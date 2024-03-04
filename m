@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1092870EAD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F9C870DD6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 682851F20F08
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E40691F23993
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113AA78B4C;
-	Mon,  4 Mar 2024 21:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337022C689;
+	Mon,  4 Mar 2024 21:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vutK6d3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYRYBndM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48CF200D4;
-	Mon,  4 Mar 2024 21:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69C38F58;
+	Mon,  4 Mar 2024 21:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588753; cv=none; b=sppl+NNo+7iJ3JZyvVO3t9Fdoc2WURp5j72trvFzqH29+toj2w7+U3wpHwNEtuVa3RNui9TqILU/9XzJUKBrNlJspif2wTjvRAbfgGCGsnDhCN09gp+JA05dqCtP/IM0Ufj6SAoJDfV67eZTVWJ65+18Fr3QDsNsF+k/PNmWOdU=
+	t=1709588292; cv=none; b=T54xekhrFFRs3uS+lE9hYqI6QF4EZb0iiu1VuD7Mfy6SYfJQQBhgPzSgGpezLqkuRpxfkjeIusSX6mufE2J68JOQh28XCIkSuWoLWlQ/SuKcdEi/F+SAwRPmqwV1lEnKXr4BEoH54r5uT6uMZYRVv13Q81v3KlDH9zLqqkNQU0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588753; c=relaxed/simple;
-	bh=KALLbGVlLN76fxVFpPADNaelh1QllP8cMlD3n2MfZ5I=;
+	s=arc-20240116; t=1709588292; c=relaxed/simple;
+	bh=hi+5jkCIlsqBWL+k7CKSK5bYxID0kTbLIQWNmjjYcow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bofppTFQorxkdeTPEsbFl77APd5UzCYnl2pGHEcehRcguKSwrxh6wB1zzPGnOH0J6iY0ei5IX/DQr6VaTyszfyilxS9LVnAcJA+nF/2qB66SM2MSyEPTNIux4Jt4U/O4rTBIlHGtsIv54i3+jYRZnoexn542m8H1Su9oPUQBl5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vutK6d3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4E9C433C7;
-	Mon,  4 Mar 2024 21:45:53 +0000 (UTC)
+	 MIME-Version; b=lA2jM/1XJgTvBMjDCnyhGLdZbTSsSdprfe9PIeq6OPxGW4+15RXFVfWsBY6U9Sgo20ADvQl+yih0NeCeRP5gLvvGXzo87sKfq+ucIu7rYs+SCkkGR+LUchOWDtvFEItxjWr8CI0v4fPMoUguybx3xhp5uhBXKZyD7aZ1eGK/gH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYRYBndM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BD1C433C7;
+	Mon,  4 Mar 2024 21:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588753;
-	bh=KALLbGVlLN76fxVFpPADNaelh1QllP8cMlD3n2MfZ5I=;
+	s=korg; t=1709588291;
+	bh=hi+5jkCIlsqBWL+k7CKSK5bYxID0kTbLIQWNmjjYcow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vutK6d3ZUl95Lwi1og5cqsV4Rgki1HJc7IKIKFgBhIupIHNBt+WPykrl4M4LagtLO
-	 goc3lv8Wkn1DU7tO+r6ZiLGkPXYxhLkbRIvdIaZQfRhdMcxor1HqMMbiZxkcVsQr89
-	 LP8Dbwo9Ql/RXoX5uOX7RHiEpCtZ9OIIJqxFTqUE=
+	b=LYRYBndMCTiT+vMC2tuwEJ3JEbEYb7hYgv8H/aDa1GMwnb+1d81goHmvNYVv3nU8e
+	 xNJbugOd9k1X9rTRUIfV3ESPRsCDoEVGuSUv9r+QAo8J2xptJUEDut+aBt/WbPWVo5
+	 XTTxGoVzotq3fbKogDkJlCFS8x4kX9CpFqHIN9Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Ma <peng.ma@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 084/215] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 027/143] Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
 Date: Mon,  4 Mar 2024 21:22:27 +0000
-Message-ID: <20240304211559.658675092@linuxfoundation.org>
+Message-ID: <20240304211550.814925356@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Ma <peng.ma@nxp.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
+[ Upstream commit 7e74aa53a68bf60f6019bd5d9a9a1406ec4d4865 ]
 
-There is chip (ls1028a) errata:
+If we received HCI_EV_IO_CAPA_REQUEST while
+HCI_OP_READ_REMOTE_EXT_FEATURES is yet to be responded assume the remote
+does support SSP since otherwise this event shouldn't be generated.
 
-The SoC may hang on 16 byte unaligned read transactions by QDMA.
-
-Unaligned read transactions initiated by QDMA may stall in the NOC
-(Network On-Chip), causing a deadlock condition. Stalled transactions will
-trigger completion timeouts in PCIe controller.
-
-Workaround:
-Enable prefetch by setting the source descriptor prefetchable bit
-( SD[PF] = 1 ).
-
-Implement this workaround.
-
-Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-bluetooth/CABBYNZ+9UdG1cMZVmdtN3U2aS16AKMCyTARZZyFX7xTEDWcMOw@mail.gmail.com/T/#t
+Fixes: c7f59461f5a7 ("Bluetooth: Fix a refcnt underflow problem for hci_conn")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -109,6 +109,7 @@
- #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
- #define FSL_QDMA_CMD_DSEN_OFFSET	19
- #define FSL_QDMA_CMD_LWC_OFFSET		16
-+#define FSL_QDMA_CMD_PF			BIT(17)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 2c5b321806b3f..58ce6e155d34a 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5329,9 +5329,12 @@ static void hci_io_capa_request_evt(struct hci_dev *hdev, void *data,
+ 	hci_dev_lock(hdev);
  
- /* Field definition for Descriptor status */
- #define QDMA_CCDF_STATUS_RTE		BIT(5)
-@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
- 	qdma_csgf_set_f(csgf_dest, len);
- 	/* Descriptor Buffer */
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
--			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
-+			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-+			  FSL_QDMA_CMD_PF;
- 	sdf->data = QDMA_SDDF_CMD(cmd);
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn || !hci_conn_ssp_enabled(conn))
++	if (!conn || !hci_dev_test_flag(hdev, HCI_SSP_ENABLED))
+ 		goto unlock;
  
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
++	/* Assume remote supports SSP since it has triggered this event */
++	set_bit(HCI_CONN_SSP_ENABLED, &conn->flags);
++
+ 	hci_conn_hold(conn);
+ 
+ 	if (!hci_dev_test_flag(hdev, HCI_MGMT))
+-- 
+2.43.0
+
 
 
 
