@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-26153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91841870D57
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E7A870C7C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4707D28EEEA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC701F26BE2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE807BAF5;
-	Mon,  4 Mar 2024 21:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2965F1F92C;
+	Mon,  4 Mar 2024 21:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc3NV/hP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4l/mRbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9471C687;
-	Mon,  4 Mar 2024 21:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1181CA94;
+	Mon,  4 Mar 2024 21:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587979; cv=none; b=FTdT8HmSM4GWVZGxpX3louD7Xovjqhe/Cs4buKUIqI5NiqdWoZNsur5thsPcquvSYKaNVoigAqeJ34wPVdhLYO/qQjYKVGGeA3AfvE89AOt3FIuQv4lmuyyXDtdOZpNwdLE7Uow7k4EZGAOWk6j6lXkwPXM4Oik+UDayd/rM1yM=
+	t=1709587570; cv=none; b=qlb4G8uGpL8k6rT4kuSg+A0TqYH8lODEC+GW8Mc+wMcajKaJMuaJxRN0U14sMrKnWHo/IzfTax754FrRlpxNCcmI2dK7llc77fr1htDob8Wz4+kiIv7BYIH8EW+HWBSl6lH5aTYJh3ZaE62cGSppYB7+vcDT2VkS4JChLnXjEdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587979; c=relaxed/simple;
-	bh=iNnD38wF5N3vTnN2Bf8W/6DCM83991BG6nRRBiHGjko=;
+	s=arc-20240116; t=1709587570; c=relaxed/simple;
+	bh=WgyqQZ1qU5dAGLy8FWVCx7SDYcITd0ZjxK2Ai2VaOO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnh31AVqIfAkyT+S/4E/ucpwiBkzsAfZG4qx5TrEKMSlmtROdhwPboXlzJFtQVS/n/ltDjmbTOOOw1Wn8ijuuAgA1AL9bXaXrgZHQ20Z7T85WcA1sL2SrYDYN6KTYiV6vzIH9Otx1Va7PSBJH/tLrD56UkXwjlhiyLWfsTG3UvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc3NV/hP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AC0C433C7;
-	Mon,  4 Mar 2024 21:32:59 +0000 (UTC)
+	 MIME-Version; b=i1iR8LHTFaSGk9P6xyt+CvcFbueFQbBcf2gYgz0p3a0na0ydWHrynR+EJipebB1LYS3sT9/pHQF8o3st0BKNOD6FhclhotXnAFFMBhaD2NLfM3TblRjnI2+Xe2DR7Zm57BS4C7UCCKVw9Gr/Hu7pqs42XshSJac5z3T9VJzOq+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4l/mRbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649C0C433C7;
+	Mon,  4 Mar 2024 21:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587979;
-	bh=iNnD38wF5N3vTnN2Bf8W/6DCM83991BG6nRRBiHGjko=;
+	s=korg; t=1709587570;
+	bh=WgyqQZ1qU5dAGLy8FWVCx7SDYcITd0ZjxK2Ai2VaOO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tc3NV/hP+Pwjn6auLbmw/NXEL0NavgXut9kOA2hFLweN25bad3QWrQ2pg8sIuD3lL
-	 6kiyamAzVuh2bZVKj2+0qFSER0uvZ7py1/xHaD/f0KP/kxiITCr7lMtk60mVSZaeJA
-	 6U7MaeIj0W//3PhPSW0PEnW+TtG+MPtFKo7N6moM=
+	b=o4l/mRbzAfrU/LvMuMJ3jO5Kec7C3iDUaTZ661c6yQLNb8jFNF2BhuhQmW10xQnne
+	 APwjYDokCOzhcAb7wIvnqRlXgej5dagbuN1ZuvPXjDlOoRivpPO7d3gVIrq/BwDeCd
+	 fQ+Qv968VM3SBMY+asIbeQXpvQk+Qcx1m3iKTn4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Zhu <tony.zhu@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Lijun Pan <lijun.pan@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 145/162] dmaengine: idxd: Ensure safe user copy of completion record
+Subject: [PATCH 4.19 09/16] power: supply: bq27xxx-i2c: Do not free non existing IRQ
 Date: Mon,  4 Mar 2024 21:23:30 +0000
-Message-ID: <20240304211556.341819199@linuxfoundation.org>
+Message-ID: <20240304211534.678178706@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
+References: <20240304211534.328737119@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d3ea125df37dc37972d581b74a5d3785c3f283ab ]
+[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
 
-If CONFIG_HARDENED_USERCOPY is enabled, copying completion record from
-event log cache to user triggers a kernel bug.
+The bq27xxx i2c-client may not have an IRQ, in which case
+client->irq will be 0. bq27xxx_battery_i2c_probe() already has
+an if (client->irq) check wrapping the request_threaded_irq().
 
-[ 1987.159822] usercopy: Kernel memory exposure attempt detected from SLUB object 'dsa0' (offset 74, size 31)!
-[ 1987.170845] ------------[ cut here ]------------
-[ 1987.176086] kernel BUG at mm/usercopy.c:102!
-[ 1987.180946] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[ 1987.186866] CPU: 17 PID: 528 Comm: kworker/17:1 Not tainted 6.8.0-rc2+ #5
-[ 1987.194537] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.86B.2492.D03.2307181620 07/18/2023
-[ 1987.206405] Workqueue: wq0.0 idxd_evl_fault_work [idxd]
-[ 1987.212338] RIP: 0010:usercopy_abort+0x72/0x90
-[ 1987.217381] Code: 58 65 9c 50 48 c7 c2 17 85 61 9c 57 48 c7 c7 98 fd 6b 9c 48 0f 44 d6 48 c7 c6 b3 08 62 9c 4c 89 d1 49 0f 44 f3 e8 1e 2e d5 ff <0f> 0b 49 c7 c1 9e 42 61 9c 4c 89 cf 4d 89 c8 eb a9 66 66 2e 0f 1f
-[ 1987.238505] RSP: 0018:ff62f5cf20607d60 EFLAGS: 00010246
-[ 1987.244423] RAX: 000000000000005f RBX: 000000000000001f RCX: 0000000000000000
-[ 1987.252480] RDX: 0000000000000000 RSI: ffffffff9c61429e RDI: 00000000ffffffff
-[ 1987.260538] RBP: ff62f5cf20607d78 R08: ff2a6a89ef3fffe8 R09: 00000000fffeffff
-[ 1987.268595] R10: ff2a6a89eed00000 R11: 0000000000000003 R12: ff2a66934849c89a
-[ 1987.276652] R13: 0000000000000001 R14: ff2a66934849c8b9 R15: ff2a66934849c899
-[ 1987.284710] FS:  0000000000000000(0000) GS:ff2a66b22fe40000(0000) knlGS:0000000000000000
-[ 1987.293850] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1987.300355] CR2: 00007fe291a37000 CR3: 000000010fbd4005 CR4: 0000000000f71ef0
-[ 1987.308413] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 1987.316470] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-[ 1987.324527] PKRU: 55555554
-[ 1987.327622] Call Trace:
-[ 1987.330424]  <TASK>
-[ 1987.332826]  ? show_regs+0x6e/0x80
-[ 1987.336703]  ? die+0x3c/0xa0
-[ 1987.339988]  ? do_trap+0xd4/0xf0
-[ 1987.343662]  ? do_error_trap+0x75/0xa0
-[ 1987.347922]  ? usercopy_abort+0x72/0x90
-[ 1987.352277]  ? exc_invalid_op+0x57/0x80
-[ 1987.356634]  ? usercopy_abort+0x72/0x90
-[ 1987.360988]  ? asm_exc_invalid_op+0x1f/0x30
-[ 1987.365734]  ? usercopy_abort+0x72/0x90
-[ 1987.370088]  __check_heap_object+0xb7/0xd0
-[ 1987.374739]  __check_object_size+0x175/0x2d0
-[ 1987.379588]  idxd_copy_cr+0xa9/0x130 [idxd]
-[ 1987.384341]  idxd_evl_fault_work+0x127/0x390 [idxd]
-[ 1987.389878]  process_one_work+0x13e/0x300
-[ 1987.394435]  ? __pfx_worker_thread+0x10/0x10
-[ 1987.399284]  worker_thread+0x2f7/0x420
-[ 1987.403544]  ? _raw_spin_unlock_irqrestore+0x2b/0x50
-[ 1987.409171]  ? __pfx_worker_thread+0x10/0x10
-[ 1987.414019]  kthread+0x107/0x140
-[ 1987.417693]  ? __pfx_kthread+0x10/0x10
-[ 1987.421954]  ret_from_fork+0x3d/0x60
-[ 1987.426019]  ? __pfx_kthread+0x10/0x10
-[ 1987.430281]  ret_from_fork_asm+0x1b/0x30
-[ 1987.434744]  </TASK>
+But bq27xxx_battery_i2c_remove() unconditionally calls
+free_irq(client->irq) leading to:
 
-The issue arises because event log cache is created using
-kmem_cache_create() which is not suitable for user copy.
+[  190.310742] ------------[ cut here ]------------
+[  190.310843] Trying to free already-free IRQ 0
+[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
 
-Fix the issue by creating event log cache with
-kmem_cache_create_usercopy(), ensuring safe user copy.
+Followed by a backtrace when unbinding the driver. Add
+an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
+probe() to fix this.
 
-Fixes: c2f156bf168f ("dmaengine: idxd: create kmem cache for event log fault items")
-Reported-by: Tony Zhu <tony.zhu@intel.com>
-Tested-by: Tony Zhu <tony.zhu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Lijun Pan <lijun.pan@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240209191412.1050270-1-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/init.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index 0eb1c827a215f..d09a8553ea71d 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -342,7 +342,9 @@ static void idxd_cleanup_internals(struct idxd_device *idxd)
- static int idxd_init_evl(struct idxd_device *idxd)
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 0fbc221ee50ef..f5870b3493094 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -217,7 +217,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
  {
- 	struct device *dev = &idxd->pdev->dev;
-+	unsigned int evl_cache_size;
- 	struct idxd_evl *evl;
-+	const char *idxd_name;
+ 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
  
- 	if (idxd->hw.gen_cap.evl_support == 0)
- 		return 0;
-@@ -354,9 +356,16 @@ static int idxd_init_evl(struct idxd_device *idxd)
- 	spin_lock_init(&evl->lock);
- 	evl->size = IDXD_EVL_SIZE_MIN;
+-	free_irq(client->irq, di);
++	if (client->irq)
++		free_irq(client->irq, di);
++
+ 	bq27xxx_battery_teardown(di);
  
--	idxd->evl_cache = kmem_cache_create(dev_name(idxd_confdev(idxd)),
--					    sizeof(struct idxd_evl_fault) + evl_ent_size(idxd),
--					    0, 0, NULL);
-+	idxd_name = dev_name(idxd_confdev(idxd));
-+	evl_cache_size = sizeof(struct idxd_evl_fault) + evl_ent_size(idxd);
-+	/*
-+	 * Since completion record in evl_cache will be copied to user
-+	 * when handling completion record page fault, need to create
-+	 * the cache suitable for user copy.
-+	 */
-+	idxd->evl_cache = kmem_cache_create_usercopy(idxd_name, evl_cache_size,
-+						     0, 0, 0, evl_cache_size,
-+						     NULL);
- 	if (!idxd->evl_cache) {
- 		kfree(evl);
- 		return -ENOMEM;
+ 	mutex_lock(&battery_mutex);
 -- 
 2.43.0
 
