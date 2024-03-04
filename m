@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5273870F0A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBD7870DA4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CDE280AC4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D1BB2711E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0926B7BAFB;
-	Mon,  4 Mar 2024 21:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E6479950;
+	Mon,  4 Mar 2024 21:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvkzhfEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBCzckdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC40D46BA0;
-	Mon,  4 Mar 2024 21:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BF21C6AB;
+	Mon,  4 Mar 2024 21:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589015; cv=none; b=ZJoB+2yTYI6SnKKNCMx4+NJN3UMrgYfh4VFqmLyqrzBzYvhKbVdkxtfdVSMm/PHQ/YCLPFeXwL4GgLZHgZjOLA+EX5ZznVPs67fw2IBzB9bNGy9jBBFLVamU/hhKAPRDZveSROlBGm34GWOCO+4lRdObV/zRN63Vh91oUM4U48E=
+	t=1709588170; cv=none; b=q4ICz3f3uvWCybjCPnItXsFiDW5Yd7OGO3MVoz5Hem+PCc/n6LWJ/q5JZlKAg4Vv14wkx366ZEtVcxDEqzbT5Ig4/S36931bakPHvFy4XUxp5CkCtQm+6ipUhZ6Wh6FcOKqWgqs0z48mPM5y9fYGdCxiYj/bzLN92o+j4df3ioY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589015; c=relaxed/simple;
-	bh=xg5MlhVa0u9Qt2TJ28LKDEFq5jYLJ3ICdE8mCJpnDb0=;
+	s=arc-20240116; t=1709588170; c=relaxed/simple;
+	bh=s3i7F244Q+36dnHSPXunMCC6lB7MomvQiq6E7522WjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8bId9gm7ouou9VS1xBAr/rGVMGt1JFXM6T3A5e/HPVf9uK2jbI0DS2KUDvF3+uaoIXqfSz5cmijTPIXov2vv7+iOXWE/tW2T6AM+9zwHgPAAfPWqaFdxwsI3Ror01drXqzOHeKI4CnFA+m44NYgQMss3q4+hovs3JgJVrP+J+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvkzhfEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45306C433F1;
-	Mon,  4 Mar 2024 21:50:15 +0000 (UTC)
+	 MIME-Version; b=V44uNLrxjgBSbHb+uYd4iqQcRhHNBA19OV0dmo6PsT1ISML6sugb+EfuvCDGUmTqviFkiv3nLVw8HWQG4rmJ4THPXXYG0/Dd9zkxwy9lPPKTEyI1noixive770b0EY1qXednDcLQIRwVYcXgLXwxLD5euZCoyeogqFoXVUrzpC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBCzckdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5E6C433F1;
+	Mon,  4 Mar 2024 21:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589015;
-	bh=xg5MlhVa0u9Qt2TJ28LKDEFq5jYLJ3ICdE8mCJpnDb0=;
+	s=korg; t=1709588169;
+	bh=s3i7F244Q+36dnHSPXunMCC6lB7MomvQiq6E7522WjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvkzhfExc5ngKinqEevPjcVymvCb7YkFvC/+bpTb+f2ckh82VmLT6x0kgfGcOlgsx
-	 6h0v4+XUSJm7vJU35o1j8lPxINiXLyBv7z4uHILT523deKbNfc2KUfw3RgWkytsEUM
-	 dxvCa96gi6NB4LPpwA5E0Wd2PzsTZu0BuLhFXm1c=
+	b=gBCzckdOfA+hA+BbHmIgvSOsAI4gCvc2xmMt7vFD+MfAchkOyL15yDpU8+xE7RluQ
+	 Gh0xN2Bb2qvTveqsH4XylmIrUMPzoRpINFZdTZjXbDF1ffH7DLqvWg4IhG8bkOYXwt
+	 AMPLEJJsnyvJTfWJkpQgm0dFo2iEG3uw5QqyTA1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 168/215] lockd: fix file selection in nlmsvc_cancel_blocked
+	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 24/42] wifi: nl80211: reject iftype change with mesh ID change
 Date: Mon,  4 Mar 2024 21:23:51 +0000
-Message-ID: <20240304211602.284202775@linuxfoundation.org>
+Message-ID: <20240304211538.450816795@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9f27783b4dd235ef3c8dbf69fc6322777450323c ]
+commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
 
-We currently do a lock_to_openmode call based on the arguments from the
-NLM_UNLOCK call, but that will always set the fl_type of the lock to
-F_UNLCK, and the O_RDONLY descriptor is always chosen.
+It's currently possible to change the mesh ID when the
+interface isn't yet in mesh mode, at the same time as
+changing it into mesh mode. This leads to an overwrite
+of data in the wdev->u union for the interface type it
+currently has, causing cfg80211_change_iface() to do
+wrong things when switching.
 
-Fix it to use the file_lock from the block instead.
+We could probably allow setting an interface to mesh
+while setting the mesh ID at the same time by doing a
+different order of operations here, but realistically
+there's no userspace that's going to do this, so just
+disallow changes in iftype when setting mesh ID.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
+Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svclock.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/wireless/nl80211.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -699,9 +699,10 @@ nlmsvc_cancel_blocked(struct net *net, s
- 	block = nlmsvc_lookup_block(file, lock);
- 	mutex_unlock(&file->f_mutex);
- 	if (block != NULL) {
--		mode = lock_to_openmode(&lock->fl);
--		vfs_cancel_lock(block->b_file->f_file[mode],
--				&block->b_call->a_args.lock.fl);
-+		struct file_lock *fl = &block->b_call->a_args.lock.fl;
-+
-+		mode = lock_to_openmode(fl);
-+		vfs_cancel_lock(block->b_file->f_file[mode], fl);
- 		status = nlmsvc_unlink_block(block);
- 		nlmsvc_release_block(block);
- 	}
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3772,6 +3772,8 @@ static int nl80211_set_interface(struct
+ 
+ 		if (ntype != NL80211_IFTYPE_MESH_POINT)
+ 			return -EINVAL;
++		if (otype != NL80211_IFTYPE_MESH_POINT)
++			return -EINVAL;
+ 		if (netif_running(dev))
+ 			return -EBUSY;
+ 
 
 
 
