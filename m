@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DDE870EF2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C28C870D41
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB6A1C21AF6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4C61F20FB0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDEB78B47;
-	Mon,  4 Mar 2024 21:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029E47B3DE;
+	Mon,  4 Mar 2024 21:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPHulFKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaT4B6ln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD7E1EB5A;
-	Mon,  4 Mar 2024 21:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B719B1F60A;
+	Mon,  4 Mar 2024 21:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588963; cv=none; b=S8Ox0NAoxNaiC8McsDo8Z/DqP1duwbdV4Kh/w2fUDifbNk9uOtMtbytY1tNRF2yMHUOiI/adRoYnWqEiI3QXmDX9kuFpk9IbIUJtRzo1wTJTpBTGos63J2Pt1tIwstl+g5HN3h7s/7ly9ViUn0RHPlTloDt/j+9aA+iO7csFu3g=
+	t=1709587935; cv=none; b=Wxye5zJ+kknFiLLXodGAymmUsso63SP7mwhh/ktMeD9g3GaylGwfdZds1sJc6y6+lezhVYuO7aggvu9p0vngf+y5gpKlHazn48SIbMPhHIOwxmIdBNHmcq7Wxjoqct2z1fo/FR34yMKNeItzFy1MSh6iufxUx8rt3+rNuvXErEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588963; c=relaxed/simple;
-	bh=cSGlSAkWbbDJkzsjAU9WByVrnga9Q0nVLa7gsJ2urDs=;
+	s=arc-20240116; t=1709587935; c=relaxed/simple;
+	bh=xsMCW1ma3pXakhYvmGNI/zU8l3UFNXpJjDjKk5do7Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMQy/ZKen4G8hioA5UMiEaDt4kBQPylRr79egww4nj3nVUE+u6hrQM+Bndwan5OQLhldsIaEkMVQOgQjHLYGXPq/5RVVwyVjigyFjefE9qxz8hLgJqBNGT818FRvewE22gHC25fEv0jsjHK49DEj8uEZj5jqHDmAEjdFUh9dW1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPHulFKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91926C433C7;
-	Mon,  4 Mar 2024 21:49:22 +0000 (UTC)
+	 MIME-Version; b=DcsDhoosiJFKHui5P3PAmrj3QRvIRpvKVuYZ6iKMFdA9AUNPkg65YGsBwgGzlyfp8GYNI5ofSLYd+N38+sENKCM7mP6bdTKV9AgWGAZziOCt6IkP4Ejf5oPt3Qqi3MutGyuC4xse6U5yWH8TuUnRiU5J8h3w8F/Y4/wosKK2rnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaT4B6ln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FE2C433C7;
+	Mon,  4 Mar 2024 21:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588962;
-	bh=cSGlSAkWbbDJkzsjAU9WByVrnga9Q0nVLa7gsJ2urDs=;
+	s=korg; t=1709587935;
+	bh=xsMCW1ma3pXakhYvmGNI/zU8l3UFNXpJjDjKk5do7Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPHulFKt0gMi5TciFfidw9owiYtlk3QmKd8um20596SflYhbtqeHMKhSTv0NmTWtS
-	 pX4JWT5m54Wb0cRqf3XXvn+dOkJlJrbPNuwlHosloh5iJ91JnTaYiM1WF54sEbm0XN
-	 mfp6UsGhhKeZ/k7WFI2qJX3TFu9CUiYWaJetz55E=
+	b=TaT4B6lnDgstBJlKO4XtLC+p955/QKwLebt63zrB3SS9z1gylA0z+NSEhDBKQGdkM
+	 hSWG51b20T8fOBB8Sj8TWBBpOfgyBvnngVK3ajlY/EFHGj+FBa+Rtq1hOa7+xYuwr5
+	 r1UydKkvzX9Reyq5CJ5kaw/ScQ0Nzd97/rnzfy8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 124/215] x86/boot/compressed: Adhere to calling convention in get_sev_encryption_bit()
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 122/162] mptcp: map v4 address to v6 when destroying subflow
 Date: Mon,  4 Mar 2024 21:23:07 +0000
-Message-ID: <20240304211601.004589522@linuxfoundation.org>
+Message-ID: <20240304211555.654791852@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 30c9ca16a5271ba6f8ad9c86507ff1c789c94677 upstream.
+commit 535d620ea5ff1a033dc64ee3d912acadc7470619 upstream.
 
-Make get_sev_encryption_bit() follow the ordinary i386 calling
-convention, and only call it if CONFIG_AMD_MEM_ENCRYPT is actually
-enabled. This clarifies the calling code, and makes it more
-maintainable.
+Address family of server side mismatches with that of client side, like
+in "userspace pm add & remove address" test:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-16-ardb@kernel.org
+    userspace_pm_add_addr $ns1 10.0.2.1 10
+    userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
+
+That's because on the server side, the family is set to AF_INET6 and the
+v4 address is mapped in a v6 one.
+
+This patch fixes this issue. In mptcp_pm_nl_subflow_destroy_doit(), before
+checking local address family with remote address family, map an IPv4
+address to an IPv6 address if the pair is a v4-mapped address.
+
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/387
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-1-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_64.S     |    5 +++--
- arch/x86/boot/compressed/mem_encrypt.S |   10 ----------
- 2 files changed, 3 insertions(+), 12 deletions(-)
+ net/mptcp/pm_userspace.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -180,12 +180,13 @@ SYM_FUNC_START(startup_32)
-   */
- 	/*
- 	 * If SEV is active then set the encryption mask in the page tables.
--	 * This will insure that when the kernel is copied and decompressed
-+	 * This will ensure that when the kernel is copied and decompressed
- 	 * it will be done so encrypted.
- 	 */
--	call	get_sev_encryption_bit
- 	xorl	%edx, %edx
- #ifdef	CONFIG_AMD_MEM_ENCRYPT
-+	call	get_sev_encryption_bit
-+	xorl	%edx, %edx
- 	testl	%eax, %eax
- 	jz	1f
- 	subl	$32, %eax	/* Encryption bit is always above bit 31 */
---- a/arch/x86/boot/compressed/mem_encrypt.S
-+++ b/arch/x86/boot/compressed/mem_encrypt.S
-@@ -18,12 +18,7 @@
- 	.text
- 	.code32
- SYM_FUNC_START(get_sev_encryption_bit)
--	xor	%eax, %eax
--
--#ifdef CONFIG_AMD_MEM_ENCRYPT
- 	push	%ebx
--	push	%ecx
--	push	%edx
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -495,6 +495,16 @@ int mptcp_pm_nl_subflow_destroy_doit(str
+ 		goto destroy_err;
+ 	}
  
- 	movl	$0x80000000, %eax	/* CPUID to check the highest leaf */
- 	cpuid
-@@ -54,12 +49,7 @@ SYM_FUNC_START(get_sev_encryption_bit)
- 	xor	%eax, %eax
- 
- .Lsev_exit:
--	pop	%edx
--	pop	%ecx
- 	pop	%ebx
--
--#endif	/* CONFIG_AMD_MEM_ENCRYPT */
--
- 	RET
- SYM_FUNC_END(get_sev_encryption_bit)
- 
++#if IS_ENABLED(CONFIG_MPTCP_IPV6)
++	if (addr_l.family == AF_INET && ipv6_addr_v4mapped(&addr_r.addr6)) {
++		ipv6_addr_set_v4mapped(addr_l.addr.s_addr, &addr_l.addr6);
++		addr_l.family = AF_INET6;
++	}
++	if (addr_r.family == AF_INET && ipv6_addr_v4mapped(&addr_l.addr6)) {
++		ipv6_addr_set_v4mapped(addr_r.addr.s_addr, &addr_r.addr6);
++		addr_r.family = AF_INET6;
++	}
++#endif
+ 	if (addr_l.family != addr_r.family) {
+ 		GENL_SET_ERR_MSG(info, "address families do not match");
+ 		err = -EINVAL;
 
 
 
