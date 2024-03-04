@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-25921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7567E8702AC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:27:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050618702BC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 236331F26C11
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A85B1F25349
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06CE3D97F;
-	Mon,  4 Mar 2024 13:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97CE3E49D;
+	Mon,  4 Mar 2024 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tlxS6qV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJ8BBBGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0733D579;
-	Mon,  4 Mar 2024 13:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ECF3E48C
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709558852; cv=none; b=AebEmkeLPx3NsJJagoE2zWiqQysUssXK7pTykxblb0tmaJX0t8JNyc43ockhmL6spcLJosLpqA4Ynd0TBK8BVnjtkL/EB10hdnQSRvEcq2snz4OtDlUzUsKD6ufZYgaz9t30vTCUTSZU1sKl4CPu/HIwJZ3M7LdnZGi2/l8A2e4=
+	t=1709559003; cv=none; b=HA3L6BHDfEWVYYFiMTiintveZoAssncjYV3U90rn4KR2MqrFlr5MxqmMGHfz5ZgRIym+Or1+F9truCMCOhmyQo3QBEWFueB/vNuSgbne7v0fBSPvxZMuCVqLZIOPUFLOUDye1C+l5lIoGPZ5tHB3C1TvjJsIQhBMfNHgTi0Y62Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709558852; c=relaxed/simple;
-	bh=AXT83CsKS04YlrnMU/ETXsCuo5f4Okc9c/ART/JBAD8=;
+	s=arc-20240116; t=1709559003; c=relaxed/simple;
+	bh=BNBDu31S6tQ3dcTUqDfuvqSlLwoZdIJUMyciiwuvUuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mxdMeKGwGcEU8+P1IctlF0+ynVolL77j9sn0xjSLGroohDAHZ4siajpNTJNaoSKAeFtZEFFQtFoVAn2m1+BziDqS7wXN7JwZRVL7KAq1lHq5h0PpZVofTw/FlGaDVvy8R808Q0CSOFoNmLFEaBbcI47Ub11Rn9a4zf0oeQluWLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tlxS6qV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBC1C43390;
-	Mon,  4 Mar 2024 13:27:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=j3xQvReerfz3RSuU4Yxj5B7/NX8ubFie2OJBhvPAyN88bj7vPJ2DpWz5tR72/l6GtrzRN1H32c0dubVgJDSf756It96FdsdHOrs46bnWkPqRgv21VPG1eLkfeGq6nkT0eq8RHMF0PTI1J5zg3bv55FOxFclGFQaEQMt445Slcmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJ8BBBGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74B5C433C7;
+	Mon,  4 Mar 2024 13:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709558851;
-	bh=AXT83CsKS04YlrnMU/ETXsCuo5f4Okc9c/ART/JBAD8=;
+	s=korg; t=1709559003;
+	bh=BNBDu31S6tQ3dcTUqDfuvqSlLwoZdIJUMyciiwuvUuM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0tlxS6qVrdvzqApIqQuYs8I3eEuFgwlc+COKdoQ3ERDdpxCGpc/DDeGYuETJNPzI7
-	 xb6dqhGYn770z46p21tEFvimEoKrscjPCGydoEdmXSoiVChbwYjFByr4tEDYJxPFS/
-	 Ze2YUvOwkH0CQ+xedYdNgA8t3C8VnCVnlpuuIWLw=
-Date: Mon, 4 Mar 2024 14:27:29 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Aditya Srivastava <yashsri421@gmail.com>, 1064035@bugs.debian.org
-Subject: Re: [regression 5.10.y] linux-doc builds: Global symbol "$args"
- requires explicit package name (did you forget to declare "my $args"?) at
- ./scripts/kernel-doc line 1236.
-Message-ID: <2024030412-street-phoenix-882e@gregkh>
-References: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
+	b=KJ8BBBGSpigrm1SFJkNe2bhPgHHgGft/PiqwuKCSCtE+Y3+1K0KN+CUbmy1XOWibg
+	 fGexHxYpnCGmrkO9NDxWk+BwtjxCSygo5YNx9UYEA9xBx0xNB0QLKlb2R1QVGBE5+D
+	 KnOhZKs3nhBUDZgwgBBkxBjfbA1HM5Yqh0e7n4x8=
+Date: Mon, 4 Mar 2024 14:29:47 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH 6.7.y v2 0/5] Delay VERW - 6.7.y backport
+Message-ID: <2024030429-starry-slider-b3e0@gregkh>
+References: <20240303-delay-verw-backport-6-7-y-v2-0-439b1829d099@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,43 +56,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
+In-Reply-To: <20240303-delay-verw-backport-6-7-y-v2-0-439b1829d099@linux.intel.com>
 
-On Fri, Mar 01, 2024 at 01:31:10PM +0100, Salvatore Bonaccorso wrote:
-> Hi,
-> 
-> Ben Hutchings reported in https://bugs.debian.org/1064035 a problem
-> with the kernel-doc builds once 3080ea5553cc ("stddef: Introduce
-> DECLARE_FLEX_ARRAY() helper") got applied in 5.10.210 (as
-> prerequisite of another fix in 5.10.y):
-> 
-> > The backport of commit 3080ea5553cc "stddef: Introduce
-> > DECLARE_FLEX_ARRAY() helper" modified scripts/kernel-doc and
-> > introduced a syntax error:
-> > 
-> > Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-> > Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-> > Execution of ./scripts/kernel-doc aborted due to compilation errors.
-> > 
-> > This doesn't stop the documentation build process, but causes the
-> > documentation that should be extracted by kernel-doc to be missing
-> > from linux-doc-5.10.
-> > 
-> > We should be able to fix this by eithering backport commit
-> > e86bdb24375a "scripts: kernel-doc: reduce repeated regex expressions
-> > into variables" or replacing /$args/ with /([^,)]+)/.
-> > 
-> > Ben.
-> 
-> What would be prefered here from stable maintainers point of view?
-> AFAICS e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
-> expressions into variables") won't apply cleanly and needs some
-> refactoring. The alternative pointed out by Ben would be to replace
-> the /$args/ with  /([^,)]+)/.
+On Sun, Mar 03, 2024 at 08:24:01PM -0800, Pawan Gupta wrote:
+> v2:
+> - Dropped already backported patch "x86/bugs: Add asm helpers for
+>   executing VERW".
+>   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.7.8&id=09b0b1a090b74c9b453f9281e72289834c1a3dbb
+> - Boot tested with KASLR and KPTI enabled.
+> - Rebased to v6.7.8
 
-I'll take a patch that does either, your call :)
-
-thanks,
+Thanks for these, the 6.7.y, 6.6.y, and 6.1.y series now queued up.
 
 greg k-h
 
