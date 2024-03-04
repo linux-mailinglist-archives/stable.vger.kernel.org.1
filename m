@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-26444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA7A870EA1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0168E870CD3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A602B26E8A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8251F21574
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3D97B3E6;
-	Mon,  4 Mar 2024 21:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF7B47A5D;
+	Mon,  4 Mar 2024 21:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ca3HtBQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Apde/ePe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2D578B47;
-	Mon,  4 Mar 2024 21:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CE61EB5A;
+	Mon,  4 Mar 2024 21:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588733; cv=none; b=Hiv/PFe96fhm2jPOgOlSxwh6X+3KXwPFQANensGAyGx+5HoRdSpzDguYFa+5CxQLQw/MaNyqMT117d/xRoN4S/L0ozjn0yzh1/zUyhM/wt73CdGK28Mqacz4XEUZuYgofn5YIXjofv11g9JQYfwPpgMdmUzq8DLUoQqVlvc1xNU=
+	t=1709587745; cv=none; b=K44vjQn39I9auqmO+mMW+5CPqitq5yCk0c9sIQHY6w02aYTR0lFfuBOhq5CDwCcdxkCFueC5ibSKge3P0wxGeqgroH9KK1vmYCq8cRbGXik8CGs9+uwWuShHt9lmagsEuM5Z+0zyLLhERkAMHdZ3JwyyhL/YFvUERXkRgzHxf50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588733; c=relaxed/simple;
-	bh=eHUrcp5VYUa2sqnG2RPE0UKUS9iM8LSzQ8ka9NFdRNo=;
+	s=arc-20240116; t=1709587745; c=relaxed/simple;
+	bh=ejtkR5QQDvvNfdsGnOgGLNg7sfmPw+jWj/i8KaHX01Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b5eG5UpxqIvsPfvPodX+MOfie+wbsjJbmmzM8rtU64XmQWQ9bcfBL+VQ4FwLZCFtXMOcE3sjrJDOdcgLyLYsT5KDcfZ6Ae1ykA9A5OHd5Nuwgv44vC2bBX9/zFDpZTCyMEvrVOo0JxsOfo426sPy27U+9VxjvGa0vQLqlBoRqvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca3HtBQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8123FC433C7;
-	Mon,  4 Mar 2024 21:45:32 +0000 (UTC)
+	 MIME-Version; b=VrCSJ3emgcibG1LACSwRycE6OvUW6zwXNHAj+zJHrh5HcW8mqY/4PBEkulx9bbfBwEZ62wocgqv5zbzqV+7d8ThW5Wr7oceJzthCpcLPj9Ixy3Ld5RJeDi39uVlKajQ/9wzSKuq+yJhyYwuXmpggFi1hDL+CN6q/0NpAsKPp5RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Apde/ePe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B23FC433F1;
+	Mon,  4 Mar 2024 21:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588732;
-	bh=eHUrcp5VYUa2sqnG2RPE0UKUS9iM8LSzQ8ka9NFdRNo=;
+	s=korg; t=1709587745;
+	bh=ejtkR5QQDvvNfdsGnOgGLNg7sfmPw+jWj/i8KaHX01Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ca3HtBQ3sYsYWrIw4UHSVe8e7zWiBLnruLAyYWI+asbpHvw6ozp1qSf7lkTIdQNwf
-	 OtU4FAN38gbxM4p67OpAc4FFN3sKieHXN3qhW+bzYd1h5HkU5J3ebTg/wVKRpoIZ3h
-	 xRIChA6L2V6ALAsl9JHEuvSJ6FLtiQ1SazGNHAvE=
+	b=Apde/ePeUHrmVhp/hrfwhhcgv/4RS/KqRzzu8pczLLm/joDXVkJqygCbzcIp5zZGW
+	 qCFQc3QpHBndnOS1KcPR7z6dXBsyAMDb1RRvmMtaTgZ7N3rou3dv0W7W5MKdAM+MOQ
+	 ziqeAva7rd4jTzdrTxVtFSE2wnLxXRXPZCCyr0ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jann Horn <jannh@google.com>,
-	Shervin Oloumi <enlightened@chromium.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.1 076/215] landlock: Fix asymmetric private inodes referring
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 074/162] ALSA: firewire-lib: fix to check cycle continuity
 Date: Mon,  4 Mar 2024 21:22:19 +0000
-Message-ID: <20240304211559.388822539@linuxfoundation.org>
+Message-ID: <20240304211554.224351658@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-commit d9818b3e906a0ee1ab02ea79e74a2f755fc5461a upstream.
+commit 77ce96543b03f437c6b45f286d8110db2b6622a3 upstream.
 
-When linking or renaming a file, if only one of the source or
-destination directory is backed by an S_PRIVATE inode, then the related
-set of layer masks would be used as uninitialized by
-is_access_to_paths_allowed().  This would result to indeterministic
-access for one side instead of always being allowed.
+The local helper function to compare the given pair of cycle count
+evaluates them. If the left value is less than the right value, the
+function returns negative value.
 
-This bug could only be triggered with a mounted filesystem containing
-both S_PRIVATE and !S_PRIVATE inodes, which doesn't seem possible.
+If the safe cycle is less than the current cycle, it is the case of
+cycle lost. However, it is not currently handled properly.
 
-The collect_domain_accesses() calls return early if
-is_nouser_or_private() returns false, which means that the directory's
-superblock has SB_NOUSER or its inode has S_PRIVATE.  Because rename or
-link actions are only allowed on the same mounted filesystem, the
-superblock is always the same for both source and destination
-directories.  However, it might be possible in theory to have an
-S_PRIVATE parent source inode with an !S_PRIVATE parent destination
-inode, or vice versa.
+This commit fixes the bug.
 
-To make sure this case is not an issue, explicitly initialized both set
-of layer masks to 0, which means to allow all actions on the related
-side.  If at least on side has !S_PRIVATE, then
-collect_domain_accesses() and is_access_to_paths_allowed() check for the
-required access rights.
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Shervin Oloumi <enlightened@chromium.org>
-Cc: stable@vger.kernel.org
-Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-Link: https://lore.kernel.org/r/20240219190345.2928627-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Cc: <stable@vger.kernel.org>
+Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://lore.kernel.org/r/20240218033026.72577-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/fs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/firewire/amdtp-stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -824,8 +824,8 @@ static int current_check_refer_path(stru
- 	bool allow_parent1, allow_parent2;
- 	access_mask_t access_request_parent1, access_request_parent2;
- 	struct path mnt_dir;
--	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS],
--		layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS];
-+	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS] = {},
-+		     layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS] = {};
- 
- 	if (!dom)
- 		return 0;
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -951,7 +951,7 @@ static int generate_tx_packet_descs(stru
+ 				// to the reason.
+ 				unsigned int safe_cycle = increment_ohci_cycle_count(next_cycle,
+ 								IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES);
+-				lost = (compare_ohci_cycle_count(safe_cycle, cycle) > 0);
++				lost = (compare_ohci_cycle_count(safe_cycle, cycle) < 0);
+ 			}
+ 			if (lost) {
+ 				dev_err(&s->unit->device, "Detect discontinuity of cycle: %d %d\n",
 
 
 
