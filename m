@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-26462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE1D870EBA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64A6870CFA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E954B272B4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D96B28BBE7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ECF7B3C3;
-	Mon,  4 Mar 2024 21:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76567B3DE;
+	Mon,  4 Mar 2024 21:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVm1W46s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZyL8eSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1002B11193;
-	Mon,  4 Mar 2024 21:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7679C1EB5A;
+	Mon,  4 Mar 2024 21:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588780; cv=none; b=h9ClsBZvunEGIEMMeplG2/UK1yorFz8uIyLFuL89oO2tYX+AQxcjXZ2K1uUmV0WAXuQKMFy6On2caVPnoPp5nGB+Yw4iTe+z3aUGUwxhzEszLNSrYE0HXEej/QDXXGDXikR0wS64JKaKVZaeW2Cm0CpnUByXieUBmzWa4xO+ctc=
+	t=1709587790; cv=none; b=fY6CCQz6Bo4wcQoYRWQdbyjdB49ndEGP3doL3Jnid6eA6aCl5Nc3d7qppdnbO6GFFnG4J3cDg0YBtzU7o1I6e/BQBTpfuCbXXnXDgwUvD4008+qNafUhnRUbVCMVX4q0ObxnfwdCO/p9naIVbpqo4n2CVAa7oaX8yWDZgxmW9Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588780; c=relaxed/simple;
-	bh=XX9L2IUUK7RZbJ4dC0uSa7cp809IDGOZpGaFKhr6zHM=;
+	s=arc-20240116; t=1709587790; c=relaxed/simple;
+	bh=pwSELbZ+07C0jxpCbM9G5YyEJZRs4CKQPnH29bMeYR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERMEAqMrQ5hAY1WhE3jCabNGqZgPWwr6JL9LoryFmpbf/ITP+Zf2lEZz2SzODYzyiyoFj3Z/pNmBYAUSixCN8OxJj+45X/QOJ4dHBfO6B569wWuVdiH/IdkzvETveb5b+M+k9O4sp09v4BpxgUifqft7RQo8tgbmQonUf54i3Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVm1W46s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED83C433F1;
-	Mon,  4 Mar 2024 21:46:19 +0000 (UTC)
+	 MIME-Version; b=Lbnh5fn37N/6SDdfHeYb5jRvdk8vqO8h4dYGSGz3l3VWayvnnvOLVYcSg3S6cwiwRLj3HlZ61hp5qzPKiwy4TqP1Ry4A42ZJiAAZJ6cgMj4XWKEssdRo1OlhKsSWMcrUFO2TPAVL6RhgH+Ohpmf/PjesqEipS9XHC4aZ8UT9E3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZyL8eSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77D2C433F1;
+	Mon,  4 Mar 2024 21:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588779;
-	bh=XX9L2IUUK7RZbJ4dC0uSa7cp809IDGOZpGaFKhr6zHM=;
+	s=korg; t=1709587790;
+	bh=pwSELbZ+07C0jxpCbM9G5YyEJZRs4CKQPnH29bMeYR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVm1W46sD488e/zamdKqlu7elXsHML28pcywk8thKCITYpfW3N+Oo97m4jNZW1qk4
-	 Cw2iSzHf582jqwQS4nc4fSPmas/Tmk0wFSPHnBGqtXj8ZO/vfUv/Aw1DhtCKdPqpOE
-	 ft9nfkv37Mv7kCImrb7D/ZZfvcbt/ghfz0W9EfXk=
+	b=mZyL8eSxT9n+WAetUYwEV95wYciCY9LW1eIaXS5HnmV+1k1A0LR/56ezI+X6yFWuI
+	 jt9ASi63EwL78MWjNPsjciny2ib1tfqAFjRb7Krvdh91gD63RYEZ9ySXTThK28LDOa
+	 ng3xkwN4xHiWdB/HVYVQWP8Ax68Iud2R4qP0S+Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/215] afs: Fix endless loop in directory parsing
+Subject: [PATCH 6.7 067/162] Revert "riscv: mm: support Svnapot in huge vmap"
 Date: Mon,  4 Mar 2024 21:22:12 +0000
-Message-ID: <20240304211559.173681925@linuxfoundation.org>
+Message-ID: <20240304211553.992766847@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
+[ Upstream commit 16ab4646c9057e0528b985ad772e3cb88c613db2 ]
 
-If a directory has a block with only ".__afsXXXX" files in it (from
-uncompleted silly-rename), these .__afsXXXX files are skipped but without
-advancing the file position in the dir_context.  This leads to
-afs_dir_iterate() repeating the block again and again.
+This reverts commit ce173474cf19fe7fbe8f0fc74e3c81ec9c3d9807.
 
-Fix this by making the code that skips the .__afsXXXX file also manually
-advance the file position.
+We cannot correctly deal with NAPOT mappings in vmalloc/vmap because if
+some part of a NAPOT mapping is unmapped, the remaining mapping is not
+updated accordingly. For example:
 
-The symptoms are a soft lookup:
+ptr = vmalloc_huge(64 * 1024, GFP_KERNEL);
+vunmap_range((unsigned long)(ptr + PAGE_SIZE),
+	     (unsigned long)(ptr + 64 * 1024));
 
-        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
-        ...
-        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
-        ...
-         ? watchdog_timer_fn+0x1a6/0x213
-        ...
-         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-         ? afs_dir_iterate_block+0x39/0x1fd
-         afs_dir_iterate+0x10a/0x148
-         afs_readdir+0x30/0x4a
-         iterate_dir+0x93/0xd3
-         __do_sys_getdents64+0x6b/0xd4
+leads to the following kernel page table dump:
 
-This is almost certainly the actual fix for:
+0xffff8f8000ef0000-0xffff8f8000ef1000    0x00000001033c0000         4K PTE N   ..     ..   D A G . . W R V
 
-        https://bugzilla.kernel.org/show_bug.cgi?id=218496
+Meaning the first entry which was not unmapped still has the N bit set,
+which, if accessed first and cached in the TLB, could allow access to the
+unmapped range.
 
-Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Markus Suvanto <markus.suvanto@gmail.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+That's because the logic to break the NAPOT mapping does not exist and
+likely won't. Indeed, to break a NAPOT mapping, we first have to clear
+the whole mapping, flush the TLB and then set the new mapping ("break-
+before-make" equivalent). That works fine in userspace since we can handle
+any pagefault occurring on the remaining mapping but we can't handle a kernel
+pagefault on such mapping.
+
+So fix this by reverting the commit that introduced the vmap/vmalloc
+support.
+
+Fixes: ce173474cf19 ("riscv: mm: support Svnapot in huge vmap")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240227205016.121901-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/vmalloc.h | 61 +-------------------------------
+ 1 file changed, 1 insertion(+), 60 deletions(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index cf811b77ee671..6e2c967fae6fc 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -478,8 +478,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
- 		    dire->u.name[0] == '.' &&
- 		    ctx->actor != afs_lookup_filldir &&
- 		    ctx->actor != afs_lookup_one_filldir &&
--		    memcmp(dire->u.name, ".__afs", 6) == 0)
-+		    memcmp(dire->u.name, ".__afs", 6) == 0) {
-+			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
- 			continue;
-+		}
+diff --git a/arch/riscv/include/asm/vmalloc.h b/arch/riscv/include/asm/vmalloc.h
+index 924d01b56c9a1..51f6dfe19745a 100644
+--- a/arch/riscv/include/asm/vmalloc.h
++++ b/arch/riscv/include/asm/vmalloc.h
+@@ -19,65 +19,6 @@ static inline bool arch_vmap_pmd_supported(pgprot_t prot)
+ 	return true;
+ }
  
- 		/* found the next entry */
- 		if (!dir_emit(ctx, dire->u.name, nlen,
+-#ifdef CONFIG_RISCV_ISA_SVNAPOT
+-#include <linux/pgtable.h>
++#endif
+ 
+-#define arch_vmap_pte_range_map_size arch_vmap_pte_range_map_size
+-static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr, unsigned long end,
+-							 u64 pfn, unsigned int max_page_shift)
+-{
+-	unsigned long map_size = PAGE_SIZE;
+-	unsigned long size, order;
+-
+-	if (!has_svnapot())
+-		return map_size;
+-
+-	for_each_napot_order_rev(order) {
+-		if (napot_cont_shift(order) > max_page_shift)
+-			continue;
+-
+-		size = napot_cont_size(order);
+-		if (end - addr < size)
+-			continue;
+-
+-		if (!IS_ALIGNED(addr, size))
+-			continue;
+-
+-		if (!IS_ALIGNED(PFN_PHYS(pfn), size))
+-			continue;
+-
+-		map_size = size;
+-		break;
+-	}
+-
+-	return map_size;
+-}
+-
+-#define arch_vmap_pte_supported_shift arch_vmap_pte_supported_shift
+-static inline int arch_vmap_pte_supported_shift(unsigned long size)
+-{
+-	int shift = PAGE_SHIFT;
+-	unsigned long order;
+-
+-	if (!has_svnapot())
+-		return shift;
+-
+-	WARN_ON_ONCE(size >= PMD_SIZE);
+-
+-	for_each_napot_order_rev(order) {
+-		if (napot_cont_size(order) > size)
+-			continue;
+-
+-		if (!IS_ALIGNED(size, napot_cont_size(order)))
+-			continue;
+-
+-		shift = napot_cont_shift(order);
+-		break;
+-	}
+-
+-	return shift;
+-}
+-
+-#endif /* CONFIG_RISCV_ISA_SVNAPOT */
+-#endif /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+ #endif /* _ASM_RISCV_VMALLOC_H */
 -- 
 2.43.0
 
