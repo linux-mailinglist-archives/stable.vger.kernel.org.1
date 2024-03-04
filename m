@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B599870EEF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F770870D48
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D0951C21B6E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 558F11F21885
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0EF46BA0;
-	Mon,  4 Mar 2024 21:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDA77BAE6;
+	Mon,  4 Mar 2024 21:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zy/ER+T2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIKfPwfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4662F1EB5A;
-	Mon,  4 Mar 2024 21:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C17B7C0B7;
+	Mon,  4 Mar 2024 21:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588955; cv=none; b=DYLo45ok7eIcvLBI1wpRuzthUfM6frov19nh8GNv8jHtjvNu+ATHqa+nvh/UhdeOokyh/iVW/CTEPEMC9qepUZSxBWtNP0ENNjIYgfFMpTkcenSB1ugXjHA66ArIA/y3DYMyumdbXc6qS/HpKR8uTGtCQwOOyITyVUTTGhrLGUI=
+	t=1709587946; cv=none; b=UFX8Gjpfkgmbq4gybKnAwuERGJUct/qSfCoS5l5Gxau56f9K4lVo4FU8j5lwNSZEmlZkWfog3kUnzI4kYEX9NIM3d2cMhzUvo1Rp2vCxXWd/fQiKa4HvUJvhAptgOcwMEvT0Wrw664U2efyFI1WG4Qhnjb+n0jzubwj+iF0VG1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588955; c=relaxed/simple;
-	bh=slF9F6EnIwgrG+38TGJKcofgCwK0bgVrqZKKqcBeQvM=;
+	s=arc-20240116; t=1709587946; c=relaxed/simple;
+	bh=T5JeyUulc+GDqcg7iEqLI6YYqQLkoLT0kfxcr0vNbh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCRpG+ClNU0iKMUzGUmkY6dFEm4Q69DZaPxRMi5Jd3o/bmqdCsscxYLpZ+wJXWRuPAuK0w7BuKFqMgBe8E65IDSPFP73eNFUTYHgTBWPJJu1VLhmrfg2TlaVRU2Pmbhtb6Rk0TlZsnl93XnuaVIiq7MHBmt8tDHMZzQ3tdBfNtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zy/ER+T2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E15C433F1;
-	Mon,  4 Mar 2024 21:49:14 +0000 (UTC)
+	 MIME-Version; b=JZOR2hQEwcpE3b92AZNyOmGvO5qN+QfrTld8B7G0BMhtFt0EI4moKKlAT+30QEGdn3ZofT1Oxnevnuh/i5G4SmEhOVTrk4oKEw+sNXaP0r9b7RbZ0mGT3ZQuOQ06V63bK1RELwbwB7nEmaAmuYsm0M+SfrQ0R/7TANwgVk+mmi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIKfPwfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BADC43394;
+	Mon,  4 Mar 2024 21:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588955;
-	bh=slF9F6EnIwgrG+38TGJKcofgCwK0bgVrqZKKqcBeQvM=;
+	s=korg; t=1709587945;
+	bh=T5JeyUulc+GDqcg7iEqLI6YYqQLkoLT0kfxcr0vNbh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zy/ER+T22SZhtMmtn5eySkEJM3OLX+Kyl+84Yr/3yvDTjwFcIJ6JK+6XmyZx2sPY/
-	 THTCrETun6NwlqVgFSDC6DYrNsX3ZrfNJQ9eP2LBEH7pkCeXiuJVLx60QxzAkhKZv+
-	 5gdcvGlDekZgbgUtuy3QkhKHLAAqh66nSws9Rco8=
+	b=ZIKfPwfz5Va3wY83MTkTrjrg9FgIibUEYJ8ufvgaRBtKwIyNfy0z7GyWWFqazxi9F
+	 xRZUrTPIRkvxlkQqUGDctN9hUFX7OpE/E9nO5padGq9I0btwyqOgT3oFwrIMGM6br/
+	 PXLm2W/KZrgE9uZryywQ9lRjY4wPGGzSLATgXq8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 145/215] nfsd: ignore requests to disable unsupported versions
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 143/162] phy: qcom-qmp-usb: fix v3 offsets data
 Date: Mon,  4 Mar 2024 21:23:28 +0000
-Message-ID: <20240304211601.644996227@linuxfoundation.org>
+Message-ID: <20240304211556.285888986@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 8e823bafff2308753d430566256c83d8085952da ]
+[ Upstream commit d4c08d8b23b22807c712208cd05cb047e92e7672 ]
 
-The kernel currently errors out if you attempt to enable or disable a
-version that it doesn't recognize. Change it to ignore attempts to
-disable an unrecognized version. If we don't support it, then there is
-no harm in doing so.
+The MSM8996 platform has registers setup different to the rest of QMP v3
+USB platforms. It has PCS region at 0x600 and no PCS_MISC region, while
+other platforms have PCS region at 0x800 and PCS_MISC at 0x600.  This
+results in the malfunctioning USB host on some of the platforms.  The
+commit f74c35b630d4 ("phy: qcom-qmp-usb: fix register offsets for
+ipq8074/ipq6018") fixed the issue for IPQ platforms, but missed the
+SDM845 which has the same register layout.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To simplify future platform addition and to make the driver more future
+proof, rename qmp_usb_offsets_v3 to qmp_usb_offsets_v3_msm8996 (to mark
+its peculiarity), rename qmp_usb_offsets_ipq8074 to qmp_usb_offsets_v3
+and use it for SDM845 platform.
+
+Fixes: 2be22aae6b18 ("phy: qcom-qmp-usb: populate offsets configuration")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240213133824.2218916-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -601,7 +601,9 @@ static ssize_t __write_versions(struct f
- 				}
- 				break;
- 			default:
--				return -EINVAL;
-+				/* Ignore requests to disable non-existent versions */
-+				if (cmd == NFSD_SET)
-+					return -EINVAL;
- 			}
- 			vers += len + 1;
- 		} while ((len = qword_get(&mesg, vers, size)) > 0);
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+index a3719719e2e0f..365f5d85847b8 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -1276,7 +1276,7 @@ static const char * const qmp_phy_vreg_l[] = {
+ 	"vdda-phy", "vdda-pll",
+ };
+ 
+-static const struct qmp_usb_offsets qmp_usb_offsets_ipq8074 = {
++static const struct qmp_usb_offsets qmp_usb_offsets_v3 = {
+ 	.serdes		= 0,
+ 	.pcs		= 0x800,
+ 	.pcs_misc	= 0x600,
+@@ -1292,7 +1292,7 @@ static const struct qmp_usb_offsets qmp_usb_offsets_ipq9574 = {
+ 	.rx		= 0x400,
+ };
+ 
+-static const struct qmp_usb_offsets qmp_usb_offsets_v3 = {
++static const struct qmp_usb_offsets qmp_usb_offsets_v3_msm8996 = {
+ 	.serdes		= 0,
+ 	.pcs		= 0x600,
+ 	.tx		= 0x200,
+@@ -1328,7 +1328,7 @@ static const struct qmp_usb_offsets qmp_usb_offsets_v5 = {
+ static const struct qmp_phy_cfg ipq6018_usb3phy_cfg = {
+ 	.lanes			= 1,
+ 
+-	.offsets		= &qmp_usb_offsets_ipq8074,
++	.offsets		= &qmp_usb_offsets_v3,
+ 
+ 	.serdes_tbl		= ipq9574_usb3_serdes_tbl,
+ 	.serdes_tbl_num		= ARRAY_SIZE(ipq9574_usb3_serdes_tbl),
+@@ -1346,7 +1346,7 @@ static const struct qmp_phy_cfg ipq6018_usb3phy_cfg = {
+ static const struct qmp_phy_cfg ipq8074_usb3phy_cfg = {
+ 	.lanes			= 1,
+ 
+-	.offsets		= &qmp_usb_offsets_ipq8074,
++	.offsets		= &qmp_usb_offsets_v3,
+ 
+ 	.serdes_tbl		= ipq8074_usb3_serdes_tbl,
+ 	.serdes_tbl_num		= ARRAY_SIZE(ipq8074_usb3_serdes_tbl),
+@@ -1382,7 +1382,7 @@ static const struct qmp_phy_cfg ipq9574_usb3phy_cfg = {
+ static const struct qmp_phy_cfg msm8996_usb3phy_cfg = {
+ 	.lanes			= 1,
+ 
+-	.offsets		= &qmp_usb_offsets_v3,
++	.offsets		= &qmp_usb_offsets_v3_msm8996,
+ 
+ 	.serdes_tbl		= msm8996_usb3_serdes_tbl,
+ 	.serdes_tbl_num		= ARRAY_SIZE(msm8996_usb3_serdes_tbl),
+-- 
+2.43.0
+
 
 
 
