@@ -1,123 +1,164 @@
-Return-Path: <stable+bounces-25945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B08B870632
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 16:51:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CD187069D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:09:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9BB1F2273E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 15:51:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17366289572
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 16:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C00947772;
-	Mon,  4 Mar 2024 15:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA69487B6;
+	Mon,  4 Mar 2024 16:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R6CByYTB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l2PH0El9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56FE4654E;
-	Mon,  4 Mar 2024 15:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D5C482FA;
+	Mon,  4 Mar 2024 16:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709567486; cv=none; b=tkuINaVGpKEqukaSBMGxC5k2f+ghSo8de+MfX6jraH13OnhYRPGHbwtQgNDcTNj+0T1VWm+mztXNaD7oehf7zAYScTotiBR/ycWfSwQMK/aV8WPMasHNcHTWBZtrPWVeBUEBvUkUi20DyJlPFvITlPyhz2AYEqWtvsC2YxMC21U=
+	t=1709568573; cv=none; b=Or46oKYDyz7DMo3Tx0yGqRExE9I2bbFku5Lr8gEzKe69SnCOOrBaaoLXs+gZuxMtQwj3R1ZaQp3dWanvfXSwHxI31gTGHpXqSPLTF3kGD+23HaYc9ltfQk0SiM2BnTkt7wzRNDcCFbKDb3C6nyi+pmRhqg0A4Z1drS6y0uVREkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709567486; c=relaxed/simple;
-	bh=0lbdHoE8wBY59uc2iX+cWek1vZda8uKlxFEeIYRikvY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XKDTLoxaYDbhvRq5jNliZtM5Ex+osAEcf48uHAGR/8rqb+1/LV0mdpC25jSs3H8C3w5xhAeaY89wEy7U16rpgEuwrdFP4of9qts5MHyMpyEFKokBm/2fo9QZiqRCYo4hPpLN5VO9r7Y9wmRKI83/FgqLhlJhYFhV+KmguonX42s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R6CByYTB; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709567485; x=1741103485;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=0lbdHoE8wBY59uc2iX+cWek1vZda8uKlxFEeIYRikvY=;
-  b=R6CByYTBJhgFp1iKtpkg5s2IYlrjIBwTiBeBo33iRpzRMTgGEr/z0fUa
-   XCqYnr7IWf7+GC37lP9CUGTuB8L+i1C8+YdZnfefu4mOPSTQIq7pH+qSp
-   2f1WUit3mq5ZEAKdOW6PAWZE1UURhtdF3fS5GF3hQ+OASkAGcHwkWikON
-   Iv4jBB3GYeXtTYfgGSO2zRAvhysWhziFUMN7jzj1jBJqSuQ7o/9dVXlZK
-   30ZG+3UF0qqVqD+1ByDa0HlsHscA9xNadyQTrJiLMDpM2xsiP/wzwMdWx
-   q2fIJkfOSbKjj+8gGNTJWqmoeyxbZ5VAokJQCCroUnn+NayRD/IzslmWg
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3929473"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="3929473"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 07:51:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="937040723"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="937040723"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 04 Mar 2024 07:51:22 -0800
-Message-ID: <3a560c60-ffa2-a511-98d3-d29ef807b213@linux.intel.com>
-Date: Mon, 4 Mar 2024 17:53:03 +0200
+	s=arc-20240116; t=1709568573; c=relaxed/simple;
+	bh=lPGDIkEBplDb8m3Vlj3yhM2rJxIPoJyBAnQ3eb8BooA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CHdiIcsR5Y7HtT/SV/BW/4aml4hl9woQn9Yl9r6l+79icRcTNGhOoFgNSSW70HPkeFk3wFmG8LA+yRRsi/BvwmDfYhf9grbdErnTYUVBIeKPL5L0ouECVSwCTfAT/bhExfRpgmpPsFHPz6yMhHRvbNSdYD+HtPCdiY3uJgGcOhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l2PH0El9; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d240d8baf6so52368891fa.3;
+        Mon, 04 Mar 2024 08:09:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709568569; x=1710173369; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WuyOvIyOBwfiR4M4sxlaKTMFgYgHpqmg2LxHSN+K2Ns=;
+        b=l2PH0El9XpNINb3eebk1wWiXvgl0Bmib+wBlDejsyiEdsFVfEtJtIbElijqdOLGOtx
+         GwkOas3L46P1QavGJubk+XPOuCZdolCcqcooGMf6aTHmZqivA5F++Kwt8uTq+1+HeeVp
+         Wo87U2oL7Y6WwWQJGS7uljTMLhZ8Rpr5iyM4xVtwa30jWjeZLDzEobERhBegDB0yFrnL
+         sfyP3JFnEcPHxObz+9Bdkx9yZWyU/14bX7Txnncnnj9ghopTYWr4rRXCm5mxY99He+07
+         C3RxoUswNAwmm9NuVgerYYo8V89kPcDl3wrRApzaoYGBmCG2AawIBZj7CvRkQb0umj97
+         QKTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709568569; x=1710173369;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WuyOvIyOBwfiR4M4sxlaKTMFgYgHpqmg2LxHSN+K2Ns=;
+        b=iCudSc/FKnexNRXwPCsK50xReGaVYWSmGMOvaa+mOynsGwhBWHEH3ZcWU9d99A9aV1
+         PoSlO36Pkhb21wU9DearVCuSC8LZcVdhTDA2eNGzC1CP6PPBMtX259elEUl2iqbwZWrH
+         4F6q1qzWt1QDBgHyF9BLlO8SOl4+D9sOWnLq5PIyeGnfpRTGIhgodjPcoBq5fLwJ2TYs
+         PHwPjM+ka8br88kN4Gg6Z5wurKRrnaX+jT9Wv0qFuyzQFcN0iowxrVVz2XzM07hdE3su
+         BzoAhL9pjk3LWj07ApTiD5ka43SlqFBWM4rFGLrsnKAS1mgh6P0hd7sneI2/6RPOywa3
+         jAMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYxMf8bK94AqPr1P/y4xEcnbkioDPQqEwON7dUcOC45kITHiPVOX4R6HOl5Gg+S71E7sp9Lrs2z9EhBA16ssmJR4xX82Wf+uoOxXz3HFZJhgbf7Ygf1sdMJeAd/x1bVkuS3xE=
+X-Gm-Message-State: AOJu0YzVBUv8KZjb2jLdO+UCDs+80CUrghLKs5Vplli6oCFpLxo8VNtT
+	fh7cF2F6gs3pB7fM0sRv671P66HoJEBvbgWHRsvvqcOPuqptvJtQ
+X-Google-Smtp-Source: AGHT+IHsFmOZ5Jx/twmR31hA9WNEe0pZKDYSnXlXXA6XOj7BbAjQPSpBTrOT0cgrIeaLhyYWT4F0rg==
+X-Received: by 2002:a2e:a7c2:0:b0:2d3:4b07:9140 with SMTP id x2-20020a2ea7c2000000b002d34b079140mr6808242ljp.47.1709568568844;
+        Mon, 04 Mar 2024 08:09:28 -0800 (PST)
+Received: from ?IPV6:2a01:e34:ec5f:c111:d799:a000:58a7:60? ([2a01:e34:ec5f:c111:d799:a000:58a7:60])
+        by smtp.gmail.com with ESMTPSA id bg14-20020a05600c3c8e00b004122b7a680dsm15266992wmb.21.2024.03.04.08.09.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Mar 2024 08:09:28 -0800 (PST)
+Message-ID: <0d2b0c46-4d84-4279-8964-589d77435e6a@gmail.com>
+Date: Mon, 4 Mar 2024 17:09:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: Chris Yokum <linux-usb@mail.totalphase.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
+Content-Language: fr-FR, en-US
+To: Mikhail Khvoinitsky <me@khvoinitsky.org>
 Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- stable <stable@vger.kernel.org>, linux-usb@vger.kernel.org,
- Niklas Neronin <niklas.neronin@linux.intel.com>
-References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com>
- <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info>
- <2024030246-wife-detoxify-08c0@gregkh>
- <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
- <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com>
-In-Reply-To: <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com>
+ Jiri Kosina <jikos@jikos.cz>,
+ Linux Input Mailing List <linux-input@vger.kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+ Linux Stable Mailing List <stable@vger.kernel.org>
+References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
+ <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
+ <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
+ <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com>
+ <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
+ <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
+ <9db59ae4-be28-4ab3-a2ae-0b0f661f56be@gmail.com>
+ <3bb95fcd-65cf-45dd-8d81-1a41b1ae0288@leemhuis.info>
+ <CAMMabwNo_yT4S3LaMV16Rmj6MiWL=TRYtB9wspfs_LWVgM=U8Q@mail.gmail.com>
+ <b30dc4a1-57aa-4ff5-ae52-7a01203b8be9@gmail.com>
+ <CAMMabwNVwapthrDkCLOQsWkObzvTKVzDMiod3KPVa1hoy0CzRA@mail.gmail.com>
+From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
+Autocrypt: addr=raphael.halimi@gmail.com; keydata=
+ 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
+ Wxcwwn0N
+In-Reply-To: <CAMMabwNVwapthrDkCLOQsWkObzvTKVzDMiod3KPVa1hoy0CzRA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4.3.2024 13.57, Mathias Nyman wrote:
-> On 2.3.2024 17.55, Chris Yokum wrote:
->>>> We have found a regression bug, where more than 512 URBs cannot be
->>>> reliably submitted to XHCI. URBs beyond that return 0x00 instead of
->>>> valid data in the buffer.
->>>
->>> FWIW, that's f5af638f0609af ("xhci: Fix transfer ring expansion size
->>> calculation") [v6.5-rc1] from Mathias.
->>>
+Le 04/03/2024 à 16:12, Mikhail Khvoinitsky a écrit :
+>> I'd be glad to test the module with this patch applied.
 > 
-> Ok, I see, this could be the empty ring exception check in xhci-ring.c:
+> Sure.
 > 
-> It could falsely assume ring is empty when it in fact is filled up in one
-> go by queuing several small urbs.
+>> What's the default setting ? Should I set any parameter in sysfs to get
+>> the desired result (apply workaround) ?
+> 
+> Default is 1, so you don't have to change anything.
 
-Does this help?
+Thanks, it's done. I'll test and report.
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 6a29ebd6682d..52278afea94b 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -332,7 +332,13 @@ static unsigned int xhci_ring_expansion_needed(struct xhci_hcd *xhci, struct xhc
-         /* how many trbs will be queued past the enqueue segment? */
-         trbs_past_seg = enq_used + num_trbs - (TRBS_PER_SEGMENT - 1);
-  
--       if (trbs_past_seg <= 0)
-+       /*
-+        * Consider expanding the ring already if num_trbs fills the current
-+        * segment (i.e. trbs_past_seg == 0), not only when num_trbs goes into
-+        * the next segment. Avoids confusing full ring with special empty ring
-+        * case below
-+        */
-+       if (trbs_past_seg < 0)
-                 return 0;
+Regards,
 
-Thanks
-Mathias
-
+-- 
+Raphaël Halimi
 
