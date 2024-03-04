@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2960E870CC6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E3D870DB7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D063C289421
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F28B28FBEC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FE943AAE;
-	Mon,  4 Mar 2024 21:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F01EA99;
+	Mon,  4 Mar 2024 21:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MRoRHFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZ3Z1TT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D1110A1F;
-	Mon,  4 Mar 2024 21:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6F38F58;
+	Mon,  4 Mar 2024 21:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587714; cv=none; b=IzDwkZvi06FZQu/JEiVYauJWw+RjaxldcGoJ9i/d9T88UV4w6pHEfoqaJRP4HQFNEo7ynsklCoEa3q16xt8JmXRlc23BrS96xCqksmr9kTHLINhtlzdQYeuuiJk/68q53r8SivNvPLd2N0dWSDXW9wXz821FBKhpM9sRnD6mIIE=
+	t=1709588219; cv=none; b=dWJgwa4BTe95FskDOYOnAikP1am7JivJaH16/9DxK5QTX18P83QwusY5gsihnAdYRrnUKlXQlwP4s8wc75Tx4QLMMl03zwsAzK518PSuNs5ivA1OuUEqwZC5udk3bn2o7hz/bB1udz4ETtdrUp5gWIdUYtwujuvAu9NaMt0PEg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587714; c=relaxed/simple;
-	bh=JWJpJcF1FnieVMGraMIWIl5Kr6JULoTwvwjEQLiAG4g=;
+	s=arc-20240116; t=1709588219; c=relaxed/simple;
+	bh=Bjh4fEj/1bfJOi5qR2dBNXQRfGivvBZnse20+TMoJ48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAyXr8lacVTE0wiqBFsXDz57u0CJjRzs57C3jxGB5dJueAO+gJcPEdtXy9VtLHsyQw/sSQFbyy4B7LKauVJnAAVOBR9XzsyXwRM6YRy/fl7xpM5KzRV80xLl37vJCsWSRn0pDHbuVo32MS0Lw4A2zxd3sTeaA6MxFMdbUi1IiOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MRoRHFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6DDC433F1;
-	Mon,  4 Mar 2024 21:28:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rDODxfY26UFpbsHjGc3U8+24f/TFnAeceAse11cOznuJ4y4yjuPYrtMi56OZtN/7x6XdI5eRheZDNJOFDyUIcxA9laLLPHFTaYRWIuaHGnW1I+nDyg/Unq4JmMt2FlNE7soNym7/rCUBswLy/co7F0mo22/D62qNYo6WLKbdxwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZ3Z1TT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C441FC433C7;
+	Mon,  4 Mar 2024 21:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587713;
-	bh=JWJpJcF1FnieVMGraMIWIl5Kr6JULoTwvwjEQLiAG4g=;
+	s=korg; t=1709588219;
+	bh=Bjh4fEj/1bfJOi5qR2dBNXQRfGivvBZnse20+TMoJ48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MRoRHFz+UYOi9KbJTSGBr+Oz7sxs6Fsym9zbdIXovsUeTdOA3A1ODDpUGn6C17dC
-	 PRXeE3WczjBB9bIH0X2wyWOWrpNvkoM4ZCx4wGzVHKOBQGhMQSZnsv1y/XY5PkrxK7
-	 GPPP+jv0JQHlYB8HBf9PaxWmhQlvrdkJOcIRrHRY=
+	b=CZ3Z1TT/obhmfgyDJ9B5wHMXSyhGF+cjhzqdMudCWV43Etp3sFrdFF1m7BaVTQC19
+	 5Gy46RYR9mU000LvhJUfEYpBy+r6njFR0XnsLf3ldhSaOssml94TNUuET1jGrZj895
+	 ZStMMoP357T2Ksl3AYNOdHghCys80WG7qe/vYuic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Dhruva Gole <d-gole@ti.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 061/162] drm/tegra: Remove existing framebuffer only if we support display
-Date: Mon,  4 Mar 2024 21:22:06 +0000
-Message-ID: <20240304211553.797339515@linuxfoundation.org>
+Subject: [PATCH 6.6 007/143] spi: cadence-qspi: fix pointer reference in runtime PM hooks
+Date: Mon,  4 Mar 2024 21:22:07 +0000
+Message-ID: <20240304211550.143004007@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 86bf8cfda6d2a6720fa2e6e676c98f0882c9d3d7 ]
+[ Upstream commit 32ce3bb57b6b402de2aec1012511e7ac4e7449dc ]
 
-Tegra DRM doesn't support display on Tegra234 and later, so make sure
-not to remove any existing framebuffers in that case.
+dev_get_drvdata() gets used to acquire the pointer to cqspi and the SPI
+controller. Neither embed the other; this lead to memory corruption.
 
-v2: - add comments explaining how this situation can come about
-    - clear DRIVER_MODESET and DRIVER_ATOMIC feature bits
+On a given platform (Mobileye EyeQ5) the memory corruption is hidden
+inside cqspi->f_pdata. Also, this uninitialised memory is used as a
+mutex (ctlr->bus_lock_mutex) by spi_controller_suspend().
 
-Fixes: 6848c291a54f ("drm/aperture: Convert drivers to aperture interfaces")
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240223150333.1401582-1-thierry.reding@gmail.com
+Fixes: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://msgid.link/r/20240222-cdns-qspi-pm-fix-v4-1-6b6af8bcbf59@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/drm.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/drm.c b/drivers/gpu/drm/tegra/drm.c
-index ff36171c8fb70..373bcd79257e0 100644
---- a/drivers/gpu/drm/tegra/drm.c
-+++ b/drivers/gpu/drm/tegra/drm.c
-@@ -1242,9 +1242,26 @@ static int host1x_drm_probe(struct host1x_device *dev)
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 2064dc4ea935f..08811577d8f8b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1904,10 +1904,9 @@ static void cqspi_remove(struct platform_device *pdev)
+ static int cqspi_suspend(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
  
- 	drm_mode_config_reset(drm);
+-	ret = spi_controller_suspend(host);
++	ret = spi_controller_suspend(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
  
--	err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
--	if (err < 0)
--		goto hub;
-+	/*
-+	 * Only take over from a potential firmware framebuffer if any CRTCs
-+	 * have been registered. This must not be a fatal error because there
-+	 * are other accelerators that are exposed via this driver.
-+	 *
-+	 * Another case where this happens is on Tegra234 where the display
-+	 * hardware is no longer part of the host1x complex, so this driver
-+	 * will not expose any modesetting features.
-+	 */
-+	if (drm->mode_config.num_crtc > 0) {
-+		err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
-+		if (err < 0)
-+			goto hub;
-+	} else {
-+		/*
-+		 * Indicate to userspace that this doesn't expose any display
-+		 * capabilities.
-+		 */
-+		drm->driver_features &= ~(DRIVER_MODESET | DRIVER_ATOMIC);
-+	}
+ 	clk_disable_unprepare(cqspi->clk);
+@@ -1918,7 +1917,6 @@ static int cqspi_suspend(struct device *dev)
+ static int cqspi_resume(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_controller *host = dev_get_drvdata(dev);
  
- 	err = drm_dev_register(drm, 0);
- 	if (err < 0)
+ 	clk_prepare_enable(cqspi->clk);
+ 	cqspi_wait_idle(cqspi);
+@@ -1927,7 +1925,7 @@ static int cqspi_resume(struct device *dev)
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
+ 
+-	return spi_controller_resume(host);
++	return spi_controller_resume(cqspi->host);
+ }
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend, cqspi_resume);
 -- 
 2.43.0
 
