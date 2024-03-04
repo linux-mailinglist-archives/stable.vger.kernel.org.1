@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B55870EB8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF9F870DC2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85D2AB27273
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28AEF1C20CE3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F347F10A35;
-	Mon,  4 Mar 2024 21:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977A32C689;
+	Mon,  4 Mar 2024 21:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClycvGW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeJdx8cq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14067BAE1;
-	Mon,  4 Mar 2024 21:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AD21C6AB;
+	Mon,  4 Mar 2024 21:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588774; cv=none; b=TE/9mSUYofORVAIa6mciO112d5RChY52xHuQyQoWeFVpN4h4IOPe7VBGYnVmyWO9/F3EYj/gwWeGKwnbHZgp4Jc4yEeDXF1OJzgxvYp12XoDHVHLMs7Wc560xkpFNNu0g6rpBIdFCf+5IuI+5uZIE1rfeNnSqZFKOUaeouv8tYU=
+	t=1709588245; cv=none; b=eh78+zVYWX4ydVd6CoynGVYwjIKlMpZ6S8wK0FP+XuzyCJJ//WSEin1U7EpFFfV4uGkT6fQRVOMP/TM/dvQbEKZmlH6eoDr3y3797o7Y7ANS72xr9zH7+hRoTC5rjpgQF5Kqc40uXR8LpKGVi5+9VzflrPscry7/V0a6J/TEK6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588774; c=relaxed/simple;
-	bh=RmI9Twl+eO5nZy3G3a2Rnc9f2iNA2KQaHwG6Za/R9N8=;
+	s=arc-20240116; t=1709588245; c=relaxed/simple;
+	bh=aGg6vRlOkiNLATLx+RhsvSVEc/mn9ewKFaThlGJM7xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nplG4jfAr5XLTaWz3YcvBdthlU1M1aQAz1IsHQQZiANygbDXAHwKO8Z0IXhjyllFJLGD9qZSk6qsJU4m57dlKsFcNE6zagAift9ejJfKdutWDO9190ISGuKccLP2GEbtZYX7sjtlGbBFhC8tb+i9GRh5KlKcb7CrGaxNfrIdySA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClycvGW8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00944C43399;
-	Mon,  4 Mar 2024 21:46:13 +0000 (UTC)
+	 MIME-Version; b=hG5PQ2GJ0HYggu0o59Xpzipf7eu8eqi2eHlVw/rvGzBXwKFrTzZwv00qp2P8TEzPxkzrochMXruwtN1hO7I1z8FdvYO6qcle4yUdo4pHu3Bvy+u4w6V4m6DYhILMsDllgDIHNwotURBp0mMd0bqJMwo6MTmGAe1kADlC660y614=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeJdx8cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC34DC433F1;
+	Mon,  4 Mar 2024 21:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588774;
-	bh=RmI9Twl+eO5nZy3G3a2Rnc9f2iNA2KQaHwG6Za/R9N8=;
+	s=korg; t=1709588245;
+	bh=aGg6vRlOkiNLATLx+RhsvSVEc/mn9ewKFaThlGJM7xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClycvGW8qEoaOOucyYXf4qbmBDmgePbBj7CrLeg7WtwGg2vNUlZRp1Cc5ka2Tva0V
-	 0OKOCEiPWNIp5iFKqEgpX31XfZNP+dGGvFCvHwlmXL2CyWDd3KAzqV4cNE9trpF89B
-	 29MbqVdiAy5dnqzvKobP4P8ecUKDmdUogcHo6GS0=
+	b=qeJdx8cqovIqL14ng6RlWzCQE0dLFiX7xCTfQ+rOXr1kkwB/Gznr9IooPlYbxUT4U
+	 nEMHtnFI3bizifOS7cxgns9XF+cdkFdJYJSwKglsQCkowsFtnRSAIQXfsa9r9ONEVg
+	 5Xsn/QZWNTaiPw/i47BxnOlu6hH9sPTr3YggNbAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 091/215] mmc: sdhci-xenon: fix PHY init clock stability
+	Donald Hunter <donald.hunter@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/143] tools: ynl: fix handling of multiple mcast groups
 Date: Mon,  4 Mar 2024 21:22:34 +0000
-Message-ID: <20240304211559.890284858@linuxfoundation.org>
+Message-ID: <20240304211551.023915761@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elad Nachman <enachman@marvell.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 8e9f25a290ae0016353c9ea13314c95fb3207812 upstream.
+[ Upstream commit b6c65eb20ffa8e3bd89f551427dbeee2876d72ca ]
 
-Each time SD/mmc phy is initialized, at times, in some of
-the attempts, phy fails to completes its initialization
-which results into timeout error. Per the HW spec, it is
-a pre-requisite to ensure a stable SD clock before a phy
-initialization is attempted.
+We never increment the group number iterator, so all groups
+get recorded into index 0 of the mcast_groups[] array.
 
-Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
-Link: https://lore.kernel.org/r/20240222200930.1277665-1-enachman@marvell.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result YNL can only handle using the last group.
+For example using the "netdev" sample on kernel with
+page pool commands results in:
+
+  $ ./samples/netdev
+  YNL: Multicast group 'mgmt' not found
+
+Most families have only one multicast group, so this hasn't
+been noticed. Plus perhaps developers usually test the last
+group which would have worked.
+
+Fixes: 86878f14d71a ("tools: ynl: user space helpers")
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20240226214019.1255242-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-xenon-phy.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ tools/net/ynl/lib/ynl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/sdhci-xenon-phy.c
-+++ b/drivers/mmc/host/sdhci-xenon-phy.c
-@@ -11,6 +11,7 @@
- #include <linux/slab.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/iopoll.h>
- #include <linux/of_address.h>
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index 11a7a889d279c..ae61ae5b02bf8 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -507,6 +507,7 @@ ynl_get_family_info_mcast(struct ynl_sock *ys, const struct nlattr *mcasts)
+ 				ys->mcast_groups[i].name[GENL_NAMSIZ - 1] = 0;
+ 			}
+ 		}
++		i++;
+ 	}
  
- #include "sdhci-pltfm.h"
-@@ -218,6 +219,19 @@ static int xenon_alloc_emmc_phy(struct s
  	return 0;
- }
- 
-+static int xenon_check_stability_internal_clk(struct sdhci_host *host)
-+{
-+	u32 reg;
-+	int err;
-+
-+	err = read_poll_timeout(sdhci_readw, reg, reg & SDHCI_CLOCK_INT_STABLE,
-+				1100, 20000, false, host, SDHCI_CLOCK_CONTROL);
-+	if (err)
-+		dev_err(mmc_dev(host->mmc), "phy_init: Internal clock never stabilized.\n");
-+
-+	return err;
-+}
-+
- /*
-  * eMMC 5.0/5.1 PHY init/re-init.
-  * eMMC PHY init should be executed after:
-@@ -234,6 +248,11 @@ static int xenon_emmc_phy_init(struct sd
- 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	struct xenon_emmc_phy_regs *phy_regs = priv->emmc_phy_regs;
- 
-+	int ret = xenon_check_stability_internal_clk(host);
-+
-+	if (ret)
-+		return ret;
-+
- 	reg = sdhci_readl(host, phy_regs->timing_adj);
- 	reg |= XENON_PHY_INITIALIZAION;
- 	sdhci_writel(host, reg, phy_regs->timing_adj);
+-- 
+2.43.0
+
 
 
 
