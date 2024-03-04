@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266C8870DBE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE73E870EB5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D039B1F24439
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69AECB270A8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E597BAE6;
-	Mon,  4 Mar 2024 21:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737D97B3FA;
+	Mon,  4 Mar 2024 21:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZxEDnWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEnDp2jc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE5578B69;
-	Mon,  4 Mar 2024 21:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3003B200CD;
+	Mon,  4 Mar 2024 21:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588234; cv=none; b=GzThFpH9/xgmR10X4ggYkR2rNgpGuMWqUeX6GxI3Mc38AjbGSl/46/HhQNL5HceIci1OP5fnppBvTCAZgGyilT0ZxyNcVfid4jJU+qsHhns2ZGiOp4CStSjtnHVakQn5DtUOnhyX1G1bftHpotYN9A9CYLZQN9jIABX7aFKlyWU=
+	t=1709588764; cv=none; b=IRxKDenD+Y6OJ3IFioB+lglLAaMf+lQcSnhEyvN1zW7mOS1K+98ERXcXK4qAjiHxwU2Eut6+xqh4ONBu8PZYy0t0P2YF8Wj2QApPkRRGIzWgQ0fA7kwK+kX2uJJdfxs99YYuWwGqRLOZrDyoyBPu+7OqIsB4rDfqUVVzaJfKORM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588234; c=relaxed/simple;
-	bh=Xic21hfXbazXFigSmDiIH+pF5kwGtKAKR+0T6AxxwKs=;
+	s=arc-20240116; t=1709588764; c=relaxed/simple;
+	bh=kJkSoczkMhN/xGNqETes2bwJ5CAdMdmYSv1K2Kvgl6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3N84iNBSXGW/n6WgB6HUVOO5zC1uPUeVk4+KOtDEbfo/VvFjBy2fbe/NxNDtuU47ZIXs30Y01JYAc6d/KtYT2BX5jt/L8mNwSrWlyD+QW6jAnbDDA7Vjn0wVRdwwGrw5h0U7krpt8DyCQYlQJxVoHAwuRm9HFD/UYxJ2dInhpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZxEDnWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F7C43390;
-	Mon,  4 Mar 2024 21:37:14 +0000 (UTC)
+	 MIME-Version; b=bBB+8znXi8jy+gp7cwU7vLiFqtkvDb4O4js9sdz2sxmdHIUJtKAyo7YOiStdcmPVkHlt+XHeJL21FUwxAhnZtWvMfwoh+bhodWWFgf9rL4IF9uPK0jS/mV7M7YcEv/ICUYUm0mT/sR56VgnYUiCkdXEr8b0SsAg9cj4wikyQi0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEnDp2jc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F8AC433F1;
+	Mon,  4 Mar 2024 21:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588234;
-	bh=Xic21hfXbazXFigSmDiIH+pF5kwGtKAKR+0T6AxxwKs=;
+	s=korg; t=1709588764;
+	bh=kJkSoczkMhN/xGNqETes2bwJ5CAdMdmYSv1K2Kvgl6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZxEDnWRYKa2i2jVdgy0Sx3XRASbsSSVrh5vabBVzPSNLDKMAuFFMxPoi46ytf04S
-	 Epto3K3Qls6XDc2V+LJJVPId1w44qvwGGPD3mbU8nbt1uY/Ty5QLq9VsQR77xcF4/2
-	 9xcyurn6qvXYwGaKMDJJWb0ceXieisC6A0TQ9fHQ=
+	b=oEnDp2jcX4CJG9FbqFDMD4wdtY0d/NTQAFIogFIXMVGR5DhB6Lv/CIJ0keDAPDsKU
+	 n1IX3y/dseFqMD41UmBfgtHiBXzfq/NCyYYqSRuSt/Im3Kj0ZUhwqfxTRX3EB9DIXA
+	 hV440tTA2mrQRgl38uX3L9SUXd7xtwHafCHb1SKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/143] Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT
+	Curtis Klein <curtis.klein@hpe.com>,
+	Yi Zhao <yi.zhao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 087/215] dmaengine: fsl-qdma: init irq after reg initialization
 Date: Mon,  4 Mar 2024 21:22:30 +0000
-Message-ID: <20240304211550.904280874@linuxfoundation.org>
+Message-ID: <20240304211559.759361644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-[ Upstream commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696 ]
+commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
 
-BT adapter going into UNCONFIGURED state during BT turn ON when
-devicetree has no local-bd-address node.
+Initialize the qDMA irqs after the registers are configured so that
+interrupts that may have been pending from a primary kernel don't get
+processed by the irq handler before it is ready to and cause panic with
+the following trace:
 
-Bluetooth will not work out of the box on such devices, to avoid this
-problem, added check to set HCI_QUIRK_USE_BDADDR_PROPERTY based on
-local-bd-address node entry.
+  Call trace:
+   fsl_qdma_queue_handler+0xf8/0x3e8
+   __handle_irq_event_percpu+0x78/0x2b0
+   handle_irq_event_percpu+0x1c/0x68
+   handle_irq_event+0x44/0x78
+   handle_fasteoi_irq+0xc8/0x178
+   generic_handle_irq+0x24/0x38
+   __handle_domain_irq+0x90/0x100
+   gic_handle_irq+0x5c/0xb8
+   el1_irq+0xb8/0x180
+   _raw_spin_unlock_irqrestore+0x14/0x40
+   __setup_irq+0x4bc/0x798
+   request_threaded_irq+0xd8/0x190
+   devm_request_threaded_irq+0x74/0xe8
+   fsl_qdma_probe+0x4d4/0xca8
+   platform_drv_probe+0x50/0xa0
+   really_probe+0xe0/0x3f8
+   driver_probe_device+0x64/0x130
+   device_driver_attach+0x6c/0x78
+   __driver_attach+0xbc/0x158
+   bus_for_each_dev+0x5c/0x98
+   driver_attach+0x20/0x28
+   bus_add_driver+0x158/0x220
+   driver_register+0x60/0x110
+   __platform_driver_register+0x44/0x50
+   fsl_qdma_driver_init+0x18/0x20
+   do_one_initcall+0x48/0x258
+   kernel_init_freeable+0x1a4/0x23c
+   kernel_init+0x10/0xf8
+   ret_from_fork+0x10/0x18
 
-When this quirk is not set, the public Bluetooth address read by host
-from controller though HCI Read BD Address command is
-considered as valid.
-
-Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
-Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/dma/fsl-qdma.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index ad940027e4b51..f3fe4deee78da 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -7,6 +7,7 @@
-  *
-  *  Copyright (C) 2007 Texas Instruments, Inc.
-  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
-+ *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  *
-  *  Acknowledgements:
-  *  This file is based on hci_ll.c, which was...
-@@ -1882,7 +1883,17 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
- 	case QCA_WCN7850:
--		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+
-+		/* Set BDA quirk bit for reading BDA value from fwnode property
-+		 * only if that property exist in DT.
-+		 */
-+		if (fwnode_property_present(dev_fwnode(hdev->dev.parent), "local-bd-address")) {
-+			set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+			bt_dev_info(hdev, "setting quirk bit to read BDA from fwnode later");
-+		} else {
-+			bt_dev_dbg(hdev, "local-bd-address` is not present in the devicetree so not setting quirk bit for BDA");
-+		}
-+
- 		hci_set_aosp_capable(hdev);
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -1203,10 +1203,6 @@ static int fsl_qdma_probe(struct platfor
+ 	if (!fsl_qdma->queue)
+ 		return -ENOMEM;
  
- 		ret = qca_read_soc_version(hdev, &ver, soc_type);
--- 
-2.43.0
-
+-	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
+-	if (ret)
+-		return ret;
+-
+ 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
+ 	if (fsl_qdma->irq_base < 0)
+ 		return fsl_qdma->irq_base;
+@@ -1245,16 +1241,19 @@ static int fsl_qdma_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, fsl_qdma);
+ 
+-	ret = dma_async_device_register(&fsl_qdma->dma_dev);
++	ret = fsl_qdma_reg_init(fsl_qdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
+-	ret = fsl_qdma_reg_init(fsl_qdma);
++	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
++	if (ret)
++		return ret;
++
++	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
 
 
 
