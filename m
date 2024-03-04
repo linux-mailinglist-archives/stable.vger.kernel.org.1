@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-26415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FDD870E7C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C973870CC8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC4B1F2174E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12146B25EC1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE8746BA0;
-	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A452147A5D;
+	Mon,  4 Mar 2024 21:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/NcYlmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C28at9vD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A52C11193;
-	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6185A10A1F;
+	Mon,  4 Mar 2024 21:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588659; cv=none; b=ctwNYNFP4o9B4jRDwQYow9HeS+7cAoqp9FSO0X9h9UkO6/KcCVgGZZPLbkQc+E2gcUme2kimc1xwtToz92vaFuFQlFTUcM4T1bQ+RzMQgNCB8AUxwjvo6BPFHaAv7WKrc8cEMsRlaGhvStmZCySqfcIjd81UDfNFOEQvQd3BLtA=
+	t=1709587717; cv=none; b=FwnvzaVccksqSlUcwl9Z28cL/X144Hk0lbHG44SRYDBYOScmyEMFaJb9QjX13UY7VzsmwHE3+u9sK0wjpgYozOQHums13qy8XfDaHdH0/L5pLrNxMpu7A8znkak5oOTYu9WsL9bQg0K/t0TWcjC8UJGkfDadYVZo/NI07i9YW1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588659; c=relaxed/simple;
-	bh=mNKcchx8l0Pe0vriT/DoTIxgtvzs1caJN3sNvmp+A/s=;
+	s=arc-20240116; t=1709587717; c=relaxed/simple;
+	bh=LwKF/EoVjn/SFEpaEWGlZ3kL4mTPh0SVb/+YUYYBqkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6J2/qB9EWM1XlcW/XDzM/gW1+K/dJ3so3EJPTh3SvQmHBwNuaLj1C2gD/nFYuh5wZYBque/2zJa2nv9SZG693PmTKDOLeu/QAepAr+W/dzxGGFLFnKsse2dF57ly9dc5qmWaI0v4wK0tyIhF7CxT6FEJNVheNJVqWOCaf7byKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/NcYlmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D81EC433F1;
-	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
+	 MIME-Version; b=pa27/YeLB9kwKrmEAbYSr5QE/SXPrO9fhztjepatbQBH65SEaQ5+8pW+DObBeZDWhZE1/TrrZYmdgS7zzzGkDfwgMBygD/w3Ojrbals5bbiqvO9nyPingPUq0KCRYWZCaEAXGbjS1cksrapFl6VLO7k38qsEJHsPqgxoDdQ/JXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C28at9vD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAD5C433C7;
+	Mon,  4 Mar 2024 21:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588659;
-	bh=mNKcchx8l0Pe0vriT/DoTIxgtvzs1caJN3sNvmp+A/s=;
+	s=korg; t=1709587716;
+	bh=LwKF/EoVjn/SFEpaEWGlZ3kL4mTPh0SVb/+YUYYBqkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/NcYlmNivyt0ZdQhvveDGG+QW5OW8reBSw2ARum5ynCY8CI9otZ7qCC+ANpPQOCM
-	 PBN4/HvxnG1YZgNRzYCEiW0O1kPK3ggJiQPOQuw8a76EOvhnbhHuY+POPgOqypXygY
-	 6IVerpttUX2aIhL0Iz/vvOVbPP10FRwddk0nrcPo=
+	b=C28at9vDPZiHggrtO3BtBX1fG1vBiHWHtFMHPQK02GCKfaPlbKmz4rwRCt+YdYkb1
+	 lj3hib2T7nXGGR1NzOBRdM+Cn3poriTyG65K2O7PVEN7xcLG+WbCHz+0UxJEQwdb//
+	 c30AU0eBE9fhYQtUqmE+Bf8/0LS9gikbidwKKU6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Simon Horman <horms@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/215] uapi: in6: replace temporary label with rfc9486
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.7 038/162] igb: extend PTP timestamp adjustments to i211
 Date: Mon,  4 Mar 2024 21:21:43 +0000
-Message-ID: <20240304211558.275996809@linuxfoundation.org>
+Message-ID: <20240304211553.058685099@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 6a2008641920a9c6fe1abbeb9acbec463215d505 ]
+[ Upstream commit 0bb7b09392eb74b152719ae87b1ba5e4bf910ef0 ]
 
-Not really a fix per se, but IPV6_TLV_IOAM is still tagged as "TEMPORARY
-IANA allocation for IOAM", while RFC 9486 is available for some time
-now. Just update the reference.
+The i211 requires the same PTP timestamp adjustments as the i210,
+according to its datasheet. To ensure consistent timestamping across
+different platforms, this change extends the existing adjustments to
+include the i211.
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240226124921.9097-1-justin.iurman@uliege.be
+The adjustment result are tested and comparable for i210 and i211 based
+systems.
+
+Fixes: 3f544d2a4d5c ("igb: adjust PTP timestamps for Tx/Rx latency")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240227184942.362710-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/in6.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
-index c4c53a9ab9595..ff8d21f9e95b7 100644
---- a/include/uapi/linux/in6.h
-+++ b/include/uapi/linux/in6.h
-@@ -145,7 +145,7 @@ struct in6_flowlabel_req {
- #define IPV6_TLV_PADN		1
- #define IPV6_TLV_ROUTERALERT	5
- #define IPV6_TLV_CALIPSO	7	/* RFC 5570 */
--#define IPV6_TLV_IOAM		49	/* TEMPORARY IANA allocation for IOAM */
-+#define IPV6_TLV_IOAM		49	/* RFC 9486 */
- #define IPV6_TLV_JUMBO		194
- #define IPV6_TLV_HAO		201	/* home address option */
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 319c544b9f04c..f945705561200 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -957,7 +957,7 @@ static void igb_ptp_tx_hwtstamp(struct igb_adapter *adapter)
  
+ 	igb_ptp_systim_to_hwtstamp(adapter, &shhwtstamps, regval);
+ 	/* adjust timestamp for the TX latency based on link speed */
+-	if (adapter->hw.mac.type == e1000_i210) {
++	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
+ 		switch (adapter->link_speed) {
+ 		case SPEED_10:
+ 			adjust = IGB_I210_TX_LATENCY_10;
+@@ -1003,6 +1003,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
+ 			ktime_t *timestamp)
+ {
+ 	struct igb_adapter *adapter = q_vector->adapter;
++	struct e1000_hw *hw = &adapter->hw;
+ 	struct skb_shared_hwtstamps ts;
+ 	__le64 *regval = (__le64 *)va;
+ 	int adjust = 0;
+@@ -1022,7 +1023,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
+ 	igb_ptp_systim_to_hwtstamp(adapter, &ts, le64_to_cpu(regval[1]));
+ 
+ 	/* adjust timestamp for the RX latency based on link speed */
+-	if (adapter->hw.mac.type == e1000_i210) {
++	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
+ 		switch (adapter->link_speed) {
+ 		case SPEED_10:
+ 			adjust = IGB_I210_RX_LATENCY_10;
 -- 
 2.43.0
 
