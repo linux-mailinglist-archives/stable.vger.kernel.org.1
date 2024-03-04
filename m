@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BC4870DFE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD0C870D7B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336601C210CA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D5061C233D6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDD31F93F;
-	Mon,  4 Mar 2024 21:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B1279950;
+	Mon,  4 Mar 2024 21:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/EmFu8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMn74fjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E13B8F58;
-	Mon,  4 Mar 2024 21:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAB1C687;
+	Mon,  4 Mar 2024 21:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588387; cv=none; b=NoffVzLvIVxeHpOjSs3fhPXAsgG8VCR3Ado/t+I6eVX8gGbubRjcnhp4yf5yYnf2qWtGwXVZPkPt9TFhKM0/sTugPy3/uVzx2BeuavOEXLnVLaNHyEVgWrDF9013g/htPoXhgxf9ih2LhITrs5yT0VY1S3s+X5+CoQcRPszcoqk=
+	t=1709588068; cv=none; b=FOp48Sz+05+bXJWF+MviUDUobImnd9ixR+pZIYgUZTnuJqzjsqd4vOqP3Ht3EVA4Pi3zWqUQh2igxpVAED9Ee7SRJYcmgXzMAXXU7MCZ0Cug1ehvKrkXtg8zQY9I2dk9xNHm/Mw+aEcw4PvxAgNb+Pws5EHRXtmym1WYl5gDOQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588387; c=relaxed/simple;
-	bh=LZ28yaGOKKtWlJW9A5iccrYbaAhIThqUHrZEyMrOaPY=;
+	s=arc-20240116; t=1709588068; c=relaxed/simple;
+	bh=971bjp9QehgN0+7BqILEz1RK8MKWg9Zv4XC3bUPi3Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+fv3Nin1VTwOvsN5cfApKtWsjPRjqKuSLDM8pSi4vZTIr/CaOPqPkfDSdDHiZ7YDPshF7eMmUCevDPKQhgLqVarxyzkZ4Kxv1VjGO/lXwohv4U6YV/E0lDCfjw0opKmHOhFQY0quEcTjWvWsSDdUm7vGDqFCsK1+GyofKI/c2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/EmFu8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59B3C433F1;
-	Mon,  4 Mar 2024 21:39:46 +0000 (UTC)
+	 MIME-Version; b=f1Rt7SMR3jRefoGv+Flp3F37enbr4iVMd3TU/0aKxHVPpcvIo7A/GmMAppsJzY2PD+rlj50U+OUJ6UTIxyaJEKWXqvNWzyGJwPWI9gA9gkp0rTAsIAHTKwpMXn6+OaN6CPpGGNVEdZk+uyMqeuq93OxQzGmK4Si6ck/x3DNojzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMn74fjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9164CC433F1;
+	Mon,  4 Mar 2024 21:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588387;
-	bh=LZ28yaGOKKtWlJW9A5iccrYbaAhIThqUHrZEyMrOaPY=;
+	s=korg; t=1709588067;
+	bh=971bjp9QehgN0+7BqILEz1RK8MKWg9Zv4XC3bUPi3Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/EmFu8ABNYLIdwrF7ZbgbQ6ra20lO40qTmk2I9mxKCMZ1mnNnFrCR+kwfhztYoQt
-	 llHVVIvAE/tAr9ms0SlcDVUJ1ILBMtiCtxOg5cMw/vDOrpTMxbGK/FDt5IN7MnPVHz
-	 j1gunDFNO7gSPmhrWHGxC2l0/Trg34NKnh2oVzU0=
+	b=SMn74fjfC2pLKmdjWNaO7jhCtu+0D1/ODEzX1T8SqcYgODGNPQEoGRFGAajVAvw1o
+	 iSkN4tCEmPe2v7Wa0pNlzKfKmFRGdejo62ZO0TzxPCCjAftYgk/rhBIszqLMZUGqKg
+	 DvNJRQ63gD4+YF93fQO7lUPcjyC3jH/TGZBNc3Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Ma <peng.ma@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 088/143] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 01/42] platform/x86: touchscreen_dmi: Allow partial (prefix) matches for ACPI names
 Date: Mon,  4 Mar 2024 21:23:28 +0000
-Message-ID: <20240304211552.737894287@linuxfoundation.org>
+Message-ID: <20240304211537.679129630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Ma <peng.ma@nxp.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
+[ Upstream commit dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0 ]
 
-There is chip (ls1028a) errata:
+On some devices the ACPI name of the touchscreen is e.g. either
+MSSL1680:00 or MSSL1680:01 depending on the BIOS version.
 
-The SoC may hang on 16 byte unaligned read transactions by QDMA.
+This happens for example on the "Chuwi Hi8 Air" tablet where the initial
+commit's ts_data uses "MSSL1680:00" but the tablets from the github issue
+and linux-hardware.org probe linked below both use "MSSL1680:01".
 
-Unaligned read transactions initiated by QDMA may stall in the NOC
-(Network On-Chip), causing a deadlock condition. Stalled transactions will
-trigger completion timeouts in PCIe controller.
+Replace the strcmp() match on ts_data->acpi_name with a strstarts()
+check to allow using a partial match on just the ACPI HID of "MSSL1680"
+and change the ts_data->acpi_name for the "Chuwi Hi8 Air" accordingly
+to fix the touchscreen not working on models where it is "MSSL1680:01".
 
-Workaround:
-Enable prefetch by setting the source descriptor prefetchable bit
-( SD[PF] = 1 ).
+Note this drops the length check for I2C_NAME_SIZE. This never was
+necessary since the ACPI names used are never more then 11 chars and
+I2C_NAME_SIZE is 20 so the replaced strncmp() would always stop long
+before reaching I2C_NAME_SIZE.
 
-Implement this workaround.
-
+Link: https://linux-hardware.org/?computer=AC4301C0542A
+Fixes: bbb97d728f77 ("platform/x86: touchscreen_dmi: Add info for the Chuwi Hi8 Air tablet")
+Closes: https://github.com/onitake/gsl-firmware/issues/91
 Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240212120608.30469-1-hdegoede@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -109,6 +109,7 @@
- #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
- #define FSL_QDMA_CMD_DSEN_OFFSET	19
- #define FSL_QDMA_CMD_LWC_OFFSET		16
-+#define FSL_QDMA_CMD_PF			BIT(17)
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -50,7 +50,7 @@ static const struct property_entry chuwi
+ };
  
- /* Field definition for Descriptor status */
- #define QDMA_CCDF_STATUS_RTE		BIT(5)
-@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
- 	qdma_csgf_set_f(csgf_dest, len);
- 	/* Descriptor Buffer */
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
--			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
-+			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-+			  FSL_QDMA_CMD_PF;
- 	sdf->data = QDMA_SDDF_CMD(cmd);
+ static const struct ts_dmi_data chuwi_hi8_air_data = {
+-	.acpi_name	= "MSSL1680:00",
++	.acpi_name	= "MSSL1680",
+ 	.properties	= chuwi_hi8_air_props,
+ };
  
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+@@ -1648,7 +1648,7 @@ static void ts_dmi_add_props(struct i2c_
+ 	int error;
+ 
+ 	if (has_acpi_companion(dev) &&
+-	    !strncmp(ts_data->acpi_name, client->name, I2C_NAME_SIZE)) {
++	    strstarts(client->name, ts_data->acpi_name)) {
+ 		error = device_add_properties(dev, ts_data->properties);
+ 		if (error)
+ 			dev_err(dev, "failed to add properties: %d\n", error);
 
 
 
