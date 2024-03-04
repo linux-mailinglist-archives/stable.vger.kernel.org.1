@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C028A870F49
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329A1870EFE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA9A282B62
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7D7280CDB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233A378B69;
-	Mon,  4 Mar 2024 21:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE9146BA0;
+	Mon,  4 Mar 2024 21:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmgQDztX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC3C1zt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332D1C6AB;
-	Mon,  4 Mar 2024 21:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8D91EB5A;
+	Mon,  4 Mar 2024 21:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589181; cv=none; b=rZLDLJfoMCfzKFbql3iGVg86KsmpneTke/rkSAROxhfr6QJ4imLFAipItGHhcigobmd+N3/jJose/pJ8tU/mpi867Ngf3xTkKQhIZ3vEUgu+Wx+v92qAYk7vSmYgcxJT+fMbbE/tNuODtL+xs7Dl2VyYPRPwmWufa2J5J6Wd5sg=
+	t=1709588994; cv=none; b=iFYFSv1AUWp2HYSf5QhaJwRDmpXwiXwvRNLTEQ0O5penZLm3onvspwa2JOSvM1Qqu8QFo20iWe8w7tNjLGVmtbN+/YslTSEm0/QAyUitmOXBiriD0SJsmLQirr9tgoo7ce8N5TJl8qUIwDr5iWOqU7HMXbHrf5wsSDRLDFBzLvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589181; c=relaxed/simple;
-	bh=nFW0o9edDUgCj/m6Hd9SR0QOuvdoErUcrMQs5WRWScs=;
+	s=arc-20240116; t=1709588994; c=relaxed/simple;
+	bh=C+0gaTUP7OET8uzvKqjVONICOajlnwP6vWgFmqtIpUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uh0tqv1JW5ObYFrlLrjKtK5i0lyfNJgDDW1O7f/5KakuXpRxlvjn9GDsGb0uLkiHR4t0gDWE93mXIUCP71O7d90V86gLQStKcGT2ulNEhMKdMMylGZdr905s/s2+JyubcheKDK1zyEEyzfo7ilf2juonbgBTE+uZIFSj73oCOG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmgQDztX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652B1C43390;
-	Mon,  4 Mar 2024 21:53:01 +0000 (UTC)
+	 MIME-Version; b=ITBQOKT40JrUYhI/3Zbo9rFZGfs0VTvGxXrhdAsoJnuFRULeC7vtUHtL01V5g39DW49BbdD6uPAKPx4b9sPvpvUPdzPHLYttHpR2tbViyJwSAy+r1qLQIJ6Ge78J7wcIDYO99urWmClC8AQ6Bj2VGgvZI4yzW2J4WvH7kM50Vgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC3C1zt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53A1C433F1;
+	Mon,  4 Mar 2024 21:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589181;
-	bh=nFW0o9edDUgCj/m6Hd9SR0QOuvdoErUcrMQs5WRWScs=;
+	s=korg; t=1709588994;
+	bh=C+0gaTUP7OET8uzvKqjVONICOajlnwP6vWgFmqtIpUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmgQDztXFsA+jWL9tiyKiqKPqD4aAq/mtyyBT8zgoTIKWsP60TxaabtQJrWojL7ZD
-	 YOrCrBXFeuCiek4BMbj7uZjxHeFgzxFwIok3aVq4BKflwA13TS/6J23KN4KPruPLg0
-	 72sgkp+tch06HnFPddW+CjgARc5NQIDZVVwRo7YI=
+	b=RC3C1zt9P6GOzlMmvtrlxZRPQJxctT3keX6bzhfziMgH2rJR73uh/I8l+3mx6y+2z
+	 dT1/WnXUaUwJXCeMQHB++ya4rhhdjbSwnQ5Ba9ZzLPAPQ3ynKtfiZ3sx6vgR7KQRhH
+	 Vq5jZcEzqB8MDkazyLVrXEz9WgchFBNN2/X+MgY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Miao Wang <shankerwangmiao@gmail.com>
-Subject: [PATCH 5.15 11/84] veth: try harder when allocating queue memory
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 161/215] filelock: add a new locks_inode_context accessor function
 Date: Mon,  4 Mar 2024 21:23:44 +0000
-Message-ID: <20240304211542.721162865@linuxfoundation.org>
+Message-ID: <20240304211602.093712575@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 1ce7d306ea63f3e379557c79abd88052e0483813 ]
+[ Upstream commit 401a8b8fd5acd51582b15238d72a8d0edd580e9f ]
 
-struct veth_rq is pretty large, 832B total without debug
-options enabled. Since commit under Fixes we try to pre-allocate
-enough queues for every possible CPU. Miao Wang reports that
-this may lead to order-5 allocations which will fail in production.
+There are a number of places in the kernel that are accessing the
+inode->i_flctx field without smp_load_acquire. This is required to
+ensure that the caller doesn't see a partially-initialized structure.
 
-Let the allocation fallback to vmalloc() and try harder.
-These are the same flags we pass to netdev queue allocation.
+Add a new accessor function for it to make this clear and convert all of
+the relevant accesses in locks.c to use it. Also, convert
+locks_free_lock_context to use the helper as well instead of just doing
+a "bare" assignment.
 
-Reported-and-tested-by: Miao Wang <shankerwangmiao@gmail.com>
-Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
-Link: https://lore.kernel.org/all/5F52CAE2-2FB7-4712-95F1-3312FBBFA8DD@gmail.com/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240223235908.693010-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 77c67530e1f9 ("nfsd: use locks_inode_context helper")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/locks.c         |   24 ++++++++++++------------
+ include/linux/fs.h |   14 ++++++++++++++
+ 2 files changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 87cee614618ca..0102f86d48676 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1303,7 +1303,8 @@ static int veth_alloc_queues(struct net_device *dev)
- 	struct veth_priv *priv = netdev_priv(dev);
- 	int i;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -175,7 +175,7 @@ locks_get_lock_context(struct inode *ino
+ 	struct file_lock_context *ctx;
  
--	priv->rq = kcalloc(dev->num_rx_queues, sizeof(*priv->rq), GFP_KERNEL_ACCOUNT);
-+	priv->rq = kvcalloc(dev->num_rx_queues, sizeof(*priv->rq),
-+			    GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
- 	if (!priv->rq)
- 		return -ENOMEM;
+ 	/* paired with cmpxchg() below */
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (likely(ctx) || type == F_UNLCK)
+ 		goto out;
  
-@@ -1319,7 +1320,7 @@ static void veth_free_queues(struct net_device *dev)
+@@ -194,7 +194,7 @@ locks_get_lock_context(struct inode *ino
+ 	 */
+ 	if (cmpxchg(&inode->i_flctx, NULL, ctx)) {
+ 		kmem_cache_free(flctx_cache, ctx);
+-		ctx = smp_load_acquire(&inode->i_flctx);
++		ctx = locks_inode_context(inode);
+ 	}
+ out:
+ 	trace_locks_get_lock_context(inode, type, ctx);
+@@ -247,7 +247,7 @@ locks_check_ctx_file_list(struct file *f
+ void
+ locks_free_lock_context(struct inode *inode)
  {
- 	struct veth_priv *priv = netdev_priv(dev);
+-	struct file_lock_context *ctx = inode->i_flctx;
++	struct file_lock_context *ctx = locks_inode_context(inode);
  
--	kfree(priv->rq);
-+	kvfree(priv->rq);
+ 	if (unlikely(ctx)) {
+ 		locks_check_ctx_lists(inode);
+@@ -891,7 +891,7 @@ posix_test_lock(struct file *filp, struc
+ 	void *owner;
+ 	void (*func)(void);
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx || list_empty_careful(&ctx->flc_posix)) {
+ 		fl->fl_type = F_UNLCK;
+ 		return;
+@@ -1483,7 +1483,7 @@ int __break_lease(struct inode *inode, u
+ 	new_fl->fl_flags = type;
+ 
+ 	/* typically we will check that ctx is non-NULL before calling */
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx) {
+ 		WARN_ON_ONCE(1);
+ 		goto free_lock;
+@@ -1588,7 +1588,7 @@ void lease_get_mtime(struct inode *inode
+ 	struct file_lock_context *ctx;
+ 	struct file_lock *fl;
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (ctx && !list_empty_careful(&ctx->flc_lease)) {
+ 		spin_lock(&ctx->flc_lock);
+ 		fl = list_first_entry_or_null(&ctx->flc_lease,
+@@ -1634,7 +1634,7 @@ int fcntl_getlease(struct file *filp)
+ 	int type = F_UNLCK;
+ 	LIST_HEAD(dispose);
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (ctx && !list_empty_careful(&ctx->flc_lease)) {
+ 		percpu_down_read(&file_rwsem);
+ 		spin_lock(&ctx->flc_lock);
+@@ -1823,7 +1823,7 @@ static int generic_delete_lease(struct f
+ 	struct file_lock_context *ctx;
+ 	LIST_HEAD(dispose);
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx) {
+ 		trace_generic_delete_lease(inode, NULL);
+ 		return error;
+@@ -2562,7 +2562,7 @@ void locks_remove_posix(struct file *fil
+ 	 * posix_lock_file().  Another process could be setting a lock on this
+ 	 * file at the same time, but we wouldn't remove that lock anyway.
+ 	 */
+-	ctx =  smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx || list_empty(&ctx->flc_posix))
+ 		return;
+ 
+@@ -2635,7 +2635,7 @@ void locks_remove_file(struct file *filp
+ {
+ 	struct file_lock_context *ctx;
+ 
+-	ctx = smp_load_acquire(&locks_inode(filp)->i_flctx);
++	ctx = locks_inode_context(locks_inode(filp));
+ 	if (!ctx)
+ 		return;
+ 
+@@ -2682,7 +2682,7 @@ bool vfs_inode_has_locks(struct inode *i
+ 	struct file_lock_context *ctx;
+ 	bool ret;
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx)
+ 		return false;
+ 
+@@ -2863,7 +2863,7 @@ void show_fd_locks(struct seq_file *f,
+ 	struct file_lock_context *ctx;
+ 	int id = 0;
+ 
+-	ctx = smp_load_acquire(&inode->i_flctx);
++	ctx = locks_inode_context(inode);
+ 	if (!ctx)
+ 		return;
+ 
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1189,6 +1189,13 @@ extern void show_fd_locks(struct seq_fil
+ 			 struct file *filp, struct files_struct *files);
+ extern bool locks_owner_has_blockers(struct file_lock_context *flctx,
+ 			fl_owner_t owner);
++
++static inline struct file_lock_context *
++locks_inode_context(const struct inode *inode)
++{
++	return smp_load_acquire(&inode->i_flctx);
++}
++
+ #else /* !CONFIG_FILE_LOCKING */
+ static inline int fcntl_getlk(struct file *file, unsigned int cmd,
+ 			      struct flock __user *user)
+@@ -1334,6 +1341,13 @@ static inline bool locks_owner_has_block
+ {
+ 	return false;
  }
++
++static inline struct file_lock_context *
++locks_inode_context(const struct inode *inode)
++{
++	return NULL;
++}
++
+ #endif /* !CONFIG_FILE_LOCKING */
  
- static int veth_dev_init(struct net_device *dev)
--- 
-2.43.0
-
+ static inline struct inode *file_inode(const struct file *f)
 
 
 
