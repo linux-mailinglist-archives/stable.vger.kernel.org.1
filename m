@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-26275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AD7870DD8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C6A870DBC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7900F1F239D0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 385DE1F23C1D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8671F92C;
-	Mon,  4 Mar 2024 21:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D977A70D;
+	Mon,  4 Mar 2024 21:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ds+sXWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAiEOY/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD498F58;
-	Mon,  4 Mar 2024 21:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC211EA99;
+	Mon,  4 Mar 2024 21:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588297; cv=none; b=k6wCQELDNqx++0GbT4Kdl472hNRQVYumQJHvFUqKyJTiyGVI6LbreaK+gYqD57JD1lrcBMRXVV8Ygf/tnvJqMkiPRNMDeKKoLVIxlc07szN0N2wy2LHf9Zx7RcrCXYq0i+b1SHuiLTQYrMkO33C9lfSUIVVcNafKFOgTWQuVL7A=
+	t=1709588230; cv=none; b=dUCmSwebI4CTXOwKZeHqIQpJIO9xTAkqJuBkvEMYWA23C4XI8PhFJQP1ZeWWNDw/QOMnX/U931uTl109guPH7h1O+zSxE+2/aXA467iejoLafjgx8VIKPKio4rLTEYa4L7nPPrQW4+jg/xbWgMWSbONGej9Sw/2Aa0PrE1KtM+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588297; c=relaxed/simple;
-	bh=XpUgsN+l7ReqHCOikUuk9TIQTcn2q+d6DBMDZzdf9qc=;
+	s=arc-20240116; t=1709588230; c=relaxed/simple;
+	bh=Cv5iWgCuf7CW8sq8QnEnG6M/NJmw2W/3sm2GrYj+qeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMWaptWAF/vESBn3SksQPUVj+iDmCabUKWwmxUgFX4Ys1zH3AZMrEWbQfEivWOWbJrZMw/bTLFX2Dp8wkhIsHs1SSjk3dA92XICwl+Oy5+9WMbJeyreN1vV7zurL1KLxOJNBXZrm0eXr0WTahUFUfN2Erv8fT9dt+FPwf1Xe8mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ds+sXWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5A1C433F1;
-	Mon,  4 Mar 2024 21:38:16 +0000 (UTC)
+	 MIME-Version; b=rM1D8xMELn5igS1AeYJn4gwe+PrM/w3gxZYzwQSLwpS25ZHo2a3il9tJi89v3Z5G+w8JbYV8hcpZWGc673/W9vl/94AGmRUbURERuhAsRo7aode5SmUUID9XdHLJYafOak+rfQv4g6zo0I0n11vRs5wIR93kk0bJsPXSIslqXS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAiEOY/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4560EC433C7;
+	Mon,  4 Mar 2024 21:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588297;
-	bh=XpUgsN+l7ReqHCOikUuk9TIQTcn2q+d6DBMDZzdf9qc=;
+	s=korg; t=1709588229;
+	bh=Cv5iWgCuf7CW8sq8QnEnG6M/NJmw2W/3sm2GrYj+qeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ds+sXWOD2ONEmLevpExNPUzLD6PylTKPkyncYqIwDwdEpY78snvqeR26lhBB2jzm
-	 2iMdA+bfAtE6r8YmRsVx3prj+l6y3Y0iwbNxH7/n4Pwq7v1rqiWO9PIX3dMSvxyeMk
-	 aEtQgN5SJ1pLEZv26UpkJjRPiUz+UmBa/CURtEsE=
+	b=LAiEOY/tqvzMpYtXpB4/h63IXhqn5g1MB1/yXcdonzWNlfh0zDdOGuZrK8JYk99fE
+	 5UA9mbm3LCvMMrlNtBgHlKLlA5F51opSz1/Z9lzoefgPMjKTPCPfKlktIBz8TVe57R
+	 yavAyy+JEs0G5VE/pWyoZ9QD6ZbFt9BpwcLbpBuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/143] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
-Date: Mon,  4 Mar 2024 21:22:19 +0000
-Message-ID: <20240304211550.551810609@linuxfoundation.org>
+Subject: [PATCH 6.6 020/143] net: lan78xx: fix "softirq work is pending" error
+Date: Mon,  4 Mar 2024 21:22:20 +0000
+Message-ID: <20240304211550.586862750@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
 References: <20240304211549.876981797@linuxfoundation.org>
@@ -68,47 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
+[ Upstream commit e3d5d70cb483df8296dd44e9ae3b6355ef86494c ]
 
-The MII code does not check the return value of mdio_read (among
-others), and therefore no error code should be sent. A previous fix to
-the use of an uninitialized variable propagates negative error codes,
-that might lead to wrong operations by the MII library.
+Disable BH around the call to napi_schedule() to avoid following
+error:
+NOHZ tick-stop error: local softirq work is pending, handler #08!!!
 
-An example of such issues is the use of mii_nway_restart by the dm9601
-driver. The mii_nway_restart function does not check the value returned
-by mdio_read, which in this case might be a negative number which could
-contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
-
-Return zero in case of error, as it is common practice in users of
-mdio_read to avoid wrong uses of the return value.
-
-Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240226110820.2113584-1-o.rempel@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/dm9601.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 99ec1d4a972db..8b6d6a1b3c2ec 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -232,7 +232,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	err = dm_read_shared_word(dev, 1, loc, &res);
- 	if (err < 0) {
- 		netdev_err(dev->net, "MDIO read error: %d\n", err);
--		return err;
-+		return 0;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index d86413a0ead4b..8b1e1e1c8d5be 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1501,7 +1501,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
+ 
+ 		lan78xx_rx_urb_submit_all(dev);
+ 
++		local_bh_disable();
+ 		napi_schedule(&dev->napi);
++		local_bh_enable();
  	}
  
- 	netdev_dbg(dev->net,
+ 	return 0;
 -- 
 2.43.0
 
