@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B46870D2F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DF8870DF8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAB328DD76
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44901C20FE5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED3D7D084;
-	Mon,  4 Mar 2024 21:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EEA1F92C;
+	Mon,  4 Mar 2024 21:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LElH3cZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpzSa7qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB097C6CC;
-	Mon,  4 Mar 2024 21:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FB48F58;
+	Mon,  4 Mar 2024 21:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587889; cv=none; b=Xiu850cHR5exoTq+dBrX4mxVuzhS4cBbGufyn6PhK8ZWxxbaWmQSYPR2FGMZVr03L4/FmPsEqFbcKZtzsoM7e3H0MCDa1h/e//LR8x0vMN5ik0YRO7NvCS1wLUShwMOKl2Th8lFNsUxPiCne+JubnFkdGscDTBkEwxOnpK0uWFw=
+	t=1709588371; cv=none; b=tbZBjHISRnzNjZEd2FOxuZVaEXNztOcMWaqR28cpMtesGN40LmYL5VjvgXcIRZ3NB9u4j05WSswGWdIUnaTvHoMRcH/LXujpM/sSDc7bwbEpcPh/ZU7sF5NB4T2Gp5qd2Wa0op8YSnXWtXQgdz/VImtz0ete2zfS6V1gPWffW2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587889; c=relaxed/simple;
-	bh=wc78RnSXPAMDVuX014FlhhImKYVqP9zbTQf30xTU+aE=;
+	s=arc-20240116; t=1709588371; c=relaxed/simple;
+	bh=ZxxEBA2guoOsePoVgyvueOnvQLe970bBOO3e2AYJjpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8/yj1ryaDWYfKcvlIfVqf6OMOILqhOAvyH17XNMxDV8l6lJOpA8YCt85v3OdbiNucU0d55a2M+qlVgevVjcMxy6HtnTn8JeidM4b2v5SLk+RPfEOMbGcjeeGTZmZxerJWHPPDX6dU/LXx2EmenTEFDlGVD0DL7JrnTlW/mUY6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LElH3cZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968A7C433F1;
-	Mon,  4 Mar 2024 21:31:28 +0000 (UTC)
+	 MIME-Version; b=tnyM4b9EsPbR7tApmc8S7LblBiRCEmfZIGYM0YGgYs/YiVPPJkQaXrNICkzV+fnPoaNrxzdxfYWEIQk3KIj8AtK6/9G+Kb0JgTiIlwYzRr8CGYru8R7fv4NcsslD+l0ru8xDiD3O5K1+YB+gAVtpJCChU1z8mTa6haQzL6wrhsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpzSa7qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1702FC433F1;
+	Mon,  4 Mar 2024 21:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587888;
-	bh=wc78RnSXPAMDVuX014FlhhImKYVqP9zbTQf30xTU+aE=;
+	s=korg; t=1709588371;
+	bh=ZxxEBA2guoOsePoVgyvueOnvQLe970bBOO3e2AYJjpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LElH3cZXf/i/fypekVysyfAEYfztfZ5XMiDUKe3yXmvm6qTAJfb/TifDKd9UlXhe9
-	 MA4bEpRMNBeEpKGYRsLCrTsx7vUQn0+1Pv++IFLu2n3MYsAmGGWsPVG06Oet8+VlZY
-	 ZVzyPybONlS6G7WiUpVBTPR/KhAI5e+rWNEU1bqs=
+	b=xpzSa7qeQurIKs5I3oJrhz+ouf/kvVtVYH8kFOsEcQUaJeB9nW80ST+jMmSTZSWiU
+	 oONimbsOxX9o/PgvZWe/3TkYGr4TqWb97VUeNc0wWBF1O2XitUF21pR2Mb3rXAiaWQ
+	 2fJpg9BTYPifSRrlG4ZeOQ+ackA9/IV/hQ1j275M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 129/162] mptcp: fix possible deadlock in subflow diag
+	Willian Wang <git@willian.wang>,
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 074/143] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
 Date: Mon,  4 Mar 2024 21:23:14 +0000
-Message-ID: <20240304211555.864039983@linuxfoundation.org>
+Message-ID: <20240304211552.287066905@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Willian Wang <git@willian.wang>
 
-commit d6a9608af9a75d13243d217f6ce1e30e57d56ffe upstream.
+commit 0ac32a396e4f41e88df76ce2282423188a2d2ed0 upstream.
 
-Syzbot and Eric reported a lockdep splat in the subflow diag:
+Lenovo Slim/Yoga Pro 9 14IRP8 requires a special fixup because there is
+a collision of its PCI SSID (17aa:3802) with Lenovo Yoga DuetITL 2021
+codec SSID.
 
-   WARNING: possible circular locking dependency detected
-   6.8.0-rc4-syzkaller-00212-g40b9385dd8e6 #0 Not tainted
-
-   syz-executor.2/24141 is trying to acquire lock:
-   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
-   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
-   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
-   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
-
-   but task is already holding lock:
-   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at: spin_lock
-   include/linux/spinlock.h:351 [inline]
-   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at:
-   inet_diag_dump_icsk+0x39f/0x1f80 net/ipv4/inet_diag.c:1038
-
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-
-   -> #1 (&h->lhash2[i].lock){+.+.}-{2:2}:
-   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
-   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
-   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
-   spin_lock include/linux/spinlock.h:351 [inline]
-   __inet_hash+0x335/0xbe0 net/ipv4/inet_hashtables.c:743
-   inet_csk_listen_start+0x23a/0x320 net/ipv4/inet_connection_sock.c:1261
-   __inet_listen_sk+0x2a2/0x770 net/ipv4/af_inet.c:217
-   inet_listen+0xa3/0x110 net/ipv4/af_inet.c:239
-   rds_tcp_listen_init+0x3fd/0x5a0 net/rds/tcp_listen.c:316
-   rds_tcp_init_net+0x141/0x320 net/rds/tcp.c:577
-   ops_init+0x352/0x610 net/core/net_namespace.c:136
-   __register_pernet_operations net/core/net_namespace.c:1214 [inline]
-   register_pernet_operations+0x2cb/0x660 net/core/net_namespace.c:1283
-   register_pernet_device+0x33/0x80 net/core/net_namespace.c:1370
-   rds_tcp_init+0x62/0xd0 net/rds/tcp.c:735
-   do_one_initcall+0x238/0x830 init/main.c:1236
-   do_initcall_level+0x157/0x210 init/main.c:1298
-   do_initcalls+0x3f/0x80 init/main.c:1314
-   kernel_init_freeable+0x42f/0x5d0 init/main.c:1551
-   kernel_init+0x1d/0x2a0 init/main.c:1441
-   ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
-
-   -> #0 (k-sk_lock-AF_INET6){+.+.}-{0:0}:
-   check_prev_add kernel/locking/lockdep.c:3134 [inline]
-   check_prevs_add kernel/locking/lockdep.c:3253 [inline]
-   validate_chain+0x18ca/0x58e0 kernel/locking/lockdep.c:3869
-   __lock_acquire+0x1345/0x1fd0 kernel/locking/lockdep.c:5137
-   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
-   lock_sock_fast include/net/sock.h:1723 [inline]
-   subflow_get_info+0x166/0xd20 net/mptcp/diag.c:28
-   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
-   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
-   inet_sk_diag_fill+0x10ed/0x1e00 net/ipv4/inet_diag.c:345
-   inet_diag_dump_icsk+0x55b/0x1f80 net/ipv4/inet_diag.c:1061
-   __inet_diag_dump+0x211/0x3a0 net/ipv4/inet_diag.c:1263
-   inet_diag_dump_compat+0x1c1/0x2d0 net/ipv4/inet_diag.c:1371
-   netlink_dump+0x59b/0xc80 net/netlink/af_netlink.c:2264
-   __netlink_dump_start+0x5df/0x790 net/netlink/af_netlink.c:2370
-   netlink_dump_start include/linux/netlink.h:338 [inline]
-   inet_diag_rcv_msg_compat+0x209/0x4c0 net/ipv4/inet_diag.c:1405
-   sock_diag_rcv_msg+0xe7/0x410
-   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
-   sock_diag_rcv+0x2a/0x40 net/core/sock_diag.c:280
-   netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
-   netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
-   netlink_sendmsg+0xa3b/0xd70 net/netlink/af_netlink.c:1908
-   sock_sendmsg_nosec net/socket.c:730 [inline]
-   __sock_sendmsg+0x221/0x270 net/socket.c:745
-   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
-   ___sys_sendmsg net/socket.c:2638 [inline]
-   __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
-   do_syscall_64+0xf9/0x240
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-
-As noted by Eric we can break the lock dependency chain avoid
-dumping any extended info for the mptcp subflow listener:
-nothing actually useful is presented there.
-
-Fixes: b8adb69a7d29 ("mptcp: fix lockless access in subflow ULP diag")
+Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555
+Link: https://lore.kernel.org/all/d5b42e483566a3815d229270abd668131a0d9f3a.camel@irl.hu
 Cc: stable@vger.kernel.org
-Reported-by: Eric Dumazet <edumazet@google.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJ=Oecw6OZDwmSYc9HJKQ_G32uN11L+oUcMu+TOD5Xiaw@mail.gmail.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-9-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Willian Wang <git@willian.wang>
+Reviewed-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/170879111795.8.6687687359006700715.273812184@willian.wang
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/diag.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/patch_realtek.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -21,6 +21,9 @@ static int subflow_get_info(struct sock
- 	bool slow;
- 	int err;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7352,6 +7352,7 @@ enum {
+ 	ALC287_FIXUP_LEGION_15IMHG05_AUTOMUTE,
+ 	ALC287_FIXUP_YOGA7_14ITL_SPEAKERS,
+ 	ALC298_FIXUP_LENOVO_C940_DUET7,
++	ALC287_FIXUP_LENOVO_14IRP8_DUETITL,
+ 	ALC287_FIXUP_13S_GEN2_SPEAKERS,
+ 	ALC256_FIXUP_SET_COEF_DEFAULTS,
+ 	ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
+@@ -7401,6 +7402,26 @@ static void alc298_fixup_lenovo_c940_due
+ 	__snd_hda_apply_fixup(codec, id, action, 0);
+ }
  
-+	if (inet_sk_state_load(sk) == TCP_LISTEN)
-+		return 0;
++/* A special fixup for Lenovo Slim/Yoga Pro 9 14IRP8 and Yoga DuetITL 2021;
++ * 14IRP8 PCI SSID will mistakenly be matched with the DuetITL codec SSID,
++ * so we need to apply a different fixup in this case. The only DuetITL codec
++ * SSID reported so far is the 17aa:3802 while the 14IRP8 has the 17aa:38be
++ * and 17aa:38bf. If it weren't for the PCI SSID, the 14IRP8 models would
++ * have matched correctly by their codecs.
++ */
++static void alc287_fixup_lenovo_14irp8_duetitl(struct hda_codec *codec,
++					      const struct hda_fixup *fix,
++					      int action)
++{
++	int id;
 +
- 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
- 	if (!start)
- 		return -EMSGSIZE;
++	if (codec->core.subsystem_id == 0x17aa3802)
++		id = ALC287_FIXUP_YOGA7_14ITL_SPEAKERS; /* DuetITL */
++	else
++		id = ALC287_FIXUP_TAS2781_I2C; /* 14IRP8 */
++	__snd_hda_apply_fixup(codec, id, action, 0);
++}
++
+ static const struct hda_fixup alc269_fixups[] = {
+ 	[ALC269_FIXUP_GPIO2] = {
+ 		.type = HDA_FIXUP_FUNC,
+@@ -9285,6 +9306,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_lenovo_c940_duet7,
+ 	},
++	[ALC287_FIXUP_LENOVO_14IRP8_DUETITL] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_lenovo_14irp8_duetitl,
++	},
+ 	[ALC287_FIXUP_13S_GEN2_SPEAKERS] = {
+ 		.type = HDA_FIXUP_VERBS,
+ 		.v.verbs = (const struct hda_verb[]) {
+@@ -10134,7 +10159,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
+ 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+-	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
++	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8 / DuetITL 2021", ALC287_FIXUP_LENOVO_14IRP8_DUETITL),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+ 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
 
 
 
