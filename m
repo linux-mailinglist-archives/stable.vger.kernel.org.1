@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-26232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB29F870DA9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D052A870EB1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B9E21F21835
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87AF21F21A3B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30F200CD;
-	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA507B3D8;
+	Mon,  4 Mar 2024 21:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj4FEmV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeLq7F7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD51DDCB;
-	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EAA61675;
+	Mon,  4 Mar 2024 21:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588185; cv=none; b=rnFFaILK5l0ZO1IIOXOum6VQyKZwW5Kq6AbhjXZ8fX8eG+7/q/5NWoj4XPte74zqa2rEjuWphy31ZzKZsZRdysokgABzOkJzsbnNE0DEeRcxB9HsuWeuaxHZlF9xUqjS2awvvUl/ZfWChFq4a9r0ll7ATtvhUIIusDj5nPMqXiU=
+	t=1709588759; cv=none; b=hhaXznbaR+dXkcBtCZ7F2W4KJrghJOthAp5qBU2Vhr5JINLkt7AtsTEoEiZxsSCTdcQZIYEMzYUnQvoEl72SML2Go9t/gs+TG3Ax0Wr6EQrLTiE5dQoB/J0Xv4w50qbne39TQKmVA+0OJB4m5ikdjlEiUuDiwYlybj/ekyMWBXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588185; c=relaxed/simple;
-	bh=RJq2o1foJRUClSrgEy7FNtuwZ+lLUkEIbtAzr/uK728=;
+	s=arc-20240116; t=1709588759; c=relaxed/simple;
+	bh=KebFIugYVCXkOlv7H6Xh4Ak3iGjYVdxCWWCuF0w//jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSmiQzCMko9PRvhRppBX+B/W4jol5sGRZCSJ36j7GyoFiIr2qA1hA0hELb/oFEwPx9lIJnqmAhwr6GEdn5TRdAYX+xo7z4T0NfJ6x6IEUUcs41hWtzJ7u0OLme2yBuPv8vsn234StnrKCHfAmIKM1c8y0x1o8p9mAVzjLYrCTnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj4FEmV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D413C433C7;
-	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
+	 MIME-Version; b=ckliFOOpR7MeTZzxgjOUazfXiyqCP9By9jElOj5Gmndx2W7jniZwTiVMXIsiLgRvFNy6VRlDWHllh3diAjoKtpdXM6K8bOaSbPGrLSYM59A7I0hTV0640NzF0DhidfKxHmaBos+/r4sKEHVrPpMjylOw97cMp5vkEy2VVeXsnpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeLq7F7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BD2C433F1;
+	Mon,  4 Mar 2024 21:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588185;
-	bh=RJq2o1foJRUClSrgEy7FNtuwZ+lLUkEIbtAzr/uK728=;
+	s=korg; t=1709588758;
+	bh=KebFIugYVCXkOlv7H6Xh4Ak3iGjYVdxCWWCuF0w//jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kj4FEmV+ia/6+EEsgANME+q3np2Vgyg70nrB9QS9MhH4qE6UVugY918KCJOpMF19V
-	 Ytbg89e7Al1GmYmo0cPxXGMuzggIR+QNz2KE8vzo66AfvV31Ei20iWotSH4kEQFk+9
-	 9jDX0RfqqSIAsM8YlI9PmZHCn5blK3eVHqjR/hhY=
+	b=GeLq7F7OqevbWhkEEQILaIHVvYAZEGQ3oaJFcJPlwNMAeB4SlPibmZF1DyyF32TLA
+	 16HHpGpXsI1Zq2fZiQQu+Dh7483HowBwp1fLViVxAgqFc23PiPSYIWSOtZR8AaRgot
+	 qxuF3c43qkZmEspY3Nf6+97PR3kNT1SH4/wQCOj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/143] net: mctp: take ownership of skb in mctp_local_output
+Subject: [PATCH 6.1 068/215] fbcon: always restore the old font data in fbcon_do_set_font()
 Date: Mon,  4 Mar 2024 21:22:11 +0000
-Message-ID: <20240304211550.280616557@linuxfoundation.org>
+Message-ID: <20240304211559.140747119@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 3773d65ae5154ed7df404b050fd7387a36ab5ef3 ]
+[ Upstream commit 00d6a284fcf3fad1b7e1b5bc3cd87cbfb60ce03f ]
 
-Currently, mctp_local_output only takes ownership of skb on success, and
-we may leak an skb if mctp_local_output fails in specific states; the
-skb ownership isn't transferred until the actual output routing occurs.
+Commit a5a923038d70 (fbdev: fbcon: Properly revert changes when
+vc_resize() failed) started restoring old font data upon failure (of
+vc_resize()). But it performs so only for user fonts. It means that the
+"system"/internal fonts are not restored at all. So in result, the very
+first call to fbcon_do_set_font() performs no restore at all upon
+failing vc_resize().
 
-Instead, make mctp_local_output free the skb on all error paths up to
-the route action, so it always consumes the passed skb.
+This can be reproduced by Syzkaller to crash the system on the next
+invocation of font_get(). It's rather hard to hit the allocation failure
+in vc_resize() on the first font_set(), but not impossible. Esp. if
+fault injection is used to aid the execution/failure. It was
+demonstrated by Sirius:
+  BUG: unable to handle page fault for address: fffffffffffffff8
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD cb7b067 P4D cb7b067 PUD cb7d067 PMD 0
+  Oops: 0000 [#1] PREEMPT SMP KASAN
+  CPU: 1 PID: 8007 Comm: poc Not tainted 6.7.0-g9d1694dc91ce #20
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  RIP: 0010:fbcon_get_font+0x229/0x800 drivers/video/fbdev/core/fbcon.c:2286
+  Call Trace:
+   <TASK>
+   con_font_get drivers/tty/vt/vt.c:4558 [inline]
+   con_font_op+0x1fc/0xf20 drivers/tty/vt/vt.c:4673
+   vt_k_ioctl drivers/tty/vt/vt_ioctl.c:474 [inline]
+   vt_ioctl+0x632/0x2ec0 drivers/tty/vt/vt_ioctl.c:752
+   tty_ioctl+0x6f8/0x1570 drivers/tty/tty_io.c:2803
+   vfs_ioctl fs/ioctl.c:51 [inline]
+  ...
 
-Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220081053.1439104-1-jk@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+So restore the font data in any case, not only for user fonts. Note the
+later 'if' is now protected by 'old_userfont' and not 'old_data' as the
+latter is always set now. (And it is supposed to be non-NULL. Otherwise
+we would see the bug above again.)
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
+Reported-and-tested-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Cc: Ubisectech Sirius <bugreport@ubisectech.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240208114411.14604-1-jirislaby@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mctp.h |  1 +
- net/mctp/route.c   | 10 ++++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index da86e106c91d5..2bff5f47ce82f 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -249,6 +249,7 @@ struct mctp_route {
- struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
- 				     mctp_eid_t daddr);
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index fa205be94a4b8..14498a0d13e0b 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2397,11 +2397,9 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+ 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
+-	char *old_data = NULL;
++	u8 *old_data = vc->vc_font.data;
  
-+/* always takes ownership of skb */
- int mctp_local_output(struct sock *sk, struct mctp_route *rt,
- 		      struct sk_buff *skb, mctp_eid_t daddr, u8 req_tag);
- 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 6218dcd07e184..ceee44ea09d97 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -888,7 +888,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
- 		dev = dev_get_by_index_rcu(sock_net(sk), cb->ifindex);
- 		if (!dev) {
- 			rcu_read_unlock();
--			return rc;
-+			goto out_free;
- 		}
- 		rt->dev = __mctp_dev_get(dev);
- 		rcu_read_unlock();
-@@ -903,7 +903,8 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
- 		rt->mtu = 0;
- 
- 	} else {
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto out_free;
+ 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
+-	if (p->userfont)
+-		old_data = vc->vc_font.data;
+ 	vc->vc_font.data = (void *)(p->fontdata = data);
+ 	old_userfont = p->userfont;
+ 	if ((p->userfont = userfont))
+@@ -2435,13 +2433,13 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 		update_screen(vc);
  	}
  
- 	spin_lock_irqsave(&rt->dev->addrs_lock, flags);
-@@ -966,12 +967,17 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
- 		rc = mctp_do_fragment_route(rt, skb, mtu, tag);
- 	}
+-	if (old_data && (--REFCOUNT(old_data) == 0))
++	if (old_userfont && (--REFCOUNT(old_data) == 0))
+ 		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
+ 	return 0;
  
-+	/* route output functions consume the skb, even on error */
-+	skb = NULL;
-+
- out_release:
- 	if (!ext_rt)
- 		mctp_route_release(rt);
+ err_out:
+ 	p->fontdata = old_data;
+-	vc->vc_font.data = (void *)old_data;
++	vc->vc_font.data = old_data;
  
- 	mctp_dev_put(tmp_rt.dev);
- 
-+out_free:
-+	kfree_skb(skb);
- 	return rc;
- }
- 
+ 	if (userfont) {
+ 		p->userfont = old_userfont;
 -- 
 2.43.0
 
