@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037F0870E3E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BBA870F8A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 261ED1C2106A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CE6D28176E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078637A706;
-	Mon,  4 Mar 2024 21:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8248979DCA;
+	Mon,  4 Mar 2024 21:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWmyizXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOcT3Eyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3D98F58;
-	Mon,  4 Mar 2024 21:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4289C1C6AB;
+	Mon,  4 Mar 2024 21:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588523; cv=none; b=rjLE5vBcfsKejw5RqVpACw3h9f0zwJIF6cF05bWoGcawc4pL0f8XKtfZ1ENNw6CRWpNQTEX9hz9pcbwB6ATDGohjT+cO5tBp0ZsIsjmI/ME1McY2E/t4FkdfKvUhQT23rJMYKlE3WQBMATAah+pm4d7BUW0LudK0HpAX1TPz4fM=
+	t=1709589340; cv=none; b=oiAb2c0XURKiJLD8zM82DZOFk52uR9pcV9kutj8NYOxgrLjCuv8Hc1PnwyJW4AjlqUPJnYkTjveYwsoTLKZquye0gxosOK1QN+w2C1BhNAcG/Z0tnsWL8bR1cgRwAOaML10jK59SAKamd0Ng1+jIwwBsDBrn/b6p2bgA/6+WC/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588523; c=relaxed/simple;
-	bh=Hhb4B2Reiz6QOA+0aqxNglG69LyqFSMlfHTjC1TDSPk=;
+	s=arc-20240116; t=1709589340; c=relaxed/simple;
+	bh=WHtyxx8mM7WI4bO1si+2Or2Ucv4JZXSHwdi2x+WsDss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mnw3z27u1ALe4ppkZdnYjUzQYH9DVOgkNXCKONosjEwUQ1IfQFy0cvzietIUiU+JZunMZYcra20WrRH15SiWK03MwCp9n8KrGJcdbcMnOS26yDLtoC0hhaRgYy6s4y9eJmX1vT2k4naHfdXv1yttrUnaZ7eHPEL38P0rnYtoEpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWmyizXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45FC433F1;
-	Mon,  4 Mar 2024 21:42:03 +0000 (UTC)
+	 MIME-Version; b=YRmW5ElLwTJLJe/DF4q+YMHD36Oo83ol6sO7Dz6qz0rhz34fq9oMKpKK6pEhCGMe6eiCLzcRmV/jzkUd30U6p5+pz0ZfCAnMIwgnOCxIRjnR4TFXJQN6Hyuxe5HLQlCPghJkKLfnMsez2O+8Qc6ak8JIJj/z6mUKcpHj8kQxtVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOcT3Eyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA07DC433F1;
+	Mon,  4 Mar 2024 21:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588523;
-	bh=Hhb4B2Reiz6QOA+0aqxNglG69LyqFSMlfHTjC1TDSPk=;
+	s=korg; t=1709589340;
+	bh=WHtyxx8mM7WI4bO1si+2Or2Ucv4JZXSHwdi2x+WsDss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWmyizXSW10W+r5LoFXz7T1zUf1X2YMdaag0FFaTAP4/9j2s/NvGnmVkz98F1u+hC
-	 zorbDTr+RnXGLm4prcwUSFrh1FjZp5HMLn3KDKP4uYm7Lu8LhjbgYfQ/elP7bxG/Ci
-	 OBjUk9KUQ1ehKTmIkKAzc9HbrC9fm+uOZzuuYf9U=
+	b=NOcT3EytD/aOaya88de1HWKlHwreyYqdl+ohP/o3mJytHuuJZSaix1JzivSYJVQwi
+	 djUbAw+h6B7rRPX+DJLjGkZaZABPd8EdWarKaeoti1KIpc6Hwc1SFrLE1R9LPgEKXJ
+	 nAsHRflB+6wz9TBenuDPGKjIoomwncSjEBX+AU1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 140/143] selftests: mptcp: update userspace pm test helpers
+	Sam Sun <samsun1006219@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 47/84] tomoyo: fix UAF write bug in tomoyo_write_control()
 Date: Mon,  4 Mar 2024 21:24:20 +0000
-Message-ID: <20240304211554.374144080@linuxfoundation.org>
+Message-ID: <20240304211543.914812996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,193 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 757c828ce94905a2975873d5e90a376c701b2b90 upstream.
+commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
 
-This patch adds a new argument namespace to userspace_pm_add_addr() and
-userspace_pm_add_sf() to make these two helper more versatile.
+Since tomoyo_write_control() updates head->write_buf when write()
+of long lines is requested, we need to fetch head->write_buf after
+head->io_sem is held.  Otherwise, concurrent write() requests can
+cause use-after-free-write and double-free problems.
 
-Add two more versatile helpers for userspace pm remove subflow or address:
-userspace_pm_rm_addr() and userspace_pm_rm_sf(). The original test helpers
-userspace_pm_rm_sf_addr_ns1() and userspace_pm_rm_sf_addr_ns2() can be
-replaced by these new helpers.
-
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-4-8d6b94150f6b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
+Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
+Cc:  <stable@vger.kernel.org> # Linux 3.1+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |  100 +++++++++++-------------
- 1 file changed, 49 insertions(+), 51 deletions(-)
+ security/tomoyo/common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2821,6 +2821,7 @@ backup_tests()
- 	fi
- }
- 
-+SUB_ESTABLISHED=10 # MPTCP_EVENT_SUB_ESTABLISHED
- LISTENER_CREATED=15 #MPTCP_EVENT_LISTENER_CREATED
- LISTENER_CLOSED=16  #MPTCP_EVENT_LISTENER_CLOSED
- 
-@@ -3281,75 +3282,70 @@ fail_tests()
- 	fi
- }
- 
-+# $1: ns ; $2: addr ; $3: id
- userspace_pm_add_addr()
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2657,13 +2657,14 @@ ssize_t tomoyo_write_control(struct tomo
  {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
- 	local tk
+ 	int error = buffer_len;
+ 	size_t avail_len = buffer_len;
+-	char *cp0 = head->write_buf;
++	char *cp0;
+ 	int idx;
  
--	tk=$(grep "type:1," "$evts_ns1" |
--	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
--	ip netns exec $ns1 ./pm_nl_ctl ann $addr token $tk id $id
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+
-+	ip netns exec $1 ./pm_nl_ctl ann $2 token $tk id $3
- 	sleep 1
- }
- 
--userspace_pm_rm_sf_addr_ns1()
-+# $1: ns ; $2: id
-+userspace_pm_rm_addr()
- {
--	local addr=$1
--	local id=$2
--	local tk sp da dp
--	local cnt_addr cnt_sf
--
--	tk=$(grep "type:1," "$evts_ns1" |
--	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
--	sp=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
--	da=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
--	dp=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
--	cnt_addr=$(rm_addr_count ${ns1})
--	cnt_sf=$(rm_sf_count ${ns1})
--	ip netns exec $ns1 ./pm_nl_ctl rem token $tk id $id
--	ip netns exec $ns1 ./pm_nl_ctl dsf lip "::ffff:$addr" \
--				lport $sp rip $da rport $dp token $tk
--	wait_rm_addr $ns1 "${cnt_addr}"
--	wait_rm_sf $ns1 "${cnt_sf}"
-+	local evts=$evts_ns1
-+	local tk
-+	local cnt
-+
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+
-+	cnt=$(rm_addr_count ${1})
-+	ip netns exec $1 ./pm_nl_ctl rem token $tk id $2
-+	wait_rm_addr $1 "${cnt}"
- }
- 
-+# $1: ns ; $2: addr ; $3: id
- userspace_pm_add_sf()
- {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
- 	local tk da dp
- 
--	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
--	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	ip netns exec $ns2 ./pm_nl_ctl csf lip $addr lid $id \
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+	da=$(mptcp_lib_evts_get_info daddr4 "$evts")
-+	dp=$(mptcp_lib_evts_get_info dport "$evts")
-+
-+	ip netns exec $1 ./pm_nl_ctl csf lip $2 lid $3 \
- 				rip $da rport $dp token $tk
- 	sleep 1
- }
- 
--userspace_pm_rm_sf_addr_ns2()
-+# $1: ns ; $2: addr $3: event type
-+userspace_pm_rm_sf()
- {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
-+	local t=${3:-1}
-+	local ip=4
- 	local tk da dp sp
--	local cnt_addr cnt_sf
-+	local cnt
-+
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	if is_v6 $2; then ip=6; fi
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
-+	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
-+	sp=$(mptcp_lib_evts_get_info sport "$evts" $t)
- 
--	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
--	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	sp=$(grep "type:10" "$evts_ns2" |
--	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
--	cnt_addr=$(rm_addr_count ${ns2})
--	cnt_sf=$(rm_sf_count ${ns2})
--	ip netns exec $ns2 ./pm_nl_ctl rem token $tk id $id
--	ip netns exec $ns2 ./pm_nl_ctl dsf lip $addr lport $sp \
-+	cnt=$(rm_sf_count ${1})
-+	ip netns exec $1 ./pm_nl_ctl dsf lip $2 lport $sp \
- 				rip $da rport $dp token $tk
--	wait_rm_addr $ns2 "${cnt_addr}"
--	wait_rm_sf $ns2 "${cnt_sf}"
-+	wait_rm_sf $1 "${cnt}"
- }
- 
- userspace_tests()
-@@ -3436,13 +3432,14 @@ userspace_tests()
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
- 		wait_mpj $ns1
--		userspace_pm_add_addr 10.0.2.1 10
-+		userspace_pm_add_addr $ns1 10.0.2.1 10
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
- 		chk_mptcp_info add_addr_signal 1 add_addr_accepted 1
--		userspace_pm_rm_sf_addr_ns1 10.0.2.1 10
-+		userspace_pm_rm_addr $ns1 10
-+		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
- 		chk_rm_nr 1 1 invert
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-@@ -3459,11 +3456,12 @@ userspace_tests()
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
- 		wait_mpj $ns2
--		userspace_pm_add_sf 10.0.3.2 20
-+		userspace_pm_add_sf $ns2 10.0.3.2 20
- 		chk_join_nr 1 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
--		userspace_pm_rm_sf_addr_ns2 10.0.3.2 20
-+		userspace_pm_rm_addr $ns2 20
-+		userspace_pm_rm_sf $ns2 10.0.3.2 $SUB_ESTABLISHED
- 		chk_rm_nr 1 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
+ 	if (!head->write)
+ 		return -EINVAL;
+ 	if (mutex_lock_interruptible(&head->io_sem))
+ 		return -EINTR;
++	cp0 = head->write_buf;
+ 	head->read_user_buf_avail = 0;
+ 	idx = tomoyo_read_lock();
+ 	/* Read a line and dispatch it to the policy handler. */
 
 
 
