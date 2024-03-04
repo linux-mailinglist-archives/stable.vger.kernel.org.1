@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192F9870CC4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 476E2870DB5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46782893C1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030F328FBF2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E99200CD;
-	Mon,  4 Mar 2024 21:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D0A200CD;
+	Mon,  4 Mar 2024 21:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vx6YGQ+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5uN5QG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB18F1EA99;
-	Mon,  4 Mar 2024 21:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A56DDCB;
+	Mon,  4 Mar 2024 21:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587708; cv=none; b=lQmRcTKpN9Ig8vJ5U5fszcqdZXZkKfJTConQ12VqCxWsouESTU8nirJ0VquW1aIu9G2YeGQ19SCKexfwEobEhdowbyNadJ8S/aBn5oW1mZe5skWYePAt7i8tosoAAa7qzz+cZedsx3lNfD4y1btgxeonUVI1zjUtENNGHXkc+nc=
+	t=1709588214; cv=none; b=ZNdbTqpcrp/puBT+r8uL2uKn3q4wRXLcaZMeoofLP80UaNivflcCWusBuyj9rfPU2HramKpNC1o0zuZaUlIuEthePxZH5vnKesyyvx5Uzt2kdWr32Hu044mqXiK9N8W9vvGP57HpLAIEmn8CMAR8z349lFGAutTX+pTbijpSbQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587708; c=relaxed/simple;
-	bh=wHAo6nk2GDQMy9JSpa9grNmmHM1rN+SdmIyOBO55D+M=;
+	s=arc-20240116; t=1709588214; c=relaxed/simple;
+	bh=MrvJBib84WWm7uKk/1piyiGeLQS2O8LkXgUgVu3E8MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gW3Xlr2Y9qF/xl+YPRBHSETPOq0qlnl7YAmUwARsHoelv8nYKAaZPMEv71rPmOO8lDm4VinCj1PvpIhGk1wxbXUTXJzGBWmjtFirpB/Oni4rFBZeo8vzYmCPg5JUt4/Uof8HkC2NrOhnnVPsp0ZxkVc538Oxxks02iPAla+om6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vx6YGQ+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F243C433F1;
-	Mon,  4 Mar 2024 21:28:28 +0000 (UTC)
+	 MIME-Version; b=Na1Ucgv+7YfMXTr9sbBHrp1hdh4H/kYadk3PyrZr2yvwjQvRmPfnTkfvNkOSj7klfSaV4N/D5WMw+xQxZuJaYnjd6OCr21WSXIfvTq+Tk81LW8/jjn/7yxaG2ATPmaYii+DVyM8+d/3tzJ1k5dudXMsBL5mpXFOpICADjY7lLeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5uN5QG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF3CC433C7;
+	Mon,  4 Mar 2024 21:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587708;
-	bh=wHAo6nk2GDQMy9JSpa9grNmmHM1rN+SdmIyOBO55D+M=;
+	s=korg; t=1709588214;
+	bh=MrvJBib84WWm7uKk/1piyiGeLQS2O8LkXgUgVu3E8MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vx6YGQ+/KC3wt7B4ooUgYZFU3ONZwbEksoH+MuW1P5xSY1LesIuvxLk09czzA3Yk8
-	 pOGR9xmst7WP1AsulBIjEtTCa6pGKR/5uNYMBRoge8xU8AV8R2w1IlQlfXd2Jm3Xw1
-	 MFAbOQQCXePuXfRoU2Q+cZoXkmnCsgH0eGtDF34s=
+	b=s5uN5QG2yNnUTHzQ8kyixLxS+OF28CM8zbrGnh5KEJqEpKNLjabY2unrdbeo4q7Ti
+	 53NBeJpFBzwZB3CmTUxuZNe8rPcP1d2aZgOlEUzo6INadfo0RyErxlMhDvn85w4Ue+
+	 fyEu9m5Bgi/OEq0IZLihx+V/x1CT4+HPDdPzxfLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 059/162] ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()
-Date: Mon,  4 Mar 2024 21:22:04 +0000
-Message-ID: <20240304211553.739961682@linuxfoundation.org>
+Subject: [PATCH 6.6 005/143] ublk: move ublk_cancel_dev() out of ub->mutex
+Date: Mon,  4 Mar 2024 21:22:05 +0000
+Message-ID: <20240304211550.068059273@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,229 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit eba2eb2495f47690400331c722868902784e59de ]
+[ Upstream commit 85248d670b71d9edda9459ee14fdc85c8e9632c0 ]
 
-snd_soc_card_get_kcontrol() must be holding a read lock on
-card->controls_rwsem while walking the controls list.
+ublk_cancel_dev() just calls ublk_cancel_queue() to cancel all pending
+io commands after ublk request queue is idle. The only protection is just
+the read & write of ubq->nr_io_ready and avoid duplicated command cancel,
+so add one per-queue lock with cancel flag for providing this protection,
+meantime move ublk_cancel_dev() out of ub->mutex.
 
-Compare with snd_ctl_find_numid().
+Then we needn't to call io_uring_cmd_complete_in_task() to cancel
+pending command. And the same cancel logic will be re-used for
+cancelable uring command.
 
-The existing function is renamed snd_soc_card_get_kcontrol_locked()
-so that it can be called from contexts that are already holding
-card->controls_rwsem (for example, control get/put functions).
+This patch basically reverts commit ac5902f84bb5 ("ublk: fix AB-BA lockdep warning").
 
-There are few direct or indirect callers of
-snd_soc_card_get_kcontrol(), and most are safe. Three require
-changes, which have been included in this patch:
-
-codecs/cs35l45.c:
-  cs35l45_activate_ctl() is called from a control put() function so
-  is changed to call snd_soc_card_get_kcontrol_locked().
-
-codecs/cs35l56.c:
-  cs35l56_sync_asp1_mixer_widgets_with_firmware() is called from
-  control get()/put() functions so is changed to call
-  snd_soc_card_get_kcontrol_locked().
-
-fsl/fsl_xcvr.c:
-  fsl_xcvr_activate_ctl() is called from three places, one of which
-  already holds card->controls_rwsem:
-  1. fsl_xcvr_mode_put(), a control put function, which will
-     already be holding card->controls_rwsem.
-  2. fsl_xcvr_startup(), a DAI startup function.
-  3. fsl_xcvr_shutdown(), a DAI shutdown function.
-
-  To fix this, fsl_xcvr_activate_ctl() has been changed to call
-  snd_soc_card_get_kcontrol_locked() so that it is safe to call
-  directly from fsl_xcvr_mode_put().
-  The fsl_xcvr_startup() and fsl_xcvr_shutdown() functions have been
-  changed to take a read lock on card->controls_rsem() around calls
-  to fsl_xcvr_activate_ctl(). While this is not very elegant, it
-  keeps the change small, to avoid this patch creating a large
-  collateral churn in fsl/fsl_xcvr.c.
-
-Analysis of other callers of snd_soc_card_get_kcontrol() is that
-they do not need any changes, they are not holding card->controls_rwsem
-when they call snd_soc_card_get_kcontrol().
-
-Direct callers of snd_soc_card_get_kcontrol():
-  fsl/fsl_spdif.c: fsl_spdif_dai_probe() - DAI probe function
-  fsl/fsl_micfil.c: voice_detected_fn() - IRQ handler
-
-Indirect callers via soc_component_notify_control():
-  codecs/cs42l43: cs42l43_mic_shutter() - IRQ handler
-  codecs/cs42l43: cs42l43_spk_shutter() - IRQ handler
-  codecs/ak4118.c: ak4118_irq_handler() - IRQ handler
-  codecs/wm_adsp.c: wm_adsp_write_ctl() - not currently used
-
-Indirect callers via snd_soc_limit_volume():
-  qcom/sc8280xp.c: sc8280xp_snd_init() - DAIlink init function
-  ti/rx51.c: rx51_aic34_init() - DAI init function
-
-I don't have hardware to test the fsl/*, qcom/sc828xp.c, ti/rx51.c
-and ak4118.c changes.
-
-Backport note:
-The fsl/, qcom/, cs35l45, cs35l56 and cs42l43 callers were added
-since the Fixes commit so won't all be present on older kernels.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 209c6cdfd283 ("ASoC: soc-card: move snd_soc_card_get_kcontrol() to soc-card")
-Link: https://lore.kernel.org/r/20240221123710.690224-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231009093324.957829-4-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc-card.h   |  2 ++
- sound/soc/codecs/cs35l45.c |  2 +-
- sound/soc/codecs/cs35l56.c |  2 +-
- sound/soc/fsl/fsl_xcvr.c   | 12 +++++++++++-
- sound/soc/soc-card.c       | 24 ++++++++++++++++++++++--
- 5 files changed, 37 insertions(+), 5 deletions(-)
+ drivers/block/ublk_drv.c | 40 +++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
-diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
-index ecc02e955279f..1f4c39922d825 100644
---- a/include/sound/soc-card.h
-+++ b/include/sound/soc-card.h
-@@ -30,6 +30,8 @@ static inline void snd_soc_card_mutex_unlock(struct snd_soc_card *card)
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 630ddfe6657bc..f4e0573c47114 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -115,6 +115,9 @@ struct ublk_uring_cmd_pdu {
+  */
+ #define UBLK_IO_FLAG_NEED_GET_DATA 0x08
  
- struct snd_kcontrol *snd_soc_card_get_kcontrol(struct snd_soc_card *soc_card,
- 					       const char *name);
-+struct snd_kcontrol *snd_soc_card_get_kcontrol_locked(struct snd_soc_card *soc_card,
-+						      const char *name);
- int snd_soc_card_jack_new(struct snd_soc_card *card, const char *id, int type,
- 			  struct snd_soc_jack *jack);
- int snd_soc_card_jack_new_pins(struct snd_soc_card *card, const char *id,
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index 44c221745c3b2..2392c6effed85 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -184,7 +184,7 @@ static int cs35l45_activate_ctl(struct snd_soc_component *component,
- 	else
- 		snprintf(name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN, "%s", ctl_name);
- 
--	kcontrol = snd_soc_card_get_kcontrol(component->card, name);
-+	kcontrol = snd_soc_card_get_kcontrol_locked(component->card, name);
- 	if (!kcontrol) {
- 		dev_err(component->dev, "Can't find kcontrol %s\n", name);
- 		return -EINVAL;
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index aaeed4992d846..8e596f5ce8b2a 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -112,7 +112,7 @@ static int cs35l56_sync_asp1_mixer_widgets_with_firmware(struct cs35l56_private
- 			name = full_name;
- 		}
- 
--		kcontrol = snd_soc_card_get_kcontrol(dapm->card, name);
-+		kcontrol = snd_soc_card_get_kcontrol_locked(dapm->card, name);
- 		if (!kcontrol) {
- 			dev_warn(cs35l56->base.dev, "Could not find control %s\n", name);
- 			continue;
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index f0fb33d719c25..c46f64557a7ff 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -174,7 +174,9 @@ static int fsl_xcvr_activate_ctl(struct snd_soc_dai *dai, const char *name,
- 	struct snd_kcontrol *kctl;
- 	bool enabled;
- 
--	kctl = snd_soc_card_get_kcontrol(card, name);
-+	lockdep_assert_held(&card->snd_card->controls_rwsem);
++/* atomic RW with ubq->cancel_lock */
++#define UBLK_IO_FLAG_CANCELED	0x80000000
 +
-+	kctl = snd_soc_card_get_kcontrol_locked(card, name);
- 	if (kctl == NULL)
- 		return -ENOENT;
- 
-@@ -576,10 +578,14 @@ static int fsl_xcvr_startup(struct snd_pcm_substream *substream,
- 	xcvr->streams |= BIT(substream->stream);
- 
- 	if (!xcvr->soc_data->spdif_only) {
-+		struct snd_soc_card *card = dai->component->card;
-+
- 		/* Disable XCVR controls if there is stream started */
-+		down_read(&card->snd_card->controls_rwsem);
- 		fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, false);
- 		fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name, false);
- 		fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name, false);
-+		up_read(&card->snd_card->controls_rwsem);
- 	}
- 
- 	return 0;
-@@ -598,11 +604,15 @@ static void fsl_xcvr_shutdown(struct snd_pcm_substream *substream,
- 	/* Enable XCVR controls if there is no stream started */
- 	if (!xcvr->streams) {
- 		if (!xcvr->soc_data->spdif_only) {
-+			struct snd_soc_card *card = dai->component->card;
-+
-+			down_read(&card->snd_card->controls_rwsem);
- 			fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, true);
- 			fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
- 						(xcvr->mode == FSL_XCVR_MODE_ARC));
- 			fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
- 						(xcvr->mode == FSL_XCVR_MODE_EARC));
-+			up_read(&card->snd_card->controls_rwsem);
- 		}
- 		ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_IER0,
- 					 FSL_XCVR_IRQ_EARC_ALL, 0);
-diff --git a/sound/soc/soc-card.c b/sound/soc/soc-card.c
-index 285ab4c9c7168..8a2f163da6bc9 100644
---- a/sound/soc/soc-card.c
-+++ b/sound/soc/soc-card.c
-@@ -5,6 +5,9 @@
- // Copyright (C) 2019 Renesas Electronics Corp.
- // Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
- //
-+
-+#include <linux/lockdep.h>
-+#include <linux/rwsem.h>
- #include <sound/soc.h>
- #include <sound/jack.h>
- 
-@@ -26,12 +29,15 @@ static inline int _soc_card_ret(struct snd_soc_card *card,
- 	return ret;
+ struct ublk_io {
+ 	/* userspace buffer address from io cmd */
+ 	__u64	addr;
+@@ -139,6 +142,7 @@ struct ublk_queue {
+ 	bool force_abort;
+ 	bool timeout;
+ 	unsigned short nr_io_ready;	/* how many ios setup */
++	spinlock_t		cancel_lock;
+ 	struct ublk_device *dev;
+ 	struct ublk_io ios[];
+ };
+@@ -1477,28 +1481,28 @@ static inline bool ublk_queue_ready(struct ublk_queue *ubq)
+ 	return ubq->nr_io_ready == ubq->q_depth;
  }
  
--struct snd_kcontrol *snd_soc_card_get_kcontrol(struct snd_soc_card *soc_card,
--					       const char *name)
-+struct snd_kcontrol *snd_soc_card_get_kcontrol_locked(struct snd_soc_card *soc_card,
-+						      const char *name)
+-static void ublk_cmd_cancel_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
+-{
+-	io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, 0, issue_flags);
+-}
+-
+ static void ublk_cancel_queue(struct ublk_queue *ubq)
  {
- 	struct snd_card *card = soc_card->snd_card;
- 	struct snd_kcontrol *kctl;
+ 	int i;
  
-+	/* must be held read or write */
-+	lockdep_assert_held(&card->controls_rwsem);
+-	if (!ublk_queue_ready(ubq))
+-		return;
+-
+ 	for (i = 0; i < ubq->q_depth; i++) {
+ 		struct ublk_io *io = &ubq->ios[i];
+ 
+-		if (io->flags & UBLK_IO_FLAG_ACTIVE)
+-			io_uring_cmd_complete_in_task(io->cmd,
+-						      ublk_cmd_cancel_cb);
+-	}
++		if (io->flags & UBLK_IO_FLAG_ACTIVE) {
++			bool done;
+ 
+-	/* all io commands are canceled */
+-	ubq->nr_io_ready = 0;
++			spin_lock(&ubq->cancel_lock);
++			done = !!(io->flags & UBLK_IO_FLAG_CANCELED);
++			if (!done)
++				io->flags |= UBLK_IO_FLAG_CANCELED;
++			spin_unlock(&ubq->cancel_lock);
 +
- 	if (unlikely(!name))
- 		return NULL;
- 
-@@ -40,6 +46,20 @@ struct snd_kcontrol *snd_soc_card_get_kcontrol(struct snd_soc_card *soc_card,
- 			return kctl;
- 	return NULL;
++			if (!done)
++				io_uring_cmd_done(io->cmd,
++						UBLK_IO_RES_ABORT, 0,
++						IO_URING_F_UNLOCKED);
++		}
++	}
  }
-+EXPORT_SYMBOL_GPL(snd_soc_card_get_kcontrol_locked);
-+
-+struct snd_kcontrol *snd_soc_card_get_kcontrol(struct snd_soc_card *soc_card,
-+					       const char *name)
-+{
-+	struct snd_card *card = soc_card->snd_card;
-+	struct snd_kcontrol *kctl;
-+
-+	down_read(&card->controls_rwsem);
-+	kctl = snd_soc_card_get_kcontrol_locked(soc_card, name);
-+	up_read(&card->controls_rwsem);
-+
-+	return kctl;
-+}
- EXPORT_SYMBOL_GPL(snd_soc_card_get_kcontrol);
  
- static int jack_new(struct snd_soc_card *card, const char *id, int type,
+ /* Cancel all pending commands, must be called after del_gendisk() returns */
+@@ -1545,7 +1549,6 @@ static void __ublk_quiesce_dev(struct ublk_device *ub)
+ 	blk_mq_quiesce_queue(ub->ub_disk->queue);
+ 	ublk_wait_tagset_rqs_idle(ub);
+ 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
+-	ublk_cancel_dev(ub);
+ 	/* we are going to release task_struct of ubq_daemon and resets
+ 	 * ->ubq_daemon to NULL. So in monitor_work, check on ubq_daemon causes UAF.
+ 	 * Besides, monitor_work is not necessary in QUIESCED state since we have
+@@ -1568,6 +1571,7 @@ static void ublk_quiesce_work_fn(struct work_struct *work)
+ 	__ublk_quiesce_dev(ub);
+  unlock:
+ 	mutex_unlock(&ub->mutex);
++	ublk_cancel_dev(ub);
+ }
+ 
+ static void ublk_unquiesce_dev(struct ublk_device *ub)
+@@ -1607,8 +1611,8 @@ static void ublk_stop_dev(struct ublk_device *ub)
+ 	put_disk(ub->ub_disk);
+ 	ub->ub_disk = NULL;
+  unlock:
+-	ublk_cancel_dev(ub);
+ 	mutex_unlock(&ub->mutex);
++	ublk_cancel_dev(ub);
+ 	cancel_delayed_work_sync(&ub->monitor_work);
+ }
+ 
+@@ -1962,6 +1966,7 @@ static int ublk_init_queue(struct ublk_device *ub, int q_id)
+ 	void *ptr;
+ 	int size;
+ 
++	spin_lock_init(&ubq->cancel_lock);
+ 	ubq->flags = ub->dev_info.flags;
+ 	ubq->q_id = q_id;
+ 	ubq->q_depth = ub->dev_info.queue_depth;
+@@ -2569,8 +2574,9 @@ static void ublk_queue_reinit(struct ublk_device *ub, struct ublk_queue *ubq)
+ 	int i;
+ 
+ 	WARN_ON_ONCE(!(ubq->ubq_daemon && ubq_daemon_is_dying(ubq)));
++
+ 	/* All old ioucmds have to be completed */
+-	WARN_ON_ONCE(ubq->nr_io_ready);
++	ubq->nr_io_ready = 0;
+ 	/* old daemon is PF_EXITING, put it now */
+ 	put_task_struct(ubq->ubq_daemon);
+ 	/* We have to reset it to NULL, otherwise ub won't accept new FETCH_REQ */
 -- 
 2.43.0
 
