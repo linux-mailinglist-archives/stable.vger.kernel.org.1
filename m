@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB48870DCD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E99870D03
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0DBAB27802
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9AE1F21565
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA6E1F92C;
-	Mon,  4 Mar 2024 21:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898857BAF7;
+	Mon,  4 Mar 2024 21:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBw0c+cf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xMwyouy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC89A8F58;
-	Mon,  4 Mar 2024 21:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479BF78B69;
+	Mon,  4 Mar 2024 21:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588273; cv=none; b=CTEIROEPiueavZKGVgWk7wqktQ3k1Rsy+M5xlrzr84LlXqSht0enpcw6DgmnvtnRXmOqARvHVpt5LXVe3V4pYVRlUChYxoy7a/k4SaxDoAW0FhpBTTIeIOlQVQlvcY1+oSvc1JqkjyiEaSUH4tWKL8xzSuKnhDVbHWI4cUqSHmI=
+	t=1709587811; cv=none; b=pYTf9s32Yx4NFA7nudutOMYHqj3SBWbBAbWFAhQXQxGFZTuMfkHd23ynx0VMjPDcj+Gvso7qGZNAQlGd2Vkor69ajnFv3qeUIkAZ6ua0ZhPuTJkdy/OAPF1rz9GomDijkFykqXCmKKOP3eUYy9Ug3/KD0/1KpauqYrJvQK7WEIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588273; c=relaxed/simple;
-	bh=n7g4DVu6NUzM+gbLlbNFCquxx3e3blrmENb2Qa/L6MM=;
+	s=arc-20240116; t=1709587811; c=relaxed/simple;
+	bh=7iqJs9/rcljyaYg5yQ35cEFoEnlYSkLxmz/W0RoPy/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFakrfQjYCaVgTCn3bfSC1opnFjUomO9bf4lnCWK0aND4S43GI62YaFMGVtYgwb4ERUZ8unPGYM4GIwDgdVFiSa1B+bC7NQMax0G/Fgq24iRprCp9QoIL0+z63+MPI40jI3wEcgrotuBnPmZYBzyMK/FxfOHmmG0TWMD8rkDgr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBw0c+cf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61138C433C7;
-	Mon,  4 Mar 2024 21:37:53 +0000 (UTC)
+	 MIME-Version; b=lXuw2i0meSNmxnRhRwLy0bj3W14piofLNQ8upzIplZLUWzrFXd0Ok80Y3hk9Lq3LfFzptsAKuFO7hHGjvmQ4vHarnkpK2145xHtd3ka9PD89pUn6d2lNCEptPQIfvAHWrXoqxVMJfKpR6biXvzc5VzEyIHSUW4TERA4borwXEvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xMwyouy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9DFC433C7;
+	Mon,  4 Mar 2024 21:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588273;
-	bh=n7g4DVu6NUzM+gbLlbNFCquxx3e3blrmENb2Qa/L6MM=;
+	s=korg; t=1709587811;
+	bh=7iqJs9/rcljyaYg5yQ35cEFoEnlYSkLxmz/W0RoPy/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBw0c+cftdI4zy7QUA7NN7lxsDuzT88RIAoH2oAroTSImb+Jryg2aZDwiohtFQYP9
-	 Wj0R37bsjz5J+nvUcN5TZ1K1K+1IlaDFkR2QyY7a7C6E4QEOkxiJDo4mxsel3/yeCC
-	 mTslf7x8Y6AXtXU/HS11m6YWU647y4vvOQxo4buE=
+	b=1xMwyouy/CWdELMziTY4m1TfctSpBDW/fz+7Yo8o3yQ8SSy5SccZWrtS4ca866kY8
+	 SqLaQQ2VTWJZ1dFfPoiIglMut7ytePGM8dk3Q4nuT87s7A6/GjYpDIx23/RblxRqzX
+	 JElSYf9944vHoBJJmoqHQrC0ZNqhVI3NODTc4pzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/143] ASoC: cs35l56: Must clear HALO_STATE before issuing SYSTEM_RESET
+	Curtis Klein <curtis.klein@hpe.com>,
+	Yi Zhao <yi.zhao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.7 099/162] dmaengine: fsl-qdma: init irq after reg initialization
 Date: Mon,  4 Mar 2024 21:22:44 +0000
-Message-ID: <20240304211551.336864707@linuxfoundation.org>
+Message-ID: <20240304211554.996781558@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-[ Upstream commit e33625c84b75e4f078d7f9bf58f01fe71ab99642 ]
+commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
 
-The driver must write 0 to HALO_STATE before sending the SYSTEM_RESET
-command to the firmware.
+Initialize the qDMA irqs after the registers are configured so that
+interrupts that may have been pending from a primary kernel don't get
+processed by the irq handler before it is ready to and cause panic with
+the following trace:
 
-HALO_STATE is in DSP memory, which is preserved across a soft reset.
-The SYSTEM_RESET command does not change the value of HALO_STATE.
-There is period of time while the CS35L56 is resetting, before the
-firmware has started to boot, where a read of HALO_STATE will return
-the value it had before the SYSTEM_RESET. If the driver does not
-clear HALO_STATE, this would return BOOT_DONE status even though the
-firmware has not booted.
+  Call trace:
+   fsl_qdma_queue_handler+0xf8/0x3e8
+   __handle_irq_event_percpu+0x78/0x2b0
+   handle_irq_event_percpu+0x1c/0x68
+   handle_irq_event+0x44/0x78
+   handle_fasteoi_irq+0xc8/0x178
+   generic_handle_irq+0x24/0x38
+   __handle_domain_irq+0x90/0x100
+   gic_handle_irq+0x5c/0xb8
+   el1_irq+0xb8/0x180
+   _raw_spin_unlock_irqrestore+0x14/0x40
+   __setup_irq+0x4bc/0x798
+   request_threaded_irq+0xd8/0x190
+   devm_request_threaded_irq+0x74/0xe8
+   fsl_qdma_probe+0x4d4/0xca8
+   platform_drv_probe+0x50/0xa0
+   really_probe+0xe0/0x3f8
+   driver_probe_device+0x64/0x130
+   device_driver_attach+0x6c/0x78
+   __driver_attach+0xbc/0x158
+   bus_for_each_dev+0x5c/0x98
+   driver_attach+0x20/0x28
+   bus_add_driver+0x158/0x220
+   driver_register+0x60/0x110
+   __platform_driver_register+0x44/0x50
+   fsl_qdma_driver_init+0x18/0x20
+   do_one_initcall+0x48/0x258
+   kernel_init_freeable+0x1a4/0x23c
+   kernel_init+0x10/0xf8
+   ret_from_fork+0x10/0x18
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
-Link: https://msgid.link/r/20240216140535.1434933-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l56-shared.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/fsl-qdma.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index 98b1e63360aeb..a925701f46fc6 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -286,6 +286,7 @@ void cs35l56_wait_min_reset_pulse(void)
- EXPORT_SYMBOL_NS_GPL(cs35l56_wait_min_reset_pulse, SND_SOC_CS35L56_SHARED);
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -1199,10 +1199,6 @@ static int fsl_qdma_probe(struct platfor
+ 	if (!fsl_qdma->queue)
+ 		return -ENOMEM;
  
- static const struct reg_sequence cs35l56_system_reset_seq[] = {
-+	REG_SEQ0(CS35L56_DSP1_HALO_STATE, 0),
- 	REG_SEQ0(CS35L56_DSP_VIRTUAL1_MBOX_1, CS35L56_MBOX_CMD_SYSTEM_RESET),
- };
+-	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
+-	if (ret)
+-		return ret;
+-
+ 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
+ 	if (fsl_qdma->irq_base < 0)
+ 		return fsl_qdma->irq_base;
+@@ -1241,16 +1237,19 @@ static int fsl_qdma_probe(struct platfor
  
--- 
-2.43.0
-
+ 	platform_set_drvdata(pdev, fsl_qdma);
+ 
+-	ret = dma_async_device_register(&fsl_qdma->dma_dev);
++	ret = fsl_qdma_reg_init(fsl_qdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
+-	ret = fsl_qdma_reg_init(fsl_qdma);
++	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
++	if (ret)
++		return ret;
++
++	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
 
 
 
