@@ -1,164 +1,166 @@
-Return-Path: <stable+bounces-25890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5813D86FFB7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:02:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E008686FFFF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1372A2852FA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:02:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51558B2485D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3656E381CF;
-	Mon,  4 Mar 2024 11:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B48838395;
+	Mon,  4 Mar 2024 11:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Frv8mNhq"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NXenhUgW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789671B814;
-	Mon,  4 Mar 2024 11:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A98B46AD;
+	Mon,  4 Mar 2024 11:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709550139; cv=none; b=H6aRONdXkwt9dsEfgZC/l4Ejl7cHGNxdH4igTIbXyip4m0U53v095TVt7DKYa62N4nlzO3IN8/jYSRO2GIfZ4ZL+jXXwRjkqp5eBXeqAk7FfGBtpJ0JawbCxLPlHdwzgp/yCHukUIAhwJJKzrmpmrwcAk7DV1SSB4joi8EJdL4E=
+	t=1709550703; cv=none; b=rLWkQUI80yxuJKsEiqd4DeCKWgOqwAl8zGTtym++ttr6Ce7lILK48zGSyuwOx+bO1v/z12TrlkBIauRavK4YYT/LXvt9dR2x5QOGW0IKKcoVZLM2zLXfr0equ3hAgBSdFEWniy5qGou1Og2+DW8Kq6bi7qhpWSxb8wIVm2bwP9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709550139; c=relaxed/simple;
-	bh=Oo/rFWJcixpRf2/WwehXFRWrzD2gkyR2NzR9XmWmaNQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sMz4vudf4x38vP6d1Q/MovpjUPCEYZCs2ZUWlQpbz1rnsFOpz5IKkO8tA20BuJJDMNSIDI8QlHl4cTFi4OyD+rAjnQHa0RBW/Hjiz7bBLDICcIl7WOEupguIc56DBRCMJHxnRyksYXEldQxOMB2ieRBTXX82Ka5z0LucrkCO0Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Frv8mNhq; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-59fc2d22cfaso1421437eaf.3;
-        Mon, 04 Mar 2024 03:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709550136; x=1710154936; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KEQEcIRITkDJdwdBYFSb2DlZavvyvEzESUuUHNPqnXM=;
-        b=Frv8mNhqKgu4eklBeizrWpfyxbVWxp66uBDGY00IOggCp/W8wtp7GosU8QFPBSG9Ko
-         qJDh9hYnsXktzvsAbegVBTqUl95T3oFqZRWE99q9R7ZtYOU9yyVi2houN76rWzMTMUQp
-         l+vrtSkG0Pg2gSSUvlZViZQAvq0mOmvRVs1QcIubBk1mlOgYzIuhvIcVYrYaue9kXL6s
-         fKqbv0UFTuZjnnAppAsA2oEw5JmXDQo+1fFRwcZB/4jebtFhCkMOCzfMi/FQje36GLPR
-         l4rPu/9knVe9xPEMWiZxKT/azF5fuT8lG3MvXqV7j1Avo6Htd7L9agJs8+YHfcRWIb1a
-         AqFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709550136; x=1710154936;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KEQEcIRITkDJdwdBYFSb2DlZavvyvEzESUuUHNPqnXM=;
-        b=ptyQs7RIygnMw/JCedx8ZX4/XvowtRWWb7otPwX2VdbHTtk2HB1jP73eLMjJiY3MwD
-         8nx0ZC79JOvN/s1wsk/6/YteGOLgFmhdmkMFa93YTDzL1scuIseMILxeo0Cxm+aj+Nrs
-         EtVlTVm6HwvSi2xx93lDN8CYZQpYc1qw+TUDECH0K4vWM0SWeV66zus5Pcdz9sXDjvmJ
-         ljmuXL2WzasuyQLcFe1EzGS4DgIr4CUmBVKYa8ZA5JLFLx3u+F08UDcI6K2Gr7mFkPwN
-         15jQYtbipPBg0mtR0nPNxBUA4nOQGx2i+6bCSxqnxusBSYoIfcVRzPS99L9zncgS37Ot
-         vW7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWeA8kcAETPfzrmEzzd64gR0a9PTKnuv1itr1KMtWRCq9UmoBD2FYUkLvBY0L5aFAu7q1ARRU9p0d/j/+rBwcmP53UsLw6k
-X-Gm-Message-State: AOJu0Yzzkv3GpESItnoFq/NmtQTXzv7XsMi/pLG3mogWV27/nhe/+IRG
-	BpR3l2JNUAfxMiEHDb1+QpetqqZrELOOIIqjuJD5RgB6cgI4SAv1x2da4Jo3Vwx/Bu0coD19ALa
-	Y0GJlasPf77rexNWngGeVX19tmJU=
-X-Google-Smtp-Source: AGHT+IHvahgzeBUUX4hz/RUp4Upi1wtnuxBy9GoDVguowxMVD0/mod1bCS/jaOMscbexoMQXSs9Ivs1glo+qGKR4lrQ=
-X-Received: by 2002:a4a:dfc3:0:b0:5a1:2059:5763 with SMTP id
- p3-20020a4adfc3000000b005a120595763mr3245670ood.5.1709550136126; Mon, 04 Mar
- 2024 03:02:16 -0800 (PST)
+	s=arc-20240116; t=1709550703; c=relaxed/simple;
+	bh=xVSkuAeo4D9ZElgt/IODeSW5ZINrq3fTsbkPSDyPGmc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yb+OvbtWbJRcZ3Nf41HH5F7ii6SAnMexh8NfzBLBPAeta6Yh7RgaAocgSipaLum9H+7tNjhRw14W70bYvX4Q8S+NkSSclMu/zV4tLvMIdZTs7wLu+QR0UP/JkT05F6emSxNZbdCarr1xpUMBSOLQ0RA87etTa2BlyM+Fl5KelW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NXenhUgW; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424AsnYr019049;
+	Mon, 4 Mar 2024 11:11:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=250lxiVyVhWgGkynbsvy556K2WPzHaat5nPoNu3o7uI=; b=NX
+	enhUgWz8BXddC9wB3akbZsUu/sCKYGBo4ZvPuYtT2dgnp+RKp7J3YCgArmuBpMyN
+	FlqDYq8+U5O641XmzJZ9pXrrsHgL8SpYnAgzWYNxTK2k1RmJJUKHMA+wsh5nwDsy
+	U9CFeB2UTAjzhyfJVs1DJ0EcfNLn074DFeKTyCLRUMGAb8Iyu5EM2DS9moZlpyeg
+	nKnkn/Nfvxwau4DGVBinA4WtVqjTeXdshYl3AP3QOmrFuYCHtpiNDTGeBbZnqBeP
+	wrwhRRrV8H8ZItyy/nyDHhqkZ9GDkBOk7QycbceyaJHcgyczqf2UsYbFtT6xp89u
+	swbxvW+3vTgZm7Pd0U2Q==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wkvb739ed-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Mar 2024 11:11:31 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424BBUT4007051
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 4 Mar 2024 11:11:30 GMT
+Received: from hu-nprakash-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 4 Mar 2024 03:11:27 -0800
+From: Nikhil V <quic_nprakash@quicinc.com>
+To: 
+CC: Charan Teja Kalla <quic_charante@quicinc.com>,
+        Joerg Roedel
+	<joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy
+	<robin.murphy@arm.com>, <linux-kernel@vger.kernel.org>,
+        <iommu@lists.linux.dev>, Nikhil V <quic_nprakash@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH RESEND STABLE v6.1] iommu: Avoid races around default domain allocations
+Date: Mon, 4 Mar 2024 16:40:50 +0530
+Message-ID: <cbf1295589bd90083ad6f75a7fbced01f327c047.1708680521.git.quic_nprakash@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229041950.738878-1-xiubli@redhat.com> <CAOi1vP-hp7jmECXP4WNDT801qmBBZJjnUm0ic61Pw-JgipOyNw@mail.gmail.com>
- <10abc117-a0e8-47ab-b9e2-05424c358c4e@redhat.com>
-In-Reply-To: <10abc117-a0e8-47ab-b9e2-05424c358c4e@redhat.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Mon, 4 Mar 2024 12:02:03 +0100
-Message-ID: <CAOi1vP_=qP0EQTEAaJ2teA8PE1cBXDO0bc_KoRBYxf9jwA4iwA@mail.gmail.com>
-Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
-To: Xiubo Li <xiubli@redhat.com>
-Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com, 
-	mchangir@redhat.com, stable@vger.kernel.org, 
-	Luis Henriques <lhenriques@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yz3Nelq0fOTemW5jQPryH1pxnJWCrhqt
+X-Proofpoint-ORIG-GUID: yz3Nelq0fOTemW5jQPryH1pxnJWCrhqt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-04_06,2024-03-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 spamscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403040084
 
-On Mon, Mar 4, 2024 at 2:02=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 3/2/24 00:16, Ilya Dryomov wrote:
-> > On Thu, Feb 29, 2024 at 5:22=E2=80=AFAM <xiubli@redhat.com> wrote:
-> >> From: Xiubo Li <xiubli@redhat.com>
-> >>
-> >> The osd code has remove cursor initilizing code and this will make
-> >> the sparse read state into a infinite loop. We should initialize
-> >> the cursor just before each sparse-read in messnger v2.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> URL: https://tracker.ceph.com/issues/64607
-> >> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available=
- on the socket")
-> >> Reported-by: Luis Henriques <lhenriques@suse.de>
-> >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> >> ---
-> >>   net/ceph/messenger_v2.c | 3 +++
-> >>   1 file changed, 3 insertions(+)
-> >>
-> >> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-> >> index a0ca5414b333..7ae0f80100f4 100644
-> >> --- a/net/ceph/messenger_v2.c
-> >> +++ b/net/ceph/messenger_v2.c
-> >> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_=
-connection *con)
-> >>   static int prepare_sparse_read_data(struct ceph_connection *con)
-> >>   {
-> >>          struct ceph_msg *msg =3D con->in_msg;
-> >> +       u64 len =3D con->in_msg->sparse_read_total ? : data_len(con->i=
-n_msg);
-> > Hi Xiubo,
-> >
-> > Why is sparse_read_total being tested here?  Isn't this function
-> > supposed to be called only for sparse reads, after the state is set to
-> > IN_S_PREPARE_SPARSE_DATA based on a similar test:
-> >
-> >      if (msg->sparse_read_total)
-> >              con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA;
-> >      else
-> >              con->v2.in_state =3D IN_S_PREPARE_READ_DATA;
->
-> Then the patch could be simplified and just be:
->
-> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-> index a0ca5414b333..ab3ab130a911 100644
-> --- a/net/ceph/messenger_v2.c
-> +++ b/net/ceph/messenger_v2.c
-> @@ -2034,6 +2034,9 @@ static int prepare_sparse_read_data(struct
-> ceph_connection *con)
->          if (!con_secure(con))
->                  con->in_data_crc =3D -1;
->
-> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg,
-> + con->in_msg->sparse_read_total);
-> +
->          reset_in_kvecs(con);
->          con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
->          con->v2.data_len_remain =3D data_len(msg);
->
-> Else where should we do the test like this ?
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-Hi Xiubo,
+This fix is applicable for LTS kernel, 6.1.y. In latest kernels, this race
+issue is fixed by the patch series [1] and [2]. The right thing to do here
+would have been propagating these changes from latest kernel to the stable
+branch, 6.1.y. However, these changes seems too intrusive to be picked for
+stable branches. Hence, the fix proposed can be taken as an alternative
+instead of backporting the patch series.
+[1] https://lore.kernel.org/all/0-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com/
+[2] https://lore.kernel.org/all/0-v5-1b99ae392328+44574-iommu_err_unwind_jgg@nvidia.com/
 
-I suspect you copied this test from prepare_message_data() in msgr1,
-where that function is called unconditionally for all reads.  In msgr2,
-prepare_sparse_read_data() is called conditionally, so the test just
-seems bogus.
+Issue:
+A race condition is observed when arm_smmu_device_probe and
+modprobe of client devices happens in parallel. This results
+in the allocation of a new default domain for the iommu group
+even though it was previously allocated and the respective iova
+domain(iovad) was initialized. However, for this newly allocated
+default domain, iovad will not be initialized. As a result, for
+devices requesting dma allocations, this uninitialized iovad will
+be used, thereby causing NULL pointer dereference issue.
 
-That said, CephFS is the only user of sparse read code, so you should
-know better at this point ;)
+Flow:
+- During arm_smmu_device_probe, bus_iommu_probe() will be called
+as part of iommu_device_register(). This results in the device probe,
+__iommu_probe_device().
 
-Thanks,
+- When the modprobe of the client device happens in parallel, it
+sets up the DMA configuration for the device using of_dma_configure_id(),
+which inturn calls iommu_probe_device(). Later, default domain is
+allocated and attached using iommu_alloc_default_domain() and
+__iommu_attach_device() respectively. It then ends up initializing a
+mapping domain(IOVA domain) and rcaches for the device via
+arch_setup_dma_ops()->iommu_setup_dma_ops().
 
-                Ilya
+- Now, in the bus_iommu_probe() path, it again tries to allocate
+a default domain via probe_alloc_default_domain(). This results in
+allocating a new default domain(along with IOVA domain) via
+__iommu_domain_alloc(). However, this newly allocated IOVA domain
+will not be initialized.
+
+- Now, when the same client device tries dma allocations via
+iommu_dma_alloc(), it ends up accessing the rcaches of the newly
+allocated IOVA domain, which is not initialized. This results
+into NULL pointer dereferencing.
+
+Fix this issue by adding a check in probe_alloc_default_domain()
+to see if the iommu_group already has a default domain allocated
+and initialized.
+
+Cc: <stable@vger.kernel.org> # see patch description, fix applicable only for 6.1.y
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Co-developed-by: Nikhil V <quic_nprakash@quicinc.com>
+Signed-off-by: Nikhil V <quic_nprakash@quicinc.com>
+---
+ drivers/iommu/iommu.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 8b3897239477..83736824f17d 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1741,6 +1741,9 @@ static void probe_alloc_default_domain(struct bus_type *bus,
+ {
+ 	struct __group_domain_type gtype;
+ 
++	if (group->default_domain)
++		return;
++
+ 	memset(&gtype, 0, sizeof(gtype));
+ 
+ 	/* Ask for default domain requirements of all devices in the group */
+-- 
+2.17.1
+
 
