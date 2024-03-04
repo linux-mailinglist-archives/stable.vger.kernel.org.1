@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-26606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F937870F52
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EBA870E18
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BC21C2138E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75B40B2816D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0612178B4C;
-	Mon,  4 Mar 2024 21:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C42961675;
+	Mon,  4 Mar 2024 21:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwOWe8Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/a2tWxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AE31C6AB;
-	Mon,  4 Mar 2024 21:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019C2200CD;
+	Mon,  4 Mar 2024 21:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589207; cv=none; b=nUWKRzFVD8naYIoQQFdCxzEuMjHapMHZEYZl0gO4f1KN9fno93/Mx7NlsIpx80c1Y2z0oHaLseByzqj9YdNkbFLoqw0/o3rlQuBYGfAj4NxGF46uAGNp2eW8xusKgbfq42Y+SMQ/heeD8YoygEzREG5Ncwr7z9V882n1efCW2wc=
+	t=1709588442; cv=none; b=llfMggAXBu0L68novVSUheuuFpOEYw9L1KQ/7Q9enkhFLABBsr9WYIgDluvMGhrmlhoZBj1lx0HPvsUXzmbJLJZsyGr2kvKqHWtC/CHZNxJshGDuwWuOGeurL/vviM3M7TsENvzTN8VDhkWVWgyKWlt4xYjnIwHJodZzGYE6QNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589207; c=relaxed/simple;
-	bh=VwXika4B7BAKizVSpMsUsn2eY3Kh9pcDGvrxF0PYjoQ=;
+	s=arc-20240116; t=1709588442; c=relaxed/simple;
+	bh=XjQASu1lE01OguX3stwaMpBwnS7Ji0oPMlMokAp7I3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QClTFqShMrytaNvSzmTxq3fbcqfGRCZBPV5tygGZsSQ3XVniknW7Jred/Jhk7j+Ik+WGvkhTmD9L70caAp68JgNiXu87CAsj5hSemjV3jKQvwJzv0hXSkvAXV4mk/pxu0POji7Li3rU+Bv+FEOjljIACFuNHfxrXu6BKVIx6jXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwOWe8Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDABC433F1;
-	Mon,  4 Mar 2024 21:53:27 +0000 (UTC)
+	 MIME-Version; b=i1rX0gPKozWEVgRHgbZe3Y81jozUOniXErw86UUbb4Vp2AVD9F5MDKuty3PKmaEWTp92qzf4rNu2p4VsZ4kOtS27iYKgMfQ7IjGLFJv/KI+ULTkke6VcXt+Pbcfmv0jv2KZQUeEKZVu+LCOFsbOiTPo01ygNmD6r7p7rQqflUBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/a2tWxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8891EC433F1;
+	Mon,  4 Mar 2024 21:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589207;
-	bh=VwXika4B7BAKizVSpMsUsn2eY3Kh9pcDGvrxF0PYjoQ=;
+	s=korg; t=1709588441;
+	bh=XjQASu1lE01OguX3stwaMpBwnS7Ji0oPMlMokAp7I3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YwOWe8KfVdD3QtfT4Zkm0i3J8b4E9Njbn+OU/NcL8IBOSG7DsJcjsJFcLj+CksOP/
-	 unq9GgQHfyobeDL3Hy/Mw54fehXHhus5yehsLaNA1+5EY/GeMZQZCmuDAIup/KTmlN
-	 lkUD+Owl2qMeFKTHic789vdPt/qV4/FR7AbPFjXI=
+	b=O/a2tWxkJw1ljx+DuWYGb2ZYrXMnn/CZBMv7YSKtQv8GWahxBEii0tvJ/Iu0qbHlO
+	 q3I7pmfn3Jpt+OSdepaXLsPsUA0op2Bs0SRodLp9MdQ+Wg3JTOUD755Xo8cW7t8zAY
+	 HAe68QR+oGhgXiOhTLEZlEmi3dhkn5/ZCI9fJbYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/84] net: veth: clear GRO when clearing XDP even when down
-Date: Mon,  4 Mar 2024 21:23:40 +0000
-Message-ID: <20240304211542.585279842@linuxfoundation.org>
+	Tim Schumacher <timschumi@gmx.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 101/143] efivarfs: Request at most 512 bytes for variable names
+Date: Mon,  4 Mar 2024 21:23:41 +0000
+Message-ID: <20240304211553.137734231@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tim Schumacher <timschumi@gmx.de>
 
-[ Upstream commit fe9f801355f0b47668419f30f1fac1cf4539e736 ]
+commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
 
-veth sets NETIF_F_GRO automatically when XDP is enabled,
-because both features use the same NAPI machinery.
+Work around a quirk in a few old (2011-ish) UEFI implementations, where
+a call to `GetNextVariableName` with a buffer size larger than 512 bytes
+will always return EFI_INVALID_PARAMETER.
 
-The logic to clear NETIF_F_GRO sits in veth_disable_xdp() which
-is called both on ndo_stop and when XDP is turned off.
-To avoid the flag from being cleared when the device is brought
-down, the clearing is skipped when IFF_UP is not set.
-Bringing the device down should indeed not modify its features.
+There is some lore around EFI variable names being up to 1024 bytes in
+size, but this has no basis in the UEFI specification, and the upper
+bounds are typically platform specific, and apply to the entire variable
+(name plus payload).
 
-Unfortunately, this means that clearing is also skipped when
-XDP is disabled _while_ the device is down. And there's nothing
-on the open path to bring the device features back into sync.
-IOW if user enables XDP, disables it and then brings the device
-up we'll end up with a stray GRO flag set but no NAPI instances.
+Given that Linux does not permit creating files with names longer than
+NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
+reasonable limit.
 
-We don't depend on the GRO flag on the datapath, so the datapath
-won't crash. We will crash (or hang), however, next time features
-are sync'ed (either by user via ethtool or peer changing its config).
-The GRO flag will go away, and veth will try to disable the NAPIs.
-But the open path never created them since XDP was off, the GRO flag
-was a stray. If NAPI was initialized before we'll hang in napi_disable().
-If it never was we'll crash trying to stop uninitialized hrtimer.
-
-Move the GRO flag updates to the XDP enable / disable paths,
-instead of mixing them with the ndo_open / ndo_close paths.
-
-Fixes: d3256efd8e8b ("veth: allow enabling NAPI even without XDP")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Reported-by: syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+ fs/efivarfs/vars.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 984a153804096..85c3e12f83627 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1079,14 +1079,6 @@ static int veth_enable_xdp(struct net_device *dev)
- 				veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, true);
- 				return err;
- 			}
--
--			if (!veth_gro_requested(dev)) {
--				/* user-space did not require GRO, but adding XDP
--				 * is supposed to get GRO working
--				 */
--				dev->features |= NETIF_F_GRO;
--				netdev_features_change(dev);
--			}
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -372,7 +372,7 @@ static void dup_variable_bug(efi_char16_
+ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 		void *data, bool duplicates, struct list_head *head)
+ {
+-	unsigned long variable_name_size = 1024;
++	unsigned long variable_name_size = 512;
+ 	efi_char16_t *variable_name;
+ 	efi_status_t status;
+ 	efi_guid_t vendor_guid;
+@@ -389,12 +389,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 		goto free;
+ 
+ 	/*
+-	 * Per EFI spec, the maximum storage allocated for both
+-	 * the variable name and variable data is 1024 bytes.
++	 * A small set of old UEFI implementations reject sizes
++	 * above a certain threshold, the lowest seen in the wild
++	 * is 512.
+ 	 */
+ 
+ 	do {
+-		variable_name_size = 1024;
++		variable_name_size = 512;
+ 
+ 		status = efivar_get_next_variable(&variable_name_size,
+ 						  variable_name,
+@@ -431,9 +432,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 			break;
+ 		case EFI_NOT_FOUND:
+ 			break;
++		case EFI_BUFFER_TOO_SMALL:
++			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
++				variable_name_size);
++			status = EFI_NOT_FOUND;
++			break;
+ 		default:
+-			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
+-				status);
++			pr_warn("efivars: get_next_variable: status=%lx\n", status);
+ 			status = EFI_NOT_FOUND;
+ 			break;
  		}
- 	}
- 
-@@ -1106,18 +1098,9 @@ static void veth_disable_xdp(struct net_device *dev)
- 	for (i = 0; i < dev->real_num_rx_queues; i++)
- 		rcu_assign_pointer(priv->rq[i].xdp_prog, NULL);
- 
--	if (!netif_running(dev) || !veth_gro_requested(dev)) {
-+	if (!netif_running(dev) || !veth_gro_requested(dev))
- 		veth_napi_del(dev);
- 
--		/* if user-space did not require GRO, since adding XDP
--		 * enabled it, clear it now
--		 */
--		if (!veth_gro_requested(dev) && netif_running(dev)) {
--			dev->features &= ~NETIF_F_GRO;
--			netdev_features_change(dev);
--		}
--	}
--
- 	veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, false);
- }
- 
-@@ -1497,6 +1480,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 		}
- 
- 		if (!old_prog) {
-+			if (!veth_gro_requested(dev)) {
-+				/* user-space did not require GRO, but adding
-+				 * XDP is supposed to get GRO working
-+				 */
-+				dev->features |= NETIF_F_GRO;
-+				netdev_features_change(dev);
-+			}
-+
- 			peer->hw_features &= ~NETIF_F_GSO_SOFTWARE;
- 			peer->max_mtu = max_mtu;
- 		}
-@@ -1507,6 +1498,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 			if (dev->flags & IFF_UP)
- 				veth_disable_xdp(dev);
- 
-+			/* if user-space did not require GRO, since adding XDP
-+			 * enabled it, clear it now
-+			 */
-+			if (!veth_gro_requested(dev)) {
-+				dev->features &= ~NETIF_F_GRO;
-+				netdev_features_change(dev);
-+			}
-+
- 			if (peer) {
- 				peer->hw_features |= NETIF_F_GSO_SOFTWARE;
- 				peer->max_mtu = ETH_MAX_MTU;
--- 
-2.43.0
-
 
 
 
