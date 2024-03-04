@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA721870E05
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B2E870C75
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1171289325
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E572855F2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B77200D4;
-	Mon,  4 Mar 2024 21:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EDA3D0BA;
+	Mon,  4 Mar 2024 21:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRlJjgLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjdoCPHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12208F58;
-	Mon,  4 Mar 2024 21:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11531CA94;
+	Mon,  4 Mar 2024 21:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588405; cv=none; b=geyWtvqet44TpAVsKiEHI2KS10jWinYEZoFVzPdhckaYFxmb4sX4CP/lb44yEHtV5bps9WiskDVlbbOHNvWbIc+2+lngy/rRDaCkpZc4xmelSllBaW7gw2OeCaL4NyxTn/yTn9+wsBWdrcWUFoqWzsL9ovfeRV9YMSEZ07Tu9Hc=
+	t=1709587544; cv=none; b=KZg8v2/ZraBgKm1RLjMkyzuAmuG67Wl3oQcChDK47w1r8CYkX7MqUnXcW1OI/B+pJ+G6BHxCchiIk5cu7cZut4uUv2HvstqSTSAGd1WgFw6RSt3d6hRhJ0tC9lrWGYPTrU/g2cYzDPlJctFGzsZXsRl9+DHxZuUSQNMy2HCkk3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588405; c=relaxed/simple;
-	bh=GJSwOSet9rZjLSeRC+ysgVrR0v+DENbF6RW/iyGQPcM=;
+	s=arc-20240116; t=1709587544; c=relaxed/simple;
+	bh=2kl6o+XSOOH4R8gB/RbKapilOlh3cRb7ai/c8J/KLCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LafxHDhL25W1e7V39AARszqw4vZrtx4tLfvFoeI1FUzPA2wYK9rsbg9l0AgzkF0bq239LD/By3FSTu+aW6yrfro+yU9SiYToNzgP2gWVXL3OrkJ+7/P2gsBe0GyDRFx/EjHNlUJDICHNvk4aE7Wh07kdNSVc/3ZQP5O60jkm268=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRlJjgLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F14C433C7;
-	Mon,  4 Mar 2024 21:40:05 +0000 (UTC)
+	 MIME-Version; b=R+DsDXk7JhvmLdVeA8p5FED6617RKcgm2a4uArdCXP8MPMdNoiDxdsk30OFAh9a2PT6EVzszEbzuArl38WT6NzXEa4oBSTe2+fuVEmwJEodYuHddTHfF2aykSzOcXNCQBULxqVC8wYYLiwjkDYgjtuGbzCwykrjlMEwJbk4EHIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjdoCPHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118DDC433F1;
+	Mon,  4 Mar 2024 21:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588405;
-	bh=GJSwOSet9rZjLSeRC+ysgVrR0v+DENbF6RW/iyGQPcM=;
+	s=korg; t=1709587544;
+	bh=2kl6o+XSOOH4R8gB/RbKapilOlh3cRb7ai/c8J/KLCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRlJjgLdJw2Xg5FEXOd3CGoc6AhKKsCXKJ/QQqiLcopO7GQZ5yJfRat06OsH/5iSo
-	 cj+CiFa9zQcLkghPcghRLUCIpf585mAR73romK9iknc0+jvItJ9WV4aK/ozYNUt7Qw
-	 rFSNZOJ/Tpe5QQrQR/vujOHxBdO3WX/eqem1Hi/w=
+	b=wjdoCPHEtibbjzZ8OCjnW9OjgrNkJSk9DgsJYyMOKLF7t1mEB51yp91AxAEpW+cSM
+	 sfH7evMto9+NxDL1o0ucNmFpHloLunBYTx9XAWYSKak7RsG/XE2V1/T3ZjZ8srGo7C
+	 9g6orAiumX67UjmJjF/a3Kh9wAnDc9iMweE4gn3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ivan Semenov <ivan@semenov.dev>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 094/143] mmc: core: Fix eMMC initialization with 1-bit bus connection
-Date: Mon,  4 Mar 2024 21:23:34 +0000
-Message-ID: <20240304211552.927292103@linuxfoundation.org>
+Subject: [PATCH 4.19 14/16] mmc: core: Fix eMMC initialization with 1-bit bus connection
+Date: Mon,  4 Mar 2024 21:23:35 +0000
+Message-ID: <20240304211534.860028623@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
+References: <20240304211534.328737119@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/mmc/core/mmc.c
 +++ b/drivers/mmc/core/mmc.c
-@@ -1007,10 +1007,12 @@ static int mmc_select_bus_width(struct m
+@@ -994,10 +994,12 @@ static int mmc_select_bus_width(struct m
  	static unsigned ext_csd_bits[] = {
  		EXT_CSD_BUS_WIDTH_8,
  		EXT_CSD_BUS_WIDTH_4,
