@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045FF870CBF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FDD870E7C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3659D1C24E83
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC4B1F2174E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7707A124;
-	Mon,  4 Mar 2024 21:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE8746BA0;
+	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdXXgzQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/NcYlmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEDE7994A;
-	Mon,  4 Mar 2024 21:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A52C11193;
+	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587696; cv=none; b=MVT/56zpIphotmR/HYKTDvQtNSZYrROR16vwW93xLmZikEhSCZfcoGa98FLNpzG0+y1j52yP/25SUMeZK+qWWdsZPojvGhiEOVc3KtdP0GJCsjtnPEblr87ca4IkW0lAybd5lyr0dDtUOz6/B1VYyiqgbXOeAVPqbq9jeLyVn+Y=
+	t=1709588659; cv=none; b=ctwNYNFP4o9B4jRDwQYow9HeS+7cAoqp9FSO0X9h9UkO6/KcCVgGZZPLbkQc+E2gcUme2kimc1xwtToz92vaFuFQlFTUcM4T1bQ+RzMQgNCB8AUxwjvo6BPFHaAv7WKrc8cEMsRlaGhvStmZCySqfcIjd81UDfNFOEQvQd3BLtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587696; c=relaxed/simple;
-	bh=93MgnCzicdbIg1ZqWmsrjGdMeBjJFNsD4EYxw8UKKjM=;
+	s=arc-20240116; t=1709588659; c=relaxed/simple;
+	bh=mNKcchx8l0Pe0vriT/DoTIxgtvzs1caJN3sNvmp+A/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExhwfT/tTBt9pJ/ZNCowm0+dLK7qTE8w+vdRGzpmVj4FcxARRyxalmnibgXuXCb0DwhBDpj2ieZLt2UZFAUOalbsYfYiKCIRkkbSlItVBwK7ryTYNbGEYZ7904IEt/DpKpgNRn1khWYGYUlzdjpCSjAeZ/zMOde0vMLZRfzvAMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdXXgzQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68953C433F1;
-	Mon,  4 Mar 2024 21:28:15 +0000 (UTC)
+	 MIME-Version; b=s6J2/qB9EWM1XlcW/XDzM/gW1+K/dJ3so3EJPTh3SvQmHBwNuaLj1C2gD/nFYuh5wZYBque/2zJa2nv9SZG693PmTKDOLeu/QAepAr+W/dzxGGFLFnKsse2dF57ly9dc5qmWaI0v4wK0tyIhF7CxT6FEJNVheNJVqWOCaf7byKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/NcYlmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D81EC433F1;
+	Mon,  4 Mar 2024 21:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587695;
-	bh=93MgnCzicdbIg1ZqWmsrjGdMeBjJFNsD4EYxw8UKKjM=;
+	s=korg; t=1709588659;
+	bh=mNKcchx8l0Pe0vriT/DoTIxgtvzs1caJN3sNvmp+A/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdXXgzQOvuF01WI3foVECvhaCx0IfLfHAQjIyna8TriLLbZ4pK7stghUitcUouUZG
-	 fLfRQl3WMkN2C3HifcnkF8XmM8hc/lBBBMeRAqBdPV4QcmSt3a5fW1gcuDIbe6jDQo
-	 iyh4HAkI0PvQEQuguQzV5AZNFCxXVosQwmySvPz0=
+	b=B/NcYlmNivyt0ZdQhvveDGG+QW5OW8reBSw2ARum5ynCY8CI9otZ7qCC+ANpPQOCM
+	 PBN4/HvxnG1YZgNRzYCEiW0O1kPK3ggJiQPOQuw8a76EOvhnbhHuY+POPgOqypXygY
+	 6IVerpttUX2aIhL0Iz/vvOVbPP10FRwddk0nrcPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 037/162] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
-Date: Mon,  4 Mar 2024 21:21:42 +0000
-Message-ID: <20240304211553.023090236@linuxfoundation.org>
+Subject: [PATCH 6.1 040/215] uapi: in6: replace temporary label with rfc9486
+Date: Mon,  4 Mar 2024 21:21:43 +0000
+Message-ID: <20240304211558.275996809@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
+[ Upstream commit 6a2008641920a9c6fe1abbeb9acbec463215d505 ]
 
-In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
-IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
-in the function `rtnl_bridge_setlink` to enable the loop to also check
-the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
-removed the `break` statement and led to an error logic of the flags
-writing back at the end of this function.
+Not really a fix per se, but IPV6_TLV_IOAM is still tagged as "TEMPORARY
+IANA allocation for IOAM", while RFC 9486 is available for some time
+now. Just update the reference.
 
-if (have_flags)
-    memcpy(nla_data(attr), &flags, sizeof(flags));
-    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
-
-Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
-However, this is not necessarily true fow now as the updated loop will let
-the attr point to the last NLA, even an invalid NLA which could cause
-overflow writes.
-
-This patch introduces a new variable `br_flag` to save the NLA pointer
-that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
-error logic.
-
-Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240226124921.9097-1-justin.iurman@uliege.be
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ include/uapi/linux/in6.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index bf4c3f65ad99c..8f9cd6b7926e3 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5164,10 +5164,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct net *net = sock_net(skb->sk);
- 	struct ifinfomsg *ifm;
- 	struct net_device *dev;
--	struct nlattr *br_spec, *attr = NULL;
-+	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
- 	int rem, err = -EOPNOTSUPP;
- 	u16 flags = 0;
--	bool have_flags = false;
+diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
+index c4c53a9ab9595..ff8d21f9e95b7 100644
+--- a/include/uapi/linux/in6.h
++++ b/include/uapi/linux/in6.h
+@@ -145,7 +145,7 @@ struct in6_flowlabel_req {
+ #define IPV6_TLV_PADN		1
+ #define IPV6_TLV_ROUTERALERT	5
+ #define IPV6_TLV_CALIPSO	7	/* RFC 5570 */
+-#define IPV6_TLV_IOAM		49	/* TEMPORARY IANA allocation for IOAM */
++#define IPV6_TLV_IOAM		49	/* RFC 9486 */
+ #define IPV6_TLV_JUMBO		194
+ #define IPV6_TLV_HAO		201	/* home address option */
  
- 	if (nlmsg_len(nlh) < sizeof(*ifm))
- 		return -EINVAL;
-@@ -5185,11 +5184,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
- 	if (br_spec) {
- 		nla_for_each_nested(attr, br_spec, rem) {
--			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
-+			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
- 				if (nla_len(attr) < sizeof(flags))
- 					return -EINVAL;
- 
--				have_flags = true;
-+				br_flags_attr = attr;
- 				flags = nla_get_u16(attr);
- 			}
- 
-@@ -5233,8 +5232,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		}
- 	}
- 
--	if (have_flags)
--		memcpy(nla_data(attr), &flags, sizeof(flags));
-+	if (br_flags_attr)
-+		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
- out:
- 	return err;
- }
 -- 
 2.43.0
 
