@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A4786FA48
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:53:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F8186FA49
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D4B2810FC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4458B1C20915
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6068511716;
-	Mon,  4 Mar 2024 06:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C9311713;
+	Mon,  4 Mar 2024 06:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPc+BbaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMMSqbzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21067B667
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0EB667
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709535229; cv=none; b=jiG/MJMsb3YjuiecvYMU7Qiv8oAdWPGw1+T+0NVzbG5bQJROs42K5lGMzy7TosDby7M9nhUfXwnv9OlbZyLx9l0Tu8zV9gK8w0GHksVVUMX1MklvaLkd4xXj3a1WaaQ4UXgmI/d4hQgnz3fy81CzN9m99YanUcc5cgwjA/u2oPg=
+	t=1709535237; cv=none; b=G5gyaaw1Ins5954O2TqigjwvFLLazsXD3wwvk8pbBE9diLzdj+B1aeUImw/mu8ohP7Ez8J6rwIIaASc0BidxkJYaZRIYKxjP1kKaIP5zB8mcnZY8FM7WHPVTltLBysYMDP18wMX+Kq4LDxw8TkG8a/HppoE8E87SvW/DtJBKqRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709535229; c=relaxed/simple;
-	bh=ceZSyXqsqda4tVjhkLWkM4VJUtTV4hFxScbR3WFRhIc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PmPV6icS9ljsWI+kQqQErYV4MC6LrnS4U0l+vsEapiFsPyrCUw38cDiZKm7SHRR9l7HvzJSB8ZXEsJOqJKQ0dKWloXcya2+V8pLxvdUCHBifWLdI8COmjpBQAkccb+7gZp0pa4tYqDb4vcakn3iRqwxdAAb8/BRszDyYzls71Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPc+BbaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF84C433C7;
-	Mon,  4 Mar 2024 06:53:48 +0000 (UTC)
+	s=arc-20240116; t=1709535237; c=relaxed/simple;
+	bh=bRtb6Ps4zdyOMHIjEEOWm3DCX8yKYQbysVUqbRMmGw8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lHICSy9F1xlRSviFjT5qofUaPjmjZaPSCRkuIvcX5jQGK2UqZNuAIUux93YqE04jk2ax8fb8qKPqChFhR8K21Rh3jyf0XbFB7m9fMlZ5TQOLeAY0LJG7xgClj8CWEo7+lIVy9sNTEYUGzMM9n0TEViban01i0kbhQJu8ClN5LLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMMSqbzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEAEC433C7;
+	Mon,  4 Mar 2024 06:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709535228;
-	bh=ceZSyXqsqda4tVjhkLWkM4VJUtTV4hFxScbR3WFRhIc=;
+	s=korg; t=1709535237;
+	bh=bRtb6Ps4zdyOMHIjEEOWm3DCX8yKYQbysVUqbRMmGw8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FPc+BbaZP9eYJs8Y8558qJCdR3Qy3aCN9clZ9o9cxA4AGejEYNf3ArGV1blbZMVxi
-	 uIdzIXrVPwbFzbxZ61pN5wAnLQTlhAGmBWudD7Kt3dGmP5bFOi47BixSYyu3oJMJKr
-	 LElUXjKIaOJ6Y2Ua2aUYyVxSdRCjB9C4S8mibIXU=
-Subject: FAILED: patch "[PATCH] dmaengine: fsl-edma: correct max_segment_size setting" failed to apply to 6.1-stable tree
-To: Frank.Li@nxp.com,vkoul@kernel.org
+	b=yMMSqbznYU1Xmbre3dQfGevuOCTl/5RqQzMmeTNBAdXihHg0pEYIHJw+raBIJZ0vA
+	 Zz2jHctHsAaswM6jthTsxq6EizgflOk1OOMuEZBXaaDhSK4MVUSGobzfsBsWoY+vdb
+	 sGWaGxLXplCqQaKcpNznNxp5HwRjQqhrIA/l7EuQ=
+Subject: FAILED: patch "[PATCH] mmc: mmci: stm32: fix DMA API overlapping mappings warning" failed to apply to 5.15-stable tree
+To: christophe.kerello@foss.st.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 07:53:35 +0100
-Message-ID: <2024030434-underling-helmet-8fbe@gregkh>
+Date: Mon, 04 Mar 2024 07:53:53 +0100
+Message-ID: <2024030453-spectacle-evade-eaed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a79f949a5ce1d45329d63742c2a995f2b47f9852
+git cherry-pick -x 6b1ba3f9040be5efc4396d86c9752cdc564730be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030434-underling-helmet-8fbe@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030453-spectacle-evade-eaed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-
+6b1ba3f9040b ("mmc: mmci: stm32: fix DMA API overlapping mappings warning")
+970dc9c11a17 ("mmc: mmci: stm32: use a buffer for unaligned DMA requests")
+0d319dd5a271 ("mmc: mmci: stm32: correctly check all elements of sg list")
 
 thanks,
 
@@ -77,59 +79,105 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a79f949a5ce1d45329d63742c2a995f2b47f9852 Mon Sep 17 00:00:00 2001
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 7 Feb 2024 14:47:32 -0500
-Subject: [PATCH] dmaengine: fsl-edma: correct max_segment_size setting
+From 6b1ba3f9040be5efc4396d86c9752cdc564730be Mon Sep 17 00:00:00 2001
+From: Christophe Kerello <christophe.kerello@foss.st.com>
+Date: Wed, 7 Feb 2024 15:39:51 +0100
+Subject: [PATCH] mmc: mmci: stm32: fix DMA API overlapping mappings warning
 
-Correcting the previous setting of 0x3fff to the actual value of 0x7fff.
+Turning on CONFIG_DMA_API_DEBUG_SG results in the following warning:
 
-Introduced new macro 'EDMA_TCD_ITER_MASK' for improved code clarity and
-utilization of FIELD_GET to obtain the accurate maximum value.
+DMA-API: mmci-pl18x 48220000.mmc: cacheline tracking EEXIST,
+overlapping mappings aren't supported
+WARNING: CPU: 1 PID: 51 at kernel/dma/debug.c:568
+add_dma_entry+0x234/0x2f4
+Modules linked in:
+CPU: 1 PID: 51 Comm: kworker/1:2 Not tainted 6.1.28 #1
+Hardware name: STMicroelectronics STM32MP257F-EV1 Evaluation Board (DT)
+Workqueue: events_freezable mmc_rescan
+Call trace:
+add_dma_entry+0x234/0x2f4
+debug_dma_map_sg+0x198/0x350
+__dma_map_sg_attrs+0xa0/0x110
+dma_map_sg_attrs+0x10/0x2c
+sdmmc_idma_prep_data+0x80/0xc0
+mmci_prep_data+0x38/0x84
+mmci_start_data+0x108/0x2dc
+mmci_request+0xe4/0x190
+__mmc_start_request+0x68/0x140
+mmc_start_request+0x94/0xc0
+mmc_wait_for_req+0x70/0x100
+mmc_send_tuning+0x108/0x1ac
+sdmmc_execute_tuning+0x14c/0x210
+mmc_execute_tuning+0x48/0xec
+mmc_sd_init_uhs_card.part.0+0x208/0x464
+mmc_sd_init_card+0x318/0x89c
+mmc_attach_sd+0xe4/0x180
+mmc_rescan+0x244/0x320
 
+DMA API debug brings to light leaking dma-mappings as dma_map_sg and
+dma_unmap_sg are not correctly balanced.
+
+If an error occurs in mmci_cmd_irq function, only mmci_dma_error
+function is called and as this API is not managed on stm32 variant,
+dma_unmap_sg is never called in this error path.
+
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Fixes: 46b723dd867d ("mmc: mmci: add stm32 sdmmc variant")
 Cc: stable@vger.kernel.org
-Fixes: e06748539432 ("dmaengine: fsl-edma: support edma memcpy")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240207194733.2112870-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20240207143951.938144-1-christophe.kerello@foss.st.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
-index bb5221158a77..f5e216b157c7 100644
---- a/drivers/dma/fsl-edma-common.h
-+++ b/drivers/dma/fsl-edma-common.h
-@@ -30,8 +30,9 @@
- #define EDMA_TCD_ATTR_SSIZE(x)		(((x) & GENMASK(2, 0)) << 8)
- #define EDMA_TCD_ATTR_SMOD(x)		(((x) & GENMASK(4, 0)) << 11)
+diff --git a/drivers/mmc/host/mmci_stm32_sdmmc.c b/drivers/mmc/host/mmci_stm32_sdmmc.c
+index 35067e1e6cd8..f5da7f9baa52 100644
+--- a/drivers/mmc/host/mmci_stm32_sdmmc.c
++++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
+@@ -225,6 +225,8 @@ static int sdmmc_idma_start(struct mmci_host *host, unsigned int *datactrl)
+ 	struct scatterlist *sg;
+ 	int i;
  
--#define EDMA_TCD_CITER_CITER(x)		((x) & GENMASK(14, 0))
--#define EDMA_TCD_BITER_BITER(x)		((x) & GENMASK(14, 0))
-+#define EDMA_TCD_ITER_MASK		GENMASK(14, 0)
-+#define EDMA_TCD_CITER_CITER(x)		((x) & EDMA_TCD_ITER_MASK)
-+#define EDMA_TCD_BITER_BITER(x)		((x) & EDMA_TCD_ITER_MASK)
++	host->dma_in_progress = true;
++
+ 	if (!host->variant->dma_lli || data->sg_len == 1 ||
+ 	    idma->use_bounce_buffer) {
+ 		u32 dma_addr;
+@@ -263,9 +265,30 @@ static int sdmmc_idma_start(struct mmci_host *host, unsigned int *datactrl)
+ 	return 0;
+ }
  
- #define EDMA_TCD_CSR_START		BIT(0)
- #define EDMA_TCD_CSR_INT_MAJOR		BIT(1)
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 45cc419b1b4a..d36e28b9c767 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -10,6 +10,7 @@
-  */
++static void sdmmc_idma_error(struct mmci_host *host)
++{
++	struct mmc_data *data = host->data;
++	struct sdmmc_idma *idma = host->dma_priv;
++
++	if (!dma_inprogress(host))
++		return;
++
++	writel_relaxed(0, host->base + MMCI_STM32_IDMACTRLR);
++	host->dma_in_progress = false;
++	data->host_cookie = 0;
++
++	if (!idma->use_bounce_buffer)
++		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
++			     mmc_get_dma_dir(data));
++}
++
+ static void sdmmc_idma_finalize(struct mmci_host *host, struct mmc_data *data)
+ {
++	if (!dma_inprogress(host))
++		return;
++
+ 	writel_relaxed(0, host->base + MMCI_STM32_IDMACTRLR);
++	host->dma_in_progress = false;
  
- #include <dt-bindings/dma/fsl-edma.h>
-+#include <linux/bitfield.h>
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/clk.h>
-@@ -582,7 +583,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 					DMAENGINE_ALIGN_32_BYTES;
- 
- 	/* Per worst case 'nbytes = 1' take CITER as the max_seg_size */
--	dma_set_max_seg_size(fsl_edma->dma_dev.dev, 0x3fff);
-+	dma_set_max_seg_size(fsl_edma->dma_dev.dev,
-+			     FIELD_GET(EDMA_TCD_ITER_MASK, EDMA_TCD_ITER_MASK));
- 
- 	fsl_edma->dma_dev.residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
- 
+ 	if (!data->host_cookie)
+ 		sdmmc_idma_unprep_data(host, data, 0);
+@@ -676,6 +699,7 @@ static struct mmci_host_ops sdmmc_variant_ops = {
+ 	.dma_setup = sdmmc_idma_setup,
+ 	.dma_start = sdmmc_idma_start,
+ 	.dma_finalize = sdmmc_idma_finalize,
++	.dma_error = sdmmc_idma_error,
+ 	.set_clkreg = mmci_sdmmc_set_clkreg,
+ 	.set_pwrreg = mmci_sdmmc_set_pwrreg,
+ 	.busy_complete = sdmmc_busy_complete,
 
 
