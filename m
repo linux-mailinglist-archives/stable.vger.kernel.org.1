@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-26200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6035C870D88
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DAA870F47
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92FE11C21A8B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503691F2234E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8AA78B4C;
-	Mon,  4 Mar 2024 21:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE87378B4C;
+	Mon,  4 Mar 2024 21:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt40tYHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3yD/+pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F15B1C687;
-	Mon,  4 Mar 2024 21:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6CC1C6AB;
+	Mon,  4 Mar 2024 21:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588102; cv=none; b=ei5xJM+viC1yJHYBmxx5xbXpn5jZYB1zcBj0UDrPFWOf+Vk1DmdCOltwxPbucYhbZUWrlK320bY/wdNsS6bR+/ne3FBWubqgDgmcf3RGnMHJ7klvC6cyqMxynwpb0v0QbRg1h7QsvwAvekrgY2XBIIDc0pi3N3zLYkpw1uNtnsM=
+	t=1709589176; cv=none; b=HEhvLTmDr1RAqkU4FHfFG6WY0JsbRdNCjO+haPhiBDTJ7lDz2SXJvdHdjmmbvhMaKWCERL/x/GosOM7rSgyd7o89OaFwkNU5Gi8weBDtZ4SNR9mDABdb75fmszqmjE6B1Wnlz92WS8zPNWQ7/IVVXSqrLQFeKvxnlUxRy/k49gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588102; c=relaxed/simple;
-	bh=wscpWMQGQVWqbNcRd/AgeaPFQW0QxTuJ0tKPU2A4yQs=;
+	s=arc-20240116; t=1709589176; c=relaxed/simple;
+	bh=lvwWW0pE8GnZgPKOUzmA3aMV2HDyJQ2xKSNFMohQdeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CecUdRwH12chhptxFvwOqOkFHAwqg25z2fliWP2k5wRn9NUhxn0v3PKClvmw3yl6Xalrn9iIhHckhZZ1w9OEYGhgdupHdGi/zj7EJhSsb4A79/FTUHERoUP5u8X9fpcPTEwn2MAcO0jZlwwfHU7oHyKn2eqJGjxhiY3Ym7r6zZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt40tYHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FD8C433F1;
-	Mon,  4 Mar 2024 21:35:02 +0000 (UTC)
+	 MIME-Version; b=Bi/LpAgMSSw0ABqn+eCsFpeBQB97mT4pmTOxcQmzyj/oMVJuZ4xhSnvgv3Xtnm9kTR44TY/h1Oj1NKEKLlgj7+uU4xtyROHyJr5ngq8zsh8lA71i4/oeONPS4Ez3dnkhPL4KFCGU8zmNL6PM3m8wL4XrtwtjzRe6azRNaH58Qig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3yD/+pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0D4C433F1;
+	Mon,  4 Mar 2024 21:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588102;
-	bh=wscpWMQGQVWqbNcRd/AgeaPFQW0QxTuJ0tKPU2A4yQs=;
+	s=korg; t=1709589176;
+	bh=lvwWW0pE8GnZgPKOUzmA3aMV2HDyJQ2xKSNFMohQdeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vt40tYHJ7xRkt1lsiYHLvmfxc8irI75REkyj8dye6VEDIlcb7lTydvGKBNLg5m435
-	 ScDd6ojSHBrHk8P2BGQQ4Kr0trvzynZ2HIbO42TBdkU2CgBXN6fGbLBYd2jQhCyWkp
-	 MfH2pdUyKWBraCER2uGjnw6eAt74BpK2MjrgBvR8=
+	b=e3yD/+pPK5tfGaA4WjK3hl5UY5mF0MW3DvehdICs0zgZ9QkKL/7oZFc+mZxLQJmBx
+	 ZAxlObrKwqpidVbFR8nsN4+3OeZ4ISrrdbplQpaX/Gi62bMRh9LZx7gc6pV1bCJvsq
+	 Xip/VIWXJNRGDn64d4E7WIO7m7DwF2wTr64UcvQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/42] tun: Fix xdp_rxq_infos queue_index when detaching
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 01/84] netfilter: nf_tables: disallow timeout for anonymous sets
 Date: Mon,  4 Mar 2024 21:23:34 +0000
-Message-ID: <20240304211537.882475754@linuxfoundation.org>
+Message-ID: <20240304211542.384534173@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
+commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
 
-When a queue(tfile) is detached, we only update tfile's queue_index,
-but do not update xdp_rxq_info's queue_index. This patch fixes it.
+Never used from userspace, disallow these parameters.
 
-Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 0b25b59f44033..bb0368272a1bb 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -665,6 +665,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
- 		ntfile->queue_index = index;
-+		ntfile->xdp_rxq.queue_index = index;
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4682,6 +4682,9 @@ static int nf_tables_newset(struct sk_bu
+ 		if (!(flags & NFT_SET_TIMEOUT))
+ 			return -EINVAL;
  
--- 
-2.43.0
-
++		if (flags & NFT_SET_ANONYMOUS)
++			return -EOPNOTSUPP;
++
+ 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &desc.timeout);
+ 		if (err)
+ 			return err;
+@@ -4690,6 +4693,10 @@ static int nf_tables_newset(struct sk_bu
+ 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
+ 		if (!(flags & NFT_SET_TIMEOUT))
+ 			return -EINVAL;
++
++		if (flags & NFT_SET_ANONYMOUS)
++			return -EOPNOTSUPP;
++
+ 		desc.gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
+ 	}
+ 
 
 
 
