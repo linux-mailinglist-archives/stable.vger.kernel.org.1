@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFF2870CE0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 417B2870EA4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DE2D1C2453F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A2FB257F2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8023561675;
-	Mon,  4 Mar 2024 21:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AC41F92C;
+	Mon,  4 Mar 2024 21:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQZzmB2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+2gpb83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9321EB5A;
-	Mon,  4 Mar 2024 21:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450D67992E;
+	Mon,  4 Mar 2024 21:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587756; cv=none; b=tTwXKduydnW5anIW6dgrLcZO/yfFk0w5tnUQiFP+7ONsZv1mN9Ke4fXY7/pVUleFdEel9of4166RdlND+Mga5XgurmI9gqu9797ofNPAdYYI+TjizKB4y91lRDRanJqqjGZsgSETSNnvhVv7ADAXSfJ2TUDlBW3inTZ9V+AHvlg=
+	t=1709588743; cv=none; b=lTUv2Q7pDhYFltuOrpggwoG8K5lIlfcZjvTzLFAIozrMmNMZn7YEKi81EK5gmL7sNmDKTPdPz0BsL+ShupGze789bN2t0CC15dQrY3sfTWSE61Qpt1TjcHpRPxoKBbK280fhj8aLcvtTNSE74FY5IQtO36EoZUsqBUaK/hq6Nvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587756; c=relaxed/simple;
-	bh=0CPxo/3+3wMMACv/qxMD7DJJUzQJ0mSWoq4aXlfBjv4=;
+	s=arc-20240116; t=1709588743; c=relaxed/simple;
+	bh=RoQZ9JMi9k8TPjEiknTVmdyntJGED1DA4Xd1OidI5hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+0QemBsmraDkjGv148sY5m6O5khxZO6sd3O8yK1Kaq9E/u/FXQX/7hfgDRgWN6xXyA/wt/KL2w0gYBFDViX3/JAoeiOkV1KjAWS6dzy3VJcb9H3AgRC17Hko1gOQ8GaP9Nbn4hIAygzCvchdDRo+l5wQC4mQW14uchHigaR6O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQZzmB2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C565EC433F1;
-	Mon,  4 Mar 2024 21:29:15 +0000 (UTC)
+	 MIME-Version; b=eqnifBhMSyc2sETyNJPBJ+4+GSqZw3753rw2R2suAnzZonOiJgZA0ws6aP/E9/J9qg/W3VaA2hQJ1XLgBxAJJj0V5ZfvuOSFOb948YcgmmOiUa8wcfqAV0QytQZZsOKMcb9GLeSF0h94LGvw4VBeDpVkGrfXHt0xZvndC4C4aGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+2gpb83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA925C433C7;
+	Mon,  4 Mar 2024 21:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587756;
-	bh=0CPxo/3+3wMMACv/qxMD7DJJUzQJ0mSWoq4aXlfBjv4=;
+	s=korg; t=1709588743;
+	bh=RoQZ9JMi9k8TPjEiknTVmdyntJGED1DA4Xd1OidI5hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQZzmB2xOq+oOwTfuJ7pHgC7eKm1K7+oZWzU0b/8ilRbQiO1ON4vdHWdi0eBNTZv4
-	 sZq/PW9BsHcLZugptoB3Qb+mN9ASZalUZXgm6gAF31WlgXi7Q6yUqXPamIUSKFEU+C
-	 CFRKVRhR20y7/th2PSG42G+r3FWIVZ1JzUuL4H2I=
+	b=v+2gpb83yJcn7LcbM87q7QiPPqSuoG8DI8WB5qtnSoDmeFw8CjlMN7qin/KmN2vZk
+	 QTDfA3y5hIZjNv0x7ggWXrNxnbTp5eC9PQOvVcM4Hx38hiSdwMAvJiqB3/Dkf54xV9
+	 41hqaTKxvCEvGj7K3IU2pfv3mK0Al8z+j+wifu6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Peter <flurry123@gmx.ch>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 078/162] ALSA: hda/realtek: Enable Mute LED on HP 840 G8 (MB 8AB8)
+	Edward Adam Davis <eadavis@qq.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 080/215] btrfs: dev-replace: properly validate device names
 Date: Mon,  4 Mar 2024 21:22:23 +0000
-Message-ID: <20240304211554.343468252@linuxfoundation.org>
+Message-ID: <20240304211559.522549482@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Peter <flurry123@gmx.ch>
+From: David Sterba <dsterba@suse.com>
 
-commit 1fdf4e8be7059e7784fec11d30cd32784f0bdc83 upstream.
+commit 9845664b9ee47ce7ee7ea93caf47d39a9d4552c4 upstream.
 
-On my EliteBook 840 G8 Notebook PC (ProdId 5S7R6EC#ABD; built 2022 for
-german market) the Mute LED is always on. The mute button itself works
-as expected. alsa-info.sh shows a different subsystem-id 0x8ab9 for
-Realtek ALC285 Codec, thus the existing quirks for HP 840 G8 don't work.
-Therefore, add a new quirk for this type of EliteBook.
+There's a syzbot report that device name buffers passed to device
+replace are not properly checked for string termination which could lead
+to a read out of bounds in getname_kernel().
 
-Signed-off-by: Hans Peter <flurry123@gmx.ch>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240219164518.4099-1-flurry123@gmx.ch
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add a helper that validates both source and target device name buffers.
+For devid as the source initialize the buffer to empty string in case
+something tries to read it later.
+
+This was originally analyzed and fixed in a different way by Edward Adam
+Davis (see links).
+
+Link: https://lore.kernel.org/linux-btrfs/000000000000d1a1d1060cc9c5e7@google.com/
+Link: https://lore.kernel.org/linux-btrfs/tencent_44CA0665C9836EF9EEC80CB9E7E206DF5206@qq.com/
+CC: stable@vger.kernel.org # 4.19+
+CC: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/dev-replace.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9915,6 +9915,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8aa3, "HP ProBook 450 G9 (MB 8AA1)", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8aa8, "HP EliteBook 640 G9 (MB 8AA6)", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8aab, "HP EliteBook 650 G9 (MB 8AA9)", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8ab9, "HP EliteBook 840 G8 (MB 8AB8)", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+--- a/fs/btrfs/dev-replace.c
++++ b/fs/btrfs/dev-replace.c
+@@ -740,6 +740,23 @@ leave:
+ 	return ret;
+ }
+ 
++static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *args)
++{
++	if (args->start.srcdevid == 0) {
++		if (memchr(args->start.srcdev_name, 0,
++			   sizeof(args->start.srcdev_name)) == NULL)
++			return -ENAMETOOLONG;
++	} else {
++		args->start.srcdev_name[0] = 0;
++	}
++
++	if (memchr(args->start.tgtdev_name, 0,
++		   sizeof(args->start.tgtdev_name)) == NULL)
++	    return -ENAMETOOLONG;
++
++	return 0;
++}
++
+ int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
+ 			    struct btrfs_ioctl_dev_replace_args *args)
+ {
+@@ -752,10 +769,9 @@ int btrfs_dev_replace_by_ioctl(struct bt
+ 	default:
+ 		return -EINVAL;
+ 	}
+-
+-	if ((args->start.srcdevid == 0 && args->start.srcdev_name[0] == '\0') ||
+-	    args->start.tgtdev_name[0] == '\0')
+-		return -EINVAL;
++	ret = btrfs_check_replace_dev_names(args);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
+ 					args->start.srcdevid,
 
 
 
