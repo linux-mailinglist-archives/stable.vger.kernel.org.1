@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E743870E17
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E313870D65
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B169C1C2333C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4079E1C23AA7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109A478B4C;
-	Mon,  4 Mar 2024 21:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A1B1F60A;
+	Mon,  4 Mar 2024 21:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taW/yT9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yX+N5AOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C187D1F92C;
-	Mon,  4 Mar 2024 21:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC847B3DE;
+	Mon,  4 Mar 2024 21:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588444; cv=none; b=HMd5x5sgOkF9y2eDTc7UVP1SDdYMrMv/9HU5edKZzYO2NCOGCRaGcrDeVnRrSRh1+iIhMXPeO7ZD8AsJCh8DzyomgwRrlG6Lk7l+Wf+2b4tokMi/qNIQ6V74zApq56sD6Mvn/yY9Ja52Y5LdiL6BsA2yFtha9hYr/DhwO8gBpQE=
+	t=1709588014; cv=none; b=SA4FYPseJ1pryynM4NH2SEqk+6JQOZ2bbrbPuLJNJwFw/n+N2f4L3RoB39L6lGEzdoG8mXyPp6FjGYeTBEAultlFjJ1cx+DNLcttj8FgbYy5kAbzXtilMffUaqouRjUcIB2iQcFonzlH4Rz5eM/8PIZ/Wgrgc7AX/jAeGTk2PCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588444; c=relaxed/simple;
-	bh=xPdeTWpzQMAsUS0WWDtbLDBihfOce55kjtyZGn09Iyk=;
+	s=arc-20240116; t=1709588014; c=relaxed/simple;
+	bh=YvggHiq0HSmmm8IXZlNAgtlwV7JxtMC/13yZ51v+H3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J14ApSWS8v4LRRTZ/rqp1E4yNNgIOcBjmQEaffScYSPmOp0iqLs43kOnH+/XQUSuWqpUpYlN7rDCipVkh9q00niUBLlEylhkLhj8GaowW8yX40c9oCD28MzraAt+jRF6bnAv0DnjultyqPqTqwj4PfMV6x7EnTqnZInQTwenNI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taW/yT9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF2C433F1;
-	Mon,  4 Mar 2024 21:40:44 +0000 (UTC)
+	 MIME-Version; b=o6N0OzEJFzC3lJFfuH2ViYUkL2GlzgRQgaVubT2zb7eMFN67+FWLeq+Yqs3Q+f9Upw6GKeYbtqBmcIqmgTf0hDyfkBZjCoTWC6N4I56WGLbntpPDE3X9skg5ZV/JUegnavRWFXpWLadHEu92l81CZKv0HBOgQd0Gt2hbG2MqlpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yX+N5AOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313AAC433C7;
+	Mon,  4 Mar 2024 21:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588444;
-	bh=xPdeTWpzQMAsUS0WWDtbLDBihfOce55kjtyZGn09Iyk=;
+	s=korg; t=1709588013;
+	bh=YvggHiq0HSmmm8IXZlNAgtlwV7JxtMC/13yZ51v+H3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taW/yT9q0gS5WFTpgOIDVt8RFn1odBQAG9F7HVwhaCGRbBacolvX/tEOg3BJZEp8W
-	 sGVZ6t/9CaC+vU0WxCxUDIBW+qHFAribZFPW1byoXF6jrG8kf65C8Gbm1S269GMcAG
-	 QwqJfWPDWgMqXPpERKV8TSZtt5mJnDz1pwDHvnV4=
+	b=yX+N5AOrF1nqdHpVDS7ercQHSRDLSpTaJBnxdm487KicyCTa4IjKHFgSZge3DuoOZ
+	 ZobSAPf+Ho9b/PBCVdDNIicIh/8LAAyAMKZ5rB2WHQNcUe4b65hMLCmr3sGBZA7vuQ
+	 vQOJbz7Su9D20wVmt4GGzs5SdjI4JtkuQx9/hbPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 110/143] mptcp: fix snd_wnd initialization for passive socket
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 14/25] ALSA: Drop leftover snd-rtctimer stuff from Makefile
 Date: Mon,  4 Mar 2024 21:23:50 +0000
-Message-ID: <20240304211553.442523762@linuxfoundation.org>
+Message-ID: <20240304211536.221082904@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit adf1bb78dab55e36d4d557aa2fb446ebcfe9e5ce upstream.
+[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
 
-Such value should be inherited from the first subflow, but
-passive sockets always used 'rsk_rcv_wnd'.
+We forgot to remove the line for snd-rtctimer from Makefile while
+dropping the functionality.  Get rid of the stale line.
 
-Fixes: 6f8a612a33e4 ("mptcp: keep track of advertised windows right edge")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-5-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
+Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3220,7 +3220,7 @@ struct sock *mptcp_sk_clone_init(const s
- 	msk->write_seq = subflow_req->idsn + 1;
- 	msk->snd_nxt = msk->write_seq;
- 	msk->snd_una = msk->write_seq;
--	msk->wnd_end = msk->snd_nxt + req->rsk_rcv_wnd;
-+	msk->wnd_end = msk->snd_nxt + tcp_sk(ssk)->snd_wnd;
- 	msk->setsockopt_seq = mptcp_sk(sk)->setsockopt_seq;
- 	mptcp_init_sched(msk, mptcp_sk(sk)->sched);
+diff --git a/sound/core/Makefile b/sound/core/Makefile
+index d123587c0fd8f..bc04acf4a45ce 100644
+--- a/sound/core/Makefile
++++ b/sound/core/Makefile
+@@ -32,7 +32,6 @@ snd-pcm-dmaengine-objs := pcm_dmaengine.o
+ snd-rawmidi-objs  := rawmidi.o
+ snd-timer-objs    := timer.o
+ snd-hrtimer-objs  := hrtimer.o
+-snd-rtctimer-objs := rtctimer.o
+ snd-hwdep-objs    := hwdep.o
+ snd-seq-device-objs := seq_device.o
  
+-- 
+2.43.0
+
 
 
 
