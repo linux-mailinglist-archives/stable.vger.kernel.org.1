@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4FE870DDD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8B1870D1E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED74B288E06
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE67C28D577
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B1878B69;
-	Mon,  4 Mar 2024 21:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F56747A5D;
+	Mon,  4 Mar 2024 21:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPzKwmKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBLf8LTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2F10A35;
-	Mon,  4 Mar 2024 21:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7C41F5FA;
+	Mon,  4 Mar 2024 21:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588307; cv=none; b=sBEj4T8prr58I+fHrtDIcHpnhPqN1IC28vwfIW7zDC+o6RJtTcmHrVwgV8DcLgsCxtgHhqzXtxhDYmy2HMSqmFgCRlfOOqlW1UD/OPDOrsh5Chv+6kwaUuyMO800znCdgEY3cFs9gh1EmwbwD3/UEad7dgtBk+4h9CDO+pyy+8s=
+	t=1709587853; cv=none; b=HsUmgfqHbBHU+i53Zyy+JDTs2TUKc8+PEpabNW3f7OI/NcGbFNfemld7dCtBmf5zkrytfJo0dXRRMH/Cn5xhIXX3cp2UnUbF/NpSIB7VF6HXrhuQ/faFdTMQxJimwFNBJ8uWHrzDDnqbzGFhLBZMmMGdeAv9Mm9Xf18HntIu6nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588307; c=relaxed/simple;
-	bh=4E65vfBBwmo6mUT2PSlZX5jz52v9C0GnIDqsKnJHM28=;
+	s=arc-20240116; t=1709587853; c=relaxed/simple;
+	bh=WcANRqZeCfxcMBATQK4WsmVIBAdmmZg9lotHksAMHOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQdsRAUwovauuVXLwHXN/6ZI2qcCRTzHxqh+r5ZxZuLjD8V6Ey1wC1eNSDs8VcmL5tqRtggpr2ik5uI0D+JQLqC4QOdYYt32HJPf6HAfU4XlBuKxRKWMZS5XNLOwhpdDUcU7kZCpsLn+gs7/+K/aH5HETWFMtEDcRm8IL1zE43E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPzKwmKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47503C433C7;
-	Mon,  4 Mar 2024 21:38:27 +0000 (UTC)
+	 MIME-Version; b=EEnwF8pC8Eis4z5Y8vua7J03WzE+KUAmuJstCZgNtyIrOIqZw8X5bipe5MFAUXV2TVSmXhoBE404nvIB+stXlteUyqPZ3mcIy1qgL3En8o9CD3jK79yiNx1EFvELBcPsC6GkQ8+m/96bTthQaeUEyWO3g5fYG6rVm8bPqHXMbH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBLf8LTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D296C433C7;
+	Mon,  4 Mar 2024 21:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588307;
-	bh=4E65vfBBwmo6mUT2PSlZX5jz52v9C0GnIDqsKnJHM28=;
+	s=korg; t=1709587852;
+	bh=WcANRqZeCfxcMBATQK4WsmVIBAdmmZg9lotHksAMHOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPzKwmKskUJVaBfxshYsfMik7KcRHBjdhYLcP2XZr6wh8hNAdUKEjgDvArtPfJxFD
-	 0q5zWt/nvPMrf636yYvUyhWTkA7tP+Ta8xqWaUEdcd8WtQuVwstUue+gUL0wDM5D+k
-	 0anjwepDK2+ycGGYawhA4LSYiN+FJUhSP0acjofY=
+	b=PBLf8LTIZUjepiPRxXmahVuaa7RtlhuJuWPgGrFitmxI+C/PdKPusbKAvt/KhGySO
+	 qNaVNuHDSmAxI+O+SpTfAKxIDE/boyV5ExTs/hmtUT+1R03ITK+ocRCUtLTJ3bTzrW
+	 VnatJOANDBqgLw2AMGyCb8KeyaiQqhyXUjlXBhMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/143] drm/tegra: Remove existing framebuffer only if we support display
-Date: Mon,  4 Mar 2024 21:22:58 +0000
-Message-ID: <20240304211551.780301252@linuxfoundation.org>
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 114/162] pmdomain: arm: Fix NULL dereference on scmi_perf_domain removal
+Date: Mon,  4 Mar 2024 21:22:59 +0000
+Message-ID: <20240304211555.421498729@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 86bf8cfda6d2a6720fa2e6e676c98f0882c9d3d7 ]
+commit eb5555d422d0fc325e1574a7353d3c616f82d8b5 upstream.
 
-Tegra DRM doesn't support display on Tegra234 and later, so make sure
-not to remove any existing framebuffers in that case.
+On unloading of the scmi_perf_domain module got the below splat, when in
+the DT provided to the system under test the '#power-domain-cells' property
+was missing. Indeed, this particular setup causes the probe to bail out
+early without giving any error, which leads to the ->remove() callback gets
+to run too, but without all the expected initialized structures in place.
 
-v2: - add comments explaining how this situation can come about
-    - clear DRIVER_MODESET and DRIVER_ATOMIC feature bits
+Add a check and bail out early on remove too.
 
-Fixes: 6848c291a54f ("drm/aperture: Convert drivers to aperture interfaces")
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240223150333.1401582-1-thierry.reding@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Call trace:
+  scmi_perf_domain_remove+0x28/0x70 [scmi_perf_domain]
+  scmi_dev_remove+0x28/0x40 [scmi_core]
+  device_remove+0x54/0x90
+  device_release_driver_internal+0x1dc/0x240
+  driver_detach+0x58/0xa8
+  bus_remove_driver+0x78/0x108
+  driver_unregister+0x38/0x70
+  scmi_driver_unregister+0x28/0x180 [scmi_core]
+  scmi_perf_domain_driver_exit+0x18/0xb78 [scmi_perf_domain]
+  __arm64_sys_delete_module+0x1a8/0x2c0
+  invoke_syscall+0x50/0x128
+  el0_svc_common.constprop.0+0x48/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x34/0xb8
+  el0t_64_sync_handler+0x100/0x130
+  el0t_64_sync+0x190/0x198
+ Code: a90153f3 f9403c14 f9414800 955f8a05 (b9400a80)
+ ---[ end trace 0000000000000000 ]---
+
+Fixes: 2af23ceb8624 ("pmdomain: arm: Add the SCMI performance domain")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240125191756.868860-1-cristian.marussi@arm.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/drm.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/pmdomain/arm/scmi_perf_domain.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/tegra/drm.c b/drivers/gpu/drm/tegra/drm.c
-index ff36171c8fb70..373bcd79257e0 100644
---- a/drivers/gpu/drm/tegra/drm.c
-+++ b/drivers/gpu/drm/tegra/drm.c
-@@ -1242,9 +1242,26 @@ static int host1x_drm_probe(struct host1x_device *dev)
+diff --git a/drivers/pmdomain/arm/scmi_perf_domain.c b/drivers/pmdomain/arm/scmi_perf_domain.c
+index 709bbc448fad..d7ef46ccd9b8 100644
+--- a/drivers/pmdomain/arm/scmi_perf_domain.c
++++ b/drivers/pmdomain/arm/scmi_perf_domain.c
+@@ -159,6 +159,9 @@ static void scmi_perf_domain_remove(struct scmi_device *sdev)
+ 	struct genpd_onecell_data *scmi_pd_data = dev_get_drvdata(dev);
+ 	int i;
  
- 	drm_mode_config_reset(drm);
++	if (!scmi_pd_data)
++		return;
++
+ 	of_genpd_del_provider(dev->of_node);
  
--	err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
--	if (err < 0)
--		goto hub;
-+	/*
-+	 * Only take over from a potential firmware framebuffer if any CRTCs
-+	 * have been registered. This must not be a fatal error because there
-+	 * are other accelerators that are exposed via this driver.
-+	 *
-+	 * Another case where this happens is on Tegra234 where the display
-+	 * hardware is no longer part of the host1x complex, so this driver
-+	 * will not expose any modesetting features.
-+	 */
-+	if (drm->mode_config.num_crtc > 0) {
-+		err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
-+		if (err < 0)
-+			goto hub;
-+	} else {
-+		/*
-+		 * Indicate to userspace that this doesn't expose any display
-+		 * capabilities.
-+		 */
-+		drm->driver_features &= ~(DRIVER_MODESET | DRIVER_ATOMIC);
-+	}
- 
- 	err = drm_dev_register(drm, 0);
- 	if (err < 0)
+ 	for (i = 0; i < scmi_pd_data->num_domains; i++)
 -- 
-2.43.0
+2.44.0
 
 
 
