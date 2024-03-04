@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F235870D5C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D5B870F15
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F381C241FA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E4F281038
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117917BAFE;
-	Mon,  4 Mar 2024 21:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9AF7C082;
+	Mon,  4 Mar 2024 21:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM0jxeBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWmFzwX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256A1C687;
-	Mon,  4 Mar 2024 21:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2A31EB5A;
+	Mon,  4 Mar 2024 21:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587992; cv=none; b=C/MyU1kJnEWp6nuTWUZNEovp4ms21mAyiCyDfLT1c/NDJiFIsvSS/2rOVIttNvfmQnWsBAj9ddxYb8++cuoolc18VTl8IYojnjVQ/5ZPPZZ5a+h5hp6VExKSNossHDyPR9iouHjm1vlzPpg9qix0EFtGmFmsBry9qauXp06VYX8=
+	t=1709589039; cv=none; b=c0dDPXheXM6Y5edd245pwlYj7ruiz+1brN4naXS+5VsBwqWqEhUm+JUY5dTdjzMEx4aComchfykqyuTXUPbtjmluZ0W16u1GUAyfgw7/nhZgWoYiLfiA2L30NeS+8OhfVXHoC8xnN5sGQi1s4YahWyApP4u7NpW+UTQ4gyaaiJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587992; c=relaxed/simple;
-	bh=UYtwNh9wzJFUuC7IRLvv1p/WOz5DRSyTg4a3MnAyf1g=;
+	s=arc-20240116; t=1709589039; c=relaxed/simple;
+	bh=4Gx/BfkJADYmXqlxq2RgaCdTxZU3uNI4ySTqPmYAtmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqc5mjrlMnNpUGqaBVIJ2nKb/H6IaGU/0DcRJUjiWsEJTjwdFuYmXb8X07xBSXkvq9cGsUPsGp/+F722+tiTV1xrooRQDcVaPiYhN7gx4DIVx3c/kkiKdEOEiDstqbtilcgMhLnl894mcrxhlNuylyvWoiSXkjxc2UKoLz4NOBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM0jxeBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FDCC433F1;
-	Mon,  4 Mar 2024 21:33:12 +0000 (UTC)
+	 MIME-Version; b=autmIrH+/KU1KDIm1M1PN40Tqjb2A5SuL9ZN/IkQ50OBhEtwGDR1g1ziPbpgf8elDw7tTNZnsTkqOnBp9srOQ1FC19bXuf599+nPg9hCTXTdJEuszFMYI9JKwXIcTXMSaWKEzq4IQZSEpcQEpQyFxPuhFb4sGouLGJpQBgqbanM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWmFzwX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1F3C433C7;
+	Mon,  4 Mar 2024 21:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587992;
-	bh=UYtwNh9wzJFUuC7IRLvv1p/WOz5DRSyTg4a3MnAyf1g=;
+	s=korg; t=1709589039;
+	bh=4Gx/BfkJADYmXqlxq2RgaCdTxZU3uNI4ySTqPmYAtmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM0jxeBGdLC9Pcr4RE2y1gN867fpTeOcEX8kSeaMj9mJt6mgK1IgUAtH/ViZ3Nv/C
-	 q/eZL+FWXg1HbuJy4RxMCsEywHWAyHr9vW9FBVFV98eQu5dQ38/ffMdh78SaGTsyix
-	 R5ArAjlBDQsmuh3SlWmrHIiT5zDnvM2zJxksaNJU=
+	b=BWmFzwX6YHq6UyY5FPTtA7YZ19u1vxsjufX4DSOMX0KXo6dPzydbzFLqZB1tL8O26
+	 LU0YkH4sOu9ZV5PT0EvExjkp9QC35eOEgdbtBphpNmnZzhra6CmEnIPd4OVQeWCjJq
+	 aX0auvhc4pq8AdtD8XSZP3KZfh+5ZJlybSgK/Dtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 150/162] gpio: fix resource unwinding order in error path
-Date: Mon,  4 Mar 2024 21:23:35 +0000
-Message-ID: <20240304211556.487739317@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>
+Subject: [PATCH 6.1 153/215] NFSD: Use const pointers as parameters to fh_ helpers
+Date: Mon,  4 Mar 2024 21:23:36 +0000
+Message-ID: <20240304211601.872485443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit ec5c54a9d3c4f9c15e647b049fea401ee5258696 ]
+[ Upstream commit b48f8056c034f28dd54668399f1d22be421b0bef ]
 
-Hogs are added *after* ACPI so should be removed *before* in error path.
+Enable callers to use const pointers where they are able to.
 
-Fixes: a411e81e61df ("gpiolib: add hogs support for machine code")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfsd/nfsfh.h |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index e8dc706fd7979..1d033106cf396 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -972,11 +972,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -220,7 +220,7 @@ __be32	fh_update(struct svc_fh *);
+ void	fh_put(struct svc_fh *);
  
- 	ret = gpiochip_irqchip_init_valid_mask(gc);
- 	if (ret)
--		goto err_remove_acpi_chip;
-+		goto err_free_hogs;
+ static __inline__ struct svc_fh *
+-fh_copy(struct svc_fh *dst, struct svc_fh *src)
++fh_copy(struct svc_fh *dst, const struct svc_fh *src)
+ {
+ 	WARN_ON(src->fh_dentry);
  
- 	ret = gpiochip_irqchip_init_hw(gc);
- 	if (ret)
--		goto err_remove_acpi_chip;
-+		goto err_remove_irqchip_mask;
+@@ -229,7 +229,7 @@ fh_copy(struct svc_fh *dst, struct svc_f
+ }
  
- 	ret = gpiochip_add_irqchip(gc, lock_key, request_key);
- 	if (ret)
-@@ -1001,11 +1001,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gpiochip_irqchip_remove(gc);
- err_remove_irqchip_mask:
- 	gpiochip_irqchip_free_valid_mask(gc);
--err_remove_acpi_chip:
-+err_free_hogs:
-+	gpiochip_free_hogs(gc);
- 	acpi_gpiochip_remove(gc);
- 	gpiochip_remove_pin_ranges(gc);
- err_remove_of_chip:
--	gpiochip_free_hogs(gc);
- 	of_gpiochip_remove(gc);
- err_free_gpiochip_mask:
- 	gpiochip_free_valid_mask(gc);
--- 
-2.43.0
-
+ static inline void
+-fh_copy_shallow(struct knfsd_fh *dst, struct knfsd_fh *src)
++fh_copy_shallow(struct knfsd_fh *dst, const struct knfsd_fh *src)
+ {
+ 	dst->fh_size = src->fh_size;
+ 	memcpy(&dst->fh_raw, &src->fh_raw, src->fh_size);
+@@ -243,7 +243,8 @@ fh_init(struct svc_fh *fhp, int maxsize)
+ 	return fhp;
+ }
+ 
+-static inline bool fh_match(struct knfsd_fh *fh1, struct knfsd_fh *fh2)
++static inline bool fh_match(const struct knfsd_fh *fh1,
++			    const struct knfsd_fh *fh2)
+ {
+ 	if (fh1->fh_size != fh2->fh_size)
+ 		return false;
+@@ -252,7 +253,8 @@ static inline bool fh_match(struct knfsd
+ 	return true;
+ }
+ 
+-static inline bool fh_fsid_match(struct knfsd_fh *fh1, struct knfsd_fh *fh2)
++static inline bool fh_fsid_match(const struct knfsd_fh *fh1,
++				 const struct knfsd_fh *fh2)
+ {
+ 	if (fh1->fh_fsid_type != fh2->fh_fsid_type)
+ 		return false;
 
 
 
