@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47485870E22
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA905870F71
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCBE7B24E6D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B65D1F22AF9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9507BB08;
-	Mon,  4 Mar 2024 21:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0590378B4C;
+	Mon,  4 Mar 2024 21:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mw9b4PeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBtOMNe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4382211193;
-	Mon,  4 Mar 2024 21:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97FB1C6AB;
+	Mon,  4 Mar 2024 21:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588466; cv=none; b=f062XagDWT03eIwppbMqLrd7RxmUn54RwpzJxOEmL1YFrBO0aLrDMK9Z9Bfvs8CaStOO7rgQYGmHqDbj82KE8hz5gyTDrpqhVT75o79ZjxiOttp2GhpxUtI2LCsyVoD8t5QZSFevWMgde3Lmerp/17Iv1BCcD52xoJFEG9+R1SU=
+	t=1709589282; cv=none; b=XsqE49UBqp3HLvZL9g6ngdsVIx+kA4krMl0Z9Hsp7s3Gm4rf0PnbjOgz5RKgY40H1U/jWCG4XJfOIUYNSU4DzfF1AZ/MNkp+GylC44KuLW/8GpBYg/I7k6iDiOzgZrdm7ipmRt8VmsYJUOTOqTpKQ1q2fcvvHxEUJXSEO9+XMsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588466; c=relaxed/simple;
-	bh=dXH7xTM0+YlebJHtdKYlmmRcwvSp417lxRG5kxnv6co=;
+	s=arc-20240116; t=1709589282; c=relaxed/simple;
+	bh=9MZZckHtLGpBPnf71TX08dp9tJSnAgzdBZXCYySMItg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaOtjEd0NbRN1v1zqkz5iq+VU6avMjnN4A7ypZ1IgwwAusAd4/EZLqZaNoWMYmu7bXaSMDh4luRqGWr0xha2S+kIZ3RYgEkAdS7jcdxl8mk1Nd1jI2wWK0AHi5G/6wq7ijV2Z1I/7VKCvFxQchVDecJf4+GxeI9ilEzXy1u8gag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw9b4PeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93DCC433F1;
-	Mon,  4 Mar 2024 21:41:05 +0000 (UTC)
+	 MIME-Version; b=gbdH+LIcrEat4kLwSd5xWdB7IuvC/MZvyvf7Wmm51ntrhbxs12IzOupPCQ0jeuTQHRlC3ADBOjjP3gkGiTkV/DqcsApVE7IKWtZN6DIN7DNODRr9/oKtjc6MrHZdWh+fkH2gKADxKVSHPiV/Exl8aafgZ25o20s+TqMonHdgQPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBtOMNe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C967C433F1;
+	Mon,  4 Mar 2024 21:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588466;
-	bh=dXH7xTM0+YlebJHtdKYlmmRcwvSp417lxRG5kxnv6co=;
+	s=korg; t=1709589282;
+	bh=9MZZckHtLGpBPnf71TX08dp9tJSnAgzdBZXCYySMItg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mw9b4PeVblr44Jwi8Kx3oB1M0K6MzNv9aDFto1nxo1yGv/4EfJPQ2hzWh5pREjzdb
-	 +tir2c60l364/aAzY13OXcfFOXLB2mPhQJ9QU5xM02qZ/d2pHOFCusWio+NIo/sLGw
-	 WZfAPiO36o+U+64vJ/WkuA1wUogjlmCfC4r93sdo=
+	b=EBtOMNe1F14rdMmCP9pfCi7eSSib2hccW/z3Afd8oYDb0bI5bvZZ66ksqitB0rts5
+	 JGnWdl2L4aL4x35L0FfV/ts6XBlx7/tyDiBW3S5749nkoJ4z8uCJ4TqFPsMv8GXshe
+	 YI2z/gP4SVFQduzHrag6i1ZOcV5heKmCzihRqtzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Lin Ma <linma@zju.edu.cn>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/143] dmaengine: dw-edma: Fix the ch_count hdma callback
+Subject: [PATCH 5.15 25/84] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
 Date: Mon,  4 Mar 2024 21:23:58 +0000
-Message-ID: <20240304211553.691538280@linuxfoundation.org>
+Message-ID: <20240304211543.167985318@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit cd665bfc757c71e9b7e0abff0f362d8abd38a805 ]
+[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
 
-The current check of ch_en enabled to know the maximum number of available
-hardware channels is wrong as it check the number of ch_en register set
-but all of them are unset at probe. This register is set at the
-dw_hdma_v0_core_start function which is run lately before a DMA transfer.
+In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
+IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
+in the function `rtnl_bridge_setlink` to enable the loop to also check
+the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
+removed the `break` statement and led to an error logic of the flags
+writing back at the end of this function.
 
-The HDMA IP have no way to know the number of hardware channels available
-like the eDMA IP, then let set it to maximum channels and let the platform
-set the right number of channels.
+if (have_flags)
+    memcpy(nla_data(attr), &flags, sizeof(flags));
+    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
 
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-1-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
+However, this is not necessarily true fow now as the updated loop will let
+the attr point to the last NLA, even an invalid NLA which could cause
+overflow writes.
+
+This patch introduces a new variable `br_flag` to save the NLA pointer
+that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
+error logic.
+
+Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ net/core/rtnetlink.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index 00b735a0202ab..1f4cb7db54756 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -65,18 +65,12 @@ static void dw_hdma_v0_core_off(struct dw_edma *dw)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 1b71e5c582bbc..ef218e290dfba 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4925,10 +4925,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
+ 	struct net_device *dev;
+-	struct nlattr *br_spec, *attr = NULL;
++	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
+ 	int rem, err = -EOPNOTSUPP;
+ 	u16 flags = 0;
+-	bool have_flags = false;
  
- static u16 dw_hdma_v0_core_ch_count(struct dw_edma *dw, enum dw_edma_dir dir)
- {
--	u32 num_ch = 0;
--	int id;
--
--	for (id = 0; id < HDMA_V0_MAX_NR_CH; id++) {
--		if (GET_CH_32(dw, id, dir, ch_en) & BIT(0))
--			num_ch++;
--	}
--
--	if (num_ch > HDMA_V0_MAX_NR_CH)
--		num_ch = HDMA_V0_MAX_NR_CH;
--
--	return (u16)num_ch;
-+	/*
-+	 * The HDMA IP have no way to know the number of hardware channels
-+	 * available, we set it to maximum channels and let the platform
-+	 * set the right number of channels.
-+	 */
-+	return HDMA_V0_MAX_NR_CH;
+ 	if (nlmsg_len(nlh) < sizeof(*ifm))
+ 		return -EINVAL;
+@@ -4946,11 +4945,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
+ 
+-				have_flags = true;
++				br_flags_attr = attr;
+ 				flags = nla_get_u16(attr);
+ 			}
+ 
+@@ -4994,8 +4993,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
+ 	}
+ 
+-	if (have_flags)
+-		memcpy(nla_data(attr), &flags, sizeof(flags));
++	if (br_flags_attr)
++		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
+ out:
+ 	return err;
  }
- 
- static enum dma_status dw_hdma_v0_core_ch_status(struct dw_edma_chan *chan)
 -- 
 2.43.0
 
