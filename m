@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-26281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DF5870DE0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FAE870D45
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7735D1C20C61
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C1A1F20F18
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED34200D4;
-	Mon,  4 Mar 2024 21:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2677BB01;
+	Mon,  4 Mar 2024 21:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+MAIuK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSnmzceW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA64010A35;
-	Mon,  4 Mar 2024 21:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C7F7BAFF;
+	Mon,  4 Mar 2024 21:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588313; cv=none; b=ec8NP9YFPt/XuBnRH2+Gh+q5BL1yJBQUdkXcAKk6OcV1z5bHZeC9sL9hco5NnWBb6Xypg2jfx78UHHsB82rXLZLpgotJrChaTPu7rS+y/Nyh6pPrr/fngrYL2ZjlSC3YGuFMRSKsLtL4A2ZTQUgyCyL3v7D65Etss1kpIwBPeq0=
+	t=1709587943; cv=none; b=bHlIY0YJu6Ykq4++/DK0KzwQPCaZBjkg038rZsKUFHw/cj2KqpFu1OU1bPAlF//nmeZ1InwXUKXRWEO0cM5jbY8u30wr+RwCW8IJW7MBXG7CRzA0GQl3HSwmU75EQZUWhVKpYopG968ElQKMJHe43IuUuXm419c/XyX7mhC5jpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588313; c=relaxed/simple;
-	bh=z+hXGgrEuNL9CEjlpPMXqlwFIy3gj0fLfb+DBll0y5A=;
+	s=arc-20240116; t=1709587943; c=relaxed/simple;
+	bh=7ZehKQYTmUhTJxX+ZQtFcbNc3SoJuscgYt+lXjjDVTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+pOFvDdOL8Lzn+AQ1VyhNA764Kg1vaUb4NnAYTI4r3PEgoF5QSZtvjrQU7nQO3DDIAFsqrh+H04hfXmH0vVKXGzHwPynb886HwwrRU81hz5Bg3s8b09x53mOtFPSJHS9Xn3v+lkBl1wuwjj5mteHWcHSSZXyEUAmgL81iz5OeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+MAIuK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA7C433F1;
-	Mon,  4 Mar 2024 21:38:32 +0000 (UTC)
+	 MIME-Version; b=r3uubENqY6n/TMwtN6tCODUnt2GahV3TnGWCkQpNU2IjwvdyqalRliGwbOs4Jta+OeqWXqzwfX7Ejhru/tVFP2LXizmuTn6uOA0+RTwJbeeYKEfOkgWRi8kvuc4Rpv0Y3ltiMgdhspOQ7yar8KWWnNDvuldYw608KZx6sVxJXxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSnmzceW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1769FC43390;
+	Mon,  4 Mar 2024 21:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588312;
-	bh=z+hXGgrEuNL9CEjlpPMXqlwFIy3gj0fLfb+DBll0y5A=;
+	s=korg; t=1709587943;
+	bh=7ZehKQYTmUhTJxX+ZQtFcbNc3SoJuscgYt+lXjjDVTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+MAIuK2b5BcHIIz5340D3KJYYZzkNQbQO8egMVttCp7oImxCGo82bEnkOyEZyqjW
-	 7QyWVc+HRkIeFhJWX/OWCOkK/xldjI92eczseeswIMVpT5VWVwolY1onACA09Ydqw5
-	 lzIGelPulSqet8FnkqyDEm4PVtUqMG6/EnUJkF78=
+	b=FSnmzceW2p2RgZgb25GdC6mtiem2qOW3VGzJkb8ZfeuHG8+u9FRO607YVOZ9kAQxy
+	 p2N0eDrV6tmFW5ThuCrkkZSlvzrmxvVSb0PrI9sNaI4M/FJN/WphEOQ1PGNZQSAvqi
+	 HjBN5WG5hZHqUK87itiSjkQyxwDqZuWlB0A1QPNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/143] afs: Fix endless loop in directory parsing
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 115/162] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
 Date: Mon,  4 Mar 2024 21:23:00 +0000
-Message-ID: <20240304211551.845551694@linuxfoundation.org>
+Message-ID: <20240304211555.452673002@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +67,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
+commit 2a93c6cbd5a703d44c414a3c3945a87ce11430ba upstream.
 
-If a directory has a block with only ".__afsXXXX" files in it (from
-uncompleted silly-rename), these .__afsXXXX files are skipped but without
-advancing the file position in the dir_context.  This leads to
-afs_dir_iterate() repeating the block again and again.
+Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
+the domain")' aimed to make sure that a power-domain that is being
+enabled without any particular performance-state requested will at least
+turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
+required-opps properties.
 
-Fix this by making the code that skips the .__afsXXXX file also manually
-advance the file position.
+But in the event that aggregation happens on a disabled power-domain, with
+an enabled peer without performance-state, both the local and peer
+corner are 0. The peer's enabled_corner is not considered, with the
+result that the underlying (shared) resource is disabled.
 
-The symptoms are a soft lookup:
+One case where this can be observed is when the display stack keeps mmcx
+enabled (but without a particular performance-state vote) in order to
+access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
+is flushed the state of the peer (mmcx) is not considered and mmcx_ao
+ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
+several times, but has been painted over in DeviceTree by adding an
+explicit vote for the lowest non-disabled performance-state.
 
-        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
-        ...
-        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
-        ...
-         ? watchdog_timer_fn+0x1a6/0x213
-        ...
-         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-         ? afs_dir_iterate_block+0x39/0x1fd
-         afs_dir_iterate+0x10a/0x148
-         afs_readdir+0x30/0x4a
-         iterate_dir+0x93/0xd3
-         __do_sys_getdents64+0x6b/0xd4
-
-This is almost certainly the actual fix for:
-
-        https://bugzilla.kernel.org/show_bug.cgi?id=218496
-
-Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Markus Suvanto <markus.suvanto@gmail.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/dir.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pmdomain/qcom/rpmhpd.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 2df2e9ee130d8..e222fa68be847 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -479,8 +479,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
- 		    dire->u.name[0] == '.' &&
- 		    ctx->actor != afs_lookup_filldir &&
- 		    ctx->actor != afs_lookup_one_filldir &&
--		    memcmp(dire->u.name, ".__afs", 6) == 0)
-+		    memcmp(dire->u.name, ".__afs", 6) == 0) {
-+			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
- 			continue;
-+		}
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -692,6 +692,7 @@ static int rpmhpd_aggregate_corner(struc
+ 	unsigned int active_corner, sleep_corner;
+ 	unsigned int this_active_corner = 0, this_sleep_corner = 0;
+ 	unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
++	unsigned int peer_enabled_corner;
  
- 		/* found the next entry */
- 		if (!dir_emit(ctx, dire->u.name, nlen,
--- 
-2.43.0
-
+ 	if (pd->state_synced) {
+ 		to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
+@@ -701,9 +702,11 @@ static int rpmhpd_aggregate_corner(struc
+ 		this_sleep_corner = pd->level_count - 1;
+ 	}
+ 
+-	if (peer && peer->enabled)
+-		to_active_sleep(peer, peer->corner, &peer_active_corner,
++	if (peer && peer->enabled) {
++		peer_enabled_corner = max(peer->corner, peer->enable_corner);
++		to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
+ 				&peer_sleep_corner);
++	}
+ 
+ 	active_corner = max(this_active_corner, peer_active_corner);
+ 
 
 
 
