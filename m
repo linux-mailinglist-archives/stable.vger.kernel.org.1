@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-26031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C80870CB3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2082A870E4D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D570C288FDA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B58291F21386
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BECD7C08B;
-	Mon,  4 Mar 2024 21:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C41961675;
+	Mon,  4 Mar 2024 21:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSIwQCVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EpUwH7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA157BAE6;
-	Mon,  4 Mar 2024 21:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBD010A35;
+	Mon,  4 Mar 2024 21:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587665; cv=none; b=R6IOJ2xDeq5M2leA8yKa5E22KlxkUJ4P7uTc1DOEKk+hi8cK9404Nh7FtEMjmW3BJfM42Dpd3W9Jt1MCGamAfYtGwJ5tGBqt2ymvq8HCNxTDEbASN9PvZfPSdLozCWGyurBBJEzqzYnH0Amjepm66aytJybZ7m9kidn8P0BZu+g=
+	t=1709588560; cv=none; b=jVvvweWmtZNWEH+j1IGH5Py7rC+OXuvs7RWc8CowEVRmTsm61T0zTZqt5/g6FgdyzKGgjDYAaAfW8jt3l8oVKSMSPgzqkf6LpKm2/DtxZlVfsm7vmCYbRjWbVwZHfqOq/Opq045xZ4pCGn5A0AtwslyUibiu/4DMp3wp1oQOZok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587665; c=relaxed/simple;
-	bh=obur7sMhlZOaBv72BMP+9u0eFnuWTQXJSRmOskCCv2o=;
+	s=arc-20240116; t=1709588560; c=relaxed/simple;
+	bh=GSw/wkq4oUKIdMN5b5IPskoQyCA/m6sY77X7VrD54so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hr5Kfh4tpTPPb/j5cBMRXIyhBwSSz+qdVma9sHgXTsS7mVtTVjTLw8M105OdSWQaBeJd3szXTdz+y8NBfCnLQskVL7CRnBtPCSlmBdyge+uNuz72MVJlOnqY0NDwp+F4LC5E+N1vxFuWm+45ouYHPJ65Qbk2P0PxsVKntB/8ieo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSIwQCVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C85C43390;
-	Mon,  4 Mar 2024 21:27:44 +0000 (UTC)
+	 MIME-Version; b=Z6GYIvYBBbDzTEGhww2eAG4yU3BLzIBS41MWKcYRaJFMOdgU1LbBWO8ZfWIELdkrXQvqLdpEHkL7j5LKUOpePVY9HK706UIfUxfid7nN81Ar+zR8r00v2P+LTPUYJc7UozXNnySGPLAzCYSahvRLdKdCBuyTvYJ2s/Y7Ocni0OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EpUwH7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96D1C43390;
+	Mon,  4 Mar 2024 21:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587664;
-	bh=obur7sMhlZOaBv72BMP+9u0eFnuWTQXJSRmOskCCv2o=;
+	s=korg; t=1709588560;
+	bh=GSw/wkq4oUKIdMN5b5IPskoQyCA/m6sY77X7VrD54so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSIwQCVPdI4DdBjHTCKZj/9QJMJiKpg4f0WLXHZvspr+btKhxXUJeEBv9mjWVx9+Q
-	 hCVE4kl1CgRkrvScbCs0GV+kpFNPZTfQ2krQc22yxIti3xy/+5ctlXBOdqZp3u8ICx
-	 kpzLk4PCCbBAS1cF9Qc9FaTngbilvk7Wwy3aTckA=
+	b=2EpUwH7iD+mtjtlRsxcJ0BYWeZ2FgHNQIyndrhEICiYdgZPfen4p9Wthvsu7hqs2r
+	 OQek4Pqjp1zNeLuaMidYGUJ0tmd5rxe4swpiQV4RAmvaMNwrCy44bTLMdWk1jTuG2y
+	 2cNsGdjgrhL0GVrd0NUBrqolGipmTIBtaZWHRlyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 008/162] spi: cadence-qspi: fix pointer reference in runtime PM hooks
+Subject: [PATCH 6.1 010/215] mlxsw: spectrum_acl_tcam: Add missing mutex_destroy()
 Date: Mon,  4 Mar 2024 21:21:13 +0000
-Message-ID: <20240304211552.096332848@linuxfoundation.org>
+Message-ID: <20240304211557.341849644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 32ce3bb57b6b402de2aec1012511e7ac4e7449dc ]
+[ Upstream commit 65823e07b1e4055b6278725fd92f4d7e6f8d53fd ]
 
-dev_get_drvdata() gets used to acquire the pointer to cqspi and the SPI
-controller. Neither embed the other; this lead to memory corruption.
+Pair mutex_init() with a mutex_destroy() in the error path. Found during
+code review. No functional changes.
 
-On a given platform (Mobileye EyeQ5) the memory corruption is hidden
-inside cqspi->f_pdata. Also, this uninitialised memory is used as a
-mutex (ctlr->bus_lock_mutex) by spi_controller_suspend().
-
-Fixes: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://msgid.link/r/20240222-cdns-qspi-pm-fix-v4-1-6b6af8bcbf59@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index f94e0d370d466..0d184d65dce76 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1930,10 +1930,9 @@ static void cqspi_remove(struct platform_device *pdev)
- static int cqspi_suspend(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	struct spi_controller *host = dev_get_drvdata(dev);
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 2107de4e9d99b..41eac7dfb67e7 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -52,8 +52,10 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 		max_regions = max_tcam_regions;
  
--	ret = spi_controller_suspend(host);
-+	ret = spi_controller_suspend(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
+ 	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
+-	if (!tcam->used_regions)
+-		return -ENOMEM;
++	if (!tcam->used_regions) {
++		err = -ENOMEM;
++		goto err_alloc_used_regions;
++	}
+ 	tcam->max_regions = max_regions;
  
- 	clk_disable_unprepare(cqspi->clk);
-@@ -1944,7 +1943,6 @@ static int cqspi_suspend(struct device *dev)
- static int cqspi_resume(struct device *dev)
- {
- 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
--	struct spi_controller *host = dev_get_drvdata(dev);
- 
- 	clk_prepare_enable(cqspi->clk);
- 	cqspi_wait_idle(cqspi);
-@@ -1953,7 +1951,7 @@ static int cqspi_resume(struct device *dev)
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
- 
--	return spi_controller_resume(host);
-+	return spi_controller_resume(cqspi->host);
+ 	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
+@@ -78,6 +80,8 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	bitmap_free(tcam->used_groups);
+ err_alloc_used_groups:
+ 	bitmap_free(tcam->used_regions);
++err_alloc_used_regions:
++	mutex_destroy(&tcam->lock);
+ 	return err;
  }
  
- static DEFINE_RUNTIME_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend,
 -- 
 2.43.0
 
