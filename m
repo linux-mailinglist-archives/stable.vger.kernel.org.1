@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF586870E0F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9C6870D35
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 515A9B20B56
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B63628DF05
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4837992D;
-	Mon,  4 Mar 2024 21:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57A7D098;
+	Mon,  4 Mar 2024 21:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W22bEGsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJzg7fOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF601F92C;
-	Mon,  4 Mar 2024 21:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2B07D08F;
+	Mon,  4 Mar 2024 21:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588426; cv=none; b=m0FWtsApkl401ORX0ByI1jCT1JuLRLXN1xiE1lMlra6OuLydFD358ybECBufoeGTdmkgYSib+5UZ5BA8tlcxK6cRqCz07IXkiT/MDJT9KEASswCV2/IcTY/PRR7KXnqbdW0fE8jkFYcmdgbs/d15A7DI8dhC5FkzmcjzK9IfUp8=
+	t=1709587902; cv=none; b=isIym9+8t/scFIwfEXZL/73EUGt8Z1sce/HABaokVS7/2+MUCC4WwwuO9FpgMAjeak0j9q9MkbaQlCY9rMYojkHVcSJFuZWNVKtY4HLNk60ctXT2O1DeVpaXn81hw0M2OO5UBo8iBRHEHvA1dymkEfI0PKU2yA4O5aJQX+d1FY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588426; c=relaxed/simple;
-	bh=+du1MZKiR8hM1pXxHxkIYuenE2Q8ZOp1MzOgIzNCyM8=;
+	s=arc-20240116; t=1709587902; c=relaxed/simple;
+	bh=zl252ctplfA2cLZq520kPwnZQj6UB5eikx6YLwMbNSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9fxruJcoXGbBLIgcQmde+JMnnftEp+8gkVa8mo5gSFzC3xkWpDgtYC395U/d/1UKp+nnD4kXAT3RkACnCqMxALW1puSaLsFajJGYynvjxGr76gfQkgnEqq+Dqu4a0vjynuNJAialIxRCHFNLFHND2068QRnXXGUow/60LI/r+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W22bEGsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED983C433F1;
-	Mon,  4 Mar 2024 21:40:25 +0000 (UTC)
+	 MIME-Version; b=C6uDa4rBzuOSHQEAW6QabtfEJjUFiY8jmXp7Eg1CzmK7yaEacLATTYqDEU/750a3agt04gJoAIFM4xIKFDpEUaY7sG9iY1NP1uIP2tgVhE/LDn7PYP93a/mq845gefb7j12F7onGT4PhXIJG1QUOSryZMzVtWYoIJAbOLhDAV6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJzg7fOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D743C433F1;
+	Mon,  4 Mar 2024 21:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588426;
-	bh=+du1MZKiR8hM1pXxHxkIYuenE2Q8ZOp1MzOgIzNCyM8=;
+	s=korg; t=1709587901;
+	bh=zl252ctplfA2cLZq520kPwnZQj6UB5eikx6YLwMbNSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W22bEGsuWOWRHvvqgCozemUblYacC0SWD/Y3vAlSDftxr3eNlTL9XHfn6yP9qLj1i
-	 8sfUZYzn3MWgMOWTXQYjva4JWskyQ/JOXO6Ex2zW0gc2HUiMP0+nORwSSb//kKWsFg
-	 4KN1gsVBOuHORkp3QQynOsecXH/aIN+uR6L9covg=
+	b=bJzg7fOCv+ey+HUJMzC5br+SuYsb7t0ybw0EojyvDutyyAiQffUVQMsI5ZewxR++a
+	 cYYVi4GAJW07owe+kcWffz/OEHAlIOw3704DN4I6peM6zvBP6qm9DWZcgYh/D4ox4j
+	 RXSJFadEAPzYyCt+yfNTQtmLt6975jQ525EjQlSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 078/143] mm: cachestat: fix folio read-after-free in cache walk
-Date: Mon,  4 Mar 2024 21:23:18 +0000
-Message-ID: <20240304211552.418320535@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.7 134/162] ASoC: cs35l56: fix reversed if statement in cs35l56_dspwait_asp1tx_put()
+Date: Mon,  4 Mar 2024 21:23:19 +0000
+Message-ID: <20240304211556.013515702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nhat Pham <nphamcs@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 3a75cb05d53f4a6823a32deb078de1366954a804 upstream.
+commit 4703b014f28bf7a2e56d1da238ee95ef6c5ce76b upstream.
 
-In cachestat, we access the folio from the page cache's xarray to compute
-its page offset, and check for its dirty and writeback flags.  However, we
-do not hold a reference to the folio before performing these actions,
-which means the folio can concurrently be released and reused as another
-folio/page/slab.
+It looks like the "!" character was added accidentally.  The
+regmap_update_bits_check() function is normally going to succeed.  This
+means the rest of the function is unreachable and we don't handle the
+situation where "changed" is true correctly.
 
-Get around this altogether by just using xarray's existing machinery for
-the folio page offsets and dirty/writeback states.
-
-This changes behavior for tmpfs files to now always report zeroes in their
-dirty and writeback counters.  This is okay as tmpfs doesn't follow
-conventional writeback cache behavior: its pages get "cleaned" during
-swapout, after which they're no longer resident etc.
-
-Link: https://lkml.kernel.org/r/20240220153409.GA216065@cmpxchg.org
-Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-Reported-by: Jann Horn <jannh@google.com>
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Tested-by: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>	[6.4+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 07f7d6e7a124 ("ASoC: cs35l56: Fix for initializing ASP1 mixer registers")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/0c254c07-d1c0-4a5c-a22b-7e135cab032c@moroto.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |   51 ++++++++++++++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 25 deletions(-)
+ sound/soc/codecs/cs35l56.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4159,28 +4159,40 @@ static void filemap_cachestat(struct add
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -175,7 +175,7 @@ static int cs35l56_dspwait_asp1tx_put(st
  
- 	rcu_read_lock();
- 	xas_for_each(&xas, folio, last_index) {
-+		int order;
- 		unsigned long nr_pages;
- 		pgoff_t folio_first_index, folio_last_index;
+ 	ret = regmap_update_bits_check(cs35l56->base.regmap, addr,
+ 				       CS35L56_ASP_TXn_SRC_MASK, val, &changed);
+-	if (!ret)
++	if (ret)
+ 		return ret;
  
-+		/*
-+		 * Don't deref the folio. It is not pinned, and might
-+		 * get freed (and reused) underneath us.
-+		 *
-+		 * We *could* pin it, but that would be expensive for
-+		 * what should be a fast and lightweight syscall.
-+		 *
-+		 * Instead, derive all information of interest from
-+		 * the rcu-protected xarray.
-+		 */
-+
- 		if (xas_retry(&xas, folio))
- 			continue;
- 
-+		order = xa_get_order(xas.xa, xas.xa_index);
-+		nr_pages = 1 << order;
-+		folio_first_index = round_down(xas.xa_index, 1 << order);
-+		folio_last_index = folio_first_index + nr_pages - 1;
-+
-+		/* Folios might straddle the range boundaries, only count covered pages */
-+		if (folio_first_index < first_index)
-+			nr_pages -= first_index - folio_first_index;
-+
-+		if (folio_last_index > last_index)
-+			nr_pages -= folio_last_index - last_index;
-+
- 		if (xa_is_value(folio)) {
- 			/* page is evicted */
- 			void *shadow = (void *)folio;
- 			bool workingset; /* not used */
--			int order = xa_get_order(xas.xa, xas.xa_index);
--
--			nr_pages = 1 << order;
--			folio_first_index = round_down(xas.xa_index, 1 << order);
--			folio_last_index = folio_first_index + nr_pages - 1;
--
--			/* Folios might straddle the range boundaries, only count covered pages */
--			if (folio_first_index < first_index)
--				nr_pages -= first_index - folio_first_index;
--
--			if (folio_last_index > last_index)
--				nr_pages -= folio_last_index - last_index;
- 
- 			cs->nr_evicted += nr_pages;
- 
-@@ -4198,24 +4210,13 @@ static void filemap_cachestat(struct add
- 			goto resched;
- 		}
- 
--		nr_pages = folio_nr_pages(folio);
--		folio_first_index = folio_pgoff(folio);
--		folio_last_index = folio_first_index + nr_pages - 1;
--
--		/* Folios might straddle the range boundaries, only count covered pages */
--		if (folio_first_index < first_index)
--			nr_pages -= first_index - folio_first_index;
--
--		if (folio_last_index > last_index)
--			nr_pages -= folio_last_index - last_index;
--
- 		/* page is in cache */
- 		cs->nr_cache += nr_pages;
- 
--		if (folio_test_dirty(folio))
-+		if (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY))
- 			cs->nr_dirty += nr_pages;
- 
--		if (folio_test_writeback(folio))
-+		if (xas_get_mark(&xas, PAGECACHE_TAG_WRITEBACK))
- 			cs->nr_writeback += nr_pages;
- 
- resched:
+ 	if (changed)
 
 
 
