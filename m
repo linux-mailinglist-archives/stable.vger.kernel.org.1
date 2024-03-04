@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73ACA870E97
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FCB870CCA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0463EB2125D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A99C1C2507E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2FD7A706;
-	Mon,  4 Mar 2024 21:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543F83D0BA;
+	Mon,  4 Mar 2024 21:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heRV26BS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUTn+9yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF01EB5A;
-	Mon,  4 Mar 2024 21:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143AB10A1F;
+	Mon,  4 Mar 2024 21:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588712; cv=none; b=OKvnsPaDXFzhHtkR3j8oskzFYzivDrINy2DihgVp7W2LAO64gBOB09p+2jkvyAnN3Px6jsfJZ0mrLE+DLm5lP2sePopLh97Q7wfVfURrLL8x6le8BjYfFBZ08bXRt5sLhA6ybPpO7huZh2aKaeW8KQa9Y3cgujHTlZVk2vZ6shs=
+	t=1709587725; cv=none; b=g9FquISK/3RdLFcnFZIqh0/hFShvW8FsJVRl2K0TFdyFHyPZT8PCHBEOIfBa/AVYQgxecx2e6Kay8uUqvjUWO/mlTgkbFsyDUQ2BApsMC6HiuCWOY+bBuLoEXnpSA0alyTwGo67d0US1szQp4ZgxcqnGccq2lsSMSr8DD8zdVwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588712; c=relaxed/simple;
-	bh=Wp5zuABicsqao2/792ETx/rtmfl502PVTXRjNLVITQc=;
+	s=arc-20240116; t=1709587725; c=relaxed/simple;
+	bh=4k2jw9Zgt4pzDVRiiww8rKSVMxrcha9oXmGeBeISeBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtWKOhHoRWqmSp5JHqWWt+k3mo1cEkjsEPQKdsAavyZIPEVHKYzJ0pvW5ZiuSubk2Uu5YChssklTF+O0+lxSMAWN0tEnFxhI7oF9sYo6JGTlhaxN90jNoY9ovJRpiEPuArhfjME+RhAWcKm12WrJGqhbIr0fmjnwOQ6kNpI/QK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heRV26BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B5EC433C7;
-	Mon,  4 Mar 2024 21:45:11 +0000 (UTC)
+	 MIME-Version; b=j2USglBpbJu6o9AGGIi3l1q3bNXb9wQ44rGPfjlffo51DtaGqfQ5TZ37Bmjf+/hUXEq9pK+OvViKsqvEhI9LJx/aig7GG33n/JXK2NhmVpE0slNdViJbZT3e4tLGEnTXPJC5fwOrSPBrSz40cPFBh7fczslRGYVE9inwLURceZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUTn+9yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D77DC433C7;
+	Mon,  4 Mar 2024 21:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588712;
-	bh=Wp5zuABicsqao2/792ETx/rtmfl502PVTXRjNLVITQc=;
+	s=korg; t=1709587725;
+	bh=4k2jw9Zgt4pzDVRiiww8rKSVMxrcha9oXmGeBeISeBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heRV26BSg4Zs99gfQi/QYZBxZRergpw6Ik8dBbpA1e8upVVedLfuZaF1ma3SUjtuh
-	 sk0UWjPmqduj1VchNLR6XO094N6KKTOe+WlnvPos0cMm53jobPdEL2GrasMc6qijMK
-	 5v91QPAHd6f858DzuVf5AKjmNBnpFqNMEOnLMEOo=
+	b=VUTn+9yx+/SjcQxM6gsTajADibWzAkjngu0EzVUXWwWdee2DvWcriFKbIITWFvdy8
+	 hgtg0WvCfFGi6uKwGek0wb4NK2Smb/UAtbmaOxk+cuYhLO8NW4Q60xg3Nj4I0mcyRo
+	 uL3QQrrTqp6FpVg4yLkJ0pvVcqFY3wRRASK3kqqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/215] Bluetooth: Avoid potential use-after-free in hci_error_reset
+Subject: [PATCH 6.7 041/162] tls: fix peeking with sync+async decryption
 Date: Mon,  4 Mar 2024 21:21:46 +0000
-Message-ID: <20240304211558.368151477@linuxfoundation.org>
+Message-ID: <20240304211553.165332994@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
+[ Upstream commit 6caaf104423d809b49a67ee6500191d063b40dc6 ]
 
-While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
-BT controller is not responding, the GPIO reset mechanism would
-free the hci_dev and lead to a use-after-free in hci_error_reset.
+If we peek from 2 records with a currently empty rx_list, and the
+first record is decrypted synchronously but the second record is
+decrypted async, the following happens:
+  1. decrypt record 1 (sync)
+  2. copy from record 1 to the userspace's msg
+  3. queue the decrypted record to rx_list for future read(!PEEK)
+  4. decrypt record 2 (async)
+  5. queue record 2 to rx_list
+  6. call process_rx_list to copy data from the 2nd record
 
-Here's the call trace observed on a ChromeOS device with Intel AX201:
-   queue_work_on+0x3e/0x6c
-   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
-   ? init_wait_entry+0x31/0x31
-   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
-   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
-   process_one_work+0x1d8/0x33f
-   worker_thread+0x21b/0x373
-   kthread+0x13a/0x152
-   ? pr_cont_work+0x54/0x54
-   ? kthread_blkcg+0x31/0x31
-    ret_from_fork+0x1f/0x30
+We currently pass copied=0 as skip offset to process_rx_list, so we
+end up copying once again from the first record. We should skip over
+the data we've already copied.
 
-This patch holds the reference count on the hci_dev while processing
-a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
+Seen with selftest tls.12_aes_gcm.recv_peek_large_buf_mult_recs
 
-Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/1b132d2b2b99296bfde54e8a67672d90d6d16e71.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/tls/tls_sw.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 6a1db678d032f..a8932d449eb63 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -1049,6 +1049,7 @@ static void hci_error_reset(struct work_struct *work)
- {
- 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 9f23ba321efe6..1394fc44f3788 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1950,6 +1950,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	struct strp_msg *rxm;
+ 	struct tls_msg *tlm;
+ 	ssize_t copied = 0;
++	ssize_t peeked = 0;
+ 	bool async = false;
+ 	int target, err;
+ 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
+@@ -2097,8 +2098,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 			if (err < 0)
+ 				goto put_on_rx_list_err;
  
-+	hci_dev_hold(hdev);
- 	BT_DBG("%s", hdev->name);
+-			if (is_peek)
++			if (is_peek) {
++				peeked += chunk;
+ 				goto put_on_rx_list;
++			}
  
- 	if (hdev->hw_error)
-@@ -1056,10 +1057,10 @@ static void hci_error_reset(struct work_struct *work)
- 	else
- 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
+ 			if (partially_consumed) {
+ 				rxm->offset += chunk;
+@@ -2137,8 +2140,8 @@ int tls_sw_recvmsg(struct sock *sk,
  
--	if (hci_dev_do_close(hdev))
--		return;
-+	if (!hci_dev_do_close(hdev))
-+		hci_dev_do_open(hdev);
- 
--	hci_dev_do_open(hdev);
-+	hci_dev_put(hdev);
- }
- 
- void hci_uuids_clear(struct hci_dev *hdev)
+ 		/* Drain records from the rx_list & copy if required */
+ 		if (is_peek || is_kvec)
+-			err = process_rx_list(ctx, msg, &control, copied,
+-					      decrypted, is_peek, NULL);
++			err = process_rx_list(ctx, msg, &control, copied + peeked,
++					      decrypted - peeked, is_peek, NULL);
+ 		else
+ 			err = process_rx_list(ctx, msg, &control, 0,
+ 					      async_copy_bytes, is_peek, NULL);
 -- 
 2.43.0
 
