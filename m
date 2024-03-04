@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6025870D1B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0AD870ECF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C2C1F23216
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409D11C219C3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB027BAE1;
-	Mon,  4 Mar 2024 21:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F62E79950;
+	Mon,  4 Mar 2024 21:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+drpqgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZyP5imK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F101B2C689;
-	Mon,  4 Mar 2024 21:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1A21EB5A;
+	Mon,  4 Mar 2024 21:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587845; cv=none; b=MQnu7x1ebgtuuo8HtFguG2h+IZ6hrv2W6vztmZPB4cejmeQCQ3oIu8Ak+IMY9Qx3fXKJSoRCK0hglfPGcjPha9EZjZiH33Up2eqxXysrKvA1YcZZdF5qK7Lge/IW/KGtBVVo3IiyiEDicPNnESXPdub4LUpszlKXA2lEE6e+4Ms=
+	t=1709588832; cv=none; b=eHb6qiACDMOc2RV71CuYySmk240nHxepmEXMeTMyJOkAPg3v4WVifGnuMdwDzlkTy35/TFnXd7bZSAQBf39SWVScEyJC5EpqtgUp/ZPM6eWDBQ2Mr4Ap11Oi0daE5q+dBYX4EqOFjEWyonw/eDw8i6s0by5OSej/6pzjnWeagfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587845; c=relaxed/simple;
-	bh=9FD+0731GuDdT2jTuz/IpoTvooUPvDI8DvjQeviEhUU=;
+	s=arc-20240116; t=1709588832; c=relaxed/simple;
+	bh=yJSw6hQen/TH8atuJYcPDq7Sh5/EW1CAG0nGC1DSo+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeLM6KjSNUZp+xuei+KjOzb+S1o7Ju1aH2wqmJNIrWy+b17RtU+Eul/j/JGRjL7U24+oA/gstG3gOSLQJaQVn4kFZKmjsd0e5VwvbuU8jx5k0C8c/243iLMMi7akkCAO0VnA8mwEz5rUoZIypFJAGm0rFL/bMB5rJOTfV2DKy0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+drpqgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6C1C433F1;
-	Mon,  4 Mar 2024 21:30:44 +0000 (UTC)
+	 MIME-Version; b=FnvqsSy8EPuzB7/T/h+q4cSQTNWr8qU4IlogGHnUT18yEDx4W6OvLqP/ZAHqBGZt9475QuR+5KTtiXFDQSuaSFZXlPczIh6KWLAzqGoA/RYZiooemYCfSf3mv5m/L3pAlfvHanbpJo9erLanWulGtaGx5NQ77mu3HW75mXpVWa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZyP5imK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2D9C433F1;
+	Mon,  4 Mar 2024 21:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587844;
-	bh=9FD+0731GuDdT2jTuz/IpoTvooUPvDI8DvjQeviEhUU=;
+	s=korg; t=1709588831;
+	bh=yJSw6hQen/TH8atuJYcPDq7Sh5/EW1CAG0nGC1DSo+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+drpqgkqSvK4l6zV6/FKATU2xwz+dz8dpRkwTqutfraHJpqWDNy6uPjgMrQjxAxY
-	 fofM/NeSn8tddMYbN9r5qgSXpSi/Z7ycoT0GRCEhVBXZrqrc9SzZE+Tr+GETfe0Xcg
-	 Y9CPEQmCoKqyjzVMXzumN5S83khrlpL/NLmhUVis=
+	b=JZyP5imK8CLmVCGTYqVS92yqJuNcVW7ZKyYDihYadlS5alPUVWDziqjr0c2NiPQ7O
+	 LTs0UWpHmkbgPbh6DV5BVMPVg9n7CB+1Hw/fyJqIYg2hTSaz+oNTcecFCMxQf9HJUA
+	 8Dzh97gElF0Nv4Lg/asLXR7bQ2YRPietdRwtaMuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.7 111/162] iommufd: Fix iopt_access_list_id overwrite bug
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 113/215] x86/boot/compressed: Move efi32_pe_entry into .text section
 Date: Mon,  4 Mar 2024 21:22:56 +0000
-Message-ID: <20240304211555.331925520@linuxfoundation.org>
+Message-ID: <20240304211600.628138681@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit aeb004c0cd6958e910123a1607634401009c9539 upstream.
+commit 91592b5c0c2f076ff9d8cc0c14aa563448ac9fc4 upstream.
 
-Syzkaller reported the following WARN_ON:
-  WARNING: CPU: 1 PID: 4738 at drivers/iommu/iommufd/io_pagetable.c:1360
+Move efi32_pe_entry() into the .text section, so that it can be moved
+out of head_64.S and into a separate compilation unit in a subsequent
+patch.
 
-  Call Trace:
-   iommufd_access_change_ioas+0x2fe/0x4e0
-   iommufd_access_destroy_object+0x50/0xb0
-   iommufd_object_remove+0x2a3/0x490
-   iommufd_object_destroy_user
-   iommufd_access_destroy+0x71/0xb0
-   iommufd_test_staccess_release+0x89/0xd0
-   __fput+0x272/0xb50
-   __fput_sync+0x4b/0x60
-   __do_sys_close
-   __se_sys_close
-   __x64_sys_close+0x8b/0x110
-   do_syscall_x64
-
-The mismatch between the access pointer in the list and the passed-in
-pointer is resulting from an overwrite of access->iopt_access_list_id, in
-iopt_add_access(). Called from iommufd_access_change_ioas() when
-xa_alloc() succeeds but iopt_calculate_iova_alignment() fails.
-
-Add a new_id in iopt_add_access() and only update iopt_access_list_id when
-returning successfully.
-
-Cc: stable@vger.kernel.org
-Fixes: 9227da7816dd ("iommufd: Add iommufd_access_change_ioas(_id) helpers")
-Link: https://lore.kernel.org/r/2dda7acb25b8562ec5f1310de828ef5da9ef509c.1708636627.git.nicolinc@nvidia.com
-Reported-by: Jason Gunthorpe <jgg@nvidia.com>
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-5-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/head_64.S |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -1330,20 +1330,23 @@ out_unlock:
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -786,7 +786,7 @@ SYM_DATA(efi_is64, .byte 1)
+ #define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
+ #define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
  
- int iopt_add_access(struct io_pagetable *iopt, struct iommufd_access *access)
- {
-+	u32 new_id;
- 	int rc;
+-	__HEAD
++	.text
+ 	.code32
+ SYM_FUNC_START(efi32_pe_entry)
+ /*
+@@ -808,12 +808,11 @@ SYM_FUNC_START(efi32_pe_entry)
  
- 	down_write(&iopt->domains_rwsem);
- 	down_write(&iopt->iova_rwsem);
--	rc = xa_alloc(&iopt->access_list, &access->iopt_access_list_id, access,
--		      xa_limit_16b, GFP_KERNEL_ACCOUNT);
-+	rc = xa_alloc(&iopt->access_list, &new_id, access, xa_limit_16b,
-+		      GFP_KERNEL_ACCOUNT);
-+
- 	if (rc)
- 		goto out_unlock;
+ 	call	1f
+ 1:	pop	%ebx
+-	subl	$ rva(1b), %ebx
  
- 	rc = iopt_calculate_iova_alignment(iopt);
- 	if (rc) {
--		xa_erase(&iopt->access_list, access->iopt_access_list_id);
-+		xa_erase(&iopt->access_list, new_id);
- 		goto out_unlock;
- 	}
-+	access->iopt_access_list_id = new_id;
+ 	/* Get the loaded image protocol pointer from the image handle */
+ 	leal	-4(%ebp), %eax
+ 	pushl	%eax				// &loaded_image
+-	leal	rva(loaded_image_proto)(%ebx), %eax
++	leal	(loaded_image_proto - 1b)(%ebx), %eax
+ 	pushl	%eax				// pass the GUID address
+ 	pushl	8(%ebp)				// pass the image handle
  
- out_unlock:
- 	up_write(&iopt->iova_rwsem);
+@@ -842,13 +841,13 @@ SYM_FUNC_START(efi32_pe_entry)
+ 	movl	12(%ebp), %edx			// sys_table
+ 	movl	-4(%ebp), %esi			// loaded_image
+ 	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
+-	movl	%ebx, %ebp			// startup_32 for efi32_pe_stub_entry
++	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
+ 	/*
+ 	 * We need to set the image_offset variable here since startup_32() will
+ 	 * use it before we get to the 64-bit efi_pe_entry() in C code.
+ 	 */
+-	subl	%esi, %ebx
+-	movl	%ebx, rva(image_offset)(%ebp)	// save image_offset
++	subl	%esi, %ebp			// calculate image_offset
++	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
+ 	xorl	%esi, %esi
+ 	jmp	efi32_entry			// pass %ecx, %edx, %esi
+ 						// no other registers remain live
 
 
 
