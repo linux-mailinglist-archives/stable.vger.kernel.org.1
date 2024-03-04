@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8424F870F33
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD2870D9A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1340F1F21673
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EAAD1C2096E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7CA61675;
-	Mon,  4 Mar 2024 21:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA0746BA0;
+	Mon,  4 Mar 2024 21:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ic8iPQb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCTS2bfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB7C1EB5A;
-	Mon,  4 Mar 2024 21:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03611C687;
+	Mon,  4 Mar 2024 21:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589127; cv=none; b=PEwyggTmP+J7ayFRDgEDb3ATcdObWVECjN8MFmok4+2sRxUxQS+rezQ6wVoNToO7fkNSXxPytf+smxGkCc3djgFkKJ21FgHoTcINr6UUQSNSe73xAn0sMTNQ66hXud5bQaOmwH4+klHnDr7cura1lfoizmAUUlV7IZoNnw/eoQY=
+	t=1709588147; cv=none; b=Q/LbIKDFLVefLEyBXmhUv8ZtMvGn7tEijfBD1ulMK5UkeciTchsanju/7H7X+vXh5YJSR2xglTul5ezX47Jg14Nj92H5xW/jxpqZDcBiurSAcauUXrZ1pKgbc+OKEKbV9bR+vOQq8IPqp0eZrFs8IL3cPvCXUJJJReJMdWv1Fwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589127; c=relaxed/simple;
-	bh=cwbFCU6Cb7eti07/N05X0UF61v3+eLCbn94R/uG0YPs=;
+	s=arc-20240116; t=1709588147; c=relaxed/simple;
+	bh=RNBYVDNRBh/vlmNfxUQ/7DR+595fWmRNueKzu2UogZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q85IFSN0fbwywtcX/iyYvqFPjHE7hrZ4ELnQTip5PWVTaqJxnmYly0C4dFna+bdpqUrb9URImRJuA92paJEXyg5us5//LMEVTcs2X7ppALUZ8whrpn8NSnLQUSTuFnsROmjnQISnGbSvEyOAo2eK5qTiJlTvRDrsuuoS95Jgq3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ic8iPQb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFC0C433F1;
-	Mon,  4 Mar 2024 21:52:06 +0000 (UTC)
+	 MIME-Version; b=ljfohNYqbOqOcPk3SqQjXH5z6r7TxW9tRGVipar25JLH4kLllkq/VNDv6B+2KRaksiHnWIvqaTon9k4ClLLJuP7V2CKRCO/8kV5iVBYxZy11LRfzt3OStW4n94yO5hkUlsDhbuGDJFnnSX1TzcDKvT46vEceZFOSzRA0RhJCBzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCTS2bfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089CAC433F1;
+	Mon,  4 Mar 2024 21:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589127;
-	bh=cwbFCU6Cb7eti07/N05X0UF61v3+eLCbn94R/uG0YPs=;
+	s=korg; t=1709588146;
+	bh=RNBYVDNRBh/vlmNfxUQ/7DR+595fWmRNueKzu2UogZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ic8iPQb94Lsll0izYG23RO5WN/ZM5F1PF/P3a94O8ccPuzVKyT2v9dG4TA+2RXqGA
-	 9gZg05ctn36BT99JMMVl5+fpn6RmcoqJA+e2uXI2WETPipXzYgoCUmXQv5DqnIRDOj
-	 epCbCnl9SkuClozCttn75UMrUEVM5bl9ERGW25pk=
+	b=BCTS2bfeDqnjtmVael9bYGVGPCHFYd53CePDenSR97+I+lLInrK30xo9xyHAk704z
+	 LY5f9tPI9l2waK5GKbY43cbqYPctn4SIeCb5k8iiMKz/1+t5s6zK2XjupGXn/zERbf
+	 kIe7jLmkMGloLE/Lz8DGxZDRyGPTD7z1tz+D3qPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 182/215] x86/efistub: Simplify and clean up handover entry code
+	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 38/42] gpio: 74x164: Enable output pins after registers are reset
 Date: Mon,  4 Mar 2024 21:24:05 +0000
-Message-ID: <20240304211602.719330961@linuxfoundation.org>
+Message-ID: <20240304211538.936947207@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,178 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
 
-[ Commit df9215f15206c2a81909ccf60f21d170801dce38 upstream ]
+Chip outputs are enabled[1] before actual reset is performed[2] which might
+cause pin output value to flip flop if previous pin value was set to 1.
+Fix that behavior by making sure chip is fully reset before all outputs are
+enabled.
 
-Now that the EFI entry code in assembler is only used by the optional
-and deprecated EFI handover protocol, and given that the EFI stub C code
-no longer returns to it, most of it can simply be dropped.
+Flip-flop can be noticed when module is removed and inserted again and one of
+the pins was changed to 1 before removal. 100 microsecond flipping is
+noticeable on oscilloscope (100khz SPI bus).
 
-While at it, clarify the symbol naming, by merging efi_main() and
-efi_stub_entry(), making the latter the shared entry point for all
-different boot modes that enter via the EFI stub.
+For a properly reset chip - output is enabled around 100 microseconds (on 100khz
+SPI bus) later during probing process hence should be irrelevant behavioral
+change.
 
-The efi32_stub_entry() and efi64_stub_entry() names are referenced
-explicitly by the tooling that populates the setup header, so these must
-be retained, but can be emitted as aliases of efi_stub_entry() where
-appropriate.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-5-ardb@kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
+Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/x86/boot.rst              |    2 +-
- arch/x86/boot/compressed/efi_mixed.S    |   22 ++++++++++++----------
- arch/x86/boot/compressed/head_32.S      |   11 -----------
- arch/x86/boot/compressed/head_64.S      |   12 ++----------
- drivers/firmware/efi/libstub/x86-stub.c |   20 ++++++++++++++++----
- 5 files changed, 31 insertions(+), 36 deletions(-)
+ drivers/gpio/gpio-74x164.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/x86/boot.rst
-+++ b/Documentation/x86/boot.rst
-@@ -1416,7 +1416,7 @@ execution context provided by the EFI fi
+diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
+index 05637d5851526..1b50470c4e381 100644
+--- a/drivers/gpio/gpio-74x164.c
++++ b/drivers/gpio/gpio-74x164.c
+@@ -127,8 +127,6 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 	if (IS_ERR(chip->gpiod_oe))
+ 		return PTR_ERR(chip->gpiod_oe);
  
- The function prototype for the handover entry point looks like this::
- 
--    efi_main(void *handle, efi_system_table_t *table, struct boot_params *bp)
-+    efi_stub_entry(void *handle, efi_system_table_t *table, struct boot_params *bp)
- 
- 'handle' is the EFI image handle passed to the boot loader by the EFI
- firmware, 'table' is the EFI system table - these are the first two
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -26,8 +26,8 @@
-  * When booting in 64-bit mode on 32-bit EFI firmware, startup_64_mixed_mode()
-  * is the first thing that runs after switching to long mode. Depending on
-  * whether the EFI handover protocol or the compat entry point was used to
-- * enter the kernel, it will either branch to the 64-bit EFI handover
-- * entrypoint at offset 0x390 in the image, or to the 64-bit EFI PE/COFF
-+ * enter the kernel, it will either branch to the common 64-bit EFI stub
-+ * entrypoint efi_stub_entry() directly, or via the 64-bit EFI PE/COFF
-  * entrypoint efi_pe_entry(). In the former case, the bootloader must provide a
-  * struct bootparams pointer as the third argument, so the presence of such a
-  * pointer is used to disambiguate.
-@@ -37,21 +37,23 @@
-  *  | efi32_pe_entry   |---->|            |            |       +-----------+--+
-  *  +------------------+     |            |     +------+----------------+  |
-  *                           | startup_32 |---->| startup_64_mixed_mode |  |
-- *  +------------------+     |            |     +------+----------------+  V
-- *  | efi32_stub_entry |---->|            |            |     +------------------+
-- *  +------------------+     +------------+            +---->| efi64_stub_entry |
-- *                                                           +-------------+----+
-- *                           +------------+     +----------+               |
-- *                           | startup_64 |<----| efi_main |<--------------+
-- *                           +------------+     +----------+
-+ *  +------------------+     |            |     +------+----------------+  |
-+ *  | efi32_stub_entry |---->|            |            |                   |
-+ *  +------------------+     +------------+            |                   |
-+ *                                                     V                   |
-+ *                           +------------+     +----------------+         |
-+ *                           | startup_64 |<----| efi_stub_entry |<--------+
-+ *                           +------------+     +----------------+
-  */
- SYM_FUNC_START(startup_64_mixed_mode)
- 	lea	efi32_boot_args(%rip), %rdx
- 	mov	0(%rdx), %edi
- 	mov	4(%rdx), %esi
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	mov	8(%rdx), %edx		// saved bootparams pointer
- 	test	%edx, %edx
--	jnz	efi64_stub_entry
-+	jnz	efi_stub_entry
-+#endif
- 	/*
- 	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
- 	 * shadow space on the stack even if all arguments are passed in
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -150,17 +150,6 @@ SYM_FUNC_START(startup_32)
- 	jmp	*%eax
- SYM_FUNC_END(startup_32)
- 
--#ifdef CONFIG_EFI_STUB
--SYM_FUNC_START(efi32_stub_entry)
--	add	$0x4, %esp
--	movl	8(%esp), %esi	/* save boot_params pointer */
--	call	efi_main
--	/* efi_main returns the possibly relocated address of startup_32 */
--	jmp	*%eax
--SYM_FUNC_END(efi32_stub_entry)
--SYM_FUNC_ALIAS(efi_stub_entry, efi32_stub_entry)
--#endif
+-	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
 -
- 	.text
- SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	spi_set_drvdata(spi, chip);
  
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -474,19 +474,11 @@ SYM_CODE_START(startup_64)
- 	jmp	*%rax
- SYM_CODE_END(startup_64)
+ 	chip->gpio_chip.label = spi->modalias;
+@@ -153,6 +151,8 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 		goto exit_destroy;
+ 	}
  
--#ifdef CONFIG_EFI_STUB
--#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
- 	.org 0x390
--#endif
- SYM_FUNC_START(efi64_stub_entry)
--	and	$~0xf, %rsp			/* realign the stack */
--	movq	%rdx, %rbx			/* save boot_params pointer */
--	call	efi_main
--	movq	%rbx,%rsi
--	leaq	rva(startup_64)(%rax), %rax
--	jmp	*%rax
-+	jmp	efi_stub_entry
- SYM_FUNC_END(efi64_stub_entry)
--SYM_FUNC_ALIAS(efi_stub_entry, efi64_stub_entry)
- #endif
- 
- 	.text
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -774,9 +774,9 @@ static void __noreturn enter_kernel(unsi
-  * return.  On failure, it will exit to the firmware via efi_exit() instead of
-  * returning.
-  */
--asmlinkage unsigned long efi_main(efi_handle_t handle,
--				  efi_system_table_t *sys_table_arg,
--				  struct boot_params *boot_params)
-+void __noreturn efi_stub_entry(efi_handle_t handle,
-+			       efi_system_table_t *sys_table_arg,
-+			       struct boot_params *boot_params)
- {
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	unsigned long buffer_start, buffer_end;
-@@ -919,7 +919,19 @@ asmlinkage unsigned long efi_main(efi_ha
- 
- 	enter_kernel(bzimage_addr, boot_params);
- fail:
--	efi_err("efi_main() failed!\n");
-+	efi_err("efi_stub_entry() failed!\n");
- 
- 	efi_exit(handle, status);
- }
++	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
 +
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+#ifndef CONFIG_EFI_MIXED
-+extern __alias(efi_stub_entry)
-+void efi32_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
-+		      struct boot_params *boot_params);
-+
-+extern __alias(efi_stub_entry)
-+void efi64_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
-+		      struct boot_params *boot_params);
-+#endif
-+#endif
+ 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
+ 	if (!ret)
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
