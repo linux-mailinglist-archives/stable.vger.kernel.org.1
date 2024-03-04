@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1484870ED7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEBDE870D26
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E38DE1C20B23
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7FCF1C24B70
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF1B78B47;
-	Mon,  4 Mar 2024 21:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A057C08E;
+	Mon,  4 Mar 2024 21:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAz7OqGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV7Qryep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC47F1F92C;
-	Mon,  4 Mar 2024 21:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665B37C082;
+	Mon,  4 Mar 2024 21:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588852; cv=none; b=U0MqYzfNOgDCq5u/dHaX6BRngzXncED946LWswSIKMXPcgyQssJCR/P9ZD2jmPim9dOb0GtW9ZAfJ34gYok3SW1tvUiJNFUPQ2Wj1iU9UTyL5jcKJMZ+cSFYCl+VpakGC5CwWQ1MFijZNh6VzbsR/l9Mw31U8BSVMkpenhky+7o=
+	t=1709587868; cv=none; b=Ad+1ELfzP7mfFk7p9astBrkkYHgeq9PWFHfPvm1fWjNgpu2tUAJSwq9FwbGlHpXP3AFd7q0FuQgnKe9+70mfjZCakFX3p09V4ilHcX4HA9ZaYoohwcs1W2Qig3KgsdUVXayeiHvF7LRv0lbJcMajXvhEj+4DqNL/j6eK0qkpQEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588852; c=relaxed/simple;
-	bh=lGXugl+QfBc9fbJB5mqxoblCXGlAhCUnKIuJk/fQHKU=;
+	s=arc-20240116; t=1709587868; c=relaxed/simple;
+	bh=HzW3cvsD1LllZ/81BdyWAI5b662q2UYbUHEj/B4aRBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWUch9kniI8mfEpdv4XZlt6vEzop+a/wI5I2zfBdzrF6iDsbxHGuoZs4x2qjcX4KvZgtRvVLbybsENfuplY0UEoCl6xbhkAyQQW4pEXLZhfC3jWRfSMSObtUR2qcQlywzE88Z2yiJyVeAQrGTiRxgDAlpCf5zP9/n38N09UTUPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAz7OqGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5D0C433C7;
-	Mon,  4 Mar 2024 21:47:32 +0000 (UTC)
+	 MIME-Version; b=sIthnMe/fe/9wtTGTu9iZl4Ea74GMa7LczNUy37lH1/1hJG8h8OM+k/LePrbfbjnOZHGqw+LxaN2LrJxqvfI8U1MmOKASP2SgwI4wJ+eQODttL8luFDbpc25UxCYZR9dqOK7Wwdf4VxDgZaiorDBfaY4QMjPTeUgkwDOATeElOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV7Qryep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C12C433F1;
+	Mon,  4 Mar 2024 21:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588852;
-	bh=lGXugl+QfBc9fbJB5mqxoblCXGlAhCUnKIuJk/fQHKU=;
+	s=korg; t=1709587868;
+	bh=HzW3cvsD1LllZ/81BdyWAI5b662q2UYbUHEj/B4aRBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAz7OqGy9vU01g45MR3aA7Qs5UNroVwzD18d4CC75MWhvk1M7O5XByBZ92GgdydrQ
-	 DNjVP+O9LNOLDgzl3QodjuZ8RxnFTTS0/3fC6lVJHy+z0x3Yxc2izysFsN2RuJadmB
-	 QRKP5vOwSmbrDg96RZvJFCo6oFTgs/ivHR3kvGkc=
+	b=hV7Qryep3y+oWd7lI87T5crwTAyq8EnKYeRMGT0mQkJXZovFjGszIvWZmmHWg4nV4
+	 cMOg3MxCCyHkQDVwR7VW8VC9PfQAFybI3BP0LjzfOZ1X+IugKjlA4DRB+GvGv9K0wU
+	 /GffK+j3ZSmMsZR1nXYMYFapj8LDf5WXfWWWwtss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 098/215] mptcp: fix data races on remote_id
+	syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com,
+	Eric Biggers <ebiggers@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.7 096/162] crypto: arm64/neonbs - fix out-of-bounds access on short input
 Date: Mon,  4 Mar 2024 21:22:41 +0000
-Message-ID: <20240304211600.146093744@linuxfoundation.org>
+Message-ID: <20240304211554.913615595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 967d3c27127e71a10ff5c083583a038606431b61 upstream.
+commit 1c0cf6d19690141002889d72622b90fc01562ce4 upstream.
 
-Similar to the previous patch, address the data race on
-remote_id, adding the suitable ONCE annotations.
+The bit-sliced implementation of AES-CTR operates on blocks of 128
+bytes, and will fall back to the plain NEON version for tail blocks or
+inputs that are shorter than 128 bytes to begin with.
 
-Fixes: bedee0b56113 ("mptcp: address lookup improvements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+It will call straight into the plain NEON asm helper, which performs all
+memory accesses in granules of 16 bytes (the size of a NEON register).
+For this reason, the associated plain NEON glue code will copy inputs
+shorter than 16 bytes into a temporary buffer, given that this is a rare
+occurrence and it is not worth the effort to work around this in the asm
+code.
+
+The fallback from the bit-sliced NEON version fails to take this into
+account, potentially resulting in out-of-bounds accesses. So clone the
+same workaround, and use a temp buffer for short in/outputs.
+
+Fixes: fc074e130051 ("crypto: arm64/aes-neonbs-ctr - fallback to plain NEON for final chunk")
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    8 ++++----
- net/mptcp/subflow.c    |    6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/crypto/aes-neonbs-glue.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -449,7 +449,7 @@ static unsigned int fill_remote_addresse
- 		mptcp_for_each_subflow(msk, subflow) {
- 			ssk = mptcp_subflow_tcp_sock(subflow);
- 			remote_address((struct sock_common *)ssk, &addrs[i]);
--			addrs[i].id = subflow->remote_id;
-+			addrs[i].id = READ_ONCE(subflow->remote_id);
- 			if (deny_id0 && !addrs[i].id)
- 				continue;
- 
-@@ -798,18 +798,18 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 
- 		mptcp_for_each_subflow_safe(msk, subflow, tmp) {
- 			struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+			u8 remote_id = READ_ONCE(subflow->remote_id);
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
- 
--			if (rm_type == MPTCP_MIB_RMADDR && subflow->remote_id != rm_id)
-+			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
- 				continue;
- 
- 			pr_debug(" -> %s rm_list_ids[%d]=%u local_id=%u remote_id=%u mpc_id=%u",
- 				 rm_type == MPTCP_MIB_RMADDR ? "address" : "subflow",
--				 i, rm_id, id, subflow->remote_id,
--				 msk->mpc_endpoint_id);
-+				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
- 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -446,7 +446,7 @@ static void subflow_finish_connect(struc
- 		subflow->backup = mp_opt.backup;
- 		subflow->thmac = mp_opt.thmac;
- 		subflow->remote_nonce = mp_opt.nonce;
--		subflow->remote_id = mp_opt.join_id;
-+		WRITE_ONCE(subflow->remote_id, mp_opt.join_id);
- 		pr_debug("subflow=%p, thmac=%llu, remote_nonce=%u backup=%d",
- 			 subflow, subflow->thmac, subflow->remote_nonce,
- 			 subflow->backup);
-@@ -1477,7 +1477,7 @@ int __mptcp_subflow_connect(struct sock
- 	pr_debug("msk=%p remote_token=%u local_id=%d remote_id=%d", msk,
- 		 remote_token, local_id, remote_id);
- 	subflow->remote_token = remote_token;
--	subflow->remote_id = remote_id;
-+	WRITE_ONCE(subflow->remote_id, remote_id);
- 	subflow->request_join = 1;
- 	subflow->request_bkup = !!(flags & MPTCP_PM_ADDR_FLAG_BACKUP);
- 	mptcp_info2sockaddr(remote, &addr, ssk->sk_family);
-@@ -1874,7 +1874,7 @@ static void subflow_ulp_clone(const stru
- 		new_ctx->mp_join = 1;
- 		new_ctx->fully_established = 1;
- 		new_ctx->backup = subflow_req->backup;
--		new_ctx->remote_id = subflow_req->remote_id;
-+		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
- 		new_ctx->token = subflow_req->token;
- 		new_ctx->thmac = subflow_req->thmac;
- 
+--- a/arch/arm64/crypto/aes-neonbs-glue.c
++++ b/arch/arm64/crypto/aes-neonbs-glue.c
+@@ -227,8 +227,19 @@ static int ctr_encrypt(struct skcipher_r
+ 			src += blocks * AES_BLOCK_SIZE;
+ 		}
+ 		if (nbytes && walk.nbytes == walk.total) {
++			u8 buf[AES_BLOCK_SIZE];
++			u8 *d = dst;
++
++			if (unlikely(nbytes < AES_BLOCK_SIZE))
++				src = dst = memcpy(buf + sizeof(buf) - nbytes,
++						   src, nbytes);
++
+ 			neon_aes_ctr_encrypt(dst, src, ctx->enc, ctx->key.rounds,
+ 					     nbytes, walk.iv);
++
++			if (unlikely(nbytes < AES_BLOCK_SIZE))
++				memcpy(d, dst, nbytes);
++
+ 			nbytes = 0;
+ 		}
+ 		kernel_neon_end();
 
 
 
