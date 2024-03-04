@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453C6870F59
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE27870D79
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5D61F225FC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F68B1F21DA5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689A87B3C3;
-	Mon,  4 Mar 2024 21:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2092B7BAFF;
+	Mon,  4 Mar 2024 21:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7tYTPoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sL8KJ43+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8A1C6AB;
-	Mon,  4 Mar 2024 21:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44227BAF7;
+	Mon,  4 Mar 2024 21:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589226; cv=none; b=JyNgdGNcUc5KxZJxiv+c2utWQdxlg8PskixBfd1qET/XazDswbk5ImO6NR14SBT0ocaLZWLxELCgS08+20MkddMkYEv0DaVXOFALdP4fere0JMnitHNuyHd2h6k+BNtL0cupLMKTQZX/O5pqAer876ZobYf3muC5HgwXPgFyuv0=
+	t=1709588062; cv=none; b=JxLmaQVYao7t31e3Z9DSXz8hMsGxhAbCw+qMKLCuCmH/FoycO4OzSoCSqlo+46aXw5Iu440iEyJDFQeaSEo1n+11U4Y0EdtqbIP3rkdRelu7sQ/uZ/+ErKZwosX2XsPlDrpWBXE8yppTNxqvCRiD0V2rRITMCMdjrzGp/MfkZME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589226; c=relaxed/simple;
-	bh=vgBREZutk7yHb4jCBMzEBHOqjOttRikT0gGnrsMoxO4=;
+	s=arc-20240116; t=1709588062; c=relaxed/simple;
+	bh=3Cm2HjSE0gjzvliEhlP1rYD/xXdCCL2UInL9HdLKVRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbQPUGBugL5yzIYn0YvnNJzK1rsMkqa3ucMqQCWwHaOR7iFs2pKNZpohX8yHzEYhWMgsUk60P+CTAQIvpc2ClHSkj4rtGgQE498kHKPCNqR9EYK8yjQN99Qyi8MRHD6z2fwHcjyBFBXu4yOnCPLbfmK+Hu/fPhMgr2e5Ih8LPN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7tYTPoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE58C433F1;
-	Mon,  4 Mar 2024 21:53:45 +0000 (UTC)
+	 MIME-Version; b=DDJzIvr0LKncgUnEc1C5aVyKYmBK9MGqmQbNYr2TBGe3E+QNGOhMh8RNahMBC9gw5dsvZiSqF1JKEWjC2FlRQVb7dMfeq5XMZa2CJ0O0+eXDPPONT7TE6oernnGKNogljBiZx94TNkdgAc0GZWfmSdizGXMPHEDutCO1lOkhI6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sL8KJ43+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68346C43394;
+	Mon,  4 Mar 2024 21:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589225;
-	bh=vgBREZutk7yHb4jCBMzEBHOqjOttRikT0gGnrsMoxO4=;
+	s=korg; t=1709588062;
+	bh=3Cm2HjSE0gjzvliEhlP1rYD/xXdCCL2UInL9HdLKVRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7tYTPoLPkUvIDEmCQmRlPtwFjosGtGT62DqXifX4QxmMWvZrWoGjSGJQrUD2JA6i
-	 0e/D5VAG39IagQAE9fdIcvj45QpBR4iqPEkuP/fFYyQQrtn/r6EmqygKCGOznCVOaB
-	 q+VvZRmNFFX1X7WIxmBX34h9aSVSWphjlyKBYr8Q=
+	b=sL8KJ43+lmsCbf1Q9pd0/Cu5VEBU/vUMYpdqZAOoLT5Bc5HS5zXZf9a/S9Akod5si
+	 0BS0vn1DUCt4CWDTyDN87HUyJT1RllN36DyB+Qe3rQmhpWDIrU3Prjq3L7uDUr3XvX
+	 hZnBRLqiDownLBSPXUVOGAS0aOk0GWoyee+pn8Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/84] tls: rx: dont store the decryption status in socket context
+Subject: [PATCH 5.4 25/25] gpio: 74x164: Enable output pins after registers are reset
 Date: Mon,  4 Mar 2024 21:24:01 +0000
-Message-ID: <20240304211543.269918919@linuxfoundation.org>
+Message-ID: <20240304211536.606584317@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
 
-[ Upstream commit 7dc59c33d62c4520a119051d4486c214ef5caa23 ]
+[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
 
-Similar justification to previous change, the information
-about decryption status belongs in the skb.
+Chip outputs are enabled[1] before actual reset is performed[2] which might
+cause pin output value to flip flop if previous pin value was set to 1.
+Fix that behavior by making sure chip is fully reset before all outputs are
+enabled.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
+Flip-flop can be noticed when module is removed and inserted again and one of
+the pins was changed to 1 before removal. 100 microsecond flipping is
+noticeable on oscilloscope (100khz SPI bus).
+
+For a properly reset chip - output is enabled around 100 microseconds (on 100khz
+SPI bus) later during probing process hence should be irrelevant behavioral
+change.
+
+Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
+Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/strparser.h |  1 +
- include/net/tls.h       |  1 -
- net/tls/tls_device.c    |  3 ++-
- net/tls/tls_sw.c        | 10 ++++++----
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-74x164.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/strparser.h b/include/net/strparser.h
-index c271543076cf8..a191486eb1e4c 100644
---- a/include/net/strparser.h
-+++ b/include/net/strparser.h
-@@ -72,6 +72,7 @@ struct sk_skb_cb {
- 	u64 temp_reg;
- 	struct tls_msg {
- 		u8 control;
-+		u8 decrypted;
- 	} tls;
- };
+diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
+index e81307f9754e3..30aa7f82fc5b4 100644
+--- a/drivers/gpio/gpio-74x164.c
++++ b/drivers/gpio/gpio-74x164.c
+@@ -128,8 +128,6 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 	if (IS_ERR(chip->gpiod_oe))
+ 		return PTR_ERR(chip->gpiod_oe);
  
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 24c1b718ceacc..ea0aeae26cf76 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -147,7 +147,6 @@ struct tls_sw_context_rx {
+-	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
+-
+ 	spi_set_drvdata(spi, chip);
  
- 	struct sk_buff *recv_pkt;
- 	u8 async_capable:1;
--	u8 decrypted:1;
- 	atomic_t decrypt_pending;
- 	/* protect crypto_wait with decrypt_pending*/
- 	spinlock_t decrypt_compl_lock;
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 88785196a8966..f23d18e666284 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -936,6 +936,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx,
- 			 struct sk_buff *skb, struct strp_msg *rxm)
- {
- 	struct tls_offload_context_rx *ctx = tls_offload_ctx_rx(tls_ctx);
-+	struct tls_msg *tlm = tls_msg(skb);
- 	int is_decrypted = skb->decrypted;
- 	int is_encrypted = !is_decrypted;
- 	struct sk_buff *skb_iter;
-@@ -950,7 +951,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx,
- 				   tls_ctx->rx.rec_seq, rxm->full_len,
- 				   is_encrypted, is_decrypted);
+ 	chip->gpio_chip.label = spi->modalias;
+@@ -154,6 +152,8 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 		goto exit_destroy;
+ 	}
  
--	ctx->sw.decrypted |= is_decrypted;
-+	tlm->decrypted |= is_decrypted;
- 
- 	if (unlikely(test_bit(TLS_RX_DEV_DEGRADED, &tls_ctx->flags))) {
- 		if (likely(is_encrypted || is_decrypted))
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 82d7c9b036bc7..0a6630bbef53e 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1560,9 +1560,10 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	struct strp_msg *rxm = strp_msg(skb);
-+	struct tls_msg *tlm = tls_msg(skb);
- 	int pad, err = 0;
- 
--	if (!ctx->decrypted) {
-+	if (!tlm->decrypted) {
- 		if (tls_ctx->rx_conf == TLS_HW) {
- 			err = tls_device_decrypted(sk, tls_ctx, skb, rxm);
- 			if (err < 0)
-@@ -1570,7 +1571,7 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 		}
- 
- 		/* Still not decrypted after tls_device */
--		if (!ctx->decrypted) {
-+		if (!tlm->decrypted) {
- 			err = decrypt_internal(sk, skb, dest, NULL, chunk, zc,
- 					       async);
- 			if (err < 0) {
-@@ -1594,7 +1595,7 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 		rxm->offset += prot->prepend_size;
- 		rxm->full_len -= prot->overhead_size;
- 		tls_advance_record_sn(sk, prot, &tls_ctx->rx);
--		ctx->decrypted = 1;
-+		tlm->decrypted = 1;
- 		ctx->saved_data_ready(sk);
- 	} else {
- 		*zc = false;
-@@ -2137,8 +2138,9 @@ static void tls_queue(struct strparser *strp, struct sk_buff *skb)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(strp->sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
-+	struct tls_msg *tlm = tls_msg(skb);
- 
--	ctx->decrypted = 0;
-+	tlm->decrypted = 0;
- 
- 	ctx->recv_pkt = skb;
- 	strp_pause(strp);
++	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
++
+ 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
+ 	if (!ret)
+ 		return 0;
 -- 
 2.43.0
 
