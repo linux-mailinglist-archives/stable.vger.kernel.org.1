@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E7A870C7C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F243870D84
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC701F26BE2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567E928FBBB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2965F1F92C;
-	Mon,  4 Mar 2024 21:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5710626B2;
+	Mon,  4 Mar 2024 21:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4l/mRbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07tJt2aS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1181CA94;
-	Mon,  4 Mar 2024 21:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F36200CD;
+	Mon,  4 Mar 2024 21:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587570; cv=none; b=qlb4G8uGpL8k6rT4kuSg+A0TqYH8lODEC+GW8Mc+wMcajKaJMuaJxRN0U14sMrKnWHo/IzfTax754FrRlpxNCcmI2dK7llc77fr1htDob8Wz4+kiIv7BYIH8EW+HWBSl6lH5aTYJh3ZaE62cGSppYB7+vcDT2VkS4JChLnXjEdw=
+	t=1709588091; cv=none; b=eHNgAZr7bpI1CPJXPbMsYJhnQgyRYqC5D6RMppBT7p+YpnGVOcGzAkYzEB+H/Y1HGSH683W4/gioLuiEax7Lq83z5kMCH+4z9aXOiMzQlKzv8lb2OkKDSkvqahxSCWvQJNJYG4QA63MFAdSoqNq3WOENYjr29FCGsWs/8PkVIqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587570; c=relaxed/simple;
-	bh=WgyqQZ1qU5dAGLy8FWVCx7SDYcITd0ZjxK2Ai2VaOO0=;
+	s=arc-20240116; t=1709588091; c=relaxed/simple;
+	bh=pZzk4XBMaQ2ZqqgbAQE9Yf1j6sSWtlfuXNOFBI07IOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1iR8LHTFaSGk9P6xyt+CvcFbueFQbBcf2gYgz0p3a0na0ydWHrynR+EJipebB1LYS3sT9/pHQF8o3st0BKNOD6FhclhotXnAFFMBhaD2NLfM3TblRjnI2+Xe2DR7Zm57BS4C7UCCKVw9Gr/Hu7pqs42XshSJac5z3T9VJzOq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4l/mRbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649C0C433C7;
-	Mon,  4 Mar 2024 21:26:10 +0000 (UTC)
+	 MIME-Version; b=Ldfa3o3xxyJataNsVYmWlhxsD6uLM5eILNE9nZ27O8LhlMdV/PHkh1wQ1Khgy7hziPd+rvWAza75tGI9/fIbuWjWSNLn3VAF8oUTebpDhpBmyAC8BDLpI9tcvCJT8dhzK+V5vGFMGYFOaqqFsidAuHUjZBNw3n5IJOBiJHlo2SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07tJt2aS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6E7C433C7;
+	Mon,  4 Mar 2024 21:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587570;
-	bh=WgyqQZ1qU5dAGLy8FWVCx7SDYcITd0ZjxK2Ai2VaOO0=;
+	s=korg; t=1709588091;
+	bh=pZzk4XBMaQ2ZqqgbAQE9Yf1j6sSWtlfuXNOFBI07IOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4l/mRbzAfrU/LvMuMJ3jO5Kec7C3iDUaTZ661c6yQLNb8jFNF2BhuhQmW10xQnne
-	 APwjYDokCOzhcAb7wIvnqRlXgej5dagbuN1ZuvPXjDlOoRivpPO7d3gVIrq/BwDeCd
-	 fQ+Qv968VM3SBMY+asIbeQXpvQk+Qcx1m3iKTn4U=
+	b=07tJt2aSruHlpoLc1A0EwK5n/c4Y9GgAVyXROWBtgC0R/Hi7pu/+uWerG2WGSQVPQ
+	 mLIFUTcSUrDve7MgLWy5D5lD8XTaVI3ZApwgch/lANLMDRD5vcX/r+EYbQNGWovLE6
+	 P+miVzQUybzphCUFfXeaqZIlpUlzXr4UTspQkCyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Reto Schneider <reto.schneider@husqvarnagroup.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Stefan Roese <sr@denx.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/16] power: supply: bq27xxx-i2c: Do not free non existing IRQ
+Subject: [PATCH 5.10 03/42] mtd: spinand: gigadevice: Support GD5F1GQ5UExxG
 Date: Mon,  4 Mar 2024 21:23:30 +0000
-Message-ID: <20240304211534.678178706@linuxfoundation.org>
+Message-ID: <20240304211537.750565870@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Reto Schneider <reto.schneider@husqvarnagroup.com>
 
-[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
+[ Upstream commit 469b992489852b500d39048aa0013639dfe9f2e6 ]
 
-The bq27xxx i2c-client may not have an IRQ, in which case
-client->irq will be 0. bq27xxx_battery_i2c_probe() already has
-an if (client->irq) check wrapping the request_threaded_irq().
+The relevant changes to the already existing GD5F1GQ4UExxG support has
+been determined by consulting the GigaDevice product change notice
+AN-0392-10, version 1.0 from November 30, 2020.
 
-But bq27xxx_battery_i2c_remove() unconditionally calls
-free_irq(client->irq) leading to:
+As the overlaps are huge, variable names have been generalized
+accordingly.
 
-[  190.310742] ------------[ cut here ]------------
-[  190.310843] Trying to free already-free IRQ 0
-[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
+Apart from the lowered ECC strength (4 instead of 8 bits per 512 bytes),
+the new device ID, and the extra quad IO dummy byte, no changes had to
+be taken into account.
 
-Followed by a backtrace when unbinding the driver. Add
-an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
-probe() to fix this.
+New hardware features are not supported, namely:
+ - Power on reset
+ - Unique ID
+ - Double transfer rate (DTR)
+ - Parameter page
+ - Random data quad IO
 
-Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+The inverted semantic of the "driver strength" register bits, defaulting
+to 100% instead of 50% for the Q5 devices, got ignored as the driver has
+never touched them anyway.
+
+The no longer supported "read from cache during block erase"
+functionality is not reflected as the current SPI NAND core does not
+support it anyway.
+
+Implementation has been tested on MediaTek MT7688 based GARDENA smart
+Gateways using both, GigaDevice GD5F1GQ5UEYIG and GD5F1GQ4UBYIG.
+
+Signed-off-by: Reto Schneider <reto.schneider@husqvarnagroup.com>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Reviewed-by: Stefan Roese <sr@denx.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20210211113619.3502-1-code@reto-schneider.ch
+Stable-dep-of: 59950610c0c0 ("mtd: spinand: gigadevice: Fix the get ecc status issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/spi/gigadevice.c | 69 +++++++++++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 0fbc221ee50ef..f5870b3493094 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -217,7 +217,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
- {
- 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
+diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
+index 33c67403c4aa1..1dd1c58980934 100644
+--- a/drivers/mtd/nand/spi/gigadevice.c
++++ b/drivers/mtd/nand/spi/gigadevice.c
+@@ -13,7 +13,10 @@
+ #define GD5FXGQ4XA_STATUS_ECC_1_7_BITFLIPS	(1 << 4)
+ #define GD5FXGQ4XA_STATUS_ECC_8_BITFLIPS	(3 << 4)
  
--	free_irq(client->irq, di);
-+	if (client->irq)
-+		free_irq(client->irq, di);
+-#define GD5FXGQ4UEXXG_REG_STATUS2		0xf0
++#define GD5FXGQ5XE_STATUS_ECC_1_4_BITFLIPS	(1 << 4)
++#define GD5FXGQ5XE_STATUS_ECC_4_BITFLIPS	(3 << 4)
 +
- 	bq27xxx_battery_teardown(di);
++#define GD5FXGQXXEXXG_REG_STATUS2		0xf0
  
- 	mutex_lock(&battery_mutex);
+ #define GD5FXGQ4UXFXXG_STATUS_ECC_MASK		(7 << 4)
+ #define GD5FXGQ4UXFXXG_STATUS_ECC_NO_BITFLIPS	(0 << 4)
+@@ -102,7 +105,7 @@ static int gd5fxgq4xa_ecc_get_status(struct spinand_device *spinand,
+ 	return -EINVAL;
+ }
+ 
+-static int gd5fxgq4_variant2_ooblayout_ecc(struct mtd_info *mtd, int section,
++static int gd5fxgqx_variant2_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				       struct mtd_oob_region *region)
+ {
+ 	if (section)
+@@ -114,7 +117,7 @@ static int gd5fxgq4_variant2_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 	return 0;
+ }
+ 
+-static int gd5fxgq4_variant2_ooblayout_free(struct mtd_info *mtd, int section,
++static int gd5fxgqx_variant2_ooblayout_free(struct mtd_info *mtd, int section,
+ 					struct mtd_oob_region *region)
+ {
+ 	if (section)
+@@ -127,9 +130,10 @@ static int gd5fxgq4_variant2_ooblayout_free(struct mtd_info *mtd, int section,
+ 	return 0;
+ }
+ 
+-static const struct mtd_ooblayout_ops gd5fxgq4_variant2_ooblayout = {
+-	.ecc = gd5fxgq4_variant2_ooblayout_ecc,
+-	.free = gd5fxgq4_variant2_ooblayout_free,
++/* Valid for Q4/Q5 and Q6 (untested) devices */
++static const struct mtd_ooblayout_ops gd5fxgqx_variant2_ooblayout = {
++	.ecc = gd5fxgqx_variant2_ooblayout_ecc,
++	.free = gd5fxgqx_variant2_ooblayout_free,
+ };
+ 
+ static int gd5fxgq4xc_ooblayout_256_ecc(struct mtd_info *mtd, int section,
+@@ -165,7 +169,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ 					u8 status)
+ {
+ 	u8 status2;
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQ4UEXXG_REG_STATUS2,
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
+ 						      &status2);
+ 	int ret;
+ 
+@@ -203,6 +207,43 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ 	return -EINVAL;
+ }
+ 
++static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
++					u8 status)
++{
++	u8 status2;
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
++						      &status2);
++	int ret;
++
++	switch (status & STATUS_ECC_MASK) {
++	case STATUS_ECC_NO_BITFLIPS:
++		return 0;
++
++	case GD5FXGQ5XE_STATUS_ECC_1_4_BITFLIPS:
++		/*
++		 * Read status2 register to determine a more fine grained
++		 * bit error status
++		 */
++		ret = spi_mem_exec_op(spinand->spimem, &op);
++		if (ret)
++			return ret;
++
++		/*
++		 * 1 ... 4 bits are flipped (and corrected)
++		 */
++		/* bits sorted this way (1...0): ECCSE1, ECCSE0 */
++		return ((status2 & STATUS_ECC_MASK) >> 4) + 1;
++
++	case STATUS_ECC_UNCOR_ERROR:
++		return -EBADMSG;
++
++	default:
++		break;
++	}
++
++	return -EINVAL;
++}
++
+ static int gd5fxgq4ufxxg_ecc_get_status(struct spinand_device *spinand,
+ 					u8 status)
+ {
+@@ -282,7 +323,7 @@ static const struct spinand_info gigadevice_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+-		     SPINAND_ECCINFO(&gd5fxgq4_variant2_ooblayout,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4uexxg_ecc_get_status)),
+ 	SPINAND_INFO("GD5F1GQ4UFxxG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE, 0xb1, 0x48),
+@@ -292,8 +333,18 @@ static const struct spinand_info gigadevice_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     SPINAND_HAS_QE_BIT,
+-		     SPINAND_ECCINFO(&gd5fxgq4_variant2_ooblayout,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
+ 				     gd5fxgq4ufxxg_ecc_get_status)),
++	SPINAND_INFO("GD5F1GQ5UExxG",
++		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x51),
++		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
++		     NAND_ECCREQ(4, 512),
++		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
++					      &write_cache_variants,
++					      &update_cache_variants),
++		     SPINAND_HAS_QE_BIT,
++		     SPINAND_ECCINFO(&gd5fxgqx_variant2_ooblayout,
++				     gd5fxgq5xexxg_ecc_get_status)),
+ };
+ 
+ static const struct spinand_manufacturer_ops gigadevice_spinand_manuf_ops = {
 -- 
 2.43.0
 
