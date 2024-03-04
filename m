@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6F1870EF3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FD8870DE9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE1E1C21E78
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54E2EB27D3A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0D57868F;
-	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5B3200D4;
+	Mon,  4 Mar 2024 21:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQfTYcp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upYBd8Kw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1501EB5A;
-	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD128F58;
+	Mon,  4 Mar 2024 21:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588965; cv=none; b=lp8xzrXBlt2FLge8HMJ6Wy9uhYj/w2yMeBdHps7d73a8elGFqDfWK2OqzbWngzZxWVy8tNSNM6NJxubpKi5zB+v9d5Dsjxea/RfovjPkawD8kPhCDoZendpg9xp10US0/7ioonXjvGXfYk23xhTDKynA+VaHREgPmT9GjHo6+qc=
+	t=1709588336; cv=none; b=e7C1zB0VA68LXVbE5ek34K0QblRsPCueYlHhsHNqOAftooenyiQKE/plN4uO8BbTco9yC4o/Qog/5sbd/f98ViN4CaX4pqzZUaxejo62a8SMIf4G6eRv96CMNPZSUQtFFBxz5dqcgn5LgF/3VfX++t5actlZx1OS6VWDYdbcu1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588965; c=relaxed/simple;
-	bh=QoPyVRp97RCT31iPScySNQ5ZXBfETowU8X+e7+W/ktw=;
+	s=arc-20240116; t=1709588336; c=relaxed/simple;
+	bh=K7lDLTW7uvHzEfk9oYR1axjLSaA/Cb7y9wn7US2Jxlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCoRS/HmJBuCjnFraOH6HerPR402pVqErKSKGsBn9d0o6GBGW9VnvqbBMdq0vRtrsrBhoUzIcyHXOgHkVUDu7fB6tByRJnTs5TTyF3yB8prY8ClOj8y+dDBAgcHej++Fgys+wlLrSoP8fVNw7Ksih0xw1EhQV2mamgt/YbIEOzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQfTYcp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D975C433C7;
-	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
+	 MIME-Version; b=Ahj7jgDy+Gs0DNn4h8Tm7GSJgv6oYyHXchd3gmNC9/viG2yFQEdlFCNoGxdDhBv3FlpbS4mCRQdkWZjUARXybfxdPyEkOpqpYpVys+QaRpD6V5IQJbEk5alLiK3HYySucmgScX9u52gL+tinCAMj7B3601h34PgE/Gmicczua3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upYBd8Kw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF63C433F1;
+	Mon,  4 Mar 2024 21:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588965;
-	bh=QoPyVRp97RCT31iPScySNQ5ZXBfETowU8X+e7+W/ktw=;
+	s=korg; t=1709588336;
+	bh=K7lDLTW7uvHzEfk9oYR1axjLSaA/Cb7y9wn7US2Jxlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQfTYcp/3bhc/3hqfDpCEJMeBjPyifgGi0Cs4XX91pmS7vrgP1tY8Wuboj9+N0Tlg
-	 1gNM/TxB/H+ZIK1OUgpaIz+cGX1b2BpbmlGBoS7gbDgwT41lGez1gaoiNja7X2rWrC
-	 RZac46gl/KX+5YgyjFc3uMSBVQ2BQ2g7tbsIQ1GQ=
+	b=upYBd8KwN+1IeYzqsuSRgyV95LgIzcmCVW78RcRY0ARTGRDzg41UEJRI+VKwRq+3P
+	 W9hYbpi55heZHMGujoF2SsRVl5OAKa1968TSBzfxiaJ92/Eln598v7xQVxPNQqB3Xn
+	 rD0vmLpwk8w0uF6UTiqAciP9izTe/yw1vVhHG58s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 125/215] x86/boot/compressed: Only build mem_encrypt.S if AMD_MEM_ENCRYPT=y
+	Sam Sun <samsun1006219@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 068/143] tomoyo: fix UAF write bug in tomoyo_write_control()
 Date: Mon,  4 Mar 2024 21:23:08 +0000
-Message-ID: <20240304211601.033041105@linuxfoundation.org>
+Message-ID: <20240304211552.101996889@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 61de13df95901bc58456bc5acdbd3c18c66cf859 upstream.
+commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
 
-Avoid building the mem_encrypt.o object if memory encryption support is
-not enabled to begin with.
+Since tomoyo_write_control() updates head->write_buf when write()
+of long lines is requested, we need to fetch head->write_buf after
+head->io_sem is held.  Otherwise, concurrent write() requests can
+cause use-after-free-write and double-free problems.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-17-ardb@kernel.org
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
+Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
+Cc:  <stable@vger.kernel.org> # Linux 3.1+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/Makefile      |    2 +-
- arch/x86/boot/compressed/mem_encrypt.S |    2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ security/tomoyo/common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -100,7 +100,7 @@ vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) +=
- ifdef CONFIG_X86_64
- 	vmlinux-objs-y += $(obj)/ident_map_64.o
- 	vmlinux-objs-y += $(obj)/idt_64.o $(obj)/idt_handlers_64.o
--	vmlinux-objs-y += $(obj)/mem_encrypt.o
-+	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/mem_encrypt.o
- 	vmlinux-objs-y += $(obj)/pgtable_64.o
- 	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/sev.o
- endif
---- a/arch/x86/boot/compressed/mem_encrypt.S
-+++ b/arch/x86/boot/compressed/mem_encrypt.S
-@@ -307,7 +307,6 @@ SYM_FUNC_END(startup32_check_sev_cbit)
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2649,13 +2649,14 @@ ssize_t tomoyo_write_control(struct tomo
+ {
+ 	int error = buffer_len;
+ 	size_t avail_len = buffer_len;
+-	char *cp0 = head->write_buf;
++	char *cp0;
+ 	int idx;
  
- 	.data
- 
--#ifdef CONFIG_AMD_MEM_ENCRYPT
- 	.balign	8
- SYM_DATA(sme_me_mask,		.quad 0)
- SYM_DATA(sev_status,		.quad 0)
-@@ -323,4 +322,3 @@ SYM_DATA_START_LOCAL(boot32_idt_desc)
- 	.word	. - boot32_idt - 1
- 	.long	0
- SYM_DATA_END(boot32_idt_desc)
--#endif
+ 	if (!head->write)
+ 		return -EINVAL;
+ 	if (mutex_lock_interruptible(&head->io_sem))
+ 		return -EINTR;
++	cp0 = head->write_buf;
+ 	head->read_user_buf_avail = 0;
+ 	idx = tomoyo_read_lock();
+ 	/* Read a line and dispatch it to the policy handler. */
 
 
 
