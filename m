@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1CF86FA41
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:52:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5702186FA42
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42A4280E35
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:52:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F36F2B20C30
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BEA11715;
-	Mon,  4 Mar 2024 06:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6B911713;
+	Mon,  4 Mar 2024 06:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwU8xlgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pj7N88Kq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D6710A2E
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F39BA2B
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709535116; cv=none; b=jlkY4rvauI+W1icKZs9XrOCIICfyuolFrMj8aa2nCN1Yy4zezCH/SnLQYlzGIfs0LSazdxG/AKe7LwGQSzDBHSTI2dKLz3I9RSqIlctPpIytumNqg132Jje7rj2TBo6+Ji3C3aJrTPVwjr/zO/5U2vFwLOq3SLoTcv1epwPIdqw=
+	t=1709535127; cv=none; b=MVuv9TSbR6dkoIqyWzB3Yym0a7rINp5dDPqzeaTy2h7vhDJJoz+LcNWxYBKWsOj81ARzjR+blnxAd/KAsLUB6K1Jnc102xV+NjWjsgjF6BMuY617pRYzP60/dl+6MhAKNp/4Xowu6qpW6OcRRFN7m3j2iIQCNidiArokCUMM+lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709535116; c=relaxed/simple;
-	bh=WKoNDepmIamnORyg1jo2SzW1V20ABIQcWm/XD7bTWwA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=op+2ZoYwRM6+gRA8cuu+8xe4H/H73rFe2lK0Kv8ZSLEQyNRRNzhtiQhFWWevJM+w5DI2ik+eZIlIndA0FngBJdTtEAIteFto4elRsTlIYlm57y/P15DEwXzYheknuXny3y8xQafPNKuZfoqLh+a5hZgls7wFwA9hZiJIjg4T2Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwU8xlgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2464C433F1;
-	Mon,  4 Mar 2024 06:51:55 +0000 (UTC)
+	s=arc-20240116; t=1709535127; c=relaxed/simple;
+	bh=1wtYTHCN9Pj9HvgTX7EI57h9eGFLadEW2VmedyTJiHo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MPvJnYsUQ/qBOZDfPY88kJbV9ZDjVyZXoq1NJR8iin/tl6zCX+VXlgNzAbkG9Tw3Qq404/zU2Tt5A1CrxBoGqwWNaRidAxGUc8aa2kOYw9lKWmANDt4/FQtJk4qdC6QS/mvkEdqEpEHu7g+HSQsQJkZW3TTW6/V6ZAs80zk+3bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pj7N88Kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72058C433F1;
+	Mon,  4 Mar 2024 06:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709535116;
-	bh=WKoNDepmIamnORyg1jo2SzW1V20ABIQcWm/XD7bTWwA=;
+	s=korg; t=1709535127;
+	bh=1wtYTHCN9Pj9HvgTX7EI57h9eGFLadEW2VmedyTJiHo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MwU8xlgdJLJMp/951peiV7F0Ir5I+qjavLH8N/haqSSRitRUuqEa3f/WPUsJMNDfX
-	 7o2od6Xhr3q9gJ+oEcY43bsK2GYEvgJVaLEBdd4jtVk5sZOnuN3oycZRG/YZEwzRTr
-	 5ElYPLc0IMS4AqzuDjRNIosfnYVAOaJ2Y+Cqi7DE=
-Subject: FAILED: patch "[PATCH] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free" failed to apply to 6.7-stable tree
+	b=pj7N88KqyzvmX5xlaGp50zr63veh5ZtgL6H2RajLtBvt42l2YmfTHjNL951BU4PXW
+	 uBznKYgVETKgLgbuVeuUatLvthiOtFp2xWLNERgbMvXzJs4d1+cWG2zJkwCqdEIb7k
+	 4x67QqjzrN+5/oYO22lLN420pBSX90kza5G1OAmE=
+Subject: FAILED: patch "[PATCH] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free" failed to apply to 6.6-stable tree
 To: johan+linaro@kernel.org,andersson@kernel.org,dmitry.baryshkov@linaro.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 07:51:53 +0100
-Message-ID: <2024030452-unlatch-jailer-3f13@gregkh>
+Date: Mon, 04 Mar 2024 07:51:55 +0100
+Message-ID: <2024030455-jolly-catcall-c2e8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x b979f2d50a099f3402418d7ff5f26c3952fb08bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030452-unlatch-jailer-3f13@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030455-jolly-catcall-c2e8@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 b979f2d50a09 ("soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free")
 2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
+f86955f2b1ff ("soc: qcom: pmic_glink: fix connector type to be DisplayPort")
+5692aeea5bcb ("soc: qcom: pmic: Fix resource leaks in a device_for_each_child_node() loop")
 
 thanks,
 
