@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AFE870E7D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C3E870CB8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58E5C1C219BA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9352A288FF9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D13579DDE;
-	Mon,  4 Mar 2024 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FBEC47F79;
+	Mon,  4 Mar 2024 21:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/R3hMhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5gxOsXd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3CE11193;
-	Mon,  4 Mar 2024 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04AE10A35;
+	Mon,  4 Mar 2024 21:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588662; cv=none; b=o21hNn4m2c63ojQwuQT4Nxeh9FoN8OBDQZByZhOIEcIdUHGi7VrpeL9SmY5BfBSXeH0cuxNE8FBM9affKZzAPPmzddWaGmBJQro5cRa7BLbKGoP8IhUPt7/8ZTVYIGvlXm+/DmOHj0zb5kIJlkKWfIgVNId6trdyso1JggVzGuk=
+	t=1709587675; cv=none; b=Qi1QQQ0c1Q1qhPUCPgTSudAqMdoOICo0Qz6kNxddr2o2eqekhi3FNJxXkBWHrVJvhJkzL2Suw1wWuPUMJRFpKXmWwiFegj00JkjxAvWJhSvcKkP1rn9Vy7x6w1O3xZFUq1GjWSWw7KKWZLsyL4JDvG8r6AY7gvN+lh85Wnp3pGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588662; c=relaxed/simple;
-	bh=QoYP5KymdQjpYfrNwAKh83hiJPGKjdt57vJhcgpUrDA=;
+	s=arc-20240116; t=1709587675; c=relaxed/simple;
+	bh=RX9mim5+Kg/rX7bYvI2Mi4tefg4hiMPOeqL83NmsY/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OXhy5GzoU099+TFd5hjD0A9UtyQW3fm3XMD5FDElZSsuPsCIlXkNLT6/C+ImYEgBsPr1bUE+DqsHug87afKBt9yQJSzKnHpJPW8uuBnW+HVOFN/mhxrrpNClQWuj5ilCEj/42HgxWGzPjlAyGCuKQSOcVCZB5TWVzY8eK7Ay/f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/R3hMhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6AEC43390;
-	Mon,  4 Mar 2024 21:44:21 +0000 (UTC)
+	 MIME-Version; b=ZLP+5gWQ+7/fG4fa3L7NRnF4HMJnh6NzEdKwzt65St2onQU6nUb0DBxWhRujABwAqhOLamfe3X78Nz6VuzrSKR4Uz6LRXoRZXo4bcbuhhzThzhHfItjhs8Q1dgG15jFVkKVBFk72DZZnvr60KsOQCXZK0BeJol4sGzLjdkQSv48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5gxOsXd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811CBC433F1;
+	Mon,  4 Mar 2024 21:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588662;
-	bh=QoYP5KymdQjpYfrNwAKh83hiJPGKjdt57vJhcgpUrDA=;
+	s=korg; t=1709587674;
+	bh=RX9mim5+Kg/rX7bYvI2Mi4tefg4hiMPOeqL83NmsY/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/R3hMhkCTouRx/ge5N/ZnAzLKA7KmcfAyv/2+pH8JN+EuVrwD2N1IHsauXqkEDys
-	 Q9F4v5s8gM0YbFUtOmqcVW/qHxaaODLPfnhKmyWMTcrQgpfoYzLihVnTQMtweQqs1H
-	 j8tFpl66JOMziLTEnAMg6m70biWwFG6tEuL5G+P0=
+	b=y5gxOsXdAmxbL/nzQOSku2/CN8o7S8AGAUebc7KPXgcOj7TntO4LoDwGfCnlmloP9
+	 1lpdOmYdqI+hIoH6yQNOUVBlurTpGUdQh/fOeSL3vP6KcvqOCu89bxPFSguRZTI4jC
+	 kYNyBgTD9MdrVVTAMinRtkW08h+iT3+qAOpkRFyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/215] Bluetooth: hci_qca: mark OF related data as maybe unused
+Subject: [PATCH 6.7 047/162] ASoC: cs35l56: Must clear HALO_STATE before issuing SYSTEM_RESET
 Date: Mon,  4 Mar 2024 21:21:52 +0000
-Message-ID: <20240304211558.551686036@linuxfoundation.org>
+Message-ID: <20240304211553.358759426@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 44fac8a2fd2f72ee98ee41e6bc9ecc7765b5d3cc ]
+[ Upstream commit e33625c84b75e4f078d7f9bf58f01fe71ab99642 ]
 
-The driver can be compile tested with !CONFIG_OF making certain data
-unused:
+The driver must write 0 to HALO_STATE before sending the SYSTEM_RESET
+command to the firmware.
 
-  drivers/bluetooth/hci_qca.c:1869:37: error: ‘qca_soc_data_wcn6750’
-  defined but not used [-Werror=unused-const-variable=]
-  drivers/bluetooth/hci_qca.c:1853:37: error: ‘qca_soc_data_wcn3998’
-  defined but not used [-Werror=unused-const-variable=]
-  drivers/bluetooth/hci_qca.c:1841:37: error: ‘qca_soc_data_wcn3991’
-  defined but not used [-Werror=unused-const-variable=]
-  drivers/bluetooth/hci_qca.c:1830:37: error: ‘qca_soc_data_wcn3990’
-  defined but not used [-Werror=unused-const-variable=]
+HALO_STATE is in DSP memory, which is preserved across a soft reset.
+The SYSTEM_RESET command does not change the value of HALO_STATE.
+There is period of time while the CS35L56 is resetting, before the
+firmware has started to boot, where a read of HALO_STATE will return
+the value it had before the SYSTEM_RESET. If the driver does not
+clear HALO_STATE, this would return BOOT_DONE status even though the
+firmware has not booted.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
+Link: https://msgid.link/r/20240216140535.1434933-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/cs35l56-shared.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 76ceb8a0183d1..0e908a337e534 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1824,7 +1824,7 @@ static const struct hci_uart_proto qca_proto = {
- 	.dequeue	= qca_dequeue,
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index 953ba066bab1e..fc99bc92aeace 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -286,6 +286,7 @@ void cs35l56_wait_min_reset_pulse(void)
+ EXPORT_SYMBOL_NS_GPL(cs35l56_wait_min_reset_pulse, SND_SOC_CS35L56_SHARED);
+ 
+ static const struct reg_sequence cs35l56_system_reset_seq[] = {
++	REG_SEQ0(CS35L56_DSP1_HALO_STATE, 0),
+ 	REG_SEQ0(CS35L56_DSP_VIRTUAL1_MBOX_1, CS35L56_MBOX_CMD_SYSTEM_RESET),
  };
  
--static const struct qca_device_data qca_soc_data_wcn3990 = {
-+static const struct qca_device_data qca_soc_data_wcn3990 __maybe_unused = {
- 	.soc_type = QCA_WCN3990,
- 	.vregs = (struct qca_vreg []) {
- 		{ "vddio", 15000  },
-@@ -1835,7 +1835,7 @@ static const struct qca_device_data qca_soc_data_wcn3990 = {
- 	.num_vregs = 4,
- };
- 
--static const struct qca_device_data qca_soc_data_wcn3991 = {
-+static const struct qca_device_data qca_soc_data_wcn3991 __maybe_unused = {
- 	.soc_type = QCA_WCN3991,
- 	.vregs = (struct qca_vreg []) {
- 		{ "vddio", 15000  },
-@@ -1847,7 +1847,7 @@ static const struct qca_device_data qca_soc_data_wcn3991 = {
- 	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
- 
--static const struct qca_device_data qca_soc_data_wcn3998 = {
-+static const struct qca_device_data qca_soc_data_wcn3998 __maybe_unused = {
- 	.soc_type = QCA_WCN3998,
- 	.vregs = (struct qca_vreg []) {
- 		{ "vddio", 10000  },
-@@ -1858,13 +1858,13 @@ static const struct qca_device_data qca_soc_data_wcn3998 = {
- 	.num_vregs = 4,
- };
- 
--static const struct qca_device_data qca_soc_data_qca6390 = {
-+static const struct qca_device_data qca_soc_data_qca6390 __maybe_unused = {
- 	.soc_type = QCA_QCA6390,
- 	.num_vregs = 0,
- 	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
- 
--static const struct qca_device_data qca_soc_data_wcn6750 = {
-+static const struct qca_device_data qca_soc_data_wcn6750 __maybe_unused = {
- 	.soc_type = QCA_WCN6750,
- 	.vregs = (struct qca_vreg []) {
- 		{ "vddio", 5000 },
 -- 
 2.43.0
 
