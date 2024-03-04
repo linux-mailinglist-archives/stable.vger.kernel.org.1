@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-26237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE01870DB0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB7C870EBD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80B76B272C8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C0B1F21ADA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1ACA46BA0;
-	Mon,  4 Mar 2024 21:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C25A61675;
+	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgeNHVtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4EXknaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0EFDDCB;
-	Mon,  4 Mar 2024 21:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2DC1C6AB;
+	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588198; cv=none; b=GeMiLeqsVsXEfYGMR63dUzH+TZr/DykY7yIVvKoAfGx41A8e9+CYNvYw6wi9HeFwMD8PxhidP94kg3z/I0PiEUzMemQpQ3H5rRU1s70KQyc4JF9XfIzN0qPirEfFFwN5ymQRu50NDL/LCSUraYG1PwRn9mRIRnDhzNvX8xWIXS0=
+	t=1709588790; cv=none; b=jAlHaqlbLfn0/ZEK7bhs5ehoYdz7MfmtxkPY0DVyf4kW99rDd21soCcYeCQuCTCowYxPdCJJUVPHk+mKAXhqMDCX7nFyw9s0fgzltq2xxkaak+aWEf4fkIErK7Xr7wTjL3t85mN8miinITcU7rzyHcWxl3D1uHVJgkA8U4FFKEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588198; c=relaxed/simple;
-	bh=aOixEDPkvIU0JY3SJLCcr8NytjATICS8XT4pbnkw9M4=;
+	s=arc-20240116; t=1709588790; c=relaxed/simple;
+	bh=57DxTgJzmRyyUblSpM+GWY86fQVE3mgG7pPqq/Xw3dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ainQlZsvoD9YKJPIkADXR2KBKxZCO6LQeQvBR2vivxFbdEsUCnDsGQTgp6gy01ZkS1A1jkk7ytj0bKMrBZYqTuqmwMGRSIHm4xEPhdjXssobbFbQuDteWQ7mHk6Z2THfkW/3LWcmmqkVWzs4YLujUhVuZ9ZEoMc0FBaGA0Ht4DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgeNHVtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202EDC433F1;
-	Mon,  4 Mar 2024 21:36:37 +0000 (UTC)
+	 MIME-Version; b=q1hl3ZOGbZRhuQczZ+VBNDyUVHXuXjDOH6nIct6buFYG1AgdqvF1XkQrlTumSOJRBDQr9uBumZbtdb5AkahRM6qRwn4vOwfb69+qbu8tHK///ATzMdDXvxhBbBJ9GiTWPlSeK520JVe15fE0rQSR7zL+sPJeHgaxBJ8Qtk6nd+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4EXknaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845D0C433F1;
+	Mon,  4 Mar 2024 21:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588198;
-	bh=aOixEDPkvIU0JY3SJLCcr8NytjATICS8XT4pbnkw9M4=;
+	s=korg; t=1709588789;
+	bh=57DxTgJzmRyyUblSpM+GWY86fQVE3mgG7pPqq/Xw3dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgeNHVtJ+7qRziPudbTp8qltN782+60cetYC9UqhU+OrmUO8epOf7+pv6HF7906qQ
-	 viQGFyJ5eRBAAidavleTp4Y8FwjV4bLRmCuusQ963TOV2stE+ccHYWfd3rRS+r3pxf
-	 nIMuiupAmC3ZrO2O6E83a7uLK3cVaYyaBTmCD588=
+	b=M4EXknaTT3QspNcfqgntIb+z9XvQ7cRzDtX33Ize+HxF3I381+zt1a/jMVejXnKfx
+	 W9Hr7WqNVBzp0RMSCHcag/e4lZflD1kKMij6LvFfG+0n8ydEEMllaa24Lz0CpwSlyX
+	 DN61K7jbLLltKHtCXNmD5yX8Rogh1cC3c4BBM+Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/143] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 073/215] ALSA: firewire-lib: fix to check cycle continuity
 Date: Mon,  4 Mar 2024 21:22:16 +0000
-Message-ID: <20240304211550.454416921@linuxfoundation.org>
+Message-ID: <20240304211559.299733351@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
+commit 77ce96543b03f437c6b45f286d8110db2b6622a3 upstream.
 
-It seems that if userspace provides a correct IFA_TARGET_NETNSID value
-but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
-returns -EINVAL with an elevated "struct net" refcount.
+The local helper function to compare the given pair of cycle count
+evaluates them. If the left value is less than the right value, the
+function returns negative value.
 
-Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the safe cycle is less than the current cycle, it is the case of
+cycle lost. However, it is not currently handled properly.
+
+This commit fixes the bug.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://lore.kernel.org/r/20240218033026.72577-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/firewire/amdtp-stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 7881446a46c4f..6f57cbddeee63 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5505,9 +5505,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	}
- 
- 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
--	if (!addr)
--		return -EINVAL;
--
-+	if (!addr) {
-+		err = -EINVAL;
-+		goto errout;
-+	}
- 	ifm = nlmsg_data(nlh);
- 	if (ifm->ifa_index)
- 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
--- 
-2.43.0
-
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -934,7 +934,7 @@ static int generate_device_pkt_descs(str
+ 				// to the reason.
+ 				unsigned int safe_cycle = increment_ohci_cycle_count(next_cycle,
+ 								IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES);
+-				lost = (compare_ohci_cycle_count(safe_cycle, cycle) > 0);
++				lost = (compare_ohci_cycle_count(safe_cycle, cycle) < 0);
+ 			}
+ 			if (lost) {
+ 				dev_err(&s->unit->device, "Detect discontinuity of cycle: %d %d\n",
 
 
 
