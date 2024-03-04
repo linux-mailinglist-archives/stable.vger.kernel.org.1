@@ -1,148 +1,97 @@
-Return-Path: <stable+bounces-25830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4B486FA4E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B07F86FA63
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CD51C20996
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:55:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F357528157A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BDE11713;
-	Mon,  4 Mar 2024 06:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B25B12E6C;
+	Mon,  4 Mar 2024 07:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwszvOfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxuI2eHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DA8B667
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEB2B667;
+	Mon,  4 Mar 2024 07:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709535318; cv=none; b=UyBEOVbi0yvO238v07EQ1gLyH7JeIvR1CWfKYGYwAkxaBwBFSI8+vvhrcRQy8LUdKPk8RY0m7f5NVNikv/5KeyUv/MqIkkTADzp3ga22rWoMe3Z7KKiLSufx8Z+z+2jocIHiVna6L1HeIkPvA3C+lewIhd1lky/7kO8uOCD/r2Q=
+	t=1709535658; cv=none; b=RO/FqCzxVRb7JvW5LB9GlvoQLRJMVOcmSDN0yyEHRXlACqIUnuiaBDHlQ1RF62SK8zmnd7ccCpMOqViJy/jGEQJ+LRNE1fhi2LuiTfcFmLqe01Cc+UGCdDV848mgLCL7aoTLJ9I9BtlbuPz4LqFH/AV5d5FAyNoemNJ7t+I4aOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709535318; c=relaxed/simple;
-	bh=Jnumcpl2dwYwHQ94B0+kQqUzfHfOjgJJrmesDLe3v2s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jW8/TxXib74nroy7XLpBhBTGvPawq89zKA0k7WihTGd69YowkZKqMbDqk4i0JJ8HdwLhan33hwtwX7GBwvTHmGmQ72ZjNgSoIB6H+GwQJbsRiLjDV3lhlaFnoNdTR5kn+3T5WhpbbvfUiCelGrphHlk8tsJGOyS/1WU+WQhyaFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwszvOfT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDE1C433F1;
-	Mon,  4 Mar 2024 06:55:17 +0000 (UTC)
+	s=arc-20240116; t=1709535658; c=relaxed/simple;
+	bh=+6O1b61eegcauwvncVdJAGt41wHdeb1LoXWkjLcqFoE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbXxrGogjKz785tt+KA2AXaUAcWDQwEeu26zZdJHx9whgYmIRGKnhS2b0y7+KwdCEd0zFKCY8OyLFYuoeNV6269QRE3pSF98uQD8/A9LCK51cvkVoJVnJyKs6n08sCqKBwuUu15ziToFnlRw+0GSaUTH6KSelgMnOnnnDBwyyQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxuI2eHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E26C433F1;
+	Mon,  4 Mar 2024 07:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709535318;
-	bh=Jnumcpl2dwYwHQ94B0+kQqUzfHfOjgJJrmesDLe3v2s=;
-	h=Subject:To:Cc:From:Date:From;
-	b=zwszvOfTxIqGIUf6t/02jim5pwRTM/yXeWUTrBa4jJC2kRWgN2pgTfQGCOkUqwS3V
-	 XdnGsn/jbGboDzIlnqlQiftifXRpZGe5viLO+UwjS0deDqnTRVsGcX6gjoYIuBnAFR
-	 nkRfi5pWj/pK6wOaSyD5OLZB1DPUBcFmoY1XXYv4=
-Subject: FAILED: patch "[PATCH] ceph: switch to corrected encoding of max_xattr_size in" failed to apply to 6.1-stable tree
-To: xiubli@redhat.com,idryomov@gmail.com,pdonnell@ibm.com,vshankar@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 07:55:06 +0100
-Message-ID: <2024030406-ambiguity-strict-2ed2@gregkh>
+	s=korg; t=1709535658;
+	bh=+6O1b61eegcauwvncVdJAGt41wHdeb1LoXWkjLcqFoE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UxuI2eHHYYG49CuvPpfxTZ4Lym5ZGcUhVYM77yOxy0x9oL1Q+CbpyB7FXUCq77XyD
+	 LxbM2dHSvTuLkvWcrcx8SBt7yL1lfP6xhMS++RyJyMSqDQgWi8r1BSQNygoB7brDT5
+	 WWHar8t2Qrf1cvtd8e7eiIoJZz2TBZxFvtXK8iks=
+Date: Mon, 4 Mar 2024 07:58:56 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Hans de Goede <hdegoede@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	Eric Piel <eric.piel@tremplin-utc.net>,
+	linux-kernel@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH regression fix] misc: lis3lv02d_i2c: Fix regulators
+ getting en-/dis-abled twice on suspend/resume
+Message-ID: <2024030432-deploy-tingle-f2bb@gregkh>
+References: <20240220190035.53402-1-hdegoede@redhat.com>
+ <1d8226cd-df43-4ef6-8425-2db01d513b32@leemhuis.info>
+ <d2465271-1e4b-4bae-9399-4d49d3938048@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d2465271-1e4b-4bae-9399-4d49d3938048@leemhuis.info>
 
+On Fri, Mar 01, 2024 at 06:20:52AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 27.02.24 17:25, Linux regression tracking (Thorsten Leemhuis) wrote:
+> > On 20.02.24 20:00, Hans de Goede wrote:
+> >> When not configured for wakeup lis3lv02d_i2c_suspend() will call
+> >> lis3lv02d_poweroff() even if the device has already been turned off
+> >> by the runtime-suspend handler and if configured for wakeup and
+> >> the device is runtime-suspended at this point then it is not turned
+> >> back on to serve as a wakeup source.
+> >>
+> >> [...]
+> >>
+> >> Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
+> >> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> >> Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
+> >> Cc: stable@vger.kernel.org
+> >> Cc: regressions@lists.linux.dev
+> > 
+> > Paul, did you maybe test this? I suppose Greg had no time to review this
+> > yet due to all the CVE stuff and stable tree maintenance; but with a bit
+> > of luck a "Tested-by" from your side might motivate him or somebody else
+> > to look into this.
+> 
+> Hmmm, Greg seems to be pretty busy with other stuff. Hans, is there
+> maybe someone we can motivate into reviewing this to make it easier for
+> Greg to pick this up and send it to Linus before -rc8/the final?
+> 
+> Sure, it's "just" a warning fix, still would have been nice to get this
+> into -rc7. But I guess time has already run out on that. :-/
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 51d31149a88b5c5a8d2d33f06df93f6187a25b4c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030406-ambiguity-strict-2ed2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-51d31149a88b ("ceph: switch to corrected encoding of max_xattr_size in mdsmap")
-
-thanks,
+Sorry for the delay, this ended up at the bottom of my pile.  I'll pick
+it up now...
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 51d31149a88b5c5a8d2d33f06df93f6187a25b4c Mon Sep 17 00:00:00 2001
-From: Xiubo Li <xiubli@redhat.com>
-Date: Mon, 19 Feb 2024 13:14:32 +0800
-Subject: [PATCH] ceph: switch to corrected encoding of max_xattr_size in
- mdsmap
-
-The addition of bal_rank_mask with encoding version 17 was merged
-into ceph.git in Oct 2022 and made it into v18.2.0 release normally.
-A few months later, the much delayed addition of max_xattr_size got
-merged, also with encoding version 17, placed before bal_rank_mask
-in the encoding -- but it didn't make v18.2.0 release.
-
-The way this ended up being resolved on the MDS side is that
-bal_rank_mask will continue to be encoded in version 17 while
-max_xattr_size is now encoded in version 18.  This does mean that
-older kernels will misdecode version 17, but this is also true for
-v18.2.0 and v18.2.1 clients in userspace.
-
-The best we can do is backport this adjustment -- see ceph.git
-commit 78abfeaff27fee343fb664db633de5b221699a73 for details.
-
-[ idryomov: changelog ]
-
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/64440
-Fixes: d93231a6bc8a ("ceph: prevent a client from exceeding the MDS maximum xattr size")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Patrick Donnelly <pdonnell@ibm.com>
-Reviewed-by: Venky Shankar <vshankar@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-
-diff --git a/fs/ceph/mdsmap.c b/fs/ceph/mdsmap.c
-index fae97c25ce58..8109aba66e02 100644
---- a/fs/ceph/mdsmap.c
-+++ b/fs/ceph/mdsmap.c
-@@ -380,10 +380,11 @@ struct ceph_mdsmap *ceph_mdsmap_decode(struct ceph_mds_client *mdsc, void **p,
- 		ceph_decode_skip_8(p, end, bad_ext);
- 		/* required_client_features */
- 		ceph_decode_skip_set(p, end, 64, bad_ext);
-+		/* bal_rank_mask */
-+		ceph_decode_skip_string(p, end, bad_ext);
-+	}
-+	if (mdsmap_ev >= 18) {
- 		ceph_decode_64_safe(p, end, m->m_max_xattr_size, bad_ext);
--	} else {
--		/* This forces the usage of the (sync) SETXATTR Op */
--		m->m_max_xattr_size = 0;
- 	}
- bad_ext:
- 	doutc(cl, "m_enabled: %d, m_damaged: %d, m_num_laggy: %d\n",
-diff --git a/fs/ceph/mdsmap.h b/fs/ceph/mdsmap.h
-index 89f1931f1ba6..1f2171dd01bf 100644
---- a/fs/ceph/mdsmap.h
-+++ b/fs/ceph/mdsmap.h
-@@ -27,7 +27,11 @@ struct ceph_mdsmap {
- 	u32 m_session_timeout;          /* seconds */
- 	u32 m_session_autoclose;        /* seconds */
- 	u64 m_max_file_size;
--	u64 m_max_xattr_size;		/* maximum size for xattrs blob */
-+	/*
-+	 * maximum size for xattrs blob.
-+	 * Zeroed by default to force the usage of the (sync) SETXATTR Op.
-+	 */
-+	u64 m_max_xattr_size;
- 	u32 m_max_mds;			/* expected up:active mds number */
- 	u32 m_num_active_mds;		/* actual up:active mds number */
- 	u32 possible_max_rank;		/* possible max rank index */
-
 
