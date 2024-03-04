@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F5D870ED0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315AE870D1D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541801F2397C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614411C2442F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD161675;
-	Mon,  4 Mar 2024 21:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6865B7992E;
+	Mon,  4 Mar 2024 21:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hf/kEH1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYepjdnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2701EB5A;
-	Mon,  4 Mar 2024 21:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235982C689;
+	Mon,  4 Mar 2024 21:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588834; cv=none; b=azHIy/cAUi416iIjHQ/kp8XW/6uo3TKyFAhLb1458ZHb9lPlH1Npax6/CU9vfqBOZjYnwIFF5edbwNTkp5Cu7RZQzs1QIqWmwjEfqWoIUoFlskZdKeP7Y1ppjoy11Vxfytfvf0i3EKPt1ZdZdH752Ic4770lDo331oRyGqJu9Zc=
+	t=1709587850; cv=none; b=d6LUyr1aQmah55GM0UCeC9E1nuhUig5o8go8JJl9O1Q4R6ZpSET4cMiUNK94hoMnTr/5UmfuQfoT8N1M6Uq638fex8KTkhX9MxaGnh8rK4NsegiX2PtibRNFWpXWWkMNstK/tF6Pw3BNfSF3zJmd00SQ/a+SwgMlRKVld7bn+4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588834; c=relaxed/simple;
-	bh=ptbw0RnhEqYhe/lEyeYytxKmnRVdG/VV4Yqz1jelRFs=;
+	s=arc-20240116; t=1709587850; c=relaxed/simple;
+	bh=xjxSSIbESFa5LgeDFWCwewUHd8SLBJhbVPJW/aF8HSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eypwqqNpAEcEP6dCA434Koyr6dCZjFy8NPZDx4CjwFcMUSYhfJT0l7osxUdx4iy1w5abCEkUuHBJ4ozPZV0ZTBlP8sV60DBc67+SihmWts2Zmv+XjPIdoZnycQlSMmM4cP6vzENFd3n4tFyAZRaUAcCRVtBFEPSdpLmo3xYXFWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hf/kEH1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C935C433F1;
-	Mon,  4 Mar 2024 21:47:13 +0000 (UTC)
+	 MIME-Version; b=cg0TTuZmTElHaOZ7U7hrhen55/Ju2BH0hW/X55nKn+ygD87Qmp+V7KUY47XGzYR2l5RA+7CH/iFZTY2RuZLjgZd1NwoLrdJzNzA1dUev8iOBp3u5DHSXKxtMDZ+PfaSul0qEKIDgsW5+2rddSZLEGcP+OBRhRcE2YUE+GAi5MeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYepjdnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A87C433F1;
+	Mon,  4 Mar 2024 21:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588834;
-	bh=ptbw0RnhEqYhe/lEyeYytxKmnRVdG/VV4Yqz1jelRFs=;
+	s=korg; t=1709587850;
+	bh=xjxSSIbESFa5LgeDFWCwewUHd8SLBJhbVPJW/aF8HSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hf/kEH1JitQhE8jNdmgJutX3Lc4KaFxo7fA+XOC/rFNj19ttt3qzadg1BzK5pD9f5
-	 OvTxrh6+KgmkvkIrR4svzbBUtpH5skua/o7tWgiOpZvJVdgiChEFEsr2fET/BPiaJ0
-	 0zgfZumDtGEEHSeITRlLw2zDeEulVQv5RdDqCbYA=
+	b=mYepjdnvxJjsyrpCE8rnwR4JZ3uqnVSYBet609Q8wsuxIGdp1o9pqPgjIjnRdVc5N
+	 lNfUk9y12OiUIPrIbB7a4mqQxAqiB9D56KKFOkh9/UzWhxKBKujnxRfcFlUz1mXCz7
+	 4qfQJH0kR7jgrYctjr6UOPY+aNvOcqoRhgjZSqF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 114/215] x86/boot/compressed: Move efi32_entry out of head_64.S
-Date: Mon,  4 Mar 2024 21:22:57 +0000
-Message-ID: <20240304211600.661884232@linuxfoundation.org>
+	Tim Schumacher <timschumi@gmx.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.7 113/162] efivarfs: Request at most 512 bytes for variable names
+Date: Mon,  4 Mar 2024 21:22:58 +0000
+Message-ID: <20240304211555.395376674@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Tim Schumacher <timschumi@gmx.de>
 
-commit 73a6dec80e2acedaef3ca603d4b5799049f6e9f8 upstream.
+commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
 
-Move the efi32_entry() routine out of head_64.S and into efi-mixed.S,
-which reduces clutter in the complicated startup routines. It also
-permits linkage of some symbols used by code to be made local.
+Work around a quirk in a few old (2011-ish) UEFI implementations, where
+a call to `GetNextVariableName` with a buffer size larger than 512 bytes
+will always return EFI_INVALID_PARAMETER.
 
+There is some lore around EFI variable names being up to 1024 bytes in
+size, but this has no basis in the UEFI specification, and the upper
+bounds are typically platform specific, and apply to the entire variable
+(name plus payload).
+
+Given that Linux does not permit creating files with names longer than
+NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
+reasonable limit.
+
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Tim Schumacher <timschumi@gmx.de>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-6-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |   57 ++++++++++++++++++++++++++++-------
- arch/x86/boot/compressed/head_64.S   |   45 ---------------------------
- 2 files changed, 47 insertions(+), 55 deletions(-)
+ fs/efivarfs/vars.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -105,7 +105,7 @@ SYM_FUNC_START(__efi64_thunk)
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -372,7 +372,7 @@ static void dup_variable_bug(efi_char16_
+ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 		void *data, bool duplicates, struct list_head *head)
+ {
+-	unsigned long variable_name_size = 1024;
++	unsigned long variable_name_size = 512;
+ 	efi_char16_t *variable_name;
+ 	efi_status_t status;
+ 	efi_guid_t vendor_guid;
+@@ -389,12 +389,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 		goto free;
+ 
  	/*
- 	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
- 	 * and IDT that was installed when the kernel started executing. The
--	 * pointers were saved at the EFI stub entry point in head_64.S.
-+	 * pointers were saved by the efi32_entry() routine below.
- 	 *
- 	 * Pass the saved DS selector to the 32-bit code, and use far return to
- 	 * restore the saved CS selector.
-@@ -217,22 +217,59 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	lret
- SYM_FUNC_END(efi_enter32)
+-	 * Per EFI spec, the maximum storage allocated for both
+-	 * the variable name and variable data is 1024 bytes.
++	 * A small set of old UEFI implementations reject sizes
++	 * above a certain threshold, the lowest seen in the wild
++	 * is 512.
+ 	 */
  
-+/*
-+ * This is the common EFI stub entry point for mixed mode.
-+ *
-+ * Arguments:	%ecx	image handle
-+ * 		%edx	EFI system table pointer
-+ *		%esi	struct bootparams pointer (or NULL when not using
-+ *			the EFI handover protocol)
-+ *
-+ * Since this is the point of no return for ordinary execution, no registers
-+ * are considered live except for the function parameters. [Note that the EFI
-+ * stub may still exit and return to the firmware using the Exit() EFI boot
-+ * service.]
-+ */
-+SYM_FUNC_START(efi32_entry)
-+	call	1f
-+1:	pop	%ebx
-+
-+	/* Save firmware GDTR and code/data selectors */
-+	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
-+	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
-+	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
-+
-+	/* Store firmware IDT descriptor */
-+	sidtl	(efi32_boot_idt - 1b)(%ebx)
-+
-+	/* Store boot arguments */
-+	leal	(efi32_boot_args - 1b)(%ebx), %ebx
-+	movl	%ecx, 0(%ebx)
-+	movl	%edx, 4(%ebx)
-+	movl	%esi, 8(%ebx)
-+	movb	$0x0, 12(%ebx)          // efi_is64
-+
-+	/* Disable paging */
-+	movl	%cr0, %eax
-+	btrl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+
-+	jmp	startup_32
-+SYM_FUNC_END(efi32_entry)
-+
- 	.data
- 	.balign	8
--SYM_DATA_START(efi32_boot_gdt)
-+SYM_DATA_START_LOCAL(efi32_boot_gdt)
- 	.word	0
- 	.quad	0
- SYM_DATA_END(efi32_boot_gdt)
+ 	do {
+-		variable_name_size = 1024;
++		variable_name_size = 512;
  
--SYM_DATA_START(efi32_boot_idt)
-+SYM_DATA_START_LOCAL(efi32_boot_idt)
- 	.word	0
- 	.quad	0
- SYM_DATA_END(efi32_boot_idt)
- 
--SYM_DATA_START(efi32_boot_cs)
--	.word	0
--SYM_DATA_END(efi32_boot_cs)
--
--SYM_DATA_START(efi32_boot_ds)
--	.word	0
--SYM_DATA_END(efi32_boot_ds)
-+SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
-+SYM_DATA(efi_is64, .byte 1)
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -289,48 +289,6 @@ SYM_FUNC_START(efi32_stub_entry)
- 	popl	%esi
- 	jmp	efi32_entry
- SYM_FUNC_END(efi32_stub_entry)
--
--	.text
--/*
-- * This is the common EFI stub entry point for mixed mode.
-- *
-- * Arguments:	%ecx	image handle
-- * 		%edx	EFI system table pointer
-- *		%esi	struct bootparams pointer (or NULL when not using
-- *			the EFI handover protocol)
-- *
-- * Since this is the point of no return for ordinary execution, no registers
-- * are considered live except for the function parameters. [Note that the EFI
-- * stub may still exit and return to the firmware using the Exit() EFI boot
-- * service.]
-- */
--SYM_FUNC_START_LOCAL(efi32_entry)
--	call	1f
--1:	pop	%ebx
--
--	/* Save firmware GDTR and code/data selectors */
--	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
--	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
--	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
--
--	/* Store firmware IDT descriptor */
--	sidtl	(efi32_boot_idt - 1b)(%ebx)
--
--	/* Store boot arguments */
--	leal	(efi32_boot_args - 1b)(%ebx), %ebx
--	movl	%ecx, 0(%ebx)
--	movl	%edx, 4(%ebx)
--	movl	%esi, 8(%ebx)
--	movb	$0x0, 12(%ebx)          // efi_is64
--
--	/* Disable paging */
--	movl	%cr0, %eax
--	btrl	$X86_CR0_PG_BIT, %eax
--	movl	%eax, %cr0
--
--	jmp	startup_32
--SYM_FUNC_END(efi32_entry)
--	__HEAD
- #endif
- 
- 	.code64
-@@ -779,9 +737,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
- SYM_DATA(image_offset, .long 0)
- #endif
- #ifdef CONFIG_EFI_MIXED
--SYM_DATA(efi32_boot_args, .long 0, 0, 0)
--SYM_DATA(efi_is64, .byte 1)
--
- #define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
- #define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
- #define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
+ 		status = efivar_get_next_variable(&variable_name_size,
+ 						  variable_name,
+@@ -431,9 +432,13 @@ int efivar_init(int (*func)(efi_char16_t
+ 			break;
+ 		case EFI_NOT_FOUND:
+ 			break;
++		case EFI_BUFFER_TOO_SMALL:
++			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
++				variable_name_size);
++			status = EFI_NOT_FOUND;
++			break;
+ 		default:
+-			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
+-				status);
++			pr_warn("efivars: get_next_variable: status=%lx\n", status);
+ 			status = EFI_NOT_FOUND;
+ 			break;
+ 		}
 
 
 
