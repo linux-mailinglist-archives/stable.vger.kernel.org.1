@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-26003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64237870C85
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C80870CB3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F08FDB24E7C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D570C288FDA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0426C7A736;
-	Mon,  4 Mar 2024 21:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BECD7C08B;
+	Mon,  4 Mar 2024 21:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXHBxQqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSIwQCVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60B27994A;
-	Mon,  4 Mar 2024 21:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA157BAE6;
+	Mon,  4 Mar 2024 21:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587591; cv=none; b=fEZBfYZNPbC3v5dYqi0/mirIRaP0yk7O+Mor5y//0zCBcvUhVoDx+zd9agrQqEw1R5fEBzR3W4MtdfIkt6Cm6nzoaJckuW8MMNJuxOx4hQ1f2yVHOdehGFHi9IlbxI1BQOrDDhgmv05Vc43JSL0DUUEWFWMxco+6hufcWKtnGG4=
+	t=1709587665; cv=none; b=R6IOJ2xDeq5M2leA8yKa5E22KlxkUJ4P7uTc1DOEKk+hi8cK9404Nh7FtEMjmW3BJfM42Dpd3W9Jt1MCGamAfYtGwJ5tGBqt2ymvq8HCNxTDEbASN9PvZfPSdLozCWGyurBBJEzqzYnH0Amjepm66aytJybZ7m9kidn8P0BZu+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587591; c=relaxed/simple;
-	bh=Yy4ksJBnad2P4DFIerOIZXziqoSSBaZGg/HStVAm4ew=;
+	s=arc-20240116; t=1709587665; c=relaxed/simple;
+	bh=obur7sMhlZOaBv72BMP+9u0eFnuWTQXJSRmOskCCv2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBSDg50sRsdHKWk68OofnxoGFlZ2C4NA36EiqAlVS3eSpZml+soLzp0VNfWtaCN50/FYLbd3VLHs5mtSxvFUkm8+VwqRwByaKQZpd3R/H+zOJW/6i4PKYncWo2h4SQtCth6MmHJMtmWrQQdVmo+a72G7lUfXDFZBYau/Bju1nig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXHBxQqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401B5C43390;
-	Mon,  4 Mar 2024 21:26:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hr5Kfh4tpTPPb/j5cBMRXIyhBwSSz+qdVma9sHgXTsS7mVtTVjTLw8M105OdSWQaBeJd3szXTdz+y8NBfCnLQskVL7CRnBtPCSlmBdyge+uNuz72MVJlOnqY0NDwp+F4LC5E+N1vxFuWm+45ouYHPJ65Qbk2P0PxsVKntB/8ieo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSIwQCVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C85C43390;
+	Mon,  4 Mar 2024 21:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587591;
-	bh=Yy4ksJBnad2P4DFIerOIZXziqoSSBaZGg/HStVAm4ew=;
+	s=korg; t=1709587664;
+	bh=obur7sMhlZOaBv72BMP+9u0eFnuWTQXJSRmOskCCv2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXHBxQqp4o47Z/a1Vh/G1FOnAZ0hfu3uMnOhUvaaGfDPt1ulEzlTcj/pNk+7kTgFP
-	 1VdDKoFyyA2W1LX7Z5fm8RRGWPX7xDRKrwUWLGRP7bSQqa17Mm6r+gDyaJJ80TH/cg
-	 XwYBTU70wDry6aPMVD4i4hCeWnPsUTnFIK81jgRg=
+	b=FSIwQCVPdI4DdBjHTCKZj/9QJMJiKpg4f0WLXHZvspr+btKhxXUJeEBv9mjWVx9+Q
+	 hCVE4kl1CgRkrvScbCs0GV+kpFNPZTfQ2krQc22yxIti3xy/+5ctlXBOdqZp3u8ICx
+	 kpzLk4PCCbBAS1cF9Qc9FaTngbilvk7Wwy3aTckA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Bagnucki <igor.bagnucki@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.7 007/162] ice: fix pin phase adjust updates on PF reset
-Date: Mon,  4 Mar 2024 21:21:12 +0000
-Message-ID: <20240304211552.070585503@linuxfoundation.org>
+	Dhruva Gole <d-gole@ti.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 008/162] spi: cadence-qspi: fix pointer reference in runtime PM hooks
+Date: Mon,  4 Mar 2024 21:21:13 +0000
+Message-ID: <20240304211552.096332848@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
 References: <20240304211551.833500257@linuxfoundation.org>
@@ -62,54 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit ee89921da471edcb4b1e67f5bbfedddf39749782 ]
+[ Upstream commit 32ce3bb57b6b402de2aec1012511e7ac4e7449dc ]
 
-Do not allow to set phase adjust value for a pin if PF reset is in
-progress, this would cause confusing netlink extack errors as the firmware
-cannot process the request properly during the reset time.
+dev_get_drvdata() gets used to acquire the pointer to cqspi and the SPI
+controller. Neither embed the other; this lead to memory corruption.
 
-Return (-EBUSY) and report extack error for the user who tries configure
-pin phase adjust during the reset time.
+On a given platform (Mobileye EyeQ5) the memory corruption is hidden
+inside cqspi->f_pdata. Also, this uninitialised memory is used as a
+mutex (ctlr->bus_lock_mutex) by spi_controller_suspend().
 
-Test by looping execution of below steps until netlink error appears:
-- perform PF reset
-$ echo 1 > /sys/class/net/<ice PF>/device/reset
-- change pin phase adjust value:
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/dpll.yaml \
-	--do pin-set --json '{"id":0, "phase-adjust":1000}'
-
-Fixes: 90e1c90750d7 ("ice: dpll: implement phase related callbacks")
-Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 2087e85bb66e ("spi: cadence-quadspi: fix suspend-resume implementations")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://msgid.link/r/20240222-cdns-qspi-pm-fix-v4-1-6b6af8bcbf59@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index bcb9b9c13aabc..2b657d43c769d 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -988,6 +988,9 @@ ice_dpll_pin_phase_adjust_set(const struct dpll_pin *pin, void *pin_priv,
- 	u8 flag, flags_en = 0;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index f94e0d370d466..0d184d65dce76 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1930,10 +1930,9 @@ static void cqspi_remove(struct platform_device *pdev)
+ static int cqspi_suspend(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_controller *host = dev_get_drvdata(dev);
  	int ret;
  
-+	if (ice_dpll_is_reset(pf, extack))
-+		return -EBUSY;
-+
- 	mutex_lock(&pf->dplls.lock);
- 	switch (type) {
- 	case ICE_DPLL_PIN_TYPE_INPUT:
+-	ret = spi_controller_suspend(host);
++	ret = spi_controller_suspend(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
+ 
+ 	clk_disable_unprepare(cqspi->clk);
+@@ -1944,7 +1943,6 @@ static int cqspi_suspend(struct device *dev)
+ static int cqspi_resume(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	struct spi_controller *host = dev_get_drvdata(dev);
+ 
+ 	clk_prepare_enable(cqspi->clk);
+ 	cqspi_wait_idle(cqspi);
+@@ -1953,7 +1951,7 @@ static int cqspi_resume(struct device *dev)
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
+ 
+-	return spi_controller_resume(host);
++	return spi_controller_resume(cqspi->host);
+ }
+ 
+ static DEFINE_RUNTIME_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend,
 -- 
 2.43.0
 
