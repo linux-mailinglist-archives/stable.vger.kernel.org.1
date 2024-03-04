@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D74B870CE7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2AD870DBD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95121F23497
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AE95B275B1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D19A3D0BA;
-	Mon,  4 Mar 2024 21:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9043C79DCA;
+	Mon,  4 Mar 2024 21:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm75f8RF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5vUdGXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6571EB5A;
-	Mon,  4 Mar 2024 21:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F23947A5D;
+	Mon,  4 Mar 2024 21:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587774; cv=none; b=jYKsVb4j5nBTaRH7pw4Dt+jyu7bIVVhvBEzWWY40WSYUqFN/ncvk2UwY3oVFdIHvaUe249v3huY2PKDR3etWu75Who5KbN1mD9wrCUlB/xXAm/EoAzds3JFY7WNGEtuypqKYOe22cy8eHr6ih09B+WaFAbwOHtB5FMdbbf+gmDs=
+	t=1709588232; cv=none; b=m6bla3GP5ag5W185OhPeiQVpZmFHhgu2nEMbCQdx4Qq/6S/VT/WlwHH3r4unJQ9jHMkrp1lCCg015hdWp6XREaSy/hg3ZXlXTHz25/odQvzCr5ru025RpSBF4dISSQ69etATPIYwcemc3egiBDvg4iK59J+kEGew9CPOEwkR8K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587774; c=relaxed/simple;
-	bh=KP3XmIs45Y1Odvl4JVdg6/JEMu2gMaDSQOXWwJByXbo=;
+	s=arc-20240116; t=1709588232; c=relaxed/simple;
+	bh=oUgmHhm3RnwkEsNCWrkRPh3AQtj3TpnyZdsrYrVa3A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtYAHD8fWmV+pGHmQ5g9InEoPt9ksNjmpi7Wl4Pfijj4xm5QCvwojvx6sYzQ6O4NELVJQ0L+mcLbxuR1yUDriyOx/OVsbbzA3Ci6OzqE7JFr/W8NniJl5gqUTJKam88M4gS47LHB83yKFwdxjoYfmGxzja6Jbfwa1KL3mp/7cWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm75f8RF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10DCC433C7;
-	Mon,  4 Mar 2024 21:29:33 +0000 (UTC)
+	 MIME-Version; b=WPmeu/v7hssQAHKGeAYPa3i5/IAm/d6OVIrck6hz7sVLeWD4UUsUFmv94W7+cCuXs/7vr3L+VoTnm0T7RDuNY43ydUbna5RZUewUX8Bpmhq2DgrKEWaePZQK39b2wo608rx7LN8hWweGQK8EQClQrylRL+NrA4DH0oTQJ7zG5xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5vUdGXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21ACC43394;
+	Mon,  4 Mar 2024 21:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587774;
-	bh=KP3XmIs45Y1Odvl4JVdg6/JEMu2gMaDSQOXWwJByXbo=;
+	s=korg; t=1709588232;
+	bh=oUgmHhm3RnwkEsNCWrkRPh3AQtj3TpnyZdsrYrVa3A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mm75f8RFZrDRsm/xVB+ljVuFuP8GuhcmCOwr9JlKPBO0hLPbGiARpgJYQsEd/sFgx
-	 OogNfTWFlEc7xIyZ4UGF+pD5fNxdtoELm21z0HV6cPHRk1QpHA6w5i2vKZPaF5zjWw
-	 f7s5pu0ONzt3S/Aj5+cHkvQZU7UnzGgf8ZIi74As=
+	b=q5vUdGXoPN/AFkD3pbIJBiruH9ucPabIDZZrlTPk1EGCKfAqmEKzOKKzdK/D5dK/1
+	 YygKcmAyGz0hH1YuuBNosfNmpkO9hQPorUQAx01Af0JGUNm83o0tCw2faTn8opCilL
+	 7K+DDsmyucQ3Ibn/29b8DED2MoBopTkmH+tCi8C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 084/162] mm: cachestat: fix folio read-after-free in cache walk
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/143] Bluetooth: qca: Fix wrong event type for patch config command
 Date: Mon,  4 Mar 2024 21:22:29 +0000
-Message-ID: <20240304211554.519570504@linuxfoundation.org>
+Message-ID: <20240304211550.872484864@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nhat Pham <nphamcs@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 3a75cb05d53f4a6823a32deb078de1366954a804 upstream.
+[ Upstream commit c0dbc56077ae759f2dd602c7561480bc2b1b712c ]
 
-In cachestat, we access the folio from the page cache's xarray to compute
-its page offset, and check for its dirty and writeback flags.  However, we
-do not hold a reference to the folio before performing these actions,
-which means the folio can concurrently be released and reused as another
-folio/page/slab.
+Vendor-specific command patch config has HCI_Command_Complete event as
+response, but qca_send_patch_config_cmd() wrongly expects vendor-specific
+event for the command, fixed by using right event type.
 
-Get around this altogether by just using xarray's existing machinery for
-the folio page offsets and dirty/writeback states.
+Btmon log for the vendor-specific command are shown below:
+< HCI Command: Vendor (0x3f|0x0000) plen 5
+        28 01 00 00 00
+> HCI Event: Command Complete (0x0e) plen 5
+      Vendor (0x3f|0x0000) ncmd 1
+        Status: Success (0x00)
+        28
 
-This changes behavior for tmpfs files to now always report zeroes in their
-dirty and writeback counters.  This is okay as tmpfs doesn't follow
-conventional writeback cache behavior: its pages get "cleaned" during
-swapout, after which they're no longer resident etc.
-
-Link: https://lkml.kernel.org/r/20240220153409.GA216065@cmpxchg.org
-Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-Reported-by: Jann Horn <jannh@google.com>
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Tested-by: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>	[6.4+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4fac8a7ac80b ("Bluetooth: btqca: sequential validation")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |   51 ++++++++++++++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 25 deletions(-)
+ drivers/bluetooth/btqca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4108,28 +4108,40 @@ static void filemap_cachestat(struct add
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 5a35ac4138c6c..0211f704a358b 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -152,7 +152,7 @@ static int qca_send_patch_config_cmd(struct hci_dev *hdev)
+ 	bt_dev_dbg(hdev, "QCA Patch config");
  
- 	rcu_read_lock();
- 	xas_for_each(&xas, folio, last_index) {
-+		int order;
- 		unsigned long nr_pages;
- 		pgoff_t folio_first_index, folio_last_index;
- 
-+		/*
-+		 * Don't deref the folio. It is not pinned, and might
-+		 * get freed (and reused) underneath us.
-+		 *
-+		 * We *could* pin it, but that would be expensive for
-+		 * what should be a fast and lightweight syscall.
-+		 *
-+		 * Instead, derive all information of interest from
-+		 * the rcu-protected xarray.
-+		 */
-+
- 		if (xas_retry(&xas, folio))
- 			continue;
- 
-+		order = xa_get_order(xas.xa, xas.xa_index);
-+		nr_pages = 1 << order;
-+		folio_first_index = round_down(xas.xa_index, 1 << order);
-+		folio_last_index = folio_first_index + nr_pages - 1;
-+
-+		/* Folios might straddle the range boundaries, only count covered pages */
-+		if (folio_first_index < first_index)
-+			nr_pages -= first_index - folio_first_index;
-+
-+		if (folio_last_index > last_index)
-+			nr_pages -= folio_last_index - last_index;
-+
- 		if (xa_is_value(folio)) {
- 			/* page is evicted */
- 			void *shadow = (void *)folio;
- 			bool workingset; /* not used */
--			int order = xa_get_order(xas.xa, xas.xa_index);
--
--			nr_pages = 1 << order;
--			folio_first_index = round_down(xas.xa_index, 1 << order);
--			folio_last_index = folio_first_index + nr_pages - 1;
--
--			/* Folios might straddle the range boundaries, only count covered pages */
--			if (folio_first_index < first_index)
--				nr_pages -= first_index - folio_first_index;
--
--			if (folio_last_index > last_index)
--				nr_pages -= folio_last_index - last_index;
- 
- 			cs->nr_evicted += nr_pages;
- 
-@@ -4147,24 +4159,13 @@ static void filemap_cachestat(struct add
- 			goto resched;
- 		}
- 
--		nr_pages = folio_nr_pages(folio);
--		folio_first_index = folio_pgoff(folio);
--		folio_last_index = folio_first_index + nr_pages - 1;
--
--		/* Folios might straddle the range boundaries, only count covered pages */
--		if (folio_first_index < first_index)
--			nr_pages -= first_index - folio_first_index;
--
--		if (folio_last_index > last_index)
--			nr_pages -= folio_last_index - last_index;
--
- 		/* page is in cache */
- 		cs->nr_cache += nr_pages;
- 
--		if (folio_test_dirty(folio))
-+		if (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY))
- 			cs->nr_dirty += nr_pages;
- 
--		if (folio_test_writeback(folio))
-+		if (xas_get_mark(&xas, PAGECACHE_TAG_WRITEBACK))
- 			cs->nr_writeback += nr_pages;
- 
- resched:
+ 	skb = __hci_cmd_sync_ev(hdev, EDL_PATCH_CMD_OPCODE, sizeof(cmd),
+-				cmd, HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
++				cmd, 0, HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		err = PTR_ERR(skb);
+ 		bt_dev_err(hdev, "Sending QCA Patch config failed (%d)", err);
+-- 
+2.43.0
+
 
 
 
