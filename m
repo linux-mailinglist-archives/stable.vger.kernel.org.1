@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68DA870DEA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204CD870D44
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724AD28453E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB0F28E2CD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241D21F92C;
-	Mon,  4 Mar 2024 21:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A17BAFB;
+	Mon,  4 Mar 2024 21:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgP3Uj0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSbJNW1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78B88F58;
-	Mon,  4 Mar 2024 21:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76D57BAF0;
+	Mon,  4 Mar 2024 21:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588339; cv=none; b=Tm4qOiWaJQ0duJni91dooQdDKmjKQTu11SXMhrIpFoiF8Cui1pq4Tg5sJnQSXj0LMmrf5+Jjwd+/ZnlNHfbh2OW3CMxoTEcb6JueejIrR8tUZ9aAFCe5bZMWYH7bMKCrbmt3A5dGY2w+KK4jzAwHF2pTQw8oZdPmDJcwnHXKVro=
+	t=1709587941; cv=none; b=eWcgJfGaPMVpvT6IhVuOiMa6p/4SyzOZeI/CORi37nmTRtTRCCeOt7V3WKORCcshzTzUd75OdjA5qxtQRbn7nfuyc6O+ZvAvG3gx/cScIvy/saj2r4DdFFZ4yd3ivR3urbVcQeNRhCuX+smGx/s+xnXJI/8CeM32NuDgXSMn2x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588339; c=relaxed/simple;
-	bh=RhIZoUJYThtrfGeTNG1aZgqsuQT8JkLl4Swf3Jpr0KU=;
+	s=arc-20240116; t=1709587941; c=relaxed/simple;
+	bh=OVA0+2XrB5nLxXZNxoFORCzWCLWIeZ2lCc++BmMjVCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USxssyl+Q/q39x2GKY2IGkUlZlOB6z0+bFkMGd4PWT46EV+GQocMdhy8GS0hRHMpz11jzlQKjxhk8iR0j9oY4NhWfpPBXxkBCp2sj613U3k/3BKzoj4f95vFyxOmvq01VM1FRLWW+bhdoqyHPuNuRoelK+AnFP5Fc/+op8dhtQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgP3Uj0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EE6C433F1;
-	Mon,  4 Mar 2024 21:38:59 +0000 (UTC)
+	 MIME-Version; b=daqxf3ZMZulMZWwE1Ie6kI3Jwd8sV1yRVN8fSCzcSwSPzDBgP/8WR0fIg/qn4nVsiyRPmX1aSCc4qgyXuIXHPumt0dBxI88sDLR6Lhfs88VsS78qW7XW35QrFmg1Q2n1Zi4hFP9VCMao73ddNRESEpkzI04vmIwj5NMv7veBrxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSbJNW1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C39AC433C7;
+	Mon,  4 Mar 2024 21:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588339;
-	bh=RhIZoUJYThtrfGeTNG1aZgqsuQT8JkLl4Swf3Jpr0KU=;
+	s=korg; t=1709587940;
+	bh=OVA0+2XrB5nLxXZNxoFORCzWCLWIeZ2lCc++BmMjVCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JgP3Uj0w1It4VXamiRvbbPGgS/g5D+ZWTgIa2HytbDkz40DUlvLBmmw2KqRIkSIN6
-	 gsXGsUnEvNsNJg116WWvsEve85bfxf5TPr5jlaQFdAhWlqGC4ZUxERw3e8yqUp52FH
-	 IBCuji2zDlF9w8NyXF0CEstVfUz3Pa08hqlOXfGM=
+	b=NSbJNW1TJvkN7bw/yXtlb6m8gNI7L5DoJ5Ogk1P0ml8PDnU7LRUJkAPOgn20wm4UP
+	 7KgrYzbwJbkZihxJT3GHRn9Cr5XYSCu+l3GAp69esJ2pFae83EuDIfwTaM5OqwWKvd
+	 TOKFO0ehUpMunKUtVPUy0Zt4zXHpKSxQjGyT4lQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 069/143] ALSA: firewire-lib: fix to check cycle continuity
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 124/162] mptcp: push at DSS boundaries
 Date: Mon,  4 Mar 2024 21:23:09 +0000
-Message-ID: <20240304211552.132317999@linuxfoundation.org>
+Message-ID: <20240304211555.717506695@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 77ce96543b03f437c6b45f286d8110db2b6622a3 upstream.
+commit b9cd26f640a308ea314ad23532de9a8592cd09d2 upstream.
 
-The local helper function to compare the given pair of cycle count
-evaluates them. If the left value is less than the right value, the
-function returns negative value.
+when inserting not contiguous data in the subflow write queue,
+the protocol creates a new skb and prevent the TCP stack from
+merging it later with already queued skbs by setting the EOR marker.
 
-If the safe cycle is less than the current cycle, it is the case of
-cycle lost. However, it is not currently handled properly.
+Still no push flag is explicitly set at the end of previous GSO
+packet, making the aggregation on the receiver side sub-optimal -
+and packetdrill self-tests less predictable.
 
-This commit fixes the bug.
+Explicitly mark the end of not contiguous DSS with the push flag.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://lore.kernel.org/r/20240218033026.72577-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6d0060f600ad ("mptcp: Write MPTCP DSS headers to outgoing data packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-4-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -951,7 +951,7 @@ static int generate_tx_packet_descs(stru
- 				// to the reason.
- 				unsigned int safe_cycle = increment_ohci_cycle_count(next_cycle,
- 								IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES);
--				lost = (compare_ohci_cycle_count(safe_cycle, cycle) > 0);
-+				lost = (compare_ohci_cycle_count(safe_cycle, cycle) < 0);
- 			}
- 			if (lost) {
- 				dev_err(&s->unit->device, "Detect discontinuity of cycle: %d %d\n",
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1274,6 +1274,7 @@ static int mptcp_sendmsg_frag(struct soc
+ 		mpext = mptcp_get_ext(skb);
+ 		if (!mptcp_skb_can_collapse_to(data_seq, skb, mpext)) {
+ 			TCP_SKB_CB(skb)->eor = 1;
++			tcp_mark_push(tcp_sk(ssk), skb);
+ 			goto alloc_skb;
+ 		}
+ 
 
 
 
