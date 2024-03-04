@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FF9870D80
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321A3870EFB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B641C20E91
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD80280BE3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603FB7A70D;
-	Mon,  4 Mar 2024 21:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9598F7868F;
+	Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCsbF8AO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkGdKcOv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101FF78B4C;
-	Mon,  4 Mar 2024 21:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3E1EB5A;
+	Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588081; cv=none; b=WwW00jRoAmY4CkN/C/+XHaFRaNUj4osBYe2X76SBKaY5HhSGaj7UySXiesRQ73dYpEzw6mGzB6gH9SMdNjKYNhg2bCkjkCV/TfFVwfOKbjKNOhp0M4FaX8LFTM8xp57M/XenQChHzssPyAnC/1Z6R4Oz7siMjMQ0A6vwyOMuwkI=
+	t=1709588986; cv=none; b=Amp9I8jxyKiJy2e/00frdxNhjBAX2dZQrXtnYRm5O02NJ10Qd9vZtEnaam0SF9XHWDoJlc0C3Iwk/mQ8PdREXCqKyQi4J3oxd50Rwh9SFwr9s3GlhV73V4l+iLSlajNnFwl9xL56DE84fIOXHInRiike2KPoBvHpRd8iUxYCEcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588081; c=relaxed/simple;
-	bh=N1Ktf2iYkTxGgVWnoxZaJ8sIoE9rVkeKcRuhl78F3i4=;
+	s=arc-20240116; t=1709588986; c=relaxed/simple;
+	bh=G3/zD0RvUt+GwNVpCiqANitI+a4u6d/19WqKy2GMl0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/XPZORTFUifqTpg0ViPmireFJV+01D8uQ5AgNpS4X1IQC4fCWoKzPGwGoAsMaVl6Cd8nedeLoSCrJKUtAB9p9rfr/ip8rp54Wzz4M4343Fb5iR6I9voZXQZCgPY4sQAJHJ3CFOD2gN7bQsMdGhKMCIqfdP9qTZAjnWYRgpN/Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCsbF8AO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F695C433C7;
-	Mon,  4 Mar 2024 21:34:40 +0000 (UTC)
+	 MIME-Version; b=tTD4nvnVkgcN6xZGPXEU/2O+jH13rbqh7Aaq6kgXpVwc6Ma2+t/1KJz1XHTE9SvdOfrP2bfxmhWX8EmHvaW1kFky8TjcV7QAD5zsja7k8vRfSZztHMT1mnOT9J690D0RTH8LqUJQYDLj5H3akKt56QqI96BI8pntRD/xMpzcNrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkGdKcOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0C5C433C7;
+	Mon,  4 Mar 2024 21:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588080;
-	bh=N1Ktf2iYkTxGgVWnoxZaJ8sIoE9rVkeKcRuhl78F3i4=;
+	s=korg; t=1709588986;
+	bh=G3/zD0RvUt+GwNVpCiqANitI+a4u6d/19WqKy2GMl0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCsbF8AODy3Hl6Qn0dfeX8fuxxa+La/QAnn0j8OSPiZZAg1f0rXiym34B/GT7boBk
-	 G/NDTX2vDMXyUeFi4IanIO/8CM2BWE/wT3xqf8RtkZ32y1ASmHg7DIrL3ODllVm3xj
-	 ct2TPwioNlfs6thpdYdecKBEMIuZ4oCyFfCE69aI=
+	b=VkGdKcOv5TgDXhRuzM0SAD0oANWYERrJb+pHSEwD3DS3Ggua/ogMVy4B0gRg3Vm7p
+	 i1hljgg9MKu3Y4Sh85TTkHusl2Zy7m+wWSrVHy+nwxPPn413swhnyaJzjQgmRLoLRf
+	 bmHkK2zDig7OAJkL3F25I1gb1JPIjMx2trP6/hZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/42] Bluetooth: Enforce validation on max value of connection interval
+	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 158/215] NFSD: Refactor find_file()
 Date: Mon,  4 Mar 2024 21:23:41 +0000
-Message-ID: <20240304211538.123171501@linuxfoundation.org>
+Message-ID: <20240304211602.011227934@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
+[ Upstream commit 15424748001a9b5ea62b3e6ad45f0a8b27f01df9 ]
 
-Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
-'Connection Parameter Update Procedure Invalid Parameters Central
-Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
+find_file() is now the only caller of find_file_locked(), so just
+fold these two together.
 
-That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
-connection interval updates"), but later got reverted due to devices
-like keyboards and mice may require low connection interval.
-
-So only validate the max value connection interval to pass the Test
-Suite, and let devices to request low connection interval if needed.
-
-[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
-
-Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c  | 4 ++++
- net/bluetooth/l2cap_core.c | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |   36 +++++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index ea25bb31b336a..47f37080c0c55 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5925,6 +5925,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev,
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_UNKNOWN_CONN_ID);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4683,31 +4683,24 @@ move_to_close_lru(struct nfs4_ol_stateid
+ 		nfs4_put_stid(&last->st_stid);
+ }
  
-+	if (max > hcon->le_conn_max_interval)
-+		return send_conn_param_neg_reply(hdev, handle,
-+						 HCI_ERROR_INVALID_LL_PARAMS);
+-/* search file_hashtbl[] for file */
+-static struct nfs4_file *
+-find_file_locked(const struct svc_fh *fh, unsigned int hashval)
++static noinline_for_stack struct nfs4_file *
++nfsd4_file_hash_lookup(const struct svc_fh *fhp)
+ {
+-	struct nfs4_file *fp;
++	unsigned int hashval = file_hashval(fhp);
++	struct nfs4_file *fi;
+ 
+-	hlist_for_each_entry_rcu(fp, &file_hashtbl[hashval], fi_hash,
+-				lockdep_is_held(&state_lock)) {
+-		if (fh_match(&fp->fi_fhandle, &fh->fh_handle)) {
+-			if (refcount_inc_not_zero(&fp->fi_ref))
+-				return fp;
++	rcu_read_lock();
++	hlist_for_each_entry_rcu(fi, &file_hashtbl[hashval], fi_hash,
++				 lockdep_is_held(&state_lock)) {
++		if (fh_match(&fi->fi_fhandle, &fhp->fh_handle)) {
++			if (refcount_inc_not_zero(&fi->fi_ref)) {
++				rcu_read_unlock();
++				return fi;
++			}
+ 		}
+ 	}
+-	return NULL;
+-}
+-
+-static struct nfs4_file * find_file(struct svc_fh *fh)
+-{
+-	struct nfs4_file *fp;
+-	unsigned int hashval = file_hashval(fh);
+-
+-	rcu_read_lock();
+-	fp = find_file_locked(fh, hashval);
+ 	rcu_read_unlock();
+-	return fp;
++	return NULL;
+ }
+ 
+ /*
+@@ -4758,9 +4751,10 @@ nfs4_share_conflict(struct svc_fh *curre
+ 	struct nfs4_file *fp;
+ 	__be32 ret = nfs_ok;
+ 
+-	fp = find_file(current_fh);
++	fp = nfsd4_file_hash_lookup(current_fh);
+ 	if (!fp)
+ 		return ret;
 +
- 	if (hci_check_conn_params(min, max, latency, timeout))
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_INVALID_LL_PARAMS);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index a752032e12fcf..580b6d6b970d2 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5609,7 +5609,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
- 
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	if (max > hcon->le_conn_max_interval) {
-+		BT_DBG("requested connection interval exceeds current bounds.");
-+		err = -EINVAL;
-+	} else {
-+		err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	}
-+
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
--- 
-2.43.0
-
+ 	/* Check for conflicting share reservations */
+ 	spin_lock(&fp->fi_lock);
+ 	if (fp->fi_share_deny & deny_type)
 
 
 
