@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5971E870EAC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2086A870CE4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FFAF1F21AAD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5143B1C23F2E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667847BAF8;
-	Mon,  4 Mar 2024 21:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410C23D0BA;
+	Mon,  4 Mar 2024 21:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxRmlFDa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRQVd/um"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A2D46BA0;
-	Mon,  4 Mar 2024 21:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0043A1F60A;
+	Mon,  4 Mar 2024 21:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588751; cv=none; b=r0+QLyQKAo5q7nOM43KH9oXulv8mNXo9GUo4Y8n09wDYNIdkTjNHw4dclJ//NGYUgLKfsr48yg8MpGC0oZpeQofmr1PP1Nd4Piwu69iwPUafRNNKUW51KtxOYNH2rMt55YhDn3Hy4RnqB5OGRhvXcox5ySaBNSyLw5K6gKG0WlM=
+	t=1709587764; cv=none; b=oWj1IP3y4g52QUVi4ueqnqTSWcBLxAcwQGRRAkS6edcoolvSvDE5cXZZar9B42XpDtKF+Q4vB+pm4lYfRe/x+2+QxohE0iHigLHlvAAo0hbb4GyyuchOjKnMq9ikzsfZ5RUWf3ALh8RsiGjSFEdSL+lVfaipfbaiRhdcrC4azwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588751; c=relaxed/simple;
-	bh=kuWTSYl4ns7yzT2c7YRnddgDr8SwgUaKFvMp/ONC480=;
+	s=arc-20240116; t=1709587764; c=relaxed/simple;
+	bh=ls4m0Dag+rVZe+iYzn3VAS2BTpoO7xljaRpw4TLhAXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s2J7v0OxeG/Opk8pmJWl2bI7KtiNdyznzdms+UGKiF2gXxi7HTIZvx/2f2H+SlwPQpQmRJbs8Uafl3ppC2jBa/D59edWkmtHTTLmWgMfn++pNMU7olqfJiCJluN99hkBG0cBTl6dZ2697nEPeB41f9gyRTMM7xRfia8u+Zkzwnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxRmlFDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACEEC433F1;
-	Mon,  4 Mar 2024 21:45:50 +0000 (UTC)
+	 MIME-Version; b=ssS8z0EsmcYSfEX7uiDc257259YlH6lE6WIxfgg9NmSZI7NsqoBYsOWgNKMBMQiCPHOwfU0ZgC/XXuduRrOc3p2+DdWZuNPSBYiJECKuLBwmeVCLr6m6w7MA64VMLJDE34f1ATl3LFcFJvCnjcN/Bg9Am8s8JOFnkfhj18yqwOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRQVd/um; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D0CC433F1;
+	Mon,  4 Mar 2024 21:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588751;
-	bh=kuWTSYl4ns7yzT2c7YRnddgDr8SwgUaKFvMp/ONC480=;
+	s=korg; t=1709587763;
+	bh=ls4m0Dag+rVZe+iYzn3VAS2BTpoO7xljaRpw4TLhAXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxRmlFDauFnEHExxshg9ZLURepY6srS5wWSbInjLw5K4bkR4Uz83IZn1stP2udOEj
-	 zKfEEOmpQCbcjwgft1TykJK8Ue4oClBr+qskrgqQjm44z0Vj6T882VkZm/PwEnrmlQ
-	 aUHlCsFxI46K6ZiwFkn+Uzs0DA98p30PukXDLa14=
+	b=wRQVd/umsRlx0YE1U13O09iu/tVCYfpLr1s/NVZGq23sORyi4Sdg7EWpXX/JUtBl6
+	 o3hKxegx40UV4rmjOJs67uwoqEYfv4KuKfNmB+8i+G6mJEfyEzq0Ar8abIFi4rqO3I
+	 SXD7MBIRTTGvZEB/bmR05w4TPqdVI/Yx+2D0Tuaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.1 083/215] drm/buddy: fix range bias
+	Felix Zhang <mrman@mrman314.tech>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.7 081/162] Bluetooth: hci_bcm4377: do not mark valid bd_addr as invalid
 Date: Mon,  4 Mar 2024 21:22:26 +0000
-Message-ID: <20240304211559.624588947@linuxfoundation.org>
+Message-ID: <20240304211554.430628995@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit f41900e4a6ef019d64a70394b0e0c3bd048d4ec8 upstream.
+commit c17d2a7b216e168c3ba62d93482179c01b369ac7 upstream.
 
-There is a corner case here where start/end is after/before the block
-range we are currently checking. If so we need to be sure that splitting
-the block will eventually give use the block size we need. To do that we
-should adjust the block range to account for the start/end, and only
-continue with the split if the size/alignment will fit the requested
-size. Not doing so can result in leaving split blocks unmerged when it
-eventually fails.
+A recent commit restored the original (and still documented) semantics
+for the HCI_QUIRK_USE_BDADDR_PROPERTY quirk so that the device address
+is considered invalid unless an address is provided by firmware.
 
-Fixes: afea229fe102 ("drm: improve drm_buddy_alloc function")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org> # v5.18+
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240219121851.25774-4-matthew.auld@intel.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+This specifically means that this flag must only be set for devices with
+invalid addresses, but the Broadcom BCM4377 driver has so far been
+setting this flag unconditionally.
+
+Fortunately the driver already checks for invalid addresses during setup
+and sets the HCI_QUIRK_INVALID_BDADDR flag, which can simply be replaced
+with HCI_QUIRK_USE_BDADDR_PROPERTY to indicate that the default address
+is invalid but can be overridden by firmware (long term, this should
+probably just always be allowed).
+
+Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
+Cc: stable@vger.kernel.org      # 6.5
+Reported-by: Felix Zhang <mrman@mrman314.tech>
+Link: https://lore.kernel.org/r/77419ffacc5b4875e920e038332575a2a5bff29f.camel@mrman314.tech/
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reported-by: Felix Zhang <mrman@mrman314.tech>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_buddy.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/bluetooth/hci_bcm4377.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_buddy.c
-+++ b/drivers/gpu/drm/drm_buddy.c
-@@ -332,6 +332,7 @@ alloc_range_bias(struct drm_buddy *mm,
- 		 u64 start, u64 end,
- 		 unsigned int order)
- {
-+	u64 req_size = mm->chunk_size << order;
- 	struct drm_buddy_block *block;
- 	struct drm_buddy_block *buddy;
- 	LIST_HEAD(dfs);
-@@ -367,6 +368,15 @@ alloc_range_bias(struct drm_buddy *mm,
- 		if (drm_buddy_block_is_allocated(block))
- 			continue;
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -1417,7 +1417,7 @@ static int bcm4377_check_bdaddr(struct b
  
-+		if (block_start < start || block_end > end) {
-+			u64 adjusted_start = max(block_start, start);
-+			u64 adjusted_end = min(block_end, end);
-+
-+			if (round_down(adjusted_end + 1, req_size) <=
-+			    round_up(adjusted_start, req_size))
-+				continue;
-+		}
-+
- 		if (contains(start, end, block_start, block_end) &&
- 		    order == drm_buddy_block_order(block)) {
- 			/*
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+ 	if (!bcm4377_is_valid_bdaddr(bcm4377, &bda->bdaddr))
+-		set_bit(HCI_QUIRK_INVALID_BDADDR, &bcm4377->hdev->quirks);
++		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &bcm4377->hdev->quirks);
+ 
+ 	kfree_skb(skb);
+ 	return 0;
+@@ -2368,7 +2368,6 @@ static int bcm4377_probe(struct pci_dev
+ 	hdev->set_bdaddr = bcm4377_hci_set_bdaddr;
+ 	hdev->setup = bcm4377_hci_setup;
+ 
+-	set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+ 	if (bcm4377->hw->broken_mws_transport_config)
+ 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->quirks);
+ 	if (bcm4377->hw->broken_ext_scan)
 
 
 
