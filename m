@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-26182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8BC870D75
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631BB870EFF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC06F28F614
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E749BB21CF6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F49147A5D;
-	Mon,  4 Mar 2024 21:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0149C7992E;
+	Mon,  4 Mar 2024 21:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+3xNkK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjbMp4Vj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF981C687;
-	Mon,  4 Mar 2024 21:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CB91F92C;
+	Mon,  4 Mar 2024 21:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588055; cv=none; b=RtIvb3gU33hP+OmVTdnhHJawhqe71zvAX4+5VHMxQ5046S6nfWIRDjE79ZJGolS2exzN2aYj/tL+A/2OtyZWBs398H4Pm0/fQs+5fEaMxnfmImypIbpUoSSVwg26GerR1qnYxGQjCoob8YZTWXoCPRHjcvZbqJjJZm+3Voqej7c=
+	t=1709588996; cv=none; b=F4fHrW1mI6b6AhudkTvPXUnYaMTPgAlqhT+zEUdWxS6sdRlNM70GYd/XBS0ypUhaCIHzQ2Ymw3Cv6OFMT6UojSr3UF4nPJzrpDx2JA+hiCm7tbFANg/u+/4VD/VN6VzflYo3SFGOrlY0K5wGHWAZKn2gnZvASpsT3JxHZYhvOQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588055; c=relaxed/simple;
-	bh=toQsKhI024y18PjahEDRS+lKQXiN/dd+6M15UjoaM94=;
+	s=arc-20240116; t=1709588996; c=relaxed/simple;
+	bh=4Dd9LU8IVJqn8BvE6RFUfl5HRUHJz9raapn/k0wVohk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQkBTF/zFrdT8sG+ApUv419Lf0tdkBGgiFH5NzMWhYsUrWD1ded2Y4aDG9HS1neP4QfGlJTwGo8iK5XGu/fTjN7r73DYWFh1ZYTLcptMIldF2ff9UgpiZ7xs/xIupGVWm964wo1xxKvp0svKPB9NzIa0/jFCqtd+AcRXoOhYh9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+3xNkK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ED0C433F1;
-	Mon,  4 Mar 2024 21:34:14 +0000 (UTC)
+	 MIME-Version; b=TXODuVNvzv6OMU4dy0nI+oScDSOfyrMDi/1Y9VSLEa7mKLCuju8KpApPHukDa2LZz8dm53ueMieRM5jWEp04x27R7zr6aecs4zzCgryXNz8oOE58KfEVNQYYDbP8VYWCHIjW2vaGTkLLzKdVOmjF1Zi6rXf3zMSGzAKTWLp9Ns0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjbMp4Vj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45295C433F1;
+	Mon,  4 Mar 2024 21:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588055;
-	bh=toQsKhI024y18PjahEDRS+lKQXiN/dd+6M15UjoaM94=;
+	s=korg; t=1709588996;
+	bh=4Dd9LU8IVJqn8BvE6RFUfl5HRUHJz9raapn/k0wVohk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+3xNkK2jr3ZZteU9SO+0+vDkagJrRvevOvWatVuGSBOVcFl+2ioxvPUbKZ87eO35
-	 Bn/pn5QxjNflAMXNbH6dkeCgSP0exGmy5WzHh9LH4pwTWFdHIIQFe3IX0Fqfmnw0Y4
-	 vpT1o5EZwtQP2YIcMZBHMVyGTfk2ERqcM6PWly2s=
+	b=IjbMp4VjAU2OHoB19wBAujJUp8GrS31tvyk0WAQw+R8ShOH51oxB0Veo8K3+I0dMU
+	 3N8xJ2XGNFUI747uJB2MWR6mN7w1/fdrdh0S3nkDTQy3khlowizYeM+DO5nwTcL0Q2
+	 634LyS+QQ+gKhypWEWkjvXiveJhO+Ozb9kS9bIrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/25] Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
-Date: Mon,  4 Mar 2024 21:23:44 +0000
-Message-ID: <20240304211536.025765216@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 162/215] lockd: use locks_inode_context helper
+Date: Mon,  4 Mar 2024 21:23:45 +0000
+Message-ID: <20240304211602.120739071@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 7e74aa53a68bf60f6019bd5d9a9a1406ec4d4865 ]
+[ Upstream commit 98b41ffe0afdfeaa1439a5d6bd2db4a94277e31b ]
 
-If we received HCI_EV_IO_CAPA_REQUEST while
-HCI_OP_READ_REMOTE_EXT_FEATURES is yet to be responded assume the remote
-does support SSP since otherwise this event shouldn't be generated.
+lockd currently doesn't access i_flctx safely. This requires a
+smp_load_acquire, as the pointer is set via cmpxchg (a release
+operation).
 
-Link: https://lore.kernel.org/linux-bluetooth/CABBYNZ+9UdG1cMZVmdtN3U2aS16AKMCyTARZZyFX7xTEDWcMOw@mail.gmail.com/T/#t
-Fixes: c7f59461f5a7 ("Bluetooth: Fix a refcnt underflow problem for hci_conn")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/lockd/svcsubs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index f5b46ea9d4c4d..6d1c7ec051a20 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4469,9 +4469,12 @@ static void hci_io_capa_request_evt(struct hci_dev *hdev, struct sk_buff *skb)
- 	hci_dev_lock(hdev);
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -210,7 +210,7 @@ nlm_traverse_locks(struct nlm_host *host
+ {
+ 	struct inode	 *inode = nlmsvc_file_inode(file);
+ 	struct file_lock *fl;
+-	struct file_lock_context *flctx = inode->i_flctx;
++	struct file_lock_context *flctx = locks_inode_context(inode);
+ 	struct nlm_host	 *lockhost;
  
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
--	if (!conn || !hci_conn_ssp_enabled(conn))
-+	if (!conn || !hci_dev_test_flag(hdev, HCI_SSP_ENABLED))
- 		goto unlock;
+ 	if (!flctx || list_empty_careful(&flctx->flc_posix))
+@@ -265,7 +265,7 @@ nlm_file_inuse(struct nlm_file *file)
+ {
+ 	struct inode	 *inode = nlmsvc_file_inode(file);
+ 	struct file_lock *fl;
+-	struct file_lock_context *flctx = inode->i_flctx;
++	struct file_lock_context *flctx = locks_inode_context(inode);
  
-+	/* Assume remote supports SSP since it has triggered this event */
-+	set_bit(HCI_CONN_SSP_ENABLED, &conn->flags);
-+
- 	hci_conn_hold(conn);
- 
- 	if (!hci_dev_test_flag(hdev, HCI_MGMT))
--- 
-2.43.0
-
+ 	if (file->f_count || !list_empty(&file->f_blocks) || file->f_shares)
+ 		return 1;
 
 
 
