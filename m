@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-26193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39268870D82
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C219870D73
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5C7B21383
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA8B28F585
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98D247A5D;
-	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A8147A5D;
+	Mon,  4 Mar 2024 21:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyyrIpVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjL2HX5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E561C687;
-	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AEB1C687;
+	Mon,  4 Mar 2024 21:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588083; cv=none; b=TqQLVc99uBmn4xYtFA67UENyoiz1XQNUoTsVZOE+Pd78AvbRZaWThy4Khl9XtP6duP4wE3u91rZndK2d7gmXgqOZFYbaeKevJgYVdVNE1vSSLjrzXXEYDHfI9QIhHb6qmIGy/DCR5M5hn7qb/mLVsJI5KlYrAX+YlcmjLO2vxfE=
+	t=1709588050; cv=none; b=Zxp8be+oDP+Nxw21HFip78vYr03Gx2RTiDdF1EA/G0aDIsTMXxHq6T5eeIOrEL6kb2hO0AjzPjl3G6vE7P/dwUwtD5118WKjyj5x46v5GgH1XDvW6NDfOiBvjRddzunopW5KMPm7D9YQZynvbb6vz/TMmH6ZCCQCwNhCjAQCZcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588083; c=relaxed/simple;
-	bh=IM9Qk1XKuSY6JKNY2ZK9fAbkWbx9NEVlZxsTARXswmU=;
+	s=arc-20240116; t=1709588050; c=relaxed/simple;
+	bh=2+1IU1yTVIr3XQYdTySN9M5Mx/4IVb6Libis0L3xuA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qfdi1lqpmiTsTDlseN4wBbg/8W0SQnVJYvq2k/JxTM2ZBvIxwstZpVPw+KEbLMleIpShAtJlAwRTAcyBPpYWG44uxcOVdlOI3Sa9OPuX+GTWYhm0KNajnEuexpSUX+6S3eI7glKZE12WHicVfT5LpA/5pggwk2mbmY/IdlxuYvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyyrIpVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FDDC433C7;
-	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
+	 MIME-Version; b=WWKaheIJTKxtTIbxaYaBKTF5vcsmOPUpVr+dCe8lMNH6K4KG6lWnV425Ns6XPwXpUkMgvdJdcpIyR0OyGDnYAJWNcWdw2enLnLvXaXb+QfbqxN4INxRrAXzOUshRQ/ZxONwTSeA/ThsZNUFMiK1MHrSMYnLcLb29ut+S9BIGPYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjL2HX5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DBAC433C7;
+	Mon,  4 Mar 2024 21:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588083;
-	bh=IM9Qk1XKuSY6JKNY2ZK9fAbkWbx9NEVlZxsTARXswmU=;
+	s=korg; t=1709588049;
+	bh=2+1IU1yTVIr3XQYdTySN9M5Mx/4IVb6Libis0L3xuA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyyrIpVcEYR9Uo9YKvOq7ptdb6U6TOCBYughml3WW0/BSBMHkIvZrzP+j2pEF66HP
-	 IoPCzJ8/DRCcURqgQrUC5UI+QTOAn0f0EltARevmi58UuHjk0Ur4pBPmXEnCHbtYbx
-	 QQzi914Kh5YM9QGica+W79f/Sd+9bkT9M/WHzSwE=
+	b=yjL2HX5cYXM5kLt5MHoRD9Yj+1CXwVPgEu0jvuT/mNYmN98pbuinvmgFCXgSpDWjT
+	 6uKZKN+j8Y/oUCWyethqg7B6UCdC1T9TSuPrX0gZE5XClAiB1mmEWnt8hrZKPQncLI
+	 1MieCio+c/OmsVxMrTsLL7/+NiZGD3yDRpIvUUAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Griege <jgriege@cloudflare.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 15/42] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
+Subject: [PATCH 5.4 06/25] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
 Date: Mon,  4 Mar 2024 21:23:42 +0000
-Message-ID: <20240304211538.151289814@linuxfoundation.org>
+Message-ID: <20240304211535.957577985@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
+[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
 
-Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
-some validation of NFPROTO_* families in the nft_compat module, but it broke
-the ability to use legacy iptables modules in dual-stack nftables.
+The MII code does not check the return value of mdio_read (among
+others), and therefore no error code should be sent. A previous fix to
+the use of an uninitialized variable propagates negative error codes,
+that might lead to wrong operations by the MII library.
 
-While with legacy iptables one had to independently manage IPv4 and IPv6
-tables, with nftables it is possible to have dual-stack tables sharing the
-rules. Moreover, it was possible to use rules based on legacy iptables
-match/target modules in dual-stack nftables.
+An example of such issues is the use of mii_nway_restart by the dm9601
+driver. The mii_nway_restart function does not check the value returned
+by mdio_read, which in this case might be a negative number which could
+contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
 
-As an example, the program from [2] creates an INET dual-stack family table
-using an xt_bpf based rule, which looks like the following (the actual output
-was generated with a patched nft tool as the current nft tool does not parse
-dual stack tables with legacy match rules, so consider it for illustrative
-purposes only):
+Return zero in case of error, as it is common practice in users of
+mdio_read to avoid wrong uses of the return value.
 
-table inet testfw {
-  chain input {
-    type filter hook prerouting priority filter; policy accept;
-    bytecode counter packets 0 bytes 0 accept
-  }
-}
-
-After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
-EOPNOTSUPP for the above program.
-
-Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
-restrict the functions to classic iptables hooks.
-
-Changes in v3:
-  * clarify that upstream nft will not display such configuration properly and
-    that the output was generated with a patched nft tool
-  * remove example program from commit description and link to it instead
-  * no code changes otherwise
-
-Changes in v2:
-  * restrict nft_(match/target)_validate() to classic iptables hooks
-  * rewrite example program to use unmodified libnftnl
-
-Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
-Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
-Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
-Reported-by: Jordan Griege <jgriege@cloudflare.com>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/net/usb/dm9601.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 77c7362a7db8e..3e0a6e7930c6c 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -336,10 +336,20 @@ static int nft_target_validate(const struct nft_ctx *ctx,
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 5aad26600b03e..9b7db5fd9e08f 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -231,7 +231,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	err = dm_read_shared_word(dev, 1, loc, &res);
+ 	if (err < 0) {
+ 		netdev_err(dev->net, "MDIO read error: %d\n", err);
+-		return err;
++		return 0;
+ 	}
  
- 	if (ctx->family != NFPROTO_IPV4 &&
- 	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET &&
- 	    ctx->family != NFPROTO_BRIDGE &&
- 	    ctx->family != NFPROTO_ARP)
- 		return -EOPNOTSUPP;
- 
-+	ret = nft_chain_validate_hooks(ctx->chain,
-+				       (1 << NF_INET_PRE_ROUTING) |
-+				       (1 << NF_INET_LOCAL_IN) |
-+				       (1 << NF_INET_FORWARD) |
-+				       (1 << NF_INET_LOCAL_OUT) |
-+				       (1 << NF_INET_POST_ROUTING));
-+	if (ret)
-+		return ret;
-+
- 	if (nft_is_base_chain(ctx->chain)) {
- 		const struct nft_base_chain *basechain =
- 						nft_base_chain(ctx->chain);
-@@ -584,10 +594,20 @@ static int nft_match_validate(const struct nft_ctx *ctx,
- 
- 	if (ctx->family != NFPROTO_IPV4 &&
- 	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET &&
- 	    ctx->family != NFPROTO_BRIDGE &&
- 	    ctx->family != NFPROTO_ARP)
- 		return -EOPNOTSUPP;
- 
-+	ret = nft_chain_validate_hooks(ctx->chain,
-+				       (1 << NF_INET_PRE_ROUTING) |
-+				       (1 << NF_INET_LOCAL_IN) |
-+				       (1 << NF_INET_FORWARD) |
-+				       (1 << NF_INET_LOCAL_OUT) |
-+				       (1 << NF_INET_POST_ROUTING));
-+	if (ret)
-+		return ret;
-+
- 	if (nft_is_base_chain(ctx->chain)) {
- 		const struct nft_base_chain *basechain =
- 						nft_base_chain(ctx->chain);
+ 	netdev_dbg(dev->net,
 -- 
 2.43.0
 
