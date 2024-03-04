@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EDF870D98
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6E5870D61
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24A801F218F1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E7E28F17B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8B079DCA;
-	Mon,  4 Mar 2024 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F2A626B2;
+	Mon,  4 Mar 2024 21:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTbxASr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckm1en/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA5C1C687;
-	Mon,  4 Mar 2024 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E7246BA0;
+	Mon,  4 Mar 2024 21:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588141; cv=none; b=PM1r38JVnDSOW8sywzPArGJ9utG89IUJbjry5EL3EaDDGifebsB2SSsOnY2dpxtAsELA79y6SV2FYhQuSenxueIhpbQ9D960WJooa/60yfDmgcBGybPjT2xEbCSfmTxYbvOwMGDYu0wQqwWcPIkGFPQq5rvfBG1XwKP9nyJMBeY=
+	t=1709588005; cv=none; b=NECarzBr4R3SoP/+Jz/9Ji4btYXGyjtz/t5Z8tNNBZ/wbOAEiz6zAaJyiLM6Tu7LsKVpox4ukYPdoux2xjoGPhRa/8teV7w/X8CSuaVHzyPRJ+qx3uGRxF8y50Frc5PWakRPEqDRjdrAxBoxoKh0XGzUzuXXxE3T0fGCK+t2a8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588141; c=relaxed/simple;
-	bh=GYKB/ZilNHiVZMQNV2DCvK+H6/9wR6cE1t2T3Nja6/A=;
+	s=arc-20240116; t=1709588005; c=relaxed/simple;
+	bh=CC9BkcDaGEotCKVIFtAVv5Luf93OK7xSeSCGFjwdoSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aF1CBibOikDVBURciI4hPfx4jJaMrs4cVLQMoywsHj6Ny6djf2cVZu/nhqvmpzZaTeEQ/GDwVLhnHGgpQPnGd0vSOhDIbR2KlqSnZ7DSh5jZ5YOoJ42VaL15QerUYXVmazTcyMJgMOLA8x1zw1m3qAtvVi+XDz/QiePUlshFXT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTbxASr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBE0C433F1;
-	Mon,  4 Mar 2024 21:35:40 +0000 (UTC)
+	 MIME-Version; b=pUobmtX6ZzqSNMsT6Y04PEG70PVKuFpzqDaz72YVUx8UoS7y0SEe3BSoA29vku0+qLlWGe/mbkRsg1Q6nVOGQMnLF7t4HVZZS37cno2fEa/qmDpUMoKVu7MKv3ic2PY2owlxK7pMQ2ltWXf1cQoohDFPZ+SzeAYHx3nNtzT7m2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckm1en/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394DAC433C7;
+	Mon,  4 Mar 2024 21:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588141;
-	bh=GYKB/ZilNHiVZMQNV2DCvK+H6/9wR6cE1t2T3Nja6/A=;
+	s=korg; t=1709588005;
+	bh=CC9BkcDaGEotCKVIFtAVv5Luf93OK7xSeSCGFjwdoSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTbxASr+WHYdBr2NjYwb5xiJ89ujY/vx/Gj0Gy/9FXyO7vPvdzF9PbnKLGr1qg/Fe
-	 in/Ejw1yLetmqLYa7qwPS/drO//ASSLZn2O4KHF9RwYysRJvF/0IN2oPWgLUl4pDjK
-	 BcGyT5Bw9mwA9Cjs+H0yvtlArctgtJLlFk2t5U+4=
+	b=ckm1en/jwnByJx2DfPL3vyzszBd2/Nlporce4xcyc6estdFTY3LJsMLPzu4GeZ/Ko
+	 sAbmlMpU4aIv9TpG3ijk24DMyPsLS9MaWI7Od0u4Q8SDmsZDnMCVCevsbP6tuWAjgT
+	 5FA1uhIY2QLk2Bn019vXLjqyiDMuqhI4D6LXVTr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Lin Ma <linma@zju.edu.cn>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/42] ALSA: Drop leftover snd-rtctimer stuff from Makefile
-Date: Mon,  4 Mar 2024 21:23:46 +0000
-Message-ID: <20240304211538.278884067@linuxfoundation.org>
+Subject: [PATCH 5.4 11/25] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
+Date: Mon,  4 Mar 2024 21:23:47 +0000
+Message-ID: <20240304211536.119148478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
+[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
 
-We forgot to remove the line for snd-rtctimer from Makefile while
-dropping the functionality.  Get rid of the stale line.
+In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
+IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
+in the function `rtnl_bridge_setlink` to enable the loop to also check
+the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
+removed the `break` statement and led to an error logic of the flags
+writing back at the end of this function.
 
-Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
-Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+if (have_flags)
+    memcpy(nla_data(attr), &flags, sizeof(flags));
+    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
+
+Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
+However, this is not necessarily true fow now as the updated loop will let
+the attr point to the last NLA, even an invalid NLA which could cause
+overflow writes.
+
+This patch introduces a new variable `br_flag` to save the NLA pointer
+that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
+error logic.
+
+Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/Makefile | 1 -
- 1 file changed, 1 deletion(-)
+ net/core/rtnetlink.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/sound/core/Makefile b/sound/core/Makefile
-index d123587c0fd8f..bc04acf4a45ce 100644
---- a/sound/core/Makefile
-+++ b/sound/core/Makefile
-@@ -32,7 +32,6 @@ snd-pcm-dmaengine-objs := pcm_dmaengine.o
- snd-rawmidi-objs  := rawmidi.o
- snd-timer-objs    := timer.o
- snd-hrtimer-objs  := hrtimer.o
--snd-rtctimer-objs := rtctimer.o
- snd-hwdep-objs    := hwdep.o
- snd-seq-device-objs := seq_device.o
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index bb1a273840775..ee599636f817f 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4586,10 +4586,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
+ 	struct net_device *dev;
+-	struct nlattr *br_spec, *attr = NULL;
++	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
+ 	int rem, err = -EOPNOTSUPP;
+ 	u16 flags = 0;
+-	bool have_flags = false;
  
+ 	if (nlmsg_len(nlh) < sizeof(*ifm))
+ 		return -EINVAL;
+@@ -4607,11 +4606,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
+ 
+-				have_flags = true;
++				br_flags_attr = attr;
+ 				flags = nla_get_u16(attr);
+ 			}
+ 
+@@ -4655,8 +4654,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
+ 	}
+ 
+-	if (have_flags)
+-		memcpy(nla_data(attr), &flags, sizeof(flags));
++	if (br_flags_attr)
++		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
+ out:
+ 	return err;
+ }
 -- 
 2.43.0
 
