@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57130870F2B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037F0870E3E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1235A281306
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 261ED1C2106A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7837868F;
-	Mon,  4 Mar 2024 21:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078637A706;
+	Mon,  4 Mar 2024 21:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GD/wD+bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWmyizXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C179200D4;
-	Mon,  4 Mar 2024 21:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3D98F58;
+	Mon,  4 Mar 2024 21:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589093; cv=none; b=qJ8dS7zxEOqGWq66DeP9eEDlWWFXWrs1eHZjGae3Y+MZ4byrgu9J9g970la2Agp0rgmA90c5dFgwsi4nV+msOyxaYkeIpdEXQNRzDxiSUt8/g6JFpFL03lomSJUSA88VLP3dJx/W/tUj8P4x6GIn4ZjaxTDPBJMHOsQ0+xlIs/Q=
+	t=1709588523; cv=none; b=rjLE5vBcfsKejw5RqVpACw3h9f0zwJIF6cF05bWoGcawc4pL0f8XKtfZ1ENNw6CRWpNQTEX9hz9pcbwB6ATDGohjT+cO5tBp0ZsIsjmI/ME1McY2E/t4FkdfKvUhQT23rJMYKlE3WQBMATAah+pm4d7BUW0LudK0HpAX1TPz4fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589093; c=relaxed/simple;
-	bh=i9CPD22QPTRagYub0S0bkPCT2UBXYU1h3c9CfwpIzbA=;
+	s=arc-20240116; t=1709588523; c=relaxed/simple;
+	bh=Hhb4B2Reiz6QOA+0aqxNglG69LyqFSMlfHTjC1TDSPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI1IxHCgF8qkYtffBGlbM1XLpH9QpnW88+u0aczlghEVumS+lkB2HNNx70qxKmf0ue0S9P/qzkqserlJ++DibKUmKjmr+72HKCeFABHT0NBBse5gBSpwmPDapGhkv7xB3CtSX1OlcCdFziZHWKGQ+YVnCs75XckrrLVilceQdIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GD/wD+bm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4761C433C7;
-	Mon,  4 Mar 2024 21:51:32 +0000 (UTC)
+	 MIME-Version; b=Mnw3z27u1ALe4ppkZdnYjUzQYH9DVOgkNXCKONosjEwUQ1IfQFy0cvzietIUiU+JZunMZYcra20WrRH15SiWK03MwCp9n8KrGJcdbcMnOS26yDLtoC0hhaRgYy6s4y9eJmX1vT2k4naHfdXv1yttrUnaZ7eHPEL38P0rnYtoEpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWmyizXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45FC433F1;
+	Mon,  4 Mar 2024 21:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589093;
-	bh=i9CPD22QPTRagYub0S0bkPCT2UBXYU1h3c9CfwpIzbA=;
+	s=korg; t=1709588523;
+	bh=Hhb4B2Reiz6QOA+0aqxNglG69LyqFSMlfHTjC1TDSPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GD/wD+bmZ5f3fUZ2ABqStkVS4lFGXPEk4h9dvrD/sQpRkbeE+wevTgtrbHcO5yoww
-	 CMD0G1act82UtS6gphwYT0uYipLTacvYo4ATu2m8RSGg+wXbymwZwC1tO/q0mgnwRp
-	 3NMJrznvx8/4v0q9n39lwRs8sIaunAUNyuUgKgQ4=
+	b=ZWmyizXSW10W+r5LoFXz7T1zUf1X2YMdaag0FFaTAP4/9j2s/NvGnmVkz98F1u+hC
+	 zorbDTr+RnXGLm4prcwUSFrh1FjZp5HMLn3KDKP4uYm7Lu8LhjbgYfQ/elP7bxG/Ci
+	 OBjUk9KUQ1ehKTmIkKAzc9HbrC9fm+uOZzuuYf9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 197/215] af_unix: Drop oob_skb ref before purging queue in GC.
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 140/143] selftests: mptcp: update userspace pm test helpers
 Date: Mon,  4 Mar 2024 21:24:20 +0000
-Message-ID: <20240304211603.222980327@linuxfoundation.org>
+Message-ID: <20240304211554.374144080@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit aa82ac51d63328714645c827775d64dbfd9941f3 upstream.
+commit 757c828ce94905a2975873d5e90a376c701b2b90 upstream.
 
-syzbot reported another task hung in __unix_gc().  [0]
+This patch adds a new argument namespace to userspace_pm_add_addr() and
+userspace_pm_add_sf() to make these two helper more versatile.
 
-The current while loop assumes that all of the left candidates
-have oob_skb and calling kfree_skb(oob_skb) releases the remaining
-candidates.
+Add two more versatile helpers for userspace pm remove subflow or address:
+userspace_pm_rm_addr() and userspace_pm_rm_sf(). The original test helpers
+userspace_pm_rm_sf_addr_ns1() and userspace_pm_rm_sf_addr_ns2() can be
+replaced by these new helpers.
 
-However, I missed a case that oob_skb has self-referencing fd and
-another fd and the latter sk is placed before the former in the
-candidate list.  Then, the while loop never proceeds, resulting
-the task hung.
-
-__unix_gc() has the same loop just before purging the collected skb,
-so we can call kfree_skb(oob_skb) there and let __skb_queue_purge()
-release all inflight sockets.
-
-[0]:
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 2784 Comm: kworker/u4:8 Not tainted 6.8.0-rc4-syzkaller-01028-g71b605d32017 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Workqueue: events_unbound __unix_gc
-RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:200
-Code: 89 fb e8 23 00 00 00 48 8b 3d 84 f5 1a 0c 48 89 de 5b e9 43 26 57 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0d 90 52 70 7e 65 8b 15 91 52 70
-RSP: 0018:ffffc9000a17fa78 EFLAGS: 00000287
-RAX: ffffffff8a0a6108 RBX: ffff88802b6c2640 RCX: ffff88802c0b3b80
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000a17fbf0 R08: ffffffff89383f1d R09: 1ffff1100ee5ff84
-R10: dffffc0000000000 R11: ffffed100ee5ff85 R12: 1ffff110056d84ee
-R13: ffffc9000a17fae0 R14: 0000000000000000 R15: ffffffff8f47b840
-FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffef5687ff8 CR3: 0000000029b34000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- __unix_gc+0xe69/0xf40 net/unix/garbage.c:343
- process_one_work kernel/workqueue.c:2633 [inline]
- process_scheduled_works+0x913/0x1420 kernel/workqueue.c:2706
- worker_thread+0xa5f/0x1000 kernel/workqueue.c:2787
- kthread+0x2ef/0x390 kernel/kthread.c:388
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
- </TASK>
-
-Reported-and-tested-by: syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ecab4d36f920c3574bf9
-Fixes: 25236c91b5ab ("af_unix: Fix task hung while purging oob_skb in GC.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-4-8d6b94150f6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c |   22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  100 +++++++++++-------------
+ 1 file changed, 49 insertions(+), 51 deletions(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -284,9 +284,17 @@ void unix_gc(void)
- 	 * which are creating the cycle(s).
- 	 */
- 	skb_queue_head_init(&hitlist);
--	list_for_each_entry(u, &gc_candidates, link)
-+	list_for_each_entry(u, &gc_candidates, link) {
- 		scan_children(&u->sk, inc_inflight, &hitlist);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2821,6 +2821,7 @@ backup_tests()
+ 	fi
+ }
  
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+		if (u->oob_skb) {
-+			kfree_skb(u->oob_skb);
-+			u->oob_skb = NULL;
-+		}
-+#endif
-+	}
++SUB_ESTABLISHED=10 # MPTCP_EVENT_SUB_ESTABLISHED
+ LISTENER_CREATED=15 #MPTCP_EVENT_LISTENER_CREATED
+ LISTENER_CLOSED=16  #MPTCP_EVENT_LISTENER_CLOSED
+ 
+@@ -3281,75 +3282,70 @@ fail_tests()
+ 	fi
+ }
+ 
++# $1: ns ; $2: addr ; $3: id
+ userspace_pm_add_addr()
+ {
+-	local addr=$1
+-	local id=$2
++	local evts=$evts_ns1
+ 	local tk
+ 
+-	tk=$(grep "type:1," "$evts_ns1" |
+-	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
+-	ip netns exec $ns1 ./pm_nl_ctl ann $addr token $tk id $id
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(mptcp_lib_evts_get_info token "$evts")
 +
- 	/* not_cycle_list contains those sockets which do not make up a
- 	 * cycle.  Restore these to the inflight list.
- 	 */
-@@ -314,18 +322,6 @@ void unix_gc(void)
- 	/* Here we are. Hitlist is filled. Die. */
- 	__skb_queue_purge(&hitlist);
++	ip netns exec $1 ./pm_nl_ctl ann $2 token $tk id $3
+ 	sleep 1
+ }
  
--#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	while (!list_empty(&gc_candidates)) {
--		u = list_entry(gc_candidates.next, struct unix_sock, link);
--		if (u->oob_skb) {
--			struct sk_buff *skb = u->oob_skb;
+-userspace_pm_rm_sf_addr_ns1()
++# $1: ns ; $2: id
++userspace_pm_rm_addr()
+ {
+-	local addr=$1
+-	local id=$2
+-	local tk sp da dp
+-	local cnt_addr cnt_sf
 -
--			u->oob_skb = NULL;
--			kfree_skb(skb);
--		}
--	}
--#endif
--
- 	spin_lock(&unix_gc_lock);
+-	tk=$(grep "type:1," "$evts_ns1" |
+-	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
+-	sp=$(grep "type:10" "$evts_ns1" |
+-	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
+-	da=$(grep "type:10" "$evts_ns1" |
+-	     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
+-	dp=$(grep "type:10" "$evts_ns1" |
+-	     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
+-	cnt_addr=$(rm_addr_count ${ns1})
+-	cnt_sf=$(rm_sf_count ${ns1})
+-	ip netns exec $ns1 ./pm_nl_ctl rem token $tk id $id
+-	ip netns exec $ns1 ./pm_nl_ctl dsf lip "::ffff:$addr" \
+-				lport $sp rip $da rport $dp token $tk
+-	wait_rm_addr $ns1 "${cnt_addr}"
+-	wait_rm_sf $ns1 "${cnt_sf}"
++	local evts=$evts_ns1
++	local tk
++	local cnt
++
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(mptcp_lib_evts_get_info token "$evts")
++
++	cnt=$(rm_addr_count ${1})
++	ip netns exec $1 ./pm_nl_ctl rem token $tk id $2
++	wait_rm_addr $1 "${cnt}"
+ }
  
- 	/* There could be io_uring registered files, just push them back to
++# $1: ns ; $2: addr ; $3: id
+ userspace_pm_add_sf()
+ {
+-	local addr=$1
+-	local id=$2
++	local evts=$evts_ns1
+ 	local tk da dp
+ 
+-	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+-	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
+-	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+-	ip netns exec $ns2 ./pm_nl_ctl csf lip $addr lid $id \
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(mptcp_lib_evts_get_info token "$evts")
++	da=$(mptcp_lib_evts_get_info daddr4 "$evts")
++	dp=$(mptcp_lib_evts_get_info dport "$evts")
++
++	ip netns exec $1 ./pm_nl_ctl csf lip $2 lid $3 \
+ 				rip $da rport $dp token $tk
+ 	sleep 1
+ }
+ 
+-userspace_pm_rm_sf_addr_ns2()
++# $1: ns ; $2: addr $3: event type
++userspace_pm_rm_sf()
+ {
+-	local addr=$1
+-	local id=$2
++	local evts=$evts_ns1
++	local t=${3:-1}
++	local ip=4
+ 	local tk da dp sp
+-	local cnt_addr cnt_sf
++	local cnt
++
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	if is_v6 $2; then ip=6; fi
++	tk=$(mptcp_lib_evts_get_info token "$evts")
++	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
++	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
++	sp=$(mptcp_lib_evts_get_info sport "$evts" $t)
+ 
+-	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+-	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
+-	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+-	sp=$(grep "type:10" "$evts_ns2" |
+-	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
+-	cnt_addr=$(rm_addr_count ${ns2})
+-	cnt_sf=$(rm_sf_count ${ns2})
+-	ip netns exec $ns2 ./pm_nl_ctl rem token $tk id $id
+-	ip netns exec $ns2 ./pm_nl_ctl dsf lip $addr lport $sp \
++	cnt=$(rm_sf_count ${1})
++	ip netns exec $1 ./pm_nl_ctl dsf lip $2 lport $sp \
+ 				rip $da rport $dp token $tk
+-	wait_rm_addr $ns2 "${cnt_addr}"
+-	wait_rm_sf $ns2 "${cnt_sf}"
++	wait_rm_sf $1 "${cnt}"
+ }
+ 
+ userspace_tests()
+@@ -3436,13 +3432,14 @@ userspace_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
+-		userspace_pm_add_addr 10.0.2.1 10
++		userspace_pm_add_addr $ns1 10.0.2.1 10
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+ 		chk_mptcp_info subflows 1 subflows 1
+ 		chk_subflows_total 2 2
+ 		chk_mptcp_info add_addr_signal 1 add_addr_accepted 1
+-		userspace_pm_rm_sf_addr_ns1 10.0.2.1 10
++		userspace_pm_rm_addr $ns1 10
++		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
+ 		chk_rm_nr 1 1 invert
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+@@ -3459,11 +3456,12 @@ userspace_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 		wait_mpj $ns2
+-		userspace_pm_add_sf 10.0.3.2 20
++		userspace_pm_add_sf $ns2 10.0.3.2 20
+ 		chk_join_nr 1 1 1
+ 		chk_mptcp_info subflows 1 subflows 1
+ 		chk_subflows_total 2 2
+-		userspace_pm_rm_sf_addr_ns2 10.0.3.2 20
++		userspace_pm_rm_addr $ns2 20
++		userspace_pm_rm_sf $ns2 10.0.3.2 $SUB_ESTABLISHED
+ 		chk_rm_nr 1 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
 
 
 
