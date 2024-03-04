@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABC7870CAB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A305870E72
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205B41F270C7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E80D1F2153B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC08200D4;
-	Mon,  4 Mar 2024 21:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B967A70D;
+	Mon,  4 Mar 2024 21:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TW7sC/7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mN1g92qN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1957E10A1F;
-	Mon,  4 Mar 2024 21:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605B3200CD;
+	Mon,  4 Mar 2024 21:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587657; cv=none; b=AAkgkSsgfe3H6HyVSFNsFwe7KThlEZ01dEIn67jh6eqBjUEtBMPZPLJ5aqEdTAxM3Wh5iBkau8wXYUWOlXDF4a8KWaoOpiR8lmmGACKY+U5CxZrvde2ogD00iTpY02D8EY6ZqB1CkOcj0ccwRIsMDZ2izbtC3LGt/WhuKcO2cY8=
+	t=1709588644; cv=none; b=CXcjdv2KqyXy/XjyVRhwVNk+7DT2HuV1PWLnIob+OHNmGhKT1YftFnm8RtovPEzXYyVlU55kaOVFcca75qZe/I2TbEPbsQucgPqmryNS2ywpwV6b4gp+/Znq5MjaLlzviAvsOWBLRD9n5Bg38brXKr8CPCCR5l6NdAdnxZHxR7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587657; c=relaxed/simple;
-	bh=GhdmwJHtS3qRtesp4tcKPveB0huYheWWp2JP2ivhDuE=;
+	s=arc-20240116; t=1709588644; c=relaxed/simple;
+	bh=Ptg8TsXj/uXhI/Fop0VBztlb5H69EENZo6kgaHRHJ0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uau6BjqsPugJ0vRTc99c6SEBtGEbEQ8nuMjtgcS6DoN1fWPQJGR2a7xb8Il9MMLp6KePxG30QyiycYn3K6ycW6k2nUxHkWEjYKE0SdrBWUDV/QewjYAYN7O11giaMACB0uCUBtmSSLaJQsVljKPU7o43vrO/xCnQq9QPJkWPc5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TW7sC/7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58661C43390;
-	Mon,  4 Mar 2024 21:27:36 +0000 (UTC)
+	 MIME-Version; b=YB1FVwFB4EwUkLcQ59gbhP8GGL1tCZg8MIkCI45pmarj4jqyXB/O3AbaJt4jKCl3MVjN7dEb6hToApQliWtWEg1572kUToN1WSOp5gD/89uHci5x9BuU1ABdIWm07ZNycP8nVR3THZ+i30noozYaJJwaKAFrcT+bhj508cSPcqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mN1g92qN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90016C433C7;
+	Mon,  4 Mar 2024 21:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587656;
-	bh=GhdmwJHtS3qRtesp4tcKPveB0huYheWWp2JP2ivhDuE=;
+	s=korg; t=1709588643;
+	bh=Ptg8TsXj/uXhI/Fop0VBztlb5H69EENZo6kgaHRHJ0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TW7sC/7UadwFYokmXecmITiCtx0vUQ7/No9FOCgQ3A4U1rtW59k4ZdOONYIMIoka4
-	 lMDOYl8otfLa/FAbjBJy3xIEAk4uQcXdl38CYuXC8Q7cBOgyfw0BI81kHBWpKcZh2z
-	 9YXl2nALmZjonbuPRk3h/xFZkP3Ll9eCw2YXQYbw=
+	b=mN1g92qNCNoXA3VqCd0V6Ysx3R//0hx71ZJqUASoOSkETN+tL7o7U/SMAHQbASBar
+	 bKmstP+PnJwsL0468MgSvPJKKrdbfOEpB6VXjMdQbqTey5rPjYhnL0sBs1wDhScJyy
+	 3779fcaxQCPcfss3NEG7Z8ZF2nQ/5G9IcFI2KFkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tomas Krcka <krckatom@amazon.de>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 015/162] tun: Fix xdp_rxq_infos queue_index when detaching
-Date: Mon,  4 Mar 2024 21:21:20 +0000
-Message-ID: <20240304211552.320917347@linuxfoundation.org>
+Subject: [PATCH 6.1 018/215] iommu/arm-smmu-v3: Acknowledge pri/event queue overflow if any
+Date: Mon,  4 Mar 2024 21:21:21 +0000
+Message-ID: <20240304211557.583390071@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Tomas Krcka <krckatom@amazon.de>
 
-[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
+[ Upstream commit 67ea0b7ce41844eae7c10bb04dfe66a23318c224 ]
 
-When a queue(tfile) is detached, we only update tfile's queue_index,
-but do not update xdp_rxq_info's queue_index. This patch fixes it.
+When an overflow occurs in the PRI queue, the SMMU toggles the overflow
+flag in the PROD register. To exit the overflow condition, the PRI thread
+is supposed to acknowledge it by toggling this flag in the CONS register.
+Unacknowledged overflow causes the queue to stop adding anything new.
 
-Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently, the priq thread always writes the CONS register back to the
+SMMU after clearing the queue.
+
+The writeback is not necessary if the OVFLG in the PROD register has not
+been changed, no overflow has occured.
+
+This commit checks the difference of the overflow flag between CONS and
+PROD register. If it's different, toggles the OVACKFLG flag in the CONS
+register and write it to the SMMU.
+
+The situation is similar for the event queue.
+The acknowledge register is also toggled after clearing the event
+queue but never propagated to the hardware. This would only be done the
+next time when executing evtq thread.
+
+Unacknowledged event queue overflow doesn't affect the event
+queue, because the SMMU still adds elements to that queue when the
+overflow condition is active.
+But it feel nicer to keep SMMU in sync when possible, so use the same
+way here as well.
+
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Link: https://lore.kernel.org/r/20230329123420.34641-1-tomas.krcka@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 4a4f8c8e79fa1..8f95a562b8d0c 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -653,6 +653,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
- 		ntfile->queue_index = index;
-+		ntfile->xdp_rxq.queue_index = index;
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 8966f7d5aab61..82f100e591b5a 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -152,6 +152,18 @@ static void queue_inc_cons(struct arm_smmu_ll_queue *q)
+ 	q->cons = Q_OVF(q->cons) | Q_WRP(q, cons) | Q_IDX(q, cons);
+ }
+ 
++static void queue_sync_cons_ovf(struct arm_smmu_queue *q)
++{
++	struct arm_smmu_ll_queue *llq = &q->llq;
++
++	if (likely(Q_OVF(llq->prod) == Q_OVF(llq->cons)))
++		return;
++
++	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
++		      Q_IDX(llq, llq->cons);
++	queue_sync_cons_out(q);
++}
++
+ static int queue_sync_prod_in(struct arm_smmu_queue *q)
+ {
+ 	u32 prod;
+@@ -1583,8 +1595,7 @@ static irqreturn_t arm_smmu_evtq_thread(int irq, void *dev)
+ 	} while (!queue_empty(llq));
+ 
+ 	/* Sync our overflow flag, as we believe we're up to speed */
+-	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
+-		    Q_IDX(llq, llq->cons);
++	queue_sync_cons_ovf(q);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1642,9 +1653,7 @@ static irqreturn_t arm_smmu_priq_thread(int irq, void *dev)
+ 	} while (!queue_empty(llq));
+ 
+ 	/* Sync our overflow flag, as we believe we're up to speed */
+-	llq->cons = Q_OVF(llq->prod) | Q_WRP(llq, llq->cons) |
+-		      Q_IDX(llq, llq->cons);
+-	queue_sync_cons_out(q);
++	queue_sync_cons_ovf(q);
+ 	return IRQ_HANDLED;
+ }
  
 -- 
 2.43.0
