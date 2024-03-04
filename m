@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD3D870EC3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C2D870D06
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4FFC1F24048
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 782851C2363B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E502D7AE6B;
-	Mon,  4 Mar 2024 21:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1117BAF4;
+	Mon,  4 Mar 2024 21:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLyCk0qw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uphrExTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3747200CD;
-	Mon,  4 Mar 2024 21:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC781F60A;
+	Mon,  4 Mar 2024 21:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588806; cv=none; b=i45LaRZ7JSeyrXsd3TxwHKJDFJMUGlOtROliYXWACUtO6Mc9k0k7a0xoNAINROyY/l8U3U+pyXO7riZI6KZrmyf847Oyb/ikWNoR267cfgLMOUglrtLQ2D1+wrY22VT8EG43ZfO076CdkKR/rp1IXEe73c+AAkMi2s9oF1gVaXo=
+	t=1709587819; cv=none; b=eY0dPXeTQV2VaFXHbYn0FJd9PSdQ9PRTichdhdqBvzaDggD8rZkbZ9rx48Lisz5AbvdxT+0TEhQe+LlKaCNSTc3a76gBDgxtwgaG3AqIvNRWl3I/4/K2n5igBMVhl1t+b7Ss03ipALg1slbGeTBigprflXFBzAHiRiYaMA+/nR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588806; c=relaxed/simple;
-	bh=mkXqU62BwGkzjny9KfWZPBJPggdWD7gmAg1z3PFln2Q=;
+	s=arc-20240116; t=1709587819; c=relaxed/simple;
+	bh=hkE8lXzb63lOm9BC4mLHoQfU1ubk8UV/4JvDSysGMmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpiuC95Uuxcffi//tcExFiUsC71bAII9JpChbmue7KOPRtKOMhSWvIVS2iHk+4UCaPI+9kb+6diVCh4q/7/L7/YXqXnBNXwscs+WvDm+ssx4F+jb2bOFrjkhm2vTEvgxYozW7BgWWUD8vAf79R3q6am229UWjFYVqmoPbkNn1pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLyCk0qw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651EFC43390;
-	Mon,  4 Mar 2024 21:46:45 +0000 (UTC)
+	 MIME-Version; b=a3OuWGmV9sBER+YEInwjpu8uSwLUsDPJJuZ8xAr5ndOkjBZJ1r1Wj81sVq6Kwo7aUIFPwkdH6RGupV2mShThNqRK5tcDQ9ksX5skEdYBIMA1hPkU617Z0CoDs00GSUW7V4lfGxBgtxroUhbT2IQ8y6He4OHhCw7LX+iLcMeD2Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uphrExTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55ADC433C7;
+	Mon,  4 Mar 2024 21:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588805;
-	bh=mkXqU62BwGkzjny9KfWZPBJPggdWD7gmAg1z3PFln2Q=;
+	s=korg; t=1709587819;
+	bh=hkE8lXzb63lOm9BC4mLHoQfU1ubk8UV/4JvDSysGMmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLyCk0qwv6MCSU0Q2Cq0Oge1l7f6SMmfX9EA4VaYy8shajuES8x8aSizM1dru7Tk+
-	 wjTc+CXdlqfLZytOOy1wdaQUrPInVnZ99Vx/9OAb53J44Nq+BDue7zCD/Xc9p8bJFZ
-	 f6JUN8yqr+zebls0p6RxMYusph/mIOV2yulmLwbo=
+	b=uphrExTkaYTBlW7dbXFWPkVE5RAZOYGypx5Ho4oT919YGpg8ymhl6NXjvbCfsNARN
+	 8icnI+SUUXf4td+2INkA8Rsi5nGA8SoNaclMKUOfEr1V1eUvsWpITIzyHXjTqAG3S1
+	 PVMkdfDWalV8YtzlE6bV+64t5ljV93OyEbkojTTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 104/215] mptcp: fix snd_wnd initialization for passive socket
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Elad Nachman <enachman@marvell.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 102/162] mmc: sdhci-xenon: add timeout for PHY init complete
 Date: Mon,  4 Mar 2024 21:22:47 +0000
-Message-ID: <20240304211600.333733886@linuxfoundation.org>
+Message-ID: <20240304211555.086082217@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Elad Nachman <enachman@marvell.com>
 
-commit adf1bb78dab55e36d4d557aa2fb446ebcfe9e5ce upstream.
+commit 09e23823ae9a3e2d5d20f2e1efe0d6e48cef9129 upstream.
 
-Such value should be inherited from the first subflow, but
-passive sockets always used 'rsk_rcv_wnd'.
+AC5X spec says PHY init complete bit must be polled until zero.
+We see cases in which timeout can take longer than the standard
+calculation on AC5X, which is expected following the spec comment above.
+According to the spec, we must wait as long as it takes for that bit to
+toggle on AC5X.
+Cap that with 100 delay loops so we won't get stuck forever.
 
-Fixes: 6f8a612a33e4 ("mptcp: keep track of advertised windows right edge")
+Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-5-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Elad Nachman <enachman@marvell.com>
+Link: https://lore.kernel.org/r/20240222191714.1216470-3-enachman@marvell.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-xenon-phy.c |   29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3203,7 +3203,7 @@ struct sock *mptcp_sk_clone_init(const s
- 	msk->write_seq = subflow_req->idsn + 1;
- 	msk->snd_nxt = msk->write_seq;
- 	msk->snd_una = msk->write_seq;
--	msk->wnd_end = msk->snd_nxt + req->rsk_rcv_wnd;
-+	msk->wnd_end = msk->snd_nxt + tcp_sk(ssk)->snd_wnd;
- 	msk->setsockopt_seq = mptcp_sk(sk)->setsockopt_seq;
+--- a/drivers/mmc/host/sdhci-xenon-phy.c
++++ b/drivers/mmc/host/sdhci-xenon-phy.c
+@@ -109,6 +109,8 @@
+ #define XENON_EMMC_PHY_LOGIC_TIMING_ADJUST	(XENON_EMMC_PHY_REG_BASE + 0x18)
+ #define XENON_LOGIC_TIMING_VALUE		0x00AA8977
  
- 	if (mp_opt->suboptions & OPTIONS_MPTCP_MPC) {
++#define XENON_MAX_PHY_TIMEOUT_LOOPS		100
++
+ /*
+  * List offset of PHY registers and some special register values
+  * in eMMC PHY 5.0 or eMMC PHY 5.1
+@@ -259,18 +261,27 @@ static int xenon_emmc_phy_init(struct sd
+ 	/* get the wait time */
+ 	wait /= clock;
+ 	wait++;
+-	/* wait for host eMMC PHY init completes */
+-	udelay(wait);
+ 
+-	reg = sdhci_readl(host, phy_regs->timing_adj);
+-	reg &= XENON_PHY_INITIALIZAION;
+-	if (reg) {
++	/*
++	 * AC5X spec says bit must be polled until zero.
++	 * We see cases in which timeout can take longer
++	 * than the standard calculation on AC5X, which is
++	 * expected following the spec comment above.
++	 * According to the spec, we must wait as long as
++	 * it takes for that bit to toggle on AC5X.
++	 * Cap that with 100 delay loops so we won't get
++	 * stuck here forever:
++	 */
++
++	ret = read_poll_timeout(sdhci_readl, reg,
++				!(reg & XENON_PHY_INITIALIZAION),
++				wait, XENON_MAX_PHY_TIMEOUT_LOOPS * wait,
++				false, host, phy_regs->timing_adj);
++	if (ret)
+ 		dev_err(mmc_dev(host->mmc), "eMMC PHY init cannot complete after %d us\n",
+-			wait);
+-		return -ETIMEDOUT;
+-	}
++			wait * XENON_MAX_PHY_TIMEOUT_LOOPS);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ #define ARMADA_3700_SOC_PAD_1_8V	0x1
 
 
 
