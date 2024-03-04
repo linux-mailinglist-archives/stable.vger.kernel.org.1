@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA79870F55
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39268870D82
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF032283ED1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5C7B21383
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328967992E;
-	Mon,  4 Mar 2024 21:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98D247A5D;
+	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcMdlSRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyyrIpVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B081C6AB;
-	Mon,  4 Mar 2024 21:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E561C687;
+	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589213; cv=none; b=SMlCCQR9QglbOSgCiq31LsC4F6REisDclIjfg6WngTtgMBAxxRVS4dU/U+KyIuN88mJyGvsiR77oQLVcC8IsJfPiDxJAP1toz82tDbWsUQWDLJVRpLyJhckpivgu2fv85Ihyeltg/bXxZA0hi9VCuIRCM0MNQ6myEmZ2pyw2Z2g=
+	t=1709588083; cv=none; b=TqQLVc99uBmn4xYtFA67UENyoiz1XQNUoTsVZOE+Pd78AvbRZaWThy4Khl9XtP6duP4wE3u91rZndK2d7gmXgqOZFYbaeKevJgYVdVNE1vSSLjrzXXEYDHfI9QIhHb6qmIGy/DCR5M5hn7qb/mLVsJI5KlYrAX+YlcmjLO2vxfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589213; c=relaxed/simple;
-	bh=Atm2mZt8WSdHXwTVGEiknem8ysZk4j85nCY9bXFswIY=;
+	s=arc-20240116; t=1709588083; c=relaxed/simple;
+	bh=IM9Qk1XKuSY6JKNY2ZK9fAbkWbx9NEVlZxsTARXswmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrZz/ymd8QHRPNx/qjbgLrmWX9mZarYvdCYx6vB0cvsTKDirJwX3XrgSyllNnEsZAyrC9XTqYfBTRVfHpJAN22/HtPJhaWl/Lno/p9IE/YqlE6552cNfdlovaj8Bq6Ts3jNjmsIxcQ6Hi/u+PSx7DKjsMVWl2M2Ssa5DGTS0XZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcMdlSRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2F6C433C7;
-	Mon,  4 Mar 2024 21:53:32 +0000 (UTC)
+	 MIME-Version; b=Qfdi1lqpmiTsTDlseN4wBbg/8W0SQnVJYvq2k/JxTM2ZBvIxwstZpVPw+KEbLMleIpShAtJlAwRTAcyBPpYWG44uxcOVdlOI3Sa9OPuX+GTWYhm0KNajnEuexpSUX+6S3eI7glKZE12WHicVfT5LpA/5pggwk2mbmY/IdlxuYvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyyrIpVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FDDC433C7;
+	Mon,  4 Mar 2024 21:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589212;
-	bh=Atm2mZt8WSdHXwTVGEiknem8ysZk4j85nCY9bXFswIY=;
+	s=korg; t=1709588083;
+	bh=IM9Qk1XKuSY6JKNY2ZK9fAbkWbx9NEVlZxsTARXswmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcMdlSRSgw7VBba8IALtH/ioogHbibI5kQc6k9XycnH7pSRdFXLnlWNJceNTAKN0x
-	 +WDhQ1+JExkEVF132gpJf3yrr9Ryp2T1heiD8L4ggmutIZHn4yi8HDVSQ/xOYgKFp3
-	 qeaZ3HJmDYttqpCM4Pon5hbLY1vgq4SvelBhaFtY=
+	b=JyyrIpVcEYR9Uo9YKvOq7ptdb6U6TOCBYughml3WW0/BSBMHkIvZrzP+j2pEF66HP
+	 IoPCzJ8/DRCcURqgQrUC5UI+QTOAn0f0EltARevmi58UuHjk0Ur4pBPmXEnCHbtYbx
+	 QQzi914Kh5YM9QGica+W79f/Sd+9bkT9M/WHzSwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Griege <jgriege@cloudflare.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/84] lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
+Subject: [PATCH 5.10 15/42] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
 Date: Mon,  4 Mar 2024 21:23:42 +0000
-Message-ID: <20240304211542.655358464@linuxfoundation.org>
+Message-ID: <20240304211538.151289814@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 0e67899abfbfdea0c3c0ed3fd263ffc601c5c157 ]
+[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
 
-Same as LAN7800, LAN7850 can be used without EEPROM. If EEPROM is not
-present or not flashed, LAN7850 will fail to sync the speed detected by the PHY
-with the MAC. In case link speed is 100Mbit, it will accidentally work,
-otherwise no data can be transferred.
+Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
+some validation of NFPROTO_* families in the nft_compat module, but it broke
+the ability to use legacy iptables modules in dual-stack nftables.
 
-Better way would be to implement link_up callback, or set auto speed
-configuration unconditionally. But this changes would be more intrusive.
-So, for now, set it only if no EEPROM is found.
+While with legacy iptables one had to independently manage IPv4 and IPv6
+tables, with nftables it is possible to have dual-stack tables sharing the
+rules. Moreover, it was possible to use rules based on legacy iptables
+match/target modules in dual-stack nftables.
 
-Fixes: e69647a19c87 ("lan78xx: Set ASD in MAC_CR when EEE is enabled.")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240222123839.2816561-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As an example, the program from [2] creates an INET dual-stack family table
+using an xt_bpf based rule, which looks like the following (the actual output
+was generated with a patched nft tool as the current nft tool does not parse
+dual stack tables with legacy match rules, so consider it for illustrative
+purposes only):
+
+table inet testfw {
+  chain input {
+    type filter hook prerouting priority filter; policy accept;
+    bytecode counter packets 0 bytes 0 accept
+  }
+}
+
+After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
+EOPNOTSUPP for the above program.
+
+Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
+restrict the functions to classic iptables hooks.
+
+Changes in v3:
+  * clarify that upstream nft will not display such configuration properly and
+    that the output was generated with a patched nft tool
+  * remove example program from commit description and link to it instead
+  * no code changes otherwise
+
+Changes in v2:
+  * restrict nft_(match/target)_validate() to classic iptables hooks
+  * rewrite example program to use unmodified libnftnl
+
+Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
+Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
+Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nft_compat.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 5700c9d20a3e2..c8b42892655a1 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2862,7 +2862,8 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 	if (dev->chipid == ID_REV_CHIP_ID_7801_)
- 		buf &= ~MAC_CR_GMII_EN_;
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 77c7362a7db8e..3e0a6e7930c6c 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -336,10 +336,20 @@ static int nft_target_validate(const struct nft_ctx *ctx,
  
--	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
-+	if (dev->chipid == ID_REV_CHIP_ID_7800_ ||
-+	    dev->chipid == ID_REV_CHIP_ID_7850_) {
- 		ret = lan78xx_read_raw_eeprom(dev, 0, 1, &sig);
- 		if (!ret && sig != EEPROM_INDICATOR) {
- 			/* Implies there is no external eeprom. Set mac speed */
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -584,10 +594,20 @@ static int nft_match_validate(const struct nft_ctx *ctx,
+ 
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
 -- 
 2.43.0
 
