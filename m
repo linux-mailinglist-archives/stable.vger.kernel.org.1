@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A437870C77
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:25:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A784870D7C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A561F22CBF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CF641C236FE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7778200A9;
-	Mon,  4 Mar 2024 21:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C6778B4C;
+	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjzIn/Vy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4bplZzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F601F5FD;
-	Mon,  4 Mar 2024 21:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994BA1C687;
+	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587549; cv=none; b=nSo+OabJ7ketr2TxEzY7+XibIujpI5CmBDfgVIgClNkdGGfJNY6hj4o1xcCs5U5RSLo3twwSDJq5bas0vDvpXC2KcCFD9kfhY9+Tg39Lzy6obUwsguGzp1XKWGdgxhUxeX2YYNJgOdbFdqp0fUvP2b9BuXfeCPyDH2jIdiK2ak4=
+	t=1709588070; cv=none; b=j/uUmdVMF+yYVT3DxfAMxf/FZZfA6rnIoWHdzfEb/PFxJy28SoxGeoKLDgQ6Nh+VTWGzJpC1PeiwFKwPEaN1WHO1qQ7IU5vy6hJp35rrQnSL6vd+NRobK5nbI61dTDFHJKyM4q3+y8lAmuGqDNdJA6rvLlAIt86V7srOA3mB3e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587549; c=relaxed/simple;
-	bh=I2CRnr9yv8S9DssTF99dm7Rei4cRGknZ5j5wUzTB234=;
+	s=arc-20240116; t=1709588070; c=relaxed/simple;
+	bh=GcaKPwPJpjo2njfe60qvqSJ2cA8XHbsRhYjUPH0b6y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ez3Znw8sYnazSVk2KmhJzqWhV/wtDrFEATC0WG5SLSgr3sV43fnr2JnElWkOxtGIJvwuXrcSNi355evNc8F3agHXCuBtTVJ2SDfX0yBI0v37soFu7v9hzSukMefBGvchN+NBEDTE9IeszsPUdrTf+YuCHwSNNk6TNRYPgg0NYWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjzIn/Vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAF3C433F1;
-	Mon,  4 Mar 2024 21:25:49 +0000 (UTC)
+	 MIME-Version; b=IHwuSWHgYT2RxS/JC5hD0t7dFN21JJuVAYQfkdNOYgO9s258w6HENLmZ2IHXvQOgIokzE7WrxbkE1uIx74+tHYy5/Vhy5Cq1mu9iWsKql9ix26AfEAxwSe9KQAT72QYjTRVjWgug42vss9BgqH9cTMNbajLwLgSqGgfrjuLb5Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4bplZzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF8C433C7;
+	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587549;
-	bh=I2CRnr9yv8S9DssTF99dm7Rei4cRGknZ5j5wUzTB234=;
+	s=korg; t=1709588070;
+	bh=GcaKPwPJpjo2njfe60qvqSJ2cA8XHbsRhYjUPH0b6y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjzIn/VyPxj4a6W+/C6jUYk8gSmNGadK9PG9ibr9xUDwbyiwMmagnX7JUdTjOUItS
-	 JKQDXj2/f5KuW9tsWQbzvakQfXkROBmz8md2GJZ3efRkfOMRG1fYJ9DB6Mqupei0Rr
-	 +ZH53Afb/IDqNvzsVGcQ2WLHC8GDTkFoUHTo4uE0=
+	b=u4bplZzrmVs/ZP08cfouZ9VFzx8v1hB0x1oecTEFnjDQvizGXRgiF1MUJGuroOslJ
+	 Kflp7bT0W2y2s/5oRN+RwTqDU7Sa1Nuvh1XMQxoLjzw2OAJ9uxfwXx3AsA3QmEddnX
+	 co010Uw5K/yK1lW8lTr4m/rr56FsnHx5KMS28Qj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/16] gpio: 74x164: Enable output pins after registers are reset
+Subject: [PATCH 5.10 10/42] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
 Date: Mon,  4 Mar 2024 21:23:37 +0000
-Message-ID: <20240304211534.938537555@linuxfoundation.org>
+Message-ID: <20240304211537.987910802@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
+[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
 
-Chip outputs are enabled[1] before actual reset is performed[2] which might
-cause pin output value to flip flop if previous pin value was set to 1.
-Fix that behavior by making sure chip is fully reset before all outputs are
-enabled.
+The MII code does not check the return value of mdio_read (among
+others), and therefore no error code should be sent. A previous fix to
+the use of an uninitialized variable propagates negative error codes,
+that might lead to wrong operations by the MII library.
 
-Flip-flop can be noticed when module is removed and inserted again and one of
-the pins was changed to 1 before removal. 100 microsecond flipping is
-noticeable on oscilloscope (100khz SPI bus).
+An example of such issues is the use of mii_nway_restart by the dm9601
+driver. The mii_nway_restart function does not check the value returned
+by mdio_read, which in this case might be a negative number which could
+contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
 
-For a properly reset chip - output is enabled around 100 microseconds (on 100khz
-SPI bus) later during probing process hence should be irrelevant behavioral
-change.
+Return zero in case of error, as it is common practice in users of
+mdio_read to avoid wrong uses of the return value.
 
-Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
-Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-74x164.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/dm9601.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
-index fb7b620763a25..a47897f2a83de 100644
---- a/drivers/gpio/gpio-74x164.c
-+++ b/drivers/gpio/gpio-74x164.c
-@@ -132,8 +132,6 @@ static int gen_74x164_probe(struct spi_device *spi)
- 	if (IS_ERR(chip->gpiod_oe))
- 		return PTR_ERR(chip->gpiod_oe);
- 
--	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
--
- 	spi_set_drvdata(spi, chip);
- 
- 	chip->gpio_chip.label = spi->modalias;
-@@ -158,6 +156,8 @@ static int gen_74x164_probe(struct spi_device *spi)
- 		goto exit_destroy;
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 5aad26600b03e..9b7db5fd9e08f 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -231,7 +231,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	err = dm_read_shared_word(dev, 1, loc, &res);
+ 	if (err < 0) {
+ 		netdev_err(dev->net, "MDIO read error: %d\n", err);
+-		return err;
++		return 0;
  	}
  
-+	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
-+
- 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
- 	if (!ret)
- 		return 0;
+ 	netdev_dbg(dev->net,
 -- 
 2.43.0
 
