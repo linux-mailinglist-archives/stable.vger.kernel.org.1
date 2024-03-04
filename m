@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B80870D36
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7C7870EF7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16831C24E96
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2551C21A53
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DDC200CD;
-	Mon,  4 Mar 2024 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373B146BA0;
+	Mon,  4 Mar 2024 21:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1PMhKMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwofT81I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923EE7CF18;
-	Mon,  4 Mar 2024 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EEB1EB5A;
+	Mon,  4 Mar 2024 21:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587904; cv=none; b=O4STc9nNRb/y8C5XoeG736RwsQ9mMxJDBzGlJhAN0QW7CTYVBhW0GxesnftrQR0dcvLFvV5f8MeqFDPWTGb9frUT+7/4+uOKw6EBR4Itc6unOboK71C6V/+GaE2mDJDGlYRUEB/I+29N0scdjbQ2rH+0f4ir+z/osF+kLnEpdnY=
+	t=1709588976; cv=none; b=cwXFpmogL3Pp6giA+WLY8zz/OnbsLQOZcK8s/1E8HewE57bwWhdWQaY4WJRkXeoR4YlufT6dM8PAIfYbftN3vU7zLAR+kpznhwJxefevzj5MxprWUxdpULb8GUlIxar07DjvoK7LVGHh24+w95xfTs96HCa/4Pp86mW8hPooQB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587904; c=relaxed/simple;
-	bh=eain4lAB6ngw/EYFGJE8S/GekDPPy6sCq/XOawazIU0=;
+	s=arc-20240116; t=1709588976; c=relaxed/simple;
+	bh=JE+EA/Gf1fGu4iZ2UlztxxU0LkvMbTzst+vjTs0SWKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XM84V5VcmssNxALNIRFNfTweN3Z8vL4qQEVNxZdih7M/DNhaOxMFwrqmOsUuHyu6Ug+XW24dYgdIMFQ6PzdJw+u1scwZoLEjtJ+kQnkMFSAyRhOXVvtYFZ1nkSPz2tFyJXZxCzEP6mxN/x6fmaEnj8qe5WFs3LmIwISrchpXyWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1PMhKMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C36C433C7;
-	Mon,  4 Mar 2024 21:31:43 +0000 (UTC)
+	 MIME-Version; b=pVXodmc5um1Fl3YhFJOL4EE+XnP22824/KE1PhUoIyjc4KGgbMAnriyhm/SHKR2nXHyb0aJKGerOJYG+NeJNT2fyNhUA+ODs3/sdn25rE935AlNfhRvvXZ61WOJiq0QUd/3/spbU/5opUOtQ41CrnI+NNkc7RViqFwhFZDpTXn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwofT81I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF92C433F1;
+	Mon,  4 Mar 2024 21:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587904;
-	bh=eain4lAB6ngw/EYFGJE8S/GekDPPy6sCq/XOawazIU0=;
+	s=korg; t=1709588975;
+	bh=JE+EA/Gf1fGu4iZ2UlztxxU0LkvMbTzst+vjTs0SWKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1PMhKMo4w8cCynAyAyYl0ngtgVphRQp605NIqqlgmKchnKjtiA0mRM0fML6U93Dh
-	 Gw8WpGdOTIW4Cp3wRPEbTccLp0BUTF22TQKF5VXoa1iiob6qu9IBwykuI0w8fOUB5M
-	 J1uJ6oEDS8rXBMEWWFuePCv/eTqi+xcuuVrQ60b8=
+	b=DwofT81If6iruHV529b6KmNRs7P/goxFYRsVJiFDGHm/THzUkirOIc3LclTEcz7qx
+	 JoniLit9aRCr/sYfEUQP7qjrK9rEWJmO7Mdo3SKSF+Gcmt0ZaPx//KP/dYfprfw4hr
+	 j0a/+1GaMDhKyPePskKHb0bAnGxY5rPcAivr2qiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 117/162] mm/debug_vm_pgtable: fix BUG_ON with pud advanced test
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 119/215] x86/boot/compressed: Pull global variable reference into startup32_load_idt()
 Date: Mon,  4 Mar 2024 21:23:02 +0000
-Message-ID: <20240304211555.507877682@linuxfoundation.org>
+Message-ID: <20240304211600.840636668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 720da1e593b85a550593b415bf1d79a053133451 upstream.
+commit d73a257f7f86871c3aac24dc20538e3983096647 upstream.
 
-Architectures like powerpc add debug checks to ensure we find only devmap
-PUD pte entries.  These debug checks are only done with CONFIG_DEBUG_VM.
-This patch marks the ptes used for PUD advanced test devmap pte entries so
-that we don't hit on debug checks on architecture like ppc64 as below.
+In preparation for moving startup32_load_idt() out of head_64.S and
+turning it into an ordinary function using the ordinary 32-bit calling
+convention, pull the global variable reference to boot32_idt up into
+startup32_load_idt() so that startup32_set_idt_entry() does not need to
+discover its own runtime physical address, which will no longer be
+correlated with startup_32 once this code is moved into .text.
 
-WARNING: CPU: 2 PID: 1 at arch/powerpc/mm/book3s64/radix_pgtable.c:1382 radix__pud_hugepage_update+0x38/0x138
-....
-NIP [c0000000000a7004] radix__pud_hugepage_update+0x38/0x138
-LR [c0000000000a77a8] radix__pudp_huge_get_and_clear+0x28/0x60
-Call Trace:
-[c000000004a2f950] [c000000004a2f9a0] 0xc000000004a2f9a0 (unreliable)
-[c000000004a2f980] [000d34c100000000] 0xd34c100000000
-[c000000004a2f9a0] [c00000000206ba98] pud_advanced_tests+0x118/0x334
-[c000000004a2fa40] [c00000000206db34] debug_vm_pgtable+0xcbc/0x1c48
-[c000000004a2fc10] [c00000000000fd28] do_one_initcall+0x60/0x388
+While at it, give startup32_set_idt_entry() static linkage.
 
-Also
-
- kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:202!
- ....
-
- NIP [c000000000096510] pudp_huge_get_and_clear_full+0x98/0x174
- LR [c00000000206bb34] pud_advanced_tests+0x1b4/0x334
- Call Trace:
- [c000000004a2f950] [000d34c100000000] 0xd34c100000000 (unreliable)
- [c000000004a2f9a0] [c00000000206bb34] pud_advanced_tests+0x1b4/0x334
- [c000000004a2fa40] [c00000000206db34] debug_vm_pgtable+0xcbc/0x1c48
- [c000000004a2fc10] [c00000000000fd28] do_one_initcall+0x60/0x388
-
-Link: https://lkml.kernel.org/r/20240129060022.68044-1-aneesh.kumar@kernel.org
-Fixes: 27af67f35631 ("powerpc/book3s64/mm: enable transparent pud hugepage")
-Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-11-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/debug_vm_pgtable.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/boot/compressed/head_64.S |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -362,6 +362,12 @@ static void __init pud_advanced_tests(st
- 	vaddr &= HPAGE_PUD_MASK;
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -744,16 +744,11 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
+  *
+  * %eax:	Handler address
+  * %edx:	Vector number
+- *
+- * Physical offset is expected in %ebp
++ * %ecx:	IDT address
+  */
+-SYM_FUNC_START(startup32_set_idt_entry)
+-	push    %ebx
+-
+-	/* IDT entry address to %ebx */
+-	leal    rva(boot32_idt)(%ebp), %ebx
+-	shl	$3, %edx
+-	addl    %edx, %ebx
++SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
++	/* IDT entry address to %ecx */
++	leal	(%ecx, %edx, 8), %ecx
  
- 	pud = pfn_pud(args->pud_pfn, args->page_prot);
-+	/*
-+	 * Some architectures have debug checks to make sure
-+	 * huge pud mapping are only found with devmap entries
-+	 * For now test with only devmap entries.
-+	 */
-+	pud = pud_mkdevmap(pud);
- 	set_pud_at(args->mm, vaddr, args->pudp, pud);
- 	flush_dcache_page(page);
- 	pudp_set_wrprotect(args->mm, vaddr, args->pudp);
-@@ -374,6 +380,7 @@ static void __init pud_advanced_tests(st
- 	WARN_ON(!pud_none(pud));
- #endif /* __PAGETABLE_PMD_FOLDED */
- 	pud = pfn_pud(args->pud_pfn, args->page_prot);
-+	pud = pud_mkdevmap(pud);
- 	pud = pud_wrprotect(pud);
- 	pud = pud_mkclean(pud);
- 	set_pud_at(args->mm, vaddr, args->pudp, pud);
-@@ -391,6 +398,7 @@ static void __init pud_advanced_tests(st
- #endif /* __PAGETABLE_PMD_FOLDED */
+ 	/* Build IDT entry, lower 4 bytes */
+ 	movl    %eax, %edx
+@@ -761,7 +756,7 @@ SYM_FUNC_START(startup32_set_idt_entry)
+ 	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
  
- 	pud = pfn_pud(args->pud_pfn, args->page_prot);
-+	pud = pud_mkdevmap(pud);
- 	pud = pud_mkyoung(pud);
- 	set_pud_at(args->mm, vaddr, args->pudp, pud);
- 	flush_dcache_page(page);
+ 	/* Store lower 4 bytes to IDT */
+-	movl    %edx, (%ebx)
++	movl    %edx, (%ecx)
+ 
+ 	/* Build IDT entry, upper 4 bytes */
+ 	movl    %eax, %edx
+@@ -769,15 +764,16 @@ SYM_FUNC_START(startup32_set_idt_entry)
+ 	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
+ 
+ 	/* Store upper 4 bytes to IDT */
+-	movl    %edx, 4(%ebx)
++	movl    %edx, 4(%ecx)
+ 
+-	pop     %ebx
+ 	RET
+ SYM_FUNC_END(startup32_set_idt_entry)
+ #endif
+ 
+ SYM_FUNC_START(startup32_load_idt)
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
++	leal    rva(boot32_idt)(%ebp), %ecx
++
+ 	/* #VC handler */
+ 	leal    rva(startup32_vc_handler)(%ebp), %eax
+ 	movl    $X86_TRAP_VC, %edx
 
 
 
