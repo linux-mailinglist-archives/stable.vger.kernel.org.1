@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B3870F67
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9444870F20
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 405931C21A92
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10AD71C240E9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF7879950;
-	Mon,  4 Mar 2024 21:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2195179F2;
+	Mon,  4 Mar 2024 21:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftet5QUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLrJpwJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF71C6AB;
-	Mon,  4 Mar 2024 21:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31EC200D4;
+	Mon,  4 Mar 2024 21:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589257; cv=none; b=pykdyLd0WpG7XxvDfYyl+rCS9GBOphS6atH4tq7nH+n+za6FPHxYgpv/Ntdko7j8Q8dDxhjgPh1yXzWXe8BtbojbQaMyFHS0Q99v7psi7O2m3/4YchB9EI45fqnGA5XTklcU6Q/3A6vQ6ZH/zQ371qCSf62AwuzOjDNZmNCyjng=
+	t=1709589067; cv=none; b=P2kVtBZzN/kt3/Gz8JE4t6qC4YL2X7kIpHe0SkCSPNOWUQ0ImLYzFydVAjd6jEgaVr9rUNjyV/m4qvwi9gMqY79nA7w+JZS66e8AapAv8WBuNMtm0G3Psbtj2wTh+8lv9L58bsBi23hzQZ4OsBuuwYR/jhWNB8BlgR5KyJss9ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589257; c=relaxed/simple;
-	bh=65iXFR0/v9blfhohgSFjtcSWI8Nd4AkkacoY4JGKblY=;
+	s=arc-20240116; t=1709589067; c=relaxed/simple;
+	bh=Dm+2gRMaGF4cEzhAdNZY10p4+zmSwQLFEfrYJicga6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKdWRdag8N8KYwHtQ+QAGGlIP9XpaeR4CdK445QBMOhXErIoSMN7hsKyv6z+c64c2smPYBg3Qh+o4SLyqbtczBh4zi68yr1eU4QfscVUN0Ou3KOpZe7Z3uXZQEuAcKG1Zv3SJtEVt51rYX3mF+L1qmjNOzcUmnF5+Pw7U19Ql14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftet5QUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77804C433F1;
-	Mon,  4 Mar 2024 21:54:16 +0000 (UTC)
+	 MIME-Version; b=MCaU/W1mBsWclGzlOrQda+BUo//pAiNIKlehMCBFQJ5p0BlIB+mAjmINqjF+7gS8Nl8i4GsGFC+KvpbT5HcC51iff0xfuwZYNrij+dS5oT+7VZjuu2FV21SD2CiorEAQRcTS1hTsPsmbz/LV3GiSNCQkj3wR31dY80ZRRyeCx10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLrJpwJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D05C433C7;
+	Mon,  4 Mar 2024 21:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589256;
-	bh=65iXFR0/v9blfhohgSFjtcSWI8Nd4AkkacoY4JGKblY=;
+	s=korg; t=1709589067;
+	bh=Dm+2gRMaGF4cEzhAdNZY10p4+zmSwQLFEfrYJicga6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftet5QUcYRQWurs2sVDUTpg1xrpFjmpgDthA+UcAPiMUveHsfTsugBH3Cv7pDrgwQ
-	 s54r7HthB34+7mUGwIO94Wm2npUlN7jDvRM50rI2J4wm0lFVMBP4NCnqZr3Nr09zBp
-	 CHtkxHKXceRYppELOg2EmrVxzSRxKBuW2wAqcr6Y=
+	b=uLrJpwJNtqMPUCMKlk69EO88ZY/NLDdxn/qdnKr0Iy/8Oj/TLoA9CtDB/9jjr/Hv/
+	 u8OtQaamVMCBKfckP3R4oxId1OV+6BUAT78vn95feg7y21dlRR0BztT65Ntt8B9WRY
+	 4S/5jWUrzlOHHj9cNpBqVkmSXMtFFDUW5bCf24VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/84] tls: rx: use async as an in-out argument
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 189/215] x86/efistub: Prefer EFI memory attributes protocol over DXE services
 Date: Mon,  4 Mar 2024 21:24:12 +0000
-Message-ID: <20240304211543.644892938@linuxfoundation.org>
+Message-ID: <20240304211602.954811000@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ard Biesheuvel <ardb+git@google.com>
 
-[ Upstream commit 3547a1f9d988d88ecff4fc365d2773037c849f49 ]
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Propagating EINPROGRESS thru multiple layers of functions is
-error prone. Use darg->async as an in/out argument, like we
-use darg->zc today. On input it tells the code if async is
-allowed, on output if it took place.
+[ Commit 11078876b7a6a1b7226344fecab968945c806832 upstream ]
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, the EFI stub relies on DXE services in some cases to clear
+non-execute restrictions from page allocations that need to be
+executable. This is dodgy, because DXE services are not specified by
+UEFI but by PI, and they are not intended for consumption by OS loaders.
+However, no alternative existed at the time.
+
+Now, there is a new UEFI protocol that should be used instead, so if it
+exists, prefer it over the DXE services calls.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230807162720.545787-18-ardb@kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c |   29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 27ac27daec868..a1a99f9f093b1 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -236,7 +236,7 @@ static int tls_do_decryption(struct sock *sk,
- 			     char *iv_recv,
- 			     size_t data_len,
- 			     struct aead_request *aead_req,
--			     bool async)
-+			     struct tls_decrypt_arg *darg)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
-@@ -249,7 +249,7 @@ static int tls_do_decryption(struct sock *sk,
- 			       data_len + prot->tag_size,
- 			       (u8 *)iv_recv);
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -26,6 +26,7 @@ const efi_system_table_t *efi_system_tab
+ const efi_dxe_services_table_t *efi_dxe_table;
+ u32 image_offset __section(".data");
+ static efi_loaded_image_t *image = NULL;
++static efi_memory_attribute_protocol_t *memattr;
  
--	if (async) {
-+	if (darg->async) {
- 		/* Using skb->sk to push sk through to crypto async callback
- 		 * handler. This allows propagating errors up to the socket
- 		 * if needed. It _must_ be cleared in the async handler
-@@ -269,11 +269,13 @@ static int tls_do_decryption(struct sock *sk,
+ static efi_status_t
+ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+@@ -222,12 +223,18 @@ void efi_adjust_memory_range_protection(
+ 	unsigned long rounded_start, rounded_end;
+ 	unsigned long unprotect_start, unprotect_size;
  
- 	ret = crypto_aead_decrypt(aead_req);
- 	if (ret == -EINPROGRESS) {
--		if (async)
--			return ret;
-+		if (darg->async)
-+			return 0;
+-	if (efi_dxe_table == NULL)
+-		return;
+-
+ 	rounded_start = rounddown(start, EFI_PAGE_SIZE);
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
  
- 		ret = crypto_wait_req(ret, &ctx->async_wait);
- 	}
-+	darg->async = false;
++	if (memattr != NULL) {
++		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
++			       rounded_end - rounded_start, EFI_MEMORY_XP);
++		return;
++	}
 +
- 	if (ret == -EBADMSG)
- 		TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSDECRYPTERROR);
++	if (efi_dxe_table == NULL)
++		return;
++
+ 	/*
+ 	 * Don't modify memory region attributes, they are
+ 	 * already suitable, to lower the possibility to
+@@ -758,6 +765,7 @@ void __noreturn efi_stub_entry(efi_handl
+ 			       efi_system_table_t *sys_table_arg,
+ 			       struct boot_params *boot_params)
+ {
++	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
+ 	unsigned long bzimage_addr = (unsigned long)startup_32;
+ 	unsigned long buffer_start, buffer_end;
+ 	struct setup_header *hdr = &boot_params->hdr;
+@@ -769,13 +777,18 @@ void __noreturn efi_stub_entry(efi_handl
+ 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+ 		efi_exit(handle, EFI_INVALID_PARAMETER);
  
-@@ -1540,9 +1542,9 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 
- 	/* Prepare and submit AEAD request */
- 	err = tls_do_decryption(sk, skb, sgin, sgout, iv,
--				data_len, aead_req, darg->async);
--	if (err == -EINPROGRESS)
--		return err;
-+				data_len, aead_req, darg);
-+	if (darg->async)
-+		return 0;
- 
- 	/* Release the pages in case iov was mapped to pages */
- 	for (; pages > 0; pages--)
-@@ -1579,11 +1581,10 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
+-	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
+-	if (efi_dxe_table &&
+-	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
+-		efi_warn("Ignoring DXE services table: invalid signature\n");
+-		efi_dxe_table = NULL;
++	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
++		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
++		if (efi_dxe_table &&
++		    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
++			efi_warn("Ignoring DXE services table: invalid signature\n");
++			efi_dxe_table = NULL;
++		}
  	}
  
- 	err = decrypt_internal(sk, skb, dest, NULL, darg);
--	if (err < 0) {
--		if (err == -EINPROGRESS)
--			tls_advance_record_sn(sk, prot, &tls_ctx->rx);
-+	if (err < 0)
- 		return err;
--	}
-+	if (darg->async)
-+		goto decrypt_next;
- 
- decrypt_done:
- 	pad = padding_length(prot, skb);
-@@ -1593,8 +1594,9 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 	rxm->full_len -= pad;
- 	rxm->offset += prot->prepend_size;
- 	rxm->full_len -= prot->overhead_size;
--	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
- 	tlm->decrypted = 1;
-+decrypt_next:
-+	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
- 
- 	return 0;
- }
-@@ -1826,13 +1828,12 @@ int tls_sw_recvmsg(struct sock *sk,
- 			darg.async = false;
- 
- 		err = decrypt_skb_update(sk, skb, &msg->msg_iter, &darg);
--		if (err < 0 && err != -EINPROGRESS) {
-+		if (err < 0) {
- 			tls_err_abort(sk, -EBADMSG);
- 			goto recv_end;
- 		}
- 
--		if (err == -EINPROGRESS)
--			async = true;
-+		async |= darg.async;
- 
- 		/* If the type of records being processed is not known yet,
- 		 * set it to record type just dequeued. If it is already known,
--- 
-2.43.0
-
++	/* grab the memory attributes protocol if it exists */
++	efi_bs_call(locate_protocol, &guid, NULL, (void **)&memattr);
++
+ 	status = efi_setup_5level_paging();
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("efi_setup_5level_paging() failed!\n");
 
 
 
