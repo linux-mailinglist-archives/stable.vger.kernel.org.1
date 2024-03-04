@@ -1,199 +1,117 @@
-Return-Path: <stable+bounces-25958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C87F87084E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:32:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F73187088F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2281B24F05
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110661F2265D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA17A612E5;
-	Mon,  4 Mar 2024 17:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CCD61665;
+	Mon,  4 Mar 2024 17:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GSo2nkQN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="jsyLO5wN";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GSo2nkQN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="jsyLO5wN"
+	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="cyHehOvt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDF961677;
-	Mon,  4 Mar 2024 17:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12410612F6
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 17:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709573536; cv=none; b=XQiS7T7UoULCJ2oKyjYveXgSW149dbCQlFU4lriEd+cGy804bE9HK7su7yZfKAmiv0w7y4H3vLSXlKI5DJ0dk/3eWx4+ypeip/T71bvlwbDZ4B8uGcw0+SML6csPv1ULNaseg4PADXaSy1+va4dZ6N6UIbMIxbppHsyNZoW2Qro=
+	t=1709574552; cv=none; b=i5D5aDtnTUG3TTR7lcwiQgAJX1ljp8LQbvSXU+oDFeEBICtKyek5D1F4m4ZhARFglV980XQwYabPL7dSm9PJXouZgrvTl4HfoIFEKWf10AMY0NDwXRaiHzE39UsDj3/m6cqRZBrY0mBabMV3QDa+Tf4NYx9ycocE8ARLkH/b4Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709573536; c=relaxed/simple;
-	bh=mLp0dR6ersKKmliuhWp/ktZUlkkHWwNj7i7viIpAOh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A0LE/KfcQJjqtzZsYKV14T5/J+D/+s+KhdTwWTH2lcaSJrfGDtgkLP7tzV6qpoc2RubnVX06eKnBXGS1s/LeueAQ5x6b7a23dOMkvB3IUhp4iVH5w4VVBSRvLrkKX+kPNNHJg1Ik8vswm/194Ne1Y9RQoDBIuY+rle3Ne2COpwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GSo2nkQN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=jsyLO5wN; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GSo2nkQN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=jsyLO5wN; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	s=arc-20240116; t=1709574552; c=relaxed/simple;
+	bh=ccPdTJp3Uk6HHfgsE62VmoQ4mlajKldDF4M5V0Z/vPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FQifMTY5OnaFai/LspSTsXyVOKj0/4H2Nq/hRzDu18vq8qjuTpgU0NIn3CGhkCIz7jpRB7DYuytKBwtUlbJk/5UQxYEk+gYH0I/N2apA+M363TDQCTPZ/JO6VxoKsY+8c0pj/Nrcw5GChQzYupod1eVe8JUptv4WQdBCqgmzjAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=cyHehOvt; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
+Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.102])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 40BF12615A
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 17:49:03 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay1.mymailcheap.com (Postfix) with ESMTPS id 765623E875;
+	Mon,  4 Mar 2024 17:48:55 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 9715E40604;
+	Mon,  4 Mar 2024 17:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
+	s=default; t=1709574534;
+	bh=ccPdTJp3Uk6HHfgsE62VmoQ4mlajKldDF4M5V0Z/vPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cyHehOvtZcTpdq4ApFqOM+uNMHyZd4WqC/uPuAKz1tb6XfDTPgS8TB7NmwRZUF0ar
+	 klZzZNMQKeYrrC6LhQ4kOJ0JLWUjwaUsHdZSe00gdsPvjrCgQFDEAfOJfqMpzDGNWB
+	 7PKUQnnxMR9VES3/IPGvm0yydnoIki76eeYXtx4Q=
+Received: from [10.66.66.8] (unknown [139.59.64.216])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 13D8E3393F;
-	Mon,  4 Mar 2024 17:32:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709573531;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+T5l97lx5gDM8mhAfnqC8zMQ315SMtT6LNM2AgQYNqI=;
-	b=GSo2nkQNKLxq9PDwFG9cDBn7dq+dvh1P8olnpzcwhrG4y2Byhq2Zr1cp937SwJ5liQQ7Oh
-	HuwuElhLMomGXn2UzpzmnVjbyXdU5OC3r8SIKWO/zIEgPL9zjZIAIoJNbLGJJ59uU+ojVL
-	zJahxfQqGYu0tBb0+7VTMwCVHb9x31g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709573531;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+T5l97lx5gDM8mhAfnqC8zMQ315SMtT6LNM2AgQYNqI=;
-	b=jsyLO5wNF7i9EpkPqF8F5nQMfkG+jZ104auQtxTkoxhkrLQQ/9T/OEpgRi/fzbk1pV+gps
-	sgV5CUdV7c5uMwAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709573531;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+T5l97lx5gDM8mhAfnqC8zMQ315SMtT6LNM2AgQYNqI=;
-	b=GSo2nkQNKLxq9PDwFG9cDBn7dq+dvh1P8olnpzcwhrG4y2Byhq2Zr1cp937SwJ5liQQ7Oh
-	HuwuElhLMomGXn2UzpzmnVjbyXdU5OC3r8SIKWO/zIEgPL9zjZIAIoJNbLGJJ59uU+ojVL
-	zJahxfQqGYu0tBb0+7VTMwCVHb9x31g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709573531;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+T5l97lx5gDM8mhAfnqC8zMQ315SMtT6LNM2AgQYNqI=;
-	b=jsyLO5wNF7i9EpkPqF8F5nQMfkG+jZ104auQtxTkoxhkrLQQ/9T/OEpgRi/fzbk1pV+gps
-	sgV5CUdV7c5uMwAg==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id F113913419;
-	Mon,  4 Mar 2024 17:32:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id GW6nOpoF5mVZEAAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Mon, 04 Mar 2024 17:32:10 +0000
-Date: Mon, 4 Mar 2024 18:25:05 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: qgroup: verify btrfs_qgroup_inherit parameter
-Message-ID: <20240304172505.GL2604@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
- <20240301120138.GJ2604@twin.jikos.cz>
- <19762dc9-2834-46fd-91ce-26a542356adb@gmx.com>
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 6AC684047D;
+	Mon,  4 Mar 2024 17:48:51 +0000 (UTC)
+Message-ID: <fe72c912-f1a0-4a53-88ab-b85e8c3f7bd9@pavinjoseph.com>
+Date: Mon, 4 Mar 2024 23:18:49 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <19762dc9-2834-46fd-91ce-26a542356adb@gmx.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -3.68
-X-Spamd-Result: default: False [-3.68 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 TO_DN_SOME(0.00)[];
-	 BAYES_HAM(-2.68)[98.58%];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FREEMAIL_TO(0.00)[gmx.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
+To: Steve Wahl <steve.wahl@hpe.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
+References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
+ <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
+ <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
+ <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
+ <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
+ <ZeO9n6oqXosX1I6C@swahl-home.5wahls.com>
+ <f264a320-3e0d-49b6-962b-e9a741dcdf00@pavinjoseph.com>
+ <ZeXzoTjki+1WR258@swahl-home.5wahls.com>
+Content-Language: en-US
+From: Pavin Joseph <me@pavinjoseph.com>
+In-Reply-To: <ZeXzoTjki+1WR258@swahl-home.5wahls.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.09 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4]
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 9715E40604
 
-On Sat, Mar 02, 2024 at 06:51:58AM +1030, Qu Wenruo wrote:
-> 在 2024/3/1 22:31, David Sterba 写道:
-> > On Tue, Feb 27, 2024 at 01:45:35PM +1030, Qu Wenruo wrote:
-> >> [BUG]
-> >> Currently btrfs can create subvolume with an invalid qgroup inherit
-> >> without triggering any error:
-> >>
-> >>   # mkfs.btrfs -O quota -f $dev
-> >>   # mount $dev $mnt
-> >>   # btrfs subvolume create -i 2/0 $mnt/subv1
-> >>   # btrfs qgroup show -prce --sync $mnt
-> >>   Qgroupid    Referenced    Exclusive   Path
-> >>   --------    ----------    ---------   ----
-> >>   0/5           16.00KiB     16.00KiB   <toplevel>
-> >>   0/256         16.00KiB     16.00KiB   subv1
-> >>
-> >> [CAUSE]
-> >> We only do a very basic size check for btrfs_qgroup_inherit structure,
-> >> but never really verify if the values are correct.
-> >>
-> >> Thus in btrfs_qgroup_inherit() function, we have to skip non-existing
-> >> qgroups, and never return any error.
-> >>
-> >> [FIX]
-> >> Fix the behavior and introduce extra checks:
-> >>
-> >> - Introduce early check for btrfs_qgroup_inherit structure
-> >>    Not only the size, but also all the qgroup ids would be verifyed.
-> >>
-> >>    And the timing is very early, so we can return error early.
-> >>    This early check is very important for snapshot creation, as snapshot
-> >>    is delayed to transaction commit.
-> >>
-> >> - Drop support for btrfs_qgroup_inherit::num_ref_copies and
-> >>    num_excl_copies
-> >>    Those two members are used to specify to copy refr/excl numbers from
-> >>    other qgroups.
-> >>    This would definitely mark qgroup inconsistent, and btrfs-progs has
-> >>    dropped the support for them for a long time.
-> >>    It's time to drop the support for kernel.
-> >>
-> >> - Verify the supported btrfs_qgroup_inherit::flags
-> >>    Just in case we want to add extra flags for btrfs_qgroup_inherit.
-> >>
-> >> Now above subvolume creation would fail with -ENOENT other than silently
-> >> ignore the non-existing qgroup.
-> >>
-> >> CC: stable@vger.kernel.org
-> >> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> >
-> > Reviewed-by: David Sterba <dsterba@suse.com>
-> >
-> Just one thing to notice, this would cause certain test cases to fail,
-> as previously any incorrect qgroup inherit would just be ignored, but
-> now it would error out explicitly.
+On 3/4/24 21:45, Steve Wahl wrote
+> There's a chance you may be running out of the memory reserved for the
+> kexec kernel.  If you have the time to try adding the command line
+> option "nogbpages" to a kernel that's working for you to see if that
+> breaks it in a similar way or not, that would be valuable information.
 
-Ok, this is expected if we do fixes like that.
+I tried it and it breaks working kernels (6.7.4).
+
+> My next steps are to read through your logs more closely, and load
+> OpenSUSE somewhere to see if I can replicate your problem.
+
+I wasn't able to reproduce the issue inside a VM (virt-manager, QEMU/KVM).
+
+Kind regards,
+Pavin Joseph.
 
