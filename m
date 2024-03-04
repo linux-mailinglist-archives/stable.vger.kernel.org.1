@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-26470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C25870EC4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164B9870D21
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D535AB274D0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C76FC28D62D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F3E78B69;
-	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03EF7B3E7;
+	Mon,  4 Mar 2024 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwDRHjT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s31sPSFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3478200CD;
-	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707021F5FA;
+	Mon,  4 Mar 2024 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588800; cv=none; b=MGonKdUua5frwETWVfV6Y8oIrlZH9gT0AADPt/FDqGcONQd2vetEfJlkDqTr5oVm1Cw1DeiyxKUp7qYqspX6jWuUnTeDiQxaCf0wYbUEnfjXidSdjzfWakrRb+IFaWxRziYKkHFm9ZOg51oXbIGVfqcofZJyyRd7ucEqN8xIuDA=
+	t=1709587860; cv=none; b=CpECUAz5SrwtCKFANgpu7qkKRAk+fb8g2lb/ZbdjDBFhtqd9aCsCi0qgI4zP7nuqGFIq/G38Lv1igv9oCVAnfZGEbXZffet5kJckw0cP/OtOZqfLlBYx69gsmKP6cVl56449bxu7ITzHF/0ag/yFJlp1woIjoDK2ktgsuD/aiHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588800; c=relaxed/simple;
-	bh=VJ79eTZs803+ErDCET0EG91fdCfmotpfRHISLkMxLbE=;
+	s=arc-20240116; t=1709587860; c=relaxed/simple;
+	bh=bYKeDtNiGrPj2+NY4NA9yY/S3bib2qMFxLGlTbMwmfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoIoiV4CLVoEeMqsj0GvR5ed3EXT2gepmtfUN8lKYBwDw8QF3a+ZcCluJ9Y+WPQRz81aUQ4bWohZPN0pAFEf+ZN64khf5vst7CgMvaaYeXZDh8BxndEHEncC4Gh9+BrKveRCSZk0Mhocf9tH7C2ApSuUts6ToScZEq+wruw1LqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwDRHjT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35ED7C433F1;
-	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
+	 MIME-Version; b=Bq7wDhrrGLc18inSOYKGslQusaS+0cJ3GnenZKRrYmunYo4Ntg9xbEhCuvDxTnbZfztXZmCpmePHgtZ/Eadq4XfyI1Le4rmgMMtOeLlx6rsJ2GjZW55BTvnfyF3ocQoS/oW7QWjnt2I6uYDJPdvRVWkebkFygmj0tenLVcRn4M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s31sPSFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0275FC433C7;
+	Mon,  4 Mar 2024 21:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588800;
-	bh=VJ79eTZs803+ErDCET0EG91fdCfmotpfRHISLkMxLbE=;
+	s=korg; t=1709587860;
+	bh=bYKeDtNiGrPj2+NY4NA9yY/S3bib2qMFxLGlTbMwmfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwDRHjT5wP5CYjCI1+e0reqDdmzXtR6XX8v+k+1oo+cnGf2ZvKzYt00UaUASWlL/c
-	 CWwJ/cGhg9AW8J86kaPLev9gRnVtRedxua2LIIGPsjuNagaIedIS7oonO7ZEIJAVd2
-	 O6UlAtDUNEjVVYjLmdB1eC2xngSBHoMzHq3VMRR8=
+	b=s31sPSFvwy0BT6tmf6XaqkN9iFtZSp1nMxo6F/HgVqGbKVRpcWigdKUIUBG0wnJne
+	 kE8PiZeo9Ggt3r1SolhHB/LzGFQxMtVStEDdtJ0dNJSd78BWx8pjqEBIqRtmGjJb/3
+	 QZP+Mm9b3ddD54+t/CraOsn3oT0doUuqXzcGvblE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 094/215] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
-Date: Mon,  4 Mar 2024 21:22:37 +0000
-Message-ID: <20240304211559.999813751@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tsung-hua Lin <tsung-hua.lin@amd.com>,
+	Chris Chi <moukong.chi@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.7 093/162] drm/amd/display: Add monitor patch for specific eDP
+Date: Mon,  4 Mar 2024 21:22:38 +0000
+Message-ID: <20240304211554.821061178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Ryan Lin <tsung-hua.lin@amd.com>
 
-commit 2a93c6cbd5a703d44c414a3c3945a87ce11430ba upstream.
+commit b7cdccc6a849568775f738b1e233f751a8fed013 upstream.
 
-Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
-the domain")' aimed to make sure that a power-domain that is being
-enabled without any particular performance-state requested will at least
-turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
-required-opps properties.
+[WHY]
+Some eDP panels' ext caps don't write initial values. The value of
+dpcd_addr (0x317) can be random and the backlight control interface
+will be incorrect.
 
-But in the event that aggregation happens on a disabled power-domain, with
-an enabled peer without performance-state, both the local and peer
-corner are 0. The peer's enabled_corner is not considered, with the
-result that the underlying (shared) resource is disabled.
+[HOW]
+Add new panel patches to remove sink ext caps.
 
-One case where this can be observed is when the display stack keeps mmcx
-enabled (but without a particular performance-state vote) in order to
-access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
-is flushed the state of the peer (mmcx) is not considered and mmcx_ao
-ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
-several times, but has been painted over in DeviceTree by adding an
-explicit vote for the lowest non-disabled performance-state.
-
-Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.5.x
+Cc: Tsung-hua Lin <tsung-hua.lin@amd.com>
+Cc: Chris Chi <moukong.chi@amd.com>
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Ryan Lin <tsung-hua.lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/rpmhpd.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/rpmhpd.c
-+++ b/drivers/soc/qcom/rpmhpd.c
-@@ -492,12 +492,15 @@ static int rpmhpd_aggregate_corner(struc
- 	unsigned int active_corner, sleep_corner;
- 	unsigned int this_active_corner = 0, this_sleep_corner = 0;
- 	unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
-+	unsigned int peer_enabled_corner;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -66,6 +66,8 @@ static void apply_edid_quirks(struct edi
+ 	/* Workaround for some monitors that do not clear DPCD 0x317 if FreeSync is unsupported */
+ 	case drm_edid_encode_panel_id('A', 'U', 'O', 0xA7AB):
+ 	case drm_edid_encode_panel_id('A', 'U', 'O', 0xE69B):
++	case drm_edid_encode_panel_id('B', 'O', 'E', 0x092A):
++	case drm_edid_encode_panel_id('L', 'G', 'D', 0x06D1):
+ 		DRM_DEBUG_DRIVER("Clearing DPCD 0x317 on monitor with panel id %X\n", panel_id);
+ 		edid_caps->panel_patch.remove_sink_ext_caps = true;
+ 		break;
+@@ -119,6 +121,8 @@ enum dc_edid_status dm_helpers_parse_edi
  
- 	to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
+ 	edid_caps->edid_hdmi = connector->display_info.is_hdmi;
  
--	if (peer && peer->enabled)
--		to_active_sleep(peer, peer->corner, &peer_active_corner,
-+	if (peer && peer->enabled) {
-+		peer_enabled_corner = max(peer->corner, peer->enable_corner);
-+		to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
- 				&peer_sleep_corner);
-+	}
++	apply_edid_quirks(edid_buf, edid_caps);
++
+ 	sad_count = drm_edid_to_sad((struct edid *) edid->raw_edid, &sads);
+ 	if (sad_count <= 0)
+ 		return result;
+@@ -145,8 +149,6 @@ enum dc_edid_status dm_helpers_parse_edi
+ 	else
+ 		edid_caps->speaker_flags = DEFAULT_SPEAKER_LOCATION;
  
- 	active_corner = max(this_active_corner, peer_active_corner);
+-	apply_edid_quirks(edid_buf, edid_caps);
+-
+ 	kfree(sads);
+ 	kfree(sadb);
  
 
 
