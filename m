@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EEA870C70
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE586870E02
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9192287A25
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89FCD286549
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8A3200D4;
-	Mon,  4 Mar 2024 21:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238E71F93F;
+	Mon,  4 Mar 2024 21:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q19F4qRF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdwOTdCA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7698E1F5FD;
-	Mon,  4 Mar 2024 21:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B508F58;
+	Mon,  4 Mar 2024 21:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587534; cv=none; b=aRhXl+1MLSTwDG1sFWW3XHUmk8N2aZBlDpY0kaZdmOHGAx1JAbtm8YjkVCzrfpkNm4baXYtf6Be3g3B6MgVSjw2ND9tGZNVstb6WibcKqbO1YaDzIyIPrXT+NWtlsx6I24CDsN0jrHqnTAHzAXAbrRrZAhXmSXLnNQ+DaYP2LnU=
+	t=1709588397; cv=none; b=uyxDWxTzWwSwt5dR1j9e0098XWR0/p+UuqaWK/TwssqTtwZf3MlKhyXq1++Gd1boauj/W1Lai4fSqBKR4TCIsLVi69vq+nU45aMK27ipebrYvL3ihvdEeVuNNz6KgcoJPBBEPQWNSaNnAYm1r8bN27tBClu3829LpF2DlBtLn6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587534; c=relaxed/simple;
-	bh=tMOwshd8Etuy354m/VERsc7wZloVef9e2HkrMkkqZY4=;
+	s=arc-20240116; t=1709588397; c=relaxed/simple;
+	bh=uswhbah/+42hlJS0N/kMLFCVowx8Xjwkg3YOqNVyxs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPdIulDfthKGpSPLxCTpiOQpGovsAjo43GIU1bw4Of4fnt2IJEdy/o7otH89nFPSKi+9Uzqye9mdEHuevde78DEvldbq/8zmS4dXd2GvOFiJtvDDstVR3wYJeXBFbG9kUKnd16y+WZYzl+WRKgwjxF7Y1pK2a4E6jJ7OgLNEPPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q19F4qRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066FC433F1;
-	Mon,  4 Mar 2024 21:25:33 +0000 (UTC)
+	 MIME-Version; b=u3Xq0OX/Muea+9Y/ew/gwE3BNbkUS+UB2euKYkYRs1H9Ucn/Qw7sytKGDKw2NHdTs/kZn3l8YBBnoiOFHTiTs+X2yzmJ+CApNscIxG1DOTfsnejAHrYM99guSg/tLX8Cf8U3hYaWGfcuLonQcHlOonJhIS+cyvBFS55xXeO6tsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdwOTdCA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B559C433F1;
+	Mon,  4 Mar 2024 21:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587534;
-	bh=tMOwshd8Etuy354m/VERsc7wZloVef9e2HkrMkkqZY4=;
+	s=korg; t=1709588397;
+	bh=uswhbah/+42hlJS0N/kMLFCVowx8Xjwkg3YOqNVyxs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q19F4qRFXD1a6LqiYN7WgPrCzmJKaYan8fK8Yj0UAcuRVb+uygcSL9PGHKHt0DDOF
-	 6hmX5+m8fHu7dGoG+xSFLAIueAgnaM5UBdynxuBnt/xpERFhW7DPfjCVPvKsGalXFJ
-	 Kyi5JsXRg8bFCJj7j5cT91Pps/Dv/M4ilKavklVI=
+	b=pdwOTdCA3j1l+zlb3sHAIPy9xvNT7Rn4IqYxWjjM6H6p7Wd/XIUZouTNLZkF3B4oy
+	 gsuvWlUSj2s7YOPavM3xgPFaUkXzGG1lscWnDFzE+FY4mryYkl7FlBCH+4wxUO9GTL
+	 KoT5Et5/FlOyJ+iQXjvL1mCcwDy2Dzp5f5sZz8P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/16] ALSA: Drop leftover snd-rtctimer stuff from Makefile
-Date: Mon,  4 Mar 2024 21:23:31 +0000
-Message-ID: <20240304211534.707926005@linuxfoundation.org>
+	Curtis Klein <curtis.klein@hpe.com>,
+	Yi Zhao <yi.zhao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 092/143] dmaengine: fsl-qdma: init irq after reg initialization
+Date: Mon,  4 Mar 2024 21:23:32 +0000
+Message-ID: <20240304211552.854007186@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
+commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
 
-We forgot to remove the line for snd-rtctimer from Makefile while
-dropping the functionality.  Get rid of the stale line.
+Initialize the qDMA irqs after the registers are configured so that
+interrupts that may have been pending from a primary kernel don't get
+processed by the irq handler before it is ready to and cause panic with
+the following trace:
 
-Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
-Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Call trace:
+   fsl_qdma_queue_handler+0xf8/0x3e8
+   __handle_irq_event_percpu+0x78/0x2b0
+   handle_irq_event_percpu+0x1c/0x68
+   handle_irq_event+0x44/0x78
+   handle_fasteoi_irq+0xc8/0x178
+   generic_handle_irq+0x24/0x38
+   __handle_domain_irq+0x90/0x100
+   gic_handle_irq+0x5c/0xb8
+   el1_irq+0xb8/0x180
+   _raw_spin_unlock_irqrestore+0x14/0x40
+   __setup_irq+0x4bc/0x798
+   request_threaded_irq+0xd8/0x190
+   devm_request_threaded_irq+0x74/0xe8
+   fsl_qdma_probe+0x4d4/0xca8
+   platform_drv_probe+0x50/0xa0
+   really_probe+0xe0/0x3f8
+   driver_probe_device+0x64/0x130
+   device_driver_attach+0x6c/0x78
+   __driver_attach+0xbc/0x158
+   bus_for_each_dev+0x5c/0x98
+   driver_attach+0x20/0x28
+   bus_add_driver+0x158/0x220
+   driver_register+0x60/0x110
+   __platform_driver_register+0x44/0x50
+   fsl_qdma_driver_init+0x18/0x20
+   do_one_initcall+0x48/0x258
+   kernel_init_freeable+0x1a4/0x23c
+   kernel_init+0x10/0xf8
+   ret_from_fork+0x10/0x18
+
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/Makefile | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/dma/fsl-qdma.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/sound/core/Makefile b/sound/core/Makefile
-index d123587c0fd8f..bc04acf4a45ce 100644
---- a/sound/core/Makefile
-+++ b/sound/core/Makefile
-@@ -32,7 +32,6 @@ snd-pcm-dmaengine-objs := pcm_dmaengine.o
- snd-rawmidi-objs  := rawmidi.o
- snd-timer-objs    := timer.o
- snd-hrtimer-objs  := hrtimer.o
--snd-rtctimer-objs := rtctimer.o
- snd-hwdep-objs    := hwdep.o
- snd-seq-device-objs := seq_device.o
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -1199,10 +1199,6 @@ static int fsl_qdma_probe(struct platfor
+ 	if (!fsl_qdma->queue)
+ 		return -ENOMEM;
  
--- 
-2.43.0
-
+-	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
+-	if (ret)
+-		return ret;
+-
+ 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
+ 	if (fsl_qdma->irq_base < 0)
+ 		return fsl_qdma->irq_base;
+@@ -1241,16 +1237,19 @@ static int fsl_qdma_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, fsl_qdma);
+ 
+-	ret = dma_async_device_register(&fsl_qdma->dma_dev);
++	ret = fsl_qdma_reg_init(fsl_qdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
+-	ret = fsl_qdma_reg_init(fsl_qdma);
++	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
++	if (ret)
++		return ret;
++
++	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
 
 
 
