@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-25985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B2E870C75
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:25:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2E7870F14
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E572855F2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4921C23A92
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EDA3D0BA;
-	Mon,  4 Mar 2024 21:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BC7BB10;
+	Mon,  4 Mar 2024 21:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjdoCPHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxrFqSaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11531CA94;
-	Mon,  4 Mar 2024 21:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FDD7BB05;
+	Mon,  4 Mar 2024 21:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587544; cv=none; b=KZg8v2/ZraBgKm1RLjMkyzuAmuG67Wl3oQcChDK47w1r8CYkX7MqUnXcW1OI/B+pJ+G6BHxCchiIk5cu7cZut4uUv2HvstqSTSAGd1WgFw6RSt3d6hRhJ0tC9lrWGYPTrU/g2cYzDPlJctFGzsZXsRl9+DHxZuUSQNMy2HCkk3A=
+	t=1709589036; cv=none; b=pnGBUaK+TnIENDtycgXj3FVS9uo+vRRwEIMvQEvgzLrYjtMX9VSgfqWPyy9FccLsJ3w8FIcalCESrZN1mo7oyEiodS7NNkADKrZFe6nYaZU5CzjWDxMQ49sxcmzdfHzHCh2LXu1P3bVIIh57kSZZQ03cL7WzrbFtJY41slvoggA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587544; c=relaxed/simple;
-	bh=2kl6o+XSOOH4R8gB/RbKapilOlh3cRb7ai/c8J/KLCk=;
+	s=arc-20240116; t=1709589036; c=relaxed/simple;
+	bh=FfbRYMP+vVc7py1LLw1CHFnJXHviEVM6/dAs+WBUmSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+DsDXk7JhvmLdVeA8p5FED6617RKcgm2a4uArdCXP8MPMdNoiDxdsk30OFAh9a2PT6EVzszEbzuArl38WT6NzXEa4oBSTe2+fuVEmwJEodYuHddTHfF2aykSzOcXNCQBULxqVC8wYYLiwjkDYgjtuGbzCwykrjlMEwJbk4EHIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjdoCPHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118DDC433F1;
-	Mon,  4 Mar 2024 21:25:43 +0000 (UTC)
+	 MIME-Version; b=EOpPSuN1ahW2nRb57l9yQ057t4qjhWDHUgIJlo89xHhYy7J+4iDXcQmNUl2BITqvfaoIWm2UVqyxhUwE5sh7uJhCwlQcOPuq3y8RSogycYWbcislANcrbkWIZa/Gx+kdAdahogUGsUB14Zrcx/QQMsnTxC18cLDODi/yX5RSAmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxrFqSaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297A1C433F1;
+	Mon,  4 Mar 2024 21:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587544;
-	bh=2kl6o+XSOOH4R8gB/RbKapilOlh3cRb7ai/c8J/KLCk=;
+	s=korg; t=1709589036;
+	bh=FfbRYMP+vVc7py1LLw1CHFnJXHviEVM6/dAs+WBUmSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjdoCPHEtibbjzZ8OCjnW9OjgrNkJSk9DgsJYyMOKLF7t1mEB51yp91AxAEpW+cSM
-	 sfH7evMto9+NxDL1o0ucNmFpHloLunBYTx9XAWYSKak7RsG/XE2V1/T3ZjZ8srGo7C
-	 9g6orAiumX67UjmJjF/a3Kh9wAnDc9iMweE4gn3c=
+	b=HxrFqSaNtcS9zahlfR9cNgtk+T84hIE7sg/zuqMk9SyvH5xVBnn9Nfz2aEVIVeBaR
+	 hAEsKjNsKoMWNLC9NnP+SbsICPqNpX56kCmmiJEFsbCPYLbKfD5p0O/Wnc8qvhbvp/
+	 scKuyL2bPXgRfTjxgVmJXoA/pyd3a/RL4kSMqoWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Semenov <ivan@semenov.dev>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 14/16] mmc: core: Fix eMMC initialization with 1-bit bus connection
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 152/215] NFSD: Trace delegation revocations
 Date: Mon,  4 Mar 2024 21:23:35 +0000
-Message-ID: <20240304211534.860028623@linuxfoundation.org>
+Message-ID: <20240304211601.841981116@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Semenov <ivan@semenov.dev>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ff3206d2186d84e4f77e1378ba1d225633f17b9b upstream.
+[ Upstream commit a1c74569bbde91299f24535abf711be5c84df9de ]
 
-Initializing an eMMC that's connected via a 1-bit bus is current failing,
-if the HW (DT) informs that 4-bit bus is supported. In fact this is a
-regression, as we were earlier capable of falling back to 1-bit mode, when
-switching to 4/8-bit bus failed. Therefore, let's restore the behaviour.
+Delegation revocation is an exceptional event that is not otherwise
+visible externally (eg, no network traffic is emitted). Generate a
+trace record when it occurs so that revocation can be observed or
+other activity can be triggered. Example:
 
-Log for Samsung eMMC 5.1 chip connected via 1bit bus (only D0 pin)
-Before patch:
-[134509.044225] mmc0: switch to bus width 4 failed
-[134509.044509] mmc0: new high speed MMC card at address 0001
-[134509.054594] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
-[134509.281602] mmc0: switch to bus width 4 failed
-[134509.282638] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.282657] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.284598] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.284602] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.284609] ldm_validate_partition_table(): Disk read failed.
-[134509.286495] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.286500] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.288303] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.288308] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.289540] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.289544] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.289553]  mmcblk0: unable to read partition table
-[134509.289728] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
-[134509.290283] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
-[134509.294577] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 2
-[134509.295835] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.295841] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+nfsd-1104  [005]  1912.002544: nfsd_stid_revoke:        client 633c9343:4e82788d stateid 00000003:00000001 ref=2 type=DELEG
 
-After patch:
+Trace infrastructure is provided for subsequent additional tracing
+related to nfs4_stid activity.
 
-[134551.089613] mmc0: switch to bus width 4 failed
-[134551.090377] mmc0: new high speed MMC card at address 0001
-[134551.102271] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
-[134551.113365]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16 p17 p18 p19 p20 p21
-[134551.114262] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
-[134551.114925] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
-
-Fixes: 577fb13199b1 ("mmc: rework selection of bus speed mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Semenov <ivan@semenov.dev>
-Link: https://lore.kernel.org/r/20240206172845.34316-1-ivan@semenov.dev
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/mmc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4state.c |    2 +
+ fs/nfsd/trace.h     |   55 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -994,10 +994,12 @@ static int mmc_select_bus_width(struct m
- 	static unsigned ext_csd_bits[] = {
- 		EXT_CSD_BUS_WIDTH_8,
- 		EXT_CSD_BUS_WIDTH_4,
-+		EXT_CSD_BUS_WIDTH_1,
- 	};
- 	static unsigned bus_widths[] = {
- 		MMC_BUS_WIDTH_8,
- 		MMC_BUS_WIDTH_4,
-+		MMC_BUS_WIDTH_1,
- 	};
- 	struct mmc_host *host = card->host;
- 	unsigned idx, bus_width = 0;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1367,6 +1367,8 @@ static void revoke_delegation(struct nfs
+ 
+ 	WARN_ON(!list_empty(&dp->dl_recall_lru));
+ 
++	trace_nfsd_stid_revoke(&dp->dl_stid);
++
+ 	if (clp->cl_minorversion) {
+ 		spin_lock(&clp->cl_lock);
+ 		dp->dl_stid.sc_type = NFS4_REVOKED_DELEG_STID;
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -637,6 +637,61 @@ DEFINE_EVENT(nfsd_stateseqid_class, nfsd
+ DEFINE_STATESEQID_EVENT(preprocess);
+ DEFINE_STATESEQID_EVENT(open_confirm);
+ 
++TRACE_DEFINE_ENUM(NFS4_OPEN_STID);
++TRACE_DEFINE_ENUM(NFS4_LOCK_STID);
++TRACE_DEFINE_ENUM(NFS4_DELEG_STID);
++TRACE_DEFINE_ENUM(NFS4_CLOSED_STID);
++TRACE_DEFINE_ENUM(NFS4_REVOKED_DELEG_STID);
++TRACE_DEFINE_ENUM(NFS4_CLOSED_DELEG_STID);
++TRACE_DEFINE_ENUM(NFS4_LAYOUT_STID);
++
++#define show_stid_type(x)						\
++	__print_flags(x, "|",						\
++		{ NFS4_OPEN_STID,		"OPEN" },		\
++		{ NFS4_LOCK_STID,		"LOCK" },		\
++		{ NFS4_DELEG_STID,		"DELEG" },		\
++		{ NFS4_CLOSED_STID,		"CLOSED" },		\
++		{ NFS4_REVOKED_DELEG_STID,	"REVOKED" },		\
++		{ NFS4_CLOSED_DELEG_STID,	"CLOSED_DELEG" },	\
++		{ NFS4_LAYOUT_STID,		"LAYOUT" })
++
++DECLARE_EVENT_CLASS(nfsd_stid_class,
++	TP_PROTO(
++		const struct nfs4_stid *stid
++	),
++	TP_ARGS(stid),
++	TP_STRUCT__entry(
++		__field(unsigned long, sc_type)
++		__field(int, sc_count)
++		__field(u32, cl_boot)
++		__field(u32, cl_id)
++		__field(u32, si_id)
++		__field(u32, si_generation)
++	),
++	TP_fast_assign(
++		const stateid_t *stp = &stid->sc_stateid;
++
++		__entry->sc_type = stid->sc_type;
++		__entry->sc_count = refcount_read(&stid->sc_count);
++		__entry->cl_boot = stp->si_opaque.so_clid.cl_boot;
++		__entry->cl_id = stp->si_opaque.so_clid.cl_id;
++		__entry->si_id = stp->si_opaque.so_id;
++		__entry->si_generation = stp->si_generation;
++	),
++	TP_printk("client %08x:%08x stateid %08x:%08x ref=%d type=%s",
++		__entry->cl_boot, __entry->cl_id,
++		__entry->si_id, __entry->si_generation,
++		__entry->sc_count, show_stid_type(__entry->sc_type)
++	)
++);
++
++#define DEFINE_STID_EVENT(name)					\
++DEFINE_EVENT(nfsd_stid_class, nfsd_stid_##name,			\
++	TP_PROTO(const struct nfs4_stid *stid),			\
++	TP_ARGS(stid))
++
++DEFINE_STID_EVENT(revoke);
++
+ DECLARE_EVENT_CLASS(nfsd_clientid_class,
+ 	TP_PROTO(const clientid_t *clid),
+ 	TP_ARGS(clid),
 
 
 
