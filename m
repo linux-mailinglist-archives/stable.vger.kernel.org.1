@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF08870F08
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DE9870E31
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DABBF280D03
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9C71C21B8C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1086C7BB0E;
-	Mon,  4 Mar 2024 21:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC951EB5A;
+	Mon,  4 Mar 2024 21:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILXaiD1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnxDVF8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C917BAE2;
-	Mon,  4 Mar 2024 21:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBCE8F58;
+	Mon,  4 Mar 2024 21:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589010; cv=none; b=GtgY8lky0zUDBQ2GbSEFkcPAhXJDJ0hyqZmV44e2U4R6XwMAZdIfNjvoiJ3aEK5z9qdPqJigpCRy4C3wNY2GID2MhDGKi7smPPXrCplrr6kP29FJMZe3NuoyOgfx6CEHsCDVHPHbYmiiX2WOrxki5NMzE8074bV6AnKvaw9m5IU=
+	t=1709588505; cv=none; b=SkBbXC/5qmmt2vK+S4AFWlWSrT2kuDGCn6J1xsjdyFUp+7SodPD7o4ZfkJVnYYiN/nejSh3FThWvqxhC7XbZwK4s6MgaZnU/s4zIq4KcE3P1+HeoPBooQkeikg9k/iFA9Ush24yodA1Qvt1k6ioggo+Agpe1tciFb2Yb3YFjqAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589010; c=relaxed/simple;
-	bh=5EqthNYa7OyHvmQbkmCkxPHLa6H+cB+BkILrxR8uIYg=;
+	s=arc-20240116; t=1709588505; c=relaxed/simple;
+	bh=R/DBVhNdyuth3uJ3+KsqlZtzMiH2Doojip/KLaYras4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhRAu85UpWiJyp+5SzNlFNuDe9pHN9dY1ljDkbM62MFbbv80572S2kla3/60OoM2OJYxc+MGZHJ+lRZcFyfHFJFLVn7BXEnS4Mquv4H04kYOAUagexnX3kHwie0J+R8uqgwlsoRNjVdAJ+V730XBuwtZl74TXUifm9cTuqZmMsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILXaiD1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEB8C433F1;
-	Mon,  4 Mar 2024 21:50:09 +0000 (UTC)
+	 MIME-Version; b=aM1u8o9Vw19Qq0wIKFaoFh/yrAK7Nr5wJgBFFWjZpEw3cf2DoMdJre2miXil6j+Bmgm7JRNFXNzs0GogzqGVsT6k2AVVSCpsBPKPGLIcmYC3YO5AwxJs9q2YXdyVuX2sdsP7TTJcNdIuBm5n2gJLynRdsoqq2HTWBelqL4No/LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnxDVF8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2663C433C7;
+	Mon,  4 Mar 2024 21:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589010;
-	bh=5EqthNYa7OyHvmQbkmCkxPHLa6H+cB+BkILrxR8uIYg=;
+	s=korg; t=1709588505;
+	bh=R/DBVhNdyuth3uJ3+KsqlZtzMiH2Doojip/KLaYras4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILXaiD1cKJWJBV1kqIEqpurMdjy6KL2kYDwOVAmtTrXV5eq2FsR/cVOIGtx/XxHEG
-	 gNyXX8CTl8GD9YIOA0hd1au8Ta6Ibz62NTAdAVm1N8e1db/1YW9GXd/afvQyRGuN3j
-	 sfVi5oPca9SDAX2T6KuAaFopyiotNLhWYC2lhFPY=
+	b=rnxDVF8HTDzqZBRWSqZ4IxH1w+wSyEBr/PHkIm9r6C6S90evPYMyBIi6FkcioQW1+
+	 6LDkokkgt4SAXuFPVahSQ21DpT28n7mQJA9m0QgVSApAaWMrfFw8YB4PbKCntccuZQ
+	 cLdOlyErq9cRWomdeZl/ialdZpgoW0gs50MKt2Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 166/215] lockd: set missing fl_flags field when retrieving args
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 109/143] selftests: mptcp: join: add ss mptcp support check
 Date: Mon,  4 Mar 2024 21:23:49 +0000
-Message-ID: <20240304211602.232528722@linuxfoundation.org>
+Message-ID: <20240304211553.405805581@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 75c7940d2a86d3f1b60a0a265478cb8fc887b970 ]
+commit 9480f388a2ef54fba911d9325372abd69a328601 upstream.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Commands 'ss -M' are used in script mptcp_join.sh to display only MPTCP
+sockets. So it must be checked if ss tool supports MPTCP in this script.
+
+Fixes: e274f7154008 ("selftests: mptcp: add subflow limits test-cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-7-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc4proc.c |    1 +
- fs/lockd/svcproc.c  |    1 +
- 2 files changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -52,6 +52,7 @@ nlm4svc_retrieve_args(struct svc_rqst *r
- 		*filp = file;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -159,6 +159,11 @@ check_tools()
+ 		exit $ksft_skip
+ 	fi
  
- 		/* Set up the missing parts of the file_lock structure */
-+		lock->fl.fl_flags = FL_POSIX;
- 		lock->fl.fl_file  = file->f_file[mode];
- 		lock->fl.fl_pid = current->tgid;
- 		lock->fl.fl_start = (loff_t)lock->lock_start;
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -77,6 +77,7 @@ nlmsvc_retrieve_args(struct svc_rqst *rq
- 
- 		/* Set up the missing parts of the file_lock structure */
- 		mode = lock_to_openmode(&lock->fl);
-+		lock->fl.fl_flags = FL_POSIX;
- 		lock->fl.fl_file  = file->f_file[mode];
- 		lock->fl.fl_pid = current->tgid;
- 		lock->fl.fl_lmops = &nlmsvc_lock_operations;
++	if ! ss -h | grep -q MPTCP; then
++		echo "SKIP: ss tool does not support MPTCP"
++		exit $ksft_skip
++	fi
++
+ 	# Use the legacy version if available to support old kernel versions
+ 	if iptables-legacy -V &> /dev/null; then
+ 		iptables="iptables-legacy"
 
 
 
