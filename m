@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0142870F79
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A63870F44
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665041F218AD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87CA71F22738
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E478B4C;
-	Mon,  4 Mar 2024 21:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146E37992E;
+	Mon,  4 Mar 2024 21:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE6Z+TKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEhPXnMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656261C6AB;
-	Mon,  4 Mar 2024 21:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87DD1C6AB;
+	Mon,  4 Mar 2024 21:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589298; cv=none; b=ue5YOM0ww5cItDjnYz/MMn/3UAiJx2zlCqIhzu38HgICkPn4i8e5TGiiYaicj46BjLoq4DdUa6kvFohyXPlrncEJhWOIuKpiU13iCj69ONAKswNwJsQpAOsaPy3G+NDZ2gMg2RFsewRJ34E0dBClKE4lGreLB+dE20UXlqGjgVs=
+	t=1709589168; cv=none; b=g0w8eDMYpeM4tp0sq1ds/dNuKrR6oumuUxmPOb1lEvcGxuhmpgFt9R79jw6hPiCuKAXVhI2fn3f7JrRtooNKB3pbVgZM90y1g5REqHnddyoo+gz+27E/FxA0cyqo/xxIlMcGpi8yugXcUDTFwqbxK2GbIOWVZktcoqMxoGbXs0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589298; c=relaxed/simple;
-	bh=31RS71XkNiuns8RDNydkyMjtxbve4vH4T/KD9cCeL+U=;
+	s=arc-20240116; t=1709589168; c=relaxed/simple;
+	bh=D3cSWlyAFQqrt2sh0w1irDijxSN+vtZ8qrE+MPccBO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/OlS8hhyut2r/d5noz3VPxeRoADS5c5LYga3govb7QfYHSAijrNrwNKjtfAN8mB0YD2uAiBe8jE7Y8X1IpXb9Y0KQZmrsBZrK86py9J2Z2NAC5wAA/UXyf7CsJL7ksLmo0BBQGt9//iGItn2oxN2RupM1lCOiykkGzRM0s0pwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE6Z+TKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED74DC433F1;
-	Mon,  4 Mar 2024 21:54:57 +0000 (UTC)
+	 MIME-Version; b=E+IkdLPXVqtUCZMl2NQO7fOgtBMo4Reye3BBuSn1YW4MZAgXZXZmw4V4y+6JaCz9A8jc30OfGPIIAkOLLpWYorhhoNpm73k3x9kgPNsy6uDuhpGhy1Zb4dVZraCxmYaWhVCSeA5WgeOahT9r+Vvt2+JhB0sxieveRGz6wC1b8oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEhPXnMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A609C43394;
+	Mon,  4 Mar 2024 21:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589298;
-	bh=31RS71XkNiuns8RDNydkyMjtxbve4vH4T/KD9cCeL+U=;
+	s=korg; t=1709589168;
+	bh=D3cSWlyAFQqrt2sh0w1irDijxSN+vtZ8qrE+MPccBO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yE6Z+TKtN1aEE9qWKy9wlxJ+XK9wMEuHgdXqWed6CrVP0Uj7zyix1Cz/Jy0Zcimyu
-	 aiYZg9uYN5LVIOIVZCQsZLKFORnkY5+hjDBf41t2cm7//Tpd8TCJzfMul/GvqtKzmD
-	 YbEKycPRmRqEVWA9kLwaWSC/tar6NTXaf3VTtHxQ=
+	b=EEhPXnMixY+/5M/IAy9q+KD6pp2A5jdROoybsBHAkqOd9oQqgFXO6VyN0aC8dkBB/
+	 CZ25CgwTU5p88rmwzbPgSLvGJg988pwsVW+pWc7AgkRYYpBUIIyMAY2b1zlCG6BL5c
+	 v5O81kwzMTgz27rIg8E/UiNXLdu9WUUoOeAuNeJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 56/84] mmc: sdhci-xenon: add timeout for PHY init complete
-Date: Mon,  4 Mar 2024 21:24:29 +0000
-Message-ID: <20240304211544.240947636@linuxfoundation.org>
+	Dave Hansen <dave.hansen@intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.1 207/215] x86/entry_64: Add VERW just before userspace transition
+Date: Mon,  4 Mar 2024 21:24:30 +0000
+Message-ID: <20240304211603.560377149@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elad Nachman <enachman@marvell.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 09e23823ae9a3e2d5d20f2e1efe0d6e48cef9129 upstream.
+commit 3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a upstream.
 
-AC5X spec says PHY init complete bit must be polled until zero.
-We see cases in which timeout can take longer than the standard
-calculation on AC5X, which is expected following the spec comment above.
-According to the spec, we must wait as long as it takes for that bit to
-toggle on AC5X.
-Cap that with 100 delay loops so we won't get stuck forever.
+Mitigation for MDS is to use VERW instruction to clear any secrets in
+CPU Buffers. Any memory accesses after VERW execution can still remain
+in CPU buffers. It is safer to execute VERW late in return to user path
+to minimize the window in which kernel data can end up in CPU buffers.
+There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
 
-Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
-Link: https://lore.kernel.org/r/20240222191714.1216470-3-enachman@marvell.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Add support for deploying VERW mitigation after user register state is
+restored. This helps minimize the chances of kernel data ending up into
+CPU buffers after executing VERW.
+
+Note that the mitigation at the new location is not yet enabled.
+
+  Corner case not handled
+  =======================
+  Interrupts returning to kernel don't clear CPUs buffers since the
+  exit-to-user path is expected to do that anyways. But, there could be
+  a case when an NMI is generated in kernel after the exit-to-user path
+  has cleared the buffers. This case is not handled and NMI returning to
+  kernel don't clear CPU buffers because:
+
+  1. It is rare to get an NMI after VERW, but before returning to user.
+  2. For an unprivileged user, there is no known way to make that NMI
+     less rare or target it.
+  3. It would take a large number of these precisely-timed NMIs to mount
+     an actual attack.  There's presumably not enough bandwidth.
+  4. The NMI in question occurs after a VERW, i.e. when user state is
+     restored and most interesting data is already scrubbed. Whats left
+     is only the data that NMI touches, and that may or may not be of
+     any interest.
+
+  [ pawan: resolved conflict for hunk swapgs_restore_regs_and_return_to_usermode in backport ]
+
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-2-a6216d83edb7%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-xenon-phy.c |   29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ arch/x86/entry/entry_64.S        |   11 +++++++++++
+ arch/x86/entry/entry_64_compat.S |    1 +
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/mmc/host/sdhci-xenon-phy.c
-+++ b/drivers/mmc/host/sdhci-xenon-phy.c
-@@ -109,6 +109,8 @@
- #define XENON_EMMC_PHY_LOGIC_TIMING_ADJUST	(XENON_EMMC_PHY_REG_BASE + 0x18)
- #define XENON_LOGIC_TIMING_VALUE		0x00AA8977
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -223,6 +223,7 @@ syscall_return_via_sysret:
+ SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
+ 	ANNOTATE_NOENDBR
+ 	swapgs
++	CLEAR_CPU_BUFFERS
+ 	sysretq
+ SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
+ 	ANNOTATE_NOENDBR
+@@ -656,6 +657,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_
+ 	/* Restore RDI. */
+ 	popq	%rdi
+ 	swapgs
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnative_iret
  
-+#define XENON_MAX_PHY_TIMEOUT_LOOPS		100
+ 
+@@ -767,6 +769,8 @@ native_irq_return_ldt:
+ 	 */
+ 	popq	%rax				/* Restore user RAX */
+ 
++	CLEAR_CPU_BUFFERS
 +
- /*
-  * List offset of PHY registers and some special register values
-  * in eMMC PHY 5.0 or eMMC PHY 5.1
-@@ -259,18 +261,27 @@ static int xenon_emmc_phy_init(struct sd
- 	/* get the wait time */
- 	wait /= clock;
- 	wait++;
--	/* wait for host eMMC PHY init completes */
--	udelay(wait);
+ 	/*
+ 	 * RSP now points to an ordinary IRET frame, except that the page
+ 	 * is read-only and RSP[31:16] are preloaded with the userspace
+@@ -1494,6 +1498,12 @@ nmi_restore:
+ 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
  
--	reg = sdhci_readl(host, phy_regs->timing_adj);
--	reg &= XENON_PHY_INITIALIZAION;
--	if (reg) {
-+	/*
-+	 * AC5X spec says bit must be polled until zero.
-+	 * We see cases in which timeout can take longer
-+	 * than the standard calculation on AC5X, which is
-+	 * expected following the spec comment above.
-+	 * According to the spec, we must wait as long as
-+	 * it takes for that bit to toggle on AC5X.
-+	 * Cap that with 100 delay loops so we won't get
-+	 * stuck here forever:
+ 	/*
++	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
++	 * NMI in kernel after user state is restored. For an unprivileged user
++	 * these conditions are hard to meet.
 +	 */
 +
-+	ret = read_poll_timeout(sdhci_readl, reg,
-+				!(reg & XENON_PHY_INITIALIZAION),
-+				wait, XENON_MAX_PHY_TIMEOUT_LOOPS * wait,
-+				false, host, phy_regs->timing_adj);
-+	if (ret)
- 		dev_err(mmc_dev(host->mmc), "eMMC PHY init cannot complete after %d us\n",
--			wait);
--		return -ETIMEDOUT;
--	}
-+			wait * XENON_MAX_PHY_TIMEOUT_LOOPS);
- 
--	return 0;
-+	return ret;
- }
- 
- #define ARMADA_3700_SOC_PAD_1_8V	0x1
++	/*
+ 	 * iretq reads the "iret" frame and exits the NMI stack in a
+ 	 * single instruction.  We are returning to kernel mode, so this
+ 	 * cannot result in a fault.  Similarly, we don't need to worry
+@@ -1511,6 +1521,7 @@ SYM_CODE_START(ignore_sysret)
+ 	UNWIND_HINT_EMPTY
+ 	ENDBR
+ 	mov	$-ENOSYS, %eax
++	CLEAR_CPU_BUFFERS
+ 	sysretl
+ SYM_CODE_END(ignore_sysret)
+ #endif
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -272,6 +272,7 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_uns
+ 	xorl	%r9d, %r9d
+ 	xorl	%r10d, %r10d
+ 	swapgs
++	CLEAR_CPU_BUFFERS
+ 	sysretl
+ SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
+ 	ANNOTATE_NOENDBR
 
 
 
