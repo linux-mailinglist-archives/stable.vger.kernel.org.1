@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC574870ECB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16781870D18
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C69A1C2332D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1B8D28D3DC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BDF7BAE2;
-	Mon,  4 Mar 2024 21:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4EA7CF29;
+	Mon,  4 Mar 2024 21:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMmVvwvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLpyIVct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D508F7868F;
-	Mon,  4 Mar 2024 21:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376807BB1B;
+	Mon,  4 Mar 2024 21:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588821; cv=none; b=JpcFxI4OezOJAycr/b4JeHIU9gJo1GWz1pM8oZxCWRm213zwgGqrXNaWmYd116Wi/1tNnGeT7AybKphbhELe7ofpABdrQnzRQptI1isj8iyR3AWqUqmvIdS1zFe4SPjt65fAeoJnP1qSnd8UpSHzbXvnfTa37mSWZHPShe0j/dk=
+	t=1709587837; cv=none; b=WY/cXDD3EIGWmUwuVE4kiP2uMPuC5z3pwpdGsxj44sRKUT9IBXobPDih+WdypYOrH1PN5IylBVE3OVcIqJlJQVZRcAJRvqTEpbYuB+r2XCOLorIEgTB5NYDMQgVKpFrDPiawPW7aLwFpNBQK5wT5KKsd6w8dQd+S9qoWnlBQM2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588821; c=relaxed/simple;
-	bh=Ce/hSECyxaGV5opsgF26cKq5SdwG/3/F7hA1gbfEUy8=;
+	s=arc-20240116; t=1709587837; c=relaxed/simple;
+	bh=+5Boo2z+ZsVRySuHTHLdT3jTHg3cPBwJ3+eeULgZgfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGt4rjAaI0pwjAjVixEMYdq9eumgw4WyMF4s3CpzC1bZVaYrvfTqgzZ/wohl0KUQUcLQwL9neuHlGLyOBb2HmwlCoCmGyg/PMRZKdkH1HJiR5CWviuRQJCz5+JgbwibAW/sqdkJekIGhqGcW5ntv5+fbxz2JnwF+Lk3o2S4jnBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMmVvwvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1747AC433C7;
-	Mon,  4 Mar 2024 21:47:00 +0000 (UTC)
+	 MIME-Version; b=Z8TsJHSz8fpj19y+R2ik4B3hu3xvRwDDmVRDgd2jbmctBYzAQdqcdejyG3btf+YPV+mAem3Ike1bZWSQm2WZYJXTKdVwBb0mOnIlOYbCd5y53IpGzg6BS8xDJ2pBCJQexnW+BjYRu4OR7bKwQsSMYc5PaHJOAPUYtnlo57D3G3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLpyIVct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF901C433C7;
+	Mon,  4 Mar 2024 21:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588821;
-	bh=Ce/hSECyxaGV5opsgF26cKq5SdwG/3/F7hA1gbfEUy8=;
+	s=korg; t=1709587837;
+	bh=+5Boo2z+ZsVRySuHTHLdT3jTHg3cPBwJ3+eeULgZgfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMmVvwvszQPgQu/kSJrA+FtY4yQLBMAOx/HSbwdko3ztXPcHAz4K5CzagBwwudNqe
-	 2ZXnfHJxgzEFsskbCnAGJlXpL9iSiw/8PAKPUIfZT1n8mf1uuijrnZ27TvU0euxEVP
-	 EHyCXYQvwH5jWVqkwynZXWBnbGZX3ReC7w69b1WE=
+	b=aLpyIVctL5KL6dWTZxOt4y39KGAjapi86ySrIUVq/HWew2VQvu7uzIrLp+E7j451l
+	 O9v8rwjD4YCobNPUBgjSDjR33G5eKxz6jFnOn+tafLDxZgIgVDrYq6xLqYzmnTX13N
+	 fO0M5H6dbvN1lWJfFwVD6TrwkrZlWC4+VYlkpO7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 110/215] x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S
+	Samuel Holland <samuel.holland@sifive.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.7 108/162] riscv: Save/restore envcfg CSR during CPU suspend
 Date: Mon,  4 Mar 2024 21:22:53 +0000
-Message-ID: <20240304211600.524533936@linuxfoundation.org>
+Message-ID: <20240304211555.240842316@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,446 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit cb8bda8ad4438b4bcfcf89697fc84803fb210017 upstream.
+commit 05ab803d1ad8ac505ade77c6bd3f86b1b4ea0dc4 upstream.
 
-In preparation for moving the mixed mode specific code out of head_64.S,
-rename the existing file to clarify that it contains more than just the
-mixed mode thunk.
+The value of the [ms]envcfg CSR is lost when entering a nonretentive
+idle state, so the CSR must be rewritten when resuming the CPU.
 
-While at it, clean up the Makefile rules that add it to the build.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-2-ardb@kernel.org
+Cc: <stable@vger.kernel.org> # v6.7+
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240228065559.3434837-4-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/Makefile                        | 6 +++---
- arch/x86/boot/compressed/{efi_thunk_64.S => efi_mixed.S} | 0
- arch/x86/boot/compressed/Makefile       |    6 
- arch/x86/boot/compressed/efi_mixed.S    |  195 ++++++++++++++++++++++++++++++++
- arch/x86/boot/compressed/efi_thunk_64.S |  195 --------------------------------
- 3 files changed, 198 insertions(+), 198 deletions(-)
- rename arch/x86/boot/compressed/{efi_thunk_64.S => efi_mixed.S} (100%)
+ arch/riscv/include/asm/suspend.h |    1 +
+ arch/riscv/kernel/suspend.c      |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -108,11 +108,11 @@ endif
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
- vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+--- a/arch/riscv/include/asm/suspend.h
++++ b/arch/riscv/include/asm/suspend.h
+@@ -14,6 +14,7 @@ struct suspend_context {
+ 	struct pt_regs regs;
+ 	/* Saved and restored by high-level functions */
+ 	unsigned long scratch;
++	unsigned long envcfg;
+ 	unsigned long tvec;
+ 	unsigned long ie;
+ #ifdef CONFIG_MMU
+--- a/arch/riscv/kernel/suspend.c
++++ b/arch/riscv/kernel/suspend.c
+@@ -11,6 +11,8 @@
+ void suspend_save_csrs(struct suspend_context *context)
+ {
+ 	context->scratch = csr_read(CSR_SCRATCH);
++	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
++		context->envcfg = csr_read(CSR_ENVCFG);
+ 	context->tvec = csr_read(CSR_TVEC);
+ 	context->ie = csr_read(CSR_IE);
  
--vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
--efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-+vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+@@ -32,6 +34,8 @@ void suspend_save_csrs(struct suspend_co
+ void suspend_restore_csrs(struct suspend_context *context)
+ {
+ 	csr_write(CSR_SCRATCH, context->scratch);
++	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
++		csr_write(CSR_ENVCFG, context->envcfg);
+ 	csr_write(CSR_TVEC, context->tvec);
+ 	csr_write(CSR_IE, context->ie);
  
--$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
-+$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
- 	$(call if_changed,ld)
- 
- OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
---- /dev/null
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -0,0 +1,195 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
-+ *
-+ * Early support for invoking 32-bit EFI services from a 64-bit kernel.
-+ *
-+ * Because this thunking occurs before ExitBootServices() we have to
-+ * restore the firmware's 32-bit GDT and IDT before we make EFI service
-+ * calls.
-+ *
-+ * On the plus side, we don't have to worry about mangling 64-bit
-+ * addresses into 32-bits because we're executing with an identity
-+ * mapped pagetable and haven't transitioned to 64-bit virtual addresses
-+ * yet.
-+ */
-+
-+#include <linux/linkage.h>
-+#include <asm/msr.h>
-+#include <asm/page_types.h>
-+#include <asm/processor-flags.h>
-+#include <asm/segment.h>
-+
-+	.code64
-+	.text
-+SYM_FUNC_START(__efi64_thunk)
-+	push	%rbp
-+	push	%rbx
-+
-+	movl	%ds, %eax
-+	push	%rax
-+	movl	%es, %eax
-+	push	%rax
-+	movl	%ss, %eax
-+	push	%rax
-+
-+	/* Copy args passed on stack */
-+	movq	0x30(%rsp), %rbp
-+	movq	0x38(%rsp), %rbx
-+	movq	0x40(%rsp), %rax
-+
-+	/*
-+	 * Convert x86-64 ABI params to i386 ABI
-+	 */
-+	subq	$64, %rsp
-+	movl	%esi, 0x0(%rsp)
-+	movl	%edx, 0x4(%rsp)
-+	movl	%ecx, 0x8(%rsp)
-+	movl	%r8d, 0xc(%rsp)
-+	movl	%r9d, 0x10(%rsp)
-+	movl	%ebp, 0x14(%rsp)
-+	movl	%ebx, 0x18(%rsp)
-+	movl	%eax, 0x1c(%rsp)
-+
-+	leaq	0x20(%rsp), %rbx
-+	sgdt	(%rbx)
-+
-+	addq	$16, %rbx
-+	sidt	(%rbx)
-+
-+	leaq	1f(%rip), %rbp
-+
-+	/*
-+	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
-+	 * and IDT that was installed when the kernel started executing. The
-+	 * pointers were saved at the EFI stub entry point in head_64.S.
-+	 *
-+	 * Pass the saved DS selector to the 32-bit code, and use far return to
-+	 * restore the saved CS selector.
-+	 */
-+	leaq	efi32_boot_idt(%rip), %rax
-+	lidt	(%rax)
-+	leaq	efi32_boot_gdt(%rip), %rax
-+	lgdt	(%rax)
-+
-+	movzwl	efi32_boot_ds(%rip), %edx
-+	movzwq	efi32_boot_cs(%rip), %rax
-+	pushq	%rax
-+	leaq	efi_enter32(%rip), %rax
-+	pushq	%rax
-+	lretq
-+
-+1:	addq	$64, %rsp
-+	movq	%rdi, %rax
-+
-+	pop	%rbx
-+	movl	%ebx, %ss
-+	pop	%rbx
-+	movl	%ebx, %es
-+	pop	%rbx
-+	movl	%ebx, %ds
-+	/* Clear out 32-bit selector from FS and GS */
-+	xorl	%ebx, %ebx
-+	movl	%ebx, %fs
-+	movl	%ebx, %gs
-+
-+	/*
-+	 * Convert 32-bit status code into 64-bit.
-+	 */
-+	roll	$1, %eax
-+	rorq	$1, %rax
-+
-+	pop	%rbx
-+	pop	%rbp
-+	RET
-+SYM_FUNC_END(__efi64_thunk)
-+
-+	.code32
-+/*
-+ * EFI service pointer must be in %edi.
-+ *
-+ * The stack should represent the 32-bit calling convention.
-+ */
-+SYM_FUNC_START_LOCAL(efi_enter32)
-+	/* Load firmware selector into data and stack segment registers */
-+	movl	%edx, %ds
-+	movl	%edx, %es
-+	movl	%edx, %fs
-+	movl	%edx, %gs
-+	movl	%edx, %ss
-+
-+	/* Reload pgtables */
-+	movl	%cr3, %eax
-+	movl	%eax, %cr3
-+
-+	/* Disable paging */
-+	movl	%cr0, %eax
-+	btrl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+
-+	/* Disable long mode via EFER */
-+	movl	$MSR_EFER, %ecx
-+	rdmsr
-+	btrl	$_EFER_LME, %eax
-+	wrmsr
-+
-+	call	*%edi
-+
-+	/* We must preserve return value */
-+	movl	%eax, %edi
-+
-+	/*
-+	 * Some firmware will return with interrupts enabled. Be sure to
-+	 * disable them before we switch GDTs and IDTs.
-+	 */
-+	cli
-+
-+	lidtl	(%ebx)
-+	subl	$16, %ebx
-+
-+	lgdtl	(%ebx)
-+
-+	movl	%cr4, %eax
-+	btsl	$(X86_CR4_PAE_BIT), %eax
-+	movl	%eax, %cr4
-+
-+	movl	%cr3, %eax
-+	movl	%eax, %cr3
-+
-+	movl	$MSR_EFER, %ecx
-+	rdmsr
-+	btsl	$_EFER_LME, %eax
-+	wrmsr
-+
-+	xorl	%eax, %eax
-+	lldt	%ax
-+
-+	pushl	$__KERNEL_CS
-+	pushl	%ebp
-+
-+	/* Enable paging */
-+	movl	%cr0, %eax
-+	btsl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
-+	lret
-+SYM_FUNC_END(efi_enter32)
-+
-+	.data
-+	.balign	8
-+SYM_DATA_START(efi32_boot_gdt)
-+	.word	0
-+	.quad	0
-+SYM_DATA_END(efi32_boot_gdt)
-+
-+SYM_DATA_START(efi32_boot_idt)
-+	.word	0
-+	.quad	0
-+SYM_DATA_END(efi32_boot_idt)
-+
-+SYM_DATA_START(efi32_boot_cs)
-+	.word	0
-+SYM_DATA_END(efi32_boot_cs)
-+
-+SYM_DATA_START(efi32_boot_ds)
-+	.word	0
-+SYM_DATA_END(efi32_boot_ds)
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ /dev/null
-@@ -1,195 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
-- *
-- * Early support for invoking 32-bit EFI services from a 64-bit kernel.
-- *
-- * Because this thunking occurs before ExitBootServices() we have to
-- * restore the firmware's 32-bit GDT and IDT before we make EFI service
-- * calls.
-- *
-- * On the plus side, we don't have to worry about mangling 64-bit
-- * addresses into 32-bits because we're executing with an identity
-- * mapped pagetable and haven't transitioned to 64-bit virtual addresses
-- * yet.
-- */
--
--#include <linux/linkage.h>
--#include <asm/msr.h>
--#include <asm/page_types.h>
--#include <asm/processor-flags.h>
--#include <asm/segment.h>
--
--	.code64
--	.text
--SYM_FUNC_START(__efi64_thunk)
--	push	%rbp
--	push	%rbx
--
--	movl	%ds, %eax
--	push	%rax
--	movl	%es, %eax
--	push	%rax
--	movl	%ss, %eax
--	push	%rax
--
--	/* Copy args passed on stack */
--	movq	0x30(%rsp), %rbp
--	movq	0x38(%rsp), %rbx
--	movq	0x40(%rsp), %rax
--
--	/*
--	 * Convert x86-64 ABI params to i386 ABI
--	 */
--	subq	$64, %rsp
--	movl	%esi, 0x0(%rsp)
--	movl	%edx, 0x4(%rsp)
--	movl	%ecx, 0x8(%rsp)
--	movl	%r8d, 0xc(%rsp)
--	movl	%r9d, 0x10(%rsp)
--	movl	%ebp, 0x14(%rsp)
--	movl	%ebx, 0x18(%rsp)
--	movl	%eax, 0x1c(%rsp)
--
--	leaq	0x20(%rsp), %rbx
--	sgdt	(%rbx)
--
--	addq	$16, %rbx
--	sidt	(%rbx)
--
--	leaq	1f(%rip), %rbp
--
--	/*
--	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
--	 * and IDT that was installed when the kernel started executing. The
--	 * pointers were saved at the EFI stub entry point in head_64.S.
--	 *
--	 * Pass the saved DS selector to the 32-bit code, and use far return to
--	 * restore the saved CS selector.
--	 */
--	leaq	efi32_boot_idt(%rip), %rax
--	lidt	(%rax)
--	leaq	efi32_boot_gdt(%rip), %rax
--	lgdt	(%rax)
--
--	movzwl	efi32_boot_ds(%rip), %edx
--	movzwq	efi32_boot_cs(%rip), %rax
--	pushq	%rax
--	leaq	efi_enter32(%rip), %rax
--	pushq	%rax
--	lretq
--
--1:	addq	$64, %rsp
--	movq	%rdi, %rax
--
--	pop	%rbx
--	movl	%ebx, %ss
--	pop	%rbx
--	movl	%ebx, %es
--	pop	%rbx
--	movl	%ebx, %ds
--	/* Clear out 32-bit selector from FS and GS */
--	xorl	%ebx, %ebx
--	movl	%ebx, %fs
--	movl	%ebx, %gs
--
--	/*
--	 * Convert 32-bit status code into 64-bit.
--	 */
--	roll	$1, %eax
--	rorq	$1, %rax
--
--	pop	%rbx
--	pop	%rbp
--	RET
--SYM_FUNC_END(__efi64_thunk)
--
--	.code32
--/*
-- * EFI service pointer must be in %edi.
-- *
-- * The stack should represent the 32-bit calling convention.
-- */
--SYM_FUNC_START_LOCAL(efi_enter32)
--	/* Load firmware selector into data and stack segment registers */
--	movl	%edx, %ds
--	movl	%edx, %es
--	movl	%edx, %fs
--	movl	%edx, %gs
--	movl	%edx, %ss
--
--	/* Reload pgtables */
--	movl	%cr3, %eax
--	movl	%eax, %cr3
--
--	/* Disable paging */
--	movl	%cr0, %eax
--	btrl	$X86_CR0_PG_BIT, %eax
--	movl	%eax, %cr0
--
--	/* Disable long mode via EFER */
--	movl	$MSR_EFER, %ecx
--	rdmsr
--	btrl	$_EFER_LME, %eax
--	wrmsr
--
--	call	*%edi
--
--	/* We must preserve return value */
--	movl	%eax, %edi
--
--	/*
--	 * Some firmware will return with interrupts enabled. Be sure to
--	 * disable them before we switch GDTs and IDTs.
--	 */
--	cli
--
--	lidtl	(%ebx)
--	subl	$16, %ebx
--
--	lgdtl	(%ebx)
--
--	movl	%cr4, %eax
--	btsl	$(X86_CR4_PAE_BIT), %eax
--	movl	%eax, %cr4
--
--	movl	%cr3, %eax
--	movl	%eax, %cr3
--
--	movl	$MSR_EFER, %ecx
--	rdmsr
--	btsl	$_EFER_LME, %eax
--	wrmsr
--
--	xorl	%eax, %eax
--	lldt	%ax
--
--	pushl	$__KERNEL_CS
--	pushl	%ebp
--
--	/* Enable paging */
--	movl	%cr0, %eax
--	btsl	$X86_CR0_PG_BIT, %eax
--	movl	%eax, %cr0
--	lret
--SYM_FUNC_END(efi_enter32)
--
--	.data
--	.balign	8
--SYM_DATA_START(efi32_boot_gdt)
--	.word	0
--	.quad	0
--SYM_DATA_END(efi32_boot_gdt)
--
--SYM_DATA_START(efi32_boot_idt)
--	.word	0
--	.quad	0
--SYM_DATA_END(efi32_boot_idt)
--
--SYM_DATA_START(efi32_boot_cs)
--	.word	0
--SYM_DATA_END(efi32_boot_cs)
--
--SYM_DATA_START(efi32_boot_ds)
--	.word	0
--SYM_DATA_END(efi32_boot_ds)
 
 
 
