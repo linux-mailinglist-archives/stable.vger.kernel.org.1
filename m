@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-26319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5CB870E08
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17CA870D5F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A87A328869B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3996A1F215C8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BA110A35;
-	Mon,  4 Mar 2024 21:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C570D7C08C;
+	Mon,  4 Mar 2024 21:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TReKj8fq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6TiKPXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB311C6AB;
-	Mon,  4 Mar 2024 21:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849377BAF0;
+	Mon,  4 Mar 2024 21:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588413; cv=none; b=Cr6De88WSV8o178yofqUsTtoSwcd3V4EZnGgAhVTSeV8Fw4kQHdcRTj2mFUu824eNHqgOnXGwHM7NkmqW4HPf40aMqNu8tMmarszrc3N/ChKBXxPOcvQQggzofCozESgVJiId+K9IcCKNRyFTecCeCg1lo8sj143U0zU871BmSg=
+	t=1709588000; cv=none; b=k/iSyAZtToAUkPu7ZQgKl7xrSk6ai+I9MJzOwfxR25GYnUCtqNYYlcjbrSqwdxkpKIzU1qpARWqUR+ontXRpkm5C57mnyERs/njt+5jUUwZkvkXxPdfG01xEOKMyBIzk8Abf0T+euuWKahkakOM3GzuNyuaHOSdcT+9zrT54ilQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588413; c=relaxed/simple;
-	bh=tKzvwcFIkIev3AQnqS0CwZTVXOI5nuuL7SHscmlfsYc=;
+	s=arc-20240116; t=1709588000; c=relaxed/simple;
+	bh=jcoFyXBKJEqrf0T2Rq8+WRcwMB3fL9zghd+ngfnswQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZAOueG6b86YeTPKk5yBetWRo++lq2mimnFxmyYoFzjkisWa8v/fnlsBPPbW+f4V1kjpeoy/GpUc7xUUqdsV9WVtZklIEBrb/Gf1HavGbeiKa6wV0qzGCoXeAWkmW/ZGwujf9TwCbtc4Rj4G5T6p3Vk48SiomL145JjgFMmb6zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TReKj8fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0259EC433F1;
-	Mon,  4 Mar 2024 21:40:12 +0000 (UTC)
+	 MIME-Version; b=fTx4qcsQ7087Zl5iImWkBkfhfjlVTFrzWgUlstNLY3PMemEMbfXDSibBk9LKobau6Xb9RNrZ1k7WTenMit0sl+OzyQqn6weM70hzxjVwKFFaMOf8q64HzC7bUICBN0SnEpfosKn8gqidrh+T0KOVCFnVBOlXl/6EHxrWDJNdE/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6TiKPXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17487C433F1;
+	Mon,  4 Mar 2024 21:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588413;
-	bh=tKzvwcFIkIev3AQnqS0CwZTVXOI5nuuL7SHscmlfsYc=;
+	s=korg; t=1709588000;
+	bh=jcoFyXBKJEqrf0T2Rq8+WRcwMB3fL9zghd+ngfnswQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TReKj8fqokfYiJpSzjL/KqXvOELqX1aZYt6qYiduXhLBBKP3UEzjivwXiDlDjflI3
-	 wQwk+ZtaSbyBtQvtBWAUu1ssRulmxSs0+qg+vTVLeYs+Fig9Uhj0AIiyS52c7skXeo
-	 AYjx6mhZ9rMxeQD9nr52ot2TYxL8QDF2/RgDlWmw=
+	b=C6TiKPXBfQK9qUvcLAKu5eyBrogDwyRLqs7VewUcglMORTUUEtCB+jpVyK37XnybD
+	 tcOH4c0HFkoD8AzCeX1FlZMwcx7slM/UNDVJA3Eca/9EvamT8QKAehYWKCUrR5Qsmk
+	 2Rl9qhthRvZilDYzWAqF1Q/x4J7U8eWvVWiOugjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Andy Chiu <andybnac@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 097/143] RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 01/25] netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
 Date: Mon,  4 Mar 2024 21:23:37 +0000
-Message-ID: <20240304211553.013618744@linuxfoundation.org>
+Message-ID: <20240304211535.791708684@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-commit 3aff0c459e77ac0fb1c4d6884433467f797f7357 upstream.
+[ Upstream commit 661779e1fcafe1b74b3f3fe8e980c1e207fea1fd ]
 
-Commit e4bb020f3dbb ("riscv: detect assembler support for .option arch")
-added two tests, one for a valid value to '.option arch' that should
-succeed and one for an invalid value that is expected to fail to make
-sure that support for '.option arch' is properly detected because Clang
-does not error when '.option arch' is not supported:
+syzbot reported the following uninit-value access issue [1]:
 
-  $ clang --target=riscv64-linux-gnu -Werror -x assembler -c -o /dev/null <(echo '.option arch, +m')
-  /dev/fd/63:1:9: warning: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
-  .option arch, +m
-          ^
-  $ echo $?
-  0
+netlink_to_full_skb() creates a new `skb` and puts the `skb->data`
+passed as a 1st arg of netlink_to_full_skb() onto new `skb`. The data
+size is specified as `len` and passed to skb_put_data(). This `len`
+is based on `skb->end` that is not data offset but buffer offset. The
+`skb->end` contains data and tailroom. Since the tailroom is not
+initialized when the new `skb` created, KMSAN detects uninitialized
+memory area when copying the data.
 
-Unfortunately, the invalid test started being accepted by Clang after
-the linked llvm-project change, which causes CONFIG_AS_HAS_OPTION_ARCH
-and configurations that depend on it to be silently disabled, even
-though those versions do support '.option arch'.
+This patch resolved this issue by correct the len from `skb->end` to
+`skb->len`, which is the actual data offset.
 
-The invalid test can be avoided altogether by using
-'-Wa,--fatal-warnings', which will turn all assembler warnings into
-errors, like '-Werror' does for the compiler:
+BUG: KMSAN: kernel-infoleak-after-free in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+BUG: KMSAN: kernel-infoleak-after-free in copy_to_user_iter lib/iov_iter.c:24 [inline]
+BUG: KMSAN: kernel-infoleak-after-free in iterate_ubuf include/linux/iov_iter.h:29 [inline]
+BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance include/linux/iov_iter.h:271 [inline]
+BUG: KMSAN: kernel-infoleak-after-free in _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
+ instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+ copy_to_user_iter lib/iov_iter.c:24 [inline]
+ iterate_ubuf include/linux/iov_iter.h:29 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+ iterate_and_advance include/linux/iov_iter.h:271 [inline]
+ _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
+ copy_to_iter include/linux/uio.h:197 [inline]
+ simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:532
+ __skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:420
+ skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:546
+ skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
+ packet_recvmsg+0xd9c/0x2000 net/packet/af_packet.c:3482
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg net/socket.c:1066 [inline]
+ sock_read_iter+0x467/0x580 net/socket.c:1136
+ call_read_iter include/linux/fs.h:2014 [inline]
+ new_sync_read fs/read_write.c:389 [inline]
+ vfs_read+0x8f6/0xe00 fs/read_write.c:470
+ ksys_read+0x20f/0x4c0 fs/read_write.c:613
+ __do_sys_read fs/read_write.c:623 [inline]
+ __se_sys_read fs/read_write.c:621 [inline]
+ __x64_sys_read+0x93/0xd0 fs/read_write.c:621
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-  $ clang --target=riscv64-linux-gnu -Werror -Wa,--fatal-warnings -x assembler -c -o /dev/null <(echo '.option arch, +m')
-  /dev/fd/63:1:9: error: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
-  .option arch, +m
-          ^
-  $ echo $?
-  1
+Uninit was stored to memory at:
+ skb_put_data include/linux/skbuff.h:2622 [inline]
+ netlink_to_full_skb net/netlink/af_netlink.c:181 [inline]
+ __netlink_deliver_tap_skb net/netlink/af_netlink.c:298 [inline]
+ __netlink_deliver_tap+0x5be/0xc90 net/netlink/af_netlink.c:325
+ netlink_deliver_tap net/netlink/af_netlink.c:338 [inline]
+ netlink_deliver_tap_kernel net/netlink/af_netlink.c:347 [inline]
+ netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+ netlink_unicast+0x10f1/0x1250 net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
+ __sys_sendmsg net/socket.c:2667 [inline]
+ __do_sys_sendmsg net/socket.c:2676 [inline]
+ __se_sys_sendmsg net/socket.c:2674 [inline]
+ __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-The as-instr macros have been updated to make use of this flag, so
-remove the invalid test, which allows CONFIG_AS_HAS_OPTION_ARCH to work
-for all compiler versions.
+Uninit was created at:
+ free_pages_prepare mm/page_alloc.c:1087 [inline]
+ free_unref_page_prepare+0xb0/0xa40 mm/page_alloc.c:2347
+ free_unref_page_list+0xeb/0x1100 mm/page_alloc.c:2533
+ release_pages+0x23d3/0x2410 mm/swap.c:1042
+ free_pages_and_swap_cache+0xd9/0xf0 mm/swap_state.c:316
+ tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
+ tlb_flush_mmu+0x6f5/0x980 mm/mmu_gather.c:300
+ tlb_finish_mmu+0x101/0x260 mm/mmu_gather.c:392
+ exit_mmap+0x49e/0xd30 mm/mmap.c:3321
+ __mmput+0x13f/0x530 kernel/fork.c:1349
+ mmput+0x8a/0xa0 kernel/fork.c:1371
+ exit_mm+0x1b8/0x360 kernel/exit.c:567
+ do_exit+0xd57/0x4080 kernel/exit.c:858
+ do_group_exit+0x2fd/0x390 kernel/exit.c:1021
+ __do_sys_exit_group kernel/exit.c:1032 [inline]
+ __se_sys_exit_group kernel/exit.c:1030 [inline]
+ __x64_sys_exit_group+0x3c/0x50 kernel/exit.c:1030
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Cc: stable@vger.kernel.org
-Fixes: e4bb020f3dbb ("riscv: detect assembler support for .option arch")
-Link: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Closes: https://lore.kernel.org/r/20240121011341.GA97368@sol.localdomain/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Eric Biggers <ebiggers@google.com>
-Tested-by: Andy Chiu <andybnac@gmail.com>
-Reviewed-by: Andy Chiu <andybnac@gmail.com>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-2-390ac9cc3cd0@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bytes 3852-3903 of 3904 are uninitialized
+Memory access of size 3904 starts at ffff88812ea1e000
+Data copied to user address 0000000020003280
+
+CPU: 1 PID: 5043 Comm: syz-executor297 Not tainted 6.7.0-rc5-syzkaller-00047-g5bd7ef53ffe5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+
+Fixes: 1853c9496460 ("netlink, mmap: transform mmap skb into full skb on taps")
+Reported-and-tested-by: syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34ad5fab48f7bf510349 [1]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240221074053.1794118-1-ryasuoka@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -287,7 +287,6 @@ config AS_HAS_OPTION_ARCH
- 	# https://reviews.llvm.org/D123515
- 	def_bool y
- 	depends on $(as-instr, .option arch$(comma) +m)
--	depends on !$(as-instr, .option arch$(comma) -i)
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index bd9b3cd25a76c..3808b12da7f6e 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -156,7 +156,7 @@ static inline u32 netlink_group_mask(u32 group)
+ static struct sk_buff *netlink_to_full_skb(const struct sk_buff *skb,
+ 					   gfp_t gfp_mask)
+ {
+-	unsigned int len = skb_end_offset(skb);
++	unsigned int len = skb->len;
+ 	struct sk_buff *new;
  
- source "arch/riscv/Kconfig.socs"
- source "arch/riscv/Kconfig.errata"
+ 	new = alloc_skb(len, gfp_mask);
+-- 
+2.43.0
+
 
 
 
