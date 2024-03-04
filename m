@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F896870EA0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C19C5870CDE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BDC81F219CE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6249D1F22DA4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F797868F;
-	Mon,  4 Mar 2024 21:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5217F4CE0E;
+	Mon,  4 Mar 2024 21:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQfxfuWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJBCHIp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865121C6AB;
-	Mon,  4 Mar 2024 21:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116313B795;
+	Mon,  4 Mar 2024 21:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588735; cv=none; b=lmp/EnYOcns+uTOqhO6ikZfWuMFaB3kFBJrfWvkOGPUaxheKp78t4EZWPj/15xunnQzI667vlRcjo7M11Wvvoh4Pwvt1H3bq+KmU6JrAF7LoswkxJjH1S58GW5Fxf5bCYzSuHqyA0eSPZ5I8HQQJPG+SaIC8U45Ttk1s6keJseA=
+	t=1709587751; cv=none; b=H2zowV+kBg7uhQFaPSd2v3p/1FD8tKn7j2CTNcuICqgA4Z0yVMCVEt2603sDZZlSZ530Sv9g6jjRPBQOpkRibpPub6LO3gb0MMMMWwc3f2Mn/hoTkY/UrAMlfcGiFltdPaQaBMQXVmp70mH+F2iO7nxmRqxoNBz1zJJHjovYThg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588735; c=relaxed/simple;
-	bh=WYDwWFYKDfvyeWL0YGuj54f02nuM2C/l5SdNtfKrELw=;
+	s=arc-20240116; t=1709587751; c=relaxed/simple;
+	bh=ghaL+iTToi8S7z4VXPWfYrZDYqtb3KfnXHFMDJ6s4zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4rtGe9JFFncXh/X4zwheZLNGJEzFCTK+8M7RxzWUTdr7o0H1R9o/ymm+RD3S/Y4hA2DJl9Yam7MmwMRtb+u7D6a+Fa3Ult62Gbka2r9tHI1O6bTqu5KtJK3D8M8QBP1bnMlaR+kNtIm1njm3velgrti2t3ZOBde9ucFPc8QM0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQfxfuWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195DAC433C7;
-	Mon,  4 Mar 2024 21:45:34 +0000 (UTC)
+	 MIME-Version; b=MGcIqPgfukIE8LVaLqtylniWS+H1QKE458mH/vz0dlYdoKJh94PiX/g/zByo0dUoV2Jooj+sgPiQXapoKvNCdYI1KgB54jnpfnxmBzTUlRUPv4tIEdw+eUYidAPaamOrtnoC7f8XSsP9kpn0K02ucFzch5C1YHMAewDDYdVh2dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJBCHIp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F969C433C7;
+	Mon,  4 Mar 2024 21:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588735;
-	bh=WYDwWFYKDfvyeWL0YGuj54f02nuM2C/l5SdNtfKrELw=;
+	s=korg; t=1709587750;
+	bh=ghaL+iTToi8S7z4VXPWfYrZDYqtb3KfnXHFMDJ6s4zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQfxfuWsDMq3n/d8Vmob95/ee9kVCYYUnh5BLJPEEeNQafsFHKTdJMDj5S0Ru7znl
-	 jaVrQ62LG23bAqd537KOFVo0Y3JBMmJzQu7vAjdznXFq/b4ZtLxvVPHSRgnXZysojK
-	 IoeEV1qj0mDh0vjo4yY/EVVmihnnyi/azxs8yVi4=
+	b=ZJBCHIp3DBR0dXDPAxp9UTJt2Zec99n3obj8lJsyT2Uj+3/Esn8u2XmEWno7oPPGl
+	 re338DYnwSR4nCe1IYS7xE7iqHo7kHUep+CRk2GHAbkk05NMm0axxzL717VzmzNUVH
+	 93s1RaItgzXeMSPn8ZNN5nDzbgFNi0nCg/s7uPiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Ofitserov <oficerovas@altlinux.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 077/215] gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
-Date: Mon,  4 Mar 2024 21:22:20 +0000
-Message-ID: <20240304211559.420004642@linuxfoundation.org>
+	Jay Ajit Mate <jay.mate15@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 076/162] ALSA: hda/realtek: Fix top speaker connection on Dell Inspiron 16 Plus 7630
+Date: Mon,  4 Mar 2024 21:22:21 +0000
+Message-ID: <20240304211554.287568830@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,194 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Ofitserov <oficerovas@altlinux.org>
+From: Jay Ajit Mate <jay.mate15@gmail.com>
 
-commit 616d82c3cfa2a2146dd7e3ae47bda7e877ee549e upstream.
+commit 89a0dff6105e06067bdc57595982dbf6d6dd4959 upstream.
 
-The gtp_link_ops operations structure for the subsystem must be
-registered after registering the gtp_net_ops pernet operations structure.
+The Dell Inspiron 16 Plus 7630, similar to its predecessors (7620 models),
+experiences an issue with unconnected top speakers. Since the controller
+remains unchanged, this commit addresses the problem by correctly
+connecting the speakers on NID 0X17 to the DAC on NIC 0x03.
 
-Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
-
-[ 1010.702740] gtp: GTP module unloaded
-[ 1010.715877] general protection fault, probably for non-canonical address=
- 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
-[ 1010.715888] KASAN: null-ptr-deref in range [0x0000000000000008-0x0000000=
-00000000f]
-[ 1010.715895] CPU: 1 PID: 128616 Comm: a.out Not tainted 6.8.0-rc6-std-def=
--alt1 #1
-[ 1010.715899] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.1=
-6.0-alt1 04/01/2014
-[ 1010.715908] RIP: 0010:gtp_newlink+0x4d7/0x9c0 [gtp]
-[ 1010.715915] Code: 80 3c 02 00 0f 85 41 04 00 00 48 8b bb d8 05 00 00 e8 =
-ed f6 ff ff 48 89 c2 48 89 c5 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80=
-> 3c 02 00 0f 85 4f 04 00 00 4c 89 e2 4c 8b 6d 00 48 b8 00 00 00
-[ 1010.715920] RSP: 0018:ffff888020fbf180 EFLAGS: 00010203
-[ 1010.715929] RAX: dffffc0000000000 RBX: ffff88800399c000 RCX: 00000000000=
-00000
-[ 1010.715933] RDX: 0000000000000001 RSI: ffffffff84805280 RDI: 00000000000=
-00282
-[ 1010.715938] RBP: 000000000000000d R08: 0000000000000001 R09: 00000000000=
-00000
-[ 1010.715942] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8880039=
-9cc80
-[ 1010.715947] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
-00400
-[ 1010.715953] FS:  00007fd1509ab5c0(0000) GS:ffff88805b300000(0000) knlGS:=
-0000000000000000
-[ 1010.715958] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1010.715962] CR2: 0000000000000000 CR3: 000000001c07a000 CR4: 00000000007=
-50ee0
-[ 1010.715968] PKRU: 55555554
-[ 1010.715972] Call Trace:
-[ 1010.715985]  ? __die_body.cold+0x1a/0x1f
-[ 1010.715995]  ? die_addr+0x43/0x70
-[ 1010.716002]  ? exc_general_protection+0x199/0x2f0
-[ 1010.716016]  ? asm_exc_general_protection+0x1e/0x30
-[ 1010.716026]  ? gtp_newlink+0x4d7/0x9c0 [gtp]
-[ 1010.716034]  ? gtp_net_exit+0x150/0x150 [gtp]
-[ 1010.716042]  __rtnl_newlink+0x1063/0x1700
-[ 1010.716051]  ? rtnl_setlink+0x3c0/0x3c0
-[ 1010.716063]  ? is_bpf_text_address+0xc0/0x1f0
-[ 1010.716070]  ? kernel_text_address.part.0+0xbb/0xd0
-[ 1010.716076]  ? __kernel_text_address+0x56/0xa0
-[ 1010.716084]  ? unwind_get_return_address+0x5a/0xa0
-[ 1010.716091]  ? create_prof_cpu_mask+0x30/0x30
-[ 1010.716098]  ? arch_stack_walk+0x9e/0xf0
-[ 1010.716106]  ? stack_trace_save+0x91/0xd0
-[ 1010.716113]  ? stack_trace_consume_entry+0x170/0x170
-[ 1010.716121]  ? __lock_acquire+0x15c5/0x5380
-[ 1010.716139]  ? mark_held_locks+0x9e/0xe0
-[ 1010.716148]  ? kmem_cache_alloc_trace+0x35f/0x3c0
-[ 1010.716155]  ? __rtnl_newlink+0x1700/0x1700
-[ 1010.716160]  rtnl_newlink+0x69/0xa0
-[ 1010.716166]  rtnetlink_rcv_msg+0x43b/0xc50
-[ 1010.716172]  ? rtnl_fdb_dump+0x9f0/0x9f0
-[ 1010.716179]  ? lock_acquire+0x1fe/0x560
-[ 1010.716188]  ? netlink_deliver_tap+0x12f/0xd50
-[ 1010.716196]  netlink_rcv_skb+0x14d/0x440
-[ 1010.716202]  ? rtnl_fdb_dump+0x9f0/0x9f0
-[ 1010.716208]  ? netlink_ack+0xab0/0xab0
-[ 1010.716213]  ? netlink_deliver_tap+0x202/0xd50
-[ 1010.716220]  ? netlink_deliver_tap+0x218/0xd50
-[ 1010.716226]  ? __virt_addr_valid+0x30b/0x590
-[ 1010.716233]  netlink_unicast+0x54b/0x800
-[ 1010.716240]  ? netlink_attachskb+0x870/0x870
-[ 1010.716248]  ? __check_object_size+0x2de/0x3b0
-[ 1010.716254]  netlink_sendmsg+0x938/0xe40
-[ 1010.716261]  ? netlink_unicast+0x800/0x800
-[ 1010.716269]  ? __import_iovec+0x292/0x510
-[ 1010.716276]  ? netlink_unicast+0x800/0x800
-[ 1010.716284]  __sock_sendmsg+0x159/0x190
-[ 1010.716290]  ____sys_sendmsg+0x712/0x880
-[ 1010.716297]  ? sock_write_iter+0x3d0/0x3d0
-[ 1010.716304]  ? __ia32_sys_recvmmsg+0x270/0x270
-[ 1010.716309]  ? lock_acquire+0x1fe/0x560
-[ 1010.716315]  ? drain_array_locked+0x90/0x90
-[ 1010.716324]  ___sys_sendmsg+0xf8/0x170
-[ 1010.716331]  ? sendmsg_copy_msghdr+0x170/0x170
-[ 1010.716337]  ? lockdep_init_map_type+0x2c7/0x860
-[ 1010.716343]  ? lockdep_hardirqs_on_prepare+0x430/0x430
-[ 1010.716350]  ? debug_mutex_init+0x33/0x70
-[ 1010.716360]  ? percpu_counter_add_batch+0x8b/0x140
-[ 1010.716367]  ? lock_acquire+0x1fe/0x560
-[ 1010.716373]  ? find_held_lock+0x2c/0x110
-[ 1010.716384]  ? __fd_install+0x1b6/0x6f0
-[ 1010.716389]  ? lock_downgrade+0x810/0x810
-[ 1010.716396]  ? __fget_light+0x222/0x290
-[ 1010.716403]  __sys_sendmsg+0xea/0x1b0
-[ 1010.716409]  ? __sys_sendmsg_sock+0x40/0x40
-[ 1010.716419]  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
-[ 1010.716425]  ? syscall_enter_from_user_mode+0x1d/0x60
-[ 1010.716432]  do_syscall_64+0x30/0x40
-[ 1010.716438]  entry_SYSCALL_64_after_hwframe+0x62/0xc7
-[ 1010.716444] RIP: 0033:0x7fd1508cbd49
-[ 1010.716452] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 =
-89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48=
-> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ef 70 0d 00 f7 d8 64 89 01 48
-[ 1010.716456] RSP: 002b:00007fff18872348 EFLAGS: 00000202 ORIG_RAX: 000000=
-000000002e
-[ 1010.716463] RAX: ffffffffffffffda RBX: 000055f72bf0eac0 RCX: 00007fd1508=
-cbd49
-[ 1010.716468] RDX: 0000000000000000 RSI: 0000000020000280 RDI: 00000000000=
-00006
-[ 1010.716473] RBP: 00007fff18872360 R08: 00007fff18872360 R09: 00007fff188=
-72360
-[ 1010.716478] R10: 00007fff18872360 R11: 0000000000000202 R12: 000055f72bf=
-0e1b0
-[ 1010.716482] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
-00000
-[ 1010.716491] Modules linked in: gtp(+) udp_tunnel ib_core uinput af_packe=
-t rfkill qrtr joydev hid_generic usbhid hid kvm_intel iTCO_wdt intel_pmc_bx=
-t iTCO_vendor_support kvm snd_hda_codec_generic ledtrig_audio irqbypass crc=
-t10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hda_intel n=
-ls_utf8 snd_intel_dspcfg nls_cp866 psmouse aesni_intel vfat crypto_simd fat=
- cryptd glue_helper snd_hda_codec pcspkr snd_hda_core i2c_i801 snd_hwdep i2=
-c_smbus xhci_pci snd_pcm lpc_ich xhci_pci_renesas xhci_hcd qemu_fw_cfg tiny=
-_power_button button sch_fq_codel vboxvideo drm_vram_helper drm_ttm_helper =
-ttm vboxsf vboxguest snd_seq_midi snd_seq_midi_event snd_seq snd_rawmidi sn=
-d_seq_device snd_timer snd soundcore msr fuse efi_pstore dm_mod ip_tables x=
-_tables autofs4 virtio_gpu virtio_dma_buf drm_kms_helper cec rc_core drm vi=
-rtio_rng virtio_scsi rng_core virtio_balloon virtio_blk virtio_net virtio_c=
-onsole net_failover failover ahci libahci libata evdev scsi_mod input_leds =
-serio_raw virtio_pci intel_agp
-[ 1010.716674]  virtio_ring intel_gtt virtio [last unloaded: gtp]
-[ 1010.716693] ---[ end trace 04990a4ce61e174b ]---
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunnelin=
-g Protocol (GTP-U)")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240228114703.465107-1-oficerovas@altlinux=
-.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jay Ajit Mate <jay.mate15@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240219100404.9573-1-jay.mate15@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/gtp.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1902,26 +1902,26 @@ static int __init gtp_init(void)
-=20
- 	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
-=20
--	err =3D rtnl_link_register(&gtp_link_ops);
-+	err =3D register_pernet_subsys(&gtp_net_ops);
- 	if (err < 0)
- 		goto error_out;
-=20
--	err =3D register_pernet_subsys(&gtp_net_ops);
-+	err =3D rtnl_link_register(&gtp_link_ops);
- 	if (err < 0)
--		goto unreg_rtnl_link;
-+		goto unreg_pernet_subsys;
-=20
- 	err =3D genl_register_family(&gtp_genl_family);
- 	if (err < 0)
--		goto unreg_pernet_subsys;
-+		goto unreg_rtnl_link;
-=20
- 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
- 		sizeof(struct pdp_ctx));
- 	return 0;
-=20
--unreg_pernet_subsys:
--	unregister_pernet_subsys(&gtp_net_ops);
- unreg_rtnl_link:
- 	rtnl_link_unregister(&gtp_link_ops);
-+unreg_pernet_subsys:
-+	unregister_pernet_subsys(&gtp_net_ops);
- error_out:
- 	pr_err("error loading GTP module loaded\n");
- 	return err;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9733,6 +9733,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0c1c, "Dell Precision 3540", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1d, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1e, "Dell Precision 3540", ALC236_FIXUP_DELL_DUAL_CODECS),
++	SND_PCI_QUIRK(0x1028, 0x0c28, "Dell Inspiron 16 Plus 7630", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c4d, "Dell", ALC287_FIXUP_CS35L41_I2C_4),
+ 	SND_PCI_QUIRK(0x1028, 0x0cbd, "Dell Oasis 13 CS MTL-U", ALC289_FIXUP_DELL_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1028, 0x0cbe, "Dell Oasis 13 2-IN-1 MTL-U", ALC289_FIXUP_DELL_CS35L41_SPI_2),
 
 
 
