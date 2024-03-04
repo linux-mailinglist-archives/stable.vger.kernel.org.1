@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF93870DC3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EABB870D16
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD542866AF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7C428D2F6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D50C200D4;
-	Mon,  4 Mar 2024 21:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471D07CF3E;
+	Mon,  4 Mar 2024 21:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQWNIqEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAnE1e02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF50200CD;
-	Mon,  4 Mar 2024 21:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7D67AE6B;
+	Mon,  4 Mar 2024 21:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588248; cv=none; b=g7//IuDjMdrSWng/1nZvzwXLDjjm43bEZ+mIiAEjlYOwtNbKi3eKD7VtHD64q6zDtfg8DeljnKPlDy11VF2bWv8w+NFHEo2YtvA9YRVqTWHfZb6D2GvDXvUcCq3zsoAvNBE/12nUZCmEQOGdSRiCvthczKkatUpuR3loXBWtr4s=
+	t=1709587835; cv=none; b=Q8Ku/rZutLYSITyjqUfzfnvuMwur07m5HucIPKuxgxqqQFIawYYxqh6Z0j4AI022/u/FlzYXwZpUiGBbso+VqZSCxUaXQP35RRpbulpqTzZ7nYn0s4ROoEbx9y29cO5UjS7ZakCGYWyiWVzxjw8PJJsCxzf6ckKn/m6e4y9Cpgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588248; c=relaxed/simple;
-	bh=jGQiqkpyMfbVa3gFypeWogx8uMRRzD/fuHBxle+g/5A=;
+	s=arc-20240116; t=1709587835; c=relaxed/simple;
+	bh=FOfrGYCGclIzhGVDvT9SfbCrhuhC3Xey/M1KoOHeIXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cblbBq4hWW9lIJAGsz5xSc9ykM3JILj4/TOhR/0mDBpSFgv5/FfEwf1jJ1hOJ1MaixdJHzB+ADUWXcbZeVPIXdvkMFO64SMAKk+XTZI1znYLIjWBdTLNOh0GmCeoYrvDYwwRyMJdvWBVSo3kqJWV9UN2yC0J+yr0NqkAD7ocKIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQWNIqEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1C8C433C7;
-	Mon,  4 Mar 2024 21:37:27 +0000 (UTC)
+	 MIME-Version; b=JQDOHA47zdt1vNIgj4uDRJ6Rh5XxUoHB5avqeBRIs2B/40WVLm1VC5F3fTtPNPh2gwZ7euimAgBjgD+uXwRrjLz8oESrEj8UWZ4Zvl1Pp0dCPBv3Lbf6Yn5+G+tyxBX+5zUYqrqW13NUn++N1g6jdFuZNG1kop9MZRUdOSR99Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAnE1e02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3829AC433F1;
+	Mon,  4 Mar 2024 21:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588247;
-	bh=jGQiqkpyMfbVa3gFypeWogx8uMRRzD/fuHBxle+g/5A=;
+	s=korg; t=1709587834;
+	bh=FOfrGYCGclIzhGVDvT9SfbCrhuhC3Xey/M1KoOHeIXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQWNIqEZ4ArNhCvycPNOKTQ1PuiZSzRdrAVt1XNAvtD3AJqvRbDcwlKDEjCgnuZGP
-	 SMYjvNRaUvrYPSKYldIjwOyHbNSVaRgNlqAx41gs/923VPny40uEY8TbbdAFSHqT/E
-	 0TZMAobO34qjuook5SsR+A05O+iaU89oC0kMwXiY=
+	b=NAnE1e02HKM4SRJcow1bogJI2TRCjVt4qG5b/PjdTO7rzVTMJyKhUOM6fIPoomYy9
+	 R5PsyrzPWtiCyuasqJ1H4Dik/+dS216/sgZ8k41aRo2i4wTfiGyN3IBQK72zR9cefy
+	 zEprSEbEhiKBl112HXH3OiD3fW41JtKD8kscU30k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/143] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 090/162] Revert "drm/amd/pm: resolve reboot exception for si oland"
 Date: Mon,  4 Mar 2024 21:22:35 +0000
-Message-ID: <20240304211551.057478495@linuxfoundation.org>
+Message-ID: <20240304211554.716120576@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
+commit 955558030954b9637b41c97b730f9b38c92ac488 upstream.
 
-In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
-IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
-in the function `rtnl_bridge_setlink` to enable the loop to also check
-the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
-removed the `break` statement and led to an error logic of the flags
-writing back at the end of this function.
+This reverts commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86.
 
-if (have_flags)
-    memcpy(nla_data(attr), &flags, sizeof(flags));
-    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
+This causes hangs on SI when DC is enabled and errors on driver
+reboot and power off cycles.
 
-Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
-However, this is not necessarily true fow now as the updated loop will let
-the attr point to the last NLA, even an invalid NLA which could cause
-overflow writes.
-
-This patch introduces a new variable `br_flag` to save the NLA pointer
-that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
-error logic.
-
-Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3216
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2755
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index fcf331a447eee..e8bf481e80f72 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5135,10 +5135,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct net *net = sock_net(skb->sk);
- 	struct ifinfomsg *ifm;
- 	struct net_device *dev;
--	struct nlattr *br_spec, *attr = NULL;
-+	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
- 	int rem, err = -EOPNOTSUPP;
- 	u16 flags = 0;
--	bool have_flags = false;
- 
- 	if (nlmsg_len(nlh) < sizeof(*ifm))
- 		return -EINVAL;
-@@ -5156,11 +5155,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
- 	if (br_spec) {
- 		nla_for_each_nested(attr, br_spec, rem) {
--			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
-+			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
- 				if (nla_len(attr) < sizeof(flags))
- 					return -EINVAL;
- 
--				have_flags = true;
-+				br_flags_attr = attr;
- 				flags = nla_get_u16(attr);
- 			}
- 
-@@ -5204,8 +5203,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		}
- 	}
- 
--	if (have_flags)
--		memcpy(nla_data(attr), &flags, sizeof(flags));
-+	if (br_flags_attr)
-+		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
- out:
- 	return err;
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -6925,6 +6925,23 @@ static int si_dpm_enable(struct amdgpu_d
+ 	return 0;
  }
--- 
-2.43.0
-
+ 
++static int si_set_temperature_range(struct amdgpu_device *adev)
++{
++	int ret;
++
++	ret = si_thermal_enable_alert(adev, false);
++	if (ret)
++		return ret;
++	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
++	if (ret)
++		return ret;
++	ret = si_thermal_enable_alert(adev, true);
++	if (ret)
++		return ret;
++
++	return ret;
++}
++
+ static void si_dpm_disable(struct amdgpu_device *adev)
+ {
+ 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
+@@ -7608,6 +7625,18 @@ static int si_dpm_process_interrupt(stru
+ 
+ static int si_dpm_late_init(void *handle)
+ {
++	int ret;
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++
++	if (!adev->pm.dpm_enabled)
++		return 0;
++
++	ret = si_set_temperature_range(adev);
++	if (ret)
++		return ret;
++#if 0 //TODO ?
++	si_dpm_powergate_uvd(adev, true);
++#endif
+ 	return 0;
+ }
+ 
 
 
 
