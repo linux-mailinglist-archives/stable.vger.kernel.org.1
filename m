@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B09F870F60
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FA1870D9C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E08A1F220A4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58CA91F21A06
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946D97A124;
-	Mon,  4 Mar 2024 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD8E78B69;
+	Mon,  4 Mar 2024 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNrMSP5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AhdDly9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518B078B69;
-	Mon,  4 Mar 2024 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD781C687;
+	Mon,  4 Mar 2024 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589241; cv=none; b=BSKBp2hAdbxyHsfS9/DSEsLMfj2yIvViSFajnlUld+FYdoM5LeviMa3GtirMuI3G963qp3HAtisr+8lMGhOVK/9KxPFhYLxdhEUr8qVWmJ+vpyps/PCsdyLHMO00ImVstHP0f1vPEG2dj9ia7AioAeHc+wmJA8HK8JOyXjmQhYc=
+	t=1709588151; cv=none; b=JuoMxV2o57KaE3q3nKVAvHZyTZpGQ9kbLO7chzhww2+CWIBFFRz9zmHtuMPwoqksWZj5t39EKGt0yS2WGoxsXTAmnkNeLv6XLmu0YjliTLBhj47qxLrZ00tENmNDCTTk+9we+H08twwpaPi8hoMRa6ORE32D8LCmxf7GQc//Gfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589241; c=relaxed/simple;
-	bh=fGv7rByy8GGDxnURe3sB6OXMZQBnpRBy/42AYPtx8hI=;
+	s=arc-20240116; t=1709588151; c=relaxed/simple;
+	bh=1YUfYQPc4FQ5kXGbRz001GBmIlSHaUU1EcTmxypda28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JydTA0rfxq0JGz/eNNzbpu7X5mXoMBvRHFCAKut8OIyMPh2zi36Ix78hAulGIXBdO9Kik1gtR25ougxC8/annlO8PDThrMGjGQKP0Bl0dKh8Bk2O24hzSVf88f9EQfffbMUrAjCUthCtbNeAUzBOucVv+Y71dfJAZkNlJahYf4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNrMSP5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94A2C433C7;
-	Mon,  4 Mar 2024 21:54:00 +0000 (UTC)
+	 MIME-Version; b=ZMZNG6EPuMimfDzD5qpj9DyZFcdasoYGu/wPLtjIgmUKY3HyQKTUF/47aUmfy3pfyrywrvGBqa3uLinQEUAalsy+e+4JQIx/jM64F0p1lhjFFh1tz6Ai34wF8lmsZn9kXADHfyjs5hErKjvSj5VdfiqFPxDqYb/w3dyLkroDzSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AhdDly9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C28DC433C7;
+	Mon,  4 Mar 2024 21:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589241;
-	bh=fGv7rByy8GGDxnURe3sB6OXMZQBnpRBy/42AYPtx8hI=;
+	s=korg; t=1709588151;
+	bh=1YUfYQPc4FQ5kXGbRz001GBmIlSHaUU1EcTmxypda28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNrMSP5EvfvSTCLDr4FYR9/X9I/CvCpCD9rrn02HY/Ow29SJJezUGWiSlsv8C5/aC
-	 vUtJJmp2FB9Alif30KpuqxrodxOYTS+WSl5pK5c5gBM6bw3eaf+bouw1qdK6uM+fit
-	 09QxrBDjD/hl1y5obihrIdmxKiBiN/i67hEe57Ts=
+	b=0AhdDly9nRNIGIIbWdCFKcZo4yjICaRy6+V0kVPtNg2FlHuSB493DBZP1WkNx2uqd
+	 OvDqZCeCjkP/XicRNPNqlO0K7Kr7u04R9dKMKGWguShiaS7z83xiiYJbe6TYCA4Qdd
+	 RQ0wXw/zPGP3qYZ1GpQV4rRaeoTi2Kawdi0uRiLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/84] tls: rx: wrap decryption arguments in a structure
+Subject: [PATCH 5.10 40/42] gpio: fix resource unwinding order in error path
 Date: Mon,  4 Mar 2024 21:24:07 +0000
-Message-ID: <20240304211543.474699398@linuxfoundation.org>
+Message-ID: <20240304211538.995122116@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 4175eac37123a68ebee71f288826339fb89bfec7 ]
+[ Upstream commit ec5c54a9d3c4f9c15e647b049fea401ee5258696 ]
 
-We pass zc as a pointer to bool a few functions down as an in/out
-argument. This is error prone since C will happily evalue a pointer
-as a boolean (IOW forgetting *zc and writing zc leads to loss of
-developer time..). Wrap the arguments into a structure.
+Hogs are added *after* ACPI so should be removed *before* in error path.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
+Fixes: a411e81e61df ("gpiolib: add hogs support for machine code")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 49 ++++++++++++++++++++++++++----------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ drivers/gpio/gpiolib.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index fc1fa98d21937..c491cde30504e 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -44,6 +44,11 @@
- #include <net/strparser.h>
- #include <net/tls.h>
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 9c3aa518e6b79..374bb9f432660 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -732,11 +732,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
  
-+struct tls_decrypt_arg {
-+	bool zc;
-+	bool async;
-+};
-+
- noinline void tls_err_abort(struct sock *sk, int err)
- {
- 	WARN_ON_ONCE(err >= 0);
-@@ -1415,7 +1420,7 @@ static int tls_setup_from_iter(struct iov_iter *from,
- static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 			    struct iov_iter *out_iov,
- 			    struct scatterlist *out_sg,
--			    bool *zc, bool async)
-+			    struct tls_decrypt_arg *darg)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
-@@ -1432,7 +1437,7 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 			     prot->tail_size;
- 	int iv_offset = 0;
+ 	ret = gpiochip_irqchip_init_valid_mask(gc);
+ 	if (ret)
+-		goto err_remove_acpi_chip;
++		goto err_free_hogs;
  
--	if (*zc && (out_iov || out_sg)) {
-+	if (darg->zc && (out_iov || out_sg)) {
- 		if (out_iov)
- 			n_sgout = iov_iter_npages(out_iov, INT_MAX) + 1;
- 		else
-@@ -1441,7 +1446,7 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 				 rxm->full_len - prot->prepend_size);
- 	} else {
- 		n_sgout = 0;
--		*zc = false;
-+		darg->zc = false;
- 		n_sgin = skb_cow_data(skb, 0, &unused);
- 	}
+ 	ret = gpiochip_irqchip_init_hw(gc);
+ 	if (ret)
+-		goto err_remove_acpi_chip;
++		goto err_remove_irqchip_mask;
  
-@@ -1531,12 +1536,12 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- fallback_to_reg_recv:
- 		sgout = sgin;
- 		pages = 0;
--		*zc = false;
-+		darg->zc = false;
- 	}
- 
- 	/* Prepare and submit AEAD request */
- 	err = tls_do_decryption(sk, skb, sgin, sgout, iv,
--				data_len, aead_req, async);
-+				data_len, aead_req, darg->async);
- 	if (err == -EINPROGRESS)
- 		return err;
- 
-@@ -1549,7 +1554,8 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- }
- 
- static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
--			      struct iov_iter *dest, bool *zc, bool async)
-+			      struct iov_iter *dest,
-+			      struct tls_decrypt_arg *darg)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
-@@ -1558,7 +1564,7 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 	int pad, err;
- 
- 	if (tlm->decrypted) {
--		*zc = false;
-+		darg->zc = false;
- 		return 0;
- 	}
- 
-@@ -1568,12 +1574,12 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 			return err;
- 		if (err > 0) {
- 			tlm->decrypted = 1;
--			*zc = false;
-+			darg->zc = false;
- 			goto decrypt_done;
- 		}
- 	}
- 
--	err = decrypt_internal(sk, skb, dest, NULL, zc, async);
-+	err = decrypt_internal(sk, skb, dest, NULL, darg);
- 	if (err < 0) {
- 		if (err == -EINPROGRESS)
- 			tls_advance_record_sn(sk, prot, &tls_ctx->rx);
-@@ -1599,9 +1605,9 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- int decrypt_skb(struct sock *sk, struct sk_buff *skb,
- 		struct scatterlist *sgout)
- {
--	bool zc = true;
-+	struct tls_decrypt_arg darg = { .zc = true, };
- 
--	return decrypt_internal(sk, skb, NULL, sgout, &zc, false);
-+	return decrypt_internal(sk, skb, NULL, sgout, &darg);
- }
- 
- static bool tls_sw_advance_skb(struct sock *sk, struct sk_buff *skb,
-@@ -1790,11 +1796,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 	decrypted = 0;
- 	num_async = 0;
- 	while (len && (decrypted + copied < target || ctx->recv_pkt)) {
-+		struct tls_decrypt_arg darg = {};
- 		bool retain_skb = false;
- 		int to_decrypt, chunk;
--		bool zc = false;
--		bool async_capable;
--		bool async = false;
-+		bool async;
- 
- 		skb = tls_wait_data(sk, psock, flags & MSG_DONTWAIT, timeo, &err);
- 		if (!skb) {
-@@ -1820,16 +1825,15 @@ int tls_sw_recvmsg(struct sock *sk,
- 		    tlm->control == TLS_RECORD_TYPE_DATA &&
- 		    prot->version != TLS_1_3_VERSION &&
- 		    !bpf_strp_enabled)
--			zc = true;
-+			darg.zc = true;
- 
- 		/* Do not use async mode if record is non-data */
- 		if (tlm->control == TLS_RECORD_TYPE_DATA && !bpf_strp_enabled)
--			async_capable = ctx->async_capable;
-+			darg.async = ctx->async_capable;
- 		else
--			async_capable = false;
-+			darg.async = false;
- 
--		err = decrypt_skb_update(sk, skb, &msg->msg_iter,
--					 &zc, async_capable);
-+		err = decrypt_skb_update(sk, skb, &msg->msg_iter, &darg);
- 		if (err < 0 && err != -EINPROGRESS) {
- 			tls_err_abort(sk, -EBADMSG);
- 			goto recv_end;
-@@ -1875,7 +1879,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 		/* TLS 1.3 may have updated the length by more than overhead */
- 		chunk = rxm->full_len;
- 
--		if (!zc) {
-+		if (!darg.zc) {
- 			if (bpf_strp_enabled) {
- 				err = sk_psock_tls_strp_read(psock, skb);
- 				if (err != __SK_PASS) {
-@@ -1991,7 +1995,6 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	int err = 0;
- 	long timeo;
- 	int chunk;
--	bool zc = false;
- 
- 	lock_sock(sk);
- 
-@@ -2001,12 +2004,14 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	if (from_queue) {
- 		skb = __skb_dequeue(&ctx->rx_list);
- 	} else {
-+		struct tls_decrypt_arg darg = {};
-+
- 		skb = tls_wait_data(sk, NULL, flags & SPLICE_F_NONBLOCK, timeo,
- 				    &err);
- 		if (!skb)
- 			goto splice_read_end;
- 
--		err = decrypt_skb_update(sk, skb, NULL, &zc, false);
-+		err = decrypt_skb_update(sk, skb, NULL, &darg);
- 		if (err < 0) {
- 			tls_err_abort(sk, -EBADMSG);
- 			goto splice_read_end;
+ 	ret = gpiochip_add_irqchip(gc, lock_key, request_key);
+ 	if (ret)
+@@ -761,11 +761,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gpiochip_irqchip_remove(gc);
+ err_remove_irqchip_mask:
+ 	gpiochip_irqchip_free_valid_mask(gc);
+-err_remove_acpi_chip:
++err_free_hogs:
++	gpiochip_free_hogs(gc);
+ 	acpi_gpiochip_remove(gc);
+ 	gpiochip_remove_pin_ranges(gc);
+ err_remove_of_chip:
+-	gpiochip_free_hogs(gc);
+ 	of_gpiochip_remove(gc);
+ err_free_gpiochip_mask:
+ 	gpiochip_free_valid_mask(gc);
 -- 
 2.43.0
 
