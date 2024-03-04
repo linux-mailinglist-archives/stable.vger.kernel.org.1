@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72837870DA5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D537D870F6C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289D41F21912
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1D41F223EF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1B2200CD;
-	Mon,  4 Mar 2024 21:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4097992E;
+	Mon,  4 Mar 2024 21:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkKLcB4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8yUAqRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF4BDDCB;
-	Mon,  4 Mar 2024 21:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF57161675;
+	Mon,  4 Mar 2024 21:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588175; cv=none; b=P066UhZzYWXvrh7WLNoNRz1gdZ0MgfzTS2B4EEtxh6bZvDb+g36zDy2OyINEkBwrlxHK305glX0me9dUHhzi7vJ8GG4PScS7lTlBwzW8wdoUjypPIptt9KeKnyr45DF0fMGrjLu1Riq140egbmQ/7Tq6NTWQcn7GBnwci2Bd4Kc=
+	t=1709589269; cv=none; b=DCzCK9/nmPhPAAIyDWdEvDkyRbOXih0rsLyM4Kr+Fq9LzqxHoseh87cEAcQBl/pcRpZE+sH6kcL6k8L1KOL3/uWjDShDvqfxsZ7mPOtkgHyDrmJLGNeaBYaP012/peNf/P3oAZJSER/P4zvvfdkx/5IV7G9qNGgzcVT03ciSAH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588175; c=relaxed/simple;
-	bh=23Mqe6obedHUqf60bdfseatHqCI553l1NTh1F/Dj6xo=;
+	s=arc-20240116; t=1709589269; c=relaxed/simple;
+	bh=at5qafrZcEAeLjzP6Fhl6CCHKCnwZO+vFc7wkqByZac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Haf8KRgyU/BRp25ZyzjdtlxEOqasl+xn4f9LP+DjvqRZZcn5v4IxfZeSBAOqye9uoN1ANE4kxWm77mpaU0jc6H36pz9Cwljq4u5OqiyJ4JNu4yST/PuQCU2xuHbtzaKp96T6TZmmRhjYo3sRX0sLMj03jhOjwqHzjVHEi6CXtTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkKLcB4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A2DC433C7;
-	Mon,  4 Mar 2024 21:36:14 +0000 (UTC)
+	 MIME-Version; b=tfxhTcsFJem0giqR2uzPny2uaIZXAJxLDjnBV7+s6Hvw9MpYMbqkvDfBCB4u6VZOtqwkqS5RyQgLAkRlk/2YDsHSGoRc/05VcN5N89GkNSGPQKl/8WBwO1drujDC3MqWkviX8ZHsV/PJYVRDHDt1PHxCyCZfAwqlVxipZ+bZnuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8yUAqRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C62C433F1;
+	Mon,  4 Mar 2024 21:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588175;
-	bh=23Mqe6obedHUqf60bdfseatHqCI553l1NTh1F/Dj6xo=;
+	s=korg; t=1709589269;
+	bh=at5qafrZcEAeLjzP6Fhl6CCHKCnwZO+vFc7wkqByZac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkKLcB4xil1RaglnWnlM5j0tjBcNqiHLzErazhqa3YzXSGzJLdgXzejlTvi1sp5W1
-	 /85/XHL/kINV+XC8L2L7rCJL9kkcUy7LWSUaFuTjgaGGmJbmShhTj2E7KiD04nAnif
-	 BL1DuqEDjsDXvS9lGj1QktbiX9z+0KIIAXPmzppw=
+	b=f8yUAqRbxudO3dah3lAWDEuCEZuMbRuq5kUtAtaxEjg24y74rdKxHYXQo+JkoBHR2
+	 6HbwdyTzPo5gQ5EU2A71azjGpqf4MZZvYcXy2TfhxVAIXQcE3QoqIVsLvh9EuGR1Ka
+	 VmD5sRPbDdi5IXzP/cCT4E/mlceb7MiuwmG0Ry4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Ma <peng.ma@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 26/42] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
+	kernel test robot <lkp@intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 20/84] netfilter: nfnetlink_queue: silence bogus compiler warning
 Date: Mon,  4 Mar 2024 21:23:53 +0000
-Message-ID: <20240304211538.514408482@linuxfoundation.org>
+Message-ID: <20240304211543.001030198@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Ma <peng.ma@nxp.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
+[ Upstream commit b43c2793f5e9910862e8fe07846b74e45b104501 ]
 
-There is chip (ls1028a) errata:
+net/netfilter/nfnetlink_queue.c:601:36: warning: variable 'ctinfo' is
+uninitialized when used here [-Wuninitialized]
+   if (ct && nfnl_ct->build(skb, ct, ctinfo, NFQA_CT, NFQA_CT_INFO) < 0)
 
-The SoC may hang on 16 byte unaligned read transactions by QDMA.
+ctinfo is only uninitialized if ct == NULL.  Init it to 0 to silence this.
 
-Unaligned read transactions initiated by QDMA may stall in the NOC
-(Network On-Chip), causing a deadlock condition. Stalled transactions will
-trigger completion timeouts in PCIe controller.
-
-Workaround:
-Enable prefetch by setting the source descriptor prefetchable bit
-( SD[PF] = 1 ).
-
-Implement this workaround.
-
-Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nfnetlink_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -109,6 +109,7 @@
- #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
- #define FSL_QDMA_CMD_DSEN_OFFSET	19
- #define FSL_QDMA_CMD_LWC_OFFSET		16
-+#define FSL_QDMA_CMD_PF			BIT(17)
- 
- /* Field definition for Descriptor status */
- #define QDMA_CCDF_STATUS_RTE		BIT(5)
-@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
- 	qdma_csgf_set_f(csgf_dest, len);
- 	/* Descriptor Buffer */
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
--			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
-+			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-+			  FSL_QDMA_CMD_PF;
- 	sdf->data = QDMA_SDDF_CMD(cmd);
- 
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 5329ebf19a18b..f4468ef3d0a94 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -387,7 +387,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 	struct net_device *indev;
+ 	struct net_device *outdev;
+ 	struct nf_conn *ct = NULL;
+-	enum ip_conntrack_info ctinfo;
++	enum ip_conntrack_info ctinfo = 0;
+ 	struct nfnl_ct_hook *nfnl_ct;
+ 	bool csum_verify;
+ 	char *secdata = NULL;
+-- 
+2.43.0
+
 
 
 
