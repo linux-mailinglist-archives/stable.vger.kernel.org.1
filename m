@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F72870F0E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6105870E1B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 499FDB23F33
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73505288180
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982B778B4C;
-	Mon,  4 Mar 2024 21:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9015C7B3D8;
+	Mon,  4 Mar 2024 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RK1dup4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeC6I7Ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55206200D4;
-	Mon,  4 Mar 2024 21:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472E51F92C;
+	Mon,  4 Mar 2024 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589021; cv=none; b=iFGElF/5bnMGvBngf7/okpna0SIsEpK3ryV7tHI6WCBf7QfM5EhwYdkRPeN/xjw0cHtLcouaeEme2PErLM579a2HNdMc+lVVK1uVH4AvZ1VVZPhzU3FY8oKczpyZN9TrBHYfm4qDNlHyEEuzQT4Y959Vy8V9FycsUdgmf44PBi4=
+	t=1709588453; cv=none; b=CUf0nJaDpPoh+f7lXy+wRqVZKjTZVWVh37hO6/UzP0vJZ1ffjPVJegQuXBM76jDwe4d90YAnEmkb2tBoHFiV/2Th3H9JDZu1gbTOeS4fjqs0ui49JwpmfxvZoB2VqWfrq4GThIvBuUvqfEM7fELZY0BktGxiHaoU2xuObyABAkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589021; c=relaxed/simple;
-	bh=cQA4LgngIn0yF0RMOvgSQvD+Wa9uIjTC5YCwHK67+9o=;
+	s=arc-20240116; t=1709588453; c=relaxed/simple;
+	bh=Z0pPBS8gFSQh9ruJpjaIFAdv/BOKayL8MsTJZ1ZE2tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcisTmErrHPDgy0ej019tyDsxrmPklAGEFp5PXMDcO1NblgCH2PFndA2tBKP5fbUmt6NljwwW5Ug/CM4Gk15qiG6G2djx6jfFmfwJ70wMaUOusFGOzzUEuzEdnSbOCtlntJrmy7aJxFqoX2Jwz+Jyp/IYlSheeLTiegpswd5iRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RK1dup4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1303C433C7;
-	Mon,  4 Mar 2024 21:50:20 +0000 (UTC)
+	 MIME-Version; b=T8TvJbECus8e3ro4sRYgEfHyKRkpVg90l2iA/ncsVC7qdEnuR3x038ke4xloz8Hd/rrEIG0xIwvlwFxAMNPAz2PhX+f8r7Gow4/oPuAHL91XmP9dZfi3tkSCudTbcBQ9ej23UKBSIUl0sXtPz+oNx+VJ/SaZ4t0fDAbW2Ell+c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeC6I7Ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5598C433C7;
+	Mon,  4 Mar 2024 21:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589021;
-	bh=cQA4LgngIn0yF0RMOvgSQvD+Wa9uIjTC5YCwHK67+9o=;
+	s=korg; t=1709588453;
+	bh=Z0pPBS8gFSQh9ruJpjaIFAdv/BOKayL8MsTJZ1ZE2tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RK1dup4FdlpKmSA//vUkSCMCVlJ7pkGJ54PnTDCEcWv9mRJ/tnyOYW/wrP2c7wyOy
-	 +MfzyT0gU+yIPrK8ZYe1zdEMsLBE9tPrRbmNfb+PSq7MKE1ASvqzuth7iMgH39Rt1O
-	 hH47NX7lx3BCepclQq6mh7lwj8N80yzK3tmQodCo=
+	b=TeC6I7KuLEYmKLCxwKH5aoKQpiijUIbdUqy9pjzRjK4UeAnx1x7Tb7g6Ape3v0nxP
+	 UR4SpBl/r7w255pBpxaN4o0/dXqB9+7JN1EwJayxomNHREkB5MwL3yOkQ6bzZfM/8S
+	 GgFNm0C9+x53+ASlapj8oxnIeO9+9Vglr9tJK/y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 170/215] NFSD: refactoring courtesy_client_reaper to a generic low memory shrinker
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 113/143] mptcp: fix possible deadlock in subflow diag
 Date: Mon,  4 Mar 2024 21:23:53 +0000
-Message-ID: <20240304211602.345616117@linuxfoundation.org>
+Message-ID: <20240304211553.531938323@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit a1049eb47f20b9eabf9afb218578fff16b4baca6 ]
+commit d6a9608af9a75d13243d217f6ce1e30e57d56ffe upstream.
 
-Refactoring courtesy_client_reaper to generic low memory
-shrinker so it can be used for other purposes.
+Syzbot and Eric reported a lockdep splat in the subflow diag:
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+   WARNING: possible circular locking dependency detected
+   6.8.0-rc4-syzkaller-00212-g40b9385dd8e6 #0 Not tainted
+
+   syz-executor.2/24141 is trying to acquire lock:
+   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
+   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
+
+   but task is already holding lock:
+   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at: spin_lock
+   include/linux/spinlock.h:351 [inline]
+   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at:
+   inet_diag_dump_icsk+0x39f/0x1f80 net/ipv4/inet_diag.c:1038
+
+   which lock already depends on the new lock.
+
+   the existing dependency chain (in reverse order) is:
+
+   -> #1 (&h->lhash2[i].lock){+.+.}-{2:2}:
+   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+   spin_lock include/linux/spinlock.h:351 [inline]
+   __inet_hash+0x335/0xbe0 net/ipv4/inet_hashtables.c:743
+   inet_csk_listen_start+0x23a/0x320 net/ipv4/inet_connection_sock.c:1261
+   __inet_listen_sk+0x2a2/0x770 net/ipv4/af_inet.c:217
+   inet_listen+0xa3/0x110 net/ipv4/af_inet.c:239
+   rds_tcp_listen_init+0x3fd/0x5a0 net/rds/tcp_listen.c:316
+   rds_tcp_init_net+0x141/0x320 net/rds/tcp.c:577
+   ops_init+0x352/0x610 net/core/net_namespace.c:136
+   __register_pernet_operations net/core/net_namespace.c:1214 [inline]
+   register_pernet_operations+0x2cb/0x660 net/core/net_namespace.c:1283
+   register_pernet_device+0x33/0x80 net/core/net_namespace.c:1370
+   rds_tcp_init+0x62/0xd0 net/rds/tcp.c:735
+   do_one_initcall+0x238/0x830 init/main.c:1236
+   do_initcall_level+0x157/0x210 init/main.c:1298
+   do_initcalls+0x3f/0x80 init/main.c:1314
+   kernel_init_freeable+0x42f/0x5d0 init/main.c:1551
+   kernel_init+0x1d/0x2a0 init/main.c:1441
+   ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
+
+   -> #0 (k-sk_lock-AF_INET6){+.+.}-{0:0}:
+   check_prev_add kernel/locking/lockdep.c:3134 [inline]
+   check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+   validate_chain+0x18ca/0x58e0 kernel/locking/lockdep.c:3869
+   __lock_acquire+0x1345/0x1fd0 kernel/locking/lockdep.c:5137
+   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+   lock_sock_fast include/net/sock.h:1723 [inline]
+   subflow_get_info+0x166/0xd20 net/mptcp/diag.c:28
+   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
+   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
+   inet_sk_diag_fill+0x10ed/0x1e00 net/ipv4/inet_diag.c:345
+   inet_diag_dump_icsk+0x55b/0x1f80 net/ipv4/inet_diag.c:1061
+   __inet_diag_dump+0x211/0x3a0 net/ipv4/inet_diag.c:1263
+   inet_diag_dump_compat+0x1c1/0x2d0 net/ipv4/inet_diag.c:1371
+   netlink_dump+0x59b/0xc80 net/netlink/af_netlink.c:2264
+   __netlink_dump_start+0x5df/0x790 net/netlink/af_netlink.c:2370
+   netlink_dump_start include/linux/netlink.h:338 [inline]
+   inet_diag_rcv_msg_compat+0x209/0x4c0 net/ipv4/inet_diag.c:1405
+   sock_diag_rcv_msg+0xe7/0x410
+   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
+   sock_diag_rcv+0x2a/0x40 net/core/sock_diag.c:280
+   netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+   netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
+   netlink_sendmsg+0xa3b/0xd70 net/netlink/af_netlink.c:1908
+   sock_sendmsg_nosec net/socket.c:730 [inline]
+   __sock_sendmsg+0x221/0x270 net/socket.c:745
+   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
+   ___sys_sendmsg net/socket.c:2638 [inline]
+   __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
+   do_syscall_64+0xf9/0x240
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+
+As noted by Eric we can break the lock dependency chain avoid
+dumping any extended info for the mptcp subflow listener:
+nothing actually useful is presented there.
+
+Fixes: b8adb69a7d29 ("mptcp: fix lockless access in subflow ULP diag")
+Cc: stable@vger.kernel.org
+Reported-by: Eric Dumazet <edumazet@google.com>
+Closes: https://lore.kernel.org/netdev/CANn89iJ=Oecw6OZDwmSYc9HJKQ_G32uN11L+oUcMu+TOD5Xiaw@mail.gmail.com/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-9-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ net/mptcp/diag.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4362,7 +4362,7 @@ out:
- }
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -21,6 +21,9 @@ static int subflow_get_info(struct sock
+ 	bool slow;
+ 	int err;
  
- static unsigned long
--nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
-+nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	int cnt;
- 	struct nfsd_net *nn = container_of(shrink,
-@@ -4375,7 +4375,7 @@ nfsd_courtesy_client_count(struct shrink
- }
- 
- static unsigned long
--nfsd_courtesy_client_scan(struct shrinker *shrink, struct shrink_control *sc)
-+nfsd4_state_shrinker_scan(struct shrinker *shrink, struct shrink_control *sc)
- {
- 	return SHRINK_STOP;
- }
-@@ -4402,8 +4402,8 @@ nfsd4_init_leases_net(struct nfsd_net *n
- 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
- 
- 	atomic_set(&nn->nfsd_courtesy_clients, 0);
--	nn->nfsd_client_shrinker.scan_objects = nfsd_courtesy_client_scan;
--	nn->nfsd_client_shrinker.count_objects = nfsd_courtesy_client_count;
-+	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
-+	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
- 	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
- 	return register_shrinker(&nn->nfsd_client_shrinker, "nfsd-client");
- }
-@@ -6171,17 +6171,24 @@ laundromat_main(struct work_struct *laun
- }
- 
- static void
--courtesy_client_reaper(struct work_struct *reaper)
-+courtesy_client_reaper(struct nfsd_net *nn)
- {
- 	struct list_head reaplist;
--	struct delayed_work *dwork = to_delayed_work(reaper);
--	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
--					nfsd_shrinker_work);
- 
- 	nfs4_get_courtesy_client_reaplist(nn, &reaplist);
- 	nfs4_process_client_reaplist(&reaplist);
- }
- 
-+static void
-+nfsd4_state_shrinker_worker(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
-+				nfsd_shrinker_work);
++	if (inet_sk_state_load(sk) == TCP_LISTEN)
++		return 0;
 +
-+	courtesy_client_reaper(nn);
-+}
-+
- static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
- {
- 	if (!fh_match(&fhp->fh_handle, &stp->sc_file->fi_fhandle))
-@@ -8007,7 +8014,7 @@ static int nfs4_state_create_net(struct
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
- 
- 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
--	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, courtesy_client_reaper);
-+	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
- 	get_net(net);
- 
- 	return 0;
+ 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
+ 	if (!start)
+ 		return -EMSGSIZE;
 
 
 
