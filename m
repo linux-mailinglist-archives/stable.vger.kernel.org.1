@@ -1,103 +1,94 @@
-Return-Path: <stable+bounces-26535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B848870F07
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9F9871003
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 23:20:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B9CDB22CCF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100DE1C21B0A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB787B3D8;
-	Mon,  4 Mar 2024 21:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939287BAE1;
+	Mon,  4 Mar 2024 22:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="jGxCA8zZ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j2MAQ/r9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D9978B4C;
-	Mon,  4 Mar 2024 21:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166121C687
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 22:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589010; cv=none; b=g5cnOEMmJW6jKzjKDTuLTtiUkLliMZkKu4188ilDpG6LHMM5mNN02J74V7TF97DtdmKxvD6pHfmNirbaGHO+HGbfiI/mdvfb9LnjubAfn60uYZ58Sd/mWxTKD3hzx4KCsYAOtLyLAkM556KTteK6CBxw7aL/Tc5uOqGYiQdMK1Y=
+	t=1709590815; cv=none; b=a9vXIOvD6zhLfmVmWAmB3WPfzaXMwRDXgPGJQqFwKrjW2+U06GBnG9iyK20ZAhKzMS3v4RZqatpR9yxnBBvGMpYgG+7XvskvWWz+dLSsANW7RQG7ODB9ejGMfG1l5h7XrWhhDVmyHi1lKiqK47gwlHo+FKVOUiMYY0u8NNtHO6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589010; c=relaxed/simple;
-	bh=RPwtqs/WLMpQhOOQffu+E9GNmObiNBz91RoPhZG7ldY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n5/LWaetQn7y9tdtftJcntxTahPH+FJed7PYmvoQpVVByCLyDHY8yRNgIdZRzU5eOZteL0yQF2EQGt6+od2XKwgOmoh2uY1vqRzwi0sScwSKk72o/CuSxXyBVuZY7En9aZaGMAnV1uTsEtpKxbO3pUn4kCDsXON0pIXyCiksQCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=jGxCA8zZ; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1709590815; c=relaxed/simple;
+	bh=daJJ+O48/rxQfVLn4qSUO5TBMPB93fpJojNV87v3Jho=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bOgAAI51snkT9IUg8v6j2zcs6QlWt+pFMs1XOZiWnr6ZWKl6rYRqbZAJ/t/kMV3LD32M+s9P2m9Z/wo8ruIQK+y2F2ULc3PkAUL+m3O3aO8rK8rgV941Cx+izPgkAhH9jQ01vuhlrbwHoGCvTdS41e/wovpOHoDONxif30O8V60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rnv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j2MAQ/r9; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rnv.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5e4a072ce28so4604755a12.0
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 14:20:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1709589008; x=1741125008;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IPLuyADOds20t9F10dBuRgOvEI8caqH4znwPq4fIKLQ=;
-  b=jGxCA8zZb2p5NKtEpFvBsxuciRue0vYb+KYRlEdSTWWjWYgsNytQ0mop
-   xrfpkfUhm/6aI3nPNfJtt/mFFBES7Raaks2rmTobMCDmCtZEi84Zas53q
-   NsW88/f7Jmcb0r/YOC5OGAyoLJF5EhBLuTGAOPhbSKdnywFrilhfPY0Jw
-   U=;
-X-IronPort-AV: E=Sophos;i="6.06,204,1705363200"; 
-   d="scan'208";a="278554992"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 21:50:01 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:26419]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.20.189:2525] with esmtp (Farcaster)
- id e2b6372a-4e89-463b-887c-9553dfcc05aa; Mon, 4 Mar 2024 21:49:59 +0000 (UTC)
-X-Farcaster-Flow-ID: e2b6372a-4e89-463b-887c-9553dfcc05aa
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 21:49:59 +0000
-Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.53) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 21:49:56 +0000
-Date: Mon, 4 Mar 2024 13:49:51 -0800
-From: Andrew Paniakin <apanyaki@amazon.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <apanyaki@amazon.com>, <benh@amazon.com>, <boris.ostrovsky@oracle.com>,
-	<gregkh@linuxfoundation.org>, <jeremy.fitzhardinge@citrix.com>,
-	<jgrall@amazon.com>, <jgross@suse.com>, <konrad.wilk@oracle.com>,
-	<linux-kernel@vger.kernel.org>, <mheyne@amazon.de>,
-	<oleksandr_tyshchenko@epam.com>, <sashal@kernel.org>,
-	<sstabellini@kernel.org>, <stable@vger.kernel.org>,
-	<xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH 5.10] xen/events: close evtchn after mapping cleanup
-Message-ID: <20240304214951.GA3603725@uc3ecf78c6baf56.ant.amazon.com>
-References: <20240302160357.GA2232656@uc3ecf78c6baf56.ant.amazon.com>
- <2024030433-legacy-unrivaled-f5fc@gregkh>
- <20240304184726.GA3441283@uc3ecf78c6baf56.ant.amazon.com>
+        d=google.com; s=20230601; t=1709590813; x=1710195613; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=daJJ+O48/rxQfVLn4qSUO5TBMPB93fpJojNV87v3Jho=;
+        b=j2MAQ/r9iVHjX7PLGobpkdi1hAyPRwnb1yboJGvjiQTjl3V7i+U3AT0q3l6mGMPG57
+         h+endH8C+jOsudeVij4YiyUk10pg4sUmJTnQEQTh9rUCG/xUwfNOdsiQJeyDy++SD/P+
+         HyHb3jQd1fqxT2YMGnlHY59t0bOIe9hLBYiU2RDfWpi8Uw6fCq6Sm7CD8E9c98DGMhYW
+         zIJSGUZ9aiYlxcErsEog2XfOd6noAYIa2VHfhk5t7RYZiGCcE0to6gOVYJBihByfLjXJ
+         5m8qKmFA1S6M4miF2up4Fyn+xzlUH0JD6fZfSShFm3B4J41odAQ/fxnugDM6+sR9L+No
+         tICA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709590813; x=1710195613;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=daJJ+O48/rxQfVLn4qSUO5TBMPB93fpJojNV87v3Jho=;
+        b=QjeIrbbhmOShj/ronxwH8hqWd54CZR0OjAJzjr0WM/yQgA5QcIOV4xsWfIjLlMCKRP
+         B5mYFFV0rjTvzg1iS+8ALZ5WohZ1MN3f5Frb8WSlYSJTtd6TCL+hluNv1Z5B2weUF11B
+         a4zOe626ssX/saMgDLJ9XFaxSuno8Fy0atqsZMU35/LUzimYujtVx0ManeIiZTyK0EMz
+         70I7j0v3C1nMEvYUHToWp/G/9hGhMra2RnYjsv2QPJEDZp39J/DEaOkhXkWvxGtGZuhf
+         EtHkBSQckVxmJOLC38WAcNg8S06T9lb02hIDHPQlu0oCvYS8/uSzejtdPtPZPwKTKaMp
+         wF0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXichZ88g6/oUg5dQ0P+uo6AUioSn3sdtO7VAPT8XUL1T5BGb+rhnFVQKpuyLk5yXMHjViLuGpeVVn6qj7WPOzPL3f8Tr66
+X-Gm-Message-State: AOJu0YzDOz+d2kv1GAdO4bHr4pnj3QUv/wXakQ5PYVT42FD/KWwQNXRj
+	/8BP7nBsWR5Eqtv2h4rbdM0ss3wtnTOMIWy3V+zlv5g9osVpFB2U9xNBjsd6TTXLQA==
+X-Google-Smtp-Source: AGHT+IH6n8nD/pd+GpoBbvd5C2DsH5JzWW5H+GIS5zXoOxKlXMSHiTDp7/imzsPzBowYnQHpwLonIuE=
+X-Received: from cos-rnv.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:81d])
+ (user=rnv job=sendgmr) by 2002:a05:6a02:f87:b0:5e4:292b:d0eb with SMTP id
+ dq7-20020a056a020f8700b005e4292bd0ebmr25591pgb.2.1709590813310; Mon, 04 Mar
+ 2024 14:20:13 -0800 (PST)
+Date: Mon,  4 Mar 2024 22:20:11 +0000
+In-Reply-To: <20240203035346.771599322@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240304184726.GA3441283@uc3ecf78c6baf56.ant.amazon.com>
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
+Mime-Version: 1.0
+References: <20240203035346.771599322@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240304222011.2221862-1-rnv@google.com>
+Subject: [PATCH 6.1 214/219] mm, kmsan: fix infinite recursion due to RCU
+ critical section
+From: Arnav Kansal <rnv@google.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com, 
+	dvyukov@google.com, elver@google.com, glider@google.com, hpa@zytor.com, 
+	mingo@redhat.com, patches@lists.linux.dev, quic_charante@quicinc.com, 
+	stable@vger.kernel.org, syzbot+93a9e8a3dea8d6085e12@syzkaller.appspotmail.com, 
+	tglx@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
 
-On 04/03/2024, Andrew Panyakin wrote:
-> On 04/03/2024, Greg KH wrote:
-> > On Sat, Mar 02, 2024 at 08:03:57AM -0800, Andrew Panyakin wrote:
-> > > From: Maximilian Heyne <mheyne@amazon.de>
-> > >
-> > > Commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream
-> [...] 
-> > Where is the 5.15.y version of this commit?  We have to have that before
-> > we can take a 5.10.y version, right?
-> 
-> Remaining patches for 5.15 and 6.1 ready, will send once analyze test
-> results.
+Are there any plans to backport this to 5.15, or 5.10?
 
-Remaining patches posted:
-5.15: https://lore.kernel.org/all/20240304212139.GA3585816@uc3ecf78c6baf56.ant.amazon.com/
-6.1: https://lore.kernel.org/all/20240304192006.GA3517973@uc3ecf78c6baf56.ant.amazon.com/
+The buggy commit (commit id: 5ec8e8ea8b77 "mm/sparsemem: fix race in
+accessing memory_section->usage") this commit fixes was backported to
+5.10 and 5.15 and wondering if there are any plans of backporting the
+fix to 5.10, or 5.15?
 
