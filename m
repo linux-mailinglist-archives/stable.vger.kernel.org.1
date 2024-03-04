@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2A4870D4E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8C3870D72
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8171C24662
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45B571C23EBD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE037D084;
-	Mon,  4 Mar 2024 21:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5728626B2;
+	Mon,  4 Mar 2024 21:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3psKmNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duqRoR8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8637D080;
-	Mon,  4 Mar 2024 21:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A401C687;
+	Mon,  4 Mar 2024 21:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587959; cv=none; b=qyJw/eIBFz7gn8MFB08OxGkijyva84oh/UDlp3I/L0yvOuO8ViBRP91pIpytzoqjcVOOzpqXQtyq+XaHRtyRsRTJEgvGvAOIEpJZVSd8hO4e9kHyzsBkI5trdzpaAIimiPKl3b0qKaU6cSjYe9OfTpVRWc3mUI30tdjerQpiOCA=
+	t=1709588047; cv=none; b=Y5HpYMATVjmPf1610YHhx1ydWjF0u4ZYXh1DWp9vxfn5ji8QEryB9qQ14i2biXc2Bwwghk9ZxauKf21cucnMaSfrqElaIvadg6BbsES7CmnBV115sfQtbfQAbN9uqJUfJdpr/ywIovcd/8U/AjIT/3XAN78rKYyZ1+5DF13VQNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587959; c=relaxed/simple;
-	bh=NAklreLmvCBu0ke0w7PQvXjxvlM11OEIP7ydRNikU4E=;
+	s=arc-20240116; t=1709588047; c=relaxed/simple;
+	bh=s4qr4ZcUhr3UtkSbC6qNU4lJSnjNyTnuisqRS1oHdgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/MEf2pR2HHw+KBQdXY3Bi3AuzeAZhOlet2o1bfbtakGgfOpi356dXB7Pa3m4HQLDrWdfHYaN9Sosfb25+Gz5OxHovV4X1uiSQrWVSJ0pyBptVJRaKbNp7gFEqrCkr+a5Kw+RsutrrEZRXl3sac9t20osprmjjRndOrrRGkAuY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3psKmNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7024AC433F1;
-	Mon,  4 Mar 2024 21:32:38 +0000 (UTC)
+	 MIME-Version; b=k3ncqthU3TtCTZ3WOH2lrqeJj3MuI4ONftdrbVLtoeUeyPKN55Kv1eVSc4WU0mim5F59BrgBp2YCV72DiXuK49drBvhCbNfTrV4jcaKig7nh0wT7TKda5elv6wUwDSKsqas0mfATPl/ugjGF0mCk3A0H4+3Cy2xhpomHgE+YA2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duqRoR8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1BFC433C7;
+	Mon,  4 Mar 2024 21:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587958;
-	bh=NAklreLmvCBu0ke0w7PQvXjxvlM11OEIP7ydRNikU4E=;
+	s=korg; t=1709588047;
+	bh=s4qr4ZcUhr3UtkSbC6qNU4lJSnjNyTnuisqRS1oHdgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3psKmNR1Mr/HXnAofC7NsCfTHB/9iRrw7Wqca7BjKTW/iFO8ISVaE2LaBYvxEbG/
-	 C+6806K0IxU7ss2yvatJ8UDvHigoi2BxXRvwAC6KUBDKVeUOfzncOhVMgD0i6str9Q
-	 UvtURESdOZjh+eGlDyrc4ehv58ZXR4c1QgjJP58E=
+	b=duqRoR8tQh7w8winXIMb36EsRtrgXO7erHsYvoo3OqDzaSn+nLXFJy0I5x2wdmxsf
+	 Ls/Czfog6m8BuvXnSrj0sWOTFFGXFURPWb3t88kgB1md3S1t/gN7/c/NJJ1oj8pGgD
+	 eESuEreXXy4v6NxsJKO3djHNhAPGKk/zqx6zT6fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.7 156/162] KVM/VMX: Move VERW closer to VMentry for MDS mitigation
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 05/25] lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
 Date: Mon,  4 Mar 2024 21:23:41 +0000
-Message-ID: <20240304211556.660634097@linuxfoundation.org>
+Message-ID: <20240304211535.925883524@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 43fb862de8f628c5db5e96831c915b9aebf62d33 upstream.
+[ Upstream commit 0e67899abfbfdea0c3c0ed3fd263ffc601c5c157 ]
 
-During VMentry VERW is executed to mitigate MDS. After VERW, any memory
-access like register push onto stack may put host data in MDS affected
-CPU buffers. A guest can then use MDS to sample host data.
+Same as LAN7800, LAN7850 can be used without EEPROM. If EEPROM is not
+present or not flashed, LAN7850 will fail to sync the speed detected by the PHY
+with the MAC. In case link speed is 100Mbit, it will accidentally work,
+otherwise no data can be transferred.
 
-Although likelihood of secrets surviving in registers at current VERW
-callsite is less, but it can't be ruled out. Harden the MDS mitigation
-by moving the VERW mitigation late in VMentry path.
+Better way would be to implement link_up callback, or set auto speed
+configuration unconditionally. But this changes would be more intrusive.
+So, for now, set it only if no EEPROM is found.
 
-Note that VERW for MMIO Stale Data mitigation is unchanged because of
-the complexity of per-guest conditional VERW which is not easy to handle
-that late in asm with no GPRs available. If the CPU is also affected by
-MDS, VERW is unconditionally executed late in asm regardless of guest
-having MMIO access.
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e69647a19c87 ("lan78xx: Set ASD in MAC_CR when EEE is enabled.")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240222123839.2816561-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmenter.S |    3 +++
- arch/x86/kvm/vmx/vmx.c     |   20 ++++++++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ drivers/net/usb/lan78xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -161,6 +161,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Load guest RAX.  This kills the @regs pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index b51017966bb37..454a03f0bc69f 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2535,7 +2535,8 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 	if (dev->chipid == ID_REV_CHIP_ID_7801_)
+ 		buf &= ~MAC_CR_GMII_EN_;
  
-+	/* Clobbers EFLAGS.ZF */
-+	CLEAR_CPU_BUFFERS
-+
- 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
- 	jnc .Lvmlaunch
- 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -387,7 +387,16 @@ static __always_inline void vmx_enable_f
- 
- static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
- {
--	vmx->disable_fb_clear = (host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
-+	/*
-+	 * Disable VERW's behavior of clearing CPU buffers for the guest if the
-+	 * CPU isn't affected by MDS/TAA, and the host hasn't forcefully enabled
-+	 * the mitigation. Disabling the clearing behavior provides a
-+	 * performance boost for guests that aren't aware that manually clearing
-+	 * CPU buffers is unnecessary, at the cost of MSR accesses on VM-Entry
-+	 * and VM-Exit.
-+	 */
-+	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
-+				(host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
- 				!boot_cpu_has_bug(X86_BUG_MDS) &&
- 				!boot_cpu_has_bug(X86_BUG_TAA);
- 
-@@ -7226,11 +7235,14 @@ static noinstr void vmx_vcpu_enter_exit(
- 
- 	guest_state_enter_irqoff();
- 
--	/* L1D Flush includes CPU buffer clear to mitigate MDS */
-+	/*
-+	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
-+	 * mitigation for MDS is done late in VMentry and is still
-+	 * executed in spite of L1D Flush. This is because an extra VERW
-+	 * should not matter much after the big hammer L1D Flush.
-+	 */
- 	if (static_branch_unlikely(&vmx_l1d_should_flush))
- 		vmx_l1d_flush(vcpu);
--	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
--		mds_clear_cpu_buffers();
- 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
- 		 kvm_arch_has_assigned_device(vcpu->kvm))
- 		mds_clear_cpu_buffers();
+-	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
++	if (dev->chipid == ID_REV_CHIP_ID_7800_ ||
++	    dev->chipid == ID_REV_CHIP_ID_7850_) {
+ 		ret = lan78xx_read_raw_eeprom(dev, 0, 1, &sig);
+ 		if (!ret && sig != EEPROM_INDICATOR) {
+ 			/* Implies there is no external eeprom. Set mac speed */
+-- 
+2.43.0
+
 
 
 
