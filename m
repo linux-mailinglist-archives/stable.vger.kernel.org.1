@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-25928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6908702E7
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F3E8702E8
 	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9F11F269F7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:39:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03B191C23D4C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2483F9FC;
-	Mon,  4 Mar 2024 13:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A73B3E47F;
+	Mon,  4 Mar 2024 13:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qL5wxeBT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YkHuzUsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF713F9C2;
-	Mon,  4 Mar 2024 13:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94543DBB2;
+	Mon,  4 Mar 2024 13:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709559549; cv=none; b=AY1LHQ5FYiM1xwUEMROz3zwrQQ290H8crMj6+a+zZPQGCKEl2HOQAUf3yO6xMiiuFt1DrOYqSsh0rpTrYLi+wy+hqtJiTdahki81X7TPVzEhYDUV/xMU0QRcMp2JxqHV85RFSqsMdJ16wDu6QTIaLVPFabIrsMPYCc9ViU4yKRM=
+	t=1709559552; cv=none; b=ZOq727P3AMBNXrWclejAMGhBtofsS+AmHGtNJFDUr6I8hvBfA7ngxuFvuPVp/OBjAcd+nZz+Ji7+dekSTexiQ+IOUQ57N4d1fuguY/af7qEq/W5CMLk1WriiwAJJ3mfcPLAYIN/8Y1RHp1aMphkiUyQCy/5/Aj4DqXthrSPGay4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709559549; c=relaxed/simple;
-	bh=RNK1T5EBcTT0dJEI4o/0l2KMNXhZbkzGFu5Z658QZOU=;
+	s=arc-20240116; t=1709559552; c=relaxed/simple;
+	bh=NmVUivCAmX9LTWN6+xdDcJ2R5h3I9vHy2vk1QYMsadA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n65R8UYTZJBDG7YVNAgev0n37j0nApaIAiiJQ9kVS/UeOXPUnSgPp3Iqy6WGAGyHoq9Zlg027RBDEaLa6S1sYmq3FnxZcK2eQ8lWc7/m0GdqDez67KcV9CqjFMN9RNHxRCISzuGcLXLH/ZI/XLyJfuru6TD4qUmXmG1aPdiMyCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qL5wxeBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29F4C433B1;
-	Mon,  4 Mar 2024 13:39:07 +0000 (UTC)
+	 MIME-Version; b=SNWiVms1ACKwYgCvWKWPmaa0YbOyJe1loqoLgSHr3h4tp+sV8PtpuyCfkEhPkifXVw1UiXPxI8dlit02OkmOMelkYzQQUactNYMWFwZ8jvNPUfhkh6kGbpDO5URs+sxWYLSCZo/EobYoRWI+qkfSEUjvqqktTnjB0WshUKK6+SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YkHuzUsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4B9C433C7;
+	Mon,  4 Mar 2024 13:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709559549;
-	bh=RNK1T5EBcTT0dJEI4o/0l2KMNXhZbkzGFu5Z658QZOU=;
+	s=k20201202; t=1709559551;
+	bh=NmVUivCAmX9LTWN6+xdDcJ2R5h3I9vHy2vk1QYMsadA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL5wxeBT4PbTN+Lmje/gAw8vitjcszybYdSd+vx6qhdBlb0X39oEPXXJm8eUqZUne
-	 vwg6LqBdADLJyVh9+pUJn58yY0IRjSrfZluFV+xyM7EOKk/XFYS7aCyf9iwiIk7zjL
-	 LkvB6Q8x1brCxplR7oeR3vAjjMYmIv+MyH2KzEmv6cNCFzTbrH0G9oeJmeQSWfLvEA
-	 8hv9TkcJMiOGNJlWLwnHGytnssHpOnWHSDvM2yEG1e59acg2wjxQCFHFJkl4rh1PAk
-	 SrNJ9LlgEexChhxLoQKejPa/9fhAn77RgUBl1wu0bF+/WwmmMzO5Y/BbqfBvNXOAaG
-	 gmaUumdhwp0UQ==
+	b=YkHuzUsm2w0S6WYpv8Y2i88BwEOR+FSFLnJS0R5WttdRwqVMRbnWAHkZnBZJl/hnC
+	 dv70PrdmBA/+wCa66wKribEtEAxZANfOBmTHo2urmc4/QLoMLaNQZF5MB6zRmCLhFE
+	 HRDI3upEGZPwO23UpkQ/nWM1jwPmnS/DhcpelUXjXT7hIzzFkC3jKmfek8X208iaSO
+	 fJ3wUSuF1abaCLycwez12e9+bmNJJXeZ/36WVFZoNWjs3dysBcuiGBsBwPKzhUj0Oc
+	 DJcqkaXULbIR2Z6KDJanYOrZ79ItwS6wwdxh7tpRRR7K+qEZIWeravP9DYTGRDjjKt
+	 BBpkuEUyjdpXA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -49,9 +49,9 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	Matthieu Baerts <matttbe@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7.y 3/5] selftests: mptcp: update userspace pm test helpers
-Date: Mon,  4 Mar 2024 14:38:31 +0100
-Message-ID: <20240304133827.1989736-10-matttbe@kernel.org>
+Subject: [PATCH 6.7.y 4/5] selftests: mptcp: add mptcp_lib_is_v6
+Date: Mon,  4 Mar 2024 14:38:32 +0100
+Message-ID: <20240304133827.1989736-11-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <2024030420-swimsuit-antacid-a0dd@gregkh>
 References: <2024030420-swimsuit-antacid-a0dd@gregkh>
@@ -61,192 +61,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6079; i=matttbe@kernel.org; h=from:subject; bh=LwzpQpYQQVUgmzdhWlVborTdj8V0bI1EUq9c3HD6t+4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl5c7UNINK4694Fkg+k2XbPNP5E7+gx+rv/Y0qd VMvICAm3ZqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZeXO1AAKCRD2t4JPQmmg c/VEEADg1NaR5eqA0sTKj70oeV1cSrSz31MSw4/qQwGsQe+z9ocppPz+h1w9E+AZYRr/iKldFu0 WrMnVFW2js9M9MGTIirzs3CE5DUNNIo/ONHagZdkRO2TiAwgmtIq8sxtzq6dC4WsdatRha/tRZG FZg6xoWTkY+r+4TKn5W/DgbSQD/2IofINziL0kSrJRDqxXidfjWIuFN7ObFzZZ440Lqi7c8g4sv hlnK4KeddWMcQ1EsfvT5BFXnTbvCFqeyg8lO8A3R89OngjqH/GxbdsrcuHXlilPXS1JZeaT0D+2 JMg3F+MbIJHJnDPDexyVPYd14zFPr/NtZtVM/izbMzIzfqwicBFQYukIyAZOUD4UlEbHkleKe7z ma+9PLXbeTllmApcfd2O9qMfFTaPfYq3GuLuV8EVG8xUeJ8tyr0PnRzF9M+ZaaQRvC/yRFhqn5n qHIJbn7hTZG4U6rdoinUElfkt02ktWEo5eoxKIHxYu8fkffoZX8hHcK3QE8Q1TJNzhI27hbrVwp caXzQlyLUMFT6xbfRg/It+Ei/1c2+IDfDI9lp2PXcQwdJoKZaoV4CONKcCL/+qE+I95uIMvei3I D0zwHOg2A5ThK5bkJSyVcW9W+1AEIIfbN/h9e8E03+UldJCmp3Mi5gQK8Y/yUeOc692Q56Io0ND w/i22N+OQcYOEzw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5230; i=matttbe@kernel.org; h=from:subject; bh=5hiqhWrm9xKsoHocITti9kdoJvB0Ll12DAqWaHrEbho=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl5c7U7ypt4mkPZtyEtCoXeBbAu8YDmn7zgTo+c jZJSB9+DGOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZeXO1AAKCRD2t4JPQmmg c2FYD/90b/pKQKm0NZztcqv+hclMPPO3eUJATz7pz6iKRic/ha2a2RrtWEPODn16MKZqp1Lcaka fSIRvCKc1j18oFovWXwj5duu/r3Sl7/ndtXvowAZhbwhRtXpKTQ8usbRKDQE1435lURzg8rHUxm Rik3dYxbTIuP7yQYJgrV/mtPuf6wRzpg39K2iZ4Cbgox5IUQ/54TPmcWNSi0k7DfE5PAZtUizXv WlyQR1gUEE4lP4WeQr+kIK6XOCOQUxyRksrPiv2QpZeCu0Gx7U4Q6mFEpb5TF7HwVTfpM1Ba8KB pdE8LQrQ6DydZ1Z7B41KQFYCLhC1q+vGHv+KBN5PCoUdVxbN7eDa9p5jDmDwomTa7UK6ZXfx9oq 4TVj6zp3716v1fP+V4NkLlYuQGTvbquihJmG0GMBeHODYknHFovy8QJCpk75hV1nRjq+fXfgd1B 13RljLxGzXQhzOj4DtSFJZOZeWbqTsHDifIMt4x1maYlGt8v8RQxzVwHXyaQ9XZ1YCO0sriULm3 +5zSCdsZnHtFNqfs2S65lD0qMjvyxI8jSWHrjO8G5iOL+Hjrs6fTJZcMtpftloURWtTwhTcKhVm SZMN72+wEO+nvBDn30dV2xhmkb2/hz2NNt09jSOsWiT57qiXUtCSsCaj+xhfBQFJEXODcSwdprq MVWI4Gbns1otxNw==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
 From: Geliang Tang <geliang.tang@suse.com>
 
-This patch adds a new argument namespace to userspace_pm_add_addr() and
-userspace_pm_add_sf() to make these two helper more versatile.
+To avoid duplicated code in different MPTCP selftests, we can add
+and use helpers defined in mptcp_lib.sh.
 
-Add two more versatile helpers for userspace pm remove subflow or address:
-userspace_pm_rm_addr() and userspace_pm_rm_sf(). The original test helpers
-userspace_pm_rm_sf_addr_ns1() and userspace_pm_rm_sf_addr_ns2() can be
-replaced by these new helpers.
+is_v6() helper is defined in mptcp_connect.sh, mptcp_join.sh and
+mptcp_sockopt.sh, so export it into mptcp_lib.sh and rename it as
+mptcp_lib_is_v6(). Use this new helper in all scripts.
 
 Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
 Signed-off-by: Geliang Tang <geliang.tang@suse.com>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-4-8d6b94150f6b@kernel.org
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-10-8d6b94150f6b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 757c828ce94905a2975873d5e90a376c701b2b90)
+(cherry picked from commit b850f2c7dd85ecd14a333685c4ffd23f12665e94)
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- .../testing/selftests/net/mptcp/mptcp_join.sh | 98 +++++++++----------
- 1 file changed, 48 insertions(+), 50 deletions(-)
+ .../testing/selftests/net/mptcp/mptcp_connect.sh | 16 +++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh  | 14 ++++----------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh   |  5 +++++
+ .../testing/selftests/net/mptcp/mptcp_sockopt.sh |  8 +-------
+ 4 files changed, 15 insertions(+), 28 deletions(-)
 
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+index 10cd322e05c4..3b971d1617d8 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -310,12 +310,6 @@ check_mptcp_disabled()
+ 	return 0
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ do_ping()
+ {
+ 	local listener_ns="$1"
+@@ -324,7 +318,7 @@ do_ping()
+ 	local ping_args="-q -c 1"
+ 	local rc=0
+ 
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		$ipv6 || return 0
+ 		ping_args="${ping_args} -6"
+ 	fi
+@@ -620,12 +614,12 @@ run_tests_lo()
+ 	fi
+ 
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 	else
+ 		local_addr="0.0.0.0"
+@@ -693,7 +687,7 @@ run_test_transparent()
+ 	TEST_GROUP="${msg}"
+ 
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+@@ -726,7 +720,7 @@ EOF
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		r6flag="-6"
+ 	else
 diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 90845b130a95..2a769cfb7f24 100755
+index 2a769cfb7f24..1bc9e424194b 100755
 --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
 +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2824,6 +2824,7 @@ backup_tests()
- 	fi
+@@ -592,12 +592,6 @@ link_failure()
+ 	done
  }
  
-+SUB_ESTABLISHED=10 # MPTCP_EVENT_SUB_ESTABLISHED
- LISTENER_CREATED=15 #MPTCP_EVENT_LISTENER_CREATED
- LISTENER_CLOSED=16  #MPTCP_EVENT_LISTENER_CLOSED
- 
-@@ -3284,75 +3285,70 @@ fail_tests()
- 	fi
- }
- 
-+# $1: ns ; $2: addr ; $3: id
- userspace_pm_add_addr()
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ # $1: ns, $2: port
+ wait_local_port_listen()
  {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
- 	local tk
+@@ -877,7 +871,7 @@ pm_nl_set_endpoint()
+ 		local id=10
+ 		while [ $add_nr_ns1 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::1"
+ 			else
+ 				addr="10.0.$counter.1"
+@@ -929,7 +923,7 @@ pm_nl_set_endpoint()
+ 		local id=20
+ 		while [ $add_nr_ns2 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::2"
+ 			else
+ 				addr="10.0.$counter.2"
+@@ -971,7 +965,7 @@ pm_nl_set_endpoint()
+ 			pm_nl_flush_endpoint ${connector_ns}
+ 		elif [ $rm_nr_ns2 -eq 9 ]; then
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:1::2"
+ 			else
+ 				addr="10.0.1.2"
+@@ -3339,7 +3333,7 @@ userspace_pm_rm_sf()
+ 	local cnt
  
--	tk=$(grep "type:1," "$evts_ns1" |
--	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
--	ip netns exec $ns1 ./pm_nl_ctl ann $addr token $tk id $id
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+
-+	ip netns exec $1 ./pm_nl_ctl ann $2 token $tk id $3
- 	sleep 1
+ 	[ "$1" == "$ns2" ] && evts=$evts_ns2
+-	if is_v6 $2; then ip=6; fi
++	if mptcp_lib_is_v6 $2; then ip=6; fi
+ 	tk=$(mptcp_lib_evts_get_info token "$evts")
+ 	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
+ 	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+index 3cf31be5f655..f7b16d0bb5e5 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -227,6 +227,11 @@ mptcp_lib_kill_wait() {
+ 	wait "${1}" 2>/dev/null
  }
  
--userspace_pm_rm_sf_addr_ns1()
-+# $1: ns ; $2: id
-+userspace_pm_rm_addr()
++# $1: IP address
++mptcp_lib_is_v6() {
++	[ -z "${1##*:*}" ]
++}
++
+ # $1: ns, $2: MIB counter
+ mptcp_lib_get_counter() {
+ 	local ns="${1}"
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+index a817af6616ec..bfa744e350ef 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -161,12 +161,6 @@ check_transfer()
+ 	return 0
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ do_transfer()
  {
--	local addr=$1
--	local id=$2
--	local tk sp da dp
--	local cnt_addr cnt_sf
-+	local evts=$evts_ns1
-+	local tk
-+	local cnt
+ 	local listener_ns="$1"
+@@ -183,7 +177,7 @@ do_transfer()
+ 	local mptcp_connect="./mptcp_connect -r 20"
  
--	tk=$(grep "type:1," "$evts_ns1" |
--	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
--	sp=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
--	da=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
--	dp=$(grep "type:10" "$evts_ns1" |
--	     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
--	cnt_addr=$(rm_addr_count ${ns1})
--	cnt_sf=$(rm_sf_count ${ns1})
--	ip netns exec $ns1 ./pm_nl_ctl rem token $tk id $id
--	ip netns exec $ns1 ./pm_nl_ctl dsf lip "::ffff:$addr" \
--				lport $sp rip $da rport $dp token $tk
--	wait_rm_addr $ns1 "${cnt_addr}"
--	wait_rm_sf $ns1 "${cnt_sf}"
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+
-+	cnt=$(rm_addr_count ${1})
-+	ip netns exec $1 ./pm_nl_ctl rem token $tk id $2
-+	wait_rm_addr $1 "${cnt}"
- }
- 
-+# $1: ns ; $2: addr ; $3: id
- userspace_pm_add_sf()
- {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
- 	local tk da dp
- 
--	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
--	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	ip netns exec $ns2 ./pm_nl_ctl csf lip $addr lid $id \
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+	da=$(mptcp_lib_evts_get_info daddr4 "$evts")
-+	dp=$(mptcp_lib_evts_get_info dport "$evts")
-+
-+	ip netns exec $1 ./pm_nl_ctl csf lip $2 lid $3 \
- 				rip $da rport $dp token $tk
- 	sleep 1
- }
- 
--userspace_pm_rm_sf_addr_ns2()
-+# $1: ns ; $2: addr $3: event type
-+userspace_pm_rm_sf()
- {
--	local addr=$1
--	local id=$2
-+	local evts=$evts_ns1
-+	local t=${3:-1}
-+	local ip=4
- 	local tk da dp sp
--	local cnt_addr cnt_sf
-+	local cnt
- 
--	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
--	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
--	sp=$(grep "type:10" "$evts_ns2" |
--	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
--	cnt_addr=$(rm_addr_count ${ns2})
--	cnt_sf=$(rm_sf_count ${ns2})
--	ip netns exec $ns2 ./pm_nl_ctl rem token $tk id $id
--	ip netns exec $ns2 ./pm_nl_ctl dsf lip $addr lport $sp \
-+	[ "$1" == "$ns2" ] && evts=$evts_ns2
-+	if is_v6 $2; then ip=6; fi
-+	tk=$(mptcp_lib_evts_get_info token "$evts")
-+	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
-+	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
-+	sp=$(mptcp_lib_evts_get_info sport "$evts" $t)
-+
-+	cnt=$(rm_sf_count ${1})
-+	ip netns exec $1 ./pm_nl_ctl dsf lip $2 lport $sp \
- 				rip $da rport $dp token $tk
--	wait_rm_addr $ns2 "${cnt_addr}"
--	wait_rm_sf $ns2 "${cnt_sf}"
-+	wait_rm_sf $1 "${cnt}"
- }
- 
- userspace_tests()
-@@ -3439,13 +3435,14 @@ userspace_tests()
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
- 		wait_mpj $ns1
--		userspace_pm_add_addr 10.0.2.1 10
-+		userspace_pm_add_addr $ns1 10.0.2.1 10
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
- 		chk_mptcp_info add_addr_signal 1 add_addr_accepted 1
--		userspace_pm_rm_sf_addr_ns1 10.0.2.1 10
-+		userspace_pm_rm_addr $ns1 10
-+		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
- 		chk_rm_nr 1 1 invert
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-@@ -3462,11 +3459,12 @@ userspace_tests()
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
- 		wait_mpj $ns2
--		userspace_pm_add_sf 10.0.3.2 20
-+		userspace_pm_add_sf $ns2 10.0.3.2 20
- 		chk_join_nr 1 1 1
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
--		userspace_pm_rm_sf_addr_ns2 10.0.3.2 20
-+		userspace_pm_rm_addr $ns2 20
-+		userspace_pm_rm_sf $ns2 10.0.3.2 $SUB_ESTABLISHED
- 		chk_rm_nr 1 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
+ 	local local_addr ip
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		ip=ipv6
+ 	else
 -- 
 2.43.0
 
