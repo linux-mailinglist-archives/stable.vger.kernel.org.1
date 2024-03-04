@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DA3870E92
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82868870DB6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 785E91C21D2B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4F671C20AEE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC4D200CD;
-	Mon,  4 Mar 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3D346BA0;
+	Mon,  4 Mar 2024 21:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mevGAR6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYW3nLo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAD778B47;
-	Mon,  4 Mar 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFAA1EA99;
+	Mon,  4 Mar 2024 21:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588701; cv=none; b=qx/MSzWTu9cVrincFseDzygDzkbF5YAZP3WGFTaZUN0gyFGoErze/34Zire5afL/Y82R257AUuUMheZd3Odv4X7DBbZ5Vojmkd2doGnTGMPSUhCikF/QWfrXhYjPirFYm9DSUk1mFGufhvhkiU6MRLXTeNPK0FIci+PBQruilss=
+	t=1709588216; cv=none; b=a6fz0lsky4+4WRjVBYyh+er3PsspYlg7Ul8OkG6XYwro8xGJcGDmgpITYav+pmpOBRrXwvTlVuW/XyhVaJE0a7QQ4yNX3HGTeXD2RkfmB7s2BG1yGo1IIkxwt8eIakgqL4/WwApnju5GP1N5ehUE1hzMcFsSBAvUfI3qYMyzBBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588701; c=relaxed/simple;
-	bh=iCQZTT1KaGnJ7ihYRv1kTDfPfQvsXEr0caxNvwFhOxE=;
+	s=arc-20240116; t=1709588216; c=relaxed/simple;
+	bh=lYBBIvZQKmtxtF3OvQTOe5KAd+B+lD0RZg887JSAc+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAUWT7PhE+W9qK/ZwfbUrZu3LziMHAhgp2RM47fGVu0prDfLsESqKX7F0AWWiKnIXzwMKTtPJ/mbGs35Jr5WENmzdEhu7NpjCeXUF5VmrfyDJcCNezo5K5SuHwxEgsDCSs0PJJlKRBeaAGokKIxDzbFMJPCwHdS9mAoQvW0XYQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mevGAR6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EB2C433A6;
-	Mon,  4 Mar 2024 21:45:00 +0000 (UTC)
+	 MIME-Version; b=S6XnRe+1CdU8uTg4b9bt1WZp3i4SZETPHrcUb/ftIZn7rKHFo2cVbdg/kUEJ/gkvsmZOTk+A5yQ8FMpGoG3Wz084YSKWbeWoZpXjGV5UXawoF7I9sHTNRAJhIY+bbg3msYqmdz4XGDphuXIakIlFmReMikiEBEZV31oIFE36Big=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYW3nLo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3390EC433C7;
+	Mon,  4 Mar 2024 21:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588701;
-	bh=iCQZTT1KaGnJ7ihYRv1kTDfPfQvsXEr0caxNvwFhOxE=;
+	s=korg; t=1709588216;
+	bh=lYBBIvZQKmtxtF3OvQTOe5KAd+B+lD0RZg887JSAc+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mevGAR6V7a+ea9P4cTGFUcEOCA5C6mOPHDqcTPrQSAKcaTCQ9L7LdBQtmFtIaDL75
-	 NGko7JYr+wRRWzv9idx6mQSVXRw1+j4lFmD+/rFWzx93ixNVFXqyu43bbPxUTwtmEM
-	 fpJC8887EOWO9tL8HqY9S0+9Xsqrx68iHvGW8rPM=
+	b=HYW3nLo7Ms82ldpun9YrQSwwVfwab4hwoo++EwAFO0gyzZBKfdPevWCv92KFTzn7b
+	 SFGZhjugxLalkdjJ+AC8Up3cBzl34T258/jiXSmyW0dGBKtR2B1/7/CjBu55Bwuw4I
+	 cK2HljxF287utP/Hy6uBPxBQJfphZN8BUcpQAtP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Han Xu <han.xu@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/215] tls: fix peeking with sync+async decryption
+Subject: [PATCH 6.6 006/143] mtd: spinand: gigadevice: Fix the get ecc status issue
 Date: Mon,  4 Mar 2024 21:22:06 +0000
-Message-ID: <20240304211558.979963429@linuxfoundation.org>
+Message-ID: <20240304211550.109612067@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit 6caaf104423d809b49a67ee6500191d063b40dc6 ]
+[ Upstream commit 59950610c0c00c7a06d8a75d2ee5d73dba4274cf ]
 
-If we peek from 2 records with a currently empty rx_list, and the
-first record is decrypted synchronously but the second record is
-decrypted async, the following happens:
-  1. decrypt record 1 (sync)
-  2. copy from record 1 to the userspace's msg
-  3. queue the decrypted record to rx_list for future read(!PEEK)
-  4. decrypt record 2 (async)
-  5. queue record 2 to rx_list
-  6. call process_rx_list to copy data from the 2nd record
+Some GigaDevice ecc_get_status functions use on-stack buffer for
+spi_mem_op causes spi_mem_check_op failing, fix the issue by using
+spinand scratchbuf.
 
-We currently pass copied=0 as skip offset to process_rx_list, so we
-end up copying once again from the first record. We should skip over
-the data we've already copied.
-
-Seen with selftest tls.12_aes_gcm.recv_peek_large_buf_mult_recs
-
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/1b132d2b2b99296bfde54e8a67672d90d6d16e71.1709132643.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c40c7a990a46 ("mtd: spinand: Add support for GigaDevice GD5F1GQ4UExxG")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231108150701.593912-1-han.xu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/spi/gigadevice.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index c6ad435a44218..2bd27b77769cb 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2023,6 +2023,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 	struct strp_msg *rxm;
- 	struct tls_msg *tlm;
- 	ssize_t copied = 0;
-+	ssize_t peeked = 0;
- 	bool async = false;
- 	int target, err;
- 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
-@@ -2170,8 +2171,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 			if (err < 0)
- 				goto put_on_rx_list_err;
+diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
+index 987710e09441a..6023cba748bb8 100644
+--- a/drivers/mtd/nand/spi/gigadevice.c
++++ b/drivers/mtd/nand/spi/gigadevice.c
+@@ -186,7 +186,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ {
+ 	u8 status2;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
+-						      &status2);
++						      spinand->scratchbuf);
+ 	int ret;
  
--			if (is_peek)
-+			if (is_peek) {
-+				peeked += chunk;
- 				goto put_on_rx_list;
-+			}
+ 	switch (status & STATUS_ECC_MASK) {
+@@ -207,6 +207,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ 		 * report the maximum of 4 in this case
+ 		 */
+ 		/* bits sorted this way (3...0): ECCS1,ECCS0,ECCSE1,ECCSE0 */
++		status2 = *(spinand->scratchbuf);
+ 		return ((status & STATUS_ECC_MASK) >> 2) |
+ 			((status2 & STATUS_ECC_MASK) >> 4);
  
- 			if (partially_consumed) {
- 				rxm->offset += chunk;
-@@ -2210,8 +2213,8 @@ int tls_sw_recvmsg(struct sock *sk,
+@@ -228,7 +229,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
+ {
+ 	u8 status2;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
+-						      &status2);
++						      spinand->scratchbuf);
+ 	int ret;
  
- 		/* Drain records from the rx_list & copy if required */
- 		if (is_peek || is_kvec)
--			err = process_rx_list(ctx, msg, &control, copied,
--					      decrypted, is_peek, NULL);
-+			err = process_rx_list(ctx, msg, &control, copied + peeked,
-+					      decrypted - peeked, is_peek, NULL);
- 		else
- 			err = process_rx_list(ctx, msg, &control, 0,
- 					      async_copy_bytes, is_peek, NULL);
+ 	switch (status & STATUS_ECC_MASK) {
+@@ -248,6 +249,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
+ 		 * 1 ... 4 bits are flipped (and corrected)
+ 		 */
+ 		/* bits sorted this way (1...0): ECCSE1, ECCSE0 */
++		status2 = *(spinand->scratchbuf);
+ 		return ((status2 & STATUS_ECC_MASK) >> 4) + 1;
+ 
+ 	case STATUS_ECC_UNCOR_ERROR:
 -- 
 2.43.0
 
