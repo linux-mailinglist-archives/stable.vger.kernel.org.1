@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC8C870E87
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0CB870CC1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0A30B21F5E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9C31C25010
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D447868F;
-	Mon,  4 Mar 2024 21:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C277B3D8;
+	Mon,  4 Mar 2024 21:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0I4q5jQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia9XwQOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E0E46BA0;
-	Mon,  4 Mar 2024 21:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3167AE6B;
+	Mon,  4 Mar 2024 21:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588685; cv=none; b=qX6vaxDE6+wbY0BradOkliEwPESvlDNU0TDQaFu6oWvjD+BPB9IUEU3BNxkQwGOEH5qhjAaXpTaWldYmRl6W0T2jx4jMju9fFsGhEjqCrClRNHznMlq+OSF+fuV7/aV5EDe/xjup2KBfyC9VQj1a4x2uBADFfdzWgPyrQ9vqwiI=
+	t=1709587701; cv=none; b=A2JOuh3VeA/rNsSUYLIZQsLC4/wkoBtiUPQeGmNwcheJyGp9ZRorEmJg6TxkL9hYSRmvq8m7TRJG0oZH6ceuUPrgQPslZsGJDSkC8m7YL5RVFujsv5sxX/hsGiDe0qEBGttl2jQ8GxZ6SZv+d8jaCfL2H0vQvq3YIUbfujHdJIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588685; c=relaxed/simple;
-	bh=ZJ5gQE3Q6PoH6hfY+iEMxDcm2/opYSdlnzabXmuHDtw=;
+	s=arc-20240116; t=1709587701; c=relaxed/simple;
+	bh=s4/lB6WNphQEDawswprBvm7JCYUFVIv981ZKV3DjXlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkB3INew7dPUidjyfg49QJfEyZ6g3XNQFFCMhj9OwAhTOMS+TFD2CkE3ZlYHHOEkjN9b8wvJJdjXvxT3FIoK9vMfTfz4eSH2fbQTSxGzc75i06waCiuRp50mwuPITN3KllTxpoCUll7BHJWvcwNI1bHvB+SxNYstKIoW/LrpAbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0I4q5jQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B22C433F1;
-	Mon,  4 Mar 2024 21:44:44 +0000 (UTC)
+	 MIME-Version; b=AtA80OWYK812uauEpyEKJOg+/ykBJFU46lhPPtt8Hw+iZvUviUWORp8JtXolSSUmf10/bkEUDV2aluBcNjk2R0nkg23ANN/+e/ZRzThHUkN6fVqObYHhTakP5xjwhI58BBthxjOECCzrwDLL+pwxlXopiL8nFkxwLJDqA2Ox0rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia9XwQOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955AAC433F1;
+	Mon,  4 Mar 2024 21:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588685;
-	bh=ZJ5gQE3Q6PoH6hfY+iEMxDcm2/opYSdlnzabXmuHDtw=;
+	s=korg; t=1709587700;
+	bh=s4/lB6WNphQEDawswprBvm7JCYUFVIv981ZKV3DjXlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0I4q5jQ67kqmnp3iqQhqB4J5Pud7Zd+vKgymcZxAdR431ex9AypQrRvBxVMz2mU9
-	 yGZb95482+UqgeJh4vPPD3MtTDsATqZTICi0eFxAzxh9dkRvieX9Ky/0Nhndb9YxFA
-	 IqHfxnOnJHCG9B+9ipS4OcaogLzK+mJj7oIHgUqY=
+	b=Ia9XwQOIgX4F8nub5TXTdKBEVIX78wVg7NuISljgsP1rZylCUaQkYFGKxI9XiAcAw
+	 bj71wTrXeOn16POoNzZWSn2vEd3wEJrAtA2raNagzFnBHqs+wuaCnBDcu7QN6jcTam
+	 4x5Ggmp3E2VXjOMidLebZaZgwyFrkRq70CSmMx8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/215] netfilter: bridge: confirm multicast packets before passing them up the stack
+Subject: [PATCH 6.7 056/162] ASoC: cs35l56: Fix for initializing ASP1 mixer registers
 Date: Mon,  4 Mar 2024 21:22:01 +0000
-Message-ID: <20240304211558.821310303@linuxfoundation.org>
+Message-ID: <20240304211553.645375021@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,283 +62,335 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 62e7151ae3eb465e0ab52a20c941ff33bb6332e9 ]
+[ Upstream commit 07f7d6e7a124d3e4de36771e2a4926d0e31c2258 ]
 
-conntrack nf_confirm logic cannot handle cloned skbs referencing
-the same nf_conn entry, which will happen for multicast (broadcast)
-frames on bridges.
+Defer initializing the state of the ASP1 mixer registers until
+the firmware has been downloaded and rebooted.
 
- Example:
-    macvlan0
-       |
-      br0
-     /  \
-  ethX    ethY
+On a SoundWire system the ASP is free for use as a chip-to-chip
+interconnect. This can be either for the firmware on multiple
+CS35L56 to share reference audio; or as a bridge to another
+device. If it is a firmware interconnect it is owned by the
+firmware and the Linux driver should avoid writing the registers.
+However, if it is a bridge then Linux may take over and handle
+it as a normal codec-to-codec link. Even if the ASP is used
+as a firmware-firmware interconnect it is useful to have
+ALSA controls for the ASP mixer. They are at least useful for
+debugging.
 
- ethX (or Y) receives a L2 multicast or broadcast packet containing
- an IP packet, flow is not yet in conntrack table.
+CS35L56 is designed for SDCA and a generic SDCA driver would
+know nothing about these chip-specific registers. So if the
+ASP is being used on a SoundWire system the firmware sets up the
+ASP mixer registers. This means that we can't assume the default
+state of these registers. But we don't know the initial state
+that the firmware set them to until after the firmware has been
+downloaded and booted, which can take several seconds when
+downloading multiple amps.
 
- 1. skb passes through bridge and fake-ip (br_netfilter)Prerouting.
-    -> skb->_nfct now references a unconfirmed entry
- 2. skb is broad/mcast packet. bridge now passes clones out on each bridge
-    interface.
- 3. skb gets passed up the stack.
- 4. In macvlan case, macvlan driver retains clone(s) of the mcast skb
-    and schedules a work queue to send them out on the lower devices.
+DAPM normally reads the initial state of mux registers during
+probe() but this would mean blocking probe() for several seconds
+until the firmware has initialized them. To avoid this, the
+mixer muxes are set SND_SOC_NOPM to prevent DAPM trying to read
+the register state. Custom get/set callbacks are implemented for
+ALSA control access, and these can safely block waiting for the
+firmware download.
 
-    The clone skb->_nfct is not a copy, it is the same entry as the
-    original skb.  The macvlan rx handler then returns RX_HANDLER_PASS.
- 5. Normal conntrack hooks (in NF_INET_LOCAL_IN) confirm the orig skb.
+After the firmware download has completed, the state of the
+mux registers is known so a work job is queued to call
+snd_soc_dapm_mux_update_power() on each of the mux widgets.
 
-The Macvlan broadcast worker and normal confirm path will race.
+Backport note:
+This won't apply cleanly to kernels older than v6.6.
 
-This race will not happen if step 2 already confirmed a clone. In that
-case later steps perform skb_clone() with skb->_nfct already confirmed (in
-hash table).  This works fine.
-
-But such confirmation won't happen when eb/ip/nftables rules dropped the
-packets before they reached the nf_confirm step in postrouting.
-
-Pablo points out that nf_conntrack_bridge doesn't allow use of stateful
-nat, so we can safely discard the nf_conn entry and let inet call
-conntrack again.
-
-This doesn't work for bridge netfilter: skb could have a nat
-transformation. Also bridge nf prevents re-invocation of inet prerouting
-via 'sabotage_in' hook.
-
-Work around this problem by explicit confirmation of the entry at LOCAL_IN
-time, before upper layer has a chance to clone the unconfirmed entry.
-
-The downside is that this disables NAT and conntrack helpers.
-
-Alternative fix would be to add locking to all code parts that deal with
-unconfirmed packets, but even if that could be done in a sane way this
-opens up other problems, for example:
-
--m physdev --physdev-out eth0 -j SNAT --snat-to 1.2.3.4
--m physdev --physdev-out eth1 -j SNAT --snat-to 1.2.3.5
-
-For multicast case, only one of such conflicting mappings will be
-created, conntrack only handles 1:1 NAT mappings.
-
-Users should set create a setup that explicitly marks such traffic
-NOTRACK (conntrack bypass) to avoid this, but we cannot auto-bypass
-them, ruleset might have accept rules for untracked traffic already,
-so user-visible behaviour would change.
-
-Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217777
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://msgid.link/r/20240129162737.497-11-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: eba2eb2495f4 ("ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter.h                  |  1 +
- net/bridge/br_netfilter_hooks.c            | 96 ++++++++++++++++++++++
- net/bridge/netfilter/nf_conntrack_bridge.c | 30 +++++++
- net/netfilter/nf_conntrack_core.c          |  1 +
- 4 files changed, 128 insertions(+)
+ sound/soc/codecs/cs35l56-shared.c |   7 +-
+ sound/soc/codecs/cs35l56.c        | 172 +++++++++++++++++++++++++++---
+ sound/soc/codecs/cs35l56.h        |   1 +
+ 3 files changed, 163 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/netfilter.h b/include/linux/netfilter.h
-index c8e03bcaecaaa..e5f4b6f8d1c09 100644
---- a/include/linux/netfilter.h
-+++ b/include/linux/netfilter.h
-@@ -462,6 +462,7 @@ struct nf_ct_hook {
- 			      const struct sk_buff *);
- 	void (*attach)(struct sk_buff *nskb, const struct sk_buff *skb);
- 	void (*set_closing)(struct nf_conntrack *nfct);
-+	int (*confirm)(struct sk_buff *skb);
- };
- extern const struct nf_ct_hook __rcu *nf_ct_hook;
- 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 202ad43e35d6b..bff48d5763635 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -43,6 +43,10 @@
- #include <linux/sysctl.h>
- #endif
- 
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+#include <net/netfilter/nf_conntrack_core.h>
-+#endif
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index fc99bc92aeace..2eb397724b4ba 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -34,10 +34,9 @@ static const struct reg_default cs35l56_reg_defaults[] = {
+ 	{ CS35L56_ASP1_FRAME_CONTROL5,		0x00020100 },
+ 	{ CS35L56_ASP1_DATA_CONTROL1,		0x00000018 },
+ 	{ CS35L56_ASP1_DATA_CONTROL5,		0x00000018 },
+-	{ CS35L56_ASP1TX1_INPUT,		0x00000018 },
+-	{ CS35L56_ASP1TX2_INPUT,		0x00000019 },
+-	{ CS35L56_ASP1TX3_INPUT,		0x00000020 },
+-	{ CS35L56_ASP1TX4_INPUT,		0x00000028 },
 +
- static unsigned int brnf_net_id __read_mostly;
- 
- struct brnf_net {
-@@ -553,6 +557,90 @@ static unsigned int br_nf_pre_routing(void *priv,
- 	return NF_STOLEN;
++	/* no defaults for ASP1TX mixer */
++
+ 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
+ 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
+ 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index ea5d2b2eb82a0..30f4b9e9cc94c 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -59,6 +59,135 @@ static int cs35l56_dspwait_put_volsw(struct snd_kcontrol *kcontrol,
+ 	return snd_soc_put_volsw(kcontrol, ucontrol);
  }
  
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+/* conntracks' nf_confirm logic cannot handle cloned skbs referencing
-+ * the same nf_conn entry, which will happen for multicast (broadcast)
-+ * Frames on bridges.
-+ *
-+ * Example:
-+ *      macvlan0
-+ *      br0
-+ *  ethX  ethY
-+ *
-+ * ethX (or Y) receives multicast or broadcast packet containing
-+ * an IP packet, not yet in conntrack table.
-+ *
-+ * 1. skb passes through bridge and fake-ip (br_netfilter)Prerouting.
-+ *    -> skb->_nfct now references a unconfirmed entry
-+ * 2. skb is broad/mcast packet. bridge now passes clones out on each bridge
-+ *    interface.
-+ * 3. skb gets passed up the stack.
-+ * 4. In macvlan case, macvlan driver retains clone(s) of the mcast skb
-+ *    and schedules a work queue to send them out on the lower devices.
-+ *
-+ *    The clone skb->_nfct is not a copy, it is the same entry as the
-+ *    original skb.  The macvlan rx handler then returns RX_HANDLER_PASS.
-+ * 5. Normal conntrack hooks (in NF_INET_LOCAL_IN) confirm the orig skb.
-+ *
-+ * The Macvlan broadcast worker and normal confirm path will race.
-+ *
-+ * This race will not happen if step 2 already confirmed a clone. In that
-+ * case later steps perform skb_clone() with skb->_nfct already confirmed (in
-+ * hash table).  This works fine.
-+ *
-+ * But such confirmation won't happen when eb/ip/nftables rules dropped the
-+ * packets before they reached the nf_confirm step in postrouting.
-+ *
-+ * Work around this problem by explicit confirmation of the entry at
-+ * LOCAL_IN time, before upper layer has a chance to clone the unconfirmed
-+ * entry.
-+ *
-+ */
-+static unsigned int br_nf_local_in(void *priv,
-+				   struct sk_buff *skb,
-+				   const struct nf_hook_state *state)
++static const unsigned short cs35l56_asp1_mixer_regs[] = {
++	CS35L56_ASP1TX1_INPUT, CS35L56_ASP1TX2_INPUT,
++	CS35L56_ASP1TX3_INPUT, CS35L56_ASP1TX4_INPUT,
++};
++
++static const char * const cs35l56_asp1_mux_control_names[] = {
++	"ASP1 TX1 Source", "ASP1 TX2 Source", "ASP1 TX3 Source", "ASP1 TX4 Source"
++};
++
++static int cs35l56_dspwait_asp1tx_get(struct snd_kcontrol *kcontrol,
++				      struct snd_ctl_elem_value *ucontrol)
 +{
-+	struct nf_conntrack *nfct = skb_nfct(skb);
-+	const struct nf_ct_hook *ct_hook;
-+	struct nf_conn *ct;
++	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
++	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
++	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
++	int index = e->shift_l;
++	unsigned int addr, val;
 +	int ret;
 +
-+	if (!nfct || skb->pkt_type == PACKET_HOST)
-+		return NF_ACCEPT;
++	/* Wait for mux to be initialized */
++	cs35l56_wait_dsp_ready(cs35l56);
++	flush_work(&cs35l56->mux_init_work);
 +
-+	ct = container_of(nfct, struct nf_conn, ct_general);
-+	if (likely(nf_ct_is_confirmed(ct)))
-+		return NF_ACCEPT;
++	addr = cs35l56_asp1_mixer_regs[index];
++	ret = regmap_read(cs35l56->base.regmap, addr, &val);
++	if (ret)
++		return ret;
 +
-+	WARN_ON_ONCE(skb_shared(skb));
-+	WARN_ON_ONCE(refcount_read(&nfct->use) != 1);
++	val &= CS35L56_ASP_TXn_SRC_MASK;
++	ucontrol->value.enumerated.item[0] = snd_soc_enum_val_to_item(e, val);
 +
-+	/* We can't call nf_confirm here, it would create a dependency
-+	 * on nf_conntrack module.
-+	 */
-+	ct_hook = rcu_dereference(nf_ct_hook);
-+	if (!ct_hook) {
-+		skb->_nfct = 0ul;
-+		nf_conntrack_put(nfct);
-+		return NF_ACCEPT;
-+	}
-+
-+	nf_bridge_pull_encap_header(skb);
-+	ret = ct_hook->confirm(skb);
-+	switch (ret & NF_VERDICT_MASK) {
-+	case NF_STOLEN:
-+		return NF_STOLEN;
-+	default:
-+		nf_bridge_push_encap_header(skb);
-+		break;
-+	}
-+
-+	ct = container_of(nfct, struct nf_conn, ct_general);
-+	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
-+
-+	return ret;
++	return 0;
 +}
-+#endif
- 
- /* PF_BRIDGE/FORWARD *************************************************/
- static int br_nf_forward_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
-@@ -962,6 +1050,14 @@ static const struct nf_hook_ops br_nf_ops[] = {
- 		.hooknum = NF_BR_PRE_ROUTING,
- 		.priority = NF_BR_PRI_BRNF,
- 	},
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	{
-+		.hook = br_nf_local_in,
-+		.pf = NFPROTO_BRIDGE,
-+		.hooknum = NF_BR_LOCAL_IN,
-+		.priority = NF_BR_PRI_LAST,
-+	},
-+#endif
- 	{
- 		.hook = br_nf_forward_ip,
- 		.pf = NFPROTO_BRIDGE,
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 06d94b2c6b5de..c7c27ada67044 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -291,6 +291,30 @@ static unsigned int nf_ct_bridge_pre(void *priv, struct sk_buff *skb,
- 	return nf_conntrack_in(skb, &bridge_state);
- }
- 
-+static unsigned int nf_ct_bridge_in(void *priv, struct sk_buff *skb,
-+				    const struct nf_hook_state *state)
++
++static int cs35l56_dspwait_asp1tx_put(struct snd_kcontrol *kcontrol,
++				      struct snd_ctl_elem_value *ucontrol)
 +{
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conn *ct;
++	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
++	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_dapm(kcontrol);
++	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
++	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
++	int item = ucontrol->value.enumerated.item[0];
++	int index = e->shift_l;
++	unsigned int addr, val;
++	bool changed;
++	int ret;
 +
-+	if (skb->pkt_type == PACKET_HOST)
-+		return NF_ACCEPT;
++	/* Wait for mux to be initialized */
++	cs35l56_wait_dsp_ready(cs35l56);
++	flush_work(&cs35l56->mux_init_work);
 +
-+	/* nf_conntrack_confirm() cannot handle concurrent clones,
-+	 * this happens for broad/multicast frames with e.g. macvlan on top
-+	 * of the bridge device.
-+	 */
-+	ct = nf_ct_get(skb, &ctinfo);
-+	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct))
-+		return NF_ACCEPT;
++	addr = cs35l56_asp1_mixer_regs[index];
++	val = snd_soc_enum_item_to_val(e, item);
 +
-+	/* let inet prerouting call conntrack again */
-+	skb->_nfct = 0;
-+	nf_ct_put(ct);
++	ret = regmap_update_bits_check(cs35l56->base.regmap, addr,
++				       CS35L56_ASP_TXn_SRC_MASK, val, &changed);
++	if (!ret)
++		return ret;
 +
-+	return NF_ACCEPT;
++	if (changed)
++		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
++
++	return changed;
 +}
 +
- static void nf_ct_bridge_frag_save(struct sk_buff *skb,
- 				   struct nf_bridge_frag_data *data)
- {
-@@ -415,6 +439,12 @@ static struct nf_hook_ops nf_ct_bridge_hook_ops[] __read_mostly = {
- 		.hooknum	= NF_BR_PRE_ROUTING,
- 		.priority	= NF_IP_PRI_CONNTRACK,
- 	},
-+	{
-+		.hook		= nf_ct_bridge_in,
-+		.pf		= NFPROTO_BRIDGE,
-+		.hooknum	= NF_BR_LOCAL_IN,
-+		.priority	= NF_IP_PRI_CONNTRACK_CONFIRM,
-+	},
- 	{
- 		.hook		= nf_ct_bridge_post,
- 		.pf		= NFPROTO_BRIDGE,
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index 6d30c64a5fe86..024f93fc8c0bb 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2789,6 +2789,7 @@ static const struct nf_ct_hook nf_conntrack_hook = {
- 	.get_tuple_skb  = nf_conntrack_get_tuple_skb,
- 	.attach		= nf_conntrack_attach,
- 	.set_closing	= nf_conntrack_set_closing,
-+	.confirm	= __nf_conntrack_confirm,
++static void cs35l56_mark_asp1_mixer_widgets_dirty(struct cs35l56_private *cs35l56)
++{
++	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(cs35l56->component);
++	const char *prefix = cs35l56->component->name_prefix;
++	char full_name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
++	const char *name;
++	struct snd_kcontrol *kcontrol;
++	struct soc_enum *e;
++	unsigned int val[4];
++	int i, item, ret;
++
++	/*
++	 * Resume so we can read the registers from silicon if the regmap
++	 * cache has not yet been populated.
++	 */
++	ret = pm_runtime_resume_and_get(cs35l56->base.dev);
++	if (ret < 0)
++		return;
++
++	ret = regmap_bulk_read(cs35l56->base.regmap, CS35L56_ASP1TX1_INPUT,
++			       val, ARRAY_SIZE(val));
++
++	pm_runtime_mark_last_busy(cs35l56->base.dev);
++	pm_runtime_put_autosuspend(cs35l56->base.dev);
++
++	if (ret) {
++		dev_err(cs35l56->base.dev, "Failed to read ASP1 mixer regs: %d\n", ret);
++		return;
++	}
++
++	snd_soc_card_mutex_lock(dapm->card);
++	WARN_ON(!dapm->card->instantiated);
++
++	for (i = 0; i < ARRAY_SIZE(cs35l56_asp1_mux_control_names); ++i) {
++		name = cs35l56_asp1_mux_control_names[i];
++
++		if (prefix) {
++			snprintf(full_name, sizeof(full_name), "%s %s", prefix, name);
++			name = full_name;
++		}
++
++		kcontrol = snd_soc_card_get_kcontrol(dapm->card, name);
++		if (!kcontrol) {
++			dev_warn(cs35l56->base.dev, "Could not find control %s\n", name);
++			continue;
++		}
++
++		e = (struct soc_enum *)kcontrol->private_value;
++		item = snd_soc_enum_val_to_item(e, val[i] & CS35L56_ASP_TXn_SRC_MASK);
++		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
++	}
++
++	snd_soc_card_mutex_unlock(dapm->card);
++}
++
++static void cs35l56_mux_init_work(struct work_struct *work)
++{
++	struct cs35l56_private *cs35l56 = container_of(work,
++						       struct cs35l56_private,
++						       mux_init_work);
++
++	cs35l56_mark_asp1_mixer_widgets_dirty(cs35l56);
++}
++
+ static DECLARE_TLV_DB_SCALE(vol_tlv, -10000, 25, 0);
+ 
+ static const struct snd_kcontrol_new cs35l56_controls[] = {
+@@ -77,40 +206,44 @@ static const struct snd_kcontrol_new cs35l56_controls[] = {
  };
  
- void nf_conntrack_init_end(void)
+ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx1_enum,
+-				  CS35L56_ASP1TX1_INPUT,
+-				  0, CS35L56_ASP_TXn_SRC_MASK,
++				  SND_SOC_NOPM,
++				  0, 0,
+ 				  cs35l56_tx_input_texts,
+ 				  cs35l56_tx_input_values);
+ 
+ static const struct snd_kcontrol_new asp1_tx1_mux =
+-	SOC_DAPM_ENUM("ASP1TX1 SRC", cs35l56_asp1tx1_enum);
++	SOC_DAPM_ENUM_EXT("ASP1TX1 SRC", cs35l56_asp1tx1_enum,
++			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 
+ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx2_enum,
+-				  CS35L56_ASP1TX2_INPUT,
+-				  0, CS35L56_ASP_TXn_SRC_MASK,
++				  SND_SOC_NOPM,
++				  1, 0,
+ 				  cs35l56_tx_input_texts,
+ 				  cs35l56_tx_input_values);
+ 
+ static const struct snd_kcontrol_new asp1_tx2_mux =
+-	SOC_DAPM_ENUM("ASP1TX2 SRC", cs35l56_asp1tx2_enum);
++	SOC_DAPM_ENUM_EXT("ASP1TX2 SRC", cs35l56_asp1tx2_enum,
++			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 
+ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx3_enum,
+-				  CS35L56_ASP1TX3_INPUT,
+-				  0, CS35L56_ASP_TXn_SRC_MASK,
++				  SND_SOC_NOPM,
++				  2, 0,
+ 				  cs35l56_tx_input_texts,
+ 				  cs35l56_tx_input_values);
+ 
+ static const struct snd_kcontrol_new asp1_tx3_mux =
+-	SOC_DAPM_ENUM("ASP1TX3 SRC", cs35l56_asp1tx3_enum);
++	SOC_DAPM_ENUM_EXT("ASP1TX3 SRC", cs35l56_asp1tx3_enum,
++			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 
+ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx4_enum,
+-				  CS35L56_ASP1TX4_INPUT,
+-				  0, CS35L56_ASP_TXn_SRC_MASK,
++				  SND_SOC_NOPM,
++				  3, 0,
+ 				  cs35l56_tx_input_texts,
+ 				  cs35l56_tx_input_values);
+ 
+ static const struct snd_kcontrol_new asp1_tx4_mux =
+-	SOC_DAPM_ENUM("ASP1TX4 SRC", cs35l56_asp1tx4_enum);
++	SOC_DAPM_ENUM_EXT("ASP1TX4 SRC", cs35l56_asp1tx4_enum,
++			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 
+ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_sdw1tx1_enum,
+ 				CS35L56_SWIRE_DP3_CH1_INPUT,
+@@ -764,6 +897,15 @@ static void cs35l56_dsp_work(struct work_struct *work)
+ 	else
+ 		cs35l56_patch(cs35l56);
+ 
++
++	/*
++	 * Set starting value of ASP1 mux widgets. Updating a mux takes
++	 * the DAPM mutex. Post this to a separate job so that DAPM
++	 * power-up can wait for dsp_work to complete without deadlocking
++	 * on the DAPM mutex.
++	 */
++	queue_work(cs35l56->dsp_wq, &cs35l56->mux_init_work);
++
+ 	pm_runtime_mark_last_busy(cs35l56->base.dev);
+ 	pm_runtime_put_autosuspend(cs35l56->base.dev);
+ }
+@@ -809,6 +951,7 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
+ 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
+ 
+ 	cancel_work_sync(&cs35l56->dsp_work);
++	cancel_work_sync(&cs35l56->mux_init_work);
+ 
+ 	if (cs35l56->dsp.cs_dsp.booted)
+ 		wm_adsp_power_down(&cs35l56->dsp);
+@@ -876,8 +1019,10 @@ int cs35l56_system_suspend(struct device *dev)
+ 
+ 	dev_dbg(dev, "system_suspend\n");
+ 
+-	if (cs35l56->component)
++	if (cs35l56->component) {
+ 		flush_work(&cs35l56->dsp_work);
++		cancel_work_sync(&cs35l56->mux_init_work);
++	}
+ 
+ 	/*
+ 	 * The interrupt line is normally shared, but after we start suspending
+@@ -1028,6 +1173,7 @@ static int cs35l56_dsp_init(struct cs35l56_private *cs35l56)
+ 		return -ENOMEM;
+ 
+ 	INIT_WORK(&cs35l56->dsp_work, cs35l56_dsp_work);
++	INIT_WORK(&cs35l56->mux_init_work, cs35l56_mux_init_work);
+ 
+ 	dsp = &cs35l56->dsp;
+ 	cs35l56_init_cs_dsp(&cs35l56->base, &dsp->cs_dsp);
+diff --git a/sound/soc/codecs/cs35l56.h b/sound/soc/codecs/cs35l56.h
+index 8159c3e217d93..dc2fe4c91e67b 100644
+--- a/sound/soc/codecs/cs35l56.h
++++ b/sound/soc/codecs/cs35l56.h
+@@ -34,6 +34,7 @@ struct cs35l56_private {
+ 	struct wm_adsp dsp; /* must be first member */
+ 	struct cs35l56_base base;
+ 	struct work_struct dsp_work;
++	struct work_struct mux_init_work;
+ 	struct workqueue_struct *dsp_wq;
+ 	struct snd_soc_component *component;
+ 	struct regulator_bulk_data supplies[CS35L56_NUM_BULK_SUPPLIES];
 -- 
 2.43.0
 
