@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91697870D3A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7121870DFB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 434BB1F21890
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77AC2B27FC9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F3E7CF29;
-	Mon,  4 Mar 2024 21:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A11200D4;
+	Mon,  4 Mar 2024 21:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDrja90Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrpcyXfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD197A124;
-	Mon,  4 Mar 2024 21:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5122A8F58;
+	Mon,  4 Mar 2024 21:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587917; cv=none; b=Fqryui8fWCYxIo/gGkWhLwyDAp+zqVhN1kbHzpPV++OQCRaGxGm2hG3rs/Xc6bn3l5gAyHS1nFwYlv93GbygAy3oSY8OrpHDClWgijLpWaOIAVcHKWGMInkTn1dmSDUyrFOZtOgyaECVXjrx1cZz1OmXuzyrgVNZYCCUrRUEM7A=
+	t=1709588379; cv=none; b=czI4QLYAqce2RDva0CDwRyoTh24+j5WjJ3zT2nWmsEi4CvETeq1THb1hzE3a7PtFy+Y0S3n5RTkMtsmEu71tM3eYuInimA9JUUwpnWUZ2l+pTcBt4RXvKwPmRFbXM4jMkinMsZpeBHPSCaBoaXWsrkhDmeUoMDDYYWxNmsn7tPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587917; c=relaxed/simple;
-	bh=iiBlqWK5akyJRFnJFDg7SIRqn9ThNDhEAKlWrSosorw=;
+	s=arc-20240116; t=1709588379; c=relaxed/simple;
+	bh=80+EAIP1ApPNRqKOIoD27biYf79DwkmzP1zJ+Ngl/IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LB/KeBTtZ75h2pE95kk/pqZeSRZ0R5qtVymNd1cKJk/x1OI6jJ+u7VMzkh+q5LUl97eDr1eKmcUpG0bguGRCnDQn2/nGxCynciMdrua6Vbc6NC1mGzGSsJgzNAcEQQLGCMOJZ2OG9mOItlNFcx3OdslNQ95tlCbbgvcZgjFgcQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDrja90Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C015C433F1;
-	Mon,  4 Mar 2024 21:31:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mRetT7LxjRosjO56jJMPCmc9cG0OWL0IVBN3PUzFBsY/Q6u1pMwRyB1XlUpF2E4HmCgK7nC/QQNk5B++G90qAhXpV9a8gu7qB+AcCbRsPwMTxfFb/KeTQD1R5FVb8LdR26arz1nnlsZ+VDyZQoe8nYS+TcEawze7Kn3+9Ez4uwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrpcyXfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE82C433F1;
+	Mon,  4 Mar 2024 21:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587917;
-	bh=iiBlqWK5akyJRFnJFDg7SIRqn9ThNDhEAKlWrSosorw=;
+	s=korg; t=1709588379;
+	bh=80+EAIP1ApPNRqKOIoD27biYf79DwkmzP1zJ+Ngl/IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDrja90ZAujE8IXpTPGKjVMS6sjjgoHrB5mkd+igzqxj7+XGojxHIoCMCK1xhxDH1
-	 f5S/OpaR/n27JsiQjzi/2raqBHPN88alhKLMYKdetM2l5/y5l/d4bjI8Y79IL7eqKR
-	 70jh9bTv5XLHbZXTYAtP2lpVDN+E/EJpWagUcu2k=
+	b=TrpcyXfvQ97u31Cgy52CLa6RrUal6Puw9bwEnC/TkfmmjMRcFPkSkyGzyZglJJFWF
+	 7i6Mf+pOQTYwlz/IQ5yqKctf5Jj3KfhDQHsE/7zvKziRIorF2dvK13A8JBTGVriTcb
+	 ScGxgwsThmxWfDihgmiKLF7IdWvgjpCOP+LYxzzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 139/162] dmaengine: dw-edma: HDMA: Add sync read before starting the DMA transfer in remote setup
-Date: Mon,  4 Mar 2024 21:23:24 +0000
-Message-ID: <20240304211556.172432422@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.6 085/143] drm/buddy: fix range bias
+Date: Mon,  4 Mar 2024 21:23:25 +0000
+Message-ID: <20240304211552.642308346@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 712a92a48158e02155b4b6b21e03a817f78c9b7e ]
+commit f41900e4a6ef019d64a70394b0e0c3bd048d4ec8 upstream.
 
-The Linked list element and pointer are not stored in the same memory as
-the HDMA controller register. If the doorbell register is toggled before
-the full write of the linked list a race condition error will occur.
-In remote setup we can only use a readl to the memory to assure the full
-write has occurred.
+There is a corner case here where start/end is after/before the block
+range we are currently checking. If so we need to be sure that splitting
+the block will eventually give use the block size we need. To do that we
+should adjust the block range to account for the start/end, and only
+continue with the split if the size/alignment will fit the requested
+size. Not doing so can result in leaving split blocks unmerged when it
+eventually fails.
 
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-5-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: afea229fe102 ("drm: improve drm_buddy_alloc function")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: <stable@vger.kernel.org> # v5.18+
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240219121851.25774-4-matthew.auld@intel.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/drm_buddy.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index 04b0bcb6ded97..10e8f0715114f 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -222,6 +222,20 @@ static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- 	dw_hdma_v0_write_ll_link(chunk, i, control, chunk->ll_region.paddr);
- }
- 
-+static void dw_hdma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
-+{
-+	/*
-+	 * In case of remote HDMA engine setup, the DW PCIe RP/EP internal
-+	 * configuration registers and application memory are normally accessed
-+	 * over different buses. Ensure LL-data reaches the memory before the
-+	 * doorbell register is toggled by issuing the dummy-read from the remote
-+	 * LL memory in a hope that the MRd TLP will return only after the
-+	 * last MWr TLP is completed
-+	 */
-+	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
-+		readl(chunk->ll_region.vaddr.io);
-+}
-+
- static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -332,6 +332,7 @@ alloc_range_bias(struct drm_buddy *mm,
+ 		 u64 start, u64 end,
+ 		 unsigned int order)
  {
- 	struct dw_edma_chan *chan = chunk->chan;
-@@ -252,6 +266,9 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 	/* Set consumer cycle */
- 	SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
- 		  HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
++	u64 req_size = mm->chunk_size << order;
+ 	struct drm_buddy_block *block;
+ 	struct drm_buddy_block *buddy;
+ 	LIST_HEAD(dfs);
+@@ -367,6 +368,15 @@ alloc_range_bias(struct drm_buddy *mm,
+ 		if (drm_buddy_block_is_allocated(block))
+ 			continue;
+ 
++		if (block_start < start || block_end > end) {
++			u64 adjusted_start = max(block_start, start);
++			u64 adjusted_end = min(block_end, end);
 +
-+	dw_hdma_v0_sync_ll_data(chunk);
++			if (round_down(adjusted_end + 1, req_size) <=
++			    round_up(adjusted_start, req_size))
++				continue;
++		}
 +
- 	/* Doorbell */
- 	SET_CH_32(dw, chan->dir, chan->id, doorbell, HDMA_V0_DOORBELL_START);
- }
--- 
-2.43.0
-
+ 		if (contains(start, end, block_start, block_end) &&
+ 		    order == drm_buddy_block_order(block)) {
+ 			/*
 
 
 
