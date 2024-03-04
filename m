@@ -1,160 +1,254 @@
-Return-Path: <stable+bounces-25954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6963870780
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:49:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD338707DB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:02:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24C71B22A2C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 16:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 606321C221DE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6F94D9FF;
-	Mon,  4 Mar 2024 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6415FEE4;
+	Mon,  4 Mar 2024 17:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rcy2SEZ6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dFOREVO3"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3500120323;
-	Mon,  4 Mar 2024 16:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3F35D73A
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 17:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709570979; cv=none; b=MIpPqPdKk5XhQmJMf2IE/7NC03n0E26LC7Pw0g8DjDwqRi1GUGjcZlfMZPSv70PJzNI5Tcw6IXOaTJaSSRKx3wlDzhaWXXt7wjwwm8LXJtoy6twOViSOhlp4NbGHa6Aan+VlZdcwiXQXpJWK06Em8M1RVaOoZ0vjgIWOPOrTkeM=
+	t=1709571754; cv=none; b=E81aQ2Kb79G1FMnaKIurIJjT1HcvQlQ5JjjYhBFu+CDYRN3excOX26o/CIY2tG+TGUt1YzG9ijRybrZwP/nf7fS74W2Rp4grfQCLq0RdGYgYTFOn+Uc4CHa4szRIsX8RdbI45xCVRa5uadMJ/duhG1aFUnA9eTcPye7w1OlzBzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709570979; c=relaxed/simple;
-	bh=DthIDebhc9oRYRMRr+A3AN2PQCmUqSXLow3JcSS2AFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPNjmnskVwPdasOjiOXKBwOWjj/8a4ZPtgYxpnxLd+1+Og6ClSEgrySD2fN1WZ1UNJM/KrKGL0GUUPlQYF7Hzh+cgeYMHIv2fLCXxS6UVeJFrD0lRW5g+MLA7Ciki+bRfsPtXFlUYyXh6EnHt5vvQxxrG+mXqZdQy8dmME8Bd34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Rcy2SEZ6; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 42D621C0005;
-	Mon,  4 Mar 2024 16:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709570975;
+	s=arc-20240116; t=1709571754; c=relaxed/simple;
+	bh=kmvnz27dzJcpiaOuri4yLruOBlg8ue+RnmBTTY2eS6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g7BZlFw+RlP0Qz86NKlAv1JRiU0jJyDaTCi8l7QkcMSsEo7JW+5ecw4Gs/iLIqC1P+6zDCzPlJdMWI9JpSnMZlhRnx0WcvBbcUYoYeA+2yVlLOmmp0R2KFO+4k3josqyc02rUrpwVPl6j6iUWg6JpwsqD+K/qn5S//LUtcF9AIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dFOREVO3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709571750;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7nFz0hedyTLHASYMUFC14BfBNjbRjwJUmoXNnUghM5I=;
-	b=Rcy2SEZ6t1Mu02zbdb+Mh7xqcRqdUDkoyGA7N+WeuN6VIt4goMj5qZh/JLn9U2JCqKkfCf
-	2KSfnM92Rkjl5T6+BIHlsPI3Z3/mfWbGbe4NfsnM4rGsB19M1U8SrvI8FFVPtPgUNmxhHX
-	Ucwtijg1XCjPB4m9ouUrtruYcUBlbx8qFDeELKaZmRN7kPGPxzstlGt8D6tWsUeY5QXZEg
-	XSlXAZ0DGSoiLXrY4Hse1c2d/Bu4pKD0Eo9lwthvJY4Mz7cI8RFrVkvezLqmTIaJMV6BNA
-	c3ZklZKOhY96HEoT4+bKnAHD9IhiGqcKpGFpWu3xQhgZSnAZsBvMNZpTYkBS8A==
-Date: Mon, 4 Mar 2024 17:49:33 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max
- Zhen <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>, Stefano
- Stabellini <stefano.stabellini@xilinx.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, Saravana Kannan
- <saravanak@google.com>
-Subject: Re: [PATCH v3 2/2] of: overlay: Synchronize of_overlay_remove()
- with the devlink removals
-Message-ID: <20240304174933.7ad023f9@bootlin.com>
-In-Reply-To: <20240304152202.GA222088-robh@kernel.org>
-References: <20240229105204.720717-1-herve.codina@bootlin.com>
-	<20240229105204.720717-3-herve.codina@bootlin.com>
-	<acb69aa8c1a4c4e9849123ef538b9646a71507a0.camel@gmail.com>
-	<20240304152202.GA222088-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bRb2G3rGVCWNmjR6j8Y0jK9sd42QWUsDe6AfIQJkqsw=;
+	b=dFOREVO3ONSNOsSGLitbgIVeMQ9k67TuiRoqbTqb4mxnOKVaPB8nCYOul5kbIbJ+CUD1Hm
+	MRWQ54iPb89oMFBwI/Wk4EyYBlJfXj21SdAxjrVoSPPOb06MGEuuTMn4fq0+qRTdauhyQI
+	BL/85H5rfmv6+KV/gAzU078/ANlnmBU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-335-3DjiKfwuPLKcYBbGoy4npQ-1; Mon, 04 Mar 2024 12:02:28 -0500
+X-MC-Unique: 3DjiKfwuPLKcYBbGoy4npQ-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a447baf1eb0so197041466b.1
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 09:02:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709571746; x=1710176546;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bRb2G3rGVCWNmjR6j8Y0jK9sd42QWUsDe6AfIQJkqsw=;
+        b=p8lTT0mR7L2lmvBc4Lbk0apdC341mx/GTyBcOVAb/B660tX+Z1L/EGeRtjsEZEcIT5
+         vhDofwR5wX8UA3eaybmvBnUeVJZc76i9o03583ASL//cgQs5InNGUHQno4iUIapuaSms
+         xTOYxjTIWAumDgg0IFBwVRTnf0IuwLAsK0mm+rw/if7EUhsyxP6CkK7/iHDx4WzxPZpS
+         8JiGN2lQpywKo7t7xy0owivPIg8L7/9vkkvpbsGNy7TT7DT6YGkQTclZlcAyr7MrQ0L8
+         70Q5Ef19X4KEhppKWq9GongO/OInNQyt6lh5xQhgkfV50a2rSiU4YA4dwpSQ/gPkaAZm
+         Xc9Q==
+X-Gm-Message-State: AOJu0YyryUgQYeY+bwOw5JTxni84Q8AzTOHEZKTiYi5M834+j3KKSYMJ
+	ULsyNFZfCOXm7qMPOGQ5rcGXWDTN70sMYLVpENZvzD4YihSv34dDKvt4C7HnIofHLw7TscKRy6c
+	Odzln2iqn6qutvKwhxb/iQZPplBrZ3tVuNmWOhnLwxiR8tTWjI5u9D0m9JbBVBctnR0Rmx4MEro
+	KEE7WC2ZN/QSqy2me/TiSyTGH4G+XQiKoY
+X-Received: by 2002:a17:906:34d7:b0:a45:29f3:6cc9 with SMTP id h23-20020a17090634d700b00a4529f36cc9mr2924252ejb.20.1709571746373;
+        Mon, 04 Mar 2024 09:02:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEXK6MgN54UtOiHFSF4R6S0QqKf3vQjkdthql3Vdr45tKN/JnSK4chUqihHQ930YEbFsgjVA==
+X-Received: by 2002:a17:906:34d7:b0:a45:29f3:6cc9 with SMTP id h23-20020a17090634d700b00a4529f36cc9mr2924219ejb.20.1709571745935;
+        Mon, 04 Mar 2024 09:02:25 -0800 (PST)
+Received: from altair.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a15c])
+        by smtp.gmail.com with ESMTPSA id gl11-20020a170906e0cb00b00a448fab02easm3913637ejb.37.2024.03.04.09.02.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Mar 2024 09:02:25 -0800 (PST)
+From: Danilo Krummrich <dakr@redhat.com>
+To: stable@vger.kernel.org,
+	nouveau@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	Karol Herbst <kherbst@redhat.com>
+Subject: [PATCH stable v6.7] drm/nouveau: don't fini scheduler before entity flush
+Date: Mon,  4 Mar 2024 18:01:46 +0100
+Message-ID: <20240304170158.4206-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Rob,
+This bug is present in v6.7 only, since the scheduler design has been
+re-worked in v6.8.
 
-On Mon, 4 Mar 2024 09:22:02 -0600
-Rob Herring <robh@kernel.org> wrote:
+Client scheduler entities must be flushed before an associated GPU
+scheduler is teared down. Otherwise the entitiy might still hold a
+pointer to the scheduler's runqueue which is freed at scheduler tear
+down already.
 
-...
+[  305.224293] ==================================================================
+[  305.224297] BUG: KASAN: slab-use-after-free in drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
+[  305.224310] Read of size 8 at addr ffff8881440a8f48 by task rmmod/4436
 
-> > > @@ -853,6 +854,14 @@ static void free_overlay_changeset(struct
-> > > overlay_changeset *ovcs)
-> > >  {
-> > >  	int i;
-> > >  
-> > > +	/*
-> > > +	 * Wait for any ongoing device link removals before removing some of
-> > > +	 * nodes. Drop the global lock while waiting
-> > > +	 */
-> > > +	mutex_unlock(&of_mutex);
-> > > +	device_link_wait_removal();
-> > > +	mutex_lock(&of_mutex);  
-> > 
-> > I'm still not convinced we need to drop the lock. What happens if someone else
-> > grabs the lock while we are in device_link_wait_removal()? Can we guarantee that
-> > we can't screw things badly?  
-> 
-> It is also just ugly because it's the callers of 
-> free_overlay_changeset() that hold the lock and now we're releasing it 
-> behind their back.
-> 
-> As device_link_wait_removal() is called before we touch anything, can't 
-> it be called before we take the lock? And do we need to call it if 
-> applying the overlay fails?
-> 
+[  305.224317] CPU: 10 PID: 4436 Comm: rmmod Tainted: G     U             6.7.6-100.fc38.x86_64+debug #1
+[  305.224321] Hardware name: Dell Inc. Precision 7550/01PXFR, BIOS 1.27.0 11/08/2023
+[  305.224324] Call Trace:
+[  305.224327]  <TASK>
+[  305.224329]  dump_stack_lvl+0x76/0xd0
+[  305.224336]  print_report+0xcf/0x670
+[  305.224342]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
+[  305.224352]  ? __virt_addr_valid+0x215/0x410
+[  305.224359]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
+[  305.224368]  kasan_report+0xa6/0xe0
+[  305.224373]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
+[  305.224385]  drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
+[  305.224395]  ? __pfx_drm_sched_entity_flush+0x10/0x10 [gpu_sched]
+[  305.224406]  ? rcu_is_watching+0x15/0xb0
+[  305.224413]  drm_sched_entity_destroy+0x17/0x20 [gpu_sched]
+[  305.224422]  nouveau_cli_fini+0x6c/0x120 [nouveau]
+[  305.224658]  nouveau_drm_device_fini+0x2ac/0x490 [nouveau]
+[  305.224871]  nouveau_drm_remove+0x18e/0x220 [nouveau]
+[  305.225082]  ? __pfx_nouveau_drm_remove+0x10/0x10 [nouveau]
+[  305.225290]  ? rcu_is_watching+0x15/0xb0
+[  305.225295]  ? _raw_spin_unlock_irqrestore+0x66/0x80
+[  305.225299]  ? trace_hardirqs_on+0x16/0x100
+[  305.225304]  ? _raw_spin_unlock_irqrestore+0x4f/0x80
+[  305.225310]  pci_device_remove+0xa3/0x1d0
+[  305.225316]  device_release_driver_internal+0x379/0x540
+[  305.225322]  driver_detach+0xc5/0x180
+[  305.225327]  bus_remove_driver+0x11e/0x2a0
+[  305.225333]  pci_unregister_driver+0x2a/0x250
+[  305.225339]  nouveau_drm_exit+0x1f/0x970 [nouveau]
+[  305.225548]  __do_sys_delete_module+0x350/0x580
+[  305.225554]  ? __pfx___do_sys_delete_module+0x10/0x10
+[  305.225562]  ? syscall_enter_from_user_mode+0x26/0x90
+[  305.225567]  ? rcu_is_watching+0x15/0xb0
+[  305.225571]  ? syscall_enter_from_user_mode+0x26/0x90
+[  305.225575]  ? trace_hardirqs_on+0x16/0x100
+[  305.225580]  do_syscall_64+0x61/0xe0
+[  305.225584]  ? rcu_is_watching+0x15/0xb0
+[  305.225587]  ? syscall_exit_to_user_mode+0x1f/0x50
+[  305.225592]  ? trace_hardirqs_on_prepare+0xe3/0x100
+[  305.225596]  ? do_syscall_64+0x70/0xe0
+[  305.225600]  ? trace_hardirqs_on_prepare+0xe3/0x100
+[  305.225604]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  305.225609] RIP: 0033:0x7f6148f3592b
+[  305.225650] Code: 73 01 c3 48 8b 0d dd 04 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ad 04 0c 00 f7 d8 64 89 01 48
+[  305.225653] RSP: 002b:00007ffe89986f08 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+[  305.225659] RAX: ffffffffffffffda RBX: 000055cbb036e900 RCX: 00007f6148f3592b
+[  305.225662] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 000055cbb036e968
+[  305.225664] RBP: 00007ffe89986f30 R08: 1999999999999999 R09: 0000000000000000
+[  305.225667] R10: 00007f6148fa6ac0 R11: 0000000000000206 R12: 0000000000000000
+[  305.225670] R13: 00007ffe89987190 R14: 000055cbb036e900 R15: 0000000000000000
+[  305.225678]  </TASK>
 
-Indeed, having device_link_wait_removal() is not needed when applying the
-overlay fails.
+[  305.225683] Allocated by task 484:
+[  305.225685]  kasan_save_stack+0x33/0x60
+[  305.225690]  kasan_set_track+0x25/0x30
+[  305.225693]  __kasan_kmalloc+0x8f/0xa0
+[  305.225696]  drm_sched_init+0x3c7/0xce0 [gpu_sched]
+[  305.225705]  nouveau_sched_init+0xd2/0x110 [nouveau]
+[  305.225913]  nouveau_drm_device_init+0x130/0x3290 [nouveau]
+[  305.226121]  nouveau_drm_probe+0x1ab/0x6b0 [nouveau]
+[  305.226329]  local_pci_probe+0xda/0x190
+[  305.226333]  pci_device_probe+0x23a/0x780
+[  305.226337]  really_probe+0x3df/0xb80
+[  305.226341]  __driver_probe_device+0x18c/0x450
+[  305.226345]  driver_probe_device+0x4a/0x120
+[  305.226348]  __driver_attach+0x1e5/0x4a0
+[  305.226351]  bus_for_each_dev+0x106/0x190
+[  305.226355]  bus_add_driver+0x2a1/0x570
+[  305.226358]  driver_register+0x134/0x460
+[  305.226361]  do_one_initcall+0xd3/0x430
+[  305.226366]  do_init_module+0x238/0x770
+[  305.226370]  load_module+0x5581/0x6f10
+[  305.226374]  __do_sys_init_module+0x1f2/0x220
+[  305.226377]  do_syscall_64+0x61/0xe0
+[  305.226381]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-I can call device_link_wait_removal() from the caller of_overlay_remove()
-but not before the lock is taken.
-We need to call it between __of_changeset_revert_notify() and
-free_overlay_changeset() and so, the lock is taken.
+[  305.226387] Freed by task 4436:
+[  305.226389]  kasan_save_stack+0x33/0x60
+[  305.226392]  kasan_set_track+0x25/0x30
+[  305.226396]  kasan_save_free_info+0x2b/0x50
+[  305.226399]  __kasan_slab_free+0x10b/0x1a0
+[  305.226402]  slab_free_freelist_hook+0x12b/0x1e0
+[  305.226406]  __kmem_cache_free+0xd4/0x1d0
+[  305.226410]  drm_sched_fini+0x178/0x320 [gpu_sched]
+[  305.226418]  nouveau_drm_device_fini+0x2a0/0x490 [nouveau]
+[  305.226624]  nouveau_drm_remove+0x18e/0x220 [nouveau]
+[  305.226832]  pci_device_remove+0xa3/0x1d0
+[  305.226836]  device_release_driver_internal+0x379/0x540
+[  305.226840]  driver_detach+0xc5/0x180
+[  305.226843]  bus_remove_driver+0x11e/0x2a0
+[  305.226847]  pci_unregister_driver+0x2a/0x250
+[  305.226850]  nouveau_drm_exit+0x1f/0x970 [nouveau]
+[  305.227056]  __do_sys_delete_module+0x350/0x580
+[  305.227060]  do_syscall_64+0x61/0xe0
+[  305.227064]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-This lead to the following sequence:
---- 8< ---
-int of_overlay_remove(int *ovcs_id)
-{
-	...
-	mutex_lock(&of_mutex);
-	...
+[  305.227070] The buggy address belongs to the object at ffff8881440a8f00
+                which belongs to the cache kmalloc-128 of size 128
+[  305.227073] The buggy address is located 72 bytes inside of
+                freed 128-byte region [ffff8881440a8f00, ffff8881440a8f80)
 
-	ret = __of_changeset_revert_notify(&ovcs->cset);
-	...
+[  305.227078] The buggy address belongs to the physical page:
+[  305.227081] page:00000000627efa0a refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1440a8
+[  305.227085] head:00000000627efa0a order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  305.227088] flags: 0x17ffffc0000840(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
+[  305.227093] page_type: 0xffffffff()
+[  305.227097] raw: 0017ffffc0000840 ffff8881000428c0 ffffea0005b33500 dead000000000002
+[  305.227100] raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
+[  305.227102] page dumped because: kasan: bad access detected
 
-	ret_tmp = overlay_notify(ovcs, OF_OVERLAY_POST_REMOVE);
-	...
+[  305.227106] Memory state around the buggy address:
+[  305.227109]  ffff8881440a8e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[  305.227112]  ffff8881440a8e80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  305.227114] >ffff8881440a8f00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[  305.227117]                                               ^
+[  305.227120]  ffff8881440a8f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  305.227122]  ffff8881440a9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
+[  305.227125] ==================================================================
 
-	mutex_unlock(&of_mutex);
-	device_link_wait_removal();
-	mutex_lock(&of_mutex);
+Cc: <stable@vger.kernel.org> # v6.7 only
+Reported-by: Karol Herbst <kherbst@redhat.com>
+Closes: https://gist.githubusercontent.com/karolherbst/a20eb0f937a06ed6aabe2ac2ca3d11b5/raw/9cd8b1dc5894872d0eeebbee3dd0fdd28bb576bc/gistfile1.txt
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+---
+ drivers/gpu/drm/nouveau/nouveau_drm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-	free_overlay_changeset(ovcs);
-	...
-	mutex_unlock(&of_mutex);
-	...
-}
---- 8< ---
-
-In this sequence, the question is:
-Do we need to release the mutex lock while device_link_wait_removal() is
-called ?
-
-Best regards,
-Hervé
-
+diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
+index 50589f982d1a..75545da9d1e9 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -708,10 +708,11 @@ nouveau_drm_device_fini(struct drm_device *dev)
+ 	}
+ 	mutex_unlock(&drm->clients_lock);
+ 
+-	nouveau_sched_fini(drm);
+-
+ 	nouveau_cli_fini(&drm->client);
+ 	nouveau_cli_fini(&drm->master);
++
++	nouveau_sched_fini(drm);
++
+ 	nvif_parent_dtor(&drm->parent);
+ 	mutex_destroy(&drm->clients_lock);
+ 	kfree(drm);
 -- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.44.0
+
 
