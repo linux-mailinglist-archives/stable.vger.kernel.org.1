@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD35870F30
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E631870E25
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A50A1C219D6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3A5B1F21769
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FED78B47;
-	Mon,  4 Mar 2024 21:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDEF7A124;
+	Mon,  4 Mar 2024 21:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mf2X8bdO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j249V10Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8D91EB5A;
-	Mon,  4 Mar 2024 21:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9DB10A35;
+	Mon,  4 Mar 2024 21:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589112; cv=none; b=lA0UK7DqIh17IdR402IsTQcA4FMKGfuFVwqz9gJYlFcEcTQHXjMhTHis8EUX+AKwcvIG0QG1mPGnCX0EtHF19lbiOi2kyaCKY5O2FYxeLhMscN22Megs2xXHWzR2Wj7gWClAp/XfSiKOCLyeJpkOZRZlroomE9REW5TxLljZO7Y=
+	t=1709588479; cv=none; b=lHLGbyecUvCyZQJj1T/ItseMd+5oV+OBNGsGfuGN0CkzmoIsp7AKRzslkGTre4rsZ54c5uStza/V7IEHr+UXJF0NIFHcnVNme9V0E1P3Trmd/oEcJsG2gIG6J/aiC7n7xNp7lLsc/Q/esS89eoWBO6KanNbZnK3z9EFUo7XjBKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589112; c=relaxed/simple;
-	bh=PCt+01Yn/QBi+e8bAkiBXlqVQbBa3h2Nob2CmR6e12o=;
+	s=arc-20240116; t=1709588479; c=relaxed/simple;
+	bh=HG2qDElwu4UhINDDeKZ297yaTrmCTou8PXag9l53ZYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3DJTKigblxBsjFL0Uzbn1ltEAHFhIjyHj0QQGEIqy6tGjnlfaYm0/IqPY55QssJr5ufhBgJjO640C2SS1kSpROL/N29+qQHsn1IfNC1xD8GMzKtEVRH9htq6b07sIKmEkfE0fnQyOCEHPifH9xou+DeOpNvguXvb05jmoK+BXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mf2X8bdO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A020CC433F1;
-	Mon,  4 Mar 2024 21:51:51 +0000 (UTC)
+	 MIME-Version; b=QkpxEh9/9oAVZA6VNJXM9S4N/rXTtjN5V5puAXI+7OULcV3GLHkkslJWvDp9FcplyUTyY9qJ6IyuHGjQ7kiuyLLsRm3ZzrYXXI6ScK2Uc7EodC3smzA5yvFlAbcz4KYh8TQIZlMNXv4kHlEMlETG572jRTXgeBY1FN+F1npcpq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j249V10Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EA2C433F1;
+	Mon,  4 Mar 2024 21:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589112;
-	bh=PCt+01Yn/QBi+e8bAkiBXlqVQbBa3h2Nob2CmR6e12o=;
+	s=korg; t=1709588479;
+	bh=HG2qDElwu4UhINDDeKZ297yaTrmCTou8PXag9l53ZYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mf2X8bdOq+6vtTFZxOR2RW0kd7DDSLf9tCbu5etfYI01yiaFJyE/Ip4jniHhd1Gbc
-	 +8VjCKWxxMPiK1Khowu0duFD5E+fLZoTMlGR0XKaw7qIAOsf4YwMXvk0D4hGlwdFjU
-	 K7KmwhXAMHWGxG4qerTSQJTtnuZByz82addzuc9M=
+	b=j249V10Z8UWQzbdOgN3QusB4HbiBX394CJOSoScv4jTJuFOXRfkCHblUmTSBVb3zB
+	 3/iaoTk0Ma3v38FgCzoZpNire1raTVQUsDIN1YyKxORqnJwKv3eDeWYKKDGsabGL15
+	 C5tA5IQ/arx/Ap77K7EqgV2qBpvf+1qwPbyxhgEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JianHong Yin <jiyin@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 179/215] nfsd: dont destroy global nfs4_file table in per-net shutdown
+	Serge Semin <fancer.lancer@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/143] dmaengine: dw-edma: HDMA: Add sync read before starting the DMA transfer in remote setup
 Date: Mon,  4 Mar 2024 21:24:02 +0000
-Message-ID: <20240304211602.618924097@linuxfoundation.org>
+Message-ID: <20240304211553.809803112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 4102db175b5d884d133270fdbd0e59111ce688fc ]
+[ Upstream commit 712a92a48158e02155b4b6b21e03a817f78c9b7e ]
 
-The nfs4_file table is global, so shutting it down when a containerized
-nfsd is shut down is wrong and can lead to double-frees. Tear down the
-nfs4_file_rhltable in nfs4_state_shutdown instead of
-nfs4_state_shutdown_net.
+The Linked list element and pointer are not stored in the same memory as
+the HDMA controller register. If the doorbell register is toggled before
+the full write of the linked list a race condition error will occur.
+In remote setup we can only use a readl to the memory to assure the full
+write has occurred.
 
-Fixes: d47b295e8d76 ("NFSD: Use rhashtable for managing nfs4_file objects")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2169017
-Reported-by: JianHong Yin <jiyin@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-5-8e8c1acb7a46@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dw-edma/dw-hdma-v0-core.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8212,7 +8212,6 @@ nfs4_state_shutdown_net(struct net *net)
- 
- 	nfsd4_client_tracking_exit(net);
- 	nfs4_state_destroy_net(net);
--	rhltable_destroy(&nfs4_file_rhltable);
- #ifdef CONFIG_NFSD_V4_2_INTER_SSC
- 	nfsd4_ssc_shutdown_umount(nn);
- #endif
-@@ -8222,6 +8221,7 @@ void
- nfs4_state_shutdown(void)
- {
- 	nfsd4_destroy_callback_queue();
-+	rhltable_destroy(&nfs4_file_rhltable);
+diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+index 04b0bcb6ded97..10e8f0715114f 100644
+--- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
++++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+@@ -222,6 +222,20 @@ static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
+ 	dw_hdma_v0_write_ll_link(chunk, i, control, chunk->ll_region.paddr);
  }
  
- static void
++static void dw_hdma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
++{
++	/*
++	 * In case of remote HDMA engine setup, the DW PCIe RP/EP internal
++	 * configuration registers and application memory are normally accessed
++	 * over different buses. Ensure LL-data reaches the memory before the
++	 * doorbell register is toggled by issuing the dummy-read from the remote
++	 * LL memory in a hope that the MRd TLP will return only after the
++	 * last MWr TLP is completed
++	 */
++	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
++		readl(chunk->ll_region.vaddr.io);
++}
++
+ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ {
+ 	struct dw_edma_chan *chan = chunk->chan;
+@@ -252,6 +266,9 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ 	/* Set consumer cycle */
+ 	SET_CH_32(dw, chan->dir, chan->id, cycle_sync,
+ 		  HDMA_V0_CONSUMER_CYCLE_STAT | HDMA_V0_CONSUMER_CYCLE_BIT);
++
++	dw_hdma_v0_sync_ll_data(chunk);
++
+ 	/* Doorbell */
+ 	SET_CH_32(dw, chan->dir, chan->id, doorbell, HDMA_V0_DOORBELL_START);
+ }
+-- 
+2.43.0
+
 
 
 
