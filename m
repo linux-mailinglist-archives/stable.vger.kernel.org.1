@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-26239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEE870DB2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA7A870EA1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0694B27303
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A602B26E8A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C7EDDCB;
-	Mon,  4 Mar 2024 21:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3D97B3E6;
+	Mon,  4 Mar 2024 21:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh02cHOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ca3HtBQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5631C6AB;
-	Mon,  4 Mar 2024 21:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2D578B47;
+	Mon,  4 Mar 2024 21:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588203; cv=none; b=ECKe8IYSCRJzv0tFbwq8OAoEi/D0WgjVf+mZ2h2m5YkIELED+DE1raR7wH5WRzRt2hc6PafyoKVoovDrv3SCEF3kXVRKE9tJAYuj1KyKnkYIF+RpLnVJrzFfSR1i7QqjpfYmP96mqUl+hTMRj/WYxO/hcGzTn4Wj3Pxguk/zaD0=
+	t=1709588733; cv=none; b=Hiv/PFe96fhm2jPOgOlSxwh6X+3KXwPFQANensGAyGx+5HoRdSpzDguYFa+5CxQLQw/MaNyqMT117d/xRoN4S/L0ozjn0yzh1/zUyhM/wt73CdGK28Mqacz4XEUZuYgofn5YIXjofv11g9JQYfwPpgMdmUzq8DLUoQqVlvc1xNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588203; c=relaxed/simple;
-	bh=hP3mDjQ2Mc7EY5MQT5scT/U8YQ0ACpq0HGXENBEOjGo=;
+	s=arc-20240116; t=1709588733; c=relaxed/simple;
+	bh=eHUrcp5VYUa2sqnG2RPE0UKUS9iM8LSzQ8ka9NFdRNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMGmzBiG3XJpHlRNbmr21/nnXcpEpWQyg3J5KTORr3hPyhZ5PPxqktUYncPsp8yF0Pv2VZUd4G/fSTbBf/byT9QN1y6AdAbzG+ukWD3ZWp/tuIgnBrmo2h1cN5KM5yqrB50yuUjvyS454BVBkI4FXZFKumAf7m8LeqWHFBS2pwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh02cHOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA5BC433C7;
-	Mon,  4 Mar 2024 21:36:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b5eG5UpxqIvsPfvPodX+MOfie+wbsjJbmmzM8rtU64XmQWQ9bcfBL+VQ4FwLZCFtXMOcE3sjrJDOdcgLyLYsT5KDcfZ6Ae1ykA9A5OHd5Nuwgv44vC2bBX9/zFDpZTCyMEvrVOo0JxsOfo426sPy27U+9VxjvGa0vQLqlBoRqvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca3HtBQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8123FC433C7;
+	Mon,  4 Mar 2024 21:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588203;
-	bh=hP3mDjQ2Mc7EY5MQT5scT/U8YQ0ACpq0HGXENBEOjGo=;
+	s=korg; t=1709588732;
+	bh=eHUrcp5VYUa2sqnG2RPE0UKUS9iM8LSzQ8ka9NFdRNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qh02cHOSS2sip+0KAIei6VeT+zT6sa17V4dajJUSUBh7iUt8cs9kgRzgrmNK13JgA
-	 ko7pbhZWA9qGDd+YliGfKvMUVJ9z882bMl0XUR4k3J1CTHY3FnidQfZbXxb6K4AMUt
-	 erSEyxKFa3pE1mByMR/8eCIve9eTaUWJh7y37ZRI=
+	b=Ca3HtBQ3sYsYWrIw4UHSVe8e7zWiBLnruLAyYWI+asbpHvw6ozp1qSf7lkTIdQNwf
+	 OtU4FAN38gbxM4p67OpAc4FFN3sKieHXN3qhW+bzYd1h5HkU5J3ebTg/wVKRpoIZ3h
+	 xRIChA6L2V6ALAsl9JHEuvSJ6FLtiQ1SazGNHAvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Miao Wang <shankerwangmiao@gmail.com>
-Subject: [PATCH 6.6 018/143] veth: try harder when allocating queue memory
-Date: Mon,  4 Mar 2024 21:22:18 +0000
-Message-ID: <20240304211550.518950738@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Jann Horn <jannh@google.com>,
+	Shervin Oloumi <enlightened@chromium.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.1 076/215] landlock: Fix asymmetric private inodes referring
+Date: Mon,  4 Mar 2024 21:22:19 +0000
+Message-ID: <20240304211559.388822539@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 1ce7d306ea63f3e379557c79abd88052e0483813 ]
+commit d9818b3e906a0ee1ab02ea79e74a2f755fc5461a upstream.
 
-struct veth_rq is pretty large, 832B total without debug
-options enabled. Since commit under Fixes we try to pre-allocate
-enough queues for every possible CPU. Miao Wang reports that
-this may lead to order-5 allocations which will fail in production.
+When linking or renaming a file, if only one of the source or
+destination directory is backed by an S_PRIVATE inode, then the related
+set of layer masks would be used as uninitialized by
+is_access_to_paths_allowed().  This would result to indeterministic
+access for one side instead of always being allowed.
 
-Let the allocation fallback to vmalloc() and try harder.
-These are the same flags we pass to netdev queue allocation.
+This bug could only be triggered with a mounted filesystem containing
+both S_PRIVATE and !S_PRIVATE inodes, which doesn't seem possible.
 
-Reported-and-tested-by: Miao Wang <shankerwangmiao@gmail.com>
-Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
-Link: https://lore.kernel.org/all/5F52CAE2-2FB7-4712-95F1-3312FBBFA8DD@gmail.com/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240223235908.693010-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The collect_domain_accesses() calls return early if
+is_nouser_or_private() returns false, which means that the directory's
+superblock has SB_NOUSER or its inode has S_PRIVATE.  Because rename or
+link actions are only allowed on the same mounted filesystem, the
+superblock is always the same for both source and destination
+directories.  However, it might be possible in theory to have an
+S_PRIVATE parent source inode with an !S_PRIVATE parent destination
+inode, or vice versa.
+
+To make sure this case is not an issue, explicitly initialized both set
+of layer masks to 0, which means to allow all actions on the related
+side.  If at least on side has !S_PRIVATE, then
+collect_domain_accesses() and is_access_to_paths_allowed() check for the
+required access rights.
+
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shervin Oloumi <enlightened@chromium.org>
+Cc: stable@vger.kernel.org
+Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
+Link: https://lore.kernel.org/r/20240219190345.2928627-1-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ security/landlock/fs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index b32b0ff829ed5..0ae90702e7f84 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1453,7 +1453,8 @@ static int veth_alloc_queues(struct net_device *dev)
- 	struct veth_priv *priv = netdev_priv(dev);
- 	int i;
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -824,8 +824,8 @@ static int current_check_refer_path(stru
+ 	bool allow_parent1, allow_parent2;
+ 	access_mask_t access_request_parent1, access_request_parent2;
+ 	struct path mnt_dir;
+-	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS],
+-		layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS];
++	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS] = {},
++		     layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS] = {};
  
--	priv->rq = kcalloc(dev->num_rx_queues, sizeof(*priv->rq), GFP_KERNEL_ACCOUNT);
-+	priv->rq = kvcalloc(dev->num_rx_queues, sizeof(*priv->rq),
-+			    GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
- 	if (!priv->rq)
- 		return -ENOMEM;
- 
-@@ -1469,7 +1470,7 @@ static void veth_free_queues(struct net_device *dev)
- {
- 	struct veth_priv *priv = netdev_priv(dev);
- 
--	kfree(priv->rq);
-+	kvfree(priv->rq);
- }
- 
- static int veth_dev_init(struct net_device *dev)
--- 
-2.43.0
-
+ 	if (!dom)
+ 		return 0;
 
 
 
