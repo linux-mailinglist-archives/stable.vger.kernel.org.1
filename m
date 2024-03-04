@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-26454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D052A870EB1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8C2870DAA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87AF21F21A3B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521571C20BAA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA507B3D8;
-	Mon,  4 Mar 2024 21:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7306078B69;
+	Mon,  4 Mar 2024 21:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeLq7F7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbRL1ipa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EAA61675;
-	Mon,  4 Mar 2024 21:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3253D1C6AB;
+	Mon,  4 Mar 2024 21:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588759; cv=none; b=hhaXznbaR+dXkcBtCZ7F2W4KJrghJOthAp5qBU2Vhr5JINLkt7AtsTEoEiZxsSCTdcQZIYEMzYUnQvoEl72SML2Go9t/gs+TG3Ax0Wr6EQrLTiE5dQoB/J0Xv4w50qbne39TQKmVA+0OJB4m5ikdjlEiUuDiwYlybj/ekyMWBXg=
+	t=1709588188; cv=none; b=q39x3YoF8PJDj72/FSZi+CN2olO1265mA2uctdewYtEIjfAN8BWVxUiqosUOJhTRYg6PaZARJpuUYbFuZ0w6jvf/B+TxvCTUbMHfdMw9UkXCOXfLxqx5WX+QqWLBamtIFCHLMGL949fUcdWNltwyXueoBM2fpVqrcuNmNWjCVbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588759; c=relaxed/simple;
-	bh=KebFIugYVCXkOlv7H6Xh4Ak3iGjYVdxCWWCuF0w//jo=;
+	s=arc-20240116; t=1709588188; c=relaxed/simple;
+	bh=pPANHrBK7DKAHEV66DcrsxlFW32VG/r3psHd6bNsJqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckliFOOpR7MeTZzxgjOUazfXiyqCP9By9jElOj5Gmndx2W7jniZwTiVMXIsiLgRvFNy6VRlDWHllh3diAjoKtpdXM6K8bOaSbPGrLSYM59A7I0hTV0640NzF0DhidfKxHmaBos+/r4sKEHVrPpMjylOw97cMp5vkEy2VVeXsnpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeLq7F7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BD2C433F1;
-	Mon,  4 Mar 2024 21:45:58 +0000 (UTC)
+	 MIME-Version; b=FxglrPxtZ5JUS+7M5EhdOZidHIT21qDeBBZwGWOgx1cqSC0WFZIwX7JA8UkoCBvYMviAhPFfBJyccexzURvgnSX904oid1Ehh3SidDDEsEdlMc4qQ+yRQTBa1uj5ryJvyRVHrMbzHlzAVogMbAgZuRaln000ZrBVihk/u0fRVZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbRL1ipa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9805C433C7;
+	Mon,  4 Mar 2024 21:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588758;
-	bh=KebFIugYVCXkOlv7H6Xh4Ak3iGjYVdxCWWCuF0w//jo=;
+	s=korg; t=1709588188;
+	bh=pPANHrBK7DKAHEV66DcrsxlFW32VG/r3psHd6bNsJqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeLq7F7OqevbWhkEEQILaIHVvYAZEGQ3oaJFcJPlwNMAeB4SlPibmZF1DyyF32TLA
-	 16HHpGpXsI1Zq2fZiQQu+Dh7483HowBwp1fLViVxAgqFc23PiPSYIWSOtZR8AaRgot
-	 qxuF3c43qkZmEspY3Nf6+97PR3kNT1SH4/wQCOj4=
+	b=JbRL1ipa01CxjvyaMA0tPw+yDnZhPPJ1jYBXlwD6JNRT+1Sv6bk2yz9YAcoYUcp5d
+	 thgv8KIA9gnF71HZwY1XetXlAj/660dRROkQ9bwYsOWGtNQKdiPAfeebYDe/3PNIt3
+	 alFSZIaT/0JDxn/ZH/Zp/sVI8grqhRjDjNLjnz8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Madalin Bucur <madalin.bucur@oss.nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/215] fbcon: always restore the old font data in fbcon_do_set_font()
-Date: Mon,  4 Mar 2024 21:22:11 +0000
-Message-ID: <20240304211559.140747119@linuxfoundation.org>
+Subject: [PATCH 6.6 012/143] net: dpaa: fman_memac: accept phy-interface-type = "10gbase-r" in the device tree
+Date: Mon,  4 Mar 2024 21:22:12 +0000
+Message-ID: <20240304211550.318210029@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 00d6a284fcf3fad1b7e1b5bc3cd87cbfb60ce03f ]
+[ Upstream commit 734f06db599f66d6a159c78abfdbadfea3b7d43b ]
 
-Commit a5a923038d70 (fbdev: fbcon: Properly revert changes when
-vc_resize() failed) started restoring old font data upon failure (of
-vc_resize()). But it performs so only for user fonts. It means that the
-"system"/internal fonts are not restored at all. So in result, the very
-first call to fbcon_do_set_font() performs no restore at all upon
-failing vc_resize().
+Since commit 5d93cfcf7360 ("net: dpaa: Convert to phylink"), we support
+the "10gbase-r" phy-mode through a driver-based conversion of "xgmii",
+but we still don't actually support it when the device tree specifies
+"10gbase-r" proper.
 
-This can be reproduced by Syzkaller to crash the system on the next
-invocation of font_get(). It's rather hard to hit the allocation failure
-in vc_resize() on the first font_set(), but not impossible. Esp. if
-fault injection is used to aid the execution/failure. It was
-demonstrated by Sirius:
-  BUG: unable to handle page fault for address: fffffffffffffff8
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD cb7b067 P4D cb7b067 PUD cb7d067 PMD 0
-  Oops: 0000 [#1] PREEMPT SMP KASAN
-  CPU: 1 PID: 8007 Comm: poc Not tainted 6.7.0-g9d1694dc91ce #20
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:fbcon_get_font+0x229/0x800 drivers/video/fbdev/core/fbcon.c:2286
-  Call Trace:
-   <TASK>
-   con_font_get drivers/tty/vt/vt.c:4558 [inline]
-   con_font_op+0x1fc/0xf20 drivers/tty/vt/vt.c:4673
-   vt_k_ioctl drivers/tty/vt/vt_ioctl.c:474 [inline]
-   vt_ioctl+0x632/0x2ec0 drivers/tty/vt/vt_ioctl.c:752
-   tty_ioctl+0x6f8/0x1570 drivers/tty/tty_io.c:2803
-   vfs_ioctl fs/ioctl.c:51 [inline]
-  ...
+This is because boards such as LS1046A-RDB do not define pcs-handle-names
+(for whatever reason) in the ethernet@f0000 device tree node, and the
+code enters through this code path:
 
-So restore the font data in any case, not only for user fonts. Note the
-later 'if' is now protected by 'old_userfont' and not 'old_data' as the
-latter is always set now. (And it is supposed to be non-NULL. Otherwise
-we would see the bug above again.)
+	err = of_property_match_string(mac_node, "pcs-handle-names", "xfi");
+	// code takes neither branch and falls through
+	if (err >= 0) {
+		(...)
+	} else if (err != -EINVAL && err != -ENODATA) {
+		goto _return_fm_mac_free;
+	}
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
-Reported-and-tested-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Cc: Ubisectech Sirius <bugreport@ubisectech.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240208114411.14604-1-jirislaby@kernel.org
+	(...)
+
+	/* For compatibility, if pcs-handle-names is missing, we assume this
+	 * phy is the first one in pcsphy-handle
+	 */
+	err = of_property_match_string(mac_node, "pcs-handle-names", "sgmii");
+	if (err == -EINVAL || err == -ENODATA)
+		pcs = memac_pcs_create(mac_node, 0); // code takes this branch
+	else if (err < 0)
+		goto _return_fm_mac_free;
+	else
+		pcs = memac_pcs_create(mac_node, err);
+
+	// A default PCS is created and saved in "pcs"
+
+	// This determination fails and mistakenly saves the default PCS
+	// memac->sgmii_pcs instead of memac->xfi_pcs, because at this
+	// stage, mac_dev->phy_if == PHY_INTERFACE_MODE_10GBASER.
+	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
+		memac->xfi_pcs = pcs;
+	else
+		memac->sgmii_pcs = pcs;
+
+In other words, in the absence of pcs-handle-names, the default
+xfi_pcs assignment logic only works when in the device tree we have
+PHY_INTERFACE_MODE_XGMII.
+
+By reversing the order between the fallback xfi_pcs assignment and the
+"xgmii" overwrite with "10gbase-r", we are able to support both values
+in the device tree, with identical behavior.
+
+Currently, it is impossible to make the s/xgmii/10gbase-r/ device tree
+conversion, because it would break forward compatibility (new device
+tree with old kernel). The only way to modify existing device trees to
+phy-interface-mode = "10gbase-r" is to fix stable kernels to accept this
+value and handle it properly.
+
+One reason why the conversion is desirable is because with pre-phylink
+kernels, the Aquantia PHY driver used to warn about the improper use
+of PHY_INTERFACE_MODE_XGMII [1]. It is best to have a single (latest)
+device tree that works with all supported stable kernel versions.
+
+Note that the blamed commit does not constitute a regression per se.
+Older stable kernels like 6.1 still do not work with "10gbase-r", but
+for a different reason. That is a battle for another time.
+
+[1] https://lore.kernel.org/netdev/20240214-ls1046-dts-use-10gbase-r-v1-1-8c2d68547393@concurrent-rt.com/
+
+Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ .../net/ethernet/freescale/fman/fman_memac.c   | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index fa205be94a4b8..14498a0d13e0b 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2397,11 +2397,9 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	struct fbcon_display *p = &fb_display[vc->vc_num];
- 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
--	char *old_data = NULL;
-+	u8 *old_data = vc->vc_font.data;
+diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
+index 3b75cc543be93..76e5181789cb9 100644
+--- a/drivers/net/ethernet/freescale/fman/fman_memac.c
++++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
+@@ -1074,6 +1074,14 @@ int memac_initialization(struct mac_device *mac_dev,
+ 	unsigned long		 capabilities;
+ 	unsigned long		*supported;
  
- 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
--	if (p->userfont)
--		old_data = vc->vc_font.data;
- 	vc->vc_font.data = (void *)(p->fontdata = data);
- 	old_userfont = p->userfont;
- 	if ((p->userfont = userfont))
-@@ -2435,13 +2433,13 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 		update_screen(vc);
++	/* The internal connection to the serdes is XGMII, but this isn't
++	 * really correct for the phy mode (which is the external connection).
++	 * However, this is how all older device trees say that they want
++	 * 10GBASE-R (aka XFI), so just convert it for them.
++	 */
++	if (mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
++		mac_dev->phy_if = PHY_INTERFACE_MODE_10GBASER;
++
+ 	mac_dev->phylink_ops		= &memac_mac_ops;
+ 	mac_dev->set_promisc		= memac_set_promiscuous;
+ 	mac_dev->change_addr		= memac_modify_mac_address;
+@@ -1140,7 +1148,7 @@ int memac_initialization(struct mac_device *mac_dev,
+ 	 * (and therefore that xfi_pcs cannot be set). If we are defaulting to
+ 	 * XGMII, assume this is for XFI. Otherwise, assume it is for SGMII.
+ 	 */
+-	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
++	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_10GBASER)
+ 		memac->xfi_pcs = pcs;
+ 	else
+ 		memac->sgmii_pcs = pcs;
+@@ -1154,14 +1162,6 @@ int memac_initialization(struct mac_device *mac_dev,
+ 		goto _return_fm_mac_free;
  	}
  
--	if (old_data && (--REFCOUNT(old_data) == 0))
-+	if (old_userfont && (--REFCOUNT(old_data) == 0))
- 		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
- 	return 0;
- 
- err_out:
- 	p->fontdata = old_data;
--	vc->vc_font.data = (void *)old_data;
-+	vc->vc_font.data = old_data;
- 
- 	if (userfont) {
- 		p->userfont = old_userfont;
+-	/* The internal connection to the serdes is XGMII, but this isn't
+-	 * really correct for the phy mode (which is the external connection).
+-	 * However, this is how all older device trees say that they want
+-	 * 10GBASE-R (aka XFI), so just convert it for them.
+-	 */
+-	if (mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
+-		mac_dev->phy_if = PHY_INTERFACE_MODE_10GBASER;
+-
+ 	/* TODO: The following interface modes are supported by (some) hardware
+ 	 * but not by this driver:
+ 	 * - 1000BASE-KX
 -- 
 2.43.0
 
