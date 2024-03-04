@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650B2870D64
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E743870E17
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4B81F212A2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B169C1C2333C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FCE7BAED;
-	Mon,  4 Mar 2024 21:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109A478B4C;
+	Mon,  4 Mar 2024 21:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY8htPMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taW/yT9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073EB7A70D;
-	Mon,  4 Mar 2024 21:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C187D1F92C;
+	Mon,  4 Mar 2024 21:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588011; cv=none; b=MZLmoRBooVAcwECv1MPv7iDkSUYtWsDcQyMWAKFEpbnfAxMIfWUV/jAe7btUYDbPUPk1SGQIJCyqjLDaQoQECdv+L/g3/PfcGTY+vBEr1HdMwIv1oLNqs/JcEPfeyZtnVGHWzUjPB5zKBYgIulGFHIi17CkMkHPMO5Bhj1sQhXQ=
+	t=1709588444; cv=none; b=HMd5x5sgOkF9y2eDTc7UVP1SDdYMrMv/9HU5edKZzYO2NCOGCRaGcrDeVnRrSRh1+iIhMXPeO7ZD8AsJCh8DzyomgwRrlG6Lk7l+Wf+2b4tokMi/qNIQ6V74zApq56sD6Mvn/yY9Ja52Y5LdiL6BsA2yFtha9hYr/DhwO8gBpQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588011; c=relaxed/simple;
-	bh=qbzMEdXzfpsClOOS0f5aYuMmfRES68n6ZOBcLtp9P/M=;
+	s=arc-20240116; t=1709588444; c=relaxed/simple;
+	bh=xPdeTWpzQMAsUS0WWDtbLDBihfOce55kjtyZGn09Iyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9+1DtShMVQeSs6RzWrg/KY2+cb8giIwOkcMbN1/QX4tHThY1JuONrM8dgYKPdBKs3mZ49h+8BhDs+SZuRwrmx5mf2r95c5ZrpSbBAf55uJOXhSoOraG7Uy060SKiXqdg9Fp4hJaSPd33cayugP/QrR7K4bXlub4sKtrisZQGws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY8htPMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D955C433C7;
-	Mon,  4 Mar 2024 21:33:30 +0000 (UTC)
+	 MIME-Version; b=J14ApSWS8v4LRRTZ/rqp1E4yNNgIOcBjmQEaffScYSPmOp0iqLs43kOnH+/XQUSuWqpUpYlN7rDCipVkh9q00niUBLlEylhkLhj8GaowW8yX40c9oCD28MzraAt+jRF6bnAv0DnjultyqPqTqwj4PfMV6x7EnTqnZInQTwenNI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taW/yT9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF2C433F1;
+	Mon,  4 Mar 2024 21:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588010;
-	bh=qbzMEdXzfpsClOOS0f5aYuMmfRES68n6ZOBcLtp9P/M=;
+	s=korg; t=1709588444;
+	bh=xPdeTWpzQMAsUS0WWDtbLDBihfOce55kjtyZGn09Iyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MY8htPMYQit6tqvmdWk8wpHioEUvD7fD2RufmoJnmJOsxC3Z+aR305R+VEUIz6tlC
-	 P7F1c+QdeRhLfknmbuXcRVr1ODNr8tiqPRHMuu1mm+LBPr9KlHRAQU4wa3IOKLqkk7
-	 5vyeWVO+tW3qutsh+3zsr+UR0cnaSsGypL2hyIKM=
+	b=taW/yT9q0gS5WFTpgOIDVt8RFn1odBQAG9F7HVwhaCGRbBacolvX/tEOg3BJZEp8W
+	 sGVZ6t/9CaC+vU0WxCxUDIBW+qHFAribZFPW1byoXF6jrG8kf65C8Gbm1S269GMcAG
+	 QwqJfWPDWgMqXPpERKV8TSZtt5mJnDz1pwDHvnV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/25] power: supply: bq27xxx-i2c: Do not free non existing IRQ
-Date: Mon,  4 Mar 2024 21:23:49 +0000
-Message-ID: <20240304211536.185565393@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 110/143] mptcp: fix snd_wnd initialization for passive socket
+Date: Mon,  4 Mar 2024 21:23:50 +0000
+Message-ID: <20240304211553.442523762@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
+commit adf1bb78dab55e36d4d557aa2fb446ebcfe9e5ce upstream.
 
-The bq27xxx i2c-client may not have an IRQ, in which case
-client->irq will be 0. bq27xxx_battery_i2c_probe() already has
-an if (client->irq) check wrapping the request_threaded_irq().
+Such value should be inherited from the first subflow, but
+passive sockets always used 'rsk_rcv_wnd'.
 
-But bq27xxx_battery_i2c_remove() unconditionally calls
-free_irq(client->irq) leading to:
-
-[  190.310742] ------------[ cut here ]------------
-[  190.310843] Trying to free already-free IRQ 0
-[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
-
-Followed by a backtrace when unbinding the driver. Add
-an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
-probe() to fix this.
-
-Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6f8a612a33e4 ("mptcp: keep track of advertised windows right edge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-5-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 01800cd97e3af..08c7e2b4155ad 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -217,7 +217,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
- {
- 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3220,7 +3220,7 @@ struct sock *mptcp_sk_clone_init(const s
+ 	msk->write_seq = subflow_req->idsn + 1;
+ 	msk->snd_nxt = msk->write_seq;
+ 	msk->snd_una = msk->write_seq;
+-	msk->wnd_end = msk->snd_nxt + req->rsk_rcv_wnd;
++	msk->wnd_end = msk->snd_nxt + tcp_sk(ssk)->snd_wnd;
+ 	msk->setsockopt_seq = mptcp_sk(sk)->setsockopt_seq;
+ 	mptcp_init_sched(msk, mptcp_sk(sk)->sched);
  
--	free_irq(client->irq, di);
-+	if (client->irq)
-+		free_irq(client->irq, di);
-+
- 	bq27xxx_battery_teardown(di);
- 
- 	mutex_lock(&battery_mutex);
--- 
-2.43.0
-
 
 
 
