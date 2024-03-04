@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9121C870DA0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36205870F4C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6EDB27096
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68FEB1C2132F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7175279950;
-	Mon,  4 Mar 2024 21:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F127992E;
+	Mon,  4 Mar 2024 21:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khGNq9IM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qevr4EXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F119DDCB;
-	Mon,  4 Mar 2024 21:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FACC1C6AB;
+	Mon,  4 Mar 2024 21:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588162; cv=none; b=eO54MvxqsePeRnxjtVVgAPk3CLZrR1kJMqyPCcEJZcLjKZiouaDm2/NybgbRehORqncfTBURtWGGUUcpvvLnW8atA2LGGA8O5cTK6FaIx94++YU7h9Qz3mrRnEAoBB6GQ8aBpsSRl1DwVNBy8XjrGrmjRZ+q1MJvGZu3i68nF48=
+	t=1709589192; cv=none; b=BLszmbGuJpMgIXf1qc2bq1QGiYeV5WES2XJD1EUFccrYPRQ1OvUBachKQoHIjiQuZ3V6IANgnj4wD8tc5vpx+eYLxVk75ESG8BxU56j26m5mb1tqhRXqrzWDM5VsDSlr0NBLgcinpqwgUAkg5AAgDasQ055Mgbot7HbyuyOMJOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588162; c=relaxed/simple;
-	bh=XXCQWMb2LuZsWQ9t+gNKfIjpgAAgL8VwO93HjfyGUIs=;
+	s=arc-20240116; t=1709589192; c=relaxed/simple;
+	bh=aevAlS9CIa95pKoO317HsyEsngtYZtdlrkWLDWxOHe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bFZqn57PS8O8JT/BObBu2Y/K718JprqSJmbJ51p3Q/voI70qSw8NlshR5Tmub0jOFJ5aBrEDvKNeFFDly+mO7i8VOgKJ36+vMY+FuJqGi81wwbaKgpYY2tpvn1+LGOV8YnTLzEpnTW5WfxzafhhVm16ugdPs0RggIfwp9ldvNxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khGNq9IM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6342C433C7;
-	Mon,  4 Mar 2024 21:36:01 +0000 (UTC)
+	 MIME-Version; b=ASqNqkf1MUGpfzVLm1JabSe8yaF+o67QrJyqIN5rOekkXydfRYLwCyDkphB3TldG7pon8LsGN7aEGQa1VjbjgRWwUDKGdqJqvRAWJm3JdUCusFSRn49n46sGY+m26mOCregjo+9Xxrht7ss2/YTsC1NTrQdcDprt/0eePjnpZlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qevr4EXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A9EC433C7;
+	Mon,  4 Mar 2024 21:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588162;
-	bh=XXCQWMb2LuZsWQ9t+gNKfIjpgAAgL8VwO93HjfyGUIs=;
+	s=korg; t=1709589192;
+	bh=aevAlS9CIa95pKoO317HsyEsngtYZtdlrkWLDWxOHe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khGNq9IMXoNrJZGsTLwk2InkH6UktXp0ygGdp9Vs1AhwH4CGyXIM5hsRwc+yybwYW
-	 RZVsQEO2arVDD89Wap8WrFi4MM3ZB6mfcddho+mj8rFg5vXwZIInsM6oDHVtmK4T7s
-	 P9MGVGBUMH+qW1DSWKUoDhxqdxtSDLg5Lh4Y6Qnc=
+	b=Qevr4EXvqJ8u9KKEjdMJEj+D9KCSZLGcdDG8tv+D2IrlorgnpQLW449cr7LTh/oqo
+	 wKA+5pqn8HHe4X0FvQqHL79Y/9asnpD+x5m+B//aL5EpUdMO9l7/DDeIylJFphwZ0q
+	 djGhPCUYetQgUQWCkbqUbR/FzZUMnqDIKaflxNGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Dimitris Vlachos <dvlachos@ics.forth.gr>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ying Hsu <yinghsu@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 21/42] riscv: Sparse-Memory/vmemmap out-of-bounds fix
+Subject: [PATCH 5.15 15/84] Bluetooth: Avoid potential use-after-free in hci_error_reset
 Date: Mon,  4 Mar 2024 21:23:48 +0000
-Message-ID: <20240304211538.340100085@linuxfoundation.org>
+Message-ID: <20240304211542.848322831@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitris Vlachos <dvlachos@ics.forth.gr>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit a11dd49dcb9376776193e15641f84fcc1e5980c9 ]
+[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
 
-Offset vmemmap so that the first page of vmemmap will be mapped
-to the first page of physical memory in order to ensure that
-vmemmap’s bounds will be respected during
-pfn_to_page()/page_to_pfn() operations.
-The conversion macros will produce correct SV39/48/57 addresses
-for every possible/valid DRAM_BASE inside the physical memory limits.
+While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
+BT controller is not responding, the GPIO reset mechanism would
+free the hci_dev and lead to a use-after-free in hci_error_reset.
 
-v2:Address Alex's comments
+Here's the call trace observed on a ChromeOS device with Intel AX201:
+   queue_work_on+0x3e/0x6c
+   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
+   ? init_wait_entry+0x31/0x31
+   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
+   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
+   process_one_work+0x1d8/0x33f
+   worker_thread+0x21b/0x373
+   kthread+0x13a/0x152
+   ? pr_cont_work+0x54/0x54
+   ? kthread_blkcg+0x31/0x31
+    ret_from_fork+0x1f/0x30
 
-Suggested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
-Reported-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
-Closes: https://lore.kernel.org/linux-riscv/20240202135030.42265-1-csd4492@csd.uoc.gr
-Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240229191723.32779-1-dvlachos@ics.forth.gr
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+This patch holds the reference count on the hci_dev while processing
+a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
+
+Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index b16304fdf4489..5ab13570daa53 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -44,7 +44,7 @@
-  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
-  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
-  */
--#define vmemmap		((struct page *)VMEMMAP_START)
-+#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index b3b597960c562..a8854b24f4cfb 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2330,6 +2330,7 @@ static void hci_error_reset(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
  
- #define PCI_IO_SIZE      SZ_16M
- #define PCI_IO_END       VMEMMAP_START
++	hci_dev_hold(hdev);
+ 	BT_DBG("%s", hdev->name);
+ 
+ 	if (hdev->hw_error)
+@@ -2337,10 +2338,10 @@ static void hci_error_reset(struct work_struct *work)
+ 	else
+ 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
+ 
+-	if (hci_dev_do_close(hdev))
+-		return;
++	if (!hci_dev_do_close(hdev))
++		hci_dev_do_open(hdev);
+ 
+-	hci_dev_do_open(hdev);
++	hci_dev_put(hdev);
+ }
+ 
+ void hci_uuids_clear(struct hci_dev *hdev)
 -- 
 2.43.0
 
