@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C6F870E2B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717EC870D52
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 765281F21C39
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C261F21885
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB4846BA0;
-	Mon,  4 Mar 2024 21:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF5C79DCA;
+	Mon,  4 Mar 2024 21:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALC4qDN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqdBEHW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E348E8F58;
-	Mon,  4 Mar 2024 21:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F81B1C680;
+	Mon,  4 Mar 2024 21:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588495; cv=none; b=DlGopWj65D2G+qNrb5hdC3ivy2Exh7EgIO2kENl+zO5eOQ+gDTjF3DUwhNqLpp07ETCmk9cVyfMSu7TX7scTu/ZS52Z1LoQiX8J1Lgv4wR0OqmJEMEMfXPZnK6LqJ0YgKFiR8wIS3ZZljhV/76RrySHo9cYXgXJbCh9FOHitm4k=
+	t=1709587969; cv=none; b=bSjHKF25qpIOEs+0F3k7cB3QAyEiRKRBw6VzN7x0suP6Y+1PYnkgJfbYuPgnfQbNMBwxJbL7XgtO3lV90VddtTGY4TCXuV2Hg31WGtOWTUvrzzU0Ib6+xBlD3NQ6hv8vAF3zSX9MspHzhDF61ZNlkdUtXeJZGOj0KMo5p5h6HYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588495; c=relaxed/simple;
-	bh=QVvYJjbeYxDpZDLfly9EhNXJV05LUXDXzviXxK41z9k=;
+	s=arc-20240116; t=1709587969; c=relaxed/simple;
+	bh=0VzPtt8Tp8Iuo64nXBI239qsRdYIMYIbIS33CJlLniQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgnvW0A1wnDL/pO3Lbri2WVg3D9xBf5VZnzJUFtqXL4XQCBF7kvpEnGKSuB3UhrwO4x8sQqkTbr/0xbhdhpt0LfyXbyEslTJsbkJUctGvZqPlc+AN+yrTdwJHI0kg9J8Hf7Id9ewu5PbTZ45gsft9vzByp1IH0pqeByQ6GgM76U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALC4qDN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773BDC433C7;
-	Mon,  4 Mar 2024 21:41:34 +0000 (UTC)
+	 MIME-Version; b=QFYTB+EIHZA2kWVL0xtF34cSlt+yNWoT6TyWGTLfZJkOHBU3Tu80Q1WwjynRtB2rmMvlooWbxMTCiyo/yizB+visBABH6f/Xi7CiDMBC+WVJ2gFBsfKSwWxFTKxwfq7rQtOYXrob9Ouc2VkNH8FeKuB1DrUGMZlVeJ+OiTWnF5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqdBEHW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7138C433C7;
+	Mon,  4 Mar 2024 21:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588494;
-	bh=QVvYJjbeYxDpZDLfly9EhNXJV05LUXDXzviXxK41z9k=;
+	s=korg; t=1709587969;
+	bh=0VzPtt8Tp8Iuo64nXBI239qsRdYIMYIbIS33CJlLniQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALC4qDN+8G0JHYk4UGeuxbzOc0wHAn2zXp51LKVHVP+sQ1ZeID+k3/eAGr4s0E6B8
-	 R8RWpZt+psdG/tDioHIKx1YUk7ICdkk8BWsirlWEgFKdFqBKjMd9jpQDUWVY7MQASQ
-	 ap0aOpLh/fAIyYCFpaHotUHa4HaEvGpeSaHe8PbI=
+	b=mqdBEHW7pXu5pN2L674vZSHHoz/JaVUXyb4OFPBLstTPsFAAK84TQlRuPgp7/4Dv0
+	 pHrwBXap4mY8NxwOgnAmWrgrHVD058LSZD+3UCyxgceCh6FwNUoXUW12S1n8n8wHU1
+	 fD9G5BSzzuwErkUINTa2RhIWhBwZC4vNw+Kzabh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zixi Chen <zixchen@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.6 105/143] x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 160/162] selftests: mptcp: add mptcp_lib_is_v6
 Date: Mon,  4 Mar 2024 21:23:45 +0000
-Message-ID: <20240304211553.270683490@linuxfoundation.org>
+Message-ID: <20240304211556.777592271@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,248 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit 6890cb1ace350b4386c8aee1343dc3b3ddd214da upstream.
+commit b850f2c7dd85ecd14a333685c4ffd23f12665e94 upstream.
 
-MKTME repurposes the high bit of physical address to key id for encryption
-key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
-the valid bits in the MTRR mask register are based on the reduced number
-of physical address bits.
+To avoid duplicated code in different MPTCP selftests, we can add
+and use helpers defined in mptcp_lib.sh.
 
-detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
-it from the total usable physical bits, but it is called too late.
-Move the call to early_init_intel() so that it is called in setup_arch(),
-before MTRRs are setup.
+is_v6() helper is defined in mptcp_connect.sh, mptcp_join.sh and
+mptcp_sockopt.sh, so export it into mptcp_lib.sh and rename it as
+mptcp_lib_is_v6(). Use this new helper in all scripts.
 
-This fixes boot on TDX-enabled systems, which until now only worked with
-"disable_mtrr_cleanup".  Without the patch, the values written to the
-MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800) and
-the writes failed; with the patch, the values are 46-bit wide, which
-matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
-
-Reported-by: Zixi Chen <zixchen@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240131230902.1867092-3-pbonzini%40redhat.com
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-10-8d6b94150f6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/intel.c |  178 ++++++++++++++++++++++----------------------
- 1 file changed, 91 insertions(+), 87 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |   16 +++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    |   14 ++++----------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |    8 +-------
+ 4 files changed, 15 insertions(+), 28 deletions(-)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -184,6 +184,90 @@ static bool bad_spectre_microcode(struct
- 	return false;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -310,12 +310,6 @@ check_mptcp_disabled()
+ 	return 0
  }
  
-+#define MSR_IA32_TME_ACTIVATE		0x982
-+
-+/* Helpers to access TME_ACTIVATE MSR */
-+#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
-+#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
-+
-+#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
-+#define TME_ACTIVATE_POLICY_AES_XTS_128	0
-+
-+#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
-+
-+#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
-+#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
-+
-+/* Values for mktme_status (SW only construct) */
-+#define MKTME_ENABLED			0
-+#define MKTME_DISABLED			1
-+#define MKTME_UNINITIALIZED		2
-+static int mktme_status = MKTME_UNINITIALIZED;
-+
-+static void detect_tme_early(struct cpuinfo_x86 *c)
-+{
-+	u64 tme_activate, tme_policy, tme_crypto_algs;
-+	int keyid_bits = 0, nr_keyids = 0;
-+	static u64 tme_activate_cpu0 = 0;
-+
-+	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
-+
-+	if (mktme_status != MKTME_UNINITIALIZED) {
-+		if (tme_activate != tme_activate_cpu0) {
-+			/* Broken BIOS? */
-+			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
-+			pr_err_once("x86/tme: MKTME is not usable\n");
-+			mktme_status = MKTME_DISABLED;
-+
-+			/* Proceed. We may need to exclude bits from x86_phys_bits. */
-+		}
-+	} else {
-+		tme_activate_cpu0 = tme_activate;
-+	}
-+
-+	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
-+		pr_info_once("x86/tme: not enabled by BIOS\n");
-+		mktme_status = MKTME_DISABLED;
-+		return;
-+	}
-+
-+	if (mktme_status != MKTME_UNINITIALIZED)
-+		goto detect_keyid_bits;
-+
-+	pr_info("x86/tme: enabled by BIOS\n");
-+
-+	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
-+	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
-+		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
-+
-+	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
-+	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
-+		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
-+				tme_crypto_algs);
-+		mktme_status = MKTME_DISABLED;
-+	}
-+detect_keyid_bits:
-+	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
-+	nr_keyids = (1UL << keyid_bits) - 1;
-+	if (nr_keyids) {
-+		pr_info_once("x86/mktme: enabled by BIOS\n");
-+		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
-+	} else {
-+		pr_info_once("x86/mktme: disabled by BIOS\n");
-+	}
-+
-+	if (mktme_status == MKTME_UNINITIALIZED) {
-+		/* MKTME is usable */
-+		mktme_status = MKTME_ENABLED;
-+	}
-+
-+	/*
-+	 * KeyID bits effectively lower the number of physical address
-+	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
-+	 */
-+	c->x86_phys_bits -= keyid_bits;
-+}
-+
- static void early_init_intel(struct cpuinfo_x86 *c)
- {
- 	u64 misc_enable;
-@@ -335,6 +419,13 @@ static void early_init_intel(struct cpui
- 	 */
- 	if (detect_extended_topology_early(c) < 0)
- 		detect_ht_early(c);
-+
-+	/*
-+	 * Adjust the number of physical bits early because it affects the
-+	 * valid bits of the MTRR mask registers.
-+	 */
-+	if (cpu_has(c, X86_FEATURE_TME))
-+		detect_tme_early(c);
- }
- 
- static void bsp_init_intel(struct cpuinfo_x86 *c)
-@@ -495,90 +586,6 @@ static void srat_detect_node(struct cpui
- #endif
- }
- 
--#define MSR_IA32_TME_ACTIVATE		0x982
--
--/* Helpers to access TME_ACTIVATE MSR */
--#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
--#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
--
--#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
--#define TME_ACTIVATE_POLICY_AES_XTS_128	0
--
--#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
--
--#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
--#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
--
--/* Values for mktme_status (SW only construct) */
--#define MKTME_ENABLED			0
--#define MKTME_DISABLED			1
--#define MKTME_UNINITIALIZED		2
--static int mktme_status = MKTME_UNINITIALIZED;
--
--static void detect_tme(struct cpuinfo_x86 *c)
+-# $1: IP address
+-is_v6()
 -{
--	u64 tme_activate, tme_policy, tme_crypto_algs;
--	int keyid_bits = 0, nr_keyids = 0;
--	static u64 tme_activate_cpu0 = 0;
--
--	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
--
--	if (mktme_status != MKTME_UNINITIALIZED) {
--		if (tme_activate != tme_activate_cpu0) {
--			/* Broken BIOS? */
--			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
--			pr_err_once("x86/tme: MKTME is not usable\n");
--			mktme_status = MKTME_DISABLED;
--
--			/* Proceed. We may need to exclude bits from x86_phys_bits. */
--		}
--	} else {
--		tme_activate_cpu0 = tme_activate;
--	}
--
--	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
--		pr_info_once("x86/tme: not enabled by BIOS\n");
--		mktme_status = MKTME_DISABLED;
--		return;
--	}
--
--	if (mktme_status != MKTME_UNINITIALIZED)
--		goto detect_keyid_bits;
--
--	pr_info("x86/tme: enabled by BIOS\n");
--
--	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
--	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
--		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
--
--	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
--	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
--		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
--				tme_crypto_algs);
--		mktme_status = MKTME_DISABLED;
--	}
--detect_keyid_bits:
--	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
--	nr_keyids = (1UL << keyid_bits) - 1;
--	if (nr_keyids) {
--		pr_info_once("x86/mktme: enabled by BIOS\n");
--		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
--	} else {
--		pr_info_once("x86/mktme: disabled by BIOS\n");
--	}
--
--	if (mktme_status == MKTME_UNINITIALIZED) {
--		/* MKTME is usable */
--		mktme_status = MKTME_ENABLED;
--	}
--
--	/*
--	 * KeyID bits effectively lower the number of physical address
--	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
--	 */
--	c->x86_phys_bits -= keyid_bits;
+-	[ -z "${1##*:*}" ]
 -}
 -
- static void init_cpuid_fault(struct cpuinfo_x86 *c)
+ do_ping()
  {
- 	u64 msr;
-@@ -715,9 +722,6 @@ static void init_intel(struct cpuinfo_x8
+ 	local listener_ns="$1"
+@@ -324,7 +318,7 @@ do_ping()
+ 	local ping_args="-q -c 1"
+ 	local rc=0
  
- 	init_ia32_feat_ctl(c);
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		$ipv6 || return 0
+ 		ping_args="${ping_args} -6"
+ 	fi
+@@ -620,12 +614,12 @@ run_tests_lo()
+ 	fi
  
--	if (cpu_has(c, X86_FEATURE_TME))
--		detect_tme(c);
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 	else
+ 		local_addr="0.0.0.0"
+@@ -693,7 +687,7 @@ run_test_transparent()
+ 	TEST_GROUP="${msg}"
+ 
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+@@ -726,7 +720,7 @@ EOF
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		r6flag="-6"
+ 	else
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -592,12 +592,6 @@ link_failure()
+ 	done
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
 -
- 	init_intel_misc_features(c);
+ # $1: ns, $2: port
+ wait_local_port_listen()
+ {
+@@ -877,7 +871,7 @@ pm_nl_set_endpoint()
+ 		local id=10
+ 		while [ $add_nr_ns1 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::1"
+ 			else
+ 				addr="10.0.$counter.1"
+@@ -929,7 +923,7 @@ pm_nl_set_endpoint()
+ 		local id=20
+ 		while [ $add_nr_ns2 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::2"
+ 			else
+ 				addr="10.0.$counter.2"
+@@ -971,7 +965,7 @@ pm_nl_set_endpoint()
+ 			pm_nl_flush_endpoint ${connector_ns}
+ 		elif [ $rm_nr_ns2 -eq 9 ]; then
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:1::2"
+ 			else
+ 				addr="10.0.1.2"
+@@ -3339,7 +3333,7 @@ userspace_pm_rm_sf()
+ 	local cnt
  
- 	split_lock_init();
+ 	[ "$1" == "$ns2" ] && evts=$evts_ns2
+-	if is_v6 $2; then ip=6; fi
++	if mptcp_lib_is_v6 $2; then ip=6; fi
+ 	tk=$(mptcp_lib_evts_get_info token "$evts")
+ 	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
+ 	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -227,6 +227,11 @@ mptcp_lib_kill_wait() {
+ 	wait "${1}" 2>/dev/null
+ }
+ 
++# $1: IP address
++mptcp_lib_is_v6() {
++	[ -z "${1##*:*}" ]
++}
++
+ # $1: ns, $2: MIB counter
+ mptcp_lib_get_counter() {
+ 	local ns="${1}"
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -161,12 +161,6 @@ check_transfer()
+ 	return 0
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ do_transfer()
+ {
+ 	local listener_ns="$1"
+@@ -183,7 +177,7 @@ do_transfer()
+ 	local mptcp_connect="./mptcp_connect -r 20"
+ 
+ 	local local_addr ip
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		ip=ipv6
+ 	else
 
 
 
