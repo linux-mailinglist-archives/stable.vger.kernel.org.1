@@ -1,110 +1,160 @@
-Return-Path: <stable+bounces-25873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA486FE21
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 10:57:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D239B86FE5C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495F8284248
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:57:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F15EB2354C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 10:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FD4225AD;
-	Mon,  4 Mar 2024 09:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42687225DE;
+	Mon,  4 Mar 2024 10:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pww2daha"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F10B249E6;
-	Mon,  4 Mar 2024 09:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97452208A;
+	Mon,  4 Mar 2024 10:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709546175; cv=none; b=EUbjb6sPTUcMcFvdTwH+A5HKBVSajVFxXKmkVkG1Vs5nTPZ/pT62N9IkMbQx0EuGFIKEYicZec+49RAZZxx65IYjZuIwkau1IN/Evm+IzaEEr7aYy5DitjlcFtHOnpeK+X3IQXr0q3sKPLJSmaVvAdLzz+4doiCDyvnfyOA9KHU=
+	t=1709546802; cv=none; b=Eaf2q6fyVkUyKWEliy761kqG/85oqXS0LqVJWwzDW+qiv786vyV66nsvMzCDM1SzcrmpK93HI6XOrFq5P8sq2CGZmMjAXZqUhL/wNvH/FdrS3GStv2SHaJAeLimjO2JLk+j9F3c/9rO042HwHYzUNNU+I+0pFw5KuADJI1JlHFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709546175; c=relaxed/simple;
-	bh=lPMlhZe6Zu/FURCZR//Lp7oBo0dSFp8zW5k/9lO6GAk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D0nL3BLixh0opcXjWfE4Ix0HRYC1nBXZopoo4PkV7xGNsCGIosXBOrzNeLfG00I3NZaPQFoCQpqs7xElwMJtYpuWPi3D85JmsxxKq1Hubkhx6rAheMJlGQw6Wikjb7vLeV606/hI/VuAHxYJR6YEo5qyEB9o46gzH3xn1sLyNf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, Vinod Koul <vkoul@kernel.org>, Bard
- Liao <yung-chuan.liao@linux.intel.com>, Pierre-Louis Bossart
-	<pierre-louis.bossart@linux.intel.com>, Sanyog Kale
-	<sanyog.r.kale@intel.com>, <alsa-devel@alsa-project.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Ranjani
- Sridharan <ranjani.sridharan@linux.intel.com>
-Subject: [PATCH 5.10/5.15/6.1 1/1] soundwire: stream: use consistent pattern for freeing buffers
-Date: Mon, 4 Mar 2024 12:55:42 +0300
-Message-ID: <20240304095542.4799-2-d.dulov@aladdin.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240304095542.4799-1-d.dulov@aladdin.ru>
-References: <20240304095542.4799-1-d.dulov@aladdin.ru>
+	s=arc-20240116; t=1709546802; c=relaxed/simple;
+	bh=ql2YE9dLy7/HqksxFsL3EMa70qfrq6G0Ss3uyxIAfU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fZoTFFMh32rIdVTHLNSgZNTNpITE7oBUZNWGWJoNLCgRTxmsLOON0c/5Ftd1cjQX+AliqQ0ep/oe1rz5QtXIvEbuMY0NK6Qlr32ByClNWHNg3eBR7jIupZMU9Ohep1mgMXXatacYHSLZoBlwaxJxg5vRtJsNXJ+k5OnvnkEDX5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pww2daha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E61C433C7;
+	Mon,  4 Mar 2024 10:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709546801;
+	bh=ql2YE9dLy7/HqksxFsL3EMa70qfrq6G0Ss3uyxIAfU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pww2dahaYktpZw8zT+GAeiG3eZOnqVJMgGXYa9jEHCUPuvpwexEgiwYHLp8oIPWV1
+	 p9Nfs2tLGMtfRtk/61TvqOxv6B/o8bdnNnoNv4fmtMezl9QEk1KTwDhwsXfJQhjb0R
+	 S8h/M2BjnZsTX1daFrf3PHgFHyPx/I/hW2Bd7Tg7nKt2GEvzlbv3awpzmXs8VmBuEz
+	 YAzCR9rxIfj0eY9MHL/Hs6xaKa1v/WiUM4kjerG4w5F0PtzOvRZsegSxW7fevoo+Wl
+	 L6UHJUJs6JB0QPzhTtfH3TutaU8TBxfoCo5iNyFvwFfdBp+I8psu0Q8zPKUB5ig+iD
+	 mpOFS/TxydkMA==
+Date: Mon, 4 Mar 2024 11:06:38 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Frank Oltmanns <frank@oltmanns.dev>
+Cc: Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>, Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] clk: sunxi-ng: common: Support minimum and
+ maximum rate
+Message-ID: <20240304-satisfied-terrier-of-refinement-af48cd@houat>
+References: <20240304-pinephone-pll-fixes-v3-0-94ab828f269a@oltmanns.dev>
+ <20240304-pinephone-pll-fixes-v3-1-94ab828f269a@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-2016-03.aladdin.ru (192.168.1.103) To
- EXCH-2016-01.aladdin.ru (192.168.1.101)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="66d2eote3zmcdjtu"
+Content-Disposition: inline
+In-Reply-To: <20240304-pinephone-pll-fixes-v3-1-94ab828f269a@oltmanns.dev>
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 5ec0c8721c06fc55d8a0bb32c403228358987eb6 upstream
+--66d2eote3zmcdjtu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The code should free the message buffer used for data, the message
-structure used for control and assign the latter to NULL. The last
-part is missing for multi-link cases, and the order is inconsistent
-for single-link cases.
+On Mon, Mar 04, 2024 at 08:29:17AM +0100, Frank Oltmanns wrote:
+> The Allwinner SoC's typically have an upper and lower limit for their
+> clocks' rates. Up until now, support for that has been implemented
+> separately for each clock type.
+>=20
+> Implement that functionality in the sunxi-ng's common part making use of
+> the CCF rate liming capabilities, so that it is available for all clock
+> types.
+>=20
+> Suggested-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/clk/sunxi-ng/ccu_common.c | 15 +++++++++++++++
+>  drivers/clk/sunxi-ng/ccu_common.h |  3 +++
+>  2 files changed, 18 insertions(+)
+>=20
+> diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/ccu=
+_common.c
+> index 8babce55302f..2152063eee16 100644
+> --- a/drivers/clk/sunxi-ng/ccu_common.c
+> +++ b/drivers/clk/sunxi-ng/ccu_common.c
+> @@ -44,6 +44,12 @@ bool ccu_is_better_rate(struct ccu_common *common,
+>  			unsigned long current_rate,
+>  			unsigned long best_rate)
+>  {
+> +	if (common->max_rate && current_rate > common->max_rate)
+> +		return false;
+> +
+> +	if (common->min_rate && current_rate < common->min_rate)
+> +		return false;
+> +
 
-Link: https://github.com/thesofproject/linux/issues/4056
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20230119073211.85979-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
----
- drivers/soundwire/stream.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+We should use clk_hw_get_rate_range() here, there might be some
+additional constraints to the rate range than the hardware ones (ie,
+calls to clk_set_rate_range()).
 
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index a377c3d02c55..ecde6fcb8be0 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -703,8 +703,8 @@ static int sdw_bank_switch(struct sdw_bus *bus, int m_rt_count)
- 	}
- 
- 	if (!multi_link) {
--		kfree(wr_msg);
- 		kfree(wbuf);
-+		kfree(wr_msg);
- 		bus->defer_msg.msg = NULL;
- 		bus->params.curr_bank = !bus->params.curr_bank;
- 		bus->params.next_bank = !bus->params.next_bank;
-@@ -750,6 +750,7 @@ static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
- 	if (bus->defer_msg.msg) {
- 		kfree(bus->defer_msg.msg->buf);
- 		kfree(bus->defer_msg.msg);
-+		bus->defer_msg.msg = NULL;
- 	}
- 
- 	return 0;
-@@ -847,6 +848,7 @@ static int do_bank_switch(struct sdw_stream_runtime *stream)
- 		if (bus->defer_msg.msg) {
- 			kfree(bus->defer_msg.msg->buf);
- 			kfree(bus->defer_msg.msg);
-+			bus->defer_msg.msg = NULL;
- 		}
- 	}
- 
--- 
-2.25.1
+>  	if (common->features & CCU_FEATURE_CLOSEST_RATE)
+>  		return abs(current_rate - target_rate) < abs(best_rate - target_rate);
+> =20
+> @@ -122,7 +128,10 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, st=
+ruct device *dev,
+> =20
+>  	for (i =3D 0; i < desc->hw_clks->num ; i++) {
+>  		struct clk_hw *hw =3D desc->hw_clks->hws[i];
+> +		struct ccu_common *common =3D hw_to_ccu_common(hw);
+>  		const char *name;
+> +		unsigned long min_rate =3D 0;
+> +		unsigned long max_rate =3D ULONG_MAX;
+> =20
+>  		if (!hw)
+>  			continue;
+> @@ -136,6 +145,12 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, st=
+ruct device *dev,
+>  			pr_err("Couldn't register clock %d - %s\n", i, name);
+>  			goto err_clk_unreg;
+>  		}
+> +
+> +		if (common->min_rate)
+> +			min_rate =3D common->min_rate;
+> +		if (common->max_rate)
+> +			max_rate =3D common->max_rate;
 
+max_rate should always be set to ULONG_MAX. I would drop the tests for
+both here, and warn if max_rate is set to 0.
+
+Maxime
+
+--66d2eote3zmcdjtu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZeWdLgAKCRDj7w1vZxhR
+xb2SAP9ET0NeahIoRnvn18FEj694GWHVCshWmVdZSbx52ubyUQEAquQE3UNMNiFK
+TI7im2BmnlMaX7gl9ElohBH6qB5TBgE=
+=/sgn
+-----END PGP SIGNATURE-----
+
+--66d2eote3zmcdjtu--
 
