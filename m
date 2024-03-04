@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D3C870F6E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4807870D8F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7BA21C2130D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FE8828FBDF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471C17992E;
-	Mon,  4 Mar 2024 21:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514C57A124;
+	Mon,  4 Mar 2024 21:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzyyaIeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxvOPY+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F191C6AB;
-	Mon,  4 Mar 2024 21:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3AD1C687;
+	Mon,  4 Mar 2024 21:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589275; cv=none; b=oo3ginTWKufMx2IHZ17AB+gjbjRHK8p53+5OO8l4P2mrLySpPg4kPiZwkv2ZtJTAmT7Wj6jlcob+90gYbQTz8033Hau42JUd7uVxDmFLzPxi2PRLkKGTYP8b3Sy0jJTggr3qzNaB7WWXVVWe1BESmN6hQtgadKZm4mrgllfNtp4=
+	t=1709588118; cv=none; b=WKaqNk9BMFXVZ0jFz9K2fImZXo90E7iXF9aj6fo4BirX9aemf+mt1H85367o0N3sHxkWaHQ6HItRwjMndlH5dDIIQYPiQu+EkOfnjKPlKqywyNMfFUMLcAWloGNmA1CH0if/SlO3Pxd90tF2mGwrVrWfynsp8XKxZh5navyo1ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589275; c=relaxed/simple;
-	bh=hmlFIvBYn/eEyKYhNXbTmVcsREXCVybG+0F68q0pCac=;
+	s=arc-20240116; t=1709588118; c=relaxed/simple;
+	bh=f221icKxljycLIn8FPKhQ/mETws0F+ZF/cJwj7dLCqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcNM1o6wY/liqb5ZgjnMRFEhFgw5O+T63H4ATVyShb9xs1fSay54+TPQBjeiRs5P2xdayI3vnwo6ARo3MpbWG3RABxEkgaOcZvSjxIbFD+gormsivbL/9GZtgiFSyE8GzQbCfHhh2tmnWt9s4svBXU/gV8GSeHxg9YD4BIbD/5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzyyaIeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8DEC433C7;
-	Mon,  4 Mar 2024 21:54:34 +0000 (UTC)
+	 MIME-Version; b=r44T43IbZRZi1C2kiDC5+W4slN1hD5gYVvsY+LbRQDA09cYMxHrjLscChnefh7DiB5kDxj8nhTxksTQGIjvg3Crecj2KzdumqEKwG0I6bwQqy8+1XGKjoyUiLB5MM7Qt4slMpNqX15DCAMrqGe6Qo8h4gUHgUVhbyLxcHAiJd/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxvOPY+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969CAC433F1;
+	Mon,  4 Mar 2024 21:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589274;
-	bh=hmlFIvBYn/eEyKYhNXbTmVcsREXCVybG+0F68q0pCac=;
+	s=korg; t=1709588117;
+	bh=f221icKxljycLIn8FPKhQ/mETws0F+ZF/cJwj7dLCqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XzyyaIeh+FahB8+cg86xnsiBAmW5JrJxCZI1OWRZHwgvCAwmQyNhMnddFolVP28KW
-	 hkjJckMGb3TEr+GhDyLx7kEjeHwfAicaYQMvUYW/hhOyO0p9C+dUcWAgfPMrJQBbYI
-	 IEK1zpkUAqtODdTedpivEUmkjtY2FB3E0cgInRjE=
+	b=OxvOPY+lpRzW3RhMiipbhYIUNEctKJw/rmGs7NdtSOL/ybArDvWgvPlS0e4NDWGIt
+	 Kc75sMtHhQNpDak7OfXdHpJTG62mqzP/uBLizBBJth9diAjLlNe85VKEjnDUT8xdlS
+	 3L4QZoQ9aF8fuEag0Jmp/Cl/IFi63XnvH4GY0yFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/84] netfilter: make function op structures const
+	Ivan Semenov <ivan@semenov.dev>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 28/42] mmc: core: Fix eMMC initialization with 1-bit bus connection
 Date: Mon,  4 Mar 2024 21:23:55 +0000
-Message-ID: <20240304211543.068927166@linuxfoundation.org>
+Message-ID: <20240304211538.585535141@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,213 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ivan Semenov <ivan@semenov.dev>
 
-[ Upstream commit 285c8a7a58158cb1805c97ff03875df2ba2ea1fe ]
+commit ff3206d2186d84e4f77e1378ba1d225633f17b9b upstream.
 
-No functional changes, these structures should be const.
+Initializing an eMMC that's connected via a 1-bit bus is current failing,
+if the HW (DT) informs that 4-bit bus is supported. In fact this is a
+regression, as we were earlier capable of falling back to 1-bit mode, when
+switching to 4/8-bit bus failed. Therefore, let's restore the behaviour.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Log for Samsung eMMC 5.1 chip connected via 1bit bus (only D0 pin)
+Before patch:
+[134509.044225] mmc0: switch to bus width 4 failed
+[134509.044509] mmc0: new high speed MMC card at address 0001
+[134509.054594] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
+[134509.281602] mmc0: switch to bus width 4 failed
+[134509.282638] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.282657] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+[134509.284598] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.284602] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+[134509.284609] ldm_validate_partition_table(): Disk read failed.
+[134509.286495] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.286500] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+[134509.288303] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.288308] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+[134509.289540] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.289544] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+[134509.289553]  mmcblk0: unable to read partition table
+[134509.289728] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
+[134509.290283] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
+[134509.294577] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 2
+[134509.295835] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[134509.295841] Buffer I/O error on dev mmcblk0, logical block 0, async page read
+
+After patch:
+
+[134551.089613] mmc0: switch to bus width 4 failed
+[134551.090377] mmc0: new high speed MMC card at address 0001
+[134551.102271] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
+[134551.113365]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16 p17 p18 p19 p20 p21
+[134551.114262] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
+[134551.114925] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
+
+Fixes: 577fb13199b1 ("mmc: rework selection of bus speed mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ivan Semenov <ivan@semenov.dev>
+Link: https://lore.kernel.org/r/20240206172845.34316-1-ivan@semenov.dev
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netfilter.h            |  8 ++++----
- net/netfilter/core.c                 | 10 +++++-----
- net/netfilter/nf_conntrack_core.c    |  4 ++--
- net/netfilter/nf_conntrack_netlink.c |  4 ++--
- net/netfilter/nf_nat_core.c          |  2 +-
- net/netfilter/nfnetlink_queue.c      |  8 ++++----
- 6 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/mmc/core/mmc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/netfilter.h b/include/linux/netfilter.h
-index 64acdf22eb4fa..5a665034c30be 100644
---- a/include/linux/netfilter.h
-+++ b/include/linux/netfilter.h
-@@ -376,13 +376,13 @@ struct nf_nat_hook {
- 				  enum ip_conntrack_dir dir);
- };
- 
--extern struct nf_nat_hook __rcu *nf_nat_hook;
-+extern const struct nf_nat_hook __rcu *nf_nat_hook;
- 
- static inline void
- nf_nat_decode_session(struct sk_buff *skb, struct flowi *fl, u_int8_t family)
- {
- #if IS_ENABLED(CONFIG_NF_NAT)
--	struct nf_nat_hook *nat_hook;
-+	const struct nf_nat_hook *nat_hook;
- 
- 	rcu_read_lock();
- 	nat_hook = rcu_dereference(nf_nat_hook);
-@@ -459,7 +459,7 @@ struct nf_ct_hook {
- 			      const struct sk_buff *);
- 	void (*attach)(struct sk_buff *nskb, const struct sk_buff *skb);
- };
--extern struct nf_ct_hook __rcu *nf_ct_hook;
-+extern const struct nf_ct_hook __rcu *nf_ct_hook;
- 
- struct nlattr;
- 
-@@ -474,7 +474,7 @@ struct nfnl_ct_hook {
- 	void (*seq_adjust)(struct sk_buff *skb, struct nf_conn *ct,
- 			   enum ip_conntrack_info ctinfo, s32 off);
- };
--extern struct nfnl_ct_hook __rcu *nfnl_ct_hook;
-+extern const struct nfnl_ct_hook __rcu *nfnl_ct_hook;
- 
- /**
-  * nf_skb_duplicated - TEE target has sent a packet
-diff --git a/net/netfilter/core.c b/net/netfilter/core.c
-index 5396d27ba6a71..aa3f7d3228fda 100644
---- a/net/netfilter/core.c
-+++ b/net/netfilter/core.c
-@@ -632,14 +632,14 @@ EXPORT_SYMBOL(nf_hook_slow_list);
- /* This needs to be compiled in any case to avoid dependencies between the
-  * nfnetlink_queue code and nf_conntrack.
-  */
--struct nfnl_ct_hook __rcu *nfnl_ct_hook __read_mostly;
-+const struct nfnl_ct_hook __rcu *nfnl_ct_hook __read_mostly;
- EXPORT_SYMBOL_GPL(nfnl_ct_hook);
- 
--struct nf_ct_hook __rcu *nf_ct_hook __read_mostly;
-+const struct nf_ct_hook __rcu *nf_ct_hook __read_mostly;
- EXPORT_SYMBOL_GPL(nf_ct_hook);
- 
- #if IS_ENABLED(CONFIG_NF_CONNTRACK)
--struct nf_nat_hook __rcu *nf_nat_hook __read_mostly;
-+const struct nf_nat_hook __rcu *nf_nat_hook __read_mostly;
- EXPORT_SYMBOL_GPL(nf_nat_hook);
- 
- /* This does not belong here, but locally generated errors need it if connection
-@@ -662,7 +662,7 @@ EXPORT_SYMBOL(nf_ct_attach);
- 
- void nf_conntrack_destroy(struct nf_conntrack *nfct)
- {
--	struct nf_ct_hook *ct_hook;
-+	const struct nf_ct_hook *ct_hook;
- 
- 	rcu_read_lock();
- 	ct_hook = rcu_dereference(nf_ct_hook);
-@@ -677,7 +677,7 @@ EXPORT_SYMBOL(nf_conntrack_destroy);
- bool nf_ct_get_tuple_skb(struct nf_conntrack_tuple *dst_tuple,
- 			 const struct sk_buff *skb)
- {
--	struct nf_ct_hook *ct_hook;
-+	const struct nf_ct_hook *ct_hook;
- 	bool ret = false;
- 
- 	rcu_read_lock();
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index 779e41d1afdce..2a4222eefc894 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2145,9 +2145,9 @@ static int __nf_conntrack_update(struct net *net, struct sk_buff *skb,
- 				 struct nf_conn *ct,
- 				 enum ip_conntrack_info ctinfo)
- {
-+	const struct nf_nat_hook *nat_hook;
- 	struct nf_conntrack_tuple_hash *h;
- 	struct nf_conntrack_tuple tuple;
--	struct nf_nat_hook *nat_hook;
- 	unsigned int status;
- 	int dataoff;
- 	u16 l3num;
-@@ -2833,7 +2833,7 @@ int nf_conntrack_init_start(void)
- 	return ret;
- }
- 
--static struct nf_ct_hook nf_conntrack_hook = {
-+static const struct nf_ct_hook nf_conntrack_hook = {
- 	.update		= nf_conntrack_update,
- 	.destroy	= nf_ct_destroy,
- 	.get_tuple_skb  = nf_conntrack_get_tuple_skb,
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index c427f7625a3b5..1466015bc56dc 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -1816,7 +1816,7 @@ ctnetlink_parse_nat_setup(struct nf_conn *ct,
- 			  const struct nlattr *attr)
- 	__must_hold(RCU)
- {
--	struct nf_nat_hook *nat_hook;
-+	const struct nf_nat_hook *nat_hook;
- 	int err;
- 
- 	nat_hook = rcu_dereference(nf_nat_hook);
-@@ -2922,7 +2922,7 @@ static void ctnetlink_glue_seqadj(struct sk_buff *skb, struct nf_conn *ct,
- 	nf_ct_tcp_seqadj_set(skb, ct, ctinfo, diff);
- }
- 
--static struct nfnl_ct_hook ctnetlink_glue_hook = {
-+static const struct nfnl_ct_hook ctnetlink_glue_hook = {
- 	.build_size	= ctnetlink_glue_build_size,
- 	.build		= ctnetlink_glue_build,
- 	.parse		= ctnetlink_glue_parse,
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 2731176839228..b776b3af78ca2 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -1120,7 +1120,7 @@ static struct pernet_operations nat_net_ops = {
- 	.size = sizeof(struct nat_net),
- };
- 
--static struct nf_nat_hook nat_hook = {
-+static const struct nf_nat_hook nat_hook = {
- 	.parse_nat_setup	= nfnetlink_parse_nat_setup,
- #ifdef CONFIG_XFRM
- 	.decode_session		= __nf_nat_decode_session,
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index f4468ef3d0a94..8c96e01f6a023 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -225,7 +225,7 @@ find_dequeue_entry(struct nfqnl_instance *queue, unsigned int id)
- 
- static void nfqnl_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- {
--	struct nf_ct_hook *ct_hook;
-+	const struct nf_ct_hook *ct_hook;
- 	int err;
- 
- 	if (verdict == NF_ACCEPT ||
-@@ -388,7 +388,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
- 	struct net_device *outdev;
- 	struct nf_conn *ct = NULL;
- 	enum ip_conntrack_info ctinfo = 0;
--	struct nfnl_ct_hook *nfnl_ct;
-+	const struct nfnl_ct_hook *nfnl_ct;
- 	bool csum_verify;
- 	char *secdata = NULL;
- 	u32 seclen = 0;
-@@ -1115,7 +1115,7 @@ static int nfqnl_recv_verdict_batch(struct sk_buff *skb,
- 	return 0;
- }
- 
--static struct nf_conn *nfqnl_ct_parse(struct nfnl_ct_hook *nfnl_ct,
-+static struct nf_conn *nfqnl_ct_parse(const struct nfnl_ct_hook *nfnl_ct,
- 				      const struct nlmsghdr *nlh,
- 				      const struct nlattr * const nfqa[],
- 				      struct nf_queue_entry *entry,
-@@ -1182,11 +1182,11 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
- {
- 	struct nfnl_queue_net *q = nfnl_queue_pernet(info->net);
- 	u_int16_t queue_num = ntohs(info->nfmsg->res_id);
-+	const struct nfnl_ct_hook *nfnl_ct;
- 	struct nfqnl_msg_verdict_hdr *vhdr;
- 	enum ip_conntrack_info ctinfo;
- 	struct nfqnl_instance *queue;
- 	struct nf_queue_entry *entry;
--	struct nfnl_ct_hook *nfnl_ct;
- 	struct nf_conn *ct = NULL;
- 	unsigned int verdict;
- 	int err;
--- 
-2.43.0
-
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -997,10 +997,12 @@ static int mmc_select_bus_width(struct m
+ 	static unsigned ext_csd_bits[] = {
+ 		EXT_CSD_BUS_WIDTH_8,
+ 		EXT_CSD_BUS_WIDTH_4,
++		EXT_CSD_BUS_WIDTH_1,
+ 	};
+ 	static unsigned bus_widths[] = {
+ 		MMC_BUS_WIDTH_8,
+ 		MMC_BUS_WIDTH_4,
++		MMC_BUS_WIDTH_1,
+ 	};
+ 	struct mmc_host *host = card->host;
+ 	unsigned idx, bus_width = 0;
 
 
 
