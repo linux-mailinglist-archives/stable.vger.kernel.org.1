@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5CE870F04
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DA7870D62
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAE37280E9C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B95E1C23999
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255377992E;
-	Mon,  4 Mar 2024 21:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91679DCA;
+	Mon,  4 Mar 2024 21:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2vux8ZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWqyxoSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768D1EB5A;
-	Mon,  4 Mar 2024 21:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6810F46BA0;
+	Mon,  4 Mar 2024 21:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589004; cv=none; b=eyIsqMdRoOCN6W+sU8M31ImAiX2x8GbxWGTupPQT77v6RFivkYAPg0398sLq7s7SsY0h6OobgEqS99VO9i3HUaNN55gWLlz1cLSWu96JRPv8CBqv/mqd/vWew9hWkEE2eFmnjVWrv3PLGBJnVOGtZtRi4OpNN3eiX4cKNuYIH4M=
+	t=1709588008; cv=none; b=BcdABIXi1jqsDK12hbyIqPwT+wVVUIGQqtw0DE/2J/cJxzTmaKzgLjXlUOtRT88HxxUHXb4k6nXeJOsFG5Q6eAQ7/mAnXw8vDS26dV4lmYnjVNPmUGfFiuC1IH7NnIAW5/xifppVBI/RXWKZBkBtKE//9lGb1vrqFRlk4soEnAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589004; c=relaxed/simple;
-	bh=u6p3HJfnMcUChog5gOo6oFjvBF/Ap18AihaZ8ADw6nU=;
+	s=arc-20240116; t=1709588008; c=relaxed/simple;
+	bh=j0qgxw7OeYVUY79yhC7WH4Gl3xEqyNw8yckMxFcvwFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJBSZ0eRls9y9nxQ6+eQaXqrbtowd3PeM+yk+bBG0X6npBXLhb167UFzEgNrjnbQMfJXn+nf02YIZOriUBJ3DrXlkVF4+vAQxUqTaf8nhhXVnKyuuviLrPJAKuXElgbStnDQtIQ+6hsKLgJ2hRclKnkJgcTs1rrvc4zwMRdPx90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2vux8ZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE1DC433C7;
-	Mon,  4 Mar 2024 21:50:04 +0000 (UTC)
+	 MIME-Version; b=HwXtFHW6+2FiU/OSgaNnsxqGzqFkh+1jG9aVHke4E82W2pdHsjtFkD+UXaghkRxIBNIwizApsJObaDYIvWtCac+x07jDyRv614JDjXNvASmf/7I9/Q1KLiYT+SqllDVCubosRQbWs7FEJZiaAEXRAzghc+AvmLtSHgOvJUuUK2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWqyxoSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF53DC433F1;
+	Mon,  4 Mar 2024 21:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589004;
-	bh=u6p3HJfnMcUChog5gOo6oFjvBF/Ap18AihaZ8ADw6nU=;
+	s=korg; t=1709588008;
+	bh=j0qgxw7OeYVUY79yhC7WH4Gl3xEqyNw8yckMxFcvwFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2vux8ZN7o94WGIf2G8+LrxuCo9VjMLKboJqYIgpcHElqSqLdkgMlRVhlrqs/L1Xx
-	 p0ScR1hM0P1FTTsfnl/y1gHAxyEDqHPnk5nW/mv78bcw6BUwXmZDr/+acNoopo0/lC
-	 rW+kzWb/LRrbrxplk8IQ7ok7wecaZq2vUbFrqZdI=
+	b=PWqyxoSqjMaQDDXraAuoM9QAR/FFXZW2Mp5uDe2tzIkz0iHxYRhDdfxh/x4yYKJ2t
+	 JJQC6g1G34l8XnWuIq3FEUnOcKQu1R2+uEo6TlHn44zxcWc2q6oATVY9mSvahkhEkG
+	 wS8JhbkoKdt5z0+lFmi50Tqdg7lQ0o+JpM69jmoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiu Jianfeng <xiujianfeng@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 165/215] NFSD: Use struct_size() helper in alloc_session()
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 12/25] efi/capsule-loader: fix incorrect allocation size
 Date: Mon,  4 Mar 2024 21:23:48 +0000
-Message-ID: <20240304211602.203711875@linuxfoundation.org>
+Message-ID: <20240304211536.152680968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiu Jianfeng <xiujianfeng@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 85a0d0c9a58002ef7d1bf5e3ea630f4fbd42a4f0 ]
+[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
 
-Use struct_size() helper to simplify the code, no functional changes.
+gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
+is not enough for a 64-bit phys_addr_t:
 
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
+drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
+  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
+      |                        ^
+
+Use the correct type instead here.
+
+Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/capsule-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1834,13 +1834,12 @@ static struct nfsd4_session *alloc_sessi
- 	int numslots = fattrs->maxreqs;
- 	int slotsize = slot_bytes(fattrs);
- 	struct nfsd4_session *new;
--	int mem, i;
-+	int i;
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index b82cc8beac671..78c02717c368d 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -291,7 +291,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
+ 		return -ENOMEM;
+ 	}
  
--	BUILD_BUG_ON(NFSD_MAX_SLOTS_PER_SESSION * sizeof(struct nfsd4_slot *)
--			+ sizeof(struct nfsd4_session) > PAGE_SIZE);
--	mem = numslots * sizeof(struct nfsd4_slot *);
-+	BUILD_BUG_ON(struct_size(new, se_slots, NFSD_MAX_SLOTS_PER_SESSION)
-+		     > PAGE_SIZE);
- 
--	new = kzalloc(sizeof(*new) + mem, GFP_KERNEL);
-+	new = kzalloc(struct_size(new, se_slots, numslots), GFP_KERNEL);
- 	if (!new)
- 		return NULL;
- 	/* allocate each struct nfsd4_slot and data cache in one piece */
+-	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
++	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
+ 	if (!cap_info->phys) {
+ 		kfree(cap_info->pages);
+ 		kfree(cap_info);
+-- 
+2.43.0
+
 
 
 
