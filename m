@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-26249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C6A870DBC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD052870CD7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 385DE1F23C1D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919D51F2207A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D977A70D;
-	Mon,  4 Mar 2024 21:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28B97A124;
+	Mon,  4 Mar 2024 21:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAiEOY/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHuA8OBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC211EA99;
-	Mon,  4 Mar 2024 21:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2477994A;
+	Mon,  4 Mar 2024 21:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588230; cv=none; b=dUCmSwebI4CTXOwKZeHqIQpJIO9xTAkqJuBkvEMYWA23C4XI8PhFJQP1ZeWWNDw/QOMnX/U931uTl109guPH7h1O+zSxE+2/aXA467iejoLafjgx8VIKPKio4rLTEYa4L7nPPrQW4+jg/xbWgMWSbONGej9Sw/2Aa0PrE1KtM+s=
+	t=1709587748; cv=none; b=jRDi1JLUH5BcV/AcqWUs9dxEm/UWibFz7MMufltwEfzOSOK/X7FSqTTGpzoISrr2eW9XWd5tH39pWR72oqbTGRQBaGrxqjiOYZw87vaTcSSzzO/YuQHBNR+Yu23O0BO2R251OSDccucZ/b0Q7KBHfDPfyOYcscilCFENSXICLaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588230; c=relaxed/simple;
-	bh=Cv5iWgCuf7CW8sq8QnEnG6M/NJmw2W/3sm2GrYj+qeI=;
+	s=arc-20240116; t=1709587748; c=relaxed/simple;
+	bh=5hk8XT5UaIttYubOVKig/OnBULtdmdNQOoc6KF8tJkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM1D8xMELn5igS1AeYJn4gwe+PrM/w3gxZYzwQSLwpS25ZHo2a3il9tJi89v3Z5G+w8JbYV8hcpZWGc673/W9vl/94AGmRUbURERuhAsRo7aode5SmUUID9XdHLJYafOak+rfQv4g6zo0I0n11vRs5wIR93kk0bJsPXSIslqXS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAiEOY/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4560EC433C7;
-	Mon,  4 Mar 2024 21:37:09 +0000 (UTC)
+	 MIME-Version; b=LIJLrJcSLeeEBDv1iaEp4rYDeSBjOMEKH+wlTMA1HkrWsLmOTzbIuzzRqGkk8RjUfUoOfeWOxDjnQF1yyhLucOKRh3lHHtJPkXC7OVyWup+HbGimo5jl9PVVp8364Ss7BMFhRU4/doxAvb8Zyb8ZMoE11lKhQI3obPrUZaZ92W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHuA8OBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0064BC433C7;
+	Mon,  4 Mar 2024 21:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588229;
-	bh=Cv5iWgCuf7CW8sq8QnEnG6M/NJmw2W/3sm2GrYj+qeI=;
+	s=korg; t=1709587748;
+	bh=5hk8XT5UaIttYubOVKig/OnBULtdmdNQOoc6KF8tJkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAiEOY/tqvzMpYtXpB4/h63IXhqn5g1MB1/yXcdonzWNlfh0zDdOGuZrK8JYk99fE
-	 5UA9mbm3LCvMMrlNtBgHlKLlA5F51opSz1/Z9lzoefgPMjKTPCPfKlktIBz8TVe57R
-	 yavAyy+JEs0G5VE/pWyoZ9QD6ZbFt9BpwcLbpBuU=
+	b=XHuA8OBpJvFWCwBtb+HCEFx5EpJfHxzPI46mFFmB3w64PvYMK4PBt2Qx2evpl6KEk
+	 ktlNz55szN/wwb6GTMKcILODmkCXJri5yRkQylH4UOrL2SRWGS+QaoJ2Pn2T2p+Hp6
+	 nTcH9ZtdS/RFnFT94KZ3ct3xiNepKuE65B7pF8/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/143] net: lan78xx: fix "softirq work is pending" error
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 075/162] ALSA: ump: Fix the discard error code from snd_ump_legacy_open()
 Date: Mon,  4 Mar 2024 21:22:20 +0000
-Message-ID: <20240304211550.586862750@linuxfoundation.org>
+Message-ID: <20240304211554.257150861@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e3d5d70cb483df8296dd44e9ae3b6355ef86494c ]
+commit 49cbb7b7d36ec3ba73ce1daf7ae1d71d435453b8 upstream.
 
-Disable BH around the call to napi_schedule() to avoid following
-error:
-NOHZ tick-stop error: local softirq work is pending, handler #08!!!
+snd_ump_legacy_open() didn't return the error code properly even if it
+couldn't open.  Fix it.
 
-Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240226110820.2113584-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b5288f5fe63 ("ALSA: ump: Add legacy raw MIDI support")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240220150843.28630-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/core/ump.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index d86413a0ead4b..8b1e1e1c8d5be 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1501,7 +1501,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -985,7 +985,7 @@ static int snd_ump_legacy_open(struct sn
+ 	struct snd_ump_endpoint *ump = substream->rmidi->private_data;
+ 	int dir = substream->stream;
+ 	int group = ump->legacy_mapping[substream->number];
+-	int err;
++	int err = 0;
  
- 		lan78xx_rx_urb_submit_all(dev);
+ 	mutex_lock(&ump->open_mutex);
+ 	if (ump->legacy_substreams[dir][group]) {
+@@ -1009,7 +1009,7 @@ static int snd_ump_legacy_open(struct sn
+ 	spin_unlock_irq(&ump->legacy_locks[dir]);
+  unlock:
+ 	mutex_unlock(&ump->open_mutex);
+-	return 0;
++	return err;
+ }
  
-+		local_bh_disable();
- 		napi_schedule(&dev->napi);
-+		local_bh_enable();
- 	}
- 
- 	return 0;
--- 
-2.43.0
-
+ static int snd_ump_legacy_close(struct snd_rawmidi_substream *substream)
 
 
 
