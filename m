@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC58870F3A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5E2870F81
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 855D3281980
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90C251C20ECB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01D27992E;
-	Mon,  4 Mar 2024 21:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40A87992E;
+	Mon,  4 Mar 2024 21:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCmlWKFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/0Y8V2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936B71EB5A;
-	Mon,  4 Mar 2024 21:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9358D1C6AB;
+	Mon,  4 Mar 2024 21:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589145; cv=none; b=UG6k8xxRupTrX9MAH3vcFiSDOBvKBPxeU9nHH5ySRFGSjk4AMWigVXGzQ1inDGMA1fagpRG8AHPaawByE/hJs2LjNl4aCYy/H/85OLCPTQ2yB7EramWKoDOzAQJhmFyBSJVc3lzQEDrMvMYC6H/psNvUvWFLgCkgj2YTo3oPtMc=
+	t=1709589319; cv=none; b=M8x7kRAdkJh38ckkdwxKtQJ/b0rJcHqM8pKoXiAQdWOmEUxJW4YpdQwtfWdOTrg70mKdlyrL6AZ7GAdPmwUAZfswGnUwLlwXphtRqjen2Um7MUeKgNXsBpjHmmPf/fG2g4IdDbT6rxhchhUPUG0AHzJwLXys69f9d3SP23NU2gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589145; c=relaxed/simple;
-	bh=hMRi/NVCfiO2nxmaN92Bo8booXrwHr2rULJRWlpFwH4=;
+	s=arc-20240116; t=1709589319; c=relaxed/simple;
+	bh=CUXFRVnxq1WWOGPzEh5D5kMSTT/btEWHR6xpkPzJTkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwEykCL1cKWCMJtczES6A5Ai3ZGe+IGI22L1VrjU2fRK/c2j/DGcWETARGQ1w5BAAVM4gkwigIT+lK1aUopPf50r1Qq0+C+42psepefdkTjN4STEIvx/LSB1k+Fw2CexKRxdG8wABi8cX+uc2/BEubKXXyYPfqdFiOj1nDjdu2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCmlWKFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D82C433F1;
-	Mon,  4 Mar 2024 21:52:24 +0000 (UTC)
+	 MIME-Version; b=Olgn7WWkpOnbnad3TDI7MPzyZKVcXMT2i31lWITRYVMFfzf9WwpQLT7tzEl525hDYe3Q+Pj6WzZnDrv606vQXrbhOBwSoxNDbpGljdkJ8bXDYAY3rDbnXqZw9kKZqpDEaqOdp114jyCaKH0qJpTmZ6NaxguU0XU2QFhV26hORHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/0Y8V2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C5C433F1;
+	Mon,  4 Mar 2024 21:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589145;
-	bh=hMRi/NVCfiO2nxmaN92Bo8booXrwHr2rULJRWlpFwH4=;
+	s=korg; t=1709589319;
+	bh=CUXFRVnxq1WWOGPzEh5D5kMSTT/btEWHR6xpkPzJTkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCmlWKFLYWHwTzKNJ+FKB1vqPVaf2LCKYextCg2swika/ULuaRQRwCm9P+9ShEilW
-	 0/C+cPRy0R/7//z3pBLSCfeprtwrcUZ5tGbL1uTMVWoIB9t5/GHSiGxnccH+MMWqEx
-	 3S4Ibm3pqAqpg9ryP9kT2aQXRhLHkjErB552yHyw=
+	b=e/0Y8V2Y8Z4SmRM2/cUO1OpyBjJjAgYI7Um6+QqNen3x/8N/oNrwrwUsYM/lCjtBN
+	 Yl8GX6S/8zegK33zso0fYSIxgaezwwLbYFWsD2N/V86BrfEhhEnOI72YYtuLUmO7Al
+	 OpO2laKE174yWVOcbX/42YwrR2ZYVY6FlWuth0MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martynas Pumputis <m@lambda.lt>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.1 213/215] bpf: Derive source IP addr via bpf_*_fib_lookup()
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Mat Martineau <martineau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 63/84] mptcp: rename timer related helper to less confusing names
 Date: Mon,  4 Mar 2024 21:24:36 +0000
-Message-ID: <20240304211603.738799034@linuxfoundation.org>
+Message-ID: <20240304211544.486431553@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,204 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martynas Pumputis <m@lambda.lt>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit dab4e1f06cabb6834de14264394ccab197007302 upstream.
+commit f6909dc1c1f4452879278128012da6c76bc186a5 upstream.
 
-Extend the bpf_fib_lookup() helper by making it to return the source
-IPv4/IPv6 address if the BPF_FIB_LOOKUP_SRC flag is set.
+The msk socket uses to different timeout to track close related
+events and retransmissions. The existing helpers do not indicate
+clearly which timer they actually touch, making the related code
+quite confusing.
 
-For example, the following snippet can be used to derive the desired
-source IP address:
+Change the existing helpers name to avoid such confusion. No
+functional change intended.
 
-    struct bpf_fib_lookup p = { .ipv4_dst = ip4->daddr };
+This patch is linked to the next one ("mptcp: fix dangling connection
+hang-up"). The two patches are supposed to be backported together.
 
-    ret = bpf_skb_fib_lookup(skb, p, sizeof(p),
-            BPF_FIB_LOOKUP_SRC | BPF_FIB_LOOKUP_SKIP_NEIGH);
-    if (ret != BPF_FIB_LKUP_RET_SUCCESS)
-        return TC_ACT_SHOT;
-
-    /* the p.ipv4_src now contains the source address */
-
-The inability to derive the proper source address may cause malfunctions
-in BPF-based dataplanes for hosts containing netdevs with more than one
-routable IP address or for multi-homed hosts.
-
-For example, Cilium implements packet masquerading in BPF. If an
-egressing netdev to which the Cilium's BPF prog is attached has
-multiple IP addresses, then only one [hardcoded] IP address can be used for
-masquerading. This breaks connectivity if any other IP address should have
-been selected instead, for example, when a public and private addresses
-are attached to the same egress interface.
-
-The change was tested with Cilium [1].
-
-Nikolay Aleksandrov helped to figure out the IPv6 addr selection.
-
-[1]: https://github.com/cilium/cilium/pull/28283
-
-Signed-off-by: Martynas Pumputis <m@lambda.lt>
-Link: https://lore.kernel.org/r/20231007081415.33502-2-m@lambda.lt
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: stable@vger.kernel.org # v5.11+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ipv6_stubs.h       |    5 +++++
- include/uapi/linux/bpf.h       |   10 ++++++++++
- net/core/filter.c              |   18 +++++++++++++++++-
- net/ipv6/af_inet6.c            |    1 +
- tools/include/uapi/linux/bpf.h |   10 ++++++++++
- 5 files changed, 43 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/include/net/ipv6_stubs.h
-+++ b/include/net/ipv6_stubs.h
-@@ -85,6 +85,11 @@ struct ipv6_bpf_stub {
- 			       sockptr_t optval, unsigned int optlen);
- 	int (*ipv6_getsockopt)(struct sock *sk, int level, int optname,
- 			       sockptr_t optval, sockptr_t optlen);
-+	int (*ipv6_dev_get_saddr)(struct net *net,
-+				  const struct net_device *dst_dev,
-+				  const struct in6_addr *daddr,
-+				  unsigned int prefs,
-+				  struct in6_addr *saddr);
- };
- extern const struct ipv6_bpf_stub *ipv6_bpf_stub __read_mostly;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -330,7 +330,7 @@ drop:
+ 	return false;
+ }
  
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -3121,6 +3121,11 @@ union bpf_attr {
-  *			and *params*->smac will not be set as output. A common
-  *			use case is to call **bpf_redirect_neigh**\ () after
-  *			doing **bpf_fib_lookup**\ ().
-+ *		**BPF_FIB_LOOKUP_SRC**
-+ *			Derive and set source IP addr in *params*->ipv{4,6}_src
-+ *			for the nexthop. If the src addr cannot be derived,
-+ *			**BPF_FIB_LKUP_RET_NO_SRC_ADDR** is returned. In this
-+ *			case, *params*->dmac and *params*->smac are not set either.
-  *
-  *		*ctx* is either **struct xdp_md** for XDP programs or
-  *		**struct sk_buff** tc cls_act programs.
-@@ -6692,6 +6697,7 @@ enum {
- 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
- 	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
- 	BPF_FIB_LOOKUP_TBID    = (1U << 3),
-+	BPF_FIB_LOOKUP_SRC     = (1U << 4),
- };
+-static void mptcp_stop_timer(struct sock *sk)
++static void mptcp_stop_rtx_timer(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
  
- enum {
-@@ -6704,6 +6710,7 @@ enum {
- 	BPF_FIB_LKUP_RET_UNSUPP_LWT,   /* fwd requires encapsulation */
- 	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
- 	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
-+	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
- };
+@@ -830,12 +830,12 @@ static void mptcp_flush_join_list(struct
+ 	mptcp_sockopt_sync_all(msk);
+ }
  
- struct bpf_fib_lookup {
-@@ -6738,6 +6745,9 @@ struct bpf_fib_lookup {
- 		__u32	rt_metric;
- 	};
+-static bool mptcp_timer_pending(struct sock *sk)
++static bool mptcp_rtx_timer_pending(struct sock *sk)
+ {
+ 	return timer_pending(&inet_csk(sk)->icsk_retransmit_timer);
+ }
  
-+	/* input: source address to consider for lookup
-+	 * output: source address result from lookup
-+	 */
- 	union {
- 		__be32		ipv4_src;
- 		__u32		ipv6_src[4];  /* in6_addr; network order */
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -5809,6 +5809,9 @@ static int bpf_ipv4_fib_lookup(struct ne
- 	params->rt_metric = res.fi->fib_priority;
- 	params->ifindex = dev->ifindex;
+-static void mptcp_reset_timer(struct sock *sk)
++static void mptcp_reset_rtx_timer(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	unsigned long tout;
+@@ -1145,10 +1145,10 @@ out:
+ 		__mptcp_mem_reclaim_partial(sk);
  
-+	if (flags & BPF_FIB_LOOKUP_SRC)
-+		params->ipv4_src = fib_result_prefsrc(net, &res);
-+
- 	/* xdp and cls_bpf programs are run in RCU-bh so
- 	 * rcu_read_lock_bh is not needed here
- 	 */
-@@ -5951,6 +5954,18 @@ static int bpf_ipv6_fib_lookup(struct ne
- 	params->rt_metric = res.f6i->fib6_metric;
- 	params->ifindex = dev->ifindex;
+ 	if (snd_una == READ_ONCE(msk->snd_nxt) && !msk->recovery) {
+-		if (mptcp_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
+-			mptcp_stop_timer(sk);
++		if (mptcp_rtx_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
++			mptcp_stop_rtx_timer(sk);
+ 	} else {
+-		mptcp_reset_timer(sk);
++		mptcp_reset_rtx_timer(sk);
+ 	}
+ }
  
-+	if (flags & BPF_FIB_LOOKUP_SRC) {
-+		if (res.f6i->fib6_prefsrc.plen) {
-+			*src = res.f6i->fib6_prefsrc.addr;
-+		} else {
-+			err = ipv6_bpf_stub->ipv6_dev_get_saddr(net, dev,
-+								&fl6.daddr, 0,
-+								src);
-+			if (err)
-+				return BPF_FIB_LKUP_RET_NO_SRC_ADDR;
-+		}
-+	}
-+
- 	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
- 		goto set_fwd_params;
+@@ -1640,8 +1640,8 @@ void __mptcp_push_pending(struct sock *s
  
-@@ -5969,7 +5984,8 @@ set_fwd_params:
- #endif
+ out:
+ 	/* ensure the rtx timer is running */
+-	if (!mptcp_timer_pending(sk))
+-		mptcp_reset_timer(sk);
++	if (!mptcp_rtx_timer_pending(sk))
++		mptcp_reset_rtx_timer(sk);
+ 	if (copied)
+ 		mptcp_check_send_data_fin(sk);
+ }
+@@ -1700,8 +1700,8 @@ out:
+ 	if (copied) {
+ 		tcp_push(ssk, 0, info.mss_now, tcp_sk(ssk)->nonagle,
+ 			 info.size_goal);
+-		if (!mptcp_timer_pending(sk))
+-			mptcp_reset_timer(sk);
++		if (!mptcp_rtx_timer_pending(sk))
++			mptcp_reset_rtx_timer(sk);
  
- #define BPF_FIB_LOOKUP_MASK (BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT | \
--			     BPF_FIB_LOOKUP_SKIP_NEIGH | BPF_FIB_LOOKUP_TBID)
-+			     BPF_FIB_LOOKUP_SKIP_NEIGH | BPF_FIB_LOOKUP_TBID | \
-+			     BPF_FIB_LOOKUP_SRC)
+ 		if (msk->snd_data_fin_enable &&
+ 		    msk->snd_nxt + 1 == msk->write_seq)
+@@ -2173,7 +2173,7 @@ static void mptcp_retransmit_timer(struc
+ 	sock_put(sk);
+ }
  
- BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
- 	   struct bpf_fib_lookup *, params, int, plen, u32, flags)
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -1077,6 +1077,7 @@ static const struct ipv6_bpf_stub ipv6_b
- 	.udp6_lib_lookup = __udp6_lib_lookup,
- 	.ipv6_setsockopt = do_ipv6_setsockopt,
- 	.ipv6_getsockopt = do_ipv6_getsockopt,
-+	.ipv6_dev_get_saddr = ipv6_dev_get_saddr,
- };
+-static void mptcp_timeout_timer(struct timer_list *t)
++static void mptcp_tout_timer(struct timer_list *t)
+ {
+ 	struct sock *sk = from_timer(sk, t, sk_timer);
  
- static int __init inet6_init(void)
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -3121,6 +3121,11 @@ union bpf_attr {
-  *			and *params*->smac will not be set as output. A common
-  *			use case is to call **bpf_redirect_neigh**\ () after
-  *			doing **bpf_fib_lookup**\ ().
-+ *		**BPF_FIB_LOOKUP_SRC**
-+ *			Derive and set source IP addr in *params*->ipv{4,6}_src
-+ *			for the nexthop. If the src addr cannot be derived,
-+ *			**BPF_FIB_LKUP_RET_NO_SRC_ADDR** is returned. In this
-+ *			case, *params*->dmac and *params*->smac are not set either.
-  *
-  *		*ctx* is either **struct xdp_md** for XDP programs or
-  *		**struct sk_buff** tc cls_act programs.
-@@ -6692,6 +6697,7 @@ enum {
- 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
- 	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
- 	BPF_FIB_LOOKUP_TBID    = (1U << 3),
-+	BPF_FIB_LOOKUP_SRC     = (1U << 4),
- };
+@@ -2465,8 +2465,8 @@ static void __mptcp_retrans(struct sock
+ 	release_sock(ssk);
  
- enum {
-@@ -6704,6 +6710,7 @@ enum {
- 	BPF_FIB_LKUP_RET_UNSUPP_LWT,   /* fwd requires encapsulation */
- 	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
- 	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
-+	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
- };
+ reset_timer:
+-	if (!mptcp_timer_pending(sk))
+-		mptcp_reset_timer(sk);
++	if (!mptcp_rtx_timer_pending(sk))
++		mptcp_reset_rtx_timer(sk);
+ }
  
- struct bpf_fib_lookup {
-@@ -6738,6 +6745,9 @@ struct bpf_fib_lookup {
- 		__u32	rt_metric;
- 	};
+ static void mptcp_worker(struct work_struct *work)
+@@ -2543,7 +2543,7 @@ static int __mptcp_init_sock(struct sock
  
-+	/* input: source address to consider for lookup
-+	 * output: source address result from lookup
-+	 */
- 	union {
- 		__be32		ipv4_src;
- 		__u32		ipv6_src[4];  /* in6_addr; network order */
+ 	/* re-use the csk retrans timer for MPTCP-level retrans */
+ 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
+-	timer_setup(&sk->sk_timer, mptcp_timeout_timer, 0);
++	timer_setup(&sk->sk_timer, mptcp_tout_timer, 0);
+ 
+ 	return 0;
+ }
+@@ -2629,8 +2629,8 @@ void mptcp_subflow_shutdown(struct sock
+ 		} else {
+ 			pr_debug("Sending DATA_FIN on subflow %p", ssk);
+ 			tcp_send_ack(ssk);
+-			if (!mptcp_timer_pending(sk))
+-				mptcp_reset_timer(sk);
++			if (!mptcp_rtx_timer_pending(sk))
++				mptcp_reset_rtx_timer(sk);
+ 		}
+ 		break;
+ 	}
 
 
 
