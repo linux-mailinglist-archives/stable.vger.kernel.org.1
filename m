@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DD7870E9F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045FF870CBF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B10DB2146A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3659D1C24E83
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00670200CD;
-	Mon,  4 Mar 2024 21:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7707A124;
+	Mon,  4 Mar 2024 21:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh+OTShd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdXXgzQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F7F7AE47;
-	Mon,  4 Mar 2024 21:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEDE7994A;
+	Mon,  4 Mar 2024 21:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588727; cv=none; b=X3KZ0ShXzir28Lz1IFhXYp6pWnUnhObWZE8nyzclP8jcEBNIIQXqNXuWBYZ/vFHyPU6ptmCCJ0zicAqSjcqzfO1Vn1CeqovOWmq1fzTp4gmaILz4PPhvSc+q1oXKwfDjvOFDM/NonREcOVi8tQTFXepTj2NeQrERvu+2nc9WaFg=
+	t=1709587696; cv=none; b=MVT/56zpIphotmR/HYKTDvQtNSZYrROR16vwW93xLmZikEhSCZfcoGa98FLNpzG0+y1j52yP/25SUMeZK+qWWdsZPojvGhiEOVc3KtdP0GJCsjtnPEblr87ca4IkW0lAybd5lyr0dDtUOz6/B1VYyiqgbXOeAVPqbq9jeLyVn+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588727; c=relaxed/simple;
-	bh=pAzwTSktb4woCaUnmOb3KjpPz8pmpUR6XwBjJuSnZpQ=;
+	s=arc-20240116; t=1709587696; c=relaxed/simple;
+	bh=93MgnCzicdbIg1ZqWmsrjGdMeBjJFNsD4EYxw8UKKjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qs1P6iNNLc2hVwjES3ndxV2U3w/2+4//Y6Wr0P1ksrB/E85MdMz/FRnKGAe8GR25it/Kps1uFdmR9SA+1dkUAUCgdTmuc0kNeCpxGjzBG3iXATb47DLA654uJ4+Ct75hnWRykX6xZZhrH2CiOX4ycGWFD0mTIp4qwW5ueTUR7/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh+OTShd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4614EC433F1;
-	Mon,  4 Mar 2024 21:45:27 +0000 (UTC)
+	 MIME-Version; b=ExhwfT/tTBt9pJ/ZNCowm0+dLK7qTE8w+vdRGzpmVj4FcxARRyxalmnibgXuXCb0DwhBDpj2ieZLt2UZFAUOalbsYfYiKCIRkkbSlItVBwK7ryTYNbGEYZ7904IEt/DpKpgNRn1khWYGYUlzdjpCSjAeZ/zMOde0vMLZRfzvAMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdXXgzQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68953C433F1;
+	Mon,  4 Mar 2024 21:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588727;
-	bh=pAzwTSktb4woCaUnmOb3KjpPz8pmpUR6XwBjJuSnZpQ=;
+	s=korg; t=1709587695;
+	bh=93MgnCzicdbIg1ZqWmsrjGdMeBjJFNsD4EYxw8UKKjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rh+OTShdrtZ4V/L9NUaLMYoDFld7KbfsOJ/inyvzjvsrQqjU/JFkm0lIuEqaMIreh
-	 0+mCchx42NvSJftTf+rwLs6agapnw1QlHho8ai2yj4UsbOwCB3DI3TRv8Y2ymWrOg1
-	 +wP1joD/1FJ0exmky/iWusfYSqylvsL81iYC/eEo=
+	b=xdXXgzQOvuF01WI3foVECvhaCx0IfLfHAQjIyna8TriLLbZ4pK7stghUitcUouUZG
+	 fLfRQl3WMkN2C3HifcnkF8XmM8hc/lBBBMeRAqBdPV4QcmSt3a5fW1gcuDIbe6jDQo
+	 iyh4HAkI0PvQEQuguQzV5AZNFCxXVosQwmySvPz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Lin Ma <linma@zju.edu.cn>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/215] net: lan78xx: fix "softirq work is pending" error
+Subject: [PATCH 6.7 037/162] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
 Date: Mon,  4 Mar 2024 21:21:42 +0000
-Message-ID: <20240304211558.250980123@linuxfoundation.org>
+Message-ID: <20240304211553.023090236@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit e3d5d70cb483df8296dd44e9ae3b6355ef86494c ]
+[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
 
-Disable BH around the call to napi_schedule() to avoid following
-error:
-NOHZ tick-stop error: local softirq work is pending, handler #08!!!
+In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
+IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
+in the function `rtnl_bridge_setlink` to enable the loop to also check
+the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
+removed the `break` statement and led to an error logic of the flags
+writing back at the end of this function.
 
-Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240226110820.2113584-1-o.rempel@pengutronix.de
+if (have_flags)
+    memcpy(nla_data(attr), &flags, sizeof(flags));
+    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
+
+Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
+However, this is not necessarily true fow now as the updated loop will let
+the attr point to the last NLA, even an invalid NLA which could cause
+overflow writes.
+
+This patch introduces a new variable `br_flag` to save the NLA pointer
+that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
+error logic.
+
+Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/rtnetlink.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 7b9d480e44fe4..4fd4563811299 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1501,7 +1501,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index bf4c3f65ad99c..8f9cd6b7926e3 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -5164,10 +5164,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
+ 	struct net_device *dev;
+-	struct nlattr *br_spec, *attr = NULL;
++	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
+ 	int rem, err = -EOPNOTSUPP;
+ 	u16 flags = 0;
+-	bool have_flags = false;
  
- 		lan78xx_rx_urb_submit_all(dev);
+ 	if (nlmsg_len(nlh) < sizeof(*ifm))
+ 		return -EINVAL;
+@@ -5185,11 +5184,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
  
-+		local_bh_disable();
- 		napi_schedule(&dev->napi);
-+		local_bh_enable();
+-				have_flags = true;
++				br_flags_attr = attr;
+ 				flags = nla_get_u16(attr);
+ 			}
+ 
+@@ -5233,8 +5232,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
  	}
  
- 	return 0;
+-	if (have_flags)
+-		memcpy(nla_data(attr), &flags, sizeof(flags));
++	if (br_flags_attr)
++		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
+ out:
+ 	return err;
+ }
 -- 
 2.43.0
 
