@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E3E870D40
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDEF870EF0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669F61C24FB6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54D31F21297
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28F37A124;
-	Mon,  4 Mar 2024 21:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F8B78B4C;
+	Mon,  4 Mar 2024 21:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV+E6Yf2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8+scesX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D051F60A;
-	Mon,  4 Mar 2024 21:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75451EB5A;
+	Mon,  4 Mar 2024 21:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587930; cv=none; b=hNjJEbZKa6ZSfTsgl3Wim61n7ldqtcetVN0WaL8XRyNjvutHq2cgQU4r4i9ngu6GFop9q5UJz6HbjCI/Y63qDwgQeKa1IaHcLpwZWv3eOSRBMVNFLU0JfyHULw2A+E8WiyNefSLQh88F6Z3ztxLDVGBm8SvgtX1kliUIA3rnz6s=
+	t=1709588957; cv=none; b=OCIW22fG3SMO1yrBx2n4buptCKp17xl5eZ0/QofV+bshZYMawXcjbxHcnQxCm9E1VXpITUpC97QEsEJpRx7rb7yZ1j4BbKg24fFiusBH51YY6aOx9TQFJqcvbV98MbqChedouy/LToKiTi7nY+BnwyrEWC8Ztl3lN1E/kSivp3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587930; c=relaxed/simple;
-	bh=diqakf/+tvfWKyaKWbda71oNxRjusugvnoL4uFgQuoo=;
+	s=arc-20240116; t=1709588957; c=relaxed/simple;
+	bh=ug9Q1OLOXAdYUackhr1tHbldcMlXf4aQqIgFPVkA4pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nyZK0fxHyB79oFyI/1+am1I7uZ3G7PqKvWBkaG7L63htgJUFvDeJQZdiCV1D2swHBubOkixY5V5tmbR/6TnSwkAMXwma7nbVwkNdUco/ajx+KvDwWHSJRN6yhF1QpkrZznxbu+LxngD87UkgU1WnoV1vcau1/hFk+kvdjzZD7D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV+E6Yf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1463DC433F1;
-	Mon,  4 Mar 2024 21:32:09 +0000 (UTC)
+	 MIME-Version; b=q1nUPoHzIiWs9ImRBmNLyEk4FfYUB+6JJl4dLW0c0sdAac8phvhE3Ww+JqmLtbKsI/5tee094H3ZoR5i0TZ9vdn1XsJnEtkiug+7GYUiSebZrScKt6PEd0a4c3KkNiK2j6M1VzCgCfyQgIcP/l1oGdBN9enPUVadHs9MrxT+5j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8+scesX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB9C433C7;
+	Mon,  4 Mar 2024 21:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587930;
-	bh=diqakf/+tvfWKyaKWbda71oNxRjusugvnoL4uFgQuoo=;
+	s=korg; t=1709588957;
+	bh=ug9Q1OLOXAdYUackhr1tHbldcMlXf4aQqIgFPVkA4pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wV+E6Yf2BZg76NRbsPWO4FwJYqPTeVTQ9lJvZnyn+LLGMv1GQy60bS1QRxavNmVdF
-	 k1KANRA7enV4jiJnPYBFaOPLWbi/nvRGvCEsJI80dgUdmB/YvJGk/y51qlGS4TQwdB
-	 4ODT8FUysWUQPQuznlB4LIxTczRAmmVSXZ2jH+9A=
+	b=d8+scesXLEJOzJEx9jUsEaO7+9xwI9T5N+niMEhH0VwIDsEjcr/0JIMLk864vkKn3
+	 NvhueQsUZ7+V+Xk9v0n6ONiBNDVJ+UBrKKSlKLKyA03VkO7V1LwAHOCVS57/9gG32c
+	 gH5PnOmbr2uVkA58QMJKhuiblUoRCTfqs0xDBKL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.7 120/162] x86/cpu: Allow reducing x86_phys_bits during early_identify_cpu()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 122/215] x86/boot/compressed: Move startup32_check_sev_cbit() into .text
 Date: Mon,  4 Mar 2024 21:23:05 +0000
-Message-ID: <20240304211555.589854941@linuxfoundation.org>
+Message-ID: <20240304211600.939894033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 9a458198eba98b7207669a166e64d04b04cb651b upstream.
+commit b5d854cd4b6a314edd6c15dabc4233b84a0f8e5e upstream.
 
-In commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
-value straight away, instead of a two-phase approach"), the initialization
-of c->x86_phys_bits was moved after this_cpu->c_early_init(c).  This is
-incorrect because early_init_amd() expected to be able to reduce the
-value according to the contents of CPUID leaf 0x8000001f.
+Move startup32_check_sev_cbit() into the .text section and turn it into
+an ordinary function using the ordinary 32-bit calling convention,
+instead of saving/restoring the registers that are known to be live at
+the only call site. This improves maintainability, and makes it possible
+to move this function out of head_64.S and into a separate compilation
+unit that is specific to memory encryption.
 
-Fortunately, the bug was negated by init_amd()'s call to early_init_amd(),
-which does reduce x86_phys_bits in the end.  However, this is very
-late in the boot process and, most notably, the wrong value is used for
-x86_phys_bits when setting up MTRRs.
+Note that this requires the call site to be moved before the mixed mode
+check, as %eax will be live otherwise.
 
-To fix this, call get_cpu_address_sizes() as soon as X86_FEATURE_CPUID is
-set/cleared, and c->extended_cpuid_level is retrieved.
-
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240131230902.1867092-2-pbonzini%40redhat.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-14-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/head_64.S |   35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1596,6 +1596,7 @@ static void __init early_identify_cpu(st
- 		get_cpu_vendor(c);
- 		get_cpu_cap(c);
- 		setup_force_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 		cpu_parse_early_param();
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -251,6 +251,11 @@ SYM_FUNC_START(startup_32)
+ 	movl    $__BOOT_TSS, %eax
+ 	ltr	%ax
  
- 		if (this_cpu->c_early_init)
-@@ -1608,10 +1609,9 @@ static void __init early_identify_cpu(st
- 			this_cpu->c_bsp_init(c);
- 	} else {
- 		setup_clear_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 	}
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	/* Check if the C-bit position is correct when SEV is active */
++	call	startup32_check_sev_cbit
++#endif
++
+ 	/*
+ 	 * Setup for the jump to 64bit mode
+ 	 *
+@@ -268,8 +273,6 @@ SYM_FUNC_START(startup_32)
+ 	leal	rva(startup_64_mixed_mode)(%ebp), %eax
+ 1:
+ #endif
+-	/* Check if the C-bit position is correct when SEV is active */
+-	call	startup32_check_sev_cbit
  
--	get_cpu_address_sizes(c);
--
- 	setup_force_cpu_cap(X86_FEATURE_ALWAYS);
+ 	pushl	$__KERNEL_CS
+ 	pushl	%eax
+@@ -740,16 +743,17 @@ SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBA
+  * succeed. An incorrect C-bit position will map all memory unencrypted, so that
+  * the compare will use the encrypted random data and fail.
+  */
+-	__HEAD
+-SYM_FUNC_START(startup32_check_sev_cbit)
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+-	pushl	%eax
++	.text
++SYM_FUNC_START(startup32_check_sev_cbit)
+ 	pushl	%ebx
+-	pushl	%ecx
+-	pushl	%edx
++	pushl	%ebp
++
++	call	0f
++0:	popl	%ebp
  
- 	cpu_set_bug_bits(c);
+ 	/* Check for non-zero sev_status */
+-	movl	rva(sev_status)(%ebp), %eax
++	movl	(sev_status - 0b)(%ebp), %eax
+ 	testl	%eax, %eax
+ 	jz	4f
+ 
+@@ -764,17 +768,18 @@ SYM_FUNC_START(startup32_check_sev_cbit)
+ 	jnc	2b
+ 
+ 	/* Store to memory and keep it in the registers */
+-	movl	%eax, rva(sev_check_data)(%ebp)
+-	movl	%ebx, rva(sev_check_data+4)(%ebp)
++	leal	(sev_check_data - 0b)(%ebp), %ebp
++	movl	%eax, 0(%ebp)
++	movl	%ebx, 4(%ebp)
+ 
+ 	/* Enable paging to see if encryption is active */
+ 	movl	%cr0, %edx			 /* Backup %cr0 in %edx */
+ 	movl	$(X86_CR0_PG | X86_CR0_PE), %ecx /* Enable Paging and Protected mode */
+ 	movl	%ecx, %cr0
+ 
+-	cmpl	%eax, rva(sev_check_data)(%ebp)
++	cmpl	%eax, 0(%ebp)
+ 	jne	3f
+-	cmpl	%ebx, rva(sev_check_data+4)(%ebp)
++	cmpl	%ebx, 4(%ebp)
+ 	jne	3f
+ 
+ 	movl	%edx, %cr0	/* Restore previous %cr0 */
+@@ -786,13 +791,11 @@ SYM_FUNC_START(startup32_check_sev_cbit)
+ 	jmp	3b
+ 
+ 4:
+-	popl	%edx
+-	popl	%ecx
++	popl	%ebp
+ 	popl	%ebx
+-	popl	%eax
+-#endif
+ 	RET
+ SYM_FUNC_END(startup32_check_sev_cbit)
++#endif
+ 
+ /*
+  * Stack and heap for uncompression
 
 
 
