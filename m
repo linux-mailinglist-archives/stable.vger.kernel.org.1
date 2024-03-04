@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E61870F32
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3616870E29
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B991C2178B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90DC31F21773
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0107868F;
-	Mon,  4 Mar 2024 21:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8DC7868F;
+	Mon,  4 Mar 2024 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7GKzyf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qammQ3BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B801EB5A;
-	Mon,  4 Mar 2024 21:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB0211193;
+	Mon,  4 Mar 2024 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589122; cv=none; b=l1SOgQvIXp76icvDpnnrVFjS67RX454U4Jkj+SMVo/hCFR4TxwTDhaHUYBcQeqUmgV3sAdbzuBttWXk1ChwqrUGf1I/sBASyQkh/Sn3Wk2YhgezqOVW655ih+6fB7maU2kSbT0PrJnUK/vrUVjXCBQk4mZbW7uUnLDHaAtKxC0g=
+	t=1709588487; cv=none; b=Nv09fmpd6vvogRgAcumG1RATLk2kdSuUmIpgZjZ+6WtuXKhmEFkjvCmiSwaxAp2CLsfNFdPIbHPGRKTP7F9xeYqeZcg2Vs9iHzx6oje6tyEx7R4O8qZCvm9f/CYPUCZCjYez4N/QD1K/vCEbfUThviUSxo40J4nsT43i/qhD/dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589122; c=relaxed/simple;
-	bh=tRJTyjH42CeZ4P0AD10tlr81WXrJzENqiunvNkXo6yU=;
+	s=arc-20240116; t=1709588487; c=relaxed/simple;
+	bh=wHnLe8Xq1+HwsGlh6Xiy7HC+1W9Li7qeK18Vgm7yIEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFSlE0cHrEZ81CJKSD8oyfsCKIET/eFLjtHQK2BySgZwg2YsoYRk+2jiO9YEdBh5MdLLBKUQBzpAqX6odrWKd1NunPurhxjETMnlgBZswh9nZGhqkrsMjkqOwmb3/xhdEjDN4Mcm7ZdQmUr3MJ3tx/Qyu0ybkZ8AngIek5k7gEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7GKzyf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1601FC433C7;
-	Mon,  4 Mar 2024 21:52:01 +0000 (UTC)
+	 MIME-Version; b=oEMVdn3B+kk5jIZH8i5x4N4vJd/n+oBE42X/mf6NMVBeRdKXBZq7bWjM/hyd29Ltt6qDMlzK8hyAjwlFlsI4ShRdYIVgu8iAdEOQib/yvX47PVfXs/ImIcMsrr2zOAMDH/HhZEBHfNycgsUkAa7wUWY4hnEUlWnRW2o52304+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qammQ3BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB1DC433F1;
+	Mon,  4 Mar 2024 21:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589122;
-	bh=tRJTyjH42CeZ4P0AD10tlr81WXrJzENqiunvNkXo6yU=;
+	s=korg; t=1709588487;
+	bh=wHnLe8Xq1+HwsGlh6Xiy7HC+1W9Li7qeK18Vgm7yIEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7GKzyf0Sbee8j5xDrJypVpuzZKNlGcSbyYCMGLUMSB3Sf/XN3eC9TfuTOSQWGktf
-	 kVrsQGswaXB+guZe6eiFdbzixbz4b0+rtB8rUVn3wKFkkYeIRsVRl2wbl8j3CTTTpG
-	 rTojFzTHz8k9Apo5YX68fOgnlZK2g1iom28En3qY=
+	b=qammQ3BZ2t7VbzKZMHPiWC2+SwEEcbOdlFZ8VkugPlESRnCO/NkyfW+4FCsrvI20R
+	 fXM1kZ8AHtOk+OkFCj61mdesS0QdAMLNzTXjlz+6O1mRdQHjOkxEpaUy/hge5pL6ZE
+	 JD0sDa0ge3BpUAXUtThLH2GzMvkcnxRu99RdYbA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 181/215] efi: efivars: prevent double registration
-Date: Mon,  4 Mar 2024 21:24:04 +0000
-Message-ID: <20240304211602.686660703@linuxfoundation.org>
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 125/143] dmaengine: idxd: Remove shadow Event Log head stored in idxd
+Date: Mon,  4 Mar 2024 21:24:05 +0000
+Message-ID: <20240304211553.893367946@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Fenghua Yu <fenghua.yu@intel.com>
 
-From: Johan Hovold <johan+linaro@kernel.org>
+[ Upstream commit ecec7c9f29a7114a3e23a14020b1149ea7dffb4f ]
 
-[ Commit 0217a40d7ba6e71d7f3422fbe89b436e8ee7ece7 upstream ]
+head is defined in idxd->evl as a shadow of head in the EVLSTATUS register.
+There are two issues related to the shadow head:
 
-Add the missing sanity check to efivars_register() so that it is no
-longer possible to override an already registered set of efivar ops
-(without first deregistering them).
+1. Mismatch between the shadow head and the state of the EVLSTATUS
+   register:
+   If Event Log is supported, upon completion of the Enable Device command,
+   the Event Log head in the variable idxd->evl->head should be cleared to
+   match the state of the EVLSTATUS register. But the variable is not reset
+   currently, leading mismatch between the variable and the register state.
+   The mismatch causes incorrect processing of Event Log entries.
 
-This can help debug initialisation ordering issues where drivers have so
-far unknowingly been relying on overriding the generic ops.
+2. Unnecessary shadow head definition:
+   The shadow head is unnecessary as head can be read directly from the
+   EVLSTATUS register. Reading head from the register incurs no additional
+   cost because event log head and tail are always read together and
+   tail is already read directly from the register as required by hardware.
 
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove the shadow Event Log head stored in idxd->evl to address the
+mentioned issues.
+
+Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240215024931.1739621-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/vars.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/dma/idxd/cdev.c    | 2 +-
+ drivers/dma/idxd/debugfs.c | 2 +-
+ drivers/dma/idxd/idxd.h    | 1 -
+ drivers/dma/idxd/irq.c     | 3 +--
+ 4 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -66,19 +66,28 @@ int efivars_register(struct efivars *efi
- 		     const struct efivar_operations *ops,
- 		     struct kobject *kobject)
- {
-+	int rv;
-+
- 	if (down_interruptible(&efivars_lock))
- 		return -EINTR;
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index d32deb9b4e3de..4eeec95a66751 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -345,7 +345,7 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
+ 	spin_lock(&evl->lock);
+ 	status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	t = status.tail;
+-	h = evl->head;
++	h = status.head;
+ 	size = evl->size;
  
-+	if (__efivars) {
-+		pr_warn("efivars already registered\n");
-+		rv = -EBUSY;
-+		goto out;
-+	}
-+
- 	efivars->ops = ops;
- 	efivars->kobject = kobject;
+ 	while (h != t) {
+diff --git a/drivers/dma/idxd/debugfs.c b/drivers/dma/idxd/debugfs.c
+index 9cfbd9b14c4c4..f3f25ee676f30 100644
+--- a/drivers/dma/idxd/debugfs.c
++++ b/drivers/dma/idxd/debugfs.c
+@@ -68,9 +68,9 @@ static int debugfs_evl_show(struct seq_file *s, void *d)
  
- 	__efivars = efivars;
+ 	spin_lock(&evl->lock);
  
- 	pr_info("Registered efivars operations\n");
--
-+	rv = 0;
-+out:
- 	up(&efivars_lock);
+-	h = evl->head;
+ 	evl_status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	t = evl_status.tail;
++	h = evl_status.head;
+ 	evl_size = evl->size;
  
--	return 0;
-+	return rv;
- }
- EXPORT_SYMBOL_GPL(efivars_register);
+ 	seq_printf(s, "Event Log head %u tail %u interrupt pending %u\n\n",
+diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
+index e269ca1f48625..6fc79deb99bfd 100644
+--- a/drivers/dma/idxd/idxd.h
++++ b/drivers/dma/idxd/idxd.h
+@@ -286,7 +286,6 @@ struct idxd_evl {
+ 	unsigned int log_size;
+ 	/* The number of entries in the event log. */
+ 	u16 size;
+-	u16 head;
+ 	unsigned long *bmap;
+ 	bool batch_fail[IDXD_MAX_BATCH_IDENT];
+ };
+diff --git a/drivers/dma/idxd/irq.c b/drivers/dma/idxd/irq.c
+index b501320a9c7ad..0bbc6bdc6145e 100644
+--- a/drivers/dma/idxd/irq.c
++++ b/drivers/dma/idxd/irq.c
+@@ -367,9 +367,9 @@ static void process_evl_entries(struct idxd_device *idxd)
+ 	/* Clear interrupt pending bit */
+ 	iowrite32(evl_status.bits_upper32,
+ 		  idxd->reg_base + IDXD_EVLSTATUS_OFFSET + sizeof(u32));
+-	h = evl->head;
+ 	evl_status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	t = evl_status.tail;
++	h = evl_status.head;
+ 	size = idxd->evl->size;
  
+ 	while (h != t) {
+@@ -378,7 +378,6 @@ static void process_evl_entries(struct idxd_device *idxd)
+ 		h = (h + 1) % size;
+ 	}
+ 
+-	evl->head = h;
+ 	evl_status.head = h;
+ 	iowrite32(evl_status.bits_lower32, idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
+ 	spin_unlock(&evl->lock);
+-- 
+2.43.0
+
 
 
 
