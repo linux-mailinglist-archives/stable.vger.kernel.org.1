@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DC686FAF5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:37:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B5586FAF6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E46C2827A1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:37:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C123F1F212E9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B31814005;
-	Mon,  4 Mar 2024 07:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD1414013;
+	Mon,  4 Mar 2024 07:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTnUEzPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aire32FN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3928014000
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BD313FFD
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709537823; cv=none; b=aQzSBWQhjLR2nHeOIiOFLnyQ8VO8hgQD4X0sqSE59Am6IOlXhUoOv5mJqV/RJlUhjSEkFzcYvLhLmZRiuFmgekEVh6UhfsAvCUlptUNS20oysLRXQkwBPFtcBaimGfJBcbncMqCbGqhjEJ5/1JDMY0koG1gpB3B81wNK9o/nDPY=
+	t=1709537826; cv=none; b=d+GqIJa4LGySjOsntQsvgLOwCMg7vltNjml9JBw0Ss4OCRElCiYhprqiUjX88GcXwtPJvITK4vS8SD7psFL/HsH1UVg6f1NAH0NBpkM/lzMjpIFQpDt/hzeSIKpXZs18nYpy3HLmL8mIXZ+nQC72d0fAn1BxxokXXSPPem1e2Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709537823; c=relaxed/simple;
-	bh=hNNxoefGppx5vfkJNycQ+2g5N7inuXOZ3Vlw50LCtnc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a5Fzjb4FGRy2TW0D1NJ9s80bU8eDxPHrusTV9DE+t4IqFI6r4QlItTI4+Qmj67Dts+3g76x1mKbH9TjiIQsRHtoOgImutq4c2sN1rgS6uFW2wkN2ibuAYg0ZwZ4EaQQ8Oy+DkKT+aMvUspvlYJLLiNKyAH+uGfLQcwX2xyFowh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTnUEzPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B364BC433C7;
-	Mon,  4 Mar 2024 07:37:02 +0000 (UTC)
+	s=arc-20240116; t=1709537826; c=relaxed/simple;
+	bh=nkOZvo9tn0P5INlHVzfGZC3hgCJ5+o/Nu/Yk5TLWFRo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fUymtR/zxj9dq3MylT4//BdrfPYREilGaCR10+uwXo8YB57ahuulE2o22ESpKXGu//dkeI6jlTbflLKG7vUb5OZAd/NJiepdCapJkzklAcedHHrWl2HqjHKkmxZepoQcZB6Xte3ARWp9BURH8OFQkwsXoZb7mWhdoSgTG9NxVwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aire32FN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F66C433F1;
+	Mon,  4 Mar 2024 07:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709537823;
-	bh=hNNxoefGppx5vfkJNycQ+2g5N7inuXOZ3Vlw50LCtnc=;
+	s=korg; t=1709537826;
+	bh=nkOZvo9tn0P5INlHVzfGZC3hgCJ5+o/Nu/Yk5TLWFRo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TTnUEzPhVyvEmI5vQ5TnaVSv1HoBc1WUwep513Ixr//xRLWYsj/MYdWfJwQwVTVNX
-	 lgW+gWOjVoTG4ZOgSMffd0oPJe+C5vkeumpoL8vey9m2Zn0E4ZwEEYUf3RkbNHB3Xo
-	 jtk4f0Up5z0AQH5n6WVd4putCEtI3R6YgGZXoIO4=
-Subject: FAILED: patch "[PATCH] mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong" failed to apply to 6.1-stable tree
+	b=aire32FNcKoNmc1ixtX005R9yqIlcqz8PkWnWVby126Fluu+59eVB2QqsbrsgCC/r
+	 B3u5nJXKh5KbA8nY/3Z+W53kJHs6FszZPObvliEM5rj2YRWYA2qoBzK6JpILr2Gf3+
+	 LooUw+QPiQ5zbwX6oDmnVWP+uWowVmSW0bKMeSeU=
+Subject: FAILED: patch "[PATCH] mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong" failed to apply to 5.15-stable tree
 To: byungchul@sk.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,hannes@cmpxchg.org,hyeongtak.ji@sk.com,osalvador@suse.de,stable@vger.kernel.org,ying.huang@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 08:36:57 +0100
-Message-ID: <2024030457-nineteen-synthesis-5112@gregkh>
+Date: Mon, 04 Mar 2024 08:37:00 +0100
+Message-ID: <2024030400-blooper-quaking-0f36@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2774f256e7c0219e2b0a0894af1c76bdabc4f974
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030457-nineteen-synthesis-5112@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030400-blooper-quaking-0f36@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -84,6 +84,11 @@ fd3b1bc3c86e ("mm/madvise: fix madvise_pageout for private file mappings")
 7438899b0b8d ("folio-compat: remove try_to_release_page()")
 64ab3195ea07 ("khugepage: replace try_to_release_page() with filemap_release_folio()")
 ece62684dcfb ("hugetlbfs: convert hugetlb_delete_from_page_cache() to use folios")
+241f68859656 ("mm/migrate_device.c: refactor migrate_vma and migrate_deivce_coherent_page()")
+16ce101db85d ("mm/memory.c: fix race when faulting a device private page")
+fa27759af4a6 ("hugetlb: clean up code checking for fault/truncation races")
+c86272287bc6 ("hugetlb: create remove_inode_single_folio to remove single file folio")
+7e1813d48dd3 ("hugetlb: rename remove_huge_page to hugetlb_delete_from_page_cache")
 
 thanks,
 
