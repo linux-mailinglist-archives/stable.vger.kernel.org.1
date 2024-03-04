@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-26384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BD1870E55
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34105870C81
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ABA61F21100
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF8E9283E9F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C59B200CD;
-	Mon,  4 Mar 2024 21:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A864142071;
+	Mon,  4 Mar 2024 21:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFAzjcPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHuLEMzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFDA8F58;
-	Mon,  4 Mar 2024 21:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637DE200D4;
+	Mon,  4 Mar 2024 21:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588581; cv=none; b=AypGaOHVAir6+ZSY2q298tP6GjkZ/ThdM8tgeZHA/FUVWPTLX5I7g8p8Dsd4Si1YqTXHwBiQZtSxwtYKpETYGQ/Zl4W4/aKUsdvIbikCFrsYwT1H6vHCZWd9ubycvgRQnaqo6UoGeFRSsyvpw/7+NAPaIY/5TKq3MWpmxKQBYaI=
+	t=1709587586; cv=none; b=Oqo4ttgzkRgO6TPhR6lWj0fUpLrHcIp7OmCsyr8TQyaHDVDL+SZyb9K3St6lu25uHBOQwaZmvs80H4dfzGSKuGnEWNelB/tJFGdcJstWNj/h4uuLq0MXp27a5ZDkU+GqPI9ixyVwJky0sIGO2REGo35cQUuO+nR8NaHP2QxbXQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588581; c=relaxed/simple;
-	bh=+Qx0WYLhXPvs98/WwTJRKwTEokrcvf42j1yfSQPEaQ8=;
+	s=arc-20240116; t=1709587586; c=relaxed/simple;
+	bh=THeIalGhQ2OR4X0CYzX0Zg4dwUGww1Ai4hM+Ql4zDdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9+fXVi4msnrrmBtjbARiRDoAg7fu1q7+UeOtkHEJfVbxdqoOA6+TlorioVYAxkHCYRCeAXM9GO5bmNSB5KV4iApIqm/dnQwhfq6IEEmK8nOz44WH0BKuoHM0lxsFRDxat15bLVEXpvuX+eXuIGe+1u8xtyggyjcQZ+xI/NeaN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFAzjcPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73227C433C7;
-	Mon,  4 Mar 2024 21:43:00 +0000 (UTC)
+	 MIME-Version; b=jjX5gukwPjsbeYFso94O0m+P12aj1vyN0iznO7PM6DSs/ot1yV2pqHwYhrJu/B2PDSNT3JEHSt438hpf0bKit52UxHqKYWv/uMDn1L/S/DOdyWKvVArzDQYoxyqF3dWhV+9tDrw9wJrRKyccGAJKmgHwlHyVVf9JwXToIdrRT3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHuLEMzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED04AC433F1;
+	Mon,  4 Mar 2024 21:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588580;
-	bh=+Qx0WYLhXPvs98/WwTJRKwTEokrcvf42j1yfSQPEaQ8=;
+	s=korg; t=1709587586;
+	bh=THeIalGhQ2OR4X0CYzX0Zg4dwUGww1Ai4hM+Ql4zDdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFAzjcPEjQUtoALivYsK89fiyAT69UTErz9v5vswZGVESjZieZNLTEOv9hLsmSspi
-	 m0ZIO0xorw4rIAItqVeUo5M/wbnk676BeX7I2q6TuXPcGkxDWa5eFziNlWB2ZOd/lp
-	 kJ1uE9/cXKOH9WxpS8zx+oVVfbl0v5At62ENcXsU=
+	b=NHuLEMzF9Fhgpy5wEH5MFsrZafGkjIa10gfV2oaBwseE+cVHjIB8/GZE5Sg2yoIE0
+	 +i07DKKhLFX8UsQdqQrBUSv3TZt0rqx39whSUq+WY/K9gIiLP3a+E5VOPFp5EJWyGz
+	 OJLVoq9mpzz5YHUMPtGOiz5XMh3L74gPfzWXpXNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/215] of: overlay: Reorder struct fragment fields kerneldoc
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.7 005/162] ice: fix dpll and dpll_pin data access on PF reset
 Date: Mon,  4 Mar 2024 21:21:10 +0000
-Message-ID: <20240304211557.237824932@linuxfoundation.org>
+Message-ID: <20240304211552.013654515@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-[ Upstream commit 5d007ffdf6025fe83e497c44ed7c8aa8f150c4d1 ]
+[ Upstream commit fc7fd1a10a9d2d38378b42e9a508da4c68018453 ]
 
-The fields of the fragment structure were reordered, but the kerneldoc
-was not updated.
+Do not allow to acquire data or alter configuration of dpll and pins
+through firmware if PF reset is in progress, this would cause confusing
+netlink extack errors as the firmware cannot respond or process the
+request properly during the reset time.
 
-Fixes: 81225ea682f45629 ("of: overlay: reorder fields in struct fragment")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/cfa36d2bb95e3c399c415dbf58057302c70ef375.1695893695.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring <robh@kernel.org>
+Return (-EBUSY) and extack error for the user who tries access/modify
+the config of dpll/pin through firmware during the reset time.
+
+The PF reset and kernel access to dpll data are both asynchronous. It is
+not possible to guard all the possible reset paths with any determinictic
+approach. I.e., it is possible that reset starts after reset check is
+performed (or if the reset would be checked after mutex is locked), but at
+the same time it is not possible to wait for dpll mutex unlock in the
+reset flow.
+This is best effort solution to at least give a clue to the user
+what is happening in most of the cases, knowing that there are possible
+race conditions where the user could see a different error received
+from firmware due to reset unexpectedly starting.
+
+Test by looping execution of below steps until netlink error appears:
+- perform PF reset
+$ echo 1 > /sys/class/net/<ice PF>/device/reset
+- i.e. try to alter/read dpll/pin config:
+$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/dpll.yaml \
+	--dump pin-get
+
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/overlay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 38 +++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 4402871b5c0c0..e663d5585a057 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -45,8 +45,8 @@ struct target {
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 10a469060d322..9c8be237c7e50 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -30,6 +30,26 @@ static const char * const pin_type_name[] = {
+ 	[ICE_DPLL_PIN_TYPE_RCLK_INPUT] = "rclk-input",
+ };
  
++/**
++ * ice_dpll_is_reset - check if reset is in progress
++ * @pf: private board structure
++ * @extack: error reporting
++ *
++ * If reset is in progress, fill extack with error.
++ *
++ * Return:
++ * * false - no reset in progress
++ * * true - reset in progress
++ */
++static bool ice_dpll_is_reset(struct ice_pf *pf, struct netlink_ext_ack *extack)
++{
++	if (ice_is_reset_in_progress(pf->state)) {
++		NL_SET_ERR_MSG(extack, "PF reset in progress");
++		return true;
++	}
++	return false;
++}
++
  /**
-  * struct fragment - info about fragment nodes in overlay expanded device tree
-- * @target:	target of the overlay operation
-  * @overlay:	pointer to the __overlay__ node
-+ * @target:	target of the overlay operation
-  */
- struct fragment {
- 	struct device_node *overlay;
+  * ice_dpll_pin_freq_set - set pin's frequency
+  * @pf: private board structure
+@@ -109,6 +129,9 @@ ice_dpll_frequency_set(const struct dpll_pin *pin, void *pin_priv,
+ 	struct ice_pf *pf = d->pf;
+ 	int ret;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_pin_freq_set(pf, p, pin_type, frequency, extack);
+ 	mutex_unlock(&pf->dplls.lock);
+@@ -609,6 +632,9 @@ ice_dpll_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 	struct ice_pf *pf = d->pf;
+ 	int ret;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	if (enable)
+ 		ret = ice_dpll_pin_enable(&pf->hw, p, d->dpll_idx, pin_type,
+@@ -712,6 +738,9 @@ ice_dpll_pin_state_get(const struct dpll_pin *pin, void *pin_priv,
+ 	struct ice_pf *pf = d->pf;
+ 	int ret;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_pin_state_update(pf, p, pin_type, extack);
+ 	if (ret)
+@@ -836,6 +865,9 @@ ice_dpll_input_prio_set(const struct dpll_pin *pin, void *pin_priv,
+ 	struct ice_pf *pf = d->pf;
+ 	int ret;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_hw_input_prio_set(pf, d, p, prio, extack);
+ 	mutex_unlock(&pf->dplls.lock);
+@@ -1115,6 +1147,9 @@ ice_dpll_rclk_state_on_pin_set(const struct dpll_pin *pin, void *pin_priv,
+ 	int ret = -EINVAL;
+ 	u32 hw_idx;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	hw_idx = parent->idx - pf->dplls.base_rclk_idx;
+ 	if (hw_idx >= pf->dplls.num_inputs)
+@@ -1169,6 +1204,9 @@ ice_dpll_rclk_state_on_pin_get(const struct dpll_pin *pin, void *pin_priv,
+ 	int ret = -EINVAL;
+ 	u32 hw_idx;
+ 
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	hw_idx = parent->idx - pf->dplls.base_rclk_idx;
+ 	if (hw_idx >= pf->dplls.num_inputs)
 -- 
 2.43.0
 
