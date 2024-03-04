@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806C8870EDB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FF8870DCE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 106F3B276E5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DF58B27800
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7C5200CD;
-	Mon,  4 Mar 2024 21:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0939200D4;
+	Mon,  4 Mar 2024 21:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtReCKnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQmGzhCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB781EB5A;
-	Mon,  4 Mar 2024 21:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5628F58;
+	Mon,  4 Mar 2024 21:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588873; cv=none; b=VZh1ndQUGAMtJ9JH2t2JLpdT2Cs5mKntE505fl8XUX1z2dpmohNJj9UcqZRTHWCrYQWGJBl/yjTQ3CEKIQ7klNQqhnDXg6oZvhq8Hs/55If5K1xILGPvY/H11WGus0dfuh2w3Zur1zSVGc4WTKT2HlXRLILuHF5bm436HkZeT2Y=
+	t=1709588276; cv=none; b=SGYi1u/We/bITdmIkVqN1uaaZ/JL93j8dxBXuatAgxSrykRK3JsbCsMl/gpSz5l9+BZqcsFcASrtUHlq48WK42ZjzgBjZaG4t51IE09HQDzj/XbwYXDdywhyp8BLCD7qMM3AQRnju7a9spcRi7AmZWiL4sOqMT7ZpbpDvkANHzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588873; c=relaxed/simple;
-	bh=6dJbstobldXJgTw6c5EGKGrMAQEUFDS70GNG4W5AJqo=;
+	s=arc-20240116; t=1709588276; c=relaxed/simple;
+	bh=PuPGujcXVY5oh4f6V2e/PNCxigiOhdu5/5ikG1dvEQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mp7tFy1ft7+OM2V1RKrjcXPYNyGoIVcWov40JxW2imnE5Z1i8TXWjx1yoXffsqvv6RLQ074VHKfspD9W7F93n2ZRryiZV+OoQ+NrefYiRADV9gOhxXadsdym7cMvc44G6l0Smp68UKpGtUlGVJQpsy0EHASJxJcL2pL74KS41v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtReCKnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5EFC433C7;
-	Mon,  4 Mar 2024 21:47:53 +0000 (UTC)
+	 MIME-Version; b=OKkmltYIc9Kvrf8h4Whv150AOIK9KS4BSlzakjeyIct+pvrGlAqEUVrlLzXVCOqDg9JnwjKbxgBoljYkLfO97nQ7Atwtzq/EIjTHzaapwUtxsLz7ygux2pRb5Qn1e8F3JiaXhj1lCQFhlWkKpNYqH6GcDwCtUyFq9Q7Ic1YNvSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQmGzhCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D04C433C7;
+	Mon,  4 Mar 2024 21:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588873;
-	bh=6dJbstobldXJgTw6c5EGKGrMAQEUFDS70GNG4W5AJqo=;
+	s=korg; t=1709588276;
+	bh=PuPGujcXVY5oh4f6V2e/PNCxigiOhdu5/5ikG1dvEQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtReCKnTF+83+gF7el+O2nQm8g21Sjw7NbrgiSmCsJdiUd/uG7B99ZfEDg/1b5BVs
-	 U210dnzuiF1SP5fJWKVlw6Fa6EvFVw0/i8m4TdS4L6JYIBuaN9K4rMNi+ThLUWBAq6
-	 tPD/UHwQEq85gjbf7mcR3srCUMdsW6Yv26Qa95kY=
+	b=KQmGzhCD9Uv/7WHJwAob/1KuTPaMqxFlhYVpWMeg2AxXNL9dME9d2AHFD7fOeeq+T
+	 ft1ln7dUe4qgFSURtq/ikK0CtDvDTFBxVCyu78plIT79LK01qdJyotb6BigRqOnUWh
+	 Ee3kn2JJerU2wBC9K9MKklARZW7H+0Qr7VJIdA2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 102/215] mptcp: push at DSS boundaries
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/143] ALSA: Drop leftover snd-rtctimer stuff from Makefile
 Date: Mon,  4 Mar 2024 21:22:45 +0000
-Message-ID: <20240304211600.270196993@linuxfoundation.org>
+Message-ID: <20240304211551.371955869@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b9cd26f640a308ea314ad23532de9a8592cd09d2 upstream.
+[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
 
-when inserting not contiguous data in the subflow write queue,
-the protocol creates a new skb and prevent the TCP stack from
-merging it later with already queued skbs by setting the EOR marker.
+We forgot to remove the line for snd-rtctimer from Makefile while
+dropping the functionality.  Get rid of the stale line.
 
-Still no push flag is explicitly set at the end of previous GSO
-packet, making the aggregation on the receiver side sub-optimal -
-and packetdrill self-tests less predictable.
-
-Explicitly mark the end of not contiguous DSS with the push flag.
-
-Fixes: 6d0060f600ad ("mptcp: Write MPTCP DSS headers to outgoing data packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-4-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
+Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/core/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1319,6 +1319,7 @@ static int mptcp_sendmsg_frag(struct soc
- 		mpext = skb_ext_find(skb, SKB_EXT_MPTCP);
- 		if (!mptcp_skb_can_collapse_to(data_seq, skb, mpext)) {
- 			TCP_SKB_CB(skb)->eor = 1;
-+			tcp_mark_push(tcp_sk(ssk), skb);
- 			goto alloc_skb;
- 		}
+diff --git a/sound/core/Makefile b/sound/core/Makefile
+index a6b444ee28326..f6526b3371375 100644
+--- a/sound/core/Makefile
++++ b/sound/core/Makefile
+@@ -32,7 +32,6 @@ snd-ump-objs      := ump.o
+ snd-ump-$(CONFIG_SND_UMP_LEGACY_RAWMIDI) += ump_convert.o
+ snd-timer-objs    := timer.o
+ snd-hrtimer-objs  := hrtimer.o
+-snd-rtctimer-objs := rtctimer.o
+ snd-hwdep-objs    := hwdep.o
+ snd-seq-device-objs := seq_device.o
  
+-- 
+2.43.0
+
 
 
 
