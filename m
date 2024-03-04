@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE73E870EB5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F337D870CEB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69AECB270A8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF12F28B3C9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737D97B3FA;
-	Mon,  4 Mar 2024 21:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64617BAEF;
+	Mon,  4 Mar 2024 21:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEnDp2jc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDNY49kE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3003B200CD;
-	Mon,  4 Mar 2024 21:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650E27BAE1;
+	Mon,  4 Mar 2024 21:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588764; cv=none; b=IRxKDenD+Y6OJ3IFioB+lglLAaMf+lQcSnhEyvN1zW7mOS1K+98ERXcXK4qAjiHxwU2Eut6+xqh4ONBu8PZYy0t0P2YF8Wj2QApPkRRGIzWgQ0fA7kwK+kX2uJJdfxs99YYuWwGqRLOZrDyoyBPu+7OqIsB4rDfqUVVzaJfKORM=
+	t=1709587779; cv=none; b=VeuDAuE4FlXgQAXnMCx/7eCu4j1MdtC1wZkEMvuAyg0yS/DqcmE/3/6OHHQ2JdwfqeoNozZhpefRgYcYYqq2Nyi16WtCwj/evxxrJV2/PRcpjuTxYuEwhlaypqrlXL+vKqTawbsm5sFYW95stAManxKPStppJnmBKmBh25BosPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588764; c=relaxed/simple;
-	bh=kJkSoczkMhN/xGNqETes2bwJ5CAdMdmYSv1K2Kvgl6c=;
+	s=arc-20240116; t=1709587779; c=relaxed/simple;
+	bh=dNt8RTh6fm9qUFuaFUOVSOnTqzY2dbap9urTgH2AlhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBB+8znXi8jy+gp7cwU7vLiFqtkvDb4O4js9sdz2sxmdHIUJtKAyo7YOiStdcmPVkHlt+XHeJL21FUwxAhnZtWvMfwoh+bhodWWFgf9rL4IF9uPK0jS/mV7M7YcEv/ICUYUm0mT/sR56VgnYUiCkdXEr8b0SsAg9cj4wikyQi0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEnDp2jc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F8AC433F1;
-	Mon,  4 Mar 2024 21:46:03 +0000 (UTC)
+	 MIME-Version; b=r2E1vZbkelvYCjV6qNtf88L5KpMjjxR2XxsrBlGevgN9W+pqsSR+x59Pyr9Xyu2kbjHFmA4FTiTrWe/UosR/yWYSgqTp1SEVq3PexrEqXzEEQEVD6XSMS6QkFUIOBnD9eyA7QJhqDoOr0haQGvgoDGrmrGtG4MEPYdlGJ4kzONY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDNY49kE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB853C43390;
+	Mon,  4 Mar 2024 21:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588764;
-	bh=kJkSoczkMhN/xGNqETes2bwJ5CAdMdmYSv1K2Kvgl6c=;
+	s=korg; t=1709587779;
+	bh=dNt8RTh6fm9qUFuaFUOVSOnTqzY2dbap9urTgH2AlhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEnDp2jcX4CJG9FbqFDMD4wdtY0d/NTQAFIogFIXMVGR5DhB6Lv/CIJ0keDAPDsKU
-	 n1IX3y/dseFqMD41UmBfgtHiBXzfq/NCyYYqSRuSt/Im3Kj0ZUhwqfxTRX3EB9DIXA
-	 hV440tTA2mrQRgl38uX3L9SUXd7xtwHafCHb1SKA=
+	b=dDNY49kEwEXjB6cOc38RJmW6x0msDAte/CkFnFtS5XyVxaNA2MeNuBSDhUryvd9nL
+	 LOyiNbqcJRJ+UqqwrxRPJnF0PvsbIOZphXeK2s4hOoJV/ZPzT1CDOdE856Dh3AiRod
+	 QH6VdP1ZuSz7RvUrsbOO95Cc6fbO1M/C0PRvxF6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
-	Yi Zhao <yi.zhao@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 087/215] dmaengine: fsl-qdma: init irq after reg initialization
-Date: Mon,  4 Mar 2024 21:22:30 +0000
-Message-ID: <20240304211559.759361644@linuxfoundation.org>
+	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.7 086/162] wifi: nl80211: reject iftype change with mesh ID change
+Date: Mon,  4 Mar 2024 21:22:31 +0000
+Message-ID: <20240304211554.581202401@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
+commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
 
-Initialize the qDMA irqs after the registers are configured so that
-interrupts that may have been pending from a primary kernel don't get
-processed by the irq handler before it is ready to and cause panic with
-the following trace:
+It's currently possible to change the mesh ID when the
+interface isn't yet in mesh mode, at the same time as
+changing it into mesh mode. This leads to an overwrite
+of data in the wdev->u union for the interface type it
+currently has, causing cfg80211_change_iface() to do
+wrong things when switching.
 
-  Call trace:
-   fsl_qdma_queue_handler+0xf8/0x3e8
-   __handle_irq_event_percpu+0x78/0x2b0
-   handle_irq_event_percpu+0x1c/0x68
-   handle_irq_event+0x44/0x78
-   handle_fasteoi_irq+0xc8/0x178
-   generic_handle_irq+0x24/0x38
-   __handle_domain_irq+0x90/0x100
-   gic_handle_irq+0x5c/0xb8
-   el1_irq+0xb8/0x180
-   _raw_spin_unlock_irqrestore+0x14/0x40
-   __setup_irq+0x4bc/0x798
-   request_threaded_irq+0xd8/0x190
-   devm_request_threaded_irq+0x74/0xe8
-   fsl_qdma_probe+0x4d4/0xca8
-   platform_drv_probe+0x50/0xa0
-   really_probe+0xe0/0x3f8
-   driver_probe_device+0x64/0x130
-   device_driver_attach+0x6c/0x78
-   __driver_attach+0xbc/0x158
-   bus_for_each_dev+0x5c/0x98
-   driver_attach+0x20/0x28
-   bus_add_driver+0x158/0x220
-   driver_register+0x60/0x110
-   __platform_driver_register+0x44/0x50
-   fsl_qdma_driver_init+0x18/0x20
-   do_one_initcall+0x48/0x258
-   kernel_init_freeable+0x1a4/0x23c
-   kernel_init+0x10/0xf8
-   ret_from_fork+0x10/0x18
+We could probably allow setting an interface to mesh
+while setting the mesh ID at the same time by doing a
+different order of operations here, but realistically
+there's no userspace that's going to do this, so just
+disallow changes in iftype when setting mesh ID.
 
 Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
-Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
+Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-qdma.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/wireless/nl80211.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -1203,10 +1203,6 @@ static int fsl_qdma_probe(struct platfor
- 	if (!fsl_qdma->queue)
- 		return -ENOMEM;
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4185,6 +4185,8 @@ static int nl80211_set_interface(struct
  
--	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
--	if (ret)
--		return ret;
--
- 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
- 	if (fsl_qdma->irq_base < 0)
- 		return fsl_qdma->irq_base;
-@@ -1245,16 +1241,19 @@ static int fsl_qdma_probe(struct platfor
- 
- 	platform_set_drvdata(pdev, fsl_qdma);
- 
--	ret = dma_async_device_register(&fsl_qdma->dma_dev);
-+	ret = fsl_qdma_reg_init(fsl_qdma);
- 	if (ret) {
--		dev_err(&pdev->dev,
--			"Can't register NXP Layerscape qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
- 		return ret;
- 	}
- 
--	ret = fsl_qdma_reg_init(fsl_qdma);
-+	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
-+	if (ret)
-+		return ret;
-+
-+	ret = dma_async_device_register(&fsl_qdma->dma_dev);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
- 		return ret;
- 	}
+ 		if (ntype != NL80211_IFTYPE_MESH_POINT)
+ 			return -EINVAL;
++		if (otype != NL80211_IFTYPE_MESH_POINT)
++			return -EINVAL;
+ 		if (netif_running(dev))
+ 			return -EBUSY;
  
 
 
