@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3600E870CFB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8031C870EB9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18401F21304
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359AB1F21773
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A307B3F9;
-	Mon,  4 Mar 2024 21:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88637200D4;
+	Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVkBmP9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldyLRwUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E0200CD;
-	Mon,  4 Mar 2024 21:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E1A11193;
+	Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587793; cv=none; b=u8P3mVy8G14KgMhuETmtdmbQKxGRNxQnB8dLPxSIr+OZdIh6zBK94Q7b40Z792fCJUKENdQpoVQpSQ2jI7Blk7Hrfl//KhvOLzsgPezDiM8Vmm4g7UMuZTPf2/pZ3DKX4PbSK4vICAkUXmE0QalxU4NYOmte3eOCTIaQoCXUbMY=
+	t=1709588782; cv=none; b=r/wqa/ugLILe0Qs+YCnl6bTVPlrh7yIw9cA8/NBoT9Wzo2sr69R9dUx2jzXFRGPsDjAhWBn4ynC9Jnrh8Z/L2iVrsE8wcaIPgBLyAV+cbtJB5CjixxrTlXnZaPZH1OZ3ABzLJ9L+QODgpHEeGKV/Wcwjf8488aufzWbSg2AF2ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587793; c=relaxed/simple;
-	bh=mFMOtTRFToyFPMbw6jHOCk8lz2WJd1G5jRbXM0MnLOg=;
+	s=arc-20240116; t=1709588782; c=relaxed/simple;
+	bh=c5qA1cZgyhViFFWouX5E7j+Thl/HIxiq6gSq3ZeMAO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nrSEaAtu60id4cJs1Qm0LucnphCiHQLKTdN5IHG8MruZhhuafwQnrvY7FcUZ3Xo3yJZVpuGwcjogY50DonsxG3WVlETxOser7c8dGtfPwqcaCxupiysfWrSJEeXbQM7koYYFXrRPUQK0Nz5NkgRzSi0jN5s3nsaiVj0+NwM5P5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVkBmP9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C536C433F1;
-	Mon,  4 Mar 2024 21:29:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZO/03nIlWB7JEKtgbX6xpgOF7yrudbimQNYW3B2zSu85xSKBpLVGQ7CpFk2hYrIv2FHv4swCxbGiy8aQ7mxRKRRBYo1xzvr+UVft+bzilNiYOJCkdKIrp1epROzriNjI2tCs/dUiUB1kMBYDnCN/YP/W1OD8Mrj3fxsYCQqgNYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldyLRwUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBAEC433F1;
+	Mon,  4 Mar 2024 21:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587793;
-	bh=mFMOtTRFToyFPMbw6jHOCk8lz2WJd1G5jRbXM0MnLOg=;
+	s=korg; t=1709588782;
+	bh=c5qA1cZgyhViFFWouX5E7j+Thl/HIxiq6gSq3ZeMAO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVkBmP9+BZiKuBrOdW6PY+t0f9Vsc4hGu0Wnm5oPOPLSAtI9B6IE136DkHrj+2Snj
-	 4W/du1O6CS4W1rd1MY3DoJHXJN71t2u2uovcEte6CuYJmRZoe9quIfR4SUYhkT/4oH
-	 p1qMGcC8RQbuKHMCueJYYRHDsFeYztNtmodJgfTM=
+	b=ldyLRwUJsZeuy9K2bN88j5j+QyzWU0d+Cq1c6VhLqtgQ6iU8VEfSNfcRLEAvusZyz
+	 EJVnvsLkWwq8RvQ6LVdeP/aj3VRArdy2r2qPIUVeBKkOvAbE1MF6u2CNGzlJ8LiRP/
+	 7Vuu6XYRpyV5b0Ko3xJDzEUqA45VPOxwGPrx28XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Dimitris Vlachos <dvlachos@ics.forth.gr>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 068/162] riscv: Fix pte_leaf_size() for NAPOT
+Subject: [PATCH 6.1 070/215] riscv: Sparse-Memory/vmemmap out-of-bounds fix
 Date: Mon,  4 Mar 2024 21:22:13 +0000
-Message-ID: <20240304211554.027962466@linuxfoundation.org>
+Message-ID: <20240304211559.205772451@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Dimitris Vlachos <dvlachos@ics.forth.gr>
 
-[ Upstream commit e0fe5ab4192c171c111976dbe90bbd37d3976be0 ]
+[ Upstream commit a11dd49dcb9376776193e15641f84fcc1e5980c9 ]
 
-pte_leaf_size() must be reimplemented to add support for NAPOT mappings.
+Offset vmemmap so that the first page of vmemmap will be mapped
+to the first page of physical memory in order to ensure that
+vmemmap’s bounds will be respected during
+pfn_to_page()/page_to_pfn() operations.
+The conversion macros will produce correct SV39/48/57 addresses
+for every possible/valid DRAM_BASE inside the physical memory limits.
 
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240227205016.121901-3-alexghiti@rivosinc.com
+v2:Address Alex's comments
+
+Suggested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Reported-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Closes: https://lore.kernel.org/linux-riscv/20240202135030.42265-1-csd4492@csd.uoc.gr
+Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240229191723.32779-1-dvlachos@ics.forth.gr
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 74ffb2178f545..ec8468ddad4a0 100644
+index 59bb53da473dd..63055c6ad2c25 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -439,6 +439,10 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	return pte;
- }
+@@ -79,7 +79,7 @@
+  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
+  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
+  */
+-#define vmemmap		((struct page *)VMEMMAP_START)
++#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
  
-+#define pte_leaf_size(pte)	(pte_napot(pte) ?				\
-+					napot_cont_size(napot_cont_order(pte)) :\
-+					PAGE_SIZE)
-+
- #ifdef CONFIG_NUMA_BALANCING
- /*
-  * See the comment in include/asm-generic/pgtable.h
+ #define PCI_IO_SIZE      SZ_16M
+ #define PCI_IO_END       VMEMMAP_START
 -- 
 2.43.0
 
