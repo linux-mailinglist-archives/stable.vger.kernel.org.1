@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DB6870F4B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73135870D60
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12404282FFC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0B328F0AE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A54179950;
-	Mon,  4 Mar 2024 21:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565D81C687;
+	Mon,  4 Mar 2024 21:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hd8T33Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bowEzUZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EC87868F;
-	Mon,  4 Mar 2024 21:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D977A70D;
+	Mon,  4 Mar 2024 21:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589187; cv=none; b=XH5cBSDa1DGQbi37hoTfjgYLc/NtJ0C5xYSLkN6DNVipP/nKxyoTzv9CWkwEgZtC7uo7OPuunRMyIsmO6ucceAviO0+UQYxGHEylqcSa3k14fxCN4PuTPz/I3f31U+s+kUwNzyD6jl14vSyCiCVGp7/bue82ek4pEx8UeYCfI68=
+	t=1709588003; cv=none; b=JWYnghAyX5+xmKV53y7bafKRjdwKFeeh5vb2RpRB4yqGQ61qAaaGIKgIj7tGm3D+nv7rGZ9aazstRuOUg5MzkCvep6he/397ycJ2hMsrSrtecBATApyRU2TZhP9Sh7iFcDEQpUY5DzqI3qhmWvVTzm97Lm8L2b2M7peKBxfacNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589187; c=relaxed/simple;
-	bh=zdZnJV8a/corfX7Hh7O9jrs80LLcMmo+DfPmxVcUNRs=;
+	s=arc-20240116; t=1709588003; c=relaxed/simple;
+	bh=4QrQWM5PCKXe4JHN379qQ2Ne6GltjuyEMK+HLEG1brw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDucDNFPtbfxGxs9J2e4u2iyNbUqMhs9wwrZ43H3R10L5qqRAMvuIDPfqahpkAwQXGjocHyiqQciTiMyPWFGiDhmwD8Vf4wTaL4SSGGii/IOcGfCQecumr4vxMEhJ2zgk2owuN554sX2tqsrr3qonLmWd2ry6MrSvPQ6bUcIxxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hd8T33Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91293C433C7;
-	Mon,  4 Mar 2024 21:53:06 +0000 (UTC)
+	 MIME-Version; b=IVxkhh769W0W6OhvWLGRK1XTvaJOGONYGlxO9c3zx0pfsiz8PHFqN9HI9pfIvSQEk40yOmBJpda3lurYpcHOaWnzUXUvsBMa3lW/rKqeUG4RM/RlCOd1c/txY8y9FvysIurLZVHgWvOeIQu6m2Q1S+gbpjOdsn+v8jfhny/MBAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bowEzUZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB93C433F1;
+	Mon,  4 Mar 2024 21:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589186;
-	bh=zdZnJV8a/corfX7Hh7O9jrs80LLcMmo+DfPmxVcUNRs=;
+	s=korg; t=1709588003;
+	bh=4QrQWM5PCKXe4JHN379qQ2Ne6GltjuyEMK+HLEG1brw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Hd8T33QBpOEyDNyE1ffZ9jP6U1LvyQUCqwE/mdXX2pu/WvVQ8jDOYBhUejRbgNiX
-	 iMID/B7lwjX6dWvNUvxppPkUpdRj0/BwME04bLHmklaodN8labyEJ6XtpSYlWnSOBQ
-	 +nfOArWOWKIXlQCSnYpxo2xJNdz48H3ZAzysFShk=
+	b=bowEzUZcMIAQ8AwKRJQ7PNUlgqacmwD16IYAECmnD37MEUFlQxyj4LFticS9I6C54
+	 jnjYt52it+hi/vBnqDQEv8JzNu69skFZStrtSjjpKXYx6jLBHaC8rynh04/+TDR3xM
+	 NNMYI0PrU6fz4FpHMiLDO4yAK5yGptUuherhbtZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jordan Griege <jgriege@cloudflare.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/84] uapi: in6: replace temporary label with rfc9486
+Subject: [PATCH 5.4 10/25] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
 Date: Mon,  4 Mar 2024 21:23:46 +0000
-Message-ID: <20240304211542.788630197@linuxfoundation.org>
+Message-ID: <20240304211536.087212391@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 6a2008641920a9c6fe1abbeb9acbec463215d505 ]
+[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
 
-Not really a fix per se, but IPV6_TLV_IOAM is still tagged as "TEMPORARY
-IANA allocation for IOAM", while RFC 9486 is available for some time
-now. Just update the reference.
+Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
+some validation of NFPROTO_* families in the nft_compat module, but it broke
+the ability to use legacy iptables modules in dual-stack nftables.
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240226124921.9097-1-justin.iurman@uliege.be
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+While with legacy iptables one had to independently manage IPv4 and IPv6
+tables, with nftables it is possible to have dual-stack tables sharing the
+rules. Moreover, it was possible to use rules based on legacy iptables
+match/target modules in dual-stack nftables.
+
+As an example, the program from [2] creates an INET dual-stack family table
+using an xt_bpf based rule, which looks like the following (the actual output
+was generated with a patched nft tool as the current nft tool does not parse
+dual stack tables with legacy match rules, so consider it for illustrative
+purposes only):
+
+table inet testfw {
+  chain input {
+    type filter hook prerouting priority filter; policy accept;
+    bytecode counter packets 0 bytes 0 accept
+  }
+}
+
+After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
+EOPNOTSUPP for the above program.
+
+Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
+restrict the functions to classic iptables hooks.
+
+Changes in v3:
+  * clarify that upstream nft will not display such configuration properly and
+    that the output was generated with a patched nft tool
+  * remove example program from commit description and link to it instead
+  * no code changes otherwise
+
+Changes in v2:
+  * restrict nft_(match/target)_validate() to classic iptables hooks
+  * rewrite example program to use unmodified libnftnl
+
+Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
+Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
+Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/in6.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_compat.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
-index c4c53a9ab9595..ff8d21f9e95b7 100644
---- a/include/uapi/linux/in6.h
-+++ b/include/uapi/linux/in6.h
-@@ -145,7 +145,7 @@ struct in6_flowlabel_req {
- #define IPV6_TLV_PADN		1
- #define IPV6_TLV_ROUTERALERT	5
- #define IPV6_TLV_CALIPSO	7	/* RFC 5570 */
--#define IPV6_TLV_IOAM		49	/* TEMPORARY IANA allocation for IOAM */
-+#define IPV6_TLV_IOAM		49	/* RFC 9486 */
- #define IPV6_TLV_JUMBO		194
- #define IPV6_TLV_HAO		201	/* home address option */
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 2372f0bbb133d..fdce5012a4f3c 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -336,10 +336,20 @@ static int nft_target_validate(const struct nft_ctx *ctx,
  
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -584,10 +594,20 @@ static int nft_match_validate(const struct nft_ctx *ctx,
+ 
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
 -- 
 2.43.0
 
