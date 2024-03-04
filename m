@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91941870D59
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7D0870F0F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D54B28EDCA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90A671F21BA9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E63F7B3C3;
-	Mon,  4 Mar 2024 21:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789EA7B3D8;
+	Mon,  4 Mar 2024 21:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2xSYqe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KbFJ0bT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7D97BAE6;
-	Mon,  4 Mar 2024 21:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A161675;
+	Mon,  4 Mar 2024 21:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587985; cv=none; b=JayDJCaZT6GU56xirGesQRfzYgrYGxcfA5dIuHXoUStQQFLdx1pvvCiKWnvzBplNBHUJwKQmZClZ7Mvfr1BjN1MSw3e4+IyOdPYpOdJB322zqKxyAKET2RhQCkpsJQnAltZ5lWeJ3um75X1RqDCHn3BkR3/oZpT04oypGbCDvXU=
+	t=1709589029; cv=none; b=lPmrwWgu58tKy6VkmgtYIAJHKYJY53KbC2nH58VNaNfZkLF+gm2kMUIWMzEbvNTjjuhHefCvusiofKiSC3MeR5aYkNNWughUkrhtqWDIynkmkZ1w4phNS5GRJcP/8NY9ggEoGgrd7w277UiWH+TTWi5+SUhEFCrsoWoMsO6KV/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587985; c=relaxed/simple;
-	bh=ZzGrECt/g3kqNAEoxDEHec62FNIWZ5TM0j58MyWKrkw=;
+	s=arc-20240116; t=1709589029; c=relaxed/simple;
+	bh=bdZaaLURvylj/f6GR46F3nEdu2zy9lkwTJKCd9XBTQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCAbljWP6Fgrvt+3nE5HMHvNtTOUvLM6irCxi+Fg8WJbjfL00qOveq8xlL/1l/13P+yoSnFCGILN780IpA+3lIMlXW7K88jRHyvk7qBT9MNnLNvEkJ4EdnDWPiDGtz4RjcZpvjnHjoKzEELa1/wNzkUeXNR6pJHCXK5uXCzrclg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2xSYqe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809A8C433C7;
-	Mon,  4 Mar 2024 21:33:04 +0000 (UTC)
+	 MIME-Version; b=AVokktvJ5SyWke19PUPuUj/ljh8kQQXcG8jN29QIy5B9rB2nTjITm9clbwbht51W0JWTWkCWCfHFML7Q6aVSZZTPOt6X2X+/KN2rvWJ1OYKlSA7bXAQFkwloRTlbiPzhPnu4SBW4z+3blMeaTOJjjh0D0XgNqnM7qmpKa5+1lTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KbFJ0bT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DACC433F1;
+	Mon,  4 Mar 2024 21:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587984;
-	bh=ZzGrECt/g3kqNAEoxDEHec62FNIWZ5TM0j58MyWKrkw=;
+	s=korg; t=1709589028;
+	bh=bdZaaLURvylj/f6GR46F3nEdu2zy9lkwTJKCd9XBTQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2xSYqe0DjoD4Xys4/xRsTbl2tG5Mu8QCZKAprBOXMNSVEiuNZoJg/wtc8Kun1TXM
-	 tgPBuM4LefZH3jC+eYE/hiVBp7JDvTCU9RCgfPtYJOQForqYoLy/J1YJPQE9csk8K3
-	 kkneDbpTx6Aax14W2ADADuCuXF/TK9RyhH9Erin8=
+	b=1KbFJ0bTYMmHHgT00EkTHhmtp3hMXQzJ6Bc/tU6X9MBs8pizcOHhbQUfaLVwrJfrL
+	 B0GjO4VhsePCxQ6kzJFyxqcM5fzCdT4DI5IjZdzfh99d9/OI6WW7QdxVd5wfPTCMYL
+	 ApmHp/cx3S4l5o+b9nNZIqMSl03R5szw6VACrqpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 147/162] powerpc/rtas: use correct function name for resetting TCE tables
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 149/215] NFSD: Flesh out a documenting comment for filecache.c
 Date: Mon,  4 Mar 2024 21:23:32 +0000
-Message-ID: <20240304211556.404379253@linuxfoundation.org>
+Message-ID: <20240304211601.753208438@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit fad87dbd48156ab940538f052f1820f4b6ed2819 ]
+[ Upstream commit b3276c1f5b268ff56622e9e125b792b4c3dc03ac ]
 
-The PAPR spec spells the function name as
+Record what we've learned recently about the NFSD filecache in a
+documenting comment so our future selves don't forget what all this
+is for.
 
-  "ibm,reset-pe-dma-windows"
-
-but in practice firmware uses the singular form:
-
-  "ibm,reset-pe-dma-window"
-
-in the device tree. Since we have the wrong spelling in the RTAS
-function table, reverse lookups (token -> name) fail and warn:
-
-  unexpected failed lookup for token 86
-  WARNING: CPU: 1 PID: 545 at arch/powerpc/kernel/rtas.c:659 __do_enter_rtas_trace+0x2a4/0x2b4
-  CPU: 1 PID: 545 Comm: systemd-udevd Not tainted 6.8.0-rc4 #30
-  Hardware name: IBM,9105-22A POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NL1060_028) hv:phyp pSeries
-  NIP [c0000000000417f0] __do_enter_rtas_trace+0x2a4/0x2b4
-  LR [c0000000000417ec] __do_enter_rtas_trace+0x2a0/0x2b4
-  Call Trace:
-   __do_enter_rtas_trace+0x2a0/0x2b4 (unreliable)
-   rtas_call+0x1f8/0x3e0
-   enable_ddw.constprop.0+0x4d0/0xc84
-   dma_iommu_dma_supported+0xe8/0x24c
-   dma_set_mask+0x5c/0xd8
-   mlx5_pci_init.constprop.0+0xf0/0x46c [mlx5_core]
-   probe_one+0xfc/0x32c [mlx5_core]
-   local_pci_probe+0x68/0x12c
-   pci_call_probe+0x68/0x1ec
-   pci_device_probe+0xbc/0x1a8
-   really_probe+0x104/0x570
-   __driver_probe_device+0xb8/0x224
-   driver_probe_device+0x54/0x130
-   __driver_attach+0x158/0x2b0
-   bus_for_each_dev+0xa8/0x120
-   driver_attach+0x34/0x48
-   bus_add_driver+0x174/0x304
-   driver_register+0x8c/0x1c4
-   __pci_register_driver+0x68/0x7c
-   mlx5_init+0xb8/0x118 [mlx5_core]
-   do_one_initcall+0x60/0x388
-   do_init_module+0x7c/0x2a4
-   init_module_from_file+0xb4/0x108
-   idempotent_init_module+0x184/0x34c
-   sys_finit_module+0x90/0x114
-
-And oopses are possible when lockdep is enabled or the RTAS
-tracepoints are active, since those paths dereference the result of
-the lookup.
-
-Use the correct spelling to match firmware's behavior, adjusting the
-related constants to match.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
-Reported-by: Gaurav Batra <gbatra@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240222-rtas-fix-ibm-reset-pe-dma-window-v1-1-7aaf235ac63c@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/rtas.h | 4 ++--
- arch/powerpc/kernel/rtas.c      | 9 +++++++--
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ fs/nfsd/filecache.c |   24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index c697c3c746946..33024a2874a69 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -68,7 +68,7 @@ enum rtas_function_index {
- 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE,
- 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2,
- 	RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW,
--	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS,
-+	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW,
- 	RTAS_FNIDX__IBM_SCAN_LOG_DUMP,
- 	RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR,
- 	RTAS_FNIDX__IBM_SET_EEH_OPTION,
-@@ -163,7 +163,7 @@ typedef struct {
- #define RTAS_FN_IBM_READ_SLOT_RESET_STATE         rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE)
- #define RTAS_FN_IBM_READ_SLOT_RESET_STATE2        rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2)
- #define RTAS_FN_IBM_REMOVE_PE_DMA_WINDOW          rtas_fn_handle(RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW)
--#define RTAS_FN_IBM_RESET_PE_DMA_WINDOWS          rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS)
-+#define RTAS_FN_IBM_RESET_PE_DMA_WINDOW           rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW)
- #define RTAS_FN_IBM_SCAN_LOG_DUMP                 rtas_fn_handle(RTAS_FNIDX__IBM_SCAN_LOG_DUMP)
- #define RTAS_FN_IBM_SET_DYNAMIC_INDICATOR         rtas_fn_handle(RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR)
- #define RTAS_FN_IBM_SET_EEH_OPTION                rtas_fn_handle(RTAS_FNIDX__IBM_SET_EEH_OPTION)
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 87d65bdd3ecae..46b9476d75824 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -310,8 +310,13 @@ static struct rtas_function rtas_function_table[] __ro_after_init = {
- 	[RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW] = {
- 		.name = "ibm,remove-pe-dma-window",
- 	},
--	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS] = {
--		.name = "ibm,reset-pe-dma-windows",
-+	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW] = {
-+		/*
-+		 * Note: PAPR+ v2.13 7.3.31.4.1 spells this as
-+		 * "ibm,reset-pe-dma-windows" (plural), but RTAS
-+		 * implementations use the singular form in practice.
-+		 */
-+		.name = "ibm,reset-pe-dma-window",
- 	},
- 	[RTAS_FNIDX__IBM_SCAN_LOG_DUMP] = {
- 		.name = "ibm,scan-log-dump",
--- 
-2.43.0
-
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -2,6 +2,30 @@
+  * Open file cache.
+  *
+  * (c) 2015 - Jeff Layton <jeff.layton@primarydata.com>
++ *
++ * An nfsd_file object is a per-file collection of open state that binds
++ * together:
++ *   - a struct file *
++ *   - a user credential
++ *   - a network namespace
++ *   - a read-ahead context
++ *   - monitoring for writeback errors
++ *
++ * nfsd_file objects are reference-counted. Consumers acquire a new
++ * object via the nfsd_file_acquire API. They manage their interest in
++ * the acquired object, and hence the object's reference count, via
++ * nfsd_file_get and nfsd_file_put. There are two varieties of nfsd_file
++ * object:
++ *
++ *  * non-garbage-collected: When a consumer wants to precisely control
++ *    the lifetime of a file's open state, it acquires a non-garbage-
++ *    collected nfsd_file. The final nfsd_file_put releases the open
++ *    state immediately.
++ *
++ *  * garbage-collected: When a consumer does not control the lifetime
++ *    of open state, it acquires a garbage-collected nfsd_file. The
++ *    final nfsd_file_put allows the open state to linger for a period
++ *    during which it may be re-used.
+  */
+ 
+ #include <linux/hash.h>
 
 
 
