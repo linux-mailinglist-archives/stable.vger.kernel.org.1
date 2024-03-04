@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B033E870E78
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711D6870C90
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A081F21279
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0FE2876FD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0887BB05;
-	Mon,  4 Mar 2024 21:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED23B46BA0;
+	Mon,  4 Mar 2024 21:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlnpoMIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRUoy4bG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF491C6AB;
-	Mon,  4 Mar 2024 21:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4A43AAE;
+	Mon,  4 Mar 2024 21:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588649; cv=none; b=p9damFevon9RjTUWsdt8aajorCOXvLW9iy4PRV7iztIBEXRnexeucfx7e9jW5S6zJpM+6OJ9v2KgVEao0+8pialPQrZMYZI9GqmB3tnlZqyvC4TCylNyT+5Y2D/8YwIspGlgkpMwFvlKU16Q4R4pFz42nM/MGOqsMgpFwJepCp0=
+	t=1709587599; cv=none; b=leeyvKp2E0sBh2gAIYb3YLAbRpcidPXhpIoc060sj5dE7LTWGQHJOlXGU9zkCC+mM7YX3GDr2jL2QZuGtTiaRH+JhF98A9YtjbIEz5SeCg8bMvKQKNwKpYAlUP92bHMK6cwlTicrcSoT7eMrL2XqTh2/22Lq8UctTQazZYcGoO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588649; c=relaxed/simple;
-	bh=jCMhsYrAAOsKsqInOqnHC8Nhxt63kF8wmTQqOHDtvfE=;
+	s=arc-20240116; t=1709587599; c=relaxed/simple;
+	bh=SQ5umCoD4QmB/WrEq8aEEcUJt+LohkbdS8tI4wJB49Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSbHzzlyi+iCPa+4A9TDC9iW+9jddUZGQTk1Pb8VKeJHSYRzTZbT5l9hbvQfRabdN2JetumsfcLi0O2KB9rD6vpBL1cmlq6NJlKpEwn6RFwJg7hrEqzURcXcKWc+EpwSEtGxOuRFblX1bnus4FoCYOR9ys/oRBmT1MxIdKcmPjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlnpoMIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F53C433C7;
-	Mon,  4 Mar 2024 21:44:08 +0000 (UTC)
+	 MIME-Version; b=IM1liOFCNgUDs5nhbxTurm+Kf2sr7VSVPYUtjqYzrvETDNcI2kQDdH7s07kaduYtXyU09PIO3QSKWMorW5BteQkQpDaM4X1arHzgzKaY71KpIjLVTfnKCr+of6/Io8ZqfpWcZriZ4Ni+VVP6x9+UlecMznoi1NPVuXJsAL07oIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRUoy4bG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E7AC433F1;
+	Mon,  4 Mar 2024 21:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588649;
-	bh=jCMhsYrAAOsKsqInOqnHC8Nhxt63kF8wmTQqOHDtvfE=;
+	s=korg; t=1709587599;
+	bh=SQ5umCoD4QmB/WrEq8aEEcUJt+LohkbdS8tI4wJB49Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlnpoMIaVOgyJga96pDr+cz8MmyEwrxeeZUIXP1N47rpZyJHDEbanQg7Mvj6deib0
-	 JlvgD490DhR5Cn2SFOW0W9L3XVzsgKHOSpGikf/ts/pLJ1YBu7yZ7JYQPFscCUn3sM
-	 Czpwcm4Cr0nURkP448yPGlYVKMrxSksTBqfVYsg4=
+	b=pRUoy4bGLZPZU/x8Gr7UEwhQqfiLVk5m5qESQUhpHhpnOmO957lcDJYshFhxOJFGN
+	 iXHSJ0aRhexG7RBAtoiA6weivyhhalvAqRs01ScmB4kYw2zjWlsUiJqp8S2qXoee1T
+	 iIaCWvU1+3DgA5dFf9t2wJVBWnl1IpZ5Ty3dQdEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/215] clk: tegra20: fix gcc-7 constant overflow warning
+Subject: [PATCH 6.7 018/162] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
 Date: Mon,  4 Mar 2024 21:21:23 +0000
-Message-ID: <20240304211557.646483866@linuxfoundation.org>
+Message-ID: <20240304211552.411233803@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b4a2adbf3586efa12fe78b9dec047423e01f3010 ]
+[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
 
-Older gcc versions get confused by comparing a u32 value to a negative
-constant in a switch()/case block:
+It seems that if userspace provides a correct IFA_TARGET_NETNSID value
+but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
+returns -EINVAL with an elevated "struct net" refcount.
 
-drivers/clk/tegra/clk-tegra20.c: In function 'tegra20_clk_measure_input_freq':
-drivers/clk/tegra/clk-tegra20.c:581:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_12MHZ:
-  ^~~~
-drivers/clk/tegra/clk-tegra20.c:593:2: error: case label does not reduce to an integer constant
-  case OSC_CTRL_OSC_FREQ_26MHZ:
-
-Make the constants unsigned instead.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230227085914.2560984-1-arnd@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-tegra20.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ net/ipv6/addrconf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index 422d782475532..dcacc5064d339 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -21,24 +21,24 @@
- #define MISC_CLK_ENB 0x48
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 5a839c5fb1a5a..055230b669cf2 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5509,9 +5509,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	}
  
- #define OSC_CTRL 0x50
--#define OSC_CTRL_OSC_FREQ_MASK (3<<30)
--#define OSC_CTRL_OSC_FREQ_13MHZ (0<<30)
--#define OSC_CTRL_OSC_FREQ_19_2MHZ (1<<30)
--#define OSC_CTRL_OSC_FREQ_12MHZ (2<<30)
--#define OSC_CTRL_OSC_FREQ_26MHZ (3<<30)
--#define OSC_CTRL_MASK (0x3f2 | OSC_CTRL_OSC_FREQ_MASK)
+ 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
+-	if (!addr)
+-		return -EINVAL;
 -
--#define OSC_CTRL_PLL_REF_DIV_MASK (3<<28)
--#define OSC_CTRL_PLL_REF_DIV_1		(0<<28)
--#define OSC_CTRL_PLL_REF_DIV_2		(1<<28)
--#define OSC_CTRL_PLL_REF_DIV_4		(2<<28)
-+#define OSC_CTRL_OSC_FREQ_MASK (3u<<30)
-+#define OSC_CTRL_OSC_FREQ_13MHZ (0u<<30)
-+#define OSC_CTRL_OSC_FREQ_19_2MHZ (1u<<30)
-+#define OSC_CTRL_OSC_FREQ_12MHZ (2u<<30)
-+#define OSC_CTRL_OSC_FREQ_26MHZ (3u<<30)
-+#define OSC_CTRL_MASK (0x3f2u | OSC_CTRL_OSC_FREQ_MASK)
-+
-+#define OSC_CTRL_PLL_REF_DIV_MASK	(3u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_1		(0u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_2		(1u<<28)
-+#define OSC_CTRL_PLL_REF_DIV_4		(2u<<28)
- 
- #define OSC_FREQ_DET 0x58
--#define OSC_FREQ_DET_TRIG (1<<31)
-+#define OSC_FREQ_DET_TRIG (1u<<31)
- 
- #define OSC_FREQ_DET_STATUS 0x5c
--#define OSC_FREQ_DET_BUSY (1<<31)
--#define OSC_FREQ_DET_CNT_MASK 0xFFFF
-+#define OSC_FREQ_DET_BUSYu (1<<31)
-+#define OSC_FREQ_DET_CNT_MASK 0xFFFFu
- 
- #define TEGRA20_CLK_PERIPH_BANKS	3
- 
++	if (!addr) {
++		err = -EINVAL;
++		goto errout;
++	}
+ 	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifa_index)
+ 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
 -- 
 2.43.0
 
