@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8064C870EE3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7689C870E0E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3FB51C21C60
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8EC1B280AC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08227868F;
-	Mon,  4 Mar 2024 21:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B367868F;
+	Mon,  4 Mar 2024 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTLkfbpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOvR8Z6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEBC200D4;
-	Mon,  4 Mar 2024 21:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47E31F92C;
+	Mon,  4 Mar 2024 21:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588917; cv=none; b=Z1HvWQNHkHe1t+pQ9tVvoMpKm61Qk43NneCiAnRxBVcu0C/uf7xb5yerCvbQcgq/xbaWPcAK8A50PbioJmlg6KV/In55ZjG/EztMQ/pgTq6WIh7SeswzltwScl6NPOiys4L4xeiwSXWethnHJwZEW0/E7OU4Mu8crXQL9C2ZwXU=
+	t=1709588423; cv=none; b=OGr7py7zfmGlI5wfHn2EI4OlRsgzumM97NBkyux9+XuSdUzn0Vj8FwivqJYRKr0mv2ioIAy5n+NzBWhxtddwrIHphJ3qQ/nuet6qGgxfbQgZUSPOVo0jCmIRQyU0f325zOX+bAVCSIN8v6plyVsj0rJVVGopjzm+PK7FTR4O03Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588917; c=relaxed/simple;
-	bh=qQniGHr94KYLdfNasvqLPvnmMzsRr70oW0KCdvtsHjY=;
+	s=arc-20240116; t=1709588423; c=relaxed/simple;
+	bh=tNy2aP/XCe3/UBqvTOSJiXGpFGG8C963Swu6aASZKCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwUNJTTcm1mp+k053Bh/5h9fO2EDaowhnxKXNQWZIErY82pVUvAUFnfSN33JYmyJEeP4BIzL3uNaS28rRJW/Nfuj+cQuMAm5Ur++z8GVXUST6/xLEUnadijGUCsbb8gdveACLLu324YrY4xCtzSkDLsW+g5opAeS4+3XJPaYCXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTLkfbpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CDCC433F1;
-	Mon,  4 Mar 2024 21:48:36 +0000 (UTC)
+	 MIME-Version; b=r0a/qFAyTJWZtzDEZMJ8dFVVH87lUO+LUt/3B4FcLxfweIAbGFwBOqZvTXKY5ABwxJz2LiOuLMCK1oMQlD1ZgPkzQss54nB2OGZpNAXliFxj0HAV/iq3wyGRvCeZ0ofiNFcHcY1+7O+GYsqb69BcWUkXB+ZnPYokb+4939N7Tp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOvR8Z6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564BCC433C7;
+	Mon,  4 Mar 2024 21:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588917;
-	bh=qQniGHr94KYLdfNasvqLPvnmMzsRr70oW0KCdvtsHjY=;
+	s=korg; t=1709588423;
+	bh=tNy2aP/XCe3/UBqvTOSJiXGpFGG8C963Swu6aASZKCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTLkfbpFOnG4PGNWuq7CopT8xawgfZDxcfS7ZP7uRcaAj0R6FZZ1c/iGV2v2g5rmD
-	 3LKTfYwTqMu6So5zrd2Bdnf1KpHyIx3GIuNYIYjS9AKcHd3I249xVMW6n+i/5JdLvW
-	 W0h2/OPlx+2ggNYY835JOr7ckmdat+jEWeFpf/N8=
+	b=lOvR8Z6eqsGMVz5JHCFTpcGJbqvunORyyyGrKeknIC/PNX0abJsMIf4re25wt/XXd
+	 CYEnriJRBrRcVMddiZTyulZFRyYwjj/KDaDnUQChvyq2iREqxc2YetEVrpNb/JADaZ
+	 gZ2957p4PDmm1WCLOujkLKwZNdKUjJruKEoNiSN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 6.1 134/215] x86/decompressor: Avoid the need for a stack in the 32-bit trampoline
+	Alexander Ofitserov <oficerovas@altlinux.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 077/143] gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
 Date: Mon,  4 Mar 2024 21:23:17 +0000
-Message-ID: <20240304211601.325857332@linuxfoundation.org>
+Message-ID: <20240304211552.389922266@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,192 +60,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Alexander Ofitserov <oficerovas@altlinux.org>
 
-commit bd328aa01ff77a45aeffea5fc4521854291db11f upstream.
+commit 616d82c3cfa2a2146dd7e3ae47bda7e877ee549e upstream.
 
-The 32-bit trampoline no longer uses the stack for anything except
-performing a far return back to long mode, and preserving the caller's
-stack pointer value. Currently, the trampoline stack is placed in the
-same page that carries the trampoline code, which means this page must
-be mapped writable and executable, and the stack is therefore executable
-as well.
+The gtp_link_ops operations structure for the subsystem must be
+registered after registering the gtp_net_ops pernet operations structure.
 
-Replace the far return with a far jump, so that the return address can
-be pre-calculated and patched into the code before it is called. This
-removes the need for a 32-bit addressable stack entirely, and in a later
-patch, this will be taken advantage of by removing writable permissions
-from (and adding executable permissions to) the trampoline code page
-when booting via the EFI stub.
+Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
 
-Note that the value of RSP still needs to be preserved explicitly across
-the switch into 32-bit mode, as the register may get truncated to 32
-bits.
+[ 1010.702740] gtp: GTP module unloaded
+[ 1010.715877] general protection fault, probably for non-canonical address=
+ 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+[ 1010.715888] KASAN: null-ptr-deref in range [0x0000000000000008-0x0000000=
+00000000f]
+[ 1010.715895] CPU: 1 PID: 128616 Comm: a.out Not tainted 6.8.0-rc6-std-def=
+-alt1 #1
+[ 1010.715899] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.1=
+6.0-alt1 04/01/2014
+[ 1010.715908] RIP: 0010:gtp_newlink+0x4d7/0x9c0 [gtp]
+[ 1010.715915] Code: 80 3c 02 00 0f 85 41 04 00 00 48 8b bb d8 05 00 00 e8 =
+ed f6 ff ff 48 89 c2 48 89 c5 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80=
+> 3c 02 00 0f 85 4f 04 00 00 4c 89 e2 4c 8b 6d 00 48 b8 00 00 00
+[ 1010.715920] RSP: 0018:ffff888020fbf180 EFLAGS: 00010203
+[ 1010.715929] RAX: dffffc0000000000 RBX: ffff88800399c000 RCX: 00000000000=
+00000
+[ 1010.715933] RDX: 0000000000000001 RSI: ffffffff84805280 RDI: 00000000000=
+00282
+[ 1010.715938] RBP: 000000000000000d R08: 0000000000000001 R09: 00000000000=
+00000
+[ 1010.715942] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8880039=
+9cc80
+[ 1010.715947] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00400
+[ 1010.715953] FS:  00007fd1509ab5c0(0000) GS:ffff88805b300000(0000) knlGS:=
+0000000000000000
+[ 1010.715958] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1010.715962] CR2: 0000000000000000 CR3: 000000001c07a000 CR4: 00000000007=
+50ee0
+[ 1010.715968] PKRU: 55555554
+[ 1010.715972] Call Trace:
+[ 1010.715985]  ? __die_body.cold+0x1a/0x1f
+[ 1010.715995]  ? die_addr+0x43/0x70
+[ 1010.716002]  ? exc_general_protection+0x199/0x2f0
+[ 1010.716016]  ? asm_exc_general_protection+0x1e/0x30
+[ 1010.716026]  ? gtp_newlink+0x4d7/0x9c0 [gtp]
+[ 1010.716034]  ? gtp_net_exit+0x150/0x150 [gtp]
+[ 1010.716042]  __rtnl_newlink+0x1063/0x1700
+[ 1010.716051]  ? rtnl_setlink+0x3c0/0x3c0
+[ 1010.716063]  ? is_bpf_text_address+0xc0/0x1f0
+[ 1010.716070]  ? kernel_text_address.part.0+0xbb/0xd0
+[ 1010.716076]  ? __kernel_text_address+0x56/0xa0
+[ 1010.716084]  ? unwind_get_return_address+0x5a/0xa0
+[ 1010.716091]  ? create_prof_cpu_mask+0x30/0x30
+[ 1010.716098]  ? arch_stack_walk+0x9e/0xf0
+[ 1010.716106]  ? stack_trace_save+0x91/0xd0
+[ 1010.716113]  ? stack_trace_consume_entry+0x170/0x170
+[ 1010.716121]  ? __lock_acquire+0x15c5/0x5380
+[ 1010.716139]  ? mark_held_locks+0x9e/0xe0
+[ 1010.716148]  ? kmem_cache_alloc_trace+0x35f/0x3c0
+[ 1010.716155]  ? __rtnl_newlink+0x1700/0x1700
+[ 1010.716160]  rtnl_newlink+0x69/0xa0
+[ 1010.716166]  rtnetlink_rcv_msg+0x43b/0xc50
+[ 1010.716172]  ? rtnl_fdb_dump+0x9f0/0x9f0
+[ 1010.716179]  ? lock_acquire+0x1fe/0x560
+[ 1010.716188]  ? netlink_deliver_tap+0x12f/0xd50
+[ 1010.716196]  netlink_rcv_skb+0x14d/0x440
+[ 1010.716202]  ? rtnl_fdb_dump+0x9f0/0x9f0
+[ 1010.716208]  ? netlink_ack+0xab0/0xab0
+[ 1010.716213]  ? netlink_deliver_tap+0x202/0xd50
+[ 1010.716220]  ? netlink_deliver_tap+0x218/0xd50
+[ 1010.716226]  ? __virt_addr_valid+0x30b/0x590
+[ 1010.716233]  netlink_unicast+0x54b/0x800
+[ 1010.716240]  ? netlink_attachskb+0x870/0x870
+[ 1010.716248]  ? __check_object_size+0x2de/0x3b0
+[ 1010.716254]  netlink_sendmsg+0x938/0xe40
+[ 1010.716261]  ? netlink_unicast+0x800/0x800
+[ 1010.716269]  ? __import_iovec+0x292/0x510
+[ 1010.716276]  ? netlink_unicast+0x800/0x800
+[ 1010.716284]  __sock_sendmsg+0x159/0x190
+[ 1010.716290]  ____sys_sendmsg+0x712/0x880
+[ 1010.716297]  ? sock_write_iter+0x3d0/0x3d0
+[ 1010.716304]  ? __ia32_sys_recvmmsg+0x270/0x270
+[ 1010.716309]  ? lock_acquire+0x1fe/0x560
+[ 1010.716315]  ? drain_array_locked+0x90/0x90
+[ 1010.716324]  ___sys_sendmsg+0xf8/0x170
+[ 1010.716331]  ? sendmsg_copy_msghdr+0x170/0x170
+[ 1010.716337]  ? lockdep_init_map_type+0x2c7/0x860
+[ 1010.716343]  ? lockdep_hardirqs_on_prepare+0x430/0x430
+[ 1010.716350]  ? debug_mutex_init+0x33/0x70
+[ 1010.716360]  ? percpu_counter_add_batch+0x8b/0x140
+[ 1010.716367]  ? lock_acquire+0x1fe/0x560
+[ 1010.716373]  ? find_held_lock+0x2c/0x110
+[ 1010.716384]  ? __fd_install+0x1b6/0x6f0
+[ 1010.716389]  ? lock_downgrade+0x810/0x810
+[ 1010.716396]  ? __fget_light+0x222/0x290
+[ 1010.716403]  __sys_sendmsg+0xea/0x1b0
+[ 1010.716409]  ? __sys_sendmsg_sock+0x40/0x40
+[ 1010.716419]  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
+[ 1010.716425]  ? syscall_enter_from_user_mode+0x1d/0x60
+[ 1010.716432]  do_syscall_64+0x30/0x40
+[ 1010.716438]  entry_SYSCALL_64_after_hwframe+0x62/0xc7
+[ 1010.716444] RIP: 0033:0x7fd1508cbd49
+[ 1010.716452] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 =
+89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48=
+> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ef 70 0d 00 f7 d8 64 89 01 48
+[ 1010.716456] RSP: 002b:00007fff18872348 EFLAGS: 00000202 ORIG_RAX: 000000=
+000000002e
+[ 1010.716463] RAX: ffffffffffffffda RBX: 000055f72bf0eac0 RCX: 00007fd1508=
+cbd49
+[ 1010.716468] RDX: 0000000000000000 RSI: 0000000020000280 RDI: 00000000000=
+00006
+[ 1010.716473] RBP: 00007fff18872360 R08: 00007fff18872360 R09: 00007fff188=
+72360
+[ 1010.716478] R10: 00007fff18872360 R11: 0000000000000202 R12: 000055f72bf=
+0e1b0
+[ 1010.716482] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00000
+[ 1010.716491] Modules linked in: gtp(+) udp_tunnel ib_core uinput af_packe=
+t rfkill qrtr joydev hid_generic usbhid hid kvm_intel iTCO_wdt intel_pmc_bx=
+t iTCO_vendor_support kvm snd_hda_codec_generic ledtrig_audio irqbypass crc=
+t10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hda_intel n=
+ls_utf8 snd_intel_dspcfg nls_cp866 psmouse aesni_intel vfat crypto_simd fat=
+ cryptd glue_helper snd_hda_codec pcspkr snd_hda_core i2c_i801 snd_hwdep i2=
+c_smbus xhci_pci snd_pcm lpc_ich xhci_pci_renesas xhci_hcd qemu_fw_cfg tiny=
+_power_button button sch_fq_codel vboxvideo drm_vram_helper drm_ttm_helper =
+ttm vboxsf vboxguest snd_seq_midi snd_seq_midi_event snd_seq snd_rawmidi sn=
+d_seq_device snd_timer snd soundcore msr fuse efi_pstore dm_mod ip_tables x=
+_tables autofs4 virtio_gpu virtio_dma_buf drm_kms_helper cec rc_core drm vi=
+rtio_rng virtio_scsi rng_core virtio_balloon virtio_blk virtio_net virtio_c=
+onsole net_failover failover ahci libahci libata evdev scsi_mod input_leds =
+serio_raw virtio_pci intel_agp
+[ 1010.716674]  virtio_ring intel_gtt virtio [last unloaded: gtp]
+[ 1010.716693] ---[ end trace 04990a4ce61e174b ]---
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20230807162720.545787-12-ardb@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunnelin=
+g Protocol (GTP-U)")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240228114703.465107-1-oficerovas@altlinux=
+.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_64.S    |   45 ++++++++++++++++++++--------------
- arch/x86/boot/compressed/pgtable.h    |    4 +--
- arch/x86/boot/compressed/pgtable_64.c |   12 ++++++++-
- 3 files changed, 40 insertions(+), 21 deletions(-)
+ drivers/net/gtp.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -558,6 +558,7 @@ SYM_FUNC_END(.Lrelocated)
-  * trampoline memory. A non-zero second argument (ESI) means that the
-  * trampoline needs to enable 5-level paging.
-  */
-+	.section ".rodata", "a", @progbits
- SYM_CODE_START(trampoline_32bit_src)
- 	/*
- 	 * Preserve live 64-bit registers on the stack: this is necessary
-@@ -568,13 +569,9 @@ SYM_CODE_START(trampoline_32bit_src)
- 	pushq	%rbp
- 	pushq	%rbx
- 
--	/* Set up 32-bit addressable stack and push the old RSP value */
--	leaq	(TRAMPOLINE_32BIT_STACK_END - 8)(%rcx), %rbx
--	movq	%rsp, (%rbx)
--	movq	%rbx, %rsp
--
--	/* Take the address of the trampoline exit code */
--	leaq	.Lret(%rip), %rbx
-+	/* Preserve top half of RSP in a legacy mode GPR to avoid truncation */
-+	movq	%rsp, %rbx
-+	shrq	$32, %rbx
- 
- 	/* Switch to compatibility mode (CS.L = 0 CS.D = 1) via far return */
- 	pushq	$__KERNEL32_CS
-@@ -582,9 +579,17 @@ SYM_CODE_START(trampoline_32bit_src)
- 	pushq	%rax
- 	lretq
- 
-+	/*
-+	 * The 32-bit code below will do a far jump back to long mode and end
-+	 * up here after reconfiguring the number of paging levels. First, the
-+	 * stack pointer needs to be restored to its full 64-bit value before
-+	 * the callee save register contents can be popped from the stack.
-+	 */
- .Lret:
-+	shlq	$32, %rbx
-+	orq	%rbx, %rsp
-+
- 	/* Restore the preserved 64-bit registers */
--	movq	(%rsp), %rsp
- 	popq	%rbx
- 	popq	%rbp
- 	popq	%r15
-@@ -592,11 +597,6 @@ SYM_CODE_START(trampoline_32bit_src)
- 
- 	.code32
- 0:
--	/* Set up data and stack segments */
--	movl	$__KERNEL_DS, %eax
--	movl	%eax, %ds
--	movl	%eax, %ss
--
- 	/* Disable paging */
- 	movl	%cr0, %eax
- 	btrl	$X86_CR0_PG_BIT, %eax
-@@ -651,18 +651,26 @@ SYM_CODE_START(trampoline_32bit_src)
- 1:
- 	movl	%eax, %cr4
- 
--	/* Prepare the stack for far return to Long Mode */
--	pushl	$__KERNEL_CS
--	pushl	%ebx
--
- 	/* Enable paging again. */
- 	movl	%cr0, %eax
- 	btsl	$X86_CR0_PG_BIT, %eax
- 	movl	%eax, %cr0
- 
--	lret
-+	/*
-+	 * Return to the 64-bit calling code using LJMP rather than LRET, to
-+	 * avoid the need for a 32-bit addressable stack. The destination
-+	 * address will be adjusted after the template code is copied into a
-+	 * 32-bit addressable buffer.
-+	 */
-+.Ljmp:	ljmpl	$__KERNEL_CS, $(.Lret - trampoline_32bit_src)
- SYM_CODE_END(trampoline_32bit_src)
- 
-+/*
-+ * This symbol is placed right after trampoline_32bit_src() so its address can
-+ * be used to infer the size of the trampoline code.
-+ */
-+SYM_DATA(trampoline_ljmp_imm_offset, .word  .Ljmp + 1 - trampoline_32bit_src)
-+
- 	/*
-          * The trampoline code has a size limit.
-          * Make sure we fail to compile if the trampoline code grows
-@@ -670,6 +678,7 @@ SYM_CODE_END(trampoline_32bit_src)
- 	 */
- 	.org	trampoline_32bit_src + TRAMPOLINE_32BIT_CODE_SIZE
- 
-+	.text
- SYM_FUNC_START_LOCAL_NOALIGN(.Lno_longmode)
- 	/* This isn't an x86-64 CPU, so hang intentionally, we cannot continue */
- 1:
---- a/arch/x86/boot/compressed/pgtable.h
-+++ b/arch/x86/boot/compressed/pgtable.h
-@@ -8,13 +8,13 @@
- #define TRAMPOLINE_32BIT_CODE_OFFSET	PAGE_SIZE
- #define TRAMPOLINE_32BIT_CODE_SIZE	0xA0
- 
--#define TRAMPOLINE_32BIT_STACK_END	TRAMPOLINE_32BIT_SIZE
--
- #ifndef __ASSEMBLER__
- 
- extern unsigned long *trampoline_32bit;
- 
- extern void trampoline_32bit_src(void *trampoline, bool enable_5lvl);
- 
-+extern const u16 trampoline_ljmp_imm_offset;
-+
- #endif /* __ASSEMBLER__ */
- #endif /* BOOT_COMPRESSED_PAGETABLE_H */
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -109,6 +109,7 @@ static unsigned long find_trampoline_pla
- struct paging_config paging_prepare(void *rmode)
- {
- 	struct paging_config paging_config = {};
-+	void *tramp_code;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
- 	boot_params = rmode;
-@@ -148,10 +149,19 @@ struct paging_config paging_prepare(void
- 	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
- 
- 	/* Copy trampoline code in place */
--	memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
-+	tramp_code = memcpy(trampoline_32bit +
-+			TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
- 			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
- 
- 	/*
-+	 * Avoid the need for a stack in the 32-bit trampoline code, by using
-+	 * LJMP rather than LRET to return back to long mode. LJMP takes an
-+	 * immediate absolute address, which needs to be adjusted based on the
-+	 * placement of the trampoline.
-+	 */
-+	*(u32 *)(tramp_code + trampoline_ljmp_imm_offset) += (unsigned long)tramp_code;
-+
-+	/*
- 	 * The code below prepares page table in trampoline memory.
- 	 *
- 	 * The new page table will be used by trampoline code for switching
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1903,26 +1903,26 @@ static int __init gtp_init(void)
+=20
+ 	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
+=20
+-	err =3D rtnl_link_register(&gtp_link_ops);
++	err =3D register_pernet_subsys(&gtp_net_ops);
+ 	if (err < 0)
+ 		goto error_out;
+=20
+-	err =3D register_pernet_subsys(&gtp_net_ops);
++	err =3D rtnl_link_register(&gtp_link_ops);
+ 	if (err < 0)
+-		goto unreg_rtnl_link;
++		goto unreg_pernet_subsys;
+=20
+ 	err =3D genl_register_family(&gtp_genl_family);
+ 	if (err < 0)
+-		goto unreg_pernet_subsys;
++		goto unreg_rtnl_link;
+=20
+ 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
+ 		sizeof(struct pdp_ctx));
+ 	return 0;
+=20
+-unreg_pernet_subsys:
+-	unregister_pernet_subsys(&gtp_net_ops);
+ unreg_rtnl_link:
+ 	rtnl_link_unregister(&gtp_link_ops);
++unreg_pernet_subsys:
++	unregister_pernet_subsys(&gtp_net_ops);
+ error_out:
+ 	pr_err("error loading GTP module loaded\n");
+ 	return err;
 
 
 
