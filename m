@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD32F870D54
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5105870E00
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1E31C23A72
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B141F21297
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDF97B3DE;
-	Mon,  4 Mar 2024 21:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C691F93F;
+	Mon,  4 Mar 2024 21:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsfWrDzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAMrJ5Pv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B13A7AE6F;
-	Mon,  4 Mar 2024 21:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426D68F58;
+	Mon,  4 Mar 2024 21:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587974; cv=none; b=NVjX3iGnTcwd9e9274TvC4s7Wz49nWyZD/jQ/OkssOEhCkF/ReqzLJ4bAmAzXHw5oY/OZMA0eNce9tXAaybthgZ9Dowi0kqAZ1EvD6k1SQtkJ8jgfc27ZPfRm02cBKthsdoCRsXF/0jl3FKMN7660SE9t0WVTtPn6YsVGA6sVJw=
+	t=1709588392; cv=none; b=h0GERTVYsWOygI5uWun8wN1WBfF/L15YL/Xx55umG4Llm71EjiQx/DVi+Q7Yekv6puW1KSYNP800fdK7UADdJwJYllsyS+turwCl0YQNrM923YXVGeczIuiAZ0xf5DjD3r7EGfDj0FoAHPjj/aJ5xZo5Mhjq//dylo6wXLCVpDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587974; c=relaxed/simple;
-	bh=jUlFXB6PuwTdauMsHqtb2m4B+q41vO6QVVbH3IH5s3Y=;
+	s=arc-20240116; t=1709588392; c=relaxed/simple;
+	bh=W4TdRzWeAvz8oHiKq72WmdaBVH3h6TMA38gw0AP+HBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5E1WqwIKuMdLmxexB/mIXZulRlSsCkHzt6+21hl/CVIIS0iXJnBaFRslGC6NGNB6o7u4+70YtAgQNWrWiMFEtCxhzMfAkzgQU1t1gbep4rtIU2ESf857kbRqvW8DCdDf+iUw3K41lIXFvM+bbTsJLpMDXFrhORZOr2rVuhrNgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsfWrDzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEC3C433F1;
-	Mon,  4 Mar 2024 21:32:53 +0000 (UTC)
+	 MIME-Version; b=NZvG49idNMZmDl7ffLLdr6jq/V+UMVtGGti3U9FFItghkggHpWSOYJI4HZXvfgEzuwGVIral318qnuiKB3D7kiPJ5aful1vNlQsJBWZLy4khA8zunjNOPXwtT1GPY1Mx419RlAatAmcTzSS61VvBaNwJ9zQOwBw0tu3bqt933Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAMrJ5Pv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB733C433F1;
+	Mon,  4 Mar 2024 21:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587974;
-	bh=jUlFXB6PuwTdauMsHqtb2m4B+q41vO6QVVbH3IH5s3Y=;
+	s=korg; t=1709588392;
+	bh=W4TdRzWeAvz8oHiKq72WmdaBVH3h6TMA38gw0AP+HBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsfWrDzraaKAdW25zHLp2AZOSntRnLK7MuYaFiZOW/IRx7KTm/RFDKO7oEn5s/vqX
-	 h0Zg/1nSo1lbtNMssKKGCr5YlUY8GU8DrPC84A19IUb2p9z/vlFLNSCE4/wrqHFZmS
-	 48rHZgTlIKk6uIvgqIUfMOvyRfZVU38B4jiIBmfE=
+	b=TAMrJ5PvbLpA8944jvvWQmYB7xKPGkNm2RT436fMXUdcPA7BA8I2nPzTW+Hvt5vx0
+	 rWgBDYeB6DZyHDJoB33qe16sdoeO2jFZEk63QnOYxLlemuNGFSZy1FU2BvVCXg91+a
+	 xQvwC1A4fReJykv16lw229fbZ4Idk4lFgmlR3YnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 144/162] dmaengine: idxd: Remove shadow Event Log head stored in idxd
-Date: Mon,  4 Mar 2024 21:23:29 +0000
-Message-ID: <20240304211556.313598431@linuxfoundation.org>
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Tadeusz Struk <tstruk@gigaio.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 090/143] dmaengine: ptdma: use consistent DMA masks
+Date: Mon,  4 Mar 2024 21:23:30 +0000
+Message-ID: <20240304211552.794295111@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Tadeusz Struk <tstruk@gigaio.com>
 
-[ Upstream commit ecec7c9f29a7114a3e23a14020b1149ea7dffb4f ]
+commit df2515a17914ecfc2a0594509deaf7fcb8d191ac upstream.
 
-head is defined in idxd->evl as a shadow of head in the EVLSTATUS register.
-There are two issues related to the shadow head:
+The PTDMA driver sets DMA masks in two different places for the same
+device inconsistently. First call is in pt_pci_probe(), where it uses
+48bit mask. The second call is in pt_dmaengine_register(), where it
+uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
+on DMA transfers between main memory and other devices.
+Without the extra call it works fine. Additionally the second call
+doesn't check the return value so it can silently fail.
+Remove the superfluous dma_set_mask() call and only use 48bit mask.
 
-1. Mismatch between the shadow head and the state of the EVLSTATUS
-   register:
-   If Event Log is supported, upon completion of the Enable Device command,
-   the Event Log head in the variable idxd->evl->head should be cleared to
-   match the state of the EVLSTATUS register. But the variable is not reset
-   currently, leading mismatch between the variable and the register state.
-   The mismatch causes incorrect processing of Event Log entries.
-
-2. Unnecessary shadow head definition:
-   The shadow head is unnecessary as head can be read directly from the
-   EVLSTATUS register. Reading head from the register incurs no additional
-   cost because event log head and tail are always read together and
-   tail is already read directly from the register as required by hardware.
-
-Remove the shadow Event Log head stored in idxd->evl to address the
-mentioned issues.
-
-Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240215024931.1739621-1-fenghua.yu@intel.com
+Cc: stable@vger.kernel.org
+Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
+Reviewed-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
+Link: https://lore.kernel.org/r/20240222163053.13842-1-tstruk@gigaio.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/cdev.c    | 2 +-
- drivers/dma/idxd/debugfs.c | 2 +-
- drivers/dma/idxd/idxd.h    | 1 -
- drivers/dma/idxd/irq.c     | 3 +--
- 4 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/dma/ptdma/ptdma-dmaengine.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 0423655f5a880..3dd25a9a04f18 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -345,7 +345,7 @@ static void idxd_cdev_evl_drain_pasid(struct idxd_wq *wq, u32 pasid)
- 	spin_lock(&evl->lock);
- 	status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
- 	t = status.tail;
--	h = evl->head;
-+	h = status.head;
- 	size = evl->size;
+--- a/drivers/dma/ptdma/ptdma-dmaengine.c
++++ b/drivers/dma/ptdma/ptdma-dmaengine.c
+@@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_devi
+ 	chan->vc.desc_free = pt_do_cleanup;
+ 	vchan_init(&chan->vc, dma_dev);
  
- 	while (h != t) {
-diff --git a/drivers/dma/idxd/debugfs.c b/drivers/dma/idxd/debugfs.c
-index 9cfbd9b14c4c4..f3f25ee676f30 100644
---- a/drivers/dma/idxd/debugfs.c
-+++ b/drivers/dma/idxd/debugfs.c
-@@ -68,9 +68,9 @@ static int debugfs_evl_show(struct seq_file *s, void *d)
- 
- 	spin_lock(&evl->lock);
- 
--	h = evl->head;
- 	evl_status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
- 	t = evl_status.tail;
-+	h = evl_status.head;
- 	evl_size = evl->size;
- 
- 	seq_printf(s, "Event Log head %u tail %u interrupt pending %u\n\n",
-diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
-index 1e89c80a07fc2..96062ae39f9a2 100644
---- a/drivers/dma/idxd/idxd.h
-+++ b/drivers/dma/idxd/idxd.h
-@@ -290,7 +290,6 @@ struct idxd_evl {
- 	unsigned int log_size;
- 	/* The number of entries in the event log. */
- 	u16 size;
--	u16 head;
- 	unsigned long *bmap;
- 	bool batch_fail[IDXD_MAX_BATCH_IDENT];
- };
-diff --git a/drivers/dma/idxd/irq.c b/drivers/dma/idxd/irq.c
-index 2183d7f9cdbdd..3bdfc1797f620 100644
---- a/drivers/dma/idxd/irq.c
-+++ b/drivers/dma/idxd/irq.c
-@@ -367,9 +367,9 @@ static void process_evl_entries(struct idxd_device *idxd)
- 	/* Clear interrupt pending bit */
- 	iowrite32(evl_status.bits_upper32,
- 		  idxd->reg_base + IDXD_EVLSTATUS_OFFSET + sizeof(u32));
--	h = evl->head;
- 	evl_status.bits = ioread64(idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
- 	t = evl_status.tail;
-+	h = evl_status.head;
- 	size = idxd->evl->size;
- 
- 	while (h != t) {
-@@ -378,7 +378,6 @@ static void process_evl_entries(struct idxd_device *idxd)
- 		h = (h + 1) % size;
- 	}
- 
--	evl->head = h;
- 	evl_status.head = h;
- 	iowrite32(evl_status.bits_lower32, idxd->reg_base + IDXD_EVLSTATUS_OFFSET);
- 	spin_unlock(&evl->lock);
--- 
-2.43.0
-
+-	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+-
+ 	ret = dma_async_device_register(dma_dev);
+ 	if (ret)
+ 		goto err_reg;
 
 
 
