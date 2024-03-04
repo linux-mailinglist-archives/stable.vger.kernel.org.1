@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16117870E9B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA57B870CB6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 419791C2217D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A689E289086
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590677AE6B;
-	Mon,  4 Mar 2024 21:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02134CE0E;
+	Mon,  4 Mar 2024 21:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xINUrTBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bilIVyY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187D210A35;
-	Mon,  4 Mar 2024 21:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F26242071;
+	Mon,  4 Mar 2024 21:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588725; cv=none; b=UjrzTkkRxLxAPf4DOmSZivqZWjaw+hkoRSlkPBtJYegvK5GgDKUM1bDuUcAeASSK9FFCdW9BOp0Ob14ceYOVYVeqQTfd5lrMsIDL1cH7q8PO8HBKqdUGjH85SXDDba4khZyZRWIHMt6/ebxv4bG2D5i23oxLVrXKTSBcYIH8w6E=
+	t=1709587672; cv=none; b=gd6iNuEUvBVQfRFOGZSjCZ3N3TmYFPMwWbMs9vwHoUK9swVbfbj5cpf96fsv67XYAUduzfxcBz2Qf9I8sQOFMDEA0MhOG8O+ewVd1zTjpe62ROrO2kTJizJ67k9xf0zG7kYcumMo+9+zEa6x/vJHIWg4CpR8oTl1SDglb2a+Bdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588725; c=relaxed/simple;
-	bh=C34z/KvQp0ZI9vF0aDlVKLw4uvTPRieVUjLo63isnKo=;
+	s=arc-20240116; t=1709587672; c=relaxed/simple;
+	bh=nQpGR3/n53Fa2EnEOkbS34OXDZBY+/jdn/xkIYlvxDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwU2TAUUd+rBy2yHVuYPSOdXIuYsBmMVw9ome4D38TCY7eCDMYD4HXBRpEtSmuSkdEd9q8QGJwxGk8BmOroOtQ7bUScXVPiv/6n8laFMrAQBJyNt0iT5pXixoP0sit2QnhSLo5SDV3AfYn+hY13Kn3+jAuzeRTXvG2GeyrXKebQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xINUrTBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D1AC433C7;
-	Mon,  4 Mar 2024 21:45:24 +0000 (UTC)
+	 MIME-Version; b=MNPUjkCTxMcvBD+P0gxF0SrWU73VLppzR2zAbkR/yeuAzD0KKRpE+H7Nb1PYsMB7Xov9IuRb8YqK+QmTblGdIrqPJcVd6RyZteHWPZZ7EgqTOUjOqYJxuxbKsAjWfMsOiMoORCpQA684rIa1ibxqtevw+8j4J1vTZJej/r4hM5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bilIVyY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E625DC433C7;
+	Mon,  4 Mar 2024 21:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588725;
-	bh=C34z/KvQp0ZI9vF0aDlVKLw4uvTPRieVUjLo63isnKo=;
+	s=korg; t=1709587672;
+	bh=nQpGR3/n53Fa2EnEOkbS34OXDZBY+/jdn/xkIYlvxDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xINUrTBgJ3CcLZN6gn7ypIQf8xwiRv33p7OmarIWeRSWp+iLrex7l+oeaCQ55ip/g
-	 WRWSmexFnkdB0wDqT3jPudy8+BenkwjJaYumxm4m+PMhNjsDN4jAlFwIOPVnLKlhoK
-	 PD9zx/7Pjz3qnvhF5BjaOCqKSv1vfSYKiWE5L4so=
+	b=bilIVyY40KFCRaK2vhHJEdJwnXxhF/yg3SNmHpyj7/JTSZNQEQ4l7nOrFgcRZLB73
+	 J9gC8+UwwqAdO2sjwztL4kxcgJ12XUb6BVrtrRVTYJbd0pLjWRyKV0JGWd0UMeHmY9
+	 BBC7Ott7PDGLE6qm+vqRxLdnsyVCdQN8+48RA22w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/215] Bluetooth: qca: Fix wrong event type for patch config command
+Subject: [PATCH 6.7 046/162] power: supply: bq27xxx-i2c: Do not free non existing IRQ
 Date: Mon,  4 Mar 2024 21:21:51 +0000
-Message-ID: <20240304211558.522438770@linuxfoundation.org>
+Message-ID: <20240304211553.325039838@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit c0dbc56077ae759f2dd602c7561480bc2b1b712c ]
+[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
 
-Vendor-specific command patch config has HCI_Command_Complete event as
-response, but qca_send_patch_config_cmd() wrongly expects vendor-specific
-event for the command, fixed by using right event type.
+The bq27xxx i2c-client may not have an IRQ, in which case
+client->irq will be 0. bq27xxx_battery_i2c_probe() already has
+an if (client->irq) check wrapping the request_threaded_irq().
 
-Btmon log for the vendor-specific command are shown below:
-< HCI Command: Vendor (0x3f|0x0000) plen 5
-        28 01 00 00 00
-> HCI Event: Command Complete (0x0e) plen 5
-      Vendor (0x3f|0x0000) ncmd 1
-        Status: Success (0x00)
-        28
+But bq27xxx_battery_i2c_remove() unconditionally calls
+free_irq(client->irq) leading to:
 
-Fixes: 4fac8a7ac80b ("Bluetooth: btqca: sequential validation")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[  190.310742] ------------[ cut here ]------------
+[  190.310843] Trying to free already-free IRQ 0
+[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
+
+Followed by a backtrace when unbinding the driver. Add
+an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
+probe() to fix this.
+
+Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index c9064d34d8308..d7d0c9de3dc31 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -152,7 +152,7 @@ static int qca_send_patch_config_cmd(struct hci_dev *hdev)
- 	bt_dev_dbg(hdev, "QCA Patch config");
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 9b5475590518f..886e0a8e2abd1 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -209,7 +209,9 @@ static void bq27xxx_battery_i2c_remove(struct i2c_client *client)
+ {
+ 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
  
- 	skb = __hci_cmd_sync_ev(hdev, EDL_PATCH_CMD_OPCODE, sizeof(cmd),
--				cmd, HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
-+				cmd, 0, HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		err = PTR_ERR(skb);
- 		bt_dev_err(hdev, "Sending QCA Patch config failed (%d)", err);
+-	free_irq(client->irq, di);
++	if (client->irq)
++		free_irq(client->irq, di);
++
+ 	bq27xxx_battery_teardown(di);
+ 
+ 	mutex_lock(&battery_mutex);
 -- 
 2.43.0
 
