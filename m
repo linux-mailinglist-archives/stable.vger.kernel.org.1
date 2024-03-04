@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DD4870C7B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BC4870DFE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF362873BD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336601C210CA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31C61F92C;
-	Mon,  4 Mar 2024 21:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDD31F93F;
+	Mon,  4 Mar 2024 21:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrtVM2oZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/EmFu8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFD91CA94;
-	Mon,  4 Mar 2024 21:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E13B8F58;
+	Mon,  4 Mar 2024 21:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587565; cv=none; b=OGwtRtI8GYh+gjWNJ26Guw7zN7UbRrf3fwstYcwufEivmveZrsKPKSJNol/QNsDTHWm3UA0MfI8G6y/Vuug4qqGX+7u57FnfLMCsZs4jSug+pJJVdWUiztRg8Tcr5j0pSNBdl4H+Ne5GKlJsoZr7Mrp4N2cwSQ8LYNjmTabIDXM=
+	t=1709588387; cv=none; b=NoffVzLvIVxeHpOjSs3fhPXAsgG8VCR3Ado/t+I6eVX8gGbubRjcnhp4yf5yYnf2qWtGwXVZPkPt9TFhKM0/sTugPy3/uVzx2BeuavOEXLnVLaNHyEVgWrDF9013g/htPoXhgxf9ih2LhITrs5yT0VY1S3s+X5+CoQcRPszcoqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587565; c=relaxed/simple;
-	bh=t+SFRLygv5rZAJCnPupm4tdTsfPHWSr+DF1tGGdc4uw=;
+	s=arc-20240116; t=1709588387; c=relaxed/simple;
+	bh=LZ28yaGOKKtWlJW9A5iccrYbaAhIThqUHrZEyMrOaPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmCrrUib1ZLMlrOSFJEhu7JfSXXqPNVV2Y3bKh8Z1SmVFSwiOV0EnymZAyzBmOj4QQ0dL8KGaJMPj/wjM6IoDRaCElysIhq3JJpKxmg/HYaYGpFRBCee/kFOGVGObOK/yV8/hDDogeDXvw7H2W/Gms/XA6+x/EMYruXxSoIItGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrtVM2oZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9377C433C7;
-	Mon,  4 Mar 2024 21:26:04 +0000 (UTC)
+	 MIME-Version; b=f+fv3Nin1VTwOvsN5cfApKtWsjPRjqKuSLDM8pSi4vZTIr/CaOPqPkfDSdDHiZ7YDPshF7eMmUCevDPKQhgLqVarxyzkZ4Kxv1VjGO/lXwohv4U6YV/E0lDCfjw0opKmHOhFQY0quEcTjWvWsSDdUm7vGDqFCsK1+GyofKI/c2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/EmFu8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59B3C433F1;
+	Mon,  4 Mar 2024 21:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587565;
-	bh=t+SFRLygv5rZAJCnPupm4tdTsfPHWSr+DF1tGGdc4uw=;
+	s=korg; t=1709588387;
+	bh=LZ28yaGOKKtWlJW9A5iccrYbaAhIThqUHrZEyMrOaPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrtVM2oZXtIIY31+QWsjjxHY9bbbyy9k4XyAeIxFeL3/daB2ut9ebCTjorPE+5oFP
-	 Z7sjnxYoJE95GCyREYqDtunoOzoPdeWqEpFMT65d/hqre7yQVXKz7jE2TAu7mAjAXu
-	 uoLOiQGOZPw7W/AXu+Fqg7tNk0SFgYy1aahib670=
+	b=R/EmFu8ABNYLIdwrF7ZbgbQ6ra20lO40qTmk2I9mxKCMZ1mnNnFrCR+kwfhztYoQt
+	 llHVVIvAE/tAr9ms0SlcDVUJ1ILBMtiCtxOg5cMw/vDOrpTMxbGK/FDt5IN7MnPVHz
+	 j1gunDFNO7gSPmhrWHGxC2l0/Trg34NKnh2oVzU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/16] Bluetooth: Enforce validation on max value of connection interval
+	Peng Ma <peng.ma@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 088/143] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
 Date: Mon,  4 Mar 2024 21:23:28 +0000
-Message-ID: <20240304211534.606739478@linuxfoundation.org>
+Message-ID: <20240304211552.737894287@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Peng Ma <peng.ma@nxp.com>
 
-[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
+commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
 
-Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
-'Connection Parameter Update Procedure Invalid Parameters Central
-Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
+There is chip (ls1028a) errata:
 
-That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
-connection interval updates"), but later got reverted due to devices
-like keyboards and mice may require low connection interval.
+The SoC may hang on 16 byte unaligned read transactions by QDMA.
 
-So only validate the max value connection interval to pass the Test
-Suite, and let devices to request low connection interval if needed.
+Unaligned read transactions initiated by QDMA may stall in the NOC
+(Network On-Chip), causing a deadlock condition. Stalled transactions will
+trigger completion timeouts in PCIe controller.
 
-[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
+Workaround:
+Enable prefetch by setting the source descriptor prefetchable bit
+( SD[PF] = 1 ).
 
-Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Implement this workaround.
+
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Peng Ma <peng.ma@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c  | 4 ++++
- net/bluetooth/l2cap_core.c | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/dma/fsl-qdma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index e4fea656941ee..4811855259267 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5641,6 +5641,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev,
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_UNKNOWN_CONN_ID);
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -109,6 +109,7 @@
+ #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
+ #define FSL_QDMA_CMD_DSEN_OFFSET	19
+ #define FSL_QDMA_CMD_LWC_OFFSET		16
++#define FSL_QDMA_CMD_PF			BIT(17)
  
-+	if (max > hcon->le_conn_max_interval)
-+		return send_conn_param_neg_reply(hdev, handle,
-+						 HCI_ERROR_INVALID_LL_PARAMS);
-+
- 	if (hci_check_conn_params(min, max, latency, timeout))
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_INVALID_LL_PARAMS);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9346fae5d664b..b6c726976d1bb 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5313,7 +5313,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ /* Field definition for Descriptor status */
+ #define QDMA_CCDF_STATUS_RTE		BIT(5)
+@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
+ 	qdma_csgf_set_f(csgf_dest, len);
+ 	/* Descriptor Buffer */
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+-			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
++			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
++			  FSL_QDMA_CMD_PF;
+ 	sdf->data = QDMA_SDDF_CMD(cmd);
  
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	if (max > hcon->le_conn_max_interval) {
-+		BT_DBG("requested connection interval exceeds current bounds.");
-+		err = -EINVAL;
-+	} else {
-+		err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	}
-+
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
--- 
-2.43.0
-
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
 
 
 
