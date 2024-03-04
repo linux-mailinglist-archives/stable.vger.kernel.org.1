@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2AD870DBD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 901F1870EB2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AE95B275B1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A71BB27144
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9043C79DCA;
-	Mon,  4 Mar 2024 21:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA07679DCE;
+	Mon,  4 Mar 2024 21:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5vUdGXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2wlDMi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F23947A5D;
-	Mon,  4 Mar 2024 21:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9784C46BA0;
+	Mon,  4 Mar 2024 21:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588232; cv=none; b=m6bla3GP5ag5W185OhPeiQVpZmFHhgu2nEMbCQdx4Qq/6S/VT/WlwHH3r4unJQ9jHMkrp1lCCg015hdWp6XREaSy/hg3ZXlXTHz25/odQvzCr5ru025RpSBF4dISSQ69etATPIYwcemc3egiBDvg4iK59J+kEGew9CPOEwkR8K4=
+	t=1709588761; cv=none; b=I3EAVYS9HUgZZaJAxyNs2wEAkIJwdWDCz3OKad6fst7iAUpd1ObZnEjGt/o+B5wA0zPfg+rcKMpLh/NBzcv7Dxf/4c14p8b1+Zt/BWE5kX8hYO/uAU3FzO46WL/UfNj8gx4bT6E7FnPdTr6qwrh2NMYhDufg17M9ZJyhxmwoQMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588232; c=relaxed/simple;
-	bh=oUgmHhm3RnwkEsNCWrkRPh3AQtj3TpnyZdsrYrVa3A0=;
+	s=arc-20240116; t=1709588761; c=relaxed/simple;
+	bh=Jn+kB99f+z90vL2KdP4yaZ54+f61+1KCC/1i2vHzmKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPmeu/v7hssQAHKGeAYPa3i5/IAm/d6OVIrck6hz7sVLeWD4UUsUFmv94W7+cCuXs/7vr3L+VoTnm0T7RDuNY43ydUbna5RZUewUX8Bpmhq2DgrKEWaePZQK39b2wo608rx7LN8hWweGQK8EQClQrylRL+NrA4DH0oTQJ7zG5xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5vUdGXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21ACC43394;
-	Mon,  4 Mar 2024 21:37:11 +0000 (UTC)
+	 MIME-Version; b=ETpvZDyd7U0ihgF4H+Zz0zE5NFoZekwia87ZgvRate+JsGlq/KSUnxsDPV7W6XndMAIo54wXUH/QEYdknVp2KoPBKDQqchchRVq7vLIenXK49xG30QQpwFYvA/OtzQt/ICigHD8DG7owvgYgKExN8NMo4nZ93EyW9B3DOwXXbOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2wlDMi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5F4C433F1;
+	Mon,  4 Mar 2024 21:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588232;
-	bh=oUgmHhm3RnwkEsNCWrkRPh3AQtj3TpnyZdsrYrVa3A0=;
+	s=korg; t=1709588761;
+	bh=Jn+kB99f+z90vL2KdP4yaZ54+f61+1KCC/1i2vHzmKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5vUdGXoPN/AFkD3pbIJBiruH9ucPabIDZZrlTPk1EGCKfAqmEKzOKKzdK/D5dK/1
-	 YygKcmAyGz0hH1YuuBNosfNmpkO9hQPorUQAx01Af0JGUNm83o0tCw2faTn8opCilL
-	 7K+DDsmyucQ3Ibn/29b8DED2MoBopTkmH+tCi8C8=
+	b=t2wlDMi9UC+nDA1bB9WJpgb10zLDiIlpSSx1lVtDKLNqEI0F7TAqcrNz1KPSsWJmf
+	 Dab7wu6PoahGOB4wT1Mq42XGJFhnqsN3O+U26X5YPYGS4e9R0zlB16Fqpgl/1DVpyo
+	 oCPpK+P3dTCOxJO1ZauO6HNSSnnoVJm9kzGKfJ2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/143] Bluetooth: qca: Fix wrong event type for patch config command
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Tadeusz Struk <tstruk@gigaio.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 086/215] dmaengine: ptdma: use consistent DMA masks
 Date: Mon,  4 Mar 2024 21:22:29 +0000
-Message-ID: <20240304211550.872484864@linuxfoundation.org>
+Message-ID: <20240304211559.724903381@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Tadeusz Struk <tstruk@gigaio.com>
 
-[ Upstream commit c0dbc56077ae759f2dd602c7561480bc2b1b712c ]
+commit df2515a17914ecfc2a0594509deaf7fcb8d191ac upstream.
 
-Vendor-specific command patch config has HCI_Command_Complete event as
-response, but qca_send_patch_config_cmd() wrongly expects vendor-specific
-event for the command, fixed by using right event type.
+The PTDMA driver sets DMA masks in two different places for the same
+device inconsistently. First call is in pt_pci_probe(), where it uses
+48bit mask. The second call is in pt_dmaengine_register(), where it
+uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
+on DMA transfers between main memory and other devices.
+Without the extra call it works fine. Additionally the second call
+doesn't check the return value so it can silently fail.
+Remove the superfluous dma_set_mask() call and only use 48bit mask.
 
-Btmon log for the vendor-specific command are shown below:
-< HCI Command: Vendor (0x3f|0x0000) plen 5
-        28 01 00 00 00
-> HCI Event: Command Complete (0x0e) plen 5
-      Vendor (0x3f|0x0000) ncmd 1
-        Status: Success (0x00)
-        28
-
-Fixes: 4fac8a7ac80b ("Bluetooth: btqca: sequential validation")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
+Reviewed-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
+Link: https://lore.kernel.org/r/20240222163053.13842-1-tstruk@gigaio.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btqca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ptdma/ptdma-dmaengine.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 5a35ac4138c6c..0211f704a358b 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -152,7 +152,7 @@ static int qca_send_patch_config_cmd(struct hci_dev *hdev)
- 	bt_dev_dbg(hdev, "QCA Patch config");
+--- a/drivers/dma/ptdma/ptdma-dmaengine.c
++++ b/drivers/dma/ptdma/ptdma-dmaengine.c
+@@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_devi
+ 	chan->vc.desc_free = pt_do_cleanup;
+ 	vchan_init(&chan->vc, dma_dev);
  
- 	skb = __hci_cmd_sync_ev(hdev, EDL_PATCH_CMD_OPCODE, sizeof(cmd),
--				cmd, HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
-+				cmd, 0, HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		err = PTR_ERR(skb);
- 		bt_dev_err(hdev, "Sending QCA Patch config failed (%d)", err);
--- 
-2.43.0
-
+-	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+-
+ 	ret = dma_async_device_register(dma_dev);
+ 	if (ret)
+ 		goto err_reg;
 
 
 
