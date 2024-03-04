@@ -1,118 +1,98 @@
-Return-Path: <stable+bounces-25931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5238F8702EB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:39:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17B887040C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 15:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84C71F25D73
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:39:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AAF5283344
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A29E3E48C;
-	Mon,  4 Mar 2024 13:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5CA4087C;
+	Mon,  4 Mar 2024 14:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="KF1Y+MPC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrOZv12F"
 X-Original-To: stable@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC4C3E494;
-	Mon,  4 Mar 2024 13:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071473FB14;
+	Mon,  4 Mar 2024 14:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709559570; cv=none; b=Q42uBL73TQ6nXlvbmeC+PO4Bb/HxJxsBe7Vt/XnecDZ+7Q0F8pQMK4hMlspR00HU0yOLqmya/+tkAC5J/Z/Anh6RvRBjtibIC8lKHwodQmmQs08sxXx8jl5bOlKJsp2k0QfvMj5dw/t2dRwzA4K6VgGIHmCci3ZQeI8AvcwmkCk=
+	t=1709562320; cv=none; b=GqHBbsHBTq70F6MErhhmDM9Hv13VGVURaO215toTTaJqDpAnA4PsJ9LQMSL1wr2qWQ05+uPL+s4OCHvYlQMAKdC4YeDSZ5VP1OLOFZNLfJn/HwXdH6pINwcmEa30jh3RxY8OX4JKuU+pXjeB4Wqy/ibGps4oDkMQ1wVHz0R7KoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709559570; c=relaxed/simple;
-	bh=lMEQDj4wA9CSoQcPHMZJJYk/61VCQ5aWH38lX7E2mnM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IHuPoDAkPe+WIQIGdPwYiHPIWAxrsyukjVUcWSx5MhcTAspkXmptZZsXFyKyxRq0pCkTANweuSg/jNhWOk3rYxEKoks8wyiyb45sJymOBWxpaZyYccVkx5MNcm2Sa9F0y52iYI7pyAwdfjrteLq7JtIBCEqZqStFZivMz8yIjoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=KF1Y+MPC; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 95400418BA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1709559567; bh=g/HLnVv992UFJH8TinGv51zquGqHoXPwXe5EaET4ry8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KF1Y+MPCWxeBr/CzWgXbVtwk+PHp4e2ll2QZXoK9uugY79bxprrAudOWkYvGcHcZc
-	 gldJYfNEIgTvFUsYXWS2A/9xqxIPSinfIppWBNwfyqd/mK8SPX+gNvPxlFjmmZKhoJ
-	 Sns6MArjjkc+oUP+J8nYzgkUncB5ozJSdOFely+kgk6BP8JnsmBuybujrK1Hqq3tuN
-	 StUWiR4BCDTUGF2DghM1RiCR2VMHMl5d6yINwaiFLq9iUqOS9ESZpTPew3tMqm5zAy
-	 77EXkhBHZQPn/NZlRBiBXG6okfowFNwHCU+RHYQ5U6hQ+AG1a0N+NZkO8Z2lly3tvT
-	 j35uFqcnTcigQ==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 95400418BA;
-	Mon,  4 Mar 2024 13:39:27 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Salvatore Bonaccorso <carnil@debian.org>, regressions@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ben Hutchings
- <ben@decadent.org.uk>, Kees Cook <keescook@chromium.org>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Aditya Srivastava
- <yashsri421@gmail.com>, 1064035@bugs.debian.org
-Subject: Re: [regression 5.10.y] linux-doc builds: Global symbol "$args"
- requires explicit package name (did you forget to declare "my $args"?) at
- ./scripts/kernel-doc line 1236.
-In-Reply-To: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
-References: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
-Date: Mon, 04 Mar 2024 06:39:26 -0700
-Message-ID: <877ciiw1yp.fsf@meer.lwn.net>
+	s=arc-20240116; t=1709562320; c=relaxed/simple;
+	bh=VRS+n6ybLa9IWmtYpfnpQ35yJadFpwSuUqSk8qXjlG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f0VR6SHdcgr+SlCptu1FLu8tMdAHZ/e/8Pifyg5i1ya3NxxXjVjbG6vCHNbaM7QvXJ41ema6yFdXUDhr02DDyT60XJwkA8JK6KdPYuo8a0M16s4fNj93etYisObkE2lriAdItiaYctyRygLNfZyHHXAG707aEyfLWTCo1eLp38o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrOZv12F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9BEC433F1;
+	Mon,  4 Mar 2024 14:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709562319;
+	bh=VRS+n6ybLa9IWmtYpfnpQ35yJadFpwSuUqSk8qXjlG0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VrOZv12FGdvZLa1kyUWHrsIe2aCJ0y95L+R5FvZNUQnsdF3r8W7nOxD0yZpya97ek
+	 m3/DuJC+mhdYhCx2BkiMzihSDar3KQ9D1gqz+YNn7Z3Q+ZuRRxQDvjJGpxx5InldDt
+	 gTMTud+igphLPYca8j89jMGF2/lV21Ru21jakeiqCJT1D5tomH8fgxyx9vq1nS2yrM
+	 p6npyBcyzkdhge6FKB9b6ucsL6/xuPw7rCbE3IfNcziRozFDwcgj3xyiY8YwWLzOc0
+	 bFXSOSRPwTJBk7M9uQEwh+9iXxYTgJehd4+OsPRmvYF/qt7iBpgiDvQan7FbrpbGR+
+	 eM4aTi3o40Byw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6.y 0/5] mptcp: dependences for "selftests: mptcp: rm subflow with v4/v4mapped addr"
+Date: Mon,  4 Mar 2024 15:25:09 +0100
+Message-ID: <20240304142508.2086803-7-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024030421-badly-bucket-6555@gregkh>
+References: <2024030421-badly-bucket-6555@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1167; i=matttbe@kernel.org; h=from:subject; bh=VRS+n6ybLa9IWmtYpfnpQ35yJadFpwSuUqSk8qXjlG0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl5dnEASrdRf3uydwstj1MGa2r19TpipOlZlc9E S+s3g4Vjs+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZeXZxAAKCRD2t4JPQmmg c8INEADgvU3ulhsUA26DqkSERsF38WQw/HPt8iLX5gROkdKPEICRS47O9vLQ61L9Dl3o8C4c58J tHcmxlJx1V/bQU4sFgOIZMQHgcYFR2QgUdkC1q+HqGFp9IIcuwz2x/bX7+S5VpzaZpLZGZg7qVA jbnDx0Jej4kAA8VUwvqseRGZIsgVuhtaqL8BLK8djsMJf6XE/v3OQY2HZacQudIczoE1TWLSRRt 4ClxjaQ2LnjoJUw8XyF2hU9/Kn53xQtN8m9SqnuLXSuDTw3SEb40ON1y8sZW990ds3c+C8/kAW6 ZX5GPpOJIZI8+QcYK1zEAaaQODmnhLGJa2kU3d0viMKg2Zhicbs+L36maEdwFrbqh4bNKBggCMk 5FdU3sfCu1z+MQBurQ39UFJlnyPUTUjvOXNemuF24hqOgcv8HSjFX2YXtscg1PTqUmJFj1xw/bo 3gKnTX6frHxUvwat+U5CBibrtNhgTCU+oqE1LOD9iFTYoOp4m1qJa+U44XS16OH7OGNM1+i7YGM 4XN7tIuTGWRxYPBNNfWAt70RxlquYoyCtFGVEYhaLdmZcVKu/TNwv991MSLLxJooGoxrzLtQrY3 XGH19oqfVxXB4CXMagcHtjmeZBSkiH8YKyfU2XoXud3r4XXJcxvhmctNeu3nspXhXBN0iiwxrbt KJOsDc/GZyAEXgQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Salvatore Bonaccorso <carnil@debian.org> writes:
+Hi Greg,
 
-> Hi,
->
-> Ben Hutchings reported in https://bugs.debian.org/1064035 a problem
-> with the kernel-doc builds once 3080ea5553cc ("stddef: Introduce
-> DECLARE_FLEX_ARRAY() helper") got applied in 5.10.210 (as
-> prerequisite of another fix in 5.10.y):
->
->> The backport of commit 3080ea5553cc "stddef: Introduce
->> DECLARE_FLEX_ARRAY() helper" modified scripts/kernel-doc and
->> introduced a syntax error:
->> 
->> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
->> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
->> Execution of ./scripts/kernel-doc aborted due to compilation errors.
->> 
->> This doesn't stop the documentation build process, but causes the
->> documentation that should be extracted by kernel-doc to be missing
->> from linux-doc-5.10.
->> 
->> We should be able to fix this by eithering backport commit
->> e86bdb24375a "scripts: kernel-doc: reduce repeated regex expressions
->> into variables" or replacing /$args/ with /([^,)]+)/.
->> 
->> Ben.
->
-> What would be prefered here from stable maintainers point of view?
-> AFAICS e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
-> expressions into variables") won't apply cleanly and needs some
-> refactoring. The alternative pointed out by Ben would be to replace
-> the /$args/ with  /([^,)]+)/.
+To be able to apply the last patch without conflicts in v6.6, 4 other
+clean-up patches are needed.
 
-Hmm...this is the first I see of any of this...
+These patches mainly replace existing code with helpers to reduce code
+duplication. It looks interesting to backport them to ease future
+backports.
 
-The latter fix seems like the more straightforward of the two.  The only
-concern might be if there are other kernel-doc backports that might run
-afoul of the same problem, hopefully not.
+I had a few conflicts in mptcp_lib.sh, because some of the new helpers
+have been backported recently, but not all: so I had to place them
+between others.
 
-But this makes me wonder if there are other stable kernels that are
-affected as well.  I guess that, despite all of the testing being done
-on stable updates, nobody is testing the docs build?
+Note that these patches are the same the ones I sent earlier for v6.7, 
+no other conflicts.
 
-Thanks,
+Geliang Tang (5):
+  selftests: mptcp: add evts_get_info helper
+  selftests: mptcp: add chk_subflows_total helper
+  selftests: mptcp: update userspace pm test helpers
+  selftests: mptcp: add mptcp_lib_is_v6
+  selftests: mptcp: rm subflow with v4/v4mapped addr
 
-jon
+ .../selftests/net/mptcp/mptcp_connect.sh      |  16 +-
+ .../testing/selftests/net/mptcp/mptcp_join.sh | 187 ++++++++++--------
+ .../testing/selftests/net/mptcp/mptcp_lib.sh  |  15 ++
+ .../selftests/net/mptcp/mptcp_sockopt.sh      |   8 +-
+ .../selftests/net/mptcp/userspace_pm.sh       |  86 ++++----
+ 5 files changed, 170 insertions(+), 142 deletions(-)
+
+-- 
+2.43.0
+
 
