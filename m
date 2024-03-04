@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E3B870DB3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D8E870E8E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFDFB27352
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CCEB23C92
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4A0200CD;
-	Mon,  4 Mar 2024 21:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B69A79DDE;
+	Mon,  4 Mar 2024 21:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGiB5hbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFESQ8MQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE82BDDCB;
-	Mon,  4 Mar 2024 21:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F4A7B3E7;
+	Mon,  4 Mar 2024 21:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588209; cv=none; b=P0A68CgBpnT59C1XNosGxDmYmepPSGJa93W0w2w2/95ur3BHpi5pIfXCCFKb/tQ9vdKjsR0gWfgYbOc10fdnrOT/JHfsQytF4CypO7NkADjSWkGyKuoKpPwHUbRZtco7t4TQQ/EPEIk5LAEk4tUKyQFkDpSDc+zQEV7Ba5BPGm4=
+	t=1709588696; cv=none; b=Xg/50kpC/ZH/V92yh2DQdDF8SO4O2v0SjKmwsuDzNVWXZpd4f9VTI/axjwOPMDapYM9RFEUSvSNSSvpTAVWPmoBHmE+Ag/Ht4vZBUQiCZuIN6yNiLNvRxvcUVEGrFPGu20JlG5HoJphuw/trmpgMz3juFCpxQ6PgYtctPpe2HXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588209; c=relaxed/simple;
-	bh=tdAnAexnYa7HkeCCiN2KsS4DOnGqb6AEDpkO1Tpr68w=;
+	s=arc-20240116; t=1709588696; c=relaxed/simple;
+	bh=t2UHTZZ/nNBDwjFyyZNsd9PxvVFFsHklIpQRBV142IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDZjNNsCkmbKWJZpOvgke3hmCyPq4W4ff3lYVlRrifZkG5l0xruubdKAidUnNmMvim9qrqAiddzj/Cpboz2ALkd6R0bc52ab2eRVB0g1BUct8d1nub9dLHW7gxejz4x+LVGioGGvzUAX+Vg1KfIA2P4q8MMBN4z8rU9pWwircQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGiB5hbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B66C433F1;
-	Mon,  4 Mar 2024 21:36:48 +0000 (UTC)
+	 MIME-Version; b=UOtWauWOW1LkpNxWaOxYHLkNepv909Zp26iuQsn1bFGqYXqQkYZqqLJAbWJf+0F1cTo4Hl23uh7zfjPDRJ96h88+KGhzN5yopi842RM6I/21E3b4cntaiYbYqPIu1b3QKUogm8oVzW6ZMKFVmjTjm/QXI2aKMsqPbMOZyCfTDaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFESQ8MQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823D0C433C7;
+	Mon,  4 Mar 2024 21:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588208;
-	bh=tdAnAexnYa7HkeCCiN2KsS4DOnGqb6AEDpkO1Tpr68w=;
+	s=korg; t=1709588695;
+	bh=t2UHTZZ/nNBDwjFyyZNsd9PxvVFFsHklIpQRBV142IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGiB5hbp922twg0lS1W/Kv0YFivuQ8euNODmaX9Nh7oQ4o2qhYxGtKnkMb+RP+i8S
-	 GRntLwriDZbcdaPUuV0ZrlSjTSPfcQQl82E5PCoGylkxYo7jx6vmTSeP7/6i6rwh9p
-	 B19ESUyoKvuldCTUcChkHU7U0U4xDzYr+C0lnvYU=
+	b=CFESQ8MQHgMZkk9RBiW8ZiFbthgVO9tCMLjaH21TUhoiTtulyLVE9kn3fzksNsJYv
+	 560PNm6f8KkH8F5b/xAQYJl5DEjksGsof7UneuOEs/OrF0eSSNw4U2RZgAD+vS2IBs
+	 ukCpp3C5fPjbLpZ1fZhsyZ3odSEzU5Poyt878onE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/143] ASoC: cs35l34: Fix GPIO name and drop legacy include
-Date: Mon,  4 Mar 2024 21:22:03 +0000
-Message-ID: <20240304211550.000162127@linuxfoundation.org>
+Subject: [PATCH 6.1 061/215] net: hsr: Use correct offset for HSR TLV values in supervisory HSR frames
+Date: Mon,  4 Mar 2024 21:22:04 +0000
+Message-ID: <20240304211558.913669980@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
+[ Upstream commit 51dd4ee0372228ffb0f7709fa7aa0678d4199d06 ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+Current HSR implementation uses following supervisory frame (even for
+HSRv1 the HSR tag is not is not present):
 
-Drop the includes.
+00000000: 01 15 4e 00 01 2d XX YY ZZ 94 77 10 88 fb 00 01
+00000010: 7e 1c 17 06 XX YY ZZ 94 77 10 1e 06 XX YY ZZ 94
+00000020: 77 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00000030: 00 00 00 00 00 00 00 00 00 00 00 00
 
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
+The current code adds extra two bytes (i.e. sizeof(struct hsr_sup_tlv))
+when offset for skb_pull() is calculated.
+This is wrong, as both 'struct hsrv1_ethhdr_sp' and 'hsrv0_ethhdr_sp'
+already have 'struct hsr_sup_tag' defined in them, so there is no need
+for adding extra two bytes.
 
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
+This code was working correctly as with no RedBox support, the check for
+HSR_TLV_EOT (0x00) was off by two bytes, which were corresponding to
+zeroed padded bytes for minimal packet size.
 
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240228085644.3618044-1-lukma@denx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l34.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/hsr/hsr_forward.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index 6974dd4614103..04d9117b31ac7 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -20,14 +20,12 @@
- #include <linux/regulator/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/of_device.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
-@@ -1061,7 +1059,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client)
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 80cdc6f6b34c9..0323ab5023c69 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -83,7 +83,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+ 		return false;
  
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--				"reset-gpios", GPIOD_OUT_LOW);
-+				"reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(cs35l34->reset_gpio)) {
- 		ret = PTR_ERR(cs35l34->reset_gpio);
- 		goto err_regulator;
+ 	/* Get next tlv */
+-	total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tag->tlv.HSR_TLV_length;
++	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
+ 	if (!pskb_may_pull(skb, total_length))
+ 		return false;
+ 	skb_pull(skb, total_length);
 -- 
 2.43.0
 
