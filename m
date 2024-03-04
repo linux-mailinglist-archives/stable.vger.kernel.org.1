@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035ED870F54
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2A4870D4E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3616A1C20DF1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8171C24662
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D19A78B69;
-	Mon,  4 Mar 2024 21:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE037D084;
+	Mon,  4 Mar 2024 21:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbqqEDh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3psKmNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2EE1C6AB;
-	Mon,  4 Mar 2024 21:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8637D080;
+	Mon,  4 Mar 2024 21:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589210; cv=none; b=AGaHU4emXxnrrrR+cCdFW3VeljXaXkdDTAjr53hY6B6WzDR0Y7UUqlBHyXn2C1g0lsRPtgZfQDz1IqFTQi0agkHxsQyAC0tayq5Ix8b0bw5CIC21xw1szR7bnNQ9p33CHBAzveTTC9Z0Bn8Wmvg1Uqf4RZVmYZy1CoapeJ0g9Yc=
+	t=1709587959; cv=none; b=qyJw/eIBFz7gn8MFB08OxGkijyva84oh/UDlp3I/L0yvOuO8ViBRP91pIpytzoqjcVOOzpqXQtyq+XaHRtyRsRTJEgvGvAOIEpJZVSd8hO4e9kHyzsBkI5trdzpaAIimiPKl3b0qKaU6cSjYe9OfTpVRWc3mUI30tdjerQpiOCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589210; c=relaxed/simple;
-	bh=8CHpIqK/rpacUGC+m4xbwkBq8N/MGtg8SjQlKGBIOlg=;
+	s=arc-20240116; t=1709587959; c=relaxed/simple;
+	bh=NAklreLmvCBu0ke0w7PQvXjxvlM11OEIP7ydRNikU4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7U1aLhxbs0Rr+OkA7nXisRHhNEq5gsMXdnOJhuH5PStZziR80kvqo+vczqPr10lu3E++jJRlI3ARKXg9LPauWuzWeY0pb9FWW2TfrwsoRZ3F4EWtOUr1RxkBFvdu7Ui7Izz3skor6/H2HIFElsjkruOITjCaQLTHJBxK+QrcjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbqqEDh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5C0C433C7;
-	Mon,  4 Mar 2024 21:53:29 +0000 (UTC)
+	 MIME-Version; b=A/MEf2pR2HHw+KBQdXY3Bi3AuzeAZhOlet2o1bfbtakGgfOpi356dXB7Pa3m4HQLDrWdfHYaN9Sosfb25+Gz5OxHovV4X1uiSQrWVSJ0pyBptVJRaKbNp7gFEqrCkr+a5Kw+RsutrrEZRXl3sac9t20osprmjjRndOrrRGkAuY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3psKmNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7024AC433F1;
+	Mon,  4 Mar 2024 21:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589210;
-	bh=8CHpIqK/rpacUGC+m4xbwkBq8N/MGtg8SjQlKGBIOlg=;
+	s=korg; t=1709587958;
+	bh=NAklreLmvCBu0ke0w7PQvXjxvlM11OEIP7ydRNikU4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbqqEDh3yZ5agOucUbH2dH1IyRh9idQV3DJvXGfBba//3+UtZ11gJ43/oH5O9nqLP
-	 l2mus3KvASKiZOxOJxPsW3K8YLteT0MHgAC/FAd+ceRYalbGDDhzyelYzNm6VGMDMW
-	 PFsZ2vLV5TY4nYSCADd91S+yWjv3NF+BPQJmCA8M=
+	b=Y3psKmNR1Mr/HXnAofC7NsCfTHB/9iRrw7Wqca7BjKTW/iFO8ISVaE2LaBYvxEbG/
+	 C+6806K0IxU7ss2yvatJ8UDvHigoi2BxXRvwAC6KUBDKVeUOfzncOhVMgD0i6str9Q
+	 UvtURESdOZjh+eGlDyrc4ehv58ZXR4c1QgjJP58E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/84] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.7 156/162] KVM/VMX: Move VERW closer to VMentry for MDS mitigation
 Date: Mon,  4 Mar 2024 21:23:41 +0000
-Message-ID: <20240304211542.617966502@linuxfoundation.org>
+Message-ID: <20240304211556.660634097@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
+commit 43fb862de8f628c5db5e96831c915b9aebf62d33 upstream.
 
-It seems that if userspace provides a correct IFA_TARGET_NETNSID value
-but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
-returns -EINVAL with an elevated "struct net" refcount.
+During VMentry VERW is executed to mitigate MDS. After VERW, any memory
+access like register push onto stack may put host data in MDS affected
+CPU buffers. A guest can then use MDS to sample host data.
 
-Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Although likelihood of secrets surviving in registers at current VERW
+callsite is less, but it can't be ruled out. Harden the MDS mitigation
+by moving the VERW mitigation late in VMentry path.
+
+Note that VERW for MMIO Stale Data mitigation is unchanged because of
+the complexity of per-guest conditional VERW which is not easy to handle
+that late in asm with no GPRs available. If the CPU is also affected by
+MDS, VERW is unconditionally executed late in asm regardless of guest
+having MMIO access.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/vmenter.S |    3 +++
+ arch/x86/kvm/vmx/vmx.c     |   20 ++++++++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index c52317184e3e2..968ca078191cd 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5463,9 +5463,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	}
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -161,6 +161,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	/* Load guest RAX.  This kills the @regs pointer! */
+ 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
  
- 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
--	if (!addr)
--		return -EINVAL;
--
-+	if (!addr) {
-+		err = -EINVAL;
-+		goto errout;
-+	}
- 	ifm = nlmsg_data(nlh);
- 	if (ifm->ifa_index)
- 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
--- 
-2.43.0
-
++	/* Clobbers EFLAGS.ZF */
++	CLEAR_CPU_BUFFERS
++
+ 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
+ 	jnc .Lvmlaunch
+ 
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -387,7 +387,16 @@ static __always_inline void vmx_enable_f
+ 
+ static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
+ {
+-	vmx->disable_fb_clear = (host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
++	/*
++	 * Disable VERW's behavior of clearing CPU buffers for the guest if the
++	 * CPU isn't affected by MDS/TAA, and the host hasn't forcefully enabled
++	 * the mitigation. Disabling the clearing behavior provides a
++	 * performance boost for guests that aren't aware that manually clearing
++	 * CPU buffers is unnecessary, at the cost of MSR accesses on VM-Entry
++	 * and VM-Exit.
++	 */
++	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
++				(host_arch_capabilities & ARCH_CAP_FB_CLEAR_CTRL) &&
+ 				!boot_cpu_has_bug(X86_BUG_MDS) &&
+ 				!boot_cpu_has_bug(X86_BUG_TAA);
+ 
+@@ -7226,11 +7235,14 @@ static noinstr void vmx_vcpu_enter_exit(
+ 
+ 	guest_state_enter_irqoff();
+ 
+-	/* L1D Flush includes CPU buffer clear to mitigate MDS */
++	/*
++	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
++	 * mitigation for MDS is done late in VMentry and is still
++	 * executed in spite of L1D Flush. This is because an extra VERW
++	 * should not matter much after the big hammer L1D Flush.
++	 */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
+-		mds_clear_cpu_buffers();
+ 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		mds_clear_cpu_buffers();
 
 
 
