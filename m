@@ -1,151 +1,143 @@
-Return-Path: <stable+bounces-25857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428AE86FC77
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C564586FC8E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 10:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CE21C20A7F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6594A1F22F98
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9499620323;
-	Mon,  4 Mar 2024 08:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE65E199C2;
+	Mon,  4 Mar 2024 09:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fSdFNQiu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHl0Uxpu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CE938F99
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D73F1B59B
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709542298; cv=none; b=UCw3GuPghoWS2lFdWOnIHZz5+aDqBrBubbEzhEmbRdkSITz7rTjDk1laFqJHnQ3TLbiS6J2EaNHKE7mbOHBC27WtcVOxFRkyl5EzoTmGe1F4iLRJcw86vjyGis7SH6di4gzuJ2//mH2+wAzzKNiqqSwvTCTkPxqlV3FgaKFpXHI=
+	t=1709542805; cv=none; b=KySnlrrPmEyc9dtDURLGsAc3IktPLbkFessatuBBcMKRErcUeKCjJLV1T3FIp28XX6c9IXOxgh8b3lIJgF4BrjecdC2SOZVICB4GHuRJ18YB3dc5gjFrc+ewcGcqTi4UOM8o0/Kv9p8dTlzSGV3kLChoYnLI9wrBbmSwxT7J05M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709542298; c=relaxed/simple;
-	bh=FUqDuqDK3jaXfLxLku5xeZANK3Ia+SXCSM50KWYNtZ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AmjrnSCfnQhhy6H1WFxiOPDpzvJNhu76djA0R/DDujddUgDxvofYJ9StnJWmAzHOENHAuSFs/AsxdFboJQ/e3UA2NEVODqauZ7wy2DkXcG6OSYODchUtCiCbRiHy7dFxvWI1xrQl2kPx/Y6Dx/ah4vels5Ce9JvVDNCWFJnYxTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fSdFNQiu; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d109e82bd0so48374691fa.3
-        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 00:51:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1709542294; x=1710147094; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=28qkoOsNR9DkErTLbvnZcDZ96cMGlVImyXbURgCupu8=;
-        b=fSdFNQiu/U3VmlcXbV6xBvoJyw9hwTscaEbogbl327Q7jkz3l8QahRbivLGGWZ4e7l
-         rtl67kb+LiM4CO97c+nLl99HxWByN+zdw2XEPoWJhSuhR/ZyrgnLHrdoBEKobl/GWxkE
-         oWYJ58rkGpOoV5s310UdgabNceCzszDJ6k0jo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709542294; x=1710147094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=28qkoOsNR9DkErTLbvnZcDZ96cMGlVImyXbURgCupu8=;
-        b=WF07EWwMCud1/KI5yLBELCcC/IPZdN46fC0ffEbs6Abtp9buTpA56rVwH0bQp1wyXH
-         Lwq6Wsvr43PeGpjv0SeRhM8C86pWekEqWOjVUB4wW5j7ow7MNtlLD0cK/EsjQnzW7zY6
-         BujaiJGbyj8Pauy9yUWb4KRtj5UZHwRQInxQ5Yvu3qZ0wefajd5etL9C5tB2t3vFOcHX
-         6UJNzXzTjtPqLv2MnpA41IbAaK65lKYBFx03IUSqt0/dKt0IAGndIOJvT8Jb6SvZwb8p
-         as02MWY6biLzHpB+6FQeD9t9RYvgr5FzkWuvIPsfR1tx3pIIj8nFhub+PdxxJ9zUJNaf
-         5vow==
-X-Forwarded-Encrypted: i=1; AJvYcCXdu/Uxtg3jC4kvsocngt/eqx7NZPBKWSP4NW99iO6SlYI3l8F19K5sBeVQQH8IvHiMLcmAQm9w30twZhVwH+Jd5gcG0wHL
-X-Gm-Message-State: AOJu0YySLcry/UUZSCygxhLCCvw8kdrD0eEuFrsVPyXhIYAZ/dRvsojw
-	icMWYNbD3zqTPcvNqpsq1b8wkA/JWloljyp4DK5dR40dLvfCTcrz+XaZzBI9Fk+z9AuvuYZcrl0
-	zAEC4JxAupVSJwxY7t1YdM1O2rS302Q/bKmxq
-X-Google-Smtp-Source: AGHT+IHTHKLt/XKBNuXCKoQzD3d0EVWAzRXMQe64uQR7CdtYWihtA7DJhqYa9jFgo7XGcqDVJSwpOBIQ8SecXFO3gLk=
-X-Received: by 2002:a05:6512:3da9:b0:512:8a87:cbef with SMTP id
- k41-20020a0565123da900b005128a87cbefmr6728992lfv.41.1709542294430; Mon, 04
- Mar 2024 00:51:34 -0800 (PST)
+	s=arc-20240116; t=1709542805; c=relaxed/simple;
+	bh=bMb6+VW9ix7c7vRgO7qiuwo4A23BEWtDP9rnsuwaKXI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pzR0/m8ZoIBKo+zeC2l0T1MnPQsq2N04nlBglTg1juC+uImn8r/amzQdXfVsLvF1V9FE4eD/MDqdwQoFwYuiICKDCa87l5EszTL0NmnDyou4z3eLinRlC2Sl8sqTBydxG4+HqkSFhC3hGhtgH7IiE9Ezn0bcJcEoSCE9JCpRUSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHl0Uxpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18BFC433F1;
+	Mon,  4 Mar 2024 09:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709542805;
+	bh=bMb6+VW9ix7c7vRgO7qiuwo4A23BEWtDP9rnsuwaKXI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cHl0UxpuZqjn16Ae8fHx4eXuntWuKr0X2KaAdAFO9rdDiFD0Zz4d2txoUICd6yKkH
+	 /T6zBtKJf3iQ7OpF2ayIis31vwyZnhTnorEhv4r9qTyBuTLLS3b4UZjzdE+l611s68
+	 uY+DT6tm7/t2XjCB2NGkOPRrn1RlSwofU22OpbRL+Ioihh8B72j6e3H4zy/Ci6KBjU
+	 SoOdhzeEkVRb1b+6jmjeYA3yuHHAIrnC/ZITWCNUA/GgztrSncZCpmDXft1y1mi3cK
+	 gIlPD2sjv71WRwUwSaR1VBDUrim7eYYZsZiTvti5nxlErVXvL4K0RVviGYvvvyBsg6
+	 qtqCEB+ZB63rw==
+Message-ID: <2cf7b693-af2f-42d5-b0a0-fba19e840fa6@kernel.org>
+Date: Mon, 4 Mar 2024 10:00:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024022817-remedial-agonize-2e34@gregkh> <20240228184123.24643-1-brennan.lamoreaux@broadcom.com>
- <CAD2QZ9YZM=5jDtqA-Ruw9ZcztRPp6W6mZj9tA=UvA5515uYKrQ@mail.gmail.com> <2024030407-unshaven-proud-6ac4@gregkh>
-In-Reply-To: <2024030407-unshaven-proud-6ac4@gregkh>
-From: Ajay Kaher <ajay.kaher@broadcom.com>
-Date: Mon, 4 Mar 2024 14:21:22 +0530
-Message-ID: <CAD2QZ9YPmo3X+q8g+_zHd+=Y=_qKFa+xSgvwfTC3dZ0KhiMyOA@mail.gmail.com>
-Subject: Re: Backport fix for CVE-2023-2176 (8d037973 and 0e158630) to v6.1
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>, stable@vger.kernel.org, 
-	phaddad@nvidia.com, shiraz.saleem@intel.com, 
-	Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Vasavi Sirnapalli <vasavi.sirnapalli@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] mptcp: push at DSS boundaries" failed to
+ apply to 5.4-stable tree
+Content-Language: en-GB, fr-BE
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ martineau@kernel.org
+References: <2024030448-walrus-tribunal-7b38@gregkh>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <2024030448-walrus-tribunal-7b38@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 4, 2024 at 12:14=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Feb 29, 2024 at 02:05:39PM +0530, Ajay Kaher wrote:
-> > On Thu, Feb 29, 2024 at 12:13=E2=80=AFAM Brennan Lamoreaux
-> > <brennan.lamoreaux@broadcom.com> wrote:
-> > >
-> > > > If you provide a working backport of that commit, we will be glad t=
-o
-> > > > apply it.  As-is, it does not apply at all, which is why it was nev=
-er
-> > > > added to the 6.1.y tree.
-> > >
-> > > Oh, apologies for requesting if they don't apply. I'd be happy to sub=
-mit
-> > > working backports for these patches, but I am not seeing any issues a=
-pplying/building
-> > > the patches on my machine... Both patches in sequence applied directl=
-y and my
-> > > local build was successful.
-> > >
-> > > This is the workflow I tested:
-> > >
-> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linu=
-x.git/ linux-6.1.y
-> > > git checkout FETCH_HEAD
-> > > git cherry-pick -x 8d037973d48c026224ab285e6a06985ccac6f7bf
-> > > git cherry-pick -x 0e15863015d97c1ee2cc29d599abcc7fa2dc3e95
-> > > make allyesconfig
-> > > make
-> > >
-> > > Please let me know if I've made a mistake with the above commands, or=
- if these patches aren't applicable
-> > > for some other reason.
-> > >
-> >
-> > I guess the reason is:
-> >
-> > 8d037973d48c026224ab285e6a06985ccac6f7bf doesn't have "Fixes:" and is
-> > not sent to stable@vger.kernel.org.
-> > And 0e15863015d97c1ee2cc29d599abcc7fa2dc3e95 is to Fix
-> > 8d037973d48c026224ab285e6a06985ccac6f7bf,
-> > so no need of 0e158 if 8d03 not backported to that particular branch.
->
-> Ok, so there's nothing to do here, great!  If there is, please let us
-> know.
->
+Hi Greg,
 
-In my previous mail, I was guessing why 8d037973d48c commit was not
-backported to v6.1.
+On 04/03/2024 09:28, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 5.4-stable tree.
 
-However Brennan's concern is:
+(...)
 
-As per CVE-2023-2176, because of improper cleanup local users can
-crash the system.
-And this crash was reported in v5.19, refer:
-https://lore.kernel.org/all/ec81a9d50462d9b9303966176b17b85f7dfbb96a.167074=
-9660.git.leonro@nvidia.com/#t
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From b9cd26f640a308ea314ad23532de9a8592cd09d2 Mon Sep 17 00:00:00 2001
+> From: Paolo Abeni <pabeni@redhat.com>
+> Date: Fri, 23 Feb 2024 17:14:14 +0100
+> Subject: [PATCH] mptcp: push at DSS boundaries
+> 
+> when inserting not contiguous data in the subflow write queue,
+> the protocol creates a new skb and prevent the TCP stack from
+> merging it later with already queued skbs by setting the EOR marker.
+> 
+> Still no push flag is explicitly set at the end of previous GSO
+> packet, making the aggregation on the receiver side sub-optimal -
+> and packetdrill self-tests less predictable.
+> 
+> Explicitly mark the end of not contiguous DSS with the push flag.
+> 
+> Fixes: 6d0060f600ad ("mptcp: Write MPTCP DSS headers to outgoing data packets")
 
-However, fix i.e. 8d037973d48c applied to master from v6.3-rc1 and not
-backported to any stable or LTS.
-So v6.1 is still vulnarbile, so 8d037973d48c and 0e15863015d9 should
-be backported to v6.1.
+I guess this patch has been selected for v5.4 by accident because MPTCP
+has been introduced in v5.6. In other words, we don't need this patch
+for v5.4 :)
 
-- Ajay
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
