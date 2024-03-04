@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-26564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60299870F2A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11212870F73
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5FAFB277FB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43D181C21839
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166987BAE2;
-	Mon,  4 Mar 2024 21:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4496C7992E;
+	Mon,  4 Mar 2024 21:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rv5fiz1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StmttDSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C9479F2;
-	Mon,  4 Mar 2024 21:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012E61C6AB;
+	Mon,  4 Mar 2024 21:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589083; cv=none; b=TkHhww4YipJlMLfNr7K8YUlzRva9sKXGp14D6u2976ltOItOcYEyhf4FQKE6jUrAv82pA10OAreX/pqDqsJUG2AqlDEjUF8b/jc9beXYydfGjXFBoavHlQGn4haTTlDFroOqA7S7h1mYYziqlKO4yjIp2FDwCMD0hjoRhMTD4sI=
+	t=1709589288; cv=none; b=lAxLiEirID7eTg9u8SpCOWlA0cQ8x0SAEk8HGZ4idFAn+cyCt+aUf3Tt37XBn2ZQIzFeK4aFafoLI1gQTVCO9N/6fXvA+IVjnGEvQD5a5Ez7ud0dnaGXyuLbtYYPbGuV2lQP1pXNfOtTblLD1uZ9tOrrqgyzOH9d1uTU/qdDTo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589083; c=relaxed/simple;
-	bh=gnqdbQtvkmBVEUsEkgz9oTG0YFJ4gDmHDT/89vPJAmM=;
+	s=arc-20240116; t=1709589288; c=relaxed/simple;
+	bh=iSD8lQrUC2a6huqfUP7TPUMa7hjhEO/fw2MLY3BN+q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEbprtSkHyc27WDXRZYh8DHG/D/4qv25mAYOFqlTSx7LXbt3U4gc8JiSytWRsrLiYfZTGL0uyRaU9oOUZh2S4gTq5NM4+4reJT6ILlg2F8GMHTJPZ0HIQspRFAzdWFGGXhBcTbrt04qtTtWwLvBCphpiT2jOBvxO+mdjYQNhtPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rv5fiz1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59741C433F1;
-	Mon,  4 Mar 2024 21:51:23 +0000 (UTC)
+	 MIME-Version; b=G+Ui7+cGTrpzcfh4Sib//Bfm+KBrV59Z60+qWbtGPQlHpxo0IDFrX/6SbzN6hosgN6mWZYh801KmCMouuqG6OEvNbcBVPHANZ5csG0i4wJ5wOvoQwIOzcWw+c8wh/pbrLXhH4utLT/f9PXVqe6roE6S9YbPptXgEllw64X+TXL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StmttDSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5C0C433C7;
+	Mon,  4 Mar 2024 21:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589083;
-	bh=gnqdbQtvkmBVEUsEkgz9oTG0YFJ4gDmHDT/89vPJAmM=;
+	s=korg; t=1709589287;
+	bh=iSD8lQrUC2a6huqfUP7TPUMa7hjhEO/fw2MLY3BN+q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rv5fiz1Er2AIucpvI+qgzd2XKMEgnBTLA/5Rzlp0DK+kzhfQ1m50lnLf1+B/R0L6A
-	 2h17ZnRjMnnM0msCrJeaOhcrZI6YIklTmRkxlGEmB6wH3dKhkdr5FR10VuhKdM1s/1
-	 fEzimK/wKDuwjMZ5CXjiyP9StFGDC65syP07wGyo=
+	b=StmttDSkWtfPqp1rjLY5wefMHDM3EAO7I52atZzaLNLCye12WYOkb04upifDt2bUd
+	 Ibl6g6kr2oUPiMuN8N7BsDghhzsYkskMaLgrE/83lc8AP8SGYblCfwcg8ACQ42oOlx
+	 jJndxkTEPGfdrk88mFlhkUIMTA5dADIoHqjMKhHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.1 194/215] x86/boot: Rename conflicting boot_params pointer to boot_params_ptr
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 44/84] fbcon: always restore the old font data in fbcon_do_set_font()
 Date: Mon,  4 Mar 2024 21:24:17 +0000
-Message-ID: <20240304211603.128165686@linuxfoundation.org>
+Message-ID: <20240304211543.802938730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,371 +67,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+[ Upstream commit 00d6a284fcf3fad1b7e1b5bc3cd87cbfb60ce03f ]
 
-[ Commit b9e909f78e7e4b826f318cfe7bedf3ce229920e6 upstream ]
+Commit a5a923038d70 (fbdev: fbcon: Properly revert changes when
+vc_resize() failed) started restoring old font data upon failure (of
+vc_resize()). But it performs so only for user fonts. It means that the
+"system"/internal fonts are not restored at all. So in result, the very
+first call to fbcon_do_set_font() performs no restore at all upon
+failing vc_resize().
 
-The x86 decompressor is built and linked as a separate executable, but
-it shares components with the kernel proper, which are either #include'd
-as C files, or linked into the decompresor as a static library (e.g, the
-EFI stub)
+This can be reproduced by Syzkaller to crash the system on the next
+invocation of font_get(). It's rather hard to hit the allocation failure
+in vc_resize() on the first font_set(), but not impossible. Esp. if
+fault injection is used to aid the execution/failure. It was
+demonstrated by Sirius:
+  BUG: unable to handle page fault for address: fffffffffffffff8
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD cb7b067 P4D cb7b067 PUD cb7d067 PMD 0
+  Oops: 0000 [#1] PREEMPT SMP KASAN
+  CPU: 1 PID: 8007 Comm: poc Not tainted 6.7.0-g9d1694dc91ce #20
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  RIP: 0010:fbcon_get_font+0x229/0x800 drivers/video/fbdev/core/fbcon.c:2286
+  Call Trace:
+   <TASK>
+   con_font_get drivers/tty/vt/vt.c:4558 [inline]
+   con_font_op+0x1fc/0xf20 drivers/tty/vt/vt.c:4673
+   vt_k_ioctl drivers/tty/vt/vt_ioctl.c:474 [inline]
+   vt_ioctl+0x632/0x2ec0 drivers/tty/vt/vt_ioctl.c:752
+   tty_ioctl+0x6f8/0x1570 drivers/tty/tty_io.c:2803
+   vfs_ioctl fs/ioctl.c:51 [inline]
+  ...
 
-Both the kernel itself and the decompressor define a global symbol
-'boot_params' to refer to the boot_params struct, but in the former
-case, it refers to the struct directly, whereas in the decompressor, it
-refers to a global pointer variable referring to the struct boot_params
-passed by the bootloader or constructed from scratch.
+So restore the font data in any case, not only for user fonts. Note the
+later 'if' is now protected by 'old_userfont' and not 'old_data' as the
+latter is always set now. (And it is supposed to be non-NULL. Otherwise
+we would see the bug above again.)
 
-This ambiguity is unfortunate, and makes it impossible to assign this
-decompressor variable from the x86 EFI stub, given that declaring it as
-extern results in a clash. So rename the decompressor version (whose
-scope is limited) to boot_params_ptr.
-
-[ mingo: Renamed 'boot_params_p' to 'boot_params_ptr' for clarity ]
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
+Reported-and-tested-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Cc: Ubisectech Sirius <bugreport@ubisectech.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240208114411.14604-1-jirislaby@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/acpi.c         |   14 +++++++-------
- arch/x86/boot/compressed/cmdline.c      |    4 ++--
- arch/x86/boot/compressed/ident_map_64.c |    7 ++++---
- arch/x86/boot/compressed/kaslr.c        |   26 +++++++++++++-------------
- arch/x86/boot/compressed/misc.c         |   24 ++++++++++++------------
- arch/x86/boot/compressed/misc.h         |    1 -
- arch/x86/boot/compressed/pgtable_64.c   |    9 ++++-----
- arch/x86/boot/compressed/sev.c          |    2 +-
- arch/x86/include/asm/boot.h             |    2 ++
- 9 files changed, 45 insertions(+), 44 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/compressed/acpi.c
-+++ b/arch/x86/boot/compressed/acpi.c
-@@ -30,13 +30,13 @@ __efi_get_rsdp_addr(unsigned long cfg_tb
- 	 * Search EFI system tables for RSDP. Preferred is ACPI_20_TABLE_GUID to
- 	 * ACPI_TABLE_GUID because it has more features.
- 	 */
--	rsdp_addr = efi_find_vendor_table(boot_params, cfg_tbl_pa, cfg_tbl_len,
-+	rsdp_addr = efi_find_vendor_table(boot_params_ptr, cfg_tbl_pa, cfg_tbl_len,
- 					  ACPI_20_TABLE_GUID);
- 	if (rsdp_addr)
- 		return (acpi_physical_address)rsdp_addr;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index b6712655ec1f0..b163b54b868e6 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2409,11 +2409,9 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+ 	int resize, ret, old_userfont, old_width, old_height, old_charcount;
+-	char *old_data = NULL;
++	u8 *old_data = vc->vc_font.data;
  
- 	/* No ACPI_20_TABLE_GUID found, fallback to ACPI_TABLE_GUID. */
--	rsdp_addr = efi_find_vendor_table(boot_params, cfg_tbl_pa, cfg_tbl_len,
-+	rsdp_addr = efi_find_vendor_table(boot_params_ptr, cfg_tbl_pa, cfg_tbl_len,
- 					  ACPI_TABLE_GUID);
- 	if (rsdp_addr)
- 		return (acpi_physical_address)rsdp_addr;
-@@ -56,15 +56,15 @@ static acpi_physical_address efi_get_rsd
- 	enum efi_type et;
- 	int ret;
- 
--	et = efi_get_type(boot_params);
-+	et = efi_get_type(boot_params_ptr);
- 	if (et == EFI_TYPE_NONE)
- 		return 0;
- 
--	systab_pa = efi_get_system_table(boot_params);
-+	systab_pa = efi_get_system_table(boot_params_ptr);
- 	if (!systab_pa)
- 		error("EFI support advertised, but unable to locate system table.");
- 
--	ret = efi_get_conf_table(boot_params, &cfg_tbl_pa, &cfg_tbl_len);
-+	ret = efi_get_conf_table(boot_params_ptr, &cfg_tbl_pa, &cfg_tbl_len);
- 	if (ret || !cfg_tbl_pa)
- 		error("EFI config table not found.");
- 
-@@ -156,7 +156,7 @@ acpi_physical_address get_rsdp_addr(void
- {
- 	acpi_physical_address pa;
- 
--	pa = boot_params->acpi_rsdp_addr;
-+	pa = boot_params_ptr->acpi_rsdp_addr;
- 
- 	if (!pa)
- 		pa = efi_get_rsdp_addr();
-@@ -210,7 +210,7 @@ static unsigned long get_acpi_srat_table
- 	rsdp = (struct acpi_table_rsdp *)get_cmdline_acpi_rsdp();
- 	if (!rsdp)
- 		rsdp = (struct acpi_table_rsdp *)(long)
--			boot_params->acpi_rsdp_addr;
-+			boot_params_ptr->acpi_rsdp_addr;
- 
- 	if (!rsdp)
- 		return 0;
---- a/arch/x86/boot/compressed/cmdline.c
-+++ b/arch/x86/boot/compressed/cmdline.c
-@@ -14,9 +14,9 @@ static inline char rdfs8(addr_t addr)
- #include "../cmdline.c"
- unsigned long get_cmd_line_ptr(void)
- {
--	unsigned long cmd_line_ptr = boot_params->hdr.cmd_line_ptr;
-+	unsigned long cmd_line_ptr = boot_params_ptr->hdr.cmd_line_ptr;
- 
--	cmd_line_ptr |= (u64)boot_params->ext_cmd_line_ptr << 32;
-+	cmd_line_ptr |= (u64)boot_params_ptr->ext_cmd_line_ptr << 32;
- 
- 	return cmd_line_ptr;
- }
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -167,8 +167,9 @@ void initialize_identity_maps(void *rmod
- 	 * or does not touch all the pages covering them.
- 	 */
- 	kernel_add_identity_map((unsigned long)_head, (unsigned long)_end);
--	boot_params = rmode;
--	kernel_add_identity_map((unsigned long)boot_params, (unsigned long)(boot_params + 1));
-+	boot_params_ptr = rmode;
-+	kernel_add_identity_map((unsigned long)boot_params_ptr,
-+				(unsigned long)(boot_params_ptr + 1));
- 	cmdline = get_cmd_line_ptr();
- 	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
- 
-@@ -176,7 +177,7 @@ void initialize_identity_maps(void *rmod
- 	 * Also map the setup_data entries passed via boot_params in case they
- 	 * need to be accessed by uncompressed kernel via the identity mapping.
- 	 */
--	sd = (struct setup_data *)boot_params->hdr.setup_data;
-+	sd = (struct setup_data *)boot_params_ptr->hdr.setup_data;
- 	while (sd) {
- 		unsigned long sd_addr = (unsigned long)sd;
- 
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -63,7 +63,7 @@ static unsigned long get_boot_seed(void)
- 	unsigned long hash = 0;
- 
- 	hash = rotate_xor(hash, build_str, sizeof(build_str));
--	hash = rotate_xor(hash, boot_params, sizeof(*boot_params));
-+	hash = rotate_xor(hash, boot_params_ptr, sizeof(*boot_params_ptr));
- 
- 	return hash;
- }
-@@ -383,7 +383,7 @@ static void handle_mem_options(void)
- static void mem_avoid_init(unsigned long input, unsigned long input_size,
- 			   unsigned long output)
- {
--	unsigned long init_size = boot_params->hdr.init_size;
-+	unsigned long init_size = boot_params_ptr->hdr.init_size;
- 	u64 initrd_start, initrd_size;
- 	unsigned long cmd_line, cmd_line_size;
- 
-@@ -395,10 +395,10 @@ static void mem_avoid_init(unsigned long
- 	mem_avoid[MEM_AVOID_ZO_RANGE].size = (output + init_size) - input;
- 
- 	/* Avoid initrd. */
--	initrd_start  = (u64)boot_params->ext_ramdisk_image << 32;
--	initrd_start |= boot_params->hdr.ramdisk_image;
--	initrd_size  = (u64)boot_params->ext_ramdisk_size << 32;
--	initrd_size |= boot_params->hdr.ramdisk_size;
-+	initrd_start  = (u64)boot_params_ptr->ext_ramdisk_image << 32;
-+	initrd_start |= boot_params_ptr->hdr.ramdisk_image;
-+	initrd_size  = (u64)boot_params_ptr->ext_ramdisk_size << 32;
-+	initrd_size |= boot_params_ptr->hdr.ramdisk_size;
- 	mem_avoid[MEM_AVOID_INITRD].start = initrd_start;
- 	mem_avoid[MEM_AVOID_INITRD].size = initrd_size;
- 	/* No need to set mapping for initrd, it will be handled in VO. */
-@@ -413,8 +413,8 @@ static void mem_avoid_init(unsigned long
+ 	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
+-	if (p->userfont)
+-		old_data = vc->vc_font.data;
+ 	vc->vc_font.data = (void *)(p->fontdata = data);
+ 	old_userfont = p->userfont;
+ 	if ((p->userfont = userfont))
+@@ -2447,13 +2445,13 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 		update_screen(vc);
  	}
  
- 	/* Avoid boot parameters. */
--	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params;
--	mem_avoid[MEM_AVOID_BOOTPARAMS].size = sizeof(*boot_params);
-+	mem_avoid[MEM_AVOID_BOOTPARAMS].start = (unsigned long)boot_params_ptr;
-+	mem_avoid[MEM_AVOID_BOOTPARAMS].size = sizeof(*boot_params_ptr);
+-	if (old_data && (--REFCOUNT(old_data) == 0))
++	if (old_userfont && (--REFCOUNT(old_data) == 0))
+ 		kfree(old_data - FONT_EXTRA_WORDS * sizeof(int));
+ 	return 0;
  
- 	/* We don't need to set a mapping for setup_data. */
+ err_out:
+ 	p->fontdata = old_data;
+-	vc->vc_font.data = (void *)old_data;
++	vc->vc_font.data = old_data;
  
-@@ -447,7 +447,7 @@ static bool mem_avoid_overlap(struct mem
- 	}
- 
- 	/* Avoid all entries in the setup_data linked list. */
--	ptr = (struct setup_data *)(unsigned long)boot_params->hdr.setup_data;
-+	ptr = (struct setup_data *)(unsigned long)boot_params_ptr->hdr.setup_data;
- 	while (ptr) {
- 		struct mem_vector avoid;
- 
-@@ -679,7 +679,7 @@ static bool process_mem_region(struct me
- static bool
- process_efi_entries(unsigned long minimum, unsigned long image_size)
- {
--	struct efi_info *e = &boot_params->efi_info;
-+	struct efi_info *e = &boot_params_ptr->efi_info;
- 	bool efi_mirror_found = false;
- 	struct mem_vector region;
- 	efi_memory_desc_t *md;
-@@ -761,8 +761,8 @@ static void process_e820_entries(unsigne
- 	struct boot_e820_entry *entry;
- 
- 	/* Verify potential e820 positions, appending to slots list. */
--	for (i = 0; i < boot_params->e820_entries; i++) {
--		entry = &boot_params->e820_table[i];
-+	for (i = 0; i < boot_params_ptr->e820_entries; i++) {
-+		entry = &boot_params_ptr->e820_table[i];
- 		/* Skip non-RAM entries. */
- 		if (entry->type != E820_TYPE_RAM)
- 			continue;
-@@ -836,7 +836,7 @@ void choose_random_location(unsigned lon
- 		return;
- 	}
- 
--	boot_params->hdr.loadflags |= KASLR_FLAG;
-+	boot_params_ptr->hdr.loadflags |= KASLR_FLAG;
- 
- 	if (IS_ENABLED(CONFIG_X86_32))
- 		mem_limit = KERNEL_IMAGE_SIZE;
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -46,7 +46,7 @@ void *memmove(void *dest, const void *sr
- /*
-  * This is set up by the setup-routine at boot-time
-  */
--struct boot_params *boot_params;
-+struct boot_params *boot_params_ptr;
- 
- struct port_io_ops pio_ops;
- 
-@@ -132,8 +132,8 @@ void __putstr(const char *s)
- 	if (lines == 0 || cols == 0)
- 		return;
- 
--	x = boot_params->screen_info.orig_x;
--	y = boot_params->screen_info.orig_y;
-+	x = boot_params_ptr->screen_info.orig_x;
-+	y = boot_params_ptr->screen_info.orig_y;
- 
- 	while ((c = *s++) != '\0') {
- 		if (c == '\n') {
-@@ -154,8 +154,8 @@ void __putstr(const char *s)
- 		}
- 	}
- 
--	boot_params->screen_info.orig_x = x;
--	boot_params->screen_info.orig_y = y;
-+	boot_params_ptr->screen_info.orig_x = x;
-+	boot_params_ptr->screen_info.orig_y = y;
- 
- 	pos = (x + cols * y) * 2;	/* Update cursor position */
- 	outb(14, vidport);
-@@ -382,14 +382,14 @@ asmlinkage __visible void *extract_kerne
- 	size_t entry_offset;
- 
- 	/* Retain x86 boot parameters pointer passed from startup_32/64. */
--	boot_params = rmode;
-+	boot_params_ptr = rmode;
- 
- 	/* Clear flags intended for solely in-kernel use. */
--	boot_params->hdr.loadflags &= ~KASLR_FLAG;
-+	boot_params_ptr->hdr.loadflags &= ~KASLR_FLAG;
- 
--	sanitize_boot_params(boot_params);
-+	sanitize_boot_params(boot_params_ptr);
- 
--	if (boot_params->screen_info.orig_video_mode == 7) {
-+	if (boot_params_ptr->screen_info.orig_video_mode == 7) {
- 		vidmem = (char *) 0xb0000;
- 		vidport = 0x3b4;
- 	} else {
-@@ -397,8 +397,8 @@ asmlinkage __visible void *extract_kerne
- 		vidport = 0x3d4;
- 	}
- 
--	lines = boot_params->screen_info.orig_video_lines;
--	cols = boot_params->screen_info.orig_video_cols;
-+	lines = boot_params_ptr->screen_info.orig_video_lines;
-+	cols = boot_params_ptr->screen_info.orig_video_cols;
- 
- 	init_default_io_ops();
- 
-@@ -417,7 +417,7 @@ asmlinkage __visible void *extract_kerne
- 	 * so that early debugging output from the RSDP parsing code can be
- 	 * collected.
- 	 */
--	boot_params->acpi_rsdp_addr = get_rsdp_addr();
-+	boot_params_ptr->acpi_rsdp_addr = get_rsdp_addr();
- 
- 	debug_putstr("early console in extract_kernel\n");
- 
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -52,7 +52,6 @@ extern memptr free_mem_ptr;
- extern memptr free_mem_end_ptr;
- void *malloc(int size);
- void free(void *where);
--extern struct boot_params *boot_params;
- void __putstr(const char *s);
- void __puthex(unsigned long value);
- #define error_putstr(__x)  __putstr(__x)
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -28,7 +28,6 @@ static char trampoline_save[TRAMPOLINE_3
-  */
- unsigned long *trampoline_32bit __section(".data");
- 
--extern struct boot_params *boot_params;
- int cmdline_find_option_bool(const char *option);
- 
- static unsigned long find_trampoline_placement(void)
-@@ -49,7 +48,7 @@ static unsigned long find_trampoline_pla
- 	 *
- 	 * Only look for values in the legacy ROM for non-EFI system.
- 	 */
--	signature = (char *)&boot_params->efi_info.efi_loader_signature;
-+	signature = (char *)&boot_params_ptr->efi_info.efi_loader_signature;
- 	if (strncmp(signature, EFI32_LOADER_SIGNATURE, 4) &&
- 	    strncmp(signature, EFI64_LOADER_SIGNATURE, 4)) {
- 		ebda_start = *(unsigned short *)0x40e << 4;
-@@ -65,10 +64,10 @@ static unsigned long find_trampoline_pla
- 	bios_start = round_down(bios_start, PAGE_SIZE);
- 
- 	/* Find the first usable memory region under bios_start. */
--	for (i = boot_params->e820_entries - 1; i >= 0; i--) {
-+	for (i = boot_params_ptr->e820_entries - 1; i >= 0; i--) {
- 		unsigned long new = bios_start;
- 
--		entry = &boot_params->e820_table[i];
-+		entry = &boot_params_ptr->e820_table[i];
- 
- 		/* Skip all entries above bios_start. */
- 		if (bios_start <= entry->addr)
-@@ -107,7 +106,7 @@ asmlinkage void configure_5level_paging(
- 	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
--	boot_params = bp;
-+	boot_params_ptr = bp;
- 
- 	/*
- 	 * Check if LA57 is desired and supported.
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -565,7 +565,7 @@ void sev_prep_identity_maps(unsigned lon
- 	 * accessed after switchover.
- 	 */
- 	if (sev_snp_enabled()) {
--		unsigned long cc_info_pa = boot_params->cc_blob_address;
-+		unsigned long cc_info_pa = boot_params_ptr->cc_blob_address;
- 		struct cc_blob_sev_info *cc_info;
- 
- 		kernel_add_identity_map(cc_info_pa, cc_info_pa + sizeof(*cc_info));
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -85,6 +85,8 @@ extern const unsigned long kernel_total_
- 
- unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
- 				void (*error)(char *x));
-+
-+extern struct boot_params *boot_params_ptr;
- #endif
- 
- #endif /* _ASM_X86_BOOT_H */
+ 	if (userfont) {
+ 		p->userfont = old_userfont;
+-- 
+2.43.0
+
 
 
 
