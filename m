@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0CB870CC1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1418F870DA8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9C31C25010
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 887D8B271A8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C277B3D8;
-	Mon,  4 Mar 2024 21:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F12200CD;
+	Mon,  4 Mar 2024 21:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia9XwQOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RN1IKopq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3167AE6B;
-	Mon,  4 Mar 2024 21:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62917DDCB;
+	Mon,  4 Mar 2024 21:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587701; cv=none; b=A2JOuh3VeA/rNsSUYLIZQsLC4/wkoBtiUPQeGmNwcheJyGp9ZRorEmJg6TxkL9hYSRmvq8m7TRJG0oZH6ceuUPrgQPslZsGJDSkC8m7YL5RVFujsv5sxX/hsGiDe0qEBGttl2jQ8GxZ6SZv+d8jaCfL2H0vQvq3YIUbfujHdJIE=
+	t=1709588180; cv=none; b=BUF+hwWaN10lcwLHpRB+wHQKKvBaqX7/Yoo18Eumhst3cuMsx7jpwiDVXM3cPO6bH/UJ9D9MEAV0xw/CdNkGImwQk/suq0f80u+HicvD0xmSKuyTyuNr/MjdOc2g33FgrRf0PA/3qmJ4DW6u0SXG8gqtjNA2HHhqG/5mHJoaMRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587701; c=relaxed/simple;
-	bh=s4/lB6WNphQEDawswprBvm7JCYUFVIv981ZKV3DjXlg=;
+	s=arc-20240116; t=1709588180; c=relaxed/simple;
+	bh=vC5F7h0XqUHnCFnwV/D+g62/cYkVf6KMWde1MQUMfs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtA80OWYK812uauEpyEKJOg+/ykBJFU46lhPPtt8Hw+iZvUviUWORp8JtXolSSUmf10/bkEUDV2aluBcNjk2R0nkg23ANN/+e/ZRzThHUkN6fVqObYHhTakP5xjwhI58BBthxjOECCzrwDLL+pwxlXopiL8nFkxwLJDqA2Ox0rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia9XwQOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955AAC433F1;
-	Mon,  4 Mar 2024 21:28:20 +0000 (UTC)
+	 MIME-Version; b=mjzWt8Mm44OGc74L7uaKiPkkw+6HTDjLo0CMIekIN0jrRgRkf+GmmsuWOj+e68TUs2OLQKHGbh2Vg1bB6qsssDtHR7CVxLeJA5S050EHVtVCnSK9Lr+1YP4F+lG+Tla63FapQZeyefo938hM8CqKSNJ/6xEEr8opYkMEs5CC1ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RN1IKopq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79DBC433F1;
+	Mon,  4 Mar 2024 21:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587700;
-	bh=s4/lB6WNphQEDawswprBvm7JCYUFVIv981ZKV3DjXlg=;
+	s=korg; t=1709588180;
+	bh=vC5F7h0XqUHnCFnwV/D+g62/cYkVf6KMWde1MQUMfs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ia9XwQOIgX4F8nub5TXTdKBEVIX78wVg7NuISljgsP1rZylCUaQkYFGKxI9XiAcAw
-	 bj71wTrXeOn16POoNzZWSn2vEd3wEJrAtA2raNagzFnBHqs+wuaCnBDcu7QN6jcTam
-	 4x5Ggmp3E2VXjOMidLebZaZgwyFrkRq70CSmMx8I=
+	b=RN1IKopqc7zYvOVOGuuGcaBJukjBfOGCnkjKWCeU2PF014vQ50JiY0F6BSnar/uVV
+	 kBf2EH3HlgqvEEz19PwS0g79UbNFG1lNvA0ySfi2Q9Zxv9r2e5mTtsbZqrFQzzzaVi
+	 sGmRPgknzlEKA/RvS2qEv8OAKZrUoSTKHD1nHUVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 056/162] ASoC: cs35l56: Fix for initializing ASP1 mixer registers
+Subject: [PATCH 6.6 001/143] btrfs: fix deadlock with fiemap and extent locking
 Date: Mon,  4 Mar 2024 21:22:01 +0000
-Message-ID: <20240304211553.645375021@linuxfoundation.org>
+Message-ID: <20240304211549.931535666@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,335 +63,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 07f7d6e7a124d3e4de36771e2a4926d0e31c2258 ]
+[ Upstream commit b0ad381fa7690244802aed119b478b4bdafc31dd ]
 
-Defer initializing the state of the ASP1 mixer registers until
-the firmware has been downloaded and rebooted.
+While working on the patchset to remove extent locking I got a lockdep
+splat with fiemap and pagefaulting with my new extent lock replacement
+lock.
 
-On a SoundWire system the ASP is free for use as a chip-to-chip
-interconnect. This can be either for the firmware on multiple
-CS35L56 to share reference audio; or as a bridge to another
-device. If it is a firmware interconnect it is owned by the
-firmware and the Linux driver should avoid writing the registers.
-However, if it is a bridge then Linux may take over and handle
-it as a normal codec-to-codec link. Even if the ASP is used
-as a firmware-firmware interconnect it is useful to have
-ALSA controls for the ASP mixer. They are at least useful for
-debugging.
+This deadlock exists with our normal code, we just don't have lockdep
+annotations with the extent locking so we've never noticed it.
 
-CS35L56 is designed for SDCA and a generic SDCA driver would
-know nothing about these chip-specific registers. So if the
-ASP is being used on a SoundWire system the firmware sets up the
-ASP mixer registers. This means that we can't assume the default
-state of these registers. But we don't know the initial state
-that the firmware set them to until after the firmware has been
-downloaded and booted, which can take several seconds when
-downloading multiple amps.
+Since we're copying the fiemap extent to user space on every iteration
+we have the chance of pagefaulting.  Because we hold the extent lock for
+the entire range we could mkwrite into a range in the file that we have
+mmap'ed.  This would deadlock with the following stack trace
 
-DAPM normally reads the initial state of mux registers during
-probe() but this would mean blocking probe() for several seconds
-until the firmware has initialized them. To avoid this, the
-mixer muxes are set SND_SOC_NOPM to prevent DAPM trying to read
-the register state. Custom get/set callbacks are implemented for
-ALSA control access, and these can safely block waiting for the
-firmware download.
+[<0>] lock_extent+0x28d/0x2f0
+[<0>] btrfs_page_mkwrite+0x273/0x8a0
+[<0>] do_page_mkwrite+0x50/0xb0
+[<0>] do_fault+0xc1/0x7b0
+[<0>] __handle_mm_fault+0x2fa/0x460
+[<0>] handle_mm_fault+0xa4/0x330
+[<0>] do_user_addr_fault+0x1f4/0x800
+[<0>] exc_page_fault+0x7c/0x1e0
+[<0>] asm_exc_page_fault+0x26/0x30
+[<0>] rep_movs_alternative+0x33/0x70
+[<0>] _copy_to_user+0x49/0x70
+[<0>] fiemap_fill_next_extent+0xc8/0x120
+[<0>] emit_fiemap_extent+0x4d/0xa0
+[<0>] extent_fiemap+0x7f8/0xad0
+[<0>] btrfs_fiemap+0x49/0x80
+[<0>] __x64_sys_ioctl+0x3e1/0xb50
+[<0>] do_syscall_64+0x94/0x1a0
+[<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-After the firmware download has completed, the state of the
-mux registers is known so a work job is queued to call
-snd_soc_dapm_mux_update_power() on each of the mux widgets.
+I wrote an fstest to reproduce this deadlock without my replacement lock
+and verified that the deadlock exists with our existing locking.
 
-Backport note:
-This won't apply cleanly to kernels older than v6.6.
+To fix this simply don't take the extent lock for the entire duration of
+the fiemap.  This is safe in general because we keep track of where we
+are when we're searching the tree, so if an ordered extent updates in
+the middle of our fiemap call we'll still emit the correct extents
+because we know what offset we were on before.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
-Link: https://msgid.link/r/20240129162737.497-11-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: eba2eb2495f4 ("ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()")
+The only place we maintain the lock is searching delalloc.  Since the
+delalloc stuff can change during writeback we want to lock the extent
+range so we have a consistent view of delalloc at the time we're
+checking to see if we need to set the delalloc flag.
+
+With this patch applied we no longer deadlock with my testcase.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l56-shared.c |   7 +-
- sound/soc/codecs/cs35l56.c        | 172 +++++++++++++++++++++++++++---
- sound/soc/codecs/cs35l56.h        |   1 +
- 3 files changed, 163 insertions(+), 17 deletions(-)
+ fs/btrfs/extent_io.c | 62 ++++++++++++++++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 17 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index fc99bc92aeace..2eb397724b4ba 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -34,10 +34,9 @@ static const struct reg_default cs35l56_reg_defaults[] = {
- 	{ CS35L56_ASP1_FRAME_CONTROL5,		0x00020100 },
- 	{ CS35L56_ASP1_DATA_CONTROL1,		0x00000018 },
- 	{ CS35L56_ASP1_DATA_CONTROL5,		0x00000018 },
--	{ CS35L56_ASP1TX1_INPUT,		0x00000018 },
--	{ CS35L56_ASP1TX2_INPUT,		0x00000019 },
--	{ CS35L56_ASP1TX3_INPUT,		0x00000020 },
--	{ CS35L56_ASP1TX4_INPUT,		0x00000028 },
-+
-+	/* no defaults for ASP1TX mixer */
-+
- 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
- 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
- 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index ea5d2b2eb82a0..30f4b9e9cc94c 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -59,6 +59,135 @@ static int cs35l56_dspwait_put_volsw(struct snd_kcontrol *kcontrol,
- 	return snd_soc_put_volsw(kcontrol, ucontrol);
- }
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 03c10e0ba0e27..70c6c7a0d4014 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2646,16 +2646,34 @@ static int fiemap_process_hole(struct btrfs_inode *inode,
+ 	 * it beyond i_size.
+ 	 */
+ 	while (cur_offset < end && cur_offset < i_size) {
++		struct extent_state *cached_state = NULL;
+ 		u64 delalloc_start;
+ 		u64 delalloc_end;
+ 		u64 prealloc_start;
++		u64 lockstart;
++		u64 lockend;
+ 		u64 prealloc_len = 0;
+ 		bool delalloc;
  
-+static const unsigned short cs35l56_asp1_mixer_regs[] = {
-+	CS35L56_ASP1TX1_INPUT, CS35L56_ASP1TX2_INPUT,
-+	CS35L56_ASP1TX3_INPUT, CS35L56_ASP1TX4_INPUT,
-+};
++		lockstart = round_down(cur_offset, inode->root->fs_info->sectorsize);
++		lockend = round_up(end, inode->root->fs_info->sectorsize);
 +
-+static const char * const cs35l56_asp1_mux_control_names[] = {
-+	"ASP1 TX1 Source", "ASP1 TX2 Source", "ASP1 TX3 Source", "ASP1 TX4 Source"
-+};
-+
-+static int cs35l56_dspwait_asp1tx_get(struct snd_kcontrol *kcontrol,
-+				      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	int index = e->shift_l;
-+	unsigned int addr, val;
-+	int ret;
-+
-+	/* Wait for mux to be initialized */
-+	cs35l56_wait_dsp_ready(cs35l56);
-+	flush_work(&cs35l56->mux_init_work);
-+
-+	addr = cs35l56_asp1_mixer_regs[index];
-+	ret = regmap_read(cs35l56->base.regmap, addr, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= CS35L56_ASP_TXn_SRC_MASK;
-+	ucontrol->value.enumerated.item[0] = snd_soc_enum_val_to_item(e, val);
-+
-+	return 0;
-+}
-+
-+static int cs35l56_dspwait_asp1tx_put(struct snd_kcontrol *kcontrol,
-+				      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_dapm(kcontrol);
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	int item = ucontrol->value.enumerated.item[0];
-+	int index = e->shift_l;
-+	unsigned int addr, val;
-+	bool changed;
-+	int ret;
-+
-+	/* Wait for mux to be initialized */
-+	cs35l56_wait_dsp_ready(cs35l56);
-+	flush_work(&cs35l56->mux_init_work);
-+
-+	addr = cs35l56_asp1_mixer_regs[index];
-+	val = snd_soc_enum_item_to_val(e, item);
-+
-+	ret = regmap_update_bits_check(cs35l56->base.regmap, addr,
-+				       CS35L56_ASP_TXn_SRC_MASK, val, &changed);
-+	if (!ret)
-+		return ret;
-+
-+	if (changed)
-+		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
-+
-+	return changed;
-+}
-+
-+static void cs35l56_mark_asp1_mixer_widgets_dirty(struct cs35l56_private *cs35l56)
-+{
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(cs35l56->component);
-+	const char *prefix = cs35l56->component->name_prefix;
-+	char full_name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
-+	const char *name;
-+	struct snd_kcontrol *kcontrol;
-+	struct soc_enum *e;
-+	unsigned int val[4];
-+	int i, item, ret;
-+
-+	/*
-+	 * Resume so we can read the registers from silicon if the regmap
-+	 * cache has not yet been populated.
-+	 */
-+	ret = pm_runtime_resume_and_get(cs35l56->base.dev);
-+	if (ret < 0)
-+		return;
-+
-+	ret = regmap_bulk_read(cs35l56->base.regmap, CS35L56_ASP1TX1_INPUT,
-+			       val, ARRAY_SIZE(val));
-+
-+	pm_runtime_mark_last_busy(cs35l56->base.dev);
-+	pm_runtime_put_autosuspend(cs35l56->base.dev);
-+
-+	if (ret) {
-+		dev_err(cs35l56->base.dev, "Failed to read ASP1 mixer regs: %d\n", ret);
-+		return;
-+	}
-+
-+	snd_soc_card_mutex_lock(dapm->card);
-+	WARN_ON(!dapm->card->instantiated);
-+
-+	for (i = 0; i < ARRAY_SIZE(cs35l56_asp1_mux_control_names); ++i) {
-+		name = cs35l56_asp1_mux_control_names[i];
-+
-+		if (prefix) {
-+			snprintf(full_name, sizeof(full_name), "%s %s", prefix, name);
-+			name = full_name;
-+		}
-+
-+		kcontrol = snd_soc_card_get_kcontrol(dapm->card, name);
-+		if (!kcontrol) {
-+			dev_warn(cs35l56->base.dev, "Could not find control %s\n", name);
-+			continue;
-+		}
-+
-+		e = (struct soc_enum *)kcontrol->private_value;
-+		item = snd_soc_enum_val_to_item(e, val[i] & CS35L56_ASP_TXn_SRC_MASK);
-+		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
-+	}
-+
-+	snd_soc_card_mutex_unlock(dapm->card);
-+}
-+
-+static void cs35l56_mux_init_work(struct work_struct *work)
-+{
-+	struct cs35l56_private *cs35l56 = container_of(work,
-+						       struct cs35l56_private,
-+						       mux_init_work);
-+
-+	cs35l56_mark_asp1_mixer_widgets_dirty(cs35l56);
-+}
-+
- static DECLARE_TLV_DB_SCALE(vol_tlv, -10000, 25, 0);
++		/*
++		 * We are only locking for the delalloc range because that's the
++		 * only thing that can change here.  With fiemap we have a lock
++		 * on the inode, so no buffered or direct writes can happen.
++		 *
++		 * However mmaps and normal page writeback will cause this to
++		 * change arbitrarily.  We have to lock the extent lock here to
++		 * make sure that nobody messes with the tree while we're doing
++		 * btrfs_find_delalloc_in_range.
++		 */
++		lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 		delalloc = btrfs_find_delalloc_in_range(inode, cur_offset, end,
+ 							delalloc_cached_state,
+ 							&delalloc_start,
+ 							&delalloc_end);
++		unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 		if (!delalloc)
+ 			break;
  
- static const struct snd_kcontrol_new cs35l56_controls[] = {
-@@ -77,40 +206,44 @@ static const struct snd_kcontrol_new cs35l56_controls[] = {
- };
+@@ -2823,15 +2841,15 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		  u64 start, u64 len)
+ {
+ 	const u64 ino = btrfs_ino(inode);
+-	struct extent_state *cached_state = NULL;
+ 	struct extent_state *delalloc_cached_state = NULL;
+ 	struct btrfs_path *path;
+ 	struct fiemap_cache cache = { 0 };
+ 	struct btrfs_backref_share_check_ctx *backref_ctx;
+ 	u64 last_extent_end;
+ 	u64 prev_extent_end;
+-	u64 lockstart;
+-	u64 lockend;
++	u64 range_start;
++	u64 range_end;
++	const u64 sectorsize = inode->root->fs_info->sectorsize;
+ 	bool stopped = false;
+ 	int ret;
  
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx1_enum,
--				  CS35L56_ASP1TX1_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  0, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
+@@ -2842,12 +2860,11 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		goto out;
+ 	}
  
- static const struct snd_kcontrol_new asp1_tx1_mux =
--	SOC_DAPM_ENUM("ASP1TX1 SRC", cs35l56_asp1tx1_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX1 SRC", cs35l56_asp1tx1_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+-	lockstart = round_down(start, inode->root->fs_info->sectorsize);
+-	lockend = round_up(start + len, inode->root->fs_info->sectorsize);
+-	prev_extent_end = lockstart;
++	range_start = round_down(start, sectorsize);
++	range_end = round_up(start + len, sectorsize);
++	prev_extent_end = range_start;
  
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx2_enum,
--				  CS35L56_ASP1TX2_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  1, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
+ 	btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
+-	lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
  
- static const struct snd_kcontrol_new asp1_tx2_mux =
--	SOC_DAPM_ENUM("ASP1TX2 SRC", cs35l56_asp1tx2_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX2 SRC", cs35l56_asp1tx2_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 	ret = fiemap_find_last_extent_offset(inode, path, &last_extent_end);
+ 	if (ret < 0)
+@@ -2855,7 +2872,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	btrfs_release_path(path);
  
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx3_enum,
--				  CS35L56_ASP1TX3_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  2, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
+ 	path->reada = READA_FORWARD;
+-	ret = fiemap_search_slot(inode, path, lockstart);
++	ret = fiemap_search_slot(inode, path, range_start);
+ 	if (ret < 0) {
+ 		goto out_unlock;
+ 	} else if (ret > 0) {
+@@ -2867,7 +2884,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		goto check_eof_delalloc;
+ 	}
  
- static const struct snd_kcontrol_new asp1_tx3_mux =
--	SOC_DAPM_ENUM("ASP1TX3 SRC", cs35l56_asp1tx3_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX3 SRC", cs35l56_asp1tx3_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+-	while (prev_extent_end < lockend) {
++	while (prev_extent_end < range_end) {
+ 		struct extent_buffer *leaf = path->nodes[0];
+ 		struct btrfs_file_extent_item *ei;
+ 		struct btrfs_key key;
+@@ -2890,19 +2907,19 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		 * The first iteration can leave us at an extent item that ends
+ 		 * before our range's start. Move to the next item.
+ 		 */
+-		if (extent_end <= lockstart)
++		if (extent_end <= range_start)
+ 			goto next_item;
  
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx4_enum,
--				  CS35L56_ASP1TX4_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  3, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
+ 		backref_ctx->curr_leaf_bytenr = leaf->start;
  
- static const struct snd_kcontrol_new asp1_tx4_mux =
--	SOC_DAPM_ENUM("ASP1TX4 SRC", cs35l56_asp1tx4_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX4 SRC", cs35l56_asp1tx4_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
+ 		/* We have in implicit hole (NO_HOLES feature enabled). */
+ 		if (prev_extent_end < key.offset) {
+-			const u64 range_end = min(key.offset, lockend) - 1;
++			const u64 hole_end = min(key.offset, range_end) - 1;
  
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_sdw1tx1_enum,
- 				CS35L56_SWIRE_DP3_CH1_INPUT,
-@@ -764,6 +897,15 @@ static void cs35l56_dsp_work(struct work_struct *work)
- 	else
- 		cs35l56_patch(cs35l56);
+ 			ret = fiemap_process_hole(inode, fieinfo, &cache,
+ 						  &delalloc_cached_state,
+ 						  backref_ctx, 0, 0, 0,
+-						  prev_extent_end, range_end);
++						  prev_extent_end, hole_end);
+ 			if (ret < 0) {
+ 				goto out_unlock;
+ 			} else if (ret > 0) {
+@@ -2912,7 +2929,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 			}
  
+ 			/* We've reached the end of the fiemap range, stop. */
+-			if (key.offset >= lockend) {
++			if (key.offset >= range_end) {
+ 				stopped = true;
+ 				break;
+ 			}
+@@ -3006,29 +3023,41 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	btrfs_free_path(path);
+ 	path = NULL;
+ 
+-	if (!stopped && prev_extent_end < lockend) {
++	if (!stopped && prev_extent_end < range_end) {
+ 		ret = fiemap_process_hole(inode, fieinfo, &cache,
+ 					  &delalloc_cached_state, backref_ctx,
+-					  0, 0, 0, prev_extent_end, lockend - 1);
++					  0, 0, 0, prev_extent_end, range_end - 1);
+ 		if (ret < 0)
+ 			goto out_unlock;
+-		prev_extent_end = lockend;
++		prev_extent_end = range_end;
+ 	}
+ 
+ 	if (cache.cached && cache.offset + cache.len >= last_extent_end) {
+ 		const u64 i_size = i_size_read(&inode->vfs_inode);
+ 
+ 		if (prev_extent_end < i_size) {
++			struct extent_state *cached_state = NULL;
+ 			u64 delalloc_start;
+ 			u64 delalloc_end;
++			u64 lockstart;
++			u64 lockend;
+ 			bool delalloc;
+ 
++			lockstart = round_down(prev_extent_end, sectorsize);
++			lockend = round_up(i_size, sectorsize);
 +
-+	/*
-+	 * Set starting value of ASP1 mux widgets. Updating a mux takes
-+	 * the DAPM mutex. Post this to a separate job so that DAPM
-+	 * power-up can wait for dsp_work to complete without deadlocking
-+	 * on the DAPM mutex.
-+	 */
-+	queue_work(cs35l56->dsp_wq, &cs35l56->mux_init_work);
-+
- 	pm_runtime_mark_last_busy(cs35l56->base.dev);
- 	pm_runtime_put_autosuspend(cs35l56->base.dev);
- }
-@@ -809,6 +951,7 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
- 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
++			/*
++			 * See the comment in fiemap_process_hole as to why
++			 * we're doing the locking here.
++			 */
++			lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 			delalloc = btrfs_find_delalloc_in_range(inode,
+ 								prev_extent_end,
+ 								i_size - 1,
+ 								&delalloc_cached_state,
+ 								&delalloc_start,
+ 								&delalloc_end);
++			unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 			if (!delalloc)
+ 				cache.flags |= FIEMAP_EXTENT_LAST;
+ 		} else {
+@@ -3039,7 +3068,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	ret = emit_last_fiemap_cache(fieinfo, &cache);
  
- 	cancel_work_sync(&cs35l56->dsp_work);
-+	cancel_work_sync(&cs35l56->mux_init_work);
- 
- 	if (cs35l56->dsp.cs_dsp.booted)
- 		wm_adsp_power_down(&cs35l56->dsp);
-@@ -876,8 +1019,10 @@ int cs35l56_system_suspend(struct device *dev)
- 
- 	dev_dbg(dev, "system_suspend\n");
- 
--	if (cs35l56->component)
-+	if (cs35l56->component) {
- 		flush_work(&cs35l56->dsp_work);
-+		cancel_work_sync(&cs35l56->mux_init_work);
-+	}
- 
- 	/*
- 	 * The interrupt line is normally shared, but after we start suspending
-@@ -1028,6 +1173,7 @@ static int cs35l56_dsp_init(struct cs35l56_private *cs35l56)
- 		return -ENOMEM;
- 
- 	INIT_WORK(&cs35l56->dsp_work, cs35l56_dsp_work);
-+	INIT_WORK(&cs35l56->mux_init_work, cs35l56_mux_init_work);
- 
- 	dsp = &cs35l56->dsp;
- 	cs35l56_init_cs_dsp(&cs35l56->base, &dsp->cs_dsp);
-diff --git a/sound/soc/codecs/cs35l56.h b/sound/soc/codecs/cs35l56.h
-index 8159c3e217d93..dc2fe4c91e67b 100644
---- a/sound/soc/codecs/cs35l56.h
-+++ b/sound/soc/codecs/cs35l56.h
-@@ -34,6 +34,7 @@ struct cs35l56_private {
- 	struct wm_adsp dsp; /* must be first member */
- 	struct cs35l56_base base;
- 	struct work_struct dsp_work;
-+	struct work_struct mux_init_work;
- 	struct workqueue_struct *dsp_wq;
- 	struct snd_soc_component *component;
- 	struct regulator_bulk_data supplies[CS35L56_NUM_BULK_SUPPLIES];
+ out_unlock:
+-	unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 	btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
+ out:
+ 	free_extent_state(delalloc_cached_state);
 -- 
 2.43.0
 
