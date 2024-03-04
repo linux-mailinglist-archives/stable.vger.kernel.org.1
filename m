@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F01870E28
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCBC870F5E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3799C289888
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3328A1F22DE6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB8F7AE6B;
-	Mon,  4 Mar 2024 21:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D92F79DCE;
+	Mon,  4 Mar 2024 21:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB/rovVb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR8oyGBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C8E8F58;
-	Mon,  4 Mar 2024 21:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C9F7868F;
+	Mon,  4 Mar 2024 21:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588484; cv=none; b=hv1YesMdUorEBkJcs4zcrWh1d1AR975MkfWRLU4xjYhBcfxvBqdSqrlBEmahUJ80IAzyXwd1RHPveywgyDrN5CzgpscRhmNV2rEjckuiyTelIeCQfFrR4QQj1rn39Cd5ZplBfhQjSKYMJtV/kKjsOLSyJv86h4406UwhP7uZqr8=
+	t=1709589234; cv=none; b=pu/deD0jGXAIp9zHAxdC2T+X5rEFNB8ar+o9gxQ7Hqfu3BdVm1sYc5aHDbJDh2uTM4e3+PMc0ufK2EC0fRiu6sltcUcEH0Uml2zNWSs3mKFx5Vw+iGlvpl7WptFHeyYoP5gpXBKRCQENEhLfeJsWLNy8D/fT+pP7SNALye4u+A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588484; c=relaxed/simple;
-	bh=imLZv6uDGSWeQZL+kY3N/JKIG7biQs/tyGes9rkoqeo=;
+	s=arc-20240116; t=1709589234; c=relaxed/simple;
+	bh=H4ZYKjFL3qGGS4Z75Nt2WLaiqaBYkLIUnhbLQfq4+Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ce6rW/aztii/Ax4mxaLsqR2t4IePWtk6oCA0WYsrWA77lUtLe588vIfSwyR2GMJStZjRmIPwEoWm1eEkIpcg/N2O9GU96sarxweE4jUMRcTvFkTl1ZRF/mFDagxbJaHp4UpLaE+3OVlvF/AdsDdmRNwJG3nV/2Q1WJv+4ycHeT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB/rovVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A304C433F1;
-	Mon,  4 Mar 2024 21:41:23 +0000 (UTC)
+	 MIME-Version; b=sXD4sPuosB2KXCj8/QK3Ij8/wtgLOiLbPjTRdQOrUeHi7CUn6iVR/ZNwuIENGGP28HRjnlq0W69Y8kAnYTA0A+id+AJSf2J/K2vFXj5Jyy05hLeVsLvNpGX4mHZxDD/ITS30v8W8Ll052JBk8FDBwpFZv27U27O8CJZDxGLbhlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR8oyGBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38577C433F1;
+	Mon,  4 Mar 2024 21:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588484;
-	bh=imLZv6uDGSWeQZL+kY3N/JKIG7biQs/tyGes9rkoqeo=;
+	s=korg; t=1709589233;
+	bh=H4ZYKjFL3qGGS4Z75Nt2WLaiqaBYkLIUnhbLQfq4+Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LB/rovVbmT84mvZScwMY2J+h/ViKmlLmkGJqu3tRPP1Zl1Lyovmeqjxx+hu4Fvkaa
-	 6Sm9GUGhUlijVXMBxUrR/iYb0mddGIg9BVZYsWqunPvX2wceANzrKW6FRflLshjS6f
-	 x0lCf5rp8Nd5smXzqZltgnE/gZZuqhsxP554lgI8=
+	b=LR8oyGBKnCRAEldj2VO1Xufxvv1wUgwbRdXWI58l2buuaKFd9onwzE5lrzb4zW6OM
+	 QIqq1y/REiEHWXyNFZTYj/t3kNx26iFZT1gQygwZyYvxVjFKnUVPNtB3JM0w1zy5l5
+	 nWgwTHzF9s59fOH9xBk67p/CLw4TBulc4iLhRaiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/143] phy: freescale: phy-fsl-imx8-mipi-dphy: Fix alias name to use dashes
+Subject: [PATCH 5.15 31/84] tls: hw: rx: use return value of tls_device_decrypted() to carry status
 Date: Mon,  4 Mar 2024 21:24:04 +0000
-Message-ID: <20240304211553.868588513@linuxfoundation.org>
+Message-ID: <20240304211543.367960693@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 7936378cb6d87073163130e1e1fc1e5f76a597cf ]
+[ Upstream commit 71471ca32505afa7c3f7f6a8268716e1ddb81cd4 ]
 
-Devicetree spec lists only dashes as valid characters for alias names.
-Table 3.2: Valid characters for alias names, Devicee Specification,
-Release v0.4
+Instead of tls_device poking into internals of the message
+return 1 from tls_device_decrypted() if the device handled
+the decryption.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Fixes: 3fbae284887de ("phy: freescale: phy-fsl-imx8-mipi-dphy: Add i.MX8qxp LVDS PHY mode support")
-Link: https://lore.kernel.org/r/20240110093343.468810-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_device.c | 7 ++-----
+ net/tls/tls_sw.c     | 5 ++---
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-index e625b32889bfc..0928a526e2ab3 100644
---- a/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c
-@@ -706,7 +706,7 @@ static int mixel_dphy_probe(struct platform_device *pdev)
- 			return ret;
- 		}
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index f23d18e666284..e7c361807590d 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -936,7 +936,6 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx,
+ 			 struct sk_buff *skb, struct strp_msg *rxm)
+ {
+ 	struct tls_offload_context_rx *ctx = tls_offload_ctx_rx(tls_ctx);
+-	struct tls_msg *tlm = tls_msg(skb);
+ 	int is_decrypted = skb->decrypted;
+ 	int is_encrypted = !is_decrypted;
+ 	struct sk_buff *skb_iter;
+@@ -951,11 +950,9 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx,
+ 				   tls_ctx->rx.rec_seq, rxm->full_len,
+ 				   is_encrypted, is_decrypted);
  
--		priv->id = of_alias_get_id(np, "mipi_dphy");
-+		priv->id = of_alias_get_id(np, "mipi-dphy");
- 		if (priv->id < 0) {
- 			dev_err(dev, "Failed to get phy node alias id: %d\n",
- 				priv->id);
+-	tlm->decrypted |= is_decrypted;
+-
+ 	if (unlikely(test_bit(TLS_RX_DEV_DEGRADED, &tls_ctx->flags))) {
+ 		if (likely(is_encrypted || is_decrypted))
+-			return 0;
++			return is_decrypted;
+ 
+ 		/* After tls_device_down disables the offload, the next SKB will
+ 		 * likely have initial fragments decrypted, and final ones not
+@@ -970,7 +967,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx,
+ 	 */
+ 	if (is_decrypted) {
+ 		ctx->resync_nh_reset = 1;
+-		return 0;
++		return is_decrypted;
+ 	}
+ 	if (is_encrypted) {
+ 		tls_device_core_ctrl_rx_resync(tls_ctx, ctx, sk, skb);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 7da17dd7c38b9..eed32ef3ca4a0 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1571,9 +1571,8 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
+ 		err = tls_device_decrypted(sk, tls_ctx, skb, rxm);
+ 		if (err < 0)
+ 			return err;
+-
+-		/* skip SW decryption if NIC handled it already */
+-		if (tlm->decrypted) {
++		if (err > 0) {
++			tlm->decrypted = 1;
+ 			*zc = false;
+ 			goto decrypt_done;
+ 		}
 -- 
 2.43.0
 
