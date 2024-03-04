@@ -1,143 +1,222 @@
-Return-Path: <stable+bounces-25835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4787386FA90
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:15:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73A086FAB2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFE11F2110A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3703A1F21D03
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F18012E73;
-	Mon,  4 Mar 2024 07:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74870134BF;
+	Mon,  4 Mar 2024 07:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Da6zBkhd"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="O43rKGW/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1178A53A6
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A406290A;
+	Mon,  4 Mar 2024 07:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709536513; cv=none; b=Pe/F8BX4ZsIw1qfARFnBmW++ThJEtPFeZIfeOHhPU2dWmo6zRZeOj2rhy8Typky7ZlNQp2FpYjTBm6Dmpy672uDC4v6xQm2Yw8dyQNMV44Dqhox8zOlId9K63HtGXMJBEmODYgbt/GJbE+8LhT9UDs2L/9exffZq2T92VwjY540=
+	t=1709537107; cv=none; b=lSbUMGpLxNQw6HZJpq/YhFROOcbsCWH8wJtWvjrsjqSbhEuj4fxvNQ3qLL9Dzkv9l26y7EhtZvzmDohMkO9BfLImkgmcz9HfXil/mUmmTgn7ZwyJ0cuAc9NPARi93/+g5yXEU47XBI8BtNYKfs9h2X8Um95u9R+55Go5PL2F5jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709536513; c=relaxed/simple;
-	bh=uk2OgCGlahI9DRHckn0qjtl/U1jX+Z9HKaYgNK9rWNo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W1J1f+hYtT9S/72GawW9LxOuZb9ULYuM9as4Ye8ZoucJeas68zDKNVG5a/KB0D7/u0DUAd1JE6Ax0JhywTvgC4jwPwf9aJqQYDkWa4MXYfqjHNY4kKZhT8EdTtbCO5JqlYUNq3JhCbRPnHGZ8vr1x78g1ZmCivvEdDDO2SYm6b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Da6zBkhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D745C433F1;
-	Mon,  4 Mar 2024 07:15:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709536512;
-	bh=uk2OgCGlahI9DRHckn0qjtl/U1jX+Z9HKaYgNK9rWNo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Da6zBkhd400OsVnzkGTXkrbNOTAQ6zlI2NOwC5Oyly77vhszaf5Thvm3XbRx4JGzC
-	 uO9hrw9thQ+GGSz5HbQPnHoOTD2s6AcjtWy1Ixf2a3TdizBH/BA/GJx5vTyFyD83yq
-	 mup9Fhw53yqtPoyvof0CjbnZBZuO1aWi2/N27maA=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-xenon: fix PHY init clock stability" failed to apply to 4.19-stable tree
-To: enachman@marvell.com,adrian.hunter@intel.com,ulf.hansson@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 08:15:01 +0100
-Message-ID: <2024030401-cushy-sterility-1d74@gregkh>
+	s=arc-20240116; t=1709537107; c=relaxed/simple;
+	bh=LitBOrh0rH84Ytd3oX/0/rdi/LDYqoriCLgdKDjvv84=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eKbC8LEVYgR2Anpdh6oV2nzRkQFrEEvj6XFFFQvG8NE1yNCbt+1EHel0wNAGUUVGXk41VQ7kqdtCIlKwRG7IfyWlD75Q/QzC819WBOa5I5btDEyx7fyV2BcnfULOD5p9MJgPvP5fWOUWvTkzLOG/P0p8JUDdN/BpxAvE8esxCfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=O43rKGW/; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [46.242.8.170])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 533A140F1DEA;
+	Mon,  4 Mar 2024 07:24:53 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 533A140F1DEA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1709537093;
+	bh=sUu2jXk6oN7WL3yTZueu0m4/tmU+enR8r/8eii6cirE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O43rKGW/vJhat8eRPnIIhlulsSLV4QuGsTgA4Oz43w2fOcjlK0/EWpbItXaDZ8b9X
+	 ACFxcbaPV0PKHeG3aCtbbNW7+f0eu/Mu4CWx31pu2tt2rUBDAxyPVMPxzMoNzobPVh
+	 vina/qG8By7JliwbhO27wM2S7zSQlX0RPzBJM8sg=
+Date: Mon, 4 Mar 2024 10:24:53 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: Alexander Aring <alex.aring@gmail.com>, 
+	Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Phoebe Buckheister <phoebe.buckheister@itwm.fraunhofer.de>, linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alexey Khoroshilov <khoroshilov@ispras.ru>, 
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: Re: [PATCH wpan] mac802154: fix llsec key resources release in
+ mac802154_llsec_key_del
+Message-ID: <95eecd55-378c-4a55-96d8-fa74ec59e76a-pchelkin@ispras.ru>
+References: <20240228163840.6667-1-pchelkin@ispras.ru>
+ <CAK-6q+i4v94uF9BEeZ0zNWtutOn35pzstiY7jMBetCJ0PHOD3w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK-6q+i4v94uF9BEeZ0zNWtutOn35pzstiY7jMBetCJ0PHOD3w@mail.gmail.com>
 
+Hello Alexander,
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thanks for review!
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 24/03/03 06:19PM, Alexander Aring wrote:
+> Hi,
+> 
+> On Wed, Feb 28, 2024 at 11:44 AM Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> >
+> > mac802154_llsec_key_del() can free resources of a key directly without
+> > following the RCU rules for waiting before the end of a grace period. This
+> > may lead to use-after-free in case llsec_lookup_key() is traversing the
+> > list of keys in parallel with a key deletion:
+> >
+> > refcount_t: addition on 0; use-after-free.
+> > WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x162/0x2a0
+> > Modules linked in:
+> > CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
+> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> > RIP: 0010:refcount_warn_saturate+0x162/0x2a0
+> > Call Trace:
+> >  <TASK>
+> >  llsec_lookup_key.isra.0+0x890/0x9e0
+> >  mac802154_llsec_encrypt+0x30c/0x9c0
+> >  ieee802154_subif_start_xmit+0x24/0x1e0
+> >  dev_hard_start_xmit+0x13e/0x690
+> >  sch_direct_xmit+0x2ae/0xbc0
+> >  __dev_queue_xmit+0x11dd/0x3c20
+> >  dgram_sendmsg+0x90b/0xd60
+> >  __sys_sendto+0x466/0x4c0
+> >  __x64_sys_sendto+0xe0/0x1c0
+> >  do_syscall_64+0x45/0xf0
+> >  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> >
+> > Also, ieee802154_llsec_key_entry structures are not freed by
+> > mac802154_llsec_key_del():
+> >
+> > unreferenced object 0xffff8880613b6980 (size 64):
+> >   comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
+> >   hex dump (first 32 bytes):
+> >     78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
+> >     00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
+> >   backtrace:
+> >     [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
+> >     [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
+> >     [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
+> >     [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
+> >     [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
+> >     [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
+> >     [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
+> >     [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
+> >     [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
+> >     [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
+> >     [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
+> >     [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
+> >     [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
+> >     [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
+> >     [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
+> >     [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> >
+> > Handle the proper resource release in the RCU callback function
+> > mac802154_llsec_key_del_rcu().
+> >
+> > Note that if llsec_lookup_key() finds a key, it gets a refcount via
+> > llsec_key_get() and locally copies key id from key_entry (which is a
+> > list element). So it's safe to call llsec_key_put() and free the list
+> > entry after the RCU grace period elapses.
+> >
+> > Found by Linux Verification Center (linuxtesting.org).
+> >
+> > Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > ---
+> > Should the patch be targeted to "net" tree directly?
+> >
+> >  include/net/cfg802154.h |  1 +
+> >  net/mac802154/llsec.c   | 18 +++++++++++++-----
+> >  2 files changed, 14 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
+> > index cd95711b12b8..76d2cd2e2b30 100644
+> > --- a/include/net/cfg802154.h
+> > +++ b/include/net/cfg802154.h
+> > @@ -401,6 +401,7 @@ struct ieee802154_llsec_key {
+> >
+> >  struct ieee802154_llsec_key_entry {
+> >         struct list_head list;
+> > +       struct rcu_head rcu;
+> >
+> >         struct ieee802154_llsec_key_id id;
+> >         struct ieee802154_llsec_key *key;
+> > diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+> > index 8d2eabc71bbe..f13b07ebfb98 100644
+> > --- a/net/mac802154/llsec.c
+> > +++ b/net/mac802154/llsec.c
+> > @@ -265,19 +265,27 @@ int mac802154_llsec_key_add(struct mac802154_llsec *sec,
+> >         return -ENOMEM;
+> >  }
+> >
+> > +static void mac802154_llsec_key_del_rcu(struct rcu_head *rcu)
+> > +{
+> > +       struct ieee802154_llsec_key_entry *pos;
+> > +       struct mac802154_llsec_key *mkey;
+> > +
+> > +       pos = container_of(rcu, struct ieee802154_llsec_key_entry, rcu);
+> > +       mkey = container_of(pos->key, struct mac802154_llsec_key, key);
+> > +
+> > +       llsec_key_put(mkey);
+> > +       kfree_sensitive(pos);
+> 
+> I don't think this kfree is right, "struct ieee802154_llsec_key_entry"
+> is declared as "non pointer" in "struct mac802154_llsec_key". The
+> memory that is part of "struct ieee802154_llsec_key_entry" should be
+> freed when llsec_key_put(), llsec_key_release() hits.
+> 
+> Or is there something I am missing here?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 8e9f25a290ae0016353c9ea13314c95fb3207812
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030401-cushy-sterility-1d74@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+`struct ieee802154_llsec_key_entry` is not included into any other
+struct. It is a standalone entity describing an entry in the
+`ieee802154_llsec_table.keys` list.
 
-Possible dependencies:
+Maybe you are confusing it with `struct ieee802154_llsec_key`?
 
-8e9f25a290ae ("mmc: sdhci-xenon: fix PHY init clock stability")
+When mac802154_llsec_key_add() is called, `struct ieee802154_llsec_key_entry`
+objects are allocated using kzalloc() and are linked into the list.
 
-thanks,
+`struct mac802154_llsec_key` object is allocated only if it has not
+been allocated yet for some other llsec_key_id, otherwise its refcount
+is incremented. Its lifecycle is managed with llsec_key_{get|put}
+primitives. A pointer to this object is passed into
+`struct ieee802154_llsec_key_entry`.
 
-greg k-h
+So the only way to reach `struct ieee802154_llsec_key_entry` objects is
+through the list they belong to and they should be freed when they are
+unlinked from the list.
 
------------------- original commit in Linus's tree ------------------
+E.g. see mac802154_llsec_destroy() where for &sec->table.keys this
+sequence of llsec_key_put() for mkey and kfree_sensitive() for list entry
+is done.
 
-From 8e9f25a290ae0016353c9ea13314c95fb3207812 Mon Sep 17 00:00:00 2001
-From: Elad Nachman <enachman@marvell.com>
-Date: Thu, 22 Feb 2024 22:09:30 +0200
-Subject: [PATCH] mmc: sdhci-xenon: fix PHY init clock stability
+> 
+> Thanks.
+> 
+> Otherwise the patch looks correct to me.
+> 
+> - Alex
+> 
 
-Each time SD/mmc phy is initialized, at times, in some of
-the attempts, phy fails to completes its initialization
-which results into timeout error. Per the HW spec, it is
-a pre-requisite to ensure a stable SD clock before a phy
-initialization is attempted.
-
-Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
-Link: https://lore.kernel.org/r/20240222200930.1277665-1-enachman@marvell.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/mmc/host/sdhci-xenon-phy.c b/drivers/mmc/host/sdhci-xenon-phy.c
-index 8cf3a375de65..c3096230a969 100644
---- a/drivers/mmc/host/sdhci-xenon-phy.c
-+++ b/drivers/mmc/host/sdhci-xenon-phy.c
-@@ -11,6 +11,7 @@
- #include <linux/slab.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/iopoll.h>
- #include <linux/of_address.h>
- 
- #include "sdhci-pltfm.h"
-@@ -216,6 +217,19 @@ static int xenon_alloc_emmc_phy(struct sdhci_host *host)
- 	return 0;
- }
- 
-+static int xenon_check_stability_internal_clk(struct sdhci_host *host)
-+{
-+	u32 reg;
-+	int err;
-+
-+	err = read_poll_timeout(sdhci_readw, reg, reg & SDHCI_CLOCK_INT_STABLE,
-+				1100, 20000, false, host, SDHCI_CLOCK_CONTROL);
-+	if (err)
-+		dev_err(mmc_dev(host->mmc), "phy_init: Internal clock never stabilized.\n");
-+
-+	return err;
-+}
-+
- /*
-  * eMMC 5.0/5.1 PHY init/re-init.
-  * eMMC PHY init should be executed after:
-@@ -232,6 +246,11 @@ static int xenon_emmc_phy_init(struct sdhci_host *host)
- 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	struct xenon_emmc_phy_regs *phy_regs = priv->emmc_phy_regs;
- 
-+	int ret = xenon_check_stability_internal_clk(host);
-+
-+	if (ret)
-+		return ret;
-+
- 	reg = sdhci_readl(host, phy_regs->timing_adj);
- 	reg |= XENON_PHY_INITIALIZAION;
- 	sdhci_writel(host, reg, phy_regs->timing_adj);
-
+--
+Fedor
 
