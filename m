@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87019870F40
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BB0870F76
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D711F2229C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2DF2B22183
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83237992E;
-	Mon,  4 Mar 2024 21:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92B579950;
+	Mon,  4 Mar 2024 21:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOCg9k6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnFz+rgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AF5200D4;
-	Mon,  4 Mar 2024 21:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881E21C6AB;
+	Mon,  4 Mar 2024 21:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589158; cv=none; b=jDYOXLdWKqO1GCzwRbDN+dbF3/hGOPN+q1mqPOcuXfcNaqzTN74f2cob67F4rfcSIN0gnNqlSCWCpTy6+3GlxyvxvjxVOSYuqpxGY3Hp92P8O64LquoFKGn+YD04tsDOaG5CryWdk2XGDjcM6ZdePoYiu92yICnbGNUdZk1hiKg=
+	t=1709589290; cv=none; b=LpbAUZ5Zq4qEf5zOuehsllODYLPcxsXSv2k9dh8S1pMkle8mCZq3arj0MErnZYowVuQgTzhittlXPMpDOfRs5WzgF4cKfhSwdvDdtbbnIlJalpGBSkToacPqQYxp/pf160+fzfkDQ0xvNpe7EUFJ1UuE344fvmL4/2GsO4wQ9zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589158; c=relaxed/simple;
-	bh=LtqysbC8seZlfiMJLrVfwFofplIcSgb23mZV+z866os=;
+	s=arc-20240116; t=1709589290; c=relaxed/simple;
+	bh=CnjDx2YNly2UeAA4fJNVDcVLiBJczniXoBF/FZ/mqw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hF9DmjYnbeSE+KiOkjtdVd6S6IfKSTQl0hlnZ5pLx1CH9wNvZnEDD5Ks/jwcrMZuITB8FksrmsfG/B+Mg2tKNxLLv5LevU+SFp84pTmn3aYt0NJDUNE5jZywnP+g5XwrDRGszzvjHBBil192janmlEbDaJdNJOxJeZGdo+pV4kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOCg9k6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06599C433C7;
-	Mon,  4 Mar 2024 21:52:37 +0000 (UTC)
+	 MIME-Version; b=uSgmUscAJ5rHN6SNgmB5h8I7A7dYT+vAzf+7y2Edpc2lMx957bwAjlKvzh1o45/2IGG8nIqT6moRnHdyfGOHWfGmQ15G9TVN6535jq/NI5eUC56e+5eI23bQeEBKsxllKv9XDIihrNZGDY5ZB3gZRHrwiSJrUVP/YQJ8MTIomLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnFz+rgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8BBC433F1;
+	Mon,  4 Mar 2024 21:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589158;
-	bh=LtqysbC8seZlfiMJLrVfwFofplIcSgb23mZV+z866os=;
+	s=korg; t=1709589290;
+	bh=CnjDx2YNly2UeAA4fJNVDcVLiBJczniXoBF/FZ/mqw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOCg9k6NQfEbfh+O70WlZO8IkNHK5WFyXmlEstxc/AQ8Dj569CQfRgCBDnuM2FLFA
-	 NWsgj1s3e1ddPL0Dt4GM5yIfIFs1/gtjwnpwjFcVWPwv1kPOzcL35Ae7jPPjJwvaDd
-	 CxBQRGcMS7QMuNU852a7JJp3h/9JeaIFiagE+nvI=
+	b=tnFz+rgn3nRkeV4OAS9YLFrvGqcyeDbqBjIz3fO5bgVRZB+23aESGR4vqpusxo/tP
+	 g9UGpOCQN/aNXIGREzQqvTOBc4NzOUpUTIsj+/ryNBGJ3ZIuAw/+fz/86nD/38iyb/
+	 kBQjVv3TLAH33UxGw9jR94iwPNE7qVmDMRjqBNTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/215] block: define bvec_iter as __packed __aligned(4)
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Tadeusz Struk <tstruk@gigaio.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 53/84] dmaengine: ptdma: use consistent DMA masks
 Date: Mon,  4 Mar 2024 21:24:26 +0000
-Message-ID: <20240304211603.434290163@linuxfoundation.org>
+Message-ID: <20240304211544.138430661@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Tadeusz Struk <tstruk@gigaio.com>
 
-[ Upstream commit 7838b4656110d950afdd92a081cc0f33e23e0ea8 ]
+commit df2515a17914ecfc2a0594509deaf7fcb8d191ac upstream.
 
-In commit 19416123ab3e ("block: define 'struct bvec_iter' as packed"),
-what we need is to save the 4byte padding, and avoid `bio` to spread on
-one extra cache line.
+The PTDMA driver sets DMA masks in two different places for the same
+device inconsistently. First call is in pt_pci_probe(), where it uses
+48bit mask. The second call is in pt_dmaengine_register(), where it
+uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
+on DMA transfers between main memory and other devices.
+Without the extra call it works fine. Additionally the second call
+doesn't check the return value so it can silently fail.
+Remove the superfluous dma_set_mask() call and only use 48bit mask.
 
-It is enough to define it as '__packed __aligned(4)', as '__packed'
-alone means byte aligned, and can cause compiler to generate horrible
-code on architectures that don't support unaligned access in case that
-bvec_iter is embedded in other structures.
-
-Cc: Mikulas Patocka <mpatocka@redhat.com>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Fixes: 19416123ab3e ("block: define 'struct bvec_iter' as packed")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
+Reviewed-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
+Link: https://lore.kernel.org/r/20240222163053.13842-1-tstruk@gigaio.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bvec.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ptdma/ptdma-dmaengine.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index 9e3dac51eb26b..d4dbaae8b5218 100644
---- a/include/linux/bvec.h
-+++ b/include/linux/bvec.h
-@@ -59,7 +59,7 @@ struct bvec_iter {
+--- a/drivers/dma/ptdma/ptdma-dmaengine.c
++++ b/drivers/dma/ptdma/ptdma-dmaengine.c
+@@ -361,8 +361,6 @@ int pt_dmaengine_register(struct pt_devi
+ 	chan->vc.desc_free = pt_do_cleanup;
+ 	vchan_init(&chan->vc, dma_dev);
  
- 	unsigned int            bi_bvec_done;	/* number of bytes completed in
- 						   current bvec */
--} __packed;
-+} __packed __aligned(4);
- 
- struct bvec_iter_all {
- 	struct bio_vec	bv;
--- 
-2.43.0
-
+-	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+-
+ 	ret = dma_async_device_register(dma_dev);
+ 	if (ret)
+ 		goto err_reg;
 
 
 
