@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548AA870EC1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEE870DB2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9328FB27453
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0694B27303
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B072F78B47;
-	Mon,  4 Mar 2024 21:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C7EDDCB;
+	Mon,  4 Mar 2024 21:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoZ+Psg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh02cHOS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBF97BB05;
-	Mon,  4 Mar 2024 21:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5631C6AB;
+	Mon,  4 Mar 2024 21:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588795; cv=none; b=FZjux/E8LG3DSz/56KLRhNjybXuUGYLGE06cZLFsZBZKLP4eFm37Eb6jnFmA8cQHIwHLCr7lT4uPg5VGeWF2s7Q8NXs5uR7nRNpLOx/MKWLzBXd9UfZIOuRYQhVQYqCt8IER8L5GpV9puTbhKHwb3nWlj0M7kZwutcd27I2GTzw=
+	t=1709588203; cv=none; b=ECKe8IYSCRJzv0tFbwq8OAoEi/D0WgjVf+mZ2h2m5YkIELED+DE1raR7wH5WRzRt2hc6PafyoKVoovDrv3SCEF3kXVRKE9tJAYuj1KyKnkYIF+RpLnVJrzFfSR1i7QqjpfYmP96mqUl+hTMRj/WYxO/hcGzTn4Wj3Pxguk/zaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588795; c=relaxed/simple;
-	bh=H7A4eSC3kNN39MHvprhXvNa1MYCdqsJNhp99gdVR5jw=;
+	s=arc-20240116; t=1709588203; c=relaxed/simple;
+	bh=hP3mDjQ2Mc7EY5MQT5scT/U8YQ0ACpq0HGXENBEOjGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXyNzairx7AiSWd7RYOm72r8JNcK4C4Bds9waUKSzVi14+tTiZZbE3B2q7MC/5TT2jhif0HQTKjNKhOops0Ae6XgRRe2q2wYNsqZwbI9pnmMoG2zKJljynGpASIF9JAlEnPg7wXU3XeRoCLWEiNnw8SUueSEbeBFG6WeUkyE4eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoZ+Psg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7D0C433F1;
-	Mon,  4 Mar 2024 21:46:34 +0000 (UTC)
+	 MIME-Version; b=fMGmzBiG3XJpHlRNbmr21/nnXcpEpWQyg3J5KTORr3hPyhZ5PPxqktUYncPsp8yF0Pv2VZUd4G/fSTbBf/byT9QN1y6AdAbzG+ukWD3ZWp/tuIgnBrmo2h1cN5KM5yqrB50yuUjvyS454BVBkI4FXZFKumAf7m8LeqWHFBS2pwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh02cHOS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA5BC433C7;
+	Mon,  4 Mar 2024 21:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588795;
-	bh=H7A4eSC3kNN39MHvprhXvNa1MYCdqsJNhp99gdVR5jw=;
+	s=korg; t=1709588203;
+	bh=hP3mDjQ2Mc7EY5MQT5scT/U8YQ0ACpq0HGXENBEOjGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoZ+Psg436ff2R4DcuK6QlZ4hcCL8dzAkXB/xgGzPGD+q/LHdCQruLYi/XqU164T/
-	 oBteNYJFYRrVj9bHEZZ+azI6jg5dwnlbLVFaaLBxtT9hXQ77709w1w5xzUS2u9Lltb
-	 kVrk+WRcJ3zvDfBD7us3MJAHjbAj3XBx0QUfEkck=
+	b=Qh02cHOSS2sip+0KAIei6VeT+zT6sa17V4dajJUSUBh7iUt8cs9kgRzgrmNK13JgA
+	 ko7pbhZWA9qGDd+YliGfKvMUVJ9z882bMl0XUR4k3J1CTHY3FnidQfZbXxb6K4AMUt
+	 erSEyxKFa3pE1mByMR/8eCIve9eTaUWJh7y37ZRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eniac Zhang <eniac-xw.zhang@hp.com>,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 075/215] ALSA: hda/realtek: fix mute/micmute LED For HP mt440
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Miao Wang <shankerwangmiao@gmail.com>
+Subject: [PATCH 6.6 018/143] veth: try harder when allocating queue memory
 Date: Mon,  4 Mar 2024 21:22:18 +0000
-Message-ID: <20240304211559.356097860@linuxfoundation.org>
+Message-ID: <20240304211550.518950738@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eniac Zhang <eniac-xw.zhang@hp.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 67c3d7717efbd46092f217b1f811df1b205cce06 upstream.
+[ Upstream commit 1ce7d306ea63f3e379557c79abd88052e0483813 ]
 
-The HP mt440 Thin Client uses an ALC236 codec and needs the
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
-micmute LEDs work.
+struct veth_rq is pretty large, 832B total without debug
+options enabled. Since commit under Fixes we try to pre-allocate
+enough queues for every possible CPU. Miao Wang reports that
+this may lead to order-5 allocations which will fail in production.
 
-There are two variants of the USB-C PD chip on this device. Each uses
-a different BIOS and board ID, hence the two entries.
+Let the allocation fallback to vmalloc() and try harder.
+These are the same flags we pass to netdev queue allocation.
 
-Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240220175812.782687-1-alexandru.gagniuc@hp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: Miao Wang <shankerwangmiao@gmail.com>
+Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
+Link: https://lore.kernel.org/all/5F52CAE2-2FB7-4712-95F1-3312FBBFA8DD@gmail.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240223235908.693010-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/veth.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9662,6 +9662,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8973, "HP EliteBook 860 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8974, "HP EliteBook 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
- 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
-@@ -9693,6 +9694,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x8b3f, "HP mt440 Mobile Thin Client U91", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index b32b0ff829ed5..0ae90702e7f84 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1453,7 +1453,8 @@ static int veth_alloc_queues(struct net_device *dev)
+ 	struct veth_priv *priv = netdev_priv(dev);
+ 	int i;
+ 
+-	priv->rq = kcalloc(dev->num_rx_queues, sizeof(*priv->rq), GFP_KERNEL_ACCOUNT);
++	priv->rq = kvcalloc(dev->num_rx_queues, sizeof(*priv->rq),
++			    GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
+ 	if (!priv->rq)
+ 		return -ENOMEM;
+ 
+@@ -1469,7 +1470,7 @@ static void veth_free_queues(struct net_device *dev)
+ {
+ 	struct veth_priv *priv = netdev_priv(dev);
+ 
+-	kfree(priv->rq);
++	kvfree(priv->rq);
+ }
+ 
+ static int veth_dev_init(struct net_device *dev)
+-- 
+2.43.0
+
 
 
 
