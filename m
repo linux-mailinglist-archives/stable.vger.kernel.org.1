@@ -1,174 +1,158 @@
-Return-Path: <stable+bounces-25892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9CC870006
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:13:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E4F87002C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D84F1F262D1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE861C23471
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1CF37718;
-	Mon,  4 Mar 2024 11:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A62239AFC;
+	Mon,  4 Mar 2024 11:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYoWSDpY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EfJM/zRG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53FD381A0;
-	Mon,  4 Mar 2024 11:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D316039AE1
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 11:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709550781; cv=none; b=InYFGXAYuOPa1rLzZp0v1G2333jv+kkFwJCP2GnqtP67ZXB9zRPVQxRurN0slr8wSWv+Z6u0qt4yFvjmIK5gZXAkbFLD+4fFrxNYLkLVD7N55a46YuL24a4nqQzgdHLEhtvdSyawQ2HyaGeUxBFrjOMou5U5cphNBvZSFCpb5pk=
+	t=1709551221; cv=none; b=XSYoy6jfSkYKMoxFUPTyGUCGLewn6NQ8iONL1y1cKkV+e8xxin0AKCXnucZg6ixoI15RGV8gpLMenb167x6O38/aP11z5woYocfzeG7rGOScI9RasAQ3JiIa6avEgLSgRCfBs5cKhw5xSELqAD79+GDWWexsW8f3Pmlt9JMgj9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709550781; c=relaxed/simple;
-	bh=bBFgGv1uzwiSC74/VG1tPVfnABdHIQnAVE5a2/nbY6I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rgYXN/IZLonRPu5h/Xn3NtKxV48gv9SbLjTnyDzJkeluU17EBJmmpxNYd1TW8VX1mU/PBGnaGwB0M06n96+ag8JXUcue72QboS3CLvNI5eFYFI+DTP2XNc2EAz6GsNg92iIuHq2RfI6E+lHx/HpNm9UKflEWJmSuM43QsecQeuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYoWSDpY; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-21fdf31a154so2469040fac.3;
-        Mon, 04 Mar 2024 03:12:59 -0800 (PST)
+	s=arc-20240116; t=1709551221; c=relaxed/simple;
+	bh=4WABv3LbX7RB6RL/LQUoVlByDA2A00lpXRli1Q5d06c=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dj5WXNmO0bSaOa922x24C1PuQjXwAVA7LM5e2uFwbnncy5P4XqoM6AFOEifqwdFIQx3ts32lNNLAlC6S+3/8gvKX4RDJ9fGR+LdX2gFnDrHIlgbshW9DJjiBNrogwbiMzzrnEu1WhVJs0mDhnmCayKG/a2EAwSCXAOET3NF4zb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EfJM/zRG; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc743cc50a6so5573887276.2
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 03:20:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709550779; x=1710155579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vb78VtFyXZfR94b6vTZZCTqsOufZq9YMppe4eS0rkTs=;
-        b=PYoWSDpYMynsV4wQ8pS0sRLvIJhB9GUaGI2gya9WcWn+2QkiLNE8CNq+bZ4ZZS9UDT
-         iQwSzCn8/h0k+Cy3owivbZQUUYoj4DSu6Pj+LjYecWJ0n7sxVqb7P2iHfXcvYcj1eenr
-         kh/jSssURpdqKKdj8jtGNqvNrvIiWDpBwFUgJs+mP2sD7BAiW8Awbw6Bm7cX1Jz8b9Bh
-         xWgvfIfkry4VFv3aGqlEdnvmr0A90vbYOCAFnAGyyiT+E/cXNDUxax/drbKZ3fq14DID
-         xXkshiQnnpq0ijXVg6rUhvrxo3owpAv9ZGCqOEFNFfkrvmILMcvXcqh2uzCRUD5lHNCS
-         ujGA==
+        d=google.com; s=20230601; t=1709551219; x=1710156019; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=D+X5faEeUBlay3vk+5zci3Xi22Op4CTAjCUtJzx6Rx8=;
+        b=EfJM/zRGF5GvC0xfnRAsN1k8LX97v9k7oZ8B+Gf4DbTuaz+KwYHnR0vr/WWM4RcCPu
+         jUAJLosDIQ50A49WXEbVVV0SU0i9vXchWvgA6w7fZCx+JJ5Rep7Uxld8shL9V+Mx6tbz
+         ztfEkTpCRJ/rf4zidC094P18/G/11wliihq79+r8Es7f6xzE+hgHxAgM5KjHA+MU8GKT
+         dpFyXA6csdpw7ytIFnkoR1/2ThIDx4coivoWxkXUE6sxPYXzo0xNsXitmXxYEI84Oof5
+         nabTqovGyETdiYI6sHMRmPOvE9cRC9Ll69Wu8CwdmpVXMEJ38Izsi/Nqv/QVEbrhBH6n
+         VokQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709550779; x=1710155579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vb78VtFyXZfR94b6vTZZCTqsOufZq9YMppe4eS0rkTs=;
-        b=GeuKi/myjKGvUTEjjWAARkjo0UQSLRDaiJTkl0rennU7E4cyEveHltTMZjTBhiBGEK
-         pWR9xGBREyKPrTOkMk7P37TX/MzoYyVHWGZXUeXDglDhi8p6nWoC75f8x4gBMKH6do1b
-         mxX4K2EMPguTArL9Zgrja7bh40bXTecXE+V/TBAxAD63vK4+Fzaw0HyuAR8BgfhkxFhe
-         eRV9xVVNxrp1AGOBhq4QM3b8shuKcHkaVEecGNreNFxdZ2+xEoLCjiSruI66+rIdKZD6
-         GkWU6kUfPS9+/6lrqznyPt6Oj9YBDd78PAkTC+8Sttc3PQQj/1x3KeisrQdljV4mxb7D
-         EGLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlUvvMXH0AvhHzW0dVDQmJHofJdouoM6gzZj2tUfd0DaleSxUIHm+Trg9SFKgBxEMgi9DSmA9S2mu6LIuxeHzQx9aCOT5c
-X-Gm-Message-State: AOJu0YxdKgkLKE/2rpXLsYgslMBkYbL2u96YcAsQCZIyBMW3k7OpgWgZ
-	FrMLXI5Lay4qpOOci+PTzrOZ564I15uHYljpRF0nHFfGaQmtJWMGu82nZo9HGnMvBawf3jIDaC8
-	RJczOCTJJmyMPmC4WAR0LrLBxeiw=
-X-Google-Smtp-Source: AGHT+IGyQAnwWpBE4NO+5e2HdYeKv4ioTCChCUX7ltsOCtUuFFv55Qj9xlBleWPOk6VHbn2HgWUfitHPU1bhEdl+1zA=
-X-Received: by 2002:a05:6870:a92a:b0:21f:dc81:1c1a with SMTP id
- eq42-20020a056870a92a00b0021fdc811c1amr10306502oab.16.1709550778889; Mon, 04
- Mar 2024 03:12:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709551219; x=1710156019;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D+X5faEeUBlay3vk+5zci3Xi22Op4CTAjCUtJzx6Rx8=;
+        b=j4sBhA79kwrrBxa36GKa0TFDY1AAU9ZeuzWm7br9cBvraXfh3QGxkpS0nGQxplowJZ
+         t+mKiJEIxvaVLVz7TVXJJ4nowWCbUGUHYgbiXqKWziGzMo8y8dBsB0U4Ox8uK5dSNblL
+         w6MYQHokyacc/P2MlQvhxXzLALGHp+BLiwpT6Rg058kX+0jYOZlyD4a4tLr54x+p74PZ
+         gJg95JWgMAFrfAmoJ3sYfxVCae+lz97JxwEKqmHqvsHiHfV4eE8GfQ6nOn//tJvfyAQ9
+         5IJhmBS/WXz8HT+7pvCshXpi0kEOepFOUyypvAh2B7xIhScZNrJrEUMhQrU0EUkXqlDq
+         cSEA==
+X-Gm-Message-State: AOJu0Yz4PaPLXKzV1N1j8BTmXPdHvCylcbenLCHabldSIr1fhxmUAt9Y
+	bhqwXcOMme95ZxzVnGuqFHYCugMZ2xgWyPXWTGtbi18HQo6H7uhYraEsvswmde7cWBhFca15eKo
+	uAh7Q6M12gMqCSpHHSckNWaWTSVwaMdg8Zdr+GL+//KhouYYBmzgDuo9Q1ugrs+NDieifslye8P
+	PBP1WyZt2NAOs/BMHnGOckHA==
+X-Google-Smtp-Source: AGHT+IGxpdXyNbJ8NDNLY58QKkLKsMoe1cUbU9eDsZBMAQ5XgPPz7Nxib3nj/NtrkNAiThWbJnJ+O323
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6902:f0b:b0:dcd:2f2d:7a0f with SMTP id
+ et11-20020a0569020f0b00b00dcd2f2d7a0fmr325290ybb.9.1709551218767; Mon, 04 Mar
+ 2024 03:20:18 -0800 (PST)
+Date: Mon,  4 Mar 2024 12:19:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240229041950.738878-1-xiubli@redhat.com> <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
- <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com> <CAOi1vP_WGs4yQz62UaVBDWk-vkcAQ7=SgQG37Zu86Q2QusMgOw@mail.gmail.com>
- <256b4b68-87e6-4686-9c51-e00712add8b3@redhat.com>
-In-Reply-To: <256b4b68-87e6-4686-9c51-e00712add8b3@redhat.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Mon, 4 Mar 2024 12:12:47 +0100
-Message-ID: <CAOi1vP-LFKzij5pYz+HLWAUiBZ-6+UYpoND08ceDofhN7xN-zw@mail.gmail.com>
-Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
-To: Xiubo Li <xiubli@redhat.com>
-Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com, 
-	mchangir@redhat.com, stable@vger.kernel.org, 
-	Luis Henriques <lhenriques@suse.de>
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3462; i=ardb@kernel.org;
+ h=from:subject; bh=8zK9T8Um6D+rimjHJ8fjgKpgLdtOefuReu6MIS11PB0=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXpOs/Ws3tmX8oVrT7l5TGPR3SWfWF5V+lt/4+xLvmCl
+ 5/pyKV3lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIl8vsXIMPea9ovjR67IsdVc
+ nPon0UhO5WhC5iRdnX5P/ZYdz7YYv2dkeOQi91uxo1t94uKO1StUP3pZLd/jODV8rsX+EKnVvcf P8wAA
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240304111937.2556102-20-ardb+git@google.com>
+Subject: [PATCH stable-v6.1 00/18] efistub/x86 changes for secure boot
+From: Ard Biesheuvel <ardb+git@google.com>
+To: stable@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 4, 2024 at 1:43=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 3/2/24 01:15, Ilya Dryomov wrote:
-> > On Fri, Mar 1, 2024 at 2:53=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wro=
-te:
-> >>
-> >> On 2/29/24 18:48, Ilya Dryomov wrote:
-> >>> On Thu, Feb 29, 2024 at 5:22=E2=80=AFAM <xiubli@redhat.com> wrote:
-> >>>> From: Xiubo Li <xiubli@redhat.com>
-> >>>>
-> >>>> The osd code has remove cursor initilizing code and this will make
-> >>>> the sparse read state into a infinite loop. We should initialize
-> >>>> the cursor just before each sparse-read in messnger v2.
-> >>>>
-> >>>> Cc: stable@vger.kernel.org
-> >>>> URL: https://tracker.ceph.com/issues/64607
-> >>>> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be availab=
-le on the socket")
-> >>>> Reported-by: Luis Henriques <lhenriques@suse.de>
-> >>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> >>>> ---
-> >>>>    net/ceph/messenger_v2.c | 3 +++
-> >>>>    1 file changed, 3 insertions(+)
-> >>>>
-> >>>> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-> >>>> index a0ca5414b333..7ae0f80100f4 100644
-> >>>> --- a/net/ceph/messenger_v2.c
-> >>>> +++ b/net/ceph/messenger_v2.c
-> >>>> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct cep=
-h_connection *con)
-> >>>>    static int prepare_sparse_read_data(struct ceph_connection *con)
-> >>>>    {
-> >>>>           struct ceph_msg *msg =3D con->in_msg;
-> >>>> +       u64 len =3D con->in_msg->sparse_read_total ? : data_len(con-=
->in_msg);
-> >>>>
-> >>>>           dout("%s: starting sparse read\n", __func__);
-> >>>>
-> >>>> @@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct cep=
-h_connection *con)
-> >>>>           if (!con_secure(con))
-> >>>>                   con->in_data_crc =3D -1;
-> >>>>
-> >>>> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, l=
-en);
-> >>>> +
-> >>>>           reset_in_kvecs(con);
-> >>>>           con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
-> >>>>           con->v2.data_len_remain =3D data_len(msg);
-> >>>> --
-> >>>> 2.43.0
-> >>>>
-> >>> Hi Xiubo,
-> >>>
-> >>> How did this get missed?  Was generic/580 not paired with msgr2 in cr=
-c
-> >>> mode or are we not running generic/580 at all?
-> >>>
-> >>> Multiple runs have happened since the patch was staged so if the matr=
-ix
-> >>> is set up correctly ms_mode=3Dcrc should have been in effect for xfst=
-ests
-> >>> at least a couple of times.
-> >> I just found that my test script is incorrect and missed this case.
-> >>
-> >> The test locally is covered the msgr1 mostly and I think the qa test
-> >> suite also doesn't cover it too. I will try to improve the qa tests la=
-ter.
-> > Could you please provide some details on the fixes needed to address
-> > the coverage gap in the fs suite?
->
-> Mainly to support the msgr v2 for fscrypt, before we only tested the
-> fscrypt based on the msgr v1 for kclient. In ceph upstream we have
-> support this while not backport it to reef yet.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-I'm even more confused now...  If the fs suite in main covers msgr2 +
-fscrypt (I'm taking your "in ceph upstream we have support" to mean
-that), how did this bug get missed by runs on main?  At least a dozen
-of them must have gone through in the form of Venky's integration
-branches.
+These are the remaining patches that bring v6.1 in sync with v6.6 in
+terms of support for 4k section alignment and strict separation of
+executable and writable mappings. More details in [0].
 
-Thanks,
+[0] https://lkml.kernel.org/r/CAMj1kXE5y%2B6Fef1SqsePO1p8eGEL_qKR9ZkNPNKb-y6P8-7YmQ%40mail.gmail.com
 
-                Ilya
+Ard Biesheuvel (15):
+  arm64: efi: Limit allocations to 48-bit addressable physical region
+  x86/efistub: Simplify and clean up handover entry code
+  x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+  x86/efistub: Clear BSS in EFI handover protocol entrypoint
+  x86/decompressor: Move global symbol references to C code
+  efi/libstub: Add limit argument to efi_random_alloc()
+  x86/efistub: Perform 4/5 level paging switch from the stub
+  x86/decompressor: Factor out kernel decompression and relocation
+  x86/efistub: Prefer EFI memory attributes protocol over DXE services
+  x86/efistub: Perform SNP feature test while running in the firmware
+  x86/efistub: Avoid legacy decompressor when doing EFI boot
+  efi/x86: Avoid physical KASLR on older Dell systems
+  x86/efistub: Avoid placing the kernel below LOAD_PHYSICAL_ADDR
+  x86/boot: Rename conflicting 'boot_params' pointer to
+    'boot_params_ptr'
+  x86/boot: efistub: Assign global boot_params variable
+
+Evgeniy Baskov (1):
+  efi/libstub: Add memory attribute protocol definitions
+
+Johan Hovold (1):
+  efi: efivars: prevent double registration
+
+Yuntao Wang (1):
+  efi/x86: Fix the missing KASLR_FLAG bit in boot_params->hdr.loadflags
+
+ Documentation/x86/boot.rst                     |   2 +-
+ arch/arm64/include/asm/efi.h                   |   1 +
+ arch/x86/boot/compressed/Makefile              |   5 +
+ arch/x86/boot/compressed/acpi.c                |  14 +-
+ arch/x86/boot/compressed/cmdline.c             |   4 +-
+ arch/x86/boot/compressed/efi_mixed.S           | 107 +++----
+ arch/x86/boot/compressed/head_32.S             |  32 ---
+ arch/x86/boot/compressed/head_64.S             |  63 +----
+ arch/x86/boot/compressed/ident_map_64.c        |   7 +-
+ arch/x86/boot/compressed/kaslr.c               |  26 +-
+ arch/x86/boot/compressed/misc.c                |  69 +++--
+ arch/x86/boot/compressed/misc.h                |   1 -
+ arch/x86/boot/compressed/pgtable_64.c          |   9 +-
+ arch/x86/boot/compressed/sev.c                 | 114 ++++----
+ arch/x86/include/asm/boot.h                    |  10 +
+ arch/x86/include/asm/efi.h                     |  14 +-
+ arch/x86/include/asm/sev.h                     |   7 +
+ drivers/firmware/efi/libstub/Makefile          |   1 +
+ drivers/firmware/efi/libstub/alignedmem.c      |   2 +
+ drivers/firmware/efi/libstub/arm64-stub.c      |   7 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +
+ drivers/firmware/efi/libstub/efistub.h         |  28 +-
+ drivers/firmware/efi/libstub/mem.c             |   2 +
+ drivers/firmware/efi/libstub/randomalloc.c     |  14 +-
+ drivers/firmware/efi/libstub/x86-5lvl.c        |  95 +++++++
+ drivers/firmware/efi/libstub/x86-stub.c        | 295 +++++++++++---------
+ drivers/firmware/efi/libstub/x86-stub.h        |  17 ++
+ drivers/firmware/efi/vars.c                    |  13 +-
+ include/linux/efi.h                            |   1 +
+ 29 files changed, 560 insertions(+), 402 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/x86-5lvl.c
+ create mode 100644 drivers/firmware/efi/libstub/x86-stub.h
+
+-- 
+2.44.0.278.ge034bb2e1d-goog
+
 
