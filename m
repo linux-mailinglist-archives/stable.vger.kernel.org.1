@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-26603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98CD870F50
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5CB870E08
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 093921C21010
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A87A328869B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF1478B69;
-	Mon,  4 Mar 2024 21:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BA110A35;
+	Mon,  4 Mar 2024 21:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nf1hGLc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TReKj8fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20171C6AB;
-	Mon,  4 Mar 2024 21:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB311C6AB;
+	Mon,  4 Mar 2024 21:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589200; cv=none; b=fSzwjdjkXx3RleNz3GEBzS1HBVBbypTWxEC32m7+amy0STndT3T990yQrRU4fktTxHUajTb03pPK84ATiANf74MGcUL5a7KTVq+aVtdpEvGQwhgkZGefDv24eLZbEeYglp3UdCl1BfxQBKbp50CeNud3C3s8eOMx2A9BuIxdILM=
+	t=1709588413; cv=none; b=Cr6De88WSV8o178yofqUsTtoSwcd3V4EZnGgAhVTSeV8Fw4kQHdcRTj2mFUu824eNHqgOnXGwHM7NkmqW4HPf40aMqNu8tMmarszrc3N/ChKBXxPOcvQQggzofCozESgVJiId+K9IcCKNRyFTecCeCg1lo8sj143U0zU871BmSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589200; c=relaxed/simple;
-	bh=6wVKPU8eR8DfDTRXodPWJUftizJOxRk4zWdfvCwfFGA=;
+	s=arc-20240116; t=1709588413; c=relaxed/simple;
+	bh=tKzvwcFIkIev3AQnqS0CwZTVXOI5nuuL7SHscmlfsYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8gRyvnp48NwQl0xMlYU5wDMkUJ7ne3+pJ5zRp6OaG4CCzSc0YOVAi3appDORuM/VB8JSuGYYj1wINmxaBdgf1zIdInc6OcrWa6NuC2awyR65uigRV6Bz8Q3OFcKMwwJMTDSMjS1y7FtOoeBAykP3gKAKx/q42ZNB4T/cVQmDJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nf1hGLc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82506C433C7;
-	Mon,  4 Mar 2024 21:53:19 +0000 (UTC)
+	 MIME-Version; b=PZAOueG6b86YeTPKk5yBetWRo++lq2mimnFxmyYoFzjkisWa8v/fnlsBPPbW+f4V1kjpeoy/GpUc7xUUqdsV9WVtZklIEBrb/Gf1HavGbeiKa6wV0qzGCoXeAWkmW/ZGwujf9TwCbtc4Rj4G5T6p3Vk48SiomL145JjgFMmb6zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TReKj8fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0259EC433F1;
+	Mon,  4 Mar 2024 21:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589199;
-	bh=6wVKPU8eR8DfDTRXodPWJUftizJOxRk4zWdfvCwfFGA=;
+	s=korg; t=1709588413;
+	bh=tKzvwcFIkIev3AQnqS0CwZTVXOI5nuuL7SHscmlfsYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nf1hGLc5HcuQff+YbjzY/ZKKH5Ys1h6OVPH/pvkwzQqdfhxPqXHhKgxuFfhlfzmZK
-	 ziUjLF8E4CMMif9Iy3QIqmOFAwzX5zhN2sL/cvimnGNtyurECZM9myCMvlY/OrUhTP
-	 O+aj0gw2Yks7auAk6uUzcaQCIc7WuL/mQAaUaKXo=
+	b=TReKj8fqokfYiJpSzjL/KqXvOELqX1aZYt6qYiduXhLBBKP3UEzjivwXiDlDjflI3
+	 wQwk+ZtaSbyBtQvtBWAUu1ssRulmxSs0+qg+vTVLeYs+Fig9Uhj0AIiyS52c7skXeo
+	 AYjx6mhZ9rMxeQD9nr52ot2TYxL8QDF2/RgDlWmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 04/84] net: ip_tunnel: prevent perpetual headroom growth
+	Eric Biggers <ebiggers@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Andy Chiu <andybnac@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 097/143] RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
 Date: Mon,  4 Mar 2024 21:23:37 +0000
-Message-ID: <20240304211542.488402195@linuxfoundation.org>
+Message-ID: <20240304211553.013618744@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,186 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5ae1e9922bbdbaeb9cfbe91085ab75927488ac0f ]
+commit 3aff0c459e77ac0fb1c4d6884433467f797f7357 upstream.
 
-syzkaller triggered following kasan splat:
-BUG: KASAN: use-after-free in __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
-Read of size 1 at addr ffff88812fb4000e by task syz-executor183/5191
-[..]
- kasan_report+0xda/0x110 mm/kasan/report.c:588
- __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
- skb_flow_dissect_flow_keys include/linux/skbuff.h:1514 [inline]
- ___skb_get_hash net/core/flow_dissector.c:1791 [inline]
- __skb_get_hash+0xc7/0x540 net/core/flow_dissector.c:1856
- skb_get_hash include/linux/skbuff.h:1556 [inline]
- ip_tunnel_xmit+0x1855/0x33c0 net/ipv4/ip_tunnel.c:748
- ipip_tunnel_xmit+0x3cc/0x4e0 net/ipv4/ipip.c:308
- __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
- netdev_start_xmit include/linux/netdevice.h:4954 [inline]
- xmit_one net/core/dev.c:3548 [inline]
- dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
- __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4349
- dev_queue_xmit include/linux/netdevice.h:3134 [inline]
- neigh_connected_output+0x42c/0x5d0 net/core/neighbour.c:1592
- ...
- ip_finish_output2+0x833/0x2550 net/ipv4/ip_output.c:235
- ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
- ..
- iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
- ip_tunnel_xmit+0x1dbc/0x33c0 net/ipv4/ip_tunnel.c:831
- ipgre_xmit+0x4a1/0x980 net/ipv4/ip_gre.c:665
- __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
- netdev_start_xmit include/linux/netdevice.h:4954 [inline]
- xmit_one net/core/dev.c:3548 [inline]
- dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
- ...
+Commit e4bb020f3dbb ("riscv: detect assembler support for .option arch")
+added two tests, one for a valid value to '.option arch' that should
+succeed and one for an invalid value that is expected to fail to make
+sure that support for '.option arch' is properly detected because Clang
+does not error when '.option arch' is not supported:
 
-The splat occurs because skb->data points past skb->head allocated area.
-This is because neigh layer does:
-  __skb_pull(skb, skb_network_offset(skb));
+  $ clang --target=riscv64-linux-gnu -Werror -x assembler -c -o /dev/null <(echo '.option arch, +m')
+  /dev/fd/63:1:9: warning: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
+  .option arch, +m
+          ^
+  $ echo $?
+  0
 
-... but skb_network_offset() returns a negative offset and __skb_pull()
-arg is unsigned.  IOW, we skb->data gets "adjusted" by a huge value.
+Unfortunately, the invalid test started being accepted by Clang after
+the linked llvm-project change, which causes CONFIG_AS_HAS_OPTION_ARCH
+and configurations that depend on it to be silently disabled, even
+though those versions do support '.option arch'.
 
-The negative value is returned because skb->head and skb->data distance is
-more than 64k and skb->network_header (u16) has wrapped around.
+The invalid test can be avoided altogether by using
+'-Wa,--fatal-warnings', which will turn all assembler warnings into
+errors, like '-Werror' does for the compiler:
 
-The bug is in the ip_tunnel infrastructure, which can cause
-dev->needed_headroom to increment ad infinitum.
+  $ clang --target=riscv64-linux-gnu -Werror -Wa,--fatal-warnings -x assembler -c -o /dev/null <(echo '.option arch, +m')
+  /dev/fd/63:1:9: error: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
+  .option arch, +m
+          ^
+  $ echo $?
+  1
 
-The syzkaller reproducer consists of packets getting routed via a gre
-tunnel, and route of gre encapsulated packets pointing at another (ipip)
-tunnel.  The ipip encapsulation finds gre0 as next output device.
+The as-instr macros have been updated to make use of this flag, so
+remove the invalid test, which allows CONFIG_AS_HAS_OPTION_ARCH to work
+for all compiler versions.
 
-This results in the following pattern:
-
-1). First packet is to be sent out via gre0.
-Route lookup found an output device, ipip0.
-
-2).
-ip_tunnel_xmit for gre0 bumps gre0->needed_headroom based on the future
-output device, rt.dev->needed_headroom (ipip0).
-
-3).
-ip output / start_xmit moves skb on to ipip0. which runs the same
-code path again (xmit recursion).
-
-4).
-Routing step for the post-gre0-encap packet finds gre0 as output device
-to use for ipip0 encapsulated packet.
-
-tunl0->needed_headroom is then incremented based on the (already bumped)
-gre0 device headroom.
-
-This repeats for every future packet:
-
-gre0->needed_headroom gets inflated because previous packets' ipip0 step
-incremented rt->dev (gre0) headroom, and ipip0 incremented because gre0
-needed_headroom was increased.
-
-For each subsequent packet, gre/ipip0->needed_headroom grows until
-post-expand-head reallocations result in a skb->head/data distance of
-more than 64k.
-
-Once that happens, skb->network_header (u16) wraps around when
-pskb_expand_head tries to make sure that skb_network_offset() is unchanged
-after the headroom expansion/reallocation.
-
-After this skb_network_offset(skb) returns a different (and negative)
-result post headroom expansion.
-
-The next trip to neigh layer (or anything else that would __skb_pull the
-network header) makes skb->data point to a memory location outside
-skb->head area.
-
-v2: Cap the needed_headroom update to an arbitarily chosen upperlimit to
-prevent perpetual increase instead of dropping the headroom increment
-completely.
-
-Reported-and-tested-by: syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
-Closes: https://groups.google.com/g/syzkaller-bugs/c/fL9G6GtWskY/m/VKk_PR5FBAAJ
-Fixes: 243aad830e8a ("ip_gre: include route header_len in max_headroom calculation")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220135606.4939-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e4bb020f3dbb ("riscv: detect assembler support for .option arch")
+Link: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Closes: https://lore.kernel.org/r/20240121011341.GA97368@sol.localdomain/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Andy Chiu <andybnac@gmail.com>
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-2-390ac9cc3cd0@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel.c | 28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ arch/riscv/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 426dc910aaf87..96b7cd3049a33 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -540,6 +540,20 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
- 	return 0;
- }
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -287,7 +287,6 @@ config AS_HAS_OPTION_ARCH
+ 	# https://reviews.llvm.org/D123515
+ 	def_bool y
+ 	depends on $(as-instr, .option arch$(comma) +m)
+-	depends on !$(as-instr, .option arch$(comma) -i)
  
-+static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
-+{
-+	/* we must cap headroom to some upperlimit, else pskb_expand_head
-+	 * will overflow header offsets in skb_headers_offset_update().
-+	 */
-+	static const unsigned int max_allowed = 512;
-+
-+	if (headroom > max_allowed)
-+		headroom = max_allowed;
-+
-+	if (headroom > READ_ONCE(dev->needed_headroom))
-+		WRITE_ONCE(dev->needed_headroom, headroom);
-+}
-+
- void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		       u8 proto, int tunnel_hlen)
- {
-@@ -613,13 +627,13 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	headroom += LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len;
--	if (headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, headroom);
--
--	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
-+	if (skb_cow_head(skb, headroom)) {
- 		ip_rt_put(rt);
- 		goto tx_dropped;
- 	}
-+
-+	ip_tunnel_adj_headroom(dev, headroom);
-+
- 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, proto, tos, ttl,
- 		      df, !net_eq(tunnel->net, dev_net(dev)));
- 	return;
-@@ -797,16 +811,16 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
- 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
--	if (max_headroom > READ_ONCE(dev->needed_headroom))
--		WRITE_ONCE(dev->needed_headroom, max_headroom);
- 
--	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
-+	if (skb_cow_head(skb, max_headroom)) {
- 		ip_rt_put(rt);
- 		dev->stats.tx_dropped++;
- 		kfree_skb(skb);
- 		return;
- 	}
- 
-+	ip_tunnel_adj_headroom(dev, max_headroom);
-+
- 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
- 		      df, !net_eq(tunnel->net, dev_net(dev)));
- 	return;
--- 
-2.43.0
-
+ source "arch/riscv/Kconfig.socs"
+ source "arch/riscv/Kconfig.errata"
 
 
 
