@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75615870E1E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB2B870D6A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17D31F219FD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED4BD28F329
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001D67BB00;
-	Mon,  4 Mar 2024 21:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E460F79DCA;
+	Mon,  4 Mar 2024 21:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVzPNZNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsU16gsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FDA7B3DE;
-	Mon,  4 Mar 2024 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D9E1C687;
+	Mon,  4 Mar 2024 21:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588458; cv=none; b=qKvR+q9Sih6bmfvoTdQQOzYB9a8vzDBeKimcf8wtrxOrTdE4iPVxaktp41lxRn/nOb5dangg6ctHkUO6y0cg4LI6sjliDVSKtYW531vI+kKH2ktjEP/muOntLw4mhxeLIfIuiXqgkmFKQAVlD2sta0VETa1CbkPjkmHor5lZzuU=
+	t=1709588026; cv=none; b=Z93QGMugJFLXdJEcvWmBUA5R5fvm6hYAWQ0N1vnpS3ojBLKS4FOVo/mlLO0GwDHH3c+AA4zAGwrB8uI9MWGyiWmdjHYQz90kYwk+kMm08qtpVssvAHa6YzUE7Z7IXTKN1+G17TSVexY8zDMtIqlExyl/mkaMKRIDpTe/hdFs4ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588458; c=relaxed/simple;
-	bh=rfmcSsz5t/2zhNKvUv6EuCecz4lRWxN9NaIZ52TPtYE=;
+	s=arc-20240116; t=1709588026; c=relaxed/simple;
+	bh=zmALsA4tu+o0c5PzW4m7y/tYKeXrsskL1UueQhzbv2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvCsrMjzsQpptodVEgY8MdGvBeKtcsVO6DswCL7KEdgavZqai5CWCIvHprKhJO/exOdcVOpNGkXhq3tLth80YxcBVdDnzEgSJGXQo6lMeaarynej7pcIoqd7kWvE1DQqpEwgReOomYJ/6L8LcytDUtEC9VyEX/zYuJhQuT2Ul4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVzPNZNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0085EC433F1;
-	Mon,  4 Mar 2024 21:40:57 +0000 (UTC)
+	 MIME-Version; b=IiLxWcCX4n6fqJ3Mq4mcPJ7BVwVoWlEc4PqPFroGfchBuFPG6duxO338slWL25NH9IOfi4nu4DS2GX7nyEsvOh8WH4OK/NksOLku/7Lqk5lrthQKRoh/RB04jngg1djS1F/4K6cjnGRt2oyL3adGiy5hYbxRDH5Z8eHide9y/IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsU16gsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CB9C433C7;
+	Mon,  4 Mar 2024 21:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588458;
-	bh=rfmcSsz5t/2zhNKvUv6EuCecz4lRWxN9NaIZ52TPtYE=;
+	s=korg; t=1709588026;
+	bh=zmALsA4tu+o0c5PzW4m7y/tYKeXrsskL1UueQhzbv2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVzPNZNZBujMU1rMxtlSZWj3A0OUxji1QOJ+4ULvlliCgyHTbMcIxlVZzuXjcQcU7
-	 xC6xMILG+E+780h8FX7+e8mXrImypTbuzjnaVFYVA4RE7fCdve4YumMTN5DZFTU063
-	 KCmX047YLvyEEgK31NPHqvqZFLUkqwnEeJPfv5Qs=
+	b=QsU16gszDRddS8XGRKk47RXthHFM1O+WMwNVuCmPIo2mdeG5+4TV2zGXfPiN/fOvX
+	 0/BEC7SVqgWvXOm/jN6T7ZJTrQC3Z+SESGVfzocNZZ9vGJB7fRWcLPRRmUpkq1bwz5
+	 vPczO0ojYpG4rYVTymXsqqt7D2Pf3gpq2pUyTkGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fa4a2d1f5a5ee06f006@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 115/143] af_unix: Fix task hung while purging oob_skb in GC.
+	Peng Ma <peng.ma@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 19/25] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
 Date: Mon,  4 Mar 2024 21:23:55 +0000
-Message-ID: <20240304211553.594139184@linuxfoundation.org>
+Message-ID: <20240304211536.391500622@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Peng Ma <peng.ma@nxp.com>
 
-commit 25236c91b5ab4a26a56ba2e79b8060cf4e047839 upstream.
+commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
 
-syzbot reported a task hung; at the same time, GC was looping infinitely
-in list_for_each_entry_safe() for OOB skb.  [0]
+There is chip (ls1028a) errata:
 
-syzbot demonstrated that the list_for_each_entry_safe() was not actually
-safe in this case.
+The SoC may hang on 16 byte unaligned read transactions by QDMA.
 
-A single skb could have references for multiple sockets.  If we free such
-a skb in the list_for_each_entry_safe(), the current and next sockets could
-be unlinked in a single iteration.
+Unaligned read transactions initiated by QDMA may stall in the NOC
+(Network On-Chip), causing a deadlock condition. Stalled transactions will
+trigger completion timeouts in PCIe controller.
 
-unix_notinflight() uses list_del_init() to unlink the socket, so the
-prefetched next socket forms a loop itself and list_for_each_entry_safe()
-never stops.
+Workaround:
+Enable prefetch by setting the source descriptor prefetchable bit
+( SD[PF] = 1 ).
 
-Here, we must use while() and make sure we always fetch the first socket.
+Implement this workaround.
 
-[0]:
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 5065 Comm: syz-executor236 Not tainted 6.8.0-rc3-syzkaller-00136-g1f719a2f3fa6 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-RIP: 0010:preempt_count arch/x86/include/asm/preempt.h:26 [inline]
-RIP: 0010:check_kcov_mode kernel/kcov.c:173 [inline]
-RIP: 0010:__sanitizer_cov_trace_pc+0xd/0x60 kernel/kcov.c:207
-Code: cc cc cc cc 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 65 48 8b 14 25 40 c2 03 00 <65> 8b 05 b4 7c 78 7e a9 00 01 ff 00 48 8b 34 24 74 0f f6 c4 01 74
-RSP: 0018:ffffc900033efa58 EFLAGS: 00000283
-RAX: ffff88807b077800 RBX: ffff88807b077800 RCX: 1ffffffff27b1189
-RDX: ffff88802a5a3b80 RSI: ffffffff8968488d RDI: ffff88807b077f70
-RBP: ffffc900033efbb0 R08: 0000000000000001 R09: fffffbfff27a900c
-R10: ffffffff93d48067 R11: ffffffff8ae000eb R12: ffff88807b077800
-R13: dffffc0000000000 R14: ffff88807b077e40 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000564f4fc1e3a8 CR3: 000000000d57a000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- unix_gc+0x563/0x13b0 net/unix/garbage.c:319
- unix_release_sock+0xa93/0xf80 net/unix/af_unix.c:683
- unix_release+0x91/0xf0 net/unix/af_unix.c:1064
- __sock_release+0xb0/0x270 net/socket.c:659
- sock_close+0x1c/0x30 net/socket.c:1421
- __fput+0x270/0xb80 fs/file_table.c:376
- task_work_run+0x14f/0x250 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0xa8a/0x2ad0 kernel/exit.c:871
- do_group_exit+0xd4/0x2a0 kernel/exit.c:1020
- __do_sys_exit_group kernel/exit.c:1031 [inline]
- __se_sys_exit_group kernel/exit.c:1029 [inline]
- __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1029
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd5/0x270 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6f/0x77
-RIP: 0033:0x7f9d6cbdac09
-Code: Unable to access opcode bytes at 0x7f9d6cbdabdf.
-RSP: 002b:00007fff5952feb8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f9d6cbdac09
-RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000000
-RBP: 00007f9d6cc552b0 R08: ffffffffffffffb8 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000246 R12: 00007f9d6cc552b0
-R13: 0000000000000000 R14: 00007f9d6cc55d00 R15: 00007f9d6cbabe70
- </TASK>
-
-Reported-by: syzbot+4fa4a2d1f5a5ee06f006@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4fa4a2d1f5a5ee06f006
-Fixes: 1279f9d9dec2 ("af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240209220453.96053-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Peng Ma <peng.ma@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma/fsl-qdma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -315,10 +315,11 @@ void unix_gc(void)
- 	__skb_queue_purge(&hitlist);
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -109,6 +109,7 @@
+ #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
+ #define FSL_QDMA_CMD_DSEN_OFFSET	19
+ #define FSL_QDMA_CMD_LWC_OFFSET		16
++#define FSL_QDMA_CMD_PF			BIT(17)
  
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	list_for_each_entry_safe(u, next, &gc_candidates, link) {
--		struct sk_buff *skb = u->oob_skb;
-+	while (!list_empty(&gc_candidates)) {
-+		u = list_entry(gc_candidates.next, struct unix_sock, link);
-+		if (u->oob_skb) {
-+			struct sk_buff *skb = u->oob_skb;
+ /* Field definition for Descriptor offset */
+ #define QDMA_CCDF_STATUS		20
+@@ -372,7 +373,8 @@ static void fsl_qdma_comp_fill_memcpy(st
+ 	qdma_csgf_set_f(csgf_dest, len);
+ 	/* Descriptor Buffer */
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+-			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
++			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
++			  FSL_QDMA_CMD_PF;
+ 	sdf->data = QDMA_SDDF_CMD(cmd);
  
--		if (skb) {
- 			u->oob_skb = NULL;
- 			kfree_skb(skb);
- 		}
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
 
 
 
