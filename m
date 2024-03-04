@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46941870D97
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E22870E26
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E684AB25878
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 465211C23C8F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6C047A5D;
-	Mon,  4 Mar 2024 21:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B2579DCE;
+	Mon,  4 Mar 2024 21:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO3iqKpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmbI4CXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A91C687;
-	Mon,  4 Mar 2024 21:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69B98F58;
+	Mon,  4 Mar 2024 21:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588136; cv=none; b=H+J4Ttgp6W1Or2SmVJ3jtAAsrD3ac/OMzKJuLey7uqTcOMTg3MkdVKAz5Xdd5DtytBQHepemPofN8Bug9MFpkfOQlpS0KqLGxWNC0hBdeWI1P1K5gV6B30+taQpULFYyE+LuOWdkObKjYY9ah9ed6Z1nETFsKHeUgJdMA42edYU=
+	t=1709588481; cv=none; b=XehhQyvpzUCMlli5f6H+7gH8/zfvvImfr7/fk8u/+JCHynxe1PbsiUrO7j7cPtNL+gMz1xv5wYgbwKgTlOfxfgCABvVsuQAMROkhWLD35kGhPg4MYWXt82PPWJHX5BqHAsOpeRP2T9VaRGigXppCzWSr+mj2b7ktLZnE2c3X14o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588136; c=relaxed/simple;
-	bh=rkigtyckAqwEooavJvh/6pKJQ16ctNJwmawE0sNn98U=;
+	s=arc-20240116; t=1709588481; c=relaxed/simple;
+	bh=fKQZGz2vh134rAB+qITmUFFJCxhmRQ72gxN69yBNjLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXt+KvScU3N1cWWAmLFd37bQtTd/7iE0i/Ss/IsAXnxvHxapQojYNIxeL1MYsQF7IMpdxFM5LObWifefw367Vz1A4XHUlgiYvtz20uAz6BMpUMPwp4jXCq5r9Cn0bmYx2d5SpJq0HBGdlWzpdpvXhyZaO8H0b/a/POVPlGsa824=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO3iqKpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B71C433C7;
-	Mon,  4 Mar 2024 21:35:35 +0000 (UTC)
+	 MIME-Version; b=osxjd6R4HyFWRHp99rIAtRefrUROpp/sZ6Ct7IH3TSBezWmAAZsLbpJIBHVlAVxUqNk6O0Dt2MES/fGlFs25zE+yQr0uJSFFL8maUrCub76r/V4VJgBXiO27VULM58QChJ0NUXKOrufcLOoyFspErrQYpsHaSaoj397ICAAb+sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmbI4CXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B295C433C7;
+	Mon,  4 Mar 2024 21:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588136;
-	bh=rkigtyckAqwEooavJvh/6pKJQ16ctNJwmawE0sNn98U=;
+	s=korg; t=1709588481;
+	bh=fKQZGz2vh134rAB+qITmUFFJCxhmRQ72gxN69yBNjLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO3iqKpMckdBsXYu285b5ftdX0vkatCjHnrdFusOyN5dguvSR1lUEnp2N3BZCLMxr
-	 RCEiOn7RGnMrJsqM+QLPf54X60DrYYuDl4XMcXd8CiHfPp85QaK5eJMJgVCZacFLqX
-	 xickE+bI0htJNEf7XUP0YM2AlES/UBK6S3uyPD34=
+	b=hmbI4CXQZaVq4vFmV62VmolJuuOs1W8G5IjkxinvxHoq3DcDBU/PRcQbxDIKAQXms
+	 a2Vwz2es/Iq1FtZco94axNiv4mFMIvJQAgyr/wQ5X1JUHC/XEomZAPvbfyt9ViCTlg
+	 wg4EeN7JLdHzWNRWz01KNx1hxAPuLnmceVdVyzvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 35/42] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
-Date: Mon,  4 Mar 2024 21:24:02 +0000
-Message-ID: <20240304211538.831054302@linuxfoundation.org>
+	Serge Semin <fancer.lancer@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/143] dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
+Date: Mon,  4 Mar 2024 21:24:03 +0000
+Message-ID: <20240304211553.839606315@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+[ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+The Linked list element and pointer are not stored in the same memory as
+the eDMA controller register. If the doorbell register is toggled before
+the full write of the linked list a race condition error will occur.
+In remote setup we can only use a readl to the memory to assure the full
+write has occurred.
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
-
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC:  <stable@vger.kernel.org> # 3.10
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e4b8a4fbe2c ("dmaengine: Add Synopsys eDMA IP version 0 support")
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-6-8e8c1acb7a46@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ drivers/dma/dw-edma/dw-edma-v0-core.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1494,11 +1494,6 @@ static void mb_free_blocks(struct inode
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
- 
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1512,23 +1507,31 @@ static void mb_free_blocks(struct inode
- 		struct ext4_sb_info *sbi = EXT4_SB(sb);
- 		ext4_fsblk_t blocknr;
- 
-+		/*
-+		 * Fastcommit replay can free already freed blocks which
-+		 * corrupts allocation info. Regenerate it.
-+		 */
-+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-+			mb_regenerate_buddy(e4b);
-+			goto check;
-+		}
-+
- 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
- 		blocknr += EXT4_C2B(sbi, block);
--		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
--			ext4_grp_locked_error(sb, e4b->bd_group,
--					      inode ? inode->i_ino : 0,
--					      blocknr,
--					      "freeing already freed block (bit %u); block bitmap corrupt.",
--					      block);
--			ext4_mark_group_bitmap_corrupted(
--				sb, e4b->bd_group,
-+		ext4_grp_locked_error(sb, e4b->bd_group,
-+				      inode ? inode->i_ino : 0, blocknr,
-+				      "freeing already freed block (bit %u); block bitmap corrupt.",
-+				      block);
-+		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
--		} else {
--			mb_regenerate_buddy(e4b);
--		}
--		goto done;
-+		return;
- 	}
- 
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1553,8 +1556,8 @@ static void mb_free_blocks(struct inode
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
- 
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
+diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
+index b38786f0ad799..b75fdaffad9a4 100644
+--- a/drivers/dma/dw-edma/dw-edma-v0-core.c
++++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
+@@ -346,6 +346,20 @@ static void dw_edma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
+ 	dw_edma_v0_write_ll_link(chunk, i, control, chunk->ll_region.paddr);
  }
  
++static void dw_edma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
++{
++	/*
++	 * In case of remote eDMA engine setup, the DW PCIe RP/EP internal
++	 * configuration registers and application memory are normally accessed
++	 * over different buses. Ensure LL-data reaches the memory before the
++	 * doorbell register is toggled by issuing the dummy-read from the remote
++	 * LL memory in a hope that the MRd TLP will return only after the
++	 * last MWr TLP is completed
++	 */
++	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
++		readl(chunk->ll_region.vaddr.io);
++}
++
+ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ {
+ 	struct dw_edma_chan *chan = chunk->chan;
+@@ -412,6 +426,9 @@ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+ 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
+ 			  upper_32_bits(chunk->ll_region.paddr));
+ 	}
++
++	dw_edma_v0_sync_ll_data(chunk);
++
+ 	/* Doorbell */
+ 	SET_RW_32(dw, chan->dir, doorbell,
+ 		  FIELD_PREP(EDMA_V0_DOORBELL_CH_MASK, chan->id));
+-- 
+2.43.0
+
 
 
 
