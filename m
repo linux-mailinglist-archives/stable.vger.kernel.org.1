@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D129B870DAF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C57870CD2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711BE1F213B1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFE61C253F7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC161EA99;
-	Mon,  4 Mar 2024 21:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA6F3B795;
+	Mon,  4 Mar 2024 21:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSahMbpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y2XREdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A93EDDCB;
-	Mon,  4 Mar 2024 21:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88E10A1F;
+	Mon,  4 Mar 2024 21:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588201; cv=none; b=FuKXsED7i40wA7RfZtAdbdncVr0bHxuT1hnDsnSDbqLBaTh/tRs1Blwu5Hc7SYXUHbna7HRcSUnuVOvE3HDv3Iqv33lBKA0jOmEnyH1lVfXUZpnTUJY1GZRDK3JiYjE13u4B2Hmzf1l0kLBJiWaP7SUSEIbcwe5y5mS4fqaRXc8=
+	t=1709587743; cv=none; b=OGR8h9t8YsaGCpWlBlm1noJwVypqFw+lXcZ+b788N7K2NrCyRrjJoUY1xGn6cx/F/KfO+rZ3cRGvaN/e5xCVqbqVRJO2WPqEw8eU6RJRSx/aEkGb33gd6mUJyiOATFxVkdFnJI1OP2+KlEjCCTEjZVTF/DSX71f1F9y6lBXERY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588201; c=relaxed/simple;
-	bh=klgCrGeQtyP229BtG8/+XeSNKvKJLyepAATgcC4sluM=;
+	s=arc-20240116; t=1709587743; c=relaxed/simple;
+	bh=Lyyu8PI+uGKCMJtkw2VHzZGflWHvkhZdKRfSOU9O9kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1tx7Uej7wajPh9VFIeRLsu4tup1InsRm1tzWHAjKqix8XJvx/w2+5qBNqXLWsEUB+OQkb/p4jLsmN+JvXmwa9V5/LtAxLcB9i4YkhSPWP3rjFByLiLOPvAonQD0yz532hha5/koJryRVLrmnS5hv4G/PdfB2y5xOjXeUXl4BsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSahMbpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A20C43390;
-	Mon,  4 Mar 2024 21:36:40 +0000 (UTC)
+	 MIME-Version; b=pln30si/yPs1QvwV1I2dVbMDUkbf3HK8uhH81AmYehjA+0xcp1RoCPSZDNL8P31Cb/W+RtkvqjH34Z10QsoRKqFD2s3riAgA6bNBJGE/0kzu4VBiISjMy7moixtkxWP2vMQUr7y3XKl0iQMgqre4iqozxZK/ZlLC8Kf/qrCRSRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y2XREdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACB7C433F1;
+	Mon,  4 Mar 2024 21:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588201;
-	bh=klgCrGeQtyP229BtG8/+XeSNKvKJLyepAATgcC4sluM=;
+	s=korg; t=1709587743;
+	bh=Lyyu8PI+uGKCMJtkw2VHzZGflWHvkhZdKRfSOU9O9kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSahMbpWJLqVlJXtkQk/tTAw8LQa+dfD2FB9QNgoN+6oYbYoy2aJFvGveqSwGjA+R
-	 rMGMyqZQp1LDu4cHylGTI0XGDThHn4gjuybeA0ZIvy2+4QZZEfDkRQYBzJwZJ918Hn
-	 Pgqm6Vn+Dkckq0esMHVztXle8p3pH5isFr+5m0nw=
+	b=0Y2XREdqBJZ9/B6ai0o2iVCW34hcPmktYgoPSF95FguMYkEuqFPoYb5UzIBgFOpka
+	 NusvilE1bBIQWunLqF7NiXugbBGgS9jwOLmc85PvvYTVazsupBcD3WFl6MwGdQodvU
+	 emrdC6vpV1JG/F+7vMKDyS1BFava8PhLzqeR4epg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/143] lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
-Date: Mon,  4 Mar 2024 21:22:17 +0000
-Message-ID: <20240304211550.488966869@linuxfoundation.org>
+	Sam Sun <samsun1006219@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.7 073/162] tomoyo: fix UAF write bug in tomoyo_write_control()
+Date: Mon,  4 Mar 2024 21:22:18 +0000
+Message-ID: <20240304211554.191188897@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 0e67899abfbfdea0c3c0ed3fd263ffc601c5c157 ]
+commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
 
-Same as LAN7800, LAN7850 can be used without EEPROM. If EEPROM is not
-present or not flashed, LAN7850 will fail to sync the speed detected by the PHY
-with the MAC. In case link speed is 100Mbit, it will accidentally work,
-otherwise no data can be transferred.
+Since tomoyo_write_control() updates head->write_buf when write()
+of long lines is requested, we need to fetch head->write_buf after
+head->io_sem is held.  Otherwise, concurrent write() requests can
+cause use-after-free-write and double-free problems.
 
-Better way would be to implement link_up callback, or set auto speed
-configuration unconditionally. But this changes would be more intrusive.
-So, for now, set it only if no EEPROM is found.
-
-Fixes: e69647a19c87 ("lan78xx: Set ASD in MAC_CR when EEE is enabled.")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240222123839.2816561-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
+Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
+Cc:  <stable@vger.kernel.org> # Linux 3.1+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 3 ++-
+ security/tomoyo/common.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 59cde06aa7f60..d86413a0ead4b 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -3035,7 +3035,8 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 	if (dev->chipid == ID_REV_CHIP_ID_7801_)
- 		buf &= ~MAC_CR_GMII_EN_;
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2649,13 +2649,14 @@ ssize_t tomoyo_write_control(struct tomo
+ {
+ 	int error = buffer_len;
+ 	size_t avail_len = buffer_len;
+-	char *cp0 = head->write_buf;
++	char *cp0;
+ 	int idx;
  
--	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
-+	if (dev->chipid == ID_REV_CHIP_ID_7800_ ||
-+	    dev->chipid == ID_REV_CHIP_ID_7850_) {
- 		ret = lan78xx_read_raw_eeprom(dev, 0, 1, &sig);
- 		if (!ret && sig != EEPROM_INDICATOR) {
- 			/* Implies there is no external eeprom. Set mac speed */
--- 
-2.43.0
-
+ 	if (!head->write)
+ 		return -EINVAL;
+ 	if (mutex_lock_interruptible(&head->io_sem))
+ 		return -EINTR;
++	cp0 = head->write_buf;
+ 	head->read_user_buf_avail = 0;
+ 	idx = tomoyo_read_lock();
+ 	/* Read a line and dispatch it to the policy handler. */
 
 
 
