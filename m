@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E78870D85
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EEA870C70
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796B91C22606
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9192287A25
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCA578B69;
-	Mon,  4 Mar 2024 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8A3200D4;
+	Mon,  4 Mar 2024 21:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCRj5zhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q19F4qRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE421C687;
-	Mon,  4 Mar 2024 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7698E1F5FD;
+	Mon,  4 Mar 2024 21:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588094; cv=none; b=CF+82C8zixwKczITVlAjjIlHM0mjx8xNv85jX0tVGrNeH+9zNOdVsjC4nLIjf1AJRSPQhHm91F8tbyxvm9nJFQoydWLxovUuVULCwRpe0XK60bv8AsaOdkFBJOozj/P76I3w/Hm8E+n+Wn1GW5eZYuBUakko3ljsTgbBuL1n0sA=
+	t=1709587534; cv=none; b=aRhXl+1MLSTwDG1sFWW3XHUmk8N2aZBlDpY0kaZdmOHGAx1JAbtm8YjkVCzrfpkNm4baXYtf6Be3g3B6MgVSjw2ND9tGZNVstb6WibcKqbO1YaDzIyIPrXT+NWtlsx6I24CDsN0jrHqnTAHzAXAbrRrZAhXmSXLnNQ+DaYP2LnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588094; c=relaxed/simple;
-	bh=pQp2uD0ASC433wgcpvmLuD0mC+pNkl6wNYZaLQ1UXf8=;
+	s=arc-20240116; t=1709587534; c=relaxed/simple;
+	bh=tMOwshd8Etuy354m/VERsc7wZloVef9e2HkrMkkqZY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byvbfh9Aoc8yaV3CNkXhyYKVwH+Ncpoz6Llyxl9q1Waycfvx0lqsZ16s+C7baojatYJ1Z9cZ4vYexH3jhI2YdFaZTQz+fUaCQGy/yn+jkevRQzoC2O8x4nOAVyaMg2KGPAd0rz+vYRrwU9JU2P2PdUSHns7GAlV/oi/G+ExNDwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCRj5zhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0107CC433F1;
-	Mon,  4 Mar 2024 21:34:53 +0000 (UTC)
+	 MIME-Version; b=KPdIulDfthKGpSPLxCTpiOQpGovsAjo43GIU1bw4Of4fnt2IJEdy/o7otH89nFPSKi+9Uzqye9mdEHuevde78DEvldbq/8zmS4dXd2GvOFiJtvDDstVR3wYJeXBFbG9kUKnd16y+WZYzl+WRKgwjxF7Y1pK2a4E6jJ7OgLNEPPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q19F4qRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066FC433F1;
+	Mon,  4 Mar 2024 21:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588094;
-	bh=pQp2uD0ASC433wgcpvmLuD0mC+pNkl6wNYZaLQ1UXf8=;
+	s=korg; t=1709587534;
+	bh=tMOwshd8Etuy354m/VERsc7wZloVef9e2HkrMkkqZY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCRj5zhT7BPuwf7LWZes42HWlGe8a2xTC805kbb1E3hfAIhMFac/pGMS/d0V7V7vZ
-	 KF+PLAi0pVzi4EJxUHx9u0aOE5/9OrxOTNUW3pM0Ng2egqbAJWG34iRsyDRZbwzCmo
-	 Oe5pcI1MtR6iabtGySGOVlAG2KCmTiCKsB4J+LF0=
+	b=Q19F4qRFXD1a6LqiYN7WgPrCzmJKaYan8fK8Yj0UAcuRVb+uygcSL9PGHKHt0DDOF
+	 6hmX5+m8fHu7dGoG+xSFLAIueAgnaM5UBdynxuBnt/xpERFhW7DPfjCVPvKsGalXFJ
+	 Kyi5JsXRg8bFCJj7j5cT91Pps/Dv/M4ilKavklVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Han Xu <han.xu@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/42] mtd: spinand: gigadevice: Fix the get ecc status issue
+Subject: [PATCH 4.19 10/16] ALSA: Drop leftover snd-rtctimer stuff from Makefile
 Date: Mon,  4 Mar 2024 21:23:31 +0000
-Message-ID: <20240304211537.789740627@linuxfoundation.org>
+Message-ID: <20240304211534.707926005@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
+References: <20240304211534.328737119@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 59950610c0c00c7a06d8a75d2ee5d73dba4274cf ]
+[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
 
-Some GigaDevice ecc_get_status functions use on-stack buffer for
-spi_mem_op causes spi_mem_check_op failing, fix the issue by using
-spinand scratchbuf.
+We forgot to remove the line for snd-rtctimer from Makefile while
+dropping the functionality.  Get rid of the stale line.
 
-Fixes: c40c7a990a46 ("mtd: spinand: Add support for GigaDevice GD5F1GQ4UExxG")
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231108150701.593912-1-han.xu@nxp.com
+Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
+Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/gigadevice.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/core/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
-index 1dd1c58980934..313fd45174dd5 100644
---- a/drivers/mtd/nand/spi/gigadevice.c
-+++ b/drivers/mtd/nand/spi/gigadevice.c
-@@ -170,7 +170,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
- {
- 	u8 status2;
- 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
--						      &status2);
-+						      spinand->scratchbuf);
- 	int ret;
+diff --git a/sound/core/Makefile b/sound/core/Makefile
+index d123587c0fd8f..bc04acf4a45ce 100644
+--- a/sound/core/Makefile
++++ b/sound/core/Makefile
+@@ -32,7 +32,6 @@ snd-pcm-dmaengine-objs := pcm_dmaengine.o
+ snd-rawmidi-objs  := rawmidi.o
+ snd-timer-objs    := timer.o
+ snd-hrtimer-objs  := hrtimer.o
+-snd-rtctimer-objs := rtctimer.o
+ snd-hwdep-objs    := hwdep.o
+ snd-seq-device-objs := seq_device.o
  
- 	switch (status & STATUS_ECC_MASK) {
-@@ -191,6 +191,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
- 		 * report the maximum of 4 in this case
- 		 */
- 		/* bits sorted this way (3...0): ECCS1,ECCS0,ECCSE1,ECCSE0 */
-+		status2 = *(spinand->scratchbuf);
- 		return ((status & STATUS_ECC_MASK) >> 2) |
- 			((status2 & STATUS_ECC_MASK) >> 4);
- 
-@@ -212,7 +213,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
- {
- 	u8 status2;
- 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
--						      &status2);
-+						      spinand->scratchbuf);
- 	int ret;
- 
- 	switch (status & STATUS_ECC_MASK) {
-@@ -232,6 +233,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
- 		 * 1 ... 4 bits are flipped (and corrected)
- 		 */
- 		/* bits sorted this way (1...0): ECCSE1, ECCSE0 */
-+		status2 = *(spinand->scratchbuf);
- 		return ((status2 & STATUS_ECC_MASK) >> 4) + 1;
- 
- 	case STATUS_ECC_UNCOR_ERROR:
 -- 
 2.43.0
 
