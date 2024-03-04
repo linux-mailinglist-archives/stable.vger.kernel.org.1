@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-26093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D74B870D09
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A84C870DEF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECCE128BF62
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF6B1C20C5C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC287BB10;
-	Mon,  4 Mar 2024 21:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F07200D4;
+	Mon,  4 Mar 2024 21:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PF2HYhJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08/nshdp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C227A70D;
-	Mon,  4 Mar 2024 21:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B68F58;
+	Mon,  4 Mar 2024 21:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587826; cv=none; b=ofnIbtapvX/IiIk++bDPamaLgxv9Zq5EGbJ/KEz0wxmMIpsY4XJRqQYSrjmG0lorwUUbu0Q33E4pDByBf2JtmUqUzs9Ir4AZ5jGrud5xNYSWSWQSVZUALdDdILl3xsYkrKQsCnZD5KgfJsvtrbsFM2wr9PVWT7Il5sYSOcidDm0=
+	t=1709588353; cv=none; b=ZcUlESQ4jgL6kEENYXD/Dqecf6Oa2IZiWI0hEJX3KSQ+BF5sTh17gn9mOoDjJtMgvI270beuKblZpDz7gTykNaV/jZJ0r2znOI25a7xVZ6dlpFtkoMEDtaNFSAW2gCoJDzsRIquUfFv8+NwOlsz74f8Z/SSTMHnZ8JbgfTgJ/R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587826; c=relaxed/simple;
-	bh=cNkDu4OpqAtoLVP6cmdAV2Ytn5A0SuIwmevq4Z8JRjU=;
+	s=arc-20240116; t=1709588353; c=relaxed/simple;
+	bh=QcdnzBoQGFibhZB2grVH3Hyh4VXo7epcu/sRRC+IaEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GArnm3mgH7kXOolQOCPpOToWl1VFjnEz4RguRWxSXWIkv3dlsXeJ5KNkey1PmatMfhjpGfVhtZstoqouxO/QvJOjuDtzG2c2gGuhupewQUB3J5njPrHHl9Z3GPAuDPeOMQ8ByouDlsd0RZ3DugZJbXdLlGyyIwZPr8nV5nijCEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PF2HYhJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2C1C433F1;
-	Mon,  4 Mar 2024 21:30:26 +0000 (UTC)
+	 MIME-Version; b=Mict1BcZ4tq6ccvrCRj5BM15gpNlAwKQVOf/0y8QtJAYsZOH4QYqIlKxixicFPHECbeD1bjMk5e5RYLTeIzuSnk+gRfRWyOW7r6vIjw3f219aOmzfRbrKZi/W5rJEaDFQlEe8GhD1XxyMU6bykPRtoeKg6HYHS2cwPBvGIFQBjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08/nshdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E3C433C7;
+	Mon,  4 Mar 2024 21:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587826;
-	bh=cNkDu4OpqAtoLVP6cmdAV2Ytn5A0SuIwmevq4Z8JRjU=;
+	s=korg; t=1709588353;
+	bh=QcdnzBoQGFibhZB2grVH3Hyh4VXo7epcu/sRRC+IaEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PF2HYhJ0a/tSqGQyhH/BegA1SHXMqo3IH5P/UhPQRcKBcTnpJNUDJg7ntJp5+v4yP
-	 mJ4uHTJTs5HnUfNrGh2tzdvFD9/WjMvwbB67sxillU8DcAn5wN+VDdf6+cTsagzUCF
-	 xvehAZ7523yzGiiUbmpWc+DzJqFv4MONM2J5+wUU=
+	b=08/nshdpsOI6xy8hM6fv087lfUUNDKULdchavDWjOWykqgaGw/5SLXlxiYCp9d0jq
+	 0viSHQw3kOOGZ0q8af3aCcXPDqfbEpEfsgTuGdyxHms1tevbYPmPHvX4F7gb/MJLWS
+	 dnlyKpWp4wx4ymGvjRpMkNT2eFZhmDA8Ru7yahYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Andy Chiu <andybnac@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.7 105/162] RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/143] ASoC: cs35l56: cs35l56_component_remove() must clear cs35l56->component
 Date: Mon,  4 Mar 2024 21:22:50 +0000
-Message-ID: <20240304211555.161958348@linuxfoundation.org>
+Message-ID: <20240304211551.532251973@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 3aff0c459e77ac0fb1c4d6884433467f797f7357 upstream.
+[ Upstream commit ae861c466ee57e15a29d97629e1c564e3f714a4f ]
 
-Commit e4bb020f3dbb ("riscv: detect assembler support for .option arch")
-added two tests, one for a valid value to '.option arch' that should
-succeed and one for an invalid value that is expected to fail to make
-sure that support for '.option arch' is properly detected because Clang
-does not error when '.option arch' is not supported:
+The cs35l56->component pointer is used by the suspend-resume handling to
+know whether the driver is fully instantiated. This is to prevent it
+queuing dsp_work which would result in calling wm_adsp when the driver
+is not an instantiated ASoC component. So this pointer must be cleared
+by cs35l56_component_remove().
 
-  $ clang --target=riscv64-linux-gnu -Werror -x assembler -c -o /dev/null <(echo '.option arch, +m')
-  /dev/fd/63:1:9: warning: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
-  .option arch, +m
-          ^
-  $ echo $?
-  0
-
-Unfortunately, the invalid test started being accepted by Clang after
-the linked llvm-project change, which causes CONFIG_AS_HAS_OPTION_ARCH
-and configurations that depend on it to be silently disabled, even
-though those versions do support '.option arch'.
-
-The invalid test can be avoided altogether by using
-'-Wa,--fatal-warnings', which will turn all assembler warnings into
-errors, like '-Werror' does for the compiler:
-
-  $ clang --target=riscv64-linux-gnu -Werror -Wa,--fatal-warnings -x assembler -c -o /dev/null <(echo '.option arch, +m')
-  /dev/fd/63:1:9: error: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
-  .option arch, +m
-          ^
-  $ echo $?
-  1
-
-The as-instr macros have been updated to make use of this flag, so
-remove the invalid test, which allows CONFIG_AS_HAS_OPTION_ARCH to work
-for all compiler versions.
-
-Cc: stable@vger.kernel.org
-Fixes: e4bb020f3dbb ("riscv: detect assembler support for .option arch")
-Link: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Closes: https://lore.kernel.org/r/20240121011341.GA97368@sol.localdomain/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Eric Biggers <ebiggers@google.com>
-Tested-by: Andy Chiu <andybnac@gmail.com>
-Reviewed-by: Andy Chiu <andybnac@gmail.com>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-2-390ac9cc3cd0@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://msgid.link/r/20240129162737.497-4-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/codecs/cs35l56.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -294,7 +294,6 @@ config AS_HAS_OPTION_ARCH
- 	# https://reviews.llvm.org/D123515
- 	def_bool y
- 	depends on $(as-instr, .option arch$(comma) +m)
--	depends on !$(as-instr, .option arch$(comma) -i)
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 32d4ab2cd6724..e850f906f1079 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -809,6 +809,8 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
+ 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
  
- source "arch/riscv/Kconfig.socs"
- source "arch/riscv/Kconfig.errata"
+ 	cancel_work_sync(&cs35l56->dsp_work);
++
++	cs35l56->component = NULL;
+ }
+ 
+ static int cs35l56_set_bias_level(struct snd_soc_component *component,
+-- 
+2.43.0
+
 
 
 
