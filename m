@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-26522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7C7870EF7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E9F870DE1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2551C21A53
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9BF91F216DE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373B146BA0;
-	Mon,  4 Mar 2024 21:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5D81F93F;
+	Mon,  4 Mar 2024 21:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwofT81I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbkUado2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EEB1EB5A;
-	Mon,  4 Mar 2024 21:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E4310A35;
+	Mon,  4 Mar 2024 21:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588976; cv=none; b=cwXFpmogL3Pp6giA+WLY8zz/OnbsLQOZcK8s/1E8HewE57bwWhdWQaY4WJRkXeoR4YlufT6dM8PAIfYbftN3vU7zLAR+kpznhwJxefevzj5MxprWUxdpULb8GUlIxar07DjvoK7LVGHh24+w95xfTs96HCa/4Pp86mW8hPooQB0=
+	t=1709588318; cv=none; b=YgwQv/rAK+4xRAQDMQR4Zax/rRsLL77QDNOj7OcRpCmmCx2/F9gZNpBYK7IH76ayqxpb7UTufp1TmkQHNv/86oTo3fe4up5Qx0ntM352w1BqgWQZ+gEwpT1aTSzHrABf1rsJNBfdxB14fgrSSzHUPqFusgsxW5+6momK7LRQado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588976; c=relaxed/simple;
-	bh=JE+EA/Gf1fGu4iZ2UlztxxU0LkvMbTzst+vjTs0SWKE=;
+	s=arc-20240116; t=1709588318; c=relaxed/simple;
+	bh=0nu+hZC1PkSM6QAJKF5FH1V55K8Arv1V0vMw3i42jkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVXodmc5um1Fl3YhFJOL4EE+XnP22824/KE1PhUoIyjc4KGgbMAnriyhm/SHKR2nXHyb0aJKGerOJYG+NeJNT2fyNhUA+ODs3/sdn25rE935AlNfhRvvXZ61WOJiq0QUd/3/spbU/5opUOtQ41CrnI+NNkc7RViqFwhFZDpTXn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwofT81I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF92C433F1;
-	Mon,  4 Mar 2024 21:49:35 +0000 (UTC)
+	 MIME-Version; b=DCbD9oe61XsH91pq1uLVEk7r79IzBuD9kp3mdkj8lRj6w/HuFo08bCx41gXU841JmPN5RQ34cZ7dvv3QC4u76YqP09tWrS1Pb6cttxluYTvzh3gbvXfeaN52I/zQNtMhKzj52Dz/8MJlA4thDMwQ1gPug00OnUqp3kXMN9gJ3ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbkUado2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CCAC433C7;
+	Mon,  4 Mar 2024 21:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588975;
-	bh=JE+EA/Gf1fGu4iZ2UlztxxU0LkvMbTzst+vjTs0SWKE=;
+	s=korg; t=1709588317;
+	bh=0nu+hZC1PkSM6QAJKF5FH1V55K8Arv1V0vMw3i42jkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwofT81If6iruHV529b6KmNRs7P/goxFYRsVJiFDGHm/THzUkirOIc3LclTEcz7qx
-	 JoniLit9aRCr/sYfEUQP7qjrK9rEWJmO7Mdo3SKSF+Gcmt0ZaPx//KP/dYfprfw4hr
-	 j0a/+1GaMDhKyPePskKHb0bAnGxY5rPcAivr2qiM=
+	b=tbkUado20C/LMb8MJss2NbTr3U68DwEiSQqYB231tqNjPhEd+QXwaeFhduwKOKch8
+	 Wzgm7VkyCTlQIvZ71Cn3n6D1zYNWSRcv++mJAfeHW1iC8WH5ID9ylUMJpli+vFnWEk
+	 AGypsWWQZjrwD4gj7p9TA1l50CMMVGMX94ZbxRqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 119/215] x86/boot/compressed: Pull global variable reference into startup32_load_idt()
+	Vadim Shakirov <vadim.shakirov@syntacore.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/143] drivers: perf: ctr_get_width function for legacy is not defined
 Date: Mon,  4 Mar 2024 21:23:02 +0000
-Message-ID: <20240304211600.840636668@linuxfoundation.org>
+Message-ID: <20240304211551.908486960@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Vadim Shakirov <vadim.shakirov@syntacore.com>
 
-commit d73a257f7f86871c3aac24dc20538e3983096647 upstream.
+[ Upstream commit 682dc133f83e0194796e6ea72eb642df1c03dfbe ]
 
-In preparation for moving startup32_load_idt() out of head_64.S and
-turning it into an ordinary function using the ordinary 32-bit calling
-convention, pull the global variable reference to boot32_idt up into
-startup32_load_idt() so that startup32_set_idt_entry() does not need to
-discover its own runtime physical address, which will no longer be
-correlated with startup_32 once this code is moved into .text.
+With parameters CONFIG_RISCV_PMU_LEGACY=y and CONFIG_RISCV_PMU_SBI=n
+linux kernel crashes when you try perf record:
 
-While at it, give startup32_set_idt_entry() static linkage.
+$ perf record ls
+[ 46.749286] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[ 46.750199] Oops [#1]
+[ 46.750342] Modules linked in:
+[ 46.750608] CPU: 0 PID: 107 Comm: perf-exec Not tainted 6.6.0 #2
+[ 46.750906] Hardware name: riscv-virtio,qemu (DT)
+[ 46.751184] epc : 0x0
+[ 46.751430] ra : arch_perf_update_userpage+0x54/0x13e
+[ 46.751680] epc : 0000000000000000 ra : ffffffff8072ee52 sp : ff2000000022b8f0
+[ 46.751958] gp : ffffffff81505988 tp : ff6000000290d400 t0 : ff2000000022b9c0
+[ 46.752229] t1 : 0000000000000001 t2 : 0000000000000003 s0 : ff2000000022b930
+[ 46.752451] s1 : ff600000028fb000 a0 : 0000000000000000 a1 : ff600000028fb000
+[ 46.752673] a2 : 0000000ae2751268 a3 : 00000000004fb708 a4 : 0000000000000004
+[ 46.752895] a5 : 0000000000000000 a6 : 000000000017ffe3 a7 : 00000000000000d2
+[ 46.753117] s2 : ff600000028fb000 s3 : 0000000ae2751268 s4 : 0000000000000000
+[ 46.753338] s5 : ffffffff8153e290 s6 : ff600000863b9000 s7 : ff60000002961078
+[ 46.753562] s8 : ff60000002961048 s9 : ff60000002961058 s10: 0000000000000001
+[ 46.753783] s11: 0000000000000018 t3 : ffffffffffffffff t4 : ffffffffffffffff
+[ 46.754005] t5 : ff6000000292270c t6 : ff2000000022bb30
+[ 46.754179] status: 0000000200000100 badaddr: 0000000000000000 cause: 000000000000000c
+[ 46.754653] Code: Unable to access instruction at 0xffffffffffffffec.
+[ 46.754939] ---[ end trace 0000000000000000 ]---
+[ 46.755131] note: perf-exec[107] exited with irqs disabled
+[ 46.755546] note: perf-exec[107] exited with preempt_count 4
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-11-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This happens because in the legacy case the ctr_get_width function was not
+defined, but it is used in arch_perf_update_userpage.
+
+Also remove extra check in riscv_pmu_ctr_get_width_mask
+
+Signed-off-by: Vadim Shakirov <vadim.shakirov@syntacore.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Fixes: cc4c07c89aad ("drivers: perf: Implement perf event mmap support  in the SBI backend")
+Link: https://lore.kernel.org/r/20240227170002.188671-3-vadim.shakirov@syntacore.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/perf/riscv_pmu.c        | 18 +++++-------------
+ drivers/perf/riscv_pmu_legacy.c |  8 +++++++-
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -744,16 +744,11 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
-  *
-  * %eax:	Handler address
-  * %edx:	Vector number
-- *
-- * Physical offset is expected in %ebp
-+ * %ecx:	IDT address
-  */
--SYM_FUNC_START(startup32_set_idt_entry)
--	push    %ebx
--
--	/* IDT entry address to %ebx */
--	leal    rva(boot32_idt)(%ebp), %ebx
--	shl	$3, %edx
--	addl    %edx, %ebx
-+SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
-+	/* IDT entry address to %ecx */
-+	leal	(%ecx, %edx, 8), %ecx
+diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
+index 0dda70e1ef90a..c78a6fd6c57f6 100644
+--- a/drivers/perf/riscv_pmu.c
++++ b/drivers/perf/riscv_pmu.c
+@@ -150,19 +150,11 @@ u64 riscv_pmu_ctr_get_width_mask(struct perf_event *event)
+ 	struct riscv_pmu *rvpmu = to_riscv_pmu(event->pmu);
+ 	struct hw_perf_event *hwc = &event->hw;
  
- 	/* Build IDT entry, lower 4 bytes */
- 	movl    %eax, %edx
-@@ -761,7 +756,7 @@ SYM_FUNC_START(startup32_set_idt_entry)
- 	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
+-	if (!rvpmu->ctr_get_width)
+-	/**
+-	 * If the pmu driver doesn't support counter width, set it to default
+-	 * maximum allowed by the specification.
+-	 */
+-		cwidth = 63;
+-	else {
+-		if (hwc->idx == -1)
+-			/* Handle init case where idx is not initialized yet */
+-			cwidth = rvpmu->ctr_get_width(0);
+-		else
+-			cwidth = rvpmu->ctr_get_width(hwc->idx);
+-	}
++	if (hwc->idx == -1)
++		/* Handle init case where idx is not initialized yet */
++		cwidth = rvpmu->ctr_get_width(0);
++	else
++		cwidth = rvpmu->ctr_get_width(hwc->idx);
  
- 	/* Store lower 4 bytes to IDT */
--	movl    %edx, (%ebx)
-+	movl    %edx, (%ecx)
+ 	return GENMASK_ULL(cwidth, 0);
+ }
+diff --git a/drivers/perf/riscv_pmu_legacy.c b/drivers/perf/riscv_pmu_legacy.c
+index a85fc9a15f039..fa0bccf4edf2e 100644
+--- a/drivers/perf/riscv_pmu_legacy.c
++++ b/drivers/perf/riscv_pmu_legacy.c
+@@ -37,6 +37,12 @@ static int pmu_legacy_event_map(struct perf_event *event, u64 *config)
+ 	return pmu_legacy_ctr_get_idx(event);
+ }
  
- 	/* Build IDT entry, upper 4 bytes */
- 	movl    %eax, %edx
-@@ -769,15 +764,16 @@ SYM_FUNC_START(startup32_set_idt_entry)
- 	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
- 
- 	/* Store upper 4 bytes to IDT */
--	movl    %edx, 4(%ebx)
-+	movl    %edx, 4(%ecx)
- 
--	pop     %ebx
- 	RET
- SYM_FUNC_END(startup32_set_idt_entry)
- #endif
- 
- SYM_FUNC_START(startup32_load_idt)
- #ifdef CONFIG_AMD_MEM_ENCRYPT
-+	leal    rva(boot32_idt)(%ebp), %ecx
++/* cycle & instret are always 64 bit, one bit less according to SBI spec */
++static int pmu_legacy_ctr_get_width(int idx)
++{
++	return 63;
++}
 +
- 	/* #VC handler */
- 	leal    rva(startup32_vc_handler)(%ebp), %eax
- 	movl    $X86_TRAP_VC, %edx
+ static u64 pmu_legacy_read_ctr(struct perf_event *event)
+ {
+ 	struct hw_perf_event *hwc = &event->hw;
+@@ -111,7 +117,7 @@ static void pmu_legacy_init(struct riscv_pmu *pmu)
+ 	pmu->ctr_stop = NULL;
+ 	pmu->event_map = pmu_legacy_event_map;
+ 	pmu->ctr_get_idx = pmu_legacy_ctr_get_idx;
+-	pmu->ctr_get_width = NULL;
++	pmu->ctr_get_width = pmu_legacy_ctr_get_width;
+ 	pmu->ctr_clear_idx = NULL;
+ 	pmu->ctr_read = pmu_legacy_read_ctr;
+ 	pmu->event_mapped = pmu_legacy_event_mapped;
+-- 
+2.43.0
+
 
 
 
