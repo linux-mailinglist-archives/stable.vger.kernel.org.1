@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139F6870E69
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 138AA870CA4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29D92834B7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34A7288355
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1221C6AB;
-	Mon,  4 Mar 2024 21:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E554D117;
+	Mon,  4 Mar 2024 21:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnBacUla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8Wm6uXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD1C8F58;
-	Mon,  4 Mar 2024 21:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24B482DA;
+	Mon,  4 Mar 2024 21:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588622; cv=none; b=LqV+2SbkrLN2fCXifaslPV+EnopVol87xHCvCGLi7XFUXwMUPTh53NqQf/cxwlKsQCabHIty7t+gm6W6/hw0thCB4pJzgmd2Uas5Ax1MWuPKxkWybnMF4Ds1GlXsWIfSRgngR7rh7jpCAuaCiPpBkibUnWUw2MhN30f5Xbo9o/I=
+	t=1709587639; cv=none; b=Yuirbd4FHuLj23EJIH+kXNCDbbaEkwljHb73mcPd0PRLPKn3yYPGJOzwwyZSW8HWID0ZEXvVjMvj+qonySKb8QvH5s4uvgp2FSkfIdU/2VsKgV99GerLvYGmgrn1vh55ZS/sg+8XB3kbUcdIlW3wxdo6vgVxiLLHFusVLAluPBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588622; c=relaxed/simple;
-	bh=4BvG2zYmOtRa+gXtSCx4lG1Gj3vEFHh4GxRSj5TI3Uo=;
+	s=arc-20240116; t=1709587639; c=relaxed/simple;
+	bh=rj31HVGAxnQkBh/EB63q7RIZkpZLlUm/ysa+FQdvk9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QA/P+eWnf6cG5XoHrqXtWtMUtg6Tkgc2KviqANQHIM+ZM1C3lNyYZasw2BhTf7wc4hWktbppUvaSShFsDmuQF0cW58tTDbmhAV262k/Ba20AostHJK8yMoWInFwlYQURksegfCyPqHYF5b+CYG3bvb1WBArK11DqZw/5T86D7pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnBacUla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB23AC433C7;
-	Mon,  4 Mar 2024 21:43:41 +0000 (UTC)
+	 MIME-Version; b=iochzYFnJLRZHgc8k0fiEL8/KF0u9PylU3MuVq2wFoqTUDgLcXMC72XWXkxxOm4O4/sHPhL3fyBmJ3HvhndhhWwP8zbTV+lEZ6OEvcPMxVburBI+fb6RCtperevbsGliWOnTKrMMUMIBKuTOGzIZ5rBnDoNMFa9EUw3qDHab46k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8Wm6uXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE74C433C7;
+	Mon,  4 Mar 2024 21:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588622;
-	bh=4BvG2zYmOtRa+gXtSCx4lG1Gj3vEFHh4GxRSj5TI3Uo=;
+	s=korg; t=1709587638;
+	bh=rj31HVGAxnQkBh/EB63q7RIZkpZLlUm/ysa+FQdvk9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnBacUla85wA1K1zZHvoc8MKoeNgSmx6rZjZc/23fhfsjCsmAsvhmLg1+plVSm0Aj
-	 Iwy4kRJNTunMB/ilGM9BxlZXfs8UM7FHezOlhdbq+1XsVzdI3xHOrzrt4C82gPqT+E
-	 CSJSdL3iHn7rE2dgNpskq2ofnZJiowJI+qGn5QnQ=
+	b=i8Wm6uXKdQ4CspRaUfVhElcdkbWuEH7AvAIkh4ikzZ1wlStdC9Gi3qVHxtiy9r24X
+	 H5R/j+OKwCWcfTNl8j2YyZBaywckxZ5AnLcIZMZtFS7hprxbAPW3UqWQTagcRcLLIm
+	 GKNfSc61CyBbApBggRCwsNdFQihRMtAJUoK2RNJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/215] cpufreq: intel_pstate: fix pstate limits enforcement for adjust_perf call back
-Date: Mon,  4 Mar 2024 21:21:36 +0000
-Message-ID: <20240304211558.037001955@linuxfoundation.org>
+Subject: [PATCH 6.7 032/162] Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT
+Date: Mon,  4 Mar 2024 21:21:37 +0000
+Message-ID: <20240304211552.859937045@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
 
-[ Upstream commit f0a0fc10abb062d122db5ac4ed42f6d1ca342649 ]
+[ Upstream commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696 ]
 
-There is a loophole in pstate limit clamping for the intel_cpufreq CPU
-frequency scaling driver (intel_pstate in passive mode), schedutil CPU
-frequency scaling governor, HWP (HardWare Pstate) control enabled, when
-the adjust_perf call back path is used.
+BT adapter going into UNCONFIGURED state during BT turn ON when
+devicetree has no local-bd-address node.
 
-Fix it.
+Bluetooth will not work out of the box on such devices, to avoid this
+problem, added check to set HCI_QUIRK_USE_BDADDR_PROPERTY based on
+local-bd-address node entry.
 
-Fixes: a365ab6b9dfb cpufreq: intel_pstate: Implement the ->adjust_perf() callback
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+When this quirk is not set, the public Bluetooth address read by host
+from controller though HCI Read BD Address command is
+considered as valid.
+
+Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
+Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/hci_qca.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index abdd26f7d04c9..5771f3fc6115d 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2952,6 +2952,9 @@ static void intel_cpufreq_adjust_perf(unsigned int cpunum,
- 	if (min_pstate < cpu->min_perf_ratio)
- 		min_pstate = cpu->min_perf_ratio;
- 
-+	if (min_pstate > cpu->max_perf_ratio)
-+		min_pstate = cpu->max_perf_ratio;
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 35f74f209d1fc..cc6dabf6884d7 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -7,6 +7,7 @@
+  *
+  *  Copyright (C) 2007 Texas Instruments, Inc.
+  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
++ *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  *
+  *  Acknowledgements:
+  *  This file is based on hci_ll.c, which was...
+@@ -1886,7 +1887,17 @@ static int qca_setup(struct hci_uart *hu)
+ 	case QCA_WCN6750:
+ 	case QCA_WCN6855:
+ 	case QCA_WCN7850:
+-		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
 +
- 	max_pstate = min(cap_pstate, cpu->max_perf_ratio);
- 	if (max_pstate < min_pstate)
- 		max_pstate = min_pstate;
++		/* Set BDA quirk bit for reading BDA value from fwnode property
++		 * only if that property exist in DT.
++		 */
++		if (fwnode_property_present(dev_fwnode(hdev->dev.parent), "local-bd-address")) {
++			set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++			bt_dev_info(hdev, "setting quirk bit to read BDA from fwnode later");
++		} else {
++			bt_dev_dbg(hdev, "local-bd-address` is not present in the devicetree so not setting quirk bit for BDA");
++		}
++
+ 		hci_set_aosp_capable(hdev);
+ 
+ 		ret = qca_read_soc_version(hdev, &ver, soc_type);
 -- 
 2.43.0
 
