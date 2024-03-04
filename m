@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D6386FBD6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:28:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AD686FBDA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9913E1F21877
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:28:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED0331C20EC9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEC917565;
-	Mon,  4 Mar 2024 08:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D25F17565;
+	Mon,  4 Mar 2024 08:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9sLeVWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyfUWF2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD8F175AB
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE291757A
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709540932; cv=none; b=bat14S4pZs4LUdjF5MWBhoTMIfk+H4UhMekQiomyxLIlFHWycp13rQhhsOiRwfgESeboJp3x4xJEX2L+78cB2A1gjH7+gVzWAAUGwagk7Lle8P1qc77D8/ySzVCZycDA3tuwY2bockLGBv27/IObHb+1IfWGOK4/CcSEkhjDE20=
+	t=1709540996; cv=none; b=Z4UUIyjlpe7ZSGcNSGJ/h8xD7p6UezQGaiQAZ2PPe8y0sZUh3sjiD/mC5GOaI/ZjwZHTosj5KT2y/S+lZI07il60LBXaImeQtrW/EhY0jPZ6PlsQVb2tT0Voz1pwXxIn1cYP6vCKGQYqooPUDMOSe617AZJNJ2Hc3OCMP0KwUaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709540932; c=relaxed/simple;
-	bh=gPNlsrvPTyrCgpzVz8w/4R/45Bs6EZFtVjT4ysCm7ow=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=itcnevcfc7PmYtHMRs5fJui+LnSu2wJyhpLur9GUxc0e5ka4PbE9rpgkvB+a3WfYWMUIRIeh8w9p3iTxlRMWK7ARufB01hI0Y26OyxvO/396ejvOs+EgYHeLyZJHc7AQUAcZSIOTYUrNJMwe+t5Yrz9KTTMRx7BZ0aZNKHcl9dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9sLeVWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2F0C433F1;
-	Mon,  4 Mar 2024 08:28:51 +0000 (UTC)
+	s=arc-20240116; t=1709540996; c=relaxed/simple;
+	bh=FuME06FBbfS1zcdTzKAbKE1drqgumCbFDLY1Y2IdAcA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DZ0tTu9zcCbFv5DQivcN9Z9aZCWdmn9m4/WKTLVSE07j6wiKjPxfwMMocpyuvTK/Mko8HnCNdqMa6sKHMqWJipXUVIn6uoQGE39BikJ0s1MC2lyNAizDF1QkqASrVbFazPx2prsqRV/YgH0BC6f45tWjmgpJa/vhQS7G8RTijyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyfUWF2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B93C433C7;
+	Mon,  4 Mar 2024 08:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709540931;
-	bh=gPNlsrvPTyrCgpzVz8w/4R/45Bs6EZFtVjT4ysCm7ow=;
+	s=korg; t=1709540995;
+	bh=FuME06FBbfS1zcdTzKAbKE1drqgumCbFDLY1Y2IdAcA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Z9sLeVWGLYtCnygJ+1VOJz/+gcWnbX2vMTkL3eJjvjkdFimqx5ED+riphxh14MwRx
-	 wEsa0J/dykrhnlAly5MCfPbFgXP/fD20mDhZdSE196p66YfdSev1I+/jh5gzK28izI
-	 A6/iR55sh/8GOXMRBkpam08hHp1VGIkSnkfqDB98=
-Subject: FAILED: patch "[PATCH] mptcp: push at DSS boundaries" failed to apply to 5.4-stable tree
-To: pabeni@redhat.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
+	b=AyfUWF2L+n25qp0Di7eOOC5T8n5LWW2cOhLap7NVecs9cYdZISmfOYeuZ0PM44UR9
+	 cQld7bnIb9xGeOUhUri6a/kLp1CR7y8+4bIZbmOsLheVYwlXm5VUZ44NMNWag8ta3D
+	 lkLYBRyWWng9xaTMv1ybEwi4tc6wdOXWdyjWwkrY=
+Subject: FAILED: patch "[PATCH] mptcp: fix double-free on socket dismantle" failed to apply to 5.15-stable tree
+To: dcaratti@redhat.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 09:28:48 +0100
-Message-ID: <2024030448-walrus-tribunal-7b38@gregkh>
+Date: Mon, 04 Mar 2024 09:29:52 +0100
+Message-ID: <2024030452-appliance-decidable-ccdb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,29 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b9cd26f640a308ea314ad23532de9a8592cd09d2
+git cherry-pick -x 10048689def7e40a4405acda16fdc6477d4ecc5c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030448-walrus-tribunal-7b38@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030452-appliance-decidable-ccdb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-b9cd26f640a3 ("mptcp: push at DSS boundaries")
-1094c6fe7280 ("mptcp: fix possible divide by zero")
-8ce568ed06ce ("mptcp: drop tx skb cache")
-4e14867d5e91 ("mptcp: tune re-injections for csum enabled mode")
-2948d0a1e5ae ("mptcp: factor out __mptcp_retrans helper()")
-eaeef1ce55ec ("mptcp: fix memory accounting on allocation error")
-d489ded1a369 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+10048689def7 ("mptcp: fix double-free on socket dismantle")
+7e8b88ec35ee ("mptcp: consolidate passive msk socket initialization")
+a88d0092b24b ("mptcp: simplify subflow_syn_recv_sock()")
+2bb9a37f0e19 ("mptcp: avoid unneeded address copy")
+b6985b9b8295 ("mptcp: use the workqueue to destroy unaccepted sockets")
+3a236aef280e ("mptcp: refactor passive socket initialization")
+7d803344fdc3 ("mptcp: fix deadlock in fastopen error path")
+dfc8d0603033 ("mptcp: implement delayed seq generation for passive fastopen")
+f2bb566f5c97 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
@@ -83,40 +85,198 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b9cd26f640a308ea314ad23532de9a8592cd09d2 Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Fri, 23 Feb 2024 17:14:14 +0100
-Subject: [PATCH] mptcp: push at DSS boundaries
+From 10048689def7e40a4405acda16fdc6477d4ecc5c Mon Sep 17 00:00:00 2001
+From: Davide Caratti <dcaratti@redhat.com>
+Date: Fri, 23 Feb 2024 17:14:18 +0100
+Subject: [PATCH] mptcp: fix double-free on socket dismantle
 
-when inserting not contiguous data in the subflow write queue,
-the protocol creates a new skb and prevent the TCP stack from
-merging it later with already queued skbs by setting the EOR marker.
+when MPTCP server accepts an incoming connection, it clones its listener
+socket. However, the pointer to 'inet_opt' for the new socket has the same
+value as the original one: as a consequence, on program exit it's possible
+to observe the following splat:
 
-Still no push flag is explicitly set at the end of previous GSO
-packet, making the aggregation on the receiver side sub-optimal -
-and packetdrill self-tests less predictable.
+  BUG: KASAN: double-free in inet_sock_destruct+0x54f/0x8b0
+  Free of addr ffff888485950880 by task swapper/25/0
 
-Explicitly mark the end of not contiguous DSS with the push flag.
+  CPU: 25 PID: 0 Comm: swapper/25 Kdump: loaded Not tainted 6.8.0-rc1+ #609
+  Hardware name: Supermicro SYS-6027R-72RF/X9DRH-7TF/7F/iTF/iF, BIOS 3.0  07/26/2013
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x32/0x50
+   print_report+0xca/0x620
+   kasan_report_invalid_free+0x64/0x90
+   __kasan_slab_free+0x1aa/0x1f0
+   kfree+0xed/0x2e0
+   inet_sock_destruct+0x54f/0x8b0
+   __sk_destruct+0x48/0x5b0
+   rcu_do_batch+0x34e/0xd90
+   rcu_core+0x559/0xac0
+   __do_softirq+0x183/0x5a4
+   irq_exit_rcu+0x12d/0x170
+   sysvec_apic_timer_interrupt+0x6b/0x80
+   </IRQ>
+   <TASK>
+   asm_sysvec_apic_timer_interrupt+0x16/0x20
+  RIP: 0010:cpuidle_enter_state+0x175/0x300
+  Code: 30 00 0f 84 1f 01 00 00 83 e8 01 83 f8 ff 75 e5 48 83 c4 18 44 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc fb 45 85 ed <0f> 89 60 ff ff ff 48 c1 e5 06 48 c7 43 18 00 00 00 00 48 83 44 2b
+  RSP: 0018:ffff888481cf7d90 EFLAGS: 00000202
+  RAX: 0000000000000000 RBX: ffff88887facddc8 RCX: 0000000000000000
+  RDX: 1ffff1110ff588b1 RSI: 0000000000000019 RDI: ffff88887fac4588
+  RBP: 0000000000000004 R08: 0000000000000002 R09: 0000000000043080
+  R10: 0009b02ea273363f R11: ffff88887fabf42b R12: ffffffff932592e0
+  R13: 0000000000000004 R14: 0000000000000000 R15: 00000022c880ec80
+   cpuidle_enter+0x4a/0xa0
+   do_idle+0x310/0x410
+   cpu_startup_entry+0x51/0x60
+   start_secondary+0x211/0x270
+   secondary_startup_64_no_verify+0x184/0x18b
+   </TASK>
 
-Fixes: 6d0060f600ad ("mptcp: Write MPTCP DSS headers to outgoing data packets")
+  Allocated by task 6853:
+   kasan_save_stack+0x1c/0x40
+   kasan_save_track+0x10/0x30
+   __kasan_kmalloc+0xa6/0xb0
+   __kmalloc+0x1eb/0x450
+   cipso_v4_sock_setattr+0x96/0x360
+   netlbl_sock_setattr+0x132/0x1f0
+   selinux_netlbl_socket_post_create+0x6c/0x110
+   selinux_socket_post_create+0x37b/0x7f0
+   security_socket_post_create+0x63/0xb0
+   __sock_create+0x305/0x450
+   __sys_socket_create.part.23+0xbd/0x130
+   __sys_socket+0x37/0xb0
+   __x64_sys_socket+0x6f/0xb0
+   do_syscall_64+0x83/0x160
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+  Freed by task 6858:
+   kasan_save_stack+0x1c/0x40
+   kasan_save_track+0x10/0x30
+   kasan_save_free_info+0x3b/0x60
+   __kasan_slab_free+0x12c/0x1f0
+   kfree+0xed/0x2e0
+   inet_sock_destruct+0x54f/0x8b0
+   __sk_destruct+0x48/0x5b0
+   subflow_ulp_release+0x1f0/0x250
+   tcp_cleanup_ulp+0x6e/0x110
+   tcp_v4_destroy_sock+0x5a/0x3a0
+   inet_csk_destroy_sock+0x135/0x390
+   tcp_fin+0x416/0x5c0
+   tcp_data_queue+0x1bc8/0x4310
+   tcp_rcv_state_process+0x15a3/0x47b0
+   tcp_v4_do_rcv+0x2c1/0x990
+   tcp_v4_rcv+0x41fb/0x5ed0
+   ip_protocol_deliver_rcu+0x6d/0x9f0
+   ip_local_deliver_finish+0x278/0x360
+   ip_local_deliver+0x182/0x2c0
+   ip_rcv+0xb5/0x1c0
+   __netif_receive_skb_one_core+0x16e/0x1b0
+   process_backlog+0x1e3/0x650
+   __napi_poll+0xa6/0x500
+   net_rx_action+0x740/0xbb0
+   __do_softirq+0x183/0x5a4
+
+  The buggy address belongs to the object at ffff888485950880
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes inside of
+   64-byte region [ffff888485950880, ffff8884859508c0)
+
+  The buggy address belongs to the physical page:
+  page:0000000056d1e95e refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888485950700 pfn:0x485950
+  flags: 0x57ffffc0000800(slab|node=1|zone=2|lastcpupid=0x1fffff)
+  page_type: 0xffffffff()
+  raw: 0057ffffc0000800 ffff88810004c640 ffffea00121b8ac0 dead000000000006
+  raw: ffff888485950700 0000000000200019 00000001ffffffff 0000000000000000
+  page dumped because: kasan: bad access detected
+
+  Memory state around the buggy address:
+   ffff888485950780: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+   ffff888485950800: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+  >ffff888485950880: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+                     ^
+   ffff888485950900: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+   ffff888485950980: 00 00 00 00 00 01 fc fc fc fc fc fc fc fc fc fc
+
+Something similar (a refcount underflow) happens with CALIPSO/IPv6. Fix
+this by duplicating IP / IPv6 options after clone, so that
+ip{,6}_sock_destruct() doesn't end up freeing the same memory area twice.
+
+Fixes: cf7da0d66cc1 ("mptcp: Create SUBFLOW socket for incoming connections")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-4-162e87e48497@kernel.org
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-8-162e87e48497@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 948606a537da..442fa7d9b57a 100644
+index 2c8f931c6d5b..7833a49f6214 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1260,6 +1260,7 @@ static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 		mpext = mptcp_get_ext(skb);
- 		if (!mptcp_skb_can_collapse_to(data_seq, skb, mpext)) {
- 			TCP_SKB_CB(skb)->eor = 1;
-+			tcp_mark_push(tcp_sk(ssk), skb);
- 			goto alloc_skb;
- 		}
+@@ -3178,8 +3178,50 @@ static struct ipv6_pinfo *mptcp_inet6_sk(const struct sock *sk)
  
+ 	return (struct ipv6_pinfo *)(((u8 *)sk) + offset);
+ }
++
++static void mptcp_copy_ip6_options(struct sock *newsk, const struct sock *sk)
++{
++	const struct ipv6_pinfo *np = inet6_sk(sk);
++	struct ipv6_txoptions *opt;
++	struct ipv6_pinfo *newnp;
++
++	newnp = inet6_sk(newsk);
++
++	rcu_read_lock();
++	opt = rcu_dereference(np->opt);
++	if (opt) {
++		opt = ipv6_dup_options(newsk, opt);
++		if (!opt)
++			net_warn_ratelimited("%s: Failed to copy ip6 options\n", __func__);
++	}
++	RCU_INIT_POINTER(newnp->opt, opt);
++	rcu_read_unlock();
++}
+ #endif
+ 
++static void mptcp_copy_ip_options(struct sock *newsk, const struct sock *sk)
++{
++	struct ip_options_rcu *inet_opt, *newopt = NULL;
++	const struct inet_sock *inet = inet_sk(sk);
++	struct inet_sock *newinet;
++
++	newinet = inet_sk(newsk);
++
++	rcu_read_lock();
++	inet_opt = rcu_dereference(inet->inet_opt);
++	if (inet_opt) {
++		newopt = sock_kmalloc(newsk, sizeof(*inet_opt) +
++				      inet_opt->opt.optlen, GFP_ATOMIC);
++		if (newopt)
++			memcpy(newopt, inet_opt, sizeof(*inet_opt) +
++			       inet_opt->opt.optlen);
++		else
++			net_warn_ratelimited("%s: Failed to copy ip options\n", __func__);
++	}
++	RCU_INIT_POINTER(newinet->inet_opt, newopt);
++	rcu_read_unlock();
++}
++
+ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 				 const struct mptcp_options_received *mp_opt,
+ 				 struct sock *ssk,
+@@ -3200,6 +3242,13 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 
+ 	__mptcp_init_sock(nsk);
+ 
++#if IS_ENABLED(CONFIG_MPTCP_IPV6)
++	if (nsk->sk_family == AF_INET6)
++		mptcp_copy_ip6_options(nsk, sk);
++	else
++#endif
++		mptcp_copy_ip_options(nsk, sk);
++
+ 	msk = mptcp_sk(nsk);
+ 	msk->local_key = subflow_req->local_key;
+ 	msk->token = subflow_req->token;
 
 
