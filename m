@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AEA870F8B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478D5870E40
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FEA1C21F03
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA88B25EA3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF2B7A124;
-	Mon,  4 Mar 2024 21:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A016B46BA0;
+	Mon,  4 Mar 2024 21:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMV4iHZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z90I1JRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33741C6AB;
-	Mon,  4 Mar 2024 21:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E54C11193;
+	Mon,  4 Mar 2024 21:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589342; cv=none; b=nhYrRC4+8BFS6JxYFuza9aDTc4XstCFouyzQScWSp5rUeKa6fE6qHT77pMTMskaz/9tJbzjdE9eqoSj1JgHznrfZL+thr58zSTVpalKj+gCGqi2Ys6esm7faB+ffMgghpJdAn9KKS5pmR6WS09EbECvQRlhMMzwKIN+nD1FBxb8=
+	t=1709588526; cv=none; b=dwVyOfHNYlIeuSbSrcZTEbUn0cc/S7/gfa7SaCBXvbmjRbrQ2PGCX752PJJLtiSNV7CMXUsa2lpqilHBYHm6GXvd0ZeC4aHthIQ8SO82Avoxw+vrDR+2SWSseACTnwBT7y6gF8SXp4kGfrsiJRJYPlqojYh/NyU+VcD+CTuqx9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589342; c=relaxed/simple;
-	bh=Y/ZO1TICDmy920gfOWQCwvZRwmsRZ9LDhgPsjwoLPRg=;
+	s=arc-20240116; t=1709588526; c=relaxed/simple;
+	bh=nR4NkVU914d+XjYNdrQK4X3oxWThKwhU1j7Dpx7DLvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbM7kB9DmsZ/+iywWU58pplvGBQqJGp2dCNvq0YomzxY51G7ueGsA9n5tjDXKuRgfv+EpN0LQ1huPwTX2HFziBAooWOwP+gu+ORDcT7S2W78y0GlIZYssRwpNCreYuFB2Vtko2rIsD2Q3cR3JIuBAXlzTad8jrLfPava2LFoyjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMV4iHZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D63C433C7;
-	Mon,  4 Mar 2024 21:55:42 +0000 (UTC)
+	 MIME-Version; b=fRenShZrJoSYfkyQgINRatiNt29IZPG81gf6GDjL263Zv933k3GZ4z/b/EPIlrfEPpw02Gai8pfeipHdavFfXDmjgN7ySGU6NSySUmD/P+OfRD95upQcec36nCkeOfJScmlFDbHhSZoK6f4fRFYSjlIsdTUtSTH7+i3umZo7OL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z90I1JRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E345FC433F1;
+	Mon,  4 Mar 2024 21:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589342;
-	bh=Y/ZO1TICDmy920gfOWQCwvZRwmsRZ9LDhgPsjwoLPRg=;
+	s=korg; t=1709588526;
+	bh=nR4NkVU914d+XjYNdrQK4X3oxWThKwhU1j7Dpx7DLvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMV4iHZG8dLpO0Y/pMzawV3uj7aTpRsfPxZPCTRJA7wzt0S+ZgVlFXd5dD0E0+aeZ
-	 s1ITrhvg9lC+i9x5mtvljULsB9xFOlFRp4x//+WvIv41e1UtMDeQX9VbaB3iWJ/IlK
-	 c6WvRIWg18WA19Xnwfio9ZxCTjnpMC7ikg1BzZJg=
+	b=z90I1JRr27BHxehKAXJt/bwZLfNGVcvWDF/d4rYeACfxDUoJMallA3uw9PVzhijPn
+	 qb2aWPepliPstMzExmn1HamzHQ/l6VSMY/4hMV8D3sjJudbP76GzcU5bka6nJW0vM1
+	 sLC98VN3C2TJI6TYuo8+WiRA9jG4CLfV5c2WDo18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 48/84] ALSA: firewire-lib: fix to check cycle continuity
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 141/143] selftests: mptcp: add mptcp_lib_is_v6
 Date: Mon,  4 Mar 2024 21:24:21 +0000
-Message-ID: <20240304211543.958026645@linuxfoundation.org>
+Message-ID: <20240304211554.413250012@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit 77ce96543b03f437c6b45f286d8110db2b6622a3 upstream.
+commit b850f2c7dd85ecd14a333685c4ffd23f12665e94 upstream.
 
-The local helper function to compare the given pair of cycle count
-evaluates them. If the left value is less than the right value, the
-function returns negative value.
+To avoid duplicated code in different MPTCP selftests, we can add
+and use helpers defined in mptcp_lib.sh.
 
-If the safe cycle is less than the current cycle, it is the case of
-cycle lost. However, it is not currently handled properly.
+is_v6() helper is defined in mptcp_connect.sh, mptcp_join.sh and
+mptcp_sockopt.sh, so export it into mptcp_lib.sh and rename it as
+mptcp_lib_is_v6(). Use this new helper in all scripts.
 
-This commit fixes the bug.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://lore.kernel.org/r/20240218033026.72577-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-10-8d6b94150f6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/amdtp-stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |   16 +++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    |   14 ++++----------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |    5 +++++
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |    8 +-------
+ 4 files changed, 15 insertions(+), 28 deletions(-)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -934,7 +934,7 @@ static int generate_device_pkt_descs(str
- 				// to the reason.
- 				unsigned int safe_cycle = increment_ohci_cycle_count(next_cycle,
- 								IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES);
--				lost = (compare_ohci_cycle_count(safe_cycle, cycle) > 0);
-+				lost = (compare_ohci_cycle_count(safe_cycle, cycle) < 0);
- 			}
- 			if (lost) {
- 				dev_err(&s->unit->device, "Detect discontinuity of cycle: %d %d\n",
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -310,12 +310,6 @@ check_mptcp_disabled()
+ 	return 0
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ do_ping()
+ {
+ 	local listener_ns="$1"
+@@ -324,7 +318,7 @@ do_ping()
+ 	local ping_args="-q -c 1"
+ 	local rc=0
+ 
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		$ipv6 || return 0
+ 		ping_args="${ping_args} -6"
+ 	fi
+@@ -620,12 +614,12 @@ run_tests_lo()
+ 	fi
+ 
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 	else
+ 		local_addr="0.0.0.0"
+@@ -693,7 +687,7 @@ run_test_transparent()
+ 	TEST_GROUP="${msg}"
+ 
+ 	# skip if we don't want v6
+-	if ! $ipv6 && is_v6 "${connect_addr}"; then
++	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
+ 		return 0
+ 	fi
+ 
+@@ -726,7 +720,7 @@ EOF
+ 	fi
+ 
+ 	local local_addr
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		r6flag="-6"
+ 	else
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -592,12 +592,6 @@ link_failure()
+ 	done
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ # $1: ns, $2: port
+ wait_local_port_listen()
+ {
+@@ -877,7 +871,7 @@ pm_nl_set_endpoint()
+ 		local id=10
+ 		while [ $add_nr_ns1 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::1"
+ 			else
+ 				addr="10.0.$counter.1"
+@@ -929,7 +923,7 @@ pm_nl_set_endpoint()
+ 		local id=20
+ 		while [ $add_nr_ns2 -gt 0 ]; do
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:$counter::2"
+ 			else
+ 				addr="10.0.$counter.2"
+@@ -971,7 +965,7 @@ pm_nl_set_endpoint()
+ 			pm_nl_flush_endpoint ${connector_ns}
+ 		elif [ $rm_nr_ns2 -eq 9 ]; then
+ 			local addr
+-			if is_v6 "${connect_addr}"; then
++			if mptcp_lib_is_v6 "${connect_addr}"; then
+ 				addr="dead:beef:1::2"
+ 			else
+ 				addr="10.0.1.2"
+@@ -3336,7 +3330,7 @@ userspace_pm_rm_sf()
+ 	local cnt
+ 
+ 	[ "$1" == "$ns2" ] && evts=$evts_ns2
+-	if is_v6 $2; then ip=6; fi
++	if mptcp_lib_is_v6 $2; then ip=6; fi
+ 	tk=$(mptcp_lib_evts_get_info token "$evts")
+ 	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
+ 	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -227,6 +227,11 @@ mptcp_lib_kill_wait() {
+ 	wait "${1}" 2>/dev/null
+ }
+ 
++# $1: IP address
++mptcp_lib_is_v6() {
++	[ -z "${1##*:*}" ]
++}
++
+ # $1: ns, $2: MIB counter
+ mptcp_lib_get_counter() {
+ 	local ns="${1}"
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -162,12 +162,6 @@ check_transfer()
+ 	return 0
+ }
+ 
+-# $1: IP address
+-is_v6()
+-{
+-	[ -z "${1##*:*}" ]
+-}
+-
+ do_transfer()
+ {
+ 	local listener_ns="$1"
+@@ -184,7 +178,7 @@ do_transfer()
+ 	local mptcp_connect="./mptcp_connect -r 20"
+ 
+ 	local local_addr ip
+-	if is_v6 "${connect_addr}"; then
++	if mptcp_lib_is_v6 "${connect_addr}"; then
+ 		local_addr="::"
+ 		ip=ipv6
+ 	else
 
 
 
