@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476E2870DB5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E53C870CC5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030F328FBF2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE77928934B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D0A200CD;
-	Mon,  4 Mar 2024 21:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FD341202;
+	Mon,  4 Mar 2024 21:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5uN5QG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oni/Nm8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A56DDCB;
-	Mon,  4 Mar 2024 21:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB0D10A1F;
+	Mon,  4 Mar 2024 21:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588214; cv=none; b=ZNdbTqpcrp/puBT+r8uL2uKn3q4wRXLcaZMeoofLP80UaNivflcCWusBuyj9rfPU2HramKpNC1o0zuZaUlIuEthePxZH5vnKesyyvx5Uzt2kdWr32Hu044mqXiK9N8W9vvGP57HpLAIEmn8CMAR8z349lFGAutTX+pTbijpSbQQ=
+	t=1709587711; cv=none; b=HCEiCaT7bI3sRCpGrjppZZ3qJmkaqi+w1Dfo6/bGvYzavJWRP/1ToizcnZKv4B0U77w6lPwILRtGt+3F/AHVYnABOOGrUN9gcoECmZwAJwsfPYKT9TY5jv6OSTMKeeu2v9lg3m+eVnNM4m5DNO8wH+gj3NVAdiKRwwu1xZEmOBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588214; c=relaxed/simple;
-	bh=MrvJBib84WWm7uKk/1piyiGeLQS2O8LkXgUgVu3E8MM=;
+	s=arc-20240116; t=1709587711; c=relaxed/simple;
+	bh=65EmYOa3J/V2C/PXlLoH+5VIoQCDx7fiY95fijBZhuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Na1Ucgv+7YfMXTr9sbBHrp1hdh4H/kYadk3PyrZr2yvwjQvRmPfnTkfvNkOSj7klfSaV4N/D5WMw+xQxZuJaYnjd6OCr21WSXIfvTq+Tk81LW8/jjn/7yxaG2ATPmaYii+DVyM8+d/3tzJ1k5dudXMsBL5mpXFOpICADjY7lLeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5uN5QG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF3CC433C7;
-	Mon,  4 Mar 2024 21:36:53 +0000 (UTC)
+	 MIME-Version; b=pXrW8GcHZdZhfM3YMldOl3+CYe4A7/wa5ll++bPnDiOthqoH964fq4xsbU3dr0hWzsQXEtMfX6MMpxxcFJOFxsSo7pPPsD2+fdfuTAK5g/dUjMCyiXHvhHPvXrAoXekAWCJK9DXOIxYACgF9V/EoRsQBBaqNBp7LAJyJdaVGQs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oni/Nm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CA0C433F1;
+	Mon,  4 Mar 2024 21:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588214;
-	bh=MrvJBib84WWm7uKk/1piyiGeLQS2O8LkXgUgVu3E8MM=;
+	s=korg; t=1709587711;
+	bh=65EmYOa3J/V2C/PXlLoH+5VIoQCDx7fiY95fijBZhuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5uN5QG2yNnUTHzQ8kyixLxS+OF28CM8zbrGnh5KEJqEpKNLjabY2unrdbeo4q7Ti
-	 53NBeJpFBzwZB3CmTUxuZNe8rPcP1d2aZgOlEUzo6INadfo0RyErxlMhDvn85w4Ue+
-	 fyEu9m5Bgi/OEq0IZLihx+V/x1CT4+HPDdPzxfLU=
+	b=0oni/Nm8tMajgu+Nc3kQtdZt+c07BMZePi9a6JN9Abm6HW+v85KbXu0NabtkGBuEu
+	 zvIvKIKO72RhMV0T8oPFYTUUU7LzL0l1qw6nBe0RCG6QcUBX/slF2q4EZct6GLkbaY
+	 2W2pvrGuQO+o6LFbrUruSVkCn++i44P1EsE5Wexg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/143] ublk: move ublk_cancel_dev() out of ub->mutex
+Subject: [PATCH 6.7 060/162] RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs
 Date: Mon,  4 Mar 2024 21:22:05 +0000
-Message-ID: <20240304211550.068059273@linuxfoundation.org>
+Message-ID: <20240304211553.770897868@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Conor Dooley <conor@kernel.org>
 
-[ Upstream commit 85248d670b71d9edda9459ee14fdc85c8e9632c0 ]
+[ Upstream commit d82f32202e0df7bf40d4b67c8a4ff9cea32df4d9 ]
 
-ublk_cancel_dev() just calls ublk_cancel_queue() to cancel all pending
-io commands after ublk request queue is idle. The only protection is just
-the read & write of ubq->nr_io_ready and avoid duplicated command cancel,
-so add one per-queue lock with cancel flag for providing this protection,
-meantime move ublk_cancel_dev() out of ub->mutex.
+Before attempting to support the pre-ratification version of vector
+found on older T-Head CPUs, disallow "v" in riscv,isa on these
+platforms. The deprecated property has no clear way to communicate
+the specific version of vector that is supported and much of the vendor
+provided software puts "v" in the isa string. riscv,isa-extensions
+should be used instead. This should not be too much of a burden for
+these systems, as the vendor shipped devicetrees and firmware do not
+work with a mainline kernel and will require updating.
 
-Then we needn't to call io_uring_cmd_complete_in_task() to cancel
-pending command. And the same cancel logic will be re-used for
-cancelable uring command.
+We can limit this restriction to only ignore v in riscv,isa on CPUs
+that report T-Head's vendor ID and a zero marchid. Newer T-Head CPUs
+that support the ratified version of vector should report non-zero
+marchid, according to Guo Ren [1].
 
-This patch basically reverts commit ac5902f84bb5 ("ublk: fix AB-BA lockdep warning").
-
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20231009093324.957829-4-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/linux-riscv/CAJF2gTRy5eK73=d6s7CVy9m9pB8p4rAoMHM3cZFwzg=AuF7TDA@mail.gmail.com/ [1]
+Fixes: dc6667a4e7e3 ("riscv: Extending cpufeature.c to detect V-extension")
+Co-developed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20240223-tidings-shabby-607f086cb4d7@spud
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 40 +++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+ arch/riscv/kernel/cpufeature.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 630ddfe6657bc..f4e0573c47114 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -115,6 +115,9 @@ struct ublk_uring_cmd_pdu {
-  */
- #define UBLK_IO_FLAG_NEED_GET_DATA 0x08
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index b3785ffc15703..92a26f8b18450 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -22,6 +22,7 @@
+ #include <asm/hwprobe.h>
+ #include <asm/patch.h>
+ #include <asm/processor.h>
++#include <asm/sbi.h>
+ #include <asm/vector.h>
  
-+/* atomic RW with ubq->cancel_lock */
-+#define UBLK_IO_FLAG_CANCELED	0x80000000
-+
- struct ublk_io {
- 	/* userspace buffer address from io cmd */
- 	__u64	addr;
-@@ -139,6 +142,7 @@ struct ublk_queue {
- 	bool force_abort;
- 	bool timeout;
- 	unsigned short nr_io_ready;	/* how many ios setup */
-+	spinlock_t		cancel_lock;
- 	struct ublk_device *dev;
- 	struct ublk_io ios[];
- };
-@@ -1477,28 +1481,28 @@ static inline bool ublk_queue_ready(struct ublk_queue *ubq)
- 	return ubq->nr_io_ready == ubq->q_depth;
- }
+ #include "copy-unaligned.h"
+@@ -401,6 +402,20 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
+ 			set_bit(RISCV_ISA_EXT_ZIHPM, isainfo->isa);
+ 		}
  
--static void ublk_cmd_cancel_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
--{
--	io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, 0, issue_flags);
--}
--
- static void ublk_cancel_queue(struct ublk_queue *ubq)
- {
- 	int i;
- 
--	if (!ublk_queue_ready(ubq))
--		return;
--
- 	for (i = 0; i < ubq->q_depth; i++) {
- 		struct ublk_io *io = &ubq->ios[i];
- 
--		if (io->flags & UBLK_IO_FLAG_ACTIVE)
--			io_uring_cmd_complete_in_task(io->cmd,
--						      ublk_cmd_cancel_cb);
--	}
-+		if (io->flags & UBLK_IO_FLAG_ACTIVE) {
-+			bool done;
- 
--	/* all io commands are canceled */
--	ubq->nr_io_ready = 0;
-+			spin_lock(&ubq->cancel_lock);
-+			done = !!(io->flags & UBLK_IO_FLAG_CANCELED);
-+			if (!done)
-+				io->flags |= UBLK_IO_FLAG_CANCELED;
-+			spin_unlock(&ubq->cancel_lock);
-+
-+			if (!done)
-+				io_uring_cmd_done(io->cmd,
-+						UBLK_IO_RES_ABORT, 0,
-+						IO_URING_F_UNLOCKED);
++		/*
++		 * "V" in ISA strings is ambiguous in practice: it should mean
++		 * just the standard V-1.0 but vendors aren't well behaved.
++		 * Many vendors with T-Head CPU cores which implement the 0.7.1
++		 * version of the vector specification put "v" into their DTs.
++		 * CPU cores with the ratified spec will contain non-zero
++		 * marchid.
++		 */
++		if (acpi_disabled && riscv_cached_mvendorid(cpu) == THEAD_VENDOR_ID &&
++		    riscv_cached_marchid(cpu) == 0x0) {
++			this_hwcap &= ~isa2hwcap[RISCV_ISA_EXT_v];
++			clear_bit(RISCV_ISA_EXT_v, isainfo->isa);
 +		}
-+	}
- }
- 
- /* Cancel all pending commands, must be called after del_gendisk() returns */
-@@ -1545,7 +1549,6 @@ static void __ublk_quiesce_dev(struct ublk_device *ub)
- 	blk_mq_quiesce_queue(ub->ub_disk->queue);
- 	ublk_wait_tagset_rqs_idle(ub);
- 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
--	ublk_cancel_dev(ub);
- 	/* we are going to release task_struct of ubq_daemon and resets
- 	 * ->ubq_daemon to NULL. So in monitor_work, check on ubq_daemon causes UAF.
- 	 * Besides, monitor_work is not necessary in QUIESCED state since we have
-@@ -1568,6 +1571,7 @@ static void ublk_quiesce_work_fn(struct work_struct *work)
- 	__ublk_quiesce_dev(ub);
-  unlock:
- 	mutex_unlock(&ub->mutex);
-+	ublk_cancel_dev(ub);
- }
- 
- static void ublk_unquiesce_dev(struct ublk_device *ub)
-@@ -1607,8 +1611,8 @@ static void ublk_stop_dev(struct ublk_device *ub)
- 	put_disk(ub->ub_disk);
- 	ub->ub_disk = NULL;
-  unlock:
--	ublk_cancel_dev(ub);
- 	mutex_unlock(&ub->mutex);
-+	ublk_cancel_dev(ub);
- 	cancel_delayed_work_sync(&ub->monitor_work);
- }
- 
-@@ -1962,6 +1966,7 @@ static int ublk_init_queue(struct ublk_device *ub, int q_id)
- 	void *ptr;
- 	int size;
- 
-+	spin_lock_init(&ubq->cancel_lock);
- 	ubq->flags = ub->dev_info.flags;
- 	ubq->q_id = q_id;
- 	ubq->q_depth = ub->dev_info.queue_depth;
-@@ -2569,8 +2574,9 @@ static void ublk_queue_reinit(struct ublk_device *ub, struct ublk_queue *ubq)
- 	int i;
- 
- 	WARN_ON_ONCE(!(ubq->ubq_daemon && ubq_daemon_is_dying(ubq)));
 +
- 	/* All old ioucmds have to be completed */
--	WARN_ON_ONCE(ubq->nr_io_ready);
-+	ubq->nr_io_ready = 0;
- 	/* old daemon is PF_EXITING, put it now */
- 	put_task_struct(ubq->ubq_daemon);
- 	/* We have to reset it to NULL, otherwise ub won't accept new FETCH_REQ */
+ 		/*
+ 		 * All "okay" hart should have same isa. Set HWCAP based on
+ 		 * common capabilities of every "okay" hart, in case they don't
 -- 
 2.43.0
 
