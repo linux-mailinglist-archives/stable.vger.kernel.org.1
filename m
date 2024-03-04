@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06354870ECE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81E1870DC8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17C81F2547C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 480EEB277B6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94E77B3C3;
-	Mon,  4 Mar 2024 21:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4022D1F93F;
+	Mon,  4 Mar 2024 21:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy10zzYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2g4IaGsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665A5200CD;
-	Mon,  4 Mar 2024 21:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F146D8F58;
+	Mon,  4 Mar 2024 21:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588829; cv=none; b=lG+1MGElxcb62BjG2m9dNQwhyOEvSlbnGsfkP7gNaznoJxiuPDrYDZmYRluEiEHyb7V0x8FZmnZpWOgbjdS96ZXreWMqx8vaMg3yv6jFnd+R1KYGKnBIZyWelMX0hEoq/n2BQHkO3dzw5rJs6xq8gc62rzw37X/+HWdEN/LAFNs=
+	t=1709588261; cv=none; b=jT4VI3TXvikHtXcqsZQCp1FnI0xnzIHPfgAxSiCm7i5/ScqWqXF23cU8nCB8yNJRBT5EHl/XeYCc9MLH/StGUPf2kg748YwyJAoNbcvHhRF9ZEqSBmh1dLe57gBOMbsEdT7lbNphfEXvkjc0dd7llWshWJxQ5ptPzF+jbwVYEmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588829; c=relaxed/simple;
-	bh=0n6nD3YiMStxXwW4X2r2zjkYccV3JDr7EROAzf6LC/E=;
+	s=arc-20240116; t=1709588261; c=relaxed/simple;
+	bh=ymOkYHpPT/Td9lCTfihwj/me0h1CMVisu5eFXuOgZzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uH85GIWqQr6HQok0x4Mz5cLs0zucOybZ83huc/p3S0C/jrFMQnJ47oIavO0DHxQHKjTFenK/mD28NCAtMslDX2fnuJLkrJwpiv2c4L2L5aghxH3O4TKUgiP7kg0OWpQPpgSAViTRoKrPzsk5KbvFDjKekimFrcqrenG7S5h4Ojc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy10zzYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4E3C433C7;
-	Mon,  4 Mar 2024 21:47:08 +0000 (UTC)
+	 MIME-Version; b=kHIjfCNsiSf5jJ8c2/hUaDL0kdyGh7Qc8wRcfztsI8t7cHjceImGJ9DRrWQpTcqm12Cts/OMSz3Kteuy2gvf+gLvL9PYBOrfQCNbk6hvXJ0Q5vEIaKDHQ+0ep0jBvtXuNH2fb7kA2Q7LmMYJxi+QuEHvH5exx8eyq5q4lTvMvvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2g4IaGsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829B3C433C7;
+	Mon,  4 Mar 2024 21:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588829;
-	bh=0n6nD3YiMStxXwW4X2r2zjkYccV3JDr7EROAzf6LC/E=;
+	s=korg; t=1709588260;
+	bh=ymOkYHpPT/Td9lCTfihwj/me0h1CMVisu5eFXuOgZzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vy10zzYdJtVPlhq8z6vJUDI4X49DXe+4cgmvq47Zgr99JHA4LFK6IH+w4lRwz0epA
-	 Cj3Eo318QsTImkLwPp1BufqnWTSNVo+w+IhGkhGNk3cd2ZRj+/Lo4HL27Jz70uJO9L
-	 6EkibHgR5X0NU0vAr87PbUMb5kBpS2+yrzeBXH14=
+	b=2g4IaGslOmFLC0VLKLzbYWplT3pJ7jOG7xX9NJK5+UiKhxqYQXreRXMjy0BE/X98c
+	 FUptMm/EndYP81WHJcAE/SG+tMrHtRM+rUd1XOAqXLT86+D4v3ObLQudRnVxs6+IL4
+	 6Q8o34u2XIrNhgXRNIWaHGxw+RkXvFlphr0LWakw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Bohac <jbohac@suse.cz>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 095/215] x86/e820: Dont reserve SETUP_RNG_SEED in e820
-Date: Mon,  4 Mar 2024 21:22:38 +0000
-Message-ID: <20240304211600.042011798@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/143] tls: fix peeking with sync+async decryption
+Date: Mon,  4 Mar 2024 21:22:39 +0000
+Message-ID: <20240304211551.187627233@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Bohac <jbohac@suse.cz>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 7fd817c906503b6813ea3b41f5fdf4192449a707 upstream.
+[ Upstream commit 6caaf104423d809b49a67ee6500191d063b40dc6 ]
 
-SETUP_RNG_SEED in setup_data is supplied by kexec and should
-not be reserved in the e820 map.
+If we peek from 2 records with a currently empty rx_list, and the
+first record is decrypted synchronously but the second record is
+decrypted async, the following happens:
+  1. decrypt record 1 (sync)
+  2. copy from record 1 to the userspace's msg
+  3. queue the decrypted record to rx_list for future read(!PEEK)
+  4. decrypt record 2 (async)
+  5. queue record 2 to rx_list
+  6. call process_rx_list to copy data from the 2nd record
 
-Doing so reserves 16 bytes of RAM when booting with kexec.
-(16 bytes because data->len is zeroed by parse_setup_data so only
-sizeof(setup_data) is reserved.)
+We currently pass copied=0 as skip offset to process_rx_list, so we
+end up copying once again from the first record. We should skip over
+the data we've already copied.
 
-When kexec is used repeatedly, each boot adds two entries in the
-kexec-provided e820 map as the 16-byte range splits a larger
-range of usable memory. Eventually all of the 128 available entries
-get used up. The next split will result in losing usable memory
-as the new entries cannot be added to the e820 map.
+Seen with selftest tls.12_aes_gcm.recv_peek_large_buf_mult_recs
 
-Fixes: 68b8e9713c8e ("x86/setup: Use rng seeds from setup_data")
-Signed-off-by: Jiri Bohac <jbohac@suse.cz>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZbmOjKnARGiaYBd5@dwarf.suse.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/1b132d2b2b99296bfde54e8a67672d90d6d16e71.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/e820.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/tls/tls_sw.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..b66f540de054 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1017,10 +1017,12 @@ void __init e820__reserve_setup_data(void)
- 		e820__range_update(pa_data, sizeof(*data)+data->len, E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index adc65a21cd667..0af2a698c3d08 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1950,6 +1950,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	struct strp_msg *rxm;
+ 	struct tls_msg *tlm;
+ 	ssize_t copied = 0;
++	ssize_t peeked = 0;
+ 	bool async = false;
+ 	int target, err;
+ 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
+@@ -2097,8 +2098,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 			if (err < 0)
+ 				goto put_on_rx_list_err;
  
- 		/*
--		 * SETUP_EFI and SETUP_IMA are supplied by kexec and do not need
--		 * to be reserved.
-+		 * SETUP_EFI, SETUP_IMA and SETUP_RNG_SEED are supplied by
-+		 * kexec and do not need to be reserved.
- 		 */
--		if (data->type != SETUP_EFI && data->type != SETUP_IMA)
-+		if (data->type != SETUP_EFI &&
-+		    data->type != SETUP_IMA &&
-+		    data->type != SETUP_RNG_SEED)
- 			e820__range_update_kexec(pa_data,
- 						 sizeof(*data) + data->len,
- 						 E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
+-			if (is_peek)
++			if (is_peek) {
++				peeked += chunk;
+ 				goto put_on_rx_list;
++			}
+ 
+ 			if (partially_consumed) {
+ 				rxm->offset += chunk;
+@@ -2137,8 +2140,8 @@ int tls_sw_recvmsg(struct sock *sk,
+ 
+ 		/* Drain records from the rx_list & copy if required */
+ 		if (is_peek || is_kvec)
+-			err = process_rx_list(ctx, msg, &control, copied,
+-					      decrypted, is_peek, NULL);
++			err = process_rx_list(ctx, msg, &control, copied + peeked,
++					      decrypted - peeked, is_peek, NULL);
+ 		else
+ 			err = process_rx_list(ctx, msg, &control, 0,
+ 					      async_copy_bytes, is_peek, NULL);
 -- 
-2.44.0
+2.43.0
 
 
 
