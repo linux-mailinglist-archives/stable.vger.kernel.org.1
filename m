@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581FF870F18
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FDB870DFF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2EF61F21FF3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4900B21308
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437267BAFF;
-	Mon,  4 Mar 2024 21:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0223E200D4;
+	Mon,  4 Mar 2024 21:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5FhnRdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIF9+RzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194F79DCA;
-	Mon,  4 Mar 2024 21:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BB58F58;
+	Mon,  4 Mar 2024 21:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589047; cv=none; b=QMXYpIjgqZ3l7BPwcp4Av+WsO/lckir2iVaOJ70ufG8XIVz6xLIMwVCqumGyLTcUWkeds1soqZKRVPlnoypsFenyxBjYr/a/zx/DoBYclK5fVq8IpL8fcfD2xw3BEmK0+j3ceBVEv6yf1sG9cs0s0LGWBnmxorgU3I36xmJhbjM=
+	t=1709588389; cv=none; b=ZPovVeiZX+XRVwLzbUih6QdslnurhC3j/pARTiNUnhYVyQzVdF7v4fozzKgkbKMFDDbaa3BQlyv17pnJRSRvAPnP3xKv7sZY39swr3bKyelVlHvx+gpg+AjsVaC+vzn7od6jXwAnDwZgrxTiV6UYKe/rpR1Z2bpTFtcBMhvNfVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589047; c=relaxed/simple;
-	bh=HsTvfgKW2A9EgsM+uFua0IQ5JxZb7B/CNvVFKDZUbIY=;
+	s=arc-20240116; t=1709588389; c=relaxed/simple;
+	bh=G5lPFO4xYhoo52DPIxijUGsOtYUj002Tc4JfdS34kXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggw9A6PmjlRXyRj5CTOgkArQYTyOo3A1IMdd84uFWixYi4AIFQKNTCHjbKJUuu3X1tD/BSxB9DrYJHVAqEa7uXTyAHljbWRIWQ3t+r9DjREUOSD0n9JD5PvJDmzesJ0YYmpc3DBLbS1D5Ztsr/3/wF33kEYqwwVWAj8XEOwlDco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5FhnRdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A81C433C7;
-	Mon,  4 Mar 2024 21:50:46 +0000 (UTC)
+	 MIME-Version; b=ixa3bSzkjMIImn7IMYB68U5CMaE143oQi9YDjG4lTEG9Yq3yZ6Eq/82Pvqi3My6NLUV97s08aA+illjY4N9iEzGFN575QmLCRZlmy4SRTdNDYlgQh1z4SjN84iEYpfIIPSLhgWfsy79htUBdhlbHPkrWGzNyVDwQorQ9a7v4dNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIF9+RzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48381C433C7;
+	Mon,  4 Mar 2024 21:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589046;
-	bh=HsTvfgKW2A9EgsM+uFua0IQ5JxZb7B/CNvVFKDZUbIY=;
+	s=korg; t=1709588389;
+	bh=G5lPFO4xYhoo52DPIxijUGsOtYUj002Tc4JfdS34kXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5FhnRdRyCIZpp0QGHyqGVPC1g5uJMfe2J5zwsuW+TyGCe/yAleyWX96uP1gedLH6
-	 SSXP6X+ipxKvUAZwG8J2SvT8+Th/0z+zvXLnEYmUfLV1IQqsZ93kqRERSX//s00ntt
-	 O9yHex2/zu0HL4U/3qPRwbCfXTyKS4yUkvo4ed40=
+	b=TIF9+RzZrei/tBHljN1AwGT7SSNPJbOG46HAcFmxYQ2vhmYXXGJIdUzhe0GykgIkO
+	 zInLmwjBp5P6awefZdfTaKBaG4u//H3DWKdeStyWv0Se44b8/LBPhX6GSJzQCH6Lzx
+	 R3o9ZNrNsjFd9SkgeUbCO0LjNewenar7cjifaR4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 146/215] nfsd: move nfserrno() to vfs.c
+	syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com,
+	Eric Biggers <ebiggers@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 089/143] crypto: arm64/neonbs - fix out-of-bounds access on short input
 Date: Mon,  4 Mar 2024 21:23:29 +0000
-Message-ID: <20240304211601.669629174@linuxfoundation.org>
+Message-ID: <20240304211552.768326644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,236 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit cb12fae1c34b1fa7eaae92c5aadc72d86d7fae19 ]
+commit 1c0cf6d19690141002889d72622b90fc01562ce4 upstream.
 
-nfserrno() is common to all nfs versions, but nfsproc.c is specifically
-for NFSv2. Move it to vfs.c, and the prototype to vfs.h.
+The bit-sliced implementation of AES-CTR operates on blocks of 128
+bytes, and will fall back to the plain NEON version for tail blocks or
+inputs that are shorter than 128 bytes to begin with.
 
-While we're in here, remove the #ifdef EDQUOT check in this function.
-It's apparently a holdover from the initial merge of the nfsd code in
-1997. No other place in the kernel checks that that symbol is defined
-before using it, so I think we can dispense with it here.
+It will call straight into the plain NEON asm helper, which performs all
+memory accesses in granules of 16 bytes (the size of a NEON register).
+For this reason, the associated plain NEON glue code will copy inputs
+shorter than 16 bytes into a temporary buffer, given that this is a rare
+occurrence and it is not worth the effort to work around this in the asm
+code.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The fallback from the bit-sliced NEON version fails to take this into
+account, potentially resulting in out-of-bounds accesses. So clone the
+same workaround, and use a temp buffer for short in/outputs.
+
+Fixes: fc074e130051 ("crypto: arm64/aes-neonbs-ctr - fallback to plain NEON for final chunk")
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/blocklayout.c    |    1 
- fs/nfsd/blocklayoutxdr.c |    1 
- fs/nfsd/export.h         |    1 
- fs/nfsd/flexfilelayout.c |    1 
- fs/nfsd/nfs4idmap.c      |    1 
- fs/nfsd/nfsproc.c        |   62 ----------------------------------------------
- fs/nfsd/vfs.c            |   63 +++++++++++++++++++++++++++++++++++++++++++++++
- fs/nfsd/vfs.h            |    1 
- 8 files changed, 68 insertions(+), 63 deletions(-)
+ arch/arm64/crypto/aes-neonbs-glue.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -12,6 +12,7 @@
- #include "blocklayoutxdr.h"
- #include "pnfs.h"
- #include "filecache.h"
-+#include "vfs.h"
- 
- #define NFSDDBG_FACILITY	NFSDDBG_PNFS
- 
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -9,6 +9,7 @@
- 
- #include "nfsd.h"
- #include "blocklayoutxdr.h"
-+#include "vfs.h"
- 
- #define NFSDDBG_FACILITY	NFSDDBG_PNFS
- 
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -115,7 +115,6 @@ struct svc_export *	rqst_find_fsidzero_e
- int			exp_rootfh(struct net *, struct auth_domain *,
- 					char *path, struct knfsd_fh *, int maxsize);
- __be32			exp_pseudoroot(struct svc_rqst *, struct svc_fh *);
--__be32			nfserrno(int errno);
- 
- static inline void exp_put(struct svc_export *exp)
- {
---- a/fs/nfsd/flexfilelayout.c
-+++ b/fs/nfsd/flexfilelayout.c
-@@ -15,6 +15,7 @@
- 
- #include "flexfilelayoutxdr.h"
- #include "pnfs.h"
-+#include "vfs.h"
- 
- #define NFSDDBG_FACILITY	NFSDDBG_PNFS
- 
---- a/fs/nfsd/nfs4idmap.c
-+++ b/fs/nfsd/nfs4idmap.c
-@@ -41,6 +41,7 @@
- #include "idmap.h"
- #include "nfsd.h"
- #include "netns.h"
-+#include "vfs.h"
- 
- /*
-  * Turn off idmapping when using AUTH_SYS.
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -848,65 +848,3 @@ const struct svc_version nfsd_version2 =
- 	.vs_dispatch	= nfsd_dispatch,
- 	.vs_xdrsize	= NFS2_SVC_XDRSIZE,
- };
--
--/*
-- * Map errnos to NFS errnos.
-- */
--__be32
--nfserrno (int errno)
--{
--	static struct {
--		__be32	nfserr;
--		int	syserr;
--	} nfs_errtbl[] = {
--		{ nfs_ok, 0 },
--		{ nfserr_perm, -EPERM },
--		{ nfserr_noent, -ENOENT },
--		{ nfserr_io, -EIO },
--		{ nfserr_nxio, -ENXIO },
--		{ nfserr_fbig, -E2BIG },
--		{ nfserr_stale, -EBADF },
--		{ nfserr_acces, -EACCES },
--		{ nfserr_exist, -EEXIST },
--		{ nfserr_xdev, -EXDEV },
--		{ nfserr_mlink, -EMLINK },
--		{ nfserr_nodev, -ENODEV },
--		{ nfserr_notdir, -ENOTDIR },
--		{ nfserr_isdir, -EISDIR },
--		{ nfserr_inval, -EINVAL },
--		{ nfserr_fbig, -EFBIG },
--		{ nfserr_nospc, -ENOSPC },
--		{ nfserr_rofs, -EROFS },
--		{ nfserr_mlink, -EMLINK },
--		{ nfserr_nametoolong, -ENAMETOOLONG },
--		{ nfserr_notempty, -ENOTEMPTY },
--#ifdef EDQUOT
--		{ nfserr_dquot, -EDQUOT },
--#endif
--		{ nfserr_stale, -ESTALE },
--		{ nfserr_jukebox, -ETIMEDOUT },
--		{ nfserr_jukebox, -ERESTARTSYS },
--		{ nfserr_jukebox, -EAGAIN },
--		{ nfserr_jukebox, -EWOULDBLOCK },
--		{ nfserr_jukebox, -ENOMEM },
--		{ nfserr_io, -ETXTBSY },
--		{ nfserr_notsupp, -EOPNOTSUPP },
--		{ nfserr_toosmall, -ETOOSMALL },
--		{ nfserr_serverfault, -ESERVERFAULT },
--		{ nfserr_serverfault, -ENFILE },
--		{ nfserr_io, -EREMOTEIO },
--		{ nfserr_stale, -EOPENSTALE },
--		{ nfserr_io, -EUCLEAN },
--		{ nfserr_perm, -ENOKEY },
--		{ nfserr_no_grace, -ENOGRACE},
--	};
--	int	i;
--
--	for (i = 0; i < ARRAY_SIZE(nfs_errtbl); i++) {
--		if (nfs_errtbl[i].syserr == errno)
--			return nfs_errtbl[i].nfserr;
--	}
--	WARN_ONCE(1, "nfsd: non-standard errno: %d\n", errno);
--	return nfserr_io;
--}
--
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -49,6 +49,69 @@
- 
- #define NFSDDBG_FACILITY		NFSDDBG_FILEOP
- 
-+/**
-+ * nfserrno - Map Linux errnos to NFS errnos
-+ * @errno: POSIX(-ish) error code to be mapped
-+ *
-+ * Returns the appropriate (net-endian) nfserr_* (or nfs_ok if errno is 0). If
-+ * it's an error we don't expect, log it once and return nfserr_io.
-+ */
-+__be32
-+nfserrno (int errno)
-+{
-+	static struct {
-+		__be32	nfserr;
-+		int	syserr;
-+	} nfs_errtbl[] = {
-+		{ nfs_ok, 0 },
-+		{ nfserr_perm, -EPERM },
-+		{ nfserr_noent, -ENOENT },
-+		{ nfserr_io, -EIO },
-+		{ nfserr_nxio, -ENXIO },
-+		{ nfserr_fbig, -E2BIG },
-+		{ nfserr_stale, -EBADF },
-+		{ nfserr_acces, -EACCES },
-+		{ nfserr_exist, -EEXIST },
-+		{ nfserr_xdev, -EXDEV },
-+		{ nfserr_mlink, -EMLINK },
-+		{ nfserr_nodev, -ENODEV },
-+		{ nfserr_notdir, -ENOTDIR },
-+		{ nfserr_isdir, -EISDIR },
-+		{ nfserr_inval, -EINVAL },
-+		{ nfserr_fbig, -EFBIG },
-+		{ nfserr_nospc, -ENOSPC },
-+		{ nfserr_rofs, -EROFS },
-+		{ nfserr_mlink, -EMLINK },
-+		{ nfserr_nametoolong, -ENAMETOOLONG },
-+		{ nfserr_notempty, -ENOTEMPTY },
-+		{ nfserr_dquot, -EDQUOT },
-+		{ nfserr_stale, -ESTALE },
-+		{ nfserr_jukebox, -ETIMEDOUT },
-+		{ nfserr_jukebox, -ERESTARTSYS },
-+		{ nfserr_jukebox, -EAGAIN },
-+		{ nfserr_jukebox, -EWOULDBLOCK },
-+		{ nfserr_jukebox, -ENOMEM },
-+		{ nfserr_io, -ETXTBSY },
-+		{ nfserr_notsupp, -EOPNOTSUPP },
-+		{ nfserr_toosmall, -ETOOSMALL },
-+		{ nfserr_serverfault, -ESERVERFAULT },
-+		{ nfserr_serverfault, -ENFILE },
-+		{ nfserr_io, -EREMOTEIO },
-+		{ nfserr_stale, -EOPENSTALE },
-+		{ nfserr_io, -EUCLEAN },
-+		{ nfserr_perm, -ENOKEY },
-+		{ nfserr_no_grace, -ENOGRACE},
-+	};
-+	int	i;
+--- a/arch/arm64/crypto/aes-neonbs-glue.c
++++ b/arch/arm64/crypto/aes-neonbs-glue.c
+@@ -227,8 +227,19 @@ static int ctr_encrypt(struct skcipher_r
+ 			src += blocks * AES_BLOCK_SIZE;
+ 		}
+ 		if (nbytes && walk.nbytes == walk.total) {
++			u8 buf[AES_BLOCK_SIZE];
++			u8 *d = dst;
 +
-+	for (i = 0; i < ARRAY_SIZE(nfs_errtbl); i++) {
-+		if (nfs_errtbl[i].syserr == errno)
-+			return nfs_errtbl[i].nfserr;
-+	}
-+	WARN_ONCE(1, "nfsd: non-standard errno: %d\n", errno);
-+	return nfserr_io;
-+}
++			if (unlikely(nbytes < AES_BLOCK_SIZE))
++				src = dst = memcpy(buf + sizeof(buf) - nbytes,
++						   src, nbytes);
 +
- /* 
-  * Called from nfsd_lookup and encode_dirent. Check if we have crossed 
-  * a mount point.
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -60,6 +60,7 @@ static inline void nfsd_attrs_free(struc
- 	posix_acl_release(attrs->na_dpacl);
- }
- 
-+__be32		nfserrno (int errno);
- int		nfsd_cross_mnt(struct svc_rqst *rqstp, struct dentry **dpp,
- 		                struct svc_export **expp);
- __be32		nfsd_lookup(struct svc_rqst *, struct svc_fh *,
+ 			neon_aes_ctr_encrypt(dst, src, ctx->enc, ctx->key.rounds,
+ 					     nbytes, walk.iv);
++
++			if (unlikely(nbytes < AES_BLOCK_SIZE))
++				memcpy(d, dst, nbytes);
++
+ 			nbytes = 0;
+ 		}
+ 		kernel_neon_end();
 
 
 
