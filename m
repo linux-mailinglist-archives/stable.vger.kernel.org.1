@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8031C870EB9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5939E870DAB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359AB1F21773
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2534B27248
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88637200D4;
-	Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF4246BA0;
+	Mon,  4 Mar 2024 21:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldyLRwUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObXkq7Cd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E1A11193;
-	Mon,  4 Mar 2024 21:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDE2DDCB;
+	Mon,  4 Mar 2024 21:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588782; cv=none; b=r/wqa/ugLILe0Qs+YCnl6bTVPlrh7yIw9cA8/NBoT9Wzo2sr69R9dUx2jzXFRGPsDjAhWBn4ynC9Jnrh8Z/L2iVrsE8wcaIPgBLyAV+cbtJB5CjixxrTlXnZaPZH1OZ3ABzLJ9L+QODgpHEeGKV/Wcwjf8488aufzWbSg2AF2ik=
+	t=1709588190; cv=none; b=RrS8hMNcKnkTbfZf7U9cuubnJE3XdkBSmvtGRcOJrs8nLOEi2NfTCi9oaIwEu33UYFM5WM7gjx3KYzT7T7YNZkfeQIGExD5xPFgHivcvpuvgW3mFz5GRO/f4wpWRHwzQ4LcaTWQdvNYoZBLQaVR4JOYkiQMqR2SY9PIf0QvnXp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588782; c=relaxed/simple;
-	bh=c5qA1cZgyhViFFWouX5E7j+Thl/HIxiq6gSq3ZeMAO0=;
+	s=arc-20240116; t=1709588190; c=relaxed/simple;
+	bh=id8/kLCkDxfH+W8XWaiqc/GJvWJb5bn3O84BPZS8AJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZO/03nIlWB7JEKtgbX6xpgOF7yrudbimQNYW3B2zSu85xSKBpLVGQ7CpFk2hYrIv2FHv4swCxbGiy8aQ7mxRKRRBYo1xzvr+UVft+bzilNiYOJCkdKIrp1epROzriNjI2tCs/dUiUB1kMBYDnCN/YP/W1OD8Mrj3fxsYCQqgNYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldyLRwUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBAEC433F1;
-	Mon,  4 Mar 2024 21:46:21 +0000 (UTC)
+	 MIME-Version; b=FNtHb/47frXSXp9QYO/dx6Im6qjNuythhK6ewu1IMosdfu30lkSzrR+T844Pi4WlYPu4Z4hLzgaH9wI864nu3uy62cdepv0C+E6B/1aFeFU+zJtQ8z1iX3+Qd2QdvCEf8mv6aG9BVYZmpE4I+9xHytt1eXcY+KzhGmmPei4+dh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObXkq7Cd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5836FC433F1;
+	Mon,  4 Mar 2024 21:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588782;
-	bh=c5qA1cZgyhViFFWouX5E7j+Thl/HIxiq6gSq3ZeMAO0=;
+	s=korg; t=1709588190;
+	bh=id8/kLCkDxfH+W8XWaiqc/GJvWJb5bn3O84BPZS8AJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldyLRwUJsZeuy9K2bN88j5j+QyzWU0d+Cq1c6VhLqtgQ6iU8VEfSNfcRLEAvusZyz
-	 EJVnvsLkWwq8RvQ6LVdeP/aj3VRArdy2r2qPIUVeBKkOvAbE1MF6u2CNGzlJ8LiRP/
-	 7Vuu6XYRpyV5b0Ko3xJDzEUqA45VPOxwGPrx28XM=
+	b=ObXkq7CdSFi0bemgRLpZYhpPnnp0vjsQxKolu/IhfpWg9VfmeQ5rZ4cQ68jOerCKO
+	 sS1GPk+qeuihS9rMz3gvw16P+XUgE28hR1U82080yW8LPggxpvRCKl8olvfPuh56jm
+	 iO3Qvre00LRNis6qj8NppMP+S5oLU56GFxvGZ2Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Dimitris Vlachos <dvlachos@ics.forth.gr>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/215] riscv: Sparse-Memory/vmemmap out-of-bounds fix
+Subject: [PATCH 6.6 013/143] tun: Fix xdp_rxq_infos queue_index when detaching
 Date: Mon,  4 Mar 2024 21:22:13 +0000
-Message-ID: <20240304211559.205772451@linuxfoundation.org>
+Message-ID: <20240304211550.359230920@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitris Vlachos <dvlachos@ics.forth.gr>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit a11dd49dcb9376776193e15641f84fcc1e5980c9 ]
+[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
 
-Offset vmemmap so that the first page of vmemmap will be mapped
-to the first page of physical memory in order to ensure that
-vmemmap’s bounds will be respected during
-pfn_to_page()/page_to_pfn() operations.
-The conversion macros will produce correct SV39/48/57 addresses
-for every possible/valid DRAM_BASE inside the physical memory limits.
+When a queue(tfile) is detached, we only update tfile's queue_index,
+but do not update xdp_rxq_info's queue_index. This patch fixes it.
 
-v2:Address Alex's comments
-
-Suggested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
-Reported-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
-Closes: https://lore.kernel.org/linux-riscv/20240202135030.42265-1-csd4492@csd.uoc.gr
-Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240229191723.32779-1-dvlachos@ics.forth.gr
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/tun.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 59bb53da473dd..63055c6ad2c25 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -79,7 +79,7 @@
-  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
-  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
-  */
--#define vmemmap		((struct page *)VMEMMAP_START)
-+#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 4a4f8c8e79fa1..8f95a562b8d0c 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -653,6 +653,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
+ 				   tun->tfiles[tun->numqueues - 1]);
+ 		ntfile = rtnl_dereference(tun->tfiles[index]);
+ 		ntfile->queue_index = index;
++		ntfile->xdp_rxq.queue_index = index;
+ 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
+ 				   NULL);
  
- #define PCI_IO_SIZE      SZ_16M
- #define PCI_IO_END       VMEMMAP_START
 -- 
 2.43.0
 
