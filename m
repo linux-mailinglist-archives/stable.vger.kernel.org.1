@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C583870E96
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595D5870CC9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57667288C7D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BA981C250A3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD56079DCE;
-	Mon,  4 Mar 2024 21:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7B81EB5A;
+	Mon,  4 Mar 2024 21:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjXvKP4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRf1Mrjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5231EB5A;
-	Mon,  4 Mar 2024 21:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B20510A1F;
+	Mon,  4 Mar 2024 21:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588709; cv=none; b=Xso1nB9QgmUOMPi7jEakESr54RD1GRfVw9Anf45bsIdTz1/1+XSTH+WhkjjsEHLqqIL7FU6yDlupG67ZHzsvMVWYSyPhnezlgywCfIcrUt3IlyJR9UuAhMasmn+ztymRIg7cpTvhp67QyANQRCECXuQBwMyUh6WHog85iy+tF8A=
+	t=1709587722; cv=none; b=uPbejp7U7+m3frbmb+TrX7KsCcPUyB2QRPYyWPNmw4hnBvFQ2LNaIIWNkreqfE3ZwTRdFTfFC2rt3/xCuyRsJcPIFKq3vwUtmQO2lz40vDYj1V8HmUq8tFYUpZtnD+D3IVHMYAHU5SA1NQO9r8zFO+TRH0OcWHQ7jTxU/+cnrlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588709; c=relaxed/simple;
-	bh=KuB4GaJX8ZtuaRX+BSFzO+PpQnLAPpgdp4FkTMOFq08=;
+	s=arc-20240116; t=1709587722; c=relaxed/simple;
+	bh=xm8WhyySrcO1Y6UmIiydfy8YJGDY3Y8SfUqIrkbl/aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D7+B+ucdI4pxs3+1ooePWIJUajPg1x8+pla1hR7LbJqlb5MoE9dPw9BQl2IBH0Gd+NhvdiBKa6dKuD7TIlAU5nzck8Lys7wG1WR6WIx70k5VtL5D7AYNs3eJm2eL4yjpL96KAN1oOg5r/HPdy/AsDC1by/hLcDvsnU2bDWJ2VPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjXvKP4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD02C433C7;
-	Mon,  4 Mar 2024 21:45:08 +0000 (UTC)
+	 MIME-Version; b=Nt1ZF4brsEW7rk81h4tXbkMiztRY48EmuG+gRX3gvwv7pZz9FZUx+szqSw2tjSPYbTfKvQcWY3CgHAIAVYdWU3Nxihmd6AIU6jeyXxHmqAOaBfy/cragAqAjE5/Ov0JO88EgQXmXhHTY0XU0/oBO15mZyj8Hr0D71TR5kseZTfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRf1Mrjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3E5C433C7;
+	Mon,  4 Mar 2024 21:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588709;
-	bh=KuB4GaJX8ZtuaRX+BSFzO+PpQnLAPpgdp4FkTMOFq08=;
+	s=korg; t=1709587722;
+	bh=xm8WhyySrcO1Y6UmIiydfy8YJGDY3Y8SfUqIrkbl/aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjXvKP4JerAPjCgeLKdHoQm9wHDDaEZQ7OyPRai7wxiChlbGvfwSnK1e7mAaR19bN
-	 MB5hgB5KUg8N1FIwkK0MIWF692QA2uySn5g5XFJ3EqyEKLnmH0Y0xSFdUNTwYVgOT2
-	 /HSL+hjg7ccyGm97Fv6xtPUtIvdwrxNTQyMYOlbI=
+	b=IRf1MrjqeC1DqqVF0ET9Omdir3y7YlhkmvcJa74UsVhEzHIqFw8hfLCk0pp7eXw3F
+	 48jpfXvhErVFA/nz/UCeB+q8N2S+v7K/3g1YjFGNY3PzTPXRTcV4MdEus5gKvsvOpA
+	 5toiEOY9uj1jgVOOEP5zSGjcZ7E7oEuAVJ2MlrNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-	Simon Horman <horms@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/215] Bluetooth: hci_sync: Check the correct flag before starting a scan
+Subject: [PATCH 6.7 040/162] tls: decrement decrypt_pending if no async completion will be called
 Date: Mon,  4 Mar 2024 21:21:45 +0000
-Message-ID: <20240304211558.337105099@linuxfoundation.org>
+Message-ID: <20240304211553.128053716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Dreßler <verdre@v0yd.nl>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 6b3899be24b16ff8ee0cb25f0bd59b01b15ba1d1 ]
+[ Upstream commit f7fa16d49837f947ee59492958f9e6f0e51d9a78 ]
 
-There's a very confusing mistake in the code starting a HCI inquiry: We're
-calling hci_dev_test_flag() to test for HCI_INQUIRY, but hci_dev_test_flag()
-checks hdev->dev_flags instead of hdev->flags. HCI_INQUIRY is a bit that's
-set on hdev->flags, not on hdev->dev_flags though.
+With mixed sync/async decryption, or failures of crypto_aead_decrypt,
+we increment decrypt_pending but we never do the corresponding
+decrement since tls_decrypt_done will not be called. In this case, we
+should decrement decrypt_pending immediately to avoid getting stuck.
 
-HCI_INQUIRY equals the integer 7, and in hdev->dev_flags, 7 means
-HCI_BONDABLE, so we were actually checking for HCI_BONDABLE here.
+For example, the prequeue prequeue test gets stuck with mixed
+modes (one async decrypt + one sync decrypt).
 
-The mistake is only present in the synchronous code for starting an inquiry,
-not in the async one. Also devices are typically bondable while doing an
-inquiry, so that might be the reason why nobody noticed it so far.
-
-Fixes: abfeea476c68 ("Bluetooth: hci_sync: Convert MGMT_OP_START_DISCOVERY")
-Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/c56d5fc35543891d5319f834f25622360e1bfbec.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 45d19294aa772..13ed6cbfade3e 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5482,7 +5482,7 @@ static int hci_inquiry_sync(struct hci_dev *hdev, u8 length)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index de96959336c48..9f23ba321efe6 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -289,6 +289,8 @@ static int tls_do_decryption(struct sock *sk,
+ 			return 0;
  
- 	bt_dev_dbg(hdev, "");
+ 		ret = crypto_wait_req(ret, &ctx->async_wait);
++	} else if (darg->async) {
++		atomic_dec(&ctx->decrypt_pending);
+ 	}
+ 	darg->async = false;
  
--	if (hci_dev_test_flag(hdev, HCI_INQUIRY))
-+	if (test_bit(HCI_INQUIRY, &hdev->flags))
- 		return 0;
- 
- 	hci_dev_lock(hdev);
 -- 
 2.43.0
 
