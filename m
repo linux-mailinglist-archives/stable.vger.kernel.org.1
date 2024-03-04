@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204CD870D44
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E0C870EF5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB0F28E2CD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE0D4B27926
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A17BAFB;
-	Mon,  4 Mar 2024 21:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8DB46BA0;
+	Mon,  4 Mar 2024 21:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSbJNW1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXpEI5jO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76D57BAF0;
-	Mon,  4 Mar 2024 21:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C032061675;
+	Mon,  4 Mar 2024 21:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587941; cv=none; b=eWcgJfGaPMVpvT6IhVuOiMa6p/4SyzOZeI/CORi37nmTRtTRCCeOt7V3WKORCcshzTzUd75OdjA5qxtQRbn7nfuyc6O+ZvAvG3gx/cScIvy/saj2r4DdFFZ4yd3ivR3urbVcQeNRhCuX+smGx/s+xnXJI/8CeM32NuDgXSMn2x8=
+	t=1709588970; cv=none; b=qMLNQfFudW36t+AhO+PNYWmSJqj/iSrUDU3EZXMJeWx6Sl4ynCNXkhX73rOmSC6UDWAbEXyhsO8LFWDSDyeyrhwQXJnMGnIVWz2wGH22uaLiCD9GcjxVB3+d6UX5D1JFYJTMxU2LjGPvXV2DSWaonb9adyAezzPWvC8dCnFKNic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587941; c=relaxed/simple;
-	bh=OVA0+2XrB5nLxXZNxoFORCzWCLWIeZ2lCc++BmMjVCk=;
+	s=arc-20240116; t=1709588970; c=relaxed/simple;
+	bh=h274z+cRGL3tK+n0YpNTcsWnl9toKTtxfD1afOmGF+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daqxf3ZMZulMZWwE1Ie6kI3Jwd8sV1yRVN8fSCzcSwSPzDBgP/8WR0fIg/qn4nVsiyRPmX1aSCc4qgyXuIXHPumt0dBxI88sDLR6Lhfs88VsS78qW7XW35QrFmg1Q2n1Zi4hFP9VCMao73ddNRESEpkzI04vmIwj5NMv7veBrxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSbJNW1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C39AC433C7;
-	Mon,  4 Mar 2024 21:32:20 +0000 (UTC)
+	 MIME-Version; b=HKM3C6DrpZyR+q9MQY/blhhqiSh1Gdr2UHyv/6ae6Yhy0v28K1ScoJ4LxCM6u3q4jFY3hMrZdquEZrEUWvvXHjvpY7HIBJLkK+JKEaF3QfwnDF/B4wokw0WIupBNVZ0K9D0PapzEvNOJv4MNmAXCeiW6Zwimv2yOOb+wFe9+NA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXpEI5jO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529FDC433F1;
+	Mon,  4 Mar 2024 21:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587940;
-	bh=OVA0+2XrB5nLxXZNxoFORCzWCLWIeZ2lCc++BmMjVCk=;
+	s=korg; t=1709588970;
+	bh=h274z+cRGL3tK+n0YpNTcsWnl9toKTtxfD1afOmGF+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSbJNW1TJvkN7bw/yXtlb6m8gNI7L5DoJ5Ogk1P0ml8PDnU7LRUJkAPOgn20wm4UP
-	 7KgrYzbwJbkZihxJT3GHRn9Cr5XYSCu+l3GAp69esJ2pFae83EuDIfwTaM5OqwWKvd
-	 TOKFO0ehUpMunKUtVPUy0Zt4zXHpKSxQjGyT4lQg=
+	b=bXpEI5jO8xLXu5KzT3d7rOveqsdlcm3zClJUNRuBCEGR0uVilqWpwwYxPr4sPvBXA
+	 jIS85iRwDz4zTZ3GjvZIxMB3lMlJTXeQsluQGhKbjbs7dyckHkp2Q4wu/eFwheLzAC
+	 L7wSicELO77+rOdJRSv2gFWEbtOBTS+9fLZ88J7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 124/162] mptcp: push at DSS boundaries
-Date: Mon,  4 Mar 2024 21:23:09 +0000
-Message-ID: <20240304211555.717506695@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 127/215] x86/efi: Make the deprecated EFI handover protocol optional
+Date: Mon,  4 Mar 2024 21:23:10 +0000
+Message-ID: <20240304211601.094999250@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit b9cd26f640a308ea314ad23532de9a8592cd09d2 upstream.
+commit cc3fdda2876e58a7e83e558ab51853cf106afb6a upstream.
 
-when inserting not contiguous data in the subflow write queue,
-the protocol creates a new skb and prevent the TCP stack from
-merging it later with already queued skbs by setting the EOR marker.
+The EFI handover protocol permits a bootloader to invoke the kernel as a
+EFI PE/COFF application, while passing a bootparams struct as a third
+argument to the entrypoint function call.
 
-Still no push flag is explicitly set at the end of previous GSO
-packet, making the aggregation on the receiver side sub-optimal -
-and packetdrill self-tests less predictable.
+This has no basis in the UEFI specification, and there are better ways
+to pass additional data to a UEFI application (UEFI configuration
+tables, UEFI variables, UEFI protocols) than going around the
+StartImage() boot service and jumping to a fixed offset in the loaded
+image, just to call a different function that takes a third parameter.
 
-Explicitly mark the end of not contiguous DSS with the push flag.
+The reason for handling struct bootparams in the bootloader was that the
+EFI stub could only load initrd images from the EFI system partition,
+and so passing it via struct bootparams was needed for loaders like
+GRUB, which pass the initrd in memory, and may load it from anywhere,
+including from the network. Another motivation was EFI mixed mode, which
+could not use the initrd loader in the EFI stub at all due to 32/64 bit
+incompatibilities (which will be fixed shortly [0]), and could not
+invoke the ordinary PE/COFF entry point either, for the same reasons.
 
-Fixes: 6d0060f600ad ("mptcp: Write MPTCP DSS headers to outgoing data packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-4-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Given that loaders such as GRUB already carried the bootparams handling
+in order to implement non-EFI boot, retaining that code and just passing
+bootparams to the EFI stub was a reasonable choice (although defining an
+alternate entrypoint could have been avoided.) However, the GRUB side
+changes never made it upstream, and are only shipped by some of the
+distros in their downstream versions.
+
+In the meantime, EFI support has been added to other Linux architecture
+ports, as well as to U-boot and systemd, including arch-agnostic methods
+for passing initrd images in memory [1], and for doing mixed mode boot
+[2], none of them requiring anything like the EFI handover protocol. So
+given that only out-of-tree distro GRUB relies on this, let's permit it
+to be omitted from the build, in preparation for retiring it completely
+at a later date. (Note that systemd-boot does have an implementation as
+well, but only uses it as a fallback for booting images that do not
+implement the LoadFile2 based initrd loading method, i.e., v5.8 or older)
+
+[0] https://lore.kernel.org/all/20220927085842.2860715-1-ardb@kernel.org/
+[1] ec93fc371f01 ("efi/libstub: Add support for loading the initrd from a device path")
+[2] 97aa276579b2 ("efi/x86: Add true mixed mode entry point into .compat section")
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-18-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/Kconfig                   |   17 +++++++++++++++++
+ arch/x86/boot/compressed/head_64.S |    4 +++-
+ arch/x86/boot/header.S             |    2 +-
+ arch/x86/boot/tools/build.c        |    2 ++
+ 4 files changed, 23 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1274,6 +1274,7 @@ static int mptcp_sendmsg_frag(struct soc
- 		mpext = mptcp_get_ext(skb);
- 		if (!mptcp_skb_can_collapse_to(data_seq, skb, mpext)) {
- 			TCP_SKB_CB(skb)->eor = 1;
-+			tcp_mark_push(tcp_sk(ssk), skb);
- 			goto alloc_skb;
- 		}
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1982,6 +1982,23 @@ config EFI_STUB
+ 
+ 	  See Documentation/admin-guide/efi-stub.rst for more information.
+ 
++config EFI_HANDOVER_PROTOCOL
++	bool "EFI handover protocol (DEPRECATED)"
++	depends on EFI_STUB
++	default y
++	help
++	  Select this in order to include support for the deprecated EFI
++	  handover protocol, which defines alternative entry points into the
++	  EFI stub.  This is a practice that has no basis in the UEFI
++	  specification, and requires a priori knowledge on the part of the
++	  bootloader about Linux/x86 specific ways of passing the command line
++	  and initrd, and where in memory those assets may be loaded.
++
++	  If in doubt, say Y. Even though the corresponding support is not
++	  present in upstream GRUB or other bootloaders, most distros build
++	  GRUB with numerous downstream patches applied, and may rely on the
++	  handover protocol as as result.
++
+ config EFI_MIXED
+ 	bool "EFI mixed-mode support"
+ 	depends on EFI_STUB && X86_64
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -286,7 +286,7 @@ SYM_FUNC_START(startup_32)
+ 	lret
+ SYM_FUNC_END(startup_32)
+ 
+-#ifdef CONFIG_EFI_MIXED
++#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
+ 	.org 0x190
+ SYM_FUNC_START(efi32_stub_entry)
+ 	add	$0x4, %esp		/* Discard return address */
+@@ -535,7 +535,9 @@ trampoline_return:
+ SYM_CODE_END(startup_64)
+ 
+ #ifdef CONFIG_EFI_STUB
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+ 	.org 0x390
++#endif
+ SYM_FUNC_START(efi64_stub_entry)
+ 	and	$~0xf, %rsp			/* realign the stack */
+ 	movq	%rdx, %rbx			/* save boot_params pointer */
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -406,7 +406,7 @@ xloadflags:
+ # define XLF1 0
+ #endif
+ 
+-#ifdef CONFIG_EFI_STUB
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+ # ifdef CONFIG_EFI_MIXED
+ #  define XLF23 (XLF_EFI_HANDOVER_32|XLF_EFI_HANDOVER_64)
+ # else
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -290,6 +290,7 @@ static void efi_stub_entry_update(void)
+ {
+ 	unsigned long addr = efi32_stub_entry;
+ 
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+ #ifdef CONFIG_X86_64
+ 	/* Yes, this is really how we defined it :( */
+ 	addr = efi64_stub_entry - 0x200;
+@@ -299,6 +300,7 @@ static void efi_stub_entry_update(void)
+ 	if (efi32_stub_entry != addr)
+ 		die("32-bit and 64-bit EFI entry points do not match\n");
+ #endif
++#endif
+ 	put_unaligned_le32(addr, &buf[0x264]);
+ }
  
 
 
