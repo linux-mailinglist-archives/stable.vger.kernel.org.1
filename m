@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3916E870E47
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF93870F68
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42C91F20FB0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366E02816BB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DFD78B69;
-	Mon,  4 Mar 2024 21:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88CF79DCE;
+	Mon,  4 Mar 2024 21:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZybFAmOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnk1CKOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C21EB5A;
-	Mon,  4 Mar 2024 21:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766661C6AB;
+	Mon,  4 Mar 2024 21:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588544; cv=none; b=DqdFQ8kX+YrTmrxcaTy4cokX1Q1elNJmXXrPvKfsxgl6GikKmgj3rX9gAvXPAEBE8MOrLmxlI60s+j+GeTgvI51vZkVs86oAXjBi6iOrNlOykqnOwDwm9MQK44w0Mj9ylv1rQkewGQa0epUiuxF4Qu9YmHBbKZFKUEYEh+Ls0UA=
+	t=1709589259; cv=none; b=NjftJVNs3nn4Nsk4ubBPGroAeDbMVCyP7mqqSPccK9I2M00HGQbaHIQ6XEx2G+R63sXP2XiGweyOIbHk7T8VeOHxl0B9GyQvfZVIk+keEkxFVIMbrCjXlLVM95g2knk06MBa88GnaUF6tY1G504UV92CMjYiT8kC5vW9kvTJeXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588544; c=relaxed/simple;
-	bh=KPYmoPK8mjAOoMiaD1RcoG0DkkbIgpptzJCw1HHnnog=;
+	s=arc-20240116; t=1709589259; c=relaxed/simple;
+	bh=2rlpYyX30ZenpOoatbhqqU53mwJDCFTB68kvOMqeulY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGOVoPnq/SU8SmYssBVd9vKmXI/QYj41Nhcbwni5Cm3i/qHcrZBvfECU6y76X3Yoff120FwD+bDQnkzBwvC3poyUWLfuPT7eg0CNt9cCNufEbhw/ckzpoEWNUuwA7qc2rwuuiMtjyI2V7G+xr13a4iTAhZZpjU8aDukG1xroVyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZybFAmOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D80C433F1;
-	Mon,  4 Mar 2024 21:42:23 +0000 (UTC)
+	 MIME-Version; b=MvD5JggCAcyE7jnEX78qmNUZ6OLRPMcqO9hLSaCcEvn6yb4TfTNvr1kK2S5syDdAURpvvjDJYgGL00ofyu4+nvFEtUYVs8AnesNuSP0YKgmvbb5zL2g4oHmyxTQYm7C/9qxqpdGEgpYsGLeTWN9wfZrDCRet4iFEJSUBHQuZAGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnk1CKOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A2EC43390;
+	Mon,  4 Mar 2024 21:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588544;
-	bh=KPYmoPK8mjAOoMiaD1RcoG0DkkbIgpptzJCw1HHnnog=;
+	s=korg; t=1709589259;
+	bh=2rlpYyX30ZenpOoatbhqqU53mwJDCFTB68kvOMqeulY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZybFAmOD5U/DvYDR2Dmn7SlmG5sRs248vOisGJeZCVXxL2mBwQd5W9qxXMFTI+xu/
-	 VxFx0b7lI9jPjIPhGKYQ7Mha0Y5TVzN5ZD8XtxX9hRoINnsT6+zu56at2883Tl/fH1
-	 fxc3Jr9PDdhBh+G9AibVK4o4JNCoMhKFwoQpkzUE=
+	b=rnk1CKOkKYGcryQ8i/QDJ55th8OdP3B8LuTz+ipl4XjBEpUWa4/D6kFCnJ4pufo+C
+	 HErVV6sL6AOZBOtmohg8ZoaFhdEd8TypZCgJ2vMisnWBPLHELup84c1+PRFeorFqwD
+	 u4j64nPWb4PUgXLtQAYJw3Pd9Oitx8tZ9aoygZto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ming Lei <ming.lei@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/143] block: define bvec_iter as __packed __aligned(4)
-Date: Mon,  4 Mar 2024 21:24:12 +0000
-Message-ID: <20240304211554.127282606@linuxfoundation.org>
+Subject: [PATCH 5.15 40/84] tls: decrement decrypt_pending if no async completion will be called
+Date: Mon,  4 Mar 2024 21:24:13 +0000
+Message-ID: <20240304211543.671086904@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 7838b4656110d950afdd92a081cc0f33e23e0ea8 ]
+[ Upstream commit f7fa16d49837f947ee59492958f9e6f0e51d9a78 ]
 
-In commit 19416123ab3e ("block: define 'struct bvec_iter' as packed"),
-what we need is to save the 4byte padding, and avoid `bio` to spread on
-one extra cache line.
+With mixed sync/async decryption, or failures of crypto_aead_decrypt,
+we increment decrypt_pending but we never do the corresponding
+decrement since tls_decrypt_done will not be called. In this case, we
+should decrement decrypt_pending immediately to avoid getting stuck.
 
-It is enough to define it as '__packed __aligned(4)', as '__packed'
-alone means byte aligned, and can cause compiler to generate horrible
-code on architectures that don't support unaligned access in case that
-bvec_iter is embedded in other structures.
+For example, the prequeue prequeue test gets stuck with mixed
+modes (one async decrypt + one sync decrypt).
 
-Cc: Mikulas Patocka <mpatocka@redhat.com>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Fixes: 19416123ab3e ("block: define 'struct bvec_iter' as packed")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/c56d5fc35543891d5319f834f25622360e1bfbec.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bvec.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index 555aae5448ae4..bd1e361b351c5 100644
---- a/include/linux/bvec.h
-+++ b/include/linux/bvec.h
-@@ -83,7 +83,7 @@ struct bvec_iter {
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index a1a99f9f093b1..83319a3b8bdd1 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -273,6 +273,8 @@ static int tls_do_decryption(struct sock *sk,
+ 			return 0;
  
- 	unsigned int            bi_bvec_done;	/* number of bytes completed in
- 						   current bvec */
--} __packed;
-+} __packed __aligned(4);
+ 		ret = crypto_wait_req(ret, &ctx->async_wait);
++	} else if (darg->async) {
++		atomic_dec(&ctx->decrypt_pending);
+ 	}
+ 	darg->async = false;
  
- struct bvec_iter_all {
- 	struct bio_vec	bv;
 -- 
 2.43.0
 
