@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC5B870DF3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5692870D15
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39B0B288BCA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 551F728D2B3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9F200D4;
-	Mon,  4 Mar 2024 21:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F50D7BB15;
+	Mon,  4 Mar 2024 21:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW+P4FST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb825whg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4DD8F58;
-	Mon,  4 Mar 2024 21:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2267BB1B;
+	Mon,  4 Mar 2024 21:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588358; cv=none; b=tpC6JNBAabZdgDyU0Tk8zfP24VhYGcRkbLsRLeH9FqeHVkBKbLGcw2lBCgifGCuMY0Sqf3CrxyKGk1SMTOTMeSCX/aN/V27HgUBa3vsLMdDJkd2BtASP7exT4JnP4HpPQIYwxpWAGoQTadM5qXu8rsnBYrb7hdTDsIYoo0vfMH4=
+	t=1709587832; cv=none; b=HVg53PnkpUwMA1XyTMjMxGgAFKY6sIkwtnEZTfS6Zxl0ZF6sZSdZOQcDtwjsBF3uGgyA2MRWO1qpPuFiHAS9nU3aZV5n2GPK+ZXzntImvQQMOhy0OhCyCNgaW5lczjSNoQe0HZ6vPozzZNsT8yC8/WO4+KlA1EXizE62NsoG4es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588358; c=relaxed/simple;
-	bh=RWo58TPYdsKPj8G3RtrCRcTVCkCjHsM8Z7GaN06gIog=;
+	s=arc-20240116; t=1709587832; c=relaxed/simple;
+	bh=v9Op5os/DDFyKV3lsBTCB81F8DKQpo1jHCty6lsklfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nha1QOwWxdA3qUWoss9ykJe8PL7pMY2VJkG93D38PRlSXVg2jZreoibw5IlLhn4MvARedNXMm0fRn9uHCmrtLrV8WuebIp2qp+9IrBrkur3a7+Qd8ohRcOzOcvgcKa0Y5VSO20ktzDOxSxf+h9C0ntdb30PnkpoBp1iExfpoibk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW+P4FST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119D8C43390;
-	Mon,  4 Mar 2024 21:39:17 +0000 (UTC)
+	 MIME-Version; b=QJzVpyntGTbjFHWsi8j/JG/bRWaZ6EKF7fy+YCweba5i/RQczULj8+tGffxmaMeDhhVTESZyQh15Z4otEcXn1VgvKSRqT1KbXHLncY9sZcFY8UwdrCLAyU7cr1cuJ6s2T0o/U44XOzj0Q/wkIrUjhJ1V/ROXZUkeklCPav9tzcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb825whg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD9BC433C7;
+	Mon,  4 Mar 2024 21:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588358;
-	bh=RWo58TPYdsKPj8G3RtrCRcTVCkCjHsM8Z7GaN06gIog=;
+	s=korg; t=1709587832;
+	bh=v9Op5os/DDFyKV3lsBTCB81F8DKQpo1jHCty6lsklfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gW+P4FSTqvt9mEXVUKerIdwhxK0aaFS4vzOnk4J+ZvGrcGlwT2TvvfI+90Yv70ri7
-	 0AZPVUTCcCPA19OkjPuewXvYNd+MMkGCvEQ5u37C001pwtD0xIV2YbbawDhKUMrtpN
-	 ohl3TtMNc1WCFj2yGyZpj7fqY9YCNLTm280Ta4GM=
+	b=Sb825whgRszJMhj61frw/IsChPI6/io2HxOcarL0VdIHN3bCkoiIZTOq33MUaJp0/
+	 aDBbV3kF0GX7QBoM89Tmiq/X3VYv33TDsU0QNp8WBZWwKKlSvNT+/R6HtF90MSsS0+
+	 KxEOPgc4u9CXruI/dIokqfdpXSl0u7ZEJ39FdlHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/143] ASoC: cs35l56: Dont add the same register patch multiple times
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.7 107/162] riscv: Fix enabling cbo.zero when running in M-mode
 Date: Mon,  4 Mar 2024 21:22:52 +0000
-Message-ID: <20240304211551.593890199@linuxfoundation.org>
+Message-ID: <20240304211555.216977466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 07687cd0539f8185b6ba0c0afba8473517116d6a ]
+commit 3fb3f7164edc467450e650dca51dbe4823315a56 upstream.
 
-Move the call to cs35l56_set_patch() earlier in cs35l56_init() so
-that it only adds the register patch on first-time initialization.
+When the kernel is running in M-mode, the CBZE bit must be set in the
+menvcfg CSR, not in senvcfg.
 
-The call was after the post_soft_reset label, so every time this
-function was run to re-initialize the hardware after a reset it would
-call regmap_register_patch() and add the same reg_sequence again.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 898673b905b9 ("ASoC: cs35l56: Move shared data into a common data structure")
-Link: https://msgid.link/r/20240129162737.497-6-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240228065559.3434837-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l56.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/csr.h   |    2 ++
+ arch/riscv/kernel/cpufeature.c |    2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 1d0a2948f533b..6d42442a29448 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -1159,6 +1159,10 @@ int cs35l56_init(struct cs35l56_private *cs35l56)
- 	if (ret < 0)
- 		return ret;
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -415,6 +415,7 @@
+ # define CSR_STATUS	CSR_MSTATUS
+ # define CSR_IE		CSR_MIE
+ # define CSR_TVEC	CSR_MTVEC
++# define CSR_ENVCFG	CSR_MENVCFG
+ # define CSR_SCRATCH	CSR_MSCRATCH
+ # define CSR_EPC	CSR_MEPC
+ # define CSR_CAUSE	CSR_MCAUSE
+@@ -439,6 +440,7 @@
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+ # define CSR_TVEC	CSR_STVEC
++# define CSR_ENVCFG	CSR_SENVCFG
+ # define CSR_SCRATCH	CSR_SSCRATCH
+ # define CSR_EPC	CSR_SEPC
+ # define CSR_CAUSE	CSR_SCAUSE
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -740,7 +740,7 @@ arch_initcall(check_unaligned_access_all
+ void riscv_user_isa_enable(void)
+ {
+ 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
+-		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
++		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
+ }
  
-+	ret = cs35l56_set_patch(&cs35l56->base);
-+	if (ret)
-+		return ret;
-+
- 	/* Populate the DSP information with the revision and security state */
- 	cs35l56->dsp.part = devm_kasprintf(cs35l56->base.dev, GFP_KERNEL, "cs35l56%s-%02x",
- 					   cs35l56->base.secured ? "s" : "", cs35l56->base.rev);
-@@ -1197,10 +1201,6 @@ int cs35l56_init(struct cs35l56_private *cs35l56)
- 	if (ret)
- 		return ret;
- 
--	ret = cs35l56_set_patch(&cs35l56->base);
--	if (ret)
--		return ret;
--
- 	/* Registers could be dirty after soft reset or SoundWire enumeration */
- 	regcache_sync(cs35l56->base.regmap);
- 
--- 
-2.43.0
-
+ #ifdef CONFIG_RISCV_ALTERNATIVE
 
 
 
