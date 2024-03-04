@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373C0870DD1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 475D0870CE2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DFB1C20C8A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C30289B9D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E17C2C689;
-	Mon,  4 Mar 2024 21:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A051E4CE0E;
+	Mon,  4 Mar 2024 21:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJq9p3GQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOXFVEQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D81B8F58;
-	Mon,  4 Mar 2024 21:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAAC200CD;
+	Mon,  4 Mar 2024 21:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588284; cv=none; b=H6n4yvClZmj40uAKsB/boqHxMHSUuYxv+L2sH+dOmLqyvbLF+5zgjYDh3pIR3lnpkmY+HLjSC3RArjYXBbrKZJhtYrrc21ERG61yEXz3EPGxcHyX6qPiTD7QA6osQ1mYDrSRpbMorDijtJhtzgEDi+F+6awjXNOK2wKMgMZvqHg=
+	t=1709587761; cv=none; b=JaV+pvr84LNAd6PLC5xYciwNvsokW1LLyPb6i7rqKXweCQxS/SivICXg0KTiyz8WL/Hp2PfByHEQk4zbwa5c5oLp2sie5vlCmex9HeCUIheKOOtX2miU5NNzwG59f/y8QLcdmLP19i01l+lq1Sgep34OyWywqOBMJi0njyNaMjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588284; c=relaxed/simple;
-	bh=bPwx5gg5J8+9gGuWmpUP+1uIGXlZZOUD+FFxH+dwaoM=;
+	s=arc-20240116; t=1709587761; c=relaxed/simple;
+	bh=KPPTPU/H46VNikvAID7C5VmkTrjjtalMFutLmxMRCsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyNCXlvN0YUrEOylzOvt7C2/VeV9yjA/4vB5Sw4KkyQdEVGwOQnw2f0IZR6QsL9Ffm/pcfh1NoadtItfdIBDmIKxiuNv+7P5notjVZUnvam/WePHl8K4ck8Okd9jgUS3RRbINn0G99Ql3tGzHL3NgogXIc5nqKWJfeo6t/UAugY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJq9p3GQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A416EC433C7;
-	Mon,  4 Mar 2024 21:38:03 +0000 (UTC)
+	 MIME-Version; b=OZbOu4PKfkRMKeptSKHmTBUA1pHXIwjR9yIMKUfUWzV3TtzJHXW6101y5qPpxVHohhEz+ckwqkQha/5SjPbD5d1n4540NR7UHCkgQ54LqIrKHMy4iAIA+7C5oDWI0kR8XeKdd2j1u88tEDxTcG6RcoEokBHVZCbGLVhNsB37FsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOXFVEQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56C6C43390;
+	Mon,  4 Mar 2024 21:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588284;
-	bh=bPwx5gg5J8+9gGuWmpUP+1uIGXlZZOUD+FFxH+dwaoM=;
+	s=korg; t=1709587761;
+	bh=KPPTPU/H46VNikvAID7C5VmkTrjjtalMFutLmxMRCsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJq9p3GQqcNx8i46FO7PmUXSWY35MgJy0ulJ5ZqXmM+60gagiRdehPTDRbQGwBkp4
-	 T3/MBXh3MnVNEo37ocaQaA1CuhTtkFPx6MMUPXCQ67axRqljaLrcCYVxRSVvFFM8Ta
-	 RoxH0DD4dd6pSk7dJmKgEotkuptCxUFn5s3R74uY=
+	b=tOXFVEQmNOiVCcO4B+NWznVWtup5tP+Ej73mxK+aclHerSvrknrvP3uLSI9i6fJr/
+	 DoXA2SDia5mFK9WIwxF3ICPM7S69oS3eLgvqALXUhUwHftaEZDnh+tFlFXczX/gjnP
+	 OUaBj0s9LRTEC1GH2VWxu7kNLykC1c4EzS9J1haw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/143] Bluetooth: Avoid potential use-after-free in hci_error_reset
-Date: Mon,  4 Mar 2024 21:22:24 +0000
-Message-ID: <20240304211550.718590902@linuxfoundation.org>
+	Willian Wang <git@willian.wang>,
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 080/162] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
+Date: Mon,  4 Mar 2024 21:22:25 +0000
+Message-ID: <20240304211554.402433237@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Willian Wang <git@willian.wang>
 
-[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
+commit 0ac32a396e4f41e88df76ce2282423188a2d2ed0 upstream.
 
-While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
-BT controller is not responding, the GPIO reset mechanism would
-free the hci_dev and lead to a use-after-free in hci_error_reset.
+Lenovo Slim/Yoga Pro 9 14IRP8 requires a special fixup because there is
+a collision of its PCI SSID (17aa:3802) with Lenovo Yoga DuetITL 2021
+codec SSID.
 
-Here's the call trace observed on a ChromeOS device with Intel AX201:
-   queue_work_on+0x3e/0x6c
-   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
-   ? init_wait_entry+0x31/0x31
-   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
-   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
-   process_one_work+0x1d8/0x33f
-   worker_thread+0x21b/0x373
-   kthread+0x13a/0x152
-   ? pr_cont_work+0x54/0x54
-   ? kthread_blkcg+0x31/0x31
-    ret_from_fork+0x1f/0x30
-
-This patch holds the reference count on the hci_dev while processing
-a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
-
-Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555
+Link: https://lore.kernel.org/all/d5b42e483566a3815d229270abd668131a0d9f3a.camel@irl.hu
+Cc: stable@vger.kernel.org
+Signed-off-by: Willian Wang <git@willian.wang>
+Reviewed-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/170879111795.8.6687687359006700715.273812184@willian.wang
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 65601aa52e0d8..2821a42cefdc6 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -1049,6 +1049,7 @@ static void hci_error_reset(struct work_struct *work)
- {
- 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
- 
-+	hci_dev_hold(hdev);
- 	BT_DBG("%s", hdev->name);
- 
- 	if (hdev->hw_error)
-@@ -1056,10 +1057,10 @@ static void hci_error_reset(struct work_struct *work)
- 	else
- 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
- 
--	if (hci_dev_do_close(hdev))
--		return;
-+	if (!hci_dev_do_close(hdev))
-+		hci_dev_do_open(hdev);
- 
--	hci_dev_do_open(hdev);
-+	hci_dev_put(hdev);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7438,6 +7438,7 @@ enum {
+ 	ALC287_FIXUP_LEGION_15IMHG05_AUTOMUTE,
+ 	ALC287_FIXUP_YOGA7_14ITL_SPEAKERS,
+ 	ALC298_FIXUP_LENOVO_C940_DUET7,
++	ALC287_FIXUP_LENOVO_14IRP8_DUETITL,
+ 	ALC287_FIXUP_13S_GEN2_SPEAKERS,
+ 	ALC256_FIXUP_SET_COEF_DEFAULTS,
+ 	ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
+@@ -7488,6 +7489,26 @@ static void alc298_fixup_lenovo_c940_due
+ 	__snd_hda_apply_fixup(codec, id, action, 0);
  }
  
- void hci_uuids_clear(struct hci_dev *hdev)
--- 
-2.43.0
-
++/* A special fixup for Lenovo Slim/Yoga Pro 9 14IRP8 and Yoga DuetITL 2021;
++ * 14IRP8 PCI SSID will mistakenly be matched with the DuetITL codec SSID,
++ * so we need to apply a different fixup in this case. The only DuetITL codec
++ * SSID reported so far is the 17aa:3802 while the 14IRP8 has the 17aa:38be
++ * and 17aa:38bf. If it weren't for the PCI SSID, the 14IRP8 models would
++ * have matched correctly by their codecs.
++ */
++static void alc287_fixup_lenovo_14irp8_duetitl(struct hda_codec *codec,
++					      const struct hda_fixup *fix,
++					      int action)
++{
++	int id;
++
++	if (codec->core.subsystem_id == 0x17aa3802)
++		id = ALC287_FIXUP_YOGA7_14ITL_SPEAKERS; /* DuetITL */
++	else
++		id = ALC287_FIXUP_TAS2781_I2C; /* 14IRP8 */
++	__snd_hda_apply_fixup(codec, id, action, 0);
++}
++
+ static const struct hda_fixup alc269_fixups[] = {
+ 	[ALC269_FIXUP_GPIO2] = {
+ 		.type = HDA_FIXUP_FUNC,
+@@ -9372,6 +9393,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_lenovo_c940_duet7,
+ 	},
++	[ALC287_FIXUP_LENOVO_14IRP8_DUETITL] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_lenovo_14irp8_duetitl,
++	},
+ 	[ALC287_FIXUP_13S_GEN2_SPEAKERS] = {
+ 		.type = HDA_FIXUP_VERBS,
+ 		.v.verbs = (const struct hda_verb[]) {
+@@ -10239,7 +10264,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
+ 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+-	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
++	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8 / DuetITL 2021", ALC287_FIXUP_LENOVO_14IRP8_DUETITL),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+ 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
 
 
 
