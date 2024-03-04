@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83832870EA9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07154870DD2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B60391C23B2A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BEA11F21255
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC227BAFE;
-	Mon,  4 Mar 2024 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CA61F93F;
+	Mon,  4 Mar 2024 21:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeWmoOMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVEX45t7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7417BAF0;
-	Mon,  4 Mar 2024 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D9410A35;
+	Mon,  4 Mar 2024 21:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588748; cv=none; b=RJ3XYZ4IGm3kKYY2YFaPGyFrbKwYC65E5cimFiA9LL3w9Lf9+hBd+NdPz0D/Kc9p3Qnf0fXVQvPf5rCmfniy3l7ptwTz1r9oLvy34ADyBSVxyVMkhudd8oTlqIbM2WHnna52/cMZDwrxSFPa8RCbeZ5mPChdS6oCa0upZ7esGJ0=
+	t=1709588286; cv=none; b=XIYJ65QTyzmeqCbL5s9+yRoGxCd8616dz9ekYc/up0bAdJ+xZCf6FjH/iHnnDnt6h0k1g2OnFJcW6KTv7AJzdyxwkcs7ev4APV5lAKsk6j/hSb28bF+bIZPcHz4kNBotJjIYNO/dhEqecPLEvnb8Kb2RoaaDencP8eqGLQ+EIgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588748; c=relaxed/simple;
-	bh=GleRpfPPD4Cemg3vcx1Y2HW1tDOCrAJ4tVTee67KAgQ=;
+	s=arc-20240116; t=1709588286; c=relaxed/simple;
+	bh=fhrv4GAqC8UQAX3++URjPOPHHh68jCR4SYoUJrrSLoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8rgrGOAfWR3v95mMQnnXAABGyVBLOI0xc7U0G4C1dRHSvylq7HvZmipn9j6w7BmSO7R+TZEPY1iQPhGHrbFo2C5DAqpsU4pzfKha7mMu1iFzE1ojAN6dbq1wDF+5rHJZwobyJkf1jSXB7yIpUCCmU1NQeF91w1UmRPRAV3QiZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeWmoOMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10905C433A6;
-	Mon,  4 Mar 2024 21:45:47 +0000 (UTC)
+	 MIME-Version; b=s6aE1oNcCVwiX5X+W7MfMcuKucmfedo5sjMWyIwIZMxYTjmD2o/hLfiRjm+DXmpalMEEAcx2N3k2rak25vsSNWpSq5vlxkcUt5iUvqFShdUkq5Urmc/AkYQXparzGUYRL3bLqJ8BsfixbvirPSq1wnFjwRIGMjmZvrmPw8VMrVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVEX45t7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCD3C43390;
+	Mon,  4 Mar 2024 21:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588748;
-	bh=GleRpfPPD4Cemg3vcx1Y2HW1tDOCrAJ4tVTee67KAgQ=;
+	s=korg; t=1709588286;
+	bh=fhrv4GAqC8UQAX3++URjPOPHHh68jCR4SYoUJrrSLoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeWmoOMPUoQFaE4KQsktvUvqSE6kaviCsKQRUG08Wj3sM5Ka38VZW9tbXa5lmxHI6
-	 Be0JdFEIbTzfweQUDLNvw+3YgmdAiJLsqKJduL2PocXoKdu9Ps1VUbQ+tCkWAbMRBA
-	 oEYVqIWP3ZlPlPvKqTS199YQteY05qQEFRkKx80Y=
+	b=ZVEX45t7HdHmfQMarIYBRi19cEmBWZXVUzpV9SRk+CpL51msAjJ+3veBj5DUPy++M
+	 VSRnneINTZQic9mBUjFHgEBxYCTZEPFw+zkJ1CeNG1Y35WDkl9xrB62TDaSzxxeQOK
+	 UMQU1R69wMG2k1HDP68AtjIL0sfoZnhZRNKzIkMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 082/215] Revert "drm/amd/pm: resolve reboot exception for si oland"
+	Clancy Shang <clancy.shang@quectel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/143] Bluetooth: hci_sync: Fix accept_list when attempting to suspend
 Date: Mon,  4 Mar 2024 21:22:25 +0000
-Message-ID: <20240304211559.590263803@linuxfoundation.org>
+Message-ID: <20240304211550.752987737@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 955558030954b9637b41c97b730f9b38c92ac488 upstream.
+[ Upstream commit e5469adb2a7e930d96813316592302d9f8f1df4e ]
 
-This reverts commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86.
+During suspend, only wakeable devices can be in acceptlist, so if the
+device was previously added it needs to be removed otherwise the device
+can end up waking up the system prematurely.
 
-This causes hangs on SI when DC is enabled and errors on driver
-reboot and power off cycles.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3216
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2755
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b42055388c3 ("Bluetooth: hci_sync: Fix attempting to suspend with unfiltered passive scan")
+Signed-off-by: Clancy Shang <clancy.shang@quectel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ net/bluetooth/hci_sync.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -6925,6 +6925,23 @@ static int si_dpm_enable(struct amdgpu_d
- 	return 0;
- }
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 497b12e0374e0..fef9ab95ad3df 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2274,8 +2274,11 @@ static int hci_le_add_accept_list_sync(struct hci_dev *hdev,
  
-+static int si_set_temperature_range(struct amdgpu_device *adev)
-+{
-+	int ret;
-+
-+	ret = si_thermal_enable_alert(adev, false);
-+	if (ret)
-+		return ret;
-+	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
-+	if (ret)
-+		return ret;
-+	ret = si_thermal_enable_alert(adev, true);
-+	if (ret)
-+		return ret;
-+
-+	return ret;
-+}
-+
- static void si_dpm_disable(struct amdgpu_device *adev)
- {
- 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
-@@ -7608,6 +7625,18 @@ static int si_dpm_process_interrupt(stru
+ 	/* During suspend, only wakeable devices can be in acceptlist */
+ 	if (hdev->suspended &&
+-	    !(params->flags & HCI_CONN_FLAG_REMOTE_WAKEUP))
++	    !(params->flags & HCI_CONN_FLAG_REMOTE_WAKEUP)) {
++		hci_le_del_accept_list_sync(hdev, &params->addr,
++					    params->addr_type);
+ 		return 0;
++	}
  
- static int si_dpm_late_init(void *handle)
- {
-+	int ret;
-+	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-+
-+	if (!adev->pm.dpm_enabled)
-+		return 0;
-+
-+	ret = si_set_temperature_range(adev);
-+	if (ret)
-+		return ret;
-+#if 0 //TODO ?
-+	si_dpm_powergate_uvd(adev, true);
-+#endif
- 	return 0;
- }
- 
+ 	/* Select filter policy to accept all advertising */
+ 	if (*num_entries >= hdev->le_accept_list_size)
+-- 
+2.43.0
+
 
 
 
