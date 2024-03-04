@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BADA870F5B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46941870D97
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC8F282842
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E684AB25878
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6111C6AB;
-	Mon,  4 Mar 2024 21:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6C047A5D;
+	Mon,  4 Mar 2024 21:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz1/NXZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO3iqKpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B31078B47;
-	Mon,  4 Mar 2024 21:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A91C687;
+	Mon,  4 Mar 2024 21:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589228; cv=none; b=c1OAJNdkGB1reZ17zdSILMi6IJQ38ZQZrOuXXG3IIyJwi4JDe8/1E9Lfi00ptou9rC4O8nrbi1ZRxkMSmDATOh+3Dk5l6aKXV2TA4poF+M94v606UYjNCoL5Tn/04zrNMOa8O8bRoPGgcRcwRWr5Da+VBj6If8WlIEJFetJYoDY=
+	t=1709588136; cv=none; b=H+J4Ttgp6W1Or2SmVJ3jtAAsrD3ac/OMzKJuLey7uqTcOMTg3MkdVKAz5Xdd5DtytBQHepemPofN8Bug9MFpkfOQlpS0KqLGxWNC0hBdeWI1P1K5gV6B30+taQpULFYyE+LuOWdkObKjYY9ah9ed6Z1nETFsKHeUgJdMA42edYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589228; c=relaxed/simple;
-	bh=Lg0DSmxv2ktsC1eOFgchb5XShOcFWQoy1quwRxixxtc=;
+	s=arc-20240116; t=1709588136; c=relaxed/simple;
+	bh=rkigtyckAqwEooavJvh/6pKJQ16ctNJwmawE0sNn98U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAGF5NnYUHJlC4/v8wiqZ/KZ2Jy0rsSKAVz2urnpwvj2JUmqDVMIqaHf/ZDKhv38vMK4P/qd2+7CPDeUtthvS1AsXMzvo22RPGrjlpu6kowJFHj8FNZBoGNZb5WNdQQeECPdCuRDdjZ2pzcuZIED+5ClxZgfzGEmxd6LMct2c5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz1/NXZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064A3C433C7;
-	Mon,  4 Mar 2024 21:53:47 +0000 (UTC)
+	 MIME-Version; b=AXt+KvScU3N1cWWAmLFd37bQtTd/7iE0i/Ss/IsAXnxvHxapQojYNIxeL1MYsQF7IMpdxFM5LObWifefw367Vz1A4XHUlgiYvtz20uAz6BMpUMPwp4jXCq5r9Cn0bmYx2d5SpJq0HBGdlWzpdpvXhyZaO8H0b/a/POVPlGsa824=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO3iqKpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B71C433C7;
+	Mon,  4 Mar 2024 21:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589228;
-	bh=Lg0DSmxv2ktsC1eOFgchb5XShOcFWQoy1quwRxixxtc=;
+	s=korg; t=1709588136;
+	bh=rkigtyckAqwEooavJvh/6pKJQ16ctNJwmawE0sNn98U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vz1/NXZ1i8jywmRZ7lBZzfHhbo/jUvSBpICSLtHw92I8HIBseGnzvKE6kRQvJDwUn
-	 MWk7rDJEQexHzHSYuEBEYp0+rXJ2/c5QZfSjuf74t/NTTXSiG5bsnjqLRT7KnaSjMq
-	 AX6fgMPxGuTAJpWv29TXbTsMbuRwjxqRwsCPL9iQ=
+	b=OO3iqKpMckdBsXYu285b5ftdX0vkatCjHnrdFusOyN5dguvSR1lUEnp2N3BZCLMxr
+	 RCEiOn7RGnMrJsqM+QLPf54X60DrYYuDl4XMcXd8CiHfPp85QaK5eJMJgVCZacFLqX
+	 xickE+bI0htJNEf7XUP0YM2AlES/UBK6S3uyPD34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/84] tls: rx: dont issue wake ups when data is decrypted
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 35/42] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
 Date: Mon,  4 Mar 2024 21:24:02 +0000
-Message-ID: <20240304211543.304699537@linuxfoundation.org>
+Message-ID: <20240304211538.831054302@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 5dbda02d322db7762f1a0348117cde913fb46c13 ]
+commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
 
-We inform the applications that data is available when
-the record is received. Decryption happens inline inside
-recvmsg or splice call. Generating another wakeup inside
-the decryption handler seems pointless as someone must
-be actively reading the socket if we are executing this
-code.
+After updating bb_free in mb_free_blocks, it is possible to return without
+updating bb_fragments because the block being freed is found to have
+already been freed, which leads to inconsistency between bb_free and
+bb_fragments.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+to problems such as dividing by zero when calculating the average fragment
+length. Hence move the update of bb_free to after the block double-free
+check guarantees that the corresponding statistics are updated only after
+the core block bitmap is modified.
+
+Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+CC:  <stable@vger.kernel.org> # 3.10
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 0a6630bbef53e..5fdc4f5193ee5 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1557,7 +1557,6 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 			      bool async)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
--	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	struct strp_msg *rxm = strp_msg(skb);
- 	struct tls_msg *tlm = tls_msg(skb);
-@@ -1596,7 +1595,6 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 		rxm->full_len -= prot->overhead_size;
- 		tls_advance_record_sn(sk, prot, &tls_ctx->rx);
- 		tlm->decrypted = 1;
--		ctx->saved_data_ready(sk);
- 	} else {
- 		*zc = false;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1494,11 +1494,6 @@ static void mb_free_blocks(struct inode
+ 	mb_check_buddy(e4b);
+ 	mb_free_blocks_double(inode, e4b, first, count);
+ 
+-	this_cpu_inc(discard_pa_seq);
+-	e4b->bd_info->bb_free += count;
+-	if (first < e4b->bd_info->bb_first_free)
+-		e4b->bd_info->bb_first_free = first;
+-
+ 	/* access memory sequentially: check left neighbour,
+ 	 * clear range and then check right neighbour
+ 	 */
+@@ -1512,23 +1507,31 @@ static void mb_free_blocks(struct inode
+ 		struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 		ext4_fsblk_t blocknr;
+ 
++		/*
++		 * Fastcommit replay can free already freed blocks which
++		 * corrupts allocation info. Regenerate it.
++		 */
++		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
++			mb_regenerate_buddy(e4b);
++			goto check;
++		}
++
+ 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
+ 		blocknr += EXT4_C2B(sbi, block);
+-		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
+-			ext4_grp_locked_error(sb, e4b->bd_group,
+-					      inode ? inode->i_ino : 0,
+-					      blocknr,
+-					      "freeing already freed block (bit %u); block bitmap corrupt.",
+-					      block);
+-			ext4_mark_group_bitmap_corrupted(
+-				sb, e4b->bd_group,
++		ext4_grp_locked_error(sb, e4b->bd_group,
++				      inode ? inode->i_ino : 0, blocknr,
++				      "freeing already freed block (bit %u); block bitmap corrupt.",
++				      block);
++		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
+ 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+-		} else {
+-			mb_regenerate_buddy(e4b);
+-		}
+-		goto done;
++		return;
  	}
--- 
-2.43.0
-
+ 
++	this_cpu_inc(discard_pa_seq);
++	e4b->bd_info->bb_free += count;
++	if (first < e4b->bd_info->bb_first_free)
++		e4b->bd_info->bb_first_free = first;
++
+ 	/* let's maintain fragments counter */
+ 	if (left_is_free && right_is_free)
+ 		e4b->bd_info->bb_fragments--;
+@@ -1553,8 +1556,8 @@ static void mb_free_blocks(struct inode
+ 	if (first <= last)
+ 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
+ 
+-done:
+ 	mb_set_largest_free_order(sb, e4b->bd_info);
++check:
+ 	mb_check_buddy(e4b);
+ }
+ 
 
 
 
