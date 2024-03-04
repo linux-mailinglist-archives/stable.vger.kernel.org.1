@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-26130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B2870D3B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD814870C8D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473EC28E0A9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA6F1C24215
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8D7B3F9;
-	Mon,  4 Mar 2024 21:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107AC3D0BA;
+	Mon,  4 Mar 2024 21:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2g8cWYOT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cln1MuwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9611C680;
-	Mon,  4 Mar 2024 21:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5151F95E;
+	Mon,  4 Mar 2024 21:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587920; cv=none; b=cAoofzIEE0QPn8KiuCJo7VBOZOCzOEb2NwBqQwwrcZEcsEXOe5SAlsaqbONeS7btVrN1AnxFGcPmEjAjEUBuPuvHUqe8pC8LV8e+c0g81wdt7LpwhD+niwBYneQ4aTclfFGsE8/x6pIu4eE6c7S78iyOgPM3Qa+77MtLGDdTzHM=
+	t=1709587557; cv=none; b=HyUJHGlS4ARv1kjGOJlLKR1ypyDcR6vQg3hjBL/mQiemtHgOTBWTOAhOUKt+3QV4gn6DsMJ93JUhuRx73CNnhywHoqEMBoHkoeuadGKbnWXKYw+xabZh4swsni/NT3SQc3P/G1ulhEhxclnQAHXCli5+5Kz0h6QpaS3TphLGxsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587920; c=relaxed/simple;
-	bh=+61XavaydZmowteEXnl+0ufRZxJyqZsDoGtgiNhaecM=;
+	s=arc-20240116; t=1709587557; c=relaxed/simple;
+	bh=m2Yhs6HTHEA6HPlkWnL9IkxEyJiKE7xpVHH8klE0C6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9FnZcNW8wFb2YSDyWE1OVR4lVQS3qGtaMQiHbSozAWYcoXDUGlxt0BgGFeZy5c8ZyNTBdXTVWn+UuJMuR8cm8QdRRjYq92vvx8QO9cuVsTvrPERbiJMAcat+jX9gQ+RGQRboDXIQRD6AYsujeNjl8xCymu2qbs8PFilgJ+REeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2g8cWYOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E02C433F1;
-	Mon,  4 Mar 2024 21:31:59 +0000 (UTC)
+	 MIME-Version; b=BctOw9EYpFlzsO1zWNIzbZyDrHa0dyFvgTZ6RegoCV60WltTQckZ9V8HQPEzbmLPNYrX2OYogfSsx27MkbdLS/dOVAcUNYHAioEYMn00hyONIXnss5B9Xz2ND1bHcsJcxmCEexKu1DJ1ibmfighg+p8BDV+5dZXawi5hr3HUcGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cln1MuwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64F5C433C7;
+	Mon,  4 Mar 2024 21:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587920;
-	bh=+61XavaydZmowteEXnl+0ufRZxJyqZsDoGtgiNhaecM=;
+	s=korg; t=1709587557;
+	bh=m2Yhs6HTHEA6HPlkWnL9IkxEyJiKE7xpVHH8klE0C6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2g8cWYOT8bfFbBbCepmPIyj/AuA1uCgRROA6H81a0pu+IGPi5zG7rmeqoAoSR8Xh5
-	 w/ThFT2w4Cm3L5MklMH3r+btJ4uGrKj+othmdg1npkcaObKuxwYEejdGJsrseDACCm
-	 37Ci16JStHNSF5Rp5XhcksS5xY4gx8j+29U+5Otc=
+	b=cln1MuwTNgLTqLZhhU6UFxBD8IfBWAa3NjvSFVhzmwTyDbamK2rjJodFheFSy656e
+	 H1t7iEPdfF3mGvS293/2J2q/3z26/gCpxjdDZGeZaWx/XAa4riwhv0dU1c2Ors8fnx
+	 Z9P18V56dEwafH/OurrbSKW4TvH2+DUIirhdbM4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 140/162] dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
+Subject: [PATCH 4.19 04/16] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
 Date: Mon,  4 Mar 2024 21:23:25 +0000
-Message-ID: <20240304211556.199357888@linuxfoundation.org>
+Message-ID: <20240304211534.494966434@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
+References: <20240304211534.328737119@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
+[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
 
-The Linked list element and pointer are not stored in the same memory as
-the eDMA controller register. If the doorbell register is toggled before
-the full write of the linked list a race condition error will occur.
-In remote setup we can only use a readl to the memory to assure the full
-write has occurred.
+The MII code does not check the return value of mdio_read (among
+others), and therefore no error code should be sent. A previous fix to
+the use of an uninitialized variable propagates negative error codes,
+that might lead to wrong operations by the MII library.
 
-Fixes: 7e4b8a4fbe2c ("dmaengine: Add Synopsys eDMA IP version 0 support")
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-6-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+An example of such issues is the use of mii_nway_restart by the dm9601
+driver. The mii_nway_restart function does not check the value returned
+by mdio_read, which in this case might be a negative number which could
+contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
+
+Return zero in case of error, as it is common practice in users of
+mdio_read to avoid wrong uses of the return value.
+
+Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-v0-core.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/usb/dm9601.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
-index b38786f0ad799..b75fdaffad9a4 100644
---- a/drivers/dma/dw-edma/dw-edma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
-@@ -346,6 +346,20 @@ static void dw_edma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- 	dw_edma_v0_write_ll_link(chunk, i, control, chunk->ll_region.paddr);
- }
- 
-+static void dw_edma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
-+{
-+	/*
-+	 * In case of remote eDMA engine setup, the DW PCIe RP/EP internal
-+	 * configuration registers and application memory are normally accessed
-+	 * over different buses. Ensure LL-data reaches the memory before the
-+	 * doorbell register is toggled by issuing the dummy-read from the remote
-+	 * LL memory in a hope that the MRd TLP will return only after the
-+	 * last MWr TLP is completed
-+	 */
-+	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
-+		readl(chunk->ll_region.vaddr.io);
-+}
-+
- static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- {
- 	struct dw_edma_chan *chan = chunk->chan;
-@@ -412,6 +426,9 @@ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
- 			  upper_32_bits(chunk->ll_region.paddr));
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 5aad26600b03e..9b7db5fd9e08f 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -231,7 +231,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	err = dm_read_shared_word(dev, 1, loc, &res);
+ 	if (err < 0) {
+ 		netdev_err(dev->net, "MDIO read error: %d\n", err);
+-		return err;
++		return 0;
  	}
-+
-+	dw_edma_v0_sync_ll_data(chunk);
-+
- 	/* Doorbell */
- 	SET_RW_32(dw, chan->dir, doorbell,
- 		  FIELD_PREP(EDMA_V0_DOORBELL_CH_MASK, chan->id));
+ 
+ 	netdev_dbg(dev->net,
 -- 
 2.43.0
 
