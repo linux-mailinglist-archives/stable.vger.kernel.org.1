@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7545E870CA8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C729B870E7A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D46F2885E7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8319E287EC1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB17C7A736;
-	Mon,  4 Mar 2024 21:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AC778B69;
+	Mon,  4 Mar 2024 21:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFQiJlkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgONsmQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E87178B69;
-	Mon,  4 Mar 2024 21:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BC246BA0;
+	Mon,  4 Mar 2024 21:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587646; cv=none; b=pybaVJGPJGgHDjj5ZCq8o9GryMmaBTRSZWR1envrshY+YayiUfMsyHu43HrxHD3/bbykqhZZKBV+YguBaeNYgFWL4iimLuBUaUwlTyocSIr+6uxNgPXJ4G+JBsP8dyPWpon44oX6aULQb4scralxxE5VetWj7ZeVyJS9Y+2EbFc=
+	t=1709588657; cv=none; b=pOlgLEhWa2VkeGsJsWC/fq/e8tezRqX7wF5ZS47wAV3k3uVYFynKdNzFPfvMPK87R7Ci2k42lSkfO+GM8ndPmV7+EImiIvZ76vlCuRBo31SzMi4mj4EWZKLl4qdeZwXBISi+BgyLjsEXCLKxCYuE7zDi1K1gMnC3mey4nQwf5jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587646; c=relaxed/simple;
-	bh=EdcRcSvB/CcdIk4OX9UC0eqdo69Unc/JwRqUFknfcC4=;
+	s=arc-20240116; t=1709588657; c=relaxed/simple;
+	bh=C7BfHZTF8qLHwX36pUAm4qK/hZCwc6j5V1FAQA0Bg/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=td4eE2G7QpNh2bXzgqVNLcc5K394UWDMfwwekf1RAc5eNZDXw75oPlgmm2F8kWkfxApcp2A6ErQDyTmqtlQf1Bvpc0qcrRdWYYw4/EoJmYiz8XxNGnq2sv+IL0EjRJZj3MEXhVIxfQ5WpIgInAFyP2OjW+2HyZlis4buZa42sYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFQiJlkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108BEC433F1;
-	Mon,  4 Mar 2024 21:27:25 +0000 (UTC)
+	 MIME-Version; b=RWucQfprBmq0XYsbTJNsp8tW/AX2Hvp+7JvenCicTyWI6KIJlZJn/6uKf/lbX/QxS6dO91AqlVD5/a5VyIhD4mnjSWlVk3wMl5lbxz7g52ooWhE5/zLH5r3OQhEeZQi/IRPQ1LACU4d7bLY0q9TYmTsfXipgnFHNF6WZWXOnfXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgONsmQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8F2C43390;
+	Mon,  4 Mar 2024 21:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587646;
-	bh=EdcRcSvB/CcdIk4OX9UC0eqdo69Unc/JwRqUFknfcC4=;
+	s=korg; t=1709588656;
+	bh=C7BfHZTF8qLHwX36pUAm4qK/hZCwc6j5V1FAQA0Bg/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFQiJlktIee04eJg+AIwS//I+ZIgu3yRoKmBIT8PNdyJh2zjE1MR01a5XH/ItB+Us
-	 V1R6UwpYpqKVOflNBu+ppvrM1XlHEyxhcrbQo8t0KJkOseDIYfO0LQfWFGfrracAur
-	 y5RSZ/DCWUIfwdKcmNtn3hIl3Tx98lGY2AIdcagQ=
+	b=XgONsmQZHKWT/gZzQ3izwQnm3NrocvBctcTz8Say6wTTzL6Sw6nCHThj1gv7Zt1kJ
+	 6M1rPaNbD8CUuUwv0mWB7GzfTYKd5zvqeJiZDwydnbznXTJMTjtSofOgyAlwvviJwi
+	 iHzpr4OVt7DzZ60FXxAYWIzg5Yb4PLfMiIWafQw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f497b07aa3baf2fb4d0@syzkaller.appspotmail.com,
-	xingwei lee <xrivendell7@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Wahren <stefan.wahren@i2se.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 011/162] netlink: add nla be16/32 types to minlen array
+Subject: [PATCH 6.1 013/215] ARM: dts: imx: Adjust dma-apbh node name
 Date: Mon,  4 Mar 2024 21:21:16 +0000
-Message-ID: <20240304211552.189273592@linuxfoundation.org>
+Message-ID: <20240304211557.438955760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Stefan Wahren <stefan.wahren@i2se.com>
 
-[ Upstream commit 9a0d18853c280f6a0ee99f91619f2442a17a323a ]
+[ Upstream commit e9f5cd85f1f931bb7b64031492f7051187ccaac7 ]
 
-BUG: KMSAN: uninit-value in nla_validate_range_unsigned lib/nlattr.c:222 [inline]
-BUG: KMSAN: uninit-value in nla_validate_int_range lib/nlattr.c:336 [inline]
-BUG: KMSAN: uninit-value in validate_nla lib/nlattr.c:575 [inline]
-BUG: KMSAN: uninit-value in __nla_validate_parse+0x2e20/0x45c0 lib/nlattr.c:631
- nla_validate_range_unsigned lib/nlattr.c:222 [inline]
- nla_validate_int_range lib/nlattr.c:336 [inline]
- validate_nla lib/nlattr.c:575 [inline]
-...
+Currently the dtbs_check generates warnings like this:
 
-The message in question matches this policy:
+$nodename:0: 'dma-apbh@110000' does not match '^dma-controller(@.*)?$'
 
- [NFTA_TARGET_REV]       = NLA_POLICY_MAX(NLA_BE32, 255),
+So fix all affected dma-apbh node names.
 
-but because NLA_BE32 size in minlen array is 0, the validation
-code will read past the malformed (too small) attribute.
-
-Note: Other attributes, e.g. BITFIELD32, SINT, UINT.. are also missing:
-those likely should be added too.
-
-Reported-by: syzbot+3f497b07aa3baf2fb4d0@syzkaller.appspotmail.com
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/all/CABOYnLzFYHSnvTyS6zGa-udNX55+izqkOt2sB9WDqUcEGW6n8w@mail.gmail.com/raw
-Fixes: ecaf75ffd5f5 ("netlink: introduce bigendian integer types")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20240221172740.5092-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/nlattr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/imx23.dtsi   | 2 +-
+ arch/arm/boot/dts/imx28.dtsi   | 2 +-
+ arch/arm/boot/dts/imx6qdl.dtsi | 2 +-
+ arch/arm/boot/dts/imx6sx.dtsi  | 2 +-
+ arch/arm/boot/dts/imx6ul.dtsi  | 2 +-
+ arch/arm/boot/dts/imx7s.dtsi   | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/lib/nlattr.c b/lib/nlattr.c
-index dc15e7888fc1f..0319e811bb10a 100644
---- a/lib/nlattr.c
-+++ b/lib/nlattr.c
-@@ -30,6 +30,8 @@ static const u8 nla_attr_len[NLA_TYPE_MAX+1] = {
- 	[NLA_S16]	= sizeof(s16),
- 	[NLA_S32]	= sizeof(s32),
- 	[NLA_S64]	= sizeof(s64),
-+	[NLA_BE16]	= sizeof(__be16),
-+	[NLA_BE32]	= sizeof(__be32),
- };
+diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
+index ec476b1596496..b236d23f80715 100644
+--- a/arch/arm/boot/dts/imx23.dtsi
++++ b/arch/arm/boot/dts/imx23.dtsi
+@@ -59,7 +59,7 @@ icoll: interrupt-controller@80000000 {
+ 				reg = <0x80000000 0x2000>;
+ 			};
  
- static const u8 nla_attr_minlen[NLA_TYPE_MAX+1] = {
-@@ -43,6 +45,8 @@ static const u8 nla_attr_minlen[NLA_TYPE_MAX+1] = {
- 	[NLA_S16]	= sizeof(s16),
- 	[NLA_S32]	= sizeof(s32),
- 	[NLA_S64]	= sizeof(s64),
-+	[NLA_BE16]	= sizeof(__be16),
-+	[NLA_BE32]	= sizeof(__be32),
- };
+-			dma_apbh: dma-apbh@80004000 {
++			dma_apbh: dma-controller@80004000 {
+ 				compatible = "fsl,imx23-dma-apbh";
+ 				reg = <0x80004000 0x2000>;
+ 				interrupts = <0 14 20 0
+diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
+index b15df16ecb01a..b81592a613112 100644
+--- a/arch/arm/boot/dts/imx28.dtsi
++++ b/arch/arm/boot/dts/imx28.dtsi
+@@ -78,7 +78,7 @@ hsadc: hsadc@80002000 {
+ 				status = "disabled";
+ 			};
  
- /*
+-			dma_apbh: dma-apbh@80004000 {
++			dma_apbh: dma-controller@80004000 {
+ 				compatible = "fsl,imx28-dma-apbh";
+ 				reg = <0x80004000 0x2000>;
+ 				interrupts = <82 83 84 85
+diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
+index ff1e0173b39be..2c6eada01d792 100644
+--- a/arch/arm/boot/dts/imx6qdl.dtsi
++++ b/arch/arm/boot/dts/imx6qdl.dtsi
+@@ -150,7 +150,7 @@ soc: soc {
+ 		interrupt-parent = <&gpc>;
+ 		ranges;
+ 
+-		dma_apbh: dma-apbh@110000 {
++		dma_apbh: dma-controller@110000 {
+ 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
+ 			reg = <0x00110000 0x2000>;
+ 			interrupts = <0 13 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/arch/arm/boot/dts/imx6sx.dtsi b/arch/arm/boot/dts/imx6sx.dtsi
+index 1f1053a898fbf..67d344ae76b51 100644
+--- a/arch/arm/boot/dts/imx6sx.dtsi
++++ b/arch/arm/boot/dts/imx6sx.dtsi
+@@ -209,7 +209,7 @@ gpu: gpu@1800000 {
+ 			power-domains = <&pd_pu>;
+ 		};
+ 
+-		dma_apbh: dma-apbh@1804000 {
++		dma_apbh: dma-controller@1804000 {
+ 			compatible = "fsl,imx6sx-dma-apbh", "fsl,imx28-dma-apbh";
+ 			reg = <0x01804000 0x2000>;
+ 			interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/arch/arm/boot/dts/imx6ul.dtsi b/arch/arm/boot/dts/imx6ul.dtsi
+index 2b5996395701a..aac081b6daaac 100644
+--- a/arch/arm/boot/dts/imx6ul.dtsi
++++ b/arch/arm/boot/dts/imx6ul.dtsi
+@@ -164,7 +164,7 @@ intc: interrupt-controller@a01000 {
+ 			      <0x00a06000 0x2000>;
+ 		};
+ 
+-		dma_apbh: dma-apbh@1804000 {
++		dma_apbh: dma-controller@1804000 {
+ 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
+ 			reg = <0x01804000 0x2000>;
+ 			interrupts = <0 13 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 4b23630fc738d..2940dacaa56fc 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -1267,7 +1267,7 @@ fec1: ethernet@30be0000 {
+ 			};
+ 		};
+ 
+-		dma_apbh: dma-apbh@33000000 {
++		dma_apbh: dma-controller@33000000 {
+ 			compatible = "fsl,imx7d-dma-apbh", "fsl,imx28-dma-apbh";
+ 			reg = <0x33000000 0x2000>;
+ 			interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
