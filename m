@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0AD870ECF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC00870DDC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409D11C219C3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1611F21B8D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F62E79950;
-	Mon,  4 Mar 2024 21:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4B2200CD;
+	Mon,  4 Mar 2024 21:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZyP5imK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mm/c5B47"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1A21EB5A;
-	Mon,  4 Mar 2024 21:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD1F78B69;
+	Mon,  4 Mar 2024 21:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588832; cv=none; b=eHb6qiACDMOc2RV71CuYySmk240nHxepmEXMeTMyJOkAPg3v4WVifGnuMdwDzlkTy35/TFnXd7bZSAQBf39SWVScEyJC5EpqtgUp/ZPM6eWDBQ2Mr4Ap11Oi0daE5q+dBYX4EqOFjEWyonw/eDw8i6s0by5OSej/6pzjnWeagfc=
+	t=1709588305; cv=none; b=GOMVv+KD9QZFn+tRNEEiy39KdFNC1qruYFQOpWMmjiH2PAZ8Lu6dmPcC54OKAkfsMm4MfBd1ySH8qxG8JpfZE6PSbiRa4Qb5ADGp0uiSw1mPIOLypuhg+2AoHIQ/Nqbgpt80k8r5UlAeRkR8JfNNDSieq13rgs9s3/Wjc2eNmGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588832; c=relaxed/simple;
-	bh=yJSw6hQen/TH8atuJYcPDq7Sh5/EW1CAG0nGC1DSo+I=;
+	s=arc-20240116; t=1709588305; c=relaxed/simple;
+	bh=r+t7GI1mckC+3PB7SahgkK5OTKmwt/f1C72W1Usg0uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnvqsSy8EPuzB7/T/h+q4cSQTNWr8qU4IlogGHnUT18yEDx4W6OvLqP/ZAHqBGZt9475QuR+5KTtiXFDQSuaSFZXlPczIh6KWLAzqGoA/RYZiooemYCfSf3mv5m/L3pAlfvHanbpJo9erLanWulGtaGx5NQ77mu3HW75mXpVWa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZyP5imK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2D9C433F1;
-	Mon,  4 Mar 2024 21:47:11 +0000 (UTC)
+	 MIME-Version; b=g4J7lqGCkkDtErc7cuH7wH4Swhg+69rh4/pe5hWVoGmOuBnjmg49K8Vh9z2DJkoj4D1EjEjTp9M/i9UjKsS6OKMUzPCvHhR1qTHIU05w2a/8ZW+dfQRMKTlY8/hL2QMVB8zlYhD+q6Q/ncTMIU4hy2VEXl4TBhKq3tBtN81afWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mm/c5B47; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A986AC433F1;
+	Mon,  4 Mar 2024 21:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588831;
-	bh=yJSw6hQen/TH8atuJYcPDq7Sh5/EW1CAG0nGC1DSo+I=;
+	s=korg; t=1709588305;
+	bh=r+t7GI1mckC+3PB7SahgkK5OTKmwt/f1C72W1Usg0uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZyP5imK8CLmVCGTYqVS92yqJuNcVW7ZKyYDihYadlS5alPUVWDziqjr0c2NiPQ7O
-	 LTs0UWpHmkbgPbh6DV5BVMPVg9n7CB+1Hw/fyJqIYg2hTSaz+oNTcecFCMxQf9HJUA
-	 8Dzh97gElF0Nv4Lg/asLXR7bQ2YRPietdRwtaMuE=
+	b=Mm/c5B47yUqT+EHcfTUHBy/CpKmcB2bFgcFb8UsZWMrY/wc84mToflfey4fWog4d9
+	 Wt9DrQVuulHvTpmDJtsXQHY/2N8KcAtjLpBKvHX5eeBq1q69j7bM/vRhpzR0u2jRIQ
+	 IvEqeBRT57IrTs+pxU90CgvOZpqUaO0/quTksksg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 113/215] x86/boot/compressed: Move efi32_pe_entry into .text section
-Date: Mon,  4 Mar 2024 21:22:56 +0000
-Message-ID: <20240304211600.628138681@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 057/143] RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs
+Date: Mon,  4 Mar 2024 21:22:57 +0000
+Message-ID: <20240304211551.745456636@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Conor Dooley <conor@kernel.org>
 
-commit 91592b5c0c2f076ff9d8cc0c14aa563448ac9fc4 upstream.
+[ Upstream commit d82f32202e0df7bf40d4b67c8a4ff9cea32df4d9 ]
 
-Move efi32_pe_entry() into the .text section, so that it can be moved
-out of head_64.S and into a separate compilation unit in a subsequent
-patch.
+Before attempting to support the pre-ratification version of vector
+found on older T-Head CPUs, disallow "v" in riscv,isa on these
+platforms. The deprecated property has no clear way to communicate
+the specific version of vector that is supported and much of the vendor
+provided software puts "v" in the isa string. riscv,isa-extensions
+should be used instead. This should not be too much of a burden for
+these systems, as the vendor shipped devicetrees and firmware do not
+work with a mainline kernel and will require updating.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-5-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We can limit this restriction to only ignore v in riscv,isa on CPUs
+that report T-Head's vendor ID and a zero marchid. Newer T-Head CPUs
+that support the ratified version of vector should report non-zero
+marchid, according to Guo Ren [1].
+
+Link: https://lore.kernel.org/linux-riscv/CAJF2gTRy5eK73=d6s7CVy9m9pB8p4rAoMHM3cZFwzg=AuF7TDA@mail.gmail.com/ [1]
+Fixes: dc6667a4e7e3 ("riscv: Extending cpufeature.c to detect V-extension")
+Co-developed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Link: https://lore.kernel.org/r/20240223-tidings-shabby-607f086cb4d7@spud
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/riscv/kernel/cpufeature.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -786,7 +786,7 @@ SYM_DATA(efi_is64, .byte 1)
- #define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
- #define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index e12cd22755c78..e39a905aca248 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -21,6 +21,7 @@
+ #include <asm/hwprobe.h>
+ #include <asm/patch.h>
+ #include <asm/processor.h>
++#include <asm/sbi.h>
+ #include <asm/vector.h>
  
--	__HEAD
-+	.text
- 	.code32
- SYM_FUNC_START(efi32_pe_entry)
- /*
-@@ -808,12 +808,11 @@ SYM_FUNC_START(efi32_pe_entry)
+ #include "copy-unaligned.h"
+@@ -396,6 +397,20 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
+ 			set_bit(RISCV_ISA_EXT_ZIHPM, isainfo->isa);
+ 		}
  
- 	call	1f
- 1:	pop	%ebx
--	subl	$ rva(1b), %ebx
- 
- 	/* Get the loaded image protocol pointer from the image handle */
- 	leal	-4(%ebp), %eax
- 	pushl	%eax				// &loaded_image
--	leal	rva(loaded_image_proto)(%ebx), %eax
-+	leal	(loaded_image_proto - 1b)(%ebx), %eax
- 	pushl	%eax				// pass the GUID address
- 	pushl	8(%ebp)				// pass the image handle
- 
-@@ -842,13 +841,13 @@ SYM_FUNC_START(efi32_pe_entry)
- 	movl	12(%ebp), %edx			// sys_table
- 	movl	-4(%ebp), %esi			// loaded_image
- 	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
--	movl	%ebx, %ebp			// startup_32 for efi32_pe_stub_entry
-+	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
- 	/*
- 	 * We need to set the image_offset variable here since startup_32() will
- 	 * use it before we get to the 64-bit efi_pe_entry() in C code.
- 	 */
--	subl	%esi, %ebx
--	movl	%ebx, rva(image_offset)(%ebp)	// save image_offset
-+	subl	%esi, %ebp			// calculate image_offset
-+	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
- 	xorl	%esi, %esi
- 	jmp	efi32_entry			// pass %ecx, %edx, %esi
- 						// no other registers remain live
++		/*
++		 * "V" in ISA strings is ambiguous in practice: it should mean
++		 * just the standard V-1.0 but vendors aren't well behaved.
++		 * Many vendors with T-Head CPU cores which implement the 0.7.1
++		 * version of the vector specification put "v" into their DTs.
++		 * CPU cores with the ratified spec will contain non-zero
++		 * marchid.
++		 */
++		if (acpi_disabled && riscv_cached_mvendorid(cpu) == THEAD_VENDOR_ID &&
++		    riscv_cached_marchid(cpu) == 0x0) {
++			this_hwcap &= ~isa2hwcap[RISCV_ISA_EXT_v];
++			clear_bit(RISCV_ISA_EXT_v, isainfo->isa);
++		}
++
+ 		/*
+ 		 * All "okay" hart should have same isa. Set HWCAP based on
+ 		 * common capabilities of every "okay" hart, in case they don't
+-- 
+2.43.0
+
 
 
 
