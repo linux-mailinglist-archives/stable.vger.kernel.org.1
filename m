@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AD686FBDA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0A786FBDF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:30:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED0331C20EC9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE2B1C20FDF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D25F17565;
-	Mon,  4 Mar 2024 08:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579E717C71;
+	Mon,  4 Mar 2024 08:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyfUWF2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScZTFEdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE291757A
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BA017BC1
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709540996; cv=none; b=Z4UUIyjlpe7ZSGcNSGJ/h8xD7p6UezQGaiQAZ2PPe8y0sZUh3sjiD/mC5GOaI/ZjwZHTosj5KT2y/S+lZI07il60LBXaImeQtrW/EhY0jPZ6PlsQVb2tT0Voz1pwXxIn1cYP6vCKGQYqooPUDMOSe617AZJNJ2Hc3OCMP0KwUaY=
+	t=1709541007; cv=none; b=Da/ntjd3ga16ryyIcoZIwe+T0yASFMiNx8lHaH2GXL3W+nTqW8NftktLVO4B8EHKw3xZtEHoRfmAh+WGlu1+kXqMy4jb6CyoeyTR2Kw/NTL0kkelWdv9wV8SPtp5Ro7/jONitUn71H1RpFakAqdA5NuJLgWEGaD7nB81lNU6rI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709540996; c=relaxed/simple;
-	bh=FuME06FBbfS1zcdTzKAbKE1drqgumCbFDLY1Y2IdAcA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DZ0tTu9zcCbFv5DQivcN9Z9aZCWdmn9m4/WKTLVSE07j6wiKjPxfwMMocpyuvTK/Mko8HnCNdqMa6sKHMqWJipXUVIn6uoQGE39BikJ0s1MC2lyNAizDF1QkqASrVbFazPx2prsqRV/YgH0BC6f45tWjmgpJa/vhQS7G8RTijyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyfUWF2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B93C433C7;
-	Mon,  4 Mar 2024 08:29:55 +0000 (UTC)
+	s=arc-20240116; t=1709541007; c=relaxed/simple;
+	bh=TBaBBb2mxG/5j/Y3vsnHFwGLqQhtIoTUPYxbodwDWHk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RDHmIUMU8YyOsygHetHyWNrRIu/qT2wKei2cUkbS+oE0OhJY0Rsmm6Evn7XDisJ2PBoehGQjwJCnH8ZXxvg2pAKK36I0NyQ/3bGRsCG4t6fIM4FZ0OioQoxmyi++WwojDE0o/zBkBcpwM/vEKrCh3Ezog7rrMBPXaTbDIcqYqgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScZTFEdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D727C43390;
+	Mon,  4 Mar 2024 08:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709540995;
-	bh=FuME06FBbfS1zcdTzKAbKE1drqgumCbFDLY1Y2IdAcA=;
+	s=korg; t=1709541006;
+	bh=TBaBBb2mxG/5j/Y3vsnHFwGLqQhtIoTUPYxbodwDWHk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AyfUWF2L+n25qp0Di7eOOC5T8n5LWW2cOhLap7NVecs9cYdZISmfOYeuZ0PM44UR9
-	 cQld7bnIb9xGeOUhUri6a/kLp1CR7y8+4bIZbmOsLheVYwlXm5VUZ44NMNWag8ta3D
-	 lkLYBRyWWng9xaTMv1ybEwi4tc6wdOXWdyjWwkrY=
-Subject: FAILED: patch "[PATCH] mptcp: fix double-free on socket dismantle" failed to apply to 5.15-stable tree
+	b=ScZTFEdVcTy5L3XVFM+yYa44yHCrX+T93C82xDNdLiEH6aSnmZaWBATsvRPWQkrih
+	 JlznAqz/tH3g2Jkvlc03/V4K1i3BaFfT/YTHLkGdkYMiBBBDpIcmUWxROa7BhpNcWI
+	 hDusrAZV0zepY1y+A10u2SrWWCp6h08jqGuQAFQo=
+Subject: FAILED: patch "[PATCH] mptcp: fix double-free on socket dismantle" failed to apply to 5.10-stable tree
 To: dcaratti@redhat.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 09:29:52 +0100
-Message-ID: <2024030452-appliance-decidable-ccdb@gregkh>
+Date: Mon, 04 Mar 2024 09:29:55 +0100
+Message-ID: <2024030455-plausible-harmonics-a964@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 10048689def7e40a4405acda16fdc6477d4ecc5c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030452-appliance-decidable-ccdb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030455-plausible-harmonics-a964@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
