@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-26322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC19870E0C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7D3870EE2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44FD0286ADF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39B7A1F210A0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748981C6AB;
-	Mon,  4 Mar 2024 21:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BEC61675;
+	Mon,  4 Mar 2024 21:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgOuf3rZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDDcXb9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339038F58;
-	Mon,  4 Mar 2024 21:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187A61EB5A;
+	Mon,  4 Mar 2024 21:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588421; cv=none; b=oCTPgyL+Z7ZQJKLcSqsy6qBM6qw5+sZh7r3wHWDgBuBb/7Cppn3jDLx6c+9OX3MXuhGjx4xBLGXdTV12iuYzWQw9Xvhr0X2ikZZpRbJPiGm3ZxzpeE0d4VorLhGmR55PyPcLjjyhwGmM4CFbfieXMJEKXwsem8qswIoRFudeaMs=
+	t=1709588913; cv=none; b=aAcppEgqOW6YZfgoDzG27s7jBvu2/wzrchUX1NdzbOA/XovS+SrAqSZrulEqJsiJCWyocbd9RkHmGzLcTv74FhrKHOdPi3FqqoJXDr6/yytmG2lfxc34QyUxysWbiS4CUD/qlNq6gJ3PLP+hUOA+BfxfVmpZ4NDt2Z3jHllwHas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588421; c=relaxed/simple;
-	bh=AC0dypErLt0vscaPavG8u8hglEBMMEDp6qmcJwSeaJ0=;
+	s=arc-20240116; t=1709588913; c=relaxed/simple;
+	bh=uD8xZMOOol1Bth74IPc+LzRg5qA0UcvwNs7l6S9z35Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YoGBuz4mmh+1qjL7g6NfrnfsTMAt8EtJ6fNkhGnzzilRCmifT40UqjjE1m3D9pi/+PF+2F/bJrEf+Nntmo1A/GhNN1P8pQ61ipiNS6luL9oqPgR4iqumvjo7hstlY2k1qxukfkPq17ovtEJxJzgzW9mRXIaOdxzOXPKaY8CcRWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgOuf3rZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2E0C433C7;
-	Mon,  4 Mar 2024 21:40:20 +0000 (UTC)
+	 MIME-Version; b=aDWSK0NiAEQSf652UlxPl3M0ikAQ8L6VOMwq0kkA3g2hAV19vGnNgoUyDBYfUtOIRG70l1gcGbpm8UyiyKdY7kproaacnTCHNJIDOfE67BW7d08WVpcZgyFt/LjoJfO8WbyMQ+RnFSbtHU7guGY5Xol1jtrZhpbpyelphbdpKEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDDcXb9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C493C433F1;
+	Mon,  4 Mar 2024 21:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588421;
-	bh=AC0dypErLt0vscaPavG8u8hglEBMMEDp6qmcJwSeaJ0=;
+	s=korg; t=1709588913;
+	bh=uD8xZMOOol1Bth74IPc+LzRg5qA0UcvwNs7l6S9z35Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgOuf3rZP/wfkYFQA07xd96qY0K/UJi7Xh7y9iG0UoEtTnfdG0281u7FN1yg4A0Bu
-	 5yQer+3C1NVIlVe/8KjXQWWhSIZMh8CQP1Kz9+1nk2OMnO0MbOrIib3a+xuNrVXMq7
-	 jQHYV1q7HM6Ckmz/OcT4byLR9jLIR/35j51/sRhw=
+	b=UDDcXb9UlnT8O45CJu/2AW27VVVOx6eTP12C4LCc2vndMtpbSY7y5QvgOY3ub+EwX
+	 j/sZDFfI8f0yJCz0hMP79Nm38/0+mcFQ00uP2u3pvzLSQU85yZrJxO0KeJw8kV0nRl
+	 WNapAexH2Tr0s2ZnjdNeHRuq8+6pUoLgJAtf8Hqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jann Horn <jannh@google.com>,
-	Shervin Oloumi <enlightened@chromium.org>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.6 076/143] landlock: Fix asymmetric private inodes referring
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH 6.1 133/215] x86/decompressor: Use standard calling convention for trampoline
 Date: Mon,  4 Mar 2024 21:23:16 +0000
-Message-ID: <20240304211552.350980376@linuxfoundation.org>
+Message-ID: <20240304211601.293602314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d9818b3e906a0ee1ab02ea79e74a2f755fc5461a upstream.
+commit 918a7a04e71745e99a0efc6753e587439b794b29 upstream.
 
-When linking or renaming a file, if only one of the source or
-destination directory is backed by an S_PRIVATE inode, then the related
-set of layer masks would be used as uninitialized by
-is_access_to_paths_allowed().  This would result to indeterministic
-access for one side instead of always being allowed.
+Update the trampoline code so its arguments are passed via RDI and RSI,
+which matches the ordinary SysV calling convention for x86_64. This will
+allow this code to be called directly from C.
 
-This bug could only be triggered with a mounted filesystem containing
-both S_PRIVATE and !S_PRIVATE inodes, which doesn't seem possible.
-
-The collect_domain_accesses() calls return early if
-is_nouser_or_private() returns false, which means that the directory's
-superblock has SB_NOUSER or its inode has S_PRIVATE.  Because rename or
-link actions are only allowed on the same mounted filesystem, the
-superblock is always the same for both source and destination
-directories.  However, it might be possible in theory to have an
-S_PRIVATE parent source inode with an !S_PRIVATE parent destination
-inode, or vice versa.
-
-To make sure this case is not an issue, explicitly initialized both set
-of layer masks to 0, which means to allow all actions on the related
-side.  If at least on side has !S_PRIVATE, then
-collect_domain_accesses() and is_access_to_paths_allowed() check for the
-required access rights.
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Shervin Oloumi <enlightened@chromium.org>
-Cc: stable@vger.kernel.org
-Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
-Link: https://lore.kernel.org/r/20240219190345.2928627-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20230807162720.545787-11-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/fs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/head_64.S |   27 +++++++++++++--------------
+ arch/x86/boot/compressed/pgtable.h |    2 +-
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -820,8 +820,8 @@ static int current_check_refer_path(stru
- 	bool allow_parent1, allow_parent2;
- 	access_mask_t access_request_parent1, access_request_parent2;
- 	struct path mnt_dir;
--	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS],
--		layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS];
-+	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS] = {},
-+		     layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS] = {};
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -447,9 +447,9 @@ SYM_CODE_START(startup_64)
+ 	movq	%r15, %rdi
+ 	call	paging_prepare
  
- 	if (!dom)
- 		return 0;
+-	/* Save the trampoline address in RCX */
+-	movq	%rax, %rcx
+-
++	/* Pass the trampoline address and boolean flag as args #1 and #2 */
++	movq	%rax, %rdi
++	movq	%rdx, %rsi
+ 	leaq	TRAMPOLINE_32BIT_CODE_OFFSET(%rax), %rax
+ 	call	*%rax
+ 
+@@ -549,11 +549,14 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated
+ SYM_FUNC_END(.Lrelocated)
+ 
+ /*
+- * This is the 32-bit trampoline that will be copied over to low memory.
++ * This is the 32-bit trampoline that will be copied over to low memory. It
++ * will be called using the ordinary 64-bit calling convention from code
++ * running in 64-bit mode.
+  *
+  * Return address is at the top of the stack (might be above 4G).
+- * ECX contains the base address of the trampoline memory.
+- * Non zero RDX means trampoline needs to enable 5-level paging.
++ * The first argument (EDI) contains the 32-bit addressable base of the
++ * trampoline memory. A non-zero second argument (ESI) means that the
++ * trampoline needs to enable 5-level paging.
+  */
+ SYM_CODE_START(trampoline_32bit_src)
+ 	/*
+@@ -600,7 +603,7 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	movl	%eax, %cr0
+ 
+ 	/* Check what paging mode we want to be in after the trampoline */
+-	testl	%edx, %edx
++	testl	%esi, %esi
+ 	jz	1f
+ 
+ 	/* We want 5-level paging: don't touch CR3 if it already points to 5-level page tables */
+@@ -615,21 +618,17 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	jz	3f
+ 2:
+ 	/* Point CR3 to the trampoline's new top level page table */
+-	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%ecx), %eax
++	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%edi), %eax
+ 	movl	%eax, %cr3
+ 3:
+ 	/* Set EFER.LME=1 as a precaution in case hypervsior pulls the rug */
+-	pushl	%ecx
+-	pushl	%edx
+ 	movl	$MSR_EFER, %ecx
+ 	rdmsr
+ 	btsl	$_EFER_LME, %eax
+ 	/* Avoid writing EFER if no change was made (for TDX guest) */
+ 	jc	1f
+ 	wrmsr
+-1:	popl	%edx
+-	popl	%ecx
+-
++1:
+ #ifdef CONFIG_X86_MCE
+ 	/*
+ 	 * Preserve CR4.MCE if the kernel will enable #MC support.
+@@ -646,7 +645,7 @@ SYM_CODE_START(trampoline_32bit_src)
+ 
+ 	/* Enable PAE and LA57 (if required) paging modes */
+ 	orl	$X86_CR4_PAE, %eax
+-	testl	%edx, %edx
++	testl	%esi, %esi
+ 	jz	1f
+ 	orl	$X86_CR4_LA57, %eax
+ 1:
+--- a/arch/x86/boot/compressed/pgtable.h
++++ b/arch/x86/boot/compressed/pgtable.h
+@@ -14,7 +14,7 @@
+ 
+ extern unsigned long *trampoline_32bit;
+ 
+-extern void trampoline_32bit_src(void *return_ptr);
++extern void trampoline_32bit_src(void *trampoline, bool enable_5lvl);
+ 
+ #endif /* __ASSEMBLER__ */
+ #endif /* BOOT_COMPRESSED_PAGETABLE_H */
 
 
 
