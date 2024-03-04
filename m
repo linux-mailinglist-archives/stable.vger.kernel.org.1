@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE08870ECC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B694870DF5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2667B2809DC
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF3F1F21624
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5677868F;
-	Mon,  4 Mar 2024 21:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC52A2C689;
+	Mon,  4 Mar 2024 21:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LyRhFjS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9OxlMz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE3B1EB5A;
-	Mon,  4 Mar 2024 21:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A708F58;
+	Mon,  4 Mar 2024 21:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588824; cv=none; b=Qv6n/3KlXCFRQ1763c7Qwg4lVMMAvcvLkDCHnu3yAiPG77hUXoGsABU3jc9KipeDz13w9IANNodhUc1PSIX3VJRmOpPMcu4YkVMpWU18Ffg2juf/K4VTIEtSmHJG+ANdcx9lhdY0WWmJEkGSKSXT9XJ9uIPqSavk+KSIQYIJgR0=
+	t=1709588363; cv=none; b=oSDO9q0uH7O+xcNdVfDfT6wgkvjBiz4NVVEGI3tDZ+uWzAV6hgacZVgxTXf9zcRiWy+MwUO9BBg++/PnWW9wleicRgGI6qI3FzNg5f88p32NsXtTs1saWOENCmEvFIxM/dTmxsyVGJ0jAmNYaaWRZBopasrt+B6J54kVcZ45rXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588824; c=relaxed/simple;
-	bh=sfwDx6cA3qaIS5DOXddpt7V2itLtMXxYlns0OLJoLV4=;
+	s=arc-20240116; t=1709588363; c=relaxed/simple;
+	bh=JSW9wQd7yzSSlSTtC43/XBTuXO2kgNBkaWdY0piukw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vz0z5+zRP0Tc5Opvnh8U/Q8f3a2JgwtqeXqTZWvZP1GcbJrwyUMu2rIBrrJ8iVR7m3Nz5H1z+558mNymGSyx8kFrTyhTKmtvaDITyVbh6PHsaHwTUoWPPGVQk2HgSEKbpaO6Ba7xo0Qx4flMxSkCpxZ9z9bWuvfQO4YWda2nPL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LyRhFjS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2E0C433F1;
-	Mon,  4 Mar 2024 21:47:03 +0000 (UTC)
+	 MIME-Version; b=UfUZzv3sdRFWWDCzpjsP16wWlGPUYhPSQSsuFCi4OqUUCDYgGobKjXVhNhhT5U7uGKNKP+dUAQxGOVkQWReWTxi+IXSA00WCOvVHyEsqNaK3H8NILQieNWi2KFAbYo+ixk+lpKz60b/NrmrvzsFZQ+sPcqWuRMWGWJ7C1sMPk2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9OxlMz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DDC433C7;
+	Mon,  4 Mar 2024 21:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588824;
-	bh=sfwDx6cA3qaIS5DOXddpt7V2itLtMXxYlns0OLJoLV4=;
+	s=korg; t=1709588363;
+	bh=JSW9wQd7yzSSlSTtC43/XBTuXO2kgNBkaWdY0piukw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LyRhFjSl8fkFHar4KsuZuj6T+XdK+BDUhVfKXPGoJYD9hEd3gGvzrD66s6iY73VO
-	 wndQIhHCRJu+R4fXh/UqWyuNZYJwwkrV6UmutUfzZG/tU+s9/Hq096pgUYrPpv8Z16
-	 hDKq17ZspQwPZndVoQfNPQsVHKKTVFSTPUaSzu4U=
+	b=y9OxlMz1B6HL1Yha8u/gCUzpKAJRPGpUxyq9L1lZZZsDGn+3DY7qwdQccb4sf3BTX
+	 r86WIbvtFlQLoxE1rQdQJQ3vS2RjlVNEwUcIvT3KSbpIOBljFl563wPoEgZ0/w+eAh
+	 DF8i7GQbl4CdT3WAQ7sq5laUM1TJORubrA9bhmeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 111/215] x86/boot/compressed: Move 32-bit entrypoint code into .text section
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 054/143] ASoC: cs35l56: Fix misuse of wm_adsp part string for silicon revision
 Date: Mon,  4 Mar 2024 21:22:54 +0000
-Message-ID: <20240304211600.556328063@linuxfoundation.org>
+Message-ID: <20240304211551.656912549@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit e2ab9eab324cdf240de89741e4a1aa79919f0196 upstream.
+[ Upstream commit f6c967941c5d6fa526fdd64733a8d86bf2bfab31 ]
 
-Move the code that stores the arguments passed to the EFI entrypoint
-into the .text section, so that it can be moved into a separate
-compilation unit in a subsequent patch.
+Put the silicon revision and secured flag in the wm_adsp fwf_name
+string instead of including them in the part string.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-3-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This changes the format of the firmware name string from
+
+ cs35l56[s]-rev-misc[-system_name]
+
+to
+ cs35l56-rev[-s]-misc[-system_name]
+
+No firmware files have been published, so this doesn't cause a
+compatibility break.
+
+Silicon revision and secured flag are included in the firmware
+filename to pick a firmware compatible with the part. These strings
+were being added to the part string, but that is a misuse of the
+string. The correct place for these is the fwf_name string, which
+is specifically intended to select between multiple firmware files
+for the same part.
+
+Backport note:
+This won't apply to kernels older than v6.6.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 608f1b0dbdde ("ASoC: cs35l56: Move DSP part string generation so that it is done only once")
+Link: https://msgid.link/r/20240129162737.497-12-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S |   48 ++++++++++++++++++++++++++-----------
- 1 file changed, 34 insertions(+), 14 deletions(-)
+ sound/soc/codecs/cs35l56.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -303,24 +303,41 @@ SYM_FUNC_START(efi32_stub_entry)
- 	popl	%ecx
- 	popl	%edx
- 	popl	%esi
-+	jmp	efi32_entry
-+SYM_FUNC_END(efi32_stub_entry)
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index d1ef1c5bac580..3a3782fb70bf0 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -886,6 +886,18 @@ static void cs35l56_dsp_work(struct work_struct *work)
  
-+	.text
-+/*
-+ * This is the common EFI stub entry point for mixed mode.
-+ *
-+ * Arguments:	%ecx	image handle
-+ * 		%edx	EFI system table pointer
-+ *		%esi	struct bootparams pointer (or NULL when not using
-+ *			the EFI handover protocol)
-+ *
-+ * Since this is the point of no return for ordinary execution, no registers
-+ * are considered live except for the function parameters. [Note that the EFI
-+ * stub may still exit and return to the firmware using the Exit() EFI boot
-+ * service.]
-+ */
-+SYM_FUNC_START_LOCAL(efi32_entry)
- 	call	1f
--1:	pop	%ebp
--	subl	$ rva(1b), %ebp
--
--	movl	%esi, rva(efi32_boot_args+8)(%ebp)
--SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
--	movl	%ecx, rva(efi32_boot_args)(%ebp)
--	movl	%edx, rva(efi32_boot_args+4)(%ebp)
--	movb	$0, rva(efi_is64)(%ebp)
-+1:	pop	%ebx
+ 	pm_runtime_get_sync(cs35l56->base.dev);
  
- 	/* Save firmware GDTR and code/data selectors */
--	sgdtl	rva(efi32_boot_gdt)(%ebp)
--	movw	%cs, rva(efi32_boot_cs)(%ebp)
--	movw	%ds, rva(efi32_boot_ds)(%ebp)
-+	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
-+	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
-+	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
- 
- 	/* Store firmware IDT descriptor */
--	sidtl	rva(efi32_boot_idt)(%ebp)
-+	sidtl	(efi32_boot_idt - 1b)(%ebx)
++	/* Populate fw file qualifier with the revision and security state */
++	if (!cs35l56->dsp.fwf_name) {
++		cs35l56->dsp.fwf_name = kasprintf(GFP_KERNEL, "%02x%s-dsp1",
++						  cs35l56->base.rev,
++						  cs35l56->base.secured ? "-s" : "");
++		if (!cs35l56->dsp.fwf_name)
++			goto err;
++	}
 +
-+	/* Store boot arguments */
-+	leal	(efi32_boot_args - 1b)(%ebx), %ebx
-+	movl	%ecx, 0(%ebx)
-+	movl	%edx, 4(%ebx)
-+	movl	%esi, 8(%ebx)
-+	movb	$0x0, 12(%ebx)          // efi_is64
- 
- 	/* Disable paging */
- 	movl	%cr0, %eax
-@@ -328,7 +345,8 @@ SYM_INNER_LABEL(efi32_pe_stub_entry, SYM
- 	movl	%eax, %cr0
- 
- 	jmp	startup_32
--SYM_FUNC_END(efi32_stub_entry)
-+SYM_FUNC_END(efi32_entry)
-+	__HEAD
- #endif
- 
- 	.code64
-@@ -847,7 +865,9 @@ SYM_FUNC_START(efi32_pe_entry)
++	dev_dbg(cs35l56->base.dev, "DSP fwf name: '%s' system name: '%s'\n",
++		cs35l56->dsp.fwf_name, cs35l56->dsp.system_name);
++
+ 	/*
+ 	 * When the device is running in secure mode the firmware files can
+ 	 * only contain insecure tunings and therefore we do not need to
+@@ -905,7 +917,7 @@ static void cs35l56_dsp_work(struct work_struct *work)
+ 	 * on the DAPM mutex.
  	 */
- 	subl	%esi, %ebx
- 	movl	%ebx, rva(image_offset)(%ebp)	// save image_offset
--	jmp	efi32_pe_stub_entry
-+	xorl	%esi, %esi
-+	jmp	efi32_entry			// pass %ecx, %edx, %esi
-+						// no other registers remain live
+ 	queue_work(cs35l56->dsp_wq, &cs35l56->mux_init_work);
+-
++err:
+ 	pm_runtime_mark_last_busy(cs35l56->base.dev);
+ 	pm_runtime_put_autosuspend(cs35l56->base.dev);
+ }
+@@ -958,6 +970,9 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
  
- 2:	popl	%edi				// restore callee-save registers
- 	popl	%ebx
+ 	wm_adsp2_component_remove(&cs35l56->dsp, component);
+ 
++	kfree(cs35l56->dsp.fwf_name);
++	cs35l56->dsp.fwf_name = NULL;
++
+ 	cs35l56->component = NULL;
+ }
+ 
+@@ -1309,12 +1324,6 @@ int cs35l56_init(struct cs35l56_private *cs35l56)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Populate the DSP information with the revision and security state */
+-	cs35l56->dsp.part = devm_kasprintf(cs35l56->base.dev, GFP_KERNEL, "cs35l56%s-%02x",
+-					   cs35l56->base.secured ? "s" : "", cs35l56->base.rev);
+-	if (!cs35l56->dsp.part)
+-		return -ENOMEM;
+-
+ 	if (!cs35l56->base.reset_gpio) {
+ 		dev_dbg(cs35l56->base.dev, "No reset gpio: using soft reset\n");
+ 		cs35l56->soft_resetting = true;
+-- 
+2.43.0
+
 
 
 
