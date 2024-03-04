@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FD5870D1C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F5D870ED0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400A128D470
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541801F2397C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D6078B47;
-	Mon,  4 Mar 2024 21:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD161675;
+	Mon,  4 Mar 2024 21:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0lyR8Ka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hf/kEH1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845D12C689;
-	Mon,  4 Mar 2024 21:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2701EB5A;
+	Mon,  4 Mar 2024 21:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587847; cv=none; b=rrEXrTWZvxXy4jlDE7g98tfuq5TkYD/iU7WBrg9fiTjoOYnnuHScIJS9sKoE/gIiuZlahItqq3NtVmCDR8H7RYGY8KSKRqMQhcX/+ibtJxCtT5KytDZv55A/fcbzegIEgt4KW7VoajO0NU4Crm95IcXczovqhdT3SmAeV1hyWLg=
+	t=1709588834; cv=none; b=azHIy/cAUi416iIjHQ/kp8XW/6uo3TKyFAhLb1458ZHb9lPlH1Npax6/CU9vfqBOZjYnwIFF5edbwNTkp5Cu7RZQzs1QIqWmwjEfqWoIUoFlskZdKeP7Y1ppjoy11Vxfytfvf0i3EKPt1ZdZdH752Ic4770lDo331oRyGqJu9Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587847; c=relaxed/simple;
-	bh=vdB0fV+p/1hTRQd8AZHHT0oh1VUav2IVbXy7xP/TbQM=;
+	s=arc-20240116; t=1709588834; c=relaxed/simple;
+	bh=ptbw0RnhEqYhe/lEyeYytxKmnRVdG/VV4Yqz1jelRFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i++wcPU9GfQWOtcyzGU4AgtfS/6TIo7G+MZSDUQQPP21Ih1/97zgwTME2Py2BGJ1EVpAGysVFuP9gyZJRaE5NKEOn3AC/6WG3ojVnSa5YYOe9Ciq6anV3lf9OPnNUxMIdxOFsayC0MnCXqkHilxy11P6rks0tluNiD2Wq5WBWJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0lyR8Ka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCC3C433F1;
-	Mon,  4 Mar 2024 21:30:46 +0000 (UTC)
+	 MIME-Version; b=eypwqqNpAEcEP6dCA434Koyr6dCZjFy8NPZDx4CjwFcMUSYhfJT0l7osxUdx4iy1w5abCEkUuHBJ4ozPZV0ZTBlP8sV60DBc67+SihmWts2Zmv+XjPIdoZnycQlSMmM4cP6vzENFd3n4tFyAZRaUAcCRVtBFEPSdpLmo3xYXFWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hf/kEH1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C935C433F1;
+	Mon,  4 Mar 2024 21:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587847;
-	bh=vdB0fV+p/1hTRQd8AZHHT0oh1VUav2IVbXy7xP/TbQM=;
+	s=korg; t=1709588834;
+	bh=ptbw0RnhEqYhe/lEyeYytxKmnRVdG/VV4Yqz1jelRFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0lyR8KayjgF7NsI48xOxVSxbC+WqAymJCzt8mT33s34iZPFL4H1ZszsNVgi+H/Wh
-	 VG1wMNSJuiUSQiekj57140Lda+spS2XqPcBZYPfbnD3obCm9fT5GFKShGDmN+KVV3u
-	 yafhJYIAr1aqnb4qOXRhd43g3eJFnU2vN9AOWeIY=
+	b=hf/kEH1JitQhE8jNdmgJutX3Lc4KaFxo7fA+XOC/rFNj19ttt3qzadg1BzK5pD9f5
+	 OvTxrh6+KgmkvkIrR4svzbBUtpH5skua/o7tWgiOpZvJVdgiChEFEsr2fET/BPiaJ0
+	 0zgfZumDtGEEHSeITRlLw2zDeEulVQv5RdDqCbYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.7 112/162] iommufd: Fix protection fault in iommufd_test_syz_conv_iova
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 114/215] x86/boot/compressed: Move efi32_entry out of head_64.S
 Date: Mon,  4 Mar 2024 21:22:57 +0000
-Message-ID: <20240304211555.361490466@linuxfoundation.org>
+Message-ID: <20240304211600.661884232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit cf7c2789822db8b5efa34f5ebcf1621bc0008d48 upstream.
+commit 73a6dec80e2acedaef3ca603d4b5799049f6e9f8 upstream.
 
-Syzkaller reported the following bug:
+Move the efi32_entry() routine out of head_64.S and into efi-mixed.S,
+which reduces clutter in the complicated startup routines. It also
+permits linkage of some symbols used by code to be made local.
 
-  general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN
-  KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
-  Call Trace:
-   lock_acquire
-   lock_acquire+0x1ce/0x4f0
-   down_read+0x93/0x4a0
-   iommufd_test_syz_conv_iova+0x56/0x1f0
-   iommufd_test_access_rw.isra.0+0x2ec/0x390
-   iommufd_test+0x1058/0x1e30
-   iommufd_fops_ioctl+0x381/0x510
-   vfs_ioctl
-   __do_sys_ioctl
-   __se_sys_ioctl
-   __x64_sys_ioctl+0x170/0x1e0
-   do_syscall_x64
-   do_syscall_64+0x71/0x140
-
-This is because the new iommufd_access_change_ioas() sets access->ioas to
-NULL during its process, so the lock might be gone in a concurrent racing
-context.
-
-Fix this by doing the same access->ioas sanity as iommufd_access_rw() and
-iommufd_access_pin_pages() functions do.
-
-Cc: stable@vger.kernel.org
-Fixes: 9227da7816dd ("iommufd: Add iommufd_access_change_ioas(_id) helpers")
-Link: https://lore.kernel.org/r/3f1932acaf1dd494d404c04364d73ce8f57f3e5e.1708636627.git.nicolinc@nvidia.com
-Reported-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-6-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/selftest.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S |   57 ++++++++++++++++++++++++++++-------
+ arch/x86/boot/compressed/head_64.S   |   45 ---------------------------
+ 2 files changed, 47 insertions(+), 55 deletions(-)
 
---- a/drivers/iommu/iommufd/selftest.c
-+++ b/drivers/iommu/iommufd/selftest.c
-@@ -48,8 +48,8 @@ enum {
-  * In syzkaller mode the 64 bit IOVA is converted into an nth area and offset
-  * value. This has a much smaller randomization space and syzkaller can hit it.
-  */
--static unsigned long iommufd_test_syz_conv_iova(struct io_pagetable *iopt,
--						u64 *iova)
-+static unsigned long __iommufd_test_syz_conv_iova(struct io_pagetable *iopt,
-+						  u64 *iova)
- {
- 	struct syz_layout {
- 		__u32 nth_area;
-@@ -73,6 +73,21 @@ static unsigned long iommufd_test_syz_co
- 	return 0;
- }
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -105,7 +105,7 @@ SYM_FUNC_START(__efi64_thunk)
+ 	/*
+ 	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
+ 	 * and IDT that was installed when the kernel started executing. The
+-	 * pointers were saved at the EFI stub entry point in head_64.S.
++	 * pointers were saved by the efi32_entry() routine below.
+ 	 *
+ 	 * Pass the saved DS selector to the 32-bit code, and use far return to
+ 	 * restore the saved CS selector.
+@@ -217,22 +217,59 @@ SYM_FUNC_START_LOCAL(efi_enter32)
+ 	lret
+ SYM_FUNC_END(efi_enter32)
  
-+static unsigned long iommufd_test_syz_conv_iova(struct iommufd_access *access,
-+						u64 *iova)
-+{
-+	unsigned long ret;
++/*
++ * This is the common EFI stub entry point for mixed mode.
++ *
++ * Arguments:	%ecx	image handle
++ * 		%edx	EFI system table pointer
++ *		%esi	struct bootparams pointer (or NULL when not using
++ *			the EFI handover protocol)
++ *
++ * Since this is the point of no return for ordinary execution, no registers
++ * are considered live except for the function parameters. [Note that the EFI
++ * stub may still exit and return to the firmware using the Exit() EFI boot
++ * service.]
++ */
++SYM_FUNC_START(efi32_entry)
++	call	1f
++1:	pop	%ebx
 +
-+	mutex_lock(&access->ioas_lock);
-+	if (!access->ioas) {
-+		mutex_unlock(&access->ioas_lock);
-+		return 0;
-+	}
-+	ret = __iommufd_test_syz_conv_iova(&access->ioas->iopt, iova);
-+	mutex_unlock(&access->ioas_lock);
-+	return ret;
-+}
++	/* Save firmware GDTR and code/data selectors */
++	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
++	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
++	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
 +
- void iommufd_test_syz_conv_iova_id(struct iommufd_ucmd *ucmd,
- 				   unsigned int ioas_id, u64 *iova, u32 *flags)
- {
-@@ -85,7 +100,7 @@ void iommufd_test_syz_conv_iova_id(struc
- 	ioas = iommufd_get_ioas(ucmd->ictx, ioas_id);
- 	if (IS_ERR(ioas))
- 		return;
--	*iova = iommufd_test_syz_conv_iova(&ioas->iopt, iova);
-+	*iova = __iommufd_test_syz_conv_iova(&ioas->iopt, iova);
- 	iommufd_put_object(ucmd->ictx, &ioas->obj);
- }
++	/* Store firmware IDT descriptor */
++	sidtl	(efi32_boot_idt - 1b)(%ebx)
++
++	/* Store boot arguments */
++	leal	(efi32_boot_args - 1b)(%ebx), %ebx
++	movl	%ecx, 0(%ebx)
++	movl	%edx, 4(%ebx)
++	movl	%esi, 8(%ebx)
++	movb	$0x0, 12(%ebx)          // efi_is64
++
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++
++	jmp	startup_32
++SYM_FUNC_END(efi32_entry)
++
+ 	.data
+ 	.balign	8
+-SYM_DATA_START(efi32_boot_gdt)
++SYM_DATA_START_LOCAL(efi32_boot_gdt)
+ 	.word	0
+ 	.quad	0
+ SYM_DATA_END(efi32_boot_gdt)
  
-@@ -1045,7 +1060,7 @@ static int iommufd_test_access_pages(str
- 	}
+-SYM_DATA_START(efi32_boot_idt)
++SYM_DATA_START_LOCAL(efi32_boot_idt)
+ 	.word	0
+ 	.quad	0
+ SYM_DATA_END(efi32_boot_idt)
  
- 	if (flags & MOCK_FLAGS_ACCESS_SYZ)
--		iova = iommufd_test_syz_conv_iova(&staccess->access->ioas->iopt,
-+		iova = iommufd_test_syz_conv_iova(staccess->access,
- 					&cmd->access_pages.iova);
+-SYM_DATA_START(efi32_boot_cs)
+-	.word	0
+-SYM_DATA_END(efi32_boot_cs)
+-
+-SYM_DATA_START(efi32_boot_ds)
+-	.word	0
+-SYM_DATA_END(efi32_boot_ds)
++SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
++SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
++SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
++SYM_DATA(efi_is64, .byte 1)
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -289,48 +289,6 @@ SYM_FUNC_START(efi32_stub_entry)
+ 	popl	%esi
+ 	jmp	efi32_entry
+ SYM_FUNC_END(efi32_stub_entry)
+-
+-	.text
+-/*
+- * This is the common EFI stub entry point for mixed mode.
+- *
+- * Arguments:	%ecx	image handle
+- * 		%edx	EFI system table pointer
+- *		%esi	struct bootparams pointer (or NULL when not using
+- *			the EFI handover protocol)
+- *
+- * Since this is the point of no return for ordinary execution, no registers
+- * are considered live except for the function parameters. [Note that the EFI
+- * stub may still exit and return to the firmware using the Exit() EFI boot
+- * service.]
+- */
+-SYM_FUNC_START_LOCAL(efi32_entry)
+-	call	1f
+-1:	pop	%ebx
+-
+-	/* Save firmware GDTR and code/data selectors */
+-	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
+-	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
+-	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
+-
+-	/* Store firmware IDT descriptor */
+-	sidtl	(efi32_boot_idt - 1b)(%ebx)
+-
+-	/* Store boot arguments */
+-	leal	(efi32_boot_args - 1b)(%ebx), %ebx
+-	movl	%ecx, 0(%ebx)
+-	movl	%edx, 4(%ebx)
+-	movl	%esi, 8(%ebx)
+-	movb	$0x0, 12(%ebx)          // efi_is64
+-
+-	/* Disable paging */
+-	movl	%cr0, %eax
+-	btrl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
+-
+-	jmp	startup_32
+-SYM_FUNC_END(efi32_entry)
+-	__HEAD
+ #endif
  
- 	npages = (ALIGN(iova + length, PAGE_SIZE) -
-@@ -1147,8 +1162,8 @@ static int iommufd_test_access_rw(struct
- 	}
- 
- 	if (flags & MOCK_FLAGS_ACCESS_SYZ)
--		iova = iommufd_test_syz_conv_iova(&staccess->access->ioas->iopt,
--					&cmd->access_rw.iova);
-+		iova = iommufd_test_syz_conv_iova(staccess->access,
-+				&cmd->access_rw.iova);
- 
- 	rc = iommufd_access_rw(staccess->access, iova, tmp, length, flags);
- 	if (rc)
+ 	.code64
+@@ -779,9 +737,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
+ SYM_DATA(image_offset, .long 0)
+ #endif
+ #ifdef CONFIG_EFI_MIXED
+-SYM_DATA(efi32_boot_args, .long 0, 0, 0)
+-SYM_DATA(efi_is64, .byte 1)
+-
+ #define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
+ #define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
+ #define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
 
 
 
