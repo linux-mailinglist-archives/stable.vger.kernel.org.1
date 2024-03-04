@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55852870D19
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE08870ECC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87CD61C24254
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2667B2809DC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205BC7D07E;
-	Mon,  4 Mar 2024 21:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5677868F;
+	Mon,  4 Mar 2024 21:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHNH5BqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LyRhFjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC85F2C689;
-	Mon,  4 Mar 2024 21:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE3B1EB5A;
+	Mon,  4 Mar 2024 21:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587839; cv=none; b=MsuUUnZdk3ntZsQf8MBRa2FjlCHPjikpuaUlsflSWaJXT8PZm54D7uNvNFe2+Ux6vCWdwwhP1JuCF+gdC7YLvabs3tSL9uu5I0OcwHHMP3KTm2J0W5LEJWQAlKYry8DvDcXMzldYxIMbz1u9qGRtLWcwhjJHsJIC9FTmNc+ILG4=
+	t=1709588824; cv=none; b=Qv6n/3KlXCFRQ1763c7Qwg4lVMMAvcvLkDCHnu3yAiPG77hUXoGsABU3jc9KipeDz13w9IANNodhUc1PSIX3VJRmOpPMcu4YkVMpWU18Ffg2juf/K4VTIEtSmHJG+ANdcx9lhdY0WWmJEkGSKSXT9XJ9uIPqSavk+KSIQYIJgR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587839; c=relaxed/simple;
-	bh=zRUMo5C7fchhZFf1xO/PLjgNqp57B4x2r3EI3li0imM=;
+	s=arc-20240116; t=1709588824; c=relaxed/simple;
+	bh=sfwDx6cA3qaIS5DOXddpt7V2itLtMXxYlns0OLJoLV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CTkkHGy81KXKhsbYViXNz6zLg1o0TnG+TYwvGlcFZUJ275Qn3KtRgLBy/2zMREp6sWFyTWcUwc6XMymSpNJZB1tq6tMu+JlKEzfjImhDvIXVFJpomLovyhNOg63mjoDWT0Fwv4ajt1890T9bGU5vWOGrjpIr5dggr1iXhubx2uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHNH5BqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD18C433C7;
-	Mon,  4 Mar 2024 21:30:39 +0000 (UTC)
+	 MIME-Version; b=Vz0z5+zRP0Tc5Opvnh8U/Q8f3a2JgwtqeXqTZWvZP1GcbJrwyUMu2rIBrrJ8iVR7m3Nz5H1z+558mNymGSyx8kFrTyhTKmtvaDITyVbh6PHsaHwTUoWPPGVQk2HgSEKbpaO6Ba7xo0Qx4flMxSkCpxZ9z9bWuvfQO4YWda2nPL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LyRhFjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2E0C433F1;
+	Mon,  4 Mar 2024 21:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587839;
-	bh=zRUMo5C7fchhZFf1xO/PLjgNqp57B4x2r3EI3li0imM=;
+	s=korg; t=1709588824;
+	bh=sfwDx6cA3qaIS5DOXddpt7V2itLtMXxYlns0OLJoLV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHNH5BqLxAdsORkyJ7621JJpOvMXB1wdZA+K92gJoAflqpjmRqCUuCc7veHoNq9W6
-	 XhaXL+tGAshQb6ruPVXIBo1m71Wuk+AFEhN8wxITb/Z5SgdwrnKYCUIesKKKkNJm5O
-	 Zt9quc/ThaYGfuCXu1eRlBcPbPaUKsFRjZaikEkI=
+	b=0LyRhFjSl8fkFHar4KsuZuj6T+XdK+BDUhVfKXPGoJYD9hEd3gGvzrD66s6iY73VO
+	 wndQIhHCRJu+R4fXh/UqWyuNZYJwwkrV6UmutUfzZG/tU+s9/Hq096pgUYrPpv8Z16
+	 hDKq17ZspQwPZndVoQfNPQsVHKKTVFSTPUaSzu4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.7 109/162] power: supply: mm8013: select REGMAP_I2C
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 111/215] x86/boot/compressed: Move 32-bit entrypoint code into .text section
 Date: Mon,  4 Mar 2024 21:22:54 +0000
-Message-ID: <20240304211555.274413640@linuxfoundation.org>
+Message-ID: <20240304211600.556328063@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 30d5297862410418bb8f8b4c0a87fa55c3063dd7 upstream.
+commit e2ab9eab324cdf240de89741e4a1aa79919f0196 upstream.
 
-The driver uses regmap APIs so it should make sure they are available.
+Move the code that stores the arguments passed to the EFI entrypoint
+into the .text section, so that it can be moved into a separate
+compilation unit in a subsequent patch.
 
-Fixes: c75f4bf6800b ("power: supply: Introduce MM8013 fuel gauge driver")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240204-mm8013-regmap-v1-1-7cc6b619b7d3@weissschuh.net
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-3-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/compressed/head_64.S |   48 ++++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
-index f21cb05815ec..3e31375491d5 100644
---- a/drivers/power/supply/Kconfig
-+++ b/drivers/power/supply/Kconfig
-@@ -978,6 +978,7 @@ config CHARGER_QCOM_SMB2
- config FUEL_GAUGE_MM8013
- 	tristate "Mitsumi MM8013 fuel gauge driver"
- 	depends on I2C
-+	select REGMAP_I2C
- 	help
- 	  Say Y here to enable the Mitsumi MM8013 fuel gauge driver.
- 	  It enables the monitoring of many battery parameters, including
--- 
-2.44.0
-
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -303,24 +303,41 @@ SYM_FUNC_START(efi32_stub_entry)
+ 	popl	%ecx
+ 	popl	%edx
+ 	popl	%esi
++	jmp	efi32_entry
++SYM_FUNC_END(efi32_stub_entry)
+ 
++	.text
++/*
++ * This is the common EFI stub entry point for mixed mode.
++ *
++ * Arguments:	%ecx	image handle
++ * 		%edx	EFI system table pointer
++ *		%esi	struct bootparams pointer (or NULL when not using
++ *			the EFI handover protocol)
++ *
++ * Since this is the point of no return for ordinary execution, no registers
++ * are considered live except for the function parameters. [Note that the EFI
++ * stub may still exit and return to the firmware using the Exit() EFI boot
++ * service.]
++ */
++SYM_FUNC_START_LOCAL(efi32_entry)
+ 	call	1f
+-1:	pop	%ebp
+-	subl	$ rva(1b), %ebp
+-
+-	movl	%esi, rva(efi32_boot_args+8)(%ebp)
+-SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
+-	movl	%ecx, rva(efi32_boot_args)(%ebp)
+-	movl	%edx, rva(efi32_boot_args+4)(%ebp)
+-	movb	$0, rva(efi_is64)(%ebp)
++1:	pop	%ebx
+ 
+ 	/* Save firmware GDTR and code/data selectors */
+-	sgdtl	rva(efi32_boot_gdt)(%ebp)
+-	movw	%cs, rva(efi32_boot_cs)(%ebp)
+-	movw	%ds, rva(efi32_boot_ds)(%ebp)
++	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
++	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
++	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
+ 
+ 	/* Store firmware IDT descriptor */
+-	sidtl	rva(efi32_boot_idt)(%ebp)
++	sidtl	(efi32_boot_idt - 1b)(%ebx)
++
++	/* Store boot arguments */
++	leal	(efi32_boot_args - 1b)(%ebx), %ebx
++	movl	%ecx, 0(%ebx)
++	movl	%edx, 4(%ebx)
++	movl	%esi, 8(%ebx)
++	movb	$0x0, 12(%ebx)          // efi_is64
+ 
+ 	/* Disable paging */
+ 	movl	%cr0, %eax
+@@ -328,7 +345,8 @@ SYM_INNER_LABEL(efi32_pe_stub_entry, SYM
+ 	movl	%eax, %cr0
+ 
+ 	jmp	startup_32
+-SYM_FUNC_END(efi32_stub_entry)
++SYM_FUNC_END(efi32_entry)
++	__HEAD
+ #endif
+ 
+ 	.code64
+@@ -847,7 +865,9 @@ SYM_FUNC_START(efi32_pe_entry)
+ 	 */
+ 	subl	%esi, %ebx
+ 	movl	%ebx, rva(image_offset)(%ebp)	// save image_offset
+-	jmp	efi32_pe_stub_entry
++	xorl	%esi, %esi
++	jmp	efi32_entry			// pass %ecx, %edx, %esi
++						// no other registers remain live
+ 
+ 2:	popl	%edi				// restore callee-save registers
+ 	popl	%ebx
 
 
 
