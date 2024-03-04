@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7121870DFB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5F5870EEC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77AC2B27FC9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A56E280AC4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A11200D4;
-	Mon,  4 Mar 2024 21:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BF37992E;
+	Mon,  4 Mar 2024 21:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrpcyXfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+VJ0/V3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5122A8F58;
-	Mon,  4 Mar 2024 21:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786601F92C;
+	Mon,  4 Mar 2024 21:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588379; cv=none; b=czI4QLYAqce2RDva0CDwRyoTh24+j5WjJ3zT2nWmsEi4CvETeq1THb1hzE3a7PtFy+Y0S3n5RTkMtsmEu71tM3eYuInimA9JUUwpnWUZ2l+pTcBt4RXvKwPmRFbXM4jMkinMsZpeBHPSCaBoaXWsrkhDmeUoMDDYYWxNmsn7tPA=
+	t=1709588947; cv=none; b=hDYOy7Xy2Nn4Fl+X8tSMEjGtmoD4mD96f58ALS0Lqmp5TXHuPFFUWYSaPX+VWUYgNPG9OjQAy/fv2BqAvGdVnXKorM7WQeQbJOm78YvuA3GbN3mJE+a4O6SJZAWYHSjtj/A+ZAhX98oqhv+P7f5Jfz0cO9dtJ6X25W8VvztVhvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588379; c=relaxed/simple;
-	bh=80+EAIP1ApPNRqKOIoD27biYf79DwkmzP1zJ+Ngl/IU=;
+	s=arc-20240116; t=1709588947; c=relaxed/simple;
+	bh=AmRdIBxVA4+aB74YiWp7RyEdwbhLnPlH5oZpYOde/Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mRetT7LxjRosjO56jJMPCmc9cG0OWL0IVBN3PUzFBsY/Q6u1pMwRyB1XlUpF2E4HmCgK7nC/QQNk5B++G90qAhXpV9a8gu7qB+AcCbRsPwMTxfFb/KeTQD1R5FVb8LdR26arz1nnlsZ+VDyZQoe8nYS+TcEawze7Kn3+9Ez4uwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrpcyXfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE82C433F1;
-	Mon,  4 Mar 2024 21:39:38 +0000 (UTC)
+	 MIME-Version; b=BjYTNo3QQYetwPXaQqCTQQJM01vpM+4RnBuIohFPqz438QdtAHv7Jo5BAy9xwO2hv2LmQXBylUlQxCB6mt9YsO6z6u8LZUypONA12CqyDNdt5B/RKtJP/3qGgLoq/NEf8q4p/RXsoyAnY2Rq4EfYotGzKY6IaFHVA4iKY5/6EDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+VJ0/V3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB4EC433C7;
+	Mon,  4 Mar 2024 21:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588379;
-	bh=80+EAIP1ApPNRqKOIoD27biYf79DwkmzP1zJ+Ngl/IU=;
+	s=korg; t=1709588947;
+	bh=AmRdIBxVA4+aB74YiWp7RyEdwbhLnPlH5oZpYOde/Pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrpcyXfvQ97u31Cgy52CLa6RrUal6Puw9bwEnC/TkfmmjMRcFPkSkyGzyZglJJFWF
-	 7i6Mf+pOQTYwlz/IQ5yqKctf5Jj3KfhDQHsE/7zvKziRIorF2dvK13A8JBTGVriTcb
-	 ScGxgwsThmxWfDihgmiKLF7IdWvgjpCOP+LYxzzY=
+	b=S+VJ0/V3rLcqWtnYMr0Xd4w9i21SHueX9rLOCq0b60Y9RQ6IRgSAG79F78uVpRkJ9
+	 Qnxg0Z3VPUx5cZaU4IdGL3XiumD3VGJrJlYGt02PQRIGwqvFS42hngUVuSUfDG46NO
+	 DBuw4DrjO8JikujcRVF3V5wqjcOLnxsAIVWel5yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 085/143] drm/buddy: fix range bias
+	"linux-nfs@vger.kernel.org,  Jacek Tomaka" <Jacek.Tomaka@poczta.fm>,
+	NeilBrown <neilb@suse.de>,
+	Jacek Tomaka <Jacek.Tomaka@poczta.fm>
+Subject: [PATCH 6.1 142/215] NFS: Fix data corruption caused by congestion.
 Date: Mon,  4 Mar 2024 21:23:25 +0000
-Message-ID: <20240304211552.642308346@linuxfoundation.org>
+Message-ID: <20240304211601.558292823@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: "NeilBrown" <neilb@suse.de>
 
-commit f41900e4a6ef019d64a70394b0e0c3bd048d4ec8 upstream.
+when AOP_WRITEPAGE_ACTIVATE is returned (as NFS does when it detects
+congestion) it is important that the page is redirtied.
+nfs_writepage_locked() doesn't do this, so files can become corrupted as
+writes can be lost.
 
-There is a corner case here where start/end is after/before the block
-range we are currently checking. If so we need to be sure that splitting
-the block will eventually give use the block size we need. To do that we
-should adjust the block range to account for the start/end, and only
-continue with the split if the size/alignment will fit the requested
-size. Not doing so can result in leaving split blocks unmerged when it
-eventually fails.
+Note that this is not needed in v6.8 as AOP_WRITEPAGE_ACTIVATE cannot be
+returned.  It is needed for kernels v5.18..v6.7.  From 6.3 onward the patch
+is different as it needs to mention "folio", not "page".
 
-Fixes: afea229fe102 ("drm: improve drm_buddy_alloc function")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org> # v5.18+
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240219121851.25774-4-matthew.auld@intel.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Reported-and-tested-by: Jacek Tomaka <Jacek.Tomaka@poczta.fm>
+Fixes: 6df25e58532b ("nfs: remove reliance on bdi congestion")
+Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_buddy.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/nfs/write.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_buddy.c
-+++ b/drivers/gpu/drm/drm_buddy.c
-@@ -332,6 +332,7 @@ alloc_range_bias(struct drm_buddy *mm,
- 		 u64 start, u64 end,
- 		 unsigned int order)
- {
-+	u64 req_size = mm->chunk_size << order;
- 	struct drm_buddy_block *block;
- 	struct drm_buddy_block *buddy;
- 	LIST_HEAD(dfs);
-@@ -367,6 +368,15 @@ alloc_range_bias(struct drm_buddy *mm,
- 		if (drm_buddy_block_is_allocated(block))
- 			continue;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index f41d24b54fd1..6a0606668417 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -667,8 +667,10 @@ static int nfs_writepage_locked(struct page *page,
+ 	int err;
  
-+		if (block_start < start || block_end > end) {
-+			u64 adjusted_start = max(block_start, start);
-+			u64 adjusted_end = min(block_end, end);
-+
-+			if (round_down(adjusted_end + 1, req_size) <=
-+			    round_up(adjusted_start, req_size))
-+				continue;
-+		}
-+
- 		if (contains(start, end, block_start, block_end) &&
- 		    order == drm_buddy_block_order(block)) {
- 			/*
+ 	if (wbc->sync_mode == WB_SYNC_NONE &&
+-	    NFS_SERVER(inode)->write_congested)
++	    NFS_SERVER(inode)->write_congested) {
++		redirty_page_for_writepage(wbc, page);
+ 		return AOP_WRITEPAGE_ACTIVATE;
++	}
+ 
+ 	nfs_inc_stats(inode, NFSIOS_VFSWRITEPAGE);
+ 	nfs_pageio_init_write(&pgio, inode, 0,
+-- 
+2.43.0
+
 
 
 
