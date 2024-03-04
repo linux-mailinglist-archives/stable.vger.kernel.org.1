@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31565870E85
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83177870CBE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C227DB2097A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2393B1F276B3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F37F78B4C;
-	Mon,  4 Mar 2024 21:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C0779DCA;
+	Mon,  4 Mar 2024 21:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDRgibRM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3t/aufc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E2E8F58;
-	Mon,  4 Mar 2024 21:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479467868F;
+	Mon,  4 Mar 2024 21:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588677; cv=none; b=f4b5LvMpfjrU/xwCCyUU35tF0sf3anX3xdSx+XXqHZk+9FstdKn+npmUdoQ/97/kIQ6O/uZ3Dl6Gzbdl2tJM+VswGTpfadP0HnyzaYuxgR28jHk670yfm4Tl0fuI2HJsJsdjSYexfYFNbXjge1+qY+0ZARqc+Gb+vhJLmc6KHvQ=
+	t=1709587693; cv=none; b=KpEcLl82YI4FtYMN9HGLXlJgBjqYQqklfw4Ma2CgnzUKUUkaXVM7Levtt1rxdOcTZfGCaRTVJvB6Fem+igo8PcOdYWEaMpRfHeEqRAbReUOrmURUrtLoL9uIXzrWfY4bQM3ZRHPhp3s7HVU0xUqddkzRBUPsZvH2v5fnvCc/4s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588677; c=relaxed/simple;
-	bh=RK0HBy+8wiKD9e1thcjSDMDchD5ydIsGFk/y22OILhk=;
+	s=arc-20240116; t=1709587693; c=relaxed/simple;
+	bh=AUWTc7BI5lXOb7jv1k8ukISmwwG+l+xAssiC1fpoblw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hteprMRQcYGrxLdvErdHzrOWz9eIxqRWpnMZrM7Vhug3HFHVTrEegBU+Vuhfbo9Pwq9mGky+R/N5NsdSYlWX6eN3+voKKLnEL3TqoCvssgIIvGv5YBxYg7WuBY+FqUlmaUF1iBHxLnYJiwyhHyuDoR7M9usP31PoGlMdwS2lKBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDRgibRM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533FAC433C7;
-	Mon,  4 Mar 2024 21:44:37 +0000 (UTC)
+	 MIME-Version; b=QkWbM4CIIPvYd5jtMXibAqoSTv1wrOJQRG6EaaZTX3CJeIGLkhcS95KQl/VgTQQjGxIKNgAf+MAfe1rBuaLHf6PdFjgrPo8z/5s5rcQ1sw6iSbf4J1y4Td1l13X2eabo2epWIvONkNJV2K0qobU1ce5xlN5c/Dk/qBdK2r5w0Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3t/aufc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAE3C433F1;
+	Mon,  4 Mar 2024 21:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588677;
-	bh=RK0HBy+8wiKD9e1thcjSDMDchD5ydIsGFk/y22OILhk=;
+	s=korg; t=1709587693;
+	bh=AUWTc7BI5lXOb7jv1k8ukISmwwG+l+xAssiC1fpoblw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDRgibRMSCztuxdWR40uIrXhs5tspNo/ZjwiPNx66XwTf7O2ifTrVJpddL6Zx0p71
-	 OiMJUKS+4Rp0K+4WSF2l73QNYdWuf01Yy8E/tl3Y+PsMIK2cwjEN9T+wbK72XhCRBC
-	 MZvJWffpwEyBcccCH9B920pO7WK+kD/r09qRrl3A=
+	b=C3t/aufc0kjoeGnfvmvJ621eP4FAiHmxOJSQVYPY47kHBUIO1anRYpu6rfbdLsMPn
+	 i+QVtBqePrDePl9OmTgArUo1hQY3OTExFpOOABZc8e2xjFxFZ3/ohUeK8X5QVmTmLK
+	 5wRoJi/tq7u7jJw6q5O9WnbczzmhmFbH9wNJKEA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/215] Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT
-Date: Mon,  4 Mar 2024 21:21:58 +0000
-Message-ID: <20240304211558.729721448@linuxfoundation.org>
+Subject: [PATCH 6.7 054/162] ASoC: cs35l56: cs35l56_component_remove() must clean up wm_adsp
+Date: Mon,  4 Mar 2024 21:21:59 +0000
+Message-ID: <20240304211553.584061918@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696 ]
+[ Upstream commit cd38ccbecdace1469b4e0cfb3ddeec72a3fad226 ]
 
-BT adapter going into UNCONFIGURED state during BT turn ON when
-devicetree has no local-bd-address node.
+cs35l56_component_remove() must call wm_adsp_power_down() and
+wm_adsp2_component_remove().
 
-Bluetooth will not work out of the box on such devices, to avoid this
-problem, added check to set HCI_QUIRK_USE_BDADDR_PROPERTY based on
-local-bd-address node entry.
-
-When this quirk is not set, the public Bluetooth address read by host
-from controller though HCI Read BD Address command is
-considered as valid.
-
-Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
-Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://msgid.link/r/20240129162737.497-5-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: eba2eb2495f4 ("ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ sound/soc/codecs/cs35l56.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 43abdaf92a0ed..8bfef7f81b417 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -7,6 +7,7 @@
-  *
-  *  Copyright (C) 2007 Texas Instruments, Inc.
-  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
-+ *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  *
-  *  Acknowledgements:
-  *  This file is based on hci_ll.c, which was...
-@@ -1844,7 +1845,17 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
- 	case QCA_WCN7850:
--		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+
-+		/* Set BDA quirk bit for reading BDA value from fwnode property
-+		 * only if that property exist in DT.
-+		 */
-+		if (fwnode_property_present(dev_fwnode(hdev->dev.parent), "local-bd-address")) {
-+			set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+			bt_dev_info(hdev, "setting quirk bit to read BDA from fwnode later");
-+		} else {
-+			bt_dev_dbg(hdev, "local-bd-address` is not present in the devicetree so not setting quirk bit for BDA");
-+		}
-+
- 		hci_set_aosp_capable(hdev);
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 09944db4db30d..491da77112c34 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -810,6 +810,11 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
  
- 		ret = qca_read_soc_version(hdev, &ver, soc_type);
+ 	cancel_work_sync(&cs35l56->dsp_work);
+ 
++	if (cs35l56->dsp.cs_dsp.booted)
++		wm_adsp_power_down(&cs35l56->dsp);
++
++	wm_adsp2_component_remove(&cs35l56->dsp, component);
++
+ 	cs35l56->component = NULL;
+ }
+ 
 -- 
 2.43.0
 
