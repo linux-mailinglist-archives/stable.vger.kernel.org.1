@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-26594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DAA870F47
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99843870D5B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503691F2234E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509041F21426
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE87378B4C;
-	Mon,  4 Mar 2024 21:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752007BB1B;
+	Mon,  4 Mar 2024 21:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3yD/+pP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yM4bV+AE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6CC1C6AB;
-	Mon,  4 Mar 2024 21:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320FA7BAFE;
+	Mon,  4 Mar 2024 21:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589176; cv=none; b=HEhvLTmDr1RAqkU4FHfFG6WY0JsbRdNCjO+haPhiBDTJ7lDz2SXJvdHdjmmbvhMaKWCERL/x/GosOM7rSgyd7o89OaFwkNU5Gi8weBDtZ4SNR9mDABdb75fmszqmjE6B1Wnlz92WS8zPNWQ7/IVVXSqrLQFeKvxnlUxRy/k49gs=
+	t=1709587990; cv=none; b=RT10ajGWPuO7HJkNhW626sFW+T9PoZViaUButufKFhnD3p4YsJzpbgiMh7f7DLPH5bS0Ab+ey2k/F3O2iiJWOnKd3F9WUeDiblKzU4jnTxec8PWm/zInOMSBWej4yfiS3AaEz3ESNqZK7ePlRv3p/t6XHQpD7Xix6PX0QHUmJl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589176; c=relaxed/simple;
-	bh=lvwWW0pE8GnZgPKOUzmA3aMV2HDyJQ2xKSNFMohQdeQ=;
+	s=arc-20240116; t=1709587990; c=relaxed/simple;
+	bh=x8Lqfw/H0ZAQXk3S9LItYM+ik9aYhSjeAeIGJjJpG7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bi/LpAgMSSw0ABqn+eCsFpeBQB97mT4pmTOxcQmzyj/oMVJuZ4xhSnvgv3Xtnm9kTR44TY/h1Oj1NKEKLlgj7+uU4xtyROHyJr5ngq8zsh8lA71i4/oeONPS4Ez3dnkhPL4KFCGU8zmNL6PM3m8wL4XrtwtjzRe6azRNaH58Qig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3yD/+pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0D4C433F1;
-	Mon,  4 Mar 2024 21:52:55 +0000 (UTC)
+	 MIME-Version; b=bO1+Ayv8jO+DJAvcVFAzGyAWF6dUqu+kZ9acjRhtKwxt0CRkZto05rRh9BkVTrfpS3aBK5rDnAVgo/9klL7whZqlBavGDoMxYqdtKn3HpDEDjDdNThk+kiJBFR13filMJjhRcRvwxeKfofXzy4hpWcVfqdFFP67ARBKSLAiHM3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yM4bV+AE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B404BC433F1;
+	Mon,  4 Mar 2024 21:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589176;
-	bh=lvwWW0pE8GnZgPKOUzmA3aMV2HDyJQ2xKSNFMohQdeQ=;
+	s=korg; t=1709587990;
+	bh=x8Lqfw/H0ZAQXk3S9LItYM+ik9aYhSjeAeIGJjJpG7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3yD/+pPK5tfGaA4WjK3hl5UY5mF0MW3DvehdICs0zgZ9QkKL/7oZFc+mZxLQJmBx
-	 ZAxlObrKwqpidVbFR8nsN4+3OeZ4ISrrdbplQpaX/Gi62bMRh9LZx7gc6pV1bCJvsq
-	 Xip/VIWXJNRGDn64d4E7WIO7m7DwF2wTr64UcvQw=
+	b=yM4bV+AE4nbpGuXDbascQWGFDMRSw3waocFLE1Ak0EPbiI0qsOHx0TJsl6Q6KdydE
+	 B7By+TAjQ5ZrtiRgEcOo+stinEl3aRb0t28s5Totu1pH2sUewhmJumTZ2NfoT0rwFp
+	 ppfQLktmuDB+jEZnBLw1BhJjFcbDkPUWG+ExLfuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 01/84] netfilter: nf_tables: disallow timeout for anonymous sets
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 149/162] gpiolib: Fix the error path order in gpiochip_add_data_with_key()
 Date: Mon,  4 Mar 2024 21:23:34 +0000
-Message-ID: <20240304211542.384534173@linuxfoundation.org>
+Message-ID: <20240304211556.461037577@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
+[ Upstream commit e4aec4daa8c009057b5e063db1b7322252c92dc8 ]
 
-Never used from userspace, disallow these parameters.
+After shuffling the code, error path wasn't updated correctly.
+Fix it here.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f4133bb5f14 ("gpiolib: No need to call gpiochip_remove_pin_ranges() twice")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpio/gpiolib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4682,6 +4682,9 @@ static int nf_tables_newset(struct sk_bu
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
- 
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &desc.timeout);
- 		if (err)
- 			return err;
-@@ -4690,6 +4693,10 @@ static int nf_tables_newset(struct sk_bu
- 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
-+
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		desc.gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
- 	}
- 
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 15de124d5b402..e8dc706fd7979 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1003,11 +1003,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gpiochip_irqchip_free_valid_mask(gc);
+ err_remove_acpi_chip:
+ 	acpi_gpiochip_remove(gc);
++	gpiochip_remove_pin_ranges(gc);
+ err_remove_of_chip:
+ 	gpiochip_free_hogs(gc);
+ 	of_gpiochip_remove(gc);
+ err_free_gpiochip_mask:
+-	gpiochip_remove_pin_ranges(gc);
+ 	gpiochip_free_valid_mask(gc);
+ 	if (gdev->dev.release) {
+ 		/* release() has been registered by gpiochip_setup_dev() */
+-- 
+2.43.0
+
 
 
 
