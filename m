@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE03870D69
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F92870F0C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157151F218E4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E5571F2121F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5569C78B4C;
-	Mon,  4 Mar 2024 21:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFAB79950;
+	Mon,  4 Mar 2024 21:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsov4qaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti7r85t7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127921C687;
-	Mon,  4 Mar 2024 21:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBA7200D4;
+	Mon,  4 Mar 2024 21:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588024; cv=none; b=UXHENKNsMy5ZJ6yiiQYFCsE6O9H23RnN1lso0Ws9s2REVEpJAw+oJOmZLxrlJ/KuD+1+VgnoTbmu7Fu+V/ysubS5wlxMS1rrx0mYc+dwaf7aPYOTw4EiV5jG2wUBEyQ1yVo8g7LGq0xqJa/Sngm1N/bTV7NJIJ8sSqNjDUumpts=
+	t=1709589024; cv=none; b=fJTQC21VzXRf4aY9n3MXvCJ9TIv14N0UE1TsXx+tyyQPYPT8HgSYlC1sYnUfyznZpXtxIsjOxpODZa/+JpZ4Yw8+1KakTMS7mrwJ8EZFCcZ0v+3qX/jq19xOXKNCyitWkqGpQGYjEuLmen6ogIRBkVx6iVa5ptXl2+kn6Qqc6l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588024; c=relaxed/simple;
-	bh=KN81rjcaOpeGp/BZvOl3ebo9VY3BlTe7VKtPGEl4arw=;
+	s=arc-20240116; t=1709589024; c=relaxed/simple;
+	bh=l4lPkSUzxhjtsRKM5mDiH7AO3RikjRcBA1iHhqCx6sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvcmOcPYjeJFMkQgoO+7lVQwM8l0jANUpqgwrzrNM44c9FlxRhvMCkmRLFZd2vUaHskdycsI44RulX1xAXIoZmlfw9tVAUpmP6SWD/EUZapEqzubys3HpO61FAYQNN8saFsfES8ut7bjJPse56xWNTbLw91qNwGLFChS/CLXpFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsov4qaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995D3C433F1;
-	Mon,  4 Mar 2024 21:33:43 +0000 (UTC)
+	 MIME-Version; b=u4d25DoDO8LTZlKzctWQGjhTegpp2vWFTFumDGWrFC/gZXeITQvqiGo3Q+5nYnHm/M6LpUJmraS5/RL3InSLUxL3QW07Jo8tX6FeSvTGyrktk60Td/QVKKPjry+v88ezanh+Fz+yQJezedu8LFfHnD/9EdB6VyTigOKn3O63Bws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti7r85t7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375E0C433F1;
+	Mon,  4 Mar 2024 21:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588023;
-	bh=KN81rjcaOpeGp/BZvOl3ebo9VY3BlTe7VKtPGEl4arw=;
+	s=korg; t=1709589023;
+	bh=l4lPkSUzxhjtsRKM5mDiH7AO3RikjRcBA1iHhqCx6sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsov4qaQzIFHCwx8+ybAf5D/Its5A1+dHEM7MsoAeSxc3HUZwKyar3hNbYlZKRKUv
-	 dtpjdY/ZjgDp+tlbcb9ZBsQkIVEx6Bl7O3Ph+ahC+By+WwVePSCrIUxViXe0YRnTZV
-	 FMWcGoMgV2HraCsbh1ndLwyHfnRZ7XrMcVvM/Hww=
+	b=Ti7r85t71WFSqAVA773l9cj6XnuA+15oudGgmKQfC8rnfpY7e+J0K1R2pK5+jvyZl
+	 36F0/fnvOv+yleAqObhzB/bkRq//V5jUQScgWV9fVvmDOX3uOGNw+JeA8INWrYi3A8
+	 fx/ggWW+v450L7PMpzPpG6e8HLD+ai6YVGiOXgD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 18/25] btrfs: dev-replace: properly validate device names
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 171/215] NFSD: add support for sending CB_RECALL_ANY
 Date: Mon,  4 Mar 2024 21:23:54 +0000
-Message-ID: <20240304211536.352683426@linuxfoundation.org>
+Message-ID: <20240304211602.378276537@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 9845664b9ee47ce7ee7ea93caf47d39a9d4552c4 upstream.
+[ Upstream commit 3959066b697b5dfbb7141124ae9665337d4bc638 ]
 
-There's a syzbot report that device name buffers passed to device
-replace are not properly checked for string termination which could lead
-to a read out of bounds in getname_kernel().
+Add XDR encode and decode function for CB_RECALL_ANY.
 
-Add a helper that validates both source and target device name buffers.
-For devid as the source initialize the buffer to empty string in case
-something tries to read it later.
-
-This was originally analyzed and fixed in a different way by Edward Adam
-Davis (see links).
-
-Link: https://lore.kernel.org/linux-btrfs/000000000000d1a1d1060cc9c5e7@google.com/
-Link: https://lore.kernel.org/linux-btrfs/tencent_44CA0665C9836EF9EEC80CB9E7E206DF5206@qq.com/
-CC: stable@vger.kernel.org # 4.19+
-CC: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/dev-replace.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4callback.c |   72 +++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/nfsd/state.h        |    1 
+ fs/nfsd/xdr4.h         |    5 +++
+ fs/nfsd/xdr4cb.h       |    6 ++++
+ 4 files changed, 84 insertions(+)
 
---- a/fs/btrfs/dev-replace.c
-+++ b/fs/btrfs/dev-replace.c
-@@ -535,6 +535,23 @@ leave:
- 	return ret;
- }
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -76,6 +76,17 @@ static __be32 *xdr_encode_empty_array(__
+  * 1 Protocol"
+  */
  
-+static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *args)
++static void encode_uint32(struct xdr_stream *xdr, u32 n)
 +{
-+	if (args->start.srcdevid == 0) {
-+		if (memchr(args->start.srcdev_name, 0,
-+			   sizeof(args->start.srcdev_name)) == NULL)
-+			return -ENAMETOOLONG;
-+	} else {
-+		args->start.srcdev_name[0] = 0;
-+	}
-+
-+	if (memchr(args->start.tgtdev_name, 0,
-+		   sizeof(args->start.tgtdev_name)) == NULL)
-+	    return -ENAMETOOLONG;
-+
-+	return 0;
++	WARN_ON_ONCE(xdr_stream_encode_u32(xdr, n) < 0);
 +}
 +
- int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
- 			    struct btrfs_ioctl_dev_replace_args *args)
- {
-@@ -547,10 +564,9 @@ int btrfs_dev_replace_by_ioctl(struct bt
- 	default:
- 		return -EINVAL;
- 	}
--
--	if ((args->start.srcdevid == 0 && args->start.srcdev_name[0] == '\0') ||
--	    args->start.tgtdev_name[0] == '\0')
--		return -EINVAL;
-+	ret = btrfs_check_replace_dev_names(args);
-+	if (ret < 0)
-+		return ret;
++static void encode_bitmap4(struct xdr_stream *xdr, const __u32 *bitmap,
++			   size_t len)
++{
++	WARN_ON_ONCE(xdr_stream_encode_uint32_array(xdr, bitmap, len) < 0);
++}
++
+ /*
+  *	nfs_cb_opnum4
+  *
+@@ -329,6 +340,24 @@ static void encode_cb_recall4args(struct
+ }
  
- 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
- 					args->start.srcdevid,
+ /*
++ * CB_RECALLANY4args
++ *
++ *	struct CB_RECALLANY4args {
++ *		uint32_t	craa_objects_to_keep;
++ *		bitmap4		craa_type_mask;
++ *	};
++ */
++static void
++encode_cb_recallany4args(struct xdr_stream *xdr,
++	struct nfs4_cb_compound_hdr *hdr, struct nfsd4_cb_recall_any *ra)
++{
++	encode_nfs_cb_opnum4(xdr, OP_CB_RECALL_ANY);
++	encode_uint32(xdr, ra->ra_keep);
++	encode_bitmap4(xdr, ra->ra_bmval, ARRAY_SIZE(ra->ra_bmval));
++	hdr->nops++;
++}
++
++/*
+  * CB_SEQUENCE4args
+  *
+  *	struct CB_SEQUENCE4args {
+@@ -482,6 +511,26 @@ static void nfs4_xdr_enc_cb_recall(struc
+ 	encode_cb_nops(&hdr);
+ }
+ 
++/*
++ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
++ */
++static void
++nfs4_xdr_enc_cb_recall_any(struct rpc_rqst *req,
++		struct xdr_stream *xdr, const void *data)
++{
++	const struct nfsd4_callback *cb = data;
++	struct nfsd4_cb_recall_any *ra;
++	struct nfs4_cb_compound_hdr hdr = {
++		.ident = cb->cb_clp->cl_cb_ident,
++		.minorversion = cb->cb_clp->cl_minorversion,
++	};
++
++	ra = container_of(cb, struct nfsd4_cb_recall_any, ra_cb);
++	encode_cb_compound4args(xdr, &hdr);
++	encode_cb_sequence4args(xdr, cb, &hdr);
++	encode_cb_recallany4args(xdr, &hdr, ra);
++	encode_cb_nops(&hdr);
++}
+ 
+ /*
+  * NFSv4.0 and NFSv4.1 XDR decode functions
+@@ -520,6 +569,28 @@ static int nfs4_xdr_dec_cb_recall(struct
+ 	return decode_cb_op_status(xdr, OP_CB_RECALL, &cb->cb_status);
+ }
+ 
++/*
++ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
++ */
++static int
++nfs4_xdr_dec_cb_recall_any(struct rpc_rqst *rqstp,
++				  struct xdr_stream *xdr,
++				  void *data)
++{
++	struct nfsd4_callback *cb = data;
++	struct nfs4_cb_compound_hdr hdr;
++	int status;
++
++	status = decode_cb_compound4res(xdr, &hdr);
++	if (unlikely(status))
++		return status;
++	status = decode_cb_sequence4res(xdr, cb);
++	if (unlikely(status || cb->cb_seq_status))
++		return status;
++	status =  decode_cb_op_status(xdr, OP_CB_RECALL_ANY, &cb->cb_status);
++	return status;
++}
++
+ #ifdef CONFIG_NFSD_PNFS
+ /*
+  * CB_LAYOUTRECALL4args
+@@ -783,6 +854,7 @@ static const struct rpc_procinfo nfs4_cb
+ #endif
+ 	PROC(CB_NOTIFY_LOCK,	COMPOUND,	cb_notify_lock,	cb_notify_lock),
+ 	PROC(CB_OFFLOAD,	COMPOUND,	cb_offload,	cb_offload),
++	PROC(CB_RECALL_ANY,	COMPOUND,	cb_recall_any,	cb_recall_any),
+ };
+ 
+ static unsigned int nfs4_cb_counts[ARRAY_SIZE(nfs4_cb_procedures)];
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -636,6 +636,7 @@ enum nfsd4_cb_op {
+ 	NFSPROC4_CLNT_CB_OFFLOAD,
+ 	NFSPROC4_CLNT_CB_SEQUENCE,
+ 	NFSPROC4_CLNT_CB_NOTIFY_LOCK,
++	NFSPROC4_CLNT_CB_RECALL_ANY,
+ };
+ 
+ /* Returns true iff a is later than b: */
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -896,5 +896,10 @@ struct nfsd4_operation {
+ 			union nfsd4_op_u *);
+ };
+ 
++struct nfsd4_cb_recall_any {
++	struct nfsd4_callback	ra_cb;
++	u32			ra_keep;
++	u32			ra_bmval[1];
++};
+ 
+ #endif
+--- a/fs/nfsd/xdr4cb.h
++++ b/fs/nfsd/xdr4cb.h
+@@ -48,3 +48,9 @@
+ #define NFS4_dec_cb_offload_sz		(cb_compound_dec_hdr_sz  +      \
+ 					cb_sequence_dec_sz +            \
+ 					op_dec_sz)
++#define NFS4_enc_cb_recall_any_sz	(cb_compound_enc_hdr_sz +       \
++					cb_sequence_enc_sz +            \
++					1 + 1 + 1)
++#define NFS4_dec_cb_recall_any_sz	(cb_compound_dec_hdr_sz  +      \
++					cb_sequence_dec_sz +            \
++					op_dec_sz)
 
 
 
