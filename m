@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-26510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8637C870EEB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F92A870DFA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88221C21AE3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0631B27FCC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BE146BA0;
-	Mon,  4 Mar 2024 21:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F9D1F92C;
+	Mon,  4 Mar 2024 21:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwXGRePm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkrXFOjr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E513D1EB5A;
-	Mon,  4 Mar 2024 21:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C068F58;
+	Mon,  4 Mar 2024 21:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588945; cv=none; b=uAptDMd9qm4Pj4eLMOYt//u7STzEiJFYKFubrMfn3HVz/BBMN2oAjSLvJxjWXQHwWFm2JD4jIqyKF1iG2tHWq/SYhMUUag3OQDr02yCfaPpMldXxras9nbjDOvZk7RS+Wm3dkfO7wv5bak250qXkedLxLUrwsFo2f+EDRMxBdRw=
+	t=1709588376; cv=none; b=Vd08Hr3CSnnDFVmTO7GHGZ9XQ+fbgFlLSBFuv/+YMu0SQELXglWw2Y+BPfqwbsgO5TCcaM6z4JUg0TQxK8L+SUbnhcD6lcG040twP3rlHyOhHZCVnXMCQDOZj5g0BKiNfgEEoOpp9aXbPO79twDBFlKCQ2X+0i9AatqhDYv2vIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588945; c=relaxed/simple;
-	bh=oa6t1T8qzUEYK0X6vmgV2OhqGUVuoZtKmfaDVYrHXaU=;
+	s=arc-20240116; t=1709588376; c=relaxed/simple;
+	bh=rGqtfJ2guZZ4VjrPpb45W5gXtPZMPvNyaCbnJst5dH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vzo1hJclxj/HEVh8c4v8GL3GWWVaFq0vcOQK0C2g61obN0LNspb2812Tr2Ab4ejR4GUOlhIIBXQ898b3/0s92xxGefFPTLjZoMQjsD9HNYWCymmxNTTxi1MnPvboOsAIh7ztK9HqKXf1ocOmX4vQB1h46OMvR2IuUzQEDc+lqF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwXGRePm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9668C43390;
-	Mon,  4 Mar 2024 21:49:03 +0000 (UTC)
+	 MIME-Version; b=Uoss4Wog6FnKExJZziQIVgvxwlAt8bbn4jG5kz1oBeUAcbMG647nwusKCkzYW2tIlZBstLfHyjVuZjA82WsqnOchUkG53EsigaZl8rTtf1m1r2BFW7tuKjACrX4RGs0XdyHiKwuScgLOGXZyOqxbrFygjHoAX6vDdvzZ3hCjsQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkrXFOjr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FC3C433C7;
+	Mon,  4 Mar 2024 21:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588944;
-	bh=oa6t1T8qzUEYK0X6vmgV2OhqGUVuoZtKmfaDVYrHXaU=;
+	s=korg; t=1709588376;
+	bh=rGqtfJ2guZZ4VjrPpb45W5gXtPZMPvNyaCbnJst5dH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwXGRePm94R5atnbjFrXNdse3UZXV6FtIkIJZ4Z9Ix9gHeXex+4VJIbOL8DFdgVm5
-	 MPprYpFZa7eH/ijkGDC9YCM3zEebelvV+G8eGo9nl5OoeCeJtbwjXhBsFk8Ne+OY0G
-	 t0jVAVc//k7el8bmLhApUY1xbMReKi0st0/7IDag=
+	b=EkrXFOjroDKrxL7UDCLX29W6pXhm63Vmz44Wcy25IxdQoX+Xi4fENmCIO57jXmTPe
+	 cFtdzXXi/DW8ArutXQn2BNK5dYAERTV5PPaatbfqqreqXh5/kNQEG2c2LP60RqWaYa
+	 hqrMxQ9rwvafsLb9+INx6KT4hXlk7bbXXAYFW8ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	kernel test robot <lkp@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Samson Tam <samson.tam@amd.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.1 141/215] drm/amd/display: Increase frame warning limit with KASAN or KCSAN in dml
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 084/143] Revert "drm/amd/pm: resolve reboot exception for si oland"
 Date: Mon,  4 Mar 2024 21:23:24 +0000
-Message-ID: <20240304211601.528915648@linuxfoundation.org>
+Message-ID: <20240304211552.610882059@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 5b750b22530fe53bf7fd6a30baacd53ada26911b upstream.
+commit 955558030954b9637b41c97b730f9b38c92ac488 upstream.
 
-Does the same thing as:
-commit 6740ec97bcdb ("drm/amd/display: Increase frame warning limit with KASAN or KCSAN in dml2")
+This reverts commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311302107.hUDXVyWT-lkp@intel.com/
-Fixes: 67e38874b85b ("drm/amd/display: Increase num voltage states to 40")
+This causes hangs on SI when DC is enabled and errors on driver
+reboot and power off cycles.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3216
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2755
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Alvin Lee <alvin.lee2@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Samson Tam <samson.tam@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -51,8 +51,12 @@ endif
- endif
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -6925,6 +6925,23 @@ static int si_dpm_enable(struct amdgpu_d
+ 	return 0;
+ }
  
- ifneq ($(CONFIG_FRAME_WARN),0)
-+ifeq ($(filter y,$(CONFIG_KASAN)$(CONFIG_KCSAN)),y)
-+frame_warn_flag := -Wframe-larger-than=3072
-+else
- frame_warn_flag := -Wframe-larger-than=2048
- endif
-+endif
++static int si_set_temperature_range(struct amdgpu_device *adev)
++{
++	int ret;
++
++	ret = si_thermal_enable_alert(adev, false);
++	if (ret)
++		return ret;
++	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
++	if (ret)
++		return ret;
++	ret = si_thermal_enable_alert(adev, true);
++	if (ret)
++		return ret;
++
++	return ret;
++}
++
+ static void si_dpm_disable(struct amdgpu_device *adev)
+ {
+ 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
+@@ -7608,6 +7625,18 @@ static int si_dpm_process_interrupt(stru
  
- CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_lib.o := $(dml_ccflags)
+ static int si_dpm_late_init(void *handle)
+ {
++	int ret;
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++
++	if (!adev->pm.dpm_enabled)
++		return 0;
++
++	ret = si_set_temperature_range(adev);
++	if (ret)
++		return ret;
++#if 0 //TODO ?
++	si_dpm_powergate_uvd(adev, true);
++#endif
+ 	return 0;
+ }
  
 
 
