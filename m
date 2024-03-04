@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-26226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBD7870DA4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B25870D66
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D1BB2711E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E96F628F327
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E6479950;
-	Mon,  4 Mar 2024 21:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA4C7BAE6;
+	Mon,  4 Mar 2024 21:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBCzckdO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syrETlyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BF21C6AB;
-	Mon,  4 Mar 2024 21:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8177B3C3;
+	Mon,  4 Mar 2024 21:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588170; cv=none; b=q4ICz3f3uvWCybjCPnItXsFiDW5Yd7OGO3MVoz5Hem+PCc/n6LWJ/q5JZlKAg4Vv14wkx366ZEtVcxDEqzbT5Ig4/S36931bakPHvFy4XUxp5CkCtQm+6ipUhZ6Wh6FcOKqWgqs0z48mPM5y9fYGdCxiYj/bzLN92o+j4df3ioY=
+	t=1709588016; cv=none; b=Bwz/3LHGhctvlLYV8Y3vpWqkcieQNC1VLcg6Oy0ETh48X2VyFtLCo5433fATOV7tloYSu6ygHrVFUap9hKi42y6dYjrHIjRTHyzf2IThlnOSkFnozgRAB7ebH6pgHBgOLKBQyRTACQlb2AvolOeMZ4C9fOghuAqJJhUM8Y4xoN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588170; c=relaxed/simple;
-	bh=s3i7F244Q+36dnHSPXunMCC6lB7MomvQiq6E7522WjQ=;
+	s=arc-20240116; t=1709588016; c=relaxed/simple;
+	bh=XQ1pjmjFPCOlvHE0ATSTeyHTRZsvChImDuySMHv3Td0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V44uNLrxjgBSbHb+uYd4iqQcRhHNBA19OV0dmo6PsT1ISML6sugb+EfuvCDGUmTqviFkiv3nLVw8HWQG4rmJ4THPXXYG0/Dd9zkxwy9lPPKTEyI1noixive770b0EY1qXednDcLQIRwVYcXgLXwxLD5euZCoyeogqFoXVUrzpC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBCzckdO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5E6C433F1;
-	Mon,  4 Mar 2024 21:36:09 +0000 (UTC)
+	 MIME-Version; b=MmbjrA9NGWOHjS7tT19/gwr0jetQLBvSOY+IdaWzxnxU8epLhfn3KBOxIqe3zXL18SGdAvpJJogVkw2bXZKboDub7zOSiWPqI/sJmBQS70Z4+5VGy+NYbkTuSChQ1k+0sil+ltH1Bp4gnAjGDzgmgGd+tzuLeJF45jIsI54rP6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syrETlyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31FBC433F1;
+	Mon,  4 Mar 2024 21:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588169;
-	bh=s3i7F244Q+36dnHSPXunMCC6lB7MomvQiq6E7522WjQ=;
+	s=korg; t=1709588016;
+	bh=XQ1pjmjFPCOlvHE0ATSTeyHTRZsvChImDuySMHv3Td0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBCzckdOfA+hA+BbHmIgvSOsAI4gCvc2xmMt7vFD+MfAchkOyL15yDpU8+xE7RluQ
-	 Gh0xN2Bb2qvTveqsH4XylmIrUMPzoRpINFZdTZjXbDF1ffH7DLqvWg4IhG8bkOYXwt
-	 AMPLEJJsnyvJTfWJkpQgm0dFo2iEG3uw5QqyTA1Y=
+	b=syrETlyXT2q8Gv5VmtwUte0vlvvsil7Q8koMvoZ+1E3shsdighLkupUbaEdanAF6R
+	 ETTZxFkbYHLfkECfPYTWQdCSrEcLaRkfwOHs0CBRkbpyD8vYL5M+Z9FaWBsMMUYm0f
+	 AdGdYshG8QpiokZ7dsK47BGNttNt6A7a/DrljpK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 24/42] wifi: nl80211: reject iftype change with mesh ID change
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 15/25] afs: Fix endless loop in directory parsing
 Date: Mon,  4 Mar 2024 21:23:51 +0000
-Message-ID: <20240304211538.450816795@linuxfoundation.org>
+Message-ID: <20240304211536.253048464@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
+[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
 
-It's currently possible to change the mesh ID when the
-interface isn't yet in mesh mode, at the same time as
-changing it into mesh mode. This leads to an overwrite
-of data in the wdev->u union for the interface type it
-currently has, causing cfg80211_change_iface() to do
-wrong things when switching.
+If a directory has a block with only ".__afsXXXX" files in it (from
+uncompleted silly-rename), these .__afsXXXX files are skipped but without
+advancing the file position in the dir_context.  This leads to
+afs_dir_iterate() repeating the block again and again.
 
-We could probably allow setting an interface to mesh
-while setting the mesh ID at the same time by doing a
-different order of operations here, but realistically
-there's no userspace that's going to do this, so just
-disallow changes in iftype when setting mesh ID.
+Fix this by making the code that skips the .__afsXXXX file also manually
+advance the file position.
 
-Cc: stable@vger.kernel.org
-Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
-Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The symptoms are a soft lookup:
+
+        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
+        ...
+        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
+        ...
+         ? watchdog_timer_fn+0x1a6/0x213
+        ...
+         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+         ? afs_dir_iterate_block+0x39/0x1fd
+         afs_dir_iterate+0x10a/0x148
+         afs_readdir+0x30/0x4a
+         iterate_dir+0x93/0xd3
+         __do_sys_getdents64+0x6b/0xd4
+
+This is almost certainly the actual fix for:
+
+        https://bugzilla.kernel.org/show_bug.cgi?id=218496
+
+Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Markus Suvanto <markus.suvanto@gmail.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/afs/dir.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3772,6 +3772,8 @@ static int nl80211_set_interface(struct
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 8bed9df092301..1ada9b9cb21ec 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -426,8 +426,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 		    dire->u.name[0] == '.' &&
+ 		    ctx->actor != afs_lookup_filldir &&
+ 		    ctx->actor != afs_lookup_one_filldir &&
+-		    memcmp(dire->u.name, ".__afs", 6) == 0)
++		    memcmp(dire->u.name, ".__afs", 6) == 0) {
++			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
+ 			continue;
++		}
  
- 		if (ntype != NL80211_IFTYPE_MESH_POINT)
- 			return -EINVAL;
-+		if (otype != NL80211_IFTYPE_MESH_POINT)
-+			return -EINVAL;
- 		if (netif_running(dev))
- 			return -EBUSY;
- 
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+-- 
+2.43.0
+
 
 
 
