@@ -1,123 +1,115 @@
-Return-Path: <stable+bounces-25964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36E1870947
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B2D87095E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F66228428B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:14:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0A1F281BB7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44FB626A2;
-	Mon,  4 Mar 2024 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8BE626C6;
+	Mon,  4 Mar 2024 18:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="F3akSMUd"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="EQCWL2C2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QFMofaAk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfhigh6-smtp.messagingengine.com (wfhigh6-smtp.messagingengine.com [64.147.123.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFE60261;
-	Mon,  4 Mar 2024 18:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D209626B4;
+	Mon,  4 Mar 2024 18:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709576076; cv=none; b=ZuAGbKAmbI+TDLmI01XBGfGJUWe2cpv8S+8Cbmhd3B+qDmrk0wpfPIMkMAmrcCjGYoVWCFjWDmn5WviihButQr6KmEcXAioz7gijTg2awQTcuzhGlrqpFFJ4BSx1D/oMFswFvDfMwjRLOfVgFZAkXXgUArQTtCFdHIkSVjigepI=
+	t=1709576346; cv=none; b=uQvRLVg4zrOmm7gtHlbzuG1U7kqOvozEf6jEYZ2uPgEdARd1CUTNtpjRwjQEUdiWcc8k+WwBJtsLdPeWQX5nxc0KvVLmi7VGG3v523ZvWT0L7ZZKShZrW7FDB1lryL9nS7c8axBTpCsAMxmI41fsccarZ7d7Faq1wmlrsJpG8i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709576076; c=relaxed/simple;
-	bh=yCWM8ixm9Q5GJtAr9YxRI0nlBbJJJ+jn3PUBaQAZXt4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EuSGTTwqlYbDg0q+qIJH+zvQe2jq5E4LFKnTTxHGBPnSy/OpweRhknpzwBmmk5UUMtOiSts/iTVV7zGpvZOR3RjcaUeOmUQg4qYbthNLlzsRHWy+jckFuGjH7FZLVAo7+RFG6VmvetMr3Q5X0ySsTk/e1emSRqHQco/PE/mX7w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=F3akSMUd; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.corp.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 7A4251F91A;
-	Mon,  4 Mar 2024 19:14:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1709576069;
-	bh=AG195yM7a11qN4a7vlK78xakfrw+QRDW32XY1+id4RI=; h=From:To:Subject;
-	b=F3akSMUd2drSZbXyLgkMXFMLCzSUJhqLLfITyU5Nkzov1zsxr8Lw+cT3ZzwvNmLSt
-	 tksLq0wk0LNiofR/WqPzc1u/oG6w/7Bl25BOV05/yQvVa/EvoytJbQqaHmCEtN0hlO
-	 eiZEqcmpFlN7NdTkvOM00maD1AEwDp2YZVDJdhYPF8wdy4X2Z6ha4Qa6JzbkracCbo
-	 H08/wuhDz7JRZFr0MfvoDHbtn6xOUZtsP6kS/n9T+yEswZpJDg2xxN4SY7yyF8OJvK
-	 ECHJ7+TQx9nK/ghWDe3f7bxd6AnXB66XihXd01f05xaK+rxzVUNCIhLy6fxk2bPuO8
-	 ivMyo8/OmYL4g==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Amitkumar Karwar <amitkumar.karwar@nxp.com>,
-	Neeraj Kale <neeraj.sanjaykale@nxp.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2] Bluetooth: btnxpuart: Fix btnxpuart_close
-Date: Mon,  4 Mar 2024 19:14:21 +0100
-Message-Id: <20240304181421.14777-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1709576346; c=relaxed/simple;
+	bh=ZB6RyDFbxlttOpgzbjZBh+D1rmRtuloGrCBd1DEC+J0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tR+6EPbAqnvXQiUpbJcc5w12YWlooKS6Gu0nzsci8X+5mTpSCxVNihCNZ0LwKqDmdG91QqmeYMSSqGcqGHcsQw+AKOzNJ2U7j/Yi1FzsRuAmEfUHltvgXsSSJnt9JJ7YVbwIaa4ErNQ1KUNZdHf7JPD4G33K7tllEIPu1fQ61jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=EQCWL2C2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QFMofaAk; arc=none smtp.client-ip=64.147.123.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 9FCD118000AF;
+	Mon,  4 Mar 2024 13:19:02 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 04 Mar 2024 13:19:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1709576342; x=1709662742; bh=5I72IAgIle
+	ks6OLkLYZtEzLf5RcIGAx8NGNiSl4OvSo=; b=EQCWL2C2QauoVC9rUwHvnjBA5T
+	NFozWAkcoidonwbim7YkhJ0tTq3/JhxK3Mrmeuq3h019PChikmOE2rRqdfW8wzOl
+	yoFDWuENytQBNuifFGYx+rKcgTZcW+rgwZIu11gZCnjBDFW9e++kW+CyQd811uFC
+	Q62N2FZHgakr8BUsY9cuCWhSxo0ExhDPnmfk6FYoyjpx0mSRHJ96DY9gGlyqiPca
+	WRL69LlAS0/IbqcOH2BGpTaSEQRMw7+MM4lkhVfKPtaRDriRrG64ezQ0ATucmPwY
+	cLDvY3MCDNdmYEcErEyLaSVCEYNZvK5E8JG+M/V9J/V+b6SAxkWqLuvUnu6w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1709576342; x=1709662742; bh=5I72IAgIleks6OLkLYZtEzLf5RcI
+	GAx8NGNiSl4OvSo=; b=QFMofaAkyrd7zIUWQMhWAe+RHcXPBDmruSxTWDr1tXWq
+	ODwRuVjRS+n9G6xiy81gSm1nCPobOcK2G1xz/8vFmmr2RTyEd15D2TgTqpJHNvs/
+	0sjgjvS2jhYXV+MGHLSLPZPrp0KYYGx4bk+ZTllmbqh2D5HMoJ/pKFzdb/tryr1U
+	hyun5pU4VAKnDL40ENUplhf6FmAuZhnW3saMrSfJDhtVCBIN7eUTv5QMgOzDpDrP
+	IQGjrmCxiw1Fk46tmXd2U7DF7PkNGnpO/WQbdKe4WhQDLLYJwFm3cmC6V0heK/pF
+	8xZ3hDe5nmc+31aC8ykcJbMzqLOcLvztcdQhp2pjfg==
+X-ME-Sender: <xms:lRDmZSFT-0ZSUeBdGkx61QFPqy2yuSW8R4n1ZoUFRF5WmU4aHaQwIg>
+    <xme:lRDmZTUnFI4c9cQ52rUbXZ4MxfYwzaRXY8MYkqOxS2_fbc_eGa6X-g8JN8ZqF_Fdg
+    yB4EYCv7t-D1w>
+X-ME-Received: <xmr:lRDmZcKnCqxN1outkorvoz5dgcZ2iTHtG3-NtLR3h5H7XPv3HtJEj5OvMg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheejgddutdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:lhDmZcEl_frVW884Fn4uYEJDJ-GpOVSfvwZQQp0oUhs3U6wPwNY5xg>
+    <xmx:lhDmZYU95LX2anQC30gbRNg9cSh0xgDZddv4bNvTgJpvbaNyU4Il5g>
+    <xmx:lhDmZfNL9g6lQPuTpxhw7pnR46GJ6G8JyTQYjAABI-_5aURFmC8vng>
+    <xmx:lhDmZZuzjgyDWCi9FwysD36oRd0cv3wE9kmfeMYk9EeP9DYK7fRreXca8s0>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Mar 2024 13:19:01 -0500 (EST)
+Date: Mon, 4 Mar 2024 19:18:53 +0100
+From: Greg KH <greg@kroah.com>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: stable@vger.kernel.org, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	Karol Herbst <kherbst@redhat.com>
+Subject: Re: [PATCH stable v6.7] drm/nouveau: don't fini scheduler before
+ entity flush
+Message-ID: <2024030446-upside-nest-59b5@gregkh>
+References: <20240304170158.4206-1-dakr@redhat.com>
+ <2024030448-basin-grit-b550@gregkh>
+ <4a3dc556-d7f4-4741-ae5b-6722bd2ce1c1@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4a3dc556-d7f4-4741-ae5b-6722bd2ce1c1@redhat.com>
 
-From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+On Mon, Mar 04, 2024 at 07:10:56PM +0100, Danilo Krummrich wrote:
+> On 3/4/24 18:55, Greg KH wrote:
+> > On Mon, Mar 04, 2024 at 06:01:46PM +0100, Danilo Krummrich wrote:
+> > > Cc: <stable@vger.kernel.org> # v6.7 only
+> > You say 6.7 only, but this commit is in 6.6, so why not 6.6 also?
+> 
+> Good catch, I was sure I originally merged this for 6.7. This fix should indeed
+> be applied to 6.6 as well. Should have double checked that, my bad.
 
-Fix scheduling while atomic BUG in btnxpuart_close(), properly
-purge the transmit queue and free the receive skb.
+Great, now queued up, thanks!
 
-[   10.973809] BUG: scheduling while atomic: kworker/u9:0/80/0x00000002
-...
-[   10.980740] CPU: 3 PID: 80 Comm: kworker/u9:0 Not tainted 6.8.0-rc7-0.0.0-devel-00005-g61fdfceacf09 #1
-[   10.980751] Hardware name: Toradex Verdin AM62 WB on Dahlia Board (DT)
-[   10.980760] Workqueue: hci0 hci_power_off [bluetooth]
-[   10.981169] Call trace:
-...
-[   10.981363]  uart_update_mctrl+0x58/0x78
-[   10.981373]  uart_dtr_rts+0x104/0x114
-[   10.981381]  tty_port_shutdown+0xd4/0xdc
-[   10.981396]  tty_port_close+0x40/0xbc
-[   10.981407]  uart_close+0x34/0x9c
-[   10.981414]  ttyport_close+0x50/0x94
-[   10.981430]  serdev_device_close+0x40/0x50
-[   10.981442]  btnxpuart_close+0x24/0x98 [btnxpuart]
-[   10.981469]  hci_dev_close_sync+0x2d8/0x718 [bluetooth]
-[   10.981728]  hci_dev_do_close+0x2c/0x70 [bluetooth]
-[   10.981862]  hci_power_off+0x20/0x64 [bluetooth]
-
-Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-[ fd: reword commit message ]
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
-v2:
- - reword commit message
- - added rb neeraj
-v1: https://lore.kernel.org/all/20231018145540.34014-2-marcel@ziswiler.com/
----
- drivers/bluetooth/btnxpuart.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index 55b6e3dcd4ec..0b93c2ff29e4 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -1252,6 +1252,9 @@ static int btnxpuart_close(struct hci_dev *hdev)
- 
- 	ps_wakeup(nxpdev);
- 	serdev_device_close(nxpdev->serdev);
-+	skb_queue_purge(&nxpdev->txq);
-+	kfree_skb(nxpdev->rx_skb);
-+	nxpdev->rx_skb = NULL;
- 	clear_bit(BTNXPUART_SERDEV_OPEN, &nxpdev->tx_state);
- 	return 0;
- }
--- 
-2.39.2
-
+greg k-h
 
