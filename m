@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BAD870D6D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED90870F19
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4189228F23F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D380B280E8A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B478B69;
-	Mon,  4 Mar 2024 21:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06C67B3E7;
+	Mon,  4 Mar 2024 21:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sO6/4oHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhEHh1EC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C0246BA0;
-	Mon,  4 Mar 2024 21:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A037A7A70D;
+	Mon,  4 Mar 2024 21:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588034; cv=none; b=jVXPBsIY19NIv8Xs/pSkPR5kVrOOat6cBad9R/30BnUyddHL/CkWTwTEepzq4GrJw/elaUVJ8cbLwe5hzIyB5dUgqO7/x9BEqcEszdqrJmXYTHBviM4hgwM/4Vu9K9z0JTCpgovFyzwaoyC/KQudIbE5FPOzgy0x4OwY5yYIsTg=
+	t=1709589049; cv=none; b=b2xusveg6RVlefm6+7ErOtQkxobVVjgqDMzQ9CDa0E4dqkYcCAZg1PZQ2OtA5xMrkBs7rO7ZCQRz8W5yWOI3bmYtO9EsxHKwpMoCOcPv5O4D39ImRDLsySSi96R2KTLBfyLhuk3QgyuPW75qfQYE1+KQnrCWqDiWdeYJny/MkHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588034; c=relaxed/simple;
-	bh=oBqpwRTdcL6XP7AyTFwcK2c+GAdRxzp/8CRhF3z9B24=;
+	s=arc-20240116; t=1709589049; c=relaxed/simple;
+	bh=ZoSxpb+lyF/y3Nqjs1vxPoRXBQniLlKRjSJ6L/G5LTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MspkQFSRAIb96ShBZPNA80U6AWldH+pQU/LC+cXz3sXbzcIvx0cwZTEJAnuFEh7oA99+3RyL7mDLZ4LddlzJHqM39WSxyG0PzVvp4TSdQdt6vEIu6c6JJru8e61HXgZH4eo3EbaUtZ7ilzWtlOI2Nikjuryf/stnjsmk6VQA/S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sO6/4oHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0607EC433F1;
-	Mon,  4 Mar 2024 21:33:53 +0000 (UTC)
+	 MIME-Version; b=aEOPdcmwFtUfKDe9x4/RvcS4Bl39zqHQ3ZJmYyqeF388C45X8WpBZ/tSp+M3J4RNL/8jjnSZuyllQfI1P/FClBRVyb+2yBm3FkA8uCqMkBqEr/v+75cxCzHgTMPEFa616U82UDxW6Qt13T0GiXbY/zCKedDrHxhxAK1mcnEtE78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhEHh1EC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F95C433F1;
+	Mon,  4 Mar 2024 21:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588034;
-	bh=oBqpwRTdcL6XP7AyTFwcK2c+GAdRxzp/8CRhF3z9B24=;
+	s=korg; t=1709589049;
+	bh=ZoSxpb+lyF/y3Nqjs1vxPoRXBQniLlKRjSJ6L/G5LTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sO6/4oHX7DiO1pdjS4DvpbDJTrkmSuvk0gCga9MlvrzudwH2yo/jYfrR3Ke+kynAi
-	 wWNiWV1QDfxOur94NNclqnjPpPWIiD0D+HLvMKrODYIVgCzpjNQ+VmrQLYV34sFiDv
-	 7EhF5XuPKe1UjarHzq9OjrTzCfsRI/p3Vc43FA58=
+	b=zhEHh1ECLFKytkFYMrAU2wqJtIYvR/ErmOPHkXHTYrRAhyrxOwC7uNJ0coL2g6bU8
+	 7YASQpitDQkStvbpXWdlnlMEClR0oFDP7LvYVUoV9XtklGgPMsX/VuCgGz8Z/iGrae
+	 YMOkmoEQ+3ZqbdTuBwlYjOI3/2tCpUSLeh+1fS6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Semenov <ivan@semenov.dev>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 21/25] mmc: core: Fix eMMC initialization with 1-bit bus connection
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 174/215] NFSD: Use only RQ_DROPME to signal the need to drop a reply
 Date: Mon,  4 Mar 2024 21:23:57 +0000
-Message-ID: <20240304211536.470406875@linuxfoundation.org>
+Message-ID: <20240304211602.459071110@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Semenov <ivan@semenov.dev>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ff3206d2186d84e4f77e1378ba1d225633f17b9b upstream.
+[ Upstream commit 9315564747cb6a570e99196b3a4880fb817635fd ]
 
-Initializing an eMMC that's connected via a 1-bit bus is current failing,
-if the HW (DT) informs that 4-bit bus is supported. In fact this is a
-regression, as we were earlier capable of falling back to 1-bit mode, when
-switching to 4/8-bit bus failed. Therefore, let's restore the behaviour.
+Clean up: NFSv2 has the only two usages of rpc_drop_reply in the
+NFSD code base. Since NFSv2 is going away at some point, replace
+these in order to simplify the "drop this reply?" check in
+nfsd_dispatch().
 
-Log for Samsung eMMC 5.1 chip connected via 1bit bus (only D0 pin)
-Before patch:
-[134509.044225] mmc0: switch to bus width 4 failed
-[134509.044509] mmc0: new high speed MMC card at address 0001
-[134509.054594] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
-[134509.281602] mmc0: switch to bus width 4 failed
-[134509.282638] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.282657] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.284598] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.284602] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.284609] ldm_validate_partition_table(): Disk read failed.
-[134509.286495] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.286500] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.288303] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.288308] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.289540] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.289544] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-[134509.289553]  mmcblk0: unable to read partition table
-[134509.289728] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
-[134509.290283] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
-[134509.294577] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 1 prio class 2
-[134509.295835] I/O error, dev mmcblk0, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
-[134509.295841] Buffer I/O error on dev mmcblk0, logical block 0, async page read
-
-After patch:
-
-[134551.089613] mmc0: switch to bus width 4 failed
-[134551.090377] mmc0: new high speed MMC card at address 0001
-[134551.102271] mmcblk0: mmc0:0001 BGUF4R 29.1 GiB
-[134551.113365]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 p11 p12 p13 p14 p15 p16 p17 p18 p19 p20 p21
-[134551.114262] mmcblk0boot0: mmc0:0001 BGUF4R 31.9 MiB
-[134551.114925] mmcblk0boot1: mmc0:0001 BGUF4R 31.9 MiB
-
-Fixes: 577fb13199b1 ("mmc: rework selection of bus speed mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Semenov <ivan@semenov.dev>
-Link: https://lore.kernel.org/r/20240206172845.34316-1-ivan@semenov.dev
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/mmc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfsproc.c |    4 ++--
+ fs/nfsd/nfssvc.c  |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -991,10 +991,12 @@ static int mmc_select_bus_width(struct m
- 	static unsigned ext_csd_bits[] = {
- 		EXT_CSD_BUS_WIDTH_8,
- 		EXT_CSD_BUS_WIDTH_4,
-+		EXT_CSD_BUS_WIDTH_1,
- 	};
- 	static unsigned bus_widths[] = {
- 		MMC_BUS_WIDTH_8,
- 		MMC_BUS_WIDTH_4,
-+		MMC_BUS_WIDTH_1,
- 	};
- 	struct mmc_host *host = card->host;
- 	unsigned idx, bus_width = 0;
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -211,7 +211,7 @@ nfsd_proc_read(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		return rpc_drop_reply;
++		__set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
+@@ -246,7 +246,7 @@ nfsd_proc_write(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		return rpc_drop_reply;
++		__set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -1071,7 +1071,7 @@ int nfsd_dispatch(struct svc_rqst *rqstp
+ 
+ 	nfs_reply = xdr_inline_decode(&rqstp->rq_res_stream, 0);
+ 	*statp = proc->pc_func(rqstp);
+-	if (*statp == rpc_drop_reply || test_bit(RQ_DROPME, &rqstp->rq_flags))
++	if (test_bit(RQ_DROPME, &rqstp->rq_flags))
+ 		goto out_update_drop;
+ 
+ 	if (!proc->pc_encode(rqstp, &rqstp->rq_res_stream))
 
 
 
