@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACD7870F75
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB395870F42
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB8B92825A2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903031F21D0F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9AE79950;
-	Mon,  4 Mar 2024 21:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDA878B4C;
+	Mon,  4 Mar 2024 21:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOnH/+UJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWR4T273"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8541C6AB;
-	Mon,  4 Mar 2024 21:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE851C6AB;
+	Mon,  4 Mar 2024 21:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589293; cv=none; b=JSBN7Ryo5JC6s+XhDUq6q/Uj0EfwwGsK4jttFLQEbYGzAGdkyuNS78vuliVRQS04vhvyRcJFJoFliWVa+iu8imhV5GO9mxwDjh9dfDMqyCUgwI9UVAcqYAimV5oREg7c+nMGaqBFyKX3UwJCwYfQR/Czb87/EjKb8NJry9fPDi4=
+	t=1709589163; cv=none; b=ItRoHmQmb+oJ1kYIOW23R+I1ojmle+E1jOqzwb20CBPops+ne1uRzra8+DydzIsmbYisHU5q2VrlTDcJDI4m8SSNMFJ3D6gZUyjTw/4/y2eHZk8fJci/lKqPNMqNAu7XV+j0qHbOGwZ6+6AjG5v5HQhxksdxHfoxhbu5sbLjmlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589293; c=relaxed/simple;
-	bh=yYzo4BGKXrMApIGLuo2B2SehjRCFARlnA0pAnhT7q2g=;
+	s=arc-20240116; t=1709589163; c=relaxed/simple;
+	bh=vJ55UNsjpa8ED4IaEhieaVOaA9OHgQhs0eoTEjXA12s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5WrXElat7ouRfff++gGHxISG5Rgse+GDrRuKb6XtTFPWjFIyy2l/+gmXsWrHfEm8CIAmiC/bWhRkWwOryKQjDdnp6JqYmPEdC6asXqN6aYRz/bBdPbgiGQFomqHObwmG88bQC9WkRvLDAb9fQpcwDFkau4YJk0vMY6HU4Fhk0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOnH/+UJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9B0C43390;
-	Mon,  4 Mar 2024 21:54:52 +0000 (UTC)
+	 MIME-Version; b=HI5fFn+h5d0CydCPNOxscL8x1vaDMZQSSojbsn9QVBsndIFiq/IJD0MeugAgGAh1N2Ce88Tpp5I+iQ4ao2i2w3cN/CT9QHROXZbtrTGgdMxLXohhhIZAqVfg33o8wKKr2H6w80A3tcQ3jNBYUSgF1g0ypQ/fO6jOXNL347yA6RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWR4T273; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3194FC433F1;
+	Mon,  4 Mar 2024 21:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589293;
-	bh=yYzo4BGKXrMApIGLuo2B2SehjRCFARlnA0pAnhT7q2g=;
+	s=korg; t=1709589163;
+	bh=vJ55UNsjpa8ED4IaEhieaVOaA9OHgQhs0eoTEjXA12s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOnH/+UJmKdXaM52+b211p1x1oI+znqWCT7A8nLMe0yZQlr4bmFmtU4lhFepajdU1
-	 VYDb/zx7PoB73YbOW+ji0bKsYzA9oKPw5qQtOk2Pb+L33B3FL+noUDYh11kyqhkpqu
-	 x2HsTTx8ukxTgNbKWq38gwmo3os0KccWPD3ZGd5k=
+	b=IWR4T273G35ivUsaxd4dcHmGS2JS0dbB25qKaa5wfG1Jnt4x9UemgY+5XXP7FUpVX
+	 sZu/YgjwWo06hX9XxevbqeT/Zc1ceXmCWgBTAWqy/aMAsanhyDGPMWmOw4ItCvUadq
+	 w2xDY4UZPxyYWF/R8CFM0tHAEGOIxK1WJCbGKB2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
-	Yi Zhao <yi.zhao@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 54/84] dmaengine: fsl-qdma: init irq after reg initialization
-Date: Mon,  4 Mar 2024 21:24:27 +0000
-Message-ID: <20240304211544.172082525@linuxfoundation.org>
+	Rob Clark <robdclark@chromium.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.1 205/215] Revert "interconnect: Teach lockdep about icc_bw_lock order"
+Date: Mon,  4 Mar 2024 21:24:28 +0000
+Message-ID: <20240304211603.495045938@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
+This reverts commit 0db211ec0f1d32b93486e8f6565249ad4d1bece5 which is
+commit 13619170303878e1dae86d9a58b039475c957fcf upstream.
 
-Initialize the qDMA irqs after the registers are configured so that
-interrupts that may have been pending from a primary kernel don't get
-processed by the irq handler before it is ready to and cause panic with
-the following trace:
+It is reported to cause boot crashes in Android systems, so revert it
+from the stable trees for now.
 
-  Call trace:
-   fsl_qdma_queue_handler+0xf8/0x3e8
-   __handle_irq_event_percpu+0x78/0x2b0
-   handle_irq_event_percpu+0x1c/0x68
-   handle_irq_event+0x44/0x78
-   handle_fasteoi_irq+0xc8/0x178
-   generic_handle_irq+0x24/0x38
-   __handle_domain_irq+0x90/0x100
-   gic_handle_irq+0x5c/0xb8
-   el1_irq+0xb8/0x180
-   _raw_spin_unlock_irqrestore+0x14/0x40
-   __setup_irq+0x4bc/0x798
-   request_threaded_irq+0xd8/0x190
-   devm_request_threaded_irq+0x74/0xe8
-   fsl_qdma_probe+0x4d4/0xca8
-   platform_drv_probe+0x50/0xa0
-   really_probe+0xe0/0x3f8
-   driver_probe_device+0x64/0x130
-   device_driver_attach+0x6c/0x78
-   __driver_attach+0xbc/0x158
-   bus_for_each_dev+0x5c/0x98
-   driver_attach+0x20/0x28
-   bus_add_driver+0x158/0x220
-   driver_register+0x60/0x110
-   __platform_driver_register+0x44/0x50
-   fsl_qdma_driver_init+0x18/0x20
-   do_one_initcall+0x48/0x258
-   kernel_init_freeable+0x1a4/0x23c
-   kernel_init+0x10/0xf8
-   ret_from_fork+0x10/0x18
-
-Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
-Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Georgi Djakov <djakov@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jon Hunter <jonathanh@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-qdma.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/interconnect/core.c |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -1203,10 +1203,6 @@ static int fsl_qdma_probe(struct platfor
- 	if (!fsl_qdma->queue)
- 		return -ENOMEM;
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -1146,21 +1146,13 @@ void icc_sync_state(struct device *dev)
+ 			}
+ 		}
+ 	}
+-	mutex_unlock(&icc_bw_lock);
+ 	mutex_unlock(&icc_lock);
+ }
+ EXPORT_SYMBOL_GPL(icc_sync_state);
  
--	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
--	if (ret)
--		return ret;
+ static int __init icc_init(void)
+ {
+-	struct device_node *root;
 -
- 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
- 	if (fsl_qdma->irq_base < 0)
- 		return fsl_qdma->irq_base;
-@@ -1245,16 +1241,19 @@ static int fsl_qdma_probe(struct platfor
+-	/* Teach lockdep about lock ordering wrt. shrinker: */
+-	fs_reclaim_acquire(GFP_KERNEL);
+-	might_lock(&icc_bw_lock);
+-	fs_reclaim_release(GFP_KERNEL);
+-
+-	root = of_find_node_by_path("/");
++	struct device_node *root = of_find_node_by_path("/");
  
- 	platform_set_drvdata(pdev, fsl_qdma);
- 
--	ret = dma_async_device_register(&fsl_qdma->dma_dev);
-+	ret = fsl_qdma_reg_init(fsl_qdma);
- 	if (ret) {
--		dev_err(&pdev->dev,
--			"Can't register NXP Layerscape qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
- 		return ret;
- 	}
- 
--	ret = fsl_qdma_reg_init(fsl_qdma);
-+	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
-+	if (ret)
-+		return ret;
-+
-+	ret = dma_async_device_register(&fsl_qdma->dma_dev);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
- 		return ret;
- 	}
- 
+ 	providers_count = of_count_icc_providers(root);
+ 	of_node_put(root);
 
 
 
