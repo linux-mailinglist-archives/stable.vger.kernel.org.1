@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DE9870E31
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EA5870DA1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9C71C21B8C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83349B27090
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC951EB5A;
-	Mon,  4 Mar 2024 21:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0643E200CD;
+	Mon,  4 Mar 2024 21:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnxDVF8H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3eKaQem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBCE8F58;
-	Mon,  4 Mar 2024 21:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91DCDDCB;
+	Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588505; cv=none; b=SkBbXC/5qmmt2vK+S4AFWlWSrT2kuDGCn6J1xsjdyFUp+7SodPD7o4ZfkJVnYYiN/nejSh3FThWvqxhC7XbZwK4s6MgaZnU/s4zIq4KcE3P1+HeoPBooQkeikg9k/iFA9Ush24yodA1Qvt1k6ioggo+Agpe1tciFb2Yb3YFjqAM=
+	t=1709588164; cv=none; b=m4OBHjQJxiepJuS/pLOT0u7jt46pfpBMuMDSK3VYdnrQz7uBU6E4W2jSC4eLy5YEHanynFE8gWyQEvHpJyiPAnUJRB3pMeEQNq9sRR4vdNNw+df0eN6sLGRP5cgLr8ElgQvcDeAmS67bgiJvgK+11/W6qomlqmSkXMpka5osdg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588505; c=relaxed/simple;
-	bh=R/DBVhNdyuth3uJ3+KsqlZtzMiH2Doojip/KLaYras4=;
+	s=arc-20240116; t=1709588164; c=relaxed/simple;
+	bh=N+eXHdsaVhVQB3eCX3YDyGMI1kuKGUP2hT7CP2IKMs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aM1u8o9Vw19Qq0wIKFaoFh/yrAK7Nr5wJgBFFWjZpEw3cf2DoMdJre2miXil6j+Bmgm7JRNFXNzs0GogzqGVsT6k2AVVSCpsBPKPGLIcmYC3YO5AwxJs9q2YXdyVuX2sdsP7TTJcNdIuBm5n2gJLynRdsoqq2HTWBelqL4No/LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnxDVF8H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2663C433C7;
-	Mon,  4 Mar 2024 21:41:44 +0000 (UTC)
+	 MIME-Version; b=To5yYcvKbhJ2kFGrZyg4+fN13vg4AbMs8UbkwYob+pLfuNDE+CuXxUC+DtT5SwgY81ENeOISdAtZ8KGqZMl0b+Xid6HSq/2lT15Qu4yL9anGSTVZjhzmPgCixcBCJ1TOSigfJMSWGeiyRU+rL+xk/w0QnRen0mHuXDPEM66JIA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3eKaQem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC45C433C7;
+	Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588505;
-	bh=R/DBVhNdyuth3uJ3+KsqlZtzMiH2Doojip/KLaYras4=;
+	s=korg; t=1709588164;
+	bh=N+eXHdsaVhVQB3eCX3YDyGMI1kuKGUP2hT7CP2IKMs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnxDVF8HTDzqZBRWSqZ4IxH1w+wSyEBr/PHkIm9r6C6S90evPYMyBIi6FkcioQW1+
-	 6LDkokkgt4SAXuFPVahSQ21DpT28n7mQJA9m0QgVSApAaWMrfFw8YB4PbKCntccuZQ
-	 cLdOlyErq9cRWomdeZl/ialdZpgoW0gs50MKt2Ug=
+	b=c3eKaQemrGiufzQ+M6ItUmJ19VBO/96VvBsqMMMW6vIcyRjHlTChrWOl7HczlR6r5
+	 t3fUCblbjbXJ8yal1Mfl/amVe5ofpyU6Sun937FVKB5gLotOaMtMllPL3fOTzP85p+
+	 qZ7O/zP7Q3lsUV4GOUnnJ5iNtJQpP0NTUkI0WRKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 109/143] selftests: mptcp: join: add ss mptcp support check
+	Sam Sun <samsun1006219@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 22/42] tomoyo: fix UAF write bug in tomoyo_write_control()
 Date: Mon,  4 Mar 2024 21:23:49 +0000
-Message-ID: <20240304211553.405805581@linuxfoundation.org>
+Message-ID: <20240304211538.378797988@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 9480f388a2ef54fba911d9325372abd69a328601 upstream.
+commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
 
-Commands 'ss -M' are used in script mptcp_join.sh to display only MPTCP
-sockets. So it must be checked if ss tool supports MPTCP in this script.
+Since tomoyo_write_control() updates head->write_buf when write()
+of long lines is requested, we need to fetch head->write_buf after
+head->io_sem is held.  Otherwise, concurrent write() requests can
+cause use-after-free-write and double-free problems.
 
-Fixes: e274f7154008 ("selftests: mptcp: add subflow limits test-cases")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-7-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
+Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
+Cc:  <stable@vger.kernel.org> # Linux 3.1+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    5 +++++
- 1 file changed, 5 insertions(+)
+ security/tomoyo/common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -159,6 +159,11 @@ check_tools()
- 		exit $ksft_skip
- 	fi
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2657,13 +2657,14 @@ ssize_t tomoyo_write_control(struct tomo
+ {
+ 	int error = buffer_len;
+ 	size_t avail_len = buffer_len;
+-	char *cp0 = head->write_buf;
++	char *cp0;
+ 	int idx;
  
-+	if ! ss -h | grep -q MPTCP; then
-+		echo "SKIP: ss tool does not support MPTCP"
-+		exit $ksft_skip
-+	fi
-+
- 	# Use the legacy version if available to support old kernel versions
- 	if iptables-legacy -V &> /dev/null; then
- 		iptables="iptables-legacy"
+ 	if (!head->write)
+ 		return -EINVAL;
+ 	if (mutex_lock_interruptible(&head->io_sem))
+ 		return -EINTR;
++	cp0 = head->write_buf;
+ 	head->read_user_buf_avail = 0;
+ 	idx = tomoyo_read_lock();
+ 	/* Read a line and dispatch it to the policy handler. */
 
 
 
