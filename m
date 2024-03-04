@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71558870CF8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB29F870DA9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26421C24377
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B9E21F21835
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0789C7CF3E;
-	Mon,  4 Mar 2024 21:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30F200CD;
+	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0U+Bg93S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kj4FEmV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B689A7BB1F;
-	Mon,  4 Mar 2024 21:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD51DDCB;
+	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587787; cv=none; b=ZKoELe3El2MW7enLnENIu2j+YjRuA+SUP6HMS3q1kzGPnBVz9Ail+n5d/0mB+voU8/yV4nk8cCEn1f/z2TpTulYPjrCSqXoPfTS0ovuqrNj0ivuFvgzGbFZnlN2rcIO3CLTrOA0BDCPJNIuo+6yDWFcTblleBR1l3gHbFOBdzi0=
+	t=1709588185; cv=none; b=rnFFaILK5l0ZO1IIOXOum6VQyKZwW5Kq6AbhjXZ8fX8eG+7/q/5NWoj4XPte74zqa2rEjuWphy31ZzKZsZRdysokgABzOkJzsbnNE0DEeRcxB9HsuWeuaxHZlF9xUqjS2awvvUl/ZfWChFq4a9r0ll7ATtvhUIIusDj5nPMqXiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587787; c=relaxed/simple;
-	bh=eqfBtNGa7QUrmAbzodf1hXdxqlaC+4PYcxrR8wBiE5Y=;
+	s=arc-20240116; t=1709588185; c=relaxed/simple;
+	bh=RJq2o1foJRUClSrgEy7FNtuwZ+lLUkEIbtAzr/uK728=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puCM0+PUEveP3crMSqbHvX0IR9OuZzS+7EyYl9I6ZK6sKNo7itQHDwr9cpyd7F2YGxg9ahvvWvKLzVyNJ2LisnO2QoX/jVR/6cyRwFhUqfJR3D6CAs8j/5P3OqoLwNNYFXeCWW/3NiJ1vPq6n9/fR5Dh7WY8wSv8bKhoPeUpUcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0U+Bg93S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8F8C433C7;
-	Mon,  4 Mar 2024 21:29:47 +0000 (UTC)
+	 MIME-Version; b=YSmiQzCMko9PRvhRppBX+B/W4jol5sGRZCSJ36j7GyoFiIr2qA1hA0hELb/oFEwPx9lIJnqmAhwr6GEdn5TRdAYX+xo7z4T0NfJ6x6IEUUcs41hWtzJ7u0OLme2yBuPv8vsn234StnrKCHfAmIKM1c8y0x1o8p9mAVzjLYrCTnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kj4FEmV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D413C433C7;
+	Mon,  4 Mar 2024 21:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587787;
-	bh=eqfBtNGa7QUrmAbzodf1hXdxqlaC+4PYcxrR8wBiE5Y=;
+	s=korg; t=1709588185;
+	bh=RJq2o1foJRUClSrgEy7FNtuwZ+lLUkEIbtAzr/uK728=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0U+Bg93SXQywm2PLrv978y2ZoWkRq643cpJE0Dk9B1oWe3TohcSxUHiG42R9LxXcQ
-	 V/IXwvkYBZHlj1zqDMbd5ubqkNMRXWngWU7XwxsY8vqyX4hcEtcu9KEYE8B1D1V/u0
-	 mlE7qKWAtk2NPsH+w2TTIMRWWQ2Vp8wKaW9f3MwM=
+	b=kj4FEmV+ia/6+EEsgANME+q3np2Vgyg70nrB9QS9MhH4qE6UVugY918KCJOpMF19V
+	 Ytbg89e7Al1GmYmo0cPxXGMuzggIR+QNz2KE8vzo66AfvV31Ei20iWotSH4kEQFk+9
+	 9jDX0RfqqSIAsM8YlI9PmZHCn5blK3eVHqjR/hhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Shakirov <vadim.shakirov@syntacore.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 066/162] drivers: perf: ctr_get_width function for legacy is not defined
+Subject: [PATCH 6.6 011/143] net: mctp: take ownership of skb in mctp_local_output
 Date: Mon,  4 Mar 2024 21:22:11 +0000
-Message-ID: <20240304211553.964289519@linuxfoundation.org>
+Message-ID: <20240304211550.280616557@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Shakirov <vadim.shakirov@syntacore.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 682dc133f83e0194796e6ea72eb642df1c03dfbe ]
+[ Upstream commit 3773d65ae5154ed7df404b050fd7387a36ab5ef3 ]
 
-With parameters CONFIG_RISCV_PMU_LEGACY=y and CONFIG_RISCV_PMU_SBI=n
-linux kernel crashes when you try perf record:
+Currently, mctp_local_output only takes ownership of skb on success, and
+we may leak an skb if mctp_local_output fails in specific states; the
+skb ownership isn't transferred until the actual output routing occurs.
 
-$ perf record ls
-[ 46.749286] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[ 46.750199] Oops [#1]
-[ 46.750342] Modules linked in:
-[ 46.750608] CPU: 0 PID: 107 Comm: perf-exec Not tainted 6.6.0 #2
-[ 46.750906] Hardware name: riscv-virtio,qemu (DT)
-[ 46.751184] epc : 0x0
-[ 46.751430] ra : arch_perf_update_userpage+0x54/0x13e
-[ 46.751680] epc : 0000000000000000 ra : ffffffff8072ee52 sp : ff2000000022b8f0
-[ 46.751958] gp : ffffffff81505988 tp : ff6000000290d400 t0 : ff2000000022b9c0
-[ 46.752229] t1 : 0000000000000001 t2 : 0000000000000003 s0 : ff2000000022b930
-[ 46.752451] s1 : ff600000028fb000 a0 : 0000000000000000 a1 : ff600000028fb000
-[ 46.752673] a2 : 0000000ae2751268 a3 : 00000000004fb708 a4 : 0000000000000004
-[ 46.752895] a5 : 0000000000000000 a6 : 000000000017ffe3 a7 : 00000000000000d2
-[ 46.753117] s2 : ff600000028fb000 s3 : 0000000ae2751268 s4 : 0000000000000000
-[ 46.753338] s5 : ffffffff8153e290 s6 : ff600000863b9000 s7 : ff60000002961078
-[ 46.753562] s8 : ff60000002961048 s9 : ff60000002961058 s10: 0000000000000001
-[ 46.753783] s11: 0000000000000018 t3 : ffffffffffffffff t4 : ffffffffffffffff
-[ 46.754005] t5 : ff6000000292270c t6 : ff2000000022bb30
-[ 46.754179] status: 0000000200000100 badaddr: 0000000000000000 cause: 000000000000000c
-[ 46.754653] Code: Unable to access instruction at 0xffffffffffffffec.
-[ 46.754939] ---[ end trace 0000000000000000 ]---
-[ 46.755131] note: perf-exec[107] exited with irqs disabled
-[ 46.755546] note: perf-exec[107] exited with preempt_count 4
+Instead, make mctp_local_output free the skb on all error paths up to
+the route action, so it always consumes the passed skb.
 
-This happens because in the legacy case the ctr_get_width function was not
-defined, but it is used in arch_perf_update_userpage.
-
-Also remove extra check in riscv_pmu_ctr_get_width_mask
-
-Signed-off-by: Vadim Shakirov <vadim.shakirov@syntacore.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Fixes: cc4c07c89aad ("drivers: perf: Implement perf event mmap support  in the SBI backend")
-Link: https://lore.kernel.org/r/20240227170002.188671-3-vadim.shakirov@syntacore.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220081053.1439104-1-jk@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu.c        | 18 +++++-------------
- drivers/perf/riscv_pmu_legacy.c |  8 +++++++-
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ include/net/mctp.h |  1 +
+ net/mctp/route.c   | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-index 0dda70e1ef90a..c78a6fd6c57f6 100644
---- a/drivers/perf/riscv_pmu.c
-+++ b/drivers/perf/riscv_pmu.c
-@@ -150,19 +150,11 @@ u64 riscv_pmu_ctr_get_width_mask(struct perf_event *event)
- 	struct riscv_pmu *rvpmu = to_riscv_pmu(event->pmu);
- 	struct hw_perf_event *hwc = &event->hw;
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index da86e106c91d5..2bff5f47ce82f 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -249,6 +249,7 @@ struct mctp_route {
+ struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
+ 				     mctp_eid_t daddr);
  
--	if (!rvpmu->ctr_get_width)
--	/**
--	 * If the pmu driver doesn't support counter width, set it to default
--	 * maximum allowed by the specification.
--	 */
--		cwidth = 63;
--	else {
--		if (hwc->idx == -1)
--			/* Handle init case where idx is not initialized yet */
--			cwidth = rvpmu->ctr_get_width(0);
--		else
--			cwidth = rvpmu->ctr_get_width(hwc->idx);
--	}
-+	if (hwc->idx == -1)
-+		/* Handle init case where idx is not initialized yet */
-+		cwidth = rvpmu->ctr_get_width(0);
-+	else
-+		cwidth = rvpmu->ctr_get_width(hwc->idx);
++/* always takes ownership of skb */
+ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		      struct sk_buff *skb, mctp_eid_t daddr, u8 req_tag);
  
- 	return GENMASK_ULL(cwidth, 0);
- }
-diff --git a/drivers/perf/riscv_pmu_legacy.c b/drivers/perf/riscv_pmu_legacy.c
-index a85fc9a15f039..fa0bccf4edf2e 100644
---- a/drivers/perf/riscv_pmu_legacy.c
-+++ b/drivers/perf/riscv_pmu_legacy.c
-@@ -37,6 +37,12 @@ static int pmu_legacy_event_map(struct perf_event *event, u64 *config)
- 	return pmu_legacy_ctr_get_idx(event);
- }
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 6218dcd07e184..ceee44ea09d97 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -888,7 +888,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		dev = dev_get_by_index_rcu(sock_net(sk), cb->ifindex);
+ 		if (!dev) {
+ 			rcu_read_unlock();
+-			return rc;
++			goto out_free;
+ 		}
+ 		rt->dev = __mctp_dev_get(dev);
+ 		rcu_read_unlock();
+@@ -903,7 +903,8 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		rt->mtu = 0;
  
-+/* cycle & instret are always 64 bit, one bit less according to SBI spec */
-+static int pmu_legacy_ctr_get_width(int idx)
-+{
-+	return 63;
-+}
+ 	} else {
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto out_free;
+ 	}
+ 
+ 	spin_lock_irqsave(&rt->dev->addrs_lock, flags);
+@@ -966,12 +967,17 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		rc = mctp_do_fragment_route(rt, skb, mtu, tag);
+ 	}
+ 
++	/* route output functions consume the skb, even on error */
++	skb = NULL;
 +
- static u64 pmu_legacy_read_ctr(struct perf_event *event)
- {
- 	struct hw_perf_event *hwc = &event->hw;
-@@ -111,7 +117,7 @@ static void pmu_legacy_init(struct riscv_pmu *pmu)
- 	pmu->ctr_stop = NULL;
- 	pmu->event_map = pmu_legacy_event_map;
- 	pmu->ctr_get_idx = pmu_legacy_ctr_get_idx;
--	pmu->ctr_get_width = NULL;
-+	pmu->ctr_get_width = pmu_legacy_ctr_get_width;
- 	pmu->ctr_clear_idx = NULL;
- 	pmu->ctr_read = pmu_legacy_read_ctr;
- 	pmu->event_mapped = pmu_legacy_event_mapped;
+ out_release:
+ 	if (!ext_rt)
+ 		mctp_route_release(rt);
+ 
+ 	mctp_dev_put(tmp_rt.dev);
+ 
++out_free:
++	kfree_skb(skb);
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
