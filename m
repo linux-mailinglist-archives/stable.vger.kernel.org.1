@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB7C870EBD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE13870CFE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C0B1F21ADA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4B71C2361A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C25A61675;
-	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2519278B4C;
+	Mon,  4 Mar 2024 21:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4EXknaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlJnsZUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2DC1C6AB;
-	Mon,  4 Mar 2024 21:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D5861675;
+	Mon,  4 Mar 2024 21:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588790; cv=none; b=jAlHaqlbLfn0/ZEK7bhs5ehoYdz7MfmtxkPY0DVyf4kW99rDd21soCcYeCQuCTCowYxPdCJJUVPHk+mKAXhqMDCX7nFyw9s0fgzltq2xxkaak+aWEf4fkIErK7Xr7wTjL3t85mN8miinITcU7rzyHcWxl3D1uHVJgkA8U4FFKEg=
+	t=1709587800; cv=none; b=nhifQ2xwcnIDsnCEtMLHmnXbI+U7UN9OLpGNv8gEcGpEbrUrgDsFc2KX/8pY8YdyI+USqWpaBDfXSTxaHjZW3ZQdM0N8wz91dTiKR/oyoAWTn9Okn1VE2EkZJd+VdCDepZZy9qNLnRGGZJsjzcIY0wgoMhJrFQPiR4bdX9zFo3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588790; c=relaxed/simple;
-	bh=57DxTgJzmRyyUblSpM+GWY86fQVE3mgG7pPqq/Xw3dA=;
+	s=arc-20240116; t=1709587800; c=relaxed/simple;
+	bh=yb030ubKD9mJbGQE//r285ACHyo31kfXg+lI+EcZOKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1hl3ZOGbZRhuQczZ+VBNDyUVHXuXjDOH6nIct6buFYG1AgdqvF1XkQrlTumSOJRBDQr9uBumZbtdb5AkahRM6qRwn4vOwfb69+qbu8tHK///ATzMdDXvxhBbBJ9GiTWPlSeK520JVe15fE0rQSR7zL+sPJeHgaxBJ8Qtk6nd+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4EXknaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845D0C433F1;
-	Mon,  4 Mar 2024 21:46:29 +0000 (UTC)
+	 MIME-Version; b=TVc9KHuc5Mk9r/iz/93B/wODRwkpBf3hEXzrLlJT17q9u3iOugznhyIq+Nuk26FuOMoTiMuMYK9nmvUuOtpkqPmmjc06RlVYozQf61Pt0Bc9xKrPDWIcT5z7fde9v0hAsgTRSaXCbJ4ioPA7Z+H0aiha/ew2vlpqJOBvbCl+qzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlJnsZUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69358C433C7;
+	Mon,  4 Mar 2024 21:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588789;
-	bh=57DxTgJzmRyyUblSpM+GWY86fQVE3mgG7pPqq/Xw3dA=;
+	s=korg; t=1709587800;
+	bh=yb030ubKD9mJbGQE//r285ACHyo31kfXg+lI+EcZOKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4EXknaTT3QspNcfqgntIb+z9XvQ7cRzDtX33Ize+HxF3I381+zt1a/jMVejXnKfx
-	 W9Hr7WqNVBzp0RMSCHcag/e4lZflD1kKMij6LvFfG+0n8ydEEMllaa24Lz0CpwSlyX
-	 DN61K7jbLLltKHtCXNmD5yX8Rogh1cC3c4BBM+Rg=
+	b=tlJnsZUDpPMjvKO25Fn7ctgHpvfAPQjwbLIhsiuN3LGrTDcO90dDWI1JNCPp4hpeT
+	 XqSUG7S2URZHnR6Ot0PxYbr+Y9mvFrot+aqMpgiNdqVpDiGSFuFjiLSEARhkNV1P08
+	 +P96w3u98tCUjVBkfLzL9aqV+Eol7ef1kGv/dDPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 073/215] ALSA: firewire-lib: fix to check cycle continuity
+	Sid Pranjale <sidpranjale127@protonmail.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 071/162] drm/nouveau: keep DMA buffers required for suspend/resume
 Date: Mon,  4 Mar 2024 21:22:16 +0000
-Message-ID: <20240304211559.299733351@linuxfoundation.org>
+Message-ID: <20240304211554.129164305@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Sid Pranjale <sidpranjale127@protonmail.com>
 
-commit 77ce96543b03f437c6b45f286d8110db2b6622a3 upstream.
+[ Upstream commit f6ecfdad359a01c7fd8a3bcfde3ef0acdf107e6e ]
 
-The local helper function to compare the given pair of cycle count
-evaluates them. If the left value is less than the right value, the
-function returns negative value.
+Nouveau deallocates a few buffers post GPU init which are required for GPU suspend/resume to function correctly.
+This is likely not as big an issue on systems where the NVGPU is the only GPU, but on multi-GPU set ups it leads to a regression where the kernel module errors and results in a system-wide rendering freeze.
 
-If the safe cycle is less than the current cycle, it is the case of
-cycle lost. However, it is not currently handled properly.
+This commit addresses that regression by moving the two buffers required for suspend and resume to be deallocated at driver unload instead of post init.
 
-This commit fixes the bug.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://lore.kernel.org/r/20240218033026.72577-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 042b5f83841fb ("drm/nouveau: fix several DMA buffer leaks")
+Signed-off-by: Sid Pranjale <sidpranjale127@protonmail.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/amdtp-stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -934,7 +934,7 @@ static int generate_device_pkt_descs(str
- 				// to the reason.
- 				unsigned int safe_cycle = increment_ohci_cycle_count(next_cycle,
- 								IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES);
--				lost = (compare_ohci_cycle_count(safe_cycle, cycle) > 0);
-+				lost = (compare_ohci_cycle_count(safe_cycle, cycle) < 0);
- 			}
- 			if (lost) {
- 				dev_err(&s->unit->device, "Detect discontinuity of cycle: %d %d\n",
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index a41735ab60683..d66fc3570642b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1054,8 +1054,6 @@ r535_gsp_postinit(struct nvkm_gsp *gsp)
+ 	/* Release the DMA buffers that were needed only for boot and init */
+ 	nvkm_gsp_mem_dtor(gsp, &gsp->boot.fw);
+ 	nvkm_gsp_mem_dtor(gsp, &gsp->libos);
+-	nvkm_gsp_mem_dtor(gsp, &gsp->rmargs);
+-	nvkm_gsp_mem_dtor(gsp, &gsp->wpr_meta);
+ 
+ 	return ret;
+ }
+@@ -2163,6 +2161,8 @@ r535_gsp_dtor(struct nvkm_gsp *gsp)
+ 
+ 	r535_gsp_dtor_fws(gsp);
+ 
++	nvkm_gsp_mem_dtor(gsp, &gsp->rmargs);
++	nvkm_gsp_mem_dtor(gsp, &gsp->wpr_meta);
+ 	nvkm_gsp_mem_dtor(gsp, &gsp->shm.mem);
+ 	nvkm_gsp_mem_dtor(gsp, &gsp->loginit);
+ 	nvkm_gsp_mem_dtor(gsp, &gsp->logintr);
+-- 
+2.43.0
+
 
 
 
