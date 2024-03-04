@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFDC870F7D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF5D870F38
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA191C21A77
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 373D5281699
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED77B78B4C;
-	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB887868F;
+	Mon,  4 Mar 2024 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRma801x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCcpSgGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3F01C6AB;
-	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C52E1C6AB;
+	Mon,  4 Mar 2024 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589311; cv=none; b=DecKV8luEVNTtK8BgDyWyL/IO5pez0/6/3amIx2RgwyQiizSiU4HH3Odxa/EBPWBNwwD77uca1Cpfa5FKA2VOoUkXcO/aU5rDKi9Ucqtu9qmwOp0Q23ypGxrnVXJCqSI01WXVNhmiWpfMDEsw5afKCRyOz0idoFs10XLbtLObO0=
+	t=1709589140; cv=none; b=iK/ekWdUypMwj/c1pBFP3lph2K2DYe8Ng4c+3P9hxcWnNam9VtZMCWn5G7UAm1jl4QO9zzdhT2UBm0qUCx7fZULEp0xkVaOtZdn0Ug9Veu9MQn0S/UQ13oWoCIHjPsBlu2BLDSgvkdFydGRByE+To2dZO3VX629o9hP0uMYtGRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589311; c=relaxed/simple;
-	bh=YbkC/R/S200rTxdLi8Sn3KUb3pTkPwkqMvMemGqTmkU=;
+	s=arc-20240116; t=1709589140; c=relaxed/simple;
+	bh=A1WGAfQTLiHLLkIfVCd3wuv+bPw+e6yplS7U6t7X1tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOtOYmnMBSk0WMH2+yNQeV9sZhGU4uFS+0qpU2rz+nmOlCkvMVTYipLdBFuHm/mgRJUNSk18JumIToBDh3y1aDRiimetL0eZxuOGV4CxxvzSN2KI3QOXzyx5HKMxSSRa/P6sVH7ivR1lwS/86+5G/u4Mr9x46OvaCJuhuIR7gm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRma801x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE59C433F1;
-	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
+	 MIME-Version; b=TvUPyj5HANuhnfdJFaYOUcEf+3tUTeBsFfqdLfHFfGo2a7WrYU6s+oY780xX5He6B+99n3bsLLfhldcKQRyKpq28uWVX0+vyoS7KP7/3hN8yoTskicrgTg8E4HgrfHIhky8vFYmCaePSTZSAU4pkQAnF1HC8oSYaTzI7K463gRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCcpSgGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A39C433C7;
+	Mon,  4 Mar 2024 21:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589311;
-	bh=YbkC/R/S200rTxdLi8Sn3KUb3pTkPwkqMvMemGqTmkU=;
+	s=korg; t=1709589140;
+	bh=A1WGAfQTLiHLLkIfVCd3wuv+bPw+e6yplS7U6t7X1tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRma801xPH5qiSksTIyn5AqtjcMSZ8AOBAESabVP27I1Lelgw4Gek4/4tPxFPdBng
-	 IkjnliK4nuM1ByU9eCzBqRHAUk52OR4NwiSYLahM4b/x/dutx8zc29T4upbOAfrLLL
-	 ZCSc5igO43UNUO+rJeppZyzbm8KmuQDyfCLITG/M=
+	b=DCcpSgGYYPyapNojyktE5ZrzhkWuhxgCMvkk52IReyCXeQkZGyeqSIRCEWbyc2/Fe
+	 HRaDTzHYEnzQNs/BgdkuyTqgDCtjbathj3ngx7FiRItbxjpDcSJQH2HZ/DSJ6p47p5
+	 h9kvxEIWjpsScsEtmBS1ke+SmqnFGr+PY/IDMDSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 61/84] mptcp: move __mptcp_error_report in protocol.c
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 211/215] KVM/VMX: Move VERW closer to VMentry for MDS mitigation
 Date: Mon,  4 Mar 2024 21:24:34 +0000
-Message-ID: <20240304211544.421455305@linuxfoundation.org>
+Message-ID: <20240304211603.681134981@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit d5fbeff1ab812b6c473b6924bee8748469462e2c upstream.
+commit 43fb862de8f628c5db5e96831c915b9aebf62d33 upstream.
 
-This will simplify the next patch ("mptcp: process pending subflow error
-on close").
+During VMentry VERW is executed to mitigate MDS. After VERW, any memory
+access like register push onto stack may put host data in MDS affected
+CPU buffers. A guest can then use MDS to sample host data.
 
-No functional change intended.
+Although likelihood of secrets surviving in registers at current VERW
+callsite is less, but it can't be ruled out. Harden the MDS mitigation
+by moving the VERW mitigation late in VMentry path.
 
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Note that VERW for MMIO Stale Data mitigation is unchanged because of
+the complexity of per-guest conditional VERW which is not easy to handle
+that late in asm with no GPRs available. If the CPU is also affected by
+MDS, VERW is unconditionally executed late in asm regardless of guest
+having MMIO access.
+
+  [ pawan: conflict resolved in backport ]
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   36 ++++++++++++++++++++++++++++++++++++
- net/mptcp/subflow.c  |   36 ------------------------------------
- 2 files changed, 36 insertions(+), 36 deletions(-)
+ arch/x86/kvm/vmx/vmenter.S |    3 +++
+ arch/x86/kvm/vmx/vmx.c     |   12 ++++++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -688,6 +688,42 @@ static bool __mptcp_ofo_queue(struct mpt
- 	return moved;
- }
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -128,6 +128,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	/* Load guest RAX.  This kills the @regs pointer! */
+ 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
  
-+void __mptcp_error_report(struct sock *sk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+	struct mptcp_sock *msk = mptcp_sk(sk);
++	/* Clobbers EFLAGS.ZF */
++	CLEAR_CPU_BUFFERS
 +
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		int err = sock_error(ssk);
-+		int ssk_state;
-+
-+		if (!err)
-+			continue;
-+
-+		/* only propagate errors on fallen-back sockets or
-+		 * on MPC connect
-+		 */
-+		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
-+			continue;
-+
-+		/* We need to propagate only transition to CLOSE state.
-+		 * Orphaned socket will see such state change via
-+		 * subflow_sched_work_if_closed() and that path will properly
-+		 * destroy the msk as needed.
-+		 */
-+		ssk_state = inet_sk_state_load(ssk);
-+		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
-+			inet_sk_state_store(sk, ssk_state);
-+		WRITE_ONCE(sk->sk_err, -err);
-+
-+		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
-+		smp_wmb();
-+		sk_error_report(sk);
-+		break;
-+	}
-+}
-+
- /* In most cases we will be able to lock the mptcp socket.  If its already
-  * owned, we need to defer to the work queue to avoid ABBA deadlock.
-  */
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1269,42 +1269,6 @@ void mptcp_space(const struct sock *ssk,
- 	*full_space = tcp_full_space(sk);
- }
+ 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
+ 	jnc .Lvmlaunch
  
--void __mptcp_error_report(struct sock *sk)
--{
--	struct mptcp_subflow_context *subflow;
--	struct mptcp_sock *msk = mptcp_sk(sk);
--
--	mptcp_for_each_subflow(msk, subflow) {
--		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		int err = sock_error(ssk);
--		int ssk_state;
--
--		if (!err)
--			continue;
--
--		/* only propagate errors on fallen-back sockets or
--		 * on MPC connect
--		 */
--		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
--			continue;
--
--		/* We need to propagate only transition to CLOSE state.
--		 * Orphaned socket will see such state change via
--		 * subflow_sched_work_if_closed() and that path will properly
--		 * destroy the msk as needed.
--		 */
--		ssk_state = inet_sk_state_load(ssk);
--		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
--			inet_sk_state_store(sk, ssk_state);
--		sk->sk_err = -err;
--
--		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
--		break;
--	}
--}
--
- static void subflow_error_report(struct sock *ssk)
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -407,7 +407,8 @@ static __always_inline void vmx_enable_f
+ 
+ static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
  {
- 	struct sock *sk = mptcp_subflow_ctx(ssk)->conn;
+-	vmx->disable_fb_clear = vmx_fb_clear_ctrl_available;
++	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
++		vmx_fb_clear_ctrl_available;
+ 
+ 	/*
+ 	 * If guest will not execute VERW, there is no need to set FB_CLEAR_DIS
+@@ -7120,11 +7121,14 @@ static noinstr void vmx_vcpu_enter_exit(
+ {
+ 	guest_state_enter_irqoff();
+ 
+-	/* L1D Flush includes CPU buffer clear to mitigate MDS */
++	/*
++	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
++	 * mitigation for MDS is done late in VMentry and is still
++	 * executed in spite of L1D Flush. This is because an extra VERW
++	 * should not matter much after the big hammer L1D Flush.
++	 */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
+-		mds_clear_cpu_buffers();
+ 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		mds_clear_cpu_buffers();
 
 
 
