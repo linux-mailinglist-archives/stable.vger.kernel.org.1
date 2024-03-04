@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-26128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECA7870D3C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE2D870EEA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF01FB26915
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF70280DF2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EF37D062;
-	Mon,  4 Mar 2024 21:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6613E78B47;
+	Mon,  4 Mar 2024 21:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5eOaGSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rT3PEu6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AE17A70D;
-	Mon,  4 Mar 2024 21:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256801EB5A;
+	Mon,  4 Mar 2024 21:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587914; cv=none; b=Dq9bB5ET7CFZuCDecJn9vXO+F4hK6cwu0p8vNigYdRbCS/LBAwHOUBbjMJV9QM1K53/7ttmgn9w6r4QtvbijPVOQkAnOft3yA7Ei8603ipzWhdCYVYLj0LmpTpNuVyUFf2u4JSkpeDPqDTQtkGdOZERh2eLphpKtufMIpDNxK2U=
+	t=1709588941; cv=none; b=Kv4DmiiLrh5d/V6i1JOQYSg318zhu/VI+e/OU5Y1Yp938bNewAD07hgg/cctQxo4BgeZu5ndY9lhKXm+Jptk4mCXFLKhT469hfXGSGWLQTPQ8k/fM4RizCwcSEOZ4uu2SpNhfRfAoUUOqwcAyCWmOnHj1/hbyTKoeCVgx8HKINo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587914; c=relaxed/simple;
-	bh=/px90JGf3L6BMgZqLnv8FFVaBk4gFKwQClLH0l+ikp4=;
+	s=arc-20240116; t=1709588941; c=relaxed/simple;
+	bh=SUpGazP7vv8zJwQDnzmTv+SZ0F9qCT74g59sPl8lXQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBub2hfR7yy6qyDhseIBRYcP0ZD+XSV5fssVqzMjAqo+mtsezSdgGOaKxyHpEa3Lcp08OVZuWo5VricfyiEfR+Ry8f2JNHiu/ROkQQmq4W3QMO3J71NIKkGgkSEA5P/NBtk6zEIi2CpDL1ibCnWqnDuxsTpYDsovhgrLmCAeWqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5eOaGSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFD6C433F1;
-	Mon,  4 Mar 2024 21:31:54 +0000 (UTC)
+	 MIME-Version; b=C9Orocroe20ak3wYctRDZ+SZ2Npij6ejX7S3jqWOGspLTOGR9CuJjO2EFZtOTlMtyzsotLm4RA+v2cI9oc0sRc/Ru/n8Z6IuxSqCsi+ujRV3cOKsjhVPbEwqLqSOx7FQCNdY2t2S7GHlS6E2s7TBEQqGcbsA9OTt3TXQgOp3s04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rT3PEu6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4CFC433C7;
+	Mon,  4 Mar 2024 21:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587914;
-	bh=/px90JGf3L6BMgZqLnv8FFVaBk4gFKwQClLH0l+ikp4=;
+	s=korg; t=1709588941;
+	bh=SUpGazP7vv8zJwQDnzmTv+SZ0F9qCT74g59sPl8lXQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5eOaGSPh/U/1AXgEVJqFGYo81BhHW++B0wexCrMYeZEQqTs4P6gHlTFYjwpsDa8n
-	 vccInDK0aXFCJX688EMpBGYwsaiPKtWsLp8KjcCOPmZHDQRhVHG546EiOe+dflz6Pr
-	 +NlUL5hDP63W9s2aiD+Vxpi2h0PcUoBU+TrABedA=
+	b=rT3PEu6DhSCEbxTOmxY/b8xD7RBVPFpH5AcGddAD/eWh2Rt3WcBnq7Lzt6EBu8yuA
+	 l1FY4AxGH8Z2iSn87L+DUzGx/tjKVyhHwH1J5tyjpRTIwOSPzdGMCiRlZ529ehbn4t
+	 SGTb3vaF78ppNBhuRXKUUw94UruRZihSnGps6FKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 138/162] dmaengine: dw-edma: Add HDMA remote interrupt configuration
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 140/215] decompress: Use 8 byte alignment
 Date: Mon,  4 Mar 2024 21:23:23 +0000
-Message-ID: <20240304211556.140733768@linuxfoundation.org>
+Message-ID: <20240304211601.502033472@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit e2f6a5789051ee9c632f27a12d0f01f0cbf78aac ]
+commit 8217ad0a435ff06d651d7298ea8ae8d72388179e upstream.
 
-Only the local interruption was configured, remote interrupt was left
-behind. This patch fix it by setting stop and abort remote interrupts when
-the DW_EDMA_CHIP_LOCAL flag is not set.
+The ZSTD decompressor requires malloc() allocations to be 8 byte
+aligned, so ensure that this the case.
 
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-4-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230807162720.545787-19-ardb@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/decompress/mm.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index 108f9127aaaaf..04b0bcb6ded97 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -237,6 +237,8 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) |
- 		      HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK |
- 		      HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
-+		if (!(dw->chip->flags & DW_EDMA_CHIP_LOCAL))
-+			tmp |= HDMA_V0_REMOTE_STOP_INT_EN | HDMA_V0_REMOTE_ABORT_INT_EN;
- 		SET_CH_32(dw, chan->dir, chan->id, int_setup, tmp);
- 		/* Channel control */
- 		SET_CH_32(dw, chan->dir, chan->id, control1, HDMA_V0_LINKLIST_EN);
--- 
-2.43.0
-
+--- a/include/linux/decompress/mm.h
++++ b/include/linux/decompress/mm.h
+@@ -48,7 +48,7 @@ MALLOC_VISIBLE void *malloc(int size)
+ 	if (!malloc_ptr)
+ 		malloc_ptr = free_mem_ptr;
+ 
+-	malloc_ptr = (malloc_ptr + 3) & ~3;     /* Align */
++	malloc_ptr = (malloc_ptr + 7) & ~7;     /* Align */
+ 
+ 	p = (void *)malloc_ptr;
+ 	malloc_ptr += size;
 
 
 
