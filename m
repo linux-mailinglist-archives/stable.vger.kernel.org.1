@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EA5870DA1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B61E870F72
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83349B27090
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DF361C2132F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0643E200CD;
-	Mon,  4 Mar 2024 21:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A06179950;
+	Mon,  4 Mar 2024 21:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3eKaQem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUmffyxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91DCDDCB;
-	Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB131C6AB;
+	Mon,  4 Mar 2024 21:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588164; cv=none; b=m4OBHjQJxiepJuS/pLOT0u7jt46pfpBMuMDSK3VYdnrQz7uBU6E4W2jSC4eLy5YEHanynFE8gWyQEvHpJyiPAnUJRB3pMeEQNq9sRR4vdNNw+df0eN6sLGRP5cgLr8ElgQvcDeAmS67bgiJvgK+11/W6qomlqmSkXMpka5osdg4=
+	t=1709589285; cv=none; b=JWd+XetD3h+6YSDHDN9loqVpY0y+XNyuN/DItT4AOa++9TwVZRafoMSwGKmt7J4fatkc5vas3y2mtENEZq3TtUspo33TnCXRStBPXFPxoAFT1Ptkg366kxamyqEbLe8PoAsyaLYopZnaQuOi+u7o3iALYU1R/I6UDXl0XQYdOMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588164; c=relaxed/simple;
-	bh=N+eXHdsaVhVQB3eCX3YDyGMI1kuKGUP2hT7CP2IKMs0=;
+	s=arc-20240116; t=1709589285; c=relaxed/simple;
+	bh=obIPPpPoMMtqQHJgE+QgNxjGlngAetdlPMzxXZweF1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=To5yYcvKbhJ2kFGrZyg4+fN13vg4AbMs8UbkwYob+pLfuNDE+CuXxUC+DtT5SwgY81ENeOISdAtZ8KGqZMl0b+Xid6HSq/2lT15Qu4yL9anGSTVZjhzmPgCixcBCJ1TOSigfJMSWGeiyRU+rL+xk/w0QnRen0mHuXDPEM66JIA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3eKaQem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC45C433C7;
-	Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
+	 MIME-Version; b=Lz2gzFZYGRXhoTTBSu1GGYYLRv8OAnuHXouhJ+oG7rmJMT/pX1s1mLWWH5uQoNJheqWJueT2Ns6CJZR84tUoJKreqL6L8UHM9oVaoTuFaWsFQmO0W5vrKahh0GIQ+d4i2hXO7qnswcWPRMXda/+Mtrp6/oFAltlkoyedDx6tNi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUmffyxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A9BC43390;
+	Mon,  4 Mar 2024 21:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588164;
-	bh=N+eXHdsaVhVQB3eCX3YDyGMI1kuKGUP2hT7CP2IKMs0=;
+	s=korg; t=1709589285;
+	bh=obIPPpPoMMtqQHJgE+QgNxjGlngAetdlPMzxXZweF1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3eKaQemrGiufzQ+M6ItUmJ19VBO/96VvBsqMMMW6vIcyRjHlTChrWOl7HczlR6r5
-	 t3fUCblbjbXJ8yal1Mfl/amVe5ofpyU6Sun937FVKB5gLotOaMtMllPL3fOTzP85p+
-	 qZ7O/zP7Q3lsUV4GOUnnJ5iNtJQpP0NTUkI0WRKk=
+	b=yUmffyxJPQBJyFYL2qQlmBQJYrXLeTGJgr02CObIti6xvI+gYamJ404MxHR+ghtS1
+	 pIyAmH88tkc9qnXx3eXxAsiS1FSHAQLR7doUlTl8RwTSHl2BN3RsItYkMTyVOkeKC2
+	 zCFNqcpZOe0aWR+3337fO+asj4FD1tdqfvIN4zOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 22/42] tomoyo: fix UAF write bug in tomoyo_write_control()
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 16/84] Bluetooth: hci_event: Fix wrongly recorded wakeup BD_ADDR
 Date: Mon,  4 Mar 2024 21:23:49 +0000
-Message-ID: <20240304211538.378797988@linuxfoundation.org>
+Message-ID: <20240304211542.881729927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
+[ Upstream commit 61a5ab72edea7ebc3ad2c6beea29d966f528ebfb ]
 
-Since tomoyo_write_control() updates head->write_buf when write()
-of long lines is requested, we need to fetch head->write_buf after
-head->io_sem is held.  Otherwise, concurrent write() requests can
-cause use-after-free-write and double-free problems.
+hci_store_wake_reason() wrongly parses event HCI_Connection_Request
+as HCI_Connection_Complete and HCI_Connection_Complete as
+HCI_Connection_Request, so causes recording wakeup BD_ADDR error and
+potential stability issue, fix it by using the correct field.
 
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
-Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
-Cc:  <stable@vger.kernel.org> # Linux 3.1+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f20216c1d6f ("Bluetooth: Emit controller suspend and resume events")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/tomoyo/common.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/security/tomoyo/common.c
-+++ b/security/tomoyo/common.c
-@@ -2657,13 +2657,14 @@ ssize_t tomoyo_write_control(struct tomo
- {
- 	int error = buffer_len;
- 	size_t avail_len = buffer_len;
--	char *cp0 = head->write_buf;
-+	char *cp0;
- 	int idx;
- 
- 	if (!head->write)
- 		return -EINVAL;
- 	if (mutex_lock_interruptible(&head->io_sem))
- 		return -EINTR;
-+	cp0 = head->write_buf;
- 	head->read_user_buf_avail = 0;
- 	idx = tomoyo_read_lock();
- 	/* Read a line and dispatch it to the policy handler. */
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 2ad2f4647847c..c4a35d4612b05 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6272,10 +6272,10 @@ static void hci_store_wake_reason(struct hci_dev *hdev, u8 event,
+ 	 * keep track of the bdaddr of the connection event that woke us up.
+ 	 */
+ 	if (event == HCI_EV_CONN_REQUEST) {
+-		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
++		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
+ 		hdev->wake_addr_type = BDADDR_BREDR;
+ 	} else if (event == HCI_EV_CONN_COMPLETE) {
+-		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
++		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
+ 		hdev->wake_addr_type = BDADDR_BREDR;
+ 	} else if (event == HCI_EV_LE_META) {
+ 		struct hci_ev_le_meta *le_ev = (void *)skb->data;
+-- 
+2.43.0
+
 
 
 
