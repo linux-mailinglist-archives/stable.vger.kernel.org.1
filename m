@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B96870F1F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3B3870F67
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90706281211
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 405931C21A92
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB107BAF0;
-	Mon,  4 Mar 2024 21:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF7879950;
+	Mon,  4 Mar 2024 21:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLRqkCAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftet5QUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4198179F2;
-	Mon,  4 Mar 2024 21:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF71C6AB;
+	Mon,  4 Mar 2024 21:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589065; cv=none; b=S0uX26GF1QgpyMQdARXmNTVItjwXnCFLonvH7MHh36FktaT+n55SR6728xTi+KNH/09MG/HxwjIXz7dQAPiW8KJ/xREXWdNRcVkSN0rY8eZgOB48cPZyDv+BoWtUZFqXZdOwSvvvvHJUmG813pM+bkGLZGu4KG9003DYZJbppow=
+	t=1709589257; cv=none; b=pykdyLd0WpG7XxvDfYyl+rCS9GBOphS6atH4tq7nH+n+za6FPHxYgpv/Ntdko7j8Q8dDxhjgPh1yXzWXe8BtbojbQaMyFHS0Q99v7psi7O2m3/4YchB9EI45fqnGA5XTklcU6Q/3A6vQ6ZH/zQ371qCSf62AwuzOjDNZmNCyjng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589065; c=relaxed/simple;
-	bh=626Wq1Tvdxq5pJBbE7bNJQydvLIr+yTC8eYygiDcsOg=;
+	s=arc-20240116; t=1709589257; c=relaxed/simple;
+	bh=65iXFR0/v9blfhohgSFjtcSWI8Nd4AkkacoY4JGKblY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1Y6qdDCuyEqBl3YQMTd39VbeQbbIgWbHTXEt5pW0BS2R41HQM7kNESTNGf0RwBxSeMDyXMp6YefYqokHxWenNENLil4dnfoBNQEYgu8hVzCSxWdwLw/mYJGF6HZ4ci4/OvaeFuPGe3Pr0vi24ctS4qrOW11mHU+3fDTNtzLeDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLRqkCAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F20C433C7;
-	Mon,  4 Mar 2024 21:51:04 +0000 (UTC)
+	 MIME-Version; b=HKdWRdag8N8KYwHtQ+QAGGlIP9XpaeR4CdK445QBMOhXErIoSMN7hsKyv6z+c64c2smPYBg3Qh+o4SLyqbtczBh4zi68yr1eU4QfscVUN0Ou3KOpZe7Z3uXZQEuAcKG1Zv3SJtEVt51rYX3mF+L1qmjNOzcUmnF5+Pw7U19Ql14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftet5QUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77804C433F1;
+	Mon,  4 Mar 2024 21:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589065;
-	bh=626Wq1Tvdxq5pJBbE7bNJQydvLIr+yTC8eYygiDcsOg=;
+	s=korg; t=1709589256;
+	bh=65iXFR0/v9blfhohgSFjtcSWI8Nd4AkkacoY4JGKblY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLRqkCAC/RaYgcub8C25rEkOZmmHIycHhM83EUjxwqnNVhy/ouCzEWxvnubGFYM3b
-	 tv+cXAFxr3YUaHgZSxWT413HnMlw4QOc0sHTJYuu8aPPGpNV4qLPLAoh5Az2hWPKmF
-	 rfJoYFTUGPqG3Sn2mIXW5FMA9AO4PKJOOPaGt2mI=
+	b=ftet5QUcYRQWurs2sVDUTpg1xrpFjmpgDthA+UcAPiMUveHsfTsugBH3Cv7pDrgwQ
+	 s54r7HthB34+7mUGwIO94Wm2npUlN7jDvRM50rI2J4wm0lFVMBP4NCnqZr3Nr09zBp
+	 CHtkxHKXceRYppELOg2EmrVxzSRxKBuW2wAqcr6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 188/215] x86/decompressor: Factor out kernel decompression and relocation
-Date: Mon,  4 Mar 2024 21:24:11 +0000
-Message-ID: <20240304211602.919862342@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/84] tls: rx: use async as an in-out argument
+Date: Mon,  4 Mar 2024 21:24:12 +0000
+Message-ID: <20240304211543.644892938@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+[ Upstream commit 3547a1f9d988d88ecff4fc365d2773037c849f49 ]
 
-[ Commit 83381519352d6b5b3e429bf72aaab907480cb6b6 upstream ]
+Propagating EINPROGRESS thru multiple layers of functions is
+error prone. Use darg->async as an in/out argument, like we
+use darg->zc today. On input it tells the code if async is
+allowed, on output if it took place.
 
-Factor out the decompressor sequence that invokes the decompressor,
-parses the ELF and applies the relocations so that it can be called
-directly from the EFI stub.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-21-ardb@kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/misc.c |   29 ++++++++++++++++++++++++-----
- arch/x86/include/asm/boot.h     |    8 ++++++++
- 2 files changed, 32 insertions(+), 5 deletions(-)
+ net/tls/tls_sw.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,11 +330,33 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
- 
-+const unsigned long kernel_total_size = VO__end - VO__text;
-+
- static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
- 
- extern unsigned char input_data[];
- extern unsigned int input_len, output_len;
- 
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x))
-+{
-+	unsigned long entry;
-+
-+	if (!free_mem_ptr) {
-+		free_mem_ptr     = (unsigned long)boot_heap;
-+		free_mem_end_ptr = (unsigned long)boot_heap + sizeof(boot_heap);
-+	}
-+
-+	if (__decompress(input_data, input_len, NULL, NULL, outbuf, output_len,
-+			 NULL, error) < 0)
-+		return ULONG_MAX;
-+
-+	entry = parse_elf(outbuf);
-+	handle_relocations(outbuf, output_len, virt_addr);
-+
-+	return entry;
-+}
-+
- /*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-@@ -354,7 +376,6 @@ extern unsigned int input_len, output_le
-  */
- asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 27ac27daec868..a1a99f9f093b1 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -236,7 +236,7 @@ static int tls_do_decryption(struct sock *sk,
+ 			     char *iv_recv,
+ 			     size_t data_len,
+ 			     struct aead_request *aead_req,
+-			     bool async)
++			     struct tls_decrypt_arg *darg)
  {
--	const unsigned long kernel_total_size = VO__end - VO__text;
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
- 	memptr heap = (memptr)boot_heap;
- 	unsigned long needed_size;
-@@ -457,10 +478,8 @@ asmlinkage __visible void *extract_kerne
- #endif
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_prot_info *prot = &tls_ctx->prot_info;
+@@ -249,7 +249,7 @@ static int tls_do_decryption(struct sock *sk,
+ 			       data_len + prot->tag_size,
+ 			       (u8 *)iv_recv);
  
- 	debug_putstr("\nDecompressing Linux... ");
--	__decompress(input_data, input_len, NULL, NULL, output, output_len,
--			NULL, error);
--	entry_offset = parse_elf(output);
--	handle_relocations(output, output_len, virt_addr);
-+
-+	entry_offset = decompress_kernel(output, virt_addr, error);
+-	if (async) {
++	if (darg->async) {
+ 		/* Using skb->sk to push sk through to crypto async callback
+ 		 * handler. This allows propagating errors up to the socket
+ 		 * if needed. It _must_ be cleared in the async handler
+@@ -269,11 +269,13 @@ static int tls_do_decryption(struct sock *sk,
  
- 	debug_putstr("done.\nBooting the kernel (entry_offset: 0x");
- 	debug_puthex(entry_offset);
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -79,4 +79,12 @@
- # define BOOT_STACK_SIZE	0x1000
- #endif
+ 	ret = crypto_aead_decrypt(aead_req);
+ 	if (ret == -EINPROGRESS) {
+-		if (async)
+-			return ret;
++		if (darg->async)
++			return 0;
  
-+#ifndef __ASSEMBLY__
-+extern unsigned int output_len;
-+extern const unsigned long kernel_total_size;
+ 		ret = crypto_wait_req(ret, &ctx->async_wait);
+ 	}
++	darg->async = false;
 +
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x));
-+#endif
-+
- #endif /* _ASM_X86_BOOT_H */
+ 	if (ret == -EBADMSG)
+ 		TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSDECRYPTERROR);
+ 
+@@ -1540,9 +1542,9 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
+ 
+ 	/* Prepare and submit AEAD request */
+ 	err = tls_do_decryption(sk, skb, sgin, sgout, iv,
+-				data_len, aead_req, darg->async);
+-	if (err == -EINPROGRESS)
+-		return err;
++				data_len, aead_req, darg);
++	if (darg->async)
++		return 0;
+ 
+ 	/* Release the pages in case iov was mapped to pages */
+ 	for (; pages > 0; pages--)
+@@ -1579,11 +1581,10 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
+ 	}
+ 
+ 	err = decrypt_internal(sk, skb, dest, NULL, darg);
+-	if (err < 0) {
+-		if (err == -EINPROGRESS)
+-			tls_advance_record_sn(sk, prot, &tls_ctx->rx);
++	if (err < 0)
+ 		return err;
+-	}
++	if (darg->async)
++		goto decrypt_next;
+ 
+ decrypt_done:
+ 	pad = padding_length(prot, skb);
+@@ -1593,8 +1594,9 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
+ 	rxm->full_len -= pad;
+ 	rxm->offset += prot->prepend_size;
+ 	rxm->full_len -= prot->overhead_size;
+-	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
+ 	tlm->decrypted = 1;
++decrypt_next:
++	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
+ 
+ 	return 0;
+ }
+@@ -1826,13 +1828,12 @@ int tls_sw_recvmsg(struct sock *sk,
+ 			darg.async = false;
+ 
+ 		err = decrypt_skb_update(sk, skb, &msg->msg_iter, &darg);
+-		if (err < 0 && err != -EINPROGRESS) {
++		if (err < 0) {
+ 			tls_err_abort(sk, -EBADMSG);
+ 			goto recv_end;
+ 		}
+ 
+-		if (err == -EINPROGRESS)
+-			async = true;
++		async |= darg.async;
+ 
+ 		/* If the type of records being processed is not known yet,
+ 		 * set it to record type just dequeued. If it is already known,
+-- 
+2.43.0
+
 
 
 
