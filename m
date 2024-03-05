@@ -1,280 +1,225 @@
-Return-Path: <stable+bounces-26803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440FD87231E
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:50:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BA18723DF
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFAFC284753
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D941C23420
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E06C12838B;
-	Tue,  5 Mar 2024 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0241D12AAEB;
+	Tue,  5 Mar 2024 16:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="egayW1Md"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GRc3FK2B"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2059.outbound.protection.outlook.com [40.107.100.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624AC12837D
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 15:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709653808; cv=none; b=e2qKmjpOVXCUrET3J5qccr4z/HJ5RaV1bh+11MpV1IzhxMNxZlvfXkIuBy0wEG6iNtmZTOIwpuaWeUCYGrbyR/Z/BGikn58CzQ3AOnXrxdid2kXSTpHyLueRDEMkL2A3+F4xcsbKTcRAwXlJ2Nz6kN7AstRBFFx3M7ezU9avXKk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709653808; c=relaxed/simple;
-	bh=QeyiRiKtFUmv85nxdL/Xv6ZWP8RdUk5xNvksulmsHOY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dzZfOWahFz9IbMk/ZzOsVMlW3pp7uKKzdIGiwFwTj1CecasNO7HbLVwoVfFzYoeoOyB0/5up5RVDtUQ5cKKLObNtl6TmYg+Wc69YZHmDVT5qNL3KDdii3kjuIErWQjXenAIoTuiG9vJtAPP2RUU0Zkk+hMFac9hgeJlYIt0f29g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=egayW1Md; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709653805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zCIy443PV1bMExvsymG7IFjtByoanOECI8kV/uhdu4Q=;
-	b=egayW1MdrrzVn8HncUCzAebKJU5ZPyJSkJIGFCeV9VqA9HvrRW80VZwF+wK2XJxTvCp/w3
-	RD19Jhs9dk3qTdifJq851ewvLDX4LtJcPsGOxFwKyNmlrvT0zf5llBnRVaI3VD7BBItAyi
-	VhqK6TDFKslNcgeJrfLMkJ72hvRGPLs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-TuZebuYJOi2pvQBTjK1wWQ-1; Tue, 05 Mar 2024 10:50:03 -0500
-X-MC-Unique: TuZebuYJOi2pvQBTjK1wWQ-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33d8d208be9so3578934f8f.2
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 07:50:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709653802; x=1710258602;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zCIy443PV1bMExvsymG7IFjtByoanOECI8kV/uhdu4Q=;
-        b=CflPiwtCBoPCN0+Kkj6T4KfpJ5xFeb37rjttgDwJY52NBXrIzHEnFsrlfDvVUDDwKl
-         z4ljA/R+Uo9kpg4rS3InayI3z9qG4CLLhmzp8YjF75kl/IU58QlBEdDqE4BlnE2oLeCT
-         y6ryctB0X69vTgpz1EJvcok+MokvICkqt2vlxt4bX6mZIPg14sbVcoT6HApPxA1Mb3DR
-         hTE87lXBH+Gzhk40phKat1Z3Sbc0eBV8c3+l/JB35ys9N2kpAarSM93JTarxUnyIszNQ
-         fSKPUi75bfpd2JTBA05prgoAiUjxs1B8uf8XltC49XbZl86uuV0uXTLhqyNjOSlErGTA
-         fFJg==
-X-Forwarded-Encrypted: i=1; AJvYcCWIS6Yh+1htZadzw94aiVoEoIXTDw7pTBmGLs55qHGxzlKTB8+q/bpQG/eoQlAQkv57xcDTmMPeqkzCAjqVneUB/zEHOCI5
-X-Gm-Message-State: AOJu0YxtEeNDKeptAinqOLhjMCZP0C3jFER547K2gsOS4J3GyVT6uw3z
-	ktcM6d4AmqZIbhkklZqpTaflR3yZU2dIA6dGrK4ol7GTI7LPwo93OJq/ZqQJ8uP78BfDhcIZv92
-	jFizjRTplzuYhf+kPEw17BIdfHmWJXYIqVVV1oDxC2jEpZXNLk0AfnQ==
-X-Received: by 2002:adf:9dc4:0:b0:33e:1ee0:62ac with SMTP id q4-20020adf9dc4000000b0033e1ee062acmr8455511wre.5.1709653802063;
-        Tue, 05 Mar 2024 07:50:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmrb4M094kjpI+xCb6K9TxDuygeKpMipcdzxLgCU/VQBNhWcXn8spbARz+uJ/HiNVXNVb6kw==
-X-Received: by 2002:adf:9dc4:0:b0:33e:1ee0:62ac with SMTP id q4-20020adf9dc4000000b0033e1ee062acmr8455490wre.5.1709653801518;
-        Tue, 05 Mar 2024 07:50:01 -0800 (PST)
-Received: from ?IPV6:2003:cb:c73c:8100:600:a1e5:da94:a13a? (p200300cbc73c81000600a1e5da94a13a.dip0.t-ipconnect.de. [2003:cb:c73c:8100:600:a1e5:da94:a13a])
-        by smtp.gmail.com with ESMTPSA id ch10-20020a5d5d0a000000b0033e26c81b11sm10380878wrb.92.2024.03.05.07.50.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 07:50:01 -0800 (PST)
-Message-ID: <cb738797-77d9-4e20-a54c-f70385cdbd95@redhat.com>
-Date: Tue, 5 Mar 2024 16:50:00 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8A51292F2;
+	Tue,  5 Mar 2024 16:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709655115; cv=fail; b=rAaIxYJzaKX4sYzNb2tm3Ls0OYt57ceZF51EnO9Q/HF7BV1cKXYxD6ZTwDsovLmTdHY+xMV4oQc+2qUKU861ZzirgU8AosvBFiyX+8arCD35cD8NCsOQ4BSo3n1YKMb1Ki8GEe1tScqXppGdh5yRhLQGZbOFfeVlhNSTxf5UfAg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709655115; c=relaxed/simple;
+	bh=c8lyXzF+OX4yn8gwmnFD5NSoL7Rj6FGxVdF9S9mOieM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q432kFBOPUVAuf6gEVcrPhXEzKn+qHD0ZrFvbJ/q/roaVSvXy9h0Qbw2zJpPIn/xLZWeQSBc63LDh+a6Ac+gc0airbk4DBEK316I5Y3kEPUjOn76My6qXYt0LNgpcEfnvTbh1n3CdLepkglW371oIwQlqoQ3FMSW3XaynK7A+wU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GRc3FK2B; arc=fail smtp.client-ip=40.107.100.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mEztvqIp05zI2ch+oiYEF5w8DBOZ7LixLKEHgt74mBsMfalL0duyK2dzdTzy5oDjVdSfSr/00lGnzNy/YW6V4D3dlTD3mvrrWSJH17dKvDNJRR6gE2M4Ft2oLz3xzrUXa5S9NU3iCMJ9tp8S5eeR5C52gxxF6hmFBWL6BqzvR/4cbVvxtMjy+rtJU1kE6VwbaxA2mXe1jMEtEjvtf8YzuKY94KK4+d+yaCJX7oCHUjTH9qEJz5rVl8/SaAPPrsnmoR5T/yvTR1+ooIiX3FWMVAP3f0/r2LvSpeJOPOKuqXElN9IEL76wbQvtb70Sgr+qbKifV9MMRYF9bT5YkLlYSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L+09M14IRLI3n9a7Q7htbZ/uODfxUfA5y9XELnT5hyY=;
+ b=nxL5IOsYyKYN8uuSWfksIlXKeIXFwb6LtObe2XE/i+5AwUokiMYqlx6zq9ARyVDo27u8anNerEzkRHG/jMfOTWpwsu2mfuu7iiKndh5VUFHIA9CbjuVn0mT/yHjjDWhqTEJbMPKV24ZrhNJC8fJZ5a//sYcc2aAqVUJSIU4UskC+gFgzcdZHT8u/eLU4QUW0O/cAbgjfJtjp+8DXdztK9PntHEZD95qGxAYzxuWNccVyye6omFlHAO2bmEBgiV/owcBmUQDHemRBUjtmihovvSLsnkDmET118IKJyMbfbFn/zw+KfmGX6Heq2T52F1uqsgxrg5hsp3ybwuklgu0pzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L+09M14IRLI3n9a7Q7htbZ/uODfxUfA5y9XELnT5hyY=;
+ b=GRc3FK2BOn8rRRWVdH6OFbsnZoZl/E5fVvxL/PXAKrquNIffZgZRfKB7r+jxQABxZIU46duZjWb3MbtqVY5uYjNFSHmeGJZF/aIcUDMxRxeK6btHtr8fg8NsET6jEtn9PehuLLsJZS4leQlZ/TuWj8sVTeD2/wbH6PvhxAM+2gvcK9Dh5LX6orw8y91uMfdADXEPzaD0gX79GZelcqpdCvlmB4eSZPLv3jmW99r1gI2Ak5+yO1U2RqmfQkyjoAbbUfnFp8l2IqYAk7SwztGJMW1NWfduLpmosMtTlPnSeX4YDiHNvsCuqk6AMdquCFY34hoXuzVI2capQ1kx+Jffzg==
+Received: from SA9P223CA0022.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::27)
+ by SN7PR12MB6837.namprd12.prod.outlook.com (2603:10b6:806:267::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Tue, 5 Mar
+ 2024 16:11:49 +0000
+Received: from SN1PEPF0002636A.namprd02.prod.outlook.com
+ (2603:10b6:806:26:cafe::f) by SA9P223CA0022.outlook.office365.com
+ (2603:10b6:806:26::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39 via Frontend
+ Transport; Tue, 5 Mar 2024 16:11:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SN1PEPF0002636A.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7362.11 via Frontend Transport; Tue, 5 Mar 2024 16:11:49 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 5 Mar 2024
+ 08:11:31 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Tue, 5 Mar 2024 08:11:30 -0800
+Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
+ mail.nvidia.com (10.126.190.180) with Microsoft SMTP Server id 15.2.1258.12
+ via Frontend Transport; Tue, 5 Mar 2024 08:11:28 -0800
+From: Wayne Chang <waynec@nvidia.com>
+To: <waynec@nvidia.com>, <jonathanh@nvidia.com>, <thierry.reding@gmail.com>,
+	<jckuo@nvidia.com>, <vkoul@kernel.org>, <kishon@kernel.org>,
+	<gregkh@linuxfoundation.org>
+CC: <linux-phy@lists.infradead.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 2/2] usb: gadget: tegra-xudc: Fix USB3 PHY retrieval logic
+Date: Wed, 6 Mar 2024 00:11:22 +0800
+Message-ID: <20240305161122.1254099-3-waynec@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240305161122.1254099-1-waynec@nvidia.com>
+References: <20240305161122.1254099-1-waynec@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
- swapoff()
-Content-Language: en-US
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, "Huang, Ying"
- <ying.huang@intel.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240305151349.3781428-1-ryan.roberts@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240305151349.3781428-1-ryan.roberts@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636A:EE_|SN7PR12MB6837:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0c21c61-3690-415c-5dc1-08dc3d2ef663
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	orIsIax+F1njox/cuhWGy1E6+lqjHWA82hPdRyZ9cj+UsqnalWcCnYMoAsgEq0FC2YwiYa+gAtaKKVQy/GBSA3grGSKvFARJ4RY00DSYzw3iYHrFalkAti5zTJxpJPjb0l43YzmbCT2sBCeoZD0bGYVMG07PdcNuyUoj/Rjt019W59vAe6b/uOd9es6BZ8n5Xv9W1k00erz0CpK8FXQpG10QdL0AFmp0wTYrik9Q6OKunXuYh3QIhdzqweNEtIHuuU/IHzAsCIIQrcyzSpOr2T5+TAAIE2KFPRg1HHnFKa4xIRRbVSLccAXcxZm9MhnF6rD7dN0UWRRowIqWPtQViUebLNsLK2nL1PqYFFvYRsyero0YdmjJwkhHtXlmHcKLsQHLbcG15k4R2jI3rKlJB7E8LZxHcl5YDZqHxNSQyzDj1700/ZiGteZsWb6jDUSKkZ1pxV2G3ifhs4vKnHhdgTPzkeV+fY/nd4zz2qv0ZVOR49K+d+jQ+CGQnvxVVH+6Qq9okpcgDn3M/93nIS8wR6jRATSqh9D8e1EEGHjDK0CXPa2kFmetz1BICui2gZnbqw2X6wYpYW1CrsWBAzd9FY1BG/c4Apx1HBFqwWMzXhr3Zn6zfAJynkikEdNVoeghaxYv2NdekMPJ+pEpx3JisDfQryQGgPJP6032TRQL2ntqapCttu79psF2fqx/Fo1GrZgSGPrfMnFEy/3imqlbJ1j+7Kn2OCmomaRtEhtwn7TkyPqWoXBfGjcApH1geAkT
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 16:11:49.0013
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0c21c61-3690-415c-5dc1-08dc3d2ef663
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002636A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6837
 
-On 05.03.24 16:13, Ryan Roberts wrote:
-> There was previously a theoretical window where swapoff() could run and
-> teardown a swap_info_struct while a call to free_swap_and_cache() was
-> running in another thread. This could cause, amongst other bad
-> possibilities, swap_page_trans_huge_swapped() (called by
-> free_swap_and_cache()) to access the freed memory for swap_map.
-> 
-> This is a theoretical problem and I haven't been able to provoke it from
-> a test case. But there has been agreement based on code review that this
-> is possible (see link below).
-> 
-> Fix it by using get_swap_device()/put_swap_device(), which will stall
-> swapoff(). There was an extra check in _swap_info_get() to confirm that
-> the swap entry was valid. This wasn't present in get_swap_device() so
-> I've added it. I couldn't find any existing get_swap_device() call sites
-> where this extra check would cause any false alarms.
-> 
-> Details of how to provoke one possible issue (thanks to David Hilenbrand
-> for deriving this):
+This commit resolves an issue in the tegra-xudc USB gadget driver that
+incorrectly fetched USB3 PHY instances. The problem stemmed from the
+assumption of a one-to-one correspondence between USB2 and USB3 PHY
+names and their association with physical USB ports in the device tree.
 
-Almost
+Previously, the driver associated USB3 PHY names directly with the USB3
+instance number, leading to mismatches when mapping the physical USB
+ports. For instance, if using USB3-1 PHY, the driver expect the
+corresponding PHY name as 'usb3-1'. However, the physical USB ports in
+the device tree were designated as USB2-0 and USB3-0 as we only have
+one device controller, causing a misalignment.
 
-"s/Hilenbrand/Hildenbrand/" :)
+This commit rectifies the issue by adjusting the PHY naming logic.
+Now, the driver correctly correlates the USB2 and USB3 PHY instances,
+allowing the USB2-0 and USB3-1 PHYs to form a physical USB port pair
+while accurately reflecting their configuration in the device tree by
+naming them USB2-0 and USB3-0, respectively.
 
-> 
-> --8<-----
-> 
-> __swap_entry_free() might be the last user and result in
-> "count == SWAP_HAS_CACHE".
-> 
-> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
-> 
-> So the question is: could someone reclaim the folio and turn
-> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
-> 
-> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-> still references by swap entries.
-> 
-> Process 1 still references subpage 0 via swap entry.
-> Process 2 still references subpage 1 via swap entry.
-> 
-> Process 1 quits. Calls free_swap_and_cache().
-> -> count == SWAP_HAS_CACHE
-> [then, preempted in the hypervisor etc.]
-> 
-> Process 2 quits. Calls free_swap_and_cache().
-> -> count == SWAP_HAS_CACHE
-> 
-> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-> __try_to_reclaim_swap().
-> 
-> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-> swap_entry_free()->swap_range_free()->
-> ...
-> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
-> 
-> What stops swapoff to succeed after process 2 reclaimed the swap cache
-> but before process1 finished its call to swap_page_trans_huge_swapped()?
-> 
-> --8<-----
-> 
-> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-> Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> ---
-> 
-> Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
-> 
-> Thanks,
-> Ryan
-> 
->   mm/swapfile.c | 14 +++++++++++---
->   1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2b3a2d85e350..f580e6abc674 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->   	smp_rmb();
->   	offset = swp_offset(entry);
->   	if (offset >= si->max)
-> -		goto put_out;
-> +		goto bad_offset;
-> +	if (data_race(!si->swap_map[swp_offset(entry)]))
-> +		goto bad_free;
-> 
->   	return si;
->   bad_nofile:
-> @@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->   out:
->   	return NULL;
->   put_out:
-> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->   	percpu_ref_put(&si->users);
->   	return NULL;
-> +bad_offset:
-> +	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
-> +	goto put_out;
-> +bad_free:
-> +	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
-> +	goto put_out;
->   }
-> 
->   static unsigned char __swap_entry_free(struct swap_info_struct *p,
-> @@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
->   	if (non_swap_entry(entry))
->   		return 1;
-> 
-> -	p = _swap_info_get(entry);
-> +	p = get_swap_device(entry);
->   	if (p) {
->   		count = __swap_entry_free(p, entry);
->   		if (count == SWAP_HAS_CACHE &&
->   		    !swap_page_trans_huge_swapped(p, entry))
->   			__try_to_reclaim_swap(p, swp_offset(entry),
->   					      TTRS_UNMAPPED | TTRS_FULL);
-> +		put_swap_device(p);
->   	}
->   	return p != NULL;
->   }
-> --
-> 2.25.1
-> 
+The change ensures that the PHY and PHY names align appropriately,
+resolving the mismatch between physical USB ports and their associated
+names in the device tree.
 
-LGTM
+Fixes: b4e19931c98a ("usb: gadget: tegra-xudc: Support multiple device modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+---
+ drivers/usb/gadget/udc/tegra-xudc.c | 39 ++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-Are you planning on sending a doc extension for get_swap_device()?
-
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index cb85168fd00c..7aa46d426f31 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3491,8 +3491,8 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
+ 
+ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ {
+-	int err = 0, usb3;
+-	unsigned int i;
++	int err = 0, usb3_companion_port;
++	unsigned int i, j;
+ 
+ 	xudc->utmi_phy = devm_kcalloc(xudc->dev, xudc->soc->num_phys,
+ 					   sizeof(*xudc->utmi_phy), GFP_KERNEL);
+@@ -3520,7 +3520,7 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		if (IS_ERR(xudc->utmi_phy[i])) {
+ 			err = PTR_ERR(xudc->utmi_phy[i]);
+ 			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb2-%d PHY\n", i);
++				"failed to get PHY for phy-name usb2-%d\n", i);
+ 			goto clean_up;
+ 		} else if (xudc->utmi_phy[i]) {
+ 			/* Get usb-phy, if utmi phy is available */
+@@ -3539,19 +3539,30 @@ static int tegra_xudc_phy_get(struct tegra_xudc *xudc)
+ 		}
+ 
+ 		/* Get USB3 phy */
+-		usb3 = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
+-		if (usb3 < 0)
++		usb3_companion_port = tegra_xusb_padctl_get_usb3_companion(xudc->padctl, i);
++		if (usb3_companion_port < 0)
+ 			continue;
+ 
+-		snprintf(phy_name, sizeof(phy_name), "usb3-%d", usb3);
+-		xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
+-		if (IS_ERR(xudc->usb3_phy[i])) {
+-			err = PTR_ERR(xudc->usb3_phy[i]);
+-			dev_err_probe(xudc->dev, err,
+-				      "failed to get usb3-%d PHY\n", usb3);
+-			goto clean_up;
+-		} else if (xudc->usb3_phy[i])
+-			dev_dbg(xudc->dev, "usb3-%d PHY registered", usb3);
++		for (j = 0; j < xudc->soc->num_phys; j++) {
++			snprintf(phy_name, sizeof(phy_name), "usb3-%d", j);
++			xudc->usb3_phy[i] = devm_phy_optional_get(xudc->dev, phy_name);
++			if (IS_ERR(xudc->usb3_phy[i])) {
++				err = PTR_ERR(xudc->usb3_phy[i]);
++				dev_err_probe(xudc->dev, err,
++					"failed to get PHY for phy-name usb3-%d\n", j);
++				goto clean_up;
++			} else if (xudc->usb3_phy[i]) {
++				int usb2_port =
++					tegra_xusb_padctl_get_port_number(xudc->utmi_phy[i]);
++				int usb3_port =
++					tegra_xusb_padctl_get_port_number(xudc->usb3_phy[i]);
++				if (usb3_port == usb3_companion_port) {
++					dev_dbg(xudc->dev, "USB2 port %d is paired with USB3 port %d for device mode port %d\n",
++					 usb2_port, usb3_port, i);
++					break;
++				}
++			}
++		}
+ 	}
+ 
+ 	return err;
 -- 
-Cheers,
-
-David / dhildenb
+2.25.1
 
 
