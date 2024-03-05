@@ -1,224 +1,211 @@
-Return-Path: <stable+bounces-26846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884AB872835
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EC987284E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB4611C280EE
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD811C288B0
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07106167A;
-	Tue,  5 Mar 2024 20:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5697C86659;
+	Tue,  5 Mar 2024 20:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="OBRVYu/T"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="An8rDUCJ";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Lx6H18ZI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1C724B59;
-	Tue,  5 Mar 2024 20:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709668914; cv=none; b=JEytL/nHLJxh0QUXGWKJvWWOx3KbYLqHpj1UGOixx5K44kYpg6HlAl5KUI6XuwhqwAvFvQgGgGQOPaicP/MvyGowC1Tf9X+FDbFQv6R5k2AWsqnwSACdzpdty8ROkiU9/P8jZctdE+1KZhnvP9YDnrQE0tWRnKnk/jmVSLwlY40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709668914; c=relaxed/simple;
-	bh=GTZEmYrJZ99CRAEJeUE7NQw/5vhF7dJqJaRROiMrRzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kaMRFkKKLRt/VgzuKXA2qKrVwKQL0G0TRp5C7eCqIwkcdLRejWkBr/Y/5ZIuoGl8wXRUv7CGCQJBtmJSe6HsppJbPrqRmWn1bYxec4Zl8/VsXZkiukVS3E4iG4usad0mfEBpCwTa+dulAsljWv47oI6zQJhr4EMXtTHfNtfCQU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=OBRVYu/T; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1709668909;
-	bh=GTZEmYrJZ99CRAEJeUE7NQw/5vhF7dJqJaRROiMrRzU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OBRVYu/Tyb/oOls1AzS687Uc4GZdicEAZ1LDF75aZgvLCzWN9FWoNvT+11Cr9TadD
-	 467iS5CaWbRKqM9MHpVIo8QECsO+mOlMktIOkz8L40zrt9J3KbJxmyr+pU0Kl5Fu8o
-	 mQey8lhQVLarLcFahnPRrcdQYZnTrj2P6MYSntUKRf6LfVS7nmMcGEVYWJJjlTQnnf
-	 WTv8ksnba53LkC52kXoP4OYs4J9eSN5HL+zIDuI6IAOm2itjdBtBTsvYHcafUcpAv4
-	 Mi2FxM6yki8BMrYXpiFjcAij8CRYSF3nTUzDAISPywCLFsRAeu9tjlcjhV6PtZbRee
-	 6CHmLBAajqhKQ==
-Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4Tq60F27Yszfx5;
-	Tue,  5 Mar 2024 15:01:49 -0500 (EST)
-Message-ID: <b0a3e152-22bb-4502-a0a0-4b2513bfbec8@efficios.com>
-Date: Tue, 5 Mar 2024 15:01:55 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B46960EF8;
+	Tue,  5 Mar 2024 20:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709669256; cv=fail; b=oX7Ge8565zMx1HcIIe/A1UjRpt/H2GiGQ8WaGPuK3pZyX+9G93AMdnVJzoUmzWNKcMI+Fai5TyltZ2rDzoXeoZnpvYTTOvNWysradcNjyMuK1bh5e/WHG94/ubsfDvxz1IsASBWvuPlsKthgoxOlfGS14/1ltIImqkKyw8SM7bA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709669256; c=relaxed/simple;
+	bh=lm9fheTAMG7yBgm4Xli3n9WmVtt8+zT111C1ryDqTxM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ck1ufzK6IdNGSdm8XVGb5boa4TxWtmb2g+NSQJN9IzVvKuWBIOhbNnz2BT/ua2RjR+/KMe8FgJjcuddY4VaSl6QD/bHMV9M1cpwkUrzcl8rs6Ef3JODgr7vR7H0/P0izSbSnn6GTjJ7xINQ+jZJiJ//mYpWZVbhLeUZ2LOHEzsk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=An8rDUCJ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Lx6H18ZI; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 425Ix9M7013415;
+	Tue, 5 Mar 2024 20:06:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
+ b=An8rDUCJqLgzN6dLroGPxVLzpr6GDTpMLgZj+itaGa83H/9FZ5BS0WXBn/S18r6r1YN8
+ 1CXdyj0CG9JFXa3REqUdKVuBWp0gfAbzgdBCEbxtpK8JWPysKqhe5TgNA0PYTq+XtVZr
+ ZFZZjT0hsEq+D6eJyc2wJI/wtvTQ08vzh1FUhT8Nikkq2d8DJ3WBvPHekXy8J277se6g
+ MhnQbqhA71pEHukQ8bc6WTv3mqPLecXo1vHIBh4jZvuhDgbolz3cdAJScJ7MNiMUdH+o
+ VAAPPN19ZlxfOe5Qrc0pEs7eAdDxJbpv6sXce1YozNfZdM8jorR87x1GchrHlbLz2uwt xw== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkvnuy6hm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 Mar 2024 20:06:51 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 425JKTLo016100;
+	Tue, 5 Mar 2024 20:06:50 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3wktj8ev6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 Mar 2024 20:06:50 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SAUxsscy6VTHYZEU6ZxC9CSIFdzIFzAu4iph5ZknRlbLqBK6UJZIjxYmVYCP3aFOpN/BRVO5W4GAR0hr84jzSdV3ODp+Qnqwfd2j8BeJtdKXSJy808pcKTbUyvKNvx2K/b+wATJBtu5kgPvfhhCWrOVoRwO2mHmSY/9CzyQDywmE5YDkPIV+EbuXFTPw68tMeG2LrSiMaOpyQYXJrmuTyOm5XnhzcoPTygK8ADnSfZ158J6bnysD5TyA+JhYvVk3unI27+y7oeJcQKdXGCKUeqH4xVz8IRZwLcWQA3/1paFOPfq274et2UyYdNBGobb7ckPQ+SgMxTxefk2RiWdBYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
+ b=CXqFC+OS10bIz0gh4KmQOCeOp8HWCqlz5AO8u1mkdQs/PnHrJHHIWkJd8mtMn+8+NTIDS/oIn+CSVxt1N2dpmCbSGOKKzHPF0jH57dL/cQ5ZnekL7x7Isc1PrQxK9gLSmHAM8PTEvdKOqaA4kEiXvF04I1Af+ID7uHiVFT1nHHHjlnqoDar3TpYLHTet8PtgEkGsc/pYwqyR1OqA8IaTh0E+tAWoiKEyTponm+XSf98IKSM8j/fGK3HMZOCAhdgsMdLfKgF/hpcgE7Xi+B+KK3rDUt3X8TXNNJgoQeJ3RKul0vT93+0caamdJDv0pJ2NX00nwq6xIiz5QMCtzeVt0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
+ b=Lx6H18ZILIduO2qrsH50duixxsyQcm7M9v37pe5PDOiTW+6SRjanjbrz4hYxvqXd5AHi6gXGBI3LwHHcclGcK1Cb+7kZj9Uw/ln7+KwCuWt09kPmBqy2QsWAcQdsNV/1hFjxCATZ1T2Y6odi9Bx/Nn1GY4DJKi/ebVLeUYK3UUE=
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+ by PH7PR10MB6674.namprd10.prod.outlook.com (2603:10b6:510:20c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Tue, 5 Mar
+ 2024 20:06:47 +0000
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::7fc:f926:8937:183]) by PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::7fc:f926:8937:183%6]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
+ 20:06:47 +0000
+Message-ID: <fe892840-9cf1-4b67-b363-7d22ff4e83a6@oracle.com>
+Date: Wed, 6 Mar 2024 01:36:33 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 00/25] 5.4.271-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+        Vegard Nossum <vegard.nossum@oracle.com>
+References: <20240304211535.741936181@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TY2PR06CA0011.apcprd06.prod.outlook.com
+ (2603:1096:404:42::23) To PH8PR10MB6290.namprd10.prod.outlook.com
+ (2603:10b6:510:1c1::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/mm: Add memory barrier for mm_cid
-Content-Language: en-US
-To: "levi.yun" <yeoreum.yun@arm.com>, catalin.marinas@arm.com,
- will@kernel.org, mark.rutland@arm.com, peterz@infradead.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- nd@arm.com, stable@vger.kernel.org, Aaron Lu <aaron.lu@intel.com>
-References: <20240305145335.2696125-1-yeoreum.yun@arm.com>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <20240305145335.2696125-1-yeoreum.yun@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH7PR10MB6674:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a29db41-4e69-494a-a624-08dc3d4fc980
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	/EBo/YsMav3oyHg00A7ZcBaCI581a1NF3ImiC3wDg8RpNyXJRLWk3M1AWCf5Q0E5dKqq0HeJsnDkgDCERbsdTuPTwEsohMZtImnpXjfckZuKx2ANjhaFsROe3v5j6zmWCtMVKSruTX8vFuVeU8gGrqecok67nGDxjkizIspBrRQyLG/BXzlTihmVYriEWnlPuMijqcguqFayBvbL9i7Wr+NrRpRNRQmpdM3ORfZJOjNO4N4ftfAU4oWDsRk58Qo3VztYgiGPjVvMFlD3ryYCvg5f3bU4v3Xd+VCgN7UayG/5mx4Z25zUqMwoe4nJu/41jPB189aEJfLqH05WEv6oJtoFgnvGEinxNe7PizjsmKxu8XZUac+S2+v8kR9pm6pL7MPGcgQxHK9+VmQFLaSnbMg0s+ne16g7q/P2vMAgzY1EQ2B5LcxAgFa0Mn5SukH/1cgQA9Cgz3WdgekmQ0Th64f3XdYtk2qJzCsRF0w0M19kjaqvfwL7heA2tpltQtf9H70PWxv5gAXgXrY5FVHS66hsuHTRIRK47u4Q/xAuKIiye8gjqvoQHvDbR0jn65hfpgpxmlBmvYcBfh6Z+CjsRbgXGUOTHrMFcw7SakZEJys=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?cWowRlQzL0pmdHNCTWl6c3lnODdPZUdKQVNoNDRNQWtCZVB2bEF6c2lCYy9Z?=
+ =?utf-8?B?R0xzRUtyY1VqNm5scm5taVo2d1RiLzM1STZnT0FJZU5Pb21jcFVmaTdTM1hM?=
+ =?utf-8?B?bXhiVHR4L1VoM203bUQ1NVdCRFVmSXdGTVN0VENPU09LZVNLdTFwNndXZEtq?=
+ =?utf-8?B?RVNXbjgyaXZxL2NJV3VJUHVOeHlDTGxXS0h2b2pnSDB4Y3dvRWhsYldUZi8v?=
+ =?utf-8?B?dGpGVGEvQXZ1aFZFTG8rQjJpc0xKYXlKNVpzbFZqYkRMZCtPUlNRSkV3aVNH?=
+ =?utf-8?B?ajZjVWVoVmp2M05kY05HVURUSzdWcGpqaUN6b0hqWGV6b2ttRjJpdGNnR0U3?=
+ =?utf-8?B?OGFpajNUbjlHZjhRRFRibENXekF4dTVHVXJnVDRPRjlGdjZVNituVU1jRkNo?=
+ =?utf-8?B?enhKQ0R1d1ExeStQeWVjdUppMjZLNXhNUkdnY0pOWGZJbmlneHRGdTIxaUpo?=
+ =?utf-8?B?RG5LMTBLMGhqblVhNGVuK3A5TWpLZlNTWEJRWXRRMFc0MlRxYmxYSllsN2FG?=
+ =?utf-8?B?UUtQRjlJM2x6d3JBcHlNUTYzQUV2Y3BMMXRnWTA4OXpWMXdvV2dqc0RiSzJC?=
+ =?utf-8?B?d1dZYVhxUGF4cVRaazdWS0N3U25KRzlFeCtuVU15c241ekJxNDhkYWc2bjd6?=
+ =?utf-8?B?M0hXczI4UDVNYWRYVHNzMFVmZElmem1XaitZOG9WakQ1R0lwUmF3eHBLdjBp?=
+ =?utf-8?B?N0pTMVRScXVleERwb2VxazBpaDVNWjd4UkxHVVBMNjJWK25yVXR0UWgwWm91?=
+ =?utf-8?B?NGdjWWNUNVlLY2dYZlE2SmJGbTl1UG5RSC9GUXc1RWZQK3lFVEpFWXRpaTVz?=
+ =?utf-8?B?d0d1R1ZNZ2dCdE5LLzJPRDdTUDl0Y2gxM1lhMi9JUDFMWkx0clA4Y0t4WEp6?=
+ =?utf-8?B?YVBObkoySlJ2dkM2ZEhncURTdDNkblpJc0hwRFlqdHU4amI4aGNDR2huYXJu?=
+ =?utf-8?B?eUpyRHpmWkNaZHA4SDltdDFxMnhIcUxxVFJUUHl5dk1XMkM2QkNYM2g4bWZs?=
+ =?utf-8?B?RXZBOUp2TU81ZmJhRitTNDdpUDQwVW9OenNaRmtaUlU3T240ZjIxRG1xNUoy?=
+ =?utf-8?B?VGFBZGtmM1pJdDhwUGxJSjVGYnNINkN6cUxqazNIaVpndEI1OFhiZVJKTTVY?=
+ =?utf-8?B?UTIzSlRqWmFzdTBnTFdWUVlPNEIwNkZYT2ZQbzdObnVaLzlVQTFkTjhMeTEr?=
+ =?utf-8?B?Nm1KYWNKUlpMRmpKSzFrVTY3aFNYK2pCdXVIYWhrNFBZTjdOZDVER0pSblNv?=
+ =?utf-8?B?NWRxV2hmUmdMUVAvNWt0TFJuS1Y4VE90dklxV0F3azZzaWM0OW1oVGRBanho?=
+ =?utf-8?B?ZGtjdGtFN0JhYUc2d0hPdXZuZWpTRk9Gd3lFcUJYTjVLU3JKWVdLcmIwaUw1?=
+ =?utf-8?B?bnFFUkNWbWVjOTQrOG92YUk2bUJISnZnZk51L0FHQ2ZiNG4yUHo4NUxQaWQ1?=
+ =?utf-8?B?S3ZTa0cvazE0aUEwemlScHBsTncrcjJyWGxpdXRtN3oxWmlGbnVmRHJtRmNO?=
+ =?utf-8?B?VmZuMlJ6ZzlwN1VBSFgxaWxQeGtQWFlNVXc2Ly82cWRrQWZsR1JQd25wWkk4?=
+ =?utf-8?B?dEdKQkNkdnpBQThSOXJMUjVxemc0ZHFKRVRCeDBlOGMrZElUVVJ5TUYvK25O?=
+ =?utf-8?B?Y1I1QlJqdENkZUp1TjFtS3N4Y09yU05GVE1EY21KeDM4aVlwS2s4S3J5VnRs?=
+ =?utf-8?B?S1d5bmF6ZGJjS0FzTzVZaUozZHYzUDJBbGRXV3RaWUJ2UHBJdUVxcVpiaHNJ?=
+ =?utf-8?B?M1orVXdYdkZSMUgwOXJyZFRiSkdwaXlscnBrblJDRkplS004S1VyMUVjU1NG?=
+ =?utf-8?B?MlhyRE5YdWpYTmVIQVFsNUxsbldUY290dC9OSWVETVV0Q3d1L0NKdkkrdUhC?=
+ =?utf-8?B?L3pHcm5jdTUraXpnK0JpdjcxSENjY0N3VVp2SjRlSStzZ3RVa203OXhiUkxZ?=
+ =?utf-8?B?NmhMWHVtWmw4QWpGVVJISnZvWWlnWVFTVis2UGM3MVUwdk02QkZzMzkvSUk5?=
+ =?utf-8?B?U2IvbW9hSjdNV2NhNXplMDc2dS8weWV3N2Zvclloa01abHMralc5VFNtYllU?=
+ =?utf-8?B?QzdINDNvb2FJc0xOMjlYaTV5VUV4QjNBdnd1UWNjOVY2OEZ1N2lZbGJZQTZq?=
+ =?utf-8?B?OVBhUTA0MWE1b0lFVHUwV3NyTWpLMENIUnNZUVV4VmpUekV5OGRTRml1c3Jy?=
+ =?utf-8?Q?4QDV+vHVS0x+N1N2bdXw1Rk=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	gVOAjHpjhRe83sBeNBOSsxlO+2U6z02XOTz95/QSxNE27cNq+i30ffLrhD/ODpVfd6tjDx7FvVaFfxwPVW3PgV9GAZzUS5+EC811d3g4504L7RNTviME77ibb1xq3IB7p8mrOJ2Yrv43UDanMye1A+v35FwW6DhHcIydJQ2k0NhmrT+Q0qhsKhyMPwrmqjzevpw+iDAEFiQ6mApIfFNU63ilYbHySlU0z9OSEupky4aSC77T2puu768EjFp/r8r6toqBEGKVtkGtXIxv8Hr45Ec9o/MuH5A29XetSIJN+y0GAJ73LxROkUo8pvXvuOrFyj1NouxyK7UQaxlYSLorbA7JmdC6ZCpSU+mv10CQwYglU3gMjkGYMQTgIoDUbJk2GhAJRRfOb09CemF+ZaM40JQot02vhny9fOFaPwEhns2oLdgHco1PeuTXpUjdHBnT5t629Khr1jJjB79ZPvWUC4SXb6SmeTnz+Wt8qURJG4Y8N4TPK8BI5zCsK+WyhVn6p//ZfEZSoDa/p6jKuQGNPcEcEi6YqKHW8FnFyA/7CLxbKa0YSt1V/vQQNJkjV3vaQMLRntdYaVuHWz3FA1HUMq7f+fql4L8BnKfTiBhdOPI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a29db41-4e69-494a-a624-08dc3d4fc980
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 20:06:47.4486
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: japM3ZN4rW9+Gu756S9y2WzArJpqTzqPm4cieatW8wsbfNXkezXr58h+tU4X0y59yJDWR6a8x/z69LHjEpPuNeYcfm4IvMIKEgiJuMSTaKjsp25n+UGhvMczHJEF+GWF
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6674
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-05_17,2024-03-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403050161
+X-Proofpoint-ORIG-GUID: Co7_QPgMgzS0hWOheZ8cog-Wu9nz_4mK
+X-Proofpoint-GUID: Co7_QPgMgzS0hWOheZ8cog-Wu9nz_4mK
 
-On 2024-03-05 09:53, levi.yun wrote:
-> Currently arm64's switch_mm() doesn't always have an smp_mb()
-> which the core scheduler code has depended upon since commit:
+Hi Greg,
+
+On 05/03/24 02:53, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.271 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
->      commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
+> Anything received after that time might be too late.
 > 
-> If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear()
-> can unset the activly used cid when it fails to observe active task after it
-> sets lazy_put.
-> 
-> By adding an smp_mb() in arm64's check_and_switch_context(),
-> Guarantee to observe active task after sched_mm_cid_remote_clear()
-> success to set lazy_put.
 
-This comment from the original implementation of membarrier
-MEMBARRIER_CMD_PRIVATE_EXPEDITED states that the original need from
-membarrier was to have a full barrier between storing to rq->curr and
-return to userspace:
+No problems seen on x86_64 and aarch64 with our testing.
 
-commit 22e4ebb9758 ("membarrier: Provide expedited private command")
-
-commit message:
-
-     * Our TSO archs can do RELEASE without being a full barrier. Look at
-       x86 spin_unlock() being a regular STORE for example.  But for those
-       archs, all atomics imply smp_mb and all of them have atomic ops in
-       switch_mm() for mm_cpumask(), and on x86 the CR3 load acts as a full
-       barrier.
-     
-     * From all weakly ordered machines, only ARM64 and PPC can do RELEASE,
-       the rest does indeed do smp_mb(), so there the spin_unlock() is a full
-       barrier and we're good.
-     
-     * ARM64 has a very heavy barrier in switch_to(), which suffices.
-     
-     * PPC just removed its barrier from switch_to(), but appears to be
-       talking about adding something to switch_mm(). So add a
-       smp_mb__after_unlock_lock() for now, until this is settled on the PPC
-       side.
-
-associated code:
-
-+               /*
-+                * The membarrier system call requires each architecture
-+                * to have a full memory barrier after updating
-+                * rq->curr, before returning to user-space. For TSO
-+                * (e.g. x86), the architecture must provide its own
-+                * barrier in switch_mm(). For weakly ordered machines
-+                * for which spin_unlock() acts as a full memory
-+                * barrier, finish_lock_switch() in common code takes
-+                * care of this barrier. For weakly ordered machines for
-+                * which spin_unlock() acts as a RELEASE barrier (only
-+                * arm64 and PowerPC), arm64 has a full barrier in
-+                * switch_to(), and PowerPC has
-+                * smp_mb__after_unlock_lock() before
-+                * finish_lock_switch().
-+                */
-
-Which got updated to this by
-
-commit 306e060435d ("membarrier: Document scheduler barrier requirements")
-
-                 /*
-                  * The membarrier system call requires each architecture
-                  * to have a full memory barrier after updating
-+                * rq->curr, before returning to user-space.
-+                *
-+                * Here are the schemes providing that barrier on the
-+                * various architectures:
-+                * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC.
-+                *   switch_mm() rely on membarrier_arch_switch_mm() on PowerPC.
-+                * - finish_lock_switch() for weakly-ordered
-+                *   architectures where spin_unlock is a full barrier,
-+                * - switch_to() for arm64 (weakly-ordered, spin_unlock
-+                *   is a RELEASE barrier),
-                  */
-
-However, rseq mm_cid has stricter requirements: the barrier needs to be
-issued between store to rq->curr and switch_mm_cid(), which happens
-earlier than:
-
-- spin_unlock(),
-- switch_to().
-
-So it's fine when the architecture switch_mm happens to have that barrier
-already, but less so when the architecture only provides the full barrier
-in switch_to() or spin_unlock().
-
-The issue is therefore not specific to arm64, it's actually a bug in the
-rseq switch_mm_cid() implementation. All architectures that don't have
-memory barriers in switch_mm(), but rather have the full barrier either in
-finish_lock_switch() or switch_to() have them too late for the needs of
-switch_mm_cid().
-
-I would recommend one of three approaches here:
-
-A) Add smp_mb() in switch_mm_cid() for all architectures that lack that
-    barrier in switch_mm().
-
-B) Figure out if we can move switch_mm_cid() further down in the scheduler
-    without breaking anything (within switch_to(), at the very end of
-    finish_lock_switch() for instance). I'm not sure we can do that though
-    because switch_mm_cid() touches the "prev" which is tricky after
-    switch_to().
-
-C) Add barriers in switch_mm() within all architectures that are missing it.
-
-Thoughts ?
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
 Thanks,
+Harshit
 
-Mathieu
-
-
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.271-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
 > 
-> Signed-off-by: levi.yun <yeoreum.yun@arm.com>
-> Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-> Cc: <stable@vger.kernel.org> # 6.4.x
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Aaron Lu <aaron.lu@intel.com>
-> ---
->   I'm really sorry if you got this multiple times.
->   I had some problems with the SMTP server...
+> thanks,
 > 
->   arch/arm64/mm/context.c | 5 +++++
->   1 file changed, 5 insertions(+)
+> greg k-h
 > 
-> diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
-> index 188197590fc9..7a9e8e6647a0 100644
-> --- a/arch/arm64/mm/context.c
-> +++ b/arch/arm64/mm/context.c
-> @@ -268,6 +268,11 @@ void check_and_switch_context(struct mm_struct *mm)
->   	 */
->   	if (!system_uses_ttbr0_pan())
->   		cpu_switch_mm(mm->pgd, mm);
-> +
-> +	/*
-> +	 * See the comments on switch_mm_cid describing user -> user transition.
-> +	 */
-> +	smp_mb();
->   }
-> 
->   unsigned long arm64_mm_context_get(struct mm_struct *mm)
-> --
-> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
-> 
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
-
 
