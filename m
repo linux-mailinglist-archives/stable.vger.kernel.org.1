@@ -1,211 +1,295 @@
-Return-Path: <stable+bounces-26847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EC987284E
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:07:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9FD872862
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD811C288B0
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DEC1F2AFD2
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5697C86659;
-	Tue,  5 Mar 2024 20:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="An8rDUCJ";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Lx6H18ZI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0565F86644;
+	Tue,  5 Mar 2024 20:15:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B46960EF8;
-	Tue,  5 Mar 2024 20:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709669256; cv=fail; b=oX7Ge8565zMx1HcIIe/A1UjRpt/H2GiGQ8WaGPuK3pZyX+9G93AMdnVJzoUmzWNKcMI+Fai5TyltZ2rDzoXeoZnpvYTTOvNWysradcNjyMuK1bh5e/WHG94/ubsfDvxz1IsASBWvuPlsKthgoxOlfGS14/1ltIImqkKyw8SM7bA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709669256; c=relaxed/simple;
-	bh=lm9fheTAMG7yBgm4Xli3n9WmVtt8+zT111C1ryDqTxM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ck1ufzK6IdNGSdm8XVGb5boa4TxWtmb2g+NSQJN9IzVvKuWBIOhbNnz2BT/ua2RjR+/KMe8FgJjcuddY4VaSl6QD/bHMV9M1cpwkUrzcl8rs6Ef3JODgr7vR7H0/P0izSbSnn6GTjJ7xINQ+jZJiJ//mYpWZVbhLeUZ2LOHEzsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=An8rDUCJ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Lx6H18ZI; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 425Ix9M7013415;
-	Tue, 5 Mar 2024 20:06:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
- b=An8rDUCJqLgzN6dLroGPxVLzpr6GDTpMLgZj+itaGa83H/9FZ5BS0WXBn/S18r6r1YN8
- 1CXdyj0CG9JFXa3REqUdKVuBWp0gfAbzgdBCEbxtpK8JWPysKqhe5TgNA0PYTq+XtVZr
- ZFZZjT0hsEq+D6eJyc2wJI/wtvTQ08vzh1FUhT8Nikkq2d8DJ3WBvPHekXy8J277se6g
- MhnQbqhA71pEHukQ8bc6WTv3mqPLecXo1vHIBh4jZvuhDgbolz3cdAJScJ7MNiMUdH+o
- VAAPPN19ZlxfOe5Qrc0pEs7eAdDxJbpv6sXce1YozNfZdM8jorR87x1GchrHlbLz2uwt xw== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkvnuy6hm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Mar 2024 20:06:51 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 425JKTLo016100;
-	Tue, 5 Mar 2024 20:06:50 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3wktj8ev6h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 Mar 2024 20:06:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SAUxsscy6VTHYZEU6ZxC9CSIFdzIFzAu4iph5ZknRlbLqBK6UJZIjxYmVYCP3aFOpN/BRVO5W4GAR0hr84jzSdV3ODp+Qnqwfd2j8BeJtdKXSJy808pcKTbUyvKNvx2K/b+wATJBtu5kgPvfhhCWrOVoRwO2mHmSY/9CzyQDywmE5YDkPIV+EbuXFTPw68tMeG2LrSiMaOpyQYXJrmuTyOm5XnhzcoPTygK8ADnSfZ158J6bnysD5TyA+JhYvVk3unI27+y7oeJcQKdXGCKUeqH4xVz8IRZwLcWQA3/1paFOPfq274et2UyYdNBGobb7ckPQ+SgMxTxefk2RiWdBYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
- b=CXqFC+OS10bIz0gh4KmQOCeOp8HWCqlz5AO8u1mkdQs/PnHrJHHIWkJd8mtMn+8+NTIDS/oIn+CSVxt1N2dpmCbSGOKKzHPF0jH57dL/cQ5ZnekL7x7Isc1PrQxK9gLSmHAM8PTEvdKOqaA4kEiXvF04I1Af+ID7uHiVFT1nHHHjlnqoDar3TpYLHTet8PtgEkGsc/pYwqyR1OqA8IaTh0E+tAWoiKEyTponm+XSf98IKSM8j/fGK3HMZOCAhdgsMdLfKgF/hpcgE7Xi+B+KK3rDUt3X8TXNNJgoQeJ3RKul0vT93+0caamdJDv0pJ2NX00nwq6xIiz5QMCtzeVt0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6D9V2UKpMoQTcwV+cqNjO7lXmkaIf6V6vFJsm0RQqW8=;
- b=Lx6H18ZILIduO2qrsH50duixxsyQcm7M9v37pe5PDOiTW+6SRjanjbrz4hYxvqXd5AHi6gXGBI3LwHHcclGcK1Cb+7kZj9Uw/ln7+KwCuWt09kPmBqy2QsWAcQdsNV/1hFjxCATZ1T2Y6odi9Bx/Nn1GY4DJKi/ebVLeUYK3UUE=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by PH7PR10MB6674.namprd10.prod.outlook.com (2603:10b6:510:20c::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Tue, 5 Mar
- 2024 20:06:47 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::7fc:f926:8937:183]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::7fc:f926:8937:183%6]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
- 20:06:47 +0000
-Message-ID: <fe892840-9cf1-4b67-b363-7d22ff4e83a6@oracle.com>
-Date: Wed, 6 Mar 2024 01:36:33 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/25] 5.4.271-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        Vegard Nossum <vegard.nossum@oracle.com>
-References: <20240304211535.741936181@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY2PR06CA0011.apcprd06.prod.outlook.com
- (2603:1096:404:42::23) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B91317BDC;
+	Tue,  5 Mar 2024 20:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709669739; cv=none; b=ScLUbgue6Hnr7Gw6uHyewVfzHXDcYkzyfuZwNqTTMnPpkl9O1rilXCAR/2OOz+0f5LM5FpGJEFqew2m5b3IdLebiXaaDt8UCs6rPoe60Vqe2iVjcBLiFTruiPPx/Wef5G0Lm3NOAflBaH3+tsOY0+jp05cl8ItWfQg+/SudAIz8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709669739; c=relaxed/simple;
+	bh=G7no1YJL9DmcoQkfFWDkjzZL68cN4RmEgEThuxLYasc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uxASmnJNm3mngSVMfDI+sYH+PA2it3Wx2/efZMkzFsxZ0bpx3Nv3lvbJ1Ja8p62+tRFh1CAg/sicVKwm4EBFjcvBAD7kJPe1wNj5ZS9U2lC9ELpvXEBbAMBXTVUhG8iidzCefCIyjE6XU5y2ruJ/zocz2rIe/XsVRROkfUP7SpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-21eab2bd67bso347401fac.0;
+        Tue, 05 Mar 2024 12:15:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709669737; x=1710274537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e90WqAEMxgxrpNORTlE61Hg6YT9+0kYQ66C6ACF3xTE=;
+        b=gyU6ekdpbrft3DHiDma7yx2uRdA1cW9yFuS/FIEbZRXWFBFulC/SZGx34Qdww1WnGK
+         fuA7ALzGG+tF4zcoxy05qbDzrs9gD55EfO/fAjD2dkh5CI8ALGH6FjXkF4TS3jxsTrkZ
+         3zccJ7GD3yOqyrIbMJr2V0BDZxav07J8CxY/rRHzd10T/e4bFMsKnP8PgOefrq0MnrM2
+         wuIIG3g+JhjEi0KLFq4VwOejk0OfHGd8JtISEZvQUHjouiSfGnsenxDy4Q+VcS5YEpWK
+         ViQP4qPk1cslRlh4DGJWf1hb90Hd98xz7YfgqXf0KcQ2AAHCm26ko8pR35FdvfN+Spdp
+         otyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWs0PntAsogGlqKtYYfJQcJgOO69Px/sMqYvt4ipbbzkSzvCQ4alIX1BFm1l2JecorKAnS9oeF0BYhn0+bBOev8tvmqKk2f3ZYP0WyaVR5ZFPZgPAieAbdv8LrF7TG9+OoOuvbhdHbZcxQWMeKZLef5mFLWWv7v1aiBnOn+tCKkA==
+X-Gm-Message-State: AOJu0YxF0ov2c8nr/lptoUezcWJRzsKD/A9QaBITndG0OD6Ms1Pi+um2
+	lL0FN9CUHxKUygotEtzqTudkg12FJ8TTRNN4ebUI5+Xpmn1fW43z8RAmagZlg+gqJimQ+7/OYJd
+	ro5zNqDw9Q0esElVMKu9YhAjm/mLdyRcU
+X-Google-Smtp-Source: AGHT+IGpt94eac2seF1UNAk8Va+8JauiQL3EPR8c2l6hQLevF5ZrIe3j6bVBG6B6s0CQ3k7ZHpGIydw+b6t5H0t9s/U=
+X-Received: by 2002:a05:6870:2143:b0:221:b2a:3beb with SMTP id
+ g3-20020a056870214300b002210b2a3bebmr1054943oae.2.1709669737175; Tue, 05 Mar
+ 2024 12:15:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH7PR10MB6674:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a29db41-4e69-494a-a624-08dc3d4fc980
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	/EBo/YsMav3oyHg00A7ZcBaCI581a1NF3ImiC3wDg8RpNyXJRLWk3M1AWCf5Q0E5dKqq0HeJsnDkgDCERbsdTuPTwEsohMZtImnpXjfckZuKx2ANjhaFsROe3v5j6zmWCtMVKSruTX8vFuVeU8gGrqecok67nGDxjkizIspBrRQyLG/BXzlTihmVYriEWnlPuMijqcguqFayBvbL9i7Wr+NrRpRNRQmpdM3ORfZJOjNO4N4ftfAU4oWDsRk58Qo3VztYgiGPjVvMFlD3ryYCvg5f3bU4v3Xd+VCgN7UayG/5mx4Z25zUqMwoe4nJu/41jPB189aEJfLqH05WEv6oJtoFgnvGEinxNe7PizjsmKxu8XZUac+S2+v8kR9pm6pL7MPGcgQxHK9+VmQFLaSnbMg0s+ne16g7q/P2vMAgzY1EQ2B5LcxAgFa0Mn5SukH/1cgQA9Cgz3WdgekmQ0Th64f3XdYtk2qJzCsRF0w0M19kjaqvfwL7heA2tpltQtf9H70PWxv5gAXgXrY5FVHS66hsuHTRIRK47u4Q/xAuKIiye8gjqvoQHvDbR0jn65hfpgpxmlBmvYcBfh6Z+CjsRbgXGUOTHrMFcw7SakZEJys=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?cWowRlQzL0pmdHNCTWl6c3lnODdPZUdKQVNoNDRNQWtCZVB2bEF6c2lCYy9Z?=
- =?utf-8?B?R0xzRUtyY1VqNm5scm5taVo2d1RiLzM1STZnT0FJZU5Pb21jcFVmaTdTM1hM?=
- =?utf-8?B?bXhiVHR4L1VoM203bUQ1NVdCRFVmSXdGTVN0VENPU09LZVNLdTFwNndXZEtq?=
- =?utf-8?B?RVNXbjgyaXZxL2NJV3VJUHVOeHlDTGxXS0h2b2pnSDB4Y3dvRWhsYldUZi8v?=
- =?utf-8?B?dGpGVGEvQXZ1aFZFTG8rQjJpc0xKYXlKNVpzbFZqYkRMZCtPUlNRSkV3aVNH?=
- =?utf-8?B?ajZjVWVoVmp2M05kY05HVURUSzdWcGpqaUN6b0hqWGV6b2ttRjJpdGNnR0U3?=
- =?utf-8?B?OGFpajNUbjlHZjhRRFRibENXekF4dTVHVXJnVDRPRjlGdjZVNituVU1jRkNo?=
- =?utf-8?B?enhKQ0R1d1ExeStQeWVjdUppMjZLNXhNUkdnY0pOWGZJbmlneHRGdTIxaUpo?=
- =?utf-8?B?RG5LMTBLMGhqblVhNGVuK3A5TWpLZlNTWEJRWXRRMFc0MlRxYmxYSllsN2FG?=
- =?utf-8?B?UUtQRjlJM2x6d3JBcHlNUTYzQUV2Y3BMMXRnWTA4OXpWMXdvV2dqc0RiSzJC?=
- =?utf-8?B?d1dZYVhxUGF4cVRaazdWS0N3U25KRzlFeCtuVU15c241ekJxNDhkYWc2bjd6?=
- =?utf-8?B?M0hXczI4UDVNYWRYVHNzMFVmZElmem1XaitZOG9WakQ1R0lwUmF3eHBLdjBp?=
- =?utf-8?B?N0pTMVRScXVleERwb2VxazBpaDVNWjd4UkxHVVBMNjJWK25yVXR0UWgwWm91?=
- =?utf-8?B?NGdjWWNUNVlLY2dYZlE2SmJGbTl1UG5RSC9GUXc1RWZQK3lFVEpFWXRpaTVz?=
- =?utf-8?B?d0d1R1ZNZ2dCdE5LLzJPRDdTUDl0Y2gxM1lhMi9JUDFMWkx0clA4Y0t4WEp6?=
- =?utf-8?B?YVBObkoySlJ2dkM2ZEhncURTdDNkblpJc0hwRFlqdHU4amI4aGNDR2huYXJu?=
- =?utf-8?B?eUpyRHpmWkNaZHA4SDltdDFxMnhIcUxxVFJUUHl5dk1XMkM2QkNYM2g4bWZs?=
- =?utf-8?B?RXZBOUp2TU81ZmJhRitTNDdpUDQwVW9OenNaRmtaUlU3T240ZjIxRG1xNUoy?=
- =?utf-8?B?VGFBZGtmM1pJdDhwUGxJSjVGYnNINkN6cUxqazNIaVpndEI1OFhiZVJKTTVY?=
- =?utf-8?B?UTIzSlRqWmFzdTBnTFdWUVlPNEIwNkZYT2ZQbzdObnVaLzlVQTFkTjhMeTEr?=
- =?utf-8?B?Nm1KYWNKUlpMRmpKSzFrVTY3aFNYK2pCdXVIYWhrNFBZTjdOZDVER0pSblNv?=
- =?utf-8?B?NWRxV2hmUmdMUVAvNWt0TFJuS1Y4VE90dklxV0F3azZzaWM0OW1oVGRBanho?=
- =?utf-8?B?ZGtjdGtFN0JhYUc2d0hPdXZuZWpTRk9Gd3lFcUJYTjVLU3JKWVdLcmIwaUw1?=
- =?utf-8?B?bnFFUkNWbWVjOTQrOG92YUk2bUJISnZnZk51L0FHQ2ZiNG4yUHo4NUxQaWQ1?=
- =?utf-8?B?S3ZTa0cvazE0aUEwemlScHBsTncrcjJyWGxpdXRtN3oxWmlGbnVmRHJtRmNO?=
- =?utf-8?B?VmZuMlJ6ZzlwN1VBSFgxaWxQeGtQWFlNVXc2Ly82cWRrQWZsR1JQd25wWkk4?=
- =?utf-8?B?dEdKQkNkdnpBQThSOXJMUjVxemc0ZHFKRVRCeDBlOGMrZElUVVJ5TUYvK25O?=
- =?utf-8?B?Y1I1QlJqdENkZUp1TjFtS3N4Y09yU05GVE1EY21KeDM4aVlwS2s4S3J5VnRs?=
- =?utf-8?B?S1d5bmF6ZGJjS0FzTzVZaUozZHYzUDJBbGRXV3RaWUJ2UHBJdUVxcVpiaHNJ?=
- =?utf-8?B?M1orVXdYdkZSMUgwOXJyZFRiSkdwaXlscnBrblJDRkplS004S1VyMUVjU1NG?=
- =?utf-8?B?MlhyRE5YdWpYTmVIQVFsNUxsbldUY290dC9OSWVETVV0Q3d1L0NKdkkrdUhC?=
- =?utf-8?B?L3pHcm5jdTUraXpnK0JpdjcxSENjY0N3VVp2SjRlSStzZ3RVa203OXhiUkxZ?=
- =?utf-8?B?NmhMWHVtWmw4QWpGVVJISnZvWWlnWVFTVis2UGM3MVUwdk02QkZzMzkvSUk5?=
- =?utf-8?B?U2IvbW9hSjdNV2NhNXplMDc2dS8weWV3N2Zvclloa01abHMralc5VFNtYllU?=
- =?utf-8?B?QzdINDNvb2FJc0xOMjlYaTV5VUV4QjNBdnd1UWNjOVY2OEZ1N2lZbGJZQTZq?=
- =?utf-8?B?OVBhUTA0MWE1b0lFVHUwV3NyTWpLMENIUnNZUVV4VmpUekV5OGRTRml1c3Jy?=
- =?utf-8?Q?4QDV+vHVS0x+N1N2bdXw1Rk=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	gVOAjHpjhRe83sBeNBOSsxlO+2U6z02XOTz95/QSxNE27cNq+i30ffLrhD/ODpVfd6tjDx7FvVaFfxwPVW3PgV9GAZzUS5+EC811d3g4504L7RNTviME77ibb1xq3IB7p8mrOJ2Yrv43UDanMye1A+v35FwW6DhHcIydJQ2k0NhmrT+Q0qhsKhyMPwrmqjzevpw+iDAEFiQ6mApIfFNU63ilYbHySlU0z9OSEupky4aSC77T2puu768EjFp/r8r6toqBEGKVtkGtXIxv8Hr45Ec9o/MuH5A29XetSIJN+y0GAJ73LxROkUo8pvXvuOrFyj1NouxyK7UQaxlYSLorbA7JmdC6ZCpSU+mv10CQwYglU3gMjkGYMQTgIoDUbJk2GhAJRRfOb09CemF+ZaM40JQot02vhny9fOFaPwEhns2oLdgHco1PeuTXpUjdHBnT5t629Khr1jJjB79ZPvWUC4SXb6SmeTnz+Wt8qURJG4Y8N4TPK8BI5zCsK+WyhVn6p//ZfEZSoDa/p6jKuQGNPcEcEi6YqKHW8FnFyA/7CLxbKa0YSt1V/vQQNJkjV3vaQMLRntdYaVuHWz3FA1HUMq7f+fql4L8BnKfTiBhdOPI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a29db41-4e69-494a-a624-08dc3d4fc980
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 20:06:47.4486
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: japM3ZN4rW9+Gu756S9y2WzArJpqTzqPm4cieatW8wsbfNXkezXr58h+tU4X0y59yJDWR6a8x/z69LHjEpPuNeYcfm4IvMIKEgiJuMSTaKjsp25n+UGhvMczHJEF+GWF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6674
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-05_17,2024-03-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403050161
-X-Proofpoint-ORIG-GUID: Co7_QPgMgzS0hWOheZ8cog-Wu9nz_4mK
-X-Proofpoint-GUID: Co7_QPgMgzS0hWOheZ8cog-Wu9nz_4mK
+References: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+In-Reply-To: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 5 Mar 2024 21:15:25 +0100
+Message-ID: <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com>
+Subject: Re: [PATCH v3] acpi: Use access_width over bit_width for system
+ memory accesses
+To: Jarred White <jarredwhite@linux.microsoft.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	srivatsabhat@linux.microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+On Fri, Mar 1, 2024 at 8:27=E2=80=AFPM Jarred White
+<jarredwhite@linux.microsoft.com> wrote:
+>
+> To align with ACPI 6.3+, since bit_width can be any 8-bit value, we canno=
+t
+> depend on it being always on a clean 8b boundary. This was uncovered on t=
+he
+> Cobalt 100 platform.
+>
+> SError Interrupt on CPU26, code 0xbe000011 -- SError
+>  CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 5.15.2.1-13 #1
+>  Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+>  pstate: 62400009 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=3D--)
+>  pc : cppc_get_perf_caps+0xec/0x410
+>  lr : cppc_get_perf_caps+0xe8/0x410
+>  sp : ffff8000155ab730
+>  x29: ffff8000155ab730 x28: ffff0080139d0038 x27: ffff0080139d0078
+>  x26: 0000000000000000 x25: ffff0080139d0058 x24: 00000000ffffffff
+>  x23: ffff0080139d0298 x22: ffff0080139d0278 x21: 0000000000000000
+>  x20: ffff00802b251910 x19: ffff0080139d0000 x18: ffffffffffffffff
+>  x17: 0000000000000000 x16: ffffdc7e111bad04 x15: ffff00802b251008
+>  x14: ffffffffffffffff x13: ffff013f1fd63300 x12: 0000000000000006
+>  x11: ffffdc7e128f4420 x10: 0000000000000000 x9 : ffffdc7e111badec
+>  x8 : ffff00802b251980 x7 : 0000000000000000 x6 : ffff0080139d0028
+>  x5 : 0000000000000000 x4 : ffff0080139d0018 x3 : 00000000ffffffff
+>  x2 : 0000000000000008 x1 : ffff8000155ab7a0 x0 : 0000000000000000
+>  Kernel panic - not syncing: Asynchronous SError Interrupt
+>  CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted
+> 5.15.2.1-13 #1
+>  Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+>  Call trace:
+>   dump_backtrace+0x0/0x1e0
+>   show_stack+0x24/0x30
+>   dump_stack_lvl+0x8c/0xb8
+>   dump_stack+0x18/0x34
+>   panic+0x16c/0x384
+>   add_taint+0x0/0xc0
+>   arm64_serror_panic+0x7c/0x90
+>   arm64_is_fatal_ras_serror+0x34/0xa4
+>   do_serror+0x50/0x6c
+>   el1h_64_error_handler+0x40/0x74
+>   el1h_64_error+0x7c/0x80
+>   cppc_get_perf_caps+0xec/0x410
+>   cppc_cpufreq_cpu_init+0x74/0x400 [cppc_cpufreq]
+>   cpufreq_online+0x2dc/0xa30
+>   cpufreq_add_dev+0xc0/0xd4
+>   subsys_interface_register+0x134/0x14c
+>   cpufreq_register_driver+0x1b0/0x354
+>   cppc_cpufreq_init+0x1a8/0x1000 [cppc_cpufreq]
+>   do_one_initcall+0x50/0x250
+>   do_init_module+0x60/0x27c
+>   load_module+0x2300/0x2570
+>   __do_sys_finit_module+0xa8/0x114
+>   __arm64_sys_finit_module+0x2c/0x3c
+>   invoke_syscall+0x78/0x100
+>   el0_svc_common.constprop.0+0x180/0x1a0
+>   do_el0_svc+0x84/0xa0
+>   el0_svc+0x2c/0xc0
+>   el0t_64_sync_handler+0xa4/0x12c
+>   el0t_64_sync+0x1a4/0x1a8
+>
+> Instead, use access_width to determine the size and use the offset and wi=
+dth
+> to shift and mask the bits we want to read/write out. Make sure to add a =
+check
+> for system memory since pcc redefines the access_width to subspace id. If
+> access_width is not set, then fallback to using the bit_width.
+>
+> Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+> CC: srivatsabhat@linux.microsoft.com
+> CC: stable@vger.kernel.org #5.15+
+> ---
+> changelog:
+> v1-->v2:
+> https://lore.kernel.org/linux-acpi/20231216001312.1160-1-jarredwhite@linu=
+x.microsoft.com/
+>         1. Fixed coding style errors
+>         2. Backwards compatibility with ioremapping of address still an
+>                 open question. Suggestions are welcomed.
+> v2-->v3:
+>         1. Created a fallback mechanism to revert to using the bit_width
+>         2. Re-labeled macro to GET_BIT_WIDTH
+>         3. Collapsed the if/else statements in the cpc_read() and cpc_wri=
+te() routines
+>
+>  drivers/acpi/cppc_acpi.c | 32 +++++++++++++++++++++++++++-----
+>  1 file changed, 27 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index d155a86a8614..57de7edda7a5 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -166,6 +166,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, n=
+ominal_freq);
+>  show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+>  show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+>
+> +/* Check for valid access_width, otherwise, fallback to using the bit_wi=
+dth */
+> +#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_w=
+idth - 1)) : (reg)->bit_width)
+> +
+> +/* Shift and apply the mask for CPC reads/writes */
+> +#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset &               =
+       \
+> +                                       GENMASK(((reg)->bit_width), 0)))
+> +
+>  static ssize_t show_feedback_ctrs(struct kobject *kobj,
+>                 struct kobj_attribute *attr, char *buf)
+>  {
+> @@ -780,6 +787,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *=
+pr)
+>                         } else if (gas_t->space_id =3D=3D ACPI_ADR_SPACE_=
+SYSTEM_MEMORY) {
+>                                 if (gas_t->address) {
+>                                         void __iomem *addr;
+> +                                       size_t access_width;
+>
+>                                         if (!osc_cpc_flexible_adr_space_c=
+onfirmed) {
+>                                                 pr_debug("Flexible addres=
+s space capability not supported\n");
+> @@ -787,7 +795,9 @@ int acpi_cppc_processor_probe(struct acpi_processor *=
+pr)
+>                                                         goto out_free;
+>                                         }
+>
+> -                                       addr =3D ioremap(gas_t->address, =
+gas_t->bit_width/8);
+> +                                       /* Check for access_width for the=
+ size, otherwise use bit_width */
+> +                                       access_width =3D GET_BIT_WIDTH(ga=
+s_t) / 8;
+> +                                       addr =3D ioremap(gas_t->address, =
+access_width);
+>                                         if (!addr)
+>                                                 goto out_free;
+>                                         cpc_ptr->cpc_regs[i-2].sys_mem_va=
+ddr =3D addr;
+> @@ -983,6 +993,7 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg *=
+reg, u64 val)
+>  static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 =
+*val)
+>  {
+>         void __iomem *vaddr =3D NULL;
+> +       int size;
+>         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
+>         struct cpc_reg *reg =3D &reg_res->cpc_entry.reg;
+>
+> @@ -994,7 +1005,7 @@ static int cpc_read(int cpu, struct cpc_register_res=
+ource *reg_res, u64 *val)
+>         *val =3D 0;
+>
+>         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
+> -               u32 width =3D 8 << (reg->access_width - 1);
+> +               u32 width =3D GET_BIT_WIDTH(reg);
+>                 u32 val_u32;
+>                 acpi_status status;
+>
+> @@ -1018,7 +1029,9 @@ static int cpc_read(int cpu, struct cpc_register_re=
+source *reg_res, u64 *val)
+>                 return acpi_os_read_memory((acpi_physical_address)reg->ad=
+dress,
+>                                 val, reg->bit_width);
+>
+> -       switch (reg->bit_width) {
+> +       size =3D GET_BIT_WIDTH(reg);
+> +
+> +       switch (size) {
+>         case 8:
+>                 *val =3D readb_relaxed(vaddr);
+>                 break;
+> @@ -1037,18 +1050,22 @@ static int cpc_read(int cpu, struct cpc_register_=
+resource *reg_res, u64 *val)
+>                 return -EFAULT;
+>         }
+>
+> +       if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> +               *val =3D MASK_VAL(reg, *val);
+> +
+>         return 0;
+>  }
+>
+>  static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64=
+ val)
+>  {
+>         int ret_val =3D 0;
+> +       int size;
+>         void __iomem *vaddr =3D NULL;
+>         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
+>         struct cpc_reg *reg =3D &reg_res->cpc_entry.reg;
+>
+>         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
+> -               u32 width =3D 8 << (reg->access_width - 1);
+> +               u32 width =3D GET_BIT_WIDTH(reg);
+>                 acpi_status status;
+>
+>                 status =3D acpi_os_write_port((acpi_io_address)reg->addre=
+ss,
+> @@ -1070,7 +1087,12 @@ static int cpc_write(int cpu, struct cpc_register_=
+resource *reg_res, u64 val)
+>                 return acpi_os_write_memory((acpi_physical_address)reg->a=
+ddress,
+>                                 val, reg->bit_width);
+>
+> -       switch (reg->bit_width) {
+> +       size =3D GET_BIT_WIDTH(reg);
+> +
+> +       if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> +               val =3D MASK_VAL(reg, val);
+> +
+> +       switch (size) {
+>         case 8:
+>                 writeb_relaxed(val, vaddr);
+>                 break;
+> --
 
-On 05/03/24 02:53, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.271 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
-> 
+Applied as 6.9 material with some edits in the subject and changelog
+and some adjustments of the new comments (one edited and one dropped).
 
-No problems seen on x86_64 and aarch64 with our testing.
-
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-
-Thanks,
-Harshit
-
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.271-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+Thanks!
 
