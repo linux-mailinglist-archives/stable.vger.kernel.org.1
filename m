@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-26795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409A18721BB
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:40:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C79872208
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3E9C1F23EAB
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 14:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEFB21C20D64
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 14:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6207086643;
-	Tue,  5 Mar 2024 14:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F238B126F3D;
+	Tue,  5 Mar 2024 14:54:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DA56127;
-	Tue,  5 Mar 2024 14:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC4D6127;
+	Tue,  5 Mar 2024 14:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709649629; cv=none; b=oHX6gK2ykHNJXUetBgsNwgMbD6qdEA7JQD+VBGR8HGZqjvsPJcpUb3N2blwylerrlWpebTGXgqHTbO9HpxAMjUFS4ppTFmPZTbqZRNfxToMr/iw0nwayMkqv8lNEJ7WaDf8rcDgy/z4XaOuVhZ682ZIoR5WgdyAeGcMrS94NCQ8=
+	t=1709650442; cv=none; b=e2BuvSi8DpyEdrUgsPyNzYRRmQAStvYFLCJuAmOiGDx2pJJSkgzCnWBuX9Nk14Qher3X242wMOf20a1UC6psVC1foQ6sCZNHTNiJnvAxPzOnOPSPOf/6m8IrRUYRJujlA293B5lnB82hViXdIoOHIKFUXrUDkuFrC91O3OoBvkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709649629; c=relaxed/simple;
-	bh=TzU/yVqfFw2Z0bXsBGHvM4X/+uETrSFIV0dy36+M3uA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rERsTf0r2KrTXAUhPfgo/coyjcXobz0wZsJxPl2atE0vtEXe/2HivOZW2fBzq455bhkndEvomGB+ff8SFCWQgjiKsw43rLUV4w8QzOwhxmYJvwG0LpeurEMo1FpLNS6Tf5cbN16pGkgBW/DMrmFiem0WXOmy8Hvyp1vFJb8B8qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E4AC433F1;
-	Tue,  5 Mar 2024 14:40:26 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	s=arc-20240116; t=1709650442; c=relaxed/simple;
+	bh=RIA85WUsvoaR0l2yajYG2tSdVf08/i/yUJ9xFRgITs8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rFSh7Ut1DzGGyauojKimplDnkvHTwSHRNuuzpVQJk508AzNwyfKt5gFsjcS0XBR5in8N9rlnehHaCj2bEG5oBEOXXDtyFh4gNbmMSIvpsO2XlEElN9if/V4vBsRjyN4nr22APU2e/1pUsht6JzoI00gKe2GTrkLjP4rwk55IM6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F3541FB;
+	Tue,  5 Mar 2024 06:54:37 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C47693F762;
+	Tue,  5 Mar 2024 06:53:58 -0800 (PST)
+From: "levi.yun" <yeoreum.yun@arm.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	mark.rutland@arm.com,
+	peterz@infradead.org,
+	mathieu.desnoyers@efficios.com
+Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Define the __io_aw() hook as mmiowb()
-Date: Tue,  5 Mar 2024 22:39:58 +0800
-Message-ID: <20240305143958.1752241-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	nd@arm.com,
+	"levi.yun" <yeoreum.yun@arm.com>,
+	stable@vger.kernel.org,
+	Aaron Lu <aaron.lu@intel.com>
+Subject: [PATCH] arm64/mm: Add memory barrier for mm_cid
+Date: Tue,  5 Mar 2024 14:53:35 +0000
+Message-Id: <20240305145335.2696125-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,111 +56,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit fb24ea52f78e0d595852e ("drivers: Remove explicit invocations of
-mmiowb()") remove all mmiowb() in drivers, but it says:
+Currently arm64's switch_mm() doesn't always have an smp_mb()
+which the core scheduler code has depended upon since commit:
 
-"NOTE: mmiowb() has only ever guaranteed ordering in conjunction with
-spin_unlock(). However, pairing each mmiowb() removal in this patch with
-the corresponding call to spin_unlock() is not at all trivial, so there
-is a small chance that this change may regress any drivers incorrectly
-relying on mmiowb() to order MMIO writes between CPUs using lock-free
-synchronisation."
+    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
 
-The mmio in radeon_ring_commit() is protected by a mutex rather than a
-spinlock, but in the mutex fastpath it behaves similar to spinlock. We
-can add mmiowb() calls in the radeon driver but the maintainer says he
-doesn't like such a workaround, and radeon is not the only example of
-mutex protected mmio.
+If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear()
+can unset the activly used cid when it fails to observe active task after it
+sets lazy_put.
 
-So we should extend the mmiowb tracking system from spinlock to mutex,
-and maybe other locking primitives. This is not easy and error prone, so
-we solve it in the architectural code, by simply defining the __io_aw()
-hook as mmiowb(). And we no longer need to override queued_spin_unlock()
-so use the generic definition.
+By adding an smp_mb() in arm64's check_and_switch_context(),
+Guarantee to observe active task after sched_mm_cid_remote_clear()
+success to set lazy_put.
 
-Without this, we get such an error when run 'glxgears' on weak ordering
-architectures such as LoongArch:
-
-radeon 0000:04:00.0: ring 0 stalled for more than 10324msec
-radeon 0000:04:00.0: ring 3 stalled for more than 10240msec
-radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000001f412 last fence id 0x000000000001f414 on ring 3)
-radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000000f940 last fence id 0x000000000000f941 on ring 0)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-
-Link: https://lore.kernel.org/dri-devel/29df7e26-d7a8-4f67-b988-44353c4270ac@amd.com/T/#t
-Link: https://lore.kernel.org/linux-arch/20240301130532.3953167-1-chenhuacai@loongson.cn/T/#t
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: levi.yun <yeoreum.yun@arm.com>
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Aaron Lu <aaron.lu@intel.com>
 ---
- arch/loongarch/include/asm/Kbuild      |  1 +
- arch/loongarch/include/asm/io.h        |  2 ++
- arch/loongarch/include/asm/qspinlock.h | 18 ------------------
- 3 files changed, 3 insertions(+), 18 deletions(-)
- delete mode 100644 arch/loongarch/include/asm/qspinlock.h
+ I'm really sorry if you got this multiple times.
+ I had some problems with the SMTP server...
 
-diff --git a/arch/loongarch/include/asm/Kbuild b/arch/loongarch/include/asm/Kbuild
-index a97c0edbb866..2dbec7853ae8 100644
---- a/arch/loongarch/include/asm/Kbuild
-+++ b/arch/loongarch/include/asm/Kbuild
-@@ -6,6 +6,7 @@ generic-y += mcs_spinlock.h
- generic-y += parport.h
- generic-y += early_ioremap.h
- generic-y += qrwlock.h
-+generic-y += qspinlock.h
- generic-y += rwsem.h
- generic-y += segment.h
- generic-y += user.h
-diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
-index c486c2341b66..4a8adcca329b 100644
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -71,6 +71,8 @@ extern void __memcpy_fromio(void *to, const volatile void __iomem *from, size_t
- #define memcpy_fromio(a, c, l) __memcpy_fromio((a), (c), (l))
- #define memcpy_toio(c, a, l)   __memcpy_toio((c), (a), (l))
- 
-+#define __io_aw() mmiowb()
+ arch/arm64/mm/context.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+index 188197590fc9..7a9e8e6647a0 100644
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -268,6 +268,11 @@ void check_and_switch_context(struct mm_struct *mm)
+ 	 */
+ 	if (!system_uses_ttbr0_pan())
+ 		cpu_switch_mm(mm->pgd, mm);
 +
- #include <asm-generic/io.h>
- 
- #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
-diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
-deleted file mode 100644
-index 34f43f8ad591..000000000000
---- a/arch/loongarch/include/asm/qspinlock.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_QSPINLOCK_H
--#define _ASM_QSPINLOCK_H
--
--#include <asm-generic/qspinlock_types.h>
--
--#define queued_spin_unlock queued_spin_unlock
--
--static inline void queued_spin_unlock(struct qspinlock *lock)
--{
--	compiletime_assert_atomic_type(lock->locked);
--	c_sync();
--	WRITE_ONCE(lock->locked, 0);
--}
--
--#include <asm-generic/qspinlock.h>
--
--#endif /* _ASM_QSPINLOCK_H */
--- 
-2.43.0
++	/*
++	 * See the comments on switch_mm_cid describing user -> user transition.
++	 */
++	smp_mb();
+ }
+
+ unsigned long arm64_mm_context_get(struct mm_struct *mm)
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
