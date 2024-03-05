@@ -1,197 +1,134 @@
-Return-Path: <stable+bounces-26695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FBA8713E4
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 03:49:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DDA8713FD
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 03:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F759B24A64
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 02:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BE422842BC
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 02:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48727286BF;
-	Tue,  5 Mar 2024 02:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3E929416;
+	Tue,  5 Mar 2024 02:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="GoDynFKX";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SWx9bxLS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Dy4CZCVe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2892942C;
-	Tue,  5 Mar 2024 02:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A29D18046
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 02:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709606929; cv=none; b=bJE7zRDzl+KgtzKCfP7Vu7tNdCIWiV9jevCh/6GeenKBmw39m0dzN8crWTZJo01JIrkYOnktLu9zcTBiKtUVMTNwQ/MO9m5MfyZJyL7mAU6PiM+d0PuJkIAQqAWLFp26K4D3VLbNbSoP/tbIlkE5i+wCXta1c6c9mWvqTekgc9k=
+	t=1709607512; cv=none; b=YuS3RQUVuszIXpNqsCvrSumaiBLtuaHAHB96jumPBgxV4vsRHB/AETJx6BudaXjWJXniwY4WOXAW2XDTU1VZ4LMZglvOnblfM9vtfp/5HK7RqQD16geU32PrHuIHTFfWD2N2XiTj22Qha4G+28pKINQTxevJDTg/Z9nh0Fjh9vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709606929; c=relaxed/simple;
-	bh=JiA9kzeN609txgE8z4GSqVv0/0AubIr+K76ucAH9UJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=noxxqKBHA9rDJOMhtwmxszkYWwRHMIL0u8/9mWX1p8+0yMaslJAgEauDfi7CEfr+2pOeD85qwlchHVoh3CZrSinTg/t4lKxi+Tasgse9UH8SkLcEHZ6CeKG+yCUQUrEZ2CPSdEaMR4+yjcO730QRPaezFJwkWMvAtiei3vCrcb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=GoDynFKX; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SWx9bxLS; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5200B386DE;
-	Tue,  5 Mar 2024 02:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1709606924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+Y03Au7QrI5K9RTyoPMPBjTzhHyEv6BVHwGhrK8ff2I=;
-	b=GoDynFKXlbFfW8wwZhxtNrSU50kOC99hj2dTecMGAf6R/YrHWi1NIi7QOpbNXUxwme7oaI
-	JNwFzGmoR+g9gTUpPNdqPKR+YbPrLsErpbdAFfAuzaz+pTWhHhYV8X3wil3JZPK4RRcQZS
-	VlFWGLvgfx6dX6YD1KEsH9wKZ0dj54A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1709606922; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=+Y03Au7QrI5K9RTyoPMPBjTzhHyEv6BVHwGhrK8ff2I=;
-	b=SWx9bxLStQAPtui7V4RVTtOEny1DQZHyujvWfPbk+MT14CkAyUsp89Lg+Bt5XUKmL+J7EI
-	OBr2Pxo19anPv/BZ84JWE6OWkzRYLNJn/gZW+P9SKWOzxi5DK1TRe6ZSi26yqX0OImjuls
-	XPBb9hP87a9TnM4iudX/eiYE7DDQQGQ=
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 721D413419;
-	Tue,  5 Mar 2024 02:48:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id xKwDCwiI5mXhFAAAn2gu4w
-	(envelope-from <wqu@suse.com>); Tue, 05 Mar 2024 02:48:40 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: WA AM <waautomata@gmail.com>,
-	stable@vger.kernel.org,
-	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Subject: [PATCH] btrfs: scrub: fix false alerts on zoned device scrubing
-Date: Tue,  5 Mar 2024 13:18:22 +1030
-Message-ID: <91a3647a1f2657b89bd63c12fa466c6c70965d22.1709606883.git.wqu@suse.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1709607512; c=relaxed/simple;
+	bh=y9r4LteBqMH04QeMzH5ZRb8WL1DNQ8oIZpGiIGECeXY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=D1FLZeWlBoGaVy98HwhNt5qbFo7ZcqdJIERsiCR6Qs+hRLu9T4qOmik/Ylah+XFtARCWfrWduOfQSU3yq55uHGZOrBPXSd6BijM2Auvv5bOXSqXJXwxC9B+POjSbzfG1t9Ja79rMNmLM3sR7cSidK1RfENeS5cxSXm7Cte5aZ+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Dy4CZCVe; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b26783b4so6291212276.0
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 18:58:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709607510; x=1710212310; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n7eOdHJCXhPfTrzPjBN5+OXdUaTW8sE8Q3b3My/raac=;
+        b=Dy4CZCVe6YM3yt/0TbGDzz54ppXCl4VbIDX9HVuMhbF8XDYBKaai4J4zbmAbnYsuub
+         u1vRM2HOUfUFFfH9QICaOpQebL4y7htcBzc2SAsY1a0ehIrpRk+wKsDVx6xbY3A+Z1cR
+         G+DPD2QLZy+mUQOA+fFcGgpmOCL+8rhAUZKXDeSRBqd0zhrKWQ2CMdVQlxaI4zdK7P2g
+         BrJa0Q3FNEXk8ZmX4KXxekdQRvMGTZ061+6PeYG0Zhxb//JSospGHzJ5i0tgdbNolvJB
+         iKVAP28elHCyg1gOPiAZqjbj9/zfl3jbz/v4DA4+fqwVfPYLdnMTlJOtVlC5s4l36j7R
+         Gd3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709607510; x=1710212310;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=n7eOdHJCXhPfTrzPjBN5+OXdUaTW8sE8Q3b3My/raac=;
+        b=xT43ra6IcStGWgnvohr6seRQCxU0C7XVpFGHkxD0Vf0+8nj+TeYoKIUs4rftJfzSLX
+         HOH0T+ERqRQjQdUkhLD/3hwDF/3x1zF8nfu+UgbL+rRvtY5RaDJYyDr565+YNYuJtKFI
+         f6IuJnKdQSa6jVAhvmVo1QwhR8jL8Z3i4HVcOKA+0FMNMOje8qQWIyYtmdoY2lyY74RC
+         YERk9alxYGyJbIS1wgrBTJp18LNtSWSxrDgTymycOQ9r10dIy+/iJCrbqANe2SHnwC7k
+         B62c9fo2MNgWEM+dY4s/Z5OkRmL3LkJQvOzfq+WzKHHeWJO7RA8wpEr/mF2vaAqcpGKu
+         r2MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXclnGpvSWKfvEjJvBUD9zU4vL7ZXG5TC2L6MtB6xr+5J/k2Fw6ghzpn+VYg+TPxpnXU98ejXCk3vCENRGFuzgGjWjv02ih
+X-Gm-Message-State: AOJu0Yywyt/f4C9b39SAktM8uxdrvKEP9GFeI57OTvrwKZTB+Zzpg80p
+	ltPevhHicA6OxP9OmZxaZYw1MovsqWbfvh2GT1YhaxIuR1Slx5b1zeNqD3hUwLbeB3rgvXaPpZ8
+	/Zg==
+X-Google-Smtp-Source: AGHT+IEogZ5CBaQQ1Pxlsyr4kO/zwOsDzoA40G/l0PfELA3rCnlArqT1Dqnlc8Fvf/0OV9x4yFlIYI1+7V0=
+X-Received: from jthies.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:23db])
+ (user=jthies job=sendgmr) by 2002:a05:6902:1009:b0:dbe:387d:a8ef with SMTP id
+ w9-20020a056902100900b00dbe387da8efmr370628ybt.1.1709607510093; Mon, 04 Mar
+ 2024 18:58:30 -0800 (PST)
+Date: Tue,  5 Mar 2024 02:58:01 +0000
+In-Reply-To: <20240305025804.1290919-1-jthies@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Bar: /
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=SWx9bxLS
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_TRACE(0.00)[suse.com:+];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-3.00)[100.00%];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,wdc.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,wdc.com];
-	 RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: 5200B386DE
-X-Spam-Flag: NO
+Mime-Version: 1.0
+References: <20240305025804.1290919-1-jthies@google.com>
+X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
+Message-ID: <20240305025804.1290919-2-jthies@google.com>
+Subject: [PATCH v4 1/4] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
+From: Jameson Thies <jthies@google.com>
+To: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org
+Cc: jthies@google.com, pmalani@chromium.org, bleung@google.com, 
+	abhishekpandit@chromium.org, andersson@kernel.org, 
+	dmitry.baryshkov@linaro.org, fabrice.gasnier@foss.st.com, 
+	gregkh@linuxfoundation.org, hdegoede@redhat.com, neil.armstrong@linaro.org, 
+	rajaram.regupathy@intel.com, saranya.gopal@intel.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Benson Leung <bleung@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 
-[BUG]
-When using zoned devices (zbc), scrub would always report super block
-errors like the following:
+Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
+plug type and updating the modal support macro for consistent naming.
 
-  # btrfs scrub start -fB /mnt/btrfs/
-  Starting scrub on devid 1
-  scrub done for b7b5c759-1baa-4561-a0ca-b8d0babcde56
-  Scrub started:    Tue Mar  5 12:49:14 2024
-  Status:           finished
-  Duration:         0:00:00
-  Total to scrub:   288.00KiB
-  Rate:             288.00KiB/s
-  Error summary:    super=2
-    Corrected:      0
-    Uncorrectable:  0
-    Unverified:     0
-
-[CAUSE]
-Since the very beginning of scrub, we always go with btrfs_sb_offset()
-to grab the super blocks.
-This is fine for regular btrfs filesystems, but for zoned btrfs, super
-blocks are stored in dedicated zones with a ring buffer like structure.
-
-This means the old btrfs_sb_offset() is not able to give the correct
-bytenr for us to grabbing the super blocks, thus except the primary
-super block, the rest would be garbage and cause the above false alerts.
-
-[FIX]
-Instead of btrfs_sb_offset(), go with btrfs_sb_log_location() which is
-zoned friendly, to grab the correct super block location.
-
-This would introduce new error patterns, as btrfs_sb_log_location() can
-fail with extra errors.
-
-Here for -ENOENT we just end the scrub as there are no more super
-blocks.
-For other errors, we record it as a super block error and exit.
-
-Reported-by: WA AM <waautomata@gmail.com>
-Link: https://lore.kernel.org/all/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com/
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
 ---
- fs/btrfs/scrub.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Changes in v4:
+- None.
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index c4bd0e60db59..e1b67baa4072 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2788,7 +2788,6 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
- 					   struct btrfs_device *scrub_dev)
- {
- 	int	i;
--	u64	bytenr;
- 	u64	gen;
- 	int ret = 0;
- 	struct page *page;
-@@ -2812,7 +2811,17 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
- 		gen = btrfs_get_last_trans_committed(fs_info);
+Changes in v3:
+- Fixed CC stable.
+
+Changes in v2:
+- Tested on usb-testing branch merged with chromeOS 6.8-rc2 kernel.
+
+ drivers/usb/typec/ucsi/ucsi.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 7e35ffbe0a6f2..469a2baf472e4 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -259,12 +259,12 @@ struct ucsi_cable_property {
+ #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
+ #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
+ #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
+-#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
++#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
+ #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
+-#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
++#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
+ 	u8 latency;
+ } __packed;
  
- 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
--		bytenr = btrfs_sb_offset(i);
-+		u64 bytenr;
-+
-+		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
-+		if (ret == -ENOENT)
-+			break;
-+		if (ret < 0) {
-+			spin_lock(&sctx->stat_lock);
-+			sctx->stat.super_errors++;
-+			spin_unlock(&sctx->stat_lock);
-+			break;
-+		}
- 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
- 		    scrub_dev->commit_total_bytes)
- 			break;
 -- 
-2.44.0
+2.44.0.rc1.240.g4c46232300-goog
 
 
