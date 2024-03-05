@@ -1,124 +1,219 @@
-Return-Path: <stable+bounces-26860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC39872948
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:18:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CE78729BA
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD7BFB2D3C1
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693F41C21C9C
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2348512AAF5;
-	Tue,  5 Mar 2024 21:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19912BE98;
+	Tue,  5 Mar 2024 21:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FwhoyyrR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M4OpxBmI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D133612A16C;
-	Tue,  5 Mar 2024 21:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709673442; cv=none; b=doeirI0Lmtd2wBDPT+3OCfyPrdoisH3uk4DtGfCvXUej7pOMOeHuf23Flx9WdttwZ9v9Cuzlilh5T1z7Yd3H7aBBIrFFEW1Xwvv95qv3cE7yzvx27mI/JV2vr2Sc50S5j6rVYVD6c7vW3hFvGNfwO3PythBMNX7FVDYbXSYHwWM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709673442; c=relaxed/simple;
-	bh=QRXH/8lE9leyc3TMSPftFHr6I8X4mVKYeHcAzXHHCAk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AWzSjLHGPLMybipamQMcjVKcmb9MSIS50CdKwD+lvG/caHvonuqhSUN2Z5b7DUrU5YCaecocmx1GE272PW3qs+DkH+iyY33oCFODqW7Pi1v/oEHhW4BajwPGy4kGySuAdTTMiZjn+9bNuWH4oKTka5CbngvNL2gwIFbHgy44B8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FwhoyyrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52701C433F1;
-	Tue,  5 Mar 2024 21:17:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709673442;
-	bh=QRXH/8lE9leyc3TMSPftFHr6I8X4mVKYeHcAzXHHCAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FwhoyyrR+vVycbZa7TIxMaLpC6rGRiP2VO1S5gAASloZMPCTvJDvebT6kls70aoxu
-	 6/BAhB57kRXv8KkaND6Y1D9VCw3fEYgJTjiuohiNwFesCR3FRnQHDi8NtjNUgTDiAl
-	 IBEQz+GSAYLg9kqwgmRpsNfs9lIVh8y6bN3rogMpR1CfYbdA7lxeL+21M55e7hFozL
-	 de3Z+N+5f/PZfe/F1IgN4MmXU4YN45KGYu8k1CPPTgntUNIsIMSF4idkSghmxoL4d9
-	 sJD4tACESoAZW0wvMDiVt4sJTbEbmtT9/mDQt8biDQ0zaGQaAF8DZVTR53/ps7E37J
-	 OOxT0P7Mq3Rdw==
-Date: Tue, 5 Mar 2024 13:17:20 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Benjamin LaHaise <ben@communityfibre.ca>,
-	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
-Subject: Re: [PATCH] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb
- conversion
-Message-ID: <20240305211720.GB1202@sol.localdomain>
-References: <20240304235715.3790858-1-bvanassche@acm.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D76D86AC0
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709675547; cv=fail; b=tiL9Feg4DneuDsQEIXgBSYk5qgnKfGjPWBR5JqctRW9L90Ob3iVamQYpypnUAD8H888KyQWt9jjyZC3OBLGIItGlFf7XzMCF34KSfx08c6mmyenFS2/jNPVjwpoeKf+dVKdKjFB7FAOOdMDAxLBTBcr2X+/8eLjAjh/uLiv0pN4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709675547; c=relaxed/simple;
+	bh=ati3puPWPcSzePZYGKLK60wTrp4P5VtzSGIG6cU2ezU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LFTrNqSbfuWPPsPb/M2G3xzNqmsNzKK5Qfns8Bgf4jGrFNNLlRoDWY8zXoRP0nNqzf8FppN6GGw+QMRZ10i8fqpSqrXE0sXeRQCXWsfZmYEr5oSPyfOZiB4/6cIjPyB16r7MX7ZAVJDRLIcEpKnCCQaF0qsgXIchI/HdXXp2D5E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M4OpxBmI; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709675546; x=1741211546;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=ati3puPWPcSzePZYGKLK60wTrp4P5VtzSGIG6cU2ezU=;
+  b=M4OpxBmIA0bNkrQ5P6hpI1umdY/ibwkyO0DWXVAumyVPk60nQ8w6EI03
+   dN8hzFCSV/iZ0sptG6gQqZZqVPPJPKIE9Qw8YeNaaOdqzZD9lyXKca3gD
+   APQBBMr6DVfiKCxvjPThVMnZuCUhqxFywFIKdlH9JnJqEHWjxeMDvVVa4
+   muB1KSic327mk6QNa8/pWsb/1L94+tyq3XpwbRrBCHGpmRLRcojB0pJgm
+   nGMbhJL4lxrzR1P8ppow779zpom2KbAEJu0O81XhjrUd85PPfCrBhhnDP
+   FNLB/XqyqouqI5LFQYHuOf1eo+Cho+UsaLWZAv5/U11p1WT83bKbPWI6B
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="15662277"
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="15662277"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 13:52:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="14219644"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Mar 2024 13:52:24 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 5 Mar 2024 13:52:23 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 5 Mar 2024 13:52:23 -0800
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.168)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 5 Mar 2024 13:52:22 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=U6WWEoXwPXhWYA1OZh/MIdtHqV+vCYcaCvKc/4ipR3n6bZll/9qaxPPSPyklQMo/1LE7GpZ0JZJeuARWN4Amz7EdeF2utoceuwnXwwF+E3hwaAAv3A6S0eCDFhKaz5an3eNlMh1nckybtsPrmin1qBvRTq459e+glfGkMrs4q1Xyj4n2SWu87PMIM48FOvuhoziZctiCqyMLCcdGB6ii18w0bynseiTvzhjXzpEFMOpYq/GAEPUCVP4LNkuTxVHxbi8BeWcTv9pSTHYx6rvgfzN70INDDg2zzUrJSPV8TS8Z1HCiy9fLZBsOuxiZ7sUAbalm6FXQYE/YpW3EEJtJfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yw/vBqDpnSnXuf0Jz2Q4MHybP6ftYmuA5RqCL8Scm6g=;
+ b=hp1zBLnPYSl6ArUMTzbGn+yqtsH+g1stw4dHeCREOn9xFscDIncskWj7/uOcN+Guu0OHDwRCNPSVnT3YtnodFp7nlvQjc5WIphaR95IyaBuYu4O0rD4hSgejlAzcrUw+Cf/vNh37T+qCWOYDXep/FtuAjrdT6XLF6sRY6gD27Dry+5AOm7W9tW3qipc+bhCfuqI0Ilo+kgbSPP6uxODJ0Nk7HOf1BTEbVlfqoIn75mg/I8DSf1IzKS4mUhsNIWXaswtelODSeMzEZ4BEtEyUb5Dqp8+FL3csT/CoJTpVnmmpVxvGx8m4XcyL5c99WE26y3J9Q2sNCv1XA2bAjKn23Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
+ by DS0PR11MB8072.namprd11.prod.outlook.com (2603:10b6:8:12f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.23; Tue, 5 Mar
+ 2024 21:52:21 +0000
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::45cf:261e:c084:9493]) by DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::45cf:261e:c084:9493%6]) with mapi id 15.20.7362.019; Tue, 5 Mar 2024
+ 21:52:21 +0000
+Date: Tue, 5 Mar 2024 13:52:18 -0800
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
+	<dri-devel@lists.freedesktop.org>, Chris Wilson
+	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
+	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, <stable@vger.kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH v3 2/4] drm/i915/gt: Do not exposed fused off engines.
+Message-ID: <20240305215218.GY718896@mdroper-desk1.amr.corp.intel.com>
+References: <20240229232859.70058-1-andi.shyti@linux.intel.com>
+ <20240229232859.70058-3-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240229232859.70058-3-andi.shyti@linux.intel.com>
+X-ClientProxiedBy: BYAPR11CA0051.namprd11.prod.outlook.com
+ (2603:10b6:a03:80::28) To DS0PR11MB8182.namprd11.prod.outlook.com
+ (2603:10b6:8:163::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240304235715.3790858-1-bvanassche@acm.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|DS0PR11MB8072:EE_
+X-MS-Office365-Filtering-Correlation-Id: 452be654-42ea-41f4-3554-08dc3d5e88e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: WgB8nu/n/HnwLDRmQV/VNVOm/LXDzd8fAald/IJDiDqvlns9edox9AAFIE59PLLW6IRqhkZH1ZOJynfc0hmyM2/knaW1CLXaA67tLSsZYrEc/MnXTWelgX88mSQxyUz9E5dk8Pk43ZtOxo63dMbAkHmJx4MTtMFOSjWPHpgBejpS8fcyzE9a2l/1Y+TYl1/Vhs1y/HRbz3AqCdUQmLIg6PfHsgChmzcNk0wO4t37/dM00qAU1rzHYBOQ88VXDtEM9LhiYV+LzQ4UHJnQcgLXJ+FVjg+SKOpag1qoQZwXcW1BfKf/NKktsRYtlYrV9GwLLMG5IYBPznW4/XB+Cl0lSxi3/vl0+bi1qrUMF55GnoqpTXFhqFOptDpCywDJI13Rvu7I/Ygwyhl57d0/JHLAv8mBPPNtLCn6T6aIwnrheoh6N7TXX2qZ03ZpFbx5N08G9nywASpYRS+rmF6bajc46F5YWFEHKPpZfvHOeUXPHLpYQFqqLFHpqtaDJwmM18YyAroKRJKLJ1G1UWQB01jTLzVjxVa9QgRpVBnIAM5JkK/RfoZJeBQkMRDByFiB29lGLwHP7tth05HY8Ge3JWQLJoCOn5RVS94r9IZeI9f/p8wMjvvJAtVCsiCi+A8xzVH6yLLGqQk1QV7k2owE/9gdH8IW2uO3fOK/Yqo4NKB81uM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wy+BS2C/FjsKsqLEQz815qX80oc+OoBFa3b3MDUjpyXZYq3mjapbJxJxvCRU?=
+ =?us-ascii?Q?fnAq3W8A5wpGggu0FnDg3wMX5pGAZR1N2xyUWVI/+dKMWpYIppnnrgdbgYYr?=
+ =?us-ascii?Q?vbZB02pICW5RVOe1UthsWtoQjsrvNBoumVTqCOQ88jT13kS3MEHEoxk1/WdN?=
+ =?us-ascii?Q?+O9w7y/vnZaaUghG2wzHhfofB1k03//LerwW3GlL6bjkRXOS1H34vJJyFOrk?=
+ =?us-ascii?Q?Hk7rpedIgrVHERAoGoM6ryOy4I0BXV2lx/LiSjSQcUnVBw/EN3hPLCe7I1UU?=
+ =?us-ascii?Q?EmmR3C/20xScLJXmHohZl3ifcoVSY3aY8Qy0UJejIpw9dt+krO8deRf8jHtC?=
+ =?us-ascii?Q?DCvQ/ujpTMEB+ehFRWQ6NxlvMkEqGId70bXTe6bxSTVxzz1gD6jXHKEaA87d?=
+ =?us-ascii?Q?gLqLpQda4TOSYT/rgdhH5/YaOYdYnLCBd4zaOAZ2Pvj1GsvznkPQnEtZQ5hG?=
+ =?us-ascii?Q?iNCJ6EGGRq7z92ZwLyhc0cT83AJgDDBk67D5hRjcK0AqSaObtRpwq01amf0q?=
+ =?us-ascii?Q?BZ3WqllnbFy674OtMXlT6oZabo2CtiqULe7FlyEaMmVp4HaPEDcVP7EOb8hK?=
+ =?us-ascii?Q?uKa15WbRHRLK3qz77hrX/snvda2Z1ZqLnPalTpUVFcsTnDCLX30q4KpwpbHR?=
+ =?us-ascii?Q?wEzhC2l4VhD2Knk5UkaXeIgLJrfdBDp11VPPPc1iifqf1RKMEXKqtFe9Lnj2?=
+ =?us-ascii?Q?TzRT7qZ7nZsbhD9dMRzQonP6znX1sbfrcizkKZgW5HIxLir0Nc89VIzPZA6D?=
+ =?us-ascii?Q?C47a3vkwg3GQ3KNLkeOZSIZWTQg8tYLOP02gGKIHq+MbdvAuAvgdCdy4Di2U?=
+ =?us-ascii?Q?T7V8x9qBur5rw5l1xFd/Mmw/MKPej8Qv+s/ZKptMNmkMt+7e3AyM+zLRQYVu?=
+ =?us-ascii?Q?sDkNDHjBSlH2lJtSCJ0rlZPl75ybZZ3nl612J7RLlQbRVHqPidfDPSz8FfHW?=
+ =?us-ascii?Q?W3HXtWGqee+t3LziBDDXZ27MMd9VlM2Jc4uQ4fjw7xNu1JPrW7r7XiD5CT9i?=
+ =?us-ascii?Q?4bG2pqkGZ6ZFjc2Q5h1TVxsMmV7ZvVR6paAr1vOfZwi/yGgO8LOuY2wC65BT?=
+ =?us-ascii?Q?N13NQST5cRBQlKCGw1qkyMqCaQ6tqGaoBNtMsTLu6ylbLbGyC1MkEt/2u31c?=
+ =?us-ascii?Q?bQtka1gMxfF7Whuwlx/B+KmU5xd5t/x+IOjFuhjn8mITcfc4M5M4PJHRAHht?=
+ =?us-ascii?Q?G7y+K0F7DL5vZu4fmE7OB0GBjwkZgdJID6KbNAlCgi6apr3jWsdFyYD9xtvC?=
+ =?us-ascii?Q?60tU/anSB0A9qvSc/t2XeGmlk8epUAgL6n9kTkplHNsVeassRYoJ8kLZ0521?=
+ =?us-ascii?Q?QdulCdJCg6v8X3cS1wtgIRyXrT62hLwiBCuSaKbx1ulGpRtf12VNx6PMcoXd?=
+ =?us-ascii?Q?ofcC+4CcA0I1P1LBDvCzGWxEDac5ycvxcOO6r+Pkr5CLGMUIsWTDwld4yXN6?=
+ =?us-ascii?Q?SBmRzoXTi2nqSzQqYhbGssB4HnIeT6HGqLoBgslAVmbdo1MjdnkpAv7/LJWg?=
+ =?us-ascii?Q?kasCaVu2AhjRb7hnXCVQdaAqiMwnmM1j/OeNz9ZqecxNzR29KKDWjt0NiO/7?=
+ =?us-ascii?Q?xFx9V6HqQ6dbGseLSw4qBjg7px5ehVLZ+uh/hm6CKTyBKSgn9M5/aXzfUXf/?=
+ =?us-ascii?Q?zQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 452be654-42ea-41f4-3554-08dc3d5e88e3
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 21:52:21.3729
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IrNMNbBTedrfSB9NY+onmiyh38wOTgxwSpUY2Uze1FJROxPnU/ytgbMmqcJ9ULsLAXOtGPIEQDUzXAfP2cFHUuxUQRHeW3L1NHbmJdv2BEA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8072
+X-OriginatorOrg: intel.com
 
-On Mon, Mar 04, 2024 at 03:57:15PM -0800, Bart Van Assche wrote:
-> The first kiocb_set_cancel_fn() argument may point at a struct kiocb
-> that is not embedded inside struct aio_kiocb. With the current code,
-> depending on the compiler, the req->ki_ctx read happens either before
-> the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
-> that it is guaranteed that the IOCB_AIO_RW test happens first.
+On Fri, Mar 01, 2024 at 12:28:57AM +0100, Andi Shyti wrote:
+> Some of the CCS engines are disabled. They should not be listed
+> in the uabi_engine list, that is the list of engines that the
+> user can see.
+
+Fused off engines already aren't visible to userspace (or to the kernel
+for that matter).  For CCS engines engine_mask_apply_compute_fuses()
+removes the fused off engines from the runtime engine mask; other engine
+types are handled in similar functions.  Any engine that doesn't appear
+in the filtered down engine_mask won't even have a 'struct
+intel_engine_cs' allocated for it.
+
+
+Matt
+
 > 
-> Reported-by: Eric Biggers <ebiggers@kernel.org>
-> Cc: Benjamin LaHaise <ben@communityfibre.ca>
-> Cc: Eric Biggers <ebiggers@google.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Avi Kivity <avi@scylladb.com>
-> Cc: Sandeep Dhavale <dhavale@google.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: stable@vger.kernel.org
-> Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> Requires: 4e4f77d74878 ("drm/i915/gt: Refactor uabi engine class/instance list creation")
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
 > ---
->  fs/aio.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  drivers/gpu/drm/i915/gt/intel_engine_user.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/fs/aio.c b/fs/aio.c
-> index da18dbcfcb22..9cdaa2faa536 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -589,8 +589,8 @@ static int aio_setup_ring(struct kioctx *ctx, unsigned int nr_events)
+> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+> index cf8f24ad88f6..ec5bcd1c1ec4 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+> @@ -244,6 +244,18 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+>  		if (uabi_class > I915_LAST_UABI_ENGINE_CLASS)
+>  			continue;
 >  
->  void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
->  {
-> -	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
-> -	struct kioctx *ctx = req->ki_ctx;
-> +	struct aio_kiocb *req;
-> +	struct kioctx *ctx;
->  	unsigned long flags;
->  
->  	/*
-> @@ -600,9 +600,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
->  	if (!(iocb->ki_flags & IOCB_AIO_RW))
->  		return;
->  
-> +	req = container_of(iocb, struct aio_kiocb, rw);
+> +		/*
+> +		 * If the CCS engine is fused off, the corresponding bit
+> +		 * in the engine mask is disabled. Do not expose it
+> +		 * to the user.
+> +		 *
+> +		 * By default at least one engine is enabled (check
+> +		 * the engine_mask_apply_compute_fuses() function.
+> +		 */
+> +		if (!(engine->gt->info.engine_mask &
+> +		      BIT(_CCS(engine->uabi_instance))))
+> +			continue;
 > +
->  	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
->  		return;
->  
-> +	ctx = req->ki_ctx;
-> +
->  	spin_lock_irqsave(&ctx->ctx_lock, flags);
->  	list_add_tail(&req->ki_list, &ctx->active_reqs);
->  	req->ki_cancel = cancel;
+>  		GEM_BUG_ON(uabi_class >=
+>  			   ARRAY_SIZE(i915->engine_uabi_class_count));
+>  		i915->engine_uabi_class_count[uabi_class]++;
+> -- 
+> 2.43.0
+> 
 
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-
-- Eric
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
