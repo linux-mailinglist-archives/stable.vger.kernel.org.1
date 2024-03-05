@@ -1,200 +1,269 @@
-Return-Path: <stable+bounces-26717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0BA871600
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 07:48:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EAF871682
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 08:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23BF1C20BC6
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 06:47:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F29F2B23DE7
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 07:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE5454FBA;
-	Tue,  5 Mar 2024 06:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF5F7E571;
+	Tue,  5 Mar 2024 07:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ONVtEDtZ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3xnEyCNc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962BD1EA6F
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 06:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E618A7D3FE
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 07:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709621271; cv=none; b=emodtviS7dqOEkmbkWAZXLXbMDFek/7Iql8MFNKntiSStVkt49+2hMzA+9LQ9TgRU+SA9jmFNnwGms14E7hi7wehZgKeNE7zLYg0iPGD87CZebYeVC5K+/RJ0SQNH1be2LMZ+PeBMLvA8EVx46jRWLyQOysXgBmIsJyOANEmWgU=
+	t=1709622896; cv=none; b=SjsYD76FprL+VV4cR528/kyyVgsSJ4engnuJoph75tf2wkkJPUe7FcZUx6llHlWSphUaaQP3d+0gP8WLjHKSFpJJFpX396xbQEFCU++poD17Y+btJFusD2QhlgCDjTqNWXp6tFISFT4xNNYxPNkLg1uUXpFO8p0UNDlHI7FB3qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709621271; c=relaxed/simple;
-	bh=O4yVRud/9+8a7tAKirWeQ09Db+zegMJkuUhSNXLZlLs=;
+	s=arc-20240116; t=1709622896; c=relaxed/simple;
+	bh=y6zaOZvJ4cIVJ2qepjnDrcV6r6n/r5jEVFp4o5JpDlg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sInDxEekhtRk3u4ZqHTxLX7IGMl0mkc7n9IxTw+qIUTPH1LR8RFTmroCcf+It20TOzS+xNslfEBwd5iiqJLXV4TTnpQqCnuoUF1mLpoBzvXmmDyyGl8dbVC32ihkUvJTfRc/dkKJvVfgDep9GhNPiPeozR9TF7Lgt7x1+q6HsuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ONVtEDtZ; arc=none smtp.client-ip=209.85.160.169
+	 To:Cc:Content-Type; b=RYYbjKomyKfoDhdY3kB1FBUmV2hethUc7U7fK/LBGpWstDHQ3LJpsbccqaEK7iZkzAVNop8O1qd+GtbQ6odO/Iyit8JO7MWpDopPs8C9wDz08G6exrgW0SDJ2tkqqxn/l3pbwX+IyNr44H3rfkCOBkD4MOeJQ3wTXCZov00LyZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3xnEyCNc; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-42ef8193ae6so128671cf.1
-        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 22:47:48 -0800 (PST)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-428405a0205so156051cf.1
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 23:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709621267; x=1710226067; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1709622893; x=1710227693; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2isqh14d05L6zoJqPkxhn5o+6H4cX5aRd/OEiiiX0AM=;
-        b=ONVtEDtZdzGnMJI+zo6Oxb19tlK2LZZG1OtKEJjSDJAbbkfK8OghKuvZmaFYcvu/aw
-         00nQIKJ0STugS5NGNpDi52ueOHzrs0jBU6LCJZnjeg0F7K0+0hojasrLKyBPdrzICwgb
-         a7CQp8m9NJelj/uwWRMVpwDOVjY/erQQLQTrJH84wDptjLL3dF7q19YffDMjCh+T19bI
-         EvCnvg71oWAhY/fcuW69km/FZ0iiWilN4rGQACnmQHkDKyYdodgWzEgOjV+132sCYSlc
-         HmvoSu6vEIhJCXZeWKPcRT680jedt7PLqjL8biSxsTx3nLognxntH+qptoTxnKN8WKzF
-         bMrQ==
+        bh=gZ6lNE1/SlOo2Yjm5/u+OE6lkumtZM5XSJ/KqzGtJ3Q=;
+        b=3xnEyCNcWJdP9DBGCyKMyXRkWAta2A7CR4YbXMJtqFYtXj4AbHlzTF5Tn8dlgDjT95
+         uVAnjebeVBOiWclGVltKar/0R+bkxlChJt6hUxvLDnZ7EKdS/3UIBSKYMjbzjl05ZB28
+         FwlWiJgLinGOtx3NQPaeIH26RDfZKVLQMAoSUf52Og0PwL/Ztrh7V7lm9hZaly4lADVF
+         rBUdIXvUu7bcGCLu+uL0pun0GspLW0iIjyBEU2vWGZNbQKf8iyc5DZT680JFPYHPIxV+
+         LJODNuGLqJndvM2ChUMy1WqQ3W2DGvRCZZqkKPR12iJzJpPfRxwuFniVlaKtrHcrD2Dt
+         ssfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709621267; x=1710226067;
+        d=1e100.net; s=20230601; t=1709622893; x=1710227693;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2isqh14d05L6zoJqPkxhn5o+6H4cX5aRd/OEiiiX0AM=;
-        b=nlmQFUWh4qhE8bpjNf8UsKN5obAfc2ctRAbP9LBklCsZo9Pih3pL8Xh91q33ZyLOrw
-         8qHTdNt1x0uhIeSYIRG99pdB8Bp7taAC+v7sgTGwOqTkmJ5HwkxuSBw6HFZJKnGH7boS
-         7AP4OMya8sxfR7Au7HQud8pFaCXKVOW2yEPSS5thqNAYyNCp+MvX9yy1ycU6d1RkOKab
-         Bser5y+dwvvJuGW10eXD8hYA/Laoy8hDOZWm1ZQ60OBcv296yXASH61A4dv5Soycs3MV
-         O8MMI/5V3eNb4tD6O0K6jxP4Lm+LCKxraOVYmr6XadKXyTq7P5rxY1hN6iCpnm3yQ3KC
-         6yyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBR+unByI21812yGcND7h2eHilAFBEEO25fCpdEOGOAUt22k2YSJcgm6rUfi8eBAUUc9x4l1XMygP9FgvGevcSU3KwNAWJ
-X-Gm-Message-State: AOJu0YyF9K2YKLNWTekLUBB2Stq90ZTUhXl7vk66vIu8E+tWtThMvqKk
-	S2hHkblJ718Az7/7AwiFd4gEQd0Cys/bhSZelYdxwlNUW33n0JBIuRA0X4X4P086m/ywauHUukO
-	efZMhirpgosjmPFZO/R5NGtt0mEfKzE1VJCJk
-X-Google-Smtp-Source: AGHT+IEpTpDOEFpl781QIzwL1OSIgfOz8xQaKP1fzK3tIs7/SmlB6dYuX3/oXifYUhhn/nzwkSXVJ6GySFAH0BOpg+s=
-X-Received: by 2002:a05:622a:1985:b0:42e:e0da:343d with SMTP id
- u5-20020a05622a198500b0042ee0da343dmr123630qtc.10.1709621267471; Mon, 04 Mar
- 2024 22:47:47 -0800 (PST)
+        bh=gZ6lNE1/SlOo2Yjm5/u+OE6lkumtZM5XSJ/KqzGtJ3Q=;
+        b=ELg7GWxNl9vFm70WLpED6VZo+bKWuxwtOmbe5ztS5r76FBDDhgAMXSS0Mqultnzrxt
+         A1t9CMx62ikR/dXbpytpKsz1EyVt64p2pD1qvGlB4hJb5wWvtooUAhnSewpqu0evmKz8
+         9WrXPXV+gVPZTfXAQW9hsUI5gI8PzGkNXas7klYGOdxjHAu4cKyEi6pQN5fmfx7ZLfXn
+         N8IjyPOmX6bbL1vBjFjp9eTh6ts459DE3yfDCw79yifRLcqL8uHPapoQtZIr69EI9zHw
+         t3h6zfCyiTgpvfzQa5Y1ojjVQTu1483fAjTaO5jBPYHzNOwQuRToH2l6+4tEg7PVhPkr
+         HM9g==
+X-Forwarded-Encrypted: i=1; AJvYcCW11ssuRfYOm4QYbqQ/yoxkXwFvi6thUXz9+e5g8W6GH7d+WcQb1XW4sTBdhBHqgt1XsBQhZEW5GqP8OIFG/JeQkVbtTrQK
+X-Gm-Message-State: AOJu0YwhUBfbFTv2e/Ap3JwHzlREpJB8N4KQQeF3JEUK5nXuj6CvxSX7
+	TyzeX7kL42SMVfL8rK8IZ3KDLy9QxH+TPAzdJT7Wt1jyBR6AI6PrSLVGe1dSToFCNNZR6qyfeyF
+	JLNIDVgCVDcmdMP462Bo+LW51HzPeCskvSpxm
+X-Google-Smtp-Source: AGHT+IEFOU5j+ArF55fdfXdcl8hFaVcAq2CRoTSvDHrwXdk+TBzUqq588pPOFFn7BNfYvwZzsxzAIGsV46EFXvApyc0=
+X-Received: by 2002:ac8:5c85:0:b0:42e:fa0e:2592 with SMTP id
+ r5-20020ac85c85000000b0042efa0e2592mr103522qta.12.1709622892609; Mon, 04 Mar
+ 2024 23:14:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229105204.720717-1-herve.codina@bootlin.com>
- <20240229105204.720717-3-herve.codina@bootlin.com> <acb69aa8c1a4c4e9849123ef538b9646a71507a0.camel@gmail.com>
- <20240304152202.GA222088-robh@kernel.org> <20240304174933.7ad023f9@bootlin.com>
-In-Reply-To: <20240304174933.7ad023f9@bootlin.com>
+References: <20240220111044.133776-1-herve.codina@bootlin.com>
+ <20240220111044.133776-3-herve.codina@bootlin.com> <CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
+ <20240221095137.616d2aaa@bootlin.com>
+In-Reply-To: <20240221095137.616d2aaa@bootlin.com>
 From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 4 Mar 2024 22:47:09 -0800
-Message-ID: <CAGETcx-tmyJA30GtdU_dO9tWFoK+rO5tm-On4tPR7oQotnMkqQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] of: overlay: Synchronize of_overlay_remove() with
- the devlink removals
+Date: Mon, 4 Mar 2024 23:14:13 -0800
+Message-ID: <CAGETcx9eFuqwJTSrGz9Or8nfHCN3=kNO5KpXwdUxQ4Z7FxHZug@mail.gmail.com>
+Subject: Re: [PATCH 2/2] of: property: fw_devlink: Fix links to supplier when
+ created from phandles
 To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
-	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, 
+	Android Kernel Team <kernel-team@android.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 4, 2024 at 8:49=E2=80=AFAM Herve Codina <herve.codina@bootlin.c=
-om> wrote:
+On Wed, Feb 21, 2024 at 12:51=E2=80=AFAM Herve Codina <herve.codina@bootlin=
+.com> wrote:
 >
-> Hi Rob,
+> Hi Saravana,
 >
-> On Mon, 4 Mar 2024 09:22:02 -0600
-> Rob Herring <robh@kernel.org> wrote:
+> On Tue, 20 Feb 2024 18:40:40 -0800
+> Saravana Kannan <saravanak@google.com> wrote:
 >
-> ...
->
-> > > > @@ -853,6 +854,14 @@ static void free_overlay_changeset(struct
-> > > > overlay_changeset *ovcs)
-> > > >  {
-> > > >   int i;
-> > > >
-> > > > + /*
-> > > > +  * Wait for any ongoing device link removals before removing some=
- of
-> > > > +  * nodes. Drop the global lock while waiting
-> > > > +  */
-> > > > + mutex_unlock(&of_mutex);
-> > > > + device_link_wait_removal();
-> > > > + mutex_lock(&of_mutex);
+> > On Tue, Feb 20, 2024 at 3:10=E2=80=AFAM Herve Codina <herve.codina@boot=
+lin.com> wrote:
 > > >
-> > > I'm still not convinced we need to drop the lock. What happens if som=
-eone else
-> > > grabs the lock while we are in device_link_wait_removal()? Can we gua=
-rantee that
-> > > we can't screw things badly?
+> > > Since commit 1a50d9403fb9 ("treewide: Fix probing of devices in DT
+> > > overlays"), when using device-tree overlays, the FWNODE_FLAG_NOT_DEVI=
+CE
+> > > is set on each overlay nodes. This flag is cleared when a struct devi=
+ce
+> > > is actually created for the DT node.
+> > > Also, when a device is created, the device DT node is parsed for know=
+n
+> > > phandle and devlinks consumer/supplier links are created between the
+> > > device (consumer) and the devices referenced by phandles (suppliers).
+> > > As these supplier device can have a struct device not already created=
+,
+> > > the FWNODE_FLAG_NOT_DEVICE can be set for suppliers and leads the
+> > > devlink supplier point to the device's parent instead of the device
+> > > itself.
+> > >
+> > > Avoid this situation clearing the supplier FWNODE_FLAG_NOT_DEVICE jus=
+t
+> > > before the devlink creation if a device is supposed to be created and
+> > > handled later in the process.
+> > >
+> > > Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays=
+")
+> > > Cc: <stable@vger.kernel.org>
+> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > ---
+> > >  drivers/of/property.c | 16 +++++++++++++++-
+> > >  1 file changed, 15 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/of/property.c b/drivers/of/property.c
+> > > index 641a40cf5cf3..ff5cac477dbe 100644
+> > > --- a/drivers/of/property.c
+> > > +++ b/drivers/of/property.c
+> > > @@ -1097,6 +1097,7 @@ static void of_link_to_phandle(struct device_no=
+de *con_np,
+> > >                               struct device_node *sup_np)
+> > >  {
+> > >         struct device_node *tmp_np =3D of_node_get(sup_np);
+> > > +       struct fwnode_handle *sup_fwnode;
+> > >
+> > >         /* Check that sup_np and its ancestors are available. */
+> > >         while (tmp_np) {
+> > > @@ -1113,7 +1114,20 @@ static void of_link_to_phandle(struct device_n=
+ode *con_np,
+> > >                 tmp_np =3D of_get_next_parent(tmp_np);
+> > >         }
+> > >
+> > > -       fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(su=
+p_np));
+> > > +       /*
+> > > +        * In case of overlays, the fwnode are added with FWNODE_FLAG=
+_NOT_DEVICE
+> > > +        * flag set. A node can have a phandle that references an oth=
+er node
+> > > +        * added by the overlay.
+> > > +        * Clear the supplier's FWNODE_FLAG_NOT_DEVICE so that fw_dev=
+link links
+> > > +        * to this supplier instead of linking to its parent.
+> > > +        */
+> > > +       sup_fwnode =3D of_fwnode_handle(sup_np);
+> > > +       if (sup_fwnode->flags & FWNODE_FLAG_NOT_DEVICE) {
+> > > +               if (of_property_present(sup_np, "compatible") &&
+> > > +                   of_device_is_available(sup_np))
+> > > +                       sup_fwnode->flags &=3D ~FWNODE_FLAG_NOT_DEVIC=
+E;
+> > > +       }
+> > > +       fwnode_link_add(of_fwnode_handle(con_np), sup_fwnode);
 > >
-> > It is also just ugly because it's the callers of
-> > free_overlay_changeset() that hold the lock and now we're releasing it
-> > behind their back.
+> > Nack.
 > >
-> > As device_link_wait_removal() is called before we touch anything, can't
-> > it be called before we take the lock? And do we need to call it if
-> > applying the overlay fails?
-
-Rob,
-
-This[1] scenario Luca reported seems like a reason for the
-device_link_wait_removal() to be where Herve put it. That example
-seems reasonable.
-
-[1] - https://lore.kernel.org/all/20231220181627.341e8789@booty/
-
+> > of_link_to_phandle() doesn't care about any of the fwnode flags. It
+> > just creates links between the consumer and supplier nodes. Don't add
+> > more intelligence into it please. Also, "compatible" doesn't really
+> > guarantee device creation and you can have devices created out of
+> > nodes with no compatible property. I finally managed to get away from
+> > looking for the "compatible" property. So, let's not add back a
+> > dependency on that property please.
+> >
+> > Can you please give a real example where you are hitting this? I have
+> > some thoughts on solutions, but I want to understand the issue fully
+> > before I make suggestions.
 > >
 >
-> Indeed, having device_link_wait_removal() is not needed when applying the
-> overlay fails.
->
-> I can call device_link_wait_removal() from the caller of_overlay_remove()
-> but not before the lock is taken.
-> We need to call it between __of_changeset_revert_notify() and
-> free_overlay_changeset() and so, the lock is taken.
->
-> This lead to the following sequence:
+> I detected the issue with this overlay:
 > --- 8< ---
-> int of_overlay_remove(int *ovcs_id)
+> &{/}
+> {
+>         reg_dock_sys_3v3: regulator-dock-sys-3v3 {
+>                 compatible =3D "regulator-fixed";
+>                 regulator-name =3D "DOCK_SYS_3V3";
+>                 regulator-min-microvolt =3D <3300000>;
+>                 regulator-max-microvolt =3D <3300000>;
+>                 gpios =3D <&tca6424_dock_1 5 GPIO_ACTIVE_HIGH>; // DOCK_S=
+YS3V3_EN
+>                 enable-active-high;
+>                 regulator-always-on;
+>         };
+> };
+>
+> &i2c5 {
+>         tca6424_dock_1: gpio@22 {
+>                 compatible =3D "ti,tca6424";
+>                 reg =3D <0x22>;
+>                 gpio-controller;
+>                 #gpio-cells =3D <2>;
+>                 interrupt-parent =3D <&gpio4>;
+>                 interrupts =3D <1 IRQ_TYPE_EDGE_FALLING>;
+>                 interrupt-controller;
+>                 #interrupt-cells =3D <2>;
+>                 vcc-supply =3D <&reg_dock_ctrl_3v3>;
+>         };
+> };
+> --- 8< ---
+>
+> The regulator uses a gpio.
+> The supplier for the regulator was not the gpio chip (gpio@22) but the i2=
+c bus.
+
+Thanks for the example. Let me think about this a bit on how we could
+fix this and get back to you.
+
+Please do ping me if I don't get back in a week or two.
+
+-Saravana
+
+>
+> I first tried to clear always the flag in of_link_to_phandle() without an=
+y check
+> to a "compatible" string and in that case, I broke pinctrl.
+>
+> All devices were waiting for the pinctrl they used (child of pinctrl devi=
+ce
+> node) even if the pinctrl driver was bound to the device.
+>
+> For pinctrl, the DT structure looks like the following:
+> --- 8< ---
 > {
 >         ...
->         mutex_lock(&of_mutex);
->         ...
+>         pinctrl@1234 {
+>                 reg =3D <1234>;
+>                 compatible =3D "vendor,chip";
 >
->         ret =3D __of_changeset_revert_notify(&ovcs->cset);
->         ...
+>                 pinctrl_some_device: grp {
+>                         fsl,pins =3D < ... >;
+>                 };
+>         };
 >
->         ret_tmp =3D overlay_notify(ovcs, OF_OVERLAY_POST_REMOVE);
->         ...
->
->         mutex_unlock(&of_mutex);
->         device_link_wait_removal();
->         mutex_lock(&of_mutex);
->
->         free_overlay_changeset(ovcs);
->         ...
->         mutex_unlock(&of_mutex);
->         ...
-> }
+>         some_device@4567 {
+>                 compablile =3D "foo,bar";
+>                 reg =3D <4567>;
+>                 pinctrl-names =3D "default";
+>                 pinctrl-0 =3D <&pinctrl_some_device>;
+>                 ...
+>         };
+> };
 > --- 8< ---
 >
-> In this sequence, the question is:
-> Do we need to release the mutex lock while device_link_wait_removal() is
-> called ?
-
-In general I hate these kinds of sequences that release a lock and
-then grab it again quickly. It's not always a bug, but my personal
-take on that is 90% of these introduce a bug.
-
-Drop the unlock/lock and we'll deal a deadlock if we actually hit one.
-I'm also fairly certain that device_link_wait_removal() can't trigger
-something else that can cause an OF overlay change while we are in the
-middle of one. And like Rob said, I'm not sure this unlock/lock is a
-good solution for that anyway.
-
-Please CC me on the next series. And I'm glad folks convinced you to
-use flush_workqueue(). As I said in the older series, I think
-drain_workqueue() will actually break device links.
-
--Saravana
-
-
--Saravana
+> In that case the link related to pinctrl for some_device needs to be to t=
+he
+> 'pinctrl_some_device' node parent (i.e. the pinctrl@1234 node).
+>
+>
+> Best regards,
+> Herv=C3=A9
 
