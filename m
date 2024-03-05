@@ -1,175 +1,137 @@
-Return-Path: <stable+bounces-26799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CD9872274
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:14:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CFB8722AA
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EB3B2148F
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:14:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DFED287255
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1041272A1;
-	Tue,  5 Mar 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4701272BF;
+	Tue,  5 Mar 2024 15:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="d0BLrSxJ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F5C126F11;
-	Tue,  5 Mar 2024 15:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082D41272A2
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 15:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709651643; cv=none; b=Dt09oAvCdybG7xRdoubuAK2JvgRiCLZo5SDrvgHWjnuM0fCVZeAqqlnBMOjgJ3ka3RM61/Ww4XOf+o0a2uiW0etcCqKTAtAkKFfIqsNKxEtrRHrsLyESlsSXnayDclJ2GI/tQJvPJt5cQbzLFsMLdd2MazU7fyCRhlJKBrTS2bI=
+	t=1709652326; cv=none; b=aBOHLR2GWaKokF5nzNEMluzER7Cn7GDslbEsEzZkghixgstL4WH7IS3Ww6dtr5EDDRtACpns/Hzd2Wkjxu7vhl+aH/TAMSIr3cjt145eGFvXQrX9G/iewIX46bxv7J+CDy2UYj5oTEof1aMBAHjZsSRbWPWbxb5XN39LVDZ3gB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709651643; c=relaxed/simple;
-	bh=usGZF6UxV+1VLnpklW44wjNYg9/XmH4RSi/XxQz0hzQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LY/7da/r5AKzZDPxLkgdyfR0/ow3iv9S8a5tJuqFEIIfZSx3VvzCPy/ens944Es6b8j9/DfGGrSQA9i43wJlc48ojy8k7xTc+SXaouVBsHKQV1vl/rshAPyETdjI2gGaOrGIr8X7uhfKuC9pZUjQ0Ucwpf14zJZZVyDeTO/BsZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F0781FB;
-	Tue,  5 Mar 2024 07:14:37 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 836683F738;
-	Tue,  5 Mar 2024 07:13:59 -0800 (PST)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and swapoff()
-Date: Tue,  5 Mar 2024 15:13:49 +0000
-Message-Id: <20240305151349.3781428-1-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1709652326; c=relaxed/simple;
+	bh=q7EQj5T0Are7t8oh5ebCVYH/j+VAIo2h2q8OFWU/E5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f9W4PdwSM84qR3XF2khis9bVqk2vZfpLAO244s0Drf2UPvaq7DWfSYk5xqqTDuM/thKxoJ/FJkerGLJDsWO5ZpQ9DdIlFAm9+ODKmJ9Skvgirp4VLfqdgTcrYAKGzozFMiS/F+2lrkwpFImOGjUjsdihbzA2lfTboSa20R9noCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=d0BLrSxJ; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 425F5fdV005466;
+	Tue, 5 Mar 2024 15:25:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pps0720; bh=6rKM/hQsKq/kpwMcC1BQSxxYUcrxG6XXX0yEkHvLLjo=;
+ b=d0BLrSxJ10ynJKPbK55DTmAIMIM2Nl3ikwLuK14oWwxzs2uj/1Yoqh5MGciY7mvof9lK
+ nz/lvrfLSly8pWq8KBHEoM422PS51GmRN9bPij6zcf2zkezkrDK4VXGS/GVj+lXghx8p
+ 3fXULq8+SynaeuPP1xWvZYqV8qmWxenDPDI4HJZsoRyiBjbzb51pW00I8XfnRcsugfZF
+ qUxCJ4jHwIeCC47n3yih5n+7l7eEaQ51b2dd+uYG7E4SgBW5/oUjbEDTekQA3piEDf5g
+ i4q4ZMhx/Lm49/CqCdoaaCAsSrU07HboWq0lH/dPjgBDRyLvv+kjQGN0/dAt3IRrRICP mw== 
+Received: from p1lg14878.it.hpe.com ([16.230.97.204])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3wp4j2sma3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Mar 2024 15:25:10 +0000
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 66C1D27644;
+	Tue,  5 Mar 2024 15:25:09 +0000 (UTC)
+Received: from swahl-home.5wahls.com (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id B3BB9801FD5;
+	Tue,  5 Mar 2024 15:25:07 +0000 (UTC)
+Date: Tue, 5 Mar 2024 09:25:05 -0600
+From: Steve Wahl <steve.wahl@hpe.com>
+To: Pavin Joseph <me@pavinjoseph.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
+Message-ID: <Zec5Ubr7G9NbnIyq@swahl-home.5wahls.com>
+References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
+ <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
+ <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
+ <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
+ <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
+ <ZeO9n6oqXosX1I6C@swahl-home.5wahls.com>
+ <f264a320-3e0d-49b6-962b-e9a741dcdf00@pavinjoseph.com>
+ <ZeXzoTjki+1WR258@swahl-home.5wahls.com>
+ <fe72c912-f1a0-4a53-88ab-b85e8c3f7bd9@pavinjoseph.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe72c912-f1a0-4a53-88ab-b85e8c3f7bd9@pavinjoseph.com>
+X-Proofpoint-ORIG-GUID: sHk-IgT3tMDLQNZhnheyDRQYM9YqSXC2
+X-Proofpoint-GUID: sHk-IgT3tMDLQNZhnheyDRQYM9YqSXC2
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-05_12,2024-03-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ mlxscore=0 suspectscore=0 phishscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403050122
 
-There was previously a theoretical window where swapoff() could run and
-teardown a swap_info_struct while a call to free_swap_and_cache() was
-running in another thread. This could cause, amongst other bad
-possibilities, swap_page_trans_huge_swapped() (called by
-free_swap_and_cache()) to access the freed memory for swap_map.
+[Oops; previously sent this to Pavin only when I ment to copy everyone.]
 
-This is a theoretical problem and I haven't been able to provoke it from
-a test case. But there has been agreement based on code review that this
-is possible (see link below).
+On Mon, Mar 04, 2024 at 11:18:49PM +0530, Pavin Joseph wrote:
+> On 3/4/24 21:45, Steve Wahl wrote
+> > There's a chance you may be running out of the memory reserved for the
+> > kexec kernel.  If you have the time to try adding the command line
+> > option "nogbpages" to a kernel that's working for you to see if that
+> > breaks it in a similar way or not, that would be valuable information.
+> 
+> I tried it and it breaks working kernels (6.7.4).
 
-Fix it by using get_swap_device()/put_swap_device(), which will stall
-swapoff(). There was an extra check in _swap_info_get() to confirm that
-the swap entry was valid. This wasn't present in get_swap_device() so
-I've added it. I couldn't find any existing get_swap_device() call sites
-where this extra check would cause any false alarms.
+Thank you.  That's good news, it means I'm thinking on the right
+track.
 
-Details of how to provoke one possible issue (thanks to David Hilenbrand
-for deriving this):
+I'm still on the way to getting a system installed with OpenSUSE to
+try and replicate your problem.  In the meantime, if you want to try
+figuring out how to increase the memory allocated for kexec kernel
+purposes, that might correct the problem.
 
---8<-----
+> > My next steps are to read through your logs more closely, and load
+> > OpenSUSE somewhere to see if I can replicate your problem.
+> 
+> I wasn't able to reproduce the issue inside a VM (virt-manager, QEMU/KVM).
 
-__swap_entry_free() might be the last user and result in
-"count == SWAP_HAS_CACHE".
+Also good to know, as that was a possibility I was considering trying.
 
-swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+The number of regions created in the identity map as you're kexecing
+is fairly system dependent, it's been a couple of months since I
+looked through the callers, but as I recall it might even include
+regions that are in tables passed in by the BIOS.  So, it varies from
+system to system, and a VM is probably going to be much simpler
+compared to real hardware.
 
-So the question is: could someone reclaim the folio and turn
-si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+Thanks.
 
-Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-still references by swap entries.
-
-Process 1 still references subpage 0 via swap entry.
-Process 2 still references subpage 1 via swap entry.
-
-Process 1 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-[then, preempted in the hypervisor etc.]
-
-Process 2 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-
-Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-__try_to_reclaim_swap().
-
-__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-swap_entry_free()->swap_range_free()->
-...
-WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
-
-What stops swapoff to succeed after process 2 reclaimed the swap cache
-but before process1 finished its call to swap_page_trans_huge_swapped()?
-
---8<-----
-
-Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
-
-Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
-
-Thanks,
-Ryan
-
- mm/swapfile.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2b3a2d85e350..f580e6abc674 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
- 	smp_rmb();
- 	offset = swp_offset(entry);
- 	if (offset >= si->max)
--		goto put_out;
-+		goto bad_offset;
-+	if (data_race(!si->swap_map[swp_offset(entry)]))
-+		goto bad_free;
-
- 	return si;
- bad_nofile:
-@@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
- out:
- 	return NULL;
- put_out:
--	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
- 	percpu_ref_put(&si->users);
- 	return NULL;
-+bad_offset:
-+	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
-+	goto put_out;
-+bad_free:
-+	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
-+	goto put_out;
- }
-
- static unsigned char __swap_entry_free(struct swap_info_struct *p,
-@@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
- 	if (non_swap_entry(entry))
- 		return 1;
-
--	p = _swap_info_get(entry);
-+	p = get_swap_device(entry);
- 	if (p) {
- 		count = __swap_entry_free(p, entry);
- 		if (count == SWAP_HAS_CACHE &&
- 		    !swap_page_trans_huge_swapped(p, entry))
- 			__try_to_reclaim_swap(p, swp_offset(entry),
- 					      TTRS_UNMAPPED | TTRS_FULL);
-+		put_swap_device(p);
- 	}
- 	return p != NULL;
- }
---
-2.25.1
-
+--> Steve Wahl
+-- 
+Steve Wahl, Hewlett Packard Enterprise
 
