@@ -1,144 +1,212 @@
-Return-Path: <stable+bounces-26817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2A687245D
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:32:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E305187245E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4C81F26C7D
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9892E285E84
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2538F70;
-	Tue,  5 Mar 2024 16:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sent.com header.i=@sent.com header.b="A8SdnuzY";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pgGINRdA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A878BF7;
+	Tue,  5 Mar 2024 16:33:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416DF79EE
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 16:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68B35256;
+	Tue,  5 Mar 2024 16:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709656338; cv=none; b=jRTmStTF/EumPXJJGiz8ISD5Ml0u1KN20m8lUCZrYnONuZHRMY64aHMJHQ2ipYm+d/cCyr1Bgat+dtQ2eAOVVLu0AF2b9Y0e6LZifOUX3BEjR9WvT3WPOwTZ8KivB6BqBAXKaq62BbA0px7ezR3s94t7DNyDUlqBWjURd/ce4KU=
+	t=1709656399; cv=none; b=FNd/9AzmtLXMScxtGDcHEeKSOAeKsyaqrBDNZhC0V4OLNIDeJcOPKwmaO+0d9Dz6hCSITnZXnzzboXrxSLfATKue4/QBkkUGSvjijwbHkaFLwuQjW5lQs9DupubqF0eg7AoAd3BmbnWCO8PMUq7tEzxdzBo0xkQcRsz5asDdLmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709656338; c=relaxed/simple;
-	bh=9sqcdIEWEA0YYWpKIHIcRxsMPrYEPygnfiyS72LYCIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TG9hI5ZZIYEYfdRUAUCRNekNHH7kWF5f1VJfNy2gMjAsowqUE1uezfG1kX75nH1jZxqoq1JP4OUx8vii1WGhddjz0SrUW7f14o+Qca2tUuJff+qDeUDUsN2bIFNqfbqs8fR7ffMQCPabkio19E1HyAjPKXWvZhZfsEAnmtbx1d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sent.com; spf=pass smtp.mailfrom=sent.com; dkim=pass (2048-bit key) header.d=sent.com header.i=@sent.com header.b=A8SdnuzY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pgGINRdA; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sent.com
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 2E17211400FA;
-	Tue,  5 Mar 2024 11:32:16 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Tue, 05 Mar 2024 11:32:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:reply-to:subject:subject:to:to; s=fm1; t=1709656336; x=
-	1709742736; bh=6l285yO6SumF56rDdMfLu5SKNuqZg2rVZIvbyL2k2BA=; b=A
-	8SdnuzYJGaXbdWUdJ+PSgE2BryZ9iNej8TjYTDd3Ymh2Mc4phWdDj5CAOaz4AKaZ
-	Pyivn+LxudPB2jyo6rhKEIIEA+UFvpQWYvQPr7Y8V8zlrOAeyU6gve6NNVwMWPkv
-	jqnAjwMDcUTsIYlf+bks0XnuXsJ7uUMZwwhc3aEXBAkldeZKBYjGSSz3xxhHlYax
-	Zug0Hvx5uKx51mBtFsqq057nQKKKoUnDtBQooyOpNIJkztFLFs8fEw6SnP11xp9B
-	dAPXrsZZl4S3KJoyX2GIRG8cyigcUnjXM1EXLCftRzvb3FzBZXLAeKUJ4OwnItGV
-	3Zcjkbhn4pwFPEQLO1oBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:reply-to
-	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1709656336; x=1709742736; bh=6
-	l285yO6SumF56rDdMfLu5SKNuqZg2rVZIvbyL2k2BA=; b=pgGINRdA7K+YCaJwT
-	neOMX3paB4tUiUZGiRKSDl8zAfH61KMyvp4C/75dHDmDwjwfAz/6HCATObc7ltoQ
-	2t7jZeluRdT3MVsYqqvp6dHFKTJTfjT6ZmSVC7DhaHFwsSKqg4C/4jdBtvr5Hjy9
-	+pVMPLxm/PcXjEqgPiYpt5n7bZBSbA3ZEe8bRXd1v1Z2vNtWPvGr/YA+QPKteoyF
-	jB5Q2JIM176OV8E3UWPH98OgZLuuzYZsW9kFnXNNHLxC3a0ll6guxRzkYWHlkJv8
-	XJoAit3ZiqPP+HaE7o+DlWEwtq6OMnnL8dbZD1SJ0BE5gALMFQ3yRzA0bjsT0AdT
-	d4iqA==
-X-ME-Sender: <xms:D0nnZV05adDuTrAqYxSbxHIt7OiJJG91WLz-ZLxv10Lf_vWVry7cLw>
-    <xme:D0nnZcEWCRYpxwat4xMIzp4GIjDepiRg-MvsufzhRPOEpnGw9quOYJuFI3rG-8S6U
-    D8wN0DqG_McECZeBw>
-X-ME-Received: <xmr:D0nnZV5unNvBeaGalfoJYzdc9ngvQqjwOmXTgUthpuWKc4zjSx1puWzNhdr7wNT2Zf3v9vxGxdMsmnd3uWLuS_47xW5Aib_LjCGqE8nWkIJ8HM_71oFgAY3G>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdekiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkfforhggtgfgsehtkeertdertdejnecuhfhrohhmpegkihcujggr
-    nhcuoeiiihdrhigrnhesshgvnhhtrdgtohhmqeenucggtffrrghtthgvrhhnpeetudevhe
-    etheehieetiefhjeevjeeltdfgvdeiueeiudetffdtvedthfetvedtffenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
-X-ME-Proxy: <xmx:D0nnZS3eTpQs5V4JNfoOR8qI50_Ch__tCIVDQz2gRQ3XZEOmK2YMhQ>
-    <xmx:D0nnZYHL8BRmWSQ6KMp2QeRrx6FTd_uj8hV1Omib-PFTWinS5kx6mw>
-    <xmx:D0nnZT8oLztouUaFoNO-QFVixYiIQegU_drLADE4OO23ZpI5qai7wA>
-    <xmx:EEnnZQ9AlVnze0Vc4kOzc2YZ7uCF4kmklsEoTkHL5YjQPkw0yLrNqA>
-Feedback-ID: iccd040f4:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 5 Mar 2024 11:32:14 -0500 (EST)
-From: Zi Yan <zi.yan@sent.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Huang Ying <ying.huang@intel.com>,
-	Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Subject: [PATCH STABLE v4.19.y] mm/migrate: set swap entry values of THP tail pages properly.
-Date: Tue,  5 Mar 2024 11:32:13 -0500
-Message-ID: <20240305163213.95119-1-zi.yan@sent.com>
-X-Mailer: git-send-email 2.43.0
-Reply-To: Zi Yan <ziy@nvidia.com>
+	s=arc-20240116; t=1709656399; c=relaxed/simple;
+	bh=f5Lp8EFVZnUWM98jg6oEX+5rvZnQO3fYT71oARwy5D4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KRJ65iYMDujzoU4VTjuakHIlZ6jhst/ZG5+OZdpCLumxRlduXOqat8i+s17iWYGTLd+FX4YXYYFpDeOTCIA1mI7IZA8yfsaQdQC2v6Ka80WdKK6TAL1FIC8lSD8VE/5A1rKh5ew7ov7teECvwDLNByXt4I9B4RQirgCA6+2j0b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3D5D1FB;
+	Tue,  5 Mar 2024 08:33:51 -0800 (PST)
+Received: from [10.1.39.151] (XHFQ2J9959.cambridge.arm.com [10.1.39.151])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3AA163F738;
+	Tue,  5 Mar 2024 08:33:14 -0800 (PST)
+Message-ID: <8989df79-84f5-488c-bd74-c11d2241eff1@arm.com>
+Date: Tue, 5 Mar 2024 16:33:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
+ swapoff()
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "Huang, Ying"
+ <ying.huang@intel.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240305151349.3781428-1-ryan.roberts@arm.com>
+ <cb738797-77d9-4e20-a54c-f70385cdbd95@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <cb738797-77d9-4e20-a54c-f70385cdbd95@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Zi Yan <ziy@nvidia.com>
+On 05/03/2024 15:50, David Hildenbrand wrote:
+> On 05.03.24 16:13, Ryan Roberts wrote:
+>> There was previously a theoretical window where swapoff() could run and
+>> teardown a swap_info_struct while a call to free_swap_and_cache() was
+>> running in another thread. This could cause, amongst other bad
+>> possibilities, swap_page_trans_huge_swapped() (called by
+>> free_swap_and_cache()) to access the freed memory for swap_map.
+>>
+>> This is a theoretical problem and I haven't been able to provoke it from
+>> a test case. But there has been agreement based on code review that this
+>> is possible (see link below).
+>>
+>> Fix it by using get_swap_device()/put_swap_device(), which will stall
+>> swapoff(). There was an extra check in _swap_info_get() to confirm that
+>> the swap entry was valid. This wasn't present in get_swap_device() so
+>> I've added it. I couldn't find any existing get_swap_device() call sites
+>> where this extra check would cause any false alarms.
+>>
+>> Details of how to provoke one possible issue (thanks to David Hilenbrand
+>> for deriving this):
+> 
+> Almost
+> 
+> "s/Hilenbrand/Hildenbrand/" :)
 
-The tail pages in a THP can have swap entry information stored in their
-private field. When migrating to a new page, all tail pages of the new
-page need to update ->private to avoid future data corruption.
+Ahh sorry... I even explicitly checked it against your name on emails... fat
+fingers...
 
-Corresponding swapcache entries need to be updated as well.
-e71769ae5260 ("mm: enable thp migration for shmem thp") fixed it already.
+> 
+>>
+>> --8<-----
+>>
+>> __swap_entry_free() might be the last user and result in
+>> "count == SWAP_HAS_CACHE".
+>>
+>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+>>
+>> So the question is: could someone reclaim the folio and turn
+>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+>>
+>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+>> still references by swap entries.
+>>
+>> Process 1 still references subpage 0 via swap entry.
+>> Process 2 still references subpage 1 via swap entry.
+>>
+>> Process 1 quits. Calls free_swap_and_cache().
+>> -> count == SWAP_HAS_CACHE
+>> [then, preempted in the hypervisor etc.]
+>>
+>> Process 2 quits. Calls free_swap_and_cache().
+>> -> count == SWAP_HAS_CACHE
+>>
+>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+>> __try_to_reclaim_swap().
+>>
+>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+>> swap_entry_free()->swap_range_free()->
+>> ...
+>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+>>
+>> What stops swapoff to succeed after process 2 reclaimed the swap cache
+>> but before process1 finished its call to swap_page_trans_huge_swapped()?
+>>
+>> --8<-----
+>>
+>> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+>> Closes:
+>> https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>>
+>> Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
+>>
+>> Thanks,
+>> Ryan
+>>
+>>   mm/swapfile.c | 14 +++++++++++---
+>>   1 file changed, 11 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index 2b3a2d85e350..f580e6abc674 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+>>       smp_rmb();
+>>       offset = swp_offset(entry);
+>>       if (offset >= si->max)
+>> -        goto put_out;
+>> +        goto bad_offset;
+>> +    if (data_race(!si->swap_map[swp_offset(entry)]))
+>> +        goto bad_free;
+>>
+>>       return si;
+>>   bad_nofile:
+>> @@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t
+>> entry)
+>>   out:
+>>       return NULL;
+>>   put_out:
+>> -    pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>>       percpu_ref_put(&si->users);
+>>       return NULL;
+>> +bad_offset:
+>> +    pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>> +    goto put_out;
+>> +bad_free:
+>> +    pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
+>> +    goto put_out;
+>>   }
+>>
+>>   static unsigned char __swap_entry_free(struct swap_info_struct *p,
+>> @@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
+>>       if (non_swap_entry(entry))
+>>           return 1;
+>>
+>> -    p = _swap_info_get(entry);
+>> +    p = get_swap_device(entry);
+>>       if (p) {
+>>           count = __swap_entry_free(p, entry);
+>>           if (count == SWAP_HAS_CACHE &&
+>>               !swap_page_trans_huge_swapped(p, entry))
+>>               __try_to_reclaim_swap(p, swp_offset(entry),
+>>                             TTRS_UNMAPPED | TTRS_FULL);
+>> +        put_swap_device(p);
+>>       }
+>>       return p != NULL;
+>>   }
+>> -- 
+>> 2.25.1
+>>
+> 
+> LGTM
+> 
+> Are you planning on sending a doc extension for get_swap_device()?
 
-Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
-Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- mm/migrate.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+I saw your comment:
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 171573613c39..893ea04498f7 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -514,8 +514,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
- 	if (PageSwapBacked(page)) {
- 		__SetPageSwapBacked(newpage);
- 		if (PageSwapCache(page)) {
-+			int i;
-+
- 			SetPageSwapCache(newpage);
--			set_page_private(newpage, page_private(page));
-+			for (i = 0; i < (1 << compound_order(page)); i++)
-+				set_page_private(newpage + i,
-+						 page_private(page + i));
- 		}
- 	} else {
- 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
--- 
-2.43.0
+We should likely update the documentation of get_swap_device(), that after
+decrementing the refcount, the SI might become stale and should not be touched
+without a prior get_swap_device().
 
+But when I went to make the changes, I saw the documentation already said:
+
+...we need to enclose all swap related functions with get_swap_device() and
+put_swap_device()... Notice that swapoff ... can still happen before the
+percpu_ref_tryget_live() in get_swap_device() or after the percpu_ref_put() in
+put_swap_device()... The caller must be prepared for that.
+
+I thought that already covered it? I'm sure as usual, I've misunderstood your
+point. Happy to respin if you have something in mind?
 
