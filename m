@@ -1,134 +1,89 @@
-Return-Path: <stable+bounces-26841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEEF8727E1
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:47:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED5E8727FB
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951361F27F2B
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3E41F2907B
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B6D86659;
-	Tue,  5 Mar 2024 19:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00AB5C619;
+	Tue,  5 Mar 2024 19:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JMGanj5g"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WqPxyIUv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2CB5C619;
-	Tue,  5 Mar 2024 19:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4499624A1D
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 19:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709668031; cv=none; b=Cifon236hi62QyiLlkf3tvBB/my859wl0g8GhzD6yj/NIZonIcy5A/ZHRxA8/ithseU/BELbGEvDhMV/VxGT0GRr6yQEUc3LHjgcHarxJp/w4rLdtjXRSLwF233OE7Y+6RP8lHfoOzm97uiIsxFmCZeDTLYf9yTnj9qdzfPgco0=
+	t=1709668189; cv=none; b=jt1ya39AHRN2i/LDpESLJsjf+40WniZerJfH8C3p5s3b2cZWHwtYvZlpIPg0WmYp9Rt2Cf5L7efSqu0D+RUqButKDgWoq6fqV3335dYYGdx/ccK+Dfj5jP3tDlJLOWHSH8x9w8TuLXk8YSyAvhatGBTAZkFoHxVitGSlJ9SxJVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709668031; c=relaxed/simple;
-	bh=kuoYnsDLmW/wxuxNi4a6n7MjG9q5R/wZqtXOSAbz7p0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y5YK3fNfmBBdYbx9RPKscKOzA6TEE6oyyfSIbeasTfQtvaQ8F9Vh/GET6bNQ0uHJhetXK95Cc8zgwROLRiexoMGJLS3A2Xe6ezmRjkSCaQasg5UZKVs3jEFqHD3gqf3yphDH/pfa/jxmydi0EVB1Y+5hxgUa1At9qraWgGzMhCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JMGanj5g; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709668031; x=1741204031;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kuoYnsDLmW/wxuxNi4a6n7MjG9q5R/wZqtXOSAbz7p0=;
-  b=JMGanj5gWiyvzj3vPF6/9x8TeO7b071tslUzcawtqjtajzyFMYgySkGn
-   FvzaZseScrrpaAz/ltBp+DjxCdNIyruwH+fGQvAjWCHoh9ufsKEs9LL1F
-   7LhERh5t3KtiJZJaiV6Q59Hfil7f7UHyG+kGWcGOb3CV+qW52zMTH4CPl
-   2FRvAnnONkGbXJFZ+Eg10bA4WkYx+6DE5G4Qgbdwd764c3kIqKDE96S2H
-   tXsOXX6q6gJxgFxgRCGekPp5vcLO15nOjo2HZAPu1hqHYRMQeISIBMrxY
-   +5LrTOnkea7g6U3E046XyrmHg9sbG5btZFOfsCIvO8LHiiNQWlADn0bqN
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4121795"
-X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
-   d="scan'208";a="4121795"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 11:47:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
-   d="scan'208";a="14057021"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Mar 2024 11:47:09 -0800
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: hdegoede@redhat.com,
-	markgross@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	andriy.shevchenko@linux.intel.com
-Cc: platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/x86/intel/tpmi: Change vsec offset to u64
-Date: Tue,  5 Mar 2024 11:46:44 -0800
-Message-Id: <20240305194644.2077867-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1709668189; c=relaxed/simple;
+	bh=+WKDowJ/Vyo6jEXEBn5BtLH+g7pYLXM9AnPMMTv2bzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MFniZB+fhtKovTGWrrpZaT67qubc0U3uxiEOPurVBisQ3irA3mxrqN0NSLXDm88pb3EnKjkmSFZPg0sB18xjEmSO1ts8iHhyA/s64qKj8lt43bGD0sksfHNJkeYWoTHexOYchW4CFjJQl3jOAaJEvowS7W1xGgBdaKfgrUQ/srk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WqPxyIUv; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 5 Mar 2024 19:49:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1709668185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z6IK7WTxYDII1ZZxniDW+JY/tgmWm66Vu1jWnH6jiRw=;
+	b=WqPxyIUvJbTV79UAzinYrjAvZXcW8HGl7VrNMOVbVNT/0O7k1Ewhrkj5Ft8HkntmqFn9WS
+	JHT1SKWyIbrYqUns5W/KZ59IJHyxbMfCHyIhGc9v8olorlZhcdLkBtlGGf0oPRs4YkEdtf
+	MNPL9vXFLouuU/C4RYbgpz6yz2+9KEc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	David Matlack <dmatlack@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 5.15.y 0/2] fix softlockups in stage2_apply_range()
+Message-ID: <Zed3T8SGyIkvW-Ru@linux.dev>
+References: <cover.1709665227.git.kjlx@templeofstupid.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1709665227.git.kjlx@templeofstupid.com>
+X-Migadu-Flow: FLOW_OUT
 
-The vsec offset can be 64 bit long depending on the PFS start. So change
-type to u64. Also use 64 bit formatting for seq_printf.
+On Tue, Mar 05, 2024 at 11:41:38AM -0800, Krister Johansen wrote:
+> Hi Stable Team,
+> In 5.15, unmapping large kvm vms on arm64 can generate softlockups.  My team has
+> been hitting this when tearing down VMs > 100Gb in size.
+> 
+> Oliver fixed this with the attached patches.  They've been in mainline since
+> 6.1.
+> 
+> I tested on 5.15.150 with these patches applied. When they're present,
+> both the dirty_log_perf_test detailed in the second patch, and
+> kvm_page_table_test no longer generate softlockups when unmapping VMs
+> with large memory configurations.
+> 
+> Would you please consider these patches for inclusion in an upcoming 5.15
+> release?
 
-Fixes: 47731fd2865f ("platform/x86/intel: Intel TPMI enumeration driver")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.3+
----
-This is a forward looking change. There is no platform with this issue.
-This can go through regular cycle.
+Backport looks fine, and I have no issues with this going to stable if
+it helps folks.
 
- drivers/platform/x86/intel/tpmi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
 
-diff --git a/drivers/platform/x86/intel/tpmi.c b/drivers/platform/x86/intel/tpmi.c
-index e73cdea67fff..910df7c654f4 100644
---- a/drivers/platform/x86/intel/tpmi.c
-+++ b/drivers/platform/x86/intel/tpmi.c
-@@ -96,7 +96,7 @@ struct intel_tpmi_pfs_entry {
-  */
- struct intel_tpmi_pm_feature {
- 	struct intel_tpmi_pfs_entry pfs_header;
--	unsigned int vsec_offset;
-+	u64 vsec_offset;
- 	struct intel_vsec_device *vsec_dev;
- };
- 
-@@ -376,7 +376,7 @@ static int tpmi_pfs_dbg_show(struct seq_file *s, void *unused)
- 			read_blocked = feature_state.read_blocked ? 'Y' : 'N';
- 			write_blocked = feature_state.write_blocked ? 'Y' : 'N';
- 		}
--		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%08x\t%c\t%c\t\t%c\t\t%c\n",
-+		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%016llx\t%c\t%c\t\t%c\t\t%c\n",
- 			   pfs->pfs_header.tpmi_id, pfs->pfs_header.num_entries,
- 			   pfs->pfs_header.entry_size, pfs->pfs_header.cap_offset,
- 			   pfs->pfs_header.attribute, pfs->vsec_offset, locked, disabled,
-@@ -395,7 +395,8 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
- 	struct intel_tpmi_pm_feature *pfs = s->private;
- 	int count, ret = 0;
- 	void __iomem *mem;
--	u32 off, size;
-+	u32 size;
-+	u64 off;
- 	u8 *buffer;
- 
- 	size = TPMI_GET_SINGLE_ENTRY_SIZE(pfs);
-@@ -411,7 +412,7 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
- 	mutex_lock(&tpmi_dev_lock);
- 
- 	for (count = 0; count < pfs->pfs_header.num_entries; ++count) {
--		seq_printf(s, "TPMI Instance:%d offset:0x%x\n", count, off);
-+		seq_printf(s, "TPMI Instance:%d offset:0x%llx\n", count, off);
- 
- 		mem = ioremap(off, size);
- 		if (!mem) {
 -- 
-2.43.0
-
+Thanks,
+Oliver
 
