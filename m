@@ -1,115 +1,96 @@
-Return-Path: <stable+bounces-26882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA817872A1F
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 23:21:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5F8872A39
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 23:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA40E1C261E5
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:21:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193761C2172E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1412D75D;
-	Tue,  5 Mar 2024 22:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8701B59F;
+	Tue,  5 Mar 2024 22:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TX0287BY";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="G0DfJrRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F91gqYFc"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh7-smtp.messagingengine.com (wfhigh7-smtp.messagingengine.com [64.147.123.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68D112B173;
-	Tue,  5 Mar 2024 22:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D414290
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 22:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709677240; cv=none; b=Bc7ERbWz1oMMoTlTD+G3QPpQ6cKX2NS0fLvWMNPtGCxEfzsGoN24BgPVWP/Xigjw2NKYLAaQUKwcaIobYzh+Cv8PIeb3nk/F7WyTkfLw/Z9nZKOV4CpQIQXZ8ub+SJeh0DRbskQRmj8nlMYgm8800c3CsfI8GzLg6p1fsBGuKAo=
+	t=1709677979; cv=none; b=hCjqxWQAn8dF/QJU0/3VV6iTXjel6e3BLbGLt67K/L2mmUQ04/3ouRhaVoUpxIpzj2MTZTzKEKEBLyGO4dgd+axspSX0O72IUoDTpuVb3Kuw1JbRST3SfBwmi74mDq1J3hwSGrNw021R9yzDictTTpnid5bYhPgNGzPYF5ucsa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709677240; c=relaxed/simple;
-	bh=cJSh5WC3TcK0ncHmqJarmaVKE8EIju9DrUGMpqKeeDM=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=hZlaLGPR08Sk5AXZuYZLwb7/a2sWh5FERnmdtsW/XrxgUOn72Ouwaep4NXzCwwtXVRg7UuwcHpZJpj8zdhjXBQAXvzEzxnz7IH7V1P2VfzFyb6tzm3svzubyYfZRT2BoFzLkJXAQ7GyshGwexAJ1Bs5RV3jV+5z4gb53vQbi/p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TX0287BY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=G0DfJrRK; arc=none smtp.client-ip=64.147.123.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 13D131800098;
-	Tue,  5 Mar 2024 17:20:36 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 05 Mar 2024 17:20:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1709677236; x=1709763636; bh=RA76mlg5ek
-	lvGZW+o1Volc1xu5PRh1gUrgo0OjPyH3g=; b=TX0287BYzltjF5Xh/4uZkmu2Gq
-	HuthSWmXtI2eRv3aCncstXaerbHdw/M8whWb5/5/8zIZjWKcKFylfZHsetGqSqQq
-	lLMeaZc+i2DnHPiC6H1IHmiiO5ae7vKa8nstMs+m5C74y4e/A41QBrbB1TEyRYfj
-	YSstRSW6APDSjLK56d9Xxx7ShxxBqOx2sHmYd3y0iuxLlQRqRuTurATHx7huNVXz
-	Ih2W41s4627IeLByV8FUs2yNPJ4GGTlcEhO4yNO7bbp0nFETCtF8QFu6RbafJVnr
-	SgiWdzYhVs5ErNG2Gzt4/eqk7DBDEaeELSApV8iai8VLvpfr8+8pUDKgY0KA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1709677236; x=1709763636; bh=RA76mlg5eklvGZW+o1Volc1xu5PR
-	h1gUrgo0OjPyH3g=; b=G0DfJrRKcZiGwgk8umVmB3KPG5xKuM7ErF6L5lhnyK0d
-	xL9jtOraNTxHsld3tZjm2y0JFM+L7bm1kujBgfcBtfJruw1FoWYEtKYiCLkNnkJ4
-	KJ8Vy/6fPfAl10m1Ga5FhPAmP6rKgli1FkuYz7jk0CVzrnT0dDTxU4gEtGJSCkBj
-	tlIe89zzWuWg8F7jDT7IJSukb1N4YxCjk0Qalhhyk+sFqNa11by2n6+w+/lHriGe
-	RRqUbknWPjDReraVRYTIhbjQSgWI09l7p41zDb4FSlGHSVvepWZMCkZ+d9UthPUV
-	ZTnzpqg2ScfToa0E9yroXGH7nsxz+A1kVCx4st6N+Q==
-X-ME-Sender: <xms:tJrnZdZHU8FUPwdhN8pHBSG3KeWBI7qBaW5ZdBQBvw0_dNoWDENViw>
-    <xme:tJrnZUb2PThJOmY4A7PeRbJGwglgi_NJ25ITt0FfYnTIT1ybCYC-nA0R-_r18-kkh
-    x2cjNTJZdDvkOZbMGU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdduheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepjedvvddvudeludehjeeitdehheeivdejgfelleffiefgvefhhfeuudfhgeef
-    feehnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:tJrnZf8XjVEGSMMrr0aCdWH1HiDXpdRoX_9CMUplrSQ-sK8ZQCCPEA>
-    <xmx:tJrnZbq9mQKjkioGoH24LduwI_BsGWSvR5jkcZupdzvPQ58AFCtlAg>
-    <xmx:tJrnZYqopqvoQ_lb02v4x5G0n0MmPNmKth11otlXqkXsPVYZegMrNg>
-    <xmx:tJrnZVhxkJF-dWxna-47-jhpq_TMhy2CSBWqzgRNUlrHCn-Qpk9J_KIxcPY>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 252D9B6008D; Tue,  5 Mar 2024 17:20:36 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-208-g3f1d79aedb-fm-20240301.002-g3f1d79ae
+	s=arc-20240116; t=1709677979; c=relaxed/simple;
+	bh=CR3apIHKxfx8CehRoKh2i7lKMiU0SaLTbaUmyqdA+lU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IlSI5jHeASxVYmi35K36ju/OE8yHs5Vi9qq3Fmr+ax4HmGvwzj77WIjKhVvYVPbnCSA+g6MlCelOtdOqxxXuE3hKFsuBDdKRGoJDc0mTYL3DR9CCGVASeQiJKEFAzTQq1/UkiY6ujw3gJa61QFk28jUtaGReoS605/3SnJ0XfKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F91gqYFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58AEC433C7;
+	Tue,  5 Mar 2024 22:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709677979;
+	bh=CR3apIHKxfx8CehRoKh2i7lKMiU0SaLTbaUmyqdA+lU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F91gqYFcbB+NZ1oJATQj2sH0ePOqbqdIR6LjQCUeSfBTk1flslPt6RRMp8EIaJxtn
+	 maBCtP8bemrhE7JPXbv4PSpGvkABMYJrhlften9LQsLLzpXMpVpGve3qWrIrF6/Z7/
+	 8hDwTeFTz4ae5Gg5qeBclkkqt8oJAFHlnbsqU0Rw=
+Date: Tue, 5 Mar 2024 22:32:56 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org, linux-mm@kvack.org,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Subject: Re: [PATCH STABLE v6.1.y] mm/migrate: set swap entry values of THP
+ tail pages properly.
+Message-ID: <2024030527-footrest-cathedral-5e15@gregkh>
+References: <20240305161313.90954-1-zi.yan@sent.com>
+ <2024030506-quotable-kerosene-6820@gregkh>
+ <0910e8f0-5490-4d08-ac64-da4077a1e703@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <06e56321-61d5-43f3-83e7-c583e053e600@app.fastmail.com>
-In-Reply-To: 
- <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
-References: 
- <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
-Date: Tue, 05 Mar 2024 23:20:15 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>,
- "Masahiro Yamada" <masahiroy@kernel.org>
-Cc: "Nicolas Schier" <nicolas@fjasle.eu>,
- "Nick Desaulniers" <ndesaulniers@google.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>,
- "Yonghong Song" <yonghong.song@linux.dev>, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: Move -Wenum-{compare-conditional,enum-conversion} into
- W=1
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0910e8f0-5490-4d08-ac64-da4077a1e703@redhat.com>
 
-On Tue, Mar 5, 2024, at 23:12, Nathan Chancellor wrote:
-> Cc: stable@vger.kernel.org
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-> Link: 
-> https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-> Acked-by: Yonghong Song <yonghong.song@linux.dev>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+On Tue, Mar 05, 2024 at 11:09:17PM +0100, David Hildenbrand wrote:
+> On 05.03.24 23:04, Greg KH wrote:
+> > On Tue, Mar 05, 2024 at 11:13:13AM -0500, Zi Yan wrote:
+> > > From: Zi Yan <ziy@nvidia.com>
+> > > 
+> > > The tail pages in a THP can have swap entry information stored in their
+> > > private field. When migrating to a new page, all tail pages of the new
+> > > page need to update ->private to avoid future data corruption.
+> > > 
+> > > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> > > ---
+> > >   mm/migrate.c | 6 +++++-
+> > >   1 file changed, 5 insertions(+), 1 deletion(-)
+> > 
+> > What is the git commit id of this change in Linus's tree?
+> 
+> Unfortunately, we had to do stable-only versions, because the backport
+> of the "accidental" fix that removes the per-subpage "private" information
+> would be non-trivial, especially for pre-folio-converison times.
+> 
+> The accidental fix is
+> 
+> 07e09c483cbef2a252f75d95670755a0607288f5
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+None of that is obvious at all here, we need loads of documentation in
+the changelog text that says all of that please.
+
+thanks,
+
+greg k-h
 
