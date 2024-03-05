@@ -1,60 +1,74 @@
-Return-Path: <stable+bounces-26855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C258728E1
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:43:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD778728EF
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D52F28BB4A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:43:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3DE1F22693
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E686A79953;
-	Tue,  5 Mar 2024 20:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B409612AAF9;
+	Tue,  5 Mar 2024 20:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kU0xokt6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7647E13FFC;
-	Tue,  5 Mar 2024 20:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6101758C;
+	Tue,  5 Mar 2024 20:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709671409; cv=none; b=FK52Hha9N23YBefjDx3HotWUJnPo8tF1Txy9xGz4KkWyuK3z/laLBg0XlIGsMEgNkPsgQZccMYsAOmEOcrO7gfPIyXMNV5IIQl3CNt5AFA0zxr9qpyTQT0pEXQmBAy3Q8oCWTDrwt0ZrTzd5d3aLxqjIag+PAB2NKmCOGgfZGsE=
+	t=1709671909; cv=none; b=hs6HPrnoCxf6eloAIm/1W4SpDY50ezoilrdAzquKfUXWC0z9VtT3NFjYBEHnqVbOdiMsQY0UzYRyHkEssZEm2iiAKtLJi4Uzw8kyCOGvVUg2i0bRDsFGt5StuCCixDuEV1CBt8Q9rIoEBmpwBlfFIztEn3IH1CLTLwJMdND6Wig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709671409; c=relaxed/simple;
-	bh=5LhkyOL5DBfFrm/Q4kn3P/JyK8ZmVreOttEn5YGWp6o=;
+	s=arc-20240116; t=1709671909; c=relaxed/simple;
+	bh=SjSiPVcEcyD4W6ufsE2+x5JmNWbIASUDZW/T1vteaWg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGhNL1kxO8MSOFiwbCLKSyOrLeFbPD4v3wZh9oG8jVsWyxrVYIoxbi4XKVDwDEf4nfT1aqg/QVPuJsGONahP7ace0nmJ/JpDCPj7sPCV/rpMvBBdmiaJp4YRmyfm59rkFb4qmMx7HLpSPwl+obb/vyUsyHpMadOG6nNqyEM4oo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+	 In-Reply-To:Content-Type; b=n1X3dFwvLBCXMib2aTOVzped5rHr4Qqg6UFsXhj9wgS3AoXnjoKLYEZS8PdNp9Nn4yriOkl693RSuEzJeLx6tgrypcpE9jbUKEmjWxiFWvIbVhut6w75BioK959FalLJ/KSIOflN04gOTmQw1rcu0vh4P2/HDzX6WwWGCRsTz2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kU0xokt6; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6e4d48a5823so4885606b3a.1;
-        Tue, 05 Mar 2024 12:43:28 -0800 (PST)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2998950e951so3704897a91.2;
+        Tue, 05 Mar 2024 12:51:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709671907; x=1710276707; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fnn+qBNjgeLnA7Zdn1ytKrCjMf49ommBffpdqi1uL14=;
+        b=kU0xokt6UoFnier7/ZVXswWvplgnhv1jZWawElQc1u3Vn68aYtVWnwEP9UlJqU4XXu
+         OXv5UosW6uRBTCDOA3IoWHkJHyYQ9bSR1bT+T9CJycKfNSoTIOjjPTOUhpCmp257Qy1N
+         cOzucKbaJcP/x5TI+F2IMEb+ilO+p/+LQzqsgDEMi89sgJ2/D3qSP3o1YO9CWQqJz6ft
+         OGbe8TOzdyyjxo8wVF/ij2376r4Dvj8LwdHhZI7wkkXR8J9/GXwmRDUfDdrai4jy7tUf
+         A1OngfUIo9qhsnUG6yP69qqAs+w283zcCfsR+Q+Ezi/pV+a1yHmP/DCm1JDtoCHsBgKo
+         Sywg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709671408; x=1710276208;
+        d=1e100.net; s=20230601; t=1709671907; x=1710276707;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s4cUwSCUfrhnX7rFZCq2HWzc9MGRRD5c8S8wSmLmcuY=;
-        b=wkBAglwTO6eYB/kt331ahf5OlJkxxicDfFOHRk9g+Nc7ECi/5HdBuU5bkMAZ0LCFlf
-         8EVgzRvqCdf77YD7xwlK+CW17vPeKEGVet5gkB8PM8REGRiwnwP3wRaP4Ws0hLuiX4N8
-         F4rtjEODoD8ct+HDFrSV+ChpHyNcuUHXmcURucTRrfy+Pl7zvJz+C0bkZD5ELYa8FVR6
-         3ktnBUDWpSqoAMKVrK9Urue8rSe4tx9LqVWYXYLmcXAPsf0URQZD8usYRkXi/r4KRb99
-         c5za4PtOpej83pFO1/aS0j+qyBUIyRb4iSso+3Vk0csW7NyV2B8+85KUJG8W/iFYsLl3
-         eoSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKZhlXoDGu1yYigtS7c1SBxTMZbS9Zelv3IWVqyy52CAEH9QQkiDqeDmkILB6IY4Fa6zzBVBtoOr8Hzc1ytdb7DR2/FFf71AaXODm8cHY8Xj4CE5Q/eX1ZprO0D1+x08KKRb6e9Q==
-X-Gm-Message-State: AOJu0YzZHofxAOsmrEQYxwkbLflpwzj/hNqaTL1rhEMCCxmD5GUxybeD
-	A2ss2/16Rzu+vUGzKyc+aG92WjdJRGfRsIdK3u+niYaexFbWAWL8
-X-Google-Smtp-Source: AGHT+IEBYm9zdJraXaE2N6WQpGT8/+FhFknywcpDBj8R9qAJ6nWOP3rRf9cbjLQovMjvEfndTm6t4g==
-X-Received: by 2002:a05:6a21:6da4:b0:1a1:4d8b:6f2c with SMTP id wl36-20020a056a216da400b001a14d8b6f2cmr3007251pzb.2.1709671407713;
-        Tue, 05 Mar 2024 12:43:27 -0800 (PST)
-Received: from ?IPV6:2620:0:1000:8411:3e11:2c1a:c1ee:7fe1? ([2620:0:1000:8411:3e11:2c1a:c1ee:7fe1])
-        by smtp.gmail.com with ESMTPSA id lo12-20020a056a003d0c00b006e627d0e97bsm3429769pfb.181.2024.03.05.12.43.26
+        bh=fnn+qBNjgeLnA7Zdn1ytKrCjMf49ommBffpdqi1uL14=;
+        b=g/Stgee53wrL/H1grT2qTJVoagCh+hJuvK+BcQWnxBt+L6wH+e4xwMnc1GsqIUCP0C
+         z+/Q/UYfbbbfKw01VbxHVgenVtyXnADu+KTBuna4l5L3qu0CJEHQLFGZDlNeby1qI306
+         mM8e6WJeOWPRoNAzGYeOVFwgoGNrXI5+Oro5rCnyDhRlhdGFn2PlcjLGDvQtddgPIef7
+         AzuTZZT4F3GfCYly5mXUiFa4v3U3oWtjGEusd5ZmY9raemPn1rK88C6atguWn5YnmY+4
+         LWkNizIjKiib0GHYxPDXh9U9UrM+ILV3JZ48C5Zxeky/aAF/3CHYJ+MnFPObOIJ4vioZ
+         C5sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5pbRri/UqremLP1n9jS/+T5rLfsfG7U9LdQ/PJJFccDAdCPaNd7mEW4179LnDAKr1JvvLs73LJlPlabDE2YCqPSCNW0F35OiqTqziSSz1hHVGekbo1ssVg2d6G8ljZOhXFB6A
+X-Gm-Message-State: AOJu0YwdYMJi3PlCF8551Cr6jCJ96H6gXpFaUGeEKmFz4d/uoAb7AKFr
+	OMjYQ9mqtSzV6r+VFoXOV3jFnGjWN+3J/5eIFK8a0My3AbKrL7Rk
+X-Google-Smtp-Source: AGHT+IF3mm4NwyqtTufGOJgmT7DBewSlt5bothb7FXlxENeR6anuCge2sR0DoCkr4rlTwamTf1QdZA==
+X-Received: by 2002:a17:90a:dd82:b0:299:489f:a126 with SMTP id l2-20020a17090add8200b00299489fa126mr9619659pjv.41.1709671907174;
+        Tue, 05 Mar 2024 12:51:47 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id ep2-20020a17090ae64200b0029932d175c3sm580395pjb.0.2024.03.05.12.51.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 12:43:27 -0800 (PST)
-Message-ID: <94dd9db1-6025-4cd0-93b7-40d55a60efc4@acm.org>
-Date: Tue, 5 Mar 2024 12:43:26 -0800
+        Tue, 05 Mar 2024 12:51:45 -0800 (PST)
+Message-ID: <5a8f45b5-3199-433f-bbf5-cfe7c9e77e45@gmail.com>
+Date: Tue, 5 Mar 2024 12:51:41 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,54 +76,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
- submitted via libaio
+Subject: Re: [PATCH 5.15 00/83] 5.15.151-rc2 review
 Content-Language: en-US
-To: Jens Axboe <axboe@kernel.dk>, Eric Biggers <ebiggers@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
- Sandeep Dhavale <dhavale@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
-References: <20240215204739.2677806-1-bvanassche@acm.org>
- <20240215204739.2677806-2-bvanassche@acm.org>
- <20240304191047.GB1195@sol.localdomain>
- <90c96981-cd7a-4a4c-aade-7a5cfc3fd617@acm.org>
- <b36536cd-c62b-4b86-aef7-fddd3eb282a1@kernel.dk>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <b36536cd-c62b-4b86-aef7-fddd3eb282a1@kernel.dk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240305113135.403426564@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240305113135.403426564@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 3/4/24 12:21, Jens Axboe wrote:
-> On 3/4/24 12:43 PM, Bart Van Assche wrote:
->> As far as I know no Linux user space interface for submitting I/O
->> supports cancellation of read or write requests other than the AIO
->> io_cancel() system call.
+On 3/5/24 03:31, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.151 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Not true, see previous reply (on both points in this email). The kernel
-> in general does not support cancelation of regular file/storage IO that
-> has submitted. That includes aio. There are many reasons for this.
+> Responses should be made by Thu, 07 Mar 2024 11:31:11 +0000.
+> Anything received after that time might be too late.
 > 
-> For anything but that, you can most certainly cancel inflight IO with
-> io_uring, be it to a socket, pipe, whatever.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.151-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 > 
-> The problem here isn't that only aio supports cancelations, it's that
-> the code to do so is a bad hack.
+> thanks,
+> 
+> greg k-h
 
-What I meant is that the AIO code is the only code I know of that
-supports cancelling I/O from user space after the I/O has been submitted
-to the driver that will process the I/O request (e.g. a USB driver). Is
-my understanding correct that io_uring cancellation involves setting the
-IO_WQ_WORK_CANCEL flag and also that that flag is ignored by
-io_wq_submit_work() after io_assign_file() has been called? The AIO code
-supports cancelling I/O after call_read_iter() or call_write_iter() has
-been called.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Thanks,
-
-Bart.
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
