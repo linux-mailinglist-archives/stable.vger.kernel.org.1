@@ -1,213 +1,123 @@
-Return-Path: <stable+bounces-26741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C888718FE
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:07:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F67871907
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FC011F22C55
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:07:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63453B24A8A
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7B55102F;
-	Tue,  5 Mar 2024 09:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491CF50249;
+	Tue,  5 Mar 2024 09:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="W7hZDFO2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JsbX5dzF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298E04F894
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 09:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CBA4DA1F;
+	Tue,  5 Mar 2024 09:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629563; cv=none; b=KoM2eX9IeX/fUeerq4crRkZEfz8cN34qPRmkO6/jKFhgQeiT4S4yUa04FzSRVTYlg5PU0FplvkZRtdncqiQgn8lMJHX+7s9ZZIC7Nm9zSW2jc7uRhssFUKXB67mkPEIT04bg6v+1TKvDpy0qdGtGrurLiACK+mcKz7ifP6pQBz8=
+	t=1709629672; cv=none; b=QHjSjT8tNBRAp+BuVaRZEVwbF0I8myq/FCo5+PbNiIhr7ob1G0XNt6NeFWCY5e21KPG9GpOBCgYAl0aWZKsQMaJrjehQSPRKNfxPb15tyoMoTc0Hfk6jzYC8rL4K6HRQHEtOYbI+z+BQPigmp4VuScVP26jyNRoF4PG3JQ+B4Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629563; c=relaxed/simple;
-	bh=VKOiHav/yw7Z8MKppwEQwdcpsKQuNnB4Tx+CoLuu32Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pgtNMRxL7kRC2TBTiXfHfuRJP09kHobmRltc5/tIdZc7dKq7l1vANprXiFzF1Aw6GxBxCkSTVTHV3byQzPkbpfwclEUkjxALSwKLzhjZuZmefJmN9ayIm71NtWrlJTwfxXoLc76bl7wXf9X2i3G8JdgLbjmMvZO4h716gpLSlko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=W7hZDFO2; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d2ab9c5e83so54171021fa.2
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 01:06:00 -0800 (PST)
+	s=arc-20240116; t=1709629672; c=relaxed/simple;
+	bh=9sSwvYiVNiVEMFJhGyHIfjkNYJ+8iisCRGyT03Xnpzc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=luSpWG/rLebRwjAdJTWdU2it6h/5Jl2SwNDb/ZxAPH1K7Y0jigLwCzs2eRWwHPfHQcYEPEphberhPW2dpc5Uf5umEZ4WBRRr/dnHPFYJNMrX11sx10eHVMYD5LQcCLMrMX0/25pYFIX36yF+6U1sKkkA7KX/IifaK9tGdUuKqY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JsbX5dzF; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d42e7ab8a9so3823353a12.3;
+        Tue, 05 Mar 2024 01:07:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1709629559; x=1710234359; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Q9mhdYZ9+rxVPecvuffO5o2Xu+p4/LqccpCPzMg9nQ=;
-        b=W7hZDFO2e3RCS6IiwyKdxgv3F91IHMIepPaerNvQMVOX8YbeHW1ssES6mhT372RQOY
-         FVC41b+0zT4e+UyaKfjbsfAA/EJQtiJoTjUTmsXrNjiWDd7wQInE46KZUFGOjO1MKjB6
-         wkzV1T4tCPdRVbglm3N2WUhi9iRXPC/rfdjlqZoIk7qv5ksNzb5R5mUEFvJxtk05ejfG
-         6g2U3AxLVhmvBeUGWTMgi2yG1ndLlp1l6YIQUea+64/bgGazeseCf5awXslauGTkZmnx
-         GAs4MKTiYRAznMeJyLrACoMhcLxSuXeC1uwCm8N1pNGFwl9VIbiN2gM0AXH6TWSrkxNf
-         Dbdw==
+        d=gmail.com; s=20230601; t=1709629670; x=1710234470; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xECqrC5wW8C4gpURucKnrkHYEZdlXOnIvk1nQsHS7MM=;
+        b=JsbX5dzFK2fXu4p+216MG6FRTyysaJ0EuZOf3v54PVyw1pJVPmC63JqJejr67+72yW
+         DGXdx0M3wcAMtuTznRRpeYUi+K4l2yYWeY1UuSZ8d7L31L0GRfmsamsT6s3AlYCS68ql
+         cSHrqvbMnMtrp3D88msPwk+bOULSqXvfxs/aOg/cSf8KCZYl1eYU/Z0VoG0X9pMXKQLS
+         4YVT4VAjuvPt+cR99QcLNShCeFTt0GMIT4h5v9ps9BTztSH7Z9SAMUioK1dTu2SofodE
+         Q9Lc6R9ZVntLTgmfGJNLwSK3ExCeaT9hCB5U48F2FYTJlIX9hMfck6RODlOfCiuAnYv5
+         VGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709629559; x=1710234359;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1709629670; x=1710234470;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0Q9mhdYZ9+rxVPecvuffO5o2Xu+p4/LqccpCPzMg9nQ=;
-        b=XhnD94jfaGinRwu1tzGM78+DAv/07oFPSPNLOPTfe9bhVG8jWd+UEkBjWYlzCq0tLI
-         hBrhdTFX6/N2nBqFAluFNUzylzPiSkhnwrMNt9QTOH8Uu5h7NKV4Bv1Silv86peDBOkD
-         kYapk3tV93p/ycmmuI3XAgkjzqOhCUT8F6xJ3Q4+Q9sI/tzGFMdDbQMvdrBFB9K8vGvQ
-         3B7FJLnSEckesYY1RLgE6FovooWhzD16uR4z5WVaYpFONyxHdvJsHrKZ87/sx5QvOA42
-         xKVAC/Hm9kLBs7Q9OXi1Ir+l0tCRFsbEp08CbwyXZ+n7grnxH/yCjU50DGTRYjxaawQD
-         ZF+w==
-X-Forwarded-Encrypted: i=1; AJvYcCV+CsrxC9Akash8E8zOL4aG+cfY2CmHkOULPaajbHsbTFjMALH5e9/RuFngGKF4Eh1A0JgQLY12sU733p67ZEdu1mWx9eU/
-X-Gm-Message-State: AOJu0YzrfyMxMKFbenVdqrcvbG31UtDfsHGmd0l3kZsjaAqY5p0CQlQM
-	2B3TiGJq5zc62iHntR/PU7CCI9kDE584HB4hUIZGhmD5ICUc+g2kPpTABYDzHH+tn+JXjMKo9KZ
-	wkuE=
-X-Google-Smtp-Source: AGHT+IEYXy/KzlV8JcnTJ2uHzZRkWZYy8YkWQJUjryhcEiJKX0XEkypvow3owRnIy6/yfcDhosVCpg==
-X-Received: by 2002:a2e:9804:0:b0:2d2:37d6:350c with SMTP id a4-20020a2e9804000000b002d237d6350cmr1074331ljj.12.1709629559379;
-        Tue, 05 Mar 2024 01:05:59 -0800 (PST)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id y33-20020a17090a53a400b0029ab5abcbe1sm12329178pjh.20.2024.03.05.01.05.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 01:05:58 -0800 (PST)
-Message-ID: <12c38978-9371-48c0-bc73-aa15f8c462b6@suse.com>
-Date: Tue, 5 Mar 2024 19:35:54 +1030
+        bh=xECqrC5wW8C4gpURucKnrkHYEZdlXOnIvk1nQsHS7MM=;
+        b=SMgegF9i4uB4y3TxSSUfmAB6GVcihR4nGR253G9xixkvhbi63akwSx2J5nMI+2JNO6
+         LHWVRNybJbTtRsMPG5yk54ncLL6IRh3bBUP7WiY47FgH9YmGXmfauF14eI2H1cb1Hl46
+         iuB3LH6qMhmEolTRw4gOUpf8Z/hcgQRJbBwDi6kKhOVVBEeEs0A4OBgW9TLrG+qbnE+X
+         hNjs9KfBuRB/boDCQZKpPIoUKDolqUJKNBC7vswGfHpbD/IJMUoV0vR7dAN3M7AtCnu2
+         Y9PVZXgvwvTM0sB8A2kY9z9JsdY5Wqaj5gwwEL+PEIHtFxxOrHgs3Y6Y4KCntHp+eZVl
+         3cOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpSdCl+9kY8Wi0YvP1Osrr0AeVImyXPLZIy1BU9CdTgvhWvD37ifO/Tk1MPAreT1JqPDCLb9GpOdwUqsXCJ3hUDLN0Zbty2WXx60w9LVAx8COpYGZvL1hSFKZRia45eBhHX22t
+X-Gm-Message-State: AOJu0Yx2QWPvl/aDAIYQuR3MEJSkJjBTOCnd6O5cO8QLOt7JxPH/gjtI
+	svNOHFqYiv6nIPEDN2rxEap4jltiHs+kVBJvuRBFsAONi4RzKVe3QNeWwk8lPknIf0+R9PFCa5y
+	B8bkLI0alb3ITH5VPPoBbUJfoaRg=
+X-Google-Smtp-Source: AGHT+IHQCsAc5k/dqnxRuofGLrxJI5VV9DX8j35EwjwxKG9bP5pOWIbRfkocDE/Kxr11z/qfnCWoxfbMUcq/eJzkogw=
+X-Received: by 2002:a05:6a21:6da4:b0:19e:2d04:d775 with SMTP id
+ wl36-20020a056a216da400b0019e2d04d775mr1121314pzb.50.1709629669859; Tue, 05
+ Mar 2024 01:07:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: scrub: fix false alerts on zoned device
- scrubing
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: WA AM <waautomata@gmail.com>, stable@vger.kernel.org,
- Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-References: <cf93c10bb94755f1bee7e70b333db72ba9f0896b.1709629215.git.wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJVBQkNOgemAAoJEMI9kfOh
- Jf6oapEH/3r/xcalNXMvyRODoprkDraOPbCnULLPNwwp4wLP0/nKXvAlhvRbDpyx1+Ht/3gW
- p+Klw+S9zBQemxu+6v5nX8zny8l7Q6nAM5InkLaD7U5OLRgJ0O1MNr/UTODIEVx3uzD2X6MR
- ECMigQxu9c3XKSELXVjTJYgRrEo8o2qb7xoInk4mlleji2rRrqBh1rS0pEexImWphJi+Xgp3
- dxRGHsNGEbJ5+9yK9Nc5r67EYG4bwm+06yVT8aQS58ZI22C/UeJpPwcsYrdABcisd7dddj4Q
- RhWiO4Iy5MTGUD7PdfIkQ40iRcQzVEL1BeidP8v8C4LVGmk4vD1wF6xTjQRKfXHOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJuBQkNOge/AAoJEMI9kfOhJf6o
- rq8H/3LJmWxL6KO2y/BgOMYDZaFWE3TtdrlIEG8YIDJzIYbNIyQ4lw61RR+0P4APKstsu5VJ
- 9E3WR7vfxSiOmHCRIWPi32xwbkD5TwaA5m2uVg6xjb5wbdHm+OhdSBcw/fsg19aHQpsmh1/Q
- bjzGi56yfTxxt9R2WmFIxe6MIDzLlNw3JG42/ark2LOXywqFRnOHgFqxygoMKEG7OcGy5wJM
- AavA+Abj+6XoedYTwOKkwq+RX2hvXElLZbhYlE+npB1WsFYn1wJ22lHoZsuJCLba5lehI+//
- ShSsZT5Tlfgi92e9P7y+I/OzMvnBezAll+p/Ly2YczznKM5tV0gboCWeusM=
-In-Reply-To: <cf93c10bb94755f1bee7e70b333db72ba9f0896b.1709629215.git.wqu@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240305074649.580820283@linuxfoundation.org> <20240305-arson-panhandle-afa453ccb0aa@wendy>
+In-Reply-To: <20240305-arson-panhandle-afa453ccb0aa@wendy>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Tue, 5 Mar 2024 10:07:37 +0100
+Message-ID: <CADo9pHg4teVS7Lt1j+gOt4G9U=dZF9G92AUK=Km6PTdURkc0pg@mail.gmail.com>
+Subject: Re: [PATCH 6.7 000/163] 6.7.9-rc2 review
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Please ignore this patch.
+Den tis 5 mars 2024 kl 09:32 skrev Conor Dooley <conor.dooley@microchip.com>:
+>
+> On Tue, Mar 05, 2024 at 07:58:57AM +0000, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.7.9 release.
+> > There are 163 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 07 Mar 2024 07:46:26 +0000.
+> > Anything received after that time might be too late.
+>
+> > Samuel Holland <samuel.holland@sifive.com>
+> >     riscv: Save/restore envcfg CSR during CPU suspend
+> >
+> > Samuel Holland <samuel.holland@sifive.com>
+> >     riscv: Add a custom ISA extension for the [ms]envcfg CSR
+>
+> I left a comment in response to the off-list email about this patch,
+> I don't think it's gonna work as the number this custom extension has
+> been given exceeds the max in 6.7/
+>
+> Cheers,
+> Conor.
+>
+> >
+> > Samuel Holland <samuel.holland@sifive.com>
+> >     riscv: Fix enabling cbo.zero when running in M-mode
 
-Johannes sent out his version before me and it's all my bad I didn't 
-check the ML before sending out my version.
+Works fine on my Arch Linux desktop with model name    : AMD Ryzen 5
+5600 6-Core Processor
+after the Arch Linux manual intervention for new mkinitcpio settings
+and version in Arch
 
-Sorry for the noise.
-
-Thanks,
-Qu
-
-在 2024/3/5 19:31, Qu Wenruo 写道:
-> [BUG]
-> When using zoned devices (zbc), scrub would always report super block
-> errors like the following:
-> 
->    # btrfs scrub start -fB /mnt/btrfs/
->    Starting scrub on devid 1
->    scrub done for b7b5c759-1baa-4561-a0ca-b8d0babcde56
->    Scrub started:    Tue Mar  5 12:49:14 2024
->    Status:           finished
->    Duration:         0:00:00
->    Total to scrub:   288.00KiB
->    Rate:             288.00KiB/s
->    Error summary:    super=2
->      Corrected:      0
->      Uncorrectable:  0
->      Unverified:     0
-> 
-> [CAUSE]
-> Since the very beginning of scrub, we always go with btrfs_sb_offset()
-> to grab the super blocks.
-> This is fine for regular btrfs filesystems, but for zoned btrfs, super
-> blocks are stored in dedicated zones with a ring buffer like structure.
-> 
-> This means the old btrfs_sb_offset() is not able to give the correct
-> bytenr for us to grabbing the super blocks, thus except the primary
-> super block, the rest would be garbage and cause the above false alerts.
-> 
-> [FIX]
-> Instead of btrfs_sb_offset(), go with btrfs_sb_log_location() which is
-> zoned friendly, to grab the correct super block location.
-> 
-> This would introduce new error patterns, as btrfs_sb_log_location() can
-> fail with extra errors.
-> 
-> Here for -ENOENT we just end the scrub as there are no more super
-> blocks.
-> For other errors, we record it as a super block error and exit.
-> 
-> Reported-by: WA AM <waautomata@gmail.com>
-> Link: https://lore.kernel.org/all/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com/
-> CC: stable@vger.kernel.org # 5.15+
-> Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-> Signed-off-by: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
->   fs/btrfs/scrub.c | 13 +++++++++++--
->   1 file changed, 11 insertions(+), 2 deletions(-)
-> ---
-> Changelog:
-> v2:
-> - Use READ to replace the number 0
-> - Continue checking the next super block if we hit a non-ENOENT error
-> 
-> diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-> index c4bd0e60db59..201b547aac4c 100644
-> --- a/fs/btrfs/scrub.c
-> +++ b/fs/btrfs/scrub.c
-> @@ -2788,7 +2788,6 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
->   					   struct btrfs_device *scrub_dev)
->   {
->   	int	i;
-> -	u64	bytenr;
->   	u64	gen;
->   	int ret = 0;
->   	struct page *page;
-> @@ -2812,7 +2811,17 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
->   		gen = btrfs_get_last_trans_committed(fs_info);
->   
->   	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
-> -		bytenr = btrfs_sb_offset(i);
-> +		u64 bytenr;
-> +
-> +		ret = btrfs_sb_log_location(scrub_dev, i, READ, &bytenr);
-> +		if (ret == -ENOENT)
-> +			break;
-> +		if (ret < 0) {
-> +			spin_lock(&sctx->stat_lock);
-> +			sctx->stat.super_errors++;
-> +			spin_unlock(&sctx->stat_lock);
-> +			continue;
-> +		}
->   		if (bytenr + BTRFS_SUPER_INFO_SIZE >
->   		    scrub_dev->commit_total_bytes)
->   			break;
+Tested by: Luna Jernberg <droidbittin@gmail.com>
 
