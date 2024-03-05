@@ -1,147 +1,93 @@
-Return-Path: <stable+bounces-26824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6BA8725D5
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:43:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1E08725D9
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C1A5B218DC
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4A771F21E78
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0A417583;
-	Tue,  5 Mar 2024 17:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768AB1756A;
+	Tue,  5 Mar 2024 17:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIRW9gzq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m2n5GxJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483EFBE4D;
-	Tue,  5 Mar 2024 17:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E7171A7;
+	Tue,  5 Mar 2024 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709660582; cv=none; b=Py5pTH9EZpejl1KvaR8BOjEi2eJ2Uy7N1wgRaI0meY4qEP2HyuBa5C8Oru0RhlquZe9hwkYX66Ysvq5wjW46K8EAaDdbtTeaolR+4lLtH5lH/mojvbN4hPzlAWqCsJGI2NleH4/yu8siaDRIfJ8Y2CjkvIHBYSo8HGFN7stPz0I=
+	t=1709660621; cv=none; b=frNv1mzMvJ4+sf9dA8Vhwi31oe0upzcCy+67sVd8bd4ql5cYmiIVtFXNG83CxyuqNN8/UcQ9gxO5clsQEniB8epkmjdbqmfOUz+MMla2ZA2a93OUUl2+Os5UABY1RYgpASa8jfmPV4cETYCQqhZ/sIHBYJ6ATpfLPARzsX/lvDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709660582; c=relaxed/simple;
-	bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VPYzxGd0rqtPo1Oh0a/oWQYfpfbLQE71HfUbBKJd5K65wy6IlpwTdnqLUhozvV1FBV4Lh4co6u36kH/YyOsBBFzDyTYxjOAsyOuAOZR84V/6suRfqXa6PA/RC+i3bYsMg4hvPfVJSeblrXOKGkvehqcjS1jgQCrS6ajZ7RezNhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIRW9gzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1771FC433C7;
-	Tue,  5 Mar 2024 17:43:01 +0000 (UTC)
+	s=arc-20240116; t=1709660621; c=relaxed/simple;
+	bh=k3duPj50TUmWI9VEiNWJ+Oj7+nk799b9xKxX4qq0/PQ=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=FdSX37YjQdR63DHBO+KbuQPp3VUvgAvJKhH25d6VNMl/yKpqiv9Y/pB1uZLNxdBaf7e6nbGLjNhTgWAZpY0FQMvGiGc8QJmBz1cvvhLM0M8qfhj5+70+GAdNd/wOqd9HUkHBX2a8NcW/0+hFdz2mgm/KML5UpLEI/QN1RtwdTrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m2n5GxJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB75C433C7;
+	Tue,  5 Mar 2024 17:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709660581;
-	bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=kIRW9gzq4jKNT7Z1GAadTz+GbpnBPW/O80H3suGrswIK7olLKDNd1QNDRBv1ACxfB
-	 Rw3OJlysQLqKOHivUsJvk38AcxhlQTl3TXlcJaAobh5tEUbFM5IT4QW1bYL0rLpMsZ
-	 +jFWB8bAQvcAlseJmAZllZBGADV0QbJ466ywkNs5NIvYugIs8qWK7A7osrt3HwYBex
-	 ZTPRIRML7oNYZjIbXeZpAmc8i9JFjrdzhEb4VSuw/+iXh5/w4UALAQyhgSF49jN8ai
-	 cZZO5mdJDEmSEUtMYGPb4SQM7zU51HdPL5U1TTKGWV3MjjwYoEJ66sNz96StQAb8Di
-	 luGol5SeEfwPA==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 05 Mar 2024 10:42:50 -0700
-Subject: [PATCH] kbuild: Disable two Clang specific enumeration warnings
+	s=k20201202; t=1709660620;
+	bh=k3duPj50TUmWI9VEiNWJ+Oj7+nk799b9xKxX4qq0/PQ=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=m2n5GxJExidLb5JA5HR4QDHzw3elLQ7AOQZuj6Qf9uKVS1EEx4UACBhqTnEaF5LlS
+	 utnlmMgmY0pThjqAMelG3j8B1e7DgClRmM8jZEMaT0zr/6itfnjI28iGXWZSipTg/x
+	 yBbcOCLwfm7apJ4FYwlrr66TPVSTBOt1MAE9E2s8/EAGIAZx269DWhZNqhFQY3WJDM
+	 ssg/uJ+g9rYdWa6SDmkg/l8pewo09RC8CHmTyrUAjj7ipO/ZZB9pLZsqUMQtr2s+5K
+	 UO4kWhCyVGe711Kk/yJAcnl4GXxMV8znbJ4wEA1aB70gHdDfE/afWvoRK7KInVKYT7
+	 CtLo10CZVe4MQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAJlZ52UC/x2NywqDMBAAf0X23IWoKWJ/pfQQk41dsGvZ9QXiv
- zf0ODDMnGCkTAaP6gSljY1nKVDfKojvICMhp8LQuMa71nlMbGGYCOlYNGCcioMk6wf3oMIyGg7
- 53vnYxb7PCUrnq5T5+D+er+v6ARre46NzAAAA
-To: masahiroy@kernel.org
-Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
- justinstitt@google.com, arnd@arndb.de, yonghong.song@linux.dev, 
- linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3911; i=nathan@kernel.org;
- h=from:subject:message-id; bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKnPI5c0rNBNXppi3vty7mbjafkHuCbLxD2p/76SV3qn1
- erDy/Yu6ChlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQATcZjAyNAzzUX+dsCjVZuU
- I3+p9nEEHTcv3H9F7O6loH5RlqikybYM/10DD7Il7pXoscg8ymbS0/jaterLYbFyzeQKc8OCIG8
- bFgA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Subject: Re: [PATCH,V2] wifi: rtw88: Add missing VID/PIDs for 8811CU and
+ 8821CU
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <4ume7mjw63u7.XlMUvUuacW2ErhOCdqlLkw2@1EHFQ.trk.elasticemail.com>
+References: <4ume7mjw63u7.XlMUvUuacW2ErhOCdqlLkw2@1EHFQ.trk.elasticemail.com>
+To: Larry Finger <Larry.Finger@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
+ Nick Morrow <morrownr@gmail.com>, Larry Finger <Larry.Finger@lwfinger.net>,
+ Ping-Ke Shih <pkshih@realtek.com>, stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170966061752.365498.12192322464108604606.kvalo@kernel.org>
+Date: Tue,  5 Mar 2024 17:43:39 +0000 (UTC)
 
-Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
-under -Wenum-conversion. A recent change in Clang strengthened these
-warnings and they appear frequently in common builds, primarily due to
-several instances in common headers but there are quite a few drivers
-that have individual instances as well.
+Larry Finger <Larry.Finger@gmail.com> wrote:
 
-  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-    509 |                            item];
-        |                            ~~~~
+> From: Nick Morrow <morrownr@gmail.com>
+> 
+> Add VID/PIDs that are known to be missing for this driver.
+> 
+> Removed /* 8811CU */ and /* 8821CU */ as they are redundant
+> since the file is specific to those chips.
+> 
+> Removed /* TOTOLINK A650UA v3 */ as the manufacturer. It has a REALTEK
+> VID so it may not be specific to this adapter.
+> 
+> Verified and tested.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nick Morrow <morrownr@gmail.com>
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
-        |                                      ^ ~~~~~~~~~~~~~~~~~~
-    956 |                           : IWL_MAC_BEACON_CCK_V1;
-        |                             ~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
-   1120 |                                                0) > 10 ?
-        |                                                        ^
-   1121 |                         IWL_MAC_BEACON_FILS :
-        |                         ~~~~~~~~~~~~~~~~~~~
-   1122 |                         IWL_MAC_BEACON_FILS_V1;
-        |                         ~~~~~~~~~~~~~~~~~~~~~~
+Patch applied to wireless-next.git, thanks.
 
-While doing arithmetic with different types of enums may be potentially
-problematic, inspecting several instances of the warning does not reveal
-any obvious problems. To silence the warnings at the source level, an
-integral cast must be added to each mismatched enum (which is incredibly
-ugly when done frequently) or the value must moved out of the enum to a
-macro, which can remove the type safety offered by enums in other
-places, such as assignments that would trigger -Wenum-conversion.
+b8a62478f3b1 wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU
 
-As the warnings do not appear to have a high signal to noise ratio and
-the source level silencing options are not sustainable, disable the
-warnings unconditionally, as they will be enabled with -Wenum-conversion
-and are supported in all versions of clang that can build the kernel.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- scripts/Makefile.extrawarn | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index a9e552a1e910..6053aa22b8f5 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -81,6 +81,14 @@ KBUILD_CFLAGS += $(call cc-option,-Werror=designated-init)
- 
- # Warn if there is an enum types mismatch
- KBUILD_CFLAGS += $(call cc-option,-Wenum-conversion)
-+ifdef CONFIG_CC_IS_CLANG
-+# Clang enables these extra warnings under -Wenum-conversion but the kernel
-+# performs arithmetic using or has conditionals returning enums of different
-+# types in several different places, which is rarely a bug in the kernel's
-+# case, so disable the warnings.
-+KBUILD_CFLAGS += -Wno-enum-compare-conditional
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
- 
- #
- # W=1 - warnings which may be relevant and do not occur too often
-
----
-base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
-change-id: 20240304-disable-extra-clang-enum-warnings-bf574c7c99fd
-
-Best regards,
 -- 
-Nathan Chancellor <nathan@kernel.org>
+https://patchwork.kernel.org/project/linux-wireless/patch/4ume7mjw63u7.XlMUvUuacW2ErhOCdqlLkw2@1EHFQ.trk.elasticemail.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
