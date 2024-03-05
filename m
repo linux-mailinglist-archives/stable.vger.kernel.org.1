@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-26775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E2871DCF
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 12:31:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20460871DD0
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 12:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8E8D28C6BB
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 11:31:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC7728C6E9
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 11:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB97D5B660;
-	Tue,  5 Mar 2024 11:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067355B5D9;
+	Tue,  5 Mar 2024 11:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTdyGKFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8QOvmU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9C85B5D9
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 11:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC2458201
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 11:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709638181; cv=none; b=IDd99l2jGbtcd6PLKzfSIYOjdMsNoOtLckrOxznml7XdjXMEokdoinJuZdk0BgdEjgJSTYx13R0ieDEzUIPo3LQBEkNhXXupmGnbhl7Y/g6hyQ1SsnW8DBB/YEPMsdUrFgfQQ0jFzQpyCbqGaf+uc89n6IAG+OEXX1Cdvq/3Suo=
+	t=1709638190; cv=none; b=CUqKXwONxbZQZXFjWoWnGOtZ7ICZ74mvNlXb1GeY/I8TqlVn7k7QJ1n6Q+TRTm3/rpWvJSAU+GbFkv5s0CvaOp7V3lpzcOBoFijogZFtc5wMB6r6F171Gm/7ILbjTtVX1HaOqd1In65kogsJh8PLhG6nH7IsQx7Sa6gMzbTv/Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709638181; c=relaxed/simple;
-	bh=wiIdI+Su3nkrEVhoedoeONYsbAROOGlCthK9napVS6s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KDitBtwjHbCU8zYa31bfbkyjUqCnEOaWVOkPT68QRZv13qg4TABxkRR5oCdtbrcpVCyEBz/4R3tUrw5uFRdO9n37u5GLlLyHML57x/xJVAbiboG9EkCnFRCzNAuQyoyuVeqrlldeQi+UH74OwUW5BvOFk2nSMZCtITkJlw7CTBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTdyGKFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC88C43394;
-	Tue,  5 Mar 2024 11:29:39 +0000 (UTC)
+	s=arc-20240116; t=1709638190; c=relaxed/simple;
+	bh=05xvv1go8aO8DIQ13AMkJPmfRQmzoFAOHGct7z6namQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GabainV3jrcKpLvyue41/iN6JbDHaJsQJSGuFy/GgvC85mtZOwr72QFALsqfFUpcBeVjGnSo+2yOqxqefujbzxGVb0ea0dQDUxwelVDuU9O2BEr2yesHmrALGosSm+J9XLa588N1lIoB1QhxSyJh8aRkLrEhMgtYwh0cPOVFCtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8QOvmU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D56C433C7;
+	Tue,  5 Mar 2024 11:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709638180;
-	bh=wiIdI+Su3nkrEVhoedoeONYsbAROOGlCthK9napVS6s=;
+	s=korg; t=1709638190;
+	bh=05xvv1go8aO8DIQ13AMkJPmfRQmzoFAOHGct7z6namQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UTdyGKFXZYQ2gerrsmxTWme7QqDXxAbuKceghmkpISzbYS1Df3ZJIT3OakAKaC0fm
-	 Qn8ofkZTSxtxWuNYztHLu3IjPIdTJAoEYre62hNEj2rdof2WTiC8fbvMP8PuIMdZbm
-	 LNE8WpJ1oCpTBD5rV8fS61ay34HZUo3m2rBby1MI=
-Subject: FAILED: patch "[PATCH] riscv: add CALLER_ADDRx support" failed to apply to 5.15-stable tree
+	b=E8QOvmU68O8kThWwI5ZXuA9++MA3QgxNRE7iUn/LFcAmoI+wS1+uGrRwik1dB0AAk
+	 56brDe2ajDB1rIyjgwlqiJN/OV2GbsjImavlKCtdrzR/pnXIB4/WPtEKmaXTK5hp/7
+	 jB/SZu39mdKKOQpTHKPCWtVETB3rAxTSQ8gmXP4s=
+Subject: FAILED: patch "[PATCH] riscv: add CALLER_ADDRx support" failed to apply to 5.10-stable tree
 To: zong.li@sifive.com,alexghiti@rivosinc.com,palmer@rivosinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 05 Mar 2024 11:29:37 +0000
-Message-ID: <2024030537-amiss-payable-3723@gregkh>
+Date: Tue, 05 Mar 2024 11:29:38 +0000
+Message-ID: <2024030538-luckiness-crevice-fa39@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 680341382da56bd192ebfa4e58eaf4fec2e5bca7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030537-amiss-payable-3723@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030538-luckiness-crevice-fa39@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 680341382da5 ("riscv: add CALLER_ADDRx support")
+7ce047715030 ("riscv: Workaround mcount name prior to clang-13")
+2f095504f4b9 ("scripts/recordmcount.pl: Fix RISC-V regex for clang")
+5ad84adf5456 ("riscv: Fixup patch_text panic in ftrace")
+67d945778099 ("riscv: Fixup wrong ftrace remove cflag")
 
 thanks,
 
