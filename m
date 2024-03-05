@@ -1,43 +1,81 @@
-Return-Path: <stable+bounces-26802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C0E87230C
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:44:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440FD87231E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 048101C22FBA
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:44:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFAFC284753
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDE5127B47;
-	Tue,  5 Mar 2024 15:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E06C12838B;
+	Tue,  5 Mar 2024 15:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="egayW1Md"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A93085944;
-	Tue,  5 Mar 2024 15:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624AC12837D
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 15:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709653448; cv=none; b=XrBa6uqePs2OPwaZqIoyFOK/cLT84ZczEWkToFGfefg3Nz+M2f3ljZVKHoZfBcs3Jn8Olh5HSMzGHQJlmGHQ1WKo1sEMJtjOSFbTopmo1tWjNXruknVG4QsY+5gIMekhRrS5ynrFR53KhJn8vwp7Gw4PTj0640jvm0SC1Y+sk2o=
+	t=1709653808; cv=none; b=e2qKmjpOVXCUrET3J5qccr4z/HJ5RaV1bh+11MpV1IzhxMNxZlvfXkIuBy0wEG6iNtmZTOIwpuaWeUCYGrbyR/Z/BGikn58CzQ3AOnXrxdid2kXSTpHyLueRDEMkL2A3+F4xcsbKTcRAwXlJ2Nz6kN7AstRBFFx3M7ezU9avXKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709653448; c=relaxed/simple;
-	bh=MnnHCdDfPrQPB8WD5/lqBatvO68cm49it20wP3Yp/aY=;
+	s=arc-20240116; t=1709653808; c=relaxed/simple;
+	bh=QeyiRiKtFUmv85nxdL/Xv6ZWP8RdUk5xNvksulmsHOY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGdLYjcXLWBCitB1HPozNI2e3Gglt4G/vxWR/2b2NfVKoLoEx0icMYV2XAbSrJKGMNT5yty6D+7W19oKffH79FfFkadvqSYDsi57YvLbSNFGHausjBmQdaZdQbGq/0NcFqMHREOFCIFLvxk953oM9du7yG6H/9LEyzIe1qZRdMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 92E3261E5FE36;
-	Tue,  5 Mar 2024 16:43:49 +0100 (CET)
-Message-ID: <84dd5c01-906c-4e13-9d8c-e5350f718d56@molgen.mpg.de>
-Date: Tue, 5 Mar 2024 16:43:49 +0100
+	 In-Reply-To:Content-Type; b=dzZfOWahFz9IbMk/ZzOsVMlW3pp7uKKzdIGiwFwTj1CecasNO7HbLVwoVfFzYoeoOyB0/5up5RVDtUQ5cKKLObNtl6TmYg+Wc69YZHmDVT5qNL3KDdii3kjuIErWQjXenAIoTuiG9vJtAPP2RUU0Zkk+hMFac9hgeJlYIt0f29g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=egayW1Md; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709653805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zCIy443PV1bMExvsymG7IFjtByoanOECI8kV/uhdu4Q=;
+	b=egayW1MdrrzVn8HncUCzAebKJU5ZPyJSkJIGFCeV9VqA9HvrRW80VZwF+wK2XJxTvCp/w3
+	RD19Jhs9dk3qTdifJq851ewvLDX4LtJcPsGOxFwKyNmlrvT0zf5llBnRVaI3VD7BBItAyi
+	VhqK6TDFKslNcgeJrfLMkJ72hvRGPLs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-522-TuZebuYJOi2pvQBTjK1wWQ-1; Tue, 05 Mar 2024 10:50:03 -0500
+X-MC-Unique: TuZebuYJOi2pvQBTjK1wWQ-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33d8d208be9so3578934f8f.2
+        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 07:50:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709653802; x=1710258602;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zCIy443PV1bMExvsymG7IFjtByoanOECI8kV/uhdu4Q=;
+        b=CflPiwtCBoPCN0+Kkj6T4KfpJ5xFeb37rjttgDwJY52NBXrIzHEnFsrlfDvVUDDwKl
+         z4ljA/R+Uo9kpg4rS3InayI3z9qG4CLLhmzp8YjF75kl/IU58QlBEdDqE4BlnE2oLeCT
+         y6ryctB0X69vTgpz1EJvcok+MokvICkqt2vlxt4bX6mZIPg14sbVcoT6HApPxA1Mb3DR
+         hTE87lXBH+Gzhk40phKat1Z3Sbc0eBV8c3+l/JB35ys9N2kpAarSM93JTarxUnyIszNQ
+         fSKPUi75bfpd2JTBA05prgoAiUjxs1B8uf8XltC49XbZl86uuV0uXTLhqyNjOSlErGTA
+         fFJg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIS6Yh+1htZadzw94aiVoEoIXTDw7pTBmGLs55qHGxzlKTB8+q/bpQG/eoQlAQkv57xcDTmMPeqkzCAjqVneUB/zEHOCI5
+X-Gm-Message-State: AOJu0YxtEeNDKeptAinqOLhjMCZP0C3jFER547K2gsOS4J3GyVT6uw3z
+	ktcM6d4AmqZIbhkklZqpTaflR3yZU2dIA6dGrK4ol7GTI7LPwo93OJq/ZqQJ8uP78BfDhcIZv92
+	jFizjRTplzuYhf+kPEw17BIdfHmWJXYIqVVV1oDxC2jEpZXNLk0AfnQ==
+X-Received: by 2002:adf:9dc4:0:b0:33e:1ee0:62ac with SMTP id q4-20020adf9dc4000000b0033e1ee062acmr8455511wre.5.1709653802063;
+        Tue, 05 Mar 2024 07:50:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFmrb4M094kjpI+xCb6K9TxDuygeKpMipcdzxLgCU/VQBNhWcXn8spbARz+uJ/HiNVXNVb6kw==
+X-Received: by 2002:adf:9dc4:0:b0:33e:1ee0:62ac with SMTP id q4-20020adf9dc4000000b0033e1ee062acmr8455490wre.5.1709653801518;
+        Tue, 05 Mar 2024 07:50:01 -0800 (PST)
+Received: from ?IPV6:2003:cb:c73c:8100:600:a1e5:da94:a13a? (p200300cbc73c81000600a1e5da94a13a.dip0.t-ipconnect.de. [2003:cb:c73c:8100:600:a1e5:da94:a13a])
+        by smtp.gmail.com with ESMTPSA id ch10-20020a5d5d0a000000b0033e26c81b11sm10380878wrb.92.2024.03.05.07.50.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Mar 2024 07:50:01 -0800 (PST)
+Message-ID: <cb738797-77d9-4e20-a54c-f70385cdbd95@redhat.com>
+Date: Tue, 5 Mar 2024 16:50:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,71 +83,198 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tpm,tpm_tis: Avoid warning splat at shutdown
+Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
+ swapoff()
 Content-Language: en-US
-To: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: jarkko@kernel.org, peterhuewe@gmx.de, LinoSanfilippo@gmx.de,
- p.rosenberger@kunbus.com, lukas@wunner.de, jgg@ziepe.ca,
- linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "Huang, Ying"
+ <ying.huang@intel.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240305151349.3781428-1-ryan.roberts@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240305151349.3781428-1-ryan.roberts@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Dear Lino,
-
-
-Thank you for the patch.
-
-Am 01.02.24 um 12:36 schrieb Lino Sanfilippo:
-> If interrupts are not activated the work struct 'free_irq_work' is not
-> initialized. This results in a warning splat at module shutdown.
+On 05.03.24 16:13, Ryan Roberts wrote:
+> There was previously a theoretical window where swapoff() could run and
+> teardown a swap_info_struct while a call to free_swap_and_cache() was
+> running in another thread. This could cause, amongst other bad
+> possibilities, swap_page_trans_huge_swapped() (called by
+> free_swap_and_cache()) to access the freed memory for swap_map.
 > 
-> Fix this by always initializing the work regardless of whether interrupts
-> are activated or not.
+> This is a theoretical problem and I haven't been able to provoke it from
+> a test case. But there has been agreement based on code review that this
+> is possible (see link below).
 > 
-> cc: stable@vger.kernel.org
-> Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
-> Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
-> Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org/
-> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> Fix it by using get_swap_device()/put_swap_device(), which will stall
+> swapoff(). There was an extra check in _swap_info_get() to confirm that
+> the swap entry was valid. This wasn't present in get_swap_device() so
+> I've added it. I couldn't find any existing get_swap_device() call sites
+> where this extra check would cause any false alarms.
+> 
+> Details of how to provoke one possible issue (thanks to David Hilenbrand
+> for deriving this):
+
+Almost
+
+"s/Hilenbrand/Hildenbrand/" :)
+
+> 
+> --8<-----
+> 
+> __swap_entry_free() might be the last user and result in
+> "count == SWAP_HAS_CACHE".
+> 
+> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+> 
+> So the question is: could someone reclaim the folio and turn
+> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+> 
+> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+> still references by swap entries.
+> 
+> Process 1 still references subpage 0 via swap entry.
+> Process 2 still references subpage 1 via swap entry.
+> 
+> Process 1 quits. Calls free_swap_and_cache().
+> -> count == SWAP_HAS_CACHE
+> [then, preempted in the hypervisor etc.]
+> 
+> Process 2 quits. Calls free_swap_and_cache().
+> -> count == SWAP_HAS_CACHE
+> 
+> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+> __try_to_reclaim_swap().
+> 
+> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+> swap_entry_free()->swap_range_free()->
+> ...
+> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+> 
+> What stops swapoff to succeed after process 2 reclaimed the swap cache
+> but before process1 finished its call to swap_page_trans_huge_swapped()?
+> 
+> --8<-----
+> 
+> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+> Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 > ---
->   drivers/char/tpm/tpm_tis_core.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-> index 1b350412d8a6..64c875657687 100644
-> --- a/drivers/char/tpm/tpm_tis_core.c
-> +++ b/drivers/char/tpm/tpm_tis_core.c
-> @@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
->   	int rc;
->   	u32 int_status;
->   
-> -	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
-> -
->   	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
->   				       tis_int_handler, IRQF_ONESHOT | flags,
->   				       dev_name(&chip->dev), chip);
-> @@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
->   	priv->phy_ops = phy_ops;
->   	priv->locality_count = 0;
->   	mutex_init(&priv->locality_count_mutex);
-> +	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
->   
->   	dev_set_drvdata(&chip->dev, priv);
+> Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
+> 
+> Thanks,
+> Ryan
+> 
+>   mm/swapfile.c | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 2b3a2d85e350..f580e6abc674 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+>   	smp_rmb();
+>   	offset = swp_offset(entry);
+>   	if (offset >= si->max)
+> -		goto put_out;
+> +		goto bad_offset;
+> +	if (data_race(!si->swap_map[swp_offset(entry)]))
+> +		goto bad_free;
+> 
+>   	return si;
+>   bad_nofile:
+> @@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+>   out:
+>   	return NULL;
+>   put_out:
+> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+>   	percpu_ref_put(&si->users);
+>   	return NULL;
+> +bad_offset:
+> +	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+> +	goto put_out;
+> +bad_free:
+> +	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
+> +	goto put_out;
+>   }
+> 
+>   static unsigned char __swap_entry_free(struct swap_info_struct *p,
+> @@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
+>   	if (non_swap_entry(entry))
+>   		return 1;
+> 
+> -	p = _swap_info_get(entry);
+> +	p = get_swap_device(entry);
+>   	if (p) {
+>   		count = __swap_entry_free(p, entry);
+>   		if (count == SWAP_HAS_CACHE &&
+>   		    !swap_page_trans_huge_swapped(p, entry))
+>   			__try_to_reclaim_swap(p, swp_offset(entry),
+>   					      TTRS_UNMAPPED | TTRS_FULL);
+> +		put_swap_device(p);
+>   	}
+>   	return p != NULL;
+>   }
+> --
+> 2.25.1
+> 
 
-This is commit d6fb14208e22 in jarkko/next.
+LGTM
 
-I tested this patch on top of Linux 6.8-rc7 on a Dell OptiPlex 5055 [1] 
-and it fixes the issue there too.
+Are you planning on sending a doc extension for get_swap_device()?
 
+-- 
+Cheers,
 
-Kind regards,
+David / dhildenb
 
-Paul
-
-
-[1]: https://lore.kernel.org/all/CYJ163J3I09U.2XMVZ0BLWV1Y1@seitikki/
 
