@@ -1,123 +1,122 @@
-Return-Path: <stable+bounces-26742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F67871907
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:08:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8985A87192B
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63453B24A8A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4645F281782
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491CF50249;
-	Tue,  5 Mar 2024 09:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D257A4F898;
+	Tue,  5 Mar 2024 09:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JsbX5dzF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uc/+uHGp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CBA4DA1F;
-	Tue,  5 Mar 2024 09:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF164DA1F;
+	Tue,  5 Mar 2024 09:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629672; cv=none; b=QHjSjT8tNBRAp+BuVaRZEVwbF0I8myq/FCo5+PbNiIhr7ob1G0XNt6NeFWCY5e21KPG9GpOBCgYAl0aWZKsQMaJrjehQSPRKNfxPb15tyoMoTc0Hfk6jzYC8rL4K6HRQHEtOYbI+z+BQPigmp4VuScVP26jyNRoF4PG3JQ+B4Rc=
+	t=1709629867; cv=none; b=EFSYKlUrb5NB6IntO3KA3jW9t9DzE2UZ5Ukjk9DOsauzE2JKe7hCgHAeDwRN7fu1Gy6xezIBq7ax/a7uV4S7ADWTeWvUS6QegrQ1JW2ZkOvRQwoLpprkYYfr3/ctUTw0LLYpNXIUNvB+czPAaLtcPLHivBcqUnowjwNchP35X1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629672; c=relaxed/simple;
-	bh=9sSwvYiVNiVEMFJhGyHIfjkNYJ+8iisCRGyT03Xnpzc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=luSpWG/rLebRwjAdJTWdU2it6h/5Jl2SwNDb/ZxAPH1K7Y0jigLwCzs2eRWwHPfHQcYEPEphberhPW2dpc5Uf5umEZ4WBRRr/dnHPFYJNMrX11sx10eHVMYD5LQcCLMrMX0/25pYFIX36yF+6U1sKkkA7KX/IifaK9tGdUuKqY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JsbX5dzF; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d42e7ab8a9so3823353a12.3;
-        Tue, 05 Mar 2024 01:07:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709629670; x=1710234470; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xECqrC5wW8C4gpURucKnrkHYEZdlXOnIvk1nQsHS7MM=;
-        b=JsbX5dzFK2fXu4p+216MG6FRTyysaJ0EuZOf3v54PVyw1pJVPmC63JqJejr67+72yW
-         DGXdx0M3wcAMtuTznRRpeYUi+K4l2yYWeY1UuSZ8d7L31L0GRfmsamsT6s3AlYCS68ql
-         cSHrqvbMnMtrp3D88msPwk+bOULSqXvfxs/aOg/cSf8KCZYl1eYU/Z0VoG0X9pMXKQLS
-         4YVT4VAjuvPt+cR99QcLNShCeFTt0GMIT4h5v9ps9BTztSH7Z9SAMUioK1dTu2SofodE
-         Q9Lc6R9ZVntLTgmfGJNLwSK3ExCeaT9hCB5U48F2FYTJlIX9hMfck6RODlOfCiuAnYv5
-         VGcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709629670; x=1710234470;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xECqrC5wW8C4gpURucKnrkHYEZdlXOnIvk1nQsHS7MM=;
-        b=SMgegF9i4uB4y3TxSSUfmAB6GVcihR4nGR253G9xixkvhbi63akwSx2J5nMI+2JNO6
-         LHWVRNybJbTtRsMPG5yk54ncLL6IRh3bBUP7WiY47FgH9YmGXmfauF14eI2H1cb1Hl46
-         iuB3LH6qMhmEolTRw4gOUpf8Z/hcgQRJbBwDi6kKhOVVBEeEs0A4OBgW9TLrG+qbnE+X
-         hNjs9KfBuRB/boDCQZKpPIoUKDolqUJKNBC7vswGfHpbD/IJMUoV0vR7dAN3M7AtCnu2
-         Y9PVZXgvwvTM0sB8A2kY9z9JsdY5Wqaj5gwwEL+PEIHtFxxOrHgs3Y6Y4KCntHp+eZVl
-         3cOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpSdCl+9kY8Wi0YvP1Osrr0AeVImyXPLZIy1BU9CdTgvhWvD37ifO/Tk1MPAreT1JqPDCLb9GpOdwUqsXCJ3hUDLN0Zbty2WXx60w9LVAx8COpYGZvL1hSFKZRia45eBhHX22t
-X-Gm-Message-State: AOJu0Yx2QWPvl/aDAIYQuR3MEJSkJjBTOCnd6O5cO8QLOt7JxPH/gjtI
-	svNOHFqYiv6nIPEDN2rxEap4jltiHs+kVBJvuRBFsAONi4RzKVe3QNeWwk8lPknIf0+R9PFCa5y
-	B8bkLI0alb3ITH5VPPoBbUJfoaRg=
-X-Google-Smtp-Source: AGHT+IHQCsAc5k/dqnxRuofGLrxJI5VV9DX8j35EwjwxKG9bP5pOWIbRfkocDE/Kxr11z/qfnCWoxfbMUcq/eJzkogw=
-X-Received: by 2002:a05:6a21:6da4:b0:19e:2d04:d775 with SMTP id
- wl36-20020a056a216da400b0019e2d04d775mr1121314pzb.50.1709629669859; Tue, 05
- Mar 2024 01:07:49 -0800 (PST)
+	s=arc-20240116; t=1709629867; c=relaxed/simple;
+	bh=H+2wlslZkHG5WJTMkedhIAxZ71n6oHIBbYXZAqgOaZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VAsrFsyVEKkRlIfVyWYBcIGu7AwL5vqX85jLGMczSQW29Lpkaq/f/kwd0PCqeah80YDyt1DAOe4+CizJB7xafSGQ2a++5r44zqsD7px0s1o4qvomlck5/yqT6RTR/vxYe3WsaQt4UaFHstfPQGUI/YcGMyR57QnVA0eM6ZrdZbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uc/+uHGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D16C43394;
+	Tue,  5 Mar 2024 09:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709629867;
+	bh=H+2wlslZkHG5WJTMkedhIAxZ71n6oHIBbYXZAqgOaZY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uc/+uHGpnp1P2VH3AWg0LLYN1WK+jtpThZcZpatgIWyYJqafxriuAeORhX2Tb/oF/
+	 JISu5NenwDGh1LqcXMIPJx0/rHkMLoPhtI5mNmed7b6TIeMti00+c/FobEZSqc6JXu
+	 RKUE5ptAnoDyy5vQXRWPWzuTSQ+T4y3/sJK3UwlVOsIBc/fnTMogrmFF11HzGd3o5B
+	 vZ8jBUnhGPTdQPTEXDOzv5s5F4+uZxuznlV/U9zZP3x7cf0adx9fgfxQ/K3imMS01v
+	 pnBnHTpAu8xgi8wqikA7GHev5BBoUKvOUXXhiUh2xOPjEmogOazBinXeTjxSV5R0wn
+	 9nE2tj92VH72A==
+Date: Tue, 5 Mar 2024 10:11:01 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>, 
+	Eric Biggers <ebiggers@kernel.org>, Benjamin LaHaise <ben@communityfibre.ca>
+Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, 
+	Eric Biggers <ebiggers@google.com>, Avi Kivity <avi@scylladb.com>, 
+	Sandeep Dhavale <dhavale@google.com>, Jens Axboe <axboe@kernel.dk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb
+ conversion
+Message-ID: <20240305-leerlauf-hinauf-b44c47f26f4e@brauner>
+References: <20240304235715.3790858-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240305074649.580820283@linuxfoundation.org> <20240305-arson-panhandle-afa453ccb0aa@wendy>
-In-Reply-To: <20240305-arson-panhandle-afa453ccb0aa@wendy>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Tue, 5 Mar 2024 10:07:37 +0100
-Message-ID: <CADo9pHg4teVS7Lt1j+gOt4G9U=dZF9G92AUK=Km6PTdURkc0pg@mail.gmail.com>
-Subject: Re: [PATCH 6.7 000/163] 6.7.9-rc2 review
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-	conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240304235715.3790858-1-bvanassche@acm.org>
 
-Den tis 5 mars 2024 kl 09:32 skrev Conor Dooley <conor.dooley@microchip.com>:
->
-> On Tue, Mar 05, 2024 at 07:58:57AM +0000, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.7.9 release.
-> > There are 163 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 07 Mar 2024 07:46:26 +0000.
-> > Anything received after that time might be too late.
->
-> > Samuel Holland <samuel.holland@sifive.com>
-> >     riscv: Save/restore envcfg CSR during CPU suspend
-> >
-> > Samuel Holland <samuel.holland@sifive.com>
-> >     riscv: Add a custom ISA extension for the [ms]envcfg CSR
->
-> I left a comment in response to the off-list email about this patch,
-> I don't think it's gonna work as the number this custom extension has
-> been given exceeds the max in 6.7/
->
-> Cheers,
-> Conor.
->
-> >
-> > Samuel Holland <samuel.holland@sifive.com>
-> >     riscv: Fix enabling cbo.zero when running in M-mode
+On Mon, Mar 04, 2024 at 03:57:15PM -0800, Bart Van Assche wrote:
+> The first kiocb_set_cancel_fn() argument may point at a struct kiocb
+> that is not embedded inside struct aio_kiocb. With the current code,
+> depending on the compiler, the req->ki_ctx read happens either before
+> the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
+> that it is guaranteed that the IOCB_AIO_RW test happens first.
+> 
+> Reported-by: Eric Biggers <ebiggers@kernel.org>
+> Cc: Benjamin LaHaise <ben@communityfibre.ca>
+> Cc: Eric Biggers <ebiggers@google.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Avi Kivity <avi@scylladb.com>
+> Cc: Sandeep Dhavale <dhavale@google.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: stable@vger.kernel.org
+> Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
 
-Works fine on my Arch Linux desktop with model name    : AMD Ryzen 5
-5600 6-Core Processor
-after the Arch Linux manual intervention for new mkinitcpio settings
-and version in Arch
+Can I please get a review from Eric and/or Benjamin, please?
 
-Tested by: Luna Jernberg <droidbittin@gmail.com>
+>  fs/aio.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/aio.c b/fs/aio.c
+> index da18dbcfcb22..9cdaa2faa536 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -589,8 +589,8 @@ static int aio_setup_ring(struct kioctx *ctx, unsigned int nr_events)
+>  
+>  void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+>  {
+> -	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
+> -	struct kioctx *ctx = req->ki_ctx;
+> +	struct aio_kiocb *req;
+> +	struct kioctx *ctx;
+>  	unsigned long flags;
+>  
+>  	/*
+> @@ -600,9 +600,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+>  	if (!(iocb->ki_flags & IOCB_AIO_RW))
+>  		return;
+>  
+> +	req = container_of(iocb, struct aio_kiocb, rw);
+> +
+>  	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+>  		return;
+>  
+> +	ctx = req->ki_ctx;
+> +
+>  	spin_lock_irqsave(&ctx->ctx_lock, flags);
+>  	list_add_tail(&req->ki_list, &ctx->active_reqs);
+>  	req->ki_cancel = cancel;
 
