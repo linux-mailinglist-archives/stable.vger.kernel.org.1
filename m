@@ -1,111 +1,146 @@
-Return-Path: <stable+bounces-26838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA1187278C
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:30:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FDC8727E6
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0073928C4C6
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:30:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CCE31F23DD2
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEA941760;
-	Tue,  5 Mar 2024 19:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26184DA11;
+	Tue,  5 Mar 2024 19:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uemJS2rM"
+	dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b="knva6nXZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7881D18EA2;
-	Tue,  5 Mar 2024 19:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709667018; cv=none; b=sCi90Yxjj1i757ipIGla9T5YfnSP3bcDAkWoUemsk/XlUZC+chqaunQVH3GmuoqVRDetB0FsgTCPGbkMLCHbHA1p+DHCYkXLsNngk+5Q3F6/hthzSux4y3zMzY8/oH0J6URFwxKT3XtOUqL406PJSiIM3ObUdLMSFHVPMhld9lo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709667018; c=relaxed/simple;
-	bh=TU7ULCtZZi7jWcyR3SfCPPJFR2ljxw8j93N5IXJXUxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKOiu59z/DTNqMlbCSwRq4Cjs5UN/YD3ay4+mQhCaHU5OIyHbZSilxCvGAWaVZIQkYvUap4LvJ7UNPdysT1m92/vxVPIpd2db0c6YyA9vjTQnPoGFNSxff2H3xNwGYUW9u0bHY2tgHAPMbAuUApFHT2gjNAZueMeykTlQqBekZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uemJS2rM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E931C433F1;
-	Tue,  5 Mar 2024 19:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709667018;
-	bh=TU7ULCtZZi7jWcyR3SfCPPJFR2ljxw8j93N5IXJXUxQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uemJS2rMuMgBzT5h2fwcU3pGWU0E9XbFWhYKPDhkOfzmZAAgc8S62twn2OVLfmip2
-	 KvLlUw5S+HrGkwMgw7mFgoGK9l9+OPQEoW7wpeXUdgyu6Ulst5/vzAomcr02XxgAfe
-	 QZFqBHj3+nt0SD8I8EJ8OKnN8dVXVqirrADklkXyi93YCeZAdhWldBSlJ1YkyKKYTJ
-	 PTAHz3dFz7mK859VUiX9xINC+8BuRXNkjFMBzt2wu3pXP1RXpeDcGi9I/11IJjKV1I
-	 FTNAERf506r1JhprRgZ+/SR1FaR2A2oW3Sm9M634uwH7LGI8vrz/C7IZ1iNmTw7d+j
-	 pqp8Ah2Qtpaeg==
-Date: Tue, 5 Mar 2024 12:30:15 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: Disable two Clang specific enumeration warnings
-Message-ID: <20240305193015.GA1173426@dev-arch.thelio-3990X>
-References: <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
- <57abd8e9-3177-4260-b423-38d5cdcda44e@app.fastmail.com>
- <CAKwvOd=V_Qtd2pK8AKc6bv=zMPnAaCf08=QO74ckqH26A3sefA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45B818639
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 19:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709668055; cv=pass; b=BqknZXrWDGOn8F93AJlFMvk1UwgrqM9vPhrXBxLRGfcmujsjUiRIeklzXOzssEaD714z+cAGA+Q5Jxphf2h4JkQAAuum4ngypXOQ/rgiCs0rDqfDoYou4nagnWzBG9dlH/ImlXwBMivV7mfxidJUcVbZ3l/nCDx/dDage0+5Qhg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709668055; c=relaxed/simple;
+	bh=giaEKfckGjS3IKGGoymltghhXFc22afEJBfjWIyAyuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=lCT/j0VkubZQpVQ7gJn/OlrvVQcq0S7bE504UfhMLzbQjaWBm5gmrS9N81fvrLgmr+/2gqlnfyi/P+vYheF3lfsRmjN99iUlfuHB/0ItoGFFIp6duDRfTJkJCMoYiy6LI0xqU1ncefUXt5sasKG+oKZPDCytsMhbnkCFin/Klpc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com; spf=pass smtp.mailfrom=templeofstupid.com; dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b=knva6nXZ; arc=pass smtp.client-ip=23.83.218.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 306D67A3613
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 19:41:48 +0000 (UTC)
+Received: from pdx1-sub0-mail-a293.dreamhost.com (unknown [127.0.0.6])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id AE11B7A1F34
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 19:41:47 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1709667707; a=rsa-sha256;
+	cv=none;
+	b=CvdzGfb4e9a/3rGFfW2pvS++ET2EdQCYfp8cI/eBpMk3/YmBFXkRd/hAGzqvk7rY+Vxy6J
+	UWPUAUifEPB37AGSHVpK/hiXaeEzO+ocJhI+K355dgtEfxksawtQZmaSouF45kMHHPQegC
+	NIslmTby7J059pv+Ta5J9wntaQfNC1eRhXZckJOZR8XnkeeEq+y+gmajPj/mze2vH5vtjM
+	cVDLgwJfms76wQdKowiiWLbRYuAS+azkyhPxeX8RJuOneOWFx+AIlLQQnCcf+/clIt9r8P
+	E/pcmW4FgAVQ7pvkrH/5MrQ04tYoCDFdx4vwBq35IBs2GnecciQG8bWq2x0DDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1709667707;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=LpYhkwRacccxYX97IU6DnVg+TCfnBanFzugoowp1BSc=;
+	b=g3EtBrDdXUyF4RD0DR4mmU2xVJhEqYeLWFNLhsFq9Z0978hdMufiJZTBe0PqH0rldNE34I
+	z+uSJAL/wUtJrqMIWToBwJAMBtfG3LnNR3t4qZ5aP2Xh0/mZubyzJEuk5lJLEfe0BDhYJb
+	H/f8jAtHrGWitGG2ll/ZqX2NjBIGqxg2j2he/ok9Fhu6+M+zaL0nAdvz9Ps75JzMj+eYk9
+	0KiCVUAwneqHU9IBrxnd69Ut7LgbNTHZVqhQoe4xXMr0r6WGZK8y3m8undDUd2Yz10S5yA
+	5AxGyV/NwZDwXtZDoICI7L+urvtxvl3b0EGgpDbVde7CvzDUDRjjvF5XfmGoBA==
+ARC-Authentication-Results: i=1;
+	rspamd-55b4bfd7cb-t6svs;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MailChannels-Auth-Id: dreamhost
+X-Cure-Cooperative: 5d6229dd07153e94_1709667707937_4001639644
+X-MC-Loop-Signature: 1709667707937:2183295438
+X-MC-Ingress-Time: 1709667707937
+Received: from pdx1-sub0-mail-a293.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.111.52.242 (trex/6.9.2);
+	Tue, 05 Mar 2024 19:41:47 +0000
+Received: from kmjvbox.templeofstupid.com (c-73-222-159-162.hsd1.ca.comcast.net [73.222.159.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kjlx@templeofstupid.com)
+	by pdx1-sub0-mail-a293.dreamhost.com (Postfix) with ESMTPSA id 4Tq5Y73Z64z5y
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 11:41:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
+	s=dreamhost; t=1709667707;
+	bh=LpYhkwRacccxYX97IU6DnVg+TCfnBanFzugoowp1BSc=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=knva6nXZzUfXzecR0T2AUebiWkgg6Jw6UPmg56LI9hT1XxhGv/5HbgCZbKqd6F24B
+	 dr4jhyKbiIM6tc2+af4mFXDJLp5t6HG36+/rNhsqwlq6l1+OvtZrtteyt5uHJ9rxE7
+	 rqCgWTg1uDdpD1RMQN6omFZ0GnE1yjXC8i78p/7GYG2Mjc89V9y/lMEsLDyVUu5To/
+	 yYYoXYd/OhcNZZtHjdQFeJO8EzHQIbyl1GemNSzte39thRTeCGtTDf0tagQqSIjd+g
+	 7Z3xDMzKOyWbMwxNsM3tGuKMTg5WumyMhhEQW0J1eGqNNs6Gn5lgf0S/J+BcNMIi3m
+	 xOH6jCG4rcbOQ==
+Received: from johansen (uid 1000)
+	(envelope-from kjlx@templeofstupid.com)
+	id e00eb
+	by kmjvbox.templeofstupid.com (DragonFly Mail Agent v0.12);
+	Tue, 05 Mar 2024 11:41:38 -0800
+Date: Tue, 5 Mar 2024 11:41:38 -0800
+From: Krister Johansen <kjlx@templeofstupid.com>
+To: stable@vger.kernel.org
+Cc: Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	David Matlack <dmatlack@google.com>, kvm@vger.kernel.org
+Subject: [PATCH 5.15.y 0/2] fix softlockups in stage2_apply_range()
+Message-ID: <cover.1709665227.git.kjlx@templeofstupid.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOd=V_Qtd2pK8AKc6bv=zMPnAaCf08=QO74ckqH26A3sefA@mail.gmail.com>
 
-On Tue, Mar 05, 2024 at 10:52:16AM -0800, Nick Desaulniers wrote:
-> On Tue, Mar 5, 2024 at 10:50 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > On Tue, Mar 5, 2024, at 18:42, Nathan Chancellor wrote:
-> > >
-> > > As the warnings do not appear to have a high signal to noise ratio and
-> > > the source level silencing options are not sustainable, disable the
-> > > warnings unconditionally, as they will be enabled with -Wenum-conversion
-> > > and are supported in all versions of clang that can build the kernel.
-> >
-> > I took a look at a sample of warnings in an allmodconfig build
-> > and found a number that need attention. I would much prefer to
-> > leave these turned on at the W=1 level and only disable them
-> > at the default warning level.
-> 
-> Sounds like these new diagnostics are very noisy. 0day bot sends
-> people reports at W=1. Perhaps W=2?
+Hi Stable Team,
+In 5.15, unmapping large kvm vms on arm64 can generate softlockups.  My team has
+been hitting this when tearing down VMs > 100Gb in size.
 
-A number of subsystems test with W=1 as well and while opting into W=1
-means that you are potentially asking for new warnings across newer
-compiler releases, a warning with this number of instances is going to
-cause a lot of issues (I think of netdev for example).
+Oliver fixed this with the attached patches.  They've been in mainline since
+6.1.
 
-I think if we are going to leave it enabled at W=2, we might as well
-just take this change as is then have people who are developing the
-fixes use 'KCFLAGS=-Wenum-conversion' when building to override it,
-which is more targeted than using W=2. W=2 is not run by any CI as far
-as I am aware, so there is not really any difference between disabled
-altogether vs.  enabled at W=2 in terms of widespread testing. Once all
-the fixes (or patches to hide instances) are picked up and merged into
-Linus's tree, this change can just be reverted.
+I tested on 5.15.150 with these patches applied. When they're present,
+both the dirty_log_perf_test detailed in the second patch, and
+kvm_page_table_test no longer generate softlockups when unmapping VMs
+with large memory configurations.
 
-Fundamentally, I do not really care which avenue we take (either this
-change or off by default, on at W=1), I am happy to do whatever.
-Unfortunately, CONFIG_WERROR makes these decisions much more urgent
-because it is either disable it and have other warnings creep in amongst
-the sprawl of these warnings or leave it on and miss other errors for
-the same reason.
+Would you please consider these patches for inclusion in an upcoming 5.15
+release?
 
-Cheers,
-Nathan
+Thanks,
+
+-K
+
+Oliver Upton (2):
+  KVM: arm64: Work out supported block level at compile time
+  KVM: arm64: Limit stage2_apply_range() batch size to largest block
+
+ arch/arm64/include/asm/kvm_pgtable.h    | 18 +++++++++++++-----
+ arch/arm64/include/asm/stage2_pgtable.h | 20 --------------------
+ arch/arm64/kvm/mmu.c                    |  9 ++++++++-
+ 3 files changed, 21 insertions(+), 26 deletions(-)
+
+-- 
+2.25.1
+
 
