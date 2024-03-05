@@ -1,221 +1,109 @@
-Return-Path: <stable+bounces-26737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F98A8718B8
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:57:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7958718E4
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3194D284101
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 08:57:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFDBB1F2381C
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08504F1F5;
-	Tue,  5 Mar 2024 08:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B2154917;
+	Tue,  5 Mar 2024 09:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NDm2r5st"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIc4DOlQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377204EB31
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 08:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06B5490E;
+	Tue,  5 Mar 2024 09:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629060; cv=none; b=sIi8ixEgfNyxUDFclW9qISG3uWQJC6qpwmNngnB+qhqyXAnugoYYpy5OetxkHw0tvxK6HIvKdyTQEBN+Ep3TUMD07bpOtzgTDLesSNxwBPJmYmIRHKj2LhPbvrG9IPJXt8P6M/NzBwNX7zv9NYoEgVz+5DkT7kP8i0nxGhuOvzA=
+	t=1709629393; cv=none; b=teEpeBLLyHTUgcvIG3jEYIbcbreuylVlZa2glsAPLkzXY/LfAll7HtqlbBxlkvGsZ3btkgCYvIdO66OVoEurgdW2YFe1s1e5HIXw3rnKry3W33qoG1sqW2n02HcLL8/qM0NxSDEqlRm4ETbh8FZwaN5JufxfrIfrX8m4YIz3S6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629060; c=relaxed/simple;
-	bh=loUuHG6Rl5ZahVypUQt1mcaUcLn65SSDNsljM58YBSU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LWNgmon7ENhI1VmrZW/sn+srMWRCm81WFcj7cvB8YEyaNguDKcEtT837W8F/CGXNfBTvO8+aSvG8IWufmGlDe5Ci+P7wvI1311iKbq9iZH/XoItCiGX9s5cSQptjME9ugxgESvi9282QlRyC9m8eQ/Xvy5YDHQ3hhFzaGVtDTb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NDm2r5st; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d29111272eso5684691fa.0
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 00:57:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1709629056; x=1710233856; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0X83xOzgweJaKyIm8x1h65Q1GPFlkWhbvFgIWbJbDGs=;
-        b=NDm2r5staqa63+QO+ZwQ2L4e6AWNwvzY6l9A2SOyaoO0EOFnQ/xcQww93Vu5TzmBpN
-         XkbjdZQrR50++YwjrwSLrLWqwsgDpf4oU0E3RMajIBH9riwgEAnxBynd/VWAqlDVFulx
-         m1ZZfVXWEAKetSOmrRr4PQq+Sb/MTGHLME/x6UiPJgKql16ASEvkLrZnFZ92hmuhPhUm
-         LcgnGNTf4bioi/sP1GcejcB0l1uNLqsNBCfk/bb6Q+LXJtLpIyscUB8QhjTbtrZOvp8R
-         sElwAW3NeebfAGyt18PJethQq33+m2p0+VQfZATr2csPqiPXUsS4EGYddFeg/JmfWpg8
-         wUZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709629056; x=1710233856;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0X83xOzgweJaKyIm8x1h65Q1GPFlkWhbvFgIWbJbDGs=;
-        b=IF4wZvuIOfEGXBf+YhBRwaasr6aW5cs41OhvwVIsrtacIanzljWjzpOrFAd/QVtW4w
-         TsJo6LHEacbq+55725s+L/FcuV7oYQ1o8vlra3AAJoy9pcjCARe10cPc9aNnSXIZaZtf
-         PdZL+dFYRbMvvDXe0QPULB4CR/o2n+fSwnk5pXYyiZY0DBClr5Agp9zuGK6gryhh0gHp
-         qhHdLnQU45CmjhfORWZBeBPQ9vV9WiKEL43/yhnoxHjdnBFjtg4dQN1BGj5aM4oaqz39
-         pq/XYqn8wcI7BIrx6UoeEoW+ayq2w1Gpr8TDSzP9Zeong2YXQCmoVPNX1XAbLB8pr8Xg
-         xE5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUBOnegS3dqpjtITrKlJp49hjj0xhiw6HqH4h/EF5N0Bvmb+z8nbDrO+I5J0/4i8eRhWkojd4bAGgWntJunMZ6fGE93FERO
-X-Gm-Message-State: AOJu0YwAAizo0npHAWT+JBT3pq/LQpUYDcA6/0ZMKwMeyIv0wsqTVzG5
-	A/sHYcYWN+gabEeSCieKsobzE5Hy8qBvCXyniOGtENtdf1j5AIUyEJbIpbjz2PI=
-X-Google-Smtp-Source: AGHT+IG5mmFqoe7q6aetUnV1FKqk9OSnknpzFWETfXp2zUhvB5xYeDfsxZk+4vh/2rF+zCMMw7apeg==
-X-Received: by 2002:a2e:908b:0:b0:2d2:ed31:9fa6 with SMTP id l11-20020a2e908b000000b002d2ed319fa6mr877212ljg.49.1709629056276;
-        Tue, 05 Mar 2024 00:57:36 -0800 (PST)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id w7-20020a170902e88700b001dba739d15bsm9994536plg.76.2024.03.05.00.57.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 00:57:35 -0800 (PST)
-Message-ID: <f995abc3-27c4-418e-b595-88c79b793deb@suse.com>
-Date: Tue, 5 Mar 2024 19:27:30 +1030
+	s=arc-20240116; t=1709629393; c=relaxed/simple;
+	bh=0z3ZfR7fH8MNjZhZhjSXXycCjPoCP8KMQwydlho5Ss0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uGX+NgdGC8AQyJqQBHaVxUYKheHo4aSCfG7xZBGCC4Osqd/zYWkqmHfHFPGB/+a2IJImQwr8f0v/QYf6B86LSRGroGYnjoO3dnBycYflsjbjSbfy4mIJXLdWl6a1n/M5e6svRh0aFYGTx825TRtxo3oEgvchwNUu1pOzelxEj8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIc4DOlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEA2C433F1;
+	Tue,  5 Mar 2024 09:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709629393;
+	bh=0z3ZfR7fH8MNjZhZhjSXXycCjPoCP8KMQwydlho5Ss0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UIc4DOlQj7dQchzqZueCPmUNmZZYha0RNvJnu4rRL0c67/MvVpGM4K5wkF4P/ZzG+
+	 dJEU0hIYKXOz9dnJVO7XBwfJZmHkJ9KdM2L1P78pHqF9QT3mvpf572538gveRMJBOH
+	 hQMOMTWw+KfW1w8N5/smmNUcuEsP4D7ffBfVlkX8+xS9ZXdP//yE1uh1rAfqehFb6u
+	 Zo0z42efKBtF7aoeFKk33NEo+UTHCHm0HyEEnhM8ks5skSHs3+0L3lly3mF+sZEF4y
+	 7bVZZvFwn6QNbeL4KKrVUn/xfqF7uG14oWBu9ife8B8nDHD7RpCEf9MU8yKq8prCjB
+	 ptPJMDSvauQCA==
+From: Christian Brauner <brauner@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Benjamin LaHaise <ben@communityfibre.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	stable@vger.kernel.org,
+	syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
+Subject: Re: [PATCH] Revert "fs/aio: Make io_cancel() generate completions again"
+Date: Tue,  5 Mar 2024 10:01:21 +0100
+Message-ID: <20240305-querbalken-bewarben-8cd446ceed55@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240304182945.3646109-1-bvanassche@acm.org>
+References: <20240304182945.3646109-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] btrfs: scrub: fix false alerts on zoned device scrubing
-Content-Language: en-US
-To: Naohiro Aota <Naohiro.Aota@wdc.com>
-Cc: "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
- WA AM <waautomata@gmail.com>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>, Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-References: <91a3647a1f2657b89bd63c12fa466c6c70965d22.1709606883.git.wqu@suse.com>
- <lxmzcflltgts5hesryp5duiufj3mtsiqotn7bjwiowzz5ljge4@ifshxhdddgo7>
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJVBQkNOgemAAoJEMI9kfOh
- Jf6oapEH/3r/xcalNXMvyRODoprkDraOPbCnULLPNwwp4wLP0/nKXvAlhvRbDpyx1+Ht/3gW
- p+Klw+S9zBQemxu+6v5nX8zny8l7Q6nAM5InkLaD7U5OLRgJ0O1MNr/UTODIEVx3uzD2X6MR
- ECMigQxu9c3XKSELXVjTJYgRrEo8o2qb7xoInk4mlleji2rRrqBh1rS0pEexImWphJi+Xgp3
- dxRGHsNGEbJ5+9yK9Nc5r67EYG4bwm+06yVT8aQS58ZI22C/UeJpPwcsYrdABcisd7dddj4Q
- RhWiO4Iy5MTGUD7PdfIkQ40iRcQzVEL1BeidP8v8C4LVGmk4vD1wF6xTjQRKfXHOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJuBQkNOge/AAoJEMI9kfOhJf6o
- rq8H/3LJmWxL6KO2y/BgOMYDZaFWE3TtdrlIEG8YIDJzIYbNIyQ4lw61RR+0P4APKstsu5VJ
- 9E3WR7vfxSiOmHCRIWPi32xwbkD5TwaA5m2uVg6xjb5wbdHm+OhdSBcw/fsg19aHQpsmh1/Q
- bjzGi56yfTxxt9R2WmFIxe6MIDzLlNw3JG42/ark2LOXywqFRnOHgFqxygoMKEG7OcGy5wJM
- AavA+Abj+6XoedYTwOKkwq+RX2hvXElLZbhYlE+npB1WsFYn1wJ22lHoZsuJCLba5lehI+//
- ShSsZT5Tlfgi92e9P7y+I/OzMvnBezAll+p/Ly2YczznKM5tV0gboCWeusM=
-In-Reply-To: <lxmzcflltgts5hesryp5duiufj3mtsiqotn7bjwiowzz5ljge4@ifshxhdddgo7>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1514; i=brauner@kernel.org; h=from:subject:message-id; bh=0z3ZfR7fH8MNjZhZhjSXXycCjPoCP8KMQwydlho5Ss0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ+u3+i6KTk+vXX3z6d4rc5g9fYbgp7plDw9FeXjXRDG n6Gq1Wwd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkLgvDP9P9MYcLuzMXqc6J f9OzZvaRpeoJWfuyxKt3SF51ePFh+UFGhnNz/rx6w7txtZsDw0P5nAzzR+eclBLnNGkGPs+O8v7 znhkA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-
-
-在 2024/3/5 19:18, Naohiro Aota 写道:
-> On Tue, Mar 05, 2024 at 01:18:22PM +1030, Qu Wenruo wrote:
->> [BUG]
->> When using zoned devices (zbc), scrub would always report super block
->> errors like the following:
->>
->>    # btrfs scrub start -fB /mnt/btrfs/
->>    Starting scrub on devid 1
->>    scrub done for b7b5c759-1baa-4561-a0ca-b8d0babcde56
->>    Scrub started:    Tue Mar  5 12:49:14 2024
->>    Status:           finished
->>    Duration:         0:00:00
->>    Total to scrub:   288.00KiB
->>    Rate:             288.00KiB/s
->>    Error summary:    super=2
->>      Corrected:      0
->>      Uncorrectable:  0
->>      Unverified:     0
->>
->> [CAUSE]
->> Since the very beginning of scrub, we always go with btrfs_sb_offset()
->> to grab the super blocks.
->> This is fine for regular btrfs filesystems, but for zoned btrfs, super
->> blocks are stored in dedicated zones with a ring buffer like structure.
->>
->> This means the old btrfs_sb_offset() is not able to give the correct
->> bytenr for us to grabbing the super blocks, thus except the primary
->> super block, the rest would be garbage and cause the above false alerts.
->>
->> [FIX]
->> Instead of btrfs_sb_offset(), go with btrfs_sb_log_location() which is
->> zoned friendly, to grab the correct super block location.
->>
->> This would introduce new error patterns, as btrfs_sb_log_location() can
->> fail with extra errors.
->>
->> Here for -ENOENT we just end the scrub as there are no more super
->> blocks.
->> For other errors, we record it as a super block error and exit.
->>
->> Reported-by: WA AM <waautomata@gmail.com>
->> Link: https://lore.kernel.org/all/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com/
->> CC: stable@vger.kernel.org # 5.15+
->> Signed-off-by: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> ---
->>   fs/btrfs/scrub.c | 13 +++++++++++--
->>   1 file changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
->> index c4bd0e60db59..e1b67baa4072 100644
->> --- a/fs/btrfs/scrub.c
->> +++ b/fs/btrfs/scrub.c
->> @@ -2788,7 +2788,6 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
->>   					   struct btrfs_device *scrub_dev)
->>   {
->>   	int	i;
->> -	u64	bytenr;
->>   	u64	gen;
->>   	int ret = 0;
->>   	struct page *page;
->> @@ -2812,7 +2811,17 @@ static noinline_for_stack int scrub_supers(struct scrub_ctx *sctx,
->>   		gen = btrfs_get_last_trans_committed(fs_info);
->>   
->>   	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
->> -		bytenr = btrfs_sb_offset(i);
->> +		u64 bytenr;
->> +
->> +		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
->> +		if (ret == -ENOENT)
->> +			break;
->> +		if (ret < 0) {
->> +			spin_lock(&sctx->stat_lock);
->> +			sctx->stat.super_errors++;
->> +			spin_unlock(&sctx->stat_lock);
->> +			break;
+On Mon, 04 Mar 2024 10:29:44 -0800, Bart Van Assche wrote:
+> Patch "fs/aio: Make io_cancel() generate completions again" is based on the
+> assumption that calling kiocb->ki_cancel() does not complete R/W requests.
+> This is incorrect: the two drivers that call kiocb_set_cancel_fn() callers
+> set a cancellation function that calls usb_ep_dequeue(). According to its
+> documentation, usb_ep_dequeue() calls the completion routine with status
+> -ECONNRESET. Hence this revert.
 > 
-> Since an error from scrub_one_super can continue, this can be "continue"
-> also? > E.g, if btrfs_sb_log_location() returns -EUCLEAN on the 2nd SB, it
-> fails to detect the 3rd SB's corruption.
+> [...]
 
-You're right, I originally though it can return error from 
-blkdev_zone_mgmt() and if that failed we can no longer continue.
+I'm not enthusiastic about how we handled this. There was apparently
+more guesswork involved than anything else and I had asked multiple
+times whether that patch is really required. So please, let's be more
+careful going forward.
 
-But that can only happen in write case, meanwhile we're in the READ path.
-And in that case, sb_write_pointer() can return -ECULEAN and we can 
-still continue.
+---
 
-Would allow continue for non-ENOENT errors.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Thanks,
-Qu
-> 
-> Other than that, looks good.
-> 
-> Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-> 
->> +		}
->>   		if (bytenr + BTRFS_SUPER_INFO_SIZE >
->>   		    scrub_dev->commit_total_bytes)
->>   			break;
->> -- 
->> 2.44.0
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] Revert "fs/aio: Make io_cancel() generate completions again"
+      https://git.kernel.org/vfs/vfs/c/d435ca3d38eb
 
