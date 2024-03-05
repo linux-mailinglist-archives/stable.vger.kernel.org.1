@@ -1,115 +1,109 @@
-Return-Path: <stable+bounces-26826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2DA872651
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB40587265A
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284F81F27903
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:12:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B391F27AF1
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4262617C71;
-	Tue,  5 Mar 2024 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A867182DD;
+	Tue,  5 Mar 2024 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dOXjcMB6"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TIDrRuHA"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C6E17BCF
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 18:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF4317C71
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 18:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709662324; cv=none; b=C/5B2m6g1LtSqnuKOUMcg9URnClUZcp6+n4Dl92V/tbcVErOIH8RFJNTf+kWlelFhwKruVikg89UklMVG9TvJ3mR9a2euHwOUVEbaUN++KSw9BMoeWGDMpVeYna6+SNR9OJBoOZWaU96xQQhnBCk1j+M8kcOQheI2fJEy5StiTw=
+	t=1709662459; cv=none; b=VWUDqSZwC6qM86JeRwTMVexYKQtK9uysPdcH5uzzfG+uqcGrmkYcAIxWXC1+xL12UcSnEQtnSWat3Q99orGsq9xOGjclNBdumhcilFrT2tVsL8zJDPmzSrq3w90E4aHdF1PADSX6Peo8a9GEp4aqiZkjHbQsaxVZNpfRmRyWYU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709662324; c=relaxed/simple;
-	bh=q00v78Eum2+9+5tw85fvYICffuiBpCY/+uXx3ZSwQ8E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jmBXmFkmD8Ug6iLe2acxekneRJ+h3EfxwAuXBeC/0KKFW0DGy8c+ApQfuEz8iqDjOmzwtkZ37634xn0agcQ3DKpPZ5Kmno/IPHQ/cHz+XniWbgyxzSCY8absJPnwHf1wzeCom9K2WBOjF/CElEwxbnhS1rm0/MktXdkrHivIsg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dOXjcMB6; arc=none smtp.client-ip=95.215.58.176
+	s=arc-20240116; t=1709662459; c=relaxed/simple;
+	bh=CLb6htEM8BQ4wkYj4Mfxot1eztyH01EK5KTKnTSNh54=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bgpYl9lzznCBnBLWuGCbT8FACEgPl8XpMS+UZ/96+KK+JgyCPFxzY0nW2jNQr3G1x4UsWVxvY08Aza9c2X4C1jUqALuqbXzQrQKjRZodyqSig9nqLJibU8fu4kJZY3lueqAzpHJillf9MctT8ZRDcOaw4SO/ISA/HUg2Drn3EbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TIDrRuHA; arc=none smtp.client-ip=95.215.58.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <e2f2562e-5500-4afd-9e9d-fb92c7271758@linux.dev>
+Message-ID: <6764b9c5-b61a-4f20-a41a-125d5015a3e6@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709662319;
+	t=1709662455;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T9Dsn2WPTt1gxnLIJd9P9kOtBBptuwiSlUTg3Plrn6E=;
-	b=dOXjcMB6qf82D4brLcfIhPHiWn8Bw1227UmuP2b/HWkL3cgkTZsvr7NUqYasKtaQpYtER8
-	ijTW6JOJie7DsAxXpo9h+eNM+fiZm+KAQfkGpycNGg4wMLuDBJHEd5oBWpmHgjIJiSzyel
-	LHO0VWZkssF+kRIyTT+FHAhSAHPjDM0=
-Date: Tue, 5 Mar 2024 10:11:47 -0800
+	bh=4mCLjnlt6q90qUCq4m5luMROvGFxl/z1bFGYicutzgw=;
+	b=TIDrRuHAB3Fwdib4sKxYLlkNs/TwItDMIceZL4vZyE4Carkes4zEYbdAlyJQ4dcCUxPpyF
+	6rbx5Zlju5IHwZLJLPCTrfuGz8914F21k9UnY4jBL9g2kqJvjQCD3ROpdK7tcPjKdbpgRy
+	reYNOMlidxSNyyW8Jc7aInmHfsV4vK8=
+Date: Tue, 5 Mar 2024 13:14:09 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] kbuild: Disable two Clang specific enumeration warnings
-To: Nathan Chancellor <nathan@kernel.org>, masahiroy@kernel.org
-Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com,
- justinstitt@google.com, arnd@arndb.de, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-References: <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
-Content-Language: en-GB
+Subject: Re: [RESEND2 PATCH net v4 2/2] soc: fsl: qbman: Use raw spinlock for
+ cgr_lock
+Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge
+ <roy.pledge@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Camelia Groza <camelia.groza@nxp.com>,
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20240222170749.2607485-1-sean.anderson@linux.dev>
+ <20240222170749.2607485-2-sean.anderson@linux.dev>
+ <53b401d7-934c-4937-ab83-6732af47668d@csgroup.eu>
+ <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
+In-Reply-To: <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
+Hi,
 
-On 3/5/24 9:42 AM, Nathan Chancellor wrote:
-> Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
-> under -Wenum-conversion. A recent change in Clang strengthened these
-> warnings and they appear frequently in common builds, primarily due to
-> several instances in common headers but there are quite a few drivers
-> that have individual instances as well.
->
->    include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->      508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~ ^
->      509 |                            item];
->          |                            ~~~~
->
->    drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
->      955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
->          |                                      ^ ~~~~~~~~~~~~~~~~~~
->      956 |                           : IWL_MAC_BEACON_CCK_V1;
->          |                             ~~~~~~~~~~~~~~~~~~~~~
->    drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
->     1120 |                                                0) > 10 ?
->          |                                                        ^
->     1121 |                         IWL_MAC_BEACON_FILS :
->          |                         ~~~~~~~~~~~~~~~~~~~
->     1122 |                         IWL_MAC_BEACON_FILS_V1;
->          |                         ~~~~~~~~~~~~~~~~~~~~~~
->
-> While doing arithmetic with different types of enums may be potentially
-> problematic, inspecting several instances of the warning does not reveal
-> any obvious problems. To silence the warnings at the source level, an
-> integral cast must be added to each mismatched enum (which is incredibly
-> ugly when done frequently) or the value must moved out of the enum to a
-> macro, which can remove the type safety offered by enums in other
-> places, such as assignments that would trigger -Wenum-conversion.
->
-> As the warnings do not appear to have a high signal to noise ratio and
-> the source level silencing options are not sustainable, disable the
-> warnings unconditionally, as they will be enabled with -Wenum-conversion
-> and are supported in all versions of clang that can build the kernel.
->
-> Cc: stable@vger.kernel.org
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
-> Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+On 2/23/24 11:02, Sean Anderson wrote:
+> On 2/23/24 00:38, Christophe Leroy wrote:
+>> Le 22/02/2024 à 18:07, Sean Anderson a écrit :
+>>> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>> 
+>>> cgr_lock may be locked with interrupts already disabled by
+>>> smp_call_function_single. As such, we must use a raw spinlock to avoid
+>>> problems on PREEMPT_RT kernels. Although this bug has existed for a
+>>> while, it was not apparent until commit ef2a8d5478b9 ("net: dpaa: Adjust
+>>> queue depth on rate change") which invokes smp_call_function_single via
+>>> qman_update_cgr_safe every time a link goes up or down.
+>> 
+>> Why a raw spinlock to avoid problems on PREEMPT_RT, can you elaborate ?
+> 
+> smp_call_function always runs its callback in hard IRQ context, even on
+> PREEMPT_RT, where spinlocks can sleep. So we need to use raw spinlocks
+> to ensure we aren't waiting on a sleeping task. See the first bug report
+> for more discussion.
+> 
+> In the longer term it would be better to switch to some other
+> abstraction.
 
-Thanks for the fix. LGTM.
+Does this make sense to you?
 
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
+--Sean
 
 
