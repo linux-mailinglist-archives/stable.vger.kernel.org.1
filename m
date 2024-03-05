@@ -1,119 +1,130 @@
-Return-Path: <stable+bounces-26731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806198717ED
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3059587183E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BE31C20FE9
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 08:16:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5484E1C20F35
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 08:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EC581729;
-	Tue,  5 Mar 2024 08:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64661D517;
+	Tue,  5 Mar 2024 08:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMwah7VV"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ZxRPWhof"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7296580C02;
-	Tue,  5 Mar 2024 08:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801701DA27;
+	Tue,  5 Mar 2024 08:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709626486; cv=none; b=IYqK1aICkTQK3Y+Phapf2NxEmj5smtQSILFLTmEt50KPKCEvNo4fJ4j5RZ4+xrtMHqXoyVcYn8G94zzJUE3vjRjmerwVrDBzf2Bq3a5KQN6YfEZxyaS5p+4EKVCOuuactILftp4M+98jT50ZtHrrJ3ztCCcvMxZgRd4d6hJnFJc=
+	t=1709627517; cv=none; b=NpiDgRgwG/4ISHlwc5NqllnTEYi2DE7pOLBcK49CJfGyLOqaSZVAPRVybK3GpxrAW/n/Rp+3x8iTdeQXYVzQUNr8LF3npQKW9KBihO+P6Ktk30HMf96ipir4CLci5aLrTEJHCSBSwHlPqqy9OXCe38h1Z71GLhv1ipdYNB2Zv8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709626486; c=relaxed/simple;
-	bh=YyzJd5EjL4gnLemAYI0eCwc4e5Q6VYtrbvPZbBch1h4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KttUUCcj8DUWoKmkMQ1eKCO3wL7R6QSLFC3K+ZNpudiDC0wv/dp5i9C06VJemDGPGyL6s7ySl6XHAeAd+r9s15COOrJ3wE+KwMI+9Y+0y8i1mhlg9FDGaHHnOlXpu5y/fbsmVjed2wp6HSAt+GUEFE4kDJmiZ2cYVhSfntymC3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMwah7VV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B890DC43141;
-	Tue,  5 Mar 2024 08:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709626485;
-	bh=YyzJd5EjL4gnLemAYI0eCwc4e5Q6VYtrbvPZbBch1h4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMwah7VV7xvdtDONagk+i+LRvS5xXjX+HSCVwJElg938vGn5PTNe0nqWlOYx3KZip
-	 76lj9PorAWeImUQficLJ2396rQaCNtd9gkzsQwpyxwxMRPcktxADS/mmQhG05dp278
-	 rKICEpi888tvCfsVpYZRYRAleTt7flDkI6oFqviGDqeaNVYhsbf4ost9KMnbw5GBEc
-	 njiV1dwzcCT8/MzBLc3EvF5KZolrIiNINMsx65XfknQgAxzZc28MjTbszIm6foTvx8
-	 YJjfyyBhP6OUBI7mOnlhgKtlu/FpOokQeIX1mwL2jKpIVZk1wZqxDmTBpOqgZg389w
-	 F6m2V21PNIAMg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rhPwq-00000000385-2A4L;
-	Tue, 05 Mar 2024 09:14:52 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 09/10] arm64: dts: qcom: sc8280xp-x13s: disable ASPM L0s for NVMe and modem
-Date: Tue,  5 Mar 2024 09:11:04 +0100
-Message-ID: <20240305081105.11912-10-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240305081105.11912-1-johan+linaro@kernel.org>
-References: <20240305081105.11912-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1709627517; c=relaxed/simple;
+	bh=1ls+uy/JcT9Izmp8DLtQlz60vm6OJVdzHaoUaPD077U=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tau39gHaPjP2nw84ftPTQk4SA0eO4H2xsy+s2d+nv3wh5j9vCAhRLb4WUu8gwjm1A/U4MCcHbLsj+dvmX1fHOHB5raMktCS2U/Ddgne9ttCBosM/ES+28ZI9R5xjG3ROiGdDjo4+mvCzFW7vcWiHxGuuoDji6caJZgm71MNW5bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ZxRPWhof; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709627516; x=1741163516;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1ls+uy/JcT9Izmp8DLtQlz60vm6OJVdzHaoUaPD077U=;
+  b=ZxRPWhofi459kISVp/6N1dtmaxAx33eANyVoOFq2sn0GE2BITrQz3uCL
+   jAM3H9cDz5v1sa7XGhC8bflV5/h47IerJjwwIiFIM1hvz5j5eo9nwWX/a
+   SzEcV6X1H36IE/DaG9Q2OCqFYrPjS/TSpCyhaDsXA2SRsL2MOsbo3eMje
+   AWM7ZOq/QzOHBqST4P609w6fHPV4Ja0XEguyXGWB1cdRNhxeiD0mCtiB/
+   r9R4ozGnJMMKVuzASsNRVs43UXRKLUXo9m6I64t85A5SdQ96JlG6Qyd2H
+   jOU0G6QBnb3ZwAWkKVTTekQc19AM4uSxoTi8/jlLcCEb2PT5XdGyEf2HO
+   A==;
+X-CSE-ConnectionGUID: 7FKKTPsjR2WAbsvvBivZpA==
+X-CSE-MsgGUID: jVjGN+zkStWvTQpII6UeIA==
+X-IronPort-AV: E=Sophos;i="6.06,205,1705388400"; 
+   d="asc'?scan'208";a="247971682"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Mar 2024 01:31:55 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 5 Mar 2024 01:31:48 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 5 Mar 2024 01:31:45 -0700
+Date: Tue, 5 Mar 2024 08:31:00 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+	<akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
+	<patches@kernelci.org>, <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
+	<srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
+	<allen.lkml@gmail.com>
+Subject: Re: [PATCH 6.7 000/163] 6.7.9-rc2 review
+Message-ID: <20240305-arson-panhandle-afa453ccb0aa@wendy>
+References: <20240305074649.580820283@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="9YXNRHoKRDKSr8iO"
+Content-Disposition: inline
+In-Reply-To: <20240305074649.580820283@linuxfoundation.org>
 
-There are indications that ASPM L0s is not working very well on this
-machine so disable it also for the NVMe and modem controllers for now.
+--9YXNRHoKRDKSr8iO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Note that this is done as a precaution based on problems with the Wi-Fi
-on the X13s as well as the NVMe, modem and Wi-Fi on the sc8280xp-crd
-reference design (the NVMe controller on my X13s does not support L0s
-and the machine lacks a modem).
+On Tue, Mar 05, 2024 at 07:58:57AM +0000, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.9 release.
+> There are 163 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Thu, 07 Mar 2024 07:46:26 +0000.
+> Anything received after that time might be too late.
 
-Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
-Cc: stable@vger.kernel.org      # 6.7
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+> Samuel Holland <samuel.holland@sifive.com>
+>     riscv: Save/restore envcfg CSR during CPU suspend
+>=20
+> Samuel Holland <samuel.holland@sifive.com>
+>     riscv: Add a custom ISA extension for the [ms]envcfg CSR
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 9567b82db9a5..057e4d9d3c0f 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -695,6 +695,8 @@ keyboard@68 {
- };
- 
- &pcie2a {
-+	aspm-no-l0s;
-+
- 	perst-gpios = <&tlmm 143 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 145 GPIO_ACTIVE_LOW>;
- 
-@@ -714,6 +716,8 @@ &pcie2a_phy {
- };
- 
- &pcie3a {
-+	aspm-no-l0s;
-+
- 	perst-gpios = <&tlmm 151 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 148 GPIO_ACTIVE_LOW>;
- 
--- 
-2.43.0
+I left a comment in response to the off-list email about this patch,
+I don't think it's gonna work as the number this custom extension has
+been given exceeds the max in 6.7/
 
+Cheers,
+Conor.
+
+>=20
+> Samuel Holland <samuel.holland@sifive.com>
+>     riscv: Fix enabling cbo.zero when running in M-mode
+
+--9YXNRHoKRDKSr8iO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZebYRAAKCRB4tDGHoIJi
+0mFJAQDtS2vjwLxDjumw0GA73KurLViHOrB/jXXRxjsoGntZ1AEA2Ll5Ka2LMesH
+hywdAGgz1JFjaY9uLkITb3CuQaSoqwE=
+=4eM9
+-----END PGP SIGNATURE-----
+
+--9YXNRHoKRDKSr8iO--
 
