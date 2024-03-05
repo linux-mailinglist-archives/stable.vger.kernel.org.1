@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-26873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EA88729DC
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:56:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85E18729DE
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD64428CE3D
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:56:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084071C21C12
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA21712BF13;
-	Tue,  5 Mar 2024 21:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5070912BE98;
+	Tue,  5 Mar 2024 21:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iD+thwF2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUUwHb3L"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF1B134BD
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794EE134BD
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709675800; cv=none; b=r0DdgjT75gwl+S86NHQKeTWipylSLLOHP6vndJX2c07v7eD+/Jr9KdvcOymTvNSFoMIZDztYhX1Xo+e0gtAF/JCXemYu9Nl9s8/u3DeRvBJz3T9+5mmEhUq5lZdFEsoqbn5zmSRUX5zjITugYc5NieL4wM2d1rkPJCNyl9BjY/4=
+	t=1709675822; cv=none; b=onaW5r0PTfp+IFfCzIwQNXoHAkWy2Rr+NR5VYe9U4mYKgOKGxKj+B3TmZCTZdcgCsVzD4Gc6AblI7Tc5N7BmFZmuhZgVxWUg6rxrTHmCFA918J+NVj8K1icZRDAm3pJQszKiBERiZpEcu+vz2inEQ/TI1irZ599i1tDU+RfWFrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709675800; c=relaxed/simple;
-	bh=NWHcRR0XyP1Aa01kcMViE/37zvx05iOMTG+bG2Gd4fM=;
+	s=arc-20240116; t=1709675822; c=relaxed/simple;
+	bh=K5JYAzSKNuiN0uv+lSun8AQtJFUmQ+5/GC/f8G7tMJ0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dKSxIDhspih58oEVd7atCjdgCPXFqTvsTh2TudDAZRq9xC4t9PvnXivANyoUtQc9wuZCanuFd0cwO69GBtpBexfV97gqEG7lcaB0BFsuZYtpgaJ2ld12+coObwgVVDYy+6GEVkgCfDi5eN+qQOlS1g1JVO2Q9Ndgz/D87kwAzM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iD+thwF2; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=FXxgJw2AoEf3WHnx8YKNcOOfbAse3lHAemSp3Cuh0TZvW479UaW76DIQCD4N1U20GG/TXTZrP1V98pmCxEvEH3H30JEZtLqiH14WFF5XzPITtVOL8br5YRzyZwmnRU8xAesX/jYAVWpBlHmzGSRm5xKXiYDG6pRNF1Hll++9jo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUUwHb3L; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709675798;
+	s=mimecast20190719; t=1709675819;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EfR5ql1bnL1BBM4O2/FJCsNm9rdOQ7h22DgerCFUnxY=;
-	b=iD+thwF2bBVQyXJ2yAXB8vr1HN0tT1rcQ72EMDpOvgNTI0FKUf9Iu2G+z+LzZW7A9xNRbI
-	Jw+sVqxaAcdcVu/pcRVj1aKkdT6pvTH57UVP5/NJpvyFg1Qr9F1myg1TI9cDsCsyWtn8dB
-	rq+suiK71BbIXbwDW7GSEmSeryDcuxM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=tF2yPDYRhx5riT5uu/I++Kkl8sVMP4+RvWvGb8E5sVg=;
+	b=OUUwHb3LEi8ngt/ZnsLc6wFjYICLycQtxreCkY9F7iAEpvPFghI42cFSzgaXSGLs6Hpmqd
+	hNAg7xWNUyPZNlBVxOK2iV6KdoZba7343lokIjWuCYuFnRTbdhm3rXjuVnO5C0AC7jrZSK
+	XFZ7z9Ppg6UFni9zFx6hCVyTYog0x68=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-kLUNNMw9NWivgkqJi1cL5Q-1; Tue, 05 Mar 2024 16:56:36 -0500
-X-MC-Unique: kLUNNMw9NWivgkqJi1cL5Q-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40e435a606aso7682575e9.3
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 13:56:36 -0800 (PST)
+ us-mta-617-xjbvxbR6NsK7DxsyCS1L5Q-1; Tue, 05 Mar 2024 16:56:58 -0500
+X-MC-Unique: xjbvxbR6NsK7DxsyCS1L5Q-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-412b4744e9dso36671835e9.3
+        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 13:56:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709675795; x=1710280595;
+        d=1e100.net; s=20230601; t=1709675817; x=1710280617;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EfR5ql1bnL1BBM4O2/FJCsNm9rdOQ7h22DgerCFUnxY=;
-        b=e6hTXIBIPQjNjjeBH+W1iimYpbDijR5Vemxv9XMBj/zwBCMevYVhMdx5wfkI54fQvc
-         z70AD7qxSeApNm4xzq6T7LiR2bdeuUBSg9OXPUnughz5YYzutqYJ8BVexdfkmSxtAS+v
-         XH7TgCEKk/GFI1o9GmQvTE8ytPubac2TUqanc/kBVCJKmHHPoBdyxGae+ex2uZCiavPj
-         pTPP9PuiSJPJRch4JjvUpuZUf0jRcAqHC9Nnpw5edrBkpaN8UGqNa0Qr/ggSqtKDqved
-         BG4GZSeIyfW2Fp6fIhinHbmXfZZniUKBJbhub/UmZhIe7Oa4h4hUkWRq72PVd1MeSGvU
-         JQCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOtO1vlizwjumAPyx6kLvZBVorXIPDtYIs0dgEgahLmzj+SQaj9d4y9OxKXcmirhTIOffqdZWPuKhowrDlu9HU1eo7KyW7
-X-Gm-Message-State: AOJu0Ywna5ou0R6WXb6ANcvi3iJrzlvPQnHg3Dl6WzGoWdev4c/Z6WDi
-	MX1W+zh/to123QLC9GiYiInp8cPc7fINfSCZ3wqkeoocTS5yFhW8SmVaEpdMJtOoSkXyBakyAy7
-	96gaDv5sOvKtu4+DcaPb3xJpgJDymFNJzYRx2hu65yMx0HzUMPz7pj6S3y96fUQ==
-X-Received: by 2002:a05:600c:4e87:b0:412:95fb:e41 with SMTP id f7-20020a05600c4e8700b0041295fb0e41mr9998600wmq.24.1709675795511;
-        Tue, 05 Mar 2024 13:56:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGFthwWMomxIJeyQnmkjjNrB+bWUg2DKFGudpo6LYh3d3VBF4WtUVrMf4jtLNe9hKZDpbYYnQ==
-X-Received: by 2002:a05:600c:4e87:b0:412:95fb:e41 with SMTP id f7-20020a05600c4e8700b0041295fb0e41mr9998593wmq.24.1709675795139;
-        Tue, 05 Mar 2024 13:56:35 -0800 (PST)
+        bh=tF2yPDYRhx5riT5uu/I++Kkl8sVMP4+RvWvGb8E5sVg=;
+        b=K0tfT+5AH/e4EFBkTLpdYdapxOq0aoHElSlNXfXZypo+pr82i4GjxPWdxQCoMgTMzv
+         o/GgUtOXWeIMFV4Bxo2Da3nFMxUsvj7fRxX0n4C9Ulaesao3acKQJNYvN8KVxuSB7WQY
+         w+kRjRlUsN2gOtykJf+Kcnxn3tahXk88RO5sBTym4hxuE5iEvCEGJKFQIn76AzK74Lg1
+         P+2ZV5I/SA2pyxhetWCoJOxW/l44I8ao+F2V3VEAxaI/UguKOZolwH60+1+LiVgHfxQz
+         QYdrw8aqsDEY3VDQ/ZGowvjtQQERStKmQaL4nYGNPyf9pB8uDVMvRKjPEuSYs/PauG4x
+         s0mA==
+X-Forwarded-Encrypted: i=1; AJvYcCVc5lIoIFMeWhFH4WKm5jNzp+kClsxtUdJTDtoIR8L52oNHyuLo9BtvvxQuteHgXHCcgti62QcU1rNOr+Nv7AgeYOK8koJK
+X-Gm-Message-State: AOJu0YzTGicM7Xl5WQa4gnL2rMoeWprmAUTl4EJvr6homoVb3ohf23mL
+	5rQhf3U4ZbG/492gkdciyQEwEQHTb7q2IhJh3SYECZha37ijXUFeY0n9bTmhFvIbR6mLNt5qp1V
+	NZanVBy1+8KWiwylKxW6YXl8bNQmFWlg+BBv7w3YuDHK+TQ3OTBZJOw==
+X-Received: by 2002:a05:600c:1c81:b0:412:e556:ccbc with SMTP id k1-20020a05600c1c8100b00412e556ccbcmr4412880wms.10.1709675817011;
+        Tue, 05 Mar 2024 13:56:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCuPnK8R7VnUuSESQu60HqCIVa4NLnDv7BardN3Tv4Ron9kRHkmasKmhbaZqmMFWuFlQ9GXQ==
+X-Received: by 2002:a05:600c:1c81:b0:412:e556:ccbc with SMTP id k1-20020a05600c1c8100b00412e556ccbcmr4412872wms.10.1709675816746;
+        Tue, 05 Mar 2024 13:56:56 -0800 (PST)
 Received: from ?IPV6:2003:cb:c73c:8100:600:a1e5:da94:a13a? (p200300cbc73c81000600a1e5da94a13a.dip0.t-ipconnect.de. [2003:cb:c73c:8100:600:a1e5:da94:a13a])
-        by smtp.gmail.com with ESMTPSA id b17-20020a05600c4e1100b00412f428aedasm230912wmq.46.2024.03.05.13.56.34
+        by smtp.gmail.com with ESMTPSA id b17-20020a05600c4e1100b00412f428aedasm230912wmq.46.2024.03.05.13.56.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 13:56:34 -0800 (PST)
-Message-ID: <ec222d40-a939-4fff-bdaa-345c5632fdb4@redhat.com>
-Date: Tue, 5 Mar 2024 22:56:34 +0100
+        Tue, 05 Mar 2024 13:56:56 -0800 (PST)
+Message-ID: <e939bdd6-12fd-404e-87f5-490fa5dfed64@redhat.com>
+Date: Tue, 5 Mar 2024 22:56:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH STABLE v5.4.y] mm/migrate: set swap entry values of THP
+Subject: Re: [PATCH STABLE v4.19.y] mm/migrate: set swap entry values of THP
  tail pages properly.
 Content-Language: en-US
 To: Zi Yan <ziy@nvidia.com>, gregkh@linuxfoundation.org,
@@ -92,7 +92,7 @@ Cc: linux-mm@kvack.org, Charan Teja Kalla <quic_charante@quicinc.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>, Huang Ying
  <ying.huang@intel.com>, Naoya Horiguchi <naoya.horiguchi@linux.dev>
-References: <20240305162946.94199-1-zi.yan@sent.com>
+References: <20240305163213.95119-1-zi.yan@sent.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -139,11 +139,11 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240305162946.94199-1-zi.yan@sent.com>
+In-Reply-To: <20240305163213.95119-1-zi.yan@sent.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05.03.24 17:29, Zi Yan wrote:
+On 05.03.24 17:32, Zi Yan wrote:
 > From: Zi Yan <ziy@nvidia.com>
 > 
 > The tail pages in a THP can have swap entry information stored in their
@@ -161,10 +161,10 @@ On 05.03.24 17:29, Zi Yan wrote:
 >   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/mm/migrate.c b/mm/migrate.c
-> index 034b0662fd3b..9cfd53eaeb4e 100644
+> index 171573613c39..893ea04498f7 100644
 > --- a/mm/migrate.c
 > +++ b/mm/migrate.c
-> @@ -441,8 +441,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
+> @@ -514,8 +514,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
 >   	if (PageSwapBacked(page)) {
 >   		__SetPageSwapBacked(newpage);
 >   		if (PageSwapCache(page)) {
@@ -178,6 +178,8 @@ On 05.03.24 17:29, Zi Yan wrote:
 >   		}
 >   	} else {
 >   		VM_BUG_ON_PAGE(PageSwapCache(page), page);
+
+Thanks for taking care of all of these!
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
