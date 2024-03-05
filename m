@@ -1,82 +1,230 @@
-Return-Path: <stable+bounces-26875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A43C8729EC
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 23:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 383258729ED
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 23:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A54A1C22B0D
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE3C1C22AC1
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA4812D1E4;
-	Tue,  5 Mar 2024 22:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC45B12CDA8;
+	Tue,  5 Mar 2024 22:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9c/lOqE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZgaZDZ0r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE2112CDA8
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 22:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5F312BEAE
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 22:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709676263; cv=none; b=BBsbCz9COg+SvFjwO0vDomsvPma/XdN2UNUk0jWHYkQlsT6hVNlBH8v4ISlBzFM6xvC2AZAiFI/U4q8RxiMjiPaJjaYDjvh+thPQ2/HxICIWtCk80GOvW6OPlmOiIVpjuSoWKTpJT11LlthrbSibTt7ueuH5piQNhfMnXkzZz8A=
+	t=1709676318; cv=none; b=s58Oe7ZgmBOdEES3dkgkPygonXjkUhIXjMbWcJCPIrOhxZs7L3OJLs9V0Sl2Bu/UqqRibtclQwucCLTrTVEpKY8HeL29qCK/XHUQdU+f9B8cZ11Ou937VkBqOArB5sURrwzE3N0hHB7x53SmMpgePNExdqdyIZpefeV+1rCXKvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709676263; c=relaxed/simple;
-	bh=L3SZf4E+sFtB7f5Dc3q1q/9Lmuv1XJiM/41dHY4DL2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K1LXehCR3xv2TVOmcqypMs74VrGsiwKip5YkSOjQw68HWp5j25o8FWQZOKVEkl/s/Zec9mdpnAgZYzT6IpFsNy0DzcMFk0oP4AaFl6QvNJ/oc/tObiDjn4sb5E6DBJonvZ5oQ/If5+ZtpNMn+r6QA4ZXaT9t1SOP3baAWIrq7w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9c/lOqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9058C433F1;
-	Tue,  5 Mar 2024 22:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709676263;
-	bh=L3SZf4E+sFtB7f5Dc3q1q/9Lmuv1XJiM/41dHY4DL2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r9c/lOqEosm+WvgbcB/0+xcT2IxBGo+BXC457mA+kVi7JKVLOuaa4eEKHoSTq6ITn
-	 /bJbN+X3mmAaZ+msTKzzoZfPrSPJKu68MQieMrBqv3Y+h/hUQCqpGov6m+0wN36rRr
-	 Xn+33pnNVXwL6w2rtTP1nMWNSVpMSlbcxZK7SEqM=
-Date: Tue, 5 Mar 2024 22:04:19 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: stable@vger.kernel.org, linux-mm@kvack.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Huang Ying <ying.huang@intel.com>,
-	Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Subject: Re: [PATCH STABLE v6.1.y] mm/migrate: set swap entry values of THP
- tail pages properly.
-Message-ID: <2024030506-quotable-kerosene-6820@gregkh>
-References: <20240305161313.90954-1-zi.yan@sent.com>
+	s=arc-20240116; t=1709676318; c=relaxed/simple;
+	bh=+amvZSJ73Ak7qUWNWMkUOkQqMjcSn512iRVvJk0yx6A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ne2e9liuGiw6LbaE3qat3irOm31M5BRhQGPhUW09bajj7tHRaZ8/DkrTeeuF4BzJgjf8I+Da/fKflt7GL4hBHLt8RaakxBr/8p8oqOVWlpYPglbGLZVm03Oou1d1A+Hz5FSH3PNNyP3fHFwgAypAXpZS/o8wPB59Xz4dTZevo8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZgaZDZ0r; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709676315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DzluRZS8Cm/GFP3w8cOcmLM2pAOUgthF701QClSkUA4=;
+	b=ZgaZDZ0rZP185/iaXi0Uo2NWfzDaCwekTEuOg8Tzt+QwR6ZzrNBPF/ZHlrEpIFX3HlYqt4
+	V1nj0RijXsXSvlGw9BQDIKUF0r9EZiRULvI6Ko3guQKXEN6ftQcjwldVi0n8FMIeyJ6hwr
+	L40iThRnchcmH9sBA59zFF0J93G4vvc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-MiKrgC3_P_Wl0ejriLxdKQ-1; Tue, 05 Mar 2024 17:05:14 -0500
+X-MC-Unique: MiKrgC3_P_Wl0ejriLxdKQ-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-412e355e2abso14902715e9.2
+        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 14:05:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709676313; x=1710281113;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DzluRZS8Cm/GFP3w8cOcmLM2pAOUgthF701QClSkUA4=;
+        b=hH9Q+X6ABwLNzrsjjqCQ8aESEzAtcZuHQisb+ULvAVjQ1B5efHkbo3lZ0IwrIu6Q+T
+         +SK1tAwzG+Bp3rfOFzQcMVXGeQ9d0E2+F2ISeCm4fQ14XAWbnLZ3sUw3qlIKUwE8n7Iz
+         IV/t+eN6aWTuq6Pirl4CTbCH1VkVISKOuhLlcHtjAJARHAKcNLRG+uc8979LUYBLGarJ
+         KNuJ5lSYgteaZ74V/Yni0BYqNpe37sLwipVx/4vzCEXVyu9SsytuikLVRhF4u7nOSm04
+         A10CldRU+lmnRwRCiQ5OcAKjsKVuo2IwV0R+1dQb0Lko8XaoWvMpIs6DxR6rRl6sInag
+         kmaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq0nJHeIfLXOttXeefnqXfMk8UEZUj4jmWFi+ZmMR7py4ugUuAmpOpZQk7VtSGtd2OhMoi7NUXoXP6WfK0P0aas/S/Nxs4
+X-Gm-Message-State: AOJu0YwmVPtBnrWfqEDuTmQtWm1iuKvicvMe3TqHAQsN8z8jy623fGQ5
+	UwpU2u9rpnBJnUjDsR4re1DoccGzPk6GoQXtlbmODQ3r9lOHjc+uF4JPXEdqK2cpm7DM7iVsIuk
+	wpstDJfD1kEQ4Zolj6XUapoVBcVLFYa3r61TArd4kK7Hauyty7yd33g==
+X-Received: by 2002:a05:600c:1550:b0:412:eef2:f972 with SMTP id f16-20020a05600c155000b00412eef2f972mr1680278wmg.36.1709676313185;
+        Tue, 05 Mar 2024 14:05:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEccOZTzYunDsM+vNXuQrx4USnVo5MJLdF/Q+aVrijQcyOt2IUcUE3EnE4NNRPsZaaw4tgwTg==
+X-Received: by 2002:a05:600c:1550:b0:412:eef2:f972 with SMTP id f16-20020a05600c155000b00412eef2f972mr1680267wmg.36.1709676312793;
+        Tue, 05 Mar 2024 14:05:12 -0800 (PST)
+Received: from ?IPV6:2003:cb:c73c:8100:600:a1e5:da94:a13a? (p200300cbc73c81000600a1e5da94a13a.dip0.t-ipconnect.de. [2003:cb:c73c:8100:600:a1e5:da94:a13a])
+        by smtp.gmail.com with ESMTPSA id bj1-20020a0560001e0100b0033e48db23bdsm3004511wrb.100.2024.03.05.14.05.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Mar 2024 14:05:12 -0800 (PST)
+Message-ID: <017414bc-78cd-4aa1-9edf-6ce947b9e4e4@redhat.com>
+Date: Tue, 5 Mar 2024 23:05:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240305161313.90954-1-zi.yan@sent.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
+ swapoff()
+Content-Language: en-US
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "Huang, Ying"
+ <ying.huang@intel.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240305151349.3781428-1-ryan.roberts@arm.com>
+ <cb738797-77d9-4e20-a54c-f70385cdbd95@redhat.com>
+ <8989df79-84f5-488c-bd74-c11d2241eff1@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <8989df79-84f5-488c-bd74-c11d2241eff1@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 05, 2024 at 11:13:13AM -0500, Zi Yan wrote:
-> From: Zi Yan <ziy@nvidia.com>
+On 05.03.24 17:33, Ryan Roberts wrote:
+> On 05/03/2024 15:50, David Hildenbrand wrote:
+>> On 05.03.24 16:13, Ryan Roberts wrote:
+>>> There was previously a theoretical window where swapoff() could run and
+>>> teardown a swap_info_struct while a call to free_swap_and_cache() was
+>>> running in another thread. This could cause, amongst other bad
+>>> possibilities, swap_page_trans_huge_swapped() (called by
+>>> free_swap_and_cache()) to access the freed memory for swap_map.
+>>>
+>>> This is a theoretical problem and I haven't been able to provoke it from
+>>> a test case. But there has been agreement based on code review that this
+>>> is possible (see link below).
+>>>
+>>> Fix it by using get_swap_device()/put_swap_device(), which will stall
+>>> swapoff(). There was an extra check in _swap_info_get() to confirm that
+>>> the swap entry was valid. This wasn't present in get_swap_device() so
+>>> I've added it. I couldn't find any existing get_swap_device() call sites
+>>> where this extra check would cause any false alarms.
+>>>
+>>> Details of how to provoke one possible issue (thanks to David Hilenbrand
+>>> for deriving this):
+>>
+>> Almost
+>>
+>> "s/Hilenbrand/Hildenbrand/" :)
 > 
-> The tail pages in a THP can have swap entry information stored in their
-> private field. When migrating to a new page, all tail pages of the new
-> page need to update ->private to avoid future data corruption.
+> Ahh sorry... I even explicitly checked it against your name on emails... fat
+> fingers...
+
+No need to be sorry. Even your average German person would get it wrong,
+because there are other (more common) variants :)
+
+[...]
+
+>>>
+>>
+>> LGTM
+>>
+>> Are you planning on sending a doc extension for get_swap_device()?
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  mm/migrate.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+> I saw your comment:
+> 
+> We should likely update the documentation of get_swap_device(), that after
+> decrementing the refcount, the SI might become stale and should not be touched
+> without a prior get_swap_device().
+> 
+> But when I went to make the changes, I saw the documentation already said:
+> 
+> ...we need to enclose all swap related functions with get_swap_device() and
+> put_swap_device()... Notice that swapoff ... can still happen before the
+> percpu_ref_tryget_live() in get_swap_device() or after the percpu_ref_put() in
+> put_swap_device()... The caller must be prepared for that.
+> 
+> I thought that already covered it? I'm sure as usual, I've misunderstood your
+> point. Happy to respin if you have something in mind?
 
-What is the git commit id of this change in Linus's tree?
+No need to respin, we could clarify on top, if we decide it makes sense.
 
-thanks,
+I was thinking about something like this, making it clearer that the PTL
+discussion above does not express the corner case we discovered:
 
-greg k-h
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 2b3a2d85e350b..646a436581eee 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1232,6 +1232,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+   * with get_swap_device() and put_swap_device(), unless the swap
+   * functions call get/put_swap_device() by themselves.
+   *
++ * Note that when only holding the PTL, swapoff might succeed immediately
++ * after freeing a swap entry. Therefore, immediately after
++ * __swap_entry_free(), the swap info might become stale and should not
++ * be touched without a prior get_swap_device().
++ *
+   * Check whether swap entry is valid in the swap device.  If so,
+   * return pointer to swap_info_struct, and keep the swap entry valid
+   * via preventing the swap device from being swapoff, until
+
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
