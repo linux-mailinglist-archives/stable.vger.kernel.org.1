@@ -1,122 +1,107 @@
-Return-Path: <stable+bounces-26743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8985A87192B
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:11:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8D087195E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4645F281782
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1BC91C21D1C
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D257A4F898;
-	Tue,  5 Mar 2024 09:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63B35476B;
+	Tue,  5 Mar 2024 09:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uc/+uHGp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="skilj3ol"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF164DA1F;
-	Tue,  5 Mar 2024 09:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC3750A72
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 09:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629867; cv=none; b=EFSYKlUrb5NB6IntO3KA3jW9t9DzE2UZ5Ukjk9DOsauzE2JKe7hCgHAeDwRN7fu1Gy6xezIBq7ax/a7uV4S7ADWTeWvUS6QegrQ1JW2ZkOvRQwoLpprkYYfr3/ctUTw0LLYpNXIUNvB+czPAaLtcPLHivBcqUnowjwNchP35X1s=
+	t=1709630178; cv=none; b=os4HhgIfPvCqKfUBwaccmJ78qvnTBDCGiFN+RbVS811fnk72dPQTPebCTyVWXPJqifXgO04ovs1F5Vwr8xRSIzuy59sRuYRddYViuBtVaK2TAe+tvNLpAlvBvH0R3gPmI/3b2l2bYP+0X+q43nCVtCdFzgN3oDKRAHs4Aqp3yYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629867; c=relaxed/simple;
-	bh=H+2wlslZkHG5WJTMkedhIAxZ71n6oHIBbYXZAqgOaZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAsrFsyVEKkRlIfVyWYBcIGu7AwL5vqX85jLGMczSQW29Lpkaq/f/kwd0PCqeah80YDyt1DAOe4+CizJB7xafSGQ2a++5r44zqsD7px0s1o4qvomlck5/yqT6RTR/vxYe3WsaQt4UaFHstfPQGUI/YcGMyR57QnVA0eM6ZrdZbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uc/+uHGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D16C43394;
-	Tue,  5 Mar 2024 09:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709629867;
-	bh=H+2wlslZkHG5WJTMkedhIAxZ71n6oHIBbYXZAqgOaZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Uc/+uHGpnp1P2VH3AWg0LLYN1WK+jtpThZcZpatgIWyYJqafxriuAeORhX2Tb/oF/
-	 JISu5NenwDGh1LqcXMIPJx0/rHkMLoPhtI5mNmed7b6TIeMti00+c/FobEZSqc6JXu
-	 RKUE5ptAnoDyy5vQXRWPWzuTSQ+T4y3/sJK3UwlVOsIBc/fnTMogrmFF11HzGd3o5B
-	 vZ8jBUnhGPTdQPTEXDOzv5s5F4+uZxuznlV/U9zZP3x7cf0adx9fgfxQ/K3imMS01v
-	 pnBnHTpAu8xgi8wqikA7GHev5BBoUKvOUXXhiUh2xOPjEmogOazBinXeTjxSV5R0wn
-	 9nE2tj92VH72A==
-Date: Tue, 5 Mar 2024 10:11:01 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>, 
-	Eric Biggers <ebiggers@kernel.org>, Benjamin LaHaise <ben@communityfibre.ca>
-Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, 
-	Eric Biggers <ebiggers@google.com>, Avi Kivity <avi@scylladb.com>, 
-	Sandeep Dhavale <dhavale@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb
- conversion
-Message-ID: <20240305-leerlauf-hinauf-b44c47f26f4e@brauner>
-References: <20240304235715.3790858-1-bvanassche@acm.org>
+	s=arc-20240116; t=1709630178; c=relaxed/simple;
+	bh=pUEkTUaEinq7lTGTudWbBzE6b8iQHi6XhoJnUFsMyNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C1/C5ZNX5od/9gslXpprHXerbbCq3zROlx+3UfUCpaOWm1JOQne0B4c43JkdO+RfmQx7CNieXtiua0nKW0HFlSizD9N1krxiyxquTzTp+cOJypk0G4bxX5TqGJOUBAkCzzNG0IUgkFAoOtmKzt7NmaqjwDTfAfIQGD+noonTzNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=skilj3ol; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-513160a49c1so2839e87.0
+        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 01:16:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709630174; x=1710234974; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pUEkTUaEinq7lTGTudWbBzE6b8iQHi6XhoJnUFsMyNY=;
+        b=skilj3olUBDEob/9lHWfOaAN7YyHitXQ42f0owOVhH+sA3a1ZroLBId0aph8tfI+Ek
+         hgwrg0PBLfwYr4KO1G6ZDhrp2ojmSos1/jSqX5Ruebbk+DId7U9my4aWHYrEWsSduhxg
+         Zf4b4U38jA94GHjvgzZyQIrTFr96fXIM2Mg+8J0FZ2aoueF+OAopfrfwPRnD5iL29YWz
+         KhPY4bscBJ+Thj/0zISFZxL53KCbSWe9mcdnJZDWBw75btJk3wvliA7IkwrlBDN3qwdG
+         F1/6OL6hojpGwg3VNZ0GYUEWq1gfSsLDYJZnwE9OoSlos2oq4ceg1KdMAIy2OdVmcz5y
+         8PWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709630174; x=1710234974;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pUEkTUaEinq7lTGTudWbBzE6b8iQHi6XhoJnUFsMyNY=;
+        b=gm3ZVXcXIXeP/hPwGznI0lzHPX3ZLXudeodlGmCsdBzKrqT7e3kWnYHv0zQQjEMdLc
+         CyFKPzKhY8bqEwoATCRspkfjrgtMvweFNApReKhrqUbTwjfHLfDUiaXWb67iW2Me2gtC
+         Hc1AGAaiWhz9ALkmJRpiN9uS0TTciXmhgOfivrr07TkG/f1eGZ3oDHo7pTkD9yyL+rH3
+         SxBbBmIq+4AIkHXoZBSH08LxNw+Pk4ARyc94xFLJsXbdQuBJdzVWPB4AOcHbtD3v59nk
+         m8jzAb2nYC5uDAV2hI2kZG6IappMnveMnYhGwijgyZh2NIsRuAFDEd98rBQYhOHAtKp3
+         lRcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTqXMcy/BXStYkE0wnHfhWx6KyjhFbPWN3Ieq0n9DgmW5CK8nyoKfh/fjQviby4UXLp8x3Ss+W+keweRNFg0bQ8I7rb1Ul
+X-Gm-Message-State: AOJu0YxVz5U7mMxZ6RzrH3YYHecZzqjYbOmoHLviIfNbV0AOse8lI0K1
+	XhtCRqoP9IGskKndzgXI6ZndjEaKQYaH6cHoWhu4uphS6c9VNof8z8FB+AbYIMvaq2ooqhRjYlL
+	ZDz8BVmHmw3syoyce0l+B26nF9GP1S+RVju9p
+X-Google-Smtp-Source: AGHT+IGBTWDXRnEWgmFcgD/VIsmWhDVWePD6mfb41wRN4IYM0DkvXH5kA4vk5l9vJ/V7q4SYeVmBzdk3b7Lmu1q5dL8=
+X-Received: by 2002:a19:385c:0:b0:513:1cf2:e14f with SMTP id
+ d28-20020a19385c000000b005131cf2e14fmr59092lfj.4.1709630173911; Tue, 05 Mar
+ 2024 01:16:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240304235715.3790858-1-bvanassche@acm.org>
+References: <20240228185116.1269-1-vamshigajjela@google.com> <ZeA7dVBmm1yuf6F9@hovoldconsulting.com>
+In-Reply-To: <ZeA7dVBmm1yuf6F9@hovoldconsulting.com>
+From: VAMSHI GAJJELA <vamshigajjela@google.com>
+Date: Tue, 5 Mar 2024 14:46:01 +0530
+Message-ID: <CAMTSyjq6rOSeZND4iRdg_ooLf6P8rpx7oU5+tfCGjN1JVHhesg@mail.gmail.com>
+Subject: Re: [PATCH] spmi: hisi-spmi-controller: Do not override device identifier
+To: Johan Hovold <johan@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Johan Hovold <johan+linaro@kernel.org>, Caleb Connolly <caleb.connolly@linaro.org>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 04, 2024 at 03:57:15PM -0800, Bart Van Assche wrote:
-> The first kiocb_set_cancel_fn() argument may point at a struct kiocb
-> that is not embedded inside struct aio_kiocb. With the current code,
-> depending on the compiler, the req->ki_ctx read happens either before
-> the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
-> that it is guaranteed that the IOCB_AIO_RW test happens first.
-> 
-> Reported-by: Eric Biggers <ebiggers@kernel.org>
-> Cc: Benjamin LaHaise <ben@communityfibre.ca>
-> Cc: Eric Biggers <ebiggers@google.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Avi Kivity <avi@scylladb.com>
-> Cc: Sandeep Dhavale <dhavale@google.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Cc: stable@vger.kernel.org
-> Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
-
-Can I please get a review from Eric and/or Benjamin, please?
-
->  fs/aio.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/aio.c b/fs/aio.c
-> index da18dbcfcb22..9cdaa2faa536 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -589,8 +589,8 @@ static int aio_setup_ring(struct kioctx *ctx, unsigned int nr_events)
->  
->  void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
->  {
-> -	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
-> -	struct kioctx *ctx = req->ki_ctx;
-> +	struct aio_kiocb *req;
-> +	struct kioctx *ctx;
->  	unsigned long flags;
->  
->  	/*
-> @@ -600,9 +600,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
->  	if (!(iocb->ki_flags & IOCB_AIO_RW))
->  		return;
->  
-> +	req = container_of(iocb, struct aio_kiocb, rw);
-> +
->  	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
->  		return;
->  
-> +	ctx = req->ki_ctx;
-> +
->  	spin_lock_irqsave(&ctx->ctx_lock, flags);
->  	list_add_tail(&req->ki_list, &ctx->active_reqs);
->  	req->ki_cancel = cancel;
+On Thu, Feb 29, 2024 at 1:38=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Thu, Feb 29, 2024 at 12:21:16AM +0530, Vamshi Gajjela wrote:
+> > 'nr' member of struct spmi_controller, which serves as an identifier
+> > for the controller/bus. This value is a dynamic ID assigned in
+> > spmi_controller_alloc, and overriding it from the driver results in an
+> > ida_free error "ida_free called for id=3Dxx which is not allocated".
+> >
+> > Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
+> > Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driv=
+er")
+> > Cc: stable@vger.kernel.org
+> > ---
+>
+> This is v2, which should be indicated in the patch subject and with a
+> short changelog here (e.g. mentioning the split and rebase on 6.8-rc).
+ack, Thanks
+>
+> Johan
 
