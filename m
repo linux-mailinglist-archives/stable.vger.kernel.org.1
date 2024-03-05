@@ -1,203 +1,136 @@
-Return-Path: <stable+bounces-26776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20460871DD0
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 12:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE66871DD9
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 12:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC7728C6E9
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 11:31:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49269283EA3
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 11:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067355B5D9;
-	Tue,  5 Mar 2024 11:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBBD5A7B6;
+	Tue,  5 Mar 2024 11:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8QOvmU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZT0ybGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC2458201
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 11:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2355BAD9;
+	Tue,  5 Mar 2024 11:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709638190; cv=none; b=CUqKXwONxbZQZXFjWoWnGOtZ7ICZ74mvNlXb1GeY/I8TqlVn7k7QJ1n6Q+TRTm3/rpWvJSAU+GbFkv5s0CvaOp7V3lpzcOBoFijogZFtc5wMB6r6F171Gm/7ILbjTtVX1HaOqd1In65kogsJh8PLhG6nH7IsQx7Sa6gMzbTv/Ps=
+	t=1709638255; cv=none; b=pCrn84XrTRNKLpJ4xGRmXHYwiCzDFdMU3BhEsvqVirflqZ4InS0fzqR7RiJPEdv5EGUh2+KqhPGJ4Ld1YEEE6HxTH7gVQOssxi28cN3s4geHs+jwpYQDdyQBR62R26b8HADNC4p2GUYwLIof9B7TBob+C1mpZwC01HQbX/BP/Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709638190; c=relaxed/simple;
-	bh=05xvv1go8aO8DIQ13AMkJPmfRQmzoFAOHGct7z6namQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GabainV3jrcKpLvyue41/iN6JbDHaJsQJSGuFy/GgvC85mtZOwr72QFALsqfFUpcBeVjGnSo+2yOqxqefujbzxGVb0ea0dQDUxwelVDuU9O2BEr2yesHmrALGosSm+J9XLa588N1lIoB1QhxSyJh8aRkLrEhMgtYwh0cPOVFCtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8QOvmU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D56C433C7;
-	Tue,  5 Mar 2024 11:29:49 +0000 (UTC)
+	s=arc-20240116; t=1709638255; c=relaxed/simple;
+	bh=JHWuPGz+VGj/J/e0lYBFkaZdv959aJWqPnQBqFpfv+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ylzmjefb4dm9xZwozAl8Pj+fayklBtZoFdSEMhaWsWvw/I6unmA2muw1Jo6WXGf/H3bsy6yJQSkazbxyfGlYTB5FoCmbMv7vwZpIIgkPRqd65Lb8MnW5ZPOgDBNzkbjZznuSTcF+vzEF90Yl9oiZIp+awtAdGE7KGcNlIUQP8h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZT0ybGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B6FC433F1;
+	Tue,  5 Mar 2024 11:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709638190;
-	bh=05xvv1go8aO8DIQ13AMkJPmfRQmzoFAOHGct7z6namQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=E8QOvmU68O8kThWwI5ZXuA9++MA3QgxNRE7iUn/LFcAmoI+wS1+uGrRwik1dB0AAk
-	 56brDe2ajDB1rIyjgwlqiJN/OV2GbsjImavlKCtdrzR/pnXIB4/WPtEKmaXTK5hp/7
-	 jB/SZu39mdKKOQpTHKPCWtVETB3rAxTSQ8gmXP4s=
-Subject: FAILED: patch "[PATCH] riscv: add CALLER_ADDRx support" failed to apply to 5.10-stable tree
-To: zong.li@sifive.com,alexghiti@rivosinc.com,palmer@rivosinc.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 05 Mar 2024 11:29:38 +0000
-Message-ID: <2024030538-luckiness-crevice-fa39@gregkh>
+	s=korg; t=1709638255;
+	bh=JHWuPGz+VGj/J/e0lYBFkaZdv959aJWqPnQBqFpfv+U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oZT0ybGGaePPCjl76VGXn962hbyS8wOPWZMjaIavm7XkJ6A68jKojYZlDgUr9/Q8Q
+	 3kKNpzpRI7mTqUiOXYGBVNlu3L2a7X0CMluVUbCxRGmX22PJbg2RWys3F9YyLpXV/T
+	 fJOcnpS/MqdgPF5NZznwAzGI4NwJDYIwp37+jiwQ=
+Date: Tue, 5 Mar 2024 11:30:52 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com,
+	Zong Li <zong.li@sifive.com>, Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 5.15 00/84] 5.15.151-rc1 review
+Message-ID: <2024030534-makeshift-gauging-72d2@gregkh>
+References: <20240304211542.332206551@linuxfoundation.org>
+ <CA+G9fYvOpuVjEe_0E5bwsmP39VQwdybDEoKTZGeYC3ULtqmViQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYvOpuVjEe_0E5bwsmP39VQwdybDEoKTZGeYC3ULtqmViQ@mail.gmail.com>
 
+On Tue, Mar 05, 2024 at 03:38:20PM +0530, Naresh Kamboju wrote:
+> On Tue, 5 Mar 2024 at 03:23, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 5.15.151 release.
+> > There are 84 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.151-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> 
+> Following build failures noticed on riscv.
+> 
+> The riscv tinyconfig and allnoconfig builds on 5.15.
+> The riscv defconfig, tinyconfig and allnoconfig builds on 5.10.
+> 
+> linux.5.15.y build failures on riscv.
+> riscv:
+>   build:
+>     * gcc-12-tinyconfig
+>     * gcc-8-allnoconfig
+>     * clang-17-tinyconfig
+>     * gcc-8-tinyconfig
+>     * gcc-12-allnoconfig
+> 
+> linux.5.10.y build failures on riscv.
+> riscv:
+> 
+>   * gcc-8-defconfig
+>   * clang-17-allnoconfig
+>   * gcc-12-tinyconfig
+>   * gcc-8-allnoconfig
+>   * gcc-8-allmodconfig
+>   * clang-17-defconfig
+>   * gcc-12-defconfig
+>   * clang-17-tinyconfig
+>   * gcc-12-allmodconfig
+>   * gcc-8-tinyconfig
+>   * gcc-12-allnoconfig
+> 
+>  Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> arch/riscv/kernel/return_address.c:39:9: error: implicit declaration
+> of function 'arch_stack_walk' [-Werror=implicit-function-declaration]
+>    39 |         arch_stack_walk(save_return_addr, &data, current, NULL);
+>       |         ^~~~~~~~~~~~~~~
+> cc1: some warnings being treated as errors
+> 
+> Suspecting patch,
+> 
+> riscv: add CALLER_ADDRx support
+> commit 680341382da56bd192ebfa4e58eaf4fec2e5bca7 upstream.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 680341382da56bd192ebfa4e58eaf4fec2e5bca7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030538-luckiness-crevice-fa39@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-680341382da5 ("riscv: add CALLER_ADDRx support")
-7ce047715030 ("riscv: Workaround mcount name prior to clang-13")
-2f095504f4b9 ("scripts/recordmcount.pl: Fix RISC-V regex for clang")
-5ad84adf5456 ("riscv: Fixup patch_text panic in ftrace")
-67d945778099 ("riscv: Fixup wrong ftrace remove cflag")
-
-thanks,
+Thanks, will go drop this and push out -rc2 kernels for 5.15 and 5.10
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 680341382da56bd192ebfa4e58eaf4fec2e5bca7 Mon Sep 17 00:00:00 2001
-From: Zong Li <zong.li@sifive.com>
-Date: Fri, 2 Feb 2024 01:51:02 +0000
-Subject: [PATCH] riscv: add CALLER_ADDRx support
-
-CALLER_ADDRx returns caller's address at specified level, they are used
-for several tracers. These macros eventually use
-__builtin_return_address(n) to get the caller's address if arch doesn't
-define their own implementation.
-
-In RISC-V, __builtin_return_address(n) only works when n == 0, we need
-to walk the stack frame to get the caller's address at specified level.
-
-data.level started from 'level + 3' due to the call flow of getting
-caller's address in RISC-V implementation. If we don't have additional
-three iteration, the level is corresponding to follows:
-
-callsite -> return_address -> arch_stack_walk -> walk_stackframe
-|           |                 |                  |
-level 3     level 2           level 1            level 0
-
-Fixes: 10626c32e382 ("riscv/ftrace: Add basic support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Link: https://lore.kernel.org/r/20240202015102.26251-1-zong.li@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index 329172122952..15055f9df4da 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -25,6 +25,11 @@
- 
- #define ARCH_SUPPORTS_FTRACE_OPS 1
- #ifndef __ASSEMBLY__
-+
-+extern void *return_address(unsigned int level);
-+
-+#define ftrace_return_address(n) return_address(n)
-+
- void MCOUNT_NAME(void);
- static inline unsigned long ftrace_call_adjust(unsigned long addr)
- {
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index f71910718053..604d6bf7e476 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -7,6 +7,7 @@ ifdef CONFIG_FTRACE
- CFLAGS_REMOVE_ftrace.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_patch.o	= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_sbi.o	= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_return_address.o	= $(CC_FLAGS_FTRACE)
- endif
- CFLAGS_syscall_table.o	+= $(call cc-option,-Wno-override-init,)
- CFLAGS_compat_syscall_table.o += $(call cc-option,-Wno-override-init,)
-@@ -46,6 +47,7 @@ obj-y	+= irq.o
- obj-y	+= process.o
- obj-y	+= ptrace.o
- obj-y	+= reset.o
-+obj-y	+= return_address.o
- obj-y	+= setup.o
- obj-y	+= signal.o
- obj-y	+= syscall_table.o
-diff --git a/arch/riscv/kernel/return_address.c b/arch/riscv/kernel/return_address.c
-new file mode 100644
-index 000000000000..c8115ec8fb30
---- /dev/null
-+++ b/arch/riscv/kernel/return_address.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * This code come from arch/arm64/kernel/return_address.c
-+ *
-+ * Copyright (C) 2023 SiFive.
-+ */
-+
-+#include <linux/export.h>
-+#include <linux/kprobes.h>
-+#include <linux/stacktrace.h>
-+
-+struct return_address_data {
-+	unsigned int level;
-+	void *addr;
-+};
-+
-+static bool save_return_addr(void *d, unsigned long pc)
-+{
-+	struct return_address_data *data = d;
-+
-+	if (!data->level) {
-+		data->addr = (void *)pc;
-+		return false;
-+	}
-+
-+	--data->level;
-+
-+	return true;
-+}
-+NOKPROBE_SYMBOL(save_return_addr);
-+
-+noinline void *return_address(unsigned int level)
-+{
-+	struct return_address_data data;
-+
-+	data.level = level + 3;
-+	data.addr = NULL;
-+
-+	arch_stack_walk(save_return_addr, &data, current, NULL);
-+
-+	if (!data.level)
-+		return data.addr;
-+	else
-+		return NULL;
-+
-+}
-+EXPORT_SYMBOL_GPL(return_address);
-+NOKPROBE_SYMBOL(return_address);
-
 
