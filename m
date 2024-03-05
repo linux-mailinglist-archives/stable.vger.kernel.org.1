@@ -1,200 +1,147 @@
-Return-Path: <stable+bounces-26823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FB887259D
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:26:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6BA8725D5
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDFEB23E19
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:26:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C1A5B218DC
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D20614F64;
-	Tue,  5 Mar 2024 17:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0A417583;
+	Tue,  5 Mar 2024 17:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fQmKaKSO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIRW9gzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2628617555;
-	Tue,  5 Mar 2024 17:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483EFBE4D;
+	Tue,  5 Mar 2024 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709659584; cv=none; b=thBPSWGAYM4lo+fVzYn+tUhEHaBI6ReIn/Z4DxLMa0bont+kI3JO5cwPviDFBatmKDo1AyKiP1ZnoXCdtBgVsX5oigPggQyxwxdN3z8uK4Sy25HsvZRt+IlNM3raLTygF2SQe3SHjyQaNYL6LecyjX0KtAMySrRXbDJh6VRB1jA=
+	t=1709660582; cv=none; b=Py5pTH9EZpejl1KvaR8BOjEi2eJ2Uy7N1wgRaI0meY4qEP2HyuBa5C8Oru0RhlquZe9hwkYX66Ysvq5wjW46K8EAaDdbtTeaolR+4lLtH5lH/mojvbN4hPzlAWqCsJGI2NleH4/yu8siaDRIfJ8Y2CjkvIHBYSo8HGFN7stPz0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709659584; c=relaxed/simple;
-	bh=s3xQATPhaGPeMRMcaOujC72dU7qB42j7gd97Xej9j6A=;
-	h=Date:To:From:Subject:Message-Id; b=DOJUea5bcyH5rzQHJsR2cdBW+JPaILLOsTPtQCvYOGGh3dLNVQEGvNFU/FHHH+oeqMT+E2JtUAZK0WuVV7fUUlj8wsYf2VwTEizJt21GNuvRdURMs1GnbMWzxVd+ov8DfICfxv9TJCjqvwkH8RR3eJUSYZedeKXjeKrLnldzDBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fQmKaKSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93794C433C7;
-	Tue,  5 Mar 2024 17:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1709659583;
-	bh=s3xQATPhaGPeMRMcaOujC72dU7qB42j7gd97Xej9j6A=;
-	h=Date:To:From:Subject:From;
-	b=fQmKaKSOzY9lpoEo2dzNOOcW2E0yGnvUNWiApxyR2OWhvnbIgPDw8zekaHW79cyMk
-	 9fh4KfltXO5Cmk3zbZWqwVhUUQF5s6/Lm83T56s4laceRX5WU0vpp+K624TcGhQabY
-	 7TkxCS0Fu3vPqaKrOPabij4F4E91rFUU3s4vfyZk=
-Date: Tue, 05 Mar 2024 09:26:23 -0800
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch added to mm-unstable branch
-Message-Id: <20240305172623.93794C433C7@smtp.kernel.org>
+	s=arc-20240116; t=1709660582; c=relaxed/simple;
+	bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VPYzxGd0rqtPo1Oh0a/oWQYfpfbLQE71HfUbBKJd5K65wy6IlpwTdnqLUhozvV1FBV4Lh4co6u36kH/YyOsBBFzDyTYxjOAsyOuAOZR84V/6suRfqXa6PA/RC+i3bYsMg4hvPfVJSeblrXOKGkvehqcjS1jgQCrS6ajZ7RezNhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIRW9gzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1771FC433C7;
+	Tue,  5 Mar 2024 17:43:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709660581;
+	bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kIRW9gzq4jKNT7Z1GAadTz+GbpnBPW/O80H3suGrswIK7olLKDNd1QNDRBv1ACxfB
+	 Rw3OJlysQLqKOHivUsJvk38AcxhlQTl3TXlcJaAobh5tEUbFM5IT4QW1bYL0rLpMsZ
+	 +jFWB8bAQvcAlseJmAZllZBGADV0QbJ466ywkNs5NIvYugIs8qWK7A7osrt3HwYBex
+	 ZTPRIRML7oNYZjIbXeZpAmc8i9JFjrdzhEb4VSuw/+iXh5/w4UALAQyhgSF49jN8ai
+	 cZZO5mdJDEmSEUtMYGPb4SQM7zU51HdPL5U1TTKGWV3MjjwYoEJ66sNz96StQAb8Di
+	 luGol5SeEfwPA==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 05 Mar 2024 10:42:50 -0700
+Subject: [PATCH] kbuild: Disable two Clang specific enumeration warnings
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJlZ52UC/x2NywqDMBAAf0X23IWoKWJ/pfQQk41dsGvZ9QXiv
+ zf0ODDMnGCkTAaP6gSljY1nKVDfKojvICMhp8LQuMa71nlMbGGYCOlYNGCcioMk6wf3oMIyGg7
+ 53vnYxb7PCUrnq5T5+D+er+v6ARre46NzAAAA
+To: masahiroy@kernel.org
+Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
+ justinstitt@google.com, arnd@arndb.de, yonghong.song@linux.dev, 
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3911; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=oVW3xti/oddK+lHR7km/I+gcOqSZgwQguCcVLgi7iQ8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKnPI5c0rNBNXppi3vty7mbjafkHuCbLxD2p/76SV3qn1
+ erDy/Yu6ChlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQATcZjAyNAzzUX+dsCjVZuU
+ I3+p9nEEHTcv3H9F7O6loH5RlqikybYM/10DD7Il7pXoscg8ymbS0/jaterLYbFyzeQKc8OCIG8
+ bFgA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
+Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+under -Wenum-conversion. A recent change in Clang strengthened these
+warnings and they appear frequently in common builds, primarily due to
+several instances in common headers but there are quite a few drivers
+that have individual instances as well.
 
-The patch titled
-     Subject: mm: swap: fix race between free_swap_and_cache() and swapoff()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
+  include/linux/vmstat.h:508:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+    508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+        |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+    509 |                            item];
+        |                            ~~~~
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+    955 |                 flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+        |                                      ^ ~~~~~~~~~~~~~~~~~~
+    956 |                           : IWL_MAC_BEACON_CCK_V1;
+        |                             ~~~~~~~~~~~~~~~~~~~~~
+  drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: conditional expression between different enumeration types ('enum iwl_mac_beacon_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+   1120 |                                                0) > 10 ?
+        |                                                        ^
+   1121 |                         IWL_MAC_BEACON_FILS :
+        |                         ~~~~~~~~~~~~~~~~~~~
+   1122 |                         IWL_MAC_BEACON_FILS_V1;
+        |                         ~~~~~~~~~~~~~~~~~~~~~~
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+While doing arithmetic with different types of enums may be potentially
+problematic, inspecting several instances of the warning does not reveal
+any obvious problems. To silence the warnings at the source level, an
+integral cast must be added to each mismatched enum (which is incredibly
+ugly when done frequently) or the value must moved out of the enum to a
+macro, which can remove the type safety offered by enums in other
+places, such as assignments that would trigger -Wenum-conversion.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+As the warnings do not appear to have a high signal to noise ratio and
+the source level silencing options are not sustainable, disable the
+warnings unconditionally, as they will be enabled with -Wenum-conversion
+and are supported in all versions of clang that can build the kernel.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: mm: swap: fix race between free_swap_and_cache() and swapoff()
-Date: Tue, 5 Mar 2024 15:13:49 +0000
-
-There was previously a theoretical window where swapoff() could run and
-teardown a swap_info_struct while a call to free_swap_and_cache() was
-running in another thread.  This could cause, amongst other bad
-possibilities, swap_page_trans_huge_swapped() (called by
-free_swap_and_cache()) to access the freed memory for swap_map.
-
-This is a theoretical problem and I haven't been able to provoke it from a
-test case.  But there has been agreement based on code review that this is
-possible (see link below).
-
-Fix it by using get_swap_device()/put_swap_device(), which will stall
-swapoff().  There was an extra check in _swap_info_get() to confirm that
-the swap entry was valid.  This wasn't present in get_swap_device() so
-I've added it.  I couldn't find any existing get_swap_device() call sites
-where this extra check would cause any false alarms.
-
-Details of how to provoke one possible issue (thanks to David Hildenbrand
-for deriving this):
-
---8<-----
-
-__swap_entry_free() might be the last user and result in
-"count == SWAP_HAS_CACHE".
-
-swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
-
-So the question is: could someone reclaim the folio and turn
-si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
-
-Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-still references by swap entries.
-
-Process 1 still references subpage 0 via swap entry.
-Process 2 still references subpage 1 via swap entry.
-
-Process 1 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-[then, preempted in the hypervisor etc.]
-
-Process 2 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-
-Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-__try_to_reclaim_swap().
-
-__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-swap_entry_free()->swap_range_free()->
-...
-WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
-
-What stops swapoff to succeed after process 2 reclaimed the swap cache
-but before process1 finished its call to swap_page_trans_huge_swapped()?
-
---8<-----
-
-Link: https://lkml.kernel.org/r/20240305151349.3781428-1-ryan.roberts@arm.com
-Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873edcebff7c0b45a37e
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ scripts/Makefile.extrawarn | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- mm/swapfile.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
-
---- a/mm/swapfile.c~mm-swap-fix-race-between-free_swap_and_cache-and-swapoff
-+++ a/mm/swapfile.c
-@@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device
- 	smp_rmb();
- 	offset = swp_offset(entry);
- 	if (offset >= si->max)
--		goto put_out;
-+		goto bad_offset;
-+	if (data_race(!si->swap_map[swp_offset(entry)]))
-+		goto bad_free;
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index a9e552a1e910..6053aa22b8f5 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -81,6 +81,14 @@ KBUILD_CFLAGS += $(call cc-option,-Werror=designated-init)
  
- 	return si;
- bad_nofile:
-@@ -1289,9 +1291,14 @@ bad_nofile:
- out:
- 	return NULL;
- put_out:
--	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
- 	percpu_ref_put(&si->users);
- 	return NULL;
-+bad_offset:
-+	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
-+	goto put_out;
-+bad_free:
-+	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
-+	goto put_out;
- }
+ # Warn if there is an enum types mismatch
+ KBUILD_CFLAGS += $(call cc-option,-Wenum-conversion)
++ifdef CONFIG_CC_IS_CLANG
++# Clang enables these extra warnings under -Wenum-conversion but the kernel
++# performs arithmetic using or has conditionals returning enums of different
++# types in several different places, which is rarely a bug in the kernel's
++# case, so disable the warnings.
++KBUILD_CFLAGS += -Wno-enum-compare-conditional
++KBUILD_CFLAGS += -Wno-enum-enum-conversion
++endif
  
- static unsigned char __swap_entry_free(struct swap_info_struct *p,
-@@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entr
- 	if (non_swap_entry(entry))
- 		return 1;
- 
--	p = _swap_info_get(entry);
-+	p = get_swap_device(entry);
- 	if (p) {
- 		count = __swap_entry_free(p, entry);
- 		if (count == SWAP_HAS_CACHE &&
- 		    !swap_page_trans_huge_swapped(p, entry))
- 			__try_to_reclaim_swap(p, swp_offset(entry),
- 					      TTRS_UNMAPPED | TTRS_FULL);
-+		put_swap_device(p);
- 	}
- 	return p != NULL;
- }
-_
+ #
+ # W=1 - warnings which may be relevant and do not occur too often
 
-Patches currently in -mm which might be from ryan.roberts@arm.com are
+---
+base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
+change-id: 20240304-disable-extra-clang-enum-warnings-bf574c7c99fd
 
-mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
 
