@@ -1,74 +1,81 @@
-Return-Path: <stable+bounces-26871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF758729D9
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C7E8729DB
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002BE1F289D9
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:56:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FBE1F26EE0
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9595F12BF13;
-	Tue,  5 Mar 2024 21:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C22512BF13;
+	Tue,  5 Mar 2024 21:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="XgGmz+yD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PCTSTvMn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3AC12CDBC
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84706134BD
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709675741; cv=none; b=nuUqL4zMx+06SKzyIserVKWn52v3LGyijsifMMO2W6rGuJZ36ZSBArzsLvApDwES/7INZrB0bcT5sTLjn3b+ohEjOm1WQ8Is06IDCmTQnUTUxYhF+i8IR6GAkHZaxmYPIymkAa0Mbgs6cQRhRP8lcsTrn/osrkLMX9bbVKAnkPc=
+	t=1709675774; cv=none; b=DeMXQ6nzilM/mSeeMVIbD3UBjo7rZBZt3j9mr0voI0+s6K7LVOX5QoAFK5sb/P2li54l7gpkpDyHuBYSi8GX+wPWXdl1lAV1/pOdjFdvpXwVUUI846sqA9YwXzqII1A2DnVSK5zhzMM9vpqmo5GtFPh5y/ipz2tc9VlhsoJG24Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709675741; c=relaxed/simple;
-	bh=HvTsGXLIwEz4WybzEWfgvxshqRvP2qTfB4R+8famH+k=;
+	s=arc-20240116; t=1709675774; c=relaxed/simple;
+	bh=LwuMALBzddi2i0dqfgkOwBgc0gUepult+t1G+GWoZaE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GYLMS2vQBJws6kgWecPh/hc5DTqVG+HmvQnMkdW4pB75IRpVHU5C/Ztj2v6kIYEOQyFsF6c2vnVDGd/LoXex6RpZgMM9gZ9/y6VX0Mz5+HJWzl2YHmkHig1xiCqdQjPyYtF2rlSH2d0FIkiAoJmGkc1NFXcsAIc/NJ+FO+aYC/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=XgGmz+yD; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1dcc0d163a1so18678735ad.0
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 13:55:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1709675738; x=1710280538; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I5hAuOk9zgGm5wIFfI92u0pmPCRFeBG7RcQwtBDNtBU=;
-        b=XgGmz+yDD+fJZWqeoqV2u+5Waq/mPSKmRArT90JwryIEOvQvn9ajrYRm6KGnN26GBI
-         MITXDmR991C6iJC1Qsy0mikguOYMxGMGXVb8wMovM9mR52GSS7zlkmx6kiYLy4SoNIJa
-         qVP/VbINcCGSGaiTDJF4HsMppnnDpGQpKvSnxshkHkb7xttazhWIJD07Y5rCmRTbixjF
-         c+/wSr3vDusgQzvl8IPfdZcnuEhdtu92Fa+JRWdKbsD061BeZSNPZzljfITEyaMRFS2n
-         KKYT41v90292E6xDAW5zvPjN36HDIfo5uvoP62U9GE3hszcN/v98UBq04usrLmLsfk0c
-         VGRQ==
+	 In-Reply-To:Content-Type; b=J019QT/L6bp/Ly9F9BVtQPKwRHojW/Wb2QO3/los9J0Gg6LyeeLUUSdPG0e5yjq/N7ChEtaplJW3TdO67/g1zYS5gTBKIhxthg3d6hUSPWOtkIeoxanGBQy/E7AyWzmdAZbLL/T0HsDBbsW9nPV9/Vz3du3nfN9N94pQtzrz3vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PCTSTvMn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709675770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M4+ic2rqsHCqM2vW2ztqguoqjdqrHfTyc03rg5MCTEM=;
+	b=PCTSTvMnGJf6VxQWwsr/Psrffs2+2v5avVWowx0RPmYcpIv7qvap6fp0xaAVMAcNzCyUQv
+	L9CBi86RsBWlyLm4VFsvydTlhHImYkonQVdaGwexPAKjg8j7uv0wcN2lYtcMAZONV3EnRI
+	BXmcBvVXHNfd3CJxhNximpLhAWSrs/4=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-dDjfgAD2PwGNqXBvKCi2HQ-1; Tue, 05 Mar 2024 16:56:08 -0500
+X-MC-Unique: dDjfgAD2PwGNqXBvKCi2HQ-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-51333e20813so3646580e87.0
+        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 13:56:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709675738; x=1710280538;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5hAuOk9zgGm5wIFfI92u0pmPCRFeBG7RcQwtBDNtBU=;
-        b=rsjYiwB5GIYIAR3H+LYrZtZENPsjrUdiaDxkiJCHK89SvjaS8if2Z7eFQxq44qvTK0
-         cndXaXW5KMe2w5IVhKg6yYw4i492FWD7F/HMyek9DWeqg69WzDUQhVeU9Fm54nVjK9G6
-         DHAtbbtxV6SUsUbSbWWCW73Y5sliJUypJEKb2Z0/GOdjhzdnvUucI2qVvzEkMdqkf9SE
-         B31okaWSX94XXtKc/mTmY8PMRGJmCgjdCEBKILuOk2uruSUCgYMQ09G4iDG3kCA3EuIF
-         4EQzw1z+ZD/Ho6tCo6v0mgB4BOJAjbH+DlJPLD54O7tv34zR6iivz+9t75KBVWeqU+dE
-         r29w==
-X-Forwarded-Encrypted: i=1; AJvYcCVhq82IxO9QpMziWc6PcebiUs5uNn4a8IAweuIz+HTE1cY+DjpmSsEplMN7a9/VockRJiWaJFVNmVv8GfVcJVH+kv3L24Ju
-X-Gm-Message-State: AOJu0Yyz7USZ/jDnnOlWPEEFPXO3gaSLMm7EWu/aEeiMOelfNxv6Tczk
-	IOCRP0qHdkysvYizguhAaCDfj0zKypgkByz+7AieZwmpwnnuQp+zr+cp5PEoLsY=
-X-Google-Smtp-Source: AGHT+IFp9kaHg7brG++xPHTmEs9ulUnnOabRScwYUO14f3saTvYrpZu4D7+wcsuYTZSd53DsjyrfUQ==
-X-Received: by 2002:a17:90a:d78d:b0:29b:4dab:efaf with SMTP id z13-20020a17090ad78d00b0029b4dabefafmr1801084pju.4.1709675738424;
-        Tue, 05 Mar 2024 13:55:38 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.194])
-        by smtp.gmail.com with ESMTPSA id m2-20020a17090a858200b002997a5eea5bsm9972188pjn.31.2024.03.05.13.55.37
+        d=1e100.net; s=20230601; t=1709675767; x=1710280567;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M4+ic2rqsHCqM2vW2ztqguoqjdqrHfTyc03rg5MCTEM=;
+        b=oEw3o9cl6aOskQ1wI9TtPQEze7pvtbDqhv8NYNHv2Qb+FQjN9Cat8QS2ejeL1tfBEx
+         wxLT+vPh9ZYZ1xJ3YbB7ztQHVrRdB0ZR2/MWE4PDacvH76uzzHWLq1Kfnc68ZY7B0cD/
+         UGyewZZm37m8DdRb8C4cRynQ+5j9YF1gkCGY7l6xOgtO/0XbXIV5QuTamMC7w54yBfo7
+         7Lg8P89E1WNV+nmjeO6516Iwav2SCJlfDdZDwijZ6u1TV6VHTGCn8WgZO1Y1JcMZEqML
+         1bjITk9CzLOT1uNlbiQaJjn/8RhMWDTTfMTv9RGC4C5NThedcoNngJvmjV6f6JaqAFtN
+         ic0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVM2GZuecLMRyVIEcqfD11g0HxS4Ncib+76OCzZRyu6g+lc9lwHQxBVpjlNQ+p6HLkxF1LhIeKUiiAF7lUYUsG30FGkUrg7
+X-Gm-Message-State: AOJu0Yxi/FZZPhen5xEfxcbA2FJLgBcuWgzxF4hsErDL2wIN2zjiLGHy
+	BW5aJcXr9hZ6+Tz18foLPwciyzjSy43R25YWurViiKbv8Ml7STfBLktfAwMw4hiHxXLtOa27AIW
+	sn+WWOk86n5bup4ZcxHdV6jvotv2qE5f2maT9zBRasF7Ow4zybmfBKA==
+X-Received: by 2002:ac2:4241:0:b0:512:b915:606a with SMTP id m1-20020ac24241000000b00512b915606amr2064112lfl.12.1709675767144;
+        Tue, 05 Mar 2024 13:56:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHxY1nBX3SKLAknBYvsQ/pCfjKjZV2og4w7RH4xd6U1AxIEKqeA7frnYhixNCYu1SSvItB3fQ==
+X-Received: by 2002:ac2:4241:0:b0:512:b915:606a with SMTP id m1-20020ac24241000000b00512b915606amr2064100lfl.12.1709675766682;
+        Tue, 05 Mar 2024 13:56:06 -0800 (PST)
+Received: from ?IPV6:2003:cb:c73c:8100:600:a1e5:da94:a13a? (p200300cbc73c81000600a1e5da94a13a.dip0.t-ipconnect.de. [2003:cb:c73c:8100:600:a1e5:da94:a13a])
+        by smtp.gmail.com with ESMTPSA id b17-20020a05600c4e1100b00412f428aedasm230912wmq.46.2024.03.05.13.56.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 13:55:37 -0800 (PST)
-Message-ID: <e2c57d81-5ba8-452e-adb2-560cac366746@kernel.dk>
-Date: Tue, 5 Mar 2024 14:55:36 -0700
+        Tue, 05 Mar 2024 13:56:06 -0800 (PST)
+Message-ID: <f7413055-5378-4c21-8671-e5ae6cd14ab8@redhat.com>
+Date: Tue, 5 Mar 2024 22:56:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,67 +83,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
- submitted via libaio
+Subject: Re: [PATCH STABLE v5.10.y] mm/migrate: set swap entry values of THP
+ tail pages properly.
 Content-Language: en-US
-To: Bart Van Assche <bvanassche@acm.org>, Eric Biggers <ebiggers@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
- Sandeep Dhavale <dhavale@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
-References: <20240215204739.2677806-1-bvanassche@acm.org>
- <20240215204739.2677806-2-bvanassche@acm.org>
- <20240304191047.GB1195@sol.localdomain>
- <90c96981-cd7a-4a4c-aade-7a5cfc3fd617@acm.org>
- <b36536cd-c62b-4b86-aef7-fddd3eb282a1@kernel.dk>
- <94dd9db1-6025-4cd0-93b7-40d55a60efc4@acm.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <94dd9db1-6025-4cd0-93b7-40d55a60efc4@acm.org>
-Content-Type: text/plain; charset=UTF-8
+To: Zi Yan <ziy@nvidia.com>, gregkh@linuxfoundation.org,
+ stable@vger.kernel.org
+Cc: linux-mm@kvack.org, Charan Teja Kalla <quic_charante@quicinc.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Huang Ying
+ <ying.huang@intel.com>, Naoya Horiguchi <naoya.horiguchi@linux.dev>
+References: <20240305162744.93431-1-zi.yan@sent.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240305162744.93431-1-zi.yan@sent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 3/5/24 1:43 PM, Bart Van Assche wrote:
-> On 3/4/24 12:21, Jens Axboe wrote:
->> On 3/4/24 12:43 PM, Bart Van Assche wrote:
->>> As far as I know no Linux user space interface for submitting I/O
->>> supports cancellation of read or write requests other than the AIO
->>> io_cancel() system call.
->>
->> Not true, see previous reply (on both points in this email). The kernel
->> in general does not support cancelation of regular file/storage IO that
->> has submitted. That includes aio. There are many reasons for this.
->>
->> For anything but that, you can most certainly cancel inflight IO with
->> io_uring, be it to a socket, pipe, whatever.
->>
->> The problem here isn't that only aio supports cancelations, it's that
->> the code to do so is a bad hack.
+On 05.03.24 17:27, Zi Yan wrote:
+> From: Zi Yan <ziy@nvidia.com>
 > 
-> What I meant is that the AIO code is the only code I know of that
-> supports cancelling I/O from user space after the I/O has been submitted
-> to the driver that will process the I/O request (e.g. a USB driver). Is
+> The tail pages in a THP can have swap entry information stored in their
+> private field. When migrating to a new page, all tail pages of the new
+> page need to update ->private to avoid future data corruption.
+> 
+> Corresponding swapcache entries need to be updated as well.
+> e71769ae5260 ("mm: enable thp migration for shmem thp") fixed it already.
+> 
+> Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+> Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   mm/migrate.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index fcb7eb6a6eca..c0a8f3c9e256 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -447,8 +447,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
+>   	if (PageSwapBacked(page)) {
+>   		__SetPageSwapBacked(newpage);
+>   		if (PageSwapCache(page)) {
+> +			int i;
+> +
+>   			SetPageSwapCache(newpage);
+> -			set_page_private(newpage, page_private(page));
+> +			for (i = 0; i < (1 << compound_order(page)); i++)
+> +				set_page_private(newpage + i,
+> +						 page_private(page + i));
+>   		}
+>   	} else {
+>   		VM_BUG_ON_PAGE(PageSwapCache(page), page);
 
-Right, we never offered that in general in the kernel. Like I said, it's
-just a hack what is there for that.
-
-> my understanding correct that io_uring cancellation involves setting the
-> IO_WQ_WORK_CANCEL flag and also that that flag is ignored by
-> io_wq_submit_work() after io_assign_file() has been called?
-
-No, that's only for requests that go via io-wq, which is generally not
-the fast path and most workloads will never see that.
-
-For anything else, cancelation can very much happen at any time.
-
-> The AIO code
-> supports cancelling I/O after call_read_iter() or call_write_iter() has
-> been called.
-
-...for the above hacky case, and that's it, not as a generic thing.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Jens Axboe
+Cheers,
+
+David / dhildenb
 
 
