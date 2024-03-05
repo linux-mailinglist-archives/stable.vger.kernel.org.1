@@ -1,57 +1,51 @@
-Return-Path: <stable+bounces-26845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5939887281F
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:59:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884AB872835
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 043C8B23361
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:59:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB4611C280EE
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A841127B4A;
-	Tue,  5 Mar 2024 19:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07106167A;
+	Tue,  5 Mar 2024 20:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="LRFnYK1R"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="OBRVYu/T"
 X-Original-To: stable@vger.kernel.org
-Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.102])
+Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A3A5A796
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 19:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.217.248.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1C724B59;
+	Tue,  5 Mar 2024 20:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709668725; cv=none; b=C9mPgJilgo0dm9LK6G+SBx1SSrM9GSUz80PV1eFE468gwrZj3NcDXK1ZGi8VdJbyosoif8kkivwWlqfqYtOAlCdS+djnOlQ9oKfLKeQj0QkFfj7fDfJeWqOD6WNgAXFC1Bf0ZpYj5PLy6uj+8IMlm/fo4et3lXlGWwrjRq5rK/o=
+	t=1709668914; cv=none; b=JEytL/nHLJxh0QUXGWKJvWWOx3KbYLqHpj1UGOixx5K44kYpg6HlAl5KUI6XuwhqwAvFvQgGgGQOPaicP/MvyGowC1Tf9X+FDbFQv6R5k2AWsqnwSACdzpdty8ROkiU9/P8jZctdE+1KZhnvP9YDnrQE0tWRnKnk/jmVSLwlY40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709668725; c=relaxed/simple;
-	bh=BfHJn2fC9ef/7P9RF6kAufaG4X+tKN5PC/F+6mJlzdk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gjRMnz8bnTwcc/QxcVBYHkHBeuAMxsIURY5yWCd2YEClvVYMfgbHNfPFjK6ehEgxsRrgHt0YGrdIUNHDmaMLRsVnUEL55ViEvvuCnDYOiuVuce/11MiE5yAXNAaaFLA6rXXhLY1GtQeJVLv6LIUdQJ0ngFotEIJQBPoaQlB2mgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=LRFnYK1R; arc=none smtp.client-ip=144.217.248.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay1.mymailcheap.com (Postfix) with ESMTPS id F22FE3E88C;
-	Tue,  5 Mar 2024 19:58:36 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id C49724007F;
-	Tue,  5 Mar 2024 19:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
-	s=default; t=1709668715;
-	bh=BfHJn2fC9ef/7P9RF6kAufaG4X+tKN5PC/F+6mJlzdk=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=LRFnYK1RXE+1cTTi9FlYEgvSvuaDK6iLvESVRkACOn7G9WvkourMmxFdr0xTqMhqY
-	 i2ReH8i4TVsUlyQUdP6RrucWp3Q77uV5Jd7FPEhIqbo4hjVCC6q6EfDqh9prwWPEpV
-	 rajjA7HcGdm26RwLHBy3Ks3h3xGTNPlS5FWmbEPY=
-Received: from [10.66.66.8] (unknown [139.59.64.216])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 805AD4050C;
-	Tue,  5 Mar 2024 19:58:30 +0000 (UTC)
-Message-ID: <294c28ba-25c2-4db4-9dea-616ed1e2ea30@pavinjoseph.com>
-Date: Wed, 6 Mar 2024 01:28:28 +0530
+	s=arc-20240116; t=1709668914; c=relaxed/simple;
+	bh=GTZEmYrJZ99CRAEJeUE7NQw/5vhF7dJqJaRROiMrRzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kaMRFkKKLRt/VgzuKXA2qKrVwKQL0G0TRp5C7eCqIwkcdLRejWkBr/Y/5ZIuoGl8wXRUv7CGCQJBtmJSe6HsppJbPrqRmWn1bYxec4Zl8/VsXZkiukVS3E4iG4usad0mfEBpCwTa+dulAsljWv47oI6zQJhr4EMXtTHfNtfCQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=OBRVYu/T; arc=none smtp.client-ip=167.114.26.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1709668909;
+	bh=GTZEmYrJZ99CRAEJeUE7NQw/5vhF7dJqJaRROiMrRzU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OBRVYu/Tyb/oOls1AzS687Uc4GZdicEAZ1LDF75aZgvLCzWN9FWoNvT+11Cr9TadD
+	 467iS5CaWbRKqM9MHpVIo8QECsO+mOlMktIOkz8L40zrt9J3KbJxmyr+pU0Kl5Fu8o
+	 mQey8lhQVLarLcFahnPRrcdQYZnTrj2P6MYSntUKRf6LfVS7nmMcGEVYWJJjlTQnnf
+	 WTv8ksnba53LkC52kXoP4OYs4J9eSN5HL+zIDuI6IAOm2itjdBtBTsvYHcafUcpAv4
+	 Mi2FxM6yki8BMrYXpiFjcAij8CRYSF3nTUzDAISPywCLFsRAeu9tjlcjhV6PtZbRee
+	 6CHmLBAajqhKQ==
+Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4Tq60F27Yszfx5;
+	Tue,  5 Mar 2024 15:01:49 -0500 (EST)
+Message-ID: <b0a3e152-22bb-4502-a0a0-4b2513bfbec8@efficios.com>
+Date: Tue, 5 Mar 2024 15:01:55 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,66 +53,172 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Pavin Joseph <me@pavinjoseph.com>
-Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-To: Steve Wahl <steve.wahl@hpe.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
- <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
- <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
- <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
- <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
- <ZeO9n6oqXosX1I6C@swahl-home.5wahls.com>
- <f264a320-3e0d-49b6-962b-e9a741dcdf00@pavinjoseph.com>
- <ZeXzoTjki+1WR258@swahl-home.5wahls.com>
- <fe72c912-f1a0-4a53-88ab-b85e8c3f7bd9@pavinjoseph.com>
- <Zec5Ubr7G9NbnIyq@swahl-home.5wahls.com>
+Subject: Re: [PATCH] arm64/mm: Add memory barrier for mm_cid
 Content-Language: en-US
-In-Reply-To: <Zec5Ubr7G9NbnIyq@swahl-home.5wahls.com>
+To: "levi.yun" <yeoreum.yun@arm.com>, catalin.marinas@arm.com,
+ will@kernel.org, mark.rutland@arm.com, peterz@infradead.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ nd@arm.com, stable@vger.kernel.org, Aaron Lu <aaron.lu@intel.com>
+References: <20240305145335.2696125-1-yeoreum.yun@arm.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+In-Reply-To: <20240305145335.2696125-1-yeoreum.yun@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.09 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4]
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: C49724007F
 
-On 3/5/24 20:55, Steve Wahl wrote:
-> In the meantime, if you want to try
-> figuring out how to increase the memory allocated for kexec kernel
-> purposes, that might correct the problem.
+On 2024-03-05 09:53, levi.yun wrote:
+> Currently arm64's switch_mm() doesn't always have an smp_mb()
+> which the core scheduler code has depended upon since commit:
+> 
+>      commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+> 
+> If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear()
+> can unset the activly used cid when it fails to observe active task after it
+> sets lazy_put.
+> 
+> By adding an smp_mb() in arm64's check_and_switch_context(),
+> Guarantee to observe active task after sched_mm_cid_remote_clear()
+> success to set lazy_put.
 
-I tried all the options and variations possible in kexec. Don't know how 
-useful this is but it seems there's a hard limit imposed by kexec on the 
-size of the kernel image, irrespective of the format.
+This comment from the original implementation of membarrier
+MEMBARRIER_CMD_PRIVATE_EXPEDITED states that the original need from
+membarrier was to have a full barrier between storing to rq->curr and
+return to userspace:
 
-pavin@suse-laptop:~> sudo /usr/sbin/kexec --debug --kexec-syscall-auto 
---load '/usr/lib/modules/6.7.6-1-default/vmlinux' 
---initrd='/boot/initrd-6.7.6-1-default' 
---append='root=/dev/mapper/suse-system crashkernel=341M,high 
-crashkernel=72M,low security=apparmor mitigations=auto'
-Try gzip decompression.
-Invalid memory segment 0x1000000 - 0x2c60fff
-pavin@suse-laptop:~> file /usr/lib/modules/6.7.6-1-default/vmlinux
-/usr/lib/modules/6.7.6-1-default/vmlinux: ELF 64-bit LSB executable, 
-x86-64, version 1 (SYSV), statically linked, 
-BuildID[sha1]=cd9816be5099dbe04750b2583fe34462de6dcdca, not stripped
+commit 22e4ebb9758 ("membarrier: Provide expedited private command")
 
-Kind regards,
-Pavin Joseph.
+commit message:
+
+     * Our TSO archs can do RELEASE without being a full barrier. Look at
+       x86 spin_unlock() being a regular STORE for example.  But for those
+       archs, all atomics imply smp_mb and all of them have atomic ops in
+       switch_mm() for mm_cpumask(), and on x86 the CR3 load acts as a full
+       barrier.
+     
+     * From all weakly ordered machines, only ARM64 and PPC can do RELEASE,
+       the rest does indeed do smp_mb(), so there the spin_unlock() is a full
+       barrier and we're good.
+     
+     * ARM64 has a very heavy barrier in switch_to(), which suffices.
+     
+     * PPC just removed its barrier from switch_to(), but appears to be
+       talking about adding something to switch_mm(). So add a
+       smp_mb__after_unlock_lock() for now, until this is settled on the PPC
+       side.
+
+associated code:
+
++               /*
++                * The membarrier system call requires each architecture
++                * to have a full memory barrier after updating
++                * rq->curr, before returning to user-space. For TSO
++                * (e.g. x86), the architecture must provide its own
++                * barrier in switch_mm(). For weakly ordered machines
++                * for which spin_unlock() acts as a full memory
++                * barrier, finish_lock_switch() in common code takes
++                * care of this barrier. For weakly ordered machines for
++                * which spin_unlock() acts as a RELEASE barrier (only
++                * arm64 and PowerPC), arm64 has a full barrier in
++                * switch_to(), and PowerPC has
++                * smp_mb__after_unlock_lock() before
++                * finish_lock_switch().
++                */
+
+Which got updated to this by
+
+commit 306e060435d ("membarrier: Document scheduler barrier requirements")
+
+                 /*
+                  * The membarrier system call requires each architecture
+                  * to have a full memory barrier after updating
++                * rq->curr, before returning to user-space.
++                *
++                * Here are the schemes providing that barrier on the
++                * various architectures:
++                * - mm ? switch_mm() : mmdrop() for x86, s390, sparc, PowerPC.
++                *   switch_mm() rely on membarrier_arch_switch_mm() on PowerPC.
++                * - finish_lock_switch() for weakly-ordered
++                *   architectures where spin_unlock is a full barrier,
++                * - switch_to() for arm64 (weakly-ordered, spin_unlock
++                *   is a RELEASE barrier),
+                  */
+
+However, rseq mm_cid has stricter requirements: the barrier needs to be
+issued between store to rq->curr and switch_mm_cid(), which happens
+earlier than:
+
+- spin_unlock(),
+- switch_to().
+
+So it's fine when the architecture switch_mm happens to have that barrier
+already, but less so when the architecture only provides the full barrier
+in switch_to() or spin_unlock().
+
+The issue is therefore not specific to arm64, it's actually a bug in the
+rseq switch_mm_cid() implementation. All architectures that don't have
+memory barriers in switch_mm(), but rather have the full barrier either in
+finish_lock_switch() or switch_to() have them too late for the needs of
+switch_mm_cid().
+
+I would recommend one of three approaches here:
+
+A) Add smp_mb() in switch_mm_cid() for all architectures that lack that
+    barrier in switch_mm().
+
+B) Figure out if we can move switch_mm_cid() further down in the scheduler
+    without breaking anything (within switch_to(), at the very end of
+    finish_lock_switch() for instance). I'm not sure we can do that though
+    because switch_mm_cid() touches the "prev" which is tricky after
+    switch_to().
+
+C) Add barriers in switch_mm() within all architectures that are missing it.
+
+Thoughts ?
+
+Thanks,
+
+Mathieu
+
+
+> 
+> Signed-off-by: levi.yun <yeoreum.yun@arm.com>
+> Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+> Cc: <stable@vger.kernel.org> # 6.4.x
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Aaron Lu <aaron.lu@intel.com>
+> ---
+>   I'm really sorry if you got this multiple times.
+>   I had some problems with the SMTP server...
+> 
+>   arch/arm64/mm/context.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+> index 188197590fc9..7a9e8e6647a0 100644
+> --- a/arch/arm64/mm/context.c
+> +++ b/arch/arm64/mm/context.c
+> @@ -268,6 +268,11 @@ void check_and_switch_context(struct mm_struct *mm)
+>   	 */
+>   	if (!system_uses_ttbr0_pan())
+>   		cpu_switch_mm(mm->pgd, mm);
+> +
+> +	/*
+> +	 * See the comments on switch_mm_cid describing user -> user transition.
+> +	 */
+> +	smp_mb();
+>   }
+> 
+>   unsigned long arm64_mm_context_get(struct mm_struct *mm)
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+> 
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
+
 
