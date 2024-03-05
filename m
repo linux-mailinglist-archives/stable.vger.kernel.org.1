@@ -1,123 +1,218 @@
-Return-Path: <stable+bounces-26792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFADF8720C4
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 14:48:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F68A872128
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BE202832BE
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 13:48:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38F22B22392
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 14:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC79985C79;
-	Tue,  5 Mar 2024 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A2A8614C;
+	Tue,  5 Mar 2024 14:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bhrluycd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E9485C58;
-	Tue,  5 Mar 2024 13:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F05915D
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 14:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709646510; cv=none; b=gekcDNBEhdXdPqRrk+7jJ4f6Isla7GeAxuB7g4XpsV5qW5a5wadyoCpK0BbKDAtXA4dHzePPA87pFf0zLF7Ef0eJI4bKtFAs314R/+w0tvwgOVlY9mJJc+794GqyAw3G7pQk7SpljPOBccBMlc7/Z5RLZgNquokZJqkxfXnHgFE=
+	t=1709647901; cv=none; b=TsuURADXmKIoz9ihwJnudZlTw4kRAajfq1zi0lWM3vew4c2B3v2QOAK9qys9gLPhq0AYAoHDDpPYEUkzwhTL11CBCdIdzterLNrouy/ATinupz/tGOZl6tHaXylzHv8aFI59QBg4qe6JmEbf2bGuNyUE7v+8Te9ENk2t9pm7vV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709646510; c=relaxed/simple;
-	bh=Kf2biJnuyrvpVTL0uTyY/d1ul1jGIFCNbllznSFarhk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ThJLqD6V+HqbPrLJs7TamG+mNHiC+A6BAlienHTyymCNTdZPvcmwbjsEId7Bf0KhJsk2F3lnsSx4TbZAtgXAd3BWZjqe0QtHjX3kr6uRodA2yLcB7qluVrnh7RvilaMiMBP5tEBbLPE0vBZNq2ysPGYrBAc1gRf1DuIQCI+Nle0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dc74e33fe1bso5406124276.0;
-        Tue, 05 Mar 2024 05:48:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709646506; x=1710251306;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xa6eXUUE0pChqHQpQRAEU0D+PWfnG0pG7bmLlZjpoqU=;
-        b=m1AO4TWlnLC7zItMuwRpjmwseo1UFB/1+wwu6umX+/mfuScXIc/roKmb/ZI1vNi3W5
-         2wm1wgcNVIlyhQK5PQZLhVqGVNnQcfz+vI1hQhjgdtk/pTcGxaMN0QEVBMXl+eUV8BlD
-         YDMC3FHKKqzElLAgqh5vrCupWtZ/rMnhd6D+UVlLtQTULRG88NpGdJW7UzZeN/DaZ1ZW
-         0+atKmk45O3Oh8cd+p60/LVinYeMRk+tkBQjFIR9y3FGOom4ah4WUKrXdvOQ/9F2H5MT
-         PhWgNHHJAImlSP+KqgKwo9oDGzsugdnBDc3aqeRE+AUeQ2BfgkO+TXeSQRBTvEDGPfdO
-         kf5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVZKRG6YqTSNH8AA9ZHLqUZUEkf+3S0mWQQGVKziGFCQpm2p0MM4c6Chtjem6p52wmHztm624784ygNxZlc+oO0l2CC7RO0hykO2Gd3oeJKfmpGVWmqHUmRdWEe97sIOwM8Iz7FSFaxo+T8cdZByyEx8NmDBOsFmlDjZixEuWiF
-X-Gm-Message-State: AOJu0YwmDl7oZmy3YJ//kxPvbW+OSdqirLDQw/KS/ORmwe3Uakzfd+Gq
-	iMI/ZTLjiayXs4B02TMWIAcsZcgoDr7ztGaiEPfaRL7Q7OoQQ2djZBpTzdrzqyU=
-X-Google-Smtp-Source: AGHT+IEQy6GGHoGqLk6uwk8ZNW45BRZT3ywA20T6HVZbUPu/S1lIdBnk0x2oO9lDy6GmpV8iOhS5Lw==
-X-Received: by 2002:a25:d614:0:b0:dcc:3a3:9150 with SMTP id n20-20020a25d614000000b00dcc03a39150mr9622468ybg.22.1709646506286;
-        Tue, 05 Mar 2024 05:48:26 -0800 (PST)
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
-        by smtp.gmail.com with ESMTPSA id g1-20020a259341000000b00dc6a0898efasm2583054ybo.15.2024.03.05.05.48.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 05:48:26 -0800 (PST)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-608ccac1899so60551187b3.1;
-        Tue, 05 Mar 2024 05:48:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXXsLNAptFE3QxHu1GTuhf/xv+YKoec3ceF8yAwPjwargLz5+FzFHjscXwR8Qm8POuxKEO/rz40JY169h+L7MXPzCU8FLpAIkdNhJonQj3dyT6xl6dQkoe/vZspes63xIXv7iF+rPZDIsAPLVm8mNeY5s/6ycyMnNs+UfCq0AHW
-X-Received: by 2002:a25:6a86:0:b0:dcc:f5d4:8b43 with SMTP id
- f128-20020a256a86000000b00dccf5d48b43mr8483801ybc.9.1709646505511; Tue, 05
- Mar 2024 05:48:25 -0800 (PST)
+	s=arc-20240116; t=1709647901; c=relaxed/simple;
+	bh=9A/D8A8ee3vVZaVBOtwliVQXqvW+EdeWufwN3ZDihzE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CpLfGmz2TKO7uYlEiGk+BdH/j4Gz0nXkItwHvHvWP1t0VrJkLOviPd15IQxxJQ/oTv7ddBYAe2oy4TU62OEmp6Ggw2ENM00Qyi1YuyFa2qrcrnI/1LPalzT8yArEoSd3FxZnJLfn3LCbf3utzzxAC+61+B528H49xTnWUE0gM2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bhrluycd; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709647899; x=1741183899;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=9A/D8A8ee3vVZaVBOtwliVQXqvW+EdeWufwN3ZDihzE=;
+  b=BhrluycdWAvBGanvEAbaCXQrX/+Im+NqHWcBt4p4ZsuYSOuFBd3ff76X
+   Ic8FZy1AXsqbCEY7w/XSDbGPIB0KPpolBHb8aAXWzNYUJUDqpS2PFrRp9
+   qRTB4ZDfhiW3aRMps+bjNzrVjkXfQSFlFbfA7UKLiGtD74AWgFCL6FoxX
+   v29DtdI2hn15MqwtUTTLP/3Dvdvp/vr837kuerAhEIG+3jeI9yj42/wW4
+   R5h/jHNSAUyQ6cO9iaVAz+KcsR8QwOTyE5glE3ZTyBfuNw4hYY/ezQTYc
+   UmOHZKeX64LKELCR5MviBBYmpZuzPpZVbL85dIZkUpxpsrV8hlnE4cEog
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="21725261"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="21725261"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 06:11:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="9551887"
+Received: from omakhlou-mobl4.amr.corp.intel.com (HELO localhost) ([10.252.51.143])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 06:11:37 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/dsi: Go back to the previous
+ INIT_OTP/DISPLAY_ON order, mostly
+In-Reply-To: <20240305083659.8396-1-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240305083659.8396-1-ville.syrjala@linux.intel.com>
+Date: Tue, 05 Mar 2024 16:11:33 +0200
+Message-ID: <87plw822ga.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240305104423.3177-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20240305104423.3177-2-wsa+renesas@sang-engineering.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 5 Mar 2024 14:48:12 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV-PTyydtuMjP0dFkAGSKT2av7Vn5s-xJE8u=SkqrNkDw@mail.gmail.com>
-Message-ID: <CAMuHMdV-PTyydtuMjP0dFkAGSKT2av7Vn5s-xJE8u=SkqrNkDw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: tmio: avoid concurrent runs of mmc_request_done()
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Dirk Behme <dirk.behme@de.bosch.com>, 
-	stable@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Chris Ball <cjb@laptop.org>, Guennadi Liakhovetski <g.liakhovetski@gmx.de>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 5, 2024 at 11:54=E2=80=AFAM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> With the to-be-fixed commit, the reset_work handler cleared 'host->mrq'
-> outside of the spinlock protected critical section. That leaves a small
-> race window during execution of 'tmio_mmc_reset()' where the done_work
-> handler could grab a pointer to the now invalid 'host->mrq'. Both would
-> use it to call mmc_request_done() causing problems (see link below).
+On Tue, 05 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> However, 'host->mrq' cannot simply be cleared earlier inside the
-> critical section. That would allow new mrqs to come in asynchronously
-> while the actual reset of the controller still needs to be done. So,
-> like 'tmio_mmc_set_ios()', an ERR_PTR is used to prevent new mrqs from
-> coming in but still avoiding concurrency between work handlers.
+> Reinstate commit 88b065943cb5 ("drm/i915/dsi: Do display on
+> sequence later on icl+"), for the most part. Turns out some
+> machines (eg. Chuwi Minibook X) really do need that updated order.
+> It is also the order the Windows driver uses.
 >
-> Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Closes: https://lore.kernel.org/all/20240220061356.3001761-1-dirk.behme@d=
-e.bosch.com/
-> Fixes: df3ef2d3c92c ("mmc: protect the tmio_mmc driver against a theoreti=
-cal race")
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Cc: stable@vger.kernel.org # 3.0+
+> However we can't just undo the revert since that would again
+> break Lenovo 82TQ. After staring at the VBT sequences for both
+> machines I've concluded that the Lenovo 82TQ sequences look
+> somewhat broken:
+>  - INIT_OTP is not present at all
+>  - what should be in INIT_OTP is found in DISPLAY_ON
+>  - what should be in DISPLAY_ON is found in BACKLIGHT_ON
+>    (along with the actual backlight stuff)
+>
+> The Chuwi Minibook X on the other hand has a full complement
+> of sequences in its VBT.
+>
+> So let's try to deal with the broken sequences in the
+> Lenovo 82TQ VBT by simply swapping the (non-existent)
+> INIT_OTP sequence with the DISPLAY_ON sequence. Thus we
+> execute DISPLAY_ON when intending to execute INIT_OTP,
+> and execute nothing at all when intending to execute
+> DISPLAY_ON. That should be 100% equivalent to the
+> revert, for such broken VBTs.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: dc524d05974f ("Revert "drm/i915/dsi: Do display on sequence later =
+on icl+"")
+> References: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10334
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-Thanks, I gave it a boot run on all boards in my farm, no issues seen.
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Yuck.
 
-Gr{oetje,eeting}s,
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-                        Geert
+> ---
+>  drivers/gpu/drm/i915/display/icl_dsi.c    |  3 +-
+>  drivers/gpu/drm/i915/display/intel_bios.c | 43 +++++++++++++++++++----
+>  2 files changed, 39 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i91=
+5/display/icl_dsi.c
+> index eda4a8b88590..ac456a2275db 100644
+> --- a/drivers/gpu/drm/i915/display/icl_dsi.c
+> +++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+> @@ -1155,7 +1155,6 @@ static void gen11_dsi_powerup_panel(struct intel_en=
+coder *encoder)
+>  	}
+>=20=20
+>  	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
+> -	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+>=20=20
+>  	/* ensure all panel commands dispatched before enabling transcoder */
+>  	wait_for_cmds_dispatched_to_panel(encoder);
+> @@ -1256,6 +1255,8 @@ static void gen11_dsi_enable(struct intel_atomic_st=
+ate *state,
+>  	/* step6d: enable dsi transcoder */
+>  	gen11_dsi_enable_transcoder(encoder);
+>=20=20
+> +	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+> +
+>  	/* step7: enable backlight */
+>  	intel_backlight_enable(crtc_state, conn_state);
+>  	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
+> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/=
+i915/display/intel_bios.c
+> index 343726de9aa7..373291d10af9 100644
+> --- a/drivers/gpu/drm/i915/display/intel_bios.c
+> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
+> @@ -1955,16 +1955,12 @@ static int get_init_otp_deassert_fragment_len(str=
+uct drm_i915_private *i915,
+>   * these devices we split the init OTP sequence into a deassert sequence=
+ and
+>   * the actual init OTP part.
+>   */
+> -static void fixup_mipi_sequences(struct drm_i915_private *i915,
+> -				 struct intel_panel *panel)
+> +static void vlv_fixup_mipi_sequences(struct drm_i915_private *i915,
+> +				     struct intel_panel *panel)
+>  {
+>  	u8 *init_otp;
+>  	int len;
+>=20=20
+> -	/* Limit this to VLV for now. */
+> -	if (!IS_VALLEYVIEW(i915))
+> -		return;
+> -
+>  	/* Limit this to v1 vid-mode sequences */
+>  	if (panel->vbt.dsi.config->is_cmd_mode ||
+>  	    panel->vbt.dsi.seq_version !=3D 1)
+> @@ -2000,6 +1996,41 @@ static void fixup_mipi_sequences(struct drm_i915_p=
+rivate *i915,
+>  	panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] =3D init_otp + len - 1;
+>  }
+>=20=20
+> +/*
+> + * Some machines (eg. Lenovo 82TQ) appear to have broken
+> + * VBT sequences:
+> + * - INIT_OTP is not present at all
+> + * - what should be in INIT_OTP is in DISPLAY_ON
+> + * - what should be in DISPLAY_ON is in BACKLIGHT_ON
+> + *   (along with the actual backlight stuff)
+> + *
+> + * To make those work we simply swap DISPLAY_ON and INIT_OTP.
+> + *
+> + * TODO: Do we need to limit this to specific machines,
+> + *       or examine the contents of the sequences to
+> + *       avoid false positives?
+> + */
+> +static void icl_fixup_mipi_sequences(struct drm_i915_private *i915,
+> +				     struct intel_panel *panel)
+> +{
+> +	if (!panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP] &&
+> +	    panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]) {
+> +		drm_dbg_kms(&i915->drm, "Broken VBT: Swapping INIT_OTP and DISPLAY_ON =
+sequences\n");
+> +
+> +		swap(panel->vbt.dsi.sequence[MIPI_SEQ_INIT_OTP],
+> +		     panel->vbt.dsi.sequence[MIPI_SEQ_DISPLAY_ON]);
+> +	}
+> +}
+> +
+> +static void fixup_mipi_sequences(struct drm_i915_private *i915,
+> +				 struct intel_panel *panel)
+> +{
+> +	if (DISPLAY_VER(i915) >=3D 11)
+> +		icl_fixup_mipi_sequences(i915, panel);
+> +	else if (IS_VALLEYVIEW(i915))
+> +		vlv_fixup_mipi_sequences(i915, panel);
+> +}
+> +
+>  static void
+>  parse_mipi_sequence(struct drm_i915_private *i915,
+>  		    struct intel_panel *panel)
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Jani Nikula, Intel
 
