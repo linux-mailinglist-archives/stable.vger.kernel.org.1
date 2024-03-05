@@ -1,114 +1,200 @@
-Return-Path: <stable+bounces-26822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45FE872570
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:13:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FB887259D
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44A731F22388
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:13:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFDFEB23E19
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946D7134C4;
-	Tue,  5 Mar 2024 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D20614F64;
+	Tue,  5 Mar 2024 17:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcE6HeqO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fQmKaKSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461D4DDDA;
-	Tue,  5 Mar 2024 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2628617555;
+	Tue,  5 Mar 2024 17:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709658810; cv=none; b=dW3dYy3WltnmmHfv1MyM0ZspBwGPO8OEW7cIca74MjX0OnXaNn1rRyEv4qozMYGcSae6dISd3TJfADAWnu6aewnpiVDhcPvxEKJuaLNy9b+6GEe93ErFqgodfyOlW+vheJTxLSk41AlK6dxzHyx/9i8ob1+Q/Dlvp/odB5MJd+8=
+	t=1709659584; cv=none; b=thBPSWGAYM4lo+fVzYn+tUhEHaBI6ReIn/Z4DxLMa0bont+kI3JO5cwPviDFBatmKDo1AyKiP1ZnoXCdtBgVsX5oigPggQyxwxdN3z8uK4Sy25HsvZRt+IlNM3raLTygF2SQe3SHjyQaNYL6LecyjX0KtAMySrRXbDJh6VRB1jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709658810; c=relaxed/simple;
-	bh=mCb5rz9ozWoqeUEaaPJgZrZ0vT0gaWXiqiWNuvVUgO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=di4EheIStr7il8qRRLNKArbElSr1G/BPW/R5BWn+WESafx0LNqYMn3KEqVu34ZvC20iAiBbTfUs6hz+DGByQWBWZ6FD69PQtGTWhff75n0APE8zg0477ivd050kLXjX/fGqCM2laS2fEIbXIw5V+V9Fx7vECHfJU1uiCVxS15bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcE6HeqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259A1C433F1;
-	Tue,  5 Mar 2024 17:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709658810;
-	bh=mCb5rz9ozWoqeUEaaPJgZrZ0vT0gaWXiqiWNuvVUgO0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FcE6HeqOOK1wT2/YX3qgFIm/ZjXrw7B3y/5/HLj9piykdyuccrb8QPZnN0Srxl7zP
-	 TBiU0e0yqNKVyp0xsVvpi8QLbgi4YZSxj61EzkYlcLimZ9yFv8xHaq2ZxsgdRx0rWG
-	 35/LdjmliS4lGdI8+08v1OxZibwZ86DrccQ9LabSXIsxTM97BJwU+VsWGO59Fl12G8
-	 qhF+WwlTKKbdFBVVeE5hsSny529DaK6HuASA84yqFvhYXdwfKpXTwYZQmTFl1Cr9CY
-	 5IhCrTggjAa7lsaRcsz/fY9/0u309LUaWo9L4QMthPO1JlgG5CDoyLPiEv2FRVx/uZ
-	 CyQWo7/0eBmNA==
-Date: Tue, 5 Mar 2024 17:13:24 +0000
-From: Will Deacon <will@kernel.org>
-To: "levi.yun" <yeoreum.yun@arm.com>
-Cc: catalin.marinas@arm.com, mark.rutland@arm.com, peterz@infradead.org,
-	mathieu.desnoyers@efficios.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	nd@arm.com, stable@vger.kernel.org, Aaron Lu <aaron.lu@intel.com>
-Subject: Re: [PATCH] arm64/mm: Add memory barrier for mm_cid
-Message-ID: <20240305171324.GA22616@willie-the-truck>
-References: <20240305145335.2696125-1-yeoreum.yun@arm.com>
+	s=arc-20240116; t=1709659584; c=relaxed/simple;
+	bh=s3xQATPhaGPeMRMcaOujC72dU7qB42j7gd97Xej9j6A=;
+	h=Date:To:From:Subject:Message-Id; b=DOJUea5bcyH5rzQHJsR2cdBW+JPaILLOsTPtQCvYOGGh3dLNVQEGvNFU/FHHH+oeqMT+E2JtUAZK0WuVV7fUUlj8wsYf2VwTEizJt21GNuvRdURMs1GnbMWzxVd+ov8DfICfxv9TJCjqvwkH8RR3eJUSYZedeKXjeKrLnldzDBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fQmKaKSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93794C433C7;
+	Tue,  5 Mar 2024 17:26:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1709659583;
+	bh=s3xQATPhaGPeMRMcaOujC72dU7qB42j7gd97Xej9j6A=;
+	h=Date:To:From:Subject:From;
+	b=fQmKaKSOzY9lpoEo2dzNOOcW2E0yGnvUNWiApxyR2OWhvnbIgPDw8zekaHW79cyMk
+	 9fh4KfltXO5Cmk3zbZWqwVhUUQF5s6/Lm83T56s4laceRX5WU0vpp+K624TcGhQabY
+	 7TkxCS0Fu3vPqaKrOPabij4F4E91rFUU3s4vfyZk=
+Date: Tue, 05 Mar 2024 09:26:23 -0800
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch added to mm-unstable branch
+Message-Id: <20240305172623.93794C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240305145335.2696125-1-yeoreum.yun@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Mar 05, 2024 at 02:53:35PM +0000, levi.yun wrote:
-> Currently arm64's switch_mm() doesn't always have an smp_mb()
-> which the core scheduler code has depended upon since commit:
-> 
->     commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
-> 
-> If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear()
-> can unset the activly used cid when it fails to observe active task after it
-> sets lazy_put.
-> 
-> By adding an smp_mb() in arm64's check_and_switch_context(),
-> Guarantee to observe active task after sched_mm_cid_remote_clear()
-> success to set lazy_put.
-> 
-> Signed-off-by: levi.yun <yeoreum.yun@arm.com>
-> Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-> Cc: <stable@vger.kernel.org> # 6.4.x
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Aaron Lu <aaron.lu@intel.com>
-> ---
->  I'm really sorry if you got this multiple times.
->  I had some problems with the SMTP server...
-> 
->  arch/arm64/mm/context.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
-> index 188197590fc9..7a9e8e6647a0 100644
-> --- a/arch/arm64/mm/context.c
-> +++ b/arch/arm64/mm/context.c
-> @@ -268,6 +268,11 @@ void check_and_switch_context(struct mm_struct *mm)
->  	 */
->  	if (!system_uses_ttbr0_pan())
->  		cpu_switch_mm(mm->pgd, mm);
-> +
-> +	/*
-> +	 * See the comments on switch_mm_cid describing user -> user transition.
-> +	 */
-> +	smp_mb();
->  }
 
-We already have a stronger barrier than smp_mb() (dsb ish) in __switch_to().
-Is that not sufficient?
+The patch titled
+     Subject: mm: swap: fix race between free_swap_and_cache() and swapoff()
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
 
-Will
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
+
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: swap: fix race between free_swap_and_cache() and swapoff()
+Date: Tue, 5 Mar 2024 15:13:49 +0000
+
+There was previously a theoretical window where swapoff() could run and
+teardown a swap_info_struct while a call to free_swap_and_cache() was
+running in another thread.  This could cause, amongst other bad
+possibilities, swap_page_trans_huge_swapped() (called by
+free_swap_and_cache()) to access the freed memory for swap_map.
+
+This is a theoretical problem and I haven't been able to provoke it from a
+test case.  But there has been agreement based on code review that this is
+possible (see link below).
+
+Fix it by using get_swap_device()/put_swap_device(), which will stall
+swapoff().  There was an extra check in _swap_info_get() to confirm that
+the swap entry was valid.  This wasn't present in get_swap_device() so
+I've added it.  I couldn't find any existing get_swap_device() call sites
+where this extra check would cause any false alarms.
+
+Details of how to provoke one possible issue (thanks to David Hildenbrand
+for deriving this):
+
+--8<-----
+
+__swap_entry_free() might be the last user and result in
+"count == SWAP_HAS_CACHE".
+
+swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+
+So the question is: could someone reclaim the folio and turn
+si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+
+Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+still references by swap entries.
+
+Process 1 still references subpage 0 via swap entry.
+Process 2 still references subpage 1 via swap entry.
+
+Process 1 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+[then, preempted in the hypervisor etc.]
+
+Process 2 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+
+Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+__try_to_reclaim_swap().
+
+__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+swap_entry_free()->swap_range_free()->
+...
+WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+
+What stops swapoff to succeed after process 2 reclaimed the swap cache
+but before process1 finished its call to swap_page_trans_huge_swapped()?
+
+--8<-----
+
+Link: https://lkml.kernel.org/r/20240305151349.3781428-1-ryan.roberts@arm.com
+Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/swapfile.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+--- a/mm/swapfile.c~mm-swap-fix-race-between-free_swap_and_cache-and-swapoff
++++ a/mm/swapfile.c
+@@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device
+ 	smp_rmb();
+ 	offset = swp_offset(entry);
+ 	if (offset >= si->max)
+-		goto put_out;
++		goto bad_offset;
++	if (data_race(!si->swap_map[swp_offset(entry)]))
++		goto bad_free;
+ 
+ 	return si;
+ bad_nofile:
+@@ -1289,9 +1291,14 @@ bad_nofile:
+ out:
+ 	return NULL;
+ put_out:
+-	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
+ 	percpu_ref_put(&si->users);
+ 	return NULL;
++bad_offset:
++	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
++	goto put_out;
++bad_free:
++	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
++	goto put_out;
+ }
+ 
+ static unsigned char __swap_entry_free(struct swap_info_struct *p,
+@@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entr
+ 	if (non_swap_entry(entry))
+ 		return 1;
+ 
+-	p = _swap_info_get(entry);
++	p = get_swap_device(entry);
+ 	if (p) {
+ 		count = __swap_entry_free(p, entry);
+ 		if (count == SWAP_HAS_CACHE &&
+ 		    !swap_page_trans_huge_swapped(p, entry))
+ 			__try_to_reclaim_swap(p, swp_offset(entry),
+ 					      TTRS_UNMAPPED | TTRS_FULL);
++		put_swap_device(p);
+ 	}
+ 	return p != NULL;
+ }
+_
+
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
+
 
