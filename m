@@ -1,165 +1,151 @@
-Return-Path: <stable+bounces-26862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34E08729C0
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:53:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309BA8729C3
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D2828BA4A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:53:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FB8CB20EB3
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE3A134BD;
-	Tue,  5 Mar 2024 21:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74A812BEA3;
+	Tue,  5 Mar 2024 21:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kBCfIsc1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PGmqYldx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaDJluQg"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout6-smtp.messagingengine.com (wfout6-smtp.messagingengine.com [64.147.123.149])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D08712C809;
-	Tue,  5 Mar 2024 21:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0AE5A796
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709675598; cv=none; b=dTwOkGu8e+PmvSpBxEmCjzBDEwHgIxFQdVgvaxnd6pQ1Cinl+LkLzA2An76MEMxgHx6wWTy/eXy8lZiuTyvZnCmAUYRn8AQL1LPO6wIKOgQkEferCEsI9NJSCo5BsZ9rDJy0RN1idKmmPA9Rzt7zAuieQTPb/lfoIQZB7uv3bfY=
+	t=1709675688; cv=none; b=TWrHxB0mZ+Melqh+zJ+hPMVAKdRrhjrlECzzpHvG7qXR+Td/6uztaAUbxq7rpqETKLxe4l7hgUTxNUEEpVlh/dmCadc8RI8XDt+xG41iH1qZf663aZIA2Qx+DJhUwt8u1btMV2Tm77J2vrvyLQKGMzpQxYxdw+G6a/I3ID/J9KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709675598; c=relaxed/simple;
-	bh=w69YwNhhJUWrKvltEutpZXr1WsKvyjIHwp0BdHZURa4=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=nhe/t/OOo8DDuhI2nB1Q6FgvUB0agcol8yXjr9d9GTnGSDrV2TCWjM+qPKhfKRQJS05gbmfbCSOjn361HKYv5thKzZJSMveRyGN7twnXysdlc97x/S0aOZQM+rt3Q+2Vl0+j7i++RafkCvNF0Q/i7ApikWZG/qng6HmahI9JXPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kBCfIsc1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PGmqYldx; arc=none smtp.client-ip=64.147.123.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id C3C751C00087;
-	Tue,  5 Mar 2024 16:53:15 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 05 Mar 2024 16:53:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1709675595;
-	 x=1709761995; bh=QNEfkKLf+YoFMOvLOLaHBOHhoGsBFLnvQ4LA5YChDe8=; b=
-	kBCfIsc13o0inkSJN6s2rCCZXlGtZUy85CUt4VWoUMzRnosFKOqxHm4IaDnxJToM
-	+io8+RDJVMkqJLa0KZqiPoOeZ7d6Lm1yz9S777ouuGXBmiUkkVuV6Id+g2/FtdNq
-	b0/ro4rgslsftvSoPwLsoEoOt6ijY2ja4ts9Ta3F4XtR1ONVx85xl4Zj9niW5MLd
-	Dn6eSAoi3ooaI5X4Fgmj0dWwYUOr6lOgBEohlVGZ8DwK24YaJDpwVH9LZkRJrx8v
-	GR4mRa9gnFL32RZGP0GorrSyaJu64TXpa+y517eFq7JmAPI3oEjJKRRnEVMI64cP
-	rPxXmjCMQ5pCUDWhoNZ/lw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1709675595; x=
-	1709761995; bh=QNEfkKLf+YoFMOvLOLaHBOHhoGsBFLnvQ4LA5YChDe8=; b=P
-	GmqYldxrcCLZebRG8Vo3qC6IDi4t/zGYIEFtqJEMvDNnIC9VBkBGGTEFkyu7dHOL
-	vMkiJpIp0iBIEXL5aIU0RHsnepdPMk6RJ8e8kjeNvhhAQ1PcVoJsayCpf9iEKeAj
-	8jJYR99p6QF99qL8JqAIfKGI5VCqPGHgJL71i6IDbiWsAkpJSBdYVVyo1fULia/j
-	m7Fd4nO+MWVHxptn4/5oB1J0cMoiEiofYfUrb1Tn+XpdGAHt7UwiDp9Q1Cro7pxz
-	PjBNZoDWR7O6xemHkW6J2TJF1JexdH8O6jUmmsrFsow6QhvG9ezHeOodq+KWPaoM
-	voEVjTvKDwzL4iyYoatTQ==
-X-ME-Sender: <xms:SpTnZdv_DZhYWD2X8sI750_zGOOHPFz1jvfwKfL850W6xedWTO2P6w>
-    <xme:SpTnZWfOrmFSlUCfVRkJOZNgcVWMC9q5j929x0oAymJkLlGbQEfzL-3EBYB8hqN1O
-    2gmJi9QdhwtPU1dZWY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdduhedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:SpTnZQzEMjXCFglOKvTUq5O22x49kx-sveEWFm8IKxqCwLmQh8Efhg>
-    <xmx:SpTnZUOts6r1M9eM2F0eb_gKBH8ni69laCfZKpSroFnzcADLT8vU2A>
-    <xmx:SpTnZd-7MiyVNAK78opOGnMi-ur4reLRre-blpeEBJJ5yPBisljBHw>
-    <xmx:S5TnZe0DzO9qODO5JCHeijulFefAapAWDeMSF-u9Z_qhrG9K13bGNXXa1HA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 6AD1BB6008F; Tue,  5 Mar 2024 16:53:14 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-208-g3f1d79aedb-fm-20240301.002-g3f1d79ae
+	s=arc-20240116; t=1709675688; c=relaxed/simple;
+	bh=AOS6B5MMXOiz/ObftSsk1JSF/bYunndrc9aVLTcrWUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fx6p0jeLe8PBXr/eqzkoxLO/w/i6u3vaW8Tn5yXZBPxlPxVNt2fOMmoc62Nn9/KnZ4kSeQypzPD9RSm0W60JPdS5h5lm1e2zFvKGbF5t4zpppFtUPaPzar78nMvM/Fw2WTWg4DIFPC7pNdRGgMsQm7RFFiDyeB9i+Q/tcueonmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaDJluQg; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709675687; x=1741211687;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=AOS6B5MMXOiz/ObftSsk1JSF/bYunndrc9aVLTcrWUI=;
+  b=SaDJluQgWwsKdl0blaGaGZT5zlSjiUi1I0ROG/KRzoVaMPYXQeTwagH9
+   mv2pJuHA9coLU63LzgTVaXqy1o8yt0Y+8us3cwc8poxwOGTXYFMgHZHhi
+   E6O8y4gLdSt0LjXaVCdJWF4RX0RKoMaHJOs34tpR23QuGq76pGvRbRKMY
+   4UeSg9+iLK3oEFAWlBesDBvDZUp9il8iB+2KSbUz1sYrPx3ZVOiwhHQDc
+   mMC6u0Sbm+xY9Utc1rMbS8zC3OqiRxwfSK8mMhnHcjSYOulRZ+z3b5xiV
+   UBnvsAamy2KQyEQ3lV62A95iWXHEy2evLQTy9zeiw6D1fiU785d6aHzD5
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="15662561"
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="15662561"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 13:54:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
+   d="scan'208";a="9413533"
+Received: from pbemalkh-mobl.amr.corp.intel.com (HELO desk) ([10.209.20.113])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 13:54:44 -0800
+Date: Tue, 5 Mar 2024 13:54:43 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Borislav Petkov <bp@suse.de>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 5.10.y 0/7] Delay VERW 5.10.y backport
+Message-ID: <20240305-delay-verw-backport-5-10-y-v1-0-50bf452e96ba@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIANuT52UC/x3MwQqDMAwA0F+RnBdJaxW2Xxk7ZDZq2FBJh1sR/
+ 33F47u8HZKYSoJbtYPJpkmXucBdKugnnkdBjcXgyQdqKGCUN2fcxL745P61LvbBFh1hRiLm2F1
+ D44cAJVhNBv2d+R3a2lGd4XEcf80ut7h0AAAA
+X-Mailer: b4 0.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <5b4fa755-571e-4a99-8614-ca0df1db1563@app.fastmail.com>
-In-Reply-To: <20240305193015.GA1173426@dev-arch.thelio-3990X>
-References: 
- <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
- <57abd8e9-3177-4260-b423-38d5cdcda44e@app.fastmail.com>
- <CAKwvOd=V_Qtd2pK8AKc6bv=zMPnAaCf08=QO74ckqH26A3sefA@mail.gmail.com>
- <20240305193015.GA1173426@dev-arch.thelio-3990X>
-Date: Tue, 05 Mar 2024 22:52:54 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <ndesaulniers@google.com>
-Cc: "Masahiro Yamada" <masahiroy@kernel.org>,
- "Nicolas Schier" <nicolas@fjasle.eu>, "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>,
- "Yonghong Song" <yonghong.song@linux.dev>, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] kbuild: Disable two Clang specific enumeration warnings
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tue, Mar 5, 2024, at 20:30, Nathan Chancellor wrote:
-> On Tue, Mar 05, 2024 at 10:52:16AM -0800, Nick Desaulniers wrote:
->> On Tue, Mar 5, 2024 at 10:50=E2=80=AFAM Arnd Bergmann <arnd@arndb.de>=
- wrote:
->> >
->> > On Tue, Mar 5, 2024, at 18:42, Nathan Chancellor wrote:
->> > >
->> > > As the warnings do not appear to have a high signal to noise rati=
-o and
->> > > the source level silencing options are not sustainable, disable t=
-he
->> > > warnings unconditionally, as they will be enabled with -Wenum-con=
-version
->> > > and are supported in all versions of clang that can build the ker=
-nel.
->> >
->> > I took a look at a sample of warnings in an allmodconfig build
->> > and found a number that need attention. I would much prefer to
->> > leave these turned on at the W=3D1 level and only disable them
->> > at the default warning level.
->>=20
->> Sounds like these new diagnostics are very noisy. 0day bot sends
->> people reports at W=3D1. Perhaps W=3D2?
+This is the backport of recently upstreamed series that moves VERW
+execution to a later point in exit-to-user path. This is needed because
+in some cases it may be possible for data accessed after VERW executions
+may end into MDS affected CPU buffers. Moving VERW closer to ring
+transition reduces the attack surface.
 
-It feels like this is not a great reason for moving it to W=3D2
-instead of W=3D1, but W=3D2 is still better than always disabling
-it I think.
+- The series includes a dependency commit f87bc8dc7a7c ("x86/asm: Add
+  _ASM_RIP() macro for x86-64 (%rip) suffix").
 
-Specifically, the 0day bot warns for newly added W=3D1 warnings
-but not for preexisting ones, and I think there are other warnings
-at the W=3D1 level that are similarly noisy to this one.
+- Patch 2 includes a change that adds runtime patching for jmp (instead
+  of verw in original series) due to lack of rip-relative relocation
+  support in kernels <v6.5.
 
-> A number of subsystems test with W=3D1 as well and while opting into W=
-=3D1
-> means that you are potentially asking for new warnings across newer
-> compiler releases, a warning with this number of instances is going to
-> cause a lot of issues (I think of netdev for example).
+- Fixed warning:
+  arch/x86/entry/entry.o: warning: objtool: mds_verw_sel+0x0: unreachable instruction.
 
-I only see a handful of warnings in net (devlink, bpf) and
-drivers/net (ethernet/{3com,amd8111e,funeth,hns,idpf,jme,mlx4} and
-wireless/{iwlwifi,mt76,rtw88,rtw89}).=20
+- Resolved merge conflicts in:
+	syscall_return_via_sysret in entry_64.S
+	swapgs_restore_regs_and_return_to_usermode in entry_64.S.
+	__vmx_vcpu_run in vmenter.S.
+	vmx_update_fb_clear_dis in vmx.c.
 
-These are also some of the ones that I think need a closer look.
+- Boot tested with KASLR and KPTI enabled.
 
-> Fundamentally, I do not really care which avenue we take (either this
-> change or off by default, on at W=3D1), I am happy to do whatever.
-> Unfortunately, CONFIG_WERROR makes these decisions much more urgent
-> because it is either disable it and have other warnings creep in among=
-st
-> the sprawl of these warnings or leave it on and miss other errors for
-> the same reason.
+- Verified VERW being executed with mitigation ON.
 
-Agreed.
+To: stable@vger.kernel.org
 
-       Arnd
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+---
+H. Peter Anvin (Intel) (1):
+      x86/asm: Add _ASM_RIP() macro for x86-64 (%rip) suffix
+
+Pawan Gupta (5):
+      x86/bugs: Add asm helpers for executing VERW
+      x86/entry_64: Add VERW just before userspace transition
+      x86/entry_32: Add VERW just before userspace transition
+      x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
+      KVM/VMX: Move VERW closer to VMentry for MDS mitigation
+
+Sean Christopherson (1):
+      KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
+
+ Documentation/x86/mds.rst            | 38 +++++++++++++++++++++++++-----------
+ arch/x86/entry/entry.S               | 23 ++++++++++++++++++++++
+ arch/x86/entry/entry_32.S            |  3 +++
+ arch/x86/entry/entry_64.S            | 10 ++++++++++
+ arch/x86/entry/entry_64_compat.S     |  1 +
+ arch/x86/include/asm/asm.h           |  5 +++++
+ arch/x86/include/asm/cpufeatures.h   |  1 +
+ arch/x86/include/asm/entry-common.h  |  1 -
+ arch/x86/include/asm/irqflags.h      |  1 +
+ arch/x86/include/asm/nospec-branch.h | 27 +++++++++++++------------
+ arch/x86/kernel/cpu/bugs.c           | 15 ++++++--------
+ arch/x86/kernel/nmi.c                |  3 ---
+ arch/x86/kvm/vmx/run_flags.h         |  7 +++++--
+ arch/x86/kvm/vmx/vmenter.S           |  9 ++++++---
+ arch/x86/kvm/vmx/vmx.c               | 12 ++++++++----
+ 15 files changed, 111 insertions(+), 45 deletions(-)
+---
+base-commit: 9985c44f239fa0db0f3b4a1aee80794f113c135c
+change-id: 20240304-delay-verw-backport-5-10-y-00aad69432f4
+
+Best regards,
+-- 
+Thanks,
+Pawan
+
+
 
