@@ -1,132 +1,160 @@
-Return-Path: <stable+bounces-26748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E0C87199B
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:29:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950798719AB
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 10:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627792840E8
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:29:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C65F01C227A6
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 09:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6640D53383;
-	Tue,  5 Mar 2024 09:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CB55102F;
+	Tue,  5 Mar 2024 09:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="zWtWdYoX"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="1GjDofeH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7587552F6A
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 09:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF0752F6A;
+	Tue,  5 Mar 2024 09:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709630983; cv=none; b=c9jmF3fKJ6zVkDS+6TS0+R8e8WxnWG/6n9B245NY8bkASZ6rotlRunWgS9ADWVHT821qed6lLB3U/syhtLDkm1DK4Sij3R+OzNyqkBhaqhtQYoXe8tOmvfoHE5x2EANGBwGT/id58WrZZFybDFqLzIIx4RxwkoB0jUN8p2lWu0g=
+	t=1709631255; cv=none; b=CwVmbTC3VWDsWFeG9a77v60SrAQ0+22QSYdVZgaLlMOj4aNbumDYC4/KlGnCIROyELXeS2LDXQSHw/3DdESX6cBNWrtsoiguznCobo9uNHujxidF+xiVnVYDB82AGqIy1U8SGPdhXVxKdVGCNYqgKibSdQCGMpsXAAnPhzT0dK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709630983; c=relaxed/simple;
-	bh=fwwZcoGwaB5irpy1rxHWbnfBT46aa54lt77MG6kaomM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cB7JTtJcKkODFExOkXXwe1lzITOLeyqC3pwE1ZyDVTOviOmz6DZF4XMqC2I2KUDI+DiYE/I6sX1c+dlQPTvegS/62M+jndurmtSQf01p+IsMwTbs1kaOw3EH+FJQJXdP2cfcX3vhV1xZmffZkszpXPii4K/CTDSF8M0nZyD0Rgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=zWtWdYoX; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33d2b354c72so4135539f8f.1
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 01:29:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1709630980; x=1710235780; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kax6J8q+YyZ2/tOmW0rK7vE9BJFxUzpNAhhYIq1f1zs=;
-        b=zWtWdYoXfRpwj0ke9hzl6/a2lvm2sVjYc8k9ugAizoc+iSOB4qKqm5TGL+S2Afk9HC
-         LkA+mpoe8QkqvvFYVVP9Ti+KQ6NmFgl6eqhI0cX2f0gkfBsq3BDZKUMzclszqQZw5ftu
-         yIvZ2DT2dx7LfRL4eJGNBvLmhBHhgavMEkMq+p0GOmOfXW5rLHf8FLp4jN8tVaJE7bh0
-         A4H9057CVuHn6fl/vzGynX3NB9yslHbIANxz+0bphPc8EgN6zn7ko5a+Fti0lHssGeZl
-         4CWt9RVLC0yBgHIV8BvhprUgoA60tVJH2+ub2b4it2MDdvFEYoVm19ivX6BHdI6MOz7B
-         9Qqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709630980; x=1710235780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kax6J8q+YyZ2/tOmW0rK7vE9BJFxUzpNAhhYIq1f1zs=;
-        b=eYm95+oPbMGilEgB7Rp922zUU074cyasfIptpKFlZUdRQv1l+N/fNi+yP9R6fFsiMN
-         ifCLD8I7n6eyaW/m1X838tO4QU5d1u1ZZCkN92cddLZqOIP98mpQUChgew7/fCFeduBC
-         Syh0J9Hlm/vLGl8wCNQpfBneugle4L4ZP1/sdEGxnjYY41EfJ87JvujbYhW7DkihnbTE
-         T6XosT2bMWPyvw0+k8MYnu6cVyP8FbLqZtkDHAid1ESAO8e7CZC7Isd4bzUkQmwtVNqm
-         NSZyH23b66ptZi6fSTVQAPbFoCXYyyEF3gwE6WEcAMR5VUMSKbuOBiGvac6yaWgMPN60
-         aEtg==
-X-Gm-Message-State: AOJu0Yz9y7Xy40o+gmClPX9F6duNXIVqJnHtTqYn6jMtHoWa0yyOWbBz
-	mF8vbYuoJmb28e0lDE6bI2xE1PU5h5Nh4278/9xME0vK5PrOj4PJ7A+tOGL1SD6AoOsvnin3l5t
-	ym7S68yu89qapxwQbLnRzWL5sjW6O9LsceCqX/w==
-X-Google-Smtp-Source: AGHT+IECVfZbaj8vE32BJFSRyojq5sxoYbaE05unjWleIgRKFNOLgHqoAT9uxruPOMGn+ALi7kAOewyVZuDWxdEwu+Q=
-X-Received: by 2002:adf:a154:0:b0:33e:47e5:e70b with SMTP id
- r20-20020adfa154000000b0033e47e5e70bmr1011317wrr.3.1709630979563; Tue, 05 Mar
- 2024 01:29:39 -0800 (PST)
+	s=arc-20240116; t=1709631255; c=relaxed/simple;
+	bh=T+7Q7gQskuw24wef7dAaNh5RUkK6uPhJY7sdZqTMIFY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oa4YmeoNK1O9bQvyONpAkWdAhrEpwdcZrj1WNKj3pqfem+EC4NAs4y7vJ2Wtdd8kx+yQFr6AOEDsjNGHzM04B8Ba/ulmTkAN/dHJV5shVb01/VUlJAvwPBtwAm8AEPMqGj61wr/gvn+kw7NKaaLamn/6GQIhYFO2+Gc3hJXJ1Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=1GjDofeH; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709631253; x=1741167253;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T+7Q7gQskuw24wef7dAaNh5RUkK6uPhJY7sdZqTMIFY=;
+  b=1GjDofeHSagFvJHCgXShstittoYUF/LgrggDvGIf+f81xQO5cCN0qGvS
+   +XZ/2gxJ4RwFgM9rf+CJwGs+FK0K6TQorKQUM28xcMeBFN8GCocC3nmbj
+   hcz4lSmikPqcu4hAr1hbn84LpA75/1i50WKGBs+U3Ugn628yw03kXNI9+
+   nJ0Rzy8GCwkP8sK7o+SyFa4xx/Vx+deKnlc/g8ZeNP1eLUE+HXuGVMGST
+   2Pur3Oxt7H0gJf0n1YJCnvHxDgnj6UaTSIisbHCXia9/l7rJyev5hnIG6
+   htsD7yJel2fUDOUxYJFdVqoJeQlh1IJdMqro5dz8InWsU7UiRyB0NJvdT
+   Q==;
+X-CSE-ConnectionGUID: wgXCSyg+Q4GqTX7SY8rAAw==
+X-CSE-MsgGUID: 6EM9gp66SGKa0dtg7wp0Vg==
+X-IronPort-AV: E=Sophos;i="6.06,205,1705388400"; 
+   d="asc'?scan'208";a="17205101"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Mar 2024 02:34:12 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 5 Mar 2024 02:33:32 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex04.mchp-main.com (10.10.85.152)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 5 Mar 2024 02:33:29 -0700
+Date: Tue, 5 Mar 2024 09:32:45 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Luna Jernberg <droidbittin@gmail.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>
+Subject: Re: [PATCH 6.7 000/163] 6.7.9-rc2 review
+Message-ID: <20240305-squeezing-backlit-d952f4503e57@wendy>
+References: <20240305074649.580820283@linuxfoundation.org>
+ <20240305-arson-panhandle-afa453ccb0aa@wendy>
+ <CADo9pHg4teVS7Lt1j+gOt4G9U=dZF9G92AUK=Km6PTdURkc0pg@mail.gmail.com>
+ <20240305-series-flogging-e359bae88efd@wendy>
+ <CADo9pHh6fnOz7d6+WCwkKz6_T4Ahru=0YDuc6q+KNnKYqQ2gBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211549.876981797@linuxfoundation.org>
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 5 Mar 2024 18:29:28 +0900
-Message-ID: <CAKL4bV5WJ_xZ76KBnOvf6WFAfVtj++4zE=hXRgGyOGD55xgwqg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/143] 6.6.21-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="UN1dzwzL0P7pYwKx"
+Content-Disposition: inline
+In-Reply-To: <CADo9pHh6fnOz7d6+WCwkKz6_T4Ahru=0YDuc6q+KNnKYqQ2gBg@mail.gmail.com>
+
+--UN1dzwzL0P7pYwKx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+On Tue, Mar 05, 2024 at 10:21:46AM +0100, Luna Jernberg wrote:
+> Den tis 5 mars 2024 kl 10:20 skrev Conor Dooley <conor.dooley@microchip.c=
+om>:
+> >
+> > On Tue, Mar 05, 2024 at 10:07:37AM +0100, Luna Jernberg wrote:
+> > > Den tis 5 mars 2024 kl 09:32 skrev Conor Dooley <conor.dooley@microch=
+ip.com>:
+> > > >
+> > > > On Tue, Mar 05, 2024 at 07:58:57AM +0000, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.7.9 releas=
+e.
+> > > > > There are 163 patches in this series, all will be posted as a res=
+ponse
+> > > > > to this one.  If anyone has any issues with these being applied, =
+please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Thu, 07 Mar 2024 07:46:26 +0000.
+> > > > > Anything received after that time might be too late.
+> > > >
+> > > > > Samuel Holland <samuel.holland@sifive.com>
+> > > > >     riscv: Save/restore envcfg CSR during CPU suspend
+> > > > >
+> > > > > Samuel Holland <samuel.holland@sifive.com>
+> > > > >     riscv: Add a custom ISA extension for the [ms]envcfg CSR
+> > > >
+> > > > I left a comment in response to the off-list email about this patch,
+> > > > I don't think it's gonna work as the number this custom extension h=
+as
+> > > > been given exceeds the max in 6.7/
+> > > > >
+> > > > > Samuel Holland <samuel.holland@sifive.com>
+> > > > >     riscv: Fix enabling cbo.zero when running in M-mode
+> > >
+> > > Works fine on my Arch Linux desktop with model name    : AMD Ryzen 5
+> > > 5600 6-Core Processor
+> > > after the Arch Linux manual intervention for new mkinitcpio settings
+> > > and version in Arch
+> > >
+> > > Tested by: Luna Jernberg <droidbittin@gmail.com>
+> >
+> > This problem is riscv only, your x86 machine should not be affected
+> > by it.
+>=20
+> Ah alright then i know, did feel like compiling the latest test kernel
+> anyways, but thanks for the heads up
 
-On Tue, Mar 5, 2024 at 6:37=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.21 release.
-> There are 143 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.21-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+Ah, I understand now. You meant to reply saying that you had tested
+6.7.9-rc2 but you replied to me instead of Greg's original posting which
+confused me into thinking you tried to test these specific patches.
 
-6.6.21-rc1 tested.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+--UN1dzwzL0P7pYwKx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+-----BEGIN PGP SIGNATURE-----
 
-[    0.000000] Linux version 6.6.21-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue Mar  5 17:15:13 JST 2024
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZebmvQAKCRB4tDGHoIJi
+0jhIAQClM9yQavCbDkoYin11QTej1ArzrXhWBjMeuKYGikpd5AD/dDwnEqxVMLDR
+d3O4OEYxS1hBkrGB+U39kaBzeuzPzg0=
+=QlJ9
+-----END PGP SIGNATURE-----
 
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+--UN1dzwzL0P7pYwKx--
 
