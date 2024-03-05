@@ -1,155 +1,137 @@
-Return-Path: <stable+bounces-26711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1E1871512
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 06:02:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C6B87154E
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 06:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BFEF1C21179
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 05:02:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7F51F22DDF
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 05:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E100743ACF;
-	Tue,  5 Mar 2024 05:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70E14CB23;
+	Tue,  5 Mar 2024 05:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z6BsN+9n"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XpKSGbLW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467861803A
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 05:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE87AD5E
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 05:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709614956; cv=none; b=dXBuOmxMYOAmCZ8Rqkt9DqetSlp/nB0qQ1pV2D1t4JCUR8iaFUKnTXWtwsn8gcR31kcGCP+f0FVhWpWhCJ8iLJG0iv88/+TomyWAZVKnwlKS6n54qzrEzyriqfbuPumRvE2JZ5MEWB7k3lPQFCc46vlqcJy7JF2XbRxPMZPSHb8=
+	t=1709616873; cv=none; b=GAautAX5EPW5it/fgQLENBo4eiTtu4ZZNnZhEYBB2b1FgoqIWyjcKROJGum0q8iz0UgHF3WZJaTG1G2PmAM3xpphRvhuEDqo7BJPQ+pisr/Vpmzb/gLunBk+HLSQqQB0WEoMcpNJ4PmoC9ZwjqEf41iUiYbDv3xS0spmXN/aku4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709614956; c=relaxed/simple;
-	bh=VkODjK6Xic2+Xa5zG9OS84/4AFeMvFq9BuACnV3YWrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfkDlOVpv/2744NOK+LsTQZW91eZyaXrWg0kXhIPvHOUAQ7Q/p6QkmYMFgpcO5KT2MEx0D/NyfWXBmXhdYb5DKm0wzvhiFKkMZQYECbbMFyoUKSA/9E8qr3Ja4DsGlUpdEiARE5FP88BhE/f4FtzjH5NvXCO6Us7B9mhmU61kTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z6BsN+9n; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709614955; x=1741150955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VkODjK6Xic2+Xa5zG9OS84/4AFeMvFq9BuACnV3YWrI=;
-  b=Z6BsN+9nSJdqLlN6GrP61rE2fKUGOGMAYWH8Av0fsGlJ9P/8Y2NJHdWg
-   uCyZWxppCFP+uMyaNztIaPtwrXnYuhYoNz9FJ+OCaOzbYpQVUYgvvjM8b
-   /egmYLHJwRP/gxn3zNU8c0ujP0a7KRemfeodl9w81K+V/ydq5wjcwCOi6
-   qiqhpGo/OCC93EDXGRUjWH31MTbUzMvNOWLxdJVuRArSyV557EFk+r8d4
-   V32nSfdKM//hiBgR/HkP4NDePW2965hx7ElzbUMGdZlydsPmbuIZ1GPBF
-   riwCAL0E4bA9tk9aZ+MwNe+6qu3cnVoFxoppIscc1quVQcMLPZU2bKTEd
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4726940"
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="4726940"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 21:02:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
-   d="scan'208";a="9088210"
-Received: from egolubev-mobl.amr.corp.intel.com (HELO desk) ([10.212.137.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 21:02:34 -0800
-Date: Mon, 4 Mar 2024 21:02:33 -0800
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15.y 7/7] KVM/VMX: Move VERW closer to VMentry for MDS
- mitigation
-Message-ID: <20240304-delay-verw-backport-5-15-y-v1-7-fd02afc00fec@linux.intel.com>
-X-Mailer: b4 0.12.3
-References: <20240304-delay-verw-backport-5-15-y-v1-0-fd02afc00fec@linux.intel.com>
+	s=arc-20240116; t=1709616873; c=relaxed/simple;
+	bh=BWyP3ZiJl//c4sCDB62Ke5dXVqc2HOc/4/gYCNh4cxk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XXEfaOee9hsXBBd//ypJEKEmZ4JHVX2/EalaDOW4i8JJakSCzQSt3cffM8UqNG5/LeZOKTACsSNS/AvW/GCOPOo8YGwXvap96zqLQsKNSCqVIwb5iJNp6BJ3KbEkKQBWrf0cOQvuBPw2rhCwz1O3z+imNwS6mPz+vTj3KV6VZXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XpKSGbLW; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-7d5cbc4a585so2136599241.3
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 21:34:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709616870; x=1710221670; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eiQO/RxAuC9qRBH2upguRHveqR66bc4QXGr9EN8Ghi0=;
+        b=XpKSGbLW0GSpVnTEZ3PoqrdXv1IwtF9txYy+tCGbjnpbao6EEVWD4oubTGVAU0WPrV
+         0TjlsO/XpoobMEh36tV+CxxIUUBhM28aSPg6mNsIlC75DpoInRW/lf50V+hlT01m+dOq
+         RmjslpECoavTvc/XFTSCl+g45/Hx1vHriBFvCXtJmw+TIu4G/CLEt/OtrbdVAlces/Ah
+         BfoCcvvI/AsUZsOuTod3phjDqwqR0P6AqKFbJXh8L1bu0/OGmdvp19r1ik4fk4NK0gqk
+         BqXAw4UwGvL7Hh5hhfyTx6Pl+NPBT31OyVuMitM3lO4xCKmoxCZcRIQnSoeNCtEVQNhB
+         +yoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709616870; x=1710221670;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eiQO/RxAuC9qRBH2upguRHveqR66bc4QXGr9EN8Ghi0=;
+        b=mePQA0E8fAWE9a6hSvIOTXQOSbwDfCJFC/N8zu7BkK4qMrnmMPgZqs29FtRHC/rzmD
+         I+gYfGl/4VGVKXNJ5M6ykwctgozxv+0cHtGyzk9XKj8v9agUjSaRV5FFag0x0K3/YmtY
+         swndIAzdT9ujNG5SKacrDnN7XB6J82nnq1Rl2WSx4xEcMBlKVqMCXludET66XbzEdVA/
+         07eBIWJzAvHmIXDnQ7+a1GN5RxkYZhhoAxqJrAMNlbfdZQqwElSrEPflkGsj6H4O5M7Z
+         AyRbMtmt2VX+l5KgBSNqtCMUhyZONt5e9V6P670/uBvNY/69VjE0eDFUPWLkcYwPGhgU
+         FUxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVu+kNS+x1wqr4R0/qx58kc6I2BzuhYPW91v/z0Yfwj3obziv0il+gJoczzAvnLzXD952kVvfCbtk9muqfiQXebUz0aMIo/
+X-Gm-Message-State: AOJu0Yy+LDP0uiUhWuA0cDFRw8ptHnunAribuT/TA7rBAo6jxMcODSkT
+	pPof3/BrH9OqO/c1OWE82gZVWIuBLEtucHPrNKWu7MHl/wyJHp4DYOHldyht8xs7UR03UmMCOnH
+	erQmIZPwBGbm5TPaQwOFaOCf5NtbAibDV2pNvdA==
+X-Google-Smtp-Source: AGHT+IG4hbbCymssTEntZQDnPHryRIK17OJT6rKJrg61BKfg6ZtC5P1oebB0sMSPA7+WGr6xZEvXtaLOYgIPG0NubuE=
+X-Received: by 2002:a05:6102:cd4:b0:470:5d0a:6b29 with SMTP id
+ g20-20020a0561020cd400b004705d0a6b29mr951020vst.5.1709616870285; Mon, 04 Mar
+ 2024 21:34:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240304-delay-verw-backport-5-15-y-v1-0-fd02afc00fec@linux.intel.com>
+References: <20240301143731.3494455-1-sumit.garg@linaro.org>
+ <CAFA6WYOdyPG8xNCwchSzGW+KiaXZJ8LTYuKpyEbhV=tdYz=gUg@mail.gmail.com> <f539dd73-96bd-41e7-8227-fbf1ffba068b@app.fastmail.com>
+In-Reply-To: <f539dd73-96bd-41e7-8227-fbf1ffba068b@app.fastmail.com>
+From: Sumit Garg <sumit.garg@linaro.org>
+Date: Tue, 5 Mar 2024 11:04:19 +0530
+Message-ID: <CAFA6WYORMkAmoSqxA3NSfTgfdebnVt1VjJp7i23yt8L8OquWGg@mail.gmail.com>
+Subject: Re: [PATCH] tee: optee: Fix kernel panic caused by incorrect error handling
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Jens Wiklander <jens.wiklander@linaro.org>, op-tee@lists.trustedfirmware.org, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, jerome.forissier@linaro.org, 
+	linux-kernel@vger.kernel.org, mikko.rapeli@linaro.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-commit 43fb862de8f628c5db5e96831c915b9aebf62d33 upstream.
+On Mon, 4 Mar 2024 at 22:35, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Mon, Mar 4, 2024, at 06:45, Sumit Garg wrote:
+> > + Arnd
+> >
+> > On Fri, 1 Mar 2024 at 20:07, Sumit Garg <sumit.garg@linaro.org> wrote:
+> >>
+> >> The error path while failing to register devices on the TEE bus has a
+> >> bug leading to kernel panic as follows:
+> >>
+> >> [   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+> >> [   15.406913] Mem abort info:
+> >> [   15.409722]   ESR = 0x0000000096000005
+> >> [   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+> >> [   15.418814]   SET = 0, FnV = 0
+> >> [   15.421878]   EA = 0, S1PTW = 0
+> >> [   15.425031]   FSC = 0x05: level 1 translation fault
+> >> [   15.429922] Data abort info:
+> >> [   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+> >> [   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> >> [   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> >> [   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+> >> [   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+> >> [   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+> >>
+> >> Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+> >> lead to the introduction of this bug. So fix it appropriately.
+> >>
+> >> Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+> >> Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> >> ---
+> >>  drivers/tee/optee/device.c | 3 ++-
+> >>  1 file changed, 2 insertions(+), 1 deletion(-)
+> >>
+> >
+> > Jens, Arnd,
+> >
+> > Is there any chance for this fix to make it into v6.8 release?
+>
+> I merged the pull request into my arm/fixes branch now, will
+> send the branch on once it passes CI.
 
-During VMentry VERW is executed to mitigate MDS. After VERW, any memory
-access like register push onto stack may put host data in MDS affected
-CPU buffers. A guest can then use MDS to sample host data.
+Thanks.
 
-Although likelihood of secrets surviving in registers at current VERW
-callsite is less, but it can't be ruled out. Harden the MDS mitigation
-by moving the VERW mitigation late in VMentry path.
+-Sumit
 
-Note that VERW for MMIO Stale Data mitigation is unchanged because of
-the complexity of per-guest conditional VERW which is not easy to handle
-that late in asm with no GPRs available. If the CPU is also affected by
-MDS, VERW is unconditionally executed late in asm regardless of guest
-having MMIO access.
-
-  [ pawan: conflict resolved in backport ]
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
----
- arch/x86/kvm/vmx/vmenter.S |  3 +++
- arch/x86/kvm/vmx/vmx.c     | 12 ++++++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index e4a04ecbaec7..7a4b999d5701 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -99,6 +99,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Load guest RAX.  This kills the @regs pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
- 
-+	/* Clobbers EFLAGS.ZF */
-+	CLEAR_CPU_BUFFERS
-+
- 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
- 	jnc .Lvmlaunch
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2d6edf8cc59d..bedbd077e50e 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -398,7 +398,8 @@ static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
- 
- static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
- {
--	vmx->disable_fb_clear = vmx_fb_clear_ctrl_available;
-+	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
-+		vmx_fb_clear_ctrl_available;
- 
- 	/*
- 	 * If guest will not execute VERW, there is no need to set FB_CLEAR_DIS
-@@ -6747,11 +6748,14 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- {
- 	kvm_guest_enter_irqoff();
- 
--	/* L1D Flush includes CPU buffer clear to mitigate MDS */
-+	/*
-+	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
-+	 * mitigation for MDS is done late in VMentry and is still
-+	 * executed in spite of L1D Flush. This is because an extra VERW
-+	 * should not matter much after the big hammer L1D Flush.
-+	 */
- 	if (static_branch_unlikely(&vmx_l1d_should_flush))
- 		vmx_l1d_flush(vcpu);
--	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
--		mds_clear_cpu_buffers();
- 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
- 		 kvm_arch_has_assigned_device(vcpu->kvm))
- 		mds_clear_cpu_buffers();
-
--- 
-2.34.1
-
-
+>
+>      Arnd
 
