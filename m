@@ -1,219 +1,165 @@
-Return-Path: <stable+bounces-26861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CE78729BA
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:52:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34E08729C0
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 22:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 693F41C21C9C
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:52:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D2828BA4A
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19912BE98;
-	Tue,  5 Mar 2024 21:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE3A134BD;
+	Tue,  5 Mar 2024 21:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M4OpxBmI"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kBCfIsc1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PGmqYldx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from wfout6-smtp.messagingengine.com (wfout6-smtp.messagingengine.com [64.147.123.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D76D86AC0
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 21:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709675547; cv=fail; b=tiL9Feg4DneuDsQEIXgBSYk5qgnKfGjPWBR5JqctRW9L90Ob3iVamQYpypnUAD8H888KyQWt9jjyZC3OBLGIItGlFf7XzMCF34KSfx08c6mmyenFS2/jNPVjwpoeKf+dVKdKjFB7FAOOdMDAxLBTBcr2X+/8eLjAjh/uLiv0pN4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709675547; c=relaxed/simple;
-	bh=ati3puPWPcSzePZYGKLK60wTrp4P5VtzSGIG6cU2ezU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LFTrNqSbfuWPPsPb/M2G3xzNqmsNzKK5Qfns8Bgf4jGrFNNLlRoDWY8zXoRP0nNqzf8FppN6GGw+QMRZ10i8fqpSqrXE0sXeRQCXWsfZmYEr5oSPyfOZiB4/6cIjPyB16r7MX7ZAVJDRLIcEpKnCCQaF0qsgXIchI/HdXXp2D5E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M4OpxBmI; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709675546; x=1741211546;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ati3puPWPcSzePZYGKLK60wTrp4P5VtzSGIG6cU2ezU=;
-  b=M4OpxBmIA0bNkrQ5P6hpI1umdY/ibwkyO0DWXVAumyVPk60nQ8w6EI03
-   dN8hzFCSV/iZ0sptG6gQqZZqVPPJPKIE9Qw8YeNaaOdqzZD9lyXKca3gD
-   APQBBMr6DVfiKCxvjPThVMnZuCUhqxFywFIKdlH9JnJqEHWjxeMDvVVa4
-   muB1KSic327mk6QNa8/pWsb/1L94+tyq3XpwbRrBCHGpmRLRcojB0pJgm
-   nGMbhJL4lxrzR1P8ppow779zpom2KbAEJu0O81XhjrUd85PPfCrBhhnDP
-   FNLB/XqyqouqI5LFQYHuOf1eo+Cho+UsaLWZAv5/U11p1WT83bKbPWI6B
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="15662277"
-X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
-   d="scan'208";a="15662277"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 13:52:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,206,1705392000"; 
-   d="scan'208";a="14219644"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Mar 2024 13:52:24 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 5 Mar 2024 13:52:23 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 5 Mar 2024 13:52:23 -0800
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 5 Mar 2024 13:52:22 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U6WWEoXwPXhWYA1OZh/MIdtHqV+vCYcaCvKc/4ipR3n6bZll/9qaxPPSPyklQMo/1LE7GpZ0JZJeuARWN4Amz7EdeF2utoceuwnXwwF+E3hwaAAv3A6S0eCDFhKaz5an3eNlMh1nckybtsPrmin1qBvRTq459e+glfGkMrs4q1Xyj4n2SWu87PMIM48FOvuhoziZctiCqyMLCcdGB6ii18w0bynseiTvzhjXzpEFMOpYq/GAEPUCVP4LNkuTxVHxbi8BeWcTv9pSTHYx6rvgfzN70INDDg2zzUrJSPV8TS8Z1HCiy9fLZBsOuxiZ7sUAbalm6FXQYE/YpW3EEJtJfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yw/vBqDpnSnXuf0Jz2Q4MHybP6ftYmuA5RqCL8Scm6g=;
- b=hp1zBLnPYSl6ArUMTzbGn+yqtsH+g1stw4dHeCREOn9xFscDIncskWj7/uOcN+Guu0OHDwRCNPSVnT3YtnodFp7nlvQjc5WIphaR95IyaBuYu4O0rD4hSgejlAzcrUw+Cf/vNh37T+qCWOYDXep/FtuAjrdT6XLF6sRY6gD27Dry+5AOm7W9tW3qipc+bhCfuqI0Ilo+kgbSPP6uxODJ0Nk7HOf1BTEbVlfqoIn75mg/I8DSf1IzKS4mUhsNIWXaswtelODSeMzEZ4BEtEyUb5Dqp8+FL3csT/CoJTpVnmmpVxvGx8m4XcyL5c99WE26y3J9Q2sNCv1XA2bAjKn23Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by DS0PR11MB8072.namprd11.prod.outlook.com (2603:10b6:8:12f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.23; Tue, 5 Mar
- 2024 21:52:21 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493%6]) with mapi id 15.20.7362.019; Tue, 5 Mar 2024
- 21:52:21 +0000
-Date: Tue, 5 Mar 2024 13:52:18 -0800
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, <stable@vger.kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH v3 2/4] drm/i915/gt: Do not exposed fused off engines.
-Message-ID: <20240305215218.GY718896@mdroper-desk1.amr.corp.intel.com>
-References: <20240229232859.70058-1-andi.shyti@linux.intel.com>
- <20240229232859.70058-3-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240229232859.70058-3-andi.shyti@linux.intel.com>
-X-ClientProxiedBy: BYAPR11CA0051.namprd11.prod.outlook.com
- (2603:10b6:a03:80::28) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D08712C809;
+	Tue,  5 Mar 2024 21:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.149
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709675598; cv=none; b=dTwOkGu8e+PmvSpBxEmCjzBDEwHgIxFQdVgvaxnd6pQ1Cinl+LkLzA2An76MEMxgHx6wWTy/eXy8lZiuTyvZnCmAUYRn8AQL1LPO6wIKOgQkEferCEsI9NJSCo5BsZ9rDJy0RN1idKmmPA9Rzt7zAuieQTPb/lfoIQZB7uv3bfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709675598; c=relaxed/simple;
+	bh=w69YwNhhJUWrKvltEutpZXr1WsKvyjIHwp0BdHZURa4=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=nhe/t/OOo8DDuhI2nB1Q6FgvUB0agcol8yXjr9d9GTnGSDrV2TCWjM+qPKhfKRQJS05gbmfbCSOjn361HKYv5thKzZJSMveRyGN7twnXysdlc97x/S0aOZQM+rt3Q+2Vl0+j7i++RafkCvNF0Q/i7ApikWZG/qng6HmahI9JXPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kBCfIsc1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PGmqYldx; arc=none smtp.client-ip=64.147.123.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id C3C751C00087;
+	Tue,  5 Mar 2024 16:53:15 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Tue, 05 Mar 2024 16:53:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1709675595;
+	 x=1709761995; bh=QNEfkKLf+YoFMOvLOLaHBOHhoGsBFLnvQ4LA5YChDe8=; b=
+	kBCfIsc13o0inkSJN6s2rCCZXlGtZUy85CUt4VWoUMzRnosFKOqxHm4IaDnxJToM
+	+io8+RDJVMkqJLa0KZqiPoOeZ7d6Lm1yz9S777ouuGXBmiUkkVuV6Id+g2/FtdNq
+	b0/ro4rgslsftvSoPwLsoEoOt6ijY2ja4ts9Ta3F4XtR1ONVx85xl4Zj9niW5MLd
+	Dn6eSAoi3ooaI5X4Fgmj0dWwYUOr6lOgBEohlVGZ8DwK24YaJDpwVH9LZkRJrx8v
+	GR4mRa9gnFL32RZGP0GorrSyaJu64TXpa+y517eFq7JmAPI3oEjJKRRnEVMI64cP
+	rPxXmjCMQ5pCUDWhoNZ/lw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1709675595; x=
+	1709761995; bh=QNEfkKLf+YoFMOvLOLaHBOHhoGsBFLnvQ4LA5YChDe8=; b=P
+	GmqYldxrcCLZebRG8Vo3qC6IDi4t/zGYIEFtqJEMvDNnIC9VBkBGGTEFkyu7dHOL
+	vMkiJpIp0iBIEXL5aIU0RHsnepdPMk6RJ8e8kjeNvhhAQ1PcVoJsayCpf9iEKeAj
+	8jJYR99p6QF99qL8JqAIfKGI5VCqPGHgJL71i6IDbiWsAkpJSBdYVVyo1fULia/j
+	m7Fd4nO+MWVHxptn4/5oB1J0cMoiEiofYfUrb1Tn+XpdGAHt7UwiDp9Q1Cro7pxz
+	PjBNZoDWR7O6xemHkW6J2TJF1JexdH8O6jUmmsrFsow6QhvG9ezHeOodq+KWPaoM
+	voEVjTvKDwzL4iyYoatTQ==
+X-ME-Sender: <xms:SpTnZdv_DZhYWD2X8sI750_zGOOHPFz1jvfwKfL850W6xedWTO2P6w>
+    <xme:SpTnZWfOrmFSlUCfVRkJOZNgcVWMC9q5j929x0oAymJkLlGbQEfzL-3EBYB8hqN1O
+    2gmJi9QdhwtPU1dZWY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdduhedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:SpTnZQzEMjXCFglOKvTUq5O22x49kx-sveEWFm8IKxqCwLmQh8Efhg>
+    <xmx:SpTnZUOts6r1M9eM2F0eb_gKBH8ni69laCfZKpSroFnzcADLT8vU2A>
+    <xmx:SpTnZd-7MiyVNAK78opOGnMi-ur4reLRre-blpeEBJJ5yPBisljBHw>
+    <xmx:S5TnZe0DzO9qODO5JCHeijulFefAapAWDeMSF-u9Z_qhrG9K13bGNXXa1HA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 6AD1BB6008F; Tue,  5 Mar 2024 16:53:14 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-208-g3f1d79aedb-fm-20240301.002-g3f1d79ae
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|DS0PR11MB8072:EE_
-X-MS-Office365-Filtering-Correlation-Id: 452be654-42ea-41f4-3554-08dc3d5e88e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WgB8nu/n/HnwLDRmQV/VNVOm/LXDzd8fAald/IJDiDqvlns9edox9AAFIE59PLLW6IRqhkZH1ZOJynfc0hmyM2/knaW1CLXaA67tLSsZYrEc/MnXTWelgX88mSQxyUz9E5dk8Pk43ZtOxo63dMbAkHmJx4MTtMFOSjWPHpgBejpS8fcyzE9a2l/1Y+TYl1/Vhs1y/HRbz3AqCdUQmLIg6PfHsgChmzcNk0wO4t37/dM00qAU1rzHYBOQ88VXDtEM9LhiYV+LzQ4UHJnQcgLXJ+FVjg+SKOpag1qoQZwXcW1BfKf/NKktsRYtlYrV9GwLLMG5IYBPznW4/XB+Cl0lSxi3/vl0+bi1qrUMF55GnoqpTXFhqFOptDpCywDJI13Rvu7I/Ygwyhl57d0/JHLAv8mBPPNtLCn6T6aIwnrheoh6N7TXX2qZ03ZpFbx5N08G9nywASpYRS+rmF6bajc46F5YWFEHKPpZfvHOeUXPHLpYQFqqLFHpqtaDJwmM18YyAroKRJKLJ1G1UWQB01jTLzVjxVa9QgRpVBnIAM5JkK/RfoZJeBQkMRDByFiB29lGLwHP7tth05HY8Ge3JWQLJoCOn5RVS94r9IZeI9f/p8wMjvvJAtVCsiCi+A8xzVH6yLLGqQk1QV7k2owE/9gdH8IW2uO3fOK/Yqo4NKB81uM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wy+BS2C/FjsKsqLEQz815qX80oc+OoBFa3b3MDUjpyXZYq3mjapbJxJxvCRU?=
- =?us-ascii?Q?fnAq3W8A5wpGggu0FnDg3wMX5pGAZR1N2xyUWVI/+dKMWpYIppnnrgdbgYYr?=
- =?us-ascii?Q?vbZB02pICW5RVOe1UthsWtoQjsrvNBoumVTqCOQ88jT13kS3MEHEoxk1/WdN?=
- =?us-ascii?Q?+O9w7y/vnZaaUghG2wzHhfofB1k03//LerwW3GlL6bjkRXOS1H34vJJyFOrk?=
- =?us-ascii?Q?Hk7rpedIgrVHERAoGoM6ryOy4I0BXV2lx/LiSjSQcUnVBw/EN3hPLCe7I1UU?=
- =?us-ascii?Q?EmmR3C/20xScLJXmHohZl3ifcoVSY3aY8Qy0UJejIpw9dt+krO8deRf8jHtC?=
- =?us-ascii?Q?DCvQ/ujpTMEB+ehFRWQ6NxlvMkEqGId70bXTe6bxSTVxzz1gD6jXHKEaA87d?=
- =?us-ascii?Q?gLqLpQda4TOSYT/rgdhH5/YaOYdYnLCBd4zaOAZ2Pvj1GsvznkPQnEtZQ5hG?=
- =?us-ascii?Q?iNCJ6EGGRq7z92ZwLyhc0cT83AJgDDBk67D5hRjcK0AqSaObtRpwq01amf0q?=
- =?us-ascii?Q?BZ3WqllnbFy674OtMXlT6oZabo2CtiqULe7FlyEaMmVp4HaPEDcVP7EOb8hK?=
- =?us-ascii?Q?uKa15WbRHRLK3qz77hrX/snvda2Z1ZqLnPalTpUVFcsTnDCLX30q4KpwpbHR?=
- =?us-ascii?Q?wEzhC2l4VhD2Knk5UkaXeIgLJrfdBDp11VPPPc1iifqf1RKMEXKqtFe9Lnj2?=
- =?us-ascii?Q?TzRT7qZ7nZsbhD9dMRzQonP6znX1sbfrcizkKZgW5HIxLir0Nc89VIzPZA6D?=
- =?us-ascii?Q?C47a3vkwg3GQ3KNLkeOZSIZWTQg8tYLOP02gGKIHq+MbdvAuAvgdCdy4Di2U?=
- =?us-ascii?Q?T7V8x9qBur5rw5l1xFd/Mmw/MKPej8Qv+s/ZKptMNmkMt+7e3AyM+zLRQYVu?=
- =?us-ascii?Q?sDkNDHjBSlH2lJtSCJ0rlZPl75ybZZ3nl612J7RLlQbRVHqPidfDPSz8FfHW?=
- =?us-ascii?Q?W3HXtWGqee+t3LziBDDXZ27MMd9VlM2Jc4uQ4fjw7xNu1JPrW7r7XiD5CT9i?=
- =?us-ascii?Q?4bG2pqkGZ6ZFjc2Q5h1TVxsMmV7ZvVR6paAr1vOfZwi/yGgO8LOuY2wC65BT?=
- =?us-ascii?Q?N13NQST5cRBQlKCGw1qkyMqCaQ6tqGaoBNtMsTLu6ylbLbGyC1MkEt/2u31c?=
- =?us-ascii?Q?bQtka1gMxfF7Whuwlx/B+KmU5xd5t/x+IOjFuhjn8mITcfc4M5M4PJHRAHht?=
- =?us-ascii?Q?G7y+K0F7DL5vZu4fmE7OB0GBjwkZgdJID6KbNAlCgi6apr3jWsdFyYD9xtvC?=
- =?us-ascii?Q?60tU/anSB0A9qvSc/t2XeGmlk8epUAgL6n9kTkplHNsVeassRYoJ8kLZ0521?=
- =?us-ascii?Q?QdulCdJCg6v8X3cS1wtgIRyXrT62hLwiBCuSaKbx1ulGpRtf12VNx6PMcoXd?=
- =?us-ascii?Q?ofcC+4CcA0I1P1LBDvCzGWxEDac5ycvxcOO6r+Pkr5CLGMUIsWTDwld4yXN6?=
- =?us-ascii?Q?SBmRzoXTi2nqSzQqYhbGssB4HnIeT6HGqLoBgslAVmbdo1MjdnkpAv7/LJWg?=
- =?us-ascii?Q?kasCaVu2AhjRb7hnXCVQdaAqiMwnmM1j/OeNz9ZqecxNzR29KKDWjt0NiO/7?=
- =?us-ascii?Q?xFx9V6HqQ6dbGseLSw4qBjg7px5ehVLZ+uh/hm6CKTyBKSgn9M5/aXzfUXf/?=
- =?us-ascii?Q?zQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 452be654-42ea-41f4-3554-08dc3d5e88e3
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 21:52:21.3729
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IrNMNbBTedrfSB9NY+onmiyh38wOTgxwSpUY2Uze1FJROxPnU/ytgbMmqcJ9ULsLAXOtGPIEQDUzXAfP2cFHUuxUQRHeW3L1NHbmJdv2BEA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8072
-X-OriginatorOrg: intel.com
+Message-Id: <5b4fa755-571e-4a99-8614-ca0df1db1563@app.fastmail.com>
+In-Reply-To: <20240305193015.GA1173426@dev-arch.thelio-3990X>
+References: 
+ <20240305-disable-extra-clang-enum-warnings-v1-1-6a93ef3d35ff@kernel.org>
+ <57abd8e9-3177-4260-b423-38d5cdcda44e@app.fastmail.com>
+ <CAKwvOd=V_Qtd2pK8AKc6bv=zMPnAaCf08=QO74ckqH26A3sefA@mail.gmail.com>
+ <20240305193015.GA1173426@dev-arch.thelio-3990X>
+Date: Tue, 05 Mar 2024 22:52:54 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <ndesaulniers@google.com>
+Cc: "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nicolas Schier" <nicolas@fjasle.eu>, "Bill Wendling" <morbo@google.com>,
+ "Justin Stitt" <justinstitt@google.com>,
+ "Yonghong Song" <yonghong.song@linux.dev>, linux-kbuild@vger.kernel.org,
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: Disable two Clang specific enumeration warnings
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 01, 2024 at 12:28:57AM +0100, Andi Shyti wrote:
-> Some of the CCS engines are disabled. They should not be listed
-> in the uabi_engine list, that is the list of engines that the
-> user can see.
+On Tue, Mar 5, 2024, at 20:30, Nathan Chancellor wrote:
+> On Tue, Mar 05, 2024 at 10:52:16AM -0800, Nick Desaulniers wrote:
+>> On Tue, Mar 5, 2024 at 10:50=E2=80=AFAM Arnd Bergmann <arnd@arndb.de>=
+ wrote:
+>> >
+>> > On Tue, Mar 5, 2024, at 18:42, Nathan Chancellor wrote:
+>> > >
+>> > > As the warnings do not appear to have a high signal to noise rati=
+o and
+>> > > the source level silencing options are not sustainable, disable t=
+he
+>> > > warnings unconditionally, as they will be enabled with -Wenum-con=
+version
+>> > > and are supported in all versions of clang that can build the ker=
+nel.
+>> >
+>> > I took a look at a sample of warnings in an allmodconfig build
+>> > and found a number that need attention. I would much prefer to
+>> > leave these turned on at the W=3D1 level and only disable them
+>> > at the default warning level.
+>>=20
+>> Sounds like these new diagnostics are very noisy. 0day bot sends
+>> people reports at W=3D1. Perhaps W=3D2?
 
-Fused off engines already aren't visible to userspace (or to the kernel
-for that matter).  For CCS engines engine_mask_apply_compute_fuses()
-removes the fused off engines from the runtime engine mask; other engine
-types are handled in similar functions.  Any engine that doesn't appear
-in the filtered down engine_mask won't even have a 'struct
-intel_engine_cs' allocated for it.
+It feels like this is not a great reason for moving it to W=3D2
+instead of W=3D1, but W=3D2 is still better than always disabling
+it I think.
 
+Specifically, the 0day bot warns for newly added W=3D1 warnings
+but not for preexisting ones, and I think there are other warnings
+at the W=3D1 level that are similarly noisy to this one.
 
-Matt
+> A number of subsystems test with W=3D1 as well and while opting into W=
+=3D1
+> means that you are potentially asking for new warnings across newer
+> compiler releases, a warning with this number of instances is going to
+> cause a lot of issues (I think of netdev for example).
 
-> 
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Requires: 4e4f77d74878 ("drm/i915/gt: Refactor uabi engine class/instance list creation")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> ---
->  drivers/gpu/drm/i915/gt/intel_engine_user.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> index cf8f24ad88f6..ec5bcd1c1ec4 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> @@ -244,6 +244,18 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
->  		if (uabi_class > I915_LAST_UABI_ENGINE_CLASS)
->  			continue;
->  
-> +		/*
-> +		 * If the CCS engine is fused off, the corresponding bit
-> +		 * in the engine mask is disabled. Do not expose it
-> +		 * to the user.
-> +		 *
-> +		 * By default at least one engine is enabled (check
-> +		 * the engine_mask_apply_compute_fuses() function.
-> +		 */
-> +		if (!(engine->gt->info.engine_mask &
-> +		      BIT(_CCS(engine->uabi_instance))))
-> +			continue;
-> +
->  		GEM_BUG_ON(uabi_class >=
->  			   ARRAY_SIZE(i915->engine_uabi_class_count));
->  		i915->engine_uabi_class_count[uabi_class]++;
-> -- 
-> 2.43.0
-> 
+I only see a handful of warnings in net (devlink, bpf) and
+drivers/net (ethernet/{3com,amd8111e,funeth,hns,idpf,jme,mlx4} and
+wireless/{iwlwifi,mt76,rtw88,rtw89}).=20
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+These are also some of the ones that I think need a closer look.
+
+> Fundamentally, I do not really care which avenue we take (either this
+> change or off by default, on at W=3D1), I am happy to do whatever.
+> Unfortunately, CONFIG_WERROR makes these decisions much more urgent
+> because it is either disable it and have other warnings creep in among=
+st
+> the sprawl of these warnings or leave it on and miss other errors for
+> the same reason.
+
+Agreed.
+
+       Arnd
 
