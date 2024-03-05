@@ -1,49 +1,60 @@
-Return-Path: <stable+bounces-26856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C009E8728ED
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:50:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C258728E1
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E37F51C220D5
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:50:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D52F28BB4A
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727B212AAF9;
-	Tue,  5 Mar 2024 20:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="SpJ/bbmP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E686A79953;
+	Tue,  5 Mar 2024 20:43:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0757014288
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 20:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7647E13FFC;
+	Tue,  5 Mar 2024 20:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709671811; cv=none; b=AzxyrfbXSJWbnKiUaYmpqFX7YOfDeJO/x4Yl1EVPnqp68tWsqHXpgqqT4WXINL6WoTjR3wFDs/cRyxEpJRSI1Csi0KVH7kC5Dfov7EJkVkoOctveaUU9aAQlxIYSrBeZlHCLaihTCWhMrGzTI6CTKUMUkCNntzbgnGgg27HXEMk=
+	t=1709671409; cv=none; b=FK52Hha9N23YBefjDx3HotWUJnPo8tF1Txy9xGz4KkWyuK3z/laLBg0XlIGsMEgNkPsgQZccMYsAOmEOcrO7gfPIyXMNV5IIQl3CNt5AFA0zxr9qpyTQT0pEXQmBAy3Q8oCWTDrwt0ZrTzd5d3aLxqjIag+PAB2NKmCOGgfZGsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709671811; c=relaxed/simple;
-	bh=Muf+dtXFvWFK7iHlpFzCIJQHJlbsazDd+7/zrEr7Aqg=;
+	s=arc-20240116; t=1709671409; c=relaxed/simple;
+	bh=5LhkyOL5DBfFrm/Q4kn3P/JyK8ZmVreOttEn5YGWp6o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BKYUtH817LM7+vSttWmpMScZ/+IWIwVq8v5pSrvTjc4wqo1RNklhyFA+rh31uHusLtadmDuF7OJOR/laL1gkEi6RKohZ0jeGel6HTdSHbPTP3BljZ9yNT7s+s+XWP6eL4ea4RdZH5/WWFkea8nVtByX1PVhADDkwkFvXpV8xB/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=SpJ/bbmP; arc=none smtp.client-ip=193.222.135.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 47573 invoked from network); 5 Mar 2024 21:43:24 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1709671404; bh=lUS4eg8EbVkEUU15C5O9PjggQA1VMvETM0YL1xa3hHY=;
-          h=Subject:To:Cc:From;
-          b=SpJ/bbmPzOIw8D1tS9IdKeVQtJJB7zrgahk7691Z13NfMstw3XEhjYrs1V+P/r3Dh
-           WVenc/Lh5xxwfAdPFhgkCQqc6cRozovd//SSSczan3qgGsXF8muQLwbucJMGLknhoP
-           1fm4/l3szVym/zUZohLZ+gPIE1RmPaCYlB/8spoM=
-Received: from aaev116.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.125.116])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 5 Mar 2024 21:43:24 +0100
-Message-ID: <28bbdaa8-e2d8-4f4d-b627-a6c46d9e3aa7@o2.pl>
-Date: Tue, 5 Mar 2024 21:43:22 +0100
+	 In-Reply-To:Content-Type; b=jGhNL1kxO8MSOFiwbCLKSyOrLeFbPD4v3wZh9oG8jVsWyxrVYIoxbi4XKVDwDEf4nfT1aqg/QVPuJsGONahP7ace0nmJ/JpDCPj7sPCV/rpMvBBdmiaJp4YRmyfm59rkFb4qmMx7HLpSPwl+obb/vyUsyHpMadOG6nNqyEM4oo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6e4d48a5823so4885606b3a.1;
+        Tue, 05 Mar 2024 12:43:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709671408; x=1710276208;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s4cUwSCUfrhnX7rFZCq2HWzc9MGRRD5c8S8wSmLmcuY=;
+        b=wkBAglwTO6eYB/kt331ahf5OlJkxxicDfFOHRk9g+Nc7ECi/5HdBuU5bkMAZ0LCFlf
+         8EVgzRvqCdf77YD7xwlK+CW17vPeKEGVet5gkB8PM8REGRiwnwP3wRaP4Ws0hLuiX4N8
+         F4rtjEODoD8ct+HDFrSV+ChpHyNcuUHXmcURucTRrfy+Pl7zvJz+C0bkZD5ELYa8FVR6
+         3ktnBUDWpSqoAMKVrK9Urue8rSe4tx9LqVWYXYLmcXAPsf0URQZD8usYRkXi/r4KRb99
+         c5za4PtOpej83pFO1/aS0j+qyBUIyRb4iSso+3Vk0csW7NyV2B8+85KUJG8W/iFYsLl3
+         eoSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKZhlXoDGu1yYigtS7c1SBxTMZbS9Zelv3IWVqyy52CAEH9QQkiDqeDmkILB6IY4Fa6zzBVBtoOr8Hzc1ytdb7DR2/FFf71AaXODm8cHY8Xj4CE5Q/eX1ZprO0D1+x08KKRb6e9Q==
+X-Gm-Message-State: AOJu0YzZHofxAOsmrEQYxwkbLflpwzj/hNqaTL1rhEMCCxmD5GUxybeD
+	A2ss2/16Rzu+vUGzKyc+aG92WjdJRGfRsIdK3u+niYaexFbWAWL8
+X-Google-Smtp-Source: AGHT+IEBYm9zdJraXaE2N6WQpGT8/+FhFknywcpDBj8R9qAJ6nWOP3rRf9cbjLQovMjvEfndTm6t4g==
+X-Received: by 2002:a05:6a21:6da4:b0:1a1:4d8b:6f2c with SMTP id wl36-20020a056a216da400b001a14d8b6f2cmr3007251pzb.2.1709671407713;
+        Tue, 05 Mar 2024 12:43:27 -0800 (PST)
+Received: from ?IPV6:2620:0:1000:8411:3e11:2c1a:c1ee:7fe1? ([2620:0:1000:8411:3e11:2c1a:c1ee:7fe1])
+        by smtp.gmail.com with ESMTPSA id lo12-20020a056a003d0c00b006e627d0e97bsm3429769pfb.181.2024.03.05.12.43.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Mar 2024 12:43:27 -0800 (PST)
+Message-ID: <94dd9db1-6025-4cd0-93b7-40d55a60efc4@acm.org>
+Date: Tue, 5 Mar 2024 12:43:26 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,115 +62,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/215] 6.1.81-rc1 review
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240304211556.993132804@linuxfoundation.org>
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 9a9e4744036b554a7c483450a86dd5d8
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [sXME]                               
+Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
+ submitted via libaio
+Content-Language: en-US
+To: Jens Axboe <axboe@kernel.dk>, Eric Biggers <ebiggers@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
+ Sandeep Dhavale <dhavale@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
+References: <20240215204739.2677806-1-bvanassche@acm.org>
+ <20240215204739.2677806-2-bvanassche@acm.org>
+ <20240304191047.GB1195@sol.localdomain>
+ <90c96981-cd7a-4a4c-aade-7a5cfc3fd617@acm.org>
+ <b36536cd-c62b-4b86-aef7-fddd3eb282a1@kernel.dk>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <b36536cd-c62b-4b86-aef7-fddd3eb282a1@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-W dniu 4.03.2024 o 22:21, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.81 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.81-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-Hello,
+On 3/4/24 12:21, Jens Axboe wrote:
+> On 3/4/24 12:43 PM, Bart Van Assche wrote:
+>> As far as I know no Linux user space interface for submitting I/O
+>> supports cancellation of read or write requests other than the AIO
+>> io_cancel() system call.
+> 
+> Not true, see previous reply (on both points in this email). The kernel
+> in general does not support cancelation of regular file/storage IO that
+> has submitted. That includes aio. There are many reasons for this.
+> 
+> For anything but that, you can most certainly cancel inflight IO with
+> io_uring, be it to a socket, pipe, whatever.
+> 
+> The problem here isn't that only aio supports cancelations, it's that
+> the code to do so is a bad hack.
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+What I meant is that the AIO code is the only code I know of that
+supports cancelling I/O from user space after the I/O has been submitted
+to the driver that will process the I/O request (e.g. a USB driver). Is
+my understanding correct that io_uring cancellation involves setting the
+IO_WQ_WORK_CANCEL flag and also that that flag is ignored by
+io_wq_submit_work() after io_assign_file() has been called? The AIO code
+supports cancelling I/O after call_read_iter() or call_write_iter() has
+been called.
 
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in a write-mostly mode).
+Thanks,
 
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
+Bart.
 
-- GPU (Intel HD Graphics 620, with a Duke Nukem 3D game on Proton (Wine fork) and a Unigine benchmark)
-- WiFi (Realtek RTL8822BE),
-- Bluetooth (Realtek RTL8822BE),
-- PCI soundcard (Intel HD Audio),
-- USB soundcard (Logitech Pro X),
-    - on 6.1.80-rc1 (did not check other kernels) I had problems with microphone input after suspend-to-RAM, does not happen at the moment,
-- webcam,
-
-- filesystems tested very lightly:
-    - NFS,
-    - NTFS via FUSE
-    - exFAT
-    - vfat,
-
-Issues found:
-    - nothing new
-
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-
-Greetings,
-
-Mateusz
 
 
