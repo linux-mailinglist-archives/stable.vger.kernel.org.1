@@ -1,248 +1,144 @@
-Return-Path: <stable+bounces-26814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F5E872454
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:29:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10355872452
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 17:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017AAB2693C
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 419B31C2363B
 	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABA812D1E9;
-	Tue,  5 Mar 2024 16:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DA9128803;
+	Tue,  5 Mar 2024 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TKROE2CZ"
+	dkim=pass (2048-bit key) header.d=sent.com header.i=@sent.com header.b="IXJBrMF6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T9NjM0uB"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
+Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DAE128374
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 16:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709656004; cv=fail; b=gUgyleBbVYLAW7lJbTsktRfZrB2kaYizZ66H4yX3npj6FKQgtVud7fILWAg7d5fIDSVwvEVPJqZ/cUulxcUEF8vWLlFBzdmvPJOYiL1ibLxqgO+73ebcKOz3D6IiU+y05wlXAeANaiYcZsNC5YkUbgS19CreR6q5SNcWEZ3I4Cw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709656004; c=relaxed/simple;
-	bh=nf33AbGb94KEg7CtB7wlN9UibsrzsNsepY/Y8LzmXdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qObVfHCTm9eKcBrDjOeTh0U9TjmfcbWp9z8INCOwn6fZj79s3ZZISny6socAWe+V1MEsv8DR643lj8KrHFezuB9LLvcelosepcxQrY5YJbudli6t90U+9FtKbRVZ3+4kChPkMc5qThb3v8CL9fxbqR8Ce/zWKzAPigE7+mzg+eo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TKROE2CZ; arc=fail smtp.client-ip=40.107.237.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EmZjl9YELCkBytup4bQec/y9Zb+2ChuuasBVycsDFGNP7S+pGqPoeIFViP7JHsxaWHkfzzZKTdQO5OX1aMSra9Gp2wxFxgHG+FufII52/VoR+TyEzjZRZN1Q+X5Q8v31VWizxINha1U1Ksr6nEK82fjn0MGeSBah2JRoySAq+/QTd50t5p3bZt3fgRVkvMh1pHjqFd+ZMXL5KEeGjPO1CXslNLQ5wpRSIBYPA1ouFLUgXsovjxQje68CWm5FfpwW1ZuGaHTflDbRHDYMhRGnVaGXlL2E6Yt7Ldg+aDbwPzZYAO24cWrf6I6BHKI2JBvy2qtDbCASK8qdC83bvbhXJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/2raunQM8GbMBqVNikI0K/pJeh/wpu/uVybK63vdhyg=;
- b=e1oL4ScqRpD30/ndBo5xMYsMSXdp4qqQ7c0M+r0RGO/jD0i7HjJZPBctK0OVLNeHrxtAuchZf5xAbAVyh//q6UTU6sSL+JQy34tEgz7koYfvBsuPPJY+YTppFu+tKjPbAWzuU7GZs1qEJbQmSuRGA8HvdzPvSPK2ZEMJqojso8tb7zsTcxgaRAr5Jd0MDZqvupKb+5mYDP1GCjUVN2XPu3YmKEz5CkPQPM8zQ5quYDj1zoFnW2JyCpkq791AZhVVwCAEEjkhKDUQ3Za16CgIF37Ph4FUYh86Fraf2bXFPJsfY82oxcmQ5qVSjCjWDiOTkMSTC8HtxmuYyIXATy/DpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/2raunQM8GbMBqVNikI0K/pJeh/wpu/uVybK63vdhyg=;
- b=TKROE2CZRLjaoLjktfxksKQsF1zjhGkY7HYRxfbFavvO0I04zQsdJBGy+xd7XQQrDw9I5u4ZMCpffUZ6/l882L+NEYYuMMslgjuPP5cXrU2MUrGAOX2cx+5MLQi64O4kEykaJa9U/9CXJLxXyTjYBjeBxVDhjqd6aYnk6Lui2ADSrzMpieIQlkD3Ff5RZJu0aD/5AuC8fUBw2ki6N6se7XZLTcZe+9sRUusWoEFFqaw0jQv1fgjM6J6hBuoX50JyGz4VTvmV+p4bxsfwr1N+DwcnlU8+UC76TmMKK7+u610XV4ZOJqhQv6Xkw43JmyNYGWLuT2BETtDYc/1b9L96NQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com (2603:10b6:8:73::18) by
- SN7PR12MB7105.namprd12.prod.outlook.com (2603:10b6:806:2a0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Tue, 5 Mar
- 2024 16:26:25 +0000
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::dc5c:2cf1:d5f5:9753]) by DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::dc5c:2cf1:d5f5:9753%6]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
- 16:26:25 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Charan Teja Kalla <quic_charante@quicinc.com>, gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org, linux-mm@kvack.org,
- "\"Matthew Wilcox (Oracle)\"" <willy@infradead.org>,
- David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Huang Ying <ying.huang@intel.com>,
- Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Subject: Re: [PATCH STABLE v6.1.y] mm/migrate: set swap entry values of THP
- tail pages properly.
-Date: Tue, 05 Mar 2024 11:26:22 -0500
-X-Mailer: MailMate (1.14r6018)
-Message-ID: <DD82D819-FCCE-4554-86BB-89C969441240@nvidia.com>
-In-Reply-To: <ce7f78bd-68ef-952e-ae6e-8cb2429d04a1@quicinc.com>
-References: <20240305161313.90954-1-zi.yan@sent.com>
- <F242A2B9-8791-4446-A35D-110A77919115@nvidia.com>
- <ce7f78bd-68ef-952e-ae6e-8cb2429d04a1@quicinc.com>
-Content-Type: multipart/signed;
- boundary="=_MailMate_18C66C75-4FE9-42AF-A23A-570079170B2A_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: MN2PR20CA0002.namprd20.prod.outlook.com
- (2603:10b6:208:e8::15) To DS7PR12MB5744.namprd12.prod.outlook.com
- (2603:10b6:8:73::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297A5286A2
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 16:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709656070; cv=none; b=WTzWx/e4QJAIIl/+ImjglFUOHVgaGfvQ7zn24U0RXLUbosfPiG+yvvr0/e8KKvrYUEX7ZIMXJ5GsXeFVj1V2MTziUTxTwhWB2zcgoajp2xk2wkNDpWVmJgBT8UW1cbla2CVijaU2kM9kkfHNno7WcwRGANu072T7no7U9ptkHXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709656070; c=relaxed/simple;
+	bh=go9KyGvWuzXjMg9EbrYJnPDCBdr83Q8QuluqziDq3V8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VdFcfWL4wS5jYQSf3BcAKUCZKTRRs1ohTcTRyJiPoAW/6J602lDZOjihXmB/B80ITf+XDS9sffo9+RPjSwZIkhQ3XiHelvQE+LbUbH31+zMyu3TvkXbrdnqAt8jyqxhbMehHQthfXzT5JaXadBIh2mqTm27D4ugTS9y+Ua53Zc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sent.com; spf=pass smtp.mailfrom=sent.com; dkim=pass (2048-bit key) header.d=sent.com header.i=@sent.com header.b=IXJBrMF6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T9NjM0uB; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sent.com
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 3ECC21140102;
+	Tue,  5 Mar 2024 11:27:48 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 05 Mar 2024 11:27:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:reply-to:subject:subject:to:to; s=fm1; t=1709656068; x=
+	1709742468; bh=rv9CWGPrXcYc3Xg91xHt2tGn5vOuXTAu4AiypxdwtfI=; b=I
+	XJBrMF6GoMrvn8+2qQGNQfmtPI48iFvUdOMd6UMFm0M/R6y72wKrBkOCzZPLEhJn
+	F10PoPYhf28TG+LMEJ3VvAJgfDiMxdaAPNUvl8cvHwGomtDOvvbuOLfLzns6bkWw
+	TzxpAHeZtrr3MB/DE/gQg0Ixj0brKQVL/qDo+mgEo1X+vXPlqJR/reosqegOBX+h
+	+iWWh5rWqdP2DFAeJMrX5eZMXi+qjVVWCtjVikKjSmBQB+Zz29Wfd4tfAgYTd5Jb
+	lkwNY5XYbG5H2KRSXitZxxDzneYCwvPSULojxHqB0Jx59Uvv3KRoEfbzn4qCbirg
+	612HWqQYsf8GIZxmWn9mQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:reply-to
+	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1709656068; x=1709742468; bh=r
+	v9CWGPrXcYc3Xg91xHt2tGn5vOuXTAu4AiypxdwtfI=; b=T9NjM0uBULIOagiAZ
+	4H3YfMTXy9Giplp5/jyZVKAOMXFL0v14dvzCr/k4n/cAE/wrDFt40DXNvUIxZ6J0
+	upSDkvR6GVfcIe9QfTr46boPX2rJEpp/fMGJ8uAJ99E3adEa9xOGpLVrPNBfJDkP
+	TkDDPhYnN64VyX8Y2L2X3VtkGi7TzlRH4WJsFITZ1UdFV8573qCnTnpIhLRioPLn
+	UvyEYbJAGFtQhUEsZz72ZnBCggfbj84R9bYhzE2Kiz0rM9fbgHWjTXZdajE5iQ/s
+	6xHkKWoRhlKYCVZH4pW/GrpFBNgO65pUCrKGRqVIT4dedf7XmZaNREoqK1rqyGBJ
+	ubrPA==
+X-ME-Sender: <xms:A0jnZV_ROX4fghkr_iogbAAHW25vmE62RckLgYADRTiHcYQ3eRoG3A>
+    <xme:A0jnZZubQ15fVm12FNU9kJamcBIIYfVMmKmJJ8VCL3WE2MmUnbTwbid_YjdJchiao
+    r0ojp_Kjvf8MnCyAA>
+X-ME-Received: <xmr:A0jnZTDb2rR-OPetTn43m0bHiaD8SY-fLld2VJ_0VtsPz7wUVS83gvqi8OSYnCu-PVQ3HMKvpR62K3YR5NFv5qlHQ0H8WkpylhX17K4k0WayXAAOM2d9QE-0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheelgdekhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvfevufffkfforhggtgfgsehtkeertdertdejnecuhfhrohhmpegkihcujggr
+    nhcuoeiiihdrhigrnhesshgvnhhtrdgtohhmqeenucggtffrrghtthgvrhhnpeetudevhe
+    etheehieetiefhjeevjeeltdfgvdeiueeiudetffdtvedthfetvedtffenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
+X-ME-Proxy: <xmx:A0jnZZffP5czWyqEovSs6xO9SYrS4r383Ys2MoO_oLBJffjYu6yrmQ>
+    <xmx:A0jnZaOhixYlpefddgmWMP2hUgrBQOH8A78ulaj8A-zFe6JcMjCPZg>
+    <xmx:A0jnZbng1ukXQSOcAJP9X5AW5fblsnyPHOKW5vSq7uyNZyZP9F9PHw>
+    <xmx:BEjnZbHi-b7lFVkMNjPpNPAWzO4MFfiCkXe020d_qIAIYGrK7sJQKA>
+Feedback-ID: iccd040f4:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 5 Mar 2024 11:27:46 -0500 (EST)
+From: Zi Yan <zi.yan@sent.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Subject: [PATCH STABLE v5.10.y] mm/migrate: set swap entry values of THP tail pages properly.
+Date: Tue,  5 Mar 2024 11:27:44 -0500
+Message-ID: <20240305162744.93431-1-zi.yan@sent.com>
+X-Mailer: git-send-email 2.43.0
+Reply-To: Zi Yan <ziy@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB5744:EE_|SN7PR12MB7105:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee4df47a-185f-4586-9776-08dc3d310074
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	gSkrCZhGadli6IQjNbp4ISXO4hWZBJBNT3WV2LOXQAkKxpR8gTlA9ZQa8WJqjndd+HkWZVIzK6wUYJAcPQOW9RLDWWMAsxDvC8QUpIqD32trS4NT58LaEgoSSiE4OrVyRWCLWxKPo1UfUQRVmkuO1r67QrNM9zL3m7yCMt/qP2tB+68lsBlyuXfG+fLnQiqjWKONKKFkqYY7rZthwRR+CDRS4wfDe5kN1KJ4lf2z4mSKQCOWlJEpzmG/hps+QmGd5/UTCEgJmns5dS90JmCXntp3VzhC99P2NlQ/rVUgfLjjD6+NdWDh2o6VP72jlp3hjjlfk4FKOqbYXkWn1HBEZiU/gXxDlokjaEKX23ZhomsrTrbepo9ZyqhI5KnGqdZeiDNu7+0TwHJXe0ulh9QHOoUAHyyuNesqbmkU/QsGlKK6GH0Z13zQgJEBvvjs/VivuI01QxeXkASxu0/AlICzk2p7UIlVJetoiNvbMvVBl4GKBbSG0qmQscRzlHXOEfwwMH6aBgKhLn+pNwGG/EFhMPomHV4p/pTBgoriDLNYdozalxkIreMsdSETXZqhatMGvHB1zX5nMWMzEZUnDcvV2wH8LgItacEpL8L/+sJ7mIYRo/UwQs9v2pXDyJpyt03YOaFOx9wfK7Ce/8j6SihmwvK6ogMkh2svhS498GuT+mk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB5744.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0VDp9ZrnUBv9LbKtA83WHeeUao78znlDyA3MR4AKt2rXLahzMp8z1/tMmLp9?=
- =?us-ascii?Q?eTcRwIJm3KPoKshlpH/lrMQMeAi3fXiWDZo4OaXIIjGlJzBNnMOdmukBLQTX?=
- =?us-ascii?Q?C6yy0gijvlBYASDmJJF3DyE0F2cZwJOm2oaiheu5OiVrJbgvCperkpxV6wkR?=
- =?us-ascii?Q?I7APKBjm26oyeSldM5PagsvzlBHhg/Eszwn1RJ9IeZyo59Om7O90aUpNn1xj?=
- =?us-ascii?Q?RvnXH8PRl6V4vZscDgbYfiqVR2w2pMnUBLrkSvgFdqCkvJtYocQ2e8h7IoSK?=
- =?us-ascii?Q?L3LZJKbAO8OwQR/19MTeZUR3/s031VOTBh2Xh6Yv+m87YhGvxsopymphwd+Q?=
- =?us-ascii?Q?IxDtMC1ACFPQtJgX60TsP3VNp57Vet3Elqs+29sg4vLj0wElL+u69VkdwogY?=
- =?us-ascii?Q?rXRR/KhpIjz09RnHXS2Q9lkZ7eCyquoOQLhm3aEhJz+ZgEn58BgpfIPwhAPB?=
- =?us-ascii?Q?v26enlhwv3tNWce2s7F1kTCMhXPgovjVIt5D3Gd5VLKZok5idG5E4m7RX4kb?=
- =?us-ascii?Q?6vNfJJ/QRNct3vo/mjPyaDvxE4AW8rxTZ9vpBBl17BRb4X2SdTzzaPxlHqMt?=
- =?us-ascii?Q?hzPGht6ZslMf/z96Phq/2W/PPx8A7gj5q9RzKt65sUhMemt/L7lsmID0+F+r?=
- =?us-ascii?Q?E8Fa1R/SZrffS1K/0qSKp3CAXJItQMXbU6FkmiIlpCkvKgF1FPHfeYKtqUDU?=
- =?us-ascii?Q?v8dGIpSMD6lDKZBoTe3wwj70OqyfJdZwzLSK03+5fnwqa+Ib1CPxApRdCE0D?=
- =?us-ascii?Q?++ySSW2haJrT9E6UbHPpHXn+52uLGhrM5+pVzI4Am2Ni6zY/IPbggIdJkEBJ?=
- =?us-ascii?Q?pmk5NOwAZ00RwcPI7a0ej1tJoHtRlFzNN6J0Y0O8Sy6zlYiQeIrFUILHWwew?=
- =?us-ascii?Q?p5e1HuEgj3i6MmpsMMtLI5yskMDIvtZLBuCMkpEzQD0gyc+loBhHwMbRjJOd?=
- =?us-ascii?Q?bGdK9OK2ryJ8ZER3xCIfXNgyawAjCKoQcJB5BJDDJEFE1WWSfoQpMaQwgb0H?=
- =?us-ascii?Q?mqRk5al8gOpc63OkWZMblYW3mPoOdacEf/4vfimD25jM0nTr7ckOeJgCLvuO?=
- =?us-ascii?Q?Dzl8O+drGYlKd3kGWWEVg3qeaKbrg8NZwEQPHUg+cCidMavw6XDjYSrNg9G2?=
- =?us-ascii?Q?gSXTffg2lreCRnxAiazMz2vze+f1vBwWXr2PHp94keL/uCq/UlYj+8gE90nn?=
- =?us-ascii?Q?cVVxmmMWI27+dDXDIQPwjPbp3tD41DJTZ/dIZ8zNzPbV7N05yOeoUJsChTPJ?=
- =?us-ascii?Q?cU/ecIDJ8FOWfsN+MN29bNk47Cfy93/XAi/pTZStz8MnFtH7fm1bauR6fzb+?=
- =?us-ascii?Q?jPcwJyZMJZ5SFwq27BVxE6wxXEUdMwYn+GgPTPQIQSUHxeWo6YLpLqo9wkTO?=
- =?us-ascii?Q?O9a54biBSyiMJ+Tf6LLjwxaqFlYjaROT7KxQm1+Eucxv9MsuFlsKfMCEo5du?=
- =?us-ascii?Q?qMvIFosF9SUIc1B7LCUZgYyrBFIeqZiQyXPVeRWbt0DfHYHU/P3qnQ4yv4Q7?=
- =?us-ascii?Q?MpkE3ERxZkXdD5rs3rgrF80SGpeCgYNSDEsRmXTrNRLXxzPExy7MJf8Y4ufj?=
- =?us-ascii?Q?PJyyKR4qnigeptfeb7hCHLMDdtvYrellfmfdzNSR?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee4df47a-185f-4586-9776-08dc3d310074
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB5744.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2024 16:26:25.3998
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jV+ywf2Ws5W1hnhTU0QbDALhRwhpcwHhti9zec2E/WDCA6tj2sGeKkSK3o+B9CB/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7105
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
---=_MailMate_18C66C75-4FE9-42AF-A23A-570079170B2A_=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+From: Zi Yan <ziy@nvidia.com>
 
-On 5 Mar 2024, at 11:22, Charan Teja Kalla wrote:
+The tail pages in a THP can have swap entry information stored in their
+private field. When migrating to a new page, all tail pages of the new
+page need to update ->private to avoid future data corruption.
 
-> Thanks David for various inputs on this patch!!.
->
-> On 3/5/2024 9:47 PM, Zi Yan wrote:
->> On 5 Mar 2024, at 11:13, Zi Yan wrote:
->>
->>> From: Zi Yan <ziy@nvidia.com>
->>>
->>> The tail pages in a THP can have swap entry information stored in the=
-ir
->>> private field. When migrating to a new page, all tail pages of the ne=
-w
->>> page need to update ->private to avoid future data corruption.
->>
->> Corresponding swapcache entries need to be updated as well.
->> e71769ae5260 ("mm: enable thp migration for shmem thp") fixed it alrea=
-dy.
->>
->> Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
->>
->
-> Thanks Zi Yan, for posting this patch. I think below tag too applicable=
-?
->
-> Closes:
-> https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic=
-_charante@quicinc.com/
+Corresponding swapcache entries need to be updated as well.
+e71769ae5260 ("mm: enable thp migration for shmem thp") fixed it already.
 
-Right. Let me add it to other stable fixes I am going to send.
+Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+ mm/migrate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index fcb7eb6a6eca..c0a8f3c9e256 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -447,8 +447,12 @@ int migrate_page_move_mapping(struct address_space *mapping,
+ 	if (PageSwapBacked(page)) {
+ 		__SetPageSwapBacked(newpage);
+ 		if (PageSwapCache(page)) {
++			int i;
++
+ 			SetPageSwapCache(newpage);
+-			set_page_private(newpage, page_private(page));
++			for (i = 0; i < (1 << compound_order(page)); i++)
++				set_page_private(newpage + i,
++						 page_private(page + i));
+ 		}
+ 	} else {
+ 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
+-- 
+2.43.0
 
-Hi Greg,
-
-Could you add the information above (text, Fixes, and Closes) to this pat=
-ch?
-Or do you want me to resend?
-
-Thanks.
-
->
->>
->>>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>  mm/migrate.c | 6 +++++-
->>>  1 file changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/migrate.c b/mm/migrate.c
->>> index c93dd6a31c31..c5968021fde0 100644
->>> --- a/mm/migrate.c
->>> +++ b/mm/migrate.c
->>> @@ -423,8 +423,12 @@ int folio_migrate_mapping(struct address_space *=
-mapping,
->>>  	if (folio_test_swapbacked(folio)) {
->>>  		__folio_set_swapbacked(newfolio);
->>>  		if (folio_test_swapcache(folio)) {
->>> +			int i;
->>> +
->>>  			folio_set_swapcache(newfolio);
->>> -			newfolio->private =3D folio_get_private(folio);
->>> +			for (i =3D 0; i < nr; i++)
->>> +				set_page_private(folio_page(newfolio, i),
->>> +					page_private(folio_page(folio, i)));
->>>  		}
->>>  		entries =3D nr;
->>>  	} else {
->>> -- =
-
->>> 2.43.0
->>
->>
->> --
->> Best Regards,
->> Yan, Zi
-
-
---
-Best Regards,
-Yan, Zi
-
---=_MailMate_18C66C75-4FE9-42AF-A23A-570079170B2A_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename=signature.asc
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQJDBAEBCgAtFiEE6rR4j8RuQ2XmaZol4n+egRQHKFQFAmXnR68PHHppeUBudmlk
-aWEuY29tAAoJEOJ/noEUByhU7IsQAIBKPMVuo0vVMdeDfa2YYcJ+P4RAhR6BocdF
-jjrwbWC5YhMnBDbQmFcKANlXW8YK3NQk5cjBauVM5zmVLibfia2jyZW6tc2K1/pJ
-6YUaYNUhOI8n6k+hUTowLzAcu06zkdJ11wHVxF0NypjaUccY9/DVhMQflbMtzHLR
-Q8QghHZkL3dpMBmgUlV1cL9+++v1gg4ONEjIsCz9et29/mHsZnTi0E+97BQswbJ2
-9pSsnEtH7bawi43t2sxyfl7Tb1gyatZAXmSmptpFN4sF1lCuvmN+h36iM95wuIBr
-WxE8HXelxcUCjOQJvMXUcbXnG45nsfVazrhW6JJpm+9q+4nF6gy/6PjgkgSOpoqB
-xX4Zg48EfaS9uj8DhJ34BO3exD/JItPEHFPblz0/9vQYwdjd5TJb+AeIIZVYyVtn
-a6bNxkE7aqjfqEB1E1PHT/UMxcFiuZ/Om82lSjrTJAqXuLrj+Bu+butvaayc5x06
-9rhYkScs9A1HZZZmJe3kptQmsgfE8jkoGDYoVWB9x+nz7T3b1njx20TrFlgZPS4w
-Muk9Y3dBDfbP1OdueackpqmQ56In6Hu/KaxZTeg5ZhKDP5/EWUipmQ0MgqOMxBvz
-ydkd1PJSlwzKGmbG2U5JMMNBnD73se5V2NIGHZyhAP2mefKhNdSGoQ1AZMMXbNQ9
-lGOWRWcs
-=4nUj
------END PGP SIGNATURE-----
-
---=_MailMate_18C66C75-4FE9-42AF-A23A-570079170B2A_=--
 
