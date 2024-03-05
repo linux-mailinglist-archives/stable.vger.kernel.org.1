@@ -1,109 +1,101 @@
-Return-Path: <stable+bounces-26827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB40587265A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:14:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058358726E3
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 19:49:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B391F27AF1
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:14:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09033B2887D
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 18:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A867182DD;
-	Tue,  5 Mar 2024 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF72C1AAC4;
+	Tue,  5 Mar 2024 18:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TIDrRuHA"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tz3Y3RTy"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF4317C71
-	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 18:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3097B199B9
+	for <stable@vger.kernel.org>; Tue,  5 Mar 2024 18:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709662459; cv=none; b=VWUDqSZwC6qM86JeRwTMVexYKQtK9uysPdcH5uzzfG+uqcGrmkYcAIxWXC1+xL12UcSnEQtnSWat3Q99orGsq9xOGjclNBdumhcilFrT2tVsL8zJDPmzSrq3w90E4aHdF1PADSX6Peo8a9GEp4aqiZkjHbQsaxVZNpfRmRyWYU8=
+	t=1709664537; cv=none; b=LZ70MLOrhKyTU7uIoQ+jxNIXXvzX67A3vUIOKfFcYSr2urT2mYRll9FQQcL/GdZp3R43Hz1PSZ5tIojsRjtb0bwMiQ2A75ghUynnh2It3OZsB1/D9PlYMH2GxXYexObc3uoxVx8JGM/JffxgzQBqGYaW/6MIywPFU2TlorqkA2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709662459; c=relaxed/simple;
-	bh=CLb6htEM8BQ4wkYj4Mfxot1eztyH01EK5KTKnTSNh54=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=bgpYl9lzznCBnBLWuGCbT8FACEgPl8XpMS+UZ/96+KK+JgyCPFxzY0nW2jNQr3G1x4UsWVxvY08Aza9c2X4C1jUqALuqbXzQrQKjRZodyqSig9nqLJibU8fu4kJZY3lueqAzpHJillf9MctT8ZRDcOaw4SO/ISA/HUg2Drn3EbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TIDrRuHA; arc=none smtp.client-ip=95.215.58.177
+	s=arc-20240116; t=1709664537; c=relaxed/simple;
+	bh=zFHpeoHrk2fy3c/j0OJVv5j9Rm4YAqZK0RHIRw+CLq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Is/lR3XyTAIPRPdZshMgldxmSJqMs8x5k63aYjEhu5cgk1w2w8dhBiNafnx1YHtnqscuiDg++E5aFbUXcioVbwrPyFLgGiASnORSi1BrJl85ee+Db3BFQHrUn8olV9TcfTqdKZL/JzgTz/D7gPmBJcAen6GHoqYXxAwjgK9S77w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tz3Y3RTy; arc=none smtp.client-ip=91.218.175.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <6764b9c5-b61a-4f20-a41a-125d5015a3e6@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709662455;
+	t=1709664534;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4mCLjnlt6q90qUCq4m5luMROvGFxl/z1bFGYicutzgw=;
-	b=TIDrRuHAB3Fwdib4sKxYLlkNs/TwItDMIceZL4vZyE4Carkes4zEYbdAlyJQ4dcCUxPpyF
-	6rbx5Zlju5IHwZLJLPCTrfuGz8914F21k9UnY4jBL9g2kqJvjQCD3ROpdK7tcPjKdbpgRy
-	reYNOMlidxSNyyW8Jc7aInmHfsV4vK8=
-Date: Tue, 5 Mar 2024 13:14:09 -0500
+	bh=DKOAySTmtsid9rWndhWZ282Y5Z7nMyZa3Vt79s4X/6c=;
+	b=tz3Y3RTyGDXm7Lt7cGt1xxxz3Tm24ZAnhgvF4Ixi4LWM7rNAO/52LTktdTjXC5qRXfMkaL
+	/3m5Qt+83aH6zalf3eMMQgJuxw7jwXmuFmLyMBvX3wPv3IeSKVBzxyiKpf69cKqiMl0kJk
+	Sy2rZ4rKgtOLrNuT5X32tK9wj5XBUDk=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: kvmarm@lists.linux.dev
+Cc: Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/3] KVM: arm64: Fix host-programmed guest events in nVHE
+Date: Tue,  5 Mar 2024 18:48:39 +0000
+Message-ID: <20240305184840.636212-3-oliver.upton@linux.dev>
+In-Reply-To: <20240305184840.636212-1-oliver.upton@linux.dev>
+References: <20240305184840.636212-1-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RESEND2 PATCH net v4 2/2] soc: fsl: qbman: Use raw spinlock for
- cgr_lock
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge
- <roy.pledge@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Camelia Groza <camelia.groza@nxp.com>,
- Steffen Trumtrar <s.trumtrar@pengutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240222170749.2607485-1-sean.anderson@linux.dev>
- <20240222170749.2607485-2-sean.anderson@linux.dev>
- <53b401d7-934c-4937-ab83-6732af47668d@csgroup.eu>
- <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
-In-Reply-To: <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Hi,
+Programming PMU events in the host that count during guest execution is
+a feature supported by perf, e.g.
 
-On 2/23/24 11:02, Sean Anderson wrote:
-> On 2/23/24 00:38, Christophe Leroy wrote:
->> Le 22/02/2024 à 18:07, Sean Anderson a écrit :
->>> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->>> 
->>> cgr_lock may be locked with interrupts already disabled by
->>> smp_call_function_single. As such, we must use a raw spinlock to avoid
->>> problems on PREEMPT_RT kernels. Although this bug has existed for a
->>> while, it was not apparent until commit ef2a8d5478b9 ("net: dpaa: Adjust
->>> queue depth on rate change") which invokes smp_call_function_single via
->>> qman_update_cgr_safe every time a link goes up or down.
->> 
->> Why a raw spinlock to avoid problems on PREEMPT_RT, can you elaborate ?
-> 
-> smp_call_function always runs its callback in hard IRQ context, even on
-> PREEMPT_RT, where spinlocks can sleep. So we need to use raw spinlocks
-> to ensure we aren't waiting on a sleeping task. See the first bug report
-> for more discussion.
-> 
-> In the longer term it would be better to switch to some other
-> abstraction.
+  perf stat -e cpu_cycles:G ./lkvm run
 
-Does this make sense to you?
+While this works for VHE, the guest/host event bitmaps are not carried
+through to the hypervisor in the nVHE configuration. Make
+kvm_pmu_update_vcpu_events() conditional on whether or not _hardware_
+supports PMUv3 rather than if the vCPU as vPMU enabled.
 
---Sean
+Cc: stable@vger.kernel.org
+Fixes: 84d751a019a9 ("KVM: arm64: Pass pmu events to hyp via vcpu")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+---
+ include/kvm/arm_pmu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+index 4b9d8fb393a8..df32355e3e38 100644
+--- a/include/kvm/arm_pmu.h
++++ b/include/kvm/arm_pmu.h
+@@ -86,7 +86,7 @@ void kvm_vcpu_pmu_resync_el0(void);
+  */
+ #define kvm_pmu_update_vcpu_events(vcpu)				\
+ 	do {								\
+-		if (!has_vhe() && kvm_vcpu_has_pmu(vcpu))		\
++		if (!has_vhe() && kvm_arm_support_pmu_v3())		\
+ 			vcpu->arch.pmu.events = *kvm_get_pmu_events();	\
+ 	} while (0)
+ 
+-- 
+2.44.0.278.ge034bb2e1d-goog
 
 
