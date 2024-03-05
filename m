@@ -1,88 +1,115 @@
-Return-Path: <stable+bounces-26801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5486D8722FF
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:40:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C0E87230C
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 16:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86483B24685
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 048101C22FBA
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 15:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE177127B7F;
-	Tue,  5 Mar 2024 15:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=zytor.com header.i=@zytor.com header.b="GP7AAlD7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDE5127B47;
+	Tue,  5 Mar 2024 15:44:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE592127B49;
-	Tue,  5 Mar 2024 15:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A93085944;
+	Tue,  5 Mar 2024 15:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709653170; cv=none; b=eOL6ZhIGJxuzH1cIbB2nyIvGeRNuq5aiCelRzo6wZff3/rH+zaqO5mP4BBD7FAMyTLV3HopDwDwNPcB2R4bUvN7Kcbt9k8gtt1SiR2eMZvhX8ZJRxcORQ0dMWB6U39fEBg3o23Tr9gGOUawtag3r5woW5hYXgfgdurEDGKvqLKs=
+	t=1709653448; cv=none; b=XrBa6uqePs2OPwaZqIoyFOK/cLT84ZczEWkToFGfefg3Nz+M2f3ljZVKHoZfBcs3Jn8Olh5HSMzGHQJlmGHQ1WKo1sEMJtjOSFbTopmo1tWjNXruknVG4QsY+5gIMekhRrS5ynrFR53KhJn8vwp7Gw4PTj0640jvm0SC1Y+sk2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709653170; c=relaxed/simple;
-	bh=zu6dawwP6iMIyShTuCagsHimgWcoI8y5k1fedG9PSvs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=g6GqCH1ncuz3GfDR0G7dYFpEdDv2y1cOP5oXk0baRZpi4cPxu8hDjd6voobS6v7HuXoFyd6tqRt9vfOAQKYmv5W4DqfI79voEyCloAmaCWubWRMrC+LzeXXdHM9puLEslL0SY0vsk3X/OuxVzGV3A8o+HzE4J46FqDS+wHmkXig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (0-bit key) header.d=zytor.com header.i=@zytor.com header.b=GP7AAlD7 reason="key not found in DNS"; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 425Fd9tn1037566
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 5 Mar 2024 07:39:10 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 425Fd9tn1037566
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024021201; t=1709653150;
-	bh=zu6dawwP6iMIyShTuCagsHimgWcoI8y5k1fedG9PSvs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=GP7AAlD7r1+sOFcVNynvK6GMDaH36FcSPgVcETJo454PRNG72O07g2zIAoyCuoInU
-	 g1Xv6QyUTFdy4QpVJihT4lMze89VATuoFwpl8ronih2nB338xn8vMEhdyC8LbKlnnV
-	 aSjwdditNqbwELAEKZzT8JARk9gh2iG5RI9uukEL3LmDpCZ1cQOdOub8JrQYUiB+QO
-	 zpfqQHmc79RxGJH1jO3MRbLKAQEBtpNMM6QFc1xVDYcEyA+6VlQolJxdO03W2tnKcS
-	 gMgRsEiZILufGpiUVa0mgOD+tA5sz2wYqmvtd91pLsUTUNw4DDnfDwsjRXSvsJoukq
-	 QUpL0gNZnNf+A==
-Date: Tue, 05 Mar 2024 07:39:06 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: stable@vger.kernel.org, patches@lists.linux.dev,
-        Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6=2E1_128/215=5D_x86/boot=3A_Robustify_call?= =?US-ASCII?Q?ing_startup=5F=7B32=2C64=7D=28=29_from_the_decompressor_code?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <2024030523-parted-situated-8749@gregkh>
-References: <20240304211556.993132804@linuxfoundation.org> <20240304211601.130294874@linuxfoundation.org> <E57FF738-3527-45F3-891D-FD54E6E7E217@zytor.com> <2024030523-parted-situated-8749@gregkh>
-Message-ID: <5F305A61-B247-4C0F-B220-633504C72774@zytor.com>
+	s=arc-20240116; t=1709653448; c=relaxed/simple;
+	bh=MnnHCdDfPrQPB8WD5/lqBatvO68cm49it20wP3Yp/aY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SGdLYjcXLWBCitB1HPozNI2e3Gglt4G/vxWR/2b2NfVKoLoEx0icMYV2XAbSrJKGMNT5yty6D+7W19oKffH79FfFkadvqSYDsi57YvLbSNFGHausjBmQdaZdQbGq/0NcFqMHREOFCIFLvxk953oM9du7yG6H/9LEyzIe1qZRdMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 92E3261E5FE36;
+	Tue,  5 Mar 2024 16:43:49 +0100 (CET)
+Message-ID: <84dd5c01-906c-4e13-9d8c-e5350f718d56@molgen.mpg.de>
+Date: Tue, 5 Mar 2024 16:43:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tpm,tpm_tis: Avoid warning splat at shutdown
+Content-Language: en-US
+To: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: jarkko@kernel.org, peterhuewe@gmx.de, LinoSanfilippo@gmx.de,
+ p.rosenberger@kunbus.com, lukas@wunner.de, jgg@ziepe.ca,
+ linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On March 4, 2024 11:36:53 PM PST, Greg Kroah-Hartman <gregkh@linuxfoundatio=
-n=2Eorg> wrote:
->On Mon, Mar 04, 2024 at 02:42:35PM -0800, H=2E Peter Anvin wrote:
->> I would be surprised if this *didn't* break some boot loader=2E =2E=2E
->
->As this has been in the tree since 6=2E3 with no reported errors that I
->can find, I think we are ok=2E
->
->thanks,
->
->greg k-h
+Dear Lino,
 
-Well, boot loader breakage in the past has sometimes been reported a year =
-or more later=2E
 
-#Pain
+Thank you for the patch.
+
+Am 01.02.24 um 12:36 schrieb Lino Sanfilippo:
+> If interrupts are not activated the work struct 'free_irq_work' is not
+> initialized. This results in a warning splat at module shutdown.
+> 
+> Fix this by always initializing the work regardless of whether interrupts
+> are activated or not.
+> 
+> cc: stable@vger.kernel.org
+> Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
+> Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org/
+> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> ---
+>   drivers/char/tpm/tpm_tis_core.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+> index 1b350412d8a6..64c875657687 100644
+> --- a/drivers/char/tpm/tpm_tis_core.c
+> +++ b/drivers/char/tpm/tpm_tis_core.c
+> @@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
+>   	int rc;
+>   	u32 int_status;
+>   
+> -	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+> -
+>   	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
+>   				       tis_int_handler, IRQF_ONESHOT | flags,
+>   				       dev_name(&chip->dev), chip);
+> @@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
+>   	priv->phy_ops = phy_ops;
+>   	priv->locality_count = 0;
+>   	mutex_init(&priv->locality_count_mutex);
+> +	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+>   
+>   	dev_set_drvdata(&chip->dev, priv);
+
+This is commit d6fb14208e22 in jarkko/next.
+
+I tested this patch on top of Linux 6.8-rc7 on a Dell OptiPlex 5055 [1] 
+and it fixes the issue there too.
+
+
+Kind regards,
+
+Paul
+
+
+[1]: https://lore.kernel.org/all/CYJ163J3I09U.2XMVZ0BLWV1Y1@seitikki/
 
