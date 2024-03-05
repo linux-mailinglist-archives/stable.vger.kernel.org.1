@@ -1,100 +1,93 @@
-Return-Path: <stable+bounces-26851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49658728BC
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:29:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF338728BF
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 21:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F5928B81A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:29:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C9C1F21DCC
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 20:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7158C1292EA;
-	Tue,  5 Mar 2024 20:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2C5129A66;
+	Tue,  5 Mar 2024 20:29:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D739460;
-	Tue,  5 Mar 2024 20:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E919460;
+	Tue,  5 Mar 2024 20:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709670549; cv=none; b=Z0CxSkidmkdEWdtpF1x76f+/vr8Qbq+/hjy0lpegk5XJaBtqm22Czy4wSL4ecF9b0sYJ7FDo4HbjInNXq9nGV9XoIBiDmOWGBV+NPx+J4kZpLOkILDOuggkRuLKltix/7RmhhWiPSTRRn0v0kwiQsmt9mBXW7blopOMQ5Fhw944=
+	t=1709670572; cv=none; b=dkmgrFpjgKz4BieHfhuZfXrnjV5lQetWri6Tr0pBAFVOgcTG78FQWnxgbkK0Q/NS20AOVnImWcGj0yecNbagx+2cg6Qu6xeAA1gsp2tatCvJfG5gvyHKO4FX92MdyXfiX7pyK8IvR53741yE7eCPSxgFQi2gTLuW1id6MoQqeJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709670549; c=relaxed/simple;
-	bh=oe2J97hfiCUqd8RBj/oWDlSveRaG9vwVNseRd0cTLKc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YN+8oNVtZOWeMbAWwxgszDETsbsNVLpzgbIR2yVRpb8vtAGsLF7KsJNuhxx1b/1ScedJZWpeWmPrHpp60GDUUD949PxzLiSOMgE1s+DB3rh/xavCmSz0Vx3RXKWuJvCFIPeqoKWV9JWWm//n4fJrOzqbte5CqtN275fGiGUlFvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+	s=arc-20240116; t=1709670572; c=relaxed/simple;
+	bh=brvODVjEdn52eqWJ/v1JIz12UyK9u+bcrt/sT4hHvuY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KVwLMjK2QYYA3td9jUEq+SCwk12ywgz5KGRWjqhrkulqzK0nAlIXtumaFqzpGGoKC4bX9/3OZ8C4+lNKBdUj4nr5KHn2HK7pPNsC+7Yy1+KNR9pA4DBGwUy9PnwNoO+7F0vKEA1aDoeoK3T7phLbavJdORAMiI05V++JxoHXMmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dd01ea35b5so19716985ad.0;
-        Tue, 05 Mar 2024 12:29:07 -0800 (PST)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-220ce420472so983701fac.1;
+        Tue, 05 Mar 2024 12:29:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709670547; x=1710275347;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xXq7pFAKK69JkeekroRzoD2aGhQy0QdXJGytui7Sb+Q=;
-        b=B1GBHJa4S2bBwfdALIiXMiM/5J3idVW/mX+3aQbz1FAgfb2MRNu8olvmgBEJvB862s
-         LQbMGCu4JelFDBxANfMQkuO3JO693oKqfwwU0/LbgzTzSAK5K8Y/hX+auZDcyHMtQFrI
-         Rs6kR03WqWxRnrcpH4/DZBksldxmyxwSjoe1e8R2Q4FZyhj5lAT7/NvT6eYIIQFrrhCZ
-         N6kcOvhlmcilNVhXTg5fzu2bDaQmin2ZGU5to3B7B6/uDanayPZzYQjmKacUU9BwLh7A
-         krPMak3xvAkKfZaLVOPxYJt9WKldRgzPlg5YZFHsATrK1FPX8JtDRRrsRdZ7dxLrXtkK
-         3QYg==
-X-Forwarded-Encrypted: i=1; AJvYcCX0YywZ6ZkDP7NC+jj8s8nCY3SSaWyDXtOfsb06rqR/1DsemxrEHbD0KroLXxLEYxPQ9A9dscE+hqPpEEG/aW2qqrDljblM
-X-Gm-Message-State: AOJu0Yx9pEOzKXQrHp3iFHocxIi9Nne/vxSuWFZIyalPd6EvgGmZ2MNJ
-	bOUANJVAO4IRCKzrfF3V0HwM/oAV5EMbkGy0gTuGZNyH12L/GYt7icQ+mb4g
-X-Google-Smtp-Source: AGHT+IETxGKGf4oNCsiF0ugeq/oWFzeRGXyo+6AW6CukFPu5toWGC9tmAJCslyrUxa4UkmJCypV7bw==
-X-Received: by 2002:a17:902:8a83:b0:1d7:2e86:fb2a with SMTP id p3-20020a1709028a8300b001d72e86fb2amr2569921plo.65.1709670547210;
-        Tue, 05 Mar 2024 12:29:07 -0800 (PST)
-Received: from ?IPV6:2620:0:1000:8411:3e11:2c1a:c1ee:7fe1? ([2620:0:1000:8411:3e11:2c1a:c1ee:7fe1])
-        by smtp.gmail.com with ESMTPSA id a6-20020a170902ecc600b001dcc2847655sm11005035plh.176.2024.03.05.12.29.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 12:29:06 -0800 (PST)
-Message-ID: <bce48abd-8e8c-4ee9-b49f-1595e6aa8f8a@acm.org>
-Date: Tue, 5 Mar 2024 12:29:05 -0800
+        d=1e100.net; s=20230601; t=1709670570; x=1710275370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=brvODVjEdn52eqWJ/v1JIz12UyK9u+bcrt/sT4hHvuY=;
+        b=Neuz0n5JvgWquBXnYC4+sK7P2GBxmRaQKgJQ3DQn8du1j2sFG6jvwW7xyKzNfifFk/
+         IK6JELoQyGzIUgtnaJW6YfI4/viJYKwWIAS2+N1Y4C1FSQLp5+PHJ4oPfrx5aj9Vmhic
+         Xj0iC87eJerUpzFbJvV62rrBp6MLf/OLULlpmVG9hVrc2OMX/RBZqJnZSqQIkaZJZENg
+         XUfElU1LHPxS2kaANMQWjNT6KsNCvN5VEavUdo2+cwoq+VslsAs0TOjkrZyE2sWoXcHr
+         /rWQhjVdiZamPbfb43VHoDGpB5cG9wbSfEcmYKUc5qTSBYGp2sUxPb9jJSnmtAH9fK+Z
+         0SqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXF9ScsZYJfa//Sv3IGHkcrbn482546dqa/rECnPXoEXdEUszv3WGOfH4dQHqlAgAr/gyxzc8S7uutB1qc6MUOp6w5QgaNd8FYEUsjm1meWCHpJlLaRdyAo31sOGPhvUpwbMKUw0CSocgAd31qUt50tr8UixuxKIOH7oEktBjrSrQ==
+X-Gm-Message-State: AOJu0YyYM8MnFmP92NGuAtK75hJYSb+qbG1EuLP64p1NMR17ipPlJJ0P
+	cbHgpoWB+pW65TzmZ2olcWAFu0ABKeJE/+EXA+SjvY7iXMVCmT/viQRCCHYwY6UtE+cCtZL6+o2
+	1q0ag+osuUmdWiTKskF4MZtIYWIQ=
+X-Google-Smtp-Source: AGHT+IGmKFCKHu18eVUen1zEspsGJ1M3dG2mdYaT4Jy1mAiZvNyLnluyaZR18TRRqouw19nNwzybIEzP14gA+7Pr5Vs=
+X-Received: by 2002:a05:6870:d681:b0:21e:ad52:3029 with SMTP id
+ z1-20020a056870d68100b0021ead523029mr1568208oap.0.1709670570363; Tue, 05 Mar
+ 2024 12:29:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "fs/aio: Make io_cancel() generate completions
- again"
-Content-Language: en-US
-To: Christian Brauner <brauner@kernel.org>, Eric Biggers <ebiggers@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Benjamin LaHaise <ben@communityfibre.ca>, Avi Kivity <avi@scylladb.com>,
- Sandeep Dhavale <dhavale@google.com>, Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org,
- syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
-References: <20240304182945.3646109-1-bvanassche@acm.org>
- <20240304193153.GC1195@sol.localdomain>
- <20240305-hinunter-atempause-5a3784811337@brauner>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240305-hinunter-atempause-5a3784811337@brauner>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+ <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com> <5cd020bf-35a1-4ffc-bb32-167ac311d5d3@linux.microsoft.com>
+In-Reply-To: <5cd020bf-35a1-4ffc-bb32-167ac311d5d3@linux.microsoft.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 5 Mar 2024 21:29:18 +0100
+Message-ID: <CAJZ5v0j8hsp0XAWfgXRZwHAk+rRDRQwMGrureFRZgwHa3USbug@mail.gmail.com>
+Subject: Re: [PATCH v3] acpi: Use access_width over bit_width for system
+ memory accesses
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jarred White <jarredwhite@linux.microsoft.com>, 
+	Len Brown <lenb@kernel.org>, "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, srivatsabhat@linux.microsoft.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/5/24 00:50, Christian Brauner wrote:
-> We've been wrestling aio cancellations for a while now and aimed to
-> actually remove it but apparently it's used in the wild. I still very
-> much prefer if we could finally nuke this code.
+On Tue, Mar 5, 2024 at 9:19=E2=80=AFPM Easwar Hariharan
+<eahariha@linux.microsoft.com> wrote:
+>
+> On 3/5/2024 12:15 PM, Rafael J. Wysocki wrote:
+>
+> <snip>
+> >
+> > Applied as 6.9 material with some edits in the subject and changelog
+> > and some adjustments of the new comments (one edited and one dropped).
+> >
+> > Thanks!
+>
+> Thank you, Rafael! Could you please add as well:
+>
+> Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-io_cancel() is being used by at least the Android user space code for
-cancelling pending USB writes. As far as I know we (Linux kernel
-developers) are not allowed to break existing user space code. See also:
-* 
-https://android.googlesource.com/platform/frameworks/av/+/refs/heads/main/media/mtp/MtpFfsHandle.cpp
-* 
-https://android.googlesource.com/platform/packages/modules/adb/+/refs/heads/main/daemon/usb.cpp
-
-Thanks,
-
-Bart.
-
+Added, thanks!
 
