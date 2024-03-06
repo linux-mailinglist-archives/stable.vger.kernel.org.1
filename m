@@ -1,193 +1,190 @@
-Return-Path: <stable+bounces-26897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382EE872C2F
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:25:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0B6872C4E
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6511C24AED
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B5D1F21BD8
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E92DDA5;
-	Wed,  6 Mar 2024 01:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3A16FDC;
+	Wed,  6 Mar 2024 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eYSkxwf3"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Ts2xDUgc";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="WrixH0Vs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F3DDDAA
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 01:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ACD6FBD;
+	Wed,  6 Mar 2024 01:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709688226; cv=none; b=lzPA714qaiymuPIxcAcn7idvaSSNpp33vjM4CTuBZzDas6mQagd6I3fKEYDw4tDt+azQ6WT3C/OVTXwOTcRO/SGayVpFoavpIiacdvWvCc9Wh97JJq99SAmEwVS1uvI6qFQkPCp+uuTl+levYp1qdQR+CbK2xH2lBLVEHjyDp/Q=
+	t=1709689524; cv=none; b=YTK9PRHTaNbCf6bVOgehKFi4nRoxd+cz+sdvx6PcIwQZNKfyWtQ9K87DodY3osJrpu/GeMy36nWzg7vpYeAzCxsVn1APeZ32DpxWZUoZO6eG9RPhqiqzk3kqgS4f79cgVg5TXgqr3ak7OGzmumPCu7TcmDix+pNBhgVd4tXhkUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709688226; c=relaxed/simple;
-	bh=RhOkg/e+CA2tiCxWfZY+FAoYX9RUdN4cq2i33DYeYm8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sk+ssGgayP823uVEgelChYxU5mPKMPfMJ4gdLFJan2gP7aqkVwu6AuIEq0fRt0joZ+dCvUtKDL7cMfVzzpxJSxgV4YCHFf6SHpmDZxqniYRlDviM+Igh0cjdIjagbgi63Bf9Lxwcsu8FKvWpkkXfvYltqFNP0aqr+4yICnkI3nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eYSkxwf3; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709688222; x=1741224222;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RhOkg/e+CA2tiCxWfZY+FAoYX9RUdN4cq2i33DYeYm8=;
-  b=eYSkxwf3FOtzhb0W6Qu0B43ZbnTXzXm/CwYLIiSD8NHIdaXPQeVDQW0C
-   L0GN+QoZs14fjbaLCmGvdrw6gnWX8ceSp/TmNfk/b3eiffDAzMMW+bQNP
-   38tkr7UsISTUGErasSuAFtRxI3GWNRWTC2nlIrGf7uqETfXQn2Do+U/iZ
-   XrDvkMjNk01WZeHx2uhnxraOlhUvgQHjXuatV/FlIyQ3mThQQdD1EtyoT
-   pl5tCLgbrOq+oumJWBPTGcvFozEpbD0iqp5GtCzRGXo5Kl6v4IWfG40mY
-   wxQ2/TpPJPyhOLtlWdP0DFtSK8RuJHU9SdXCLYb2H6Cbof8VvRijNID+6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="8098480"
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="8098480"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="40574614"
-Received: from unknown (HELO intel.com) ([10.247.118.75])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:34 -0800
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH v4 3/3] drm/i915/gt: Enable only one CCS for compute workload
-Date: Wed,  6 Mar 2024 02:22:47 +0100
-Message-ID: <20240306012247.246003-4-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240306012247.246003-1-andi.shyti@linux.intel.com>
-References: <20240306012247.246003-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1709689524; c=relaxed/simple;
+	bh=8icK7I6k2ySylpR6U/utwQ5wybqz1zyNXnnpXmTq7/M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BcBs6okaTIpV76RP5KOPLSkRR56UD9BFjPnyMx6eEpvtxelIGtO+OWJv/TU0e8q3OZnuoK4gBtg0Y46DgI83rodOJBpa6ic/xYIU81lhgvSAwCU/1ejCaG6lVWg7j7+XOzCqd/EVu2yBMfKG9mHSoi3/Q8XqM984VzlcrX4cyWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Ts2xDUgc; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=WrixH0Vs; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 4F97EC009; Wed,  6 Mar 2024 02:45:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709689512; bh=24w78wFIT+tiDvHI5JiAHjNSzb2X5BqfSjmd7z6L0h8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Ts2xDUgci5g5MuYu3CKBP0uHW+R/CcycKJWQ8oQle2r47ROQ/5eHac4uBrH1lLGN5
+	 kuIbjnylYgnZll0N74IaLpwiPbbogYXtqttN/yDqMKdRmnpNKJPJcA3MC2q09wQ8ou
+	 I+F4vy6oj3ZwLVbom6TB/nCMi6QbdXEU8rg4mzo0Z8FRJHpq4qUKH+lj0ewo+2Sluw
+	 ZAPidxtcze0LlmH1noRgCLV/wAe3nOJuP/QPhqTG9gOf+KGCUlzABhXPMPnkl6lSek
+	 jF6muuaV9WUj4N1bBGedwkClOPtUp4WIy3LRXt4abvXVXcAKlLeLAgewtzVPRZYZm6
+	 36dvphHl4mtvA==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id EDE2FC009;
+	Wed,  6 Mar 2024 02:45:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709689508; bh=24w78wFIT+tiDvHI5JiAHjNSzb2X5BqfSjmd7z6L0h8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=WrixH0VsIj47VP+VKle8iE5Zmhp0iznWP0RSHryxDNXtFdiRyh/Qpm+xJhaqNdoTc
+	 L73TvAwrKzhputsnHIVNtJ42jdbluoZPsaOyr4A4xCzeeFgljC3rZ4DtlBq/eqMqHH
+	 gjmZk0XnQGcvUoG9Mg5E0AKcvWRrD4fxT59VZ5UxT2H8sy2XjUauC9pe+hAtJNvbOL
+	 odohqhGCkhltsd+LO1Q6Wwp1kaeP7bnexxdICDcj4BEWbmVOkmHnFiT8AI/t5iGRxa
+	 D9hk4HL41XapAObUvGozSgk7n0iGLO2sa882lOAlgeVchwpBVkKZjrtMokw59tKmhS
+	 CwvzgBQWP75QA==
+Received: from [127.0.0.1] (localhost.lan [::1])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTP id cd420dad;
+	Wed, 6 Mar 2024 01:45:01 +0000 (UTC)
+From: Dominique Martinet <asmadeus@codewreck.org>
+Date: Wed, 06 Mar 2024 10:44:38 +0900
+Subject: [PATCH] mmc: part_switch: fixes switch on gp3 partition
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+X-B4-Tracking: v=1; b=H4sIAIXK52UC/x2NywrCQAwAf6XkbGDtQ8RfEQ/ZGN0cdi3JooXSf
+ +/W4zAMs4KLqTjcuhVMvur6KQ3Opw44UXkL6rMx9KEfwxAumDPjTFb9p5UT8kBTiFO4jiTQokg
+ uGI0KpyPL5FXsELPJS5f/6f7Yth3UctOueQAAAA==
+To: Ulf Hansson <ulf.hansson@linaro.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Jorge Ramirez-Ortiz <jorge@foundries.io>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dominique Martinet <dominique.martinet@atmark-techno.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-f371f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3246;
+ i=asmadeus@codewreck.org; h=from:subject:message-id;
+ bh=w9OlutTB4nTqNTkTKcCGg2BC0kAnzLlfIIcxRubstHw=;
+ b=owEBbQKS/ZANAwAIAatOm+xqmOZwAcsmYgBl58qd3EDKJquFQVqr5C+PMXOYo5Oak5/nQwXwg
+ nESjIyMMY+JAjMEAAEIAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCZefKnQAKCRCrTpvsapjm
+ cJTtD/9ambGPqZXUPyn6wOQAiJYvaqw+Kslr2NYKgb0gtcgO04dvPR6s8y2oWuJtiUlo/jHeFb5
+ i/IbFKmyyHnybn6Vg3MQUErtGV3CsiZgFsfKH2/sXU0N6tz/YtPhbhaoaTynE3+FHWmspQut9iR
+ TGxwTUbiYQ2p2IlEm0gTO/WbuONIsJRQggpSEfBgmjtHFVPnZvp5bTxSXTRldO/D6tIvwCDNezM
+ 6OdyyyqmGPJUEUriLQJnOtnNaYW+8hEh2bTCxHNmAG2otSeWt5ZU+4JCKtn69IJHRI7HD+FSSoA
+ OMuHwtauN7/TKGXAUwyJVR5gL9WHDIKIzVBOX6x6qtVNnqcFZcOkAN3yXeRAD8NttJJWy0D10XD
+ NDO/2NHC0GBmY40v2sZsQB69ceMaLSwWgAuG8FL01cyTxnt0bEVEfqWdytSGs8uIVqzQ1fdwqMi
+ LjUvhHTBEMAqqoQhHchSvi2beaHynRAbxZh7dD9bU07+jqCbAcpQgFyaRF+nfJ2m3aSsUYrJmRR
+ k+B45Ob2yysWoP7QUlbAiWmNQYHIGcc8G0C8QKBvi8/tU7UN9VXNt4q101qNxX3EMFLw1Lhm2CZ
+ WEdItVMXNs0zM8051B8TB2/CSNUS1j9TokJgfjP7MJhh0pkk7PKKV3Rz56Em6Ycf3htm74ZUJfw
+ KeTdfI0hVC2EJzA==
+X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
+ fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
 
-Enable only one CCS engine by default with all the compute sices
-allocated to it.
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-While generating the list of UABI engines to be exposed to the
-user, exclude any additional CCS engines beyond the first
-instance.
+Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
+partitions.") added a mask check for 'part_type', but the mask used was
+wrong leading to the code intended for rpmb also being executed for GP3.
 
-This change can be tested with igt i915_query.
+On some MMCs (but not all) this would make gp3 partition inaccessible:
+armadillo:~# head -c 1 < /dev/mmcblk2gp3
+head: standard input: I/O error
+armadillo:~# dmesg -c
+[  422.976583] mmc2: running CQE recovery
+[  423.058182] mmc2: running CQE recovery
+[  423.137607] mmc2: running CQE recovery
+[  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
+[  423.237125] mmc2: running CQE recovery
+[  423.318206] mmc2: running CQE recovery
+[  423.397680] mmc2: running CQE recovery
+[  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+[  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
 
-Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-Requires: 97aba5e46038 ("drm/i915/gt: Refactor uabi engine class/instance list creation")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v6.2+
+the part_type values of interest here are defined as follow:
+main  0
+boot0 1
+boot1 2
+rpmb  3
+gp0   4
+gp1   5
+gp2   6
+gp3   7
+
+so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+
+Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
+Cc: stable@vger.kernel.org
+Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_user.c | 11 ++++++++++
- drivers/gpu/drm/i915/gt/intel_gt.c          | 23 +++++++++++++++++++++
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  5 +++++
- 3 files changed, 39 insertions(+)
+A couple of notes:
+- this doesn't fail on all eMMCs, I can still access gp3 on some models
+  but it seems to fail reliably with micron's "G1M15L"
+- I've encountered this on the 5.10 backport (in 5.10.208), so that'll
+  need to be backported everywhere the fix was taken...
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-index 11cc06c0c785..9ef1c4ce252d 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-@@ -208,6 +208,7 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
- 	struct list_head *it, *next;
- 	struct rb_node **p, *prev;
- 	LIST_HEAD(engines);
-+	u16 uabi_ccs = 0;
- 
- 	sort_engines(i915, &engines);
- 
-@@ -244,6 +245,16 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
- 		if (uabi_class > I915_LAST_UABI_ENGINE_CLASS)
- 			continue;
- 
-+		/*
-+		 * The load is balanced among all the available compute
-+		 * slices. Expose only the first instance of the compute
-+		 * engine.
-+		 */
-+		if (IS_DG2(i915) &&
-+		    uabi_class == I915_ENGINE_CLASS_COMPUTE &&
-+		    uabi_ccs++)
-+			continue;
-+
- 		GEM_BUG_ON(uabi_class >=
- 			   ARRAY_SIZE(i915->engine_uabi_class_count));
- 		i915->engine_uabi_class_count[uabi_class]++;
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-index a425db5ed3a2..0aac97439552 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-@@ -168,6 +168,26 @@ static void init_unused_rings(struct intel_gt *gt)
- 	}
- }
- 
-+static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-+{
-+	u32 mode;
-+	int cslice;
-+
-+	if (!IS_DG2(gt->i915))
-+		return;
-+
-+	/* Set '0' as a default CCS id to all the cslices */
-+	mode = 0;
-+
-+	for (cslice = 0; cslice < hweight32(CCS_MASK(gt)); cslice++)
-+		/* Write 0x7 if no CCS context dispatches to this cslice */
-+		if (!(CCS_MASK(gt) & BIT(cslice)))
-+			mode |= XEHP_CCS_MODE_CSLICE(cslice,
-+						     XEHP_CCS_MODE_CSLICE_MASK);
-+
-+	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
-+}
-+
- int intel_gt_init_hw(struct intel_gt *gt)
+Thanks!
+---
+ drivers/mmc/core/block.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 32d49100dff5..86efa6084696 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -874,10 +874,11 @@ static const struct block_device_operations mmc_bdops = {
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
  {
- 	struct drm_i915_private *i915 = gt->i915;
-@@ -195,6 +215,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
- 	intel_gt_init_swizzling(gt);
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -892,10 +893,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
+ {
+-	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
++	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-+	/* Configure CCS mode */
-+	intel_gt_apply_ccs_mode(gt);
-+
- 	/*
- 	 * At least 830 can leave some of the unused rings
- 	 * "active" (ie. head != tail) after resume which
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index cf709f6c05ae..8224dd99c7d7 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1480,6 +1480,11 @@
- #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
- #define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
- 
-+#define XEHP_CCS_MODE				_MMIO(0x14804)
-+#define   XEHP_CCS_MODE_CSLICE_MASK		REG_GENMASK(2, 0) /* CCS0-3 + rsvd */
-+#define   XEHP_CCS_MODE_CSLICE_WIDTH		ilog2(XEHP_CCS_MODE_CSLICE_MASK + 1)
-+#define   XEHP_CCS_MODE_CSLICE(cslice, ccs)	(ccs << (cslice * XEHP_CCS_MODE_CSLICE_WIDTH))
-+
- #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
- #define   CHV_FGT_DISABLE_SS0			(1 << 10)
- #define   CHV_FGT_DISABLE_SS1			(1 << 11)
+-	if ((part_type & mask) == mask) {
++	if ((part_type & mask) == rpmb) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
+
+---
+base-commit: 5847c9777c303a792202c609bd761dceb60f4eed
+change-id: 20240306-mmc-partswitch-c3a50b5084ae
+
+Best regards,
 -- 
-2.43.0
+Dominique Martinet | Asmadeus
 
 
