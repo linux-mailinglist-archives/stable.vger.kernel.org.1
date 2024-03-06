@@ -1,252 +1,182 @@
-Return-Path: <stable+bounces-26962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33655873826
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:52:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8964187384B
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 567341C226A8
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:52:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45DF42848A1
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E6213174D;
-	Wed,  6 Mar 2024 13:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CSyyu3pO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6CB131759;
+	Wed,  6 Mar 2024 14:04:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367D113249F
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 13:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F80A131E27;
+	Wed,  6 Mar 2024 14:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709733131; cv=none; b=mEBVnE8i17LmuAdbI9/eQjsveKhpPdpxa/9+kTXlyVSUhTE2XuR1PZ7q0NoaQPNVa429zYoHuSKAjxkWtRQJVl6px/ANTwZx+yY1JkZP4tnr/3zLVg3MOtBwQGZwvMWRydCRXIk7e/XZpJ/rZoOvpVDB0VXXxhaUITaNNgzTl8c=
+	t=1709733850; cv=none; b=bWm2FP9VMYjvF1xrp2LQ7dpxwjKlQEbzAY4jI9eDzd8KTJkJK/sFR2MuuBkc7DyqhJvzEWIIIygjhoEvasvb3DQOnUfSasjhi1f6qDmXLc2iTE0NOTIwYf3qcNzaxvGX528zFwV18OlhW92mMFCBCmZ17Fe2hfj2VdAGEC3EFFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709733131; c=relaxed/simple;
-	bh=DxD2l0TYNyX0nIo8X0aUdafi5RwApWasX/Fm+UM7f2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PatSqjCAzC736g7k2AKq2hRMVhZ6jmumvvALGfV076TKL6gzv43oSF9zOOtGHJL6eksWkAMCgMmgf/YN8DeAD7nUf2r8XP8cT63/bqCRpyIh1yktGB4WuZrimHKxoo63xLohoXUt/t2UHohCft0eDLrP8XqpuqzQ5ULCRuhlbtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CSyyu3pO; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7db1a2c1f96so2879651241.0
-        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 05:52:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709733127; x=1710337927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GIv5f1kNqPYJFCk7U0R+MAUVSCh7feTHZ/Nse4z4iY4=;
-        b=CSyyu3pOCI6EKXhSz2E0+jNIWWWD/UDIBmXgdnUjNA9+UF6qS//DStBp6kEh1rWon8
-         OUUh5nz1BQjSe9G9qHKwcQuO0e1T7Ro09js7P80Se4vhFFmqKRCEmnbfNMOmSs0WzrxY
-         hOpkB/9p4TOEAJQ0XNXDFkQ39k4Io5EPZHg8koGXEY+4BoQovXoYQjfBGkuZNG9meN88
-         fVz4TWkikG20eDAKtxOABAWj8lqdRM/y3LMsll7CLPw+fUdwFDtGZmYUSo5LN12WXg/o
-         MiBYKEmoVssOa+HROuoFKhv5gxoQZBLlC17KdSREWpo58/IQhID2I3RZ4oPm40bJMh/P
-         MBlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709733127; x=1710337927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GIv5f1kNqPYJFCk7U0R+MAUVSCh7feTHZ/Nse4z4iY4=;
-        b=m9MahuNKgr8Ez64Q1MYN/Nvzje4lQmHRFYtjXHgX2zJvi+hDFDXOvQf2clvcD1ON40
-         tq9uy3zFHVtjXc9DbG0NgQN00iVbo02cVT4YTYRuiqQ1tCRu8q6rzKS8f/4a56nljJwC
-         7Xvd1PIn/QHdzVlu6P/26/FR4KdHsM7wMckSDoG86Fxn4VrY49+VtvGiCxUY4hFma54x
-         omMJUvPLJfVaBd01cPA55Cc7V7Aq+snnP+UNKd4Pt2QA2R06R3dF58z+GkLSwRUzVI90
-         grHt8qoY7lKi/jO21mFQaDZWjzgkoNz/BGfb3VQ6gbRRbNnBQXpuo5F7+GcQWvdzDiBr
-         S7QA==
-X-Gm-Message-State: AOJu0YyZNSMYUK8D4plg7ekpZJ64FYC58y/uZ/CkeP38pLRTLwn45uKs
-	eGfwq0nbv+zbFTx4WQoVWBMN3qgOZxD0fP9a4bHBkzpBEKMNW2xW4t4fagkta1y9CW4/cYiIRVQ
-	siml1Cacc53EhuvC6AzsWgbJCMDF6yjaEfggh/g==
-X-Google-Smtp-Source: AGHT+IHhkU275prC88a734xDgCRlafAyCScqUTRNlX3nQgmvhtdfhst4HZGyhvX8Gi1Gdr3G7TwSw2pUSMs4KDdr2fU=
-X-Received: by 2002:a67:f408:0:b0:471:b9ab:7bad with SMTP id
- p8-20020a67f408000000b00471b9ab7badmr4148859vsn.29.1709733127093; Wed, 06 Mar
- 2024 05:52:07 -0800 (PST)
+	s=arc-20240116; t=1709733850; c=relaxed/simple;
+	bh=PB1X8HjhDk0oq0CrNU+1M4O2qnfMn33yRD2/aftWKro=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NKCNsQUgsc0vkmP7bROGoaH67LA0h1f1oN5yCUZ1GVSa40DYrASYigfT6O8sM5AbkqovpHVR8eNEc3le7wK4H8VOvnwzEh/2m9egAArrZ24X6FCCSDen8crWKRTAq5bjzse7lavsKeaqkksV6mVaHxG4E8ldGxb2OELt/6ojBNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8FD4C1FB;
+	Wed,  6 Mar 2024 06:04:43 -0800 (PST)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F5CE3F762;
+	Wed,  6 Mar 2024 06:04:04 -0800 (PST)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Huang, Ying" <ying.huang@intel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: swap: Fix race between free_swap_and_cache() and swapoff()
+Date: Wed,  6 Mar 2024 14:03:56 +0000
+Message-Id: <20240306140356.3974886-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240305113119.020328586@linuxfoundation.org>
-In-Reply-To: <20240305113119.020328586@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 6 Mar 2024 19:21:56 +0530
-Message-ID: <CA+G9fYtdu7zVnS0=Z12x_YLUbLaefpFL2F4CnmD0AHyP1p_j4A@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/41] 5.10.212-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 5 Mar 2024 at 17:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.10.212 release.
-> There are 41 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 07 Mar 2024 11:31:02 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.10.212-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+There was previously a theoretical window where swapoff() could run and
+teardown a swap_info_struct while a call to free_swap_and_cache() was
+running in another thread. This could cause, amongst other bad
+possibilities, swap_page_trans_huge_swapped() (called by
+free_swap_and_cache()) to access the freed memory for swap_map.
 
+This is a theoretical problem and I haven't been able to provoke it from
+a test case. But there has been agreement based on code review that this
+is possible (see link below).
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Fix it by using get_swap_device()/put_swap_device(), which will stall
+swapoff(). There was an extra check in _swap_info_get() to confirm that
+the swap entry was not free. This isn't present in get_swap_device()
+because it doesn't make sense in general due to the race between getting
+the reference and swapoff. So I've added an equivalent check directly in
+free_swap_and_cache().
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Details of how to provoke one possible issue (thanks to David
+Hildenbrand for deriving this):
 
-## Build
-* kernel: 5.10.212-rc2
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.10.y
-* git commit: 713b6af903ad5057407164571c78c1e307098b8e
-* git describe: v5.10.210-165-g713b6af903ad
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
-.210-165-g713b6af903ad
+--8<-----
 
-## Test Regressions (compared to v5.10.210)
+__swap_entry_free() might be the last user and result in
+"count == SWAP_HAS_CACHE".
 
-## Metric Regressions (compared to v5.10.210)
+swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
 
-## Test Fixes (compared to v5.10.210)
+So the question is: could someone reclaim the folio and turn
+si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
 
-## Metric Fixes (compared to v5.10.210)
+Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+still references by swap entries.
 
-## Test result summary
-total: 92769, pass: 72680, fail: 3078, skip: 16948, xfail: 63
+Process 1 still references subpage 0 via swap entry.
+Process 2 still references subpage 1 via swap entry.
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 107 total, 107 passed, 0 failed
-* arm64: 34 total, 34 passed, 0 failed
-* i386: 28 total, 28 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 25 total, 25 passed, 0 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 30 total, 30 passed, 0 failed
+Process 1 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+[then, preempted in the hypervisor etc.]
 
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
+Process 2 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
 
+Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+__try_to_reclaim_swap().
+
+__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+swap_entry_free()->swap_range_free()->
+...
+WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+
+What stops swapoff to succeed after process 2 reclaimed the swap cache
+but before process1 finished its call to swap_page_trans_huge_swapped()?
+
+--8<-----
+
+Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+
+Hi Andrew,
+
+Please replace v1 of this patch in mm-unstable with this version.
+
+Changes since v1:
+
+ - Added comments for get_swap_device() as suggested by David
+ - Moved check that swap entry is not free from get_swap_device() to
+   free_swap_and_cache() since there are some paths that legitimately call with
+   a free offset.
+
+I haven't addressed the recommendation by Huang Ying [1] to also revert commit
+23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device"). It
+should be done separately to this, and and we need to conclude discussion
+first.
+
+[1] https://lore.kernel.org/all/875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com/
+
+Thanks,
+Ryan
+
+ mm/swapfile.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 2b3a2d85e350..1155a6304119 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1232,6 +1232,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+  * with get_swap_device() and put_swap_device(), unless the swap
+  * functions call get/put_swap_device() by themselves.
+  *
++ * Note that when only holding the PTL, swapoff might succeed immediately
++ * after freeing a swap entry. Therefore, immediately after
++ * __swap_entry_free(), the swap info might become stale and should not
++ * be touched without a prior get_swap_device().
++ *
+  * Check whether swap entry is valid in the swap device.  If so,
+  * return pointer to swap_info_struct, and keep the swap entry valid
+  * via preventing the swap device from being swapoff, until
+@@ -1609,13 +1614,19 @@ int free_swap_and_cache(swp_entry_t entry)
+ 	if (non_swap_entry(entry))
+ 		return 1;
+
+-	p = _swap_info_get(entry);
++	p = get_swap_device(entry);
+ 	if (p) {
++		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
++			put_swap_device(p);
++			return 0;
++		}
++
+ 		count = __swap_entry_free(p, entry);
+ 		if (count == SWAP_HAS_CACHE &&
+ 		    !swap_page_trans_huge_swapped(p, entry))
+ 			__try_to_reclaim_swap(p, swp_offset(entry),
+ 					      TTRS_UNMAPPED | TTRS_FULL);
++		put_swap_device(p);
+ 	}
+ 	return p != NULL;
+ }
 --
-Linaro LKFT
-https://lkft.linaro.org
+2.25.1
+
 
