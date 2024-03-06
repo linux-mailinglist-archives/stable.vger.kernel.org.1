@@ -1,110 +1,98 @@
-Return-Path: <stable+bounces-26959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E651187381D
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:50:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6650873827
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AB5288125
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1A44284415
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB4C131746;
-	Wed,  6 Mar 2024 13:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BBA131756;
+	Wed,  6 Mar 2024 13:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="D1VN1cyu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ho/7cbAA"
 X-Original-To: stable@vger.kernel.org
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B12130E57;
-	Wed,  6 Mar 2024 13:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D9B13175B
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 13:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709733031; cv=none; b=E3DclQ4nirgP41j8A2HUNXV8it/IWWqBcx0o2fI9AtYHhLVMVmvo8VaSfpEfHEGHe5uL21QwniILYRQVYNG8bpq8MquU6oo/YHYO9hKthXGsz7v/FPzSIIsnLlH5YElQPI47XvblUd7e3VU3ta2rTVnFwkfCbgjh5uD8PgoejGg=
+	t=1709733148; cv=none; b=MAoFEaTOpXZVJQGI/e1NO9/GLf752wxPPo9yJExhidSzkG/2ZTRxnbTygDJIWOapA4V22ra5mC6XZU50u/wk8UuqHE6x7WMbp29Nd9MHcrY7WmKINxBI1o0UTtffGnJzaYu8wh0cUHRiGVmw5F0vGIvUKv4Texx+0r7qJHtcMis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709733031; c=relaxed/simple;
-	bh=Rz/7QeGwGWVQ23cVl//CoUspDWwVdJjOPTplV8dC39E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ifBVpXLoOTGuMzeINMXbhVl2gnb1s7+JlIvxkoQRP6UYIwk+QZsEqzeJOySLUquOYnJBbDqjx9WfgMfdLWskXRGA6FyQ4NIjDuhgxH9n+/5ogBhmcmWqByURAftrQqk8GVtyyEBN9JmUU1UOMIAq1AVplRdW0P9KRRa5BvG9bB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=D1VN1cyu; arc=none smtp.client-ip=178.154.239.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:601e:0:640:ac7:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id E70F16090D;
-	Wed,  6 Mar 2024 16:50:26 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Bogo8U46U0U0-5x8x78mU;
-	Wed, 06 Mar 2024 16:50:25 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1709733025; bh=si9CmxfbTTi+fzS7ZgV1gg2/IENW5eLorkGc5P/t0aU=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=D1VN1cyuNsIj1u2ombhbQGZLwl6NLZWBoBjvpgF+oBQ0bDbD0i8wrI8SljgXvkQyj
-	 2Vba3U5tDUZqR7YBvxEzfLgA3EL9TI32Roii1o59KBOcyR+ZHoPEuG4d7vhHNF5CDf
-	 aDXNkMROmIdi0tuSn0/SyooTY7XBsmqJ6li6omLw=
-Authentication-Results: mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-To: Dave Kleikamp <shaggy@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jan Kara <jack@suse.cz>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	jfs-discussion@lists.sourceforge.net,
-	stable@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	linux-kernel@vger.kernel.org,
-	Pavel Koshutin <koshutin.pavel@yandex.ru>,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Mikhail Ivanov <iwanov-23@bk.ru>
-Subject: [PATCH 5.10/5.15] scsi: add a length check for VARIABLE_LENGTH_CMD commands
-Date: Wed,  6 Mar 2024 16:50:10 +0300
-Message-Id: <20240306135010.9250-1-mish.uxin2012@yandex.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1709733148; c=relaxed/simple;
+	bh=hLlFWfK7U9czUprUrCxIsJwcRynBq1e3zZxrE3z4kuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=s8+11Mf/MdWEXpZITeoMo2ZQSLyTfbp7sMc1xvMgcH0UfaXBsKcj/JuE1WC4k/hvXtQ4l9fLHmr1WC/P/4LLoVOrM0XdjZa4eljOD6N6PvHc8nGL1b5DmZ4KSghUV5EDIuXidDoMdNt1fEu7tzzI9ZvHcK84Osj2Tm5k08jhXRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ho/7cbAA; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709733145; x=1741269145;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=hLlFWfK7U9czUprUrCxIsJwcRynBq1e3zZxrE3z4kuk=;
+  b=ho/7cbAAdIEGYnMpkm5QX4aD8Pm/h8smeddVDTien3XIpYm0M9jL/j4o
+   SCjg68jqOZvgT4njq01Wyz+93uKWCKkMjcO9lcO9O0MMeYGMC4n7xc3Ij
+   cc9qznehnhuJJrhbZ9MXjaDW3mYqDss1tXh+0+4+Kbjq45oZKYf36ctgw
+   LuMadWBxiiBYB/XoZ+WKSWHidPG2kG1rN6CgQraaItbRFrguOle8JjQtL
+   Zd8iPLH0e+pGIIX176oGaBAAVlYg+EzSSDTkSguiMA+Gm1t+MydzIYr6g
+   v+D7dwCoFJeKa3hTUDwRW6zS9w4gGlkq+2uS8RnsQNoGNEz4PATRIGlML
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="14920131"
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
+   d="scan'208";a="14920131"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 05:52:25 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
+   d="scan'208";a="9695639"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 06 Mar 2024 05:52:23 -0800
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rhrgz-0004Gb-0U;
+	Wed, 06 Mar 2024 13:52:21 +0000
+Date: Wed, 6 Mar 2024 21:51:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.10/5.15] scsi: add a length check for
+ VARIABLE_LENGTH_CMD commands
+Message-ID: <Zeh04FzDMBIY4jhQ@0a06dd0f349c>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240306135010.9250-1-mish.uxin2012@yandex.ru>
 
-Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
-ata_scsi_pass_thru.
+Hi,
 
-The error is fixed in 5.18 by commit
-ce70fd9a551af7424a7dace2a1ba05a7de8eae27.
-Backporting this commit would require significant changes to the code so
-it is bettter to use a simple fix for that particular error.
+Thanks for your patch.
 
-The problem is that the length of the received SCSI command is not
-validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
-reading if the user sends a request with SCSI command of length less than
-32.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
----
- drivers/ata/libata-scsi.c | 3 +++
- 1 file changed, 3 insertions(+)
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.10/5.15] scsi: add a length check for VARIABLE_LENGTH_CMD commands
+Link: https://lore.kernel.org/stable/20240306135010.9250-1-mish.uxin2012%40yandex.ru
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index dfa090ccd21c..77589e911d3d 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4065,6 +4065,9 @@ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev)
- 
- 	if (unlikely(!scmd->cmd_len))
- 		goto bad_cdb_len;
-+
-+	if (scsi_op == VARIABLE_LENGTH_CMD && scmd->cmd_len < 32)
-+		goto bad_cdb_len;
- 
- 	if (dev->class == ATA_DEV_ATA || dev->class == ATA_DEV_ZAC) {
- 		if (unlikely(scmd->cmd_len > dev->cdb_len))
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
