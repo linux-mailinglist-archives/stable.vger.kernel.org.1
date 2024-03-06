@@ -1,124 +1,168 @@
-Return-Path: <stable+bounces-26966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC21487389C
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:13:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B54C8738DA
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 258B91C20834
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:13:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE17AB21183
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF98131742;
-	Wed,  6 Mar 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC17132483;
+	Wed,  6 Mar 2024 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBRP9Gik"
+	dkim=pass (2048-bit key) header.d=foundries.io header.i=@foundries.io header.b="X0P9x3OT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D71130E49;
-	Wed,  6 Mar 2024 14:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1052D131749
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 14:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709734396; cv=none; b=lRL2Sszx8qNd6zDX47q1PGWjYHO/TnVqfvILeJl6CdQtTudtD8PtdRvZRUnMCfqflo79XgBIShRUNP+6wbL+H1PS9TEJzcPzFn8nMY404iD4/61DzgVvdvDowM4NRRLKrnHWpeiY391M95VT8/pb9rAn11sYJNrAy5Ii3tk0OB8=
+	t=1709734945; cv=none; b=vAk7dWVESKVIeFri2nmjrJaBCdK5I032CRhkVnJui4nmcE+knrDVuBsb/STI4HvgYsXfexfkz8/JMKLi+Cq12t+zTbn7mH8afcwmuyXO/KMcapQ0vuGyw81ngS/yyIGh2ynMPIVizQnKEMzB+rMfSGpYrWwiu0CtmYFvJ3Kc3PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709734396; c=relaxed/simple;
-	bh=It7NICRbL71EELJxllQ0BP1TzJfhsjBT/sz/UMTrHLk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W5U/SPy78v2PCr0xagHFY7vQOeyvSczLbte/ESBveO+1OgvTCU/eZMsrRN7O9wIo7wwj2Zh9nq3Ep37e1qqcZhQ8UdnPk4KvzeE5IoBdMtSrp//0d3Wh4aJn5U5zpdc3fWgKmwBFm5uefhEXvBniqiDnrFq8srPd2d11cPgsAwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBRP9Gik; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-22008177fbeso4101806fac.2;
-        Wed, 06 Mar 2024 06:13:14 -0800 (PST)
+	s=arc-20240116; t=1709734945; c=relaxed/simple;
+	bh=qxYOwaZcbx8hyWY5Ie0DRgeqhjQYZZ3KBdeahsa+ULc=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bjtrUKrO8/CcuiBf/oCuZDJgi1ZnFIbJbt6tQ6+CdTZsc76Bu8pQT8tzzN1yKaq8b5VWvgXNSbHEhkV7LQMhnnskt4WAWchH4RXUSUsADwbYS8Ul/2dwF1pGPHGSIxvkreii03d7JAofr9MWdbhjsQoInEE0fiiN0MPICfehY8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=foundries.io; spf=pass smtp.mailfrom=foundries.io; dkim=pass (2048-bit key) header.d=foundries.io header.i=@foundries.io header.b=X0P9x3OT; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=foundries.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foundries.io
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-412f988b601so3268985e9.0
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 06:22:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709734393; x=1710339193; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDJW5XO0Z8RR5HbABA4SB63Audsmw8maIWzqQ6JX9FI=;
-        b=kBRP9GikBg+Y326nkdXOffxVQd0ufjVOyWV3MS3tQhQ5He76kJAuqSxd4AxB45OMH9
-         3Bh4Q322RWoesrUD8/iTQKDigoCYogIElneHp5k8z05BOdxyAFkwirei+X0JeGuY55nH
-         tBxtKrkrrTVbfpmAbsSgLoBGDyZb2sar6kbAelI0sFR9noMIeHjJOcXq1AoxB2ZbUPeh
-         WqDoNlOrZfiLZCesqBWBil4oICwOd1sdtavTFwUXf0wnrmmB4O7ea1V42uyu+KcWa6hd
-         mS6ThL9jt/EDBYRu5uH4SQh0d4kB3q0XFMObt3ytSKC0l5il7D+kpLOQjPTLHFXclINa
-         i2aA==
+        d=foundries.io; s=google; t=1709734942; x=1710339742; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cOt02qNbcMDdF+TSWPrUZScoOyboAJRj4lBIhLrn6nI=;
+        b=X0P9x3OTiV2FkrXiaKle/QAXw6QfrgTqjpXyWG6q8guu/IhQrbFNoOXNEtNmlE70oR
+         rtLrue7xz9G/U+cMLhYW65QufJD8TrXVT2HPognKKwB7j2xMfsLnyZExr67CugrGJEdT
+         uQ7q2yLXm/xfVJticlxLVVL4bs1c1jib2Q+2bMqCY5MlTxhPQzfl+YdKGM7o8P7+957/
+         nebrV8XCtwJWCQxf9WvCFVSZQM1SbvD6Mu+5QidgqFV7hEjZZIgzqq7dzt0hApd4MjOY
+         g/1QdncTQoVvtArqZ7XKSFnf1a9VBnmTmoyLzICAgJNAL9eloWn9J9b7oNgQasfMKDDF
+         MNHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709734393; x=1710339193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lDJW5XO0Z8RR5HbABA4SB63Audsmw8maIWzqQ6JX9FI=;
-        b=JKRXyX2OVav0Qr96SdTRDg2BbJo79+otIw4Xej4GFaUL7ZBYT0ccOq95SffqiHKFop
-         rrh7+y3DJ+m2URe9UlrfKiAIO0hc7J8I4HIZs/bB5o5cH4mnYvGV5iCk3ADZV3Y3e+zs
-         7q+tOpR8gGA9eZDjHQD8sHv4ay+7v2kdEPGpwPl8qU9voSSiYD70NCiD7PXMkmNQtSXB
-         zutv3+XsUU4djS+1IF9kn09TlXkyLyyIIIrKL6lBWKBflZTeJhXj8NOYri5mgORujULz
-         VmWNUcH/JSUY+n46SY57OdDsoe0XLXJhY2lqHHloXKWKQw96QdgQiekn97j9i1Eip3bz
-         9KXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv7MZg/ymlEyCLk3VWLdqcXiyt6wfZSK/lP3HgH49Y85AVrrKhM/zJLsD1WAO4oFBMJ0RGJnmFBDFC8Cy+hA4chCpSAoIX/MDug1aC1xZGXjufvkaL2bG0JyeNWhnnh94m2w==
-X-Gm-Message-State: AOJu0Yx0YoXa+8G1ADUUlIHA5cBJGG/lEIGA0EGO1rj4iNNsYNkN+7bV
-	wn/mPUWjEBwyC433s/rqlAtQb3Wn13lw8CkHqOwTWlFoiuPhMdSiwA0u+suA8LQC5fh1zgLfXZ9
-	0ac6VhZA/7AMUcsFG6rk2PGq9I2U=
-X-Google-Smtp-Source: AGHT+IGRq4721MOAgyQqDuldDgp9kVO2AiMAjdMC1PvozrTc3VkKt+fbB/vvOoSIeP5tofkGCpULrZghcU9z0ejNlWg=
-X-Received: by 2002:a05:6871:8a7:b0:21e:3c57:18d4 with SMTP id
- r39-20020a05687108a700b0021e3c5718d4mr5287870oaq.19.1709734393643; Wed, 06
- Mar 2024 06:13:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709734942; x=1710339742;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cOt02qNbcMDdF+TSWPrUZScoOyboAJRj4lBIhLrn6nI=;
+        b=jUycfUnfoVv8onwyww2KImfkrtNkDl+237ZzYrjKMcUHolMUDvMLWb/+BJgC/1alaq
+         uAzfW1fpYN8OAeSXrmKPxBsMhbyFoBEKbNMDCsrtq4NCDrKOuUo9J4OMxIjG+kjtLAbY
+         /EvyCOsdJMvWD13bGKUsB/fgCyxGZlaPjkrHZNrA72SaFq3yYoUetGhVMqvxjPsieLc6
+         0Y/9/pFoj20NBsp5Jagg66q025IpzJmZZSjnlEhl4qARoMUm8PG6mo8vM3Yih/mjZAcZ
+         nCYmEMBxK08h3jWr2KSyV8BDb/WrqTttFtAyoozejyaxGALDPIQgGvuAcYqLM1VPAwPZ
+         9pGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXE9PBu69TffJ3sABFt8M8WaSNWdfwklI41V9mLCVP6JihOqYIdt5gXCU+PpqUlcIr1ZOAVuaLNQRa0A65sEpkgj9RKT268
+X-Gm-Message-State: AOJu0Yz27U1dTq+Tjz9yoQkHLhfsqfnduRpdd2YTcB9+Mv8dv+DoxvWS
+	jCmx4Gdz6rATQGxZOO4li8bY27eM6XGu4IS+0/orLyImXJCtQJ8H2LhjbBkvAWQ=
+X-Google-Smtp-Source: AGHT+IG+O14wyWHMVOWekCfQvwWKXcXAS82ZA8/4Fv/QDUBev5zw4Lh2wL576FZOCtNprYufeVeXMQ==
+X-Received: by 2002:adf:b199:0:b0:33d:873a:616 with SMTP id q25-20020adfb199000000b0033d873a0616mr10057350wra.64.1709734942333;
+        Wed, 06 Mar 2024 06:22:22 -0800 (PST)
+Received: from trax (132.red-81-38-137.dynamicip.rima-tde.net. [81.38.137.132])
+        by smtp.gmail.com with ESMTPSA id m6-20020a5d4a06000000b0033dbeb2eb4dsm17642666wrq.110.2024.03.06.06.22.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 06:22:21 -0800 (PST)
+From: "Jorge Ramirez-Ortiz, Foundries" <jorge@foundries.io>
+X-Google-Original-From: "Jorge Ramirez-Ortiz, Foundries" <JorgeRamirez-Ortiz>
+Date: Wed, 6 Mar 2024 15:22:20 +0100
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: "Jorge Ramirez-Ortiz, Foundries" <jorge@foundries.io>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Tomas Winkler <tomas.winkler@intel.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: part_switch: fixes switch on gp3 partition
+Message-ID: <Zeh8HGDToMoHglD2@trax>
+References: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+ <Zegx5PCtg6hs8zyp@trax>
+ <CACRpkdYZrDgVVCp2bqJqY1BpeHSXDWbRSqk6d=N_QhC4OVv=Ew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306010544.182527-1-xiubli@redhat.com> <87msrbr4b3.fsf@suse.de>
-In-Reply-To: <87msrbr4b3.fsf@suse.de>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Wed, 6 Mar 2024 15:13:01 +0100
-Message-ID: <CAOi1vP_CNhNUZsubd2ytXmqGofMpgnOYVrj-5UErDvWJDK2WCQ@mail.gmail.com>
-Subject: Re: [PATCH v2] libceph: init the cursor when preparing the sparse read
-To: Luis Henriques <lhenriques@suse.de>
-Cc: xiubli@redhat.com, ceph-devel@vger.kernel.org, jlayton@kernel.org, 
-	vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdYZrDgVVCp2bqJqY1BpeHSXDWbRSqk6d=N_QhC4OVv=Ew@mail.gmail.com>
 
-On Wed, Mar 6, 2024 at 12:24=E2=80=AFPM Luis Henriques <lhenriques@suse.de>=
- wrote:
+On 06/03/24 14:18:49, Linus Walleij wrote:
+> On Wed, Mar 6, 2024 at 10:05 AM Jorge Ramirez-Ortiz, Foundries
+> <jorge@foundries.io> wrote:
 >
-> xiubli@redhat.com writes:
+> > That looked strange as there should be support for 4 GP but this code
+> > kind of convinced me of the opposite.
+> >
+> >         if (idata->rpmb) {
+> >                 /* Support multiple RPMB partitions */
+> >                 target_part = idata->rpmb->part_index;
+> >                 target_part |= EXT_CSD_PART_CONFIG_ACC_RPMB;
+> >         }
+> >
+> > So if we apply the fix that you propose, how are multiple RPMB
+> > partitions (ie, 4) going to be identified as RPMB? Unless there can't be
+> > more than 3?
 >
-> > From: Xiubo Li <xiubli@redhat.com>
-> >
-> > The osd code has remove cursor initilizing code and this will make
-> > the sparse read state into a infinite loop. We should initialize
-> > the cursor just before each sparse-read in messnger v2.
-> >
-> > Cc: stable@vger.kernel.org
-> > URL: https://tracker.ceph.com/issues/64607
-> > Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available =
-on the socket")
-> > Reported-by: Luis Henriques <lhenriques@suse.de>
-> > Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> > ---
-> >
-> > V2:
-> > - Just removed the unnecessary 'sparse_read_total' check.
-> >
+> As far as I can tell there can only be one RPMB partition per device.
+
+that matches everything I have seen in the field too (and we have been
+supporting RPMB on many designs lately (# > 30).
+
 >
-> Thanks a lot for the quick fix, Xiubo.  FWIW:
+> The v5.1A spec says (section 6.2.1):
 >
-> Tested-by: Luis Henriques <lhenriques@suse.de>
+> "Two Boot Area Partitions, (...)"
+> "One RPMB Partition accessed through a trusted mechanism, (...)"
+> "Four General Purpose Area Partitions (...)"
+>
+> implying there can be only one RPMB.
+>
+> Also I have never seen more than one in practice.
 
-Thank you for catching this, Luis!  I'm still lacking clarity on how
-this got missed, but hopefully the fs suite will improve with regard to
-fscrypt + ms_type coverage.
++1
 
-I have staged the fix with a minor tweak to use msg local variable
-instead of con->in_msg and reworded changelog:
+so I think it is safe to conclude that my commit did indeed cause these
+regressions as it ignored the support for multiple GP. Sorry about it!.
 
-https://github.com/ceph/ceph-client/commit/321e3c3de53c7530cd518219d01f04e7=
-e32a9d23
+I still cant grasp how "target_part = idata->rpmb->part_index" is
+helping in the design.
 
-                Ilya
+What happens when:
+1) EXT_CSD_PART_CONFIG_ACC_MASK > part_index > EXT_CSD_PART_CONFIG_ACC_RPMB
+target_part now could be indicating a GP instead of an RPMB leading to failures.
+
+2) part_index <= EXT_CSD_PART_CONFIG_ACC_RPMB
+loses the part_index value .
+
+So part_index should be larger than EXT_CSD_PART_CONFIG_ACC_MASK even
+though the comment indicates it starts at 0?
+
+/**
+ * struct mmc_rpmb_data - special RPMB device type for these areas
+ * @dev: the device for the RPMB area
+ * @chrdev: character device for the RPMB area
+ * @id: unique device ID number
+ * @part_index: partition index (0 on first)    <---------------------
+ * @md: parent MMC block device
+ * @node: list item, so we can put this device on a list
+ */
+struct mmc_rpmb_data {
+	struct device dev;
+	struct cdev chrdev;
+	int id;
+
+is it just possible that "target_part = idata->rpmb->part_index" just
+needs to be shifted to avoid issues?
+
+I think the fix to the regression I introduced could perhaps address
+this as well.
 
