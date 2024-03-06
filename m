@@ -1,227 +1,393 @@
-Return-Path: <stable+bounces-26947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B84187363E
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:26:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B984F8736B4
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1313F1F250C1
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:26:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7030628298F
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1405D80020;
-	Wed,  6 Mar 2024 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3401272A4;
+	Wed,  6 Mar 2024 12:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hF90j4Ft"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="F6xbbpd2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA115F566
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 12:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709727991; cv=fail; b=UQXfkOQoSihVmnAeSm/+bWX8vKbNmXxx6RqHO+w+LmMRBxTPrapQAn8JoEJHDLZh/AUpMVTid0qWs1TCj//QhVnFWtps9reTwY039cIKEbodxYughDxJCTTIqDyyBAQBHuThOMVTSULKm6fLkcEt/hFp6UcMz7ADgDGUKO03fAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709727991; c=relaxed/simple;
-	bh=1rMO2j0MdrlB+J0QOkYh7KsDQp7V5MPSYxlDgYhcau0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FVcTx/x+m+AG23JU2RdDEv6gDX2i291p1/OYddCCukMG9lc5G91fBKUne6yNx+SqvPUK7zBLOAK6nTTJRXR3ZCVoF/7mY3JrkIrIHNZ7JdL63GhnJgP+3WANGgKdPti7druE9ItRoPEsYpAc6HSXnH3SYF6BD/vDAAZqSJS+YPc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hF90j4Ft; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709727990; x=1741263990;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=1rMO2j0MdrlB+J0QOkYh7KsDQp7V5MPSYxlDgYhcau0=;
-  b=hF90j4Ft21QKSqVSnAWGCSLT9af1w8BeQOPMEvW9gCODE5V4RasGNlsX
-   bwQQi5ca5yl2Sfc/J+K98eDof+rT5ZQfjWdO9d/w6ZoJ+AxytBhRVlTe8
-   RKHr5eVPzo0NxBx07PAc0G6YslJFOTjMKpIqq+RyehjXY5/tWkMtO+4lk
-   SYmvLEVs9MhCGWtXjRQz76kEO7lvJMhdBEcO/HkqHps/k9fVWLWGezmak
-   ysQZw12RFCysJ2P3f8qwUR4CEU4upvX5KvmRSD3S3aB7hYQUN2Dktcydn
-   mtgd43SG1e8ubKnvp6tdpNYsUBd/lpZE4Dv3wEitmuFrG0Qjc1wWjwe8x
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4919696"
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="4919696"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 04:26:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="32891537"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Mar 2024 04:26:29 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 6 Mar 2024 04:26:28 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 6 Mar 2024 04:26:28 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 6 Mar 2024 04:26:28 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 6 Mar 2024 04:26:27 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q2qqDEUPpQ3PSxO2QpP4/JTgrXHLPsQUldYMjppaeQQXroWrMML/C/ECxNoZnR6c8RB5fMAXmwHJ9pfNLpL2pSc1k3cs4bUg0h/5VwsSvfOjQLyuUQooQJW21+2NWHB3ppZdpZoXy4Qz+szVEjxSPSzxdZKxa15wPp4bSTX4yHyjANp+Qc6oDkamKpl/K9b7ccLrEbVLnvJLNXb8df7/C9dt5n1voovLQHSWT2uV+xnMKgqVJYOQ7zDU50/s9VnN9ZQSck2LkcHGPByBraBqX8bdje7JNJiHrvn4rKL3qjO5sI3r9nLl8pYF/OtxXqYUro21XPkK2O0sW07uAQc8XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1rMO2j0MdrlB+J0QOkYh7KsDQp7V5MPSYxlDgYhcau0=;
- b=oQsV0ub+jx5ZSNcMIIfGL03paH+NLCEuaASZYi73LtAjUI4/XNrTv63bQxK9D2ACzBArHs1EGhO3sAtuhhOIqP85ou1qg/XuK3Q0ah9p8+maSeNc4Kc4eh/fJ0frK+1HE540sU8I2FT86CC6iY2OOQr+7a4ukN0opGhBqlKwhM909VzHVsiV7rh+W95STNHcV7iWnURj36qLR4G6bg9MGCttS4eoPpON/L3ue/N3meZRWAFZz7g0unxBo/PYjFib/zQl++ioW/+HeqyNKOTxAyNAh4mmCaddW55QelF+u+CLRii8M4v6Wt62Ab3qVUP0x3LQXLZ4LRyD8lNvV3Gqeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB5981.namprd11.prod.outlook.com (2603:10b6:510:1e0::15)
- by SA2PR11MB5036.namprd11.prod.outlook.com (2603:10b6:806:114::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.23; Wed, 6 Mar
- 2024 12:26:24 +0000
-Received: from PH7PR11MB5981.namprd11.prod.outlook.com
- ([fe80::8970:61a2:f00d:b23f]) by PH7PR11MB5981.namprd11.prod.outlook.com
- ([fe80::8970:61a2:f00d:b23f%4]) with mapi id 15.20.7362.019; Wed, 6 Mar 2024
- 12:26:24 +0000
-From: "Manna, Animesh" <animesh.manna@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 2/3] drm/i915/dsb: Fix DSB vblank waits when using VRR
-Thread-Topic: [PATCH 2/3] drm/i915/dsb: Fix DSB vblank waits when using VRR
-Thread-Index: AQHab3v8QMSoTs7yTUC8fDm9WwJ86rEqo8mg
-Date: Wed, 6 Mar 2024 12:26:24 +0000
-Message-ID: <PH7PR11MB5981989B7FD1C733A947A0C8F9212@PH7PR11MB5981.namprd11.prod.outlook.com>
-References: <20240306040806.21697-1-ville.syrjala@linux.intel.com>
- <20240306040806.21697-3-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240306040806.21697-3-ville.syrjala@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB5981:EE_|SA2PR11MB5036:EE_
-x-ms-office365-filtering-correlation-id: 79d216e9-85ec-4474-2e2b-08dc3dd8a391
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Rl4//Qkcgz34drtbw2qr8+usrG6cDByQKgG+nXuFBWOkolwSrT4TfyXf6U1ZHiph7CLGE2Ne6P2AfTiYg0a9+9ujW10nh0eXedAsoZ8hqpqD7wd/OknKWW9gt5xlFQvcWQfzRKYOclgxB/gRyhQcIMg4BiO7fUbcWO7Afaxoox2JkhqAIor6tF0KtpdtUGd0Ba1dDpRxNOA0lZbzrWl0KmDgCqVfllubZhsxHGU1E88jig3LKe3R6Wr6RL5JfymxDV7dLCVcxIukGYHn8soqzJW25vnvVWO+8uaiKp75frcVrWDBoaaCXvabOV19fgLXWtnay2nVFX4DEvoY7PG1tEVb0YrJUF1RXU8U621gKqs+nOv1AMJ8pjm0jEWljCTQYknK9m4oXk+hDJNRBY8ULBJB+SJid/hebwZjiLe4Bz9LcBz+lRMJyZgzEHZHxrz/Qgc46HapvtFq9Rq0Ky/QusEPkg8Cd6Toy+O8rv0lt4LP4sE1VL1MxnIkPv134p2bRhepYh+blqjycn2T+F5mdpJ6VMQipH6aPgUpW+qkUC+Qi0qSZ5rcjWMfPX5I7KE9PI5GHb/CHj0Zss3b/brIeG5mFGnguopoOTiPOPLB4oOx7GBPwnGqTD0vYvsostuAXkqpamIqMWR3fpZCqTbo1MAzV0L48wnJDduCWA6eLwM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5981.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cTNRZlE3K3ZkcTdEUFNSQkdpZThVYzZpS1VOZTBtL2d6Z0lVc0VKanZyUDlj?=
- =?utf-8?B?SDhwbXB2bjZPMEZJeitWdlQwYUY0WW5vTGFHUkVuQTBiTjFBc3BNU3hubGpx?=
- =?utf-8?B?OTFEUDdrbUpzR1NNc0dlbUQ2TThWWmhwWm9KN1FRSTJyWkRBWExDbnNvWGow?=
- =?utf-8?B?VzJtRnVKSXNyZGNqcmRULzUycWRKK0N1bmpsQWh6cUJ3d0pVb3ZGRDlyVDdt?=
- =?utf-8?B?Y3dqNGlEeTdUcjVUU1lOTzF6M2wxZ1ZkTkxQOWl1aVZVaXVsYzEvbXhYM2d0?=
- =?utf-8?B?MTlmaFlJanQzNlo4YzhDMWZTNGtaeGZVSVNyT1VqdUVkN0dFWldTcFlSdCtl?=
- =?utf-8?B?YWprcEtBa3pnOFJKbjJDd0RmUCt3bDdEc0g2aHpJbFBPUUxUYXQyL29nV2VH?=
- =?utf-8?B?bndVd2NWR09DR21haisxY2lmZitQSHcyOUI1TldlU3pZWG1WeVliUVFONjVU?=
- =?utf-8?B?N0kvK3lveVd2ZmFXbSt6d3JhZ2xTYkxDd0ZISEUyMUt5RDh6a25TQUVFdXFK?=
- =?utf-8?B?ckVXWVNQa3lFZ2dHUUxoZFVMSTE3MkNqN0VqS1NsVlZMV3Azb3Q2VmtNTmFF?=
- =?utf-8?B?dVBiRG1ITjkzSTdld0NSeXpGdkhjTG5hVzlQT1FWM1UzcFNwSTI5MEN2UHNx?=
- =?utf-8?B?ay9vOTE2NDhNYnR4WGswUThtU1lnSnJ5WG5SMUlsNmNEQzhwb0tQbWFDcHRU?=
- =?utf-8?B?elVFODNWNGJVUU1UZzNIbE5EY29hR0I4M3ZPREtuc1lVOTBFMzZHOTZrSVZF?=
- =?utf-8?B?UU94Sm04SmVQdCt6M0h1M0w1b2xyZDBFSXlwenFTVzJGU3hTaU9CWFpyQlpB?=
- =?utf-8?B?SmR0SGlQVW9ZdjI0VzMzbHJJOHFrdzJReGN6SHRjcktaMFd4clhDRzVqOXVz?=
- =?utf-8?B?V050VlpmM290Y1NFenhGNURmVFVOVUdhcUxyYS9KZFg5aFNwUzF5TXpsd3R0?=
- =?utf-8?B?aC9NMzl0MXQ0UEhHVHRmSk5nVFkzWWVCUXF4Zmx1LzVFYUJrQTVRQTF3VFJy?=
- =?utf-8?B?Mm00UXVxbHRadW5qaFE4Z3RWU2NqVGxqbWxHckpReXNicDNPeWwrbzF0V0RE?=
- =?utf-8?B?VFc5aHNUWWtOQms4M2E1ZkdDcGVWMzVBbmJ2QzNLMmJtbndFbmFQa3oweWcw?=
- =?utf-8?B?SGZUd1F6OG9xWTRpaXNZRCtjLzZCZG5UdVVkRUdwYlQ1ZmNkM0xzMHR6TDZQ?=
- =?utf-8?B?NWt3djRkVG1oaSsrUGx2ZW1UR1pJaDh0bEE5bS95V0hJQzhJcnJnejQyOHBy?=
- =?utf-8?B?NGlKUXVsM1ZPOU5XTm1SeW8vNzNjVTlDa2xveVFKNVAraTZtRSt0SVA3NUlM?=
- =?utf-8?B?YWhzYjlrVFl1RGVzNHB6RTd2VGk3cm5XRlRTekxFYTJkVENxTHhpSDNzdTdM?=
- =?utf-8?B?YkF6UWpIcFp1U2dvY3pWVkcyNm9XVy9zZ0dmc2VCeFVCT3N6RUxGSkZCblhP?=
- =?utf-8?B?SjlVWk5TWjQzOFJxdHBhYjFJQU85dm90eVBaM2FPcDdQOFRYL2pRbTI5Q3Vp?=
- =?utf-8?B?YkxGUmJEZ1F6TmF4clN5NitmTGVUMks3Znk5SWlmTE1HdVkxY3BRdDdOK1ov?=
- =?utf-8?B?QTZQbDNCa3VqdGZFOGdSaGl2b0RMSFZvWTVGclh0UjRIS0xoMUN5L2E1bG55?=
- =?utf-8?B?bHM3R0J5ckIyV2grZ0ZXeEFCWGEzd09XRWRkVTlyK2hVaFNjejZKTjF6MXRv?=
- =?utf-8?B?V3MwTkI5cGY1WmVyYTkzWlUrWEtIcnlXNnl2U2dnTWMwb2RXR1RkT2ZLVDBk?=
- =?utf-8?B?RC95TUIwSWZTMWJhRkZRZ0c5WnFtQW1KcWdQdmplNTBnSkgwNjZOb1RuaHNx?=
- =?utf-8?B?bzNoenpwTUdCeDlVTlVSc0Nza1Z3TmNCUlBZUXBTVVorWDFyMXVRTUh2YmtE?=
- =?utf-8?B?SjhoQWVPZ0V6SjZ4OWV2OGVKVUlpSUFSTjFadVNFd2hWM3AwMVZJTVlaL1RJ?=
- =?utf-8?B?WWtWZFRHaFhPSW13U3NiZXExRkZ2YW9xMHJoRXpjZ1FOSVZBUmdNdDRHY1V3?=
- =?utf-8?B?cmhaSVhjYlQ2Q05YTy9kNjNTN1Yvc3ppNXAvTWlndGtoc3hYTFBnemp5Z2NU?=
- =?utf-8?B?ckE2blFsM1NZNHJMRGtKU0tMWjVpeUtYOGgrYzl3QzdKSEZ2U08zbUtWcUNh?=
- =?utf-8?Q?Cam2kRuajoy2fO9dfKQZPl3Cq?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC7B1E519
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 12:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709728762; cv=none; b=VRx8mACPr5G7Bd6fUnHd+oY9Jyq2H4RWpmjFgJ7fAfSJcFGb+xRb/bm359Nt/aqw8U51+r7z2Qok9TYC5O8PXgNGOXPt7Uft4MfyQpL2fQwKaW2v1F3U4wviwIuoYkZDawRsMojnNeKiQnvCVTSOYfxvnvqrydTLXg7CSb6oFAA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709728762; c=relaxed/simple;
+	bh=sUHS/a2wS8mGD55WrFaxVz4wqrv82q8J8J4QDB97Wmk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C+UPvCEkdxkgt73IrruWhJJV+YRw+xdi9FS3saZHNwjjoMNRmCIyW4PXbFwzkCEmWxoaTySoFurl55PzfCTovO/WQduCWXPIhHjO8zP/1U1E2yGBIP0Y5WzmyYiW3tJ3e6LuZ+fm4DXZM8iRH5Rq7jjzjM+7XyE6GjHbgCb0iFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=F6xbbpd2; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56715a6aa55so4108752a12.2
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 04:39:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1709728758; x=1710333558; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VyS1+vKdFfO2wiU1gO6Q7YmFHviftdY/gMUVBF6T6Ys=;
+        b=F6xbbpd299wI0P9lxIrv56G+UMgHByAeB/2oB+sB+bgkvtBuwqyGyX/aAdiY0jPaP5
+         LsFYlCmuZcdGlGMwImcuSG8ByFSYmjfMxW3YtYa9XVb6j+0WbLj/Dp+whwebmRIlUv7r
+         hQQPGl8Aj66UVMCPeuwxIVmZ/Pzcxe+THR1w1iqohEKZ6sRLwQDb0pjK8YpFcp9VxChg
+         kJBqIw4EYbG+VxcLXhp/MUy2aAZIsyXuqThyRM/02FNwsSJWU3M1UmzVYM5RKdhPI0w5
+         6Dj+V+o/QQOSDd8CDpMi9QLwTssnsROP09GhF94+gaHMzHMvhgcX0HZOA0xJJwrwz+ys
+         M2HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709728758; x=1710333558;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VyS1+vKdFfO2wiU1gO6Q7YmFHviftdY/gMUVBF6T6Ys=;
+        b=YZ8xGwydmtuHPTRclFe7gdOaart8MeK8ffsh9WVb0JesTlWTUi6fa+FfP3cQPUDIAy
+         mQMwi+wqYb5Mz/uImD9U1ziMLk+NuJ1MX7fhsCjbLuhQXnvGnMdAIe5HppOat120EXGM
+         41PbhbKEOXR/qcfQCW4sObP8T1U8S/axgBccnKqzx9SVTq8cdrXyPL4//hCSf5d6HE86
+         1MwetpA4arF4qfK0ac1ASWJ8UNFAiyMJbkaNP06Zl2O3iAcjVSrKa7M8HmzilYrQeYy/
+         soPvsrIFmulCmRimWIa+5gqfmqaJ4XKqM4KuDugwWrVkp7Ajc1+ekunupb+xPlHsTHM8
+         UOOQ==
+X-Gm-Message-State: AOJu0YxIbRrKgnKXt7eF9Eul4yNVr95qHCE/yOdA7qNq+/i48Xe7B0bB
+	FOzo/kmlDKyNHNHkjVKiyCTLqKMHzSiEzSRT1bAA6jApWaUqnNhlo9+Y5RJMkM0yT+gmSNkqSRO
+	xNfHLcJyUcYtF++uqRyZYDziYZNhmmOgMlUbt5Q==
+X-Google-Smtp-Source: AGHT+IHYx521363c18fMRU9nNmrQqZGmVTPx1ek5vRUEa2UcMfUJV/7NQs1oA9MSDckKaaj8zkLfRBAHQPMVBkq2FBU=
+X-Received: by 2002:a50:cc08:0:b0:566:8fa7:5d0b with SMTP id
+ m8-20020a50cc08000000b005668fa75d0bmr10375185edi.3.1709728757701; Wed, 06 Mar
+ 2024 04:39:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5981.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79d216e9-85ec-4474-2e2b-08dc3dd8a391
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2024 12:26:24.6011
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2C5itBonFGF3xRkQRdHzF4+vo6wlenwYudhkAQeze0PvGTyhOInworU3m5PYe+GRQraIK9saU1XIVnLsGbnuDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5036
-X-OriginatorOrg: intel.com
+References: <20240304211551.833500257@linuxfoundation.org> <20240304211551.880347593@linuxfoundation.org>
+In-Reply-To: <20240304211551.880347593@linuxfoundation.org>
+From: Filipe Manana <fdmanana@suse.com>
+Date: Wed, 6 Mar 2024 12:39:06 +0000
+Message-ID: <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
+Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent locking
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSW50ZWwtZ2Z4IDxpbnRl
-bC1nZngtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBWaWxsZQ0K
-PiBTeXJqYWxhDQo+IFNlbnQ6IFdlZG5lc2RheSwgTWFyY2ggNiwgMjAyNCA5OjM4IEFNDQo+IFRv
-OiBpbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBzdGFibGVAdmdlci5rZXJu
-ZWwub3JnDQo+IFN1YmplY3Q6IFtQQVRDSCAyLzNdIGRybS9pOTE1L2RzYjogRml4IERTQiB2Ymxh
-bmsgd2FpdHMgd2hlbiB1c2luZyBWUlINCj4gDQo+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmls
-bGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+IA0KPiBMb29rcyBsaWtlIHRoZSB1bmRlbGF5
-ZWQgdmJsYW5rIGdldHMgc2lnbmFsbGVkIGV4YWN0bHkgd2hlbiB0aGUgYWN0aXZlIHBlcmlvZA0K
-PiBlbmRzLiBUaGF0IGlzIGEgcHJvYmxlbSBmb3IgRFNCK1ZSUiB3aGVuIHdlIGFyZSBhbHJlYWR5
-IGluIHZibGFuayBhbmQNCj4gZXhwZWN0IERTQiB0byBzdGFydCBleGVjdXRpbmcgYXMgc29vbiBh
-cyB3ZSBzZW5kIHRoZSBwdXNoLiBJbnN0ZWFkIG9mDQo+IHN0YXJ0aW5nIHRoZSBEU0IganVzdCBr
-ZWVwcyBvbiB3YWl0aW5nIGZvciB0aGUgdW5kZWxheWVkIHZibGFuayB3aGljaCB3b24ndA0KPiBz
-aWduYWwgdW50aWwgdGhlIGVuZCBvZiB0aGUgbmV4dCBmcmFtZSdzIGFjdGl2ZSBwZXJpb2QsIHdo
-aWNoIGlzIGZhciB0b28gbGF0ZS4NCj4gDQo+IFRoZSBlbmQgcmVzdWx0IGlzIHRoYXQgRFNCIHdv
-bid0IGhhdmUgZXZlbiBzdGFydGVkIGV4ZWN1dGluZyBieSB0aGUgdGltZSB0aGUNCj4gZmxpcHMv
-ZXRjLiBoYXZlIGNvbXBsZXRlZC4NCj4gV2UgdGhlbiB3YWl0IGZvciBhbiBleHRyYSAxbXMsIGFm
-dGVyIHdoaWNoIHdlIHRlcm1pbmF0ZSB0aGUgRFNCIGFuZCByZXBvcnQNCj4gYSB0aW1lb3V0Og0K
-PiBbZHJtXSAqRVJST1IqIFtDUlRDOjgwOnBpcGUgQV0gRFNCIDAgdGltZWQgb3V0IHdhaXRpbmcg
-Zm9yIGlkbGUgKGN1cnJlbnQNCj4gaGVhZD0weGZlZGY0MDAwLCBoZWFkPTB4MCwgdGFpbD0weDEw
-ODApDQo+IA0KPiBUbyBmaXggdGhpcyBsZXQncyBjb25maWd1cmUgRFNCIHRvIHVzZSB0aGUgc28g
-Y2FsbGVkIFZSUiAic2FmZSB3aW5kb3ciIGluc3RlYWQNCj4gb2YgdGhlIHVuZGVsYXllZCB2Ymxh
-bmsgdG8gdHJpZ2dlciB0aGUgRFNCIHZibGFuayBsb2dpYywgd2hlbiBWUlIgaXMgZW5hYmxlZC4N
-Cj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IEZpeGVzOiAzNGQ4MzExZjRhMWMg
-KCJkcm0vaTkxNS9kc2I6IFJlLWluc3RhdGUgRFNCIGZvciBMVVQgdXBkYXRlcyIpDQo+IENsb3Nl
-czogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lzc3Vlcy85OTI3
-DQo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5p
-bnRlbC5jb20+DQoNCkxHVE0uDQpSZXZpZXdlZC1ieTogQW5pbWVzaCBNYW5uYSA8YW5pbWVzaC5t
-YW5uYUBpbnRlbC5jb20+DQoNCj4gLS0tDQo+ICBkcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5
-L2ludGVsX2RzYi5jIHwgMTQgKysrKysrKysrKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCAxNCBp
-bnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlz
-cGxheS9pbnRlbF9kc2IuYw0KPiBiL2RyaXZlcnMvZ3B1L2RybS9pOTE1L2Rpc3BsYXkvaW50ZWxf
-ZHNiLmMNCj4gaW5kZXggZDYyZTA1MDE4NWU3Li5lNDUxNWJmOTIwMzggMTAwNjQ0DQo+IC0tLSBh
-L2RyaXZlcnMvZ3B1L2RybS9pOTE1L2Rpc3BsYXkvaW50ZWxfZHNiLmMNCj4gKysrIGIvZHJpdmVy
-cy9ncHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9kc2IuYw0KPiBAQCAtMzQwLDYgKzM0MCwxNyBA
-QCBzdGF0aWMgaW50IGludGVsX2RzYl9kZXdha2Vfc2NhbmxpbmUoY29uc3Qgc3RydWN0DQo+IGlu
-dGVsX2NydGNfc3RhdGUgKmNydGNfc3RhdGUpDQo+ICAJcmV0dXJuIG1heCgwLCB2Ymxhbmtfc3Rh
-cnQgLQ0KPiBpbnRlbF91c2Vjc190b19zY2FubGluZXMoYWRqdXN0ZWRfbW9kZSwgbGF0ZW5jeSkp
-OyAgfQ0KPiANCj4gK3N0YXRpYyB1MzIgZHNiX2NoaWNrZW4oc3RydWN0IGludGVsX2NydGMgKmNy
-dGMpIHsNCj4gKwlpZiAoY3J0Yy0+bW9kZV9mbGFncyAmIEk5MTVfTU9ERV9GTEFHX1ZSUikNCj4g
-KwkJcmV0dXJuIERTQl9DVFJMX1dBSVRfU0FGRV9XSU5ET1cgfA0KPiArCQkJRFNCX0NUUkxfTk9f
-V0FJVF9WQkxBTksgfA0KPiArCQkJRFNCX0lOU1RfV0FJVF9TQUZFX1dJTkRPVyB8DQo+ICsJCQlE
-U0JfSU5TVF9OT19XQUlUX1ZCTEFOSzsNCj4gKwllbHNlDQo+ICsJCXJldHVybiAwOw0KPiArfQ0K
-PiArDQo+ICBzdGF0aWMgdm9pZCBfaW50ZWxfZHNiX2NvbW1pdChzdHJ1Y3QgaW50ZWxfZHNiICpk
-c2IsIHUzMiBjdHJsLA0KPiAgCQkJICAgICAgaW50IGRld2FrZV9zY2FubGluZSkNCj4gIHsNCj4g
-QEAgLTM2MSw2ICszNzIsOSBAQCBzdGF0aWMgdm9pZCBfaW50ZWxfZHNiX2NvbW1pdChzdHJ1Y3Qg
-aW50ZWxfZHNiICpkc2IsDQo+IHUzMiBjdHJsLA0KPiAgCWludGVsX2RlX3dyaXRlX2Z3KGRldl9w
-cml2LCBEU0JfQ1RSTChwaXBlLCBkc2ItPmlkKSwNCj4gIAkJCSAgY3RybCB8IERTQl9FTkFCTEUp
-Ow0KPiANCj4gKwlpbnRlbF9kZV93cml0ZV9mdyhkZXZfcHJpdiwgRFNCX0NISUNLRU4ocGlwZSwg
-ZHNiLT5pZCksDQo+ICsJCQkgIGRzYl9jaGlja2VuKGNydGMpKTsNCj4gKw0KPiAgCWludGVsX2Rl
-X3dyaXRlX2Z3KGRldl9wcml2LCBEU0JfSEVBRChwaXBlLCBkc2ItPmlkKSwNCj4gIAkJCSAgaW50
-ZWxfZHNiX2J1ZmZlcl9nZ3R0X29mZnNldCgmZHNiLT5kc2JfYnVmKSk7DQo+IA0KPiAtLQ0KPiAy
-LjQzLjANCg0K
+On Mon, Mar 4, 2024 at 9:26=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> 6.7-stable review patch.  If anyone has any objections, please let me kno=
+w.
+
+It would be better to delay the backport of this patch (and the
+followup fix) to any stable release, because it introduced another
+regression for which there is a reviewed fix but it's not yet in
+Linus' tree:
+
+https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
+
+Thanks.
+
+>
+>
+> ------------------
+>
+> From: Josef Bacik <josef@toxicpanda.com>
+>
+> [ Upstream commit b0ad381fa7690244802aed119b478b4bdafc31dd ]
+>
+> While working on the patchset to remove extent locking I got a lockdep
+> splat with fiemap and pagefaulting with my new extent lock replacement
+> lock.
+>
+> This deadlock exists with our normal code, we just don't have lockdep
+> annotations with the extent locking so we've never noticed it.
+>
+> Since we're copying the fiemap extent to user space on every iteration
+> we have the chance of pagefaulting.  Because we hold the extent lock for
+> the entire range we could mkwrite into a range in the file that we have
+> mmap'ed.  This would deadlock with the following stack trace
+>
+> [<0>] lock_extent+0x28d/0x2f0
+> [<0>] btrfs_page_mkwrite+0x273/0x8a0
+> [<0>] do_page_mkwrite+0x50/0xb0
+> [<0>] do_fault+0xc1/0x7b0
+> [<0>] __handle_mm_fault+0x2fa/0x460
+> [<0>] handle_mm_fault+0xa4/0x330
+> [<0>] do_user_addr_fault+0x1f4/0x800
+> [<0>] exc_page_fault+0x7c/0x1e0
+> [<0>] asm_exc_page_fault+0x26/0x30
+> [<0>] rep_movs_alternative+0x33/0x70
+> [<0>] _copy_to_user+0x49/0x70
+> [<0>] fiemap_fill_next_extent+0xc8/0x120
+> [<0>] emit_fiemap_extent+0x4d/0xa0
+> [<0>] extent_fiemap+0x7f8/0xad0
+> [<0>] btrfs_fiemap+0x49/0x80
+> [<0>] __x64_sys_ioctl+0x3e1/0xb50
+> [<0>] do_syscall_64+0x94/0x1a0
+> [<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+>
+> I wrote an fstest to reproduce this deadlock without my replacement lock
+> and verified that the deadlock exists with our existing locking.
+>
+> To fix this simply don't take the extent lock for the entire duration of
+> the fiemap.  This is safe in general because we keep track of where we
+> are when we're searching the tree, so if an ordered extent updates in
+> the middle of our fiemap call we'll still emit the correct extents
+> because we know what offset we were on before.
+>
+> The only place we maintain the lock is searching delalloc.  Since the
+> delalloc stuff can change during writeback we want to lock the extent
+> range so we have a consistent view of delalloc at the time we're
+> checking to see if we need to set the delalloc flag.
+>
+> With this patch applied we no longer deadlock with my testcase.
+>
+> CC: stable@vger.kernel.org # 6.1+
+> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/btrfs/extent_io.c | 62 ++++++++++++++++++++++++++++++++------------
+>  1 file changed, 45 insertions(+), 17 deletions(-)
+>
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 8f724c54fc8e9..197b41d02735b 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -2645,16 +2645,34 @@ static int fiemap_process_hole(struct btrfs_inode=
+ *inode,
+>          * it beyond i_size.
+>          */
+>         while (cur_offset < end && cur_offset < i_size) {
+> +               struct extent_state *cached_state =3D NULL;
+>                 u64 delalloc_start;
+>                 u64 delalloc_end;
+>                 u64 prealloc_start;
+> +               u64 lockstart;
+> +               u64 lockend;
+>                 u64 prealloc_len =3D 0;
+>                 bool delalloc;
+>
+> +               lockstart =3D round_down(cur_offset, inode->root->fs_info=
+->sectorsize);
+> +               lockend =3D round_up(end, inode->root->fs_info->sectorsiz=
+e);
+> +
+> +               /*
+> +                * We are only locking for the delalloc range because tha=
+t's the
+> +                * only thing that can change here.  With fiemap we have =
+a lock
+> +                * on the inode, so no buffered or direct writes can happ=
+en.
+> +                *
+> +                * However mmaps and normal page writeback will cause thi=
+s to
+> +                * change arbitrarily.  We have to lock the extent lock h=
+ere to
+> +                * make sure that nobody messes with the tree while we're=
+ doing
+> +                * btrfs_find_delalloc_in_range.
+> +                */
+> +               lock_extent(&inode->io_tree, lockstart, lockend, &cached_=
+state);
+>                 delalloc =3D btrfs_find_delalloc_in_range(inode, cur_offs=
+et, end,
+>                                                         delalloc_cached_s=
+tate,
+>                                                         &delalloc_start,
+>                                                         &delalloc_end);
+> +               unlock_extent(&inode->io_tree, lockstart, lockend, &cache=
+d_state);
+>                 if (!delalloc)
+>                         break;
+>
+> @@ -2822,15 +2840,15 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
+ct fiemap_extent_info *fieinfo,
+>                   u64 start, u64 len)
+>  {
+>         const u64 ino =3D btrfs_ino(inode);
+> -       struct extent_state *cached_state =3D NULL;
+>         struct extent_state *delalloc_cached_state =3D NULL;
+>         struct btrfs_path *path;
+>         struct fiemap_cache cache =3D { 0 };
+>         struct btrfs_backref_share_check_ctx *backref_ctx;
+>         u64 last_extent_end;
+>         u64 prev_extent_end;
+> -       u64 lockstart;
+> -       u64 lockend;
+> +       u64 range_start;
+> +       u64 range_end;
+> +       const u64 sectorsize =3D inode->root->fs_info->sectorsize;
+>         bool stopped =3D false;
+>         int ret;
+>
+> @@ -2841,12 +2859,11 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
+ct fiemap_extent_info *fieinfo,
+>                 goto out;
+>         }
+>
+> -       lockstart =3D round_down(start, inode->root->fs_info->sectorsize)=
+;
+> -       lockend =3D round_up(start + len, inode->root->fs_info->sectorsiz=
+e);
+> -       prev_extent_end =3D lockstart;
+> +       range_start =3D round_down(start, sectorsize);
+> +       range_end =3D round_up(start + len, sectorsize);
+> +       prev_extent_end =3D range_start;
+>
+>         btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
+> -       lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>
+>         ret =3D fiemap_find_last_extent_offset(inode, path, &last_extent_=
+end);
+>         if (ret < 0)
+> @@ -2854,7 +2871,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
+ fiemap_extent_info *fieinfo,
+>         btrfs_release_path(path);
+>
+>         path->reada =3D READA_FORWARD;
+> -       ret =3D fiemap_search_slot(inode, path, lockstart);
+> +       ret =3D fiemap_search_slot(inode, path, range_start);
+>         if (ret < 0) {
+>                 goto out_unlock;
+>         } else if (ret > 0) {
+> @@ -2866,7 +2883,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
+ fiemap_extent_info *fieinfo,
+>                 goto check_eof_delalloc;
+>         }
+>
+> -       while (prev_extent_end < lockend) {
+> +       while (prev_extent_end < range_end) {
+>                 struct extent_buffer *leaf =3D path->nodes[0];
+>                 struct btrfs_file_extent_item *ei;
+>                 struct btrfs_key key;
+> @@ -2889,19 +2906,19 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
+ct fiemap_extent_info *fieinfo,
+>                  * The first iteration can leave us at an extent item tha=
+t ends
+>                  * before our range's start. Move to the next item.
+>                  */
+> -               if (extent_end <=3D lockstart)
+> +               if (extent_end <=3D range_start)
+>                         goto next_item;
+>
+>                 backref_ctx->curr_leaf_bytenr =3D leaf->start;
+>
+>                 /* We have in implicit hole (NO_HOLES feature enabled). *=
+/
+>                 if (prev_extent_end < key.offset) {
+> -                       const u64 range_end =3D min(key.offset, lockend) =
+- 1;
+> +                       const u64 hole_end =3D min(key.offset, range_end)=
+ - 1;
+>
+>                         ret =3D fiemap_process_hole(inode, fieinfo, &cach=
+e,
+>                                                   &delalloc_cached_state,
+>                                                   backref_ctx, 0, 0, 0,
+> -                                                 prev_extent_end, range_=
+end);
+> +                                                 prev_extent_end, hole_e=
+nd);
+>                         if (ret < 0) {
+>                                 goto out_unlock;
+>                         } else if (ret > 0) {
+> @@ -2911,7 +2928,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
+ fiemap_extent_info *fieinfo,
+>                         }
+>
+>                         /* We've reached the end of the fiemap range, sto=
+p. */
+> -                       if (key.offset >=3D lockend) {
+> +                       if (key.offset >=3D range_end) {
+>                                 stopped =3D true;
+>                                 break;
+>                         }
+> @@ -3005,29 +3022,41 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
+ct fiemap_extent_info *fieinfo,
+>         btrfs_free_path(path);
+>         path =3D NULL;
+>
+> -       if (!stopped && prev_extent_end < lockend) {
+> +       if (!stopped && prev_extent_end < range_end) {
+>                 ret =3D fiemap_process_hole(inode, fieinfo, &cache,
+>                                           &delalloc_cached_state, backref=
+_ctx,
+> -                                         0, 0, 0, prev_extent_end, locke=
+nd - 1);
+> +                                         0, 0, 0, prev_extent_end, range=
+_end - 1);
+>                 if (ret < 0)
+>                         goto out_unlock;
+> -               prev_extent_end =3D lockend;
+> +               prev_extent_end =3D range_end;
+>         }
+>
+>         if (cache.cached && cache.offset + cache.len >=3D last_extent_end=
+) {
+>                 const u64 i_size =3D i_size_read(&inode->vfs_inode);
+>
+>                 if (prev_extent_end < i_size) {
+> +                       struct extent_state *cached_state =3D NULL;
+>                         u64 delalloc_start;
+>                         u64 delalloc_end;
+> +                       u64 lockstart;
+> +                       u64 lockend;
+>                         bool delalloc;
+>
+> +                       lockstart =3D round_down(prev_extent_end, sectors=
+ize);
+> +                       lockend =3D round_up(i_size, sectorsize);
+> +
+> +                       /*
+> +                        * See the comment in fiemap_process_hole as to w=
+hy
+> +                        * we're doing the locking here.
+> +                        */
+> +                       lock_extent(&inode->io_tree, lockstart, lockend, =
+&cached_state);
+>                         delalloc =3D btrfs_find_delalloc_in_range(inode,
+>                                                                 prev_exte=
+nt_end,
+>                                                                 i_size - =
+1,
+>                                                                 &delalloc=
+_cached_state,
+>                                                                 &delalloc=
+_start,
+>                                                                 &delalloc=
+_end);
+> +                       unlock_extent(&inode->io_tree, lockstart, lockend=
+, &cached_state);
+>                         if (!delalloc)
+>                                 cache.flags |=3D FIEMAP_EXTENT_LAST;
+>                 } else {
+> @@ -3038,7 +3067,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
+ fiemap_extent_info *fieinfo,
+>         ret =3D emit_last_fiemap_cache(fieinfo, &cache);
+>
+>  out_unlock:
+> -       unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state)=
+;
+>         btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
+>  out:
+>         free_extent_state(delalloc_cached_state);
+> --
+> 2.43.0
+>
+>
+>
 
