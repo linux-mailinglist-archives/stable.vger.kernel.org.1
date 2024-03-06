@@ -1,126 +1,169 @@
-Return-Path: <stable+bounces-26909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C6F872DEB
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 05:11:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3FD872E96
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 07:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2D4289E14
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 04:11:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1D11F25206
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 06:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2877156C2;
-	Wed,  6 Mar 2024 04:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFA21BDD3;
+	Wed,  6 Mar 2024 06:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JOueeAsb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2GzTKDX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B91811CAB;
-	Wed,  6 Mar 2024 04:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FBA1BDCE;
+	Wed,  6 Mar 2024 06:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709698263; cv=none; b=mhuxIOx0IQAaBnKVBnqCVltFVuMpSACZSyb0SDWkB9nubQpjwM6HmqKSPDqVcafVboAqIQfA61PkXd5zc5oDlWdtS1BWLRgcY9dlb2kejtNl+lioUP8SBWCO/Ydqib15Nh+e4Qwgf3YpGmp6Bth7kH9/kwiyM0YlZAjRLExDQ8M=
+	t=1709705405; cv=none; b=DO4MCFB6n3zfiRqk62KlrveaxAO+tJ6esNQGD+4aw0ncEd7rJuvjnpOzGMer+f36VB+CVx1ol0wjtaQoy4zx8lgRxSaWKXh0I9LjvMNEgngfD335wtcU9p9y/RyOqHyARo4wnBmDnxwNUjpUBZ4xKs/iTkqIVKlCoAVfsMIIM5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709698263; c=relaxed/simple;
-	bh=S9DmT5mbKevtdyCyu03W73/UmaI2YtzpBqpj8eqny4E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lm7aI8sAXoEUu1tu9ODJ3ewR08YZzzRgxCtLfxan5D2A+U+3SlOV9hkwQVVVGZotROLk5BEsF8xjLrJeukvLkzjO0To1AxMGQIurp7AXpS8FFifdD4x7Y9+hcTY3fJ8dBzXMMQX1llN7URKd7bsB6QGlDfHrbxkbT0zqi0/wf6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JOueeAsb; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4263n1p2010382;
-	Wed, 6 Mar 2024 04:10:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=qcppdkim1; bh=MbQLqOy/1i1A0JTlWj1D9
-	9Do3QPkV+3w1+MR0O4wfvc=; b=JOueeAsbF+QSP++q1cfs4WWbbzLLRUA6zLaZd
-	JosrRH8sVttX64Axe+5fqydWrzCyw9fH6GRAFnRKm9bR2Ol+L0ICImBhHTxFuVN6
-	Y21MKUww+XUqLQpGyqKfJ1vBx1Uz3WgTiD2wYlCVBXrRTDX9I4Kg33p2WEEu8Vbs
-	mDXM4MaG9TneXQ5YP0kzcJ4uCIXNzLW6/n5x93HMlMGNcup7j/1fYEgAiUfzxbh3
-	xRS9OXL5zuOeLeTEIsnEvfqPZ+cunGd7V28LHzbPAR94L3PAcRPhgNa23IK1n6sy
-	me0z6hGnJxMAwG0zGMmed94i1OjL/iC/GXMFmOVXR0s5yPoxA==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wpgwmr12e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Mar 2024 04:10:57 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4264AuLH008316
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 6 Mar 2024 04:10:56 GMT
-Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 5 Mar 2024 20:10:56 -0800
-Date: Tue, 5 Mar 2024 20:10:55 -0800
-From: Elliot Berman <quic_eberman@quicinc.com>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-CC: Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: Re: [PATCH] firmware: qcom_scm: disable clocks if
- qcom_scm_bw_enable() fails
-Message-ID: <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
-Mail-Followup-To: Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Sibi Sankar <quic_sibis@quicinc.com>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1709705405; c=relaxed/simple;
+	bh=lSRRNskVPHhclRoV5Y6ztqZLrpHVOWF8T+IB8L5neFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgYGSVwwPr0f3iJPWfA/xR7SZ729O6BbYjlF+PgbEsMI1J9ParI/HyZZyazfwcD+GL8X4U79qKdZhpKVvHEs1IYom7EB0BJcaf7o6Bh2M6qx65nul+iDyYB7JVhLBMYrXqz85TpG1KaEgbj3C76zFoNCGyQlMNtWAgW7t2LKS+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2GzTKDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E366FC433F1;
+	Wed,  6 Mar 2024 06:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709705405;
+	bh=lSRRNskVPHhclRoV5Y6ztqZLrpHVOWF8T+IB8L5neFM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N2GzTKDXkzvmqQZqFIP9B4dposW5RuAk23MxpT2SrgG/iNOcDGASuYAC7UiFa/IgS
+	 gpQGZ7J1Bl6uX33NeSdJ/7qNloFEnFslI5PWN39e/x2hqABz+PfZV3uwJPNu47AAbA
+	 tKEfnyNmIyDw9m8ogzaHsDerXRhAnNkQffLBIdN198FX0GiXi70NW0v2UtQhPyf9Aq
+	 /lrW6kgBrIMvpLkAZNUwVLDeKjCyMLifxJ4likYyleTpKQck4gp85om2DwqiHiFcLN
+	 nl1Yo2uKbvKKJOFWGlFz8RYuDKhbtJZLQ5Uw3K7rVcoHZRRK5Rz+0Z2hDmTDqfcFX2
+	 CuY+xdOlyDg1g==
+From: Namhyung Kim <namhyung@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Stephane Eranian <eranian@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	stable@vger.kernel.org
-References: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
- <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
+Subject: [PATCH v2] perf/x86: Fix out of range data
+Date: Tue,  5 Mar 2024 22:10:03 -0800
+Message-ID: <20240306061003.1894224-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: twA3sY1JSaS8_0RTxw2pyPQOlKZ86bAz
-X-Proofpoint-ORIG-GUID: twA3sY1JSaS8_0RTxw2pyPQOlKZ86bAz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-06_01,2024-03-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=530
- clxscore=1011 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403060031
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 05, 2024 at 10:15:19PM +0100, Konrad Dybcio wrote:
-> 
-> 
-> On 3/4/24 14:14, Gabor Juhos wrote:
-> > There are several functions which are calling qcom_scm_bw_enable()
-> > then returns immediately if the call fails and leaves the clocks
-> > enabled.
-> > 
-> > Change the code of these functions to disable clocks when the
-> > qcom_scm_bw_enable() call fails. This also fixes a possible dma
-> > buffer leak in the qcom_scm_pas_init_image() function.
-> > 
-> > Compile tested only due to lack of hardware with interconnect
-> > support.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
-> > Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-> > ---
-> 
-> Taking a closer look, is there any argument against simply
-> putting the clk/bw en/dis calls in qcom_scm_call()?
+On x86 each cpu_hw_events maintains a table for counter assignment but
+it missed to update one for the deleted event in x86_pmu_del().  This
+can make perf_clear_dirty_counters() reset used counter if it's called
+before event scheduling or enabling.  Then it would return out of range
+data which doesn't make sense.
 
-We shouldn't do this because the clk/bw en/dis calls are only needed in
-few SCM calls.
+The following code can reproduce the problem.
 
-Thanks,
-Elliot
+  $ cat repro.c
+  #include <pthread.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <linux/perf_event.h>
+  #include <sys/ioctl.h>
+  #include <sys/mman.h>
+  #include <sys/syscall.h>
+
+  struct perf_event_attr attr = {
+  	.type = PERF_TYPE_HARDWARE,
+  	.config = PERF_COUNT_HW_CPU_CYCLES,
+  	.disabled = 1,
+  };
+
+  void *worker(void *arg)
+  {
+  	int cpu = (long)arg;
+  	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	void *p;
+
+  	do {
+  		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
+  		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
+  		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
+
+  		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
+  		munmap(p, 4096);
+  		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
+  	} while (1);
+
+  	return NULL;
+  }
+
+  int main(void)
+  {
+  	int i;
+  	int n = sysconf(_SC_NPROCESSORS_ONLN);
+  	pthread_t *th = calloc(n, sizeof(*th));
+
+  	for (i = 0; i < n; i++)
+  		pthread_create(&th[i], NULL, worker, (void *)(long)i);
+  	for (i = 0; i < n; i++)
+  		pthread_join(th[i], NULL);
+
+  	free(th);
+  	return 0;
+  }
+
+And you can see the out of range data using perf stat like this.
+Probably it'd be easier to see on a large machine.
+
+  $ gcc -o repro repro.c -pthread
+  $ ./repro &
+  $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
+       1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
+       1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
+       1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
+       2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
+       2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
+       2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
+       2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
+       3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
+       3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
+       3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
+       3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
+
+It should move the contents in the cpuc->assign as well.
+
+Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+* add Kan's reviewed-by tag
+
+ arch/x86/events/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 09050641ce5d..5b0dd07b1ef1 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
+ 	while (++i < cpuc->n_events) {
+ 		cpuc->event_list[i-1] = cpuc->event_list[i];
+ 		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
++		cpuc->assign[i-1] = cpuc->assign[i];
+ 	}
+ 	cpuc->event_constraint[i-1] = NULL;
+ 	--cpuc->n_events;
+-- 
+2.44.0.278.ge034bb2e1d-goog
 
 
