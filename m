@@ -1,110 +1,162 @@
-Return-Path: <stable+bounces-26977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2598739E6
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:56:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A378E873A09
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 16:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0617528A5C2
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 581ED1F267AE
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D327F1350DA;
-	Wed,  6 Mar 2024 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A622C135406;
+	Wed,  6 Mar 2024 15:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k8OQj27Y"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Diub9Vs8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEE113473B;
-	Wed,  6 Mar 2024 14:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62313473B;
+	Wed,  6 Mar 2024 15:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709736974; cv=none; b=DbiIpDF69HFPiVwm+IvREtgrj/Bh5nAEDzheOfg5ymJCd/BuQVUS6UPpIUvmyHxq7tHaxpGkKXniNA1JVysAkyuB5hX/Xd2giM37dN0yAF85K6Uah8KHyo0IVe0tjQBdcn9bxrBlsbTw2m72hYa6V0FLSThzgwsWUEyy4+Ro7fg=
+	t=1709737269; cv=none; b=mkHqAOzMEGbgb/6V4ucK5wjlJVeu9WEhuztTZyDaP4GiiHBwZ7dLtf16m6AisaHmpi6QviV/9DgmVr64OmWdNSgey0emraSjiecw56Ngz0JWUswrO5CuxmRGzr06VhJ2ClLp4LOWpXcaNId3QJwtPELy9mzNclkfpzcizH//090=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709736974; c=relaxed/simple;
-	bh=CyxIq1hc0Pg4DlvLuQjoD77rmVt1bi1Xy2iXBKgigWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CC2FTeQrjC+rmvDReyiNzi5ExdzOG4vFVnWhIHvrhvBpV7YaN/n4zKuF1ljLLt7o1vnH+jCFtXxlqApzgQ1E1wBLuFnlZ1JsVhvbRqfd8AxDKnHVibH51nLKRy++xiaAa3PLFTWSkQ6wo+2Vt+MMXodQd/fmiT0/ODjr9O6v6h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k8OQj27Y; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-29954bb87b4so4578775a91.2;
-        Wed, 06 Mar 2024 06:56:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709736972; x=1710341772; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qdH3H/B03w3oeOKNshM2umjOgNwIvpOsc9RqYT8vJJI=;
-        b=k8OQj27Yyn5Vjf4kqeANfsBDSeJ0xwIgfb6J/QSGFttXolKulYjIVSQvGcSIFWEGv/
-         H7rRoTHDYhnwfY+ivN06jfvkR2syWPSnfHoPUR8jzD9ZTyXjglFK6sH1BriNelOSySXP
-         oame3gajzzAdseraSspZo4D5/EDDKlpeKDViC9OzNgrWT/Gic0n3pm07IrNnx26X7LAz
-         qaEMFtwVi/nuFU3GslYqIAIYKGIVO1fmkFv+HRhsf5GTPXhahK99XAEv08tXks6Ex+Tk
-         qS0ept7Th1qP6iukQjaIl3b7TgFc8OYgJ7mcdFMCSncMnd8/QUs2EshX50HKJNnsiUmK
-         Qn2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709736972; x=1710341772;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qdH3H/B03w3oeOKNshM2umjOgNwIvpOsc9RqYT8vJJI=;
-        b=rVBosi3j6nDxHoE9LxaIdbMtp57hCgTYaXqYLgZ/1bN/xJJpV/592C26hrITsL1MXu
-         ui0Kzo3ZQmKXvU8P/UghTB4OiHqYNU+rrfDt0GGrxHbvTDCvqE+bCB2p7mKq2pH+XkuK
-         lRODGOBy+f6+PoAYFVfUNaJYekNB00uFHIkEIKfYfOJYRE+VsGqQtcNdOR4aLI/F8kqO
-         zAieppL++bP92ZM73HfxXuOY2BmDdksKdswVtv70GKeIeDAIYXpblPUtESVfZxJMZBYM
-         Jr8lXwbN2C1W3OKfE9cfzISgx6Jlb+LQUWJxpS8W4mI4c7DdsD7sYeLJIr11QPdg2gxg
-         WYcA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5zZGrH3fILml1deJWRREHoSKJ5C42IV+7gsd4y1JP1fOTroL5SAB+HHYsdt99mU+3XLwABZrnX9XoqaQWeTZcS6dq3zXwrX4eWK5c4fZbkPx3VP0g6l9fC/C09qPau6SUkQl4
-X-Gm-Message-State: AOJu0YyjYupX507TM79QgGTXkW4MjZLaYeV1DiGEfo4HK3tHL1z6Hq0D
-	NPJYy4JEK5EU+12VcjFIabzSek4u004W5DNitKe/v7MCicq/49hj0+2UgN+Iu3nM1CmicGXq5Ed
-	tii0Z8ws0jG6XrVAblTVoKQJOPXQ=
-X-Google-Smtp-Source: AGHT+IE1Ifk2gRIsxJGsFMox+naGDQZbZsHvmMPliQl1ubSLocfF/8HdJ7TMoRwN8u/u/pDBMuXVrz0M0siJ9kYinmM=
-X-Received: by 2002:a17:90a:d514:b0:299:782e:25b0 with SMTP id
- t20-20020a17090ad51400b00299782e25b0mr12209886pju.8.1709736972572; Wed, 06
- Mar 2024 06:56:12 -0800 (PST)
+	s=arc-20240116; t=1709737269; c=relaxed/simple;
+	bh=p5Z3Q6RIYQmwH9W/ZIoGnyeT1rKzJM+Geblbu0rvw84=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qcpoXrPxbB8hhEvpbvDZZHyjzO/Kd6TSpctHPBJz5J+LrE+YSy4X7J5dbpHAQ8AyjHnqcVPryU5QDxXqj9sbVbrZnHUB25MJEg32KUmA/RnLnPH4tzGxD1PAtrcmbXuv8adyBqChjPWhyL3qMKv7CPjSISnzL01Fd5ojiO/575w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Diub9Vs8; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D9FCB24000B;
+	Wed,  6 Mar 2024 15:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709737264;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+foT+JzMpkZ+qs4nuYW7kwD/p65OO/iMpozXg8yy+i0=;
+	b=Diub9Vs89qkCeYZKoSN24ddM/+DA8ul0SaqXYF//ZQRBxJUkRsY3Kl7871YO8yEdagWVST
+	p7u8TCrqmlNdmFC4c2eCRQA0nmeHxG2zYsPOGwziJlr/ZXUZ+ubbArZ1qDbvNzdmJBhB2H
+	QCi1BCN5waghCny5y8+ZXSm+MsOq2cnahQi3FWLjAFrRQPtWRz4ZxiFW8z3548IibJrpAn
+	WApPJLU9Ua5GVTCE8sd3Pzhk4IPynFURL41a2RUdtdTIRy1eh0SWOpBuyC+9XFh2Y6TeLy
+	Df/DPuBQGSek/iHHkHkSFXehm3Z4mmSHrHhYrQ2yoP6rl1oH+tasATU5bHvZ/A==
+Date: Wed, 6 Mar 2024 16:01:01 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Frank
+ Rowand <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>,
+ Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
+ <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] driver core: Introduce
+ device_link_wait_removal()
+Message-ID: <20240306160101.25b45335@bootlin.com>
+In-Reply-To: <86a0f91675197a00bbd921d6e57d2f3c57796e68.camel@gmail.com>
+References: <20240306085007.169771-1-herve.codina@bootlin.com>
+	<20240306085007.169771-2-herve.codina@bootlin.com>
+	<1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+	<CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
+	<ed442b6916016b3a40782dc32538fc517715db6c.camel@gmail.com>
+	<CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com>
+	<ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
+	<CAJZ5v0iMUOJmm99H6SgfP9179hBsLdyC+1ixJwBxSP0b18V6XA@mail.gmail.com>
+	<86a0f91675197a00bbd921d6e57d2f3c57796e68.camel@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211551.833500257@linuxfoundation.org> <20240304224813.73380-1-sj@kernel.org>
- <CADo9pHi0az-CL_hktmpCVcuoiDaUJn2U208=TwAvBM6YQhfFqw@mail.gmail.com> <2024030653-reforest-gauze-149e@gregkh>
-In-Reply-To: <2024030653-reforest-gauze-149e@gregkh>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Wed, 6 Mar 2024 15:56:00 +0100
-Message-ID: <CADo9pHi--q0XrROk=NXkf+YBHkj6s3JsWKpJgMJU5judaJrKwg@mail.gmail.com>
-Subject: Re: [PATCH 6.7 000/162] 6.7.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>, stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-Den ons 6 mars 2024 kl 15:52 skrev Greg Kroah-Hartman
-<gregkh@linuxfoundation.org>:
->
-> On Tue, Mar 05, 2024 at 12:05:33AM +0100, Luna Jernberg wrote:
-> > Works fine on my Arch Linux desktop with model name    : AMD Ryzen 5
-> > 5600 6-Core Processor
-> > after the Arch Linux manual intervention for new mkinitcpio settings
-> > and version in Arch
-> >
-> > Tested by: Luna Jernberg <droidbittin@gmail.com>
->
-> Nit, this should be "Tested-by:" without the ' ', otherwise our tools
-> will not pick this up.
->
-> thanks,
->
-> greg k-h
+Hi Nuno,
 
-Alright resent the emails with the right tag format
-sorry for the trouble
+On Wed, 06 Mar 2024 15:50:44 +0100
+Nuno Sá <noname.nuno@gmail.com> wrote:
+
+...
+> > > > > 
+> > > > > That makes sense but then the only thing I still don't fully get is why
+> > > > > we
+> > > > > have
+> > > > > a separate devlink_class_init() initcall for registering the devlink
+> > > > > class
+> > > > > (which can also fail)...  
+> > > > 
+> > > > Well, I haven't added it. :-)
+> > > >   
+> > > > > What I take from the above is that we should fail the
+> > > > > driver model if one of it's fundamental components fails so I would say
+> > > > > we
+> > > > > should merge devlink_class_init() with device_init() otherwise it's a
+> > > > > bit
+> > > > > confusing (at least to me) and gives the idea that it's ok for the
+> > > > > driver
+> > > > > model
+> > > > > to exist without the links (unless I'm missing some other reason for the
+> > > > > devlink
+> > > > > init function).  
+> > > > 
+> > > > +1
+> > > > 
+> > > > Feel free to send a patch along these lines, chances are that it will
+> > > > be popular. ;-)  
+> > > 
+> > > I was actually thinking about that but I think I encountered the reason why
+> > > we
+> > > have it like this... devices_init() is called from driver_init() and there
+> > > we
+> > > have:
+> > > 
+> > > ...
+> > > 
+> > > devices_init();
+> > > buses_init();
+> > > classes_init();
+> > > 
+> > > ...
+> > > 
+> > > So classes are initialized after devices which means we can't really do
+> > > class_register(&devlink_class) from devices_init(). Unless, of course, we
+> > > re-
+> > > order things in driver_init() but that would be a questionable change at the
+> > > very least.
+> > > 
+> > > So, while I agree with what you've said, I'm still not sure if mixing
+> > > devlink
+> > > stuff between devices_init() and devlink_class_init() is the best thing to
+> > > do
+> > > given that we already have the case where devlink_class_init() can fail
+> > > while
+> > > the driver model is up.  
+> > 
+> > So why don't you make devlink_class_init() do a BUG() on failure
+> > instead of returning an error?  IMO crashing early is better than
+> > crashing later or otherwise failing in a subtle way due to a missed
+> > dependency.  
+> 
+> Well, I do agree with that... Maybe that's something that Herve can sneak in
+> this patch? Otherwise, I can later (after this one is applied) send a patch for
+> it.
+
+Well, I don't thing that this have to be part of this current series.
+It is an other topic and should be handled out of this current series.
+
+Hervé
 
