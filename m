@@ -1,111 +1,113 @@
-Return-Path: <stable+bounces-26916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE948730E1
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFF58730FE
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81CE283028
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 08:38:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0C9228AE55
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 08:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B19F5D901;
-	Wed,  6 Mar 2024 08:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDB75D49E;
+	Wed,  6 Mar 2024 08:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="ZogQy2Hp"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="sztOnIMO";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="D5L7Jh0O"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906515D48E;
-	Wed,  6 Mar 2024 08:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB2C1426B;
+	Wed,  6 Mar 2024 08:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709714304; cv=none; b=WwTKcpaQbEqRRBywFrT7lnzxrlIn2ViyxLSkRMzMU4DxPZaFTWxD4BH9SMJbadVVtEfrRLVH6R22sAtyV8x9sM94GHFp2iUOHwPGmliql0vhFIqYsYGYnRdAPLtYmslrMrbu8vdG2D2UKgoICnBmFDU0SH/m/5yvVe0I9E/VqEc=
+	t=1709714601; cv=none; b=JgEPL15835YKQETihYfNPhmEf9CxYRgDSIxlMOhwQIKHcZJL5nPK/Z3mhI8u4wk6tqDRSHCt/Tchxv0vsaTEnFkG8SnHggKJ46MbfvB2pgngnumeCvgn68sxOhmT0aZ0wzfKMbtsae8OMmYhN7uop5HvbF72NeEU7Oafn73pOVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709714304; c=relaxed/simple;
-	bh=INVur/i/2/DnqgH4GT7WzVy7FSpV2dn4I1Y4wqIez2U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XSjHjU24bhibT98DdeHAUfhbXFij+DXUrBwmwccyLvpgKDOZnRa/5ha603oonHo/UYMSOBHmJtxhXp1r6Vf2ApqF9GXQ/jrN8ufA4PdeMFEkRP9RGNeapSYW5dOeU/VswU43uqHI+9NJdBpY7HthG14xAEuiL3ec9sHCIrofiLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=ZogQy2Hp; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=INVur/i/2/DnqgH4GT7WzVy7FSpV2dn4I1Y4wqIez2U=;
-	t=1709714302; x=1710146302; b=ZogQy2HpFkX3F0HNQcmnquu/XVJMOewSj1tOwKqIydcuh4v
-	Utv1m3VBl+I1xf0/K9yjb2qYoE9S7rdsNW32aEZ31sjgMyzgqIzJMJ9zQibhajuI4R3yxCOmfcr8H
-	6PwE6OIFzhE4GwB8ZQiLntBfosqXd3QJg5eopOTdOsPJ1FmgXont3mQMUho7qwYm0ZbICiTRPUepf
-	tanfMOWbIcaCyRHUAQW7p4GcNMsJUX1Als/RL3vlGQuojPMpzX1bxZ+GlRoikIU3n6l9JSMR+I6TL
-	VJjiUqKg60zFOsvYya5ZjCAHZ2CmKII3oBGiEDQ2QRri9np0/XvmVz4sEShpjq4Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rhmn4-0004eJ-Kv; Wed, 06 Mar 2024 09:38:18 +0100
-Message-ID: <1d3ed2b9-a44e-45f9-a523-d219c141ea5a@leemhuis.info>
-Date: Wed, 6 Mar 2024 09:38:17 +0100
+	s=arc-20240116; t=1709714601; c=relaxed/simple;
+	bh=DyWyagf9mc/WW7PnSp7IWwZZYy1CsYm6GCvAj6tU1Yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=En56v6uwUhB9+/d/EpXDMfJG8pn/fPXaMlJEIUBALFmWlzgqcKu6rSdOnRHxrhUo4BogxVl3YvzXw3K/dKFECG1gRjN2zQTNN7eNCnef1RuczyfQ0iCsBY475jTHv3JUzYyaLoE+GLV9HviipBu4P5qCXLgelVqDhnmLXoHS4K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=sztOnIMO; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=D5L7Jh0O; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 42A85C023; Wed,  6 Mar 2024 09:43:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709714596; bh=u7xwVzE312BMKemiCxLar67jyUSufOvBkEGyMQYoFLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sztOnIMOlGYbekTPAYzejpv0by2HxruhYv242jrzHPap2uH10XtvWHZz6C1A3O3nS
+	 0SR527hJDnc27jsWIE4CGxtjNpQU6zgR4wRnb2GQcOjQW965hAAep3NU/IFkL/N/4K
+	 XNCJnGfde4rIu88SIrhFLPYMouGECWYbxZQi6zNUQUhDsJswPvG8uMWQhMEos3bBfE
+	 ZmZAUOqwLSvRK89ayRcnRiYzvswVnwPtF+B9jpbaJQd6BP4LRlfPvH2b0uF6LVzn9M
+	 99cQEvJv7TPVanjfBx3NTQ72E54YH9EoGgd4Dxybf1an5etG7pvD2JD47Z5FfA2WAs
+	 KnLiazP3XyWBw==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 423B6C009;
+	Wed,  6 Mar 2024 09:43:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709714595; bh=u7xwVzE312BMKemiCxLar67jyUSufOvBkEGyMQYoFLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D5L7Jh0OivVaFdtZJGoBrq6rNaqnVu/7vonC2N4M7G/vmMK7awNVRKjUey1Iqd9DP
+	 66+tiSoz9VNGPwEXg2jm0/P5dAmGpbehirZbcn3eu/krocTdASW1LhiGTd+MQ+UvNk
+	 TT8b3HJqFHAE8fdxnl11VzFM6WKSZ3HSFR17Wxgam8zrvFIqHR5KzF5i7dTlvh9p0K
+	 FdEEIL8J7/SQtMVxqDAClkdR0WwKQjQuWZDaoCR19j78t7oySuLhp/VmMNTG2yod8O
+	 utbguK5dYq9HY4RSsHeol5rYvyOxEcpOW3EzTVdQkTvOWVvBYzOqPIvzfl/8PgJO7a
+	 YjBNf97EpkGig==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id afc6919a;
+	Wed, 6 Mar 2024 08:43:05 +0000 (UTC)
+Date: Wed, 6 Mar 2024 17:42:50 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 00/41] 5.10.212-rc2 review
+Message-ID: <ZegsihJukpyoyTek@codewreck.org>
+References: <20240305113119.020328586@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-Content-Language: en-US, de-DE
-To: Song Liu <song@kernel.org>, Dan Moulding <dan@danm.net>
-Cc: junxiao.bi@oracle.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org
-References: <739634c3-3e21-44dd-abb1-356cf54e54fd@oracle.com>
- <20240301231222.20120-1-dan@danm.net>
- <CAPhsuW73WZRekVSEFPgL7R-KNtd2DuhDo7oUNmjZN4Hr7w0dhg@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAPhsuW73WZRekVSEFPgL7R-KNtd2DuhDo7oUNmjZN4Hr7w0dhg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709714302;fc871cb1;
-X-HE-SMSGID: 1rhmn4-0004eJ-Kv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240305113119.020328586@linuxfoundation.org>
 
-On 02.03.24 01:05, Song Liu wrote:
-> On Fri, Mar 1, 2024 at 3:12 PM Dan Moulding <dan@danm.net> wrote:
->>
->>> 5. Looks like the block layer or underlying(scsi/virtio-scsi) may have
->>> some issue which leading to the io request from md layer stayed in a
->>> partial complete statue. I can't see how this can be related with the
->>> commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in
->>> raid5d"")
->>
->> There is no question that the above mentioned commit makes this
->> problem appear. While it may be that ultimately the root cause lies
->> outside the md/raid5 code (I'm not able to make such an assessment), I
->> can tell you that change is what turned it into a runtime
->> regression. Prior to that change, I cannot reproduce the problem. One
->> of my RAID-5 arrays has been running on every kernel version since
->> 4.8, without issue. Then kernel 6.7.1 the problem appeared within
->> hours of running the new code and affected not just one but two
->> different machines with RAID-5 arrays. With that change reverted, the
->> problem is not reproducible. Then when I recently upgraded to 6.8-rc5
->> I immediately hit the problem again (because it hadn't been reverted
->> in the mainline yet). I'm now running 6.8.0-rc5 on one of my affected
->> machines without issue after reverting that commit on top of it.
-> [...]
-> I also tried again to reproduce the issue, but haven't got luck. While
-> I will continue try to repro the issue, I will also send the revert to 6.8
-> kernel.
+Greg Kroah-Hartman wrote on Tue, Mar 05, 2024 at 11:31:49AM +0000:
+> This is the start of the stable review cycle for the 5.10.212 release.
+> There are 41 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 07 Mar 2024 11:31:02 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.212-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Is that revert on the way meanwhile? I'm asking because Linus might
-release 6.8 on Sunday.
+Tested 713b6af903ad ("Linux 5.10.212-rc2") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+
+
+(For the wlan problem I described in reply to rc1, I've confirmed it's
+not new, just one in a few hundred boots rare; will be fun to
+investigate...)
+-- 
+Dominique
 
