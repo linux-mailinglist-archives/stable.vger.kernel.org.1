@@ -1,135 +1,131 @@
-Return-Path: <stable+bounces-26929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377F187333F
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:58:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A34B6873E2E
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 19:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8970289267
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:58:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59EF11F20EEA
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 18:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1685F473;
-	Wed,  6 Mar 2024 09:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02313EFEE;
+	Wed,  6 Mar 2024 18:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WNkgUXTS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923695EE9D
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 09:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AC313BAE9;
+	Wed,  6 Mar 2024 18:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709719101; cv=none; b=g7oKYifk/ddSfJWRrqJUBGdZbycWh3lLDLXjNygQt3rcRzRwiQN78f257p+cHtTEYdU8J4ZJRq0Vi2f6kiBFwPbA3dkpKm4agCnN3TP77s2pqe69k0F4v3lKF5TvJ6pu0Y75HkBVkKbZz2LxDjhkKi0i/ewUNUGWdYv+W9yEIes=
+	t=1709748115; cv=none; b=UkCTUWBvdM7sdWNZ8kVNswf1p9/V0xWJZ8n6EUuHkpJhrasFGlpgHamgx5lvm+3jlDcOySQLpyhiM2FRPedxg9rkxGN7LGv+uBv0sYR2JtPiUioq1+l5ewoOMQvPMGkDumoDitFl21SJFVCRQWao2mq382eLmHbtVYNsRmTpDzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709719101; c=relaxed/simple;
-	bh=F0VrgEoGn3VKVW7CjuxLe+mN+rspzZTMdmiYktONjv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ncyn+IcnnKuhq1JnQ3GjgCeXS9WNisxnf0OSkAkSpKIpCXu4J9uIjsqGjM1V1nUpgb0cGR/e39FEPIbcvhEqCCdBPV6VTcmuvjV+yR4+T6FyEJT+668dijbUccwq2pU3wmbfegryE1ho1LJ9DPbJUDi6A74jevqeCwrkc3Rjm38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1709719089-086e23661a01e80001-OJig3u
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx1.zhaoxin.com with ESMTP id s9aSJHPSEpQwNNlP (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 06 Mar 2024 17:58:09 +0800 (CST)
-X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Mar
- 2024 17:58:08 +0800
-Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Mar
- 2024 17:58:07 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Message-ID: <3d5254cf-27de-b689-352b-45698e265f5e@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.21
-Date: Thu, 7 Mar 2024 01:58:06 +0800
+	s=arc-20240116; t=1709748115; c=relaxed/simple;
+	bh=WUJzhGYyB2Ri6kPDJweaS0R/kNRbw+oc+bRFKM4vtKM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OCQVK0r8PmQc+1h9Ilcjijxu40dx5o3/aUHPHEd2+k2Gt5qemrCO9e1oOlmwl0q82TrEcv15pHBM6VcMP3EdpyOAqSQOxvidSufh3pfp3VoEKY/yfjUNR6iQzjVQGydQftbCl3nFC5qoaJhRKgB7Fumz5OVJPsDluF5kUw2bxgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WNkgUXTS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 426Ae3dM004280;
+	Wed, 6 Mar 2024 18:01:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=qcppdkim1; bh=WEAfSEkkHQ3/425640Pby
+	4gzYSJi7TXLgGMkYugkpt4=; b=WNkgUXTSnNljmIxyZcBG8bny1QsGt8jkTCdIu
+	n4tMmjlRlN9DObX4WDXPMLzydCXG5QUIOdjSs9a+RPpTGac3QLfgcuBR3UZRb+ll
+	FssjSi4hFQM2S4alN92PXCpdoqwdX3zOLXBUf87DoKbP6JnzUXqLzMbI3BrcZ4E2
+	WhlMpmhd2SlQkKg4EpQCBLHWnSxZlAogea+eP3vq9f9JBBhhLvtI1TgMMgQROevh
+	rdPluureRrQOEQ1BPmvV/6nDEN83UJUG1nSTWIb6AhcJylo74EdCIassQoMPUDvj
+	zIL6i7D1DKbj8xCG5L96sJHEXHRvYaz3pf7lX7xjh7N03BteA==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wpepca2km-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Mar 2024 18:01:35 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 426I1ZPI016198
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Mar 2024 18:01:35 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 6 Mar 2024 10:01:34 -0800
+Date: Wed, 6 Mar 2024 10:01:34 -0800
+From: Elliot Berman <quic_eberman@quicinc.com>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+CC: Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: Re: [PATCH] firmware: qcom_scm: disable clocks if
+ qcom_scm_bw_enable() fails
+Message-ID: <20240306095357736-0800.eberman@hu-eberman-lv.qualcomm.com>
+Mail-Followup-To: Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Sibi Sankar <quic_sibis@quicinc.com>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+References: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
+ <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
+ <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
+ <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with
- device not attached
-Content-Language: en-US
-X-ASG-Orig-Subj: Re: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with
- device not attached
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <oneukum@suse.com>, <stern@rowland.harvard.edu>,
-	<linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <usb-storage@lists.one-eyed-alien.net>,
-	<WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
-References: <20240229193349.5407-1-WeitaoWang-oc@zhaoxin.com>
- <2024030530-trinity-triangle-c334@gregkh>
-From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
-In-Reply-To: <2024030530-trinity-triangle-c334@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1709719089
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2055
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121736
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
-	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 5DJeZAb2NtAabu9ImMNMEGT8SNvW_AF2
+X-Proofpoint-ORIG-GUID: 5DJeZAb2NtAabu9ImMNMEGT8SNvW_AF2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-06_11,2024-03-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ mlxlogscore=732 adultscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403060146
 
-On 2024/3/5 21:25, Greg KH wrote:
+On Wed, Mar 06, 2024 at 05:02:37PM +0100, Konrad Dybcio wrote:
+> On 3/6/24 05:10, Elliot Berman wrote:
+> > On Tue, Mar 05, 2024 at 10:15:19PM +0100, Konrad Dybcio wrote:
+> > > On 3/4/24 14:14, Gabor Juhos wrote:
+> > > > There are several functions which are calling qcom_scm_bw_enable()
+> > > > then returns immediately if the call fails and leaves the clocks
+> > > > enabled.
+> > > > 
+> > > > Change the code of these functions to disable clocks when the
+> > > > qcom_scm_bw_enable() call fails. This also fixes a possible dma
+> > > > buffer leak in the qcom_scm_pas_init_image() function.
+> > > > 
+> > > > Compile tested only due to lack of hardware with interconnect
+> > > > support.
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
+> > > > Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+> > > > ---
+> > > 
+> > > Taking a closer look, is there any argument against simply
+> > > putting the clk/bw en/dis calls in qcom_scm_call()?
+> > 
+> > We shouldn't do this because the clk/bw en/dis calls are only needed in
+> > few SCM calls.
 > 
-> 
-> On Fri, Mar 01, 2024 at 03:33:49AM +0800, Weitao Wang wrote:
->> In the scenario of entering hibernation with udisk in the system, if the
->> udisk was gone or resume fail in the thaw phase of hibernation. Its state
->> will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
->> and can't not handle disconnect event. Next, in the poweroff phase of
->> hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
->> when poweroff this scsi device, which will cause uas_submit_urbs to be
->> called to submit URB for sense/data/cmd pipe. However, these URBs will
->> submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
->> will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
->> the SCSI layer go into an ugly loop and system fail to go into hibernation.
->>
->> On the other hand, when we specially check for -ENODEV in function
->> uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
->> poweroff fail and system shutdown instead of entering hibernation.
->>
->> To fix this issue, let uas_submit_urbs to return original generic error
->> when submitting URB failed. At the same time, we need to translate -ENODEV
->> to DID_NOT_CONNECT for the SCSI layer.
->>
->> Suggested-by: Oliver Neukum <oneukum@suse.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
->> ---
->> v2->v3
->>   - Modify the description of this patch.
->>   - An error is returned directly when submitting URB fails.
-> 
-> This change breaks the build, please be more careful'
-> 
-> drivers/usb/storage/uas.c: In function ‘uas_submit_urbs’:
-> drivers/usb/storage/uas.c:559:21: error: unused variable ‘urb’ [-Werror=unused-variable]
->    559 |         struct urb *urb;
->       |                     ^~~
-> 
+> Then the argument list could be expanded with `bool require_resources`,
+> or so still saving us a lot of boilerplate
 
-I'm sorry for the carelessness. Now, I have removed this unused variable
-and completed the compilation test. I'll resubmit this patch with a new version.
+If we want to go that route, I'd vote to add it to qcom_scm_desc in a
+new field.
 
-Thanks
-weitao
 
