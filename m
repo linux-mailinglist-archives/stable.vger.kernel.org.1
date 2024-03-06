@@ -1,138 +1,119 @@
-Return-Path: <stable+bounces-26931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC64D873366
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:00:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9DC873372
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A87EB2897B1
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:00:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 806EF1C21B72
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2747D5FDD5;
-	Wed,  6 Mar 2024 09:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA605F482;
+	Wed,  6 Mar 2024 10:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehZ3et0b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTQzxWRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA775F87A;
-	Wed,  6 Mar 2024 09:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E40C5DF29;
+	Wed,  6 Mar 2024 10:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709719189; cv=none; b=jp9sj4JBxz8+k4tDshqp0x9rMXRwIPFNy0K0YenVhsXZtvIXwseAfXoYIGSuBOOdi/Neq8SHwEQqG9dwIqgtcr0eTEd5JHQ1TSbyUH9fgw/L4+2rYLTrc1Vs8o4JzGOgTY/N7p+HUXllQQksossJXZIt/UvC7J31/VUAc8RCMiM=
+	t=1709719203; cv=none; b=otz1LCRYp6+O6EvzGpzRmtUIAzI2LsSGDWSWhgFo6TZ7sE1BL/TH2QzuRbHWhbemQJ9NouOchHy4BT+EgK/TtBGpYp1g+Dpo70nfUcIgsMUzU9n8RDdgNTVZlAEk7kvhUwA9flKpJ+qR+8/vfVX+6pn6u8Ej/aohBGp20ID7MBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709719189; c=relaxed/simple;
-	bh=et5lilMWMjndYk7hnjmXvEqmk3WER9uNeffbRsLDvYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsFqsaVCVDP8IEMO8Kl3ww44lclHAKwjv5VorjjnT1LGriJg87K5KrgZ4xfPHvymTegdZqOMn/Oe/8MVXbaFp8IAD1us1k9opBVTTG7GNzvR3Bg2gchyq2S9cUhLkuYTeVuu5N9FeDNVuSgHML1udPYtOyIXnd4IjZqtvPq4YIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehZ3et0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECD1C4160E;
-	Wed,  6 Mar 2024 09:59:49 +0000 (UTC)
+	s=arc-20240116; t=1709719203; c=relaxed/simple;
+	bh=i4/4QrpJfHFNXJZarfGFvLLrG901WJW0hZMDBQXduhM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Auy0IVR5oWWj89s1DKdQ5i34ogJ2RuE3gVXYE57vbOFRxT1/yeYtZ5uasY2poLylpYgSyDlznpi755Ave9UlwS2e14NSAuDXIwPXSMu+R4HDL++UrFAKei0KWpRQwtKLf4LI/WrXYuzHXhrXSUHgjT9iGS3ZPLXVNZD3F71s5bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTQzxWRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE852C433F1;
+	Wed,  6 Mar 2024 10:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709719189;
-	bh=et5lilMWMjndYk7hnjmXvEqmk3WER9uNeffbRsLDvYU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehZ3et0bR95TOoUFbYAJFyp03YgXIS8x7wwBhlHEEnIpo5yj13fCRQvybd8X+Ry/w
-	 BTsqp4C/tLq7Pc84jOi2Nlz/Q1IlH5Xbggq9Ym+HfI7acLNY1ru24kwylUcDUPlXhC
-	 jH+2ZCZEqE6ZBEnENeXAqjBLXp/F7KRSmZ/hd6duaQPpQD6WJHt1W4IiLtLgUOZMyK
-	 PRcD7hZqEZYaRzbmE/tskmF9uoKtkuXPcOVeKGMeeR+BcL/CT+IRq1Q4wZ/b78bgqb
-	 lwRCK0ui6VfvnAY/5Y0uhMmD9AX28qssZ0tdoni8i/N4WAB3Bc4R/ODy+YmjYVEBQG
-	 XkY/rCtI/FpOQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rho44-000000001b5-3d78;
-	Wed, 06 Mar 2024 10:59:56 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
+	s=k20201202; t=1709719202;
+	bh=i4/4QrpJfHFNXJZarfGFvLLrG901WJW0hZMDBQXduhM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CTQzxWRqpbjpJWqbgq43IPovJFKAa9pwbfzREiSxHWpbmJYBIMecE+xiQzZjXI7hV
+	 up1JXO4iBHcodx4vM6dP2zUjLl1shtuPe0RD40V/wg9UgdXczqY+6wB4y9tjIP8AnG
+	 nsJkJ2SnZcqlwzMG/F2K16ZkC1e61V/LRdiT0ioNfId/nVbYsaQyhM4+n5Si7r1RbV
+	 2lp5fIuZdun/CxSLZ347OUtePFAwCKPG/yqLRtAFvNIt76rUG8cR7ETt1vnuKf1Itg
+	 qO5LvvwH+6gcC6Ki64IMPUKZZA2wVLuVTV/D8f8H+3ClcCYE8FpzXdlkAhCaeAysr+
+	 Igxx5XvP5Nflw==
+Received: from ip-185-104-136-29.ptr.icomera.net ([185.104.136.29] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rho47-009t3x-TN;
+	Wed, 06 Mar 2024 10:00:00 +0000
+Date: Wed, 06 Mar 2024 09:59:57 +0000
+Message-ID: <87bk7rr882.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: kvmarm@lists.linux.dev,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 4/5] arm64: dts: qcom: sc8280xp: add missing PCIe minimum OPP
-Date: Wed,  6 Mar 2024 10:56:50 +0100
-Message-ID: <20240306095651.4551-5-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240306095651.4551-1-johan+linaro@kernel.org>
-References: <20240306095651.4551-1-johan+linaro@kernel.org>
+Subject: Re: [PATCH 2/3] KVM: arm64: Fix host-programmed guest events in nVHE
+In-Reply-To: <20240305184840.636212-3-oliver.upton@linux.dev>
+References: <20240305184840.636212-1-oliver.upton@linux.dev>
+	<20240305184840.636212-3-oliver.upton@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.104.136.29
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Add the missing PCIe CX performance level votes to avoid relying on
-other drivers (e.g. USB or UFS) to maintain the nominal performance
-level required for Gen3 speeds.
+On Tue, 05 Mar 2024 18:48:39 +0000,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> Programming PMU events in the host that count during guest execution is
+> a feature supported by perf, e.g.
+> 
+>   perf stat -e cpu_cycles:G ./lkvm run
+> 
+> While this works for VHE, the guest/host event bitmaps are not carried
+> through to the hypervisor in the nVHE configuration. Make
+> kvm_pmu_update_vcpu_events() conditional on whether or not _hardware_
+> supports PMUv3 rather than if the vCPU as vPMU enabled.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 84d751a019a9 ("KVM: arm64: Pass pmu events to hyp via vcpu")
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  include/kvm/arm_pmu.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+> index 4b9d8fb393a8..df32355e3e38 100644
+> --- a/include/kvm/arm_pmu.h
+> +++ b/include/kvm/arm_pmu.h
+> @@ -86,7 +86,7 @@ void kvm_vcpu_pmu_resync_el0(void);
+>   */
+>  #define kvm_pmu_update_vcpu_events(vcpu)				\
+>  	do {								\
+> -		if (!has_vhe() && kvm_vcpu_has_pmu(vcpu))		\
+> +		if (!has_vhe() && kvm_arm_support_pmu_v3())		\
+>  			vcpu->arch.pmu.events = *kvm_get_pmu_events();	\
+>  	} while (0)
+>  
 
-Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
-Cc: stable@vger.kernel.org      # 6.2
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index 2fc8d3308844..a8279ba6a756 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -1780,6 +1780,7 @@ pcie4: pcie@1c00000 {
- 			reset-names = "pci";
- 
- 			power-domains = <&gcc PCIE_4_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie4_phy>;
- 			phy-names = "pciephy";
-@@ -1878,6 +1879,7 @@ pcie3b: pcie@1c08000 {
- 			reset-names = "pci";
- 
- 			power-domains = <&gcc PCIE_3B_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie3b_phy>;
- 			phy-names = "pciephy";
-@@ -1976,6 +1978,7 @@ pcie3a: pcie@1c10000 {
- 			reset-names = "pci";
- 
- 			power-domains = <&gcc PCIE_3A_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie3a_phy>;
- 			phy-names = "pciephy";
-@@ -2077,6 +2080,7 @@ pcie2b: pcie@1c18000 {
- 			reset-names = "pci";
- 
- 			power-domains = <&gcc PCIE_2B_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie2b_phy>;
- 			phy-names = "pciephy";
-@@ -2175,6 +2179,7 @@ pcie2a: pcie@1c20000 {
- 			reset-names = "pci";
- 
- 			power-domains = <&gcc PCIE_2A_GDSC>;
-+			required-opps = <&rpmhpd_opp_nom>;
- 
- 			phys = <&pcie2a_phy>;
- 			phy-names = "pciephy";
+	M.
+
 -- 
-2.43.0
-
+Without deviation from the norm, progress is not possible.
 
