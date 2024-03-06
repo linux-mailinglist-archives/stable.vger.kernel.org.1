@@ -1,121 +1,163 @@
-Return-Path: <stable+bounces-26944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2F28735A0
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:31:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D3F8735AC
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A163B21B4A
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:31:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317F21C22032
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F247FBA8;
-	Wed,  6 Mar 2024 11:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6E77FBD2;
+	Wed,  6 Mar 2024 11:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qd7s+P0c";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qd7s+P0c"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A6C5FDDC
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 11:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E7E7FBB4;
+	Wed,  6 Mar 2024 11:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709724698; cv=none; b=uUVG7eyplUkGA06m/8bbHlM1u4yfBYg9rfGTOWbs0rPsyZWmenBW1/p6Y1O2OmDdDJPaFiDR9HPZvBLJ13p4lcxAVwF5QIQwp79Wd7PkeUHNdauhRgW1OJt3/YkcQoMcgJ5ZKx8u9YNWRB2J912aoZwVhWuVyrmUcf0IDCZCTAg=
+	t=1709725196; cv=none; b=Vz4FtXkXDXMP5/6newE3+CsbsBkKrqWE8C12l1IXA5jd/PNCrOy5RoifTAWqLictAZSMscGKREW10TQPsPsECplyV7OcP3CUEeS/d4ntbds9Yq785+LMOBUdgHQGYIM8yjAQfjxmPDqIrJusWpYuQ7GSPMzSe+BztL6x9CUpwAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709724698; c=relaxed/simple;
-	bh=Opne3QTmvUw4O2TCivooWSceNde6A7Me83HChw/pCRQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q35EuOXzGdaK8K0L3BKb3/PfnKmeHW+l7ZGM/M/gW4AqiQvV1d8Q8pll0Y7WisbeMnx7S0OgHOi8LszZ/UDMvOtFfSFnveGoiqDPv8S5HgOMHSoYSwegYojBCjb6+0RA++QJev7fftIy4SCvpabGsTjpv6h8Hw5kcViNUak9LvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4TqVcp0Rxqz4f3jXY
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 19:31:22 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 7F86B1A016E
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 19:31:27 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBXKBEOVOhlsPJ1GA--.54693S4;
-	Wed, 06 Mar 2024 19:31:27 +0800 (CST)
-From: Li Lingfeng <lilingfeng@huaweicloud.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: jsperbeck@google.com,
-	beanhuo@micron.com,
-	hch@lst.de,
-	axboe@kernel.dk,
-	sashal@kernel.org,
-	yukuai1@huaweicloud.com,
-	houtao1@huawei.com,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	lilingfeng@huaweicloud.com,
-	lilingfeng3@huawei.com
-Subject: [PATCH 5.10] nvme: use nvme_cid to generate command_id in trace event
-Date: Wed,  6 Mar 2024 19:25:06 +0800
-Message-Id: <20240306112506.1699133-1-lilingfeng@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1709725196; c=relaxed/simple;
+	bh=xwoFzPsHeZCk2y4J/x89E9mHH56JSmXj2yHhGVcCVyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tHrW6pntP8UjKKHZkuVLJBoqDmoqnI5mwVJJtzqAc9NswObrrzkag4jDdtK26l36pO/Kb2BB6E0HLaft3cmovMk85ftszgrZrrlKan1Yd3SvQHv+CsCzcFBnXwNxPjUAP4rD2dpevzvO99GgbSdUOJw8xSsRXYnc4V1sXvMlAak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qd7s+P0c; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qd7s+P0c; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id DE277C01B; Wed,  6 Mar 2024 12:39:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709725191; bh=M24mEXhEijJg73gWUpW6KA+Popv3l8CYmbbCO5rEZZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qd7s+P0cWX1xdYZUCxiiKX9bBF4pIaMd6U7LCsMAwda6rils2ZVEu/fezpefjRM88
+	 NfambXuo3ZHK1u2KpXY+p6P2w3bW0HyKRGlp5KlNktlDo5qgAZvLBRpAU7ev2mlW3I
+	 aCZrJdnqvuGPnCK37namJfsymVf4N477ftHBkSryt/U+xph8+DqZerSADOoRyRurAy
+	 2G2UtdPrxIDVQ85CeHwn+zX8Ok/S2UYw3tvJrg97pRlb5mX+72sr9KfUnxXZpKfrCG
+	 VYVOvh+QmuIab+vNOir6jL9c3uu2EedFxHBX6dW0HnfDbBQuBeWIhsOb9ZjVSpYUvA
+	 lpXJCDXJ7toDw==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 4E49FC009;
+	Wed,  6 Mar 2024 12:39:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709725191; bh=M24mEXhEijJg73gWUpW6KA+Popv3l8CYmbbCO5rEZZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qd7s+P0cWX1xdYZUCxiiKX9bBF4pIaMd6U7LCsMAwda6rils2ZVEu/fezpefjRM88
+	 NfambXuo3ZHK1u2KpXY+p6P2w3bW0HyKRGlp5KlNktlDo5qgAZvLBRpAU7ev2mlW3I
+	 aCZrJdnqvuGPnCK37namJfsymVf4N477ftHBkSryt/U+xph8+DqZerSADOoRyRurAy
+	 2G2UtdPrxIDVQ85CeHwn+zX8Ok/S2UYw3tvJrg97pRlb5mX+72sr9KfUnxXZpKfrCG
+	 VYVOvh+QmuIab+vNOir6jL9c3uu2EedFxHBX6dW0HnfDbBQuBeWIhsOb9ZjVSpYUvA
+	 lpXJCDXJ7toDw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 01e7a05f;
+	Wed, 6 Mar 2024 11:39:44 +0000 (UTC)
+Date: Wed, 6 Mar 2024 20:39:29 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: "Jorge Ramirez-Ortiz, Foundries" <jorge@foundries.io>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: part_switch: fixes switch on gp3 partition
+Message-ID: <ZehV8RrGdM9a1hO4@codewreck.org>
+References: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+ <Zegx5PCtg6hs8zyp@trax>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBXKBEOVOhlsPJ1GA--.54693S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7WrWktr4kCFWDArykAr17GFg_yoW8WFykpF
-	4rWrn09rZ7WF45t3s7Ja1DuFWUXws0vrWUGr12g3s3Xry7tFWFkr1Y9FWFvF9xZFZrury2
-	vFWYqryxXa1UX37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZa9
-	-UUUUU=
-X-CM-SenderInfo: polox0xjih0w46kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Zegx5PCtg6hs8zyp@trax>
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+Jorge Ramirez-Ortiz, Foundries wrote on Wed, Mar 06, 2024 at 10:05:40AM +0100:
+> > the part_type values of interest here are defined as follow:
+> > main  0
+> > boot0 1
+> > boot1 2
+> > rpmb  3
+> > gp0   4
+> > gp1   5
+> > gp2   6
+> > gp3   7
+> 
+> right, the patch I originally sent didn't consider anything after GP0 as per
+> the definitions below.
+> 
+> #define EXT_CSD_PART_CONFIG_ACC_MASK	(0x7)
+> #define EXT_CSD_PART_CONFIG_ACC_BOOT0	(0x1)
+> #define EXT_CSD_PART_CONFIG_ACC_RPMB	(0x3)
+> #define EXT_CSD_PART_CONFIG_ACC_GP0	(0x4)
 
-A null-ptr-deref problem may occur since commit 706960d328f5 ("nvme: use
-command_id instead of req->tag in trace_nvme_complete_rq()") tries to get
-command_id by nvme_req(req)->cmd while nvme_req(req)->cmd is NULL.
-The problem has been sloved since the patch has been reverted by commit
-929ba86476b3. However, cmd->common.command_id is set to req->tag again
-which should be ((genctl & 0xf)< 12 | req->tag).
-Generating command_id by nvme_cid() in trace event instead of
-nvme_req(req)->cmd->common.command_id to set it to
-((genctl & 0xf)< 12 | req->tag) without trigging the null-ptr-deref
-problem.
+Yes, as far as I can see these are used in drivers/mmc/core/mmc.c
+for example for GP0, below snippet:
+                        mmc_part_add(card, part_size << 19,
+                                EXT_CSD_PART_CONFIG_ACC_GP0 + idx,
+                                "gp%d", idx, false,
+                                MMC_BLK_DATA_AREA_GP);
 
-Fixes: commit 706960d328f5 ("nvme: use command_id instead of req->tag in trace_nvme_complete_rq()")
-Reported-by: John Sperbeck <jsperbeck@google.com>
-Link: https://lore.kernel.org/r/20240109181722.228783-1-jsperbeck@google.com
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
----
- drivers/nvme/host/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+where idx is in [0;3], so we've got 4-7 for GP partitions in the part's
+part_cfg.
 
-diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
-index 700fdce2ecf1..0de057a298dd 100644
---- a/drivers/nvme/host/trace.h
-+++ b/drivers/nvme/host/trace.h
-@@ -98,7 +98,7 @@ TRACE_EVENT(nvme_complete_rq,
- 	    TP_fast_assign(
- 		__entry->ctrl_id = nvme_req(req)->ctrl->instance;
- 		__entry->qid = nvme_req_qid(req);
--		__entry->cid = req->tag;
-+		__entry->cid = nvme_cid(req);
- 		__entry->result = le64_to_cpu(nvme_req(req)->result.u64);
- 		__entry->retries = nvme_req(req)->retries;
- 		__entry->flags = nvme_req(req)->flags;
+(similarly, boot has BOOT0 + [0-1], and RPMB has RPMB without anything
+added -- so as far as this field is concerned there seems to be a single
+RPMB)
+
+> That looked strange as there should be support for 4 GP but this code
+> kind of convinced me of the opposite.
+> 
+> 	if (idata->rpmb) {
+> 		/* Support multiple RPMB partitions */
+> 		target_part = idata->rpmb->part_index;
+> 		target_part |= EXT_CSD_PART_CONFIG_ACC_RPMB;
+> 	}
+>
+> So if we apply the fix that you propose, how are multiple RPMB
+> partitions (ie, 4) going to be identified as RPMB? Unless there can't be
+> more than 3?
+
+Hmm, that code is definitely odd.
+Reading this I'd normally assume that idata->rpmb->part_index ought to
+be in a range separate fom EXT_CSD_PART_CONFIG_ACC_MASK -- so we've got
+the ACC_RPMB "flag" that identifies it as RPMB within the mask, and then
+it can target a given index within that.
+
+But as far as I'm seeing in the code, rpmb->part_index always comes from
+mmc_blk_alloc_rpmb_part (set to part's part_cfg), which in turn is only
+called if area_type is MMC_BLK_DATA_AREA_RPMB, which is only set for
+mmc_part_add() for rpmb with ACC_RPMB as part_index.. So we've got
+target_part = 3 and then target_part |= 3 which will leave the value
+unchanged.
+
+Even assuming part_index was something else than 3 (let's say 1 or 2),
+we'd end up with target_part = 4 or 5 which won't match the
+PART_CONFIG_ACC_MASK check (&3 != 3), so it doesn't make sense until
+something is shifted somewhere outside of the mask, and I see no trace
+of part_index being shifted.
+
+So the if (idata->rpmb) itself makes sense as per the comment, but we
+could just have target_part take either values here as far as I
+understand.
+
+
+
+I've never actually used the rpmb partition of my MMCs so I'm not sure
+how multiple RPMB partitions is supposed to work in the first place,
+sorry.
+That code is authored by Linus W (in 2017), perhaps he'll remember
+something?
+
 -- 
-2.31.1
-
+Dominique
 
