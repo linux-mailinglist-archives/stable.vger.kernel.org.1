@@ -1,211 +1,121 @@
-Return-Path: <stable+bounces-26943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0871E873586
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:24:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2F28735A0
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C63D1F26DA5
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:24:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A163B21B4A
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFB07CF29;
-	Wed,  6 Mar 2024 11:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CDcHP2WC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DZUEh/+j";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CDcHP2WC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DZUEh/+j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F247FBA8;
+	Wed,  6 Mar 2024 11:31:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B628F7BB17;
-	Wed,  6 Mar 2024 11:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A6C5FDDC
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 11:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709724281; cv=none; b=ecDz/tI40y+ZjB67tkl9Jv3wemcwhtGJwdFj78Of0e4rAJfOuRAYVo1dEXFEV1rZ9UK/zHMk/sNXpfI7fLq+xByRMvA1kiPv5BGbSZIadjQ2ayjS/4nuJNb0OI/ZN0zydIb0mQ3dKcDezlYO+5hmGP33TZUVlUdj+72t/WgT0I8=
+	t=1709724698; cv=none; b=uUVG7eyplUkGA06m/8bbHlM1u4yfBYg9rfGTOWbs0rPsyZWmenBW1/p6Y1O2OmDdDJPaFiDR9HPZvBLJ13p4lcxAVwF5QIQwp79Wd7PkeUHNdauhRgW1OJt3/YkcQoMcgJ5ZKx8u9YNWRB2J912aoZwVhWuVyrmUcf0IDCZCTAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709724281; c=relaxed/simple;
-	bh=nLXY6FdbORSIR6lx3hLaHRZJzgY+pdtrixTnkTvcyBU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fI7NjudXTFmD/oTjLeLJT/GijI8k509EajlRqK0MbU816btDd4ywYv1g5E9qJIA55jv9ecs6UbK1r4zD7NvRPL5Y+a8n0SMyr2RAC05dpHpnUhIzez7tZpM+dBH62NCbfFqZnpaVD9tPPBC5J74PfHC3CcTLURA3ipojFyKyn/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CDcHP2WC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DZUEh/+j; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CDcHP2WC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DZUEh/+j; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B2AA668836;
-	Wed,  6 Mar 2024 11:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709724277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
-	b=CDcHP2WCnIsowGyww0Vy8Hc0okGO5z3RkUxLHKQeLr9oyc/b5xm2H7DzoAmUFk6apBLGhL
-	Fa6m8Q0QCThEJf+bu9MtUvoPPlpsrhvKaU9XOFmn6W9wo2XagFnhwnt3QBo25qpyNOuPs1
-	bG/CU3oK/oAM7ylMDGummyyt8nA0qOQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709724277;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
-	b=DZUEh/+j3ashhl7h3NOjjrvhgHNQa82IcSX0qKEYBUUKkInSrMkBookX5Sqh9jH+55ZaUJ
-	db+GSI8dQlfMrTAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709724277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
-	b=CDcHP2WCnIsowGyww0Vy8Hc0okGO5z3RkUxLHKQeLr9oyc/b5xm2H7DzoAmUFk6apBLGhL
-	Fa6m8Q0QCThEJf+bu9MtUvoPPlpsrhvKaU9XOFmn6W9wo2XagFnhwnt3QBo25qpyNOuPs1
-	bG/CU3oK/oAM7ylMDGummyyt8nA0qOQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709724277;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
-	b=DZUEh/+j3ashhl7h3NOjjrvhgHNQa82IcSX0qKEYBUUKkInSrMkBookX5Sqh9jH+55ZaUJ
-	db+GSI8dQlfMrTAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FDAC13A65;
-	Wed,  6 Mar 2024 11:24:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kbayBnVS6GUVEwAAD6G6ig
-	(envelope-from <lhenriques@suse.de>); Wed, 06 Mar 2024 11:24:37 +0000
-Received: from localhost (brahms.olymp [local])
-	by brahms.olymp (OpenSMTPD) with ESMTPA id e845dec5;
-	Wed, 6 Mar 2024 11:24:32 +0000 (UTC)
-From: Luis Henriques <lhenriques@suse.de>
-To: xiubli@redhat.com
-Cc: ceph-devel@vger.kernel.org,  idryomov@gmail.com,  jlayton@kernel.org,
-  vshankar@redhat.com,  mchangir@redhat.com,  stable@vger.kernel.org
-Subject: Re: [PATCH v2] libceph: init the cursor when preparing the sparse read
-In-Reply-To: <20240306010544.182527-1-xiubli@redhat.com> (xiubli@redhat.com's
-	message of "Wed, 6 Mar 2024 09:05:44 +0800")
-References: <20240306010544.182527-1-xiubli@redhat.com>
-Date: Wed, 06 Mar 2024 11:24:32 +0000
-Message-ID: <87msrbr4b3.fsf@suse.de>
+	s=arc-20240116; t=1709724698; c=relaxed/simple;
+	bh=Opne3QTmvUw4O2TCivooWSceNde6A7Me83HChw/pCRQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q35EuOXzGdaK8K0L3BKb3/PfnKmeHW+l7ZGM/M/gW4AqiQvV1d8Q8pll0Y7WisbeMnx7S0OgHOi8LszZ/UDMvOtFfSFnveGoiqDPv8S5HgOMHSoYSwegYojBCjb6+0RA++QJev7fftIy4SCvpabGsTjpv6h8Hw5kcViNUak9LvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4TqVcp0Rxqz4f3jXY
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 19:31:22 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 7F86B1A016E
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 19:31:27 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP1 (Coremail) with SMTP id cCh0CgBXKBEOVOhlsPJ1GA--.54693S4;
+	Wed, 06 Mar 2024 19:31:27 +0800 (CST)
+From: Li Lingfeng <lilingfeng@huaweicloud.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: jsperbeck@google.com,
+	beanhuo@micron.com,
+	hch@lst.de,
+	axboe@kernel.dk,
+	sashal@kernel.org,
+	yukuai1@huaweicloud.com,
+	houtao1@huawei.com,
+	yi.zhang@huawei.com,
+	yangerkun@huawei.com,
+	lilingfeng@huaweicloud.com,
+	lilingfeng3@huawei.com
+Subject: [PATCH 5.10] nvme: use nvme_cid to generate command_id in trace event
+Date: Wed,  6 Mar 2024 19:25:06 +0800
+Message-Id: <20240306112506.1699133-1-lilingfeng@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CDcHP2WC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="DZUEh/+j"
-X-Spamd-Result: default: False [-1.56 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
-	 RCVD_COUNT_THREE(0.00)[4];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[ceph.com:url,suse.de:dkim,suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_LAST(0.00)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,redhat.com];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 BAYES_HAM(-0.25)[73.24%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: B2AA668836
-X-Spam-Level: 
-X-Spam-Score: -1.56
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgBXKBEOVOhlsPJ1GA--.54693S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrWktr4kCFWDArykAr17GFg_yoW8WFykpF
+	4rWrn09rZ7WF45t3s7Ja1DuFWUXws0vrWUGr12g3s3Xry7tFWFkr1Y9FWFvF9xZFZrury2
+	vFWYqryxXa1UX37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUZa9
+	-UUUUU=
+X-CM-SenderInfo: polox0xjih0w46kxt4xhlfz01xgou0bp/
 
-xiubli@redhat.com writes:
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-> From: Xiubo Li <xiubli@redhat.com>
->
-> The osd code has remove cursor initilizing code and this will make
-> the sparse read state into a infinite loop. We should initialize
-> the cursor just before each sparse-read in messnger v2.
->
-> Cc: stable@vger.kernel.org
-> URL: https://tracker.ceph.com/issues/64607
-> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on=
- the socket")
-> Reported-by: Luis Henriques <lhenriques@suse.de>
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->
-> V2:
-> - Just removed the unnecessary 'sparse_read_total' check.
->
+A null-ptr-deref problem may occur since commit 706960d328f5 ("nvme: use
+command_id instead of req->tag in trace_nvme_complete_rq()") tries to get
+command_id by nvme_req(req)->cmd while nvme_req(req)->cmd is NULL.
+The problem has been sloved since the patch has been reverted by commit
+929ba86476b3. However, cmd->common.command_id is set to req->tag again
+which should be ((genctl & 0xf)< 12 | req->tag).
+Generating command_id by nvme_cid() in trace event instead of
+nvme_req(req)->cmd->common.command_id to set it to
+((genctl & 0xf)< 12 | req->tag) without trigging the null-ptr-deref
+problem.
 
-Thanks a lot for the quick fix, Xiubo.  FWIW:
+Fixes: commit 706960d328f5 ("nvme: use command_id instead of req->tag in trace_nvme_complete_rq()")
+Reported-by: John Sperbeck <jsperbeck@google.com>
+Link: https://lore.kernel.org/r/20240109181722.228783-1-jsperbeck@google.com
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+---
+ drivers/nvme/host/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Luis Henriques <lhenriques@suse.de>
-
-Note that I still see this test failing occasionally, but I haven't had
-time to help debugging it.  And that's a different issue, of course.  TBH
-I don't remember if this test ever used to reliably pass.  Here's the
-output diff shown by fstests in case you're not able to reproduce it:
-
-@@ -65,7 +65,7 @@
- # Getting encryption key status
- Present (user_count=3D1, added_by_self)
- # Removing encryption key
--Removed encryption key with identifier 69b2f6edeee720cce0577937eb8a6751
-+Removed encryption key with identifier 69b2f6edeee720cce0577937eb8a6751, b=
-ut files still busy
- # Getting encryption key status
- Absent
- # Verifying that the encrypted directory was "locked"
-
-Cheers,
---=20
-Lu=C3=ADs
-
->
-> net/ceph/messenger_v2.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-> index a0ca5414b333..ab3ab130a911 100644
-> --- a/net/ceph/messenger_v2.c
-> +++ b/net/ceph/messenger_v2.c
-> @@ -2034,6 +2034,9 @@ static int prepare_sparse_read_data(struct ceph_con=
-nection *con)
->  	if (!con_secure(con))
->  		con->in_data_crc =3D -1;
->=20=20
-> +	ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg,
-> +				  con->in_msg->sparse_read_total);
-> +
->  	reset_in_kvecs(con);
->  	con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
->  	con->v2.data_len_remain =3D data_len(msg);
-> --=20
->
-> 2.43.0
->
+diff --git a/drivers/nvme/host/trace.h b/drivers/nvme/host/trace.h
+index 700fdce2ecf1..0de057a298dd 100644
+--- a/drivers/nvme/host/trace.h
++++ b/drivers/nvme/host/trace.h
+@@ -98,7 +98,7 @@ TRACE_EVENT(nvme_complete_rq,
+ 	    TP_fast_assign(
+ 		__entry->ctrl_id = nvme_req(req)->ctrl->instance;
+ 		__entry->qid = nvme_req_qid(req);
+-		__entry->cid = req->tag;
++		__entry->cid = nvme_cid(req);
+ 		__entry->result = le64_to_cpu(nvme_req(req)->result.u64);
+ 		__entry->retries = nvme_req(req)->retries;
+ 		__entry->flags = nvme_req(req)->flags;
+-- 
+2.31.1
 
 
