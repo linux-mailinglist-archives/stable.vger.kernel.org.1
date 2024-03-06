@@ -1,175 +1,126 @@
-Return-Path: <stable+bounces-27003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A413873B58
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 16:57:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31525873B9E
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 17:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667981C2278A
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62DEF1C24BC4
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 16:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E5B135A6F;
-	Wed,  6 Mar 2024 15:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC15413BAD4;
+	Wed,  6 Mar 2024 16:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZE7iMA6z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C6460912;
-	Wed,  6 Mar 2024 15:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A013790B
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 16:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709740621; cv=none; b=FNbQJgz2dVLIbhozGAK2rVbiNFE7Wy2jDLc79e6mgJfQxdow06WtftK0E3tVNc3f8zhkHOXZeZzgN6NUBym3Wrpr5kiOZ+EyQEmAtNShRnFbLuwVh3U2JCqvw3htDT9uu0J9TLT3O6K3Ad2jNxW0gwCaFs/h6oNI79zxntN3miM=
+	t=1709740992; cv=none; b=QKV8aOumaDWPXjPShZBKnG5QZwueG7p1bDq+/dqTfNzPOh9vSGn+1ELIiJOBuWt8k+XDJibH+F4gd8+H0mqxs3UoLEarQMpFQOonFWMTVHfGKskAaPeShev7wvZ9mNBk1bHcGtfqKvy5vkQAiwOx658YKZawPS2L1rzBuYSSmtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709740621; c=relaxed/simple;
-	bh=4tghISU+9PtSjWtX/KooJvAfp+afRTcd2Wim7+281EQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V3fnhn+SqQpRPkCjVpcJk7kKElfpovxu33CdVAQJWT500Dpd5VPSseM4T7eJ3LfSrGWtxXd5+Gzl6uFjlKAs3i9VGnXo/0rFSToiAT6Fw+xLtgU7gnI1CeRPo/hbl3InZRhNsvXhO64u+d0kY04ifh3PdX6sgyeAMQQZPupY3Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-220ce420472so1347446fac.1;
-        Wed, 06 Mar 2024 07:56:59 -0800 (PST)
+	s=arc-20240116; t=1709740992; c=relaxed/simple;
+	bh=R9r772f34HXHijYnV2MOXV7FUE/0NkutRga5zVmy9a0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ipq1bcMJLuKAfK128ou6LDAm7HmqM+HlXP8J9Oo2sxGJpiqylOCBSsBw4DDUgfkR3X+sODba84r9leUiRfmmsHoCJWlsVfG0jbtn7qD3MZ0Keq2UWeB5CBnU20Wuo7X8qCU3DkKX2huKp7W/0DOWRrgPws9s3u6q5C2CTkwlyas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZE7iMA6z; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5135e8262e4so970588e87.0
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 08:03:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709740989; x=1710345789; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f9MfW84pQmInKasVchKxLCBjmSCiqOVONg69XqoBKCw=;
+        b=ZE7iMA6zxC7PEFwvziX637n4cWYjjfWv0hAutTBML1bwBdziqpOB2dhe/WqZJe3erl
+         TYJzSbpN5eQW+NvXdufQyHRE61Mzm5buhJnwwi6g1XxBmqx1z0MTCo8Hr/qf3KSwbi7W
+         j3qWC6owpoKFDNL2P+nbr4wZ8z1oTbzDUXICv5vjs8+WplLINHULUVcUpULC7De9sFHL
+         3cSFxuB50SqLyxQYjateuQI3cb/n9Mj38HKYjkA+26as46IpgBeUTBm0eINQw5niKkRj
+         FrxaZGTO/4PCTFzNxM2dFwLjArRsAmflzq+JpP05QcOUFF4PbpxwvWsf4f9E1SyZGq/K
+         02rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709740619; x=1710345419;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rRuYu3pgVDn4yl5odBwmAdoeGMF5J7JUGXQ//zks9Lo=;
-        b=caIkFuJjjXDO/al/axSusjbPiXmNNt3mzhGkUieoiXW90xWxq0v/0W4pKvI2xfUQRM
-         a7YOFhY6kd2MM+3+NoDaVLgbSKaxXp4+eMveJLzae5phMVGBbgstmYUuDUvWh48da8jl
-         x8MOjDFepXKxQXs4DXjRt10wz5zczX/XeUE6buQZTjVIdPVDRWuds8aI2JjaU2Id1Zf8
-         v6r5N/TvY3Pxhhwna0Uj9Momr7AOcggC+hHdIOqX7FcgSEmKGsDDZhEXPzs9VJkabcjv
-         YRbBShnhkblHMXs498jj53GpeLbFaGxwzEcYkg+PtjPZPab2Yr5QCPO91KETeZC6Y03i
-         bjWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2T2/rJcCyAMW3lFrqSlJ6aK8MN8aUqRIu7CDisTdZZyItHdpfyO+l99n7bf9rR+cl5Smx649y2fXnwzd52XyyUu43/mpZsj0RegLuRhlB2sOqsDzqS4S/FXG8KKv3AGW/ppe+DsrDsiJEG6Z4v4QlH361jFzLIHJLdTD+2NhJAw==
-X-Gm-Message-State: AOJu0YyF3NvROZjWzy/q6GkfQeLoa64NEaQB7naVxrCWzVpJY+n8I1P3
-	wH1gQ1LFEWTZ6ktQqiMD3alGTMy7waMsNYu5TXsSEQHKXsbK+UxwdDN60u240/3rDffc1+uqtj8
-	YloACJiYIHU84iKAu7bt86VecMhI=
-X-Google-Smtp-Source: AGHT+IEsBZ3LiBc38I6NvmS8TqLDiRTOWQTra2Xy4MwzY0sHI3hzoucfdrgc0TI/rKjp4G4ZH/bvtO8MllvCteIq4ac=
-X-Received: by 2002:a05:6870:d681:b0:21e:ad52:3029 with SMTP id
- z1-20020a056870d68100b0021ead523029mr4049265oap.0.1709740619125; Wed, 06 Mar
- 2024 07:56:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709740989; x=1710345789;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f9MfW84pQmInKasVchKxLCBjmSCiqOVONg69XqoBKCw=;
+        b=lzgHAB40FxyU+WeVYPBbR82QarQ3ixtu2gKu39QEmtD+aB65lY/zs2VppLZSXe8dig
+         OW3pa9wvDACBeU30HdoHGY0sXhr1ITJpx11pXZ9AivphL066MCogwFGsG7nWLeGIvkgf
+         MNWIvo7uFCXq01ZJyG/vNh/cVzU56jdS7nLcXSe3AnDrlQ95563Y2G0m/GvKoiftTIG9
+         AjfqqU+jkvVAym4lDeOlOdlkI2m8sAxfhwDZGmg0M0iFJu2tz38g1PlGTNZFUPgWsq2R
+         ASXFHvkz44PtyYogRE1UIgyux0QBoQmxDX2/W+l7pM7Plev67o69BdfoeahU8ofQjvM6
+         KOVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQqZD6Hfx6Siae/jTHfUNRIGwfxLPhGdXgkP9TpPWAMARS3/g6yCn60IkmMF31s93oZ+Q6DKCjACGjcnDOqgMMqVIshd1D
+X-Gm-Message-State: AOJu0Yytk2gGjeBPhPFKLqoKEK0cif1q+VPuicJ85n6B1IMpsIGWGPyq
+	0HdHhcpsTbmGqArBUVqo5wL/W2maX4HJMm4Spja90zeNF/OTnOxou6GEAij5cQs=
+X-Google-Smtp-Source: AGHT+IHOB2NN7QC1FZy5/GvqwVh+kS2gHxn4TnbcM7tZzRLNsrdlnJEIMaHR2HnCSghLIEkxdL2HwQ==
+X-Received: by 2002:a05:6512:3d8d:b0:513:57fe:97b8 with SMTP id k13-20020a0565123d8d00b0051357fe97b8mr4013094lfv.26.1709740959029;
+        Wed, 06 Mar 2024 08:02:39 -0800 (PST)
+Received: from [87.246.221.128] (netpanel-87-246-221-128.pol.akademiki.lublin.pl. [87.246.221.128])
+        by smtp.gmail.com with ESMTPSA id m13-20020a05651202ed00b005134c52debbsm1076665lfq.162.2024.03.06.08.02.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Mar 2024 08:02:38 -0800 (PST)
+Message-ID: <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
+Date: Wed, 6 Mar 2024 17:02:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306085007.169771-1-herve.codina@bootlin.com>
- <20240306085007.169771-2-herve.codina@bootlin.com> <CAJZ5v0gENrBFfJ3FDJ=m0-veFbue_Bw168+k2cs7v2u9MtCT8Q@mail.gmail.com>
- <20240306162447.2a843a11@bootlin.com>
-In-Reply-To: <20240306162447.2a843a11@bootlin.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 6 Mar 2024 16:56:47 +0100
-Message-ID: <CAJZ5v0hYxhoLEEJ=MXPNFWpp7bidx_832RdOAgzx4m=aM0YzXg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Saravana Kannan <saravanak@google.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
-	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] firmware: qcom_scm: disable clocks if
+ qcom_scm_bw_enable() fails
+Content-Language: en-US
+To: Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+ Sibi Sankar <quic_sibis@quicinc.com>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
+ <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
+ <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 6, 2024 at 4:24=E2=80=AFPM Herve Codina <herve.codina@bootlin.c=
-om> wrote:
->
-> Hi Rafael,
->
-> On Wed, 6 Mar 2024 13:48:37 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->
-> > On Wed, Mar 6, 2024 at 9:51=E2=80=AFAM Herve Codina <herve.codina@bootl=
-in.com> wrote:
-> > >
-> > > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > > introduces a workqueue to release the consumer and supplier devices u=
-sed
-> > > in the devlink.
-> > > In the job queued, devices are release and in turn, when all the
-> > > references to these devices are dropped, the release function of the
-> > > device itself is called.
-> > >
-> > > Nothing is present to provide some synchronisation with this workqueu=
-e
-> > > in order to ensure that all ongoing releasing operations are done and
-> > > so, some other operations can be started safely.
-> > >
-> > > For instance, in the following sequence:
-> > >   1) of_platform_depopulate()
-> > >   2) of_overlay_remove()
-> > >
-> > > During the step 1, devices are released and related devlinks are remo=
-ved
-> > > (jobs pushed in the workqueue).
-> > > During the step 2, OF nodes are destroyed but, without any
-> > > synchronisation with devlink removal jobs, of_overlay_remove() can ra=
-ise
-> > > warnings related to missing of_node_put():
-> > >   ERROR: memory leak, expected refcount 1 instead of 2
-> > >
-> > > Indeed, the missing of_node_put() call is going to be done, too late,
-> > > from the workqueue job execution.
-> > >
-> > > Introduce device_link_wait_removal() to offer a way to synchronize
-> > > operations waiting for the end of devlink removals (i.e. end of
-> > > workqueue jobs).
-> > > Also, as a flushing operation is done on the workqueue, the workqueue
-> > > used is moved from a system-wide workqueue to a local one.
-> > >
-> > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> >
-> > No, it is not fixed by this patch.
->
-> Was explicitly asked by Saravana on v1 review:
-> https://lore.kernel.org/linux-kernel/CAGETcx9uP86EHyKJNifBMd23oCsA+KpMa+e=
-36wJEEnHDve+Avg@mail.gmail.com/
 
-Well, I don't think this is a valid request, sorry.
 
-> The commit 80dd33cf72d1 introduces the workqueue and so some asynchronous=
- tasks
-> on removal.
-> This patch and the next one allows to re-sync execution waiting for jobs =
-in
-> the workqueue when it is needed.
+On 3/6/24 05:10, Elliot Berman wrote:
+> On Tue, Mar 05, 2024 at 10:15:19PM +0100, Konrad Dybcio wrote:
+>>
+>>
+>> On 3/4/24 14:14, Gabor Juhos wrote:
+>>> There are several functions which are calling qcom_scm_bw_enable()
+>>> then returns immediately if the call fails and leaves the clocks
+>>> enabled.
+>>>
+>>> Change the code of these functions to disable clocks when the
+>>> qcom_scm_bw_enable() call fails. This also fixes a possible dma
+>>> buffer leak in the qcom_scm_pas_init_image() function.
+>>>
+>>> Compile tested only due to lack of hardware with interconnect
+>>> support.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
+>>> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+>>> ---
+>>
+>> Taking a closer look, is there any argument against simply
+>> putting the clk/bw en/dis calls in qcom_scm_call()?
+> 
+> We shouldn't do this because the clk/bw en/dis calls are only needed in
+> few SCM calls.
 
-I get this, but still, this particular individual patch by itself
-doesn't fix anything.  Do you agree with this?
+Then the argument list could be expanded with `bool require_resources`,
+or so still saving us a lot of boilerplate
 
-If somebody applies this patch without the next one in the series,
-they will not get any change in behavior, so the tag is at least
-misleading.
-
-You can claim that the next patch on top of this one fixes things, so
-adding a Fixes tag to the other patch would be fine.
-
-There is an explicit dependency between them (the second patch is not
-even applicable without the first one, or if it is, the resulting code
-won't compile anyway), but you can make a note to the maintainer that
-they need to go to -stable together.
-
-> >
-> > In fact, the only possibly observable effect of this patch is the
-> > failure when the allocation of device_link_wq fails AFAICS.
-> >
-> > > Cc: stable@vger.kernel.org
-> >
-> > So why?
->
-> Cc:stable is needed as this patch is a prerequisite of patch 2 (needed
-> to fix the asynchronous workqueue task issue).
-
-Dependencies like this can be expressed in "Cc: stable" tags.
-Personally, I'd do it like this:
-
-Cc: stable@vger.kernel.org # 5.13: Depends on the first patch in the series
+Konrad
 
