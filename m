@@ -1,191 +1,135 @@
-Return-Path: <stable+bounces-26906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D389872D9E
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 04:46:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44153872DE5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 05:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2922DB251F8
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 03:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F4C1C217D7
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 04:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C64A14263;
-	Wed,  6 Mar 2024 03:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E13F15E97;
+	Wed,  6 Mar 2024 04:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o7dh/sgg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mkjfvqji"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D081426B
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 03:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2F714F7F
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 04:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709696752; cv=none; b=f0nlTuTMac/yF0Bq4MgRW/VIR82SBf5wTHg0ROlCi5BSN0O16IL40DRLNySLOh80gU1o6SPgZjG9U1RpNZ6kcg5nuMe8YBDyJmbfhjSVW3f8bQCHP+qBo6zYvUPnF23PvJMOxK7dVBetcpVSRUBn4+93ZfL8OeyknqzGGbar/p4=
+	t=1709698105; cv=none; b=meMxa3N8fdGmNst5HPAoQK/x6NezxkVNG0qLQKOW8Rc4gzvyjqUW9X3DoVvcPweuuhM92n22XbeDv2PwL2XTAeXOK1WX6JMcVIrDX+2tzB2vDL5g7GCXO5gIn5Az1oG4PmkpW3L39lg2n7/Prw5HcZ/HNb+29jiofYg9t04VzbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709696752; c=relaxed/simple;
-	bh=jBAPuRGdRlyLec/G8hWJrmxIWweZDNQGFQVAySUpzDk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eVtsf2fksQU3gGI84IQ8H2r+sRStuqLIBzn6nCD3xVLw0arAhlHEQx/Wbe93wnyZE0qsGQ2Z1WRLmHeFKOcasZRlxCJVJQ3W4GI4wfuwmJVIPCneO5dnFLyPj1QB0LN3Bcs1f72u4JvVN+B7Z4CkArH4DZ9arHkTARwxOLQp3QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o7dh/sgg; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7d5c40f874aso3722701241.1
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 19:45:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709696750; x=1710301550; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T5tvqqOLlp/L9fDdgXTeavKp6GslrC3c7o5kKTJOuGY=;
-        b=o7dh/sggH69N6FSzl5WuV5uPBLURS7y/K2nTJ6xB4Jy8RkqCM6NJqFlMFc93HSmUF0
-         bpGoOP5bQTMTU74dHsjzbEIYNUtIKWNKrvQAQIEAwPzJx931YX0x/YA2ew279vVqinWr
-         bK1KBcYm40gJ2aSNS28sOyEWFL1uQkoAvs3YUXYC1Zks77PUPy/oDYPLP8ayyR9akDF/
-         Gks5vQMpz4Etw0Rez9d2rOBmreJxOVXaciJqM3vFwOi8x4tIFfMmpWFLRBCb+ppFRK4j
-         DMx0z04Iqts7jMTL8bGqyfWwugM+Dbiv86UV0A5kqe6a4H93U5pngCpZT2gEdg5kZ7Jc
-         xcdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709696750; x=1710301550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T5tvqqOLlp/L9fDdgXTeavKp6GslrC3c7o5kKTJOuGY=;
-        b=hEoKo1qzN0nEy5CecgO2q3kw4AcR+TZozwWEw9kiI5E+qhjRSqqEhTGQJh80OxwXW2
-         M8Bu73Y69USFtv3ye+vqX1KZQ9l0xI0OPhRTyQdQdxr1LN216tZCUqR5loyBRVehN8iw
-         UK5ru5X4c51vRMxZF4NIeDCDGeocPF5zQrC/tOLmntnq/QFNjdpmd2b6I3PDovyudPsc
-         UZAfl3PS8g21Jtqk7fhba//NNbQhoHWX+e2B3hM0tn2Z8vWHZ6O7PwhtKDUDD5zzNfi7
-         Ac+mowmre4VYj8aSRCXgDT7OzbmWFNouOMN4tQDR46DSGsrnxdO20S2Y2OLjuooDBG32
-         8MJQ==
-X-Gm-Message-State: AOJu0YzUSOwKBBHj3rK1v6h68HlIxxdnpduenIfzMAXKJQFwbuKV88vv
-	EpoBJ7gUTGAu7j/mJvpxULTAHmRPd5lackrC0Rw62gKdIfMDRNiyGIbzOso7mJE/i6Qs457QERL
-	VtsvGYn2Z3xl+nGuN1P4pdtWYuRZIPfWcNpRQcA==
-X-Google-Smtp-Source: AGHT+IGlgYy3++WxEbb9Vbw+tVFeATrL7uP+/E+8ROLUn4LkrKLrXnX8dPjsvyriAp4nhB6XfBccEoT5BRDkmmdMhuc=
-X-Received: by 2002:a05:6122:3214:b0:4d3:4aad:22d4 with SMTP id
- ci20-20020a056122321400b004d34aad22d4mr4786922vkb.0.1709696749951; Tue, 05
- Mar 2024 19:45:49 -0800 (PST)
+	s=arc-20240116; t=1709698105; c=relaxed/simple;
+	bh=V/rGHrKIPvGHaqPazua1v+UrW50FZwNh/U2I93EPdX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ByooXD5SZoYhZzGnjTa0Vrt4QlMLg9HR4XcGupzYxN/PAkh1UPO08ciRjEW3iy85MLip5R/ZqsctdAHowq4D3ilyJ/Z4gmyrhF/w78z9VQka2g+bdbxyQJp8NHjSC2qC1wWT7TTDErQH/GuOIvsO9+ubF3OcePTtQ9v330zndbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mkjfvqji; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709698104; x=1741234104;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=V/rGHrKIPvGHaqPazua1v+UrW50FZwNh/U2I93EPdX8=;
+  b=mkjfvqjiiPYVM6KS75hyByoK4jvtKsOp3tAa8Ycjo/FsRdHzCDID5Bkr
+   KtFmYpf1Ubjegv2Q/26XNX1ySrXHGcNke1HvbTeOUzHYsKmBea9eimZR5
+   MF7pkxZe2E8v6oxWuA15fbisw15ql1B7KcSHL0dVwBbE19mh44VtF8ZZ1
+   PBqEUch1XkoC3v+zrMdIomsUjzLglLEiD3APhS+8Z1GEK4Ksr+v/7oJjb
+   kqcp0K+FlxF4tnYk+Js+IRAV2IGJzctm8kyz+EDBiR/yUxsQjQ9cAVanr
+   WPnhRhoOf9vfCNXD+2rG0YR/9m/M7+CxaemAdVi6F1f1MoJx6ib1b4T5Q
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="21817367"
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
+   d="scan'208";a="21817367"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 20:08:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="827774098"
+X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
+   d="scan'208";a="827774098"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 05 Mar 2024 20:08:10 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 06 Mar 2024 06:08:09 +0200
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/3] drm/i915/vrr: Generate VRR "safe window" for DSB
+Date: Wed,  6 Mar 2024 06:08:04 +0200
+Message-ID: <20240306040806.21697-2-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240306040806.21697-1-ville.syrjala@linux.intel.com>
+References: <20240306040806.21697-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211534.328737119@linuxfoundation.org>
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 6 Mar 2024 09:15:38 +0530
-Message-ID: <CA+G9fYuFg=5Thx50TTt4VSfzjwCoPe5oe-O8+74-T+KBtN0AEw@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/16] 4.19.309-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 5 Mar 2024 at 02:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 4.19.309 release.
-> There are 16 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
-4.19.309-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
+Looks like TRANS_CHICKEN bit 31 means something totally different
+depending on the platform:
+TGL: generate VRR "safe window" for DSB
+ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+So far we've only set this on ADL/DG2, but when using DSB+VRR
+we also need to set it on TGL.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+And a quick test on MTL says it doesn't need this bit for either
+of those purposes, even though it's still documented as valid
+in bspec.
 
-## Build
-* kernel: 4.19.309-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-4.19.y
-* git commit: c854e1c772c4f07a8856c0867118ce064c11fead
-* git describe: v4.19.307-70-gc854e1c772c4
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
-.307-70-gc854e1c772c4
+Cc: stable@vger.kernel.org
+Fixes: 34d8311f4a1c ("drm/i915/dsb: Re-instate DSB for LUT updates")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9927
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_vrr.c | 7 ++++---
+ drivers/gpu/drm/i915/i915_reg.h          | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-## Test Regressions (compared to v4.19.307)
+diff --git a/drivers/gpu/drm/i915/display/intel_vrr.c b/drivers/gpu/drm/i915/display/intel_vrr.c
+index 5d905f932cb4..eb5bd0743902 100644
+--- a/drivers/gpu/drm/i915/display/intel_vrr.c
++++ b/drivers/gpu/drm/i915/display/intel_vrr.c
+@@ -187,10 +187,11 @@ void intel_vrr_set_transcoder_timings(const struct intel_crtc_state *crtc_state)
+ 	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
+ 
+ 	/*
+-	 * TRANS_SET_CONTEXT_LATENCY with VRR enabled
+-	 * requires this chicken bit on ADL/DG2.
++	 * This bit seems to have two meanings depending on the platform:
++	 * TGL: generate VRR "safe window" for DSB vblank waits
++	 * ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
+ 	 */
+-	if (DISPLAY_VER(dev_priv) == 13)
++	if (IS_DISPLAY_VER(dev_priv, 12, 13))
+ 		intel_de_rmw(dev_priv, CHICKEN_TRANS(cpu_transcoder),
+ 			     0, PIPE_VBLANK_WITH_DELAY);
+ 
+diff --git a/drivers/gpu/drm/i915/i915_reg.h b/drivers/gpu/drm/i915/i915_reg.h
+index e00557e1a57f..3b2e49ce29ba 100644
+--- a/drivers/gpu/drm/i915/i915_reg.h
++++ b/drivers/gpu/drm/i915/i915_reg.h
+@@ -4599,7 +4599,7 @@
+ #define MTL_CHICKEN_TRANS(trans)	_MMIO_TRANS((trans), \
+ 						    _MTL_CHICKEN_TRANS_A, \
+ 						    _MTL_CHICKEN_TRANS_B)
+-#define   PIPE_VBLANK_WITH_DELAY	REG_BIT(31) /* ADL/DG2 */
++#define   PIPE_VBLANK_WITH_DELAY	REG_BIT(31) /* tgl+ */
+ #define   SKL_UNMASK_VBL_TO_PIPE_IN_SRD	REG_BIT(30) /* skl+ */
+ #define   HSW_FRAME_START_DELAY_MASK	REG_GENMASK(28, 27)
+ #define   HSW_FRAME_START_DELAY(x)	REG_FIELD_PREP(HSW_FRAME_START_DELAY_MASK, x)
+-- 
+2.43.0
 
-## Metric Regressions (compared to v4.19.307)
-
-## Test Fixes (compared to v4.19.307)
-
-## Metric Fixes (compared to v4.19.307)
-
-## Test result summary
-total: 51688, pass: 45911, fail: 287, skip: 5449, xfail: 41
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 106 total, 99 passed, 7 failed
-* arm64: 31 total, 25 passed, 6 failed
-* i386: 18 total, 15 passed, 3 failed
-* mips: 23 total, 22 passed, 1 failed
-* parisc: 4 total, 0 passed, 4 failed
-* powerpc: 27 total, 26 passed, 1 failed
-* s390: 8 total, 8 passed, 0 failed
-* sh: 12 total, 12 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 27 total, 21 passed, 6 failed
-
-## Test suites summary
-* boot
-* kselftest-drivers-dma-buf
-* kselftest-net
-* kselftest-net-mptcp
-* kunit
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
