@@ -1,70 +1,60 @@
-Return-Path: <stable+bounces-26963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6650873827
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:52:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80762873820
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1A44284415
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:52:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F611F220A5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BBA131756;
-	Wed,  6 Mar 2024 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA26130E57;
+	Wed,  6 Mar 2024 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ho/7cbAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A39kwWOI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D9B13175B
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 13:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F231E519
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 13:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709733148; cv=none; b=MAoFEaTOpXZVJQGI/e1NO9/GLf752wxPPo9yJExhidSzkG/2ZTRxnbTygDJIWOapA4V22ra5mC6XZU50u/wk8UuqHE6x7WMbp29Nd9MHcrY7WmKINxBI1o0UTtffGnJzaYu8wh0cUHRiGVmw5F0vGIvUKv4Texx+0r7qJHtcMis=
+	t=1709733098; cv=none; b=fCLqX5E7n5foN50JzRqetBuCLP2k65zmgleowUbe24iOf1iMUygbBH6a8G9PJsKry1cYrWtOlUp98xXkme6hwhV6PgmPtRO0jrwVu/ao/Z5628IDdtX9g5ABKxK0unETdvU61CInpVPQombyRVHORRZGkg4A9PiFY/FDIa0yIvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709733148; c=relaxed/simple;
-	bh=hLlFWfK7U9czUprUrCxIsJwcRynBq1e3zZxrE3z4kuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=s8+11Mf/MdWEXpZITeoMo2ZQSLyTfbp7sMc1xvMgcH0UfaXBsKcj/JuE1WC4k/hvXtQ4l9fLHmr1WC/P/4LLoVOrM0XdjZa4eljOD6N6PvHc8nGL1b5DmZ4KSghUV5EDIuXidDoMdNt1fEu7tzzI9ZvHcK84Osj2Tm5k08jhXRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ho/7cbAA; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709733145; x=1741269145;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=hLlFWfK7U9czUprUrCxIsJwcRynBq1e3zZxrE3z4kuk=;
-  b=ho/7cbAAdIEGYnMpkm5QX4aD8Pm/h8smeddVDTien3XIpYm0M9jL/j4o
-   SCjg68jqOZvgT4njq01Wyz+93uKWCKkMjcO9lcO9O0MMeYGMC4n7xc3Ij
-   cc9qznehnhuJJrhbZ9MXjaDW3mYqDss1tXh+0+4+Kbjq45oZKYf36ctgw
-   LuMadWBxiiBYB/XoZ+WKSWHidPG2kG1rN6CgQraaItbRFrguOle8JjQtL
-   Zd8iPLH0e+pGIIX176oGaBAAVlYg+EzSSDTkSguiMA+Gm1t+MydzIYr6g
-   v+D7dwCoFJeKa3hTUDwRW6zS9w4gGlkq+2uS8RnsQNoGNEz4PATRIGlML
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="14920131"
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="14920131"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 05:52:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="9695639"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Mar 2024 05:52:23 -0800
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rhrgz-0004Gb-0U;
-	Wed, 06 Mar 2024 13:52:21 +0000
-Date: Wed, 6 Mar 2024 21:51:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 5.10/5.15] scsi: add a length check for
- VARIABLE_LENGTH_CMD commands
-Message-ID: <Zeh04FzDMBIY4jhQ@0a06dd0f349c>
+	s=arc-20240116; t=1709733098; c=relaxed/simple;
+	bh=aiFjeCBLulfJTYlTDxGvoYCYsPSgBsu9exnZA8T53gU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXcytXWNDdR2hiPk6ZJcr2ryffANaWPPOLVTwU874mHPmEpFb1UFggYLdG2y+TZ0Zyrs6rHXsa0fXwQdM76XWXfx/rsqVfdurtHVXmOzaRt3Q/dXzbeXWGW4Kx4v46u+EgSM4WjUlHPMUfkz7V2mx2wXE4uEsv8DNSkGHeK/hEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A39kwWOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10904C433F1;
+	Wed,  6 Mar 2024 13:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709733097;
+	bh=aiFjeCBLulfJTYlTDxGvoYCYsPSgBsu9exnZA8T53gU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A39kwWOIlN1tTvGMCgnNtPrPW9Fv6IcBNiZI2hvUTXJozcUFomlewZYJGyyyLxKnS
+	 zJlSqf8PwyNHfST8+bRmJnmXjKVrSqXglYebU+JW24pES/McMZq7mbvRhlaLS0Iixp
+	 he8weUxWetwiKKdKoVewjeqPWSSPVwr0QcrwXoiE=
+Date: Wed, 6 Mar 2024 13:51:34 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
+	linux-mm@kvack.org, Charan Teja Kalla <quic_charante@quicinc.com>,
+	"\"Matthew Wilcox (Oracle)\"" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Subject: Re: [PATCH STABLE v6.1.y] mm/migrate: set swap entry values of THP
+ tail pages properly.
+Message-ID: <2024030649-utilize-budding-380d@gregkh>
+References: <20240305161313.90954-1-zi.yan@sent.com>
+ <2024030506-quotable-kerosene-6820@gregkh>
+ <0910e8f0-5490-4d08-ac64-da4077a1e703@redhat.com>
+ <2024030527-footrest-cathedral-5e15@gregkh>
+ <075777FD-8EA9-446F-A52C-96AF43170EA7@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,26 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240306135010.9250-1-mish.uxin2012@yandex.ru>
+In-Reply-To: <075777FD-8EA9-446F-A52C-96AF43170EA7@nvidia.com>
 
-Hi,
+On Tue, Mar 05, 2024 at 06:13:39PM -0500, Zi Yan wrote:
+> On 5 Mar 2024, at 17:32, Greg KH wrote:
+> 
+> > On Tue, Mar 05, 2024 at 11:09:17PM +0100, David Hildenbrand wrote:
+> >> On 05.03.24 23:04, Greg KH wrote:
+> >>> On Tue, Mar 05, 2024 at 11:13:13AM -0500, Zi Yan wrote:
+> >>>> From: Zi Yan <ziy@nvidia.com>
+> >>>>
+> >>>> The tail pages in a THP can have swap entry information stored in their
+> >>>> private field. When migrating to a new page, all tail pages of the new
+> >>>> page need to update ->private to avoid future data corruption.
+> >>>>
+> >>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >>>> ---
+> >>>>   mm/migrate.c | 6 +++++-
+> >>>>   1 file changed, 5 insertions(+), 1 deletion(-)
+> >>>
+> >>> What is the git commit id of this change in Linus's tree?
+> >>
+> >> Unfortunately, we had to do stable-only versions, because the backport
+> >> of the "accidental" fix that removes the per-subpage "private" information
+> >> would be non-trivial, especially for pre-folio-converison times.
+> >>
+> >> The accidental fix is
+> >>
+> >> 07e09c483cbef2a252f75d95670755a0607288f5
+> >
+> > None of that is obvious at all here, we need loads of documentation in
+> > the changelog text that says all of that please.
+> 
+> How about?
+> 
+> Before 07e09c483cbe ("mm/huge_memory: work on folio->swap instead of
+> page->private when splitting folio"), when a THP is added into swapcache,
+> each of its subpages has its own swapcache entry and need ->private pointing
+> to the right swapcache entry. THP added to swapcache function is added in
+> 38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out").
+> When THP migration was added in 616b8371539a6 ("mm: thp: enable thp migration in generic path"), it did not take care of swapcached THP's subpages,
+> neither updated subpage's ->private nor replaced subpage pointer in
+> the swapcache. Later, e71769ae5260 ("mm: enable thp migration for shmem thp")
+> fixed swapcache update part. Now this patch fixes the subpage ->private
+> update part.
 
-Thanks for your patch.
+That's better than what is there now :)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+So yes, please resend all of these with the new text and then we can
+queue them up.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+thanks,
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 5.10/5.15] scsi: add a length check for VARIABLE_LENGTH_CMD commands
-Link: https://lore.kernel.org/stable/20240306135010.9250-1-mish.uxin2012%40yandex.ru
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
 
