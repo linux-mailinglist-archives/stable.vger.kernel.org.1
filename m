@@ -1,144 +1,211 @@
-Return-Path: <stable+bounces-26942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527C8873555
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:08:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0871E873586
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2A6CB24770
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C63D1F26DA5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F192477F03;
-	Wed,  6 Mar 2024 11:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFB07CF29;
+	Wed,  6 Mar 2024 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wlal6nzd"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CDcHP2WC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DZUEh/+j";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CDcHP2WC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DZUEh/+j"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D876762D9;
-	Wed,  6 Mar 2024 11:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B628F7BB17;
+	Wed,  6 Mar 2024 11:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709723244; cv=none; b=GVo4ScYLU/sGVURcQAWe/tZEz83ke7pI1ktAUEHwvKYmGi7+CDVsn3hYVqbA4H5+cH5z8Q+IttxJitXhtfZFRGHeBW8PiZhuDTFUaJrWb6EYWC383veOOtpYAXCMYlRkJwWD7xtf02Ub/DLGp8OGF7p6RvcC6LqXzgCLooAqyM0=
+	t=1709724281; cv=none; b=ecDz/tI40y+ZjB67tkl9Jv3wemcwhtGJwdFj78Of0e4rAJfOuRAYVo1dEXFEV1rZ9UK/zHMk/sNXpfI7fLq+xByRMvA1kiPv5BGbSZIadjQ2ayjS/4nuJNb0OI/ZN0zydIb0mQ3dKcDezlYO+5hmGP33TZUVlUdj+72t/WgT0I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709723244; c=relaxed/simple;
-	bh=dhUYkisSRgaEsKU54+0TtX8xvTK2vt6Z1QeO97lvAIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e8NZSW7cRyeSP3sYLEfRzvXb3PgyPnWoP12XOYEU5+XWR/kb0PRTW6JPDUIXWlXDLiG6C6Bs4Q3HZXFZ/rApSH+ZGflILk36ciVAY/iDJQuSn9Xl3sMx0EGsTEQb8V6C6hxdUnhzqTi8NWl/SfTFTlOax6tNqJCVLGlmSdaUKsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wlal6nzd; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9772540006;
-	Wed,  6 Mar 2024 11:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709723240;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1709724281; c=relaxed/simple;
+	bh=nLXY6FdbORSIR6lx3hLaHRZJzgY+pdtrixTnkTvcyBU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fI7NjudXTFmD/oTjLeLJT/GijI8k509EajlRqK0MbU816btDd4ywYv1g5E9qJIA55jv9ecs6UbK1r4zD7NvRPL5Y+a8n0SMyr2RAC05dpHpnUhIzez7tZpM+dBH62NCbfFqZnpaVD9tPPBC5J74PfHC3CcTLURA3ipojFyKyn/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CDcHP2WC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DZUEh/+j; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CDcHP2WC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DZUEh/+j; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B2AA668836;
+	Wed,  6 Mar 2024 11:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709724277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LkpSPLFwPA6sIr441GTPKMTLs5vOapZYIPq9ZxQdhg8=;
-	b=Wlal6nzd3buzIfRLQsB5cqSN6nx1HoJ3I03GuUShz7k5AzVIlhhZC/dQJkiMZHplmw5yof
-	UpOVZQRDUKyhnoanVLdafiTX3NSMPhUEbKzTbHfmJF8jyeK0M9UP6a4UrtHayFyGyMd1LC
-	QdB+DLPHvRrphVoG5UHHTtm9Goze7bOlCWUrBN6kDe9ZHo8LUK5FSQOyIU1hBGqFV/mdq/
-	tDNGvii0WMUeOFmd8obQtT1y1wzKIMbJ0CUH+L+Y4fJjM8SuaOGlIcoubDNWGnwQl/igqd
-	3g1Tx7tHd3ztaOX9luNqHyTYCYGGES545n9dLDTlndXjMr+2KAg7hwnDvd7t3Q==
-Date: Wed, 6 Mar 2024 12:07:17 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>, Lizhi Hou
- <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Nuno Sa <nuno.sa@analog.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] of: dynamic: Synchronize of_changeset_destroy()
- with the devlink removals
-Message-ID: <20240306120717.524bcd36@booty>
-In-Reply-To: <20240306085007.169771-3-herve.codina@bootlin.com>
-References: <20240306085007.169771-1-herve.codina@bootlin.com>
-	<20240306085007.169771-3-herve.codina@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
+	b=CDcHP2WCnIsowGyww0Vy8Hc0okGO5z3RkUxLHKQeLr9oyc/b5xm2H7DzoAmUFk6apBLGhL
+	Fa6m8Q0QCThEJf+bu9MtUvoPPlpsrhvKaU9XOFmn6W9wo2XagFnhwnt3QBo25qpyNOuPs1
+	bG/CU3oK/oAM7ylMDGummyyt8nA0qOQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709724277;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
+	b=DZUEh/+j3ashhl7h3NOjjrvhgHNQa82IcSX0qKEYBUUKkInSrMkBookX5Sqh9jH+55ZaUJ
+	db+GSI8dQlfMrTAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709724277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
+	b=CDcHP2WCnIsowGyww0Vy8Hc0okGO5z3RkUxLHKQeLr9oyc/b5xm2H7DzoAmUFk6apBLGhL
+	Fa6m8Q0QCThEJf+bu9MtUvoPPlpsrhvKaU9XOFmn6W9wo2XagFnhwnt3QBo25qpyNOuPs1
+	bG/CU3oK/oAM7ylMDGummyyt8nA0qOQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709724277;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=btRou0Rd51lnj5GZrjg73LrUj608fRRr98VyK+uI1hU=;
+	b=DZUEh/+j3ashhl7h3NOjjrvhgHNQa82IcSX0qKEYBUUKkInSrMkBookX5Sqh9jH+55ZaUJ
+	db+GSI8dQlfMrTAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FDAC13A65;
+	Wed,  6 Mar 2024 11:24:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kbayBnVS6GUVEwAAD6G6ig
+	(envelope-from <lhenriques@suse.de>); Wed, 06 Mar 2024 11:24:37 +0000
+Received: from localhost (brahms.olymp [local])
+	by brahms.olymp (OpenSMTPD) with ESMTPA id e845dec5;
+	Wed, 6 Mar 2024 11:24:32 +0000 (UTC)
+From: Luis Henriques <lhenriques@suse.de>
+To: xiubli@redhat.com
+Cc: ceph-devel@vger.kernel.org,  idryomov@gmail.com,  jlayton@kernel.org,
+  vshankar@redhat.com,  mchangir@redhat.com,  stable@vger.kernel.org
+Subject: Re: [PATCH v2] libceph: init the cursor when preparing the sparse read
+In-Reply-To: <20240306010544.182527-1-xiubli@redhat.com> (xiubli@redhat.com's
+	message of "Wed, 6 Mar 2024 09:05:44 +0800")
+References: <20240306010544.182527-1-xiubli@redhat.com>
+Date: Wed, 06 Mar 2024 11:24:32 +0000
+Message-ID: <87msrbr4b3.fsf@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CDcHP2WC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="DZUEh/+j"
+X-Spamd-Result: default: False [-1.56 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_DN_NONE(0.00)[];
+	 DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+	 RCVD_COUNT_THREE(0.00)[4];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[ceph.com:url,suse.de:dkim,suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_LAST(0.00)[];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,redhat.com];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-0.25)[73.24%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: B2AA668836
+X-Spam-Level: 
+X-Spam-Score: -1.56
+X-Spam-Flag: NO
 
-On Wed,  6 Mar 2024 09:50:03 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
+xiubli@redhat.com writes:
 
-> In the following sequence:
->   1) of_platform_depopulate()
->   2) of_overlay_remove()
-> 
-> During the step 1, devices are destroyed and devlinks are removed.
-> During the step 2, OF nodes are destroyed but
-> __of_changeset_entry_destroy() can raise warnings related to missing
-> of_node_put():
->   ERROR: memory leak, expected refcount 1 instead of 2 ...
-> 
-> Indeed, during the devlink removals performed at step 1, the removal
-> itself releasing the device (and the attached of_node) is done by a job
-> queued in a workqueue and so, it is done asynchronously with respect to
-> function calls.
-> When the warning is present, of_node_put() will be called but wrongly
-> too late from the workqueue job.
-> 
-> In order to be sure that any ongoing devlink removals are done before
-> the of_node destruction, synchronize the of_changeset_destroy() with the
-> devlink removals.
-> 
-> Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> The osd code has remove cursor initilizing code and this will make
+> the sparse read state into a infinite loop. We should initialize
+> the cursor just before each sparse-read in messnger v2.
+>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> URL: https://tracker.ceph.com/issues/64607
+> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on=
+ the socket")
+> Reported-by: Luis Henriques <lhenriques@suse.de>
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
 > ---
->  drivers/of/dynamic.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> index 3bf27052832f..169e2a9ae22f 100644
-> --- a/drivers/of/dynamic.c
-> +++ b/drivers/of/dynamic.c
-> @@ -9,6 +9,7 @@
->  
->  #define pr_fmt(fmt)	"OF: " fmt
->  
-> +#include <linux/device.h>
->  #include <linux/of.h>
->  #include <linux/spinlock.h>
->  #include <linux/slab.h>
-> @@ -667,6 +668,12 @@ void of_changeset_destroy(struct of_changeset *ocs)
->  {
->  	struct of_changeset_entry *ce, *cen;
->  
-> +	/*
-> +	 * Wait for any ongoing device link removals before destroying some of
-> +	 * nodes.
-> +	 */
-> +	device_link_wait_removal();
+>
+> V2:
+> - Just removed the unnecessary 'sparse_read_total' check.
+>
 
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Thanks a lot for the quick fix, Xiubo.  FWIW:
 
-And no problem appeared in my tests due to the removed unlock/lock
-around device_link_wait_removal().
+Tested-by: Luis Henriques <lhenriques@suse.de>
 
-Luca
+Note that I still see this test failing occasionally, but I haven't had
+time to help debugging it.  And that's a different issue, of course.  TBH
+I don't remember if this test ever used to reliably pass.  Here's the
+output diff shown by fstests in case you're not able to reproduce it:
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+@@ -65,7 +65,7 @@
+ # Getting encryption key status
+ Present (user_count=3D1, added_by_self)
+ # Removing encryption key
+-Removed encryption key with identifier 69b2f6edeee720cce0577937eb8a6751
++Removed encryption key with identifier 69b2f6edeee720cce0577937eb8a6751, b=
+ut files still busy
+ # Getting encryption key status
+ Absent
+ # Verifying that the encrypted directory was "locked"
+
+Cheers,
+--=20
+Lu=C3=ADs
+
+>
+> net/ceph/messenger_v2.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+> index a0ca5414b333..ab3ab130a911 100644
+> --- a/net/ceph/messenger_v2.c
+> +++ b/net/ceph/messenger_v2.c
+> @@ -2034,6 +2034,9 @@ static int prepare_sparse_read_data(struct ceph_con=
+nection *con)
+>  	if (!con_secure(con))
+>  		con->in_data_crc =3D -1;
+>=20=20
+> +	ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg,
+> +				  con->in_msg->sparse_read_total);
+> +
+>  	reset_in_kvecs(con);
+>  	con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
+>  	con->v2.data_len_remain =3D data_len(msg);
+> --=20
+>
+> 2.43.0
+>
+
 
