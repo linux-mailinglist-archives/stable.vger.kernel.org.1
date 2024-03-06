@@ -1,260 +1,206 @@
-Return-Path: <stable+bounces-26922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC2C873272
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:23:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F119887322F
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C6E3B2D5C7
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:12:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3377C288E48
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C9E605A0;
-	Wed,  6 Mar 2024 09:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF7760DDB;
+	Wed,  6 Mar 2024 09:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=foundries.io header.i=@foundries.io header.b="ABN90weX"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37272604D4;
-	Wed,  6 Mar 2024 09:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B205B5F493
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 09:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709715813; cv=none; b=I/sZ7j78fB2ybM8CiBJ+nY6dDklEWwzNf0MNj6ft/7dfTHPU3nG0DdCVLp937iTUC4WB797ZNtYW6Bfd/LI0I+bpxGNTns/ETXNX95OljAODyay86GGF+/FGsewzu6jwE8+WlJBjRm4zQ3mI3ASPYZ4wDRZrDjuqxdxCi1qIFCI=
+	t=1709715946; cv=none; b=SlUhEHw8h57XSQ4jH54sfZoAan4juUXrawU2Dyi5Rm4BoLE3uFB+k7Ob6hhVydQLWo2xWcyyGtUP+DuVJzwaHJTAP1pvNFGmYClqCi0sN1ZKZwlq+ACU3dd4fu/7c+nV4EUHos+cSpKIFNDoUVBZG1J9AmmY/H4B2up6bh6Met0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709715813; c=relaxed/simple;
-	bh=SkuOt8HDeOXMJqnKoeKpc3t5ONCW9ExudiStGvfLifE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sKHU/h1+fDRhziHx/bgEszBCudiTry0rDmPtyIDD8YQraVZ8o6Ok3b1GZooNtAgoyBHa8M4zEKkX+qsx733TFUPuHSoyMGvVCN1Xbo9kMAOInJv67hzX6KBuw1lbZ7bLTcuIVS5ujIEc4NGNNj5VuZyC3j8mrnB0qybH8LThOdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85BA31FB;
-	Wed,  6 Mar 2024 01:04:07 -0800 (PST)
-Received: from [10.57.68.241] (unknown [10.57.68.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0959F3F762;
-	Wed,  6 Mar 2024 01:03:27 -0800 (PST)
-Message-ID: <86be68f5-546a-422f-8a46-e374d21203f4@arm.com>
-Date: Wed, 6 Mar 2024 09:03:25 +0000
+	s=arc-20240116; t=1709715946; c=relaxed/simple;
+	bh=AixO+OZOBnZxCVOMRZd6pfSLiMPnzDGtYaxvFS70ZA4=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n59Q2m+rEjrfaOn5uQ9vv5ZOytVrzcGh1bhhlLCuS0QvA83uA3TCwotItBE3cBVUgs4Jqo3gUcncr60Vgf8Uv5dVYQ9fjViAsBNWl+CeMJWNCmc/6qKEXJsfLd06yEcmfVZ8fsFmZN96gYFpdVxdg1oCTOuf7c4pwAve6MN+OXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=foundries.io; spf=pass smtp.mailfrom=foundries.io; dkim=pass (2048-bit key) header.d=foundries.io header.i=@foundries.io header.b=ABN90weX; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=foundries.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foundries.io
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33dd2f0a0c4so3863966f8f.0
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 01:05:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=foundries.io; s=google; t=1709715942; x=1710320742; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8ufPezaLKvHMaPm3SqbvV4sbLCYN/FbWjx6XVEqb6s=;
+        b=ABN90weX26uPH1XTzCDaSqZqYA/CNr2m+qHhOhbQ9cdQNQteJydK/2WZN3CarvV0rm
+         BWQNaLqgrJxgs5vkOhZkEngotbg21YgNY3sjpf4kV5avmlpmh7hV7CHpSyjvN7KgxD16
+         TRi8SimqEbugOivkEUqA+78WvWfCC5Ijict9YLdNsVuAxjGfGQS06Xi6AbqKOqc6zJA+
+         bGWgn1LhQ5hirpQ64I0wx7l5giw5cbpd9QCIQEOyh5DwVMML9ySrOSolyk529jrdSDzK
+         gGdzfOYNLmgsNgBFA7V3iYKkDXD1oygOkklouM29PbVkPLkTqxYK9Ug+AKuJPZZJWkLW
+         BwSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709715942; x=1710320742;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c8ufPezaLKvHMaPm3SqbvV4sbLCYN/FbWjx6XVEqb6s=;
+        b=EuNlzJAvLsYFcCJIaACjWtJMG6YBRc5kF7z9YGk9LvG0QK8YfAqaeQXcyb3/pY5X19
+         Vm9wtX83BzmBA2pLw+PyB8xUelcpVPY6Ss+BV6ImxbX01RD4emOQA1hy7vm1pU1Yuuqz
+         D0WJ6WvkhVOnW2z3fuQO79hRd3QCirO8ukV3CNSLnghOwpj6pFMvs8jIyI9dXrSjCcjr
+         BtznXhHT20gkoSpqDbSbA1F2xgCH6pAzPEeqyr0YznH6I1+uRnS3dGjse8yeUlO8q7xg
+         52wtV/SsCUb4/nvyxBLwe7XsWaZGzWMBlYlWx4kM2UmrRm1dcWGAuqDac06fkL3WiHda
+         R0uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaRONALKwkthPyAQJhsjdSjgtp77JpNqTZZ3AIelNe/sN41cxIdK5GGJP+SFy+0IHzWVwNeGFy46jrzsjwz6aNgAt/tBwg
+X-Gm-Message-State: AOJu0YwBL44FzxG5Phyn85yMTt7UXVsbx0HlIT46H9JePP/3wK5V3yov
+	jKlZB1+7UE3KsUbwAD3jv1gL+r6yyJEAa3MV1lF/YO157UFtI3WoO9Ibyaya/20=
+X-Google-Smtp-Source: AGHT+IEkqDsppvh+9EAAVwqQJkQOpNaPLhsIMxBUqOqRReXWyEUG7A+50+IB/vT3/o3giLHc07mvtA==
+X-Received: by 2002:a5d:594b:0:b0:33d:f30:5689 with SMTP id e11-20020a5d594b000000b0033d0f305689mr9609409wri.30.1709715941926;
+        Wed, 06 Mar 2024 01:05:41 -0800 (PST)
+Received: from trax (132.red-81-38-137.dynamicip.rima-tde.net. [81.38.137.132])
+        by smtp.gmail.com with ESMTPSA id n15-20020a5d484f000000b0033dec836ea6sm17043454wrs.99.2024.03.06.01.05.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 01:05:41 -0800 (PST)
+From: "Jorge Ramirez-Ortiz, Foundries" <jorge@foundries.io>
+X-Google-Original-From: "Jorge Ramirez-Ortiz, Foundries" <JorgeRamirez-Ortiz>
+Date: Wed, 6 Mar 2024 10:05:40 +0100
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jorge Ramirez-Ortiz <jorge@foundries.io>, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: part_switch: fixes switch on gp3 partition
+Message-ID: <Zegx5PCtg6hs8zyp@trax>
+References: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
- swapoff()
-Content-Language: en-GB
-To: "Huang, Ying" <ying.huang@intel.com>, Miaohe Lin <linmiaohe@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240305151349.3781428-1-ryan.roberts@arm.com>
- <875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
 
-On 06/03/2024 02:52, Huang, Ying wrote:
-> Ryan Roberts <ryan.roberts@arm.com> writes:
-> 
->> There was previously a theoretical window where swapoff() could run and
->> teardown a swap_info_struct while a call to free_swap_and_cache() was
->> running in another thread. This could cause, amongst other bad
->> possibilities, swap_page_trans_huge_swapped() (called by
->> free_swap_and_cache()) to access the freed memory for swap_map.
->>
->> This is a theoretical problem and I haven't been able to provoke it from
->> a test case. But there has been agreement based on code review that this
->> is possible (see link below).
->>
->> Fix it by using get_swap_device()/put_swap_device(), which will stall
->> swapoff(). There was an extra check in _swap_info_get() to confirm that
->> the swap entry was valid. This wasn't present in get_swap_device() so
->> I've added it. I couldn't find any existing get_swap_device() call sites
->> where this extra check would cause any false alarms.
->>
->> Details of how to provoke one possible issue (thanks to David Hilenbrand
->> for deriving this):
->>
->> --8<-----
->>
->> __swap_entry_free() might be the last user and result in
->> "count == SWAP_HAS_CACHE".
->>
->> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
->>
->> So the question is: could someone reclaim the folio and turn
->> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
->>
->> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
->> still references by swap entries.
->>
->> Process 1 still references subpage 0 via swap entry.
->> Process 2 still references subpage 1 via swap entry.
->>
->> Process 1 quits. Calls free_swap_and_cache().
->> -> count == SWAP_HAS_CACHE
->> [then, preempted in the hypervisor etc.]
->>
->> Process 2 quits. Calls free_swap_and_cache().
->> -> count == SWAP_HAS_CACHE
->>
->> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
->> __try_to_reclaim_swap().
->>
->> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
->> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
->> swap_entry_free()->swap_range_free()->
->> ...
->> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
->>
->> What stops swapoff to succeed after process 2 reclaimed the swap cache
->> but before process1 finished its call to swap_page_trans_huge_swapped()?
->>
->> --8<-----
-> 
-> I think that this can be simplified.  Even for a 4K folio, this could
-> happen.
+On 06/03/24 10:44:38, Dominique Martinet wrote:
+> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+>
+> Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
+> partitions.") added a mask check for 'part_type', but the mask used was
+> wrong leading to the code intended for rpmb also being executed for GP3.
+>
+> On some MMCs (but not all) this would make gp3 partition inaccessible:
+> armadillo:~# head -c 1 < /dev/mmcblk2gp3
+> head: standard input: I/O error
+> armadillo:~# dmesg -c
+> [  422.976583] mmc2: running CQE recovery
+> [  423.058182] mmc2: running CQE recovery
+> [  423.137607] mmc2: running CQE recovery
+> [  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
+> [  423.237125] mmc2: running CQE recovery
+> [  423.318206] mmc2: running CQE recovery
+> [  423.397680] mmc2: running CQE recovery
+> [  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+> [  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async page read
+>
+> the part_type values of interest here are defined as follow:
+> main  0
+> boot0 1
+> boot1 2
+> rpmb  3
+> gp0   4
+> gp1   5
+> gp2   6
+> gp3   7
 
-I'm not so sure...
+right, the patch I originally sent didn't consider anything after GP0 as per
+the definitions below.
 
-> 
-> CPU0                                     CPU1
-> ----                                     ----
-> 
-> zap_pte_range
->   free_swap_and_cache
->   __swap_entry_free
->   /* swap count become 0 */
->                                          swapoff
->                                            try_to_unuse
->                                              filemap_get_folio
->                                              folio_free_swap
->                                              /* remove swap cache */
->                                            /* free si->swap_map[] */
-> 
->   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
+#define EXT_CSD_PART_CONFIG_ACC_MASK	(0x7)
+#define EXT_CSD_PART_CONFIG_ACC_BOOT0	(0x1)
+#define EXT_CSD_PART_CONFIG_ACC_RPMB	(0x3)
+#define EXT_CSD_PART_CONFIG_ACC_GP0	(0x4)
 
-I don't think si->inuse_pages is decremented until __try_to_reclaim_swap() is
-called (per David, above), which is called after swap_page_trans_huge_swapped()
-has executed. So in CPU1, try_to_unuse() wouldn't see si->inuse_pages being zero
-until after CPU0 has completed accessing si->swap_map, so if swapoff starts
-where you have put it, it would get stalled waiting for the PTL which CPU0 has.
+That looked strange as there should be support for 4 GP but this code
+kind of convinced me of the opposite.
 
-I'm sure there are other ways that this could be racy for 4K folios, but I don't
-think this is one of them? e.g. if CPU0 does something with si after it has
-decremented si->inuse_pages, then there is a problem.
+	if (idata->rpmb) {
+		/* Support multiple RPMB partitions */
+		target_part = idata->rpmb->part_index;
+		target_part |= EXT_CSD_PART_CONFIG_ACC_RPMB;
+	}
 
-> 
->> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
->> Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->> ---
->>
->> Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
->>
->> Thanks,
->> Ryan
->>
->>  mm/swapfile.c | 14 +++++++++++---
->>  1 file changed, 11 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/swapfile.c b/mm/swapfile.c
->> index 2b3a2d85e350..f580e6abc674 100644
->> --- a/mm/swapfile.c
->> +++ b/mm/swapfile.c
->> @@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->>  	smp_rmb();
->>  	offset = swp_offset(entry);
->>  	if (offset >= si->max)
->> -		goto put_out;
->> +		goto bad_offset;
->> +	if (data_race(!si->swap_map[swp_offset(entry)]))
->> +		goto bad_free;
->>
->>  	return si;
->>  bad_nofile:
->> @@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->>  out:
->>  	return NULL;
->>  put_out:
->> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->>  	percpu_ref_put(&si->users);
->>  	return NULL;
->> +bad_offset:
->> +	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->> +	goto put_out;
->> +bad_free:
->> +	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
->> +	goto put_out;
->>  }
-> 
-> I don't think that it's a good idea to warn for bad free entries.
-> get_swap_device() could be called without enough lock to prevent
-> parallel swap operations on entry.  So, false positive is possible
-> there.  I think that it's good to add more checks in general, for
-> example, in free_swap_and_cache(), we can check more because we are sure
-> the swap entry will not be freed by parallel swap operations.
+So if we apply the fix that you propose, how are multiple RPMB
+partitions (ie, 4) going to be identified as RPMB? Unless there can't be
+more than 3?
 
-Yes, agreed. Johannes also reported that he is seeing false alarms due to this.
-I'm going to remove it and add it to free_swap_and_cache() as you suggest. This
-also fits well for the batched version I'm working on where we want to check the
-global si things once, but need to check !free for every entry in the loop
-(aiming to post that this week).
+But sure, your patch makes sense to me.
 
-  Just
-> don't put the check in general get_swap_device().  We can add another
-> helper to check that.
-> 
-> I found that there are other checks in get_swap_device() already.  I
-> think that we may need to revert,
-> 
-> commit 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
-
-Yes agree this should be reverted.
-
-> 
-> which introduces it.  And add check in appropriate places.
-
-I'm not quite sure what the "appropriate places" are. Looking at the call sites
-for get_swap_device(), it looks like they are all racy except
-free_swap_and_cache() which is called with the PTL. So check should only really
-go there?
-
-But... free_swap_and_cache() is called without the PTL by shmem (in 2 places -
-see shmem_free_swap() wrapper). It looks like in one of those places, the folio
-lock is held, so I guess this has a similar effect to holding the PTL. But the
-other shmem_free_swap() call site doesn't appear to have the folio lock. Am I
-missing something, or does this mean that for this path, free_swap_and_cache()
-is racy and therefore we shouldn't be doing either the `offset >= si->max` or
-the `!swap_map[offset]` in free_swap_and_cache() either?
-
-> 
+>
+> so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+>
+> Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partitions.")
+> Cc: stable@vger.kernel.org
+> Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
+> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> ---
+> A couple of notes:
+> - this doesn't fail on all eMMCs, I can still access gp3 on some models
+>   but it seems to fail reliably with micron's "G1M15L"
+> - I've encountered this on the 5.10 backport (in 5.10.208), so that'll
+>   need to be backported everywhere the fix was taken...
+>
+> Thanks!
+> ---
+>  drivers/mmc/core/block.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 32d49100dff5..86efa6084696 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -874,10 +874,11 @@ static const struct block_device_operations mmc_bdops = {
+>  static int mmc_blk_part_switch_pre(struct mmc_card *card,
+>  				   unsigned int part_type)
+>  {
+> -	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+> +	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
+> +	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+>  	int ret = 0;
+>
+> -	if ((part_type & mask) == mask) {
+> +	if ((part_type & mask) == rpmb) {
+>  		if (card->ext_csd.cmdq_en) {
+>  			ret = mmc_cmdq_disable(card);
+>  			if (ret)
+> @@ -892,10 +893,11 @@ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+>  static int mmc_blk_part_switch_post(struct mmc_card *card,
+>  				    unsigned int part_type)
+>  {
+> -	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+> +	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_MASK;
+> +	const unsigned int rpmb = EXT_CSD_PART_CONFIG_ACC_RPMB;
+>  	int ret = 0;
+>
+> -	if ((part_type & mask) == mask) {
+> +	if ((part_type & mask) == rpmb) {
+>  		mmc_retune_unpause(card->host);
+>  		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+>  			ret = mmc_cmdq_enable(card);
+>
+> ---
+> base-commit: 5847c9777c303a792202c609bd761dceb60f4eed
+> change-id: 20240306-mmc-partswitch-c3a50b5084ae
+>
+> Best regards,
 > --
-> Best Regards,
-> Huang, Ying
-> 
->>  static unsigned char __swap_entry_free(struct swap_info_struct *p,
->> @@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
->>  	if (non_swap_entry(entry))
->>  		return 1;
->>
->> -	p = _swap_info_get(entry);
->> +	p = get_swap_device(entry);
->>  	if (p) {
->>  		count = __swap_entry_free(p, entry);
->>  		if (count == SWAP_HAS_CACHE &&
->>  		    !swap_page_trans_huge_swapped(p, entry))
->>  			__try_to_reclaim_swap(p, swp_offset(entry),
->>  					      TTRS_UNMAPPED | TTRS_FULL);
->> +		put_swap_device(p);
->>  	}
->>  	return p != NULL;
->>  }
->> --
->> 2.25.1
-
+> Dominique Martinet | Asmadeus
+>
 
