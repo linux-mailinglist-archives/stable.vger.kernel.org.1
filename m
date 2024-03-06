@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-27018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B4287415A
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 21:27:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02F28741A0
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 22:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9AE6281CBA
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 20:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6635B2175C
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 21:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1642A1420B9;
-	Wed,  6 Mar 2024 20:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBC818C3B;
+	Wed,  6 Mar 2024 21:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1ZFQArIW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bj42NrcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE33A41C74;
-	Wed,  6 Mar 2024 20:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87D81862F;
+	Wed,  6 Mar 2024 21:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709756833; cv=none; b=KWdHqfsenZA+7+9AKTs4yp2ttpxGrzBIpboZnpC4ax+ClQR3SpJOKOwwh6RoSf6dsFuk6ownk2vv1RuNzOtBkBqAuEWLKGjlxXO1fIjcaYWN6ZNY4PMhSYdIev4QlEBcWCtgjxYZ5bWeboCAeSD7Iv0QOIZi+qvfYjnGGzunNNM=
+	t=1709759127; cv=none; b=iUV2vqGB+XJ3axE6kkMW+ax4MBDfkfhpOY0Y1whdQFCDsBCzWRv17/P5I5HpxrTs5Uza6UOBYc2EqiYfWxiHmYO2pUFxc9PYIH87C0QKx9ZLy4DyEo5siMW52CcyvpLpOsMH30AwXkNJAOQJBLJfJW0iyF/JPwQIhrPVKn1AVoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709756833; c=relaxed/simple;
-	bh=rk2JVoz97p+K8aij5PpnivnTk8yi4FeJBtzL6rmOEHg=;
-	h=Date:To:From:Subject:Message-Id; b=ApfV3RFvBIIyVYpwvfxVBZrtYW8psuHfbS3vFFwVrAq/YgCZdqjVkWmoD6XFuAVzyQ8qNADAO9pw2LbFSrrih5lbdoiU61ICJeH2RVQ/SqYAReI4UWmJnzqxKsLuQCe98Xi4/vqexMOdbz4Z/GgERLGNDjinukJzlV1xrat8Xt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1ZFQArIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABC7C433C7;
-	Wed,  6 Mar 2024 20:27:13 +0000 (UTC)
+	s=arc-20240116; t=1709759127; c=relaxed/simple;
+	bh=tIjys/FUQaWw4XD+wpR/5C9NgGzIzIubyk8iZgGNAiQ=;
+	h=Date:To:From:Subject:Message-Id; b=Z4/YqSkle19d/IF2MNst6ZJ8s9I385ORfCR6AtaVnG2lGUQeFQ2MwSCjjReh37OYSqo3TMI8vEPD1JLvpKTT/TFVX0j1m4T2+vabSCz+urM02jiBOOO9Mxxn0hThukcyiDq15uTVaISsPLTV78LRFi/nUb+axLwTleRwirmnu08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bj42NrcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD86C433F1;
+	Wed,  6 Mar 2024 21:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1709756833;
-	bh=rk2JVoz97p+K8aij5PpnivnTk8yi4FeJBtzL6rmOEHg=;
+	s=korg; t=1709759127;
+	bh=tIjys/FUQaWw4XD+wpR/5C9NgGzIzIubyk8iZgGNAiQ=;
 	h=Date:To:From:Subject:From;
-	b=1ZFQArIWbyhUdMvt+xwnURGMPgqjqG6YQbSg3s1VB/5esrx1l496G4IJXTQYzjgto
-	 w7Y8sQuD15aOptLn8nh7QWnyx8REyNAAKsa2AQCN4lGEjUznakRbeF0nCYoA/tn29o
-	 La9mfO2d1DMHCAD28MT/Hrjw2HxaRwkeJ+kudzCY=
-Date: Wed, 06 Mar 2024 12:27:12 -0800
+	b=bj42NrcM5qr41jUgvHdnSkZQVE80wvhIzAA0LUqfynLfEGi5OAxoXAmlz1o+YwTQN
+	 F0LQ7oUWrzt3sp6Pcd12ITYXHeZn+q5zik8EODuDN6pnAGFOMigMQp2Nua29Jk4WNU
+	 K+gr1qA0ycAr6u1IENFZdeRxzVzvxOmiK8WlqLSw=
+Date: Wed, 06 Mar 2024 13:05:26 -0800
 To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch added to mm-unstable branch
-Message-Id: <20240306202713.4ABC7C433C7@smtp.kernel.org>
+Subject: [merged mm-stable] mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch removed from -mm tree
+Message-Id: <20240306210527.7AD86C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,28 +49,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
+The quilt patch titled
      Subject: mm: swap: fix race between free_swap_and_cache() and swapoff()
-has been added to the -mm mm-unstable branch.  Its filename is
+has been removed from the -mm tree.  Its filename was
      mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
-
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Ryan Roberts <ryan.roberts@arm.com>
@@ -186,6 +171,5 @@ _
 
 Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-mm-swap-fix-race-between-free_swap_and_cache-and-swapoff.patch
 
 
