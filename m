@@ -1,163 +1,302 @@
-Return-Path: <stable+bounces-26968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D78187391E
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:30:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BFC873953
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 132CD1F2231D
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:30:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE77A2863FB
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E624437;
-	Wed,  6 Mar 2024 14:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="II9I1FM6";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="vExbuuyU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2601C13341E;
+	Wed,  6 Mar 2024 14:37:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout149.security-mail.net (smtpout149.security-mail.net [85.31.212.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C10132C36
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 14:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.149
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709735406; cv=fail; b=KtCTz4B+VXZeuak2IKlvM/pG/mpKD6GhapBa6iRh7P6tS1oYK5J5rJdvck+BZBqNUuzFVFV+W+plMzv8r/5F3FAAjS1NyUZZdENutxHS3yGMX5oQezOtXS6FS5SiwXUiZWhVyL+Mkrp7+x1amB2qzKGH1WAf1gzlUp2eQmLy3Pc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709735406; c=relaxed/simple;
-	bh=K79x8ZPxBQl5tSdTehGaVHGO0PE/mW6wwteaDZXFzSs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qsgdmf/ejV1hBtrmxDhF2e3okFdQMqkpSaFfoYl6hroX7oswz+hN3QSS5QfKXoV7Ey429IwmKCHgMp/4vrk2R0eVrgg63qFvylY2sG10jI1EW4ybNScEsx/TONIIrZjt7ViiQ3s72NeCxHS2z7pDUUB0ql65G8zfZTTLTiE9Nsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=II9I1FM6; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=vExbuuyU reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
-Received: from localhost (fx409.security-mail.net [127.0.0.1])
-	by fx409.security-mail.net (Postfix) with ESMTP id 860A734951F
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 15:27:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1709735237;
-	bh=K79x8ZPxBQl5tSdTehGaVHGO0PE/mW6wwteaDZXFzSs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=II9I1FM6zMcbpmnlvEI6GCaMAjDLa/QnQ3/Yo1A6Rw+SDGbLfbqZCG7yVhojLtfuR
-	 t/DOoYE5x3bchLC2QmC3Kc8mJGGwrtpAT4T+N4xq+9fVBW1AR673ow4beNWWNNxYZx
-	 L4L/N60dRY/x4/iVVSTJ55Ohk5r/sIwndrBo55q0=
-Received: from fx409 (fx409.security-mail.net [127.0.0.1]) by
- fx409.security-mail.net (Postfix) with ESMTP id 3996234933F; Wed,  6 Mar
- 2024 15:27:17 +0100 (CET)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0100.outbound.protection.outlook.com [104.47.25.100]) by
- fx409.security-mail.net (Postfix) with ESMTPS id 6C814349355; Wed,  6 Mar
- 2024 15:27:16 +0100 (CET)
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
- by MRZP264MB1736.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:17::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Wed, 6 Mar
- 2024 14:27:14 +0000
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::5db1:b5a8:71ec:59eb]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::5db1:b5a8:71ec:59eb%4]) with mapi id 15.20.7362.019; Wed, 6 Mar 2024
- 14:27:14 +0000
-X-Virus-Scanned: E-securemail
-Secumail-id: <154b7.65e87d44.6ac2e.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I4R7hp2BuoiHVpCEdZKqUoRrV58AmYLdgb0bNmIHSCYUTYrllfZQ43A8CQRp4RQboJoU2uBLLcV6yafJbo8wH8+MjF71Md44FiM0xi9l594HmhHv/2PtJz1Mz5zHUl7HE+1HuMpOrt490uILJ7Z+UCWq62Hk1R+nolLXyhv3qrycs9cAMR1wRV6A9CwibAgQ3E8YPiQ40pgYKrYMUtsPtyLOv+w8fd0wPGdAekDQmAWGS/5Vd3v3U+rkLr4/b4x2h6VI6QqngZAl9kEiDXA8e+syeHYCf0UlSbM6dLB3BOdTZH0+Vsq7eoL2hsaJHrT68P0j28rAU0JCxy06Z7AFyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nwmfbFXjL49noru/mm17MsFiPSZc7SOLPZIuJH1gmao=;
- b=REqIuNYNzB81tvZZ/N4hX2l2TbxjkulBnukibM0B3U+BnOLiqk+oM1d/jDJuaXrBNegEVDsZKv/9jh9I1NFhn1+TVObKIs5zOFbbcpeEonqhebQBYOt41sLlKV8CPCPsdE1anzd+DKLxugH5SfEvf1Yu1Z5n0Q1KZ1aHb2SjAmv9C56NHcJmrKWZ09AVaO72XB5j1HuPVmtrWhoQyYEQCOd8cBj1qHg1HdDidmDvJBXMmdWfLvRHPLQ0fP60wziQ5oMaA4/5j7Zi8JagwnYTFr8QUUFKRFsyf7ZjTdGvLdAsH7a4Ab0A+6rojw5H0a3LHf5oMBeqGEXeIio4HbyOiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nwmfbFXjL49noru/mm17MsFiPSZc7SOLPZIuJH1gmao=;
- b=vExbuuyUDhwXlBviDK9FLoEdG7kQz0oJADUK27/AR0KfTz6dWPn+NoYYhlIfsSFmHczTlbCC2o+pAiICCpntvxWKxe827FjKL9JyIaAF3jSWy77kGiOGWJo5BGAf5QiKa3gmvUQfhH1o/rMnT7StLBlDiMRTnHY1RIeWXwDMLTD/X8OPZp3pHYDnOCPcImhKizmIHvZliFaYEQRMgAHZetDQWoKm4xzrxLsYtlE4uX/o7OY7Xy/tnoB26KQMtCCATnYnNMtjvirAdlbcX4ow/7bL4uWzZrUc2bIMyFEEgYIpMOfSCH7UbA69p/B6Mf9YhRei909V/w5yOdPUnPnKOQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kalrayinc.com;
-Message-ID: <70c32bdb-eb3a-43f0-8698-b67d1b791542@kalrayinc.com>
-Date: Wed, 6 Mar 2024 15:27:13 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/215] 6.1.81-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240304211556.993132804@linuxfoundation.org>
-Content-Language: en-us, fr
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PR3P195CA0014.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:102:b6::19) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:14b::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A854130E49;
+	Wed,  6 Mar 2024 14:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709735865; cv=none; b=nhSFlilhfucJCPkp88sL5EpXyCky2LW4MR5GauaHMDeAVaDm0FYKpBkk6p0Y8ouUzH9MzG72X3esgJ1A0hTQcFz7d70J94bKvFImqntWboVPVL8MsK4tHpPjsWzR8fSFlNdI12kY65T0D0vo+5F92ycgPX6hH0S6MAzicziXSHY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709735865; c=relaxed/simple;
+	bh=3quhGH9tRRzDyM893G7Ej0KTtLDqQs5jmRyNqLZXplU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lJYOZ8JgqcCHstOTDOWHlQOX6n90KWG7ed24+6gKDelKnR639na2jFeWuvt7yPvf6BUJ+MEpFUxgFkcRSl/J6Fgwd6SzpLQUb6fX5BzxrO/SBV8gkiLayii8nQ1YfryktbOUXAaJoT6P+ElSYDOgM9cVPcqzGBVxerdAxh+Xiwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6e4ea48972cso1071246a34.0;
+        Wed, 06 Mar 2024 06:37:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709735862; x=1710340662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a4TvgA99Cj14OD7qvEjRfXxwKyvogxN2g18elv8KQlI=;
+        b=SvmxOLZW+V8dT4UVRdwF1jP4qCOc0Jfzes5mHM/tTeJznEFh3Yfm6Nu/zRQc8eMveh
+         JiDtoLsbqyvlsHsrEwcYTEJu6pH84KN65Rlo2UgrEv/0rRufdgap4E7L8k+VSlKXU9e/
+         6BdDuaqcMUx8+hHFp3Rsd6aDSCje3FWWS6eUfZFBxSMrTRuegDeHD1CFiCWVW63SFS5M
+         SDIKrWjuvJnRFOhNmpI5wAJnflY6m+nmhh755GLYpqWHl8VsOa+D4s4kCpQB1VtNVN1O
+         IVcYBuKLLr528dZzuuI8awEVJrsLw5/6mqPUUrDEgciectcALFp08QAlVZckbrLNqubh
+         Vpow==
+X-Forwarded-Encrypted: i=1; AJvYcCVgpZiFI7BT+z8Cnrxj2sfPXiiEUv83+N/oAmNGXT0Jhvfv/k2bHvdeWTUS+NKw3vgA8Si1Lf/2uGmmVY2CzMTQ4TlimLExzWE9WQtOnsOVZvM73On3rjy3ZUppdGMe+fHM47fKQPhUXY/eINP3l1IkZhUS87Grjz5O1IR2j8Tq2w==
+X-Gm-Message-State: AOJu0YzP7kLOCwWjsJwXkCgx50cjGjMTa/Z6aN2OlwlTHeQUTZdiS83D
+	acfxIBw1co9dGM7ry1Vj2yo59hRsBM8hEBOMCJ05P/lrOCJLBSCRG7aS20/hq6LCXLmpWi5lvbR
+	MhsIm85nQPnWfjbkHQ9KRVFfra+Y=
+X-Google-Smtp-Source: AGHT+IE4CvLALom7jyYW9CpPmCJzqwXZJ2apnm0WOpLLE+9EKTV5/4/63dmdzQ5kj3Up2QlL8St0VXJxw0fI41VL5kw=
+X-Received: by 2002:a05:6870:55c6:b0:220:bd4d:674d with SMTP id
+ qk6-20020a05687055c600b00220bd4d674dmr4193559oac.5.1709735862383; Wed, 06 Mar
+ 2024 06:37:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|MRZP264MB1736:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4d97aca-2f3e-4ded-dde6-08dc3de984be
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 99D3bbHS8hk40zRmVM27V5mVzsN9jSF3PMq4dGnunyLolk74Mer/x5xAm8gBQaUHOcRe8cTfhdwheWFZ9zhlenmCKJon4GtWSuQlq5gXfAL3582mIheVEE76BjVJLGF/ZeiMTpsg2b1s/FKVVUI/5GwiG+W35Zb6FeJsFSFu43iujx7D0N5UHFNJ7pmSDZ9xjYb4dKV1ZQ92t74tfMQvsYHeRun7aw3RStvsuKPKYVv1QohooFXoOIuFc4CI/g+NaZv34+ay0LTAikK28rtrOorlBV6To3vF1jNmN9cBAUSLSZ9srqhIoAknzyh8OA6/VkBCDFl/92HmkML3F8hcSioNavBo1kfPU0/lnpD4TKgT3/j/cl37VJ6LKjOOJn2I0SYNcf57np/KOEmxh07ax4teUzwBFaygGOd/eYVbnqBJt/LA2AgVaamrF/gV4pElmXsL7QLNVSdDBYFdQcZfI0iOlG5BqJivsdYMByz3OJPJij7GOODrZFlACPLooUHi2eQLxXpJYXFKyJfi68WxEMe4xg6AvkvrKaniogYJjmEcv3w5preCKl4yF5O5/4uW45NSX0nHjMoJYkZ9+OVJKghro1aWXMQkbRRct2VIvcc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: qL4KvmvQ03PpGafrXJoSAZhuOdvnq6TFxGXxwztZVgLcf+Xt3+N5p+emQyi+08eZoAD+GbmVbtBDTNUpgWkdIVWchdSna5NVPYwIH3QT1mpu3CKx9i3Z6OeIZ9ukSVK0LMvfu4ofkd8XpOSaynos8paQseAgA2IiZa4CqANY+1WtyY8KSo7QfDxq8zecRMrrl8nc6gAGFHlL+mgDNBFBCyqWrmTnYrKuRNA13AdGziykqhaPdnAr77//WHX+PLka50Lz5UQcDEmer6BUE/PDtj8T1TqTzbO4J4cYCGV6arGqYxcEV0Cwo8LlGmze9KQ7gtAeM8X4+LUTDQsv3CAplAoExiW9XqM/4g2i4R2j4Mzmv8/wgellxiWNNvkYqASAN3OiMJd7JSgG46uUo8xMnhjTHhf+7x3ZAtJ8bSOSWsvQFNR/tipPwbBSXiXW9oBysUhPOcCLCINr0n5rZg0TMNya85znJq/CrM4aJXzwJrbJtFLgg0R1tcrf1/MKSSCHI4MJCmqM06tv6LP+Cx26hmzsQSY2V+JeXc8+huxSnegI9/k+vHu4SbZaQMLCQS41diMygt0vz+s/CW5Je/qBN6XNfFX+d0COHXkVl9OXSZct104lcRc5ZT60tXaG39FHVe016S/BzH8f/JplO5caA83mzZkjuFebySJEMErLm+dPD72iksuLzO9Fl0+jz24rkfh9Pge+bbgxnXgYivGoOaDnznTm4GkfU2VKbgCve6LWzQMUbSwq1G8XgmsxfyukgU9WjSCwhUpwH+bMm9D3NY+jdM5SYo6YmR4ZOX+oP8eDpgMn/eOvXG02Htm3ApSsw6XnKCxy9Ys342ghV/8pv3vzJ5ucgc76s+7ZiWTpW6aqLuNEQsc0tsotPixfiWx0GiowQx/b84ZrKDcEH3XzcricBUcUpFd8tZlVj8JOsQMYmB1SXN6B9/gtdg2Zd0mE
- ppI4JS83/alxlDlz1wIpTuoWvcBdsaumS6L/dOuM8BA4SNxe8sNWBLVZ7CEt5/3o/mQzXReGjS4duSa36a7EPPyRAywP5DdnRPesczD+yfeeswAP2F4JSl3vI0+hX+erxLAm9pogvmBGzYHJu+IMlpFx5pmpa9c4kUTW7jEW59iWmdy832N4NNGfxmSvOoooKAxoqDRv1RkMgWAwC+lBiPbN0X4SYuChGXmt4UTH8mDYK+gYYHi1VsVnJ2e2NyfpJWxQiMfL7F1I/GluCvkdH8wHkihw8GFr6NSxzQ31+hHs2PkhUqtFuTyYBZ8kyPK+WOBrYXPuC8TjPj4XeW0FjPuLmbymyInuURgGHb2/iq7LB0fNPwLKXqUPug0a2lUQITRnR5TiO9G4CjtVrvCH2++cQ1UKqwWeMjBJ/+l4CxLUPpu/LwdAlPjQBOQADjqx2+nh7pPopzfePWyZ7VKkDFRLOw7UkZc0zRn387IYv11gAopUX1vD7TEk06l3r/H3TTbSDw5yKZkeJaj+mDl5vyqFSM3zHYgTzhqUtrKDdKqAt6Q69ZBs8o0SKk4GNQGOTOm9y6aIR5FW4Y3ylbJpTRTvFsKfkAxPm3fcoACTwoxkC/MvOqaNBwngVHqKHUoiSQA/czPHJY3O/6pmGdbs2KZzIGCTBwOte9xzvD7YEA2Kz/KrvrCrN5sX7I+kEt3da0XjGYWXKWnm2QpYP1L0VA==
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4d97aca-2f3e-4ded-dde6-08dc3de984be
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 14:27:14.6669
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8A+S9Hwf+P3JRoicStIl7xqhl9fNWi+9QcZ0WDJo5AOVrH+0VJsgEIHf2xHzC8z3K+MijaqR55wKktOtLvAvpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1736
-X-ALTERMIMEV2_out: done
+References: <20240306085007.169771-1-herve.codina@bootlin.com>
+ <20240306085007.169771-2-herve.codina@bootlin.com> <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+ <CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
+ <ed442b6916016b3a40782dc32538fc517715db6c.camel@gmail.com>
+ <CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com> <ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
+In-Reply-To: <ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 6 Mar 2024 15:37:30 +0100
+Message-ID: <CAJZ5v0iMUOJmm99H6SgfP9179hBsLdyC+1ixJwBxSP0b18V6XA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>, 
+	Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
+	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
-
-On 04/03/2024 22:21, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.81 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Mar 6, 2024 at 3:08=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com>=
+ wrote:
 >
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
+> On Wed, 2024-03-06 at 14:05 +0100, Rafael J. Wysocki wrote:
+> > On Wed, Mar 6, 2024 at 2:01=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.=
+com> wrote:
+> > >
+> > > On Wed, 2024-03-06 at 13:43 +0100, Rafael J. Wysocki wrote:
+> > > > On Wed, Mar 6, 2024 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@g=
+mail.com> wrote:
+> > > > >
+> > > > > On Wed, 2024-03-06 at 09:50 +0100, Herve Codina wrote:
+> > > > > > The commit 80dd33cf72d1 ("drivers: base: Fix device link remova=
+l")
+> > > > > > introduces a workqueue to release the consumer and supplier dev=
+ices
+> > > > > > used
+> > > > > > in the devlink.
+> > > > > > In the job queued, devices are release and in turn, when all th=
+e
+> > > > > > references to these devices are dropped, the release function o=
+f the
+> > > > > > device itself is called.
+> > > > > >
+> > > > > > Nothing is present to provide some synchronisation with this wo=
+rkqueue
+> > > > > > in order to ensure that all ongoing releasing operations are do=
+ne and
+> > > > > > so, some other operations can be started safely.
+> > > > > >
+> > > > > > For instance, in the following sequence:
+> > > > > >   1) of_platform_depopulate()
+> > > > > >   2) of_overlay_remove()
+> > > > > >
+> > > > > > During the step 1, devices are released and related devlinks ar=
+e
+> > > > > > removed
+> > > > > > (jobs pushed in the workqueue).
+> > > > > > During the step 2, OF nodes are destroyed but, without any
+> > > > > > synchronisation with devlink removal jobs, of_overlay_remove() =
+can
+> > > > > > raise
+> > > > > > warnings related to missing of_node_put():
+> > > > > >   ERROR: memory leak, expected refcount 1 instead of 2
+> > > > > >
+> > > > > > Indeed, the missing of_node_put() call is going to be done, too=
+ late,
+> > > > > > from the workqueue job execution.
+> > > > > >
+> > > > > > Introduce device_link_wait_removal() to offer a way to synchron=
+ize
+> > > > > > operations waiting for the end of devlink removals (i.e. end of
+> > > > > > workqueue jobs).
+> > > > > > Also, as a flushing operation is done on the workqueue, the wor=
+kqueue
+> > > > > > used is moved from a system-wide workqueue to a local one.
+> > > > > >
+> > > > > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > > > ---
+> > > > >
+> > > > > With the below addressed:
+> > > > >
+> > > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > > >
+> > > > > >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+> > > > > >  include/linux/device.h |  1 +
+> > > > > >  2 files changed, 24 insertions(+), 3 deletions(-)
+> > > > > >
+> > > > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > > > index d5f4e4aac09b..48b28c59c592 100644
+> > > > > > --- a/drivers/base/core.c
+> > > > > > +++ b/drivers/base/core.c
+> > > > > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> > > > > >  static void __fw_devlink_link_to_consumers(struct device *dev)=
+;
+> > > > > >  static bool fw_devlink_drv_reg_done;
+> > > > > >  static bool fw_devlink_best_effort;
+> > > > > > +static struct workqueue_struct *device_link_wq;
+> > > > > >
+> > > > > >  /**
+> > > > > >   * __fwnode_link_add - Create a link between two fwnode_handle=
+s.
+> > > > > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct de=
+vice
+> > > > > > *dev)
+> > > > > >       /*
+> > > > > >        * It may take a while to complete this work because of t=
+he SRCU
+> > > > > >        * synchronization in device_link_release_fn() and if the
+> > > > > > consumer
+> > > > > > or
+> > > > > > -      * supplier devices get deleted when it runs, so put it i=
+nto the
+> > > > > > "long"
+> > > > > > -      * workqueue.
+> > > > > > +      * supplier devices get deleted when it runs, so put it i=
+nto the
+> > > > > > +      * dedicated workqueue.
+> > > > > >        */
+> > > > > > -     queue_work(system_long_wq, &link->rm_work);
+> > > > > > +     queue_work(device_link_wq, &link->rm_work);
+> > > > > >  }
+> > > > > >
+> > > > > > +/**
+> > > > > > + * device_link_wait_removal - Wait for ongoing devlink removal=
+ jobs
+> > > > > > to
+> > > > > > terminate
+> > > > > > + */
+> > > > > > +void device_link_wait_removal(void)
+> > > > > > +{
+> > > > > > +     /*
+> > > > > > +      * devlink removal jobs are queued in the dedicated work =
+queue.
+> > > > > > +      * To be sure that all removal jobs are terminated, ensur=
+e that
+> > > > > > any
+> > > > > > +      * scheduled work has run to completion.
+> > > > > > +      */
+> > > > > > +     flush_workqueue(device_link_wq);
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> > > > > > +
+> > > > > >  static struct class devlink_class =3D {
+> > > > > >       .name =3D "devlink",
+> > > > > >       .dev_groups =3D devlink_groups,
+> > > > > > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> > > > > >       sysfs_dev_char_kobj =3D kobject_create_and_add("char", de=
+v_kobj);
+> > > > > >       if (!sysfs_dev_char_kobj)
+> > > > > >               goto char_kobj_err;
+> > > > > > +     device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0=
+);
+> > > > > > +     if (!device_link_wq)
+> > > > > > +             goto wq_err;
+> > > > > >
+> > > > >
+> > > > > I can't still agree with this. Why not doing it in devlink_class_=
+init()?
+> > > > > This is
+> > > > > devlink specific so it makes complete sense to me.
+> > > >
+> > > > If you do that in devlink_class_init() and it fails, you essentiall=
+y
+> > > > cause the creation of every device link to fail.  IOW, you try to l=
+ive
+> > > > without device links and pretend that it is all OK.  That won't get
+> > > > you very far, especially on systems where DT is used.
+> > > >
+> > > > Doing it here, if it fails, you prevent the driver model from worki=
+ng
+> > > > at all (because one of its necessary components is unavailable), wh=
+ich
+> > > > arguably is a better choice.
+> > >
+> > > That makes sense but then the only thing I still don't fully get is w=
+hy we
+> > > have
+> > > a separate devlink_class_init() initcall for registering the devlink =
+class
+> > > (which can also fail)...
+> >
+> > Well, I haven't added it. :-)
+> >
+> > > What I take from the above is that we should fail the
+> > > driver model if one of it's fundamental components fails so I would s=
+ay we
+> > > should merge devlink_class_init() with device_init() otherwise it's a=
+ bit
+> > > confusing (at least to me) and gives the idea that it's ok for the dr=
+iver
+> > > model
+> > > to exist without the links (unless I'm missing some other reason for =
+the
+> > > devlink
+> > > init function).
+> >
+> > +1
+> >
+> > Feel free to send a patch along these lines, chances are that it will
+> > be popular. ;-)
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.81-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> I was actually thinking about that but I think I encountered the reason w=
+hy we
+> have it like this... devices_init() is called from driver_init() and ther=
+e we
+> have:
 >
-> thanks,
+> ...
+>
+> devices_init();
+> buses_init();
+> classes_init();
+>
+> ...
+>
+> So classes are initialized after devices which means we can't really do
+> class_register(&devlink_class) from devices_init(). Unless, of course, we=
+ re-
+> order things in driver_init() but that would be a questionable change at =
+the
+> very least.
+>
+> So, while I agree with what you've said, I'm still not sure if mixing dev=
+link
+> stuff between devices_init() and devlink_class_init() is the best thing t=
+o do
+> given that we already have the case where devlink_class_init() can fail w=
+hile
+> the driver model is up.
 
-I tested 6.1.81-rc1 (cf578ac947cb) on Kalray kvx arch (not upstream yet) and everything looks good!
-
-It ran on real hw (k200, k200lp and k300 boards), on qemu as well as on our internal instruction set simulator (ISS).
-
-Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
-
-Everything looks fine to us.
-
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
-
-
-
-
-
+So why don't you make devlink_class_init() do a BUG() on failure
+instead of returning an error?  IMO crashing early is better than
+crashing later or otherwise failing in a subtle way due to a missed
+dependency.
 
