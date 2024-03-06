@@ -1,179 +1,272 @@
-Return-Path: <stable+bounces-26927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FA8873290
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:31:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080D78732A5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5E31F23817
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:31:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9F66B21302
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FBB5DF14;
-	Wed,  6 Mar 2024 09:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163455DF28;
+	Wed,  6 Mar 2024 09:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ATwrGvrj"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A52D1B7E3;
-	Wed,  6 Mar 2024 09:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CF45DF05
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 09:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709717467; cv=none; b=ksppRSttvGleJAR7vd0DsujJUcLOKUv5Av2xl4l4aE8YvUUt1hCZi2qoMibxBDP/iuSwmuccCjzeDY34cucDlzENWchNhdIcWsTjnGbcuj4I1VAAu2jnQZtHiCacPdfBqHaEK5NTc4WFYtB+Fu0bRPffvvCnfqGzoRkLoMBwhfc=
+	t=1709717664; cv=none; b=fiT7wOFvhZPiov3vGZorfUDoSo0Xyk43IoARYBxdTCj+cuULs/g8sLAr12b9SA5VvYl15epvKaf9Lzzz9FUtvtghAtVi96MPx6JL7Rr60x+6pdv7l80wdfDzUYzd7JTcvruM74sibzWSoO4EQ3hH07+6TaWdkvJLawdD9nkMaN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709717467; c=relaxed/simple;
-	bh=7TVwWAITfTzss3r7zBS+JIIczj4t9ScDlXpSvhDyjFs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a/mkKSn7JqfgInIcLCgZyKmh3P30nBlTahgybHL+Ay/yu8aUUZ7Il/1Wmw058T648oSfz2kghOfwZEynKtIdDJKiytz12Bi5Migg34rnfsaMrNFHuImTqHzlrfYKo1YxTfP5L+nHFNraB6ItLVN5iAquWEm8XzfzUaCN4v6X+sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86C1D1FB;
-	Wed,  6 Mar 2024 01:31:41 -0800 (PST)
-Received: from [10.57.68.241] (unknown [10.57.68.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 26E643F762;
-	Wed,  6 Mar 2024 01:31:02 -0800 (PST)
-Message-ID: <af11bbca-3f6a-4db5-916c-b0d5b942352b@arm.com>
-Date: Wed, 6 Mar 2024 09:31:01 +0000
+	s=arc-20240116; t=1709717664; c=relaxed/simple;
+	bh=eeZh91byZbYG0NLTOz3LS9US03+JS6hPT7Q+9TyertE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BFZEw+D9ykooMzkv1EjpFvSDODDzviPh/YfhtGordMI4xyNuIcOUGXNavnAaoGWgToM0vjJctBb7D0+4VQCXbDsCN54iLYr8tutwy/wA+dnNsTS/vkh8vORHSS7xQbZ3tKAEnsqSXWGYm2My1daX4MUI6NwoRj2f6O8dYywxvos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ATwrGvrj; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4d34144d710so385357e0c.1
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 01:34:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709717662; x=1710322462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FAzCifh2gw9tE3jlAbWBQ3zu5cw+J57BEOmQzQr7QdA=;
+        b=ATwrGvrjUWcbIy2qFhMEY7o3DTK2hoqiOE+RAm/tZCut4VBKcrZuEb4dni1OVUzx6o
+         CF9f1NCj/JB+avSVgD2zZa4Hvw+LPlbA04lOVlQnt5Wq8FWnGFeghUvgsipPtL85CSs8
+         GL3pTR8+D6+k3BKwUMuoK2MRq+kugw4cFY2stJeh2vbjIpUAACszbPrsfoHDRJq5sym4
+         alEAy42Z+w/NDkSe7I1kAH9BIJvbfHF0VH9oTxB6P2dcoKoi7l++Y3u5HkEVU0d009/h
+         E/kZXdwRNHWmOIjG67tEYX4l9gYTtSxnQoYKMmuA+mczGZL6fKP2+Vmyn2TLRBa89oBA
+         NnQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709717662; x=1710322462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FAzCifh2gw9tE3jlAbWBQ3zu5cw+J57BEOmQzQr7QdA=;
+        b=rdB9NviD+OHZ3/B+AV3X9dOZscSeGb8FGng8tiq7+BKuItxY+YZTQIwVbiVL5mF9it
+         cwdxsvlWsLTG46gAjNZO6GTGLdtFRyGkUSlq2FLw2k6C0kL8ZYLBndc7HM//NoHUBIVd
+         VxgUrgDn4Ta9iNJI2WDd84AxNTsQETtVSsnDrHSMxHP8OGqkxoPSbLN4eVd+RC/MdupA
+         Lut1WoiiIreJgNAOPipT4nVyTjEpwcda10vksH1FyAlclJCus3SlazU28a3U0njaDhtl
+         DIVKStVT1kPMKIf1RdA+azHcH9/9UOe0s5vmbaKXKUFSfqW7xUfFhMjFy2KPK016Nilz
+         x06A==
+X-Gm-Message-State: AOJu0YyLHB+qflLXTcYYKWGoyryyYIGSM3LEE1EA5iKR1qJeEX5avM3Y
+	AOV44GF3HU+eS9Dou97RRx3nW5BZn0aQmDKCQn5T7Y+ktGdygKWkR6nkt7TK5zycdy/wGYMtsht
+	6roJj6NAqyzx494c/Zn+3otliGvwwsB9faOJGOQ==
+X-Google-Smtp-Source: AGHT+IGdxQJNIoJqcFDFmbxBEQ4KTrPI4D4F/IqEFApyymFB+SCBvBmFHnOTDPuYclpfSsDpuYsS3/2oaBZ4JS4mEuo=
+X-Received: by 2002:a05:6122:4a8c:b0:4c7:7760:8f14 with SMTP id
+ fa12-20020a0561224a8c00b004c777608f14mr3582005vkb.7.1709717662008; Wed, 06
+ Mar 2024 01:34:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
- swapoff()
-Content-Language: en-GB
-To: Miaohe Lin <linmiaohe@huawei.com>, "Huang, Ying" <ying.huang@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240305151349.3781428-1-ryan.roberts@arm.com>
- <875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240305112824.448003471@linuxfoundation.org>
+In-Reply-To: <20240305112824.448003471@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 6 Mar 2024 15:04:11 +0530
+Message-ID: <CA+G9fYtw4VYLkJZA2EF_xxZ0x5tthrn8V1fP_+zVvMXq0xk3mg@mail.gmail.com>
+Subject: Re: [PATCH 6.7 000/161] 6.7.9-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 06/03/2024 08:51, Miaohe Lin wrote:
-> On 2024/3/6 10:52, Huang, Ying wrote:
->> Ryan Roberts <ryan.roberts@arm.com> writes:
->>
->>> There was previously a theoretical window where swapoff() could run and
->>> teardown a swap_info_struct while a call to free_swap_and_cache() was
->>> running in another thread. This could cause, amongst other bad
->>> possibilities, swap_page_trans_huge_swapped() (called by
->>> free_swap_and_cache()) to access the freed memory for swap_map.
->>>
->>> This is a theoretical problem and I haven't been able to provoke it from
->>> a test case. But there has been agreement based on code review that this
->>> is possible (see link below).
->>>
->>> Fix it by using get_swap_device()/put_swap_device(), which will stall
->>> swapoff(). There was an extra check in _swap_info_get() to confirm that
->>> the swap entry was valid. This wasn't present in get_swap_device() so
->>> I've added it. I couldn't find any existing get_swap_device() call sites
->>> where this extra check would cause any false alarms.
->>>
->>> Details of how to provoke one possible issue (thanks to David Hilenbrand
->>> for deriving this):
->>>
->>> --8<-----
->>>
->>> __swap_entry_free() might be the last user and result in
->>> "count == SWAP_HAS_CACHE".
->>>
->>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
->>>
->>> So the question is: could someone reclaim the folio and turn
->>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
->>>
->>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
->>> still references by swap entries.
->>>
->>> Process 1 still references subpage 0 via swap entry.
->>> Process 2 still references subpage 1 via swap entry.
->>>
->>> Process 1 quits. Calls free_swap_and_cache().
->>> -> count == SWAP_HAS_CACHE
->>> [then, preempted in the hypervisor etc.]
->>>
->>> Process 2 quits. Calls free_swap_and_cache().
->>> -> count == SWAP_HAS_CACHE
->>>
->>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
->>> __try_to_reclaim_swap().
->>>
->>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
->>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
->>> swap_entry_free()->swap_range_free()->
->>> ...
->>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
->>>
->>> What stops swapoff to succeed after process 2 reclaimed the swap cache
->>> but before process1 finished its call to swap_page_trans_huge_swapped()?
->>>
->>> --8<-----
->>
->> I think that this can be simplified.  Even for a 4K folio, this could
->> happen.
->>
->> CPU0                                     CPU1
->> ----                                     ----
->>
->> zap_pte_range
->>   free_swap_and_cache
->>   __swap_entry_free
->>   /* swap count become 0 */
->>                                          swapoff
->>                                            try_to_unuse
->>                                              filemap_get_folio
->>                                              folio_free_swap
->>                                              /* remove swap cache */
->>                                            /* free si->swap_map[] */
->>
->>   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
-> 
-> Sorry for jumping the discussion here. IMHO, free_swap_and_cache is called with pte lock held.
+On Tue, 5 Mar 2024 at 16:59, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.7.9 release.
+> There are 161 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 07 Mar 2024 11:27:43 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.7.9-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I don't beleive it has the PTL when called by shmem.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-> So synchronize_rcu (called by swapoff) will wait zap_pte_range to release the pte lock. So this
-> theoretical problem can't happen. Or am I miss something?
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-For Huang Ying's example, I agree this can't happen because try_to_unuse() will
-be waiting for the PTL (see the reply I just sent).
+NOTE:
+The arm64 device rk3399-rock-pi-4b kernel panics while running LTP syscalls
+fdatasync03 test case.
+However, I am trying to reproduce this crash. If successful I will
+report back with
+more findings.
 
-> 
-> CPU0                                     CPU1
-> ----                                     ----
-> 
-> zap_pte_range
->   pte_offset_map_lock -- spin_lock is held.
->   free_swap_and_cache
->    __swap_entry_free
->    /* swap count become 0 */
->                                          swapoff
->                                            try_to_unuse
->                                              filemap_get_folio
->                                              folio_free_swap
->                                              /* remove swap cache */
-> 					    percpu_ref_kill(&p->users);
->    swap_page_trans_huge_swapped
->   pte_unmap_unlock -- spin_lock is released.
-> 					    synchronize_rcu();  --> Will wait pte_unmap_unlock to be called?
+* rk3399-rock-pi-4b, log-parser-test
+  - check-kernel-oops
 
-Perhaps you can educate me here; I thought that synchronize_rcu() will only wait
-for RCU critical sections to complete. The PTL is a spin lock, so why would
-synchronize_rcu() wait for the PTL to become unlocked?
+Links,
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.=
+7.6-498-gae550cce59f9/testrun/22969808/suite/log-parser-test/tests/
 
+## Build
+* kernel: 6.7.9-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.7.y
+* git commit: ae550cce59f9da57770876a612e77f062d6b7ee0
+* git describe: v6.7.6-498-gae550cce59f9
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7.6=
+-498-gae550cce59f9
 
->                                            /* free si->swap_map[] */
-> 
-> Thanks.
-> 
-> 
+## Test Regressions (compared to v6.7.6)
 
+## Metric Regressions (compared to v6.7.6)
+
+## Test Fixes (compared to v6.7.6)
+
+## Metric Fixes (compared to v6.7.6)
+
+## Test result summary
+total: 239643, pass: 206259, fail: 3352, skip: 29782, xfail: 250
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 133 total, 129 passed, 4 failed
+* arm64: 41 total, 40 passed, 1 failed
+* i386: 33 total, 28 passed, 5 failed
+* mips: 26 total, 23 passed, 3 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 28 passed, 8 failed
+* riscv: 18 total, 18 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 33 passed, 4 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cv[
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
