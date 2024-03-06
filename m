@@ -1,236 +1,139 @@
-Return-Path: <stable+bounces-26904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351E7872D21
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 04:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E949872D5C
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 04:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A0328DA62
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 03:00:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D722852EB
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 03:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63249DDA8;
-	Wed,  6 Mar 2024 03:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178B812E78;
+	Wed,  6 Mar 2024 03:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tWCV8sVi"
+	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="f0j3eHhU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B644D530
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 03:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B24DF51
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 03:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=137.74.80.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709694028; cv=none; b=rSmWX4c3CofzDWjv3p8dOqMRhoGhY5gtA8h5zcB5VRr+iHXJFTbuw1C+9lzsCbimOVBw1tAJ92Zx0U2GMVCyL36vFn5UqMUD54si2kTbE287fsxqUfD85O1c9pn6rLICi9r+XuYs6ZXz0c1q3YNFXUhpsXSorWsMty8/3Tanqj0=
+	t=1709694592; cv=none; b=lRnXDRLaNJumWk/1PjqYXA//OaxTD5SCXGcwCFIubl4CFg12CyZZN1/HLKpl3bw4OWd8bIYi6E10R2q2JRWCw/YueK56OFFbRKGyMNRixiTaot+UwBylFLEw0GnRr2G7NVpq30U23LHbM2fufLro5Ksyf2PpjyoZqMJqJAv7KeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709694028; c=relaxed/simple;
-	bh=nWq2RjA6xIKVHD53z5lCOa7DP8gC0ToPNtns2+g4VwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=huwR3jRMZBkyk8xC40OaX97RSjwhhYWiXVrrVOlU+OXO4ec7/YwyCEHT+r/TimrvmhSngVdg0cacm6E308ZZBqDE3YGTeL1XDiSnvdhKXgslobZWRN0D9+jVqNH/zRwirCVzQkPSyle3ZxqM1ZIYzsZsHklRjUnLmO9GOZvHj5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tWCV8sVi; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-42f024b809cso149871cf.0
-        for <stable@vger.kernel.org>; Tue, 05 Mar 2024 19:00:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709694025; x=1710298825; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VDLZzB+bt3GZcs1jFg49I3gbIv3ak3sP4bxpEBluYl4=;
-        b=tWCV8sVijyin+gqrzoRSLglZTRHd1rLe1Ahu3So2L8a+3UsACtIpdJOlCc6F97/xiJ
-         OExcHbBQ5MC6AaTgs+a6D+/YHrXUGcZzhEtEYzaYF/hvYoPysMx4oS6IQ1U+vGCW/ns9
-         QO00sqIwNtdnylYXrFonIBS5uf1RowKxSroeIaMBPgKkR1IcgbgINMOvdFqF42pqzB6L
-         lCYOOKwsSUWjA7qd1iy0pjJH01uLD+7alA3saBzD4ynf28zq9FsQhaOF9Krs8z12eizs
-         Sil8qsbuz5Z478jiN+lNjhlRqXaQ7OVTlrLVtoccLx6woxHrtBHDHYgOfdUIFc6F7kWo
-         fLVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709694025; x=1710298825;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VDLZzB+bt3GZcs1jFg49I3gbIv3ak3sP4bxpEBluYl4=;
-        b=mbkfY4I0jyfaR1PQUUmGrsf4g6hgB55X2kY5QdXo8VNM5xV4jWSyZYuMWTt1pkQHRd
-         95ZK3t0kHR1Hk2aBlKMhM8KLxJ/VkLHfG9qINepjRcnCJgMokj/Ro1xNY7T4k0OcxslX
-         9ZzSS2QMgd9MDEV4jiiuYpUj/cFizsmfirDjuoW1KOPJxPCVoWfO+7VwX0sjFAuVStnK
-         GHmp4OTbXPkg9HbhRvxXuEjsUvWpiJM7SjWe77bPN/nkiwdE/TG2BQyUGE9lF83lett6
-         nMdnLDHWZb3DebOkk7TKArNrS9ernPR4spvJ8e7UFXkro9YcCStWNTx9ek6D/8uTlq7c
-         4DCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSEgOZa9Hmk1aLxlQeS1MB5lN6cM/ypD8tIfDGZEgzNVEOkrTnOhc8333o8MFN+JawvNlTeg0G5pkAu+4dQqiFmrBS1esb
-X-Gm-Message-State: AOJu0Yy9e7FLZl4uV421677HbCcTocpqQpXb+aARjIGsj1d6TRF8rgna
-	mp6wcq5mRNDcSueNnoJMuKnx4U2BN8Yh+AhuAd62LHSqpE4VPV6+NdF17AvmONCSZrCtok3zGcq
-	nU4d1bCAN30ID51gIGuu3aLgLo3mxr2G92U4b
-X-Google-Smtp-Source: AGHT+IFbiQbpmvfWgUpkxWjLJMdlRthJJh/rzASOKXR1l2syMub/sbufMHigAdAk3F+vv22c8tPcls43uGvju6+yl1o=
-X-Received: by 2002:a05:622a:5490:b0:42e:e9a3:4a49 with SMTP id
- ep16-20020a05622a549000b0042ee9a34a49mr147815qtb.28.1709694025321; Tue, 05
- Mar 2024 19:00:25 -0800 (PST)
+	s=arc-20240116; t=1709694592; c=relaxed/simple;
+	bh=SZWOvVHx5PPe1dYlcu23tYgpYzMdb9vkBaIMHTeGk9Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=u6O/ydJ0CqrXttA8vSmozTRwfNbvXPtQUAuNMmG60e4kGGoMJisAyGkNln+WiiVpr1COWXpQ6oZHSNiDeyQEuO7ghrFPZBRR96eBjuXChxyJmheKxDqBtDOB11O3o1lTwDkjUFn7zSCnJQc/8NfWRZaMxdzgO7gNgwAZsm0Qf94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=f0j3eHhU; arc=none smtp.client-ip=137.74.80.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id 5D8B4203D6;
+	Wed,  6 Mar 2024 03:09:44 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id C1FDF4007F;
+	Wed,  6 Mar 2024 03:09:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
+	s=default; t=1709694583;
+	bh=SZWOvVHx5PPe1dYlcu23tYgpYzMdb9vkBaIMHTeGk9Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=f0j3eHhUtGpxoJ6d+B1hT9QozmCl9QgwG6Q4lu1C78xUKhnY/jgLHi7MKOum67bON
+	 8JTo5nMy0ntHH5gHZ9g0xk4fBfr1jxUMiRtNr6hcn1xuHvPErAAYSxUIKeI0wc0RzZ
+	 +rfwG/unNYlCuUhfw6YPqWCdTDQGcIix9AEsemYs=
+Received: from [10.66.66.8] (unknown [139.59.64.216])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 5CAC640F70;
+	Wed,  6 Mar 2024 03:09:41 +0000 (UTC)
+Message-ID: <69698702-ae58-4bf8-b8fb-ff4a36c3df77@pavinjoseph.com>
+Date: Wed, 6 Mar 2024 08:39:38 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229105204.720717-1-herve.codina@bootlin.com>
- <20240229105204.720717-3-herve.codina@bootlin.com> <acb69aa8c1a4c4e9849123ef538b9646a71507a0.camel@gmail.com>
- <20240304152202.GA222088-robh@kernel.org> <20240304174933.7ad023f9@bootlin.com>
- <CAGETcx-tmyJA30GtdU_dO9tWFoK+rO5tm-On4tPR7oQotnMkqQ@mail.gmail.com>
- <2f497783da939f13d8c8faeab931cac0ef9c98eb.camel@gmail.com>
- <20240305112708.56869e4c@bootlin.com> <c2be9a4cbbe6946e2f98a69d915c22bc52c9f1d9.camel@gmail.com>
-In-Reply-To: <c2be9a4cbbe6946e2f98a69d915c22bc52c9f1d9.camel@gmail.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 5 Mar 2024 18:59:47 -0800
-Message-ID: <CAGETcx9W81JNeqKFJvG_ydGMdBML9SvNMsmoxnCuyKgf2vN89w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] of: overlay: Synchronize of_overlay_remove() with
- the devlink removals
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, Rob Herring <robh@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
-	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
+Content-Language: en-US
+From: Pavin Joseph <me@pavinjoseph.com>
+To: Steve Wahl <steve.wahl@hpe.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
+References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
+ <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
+ <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
+ <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
+ <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
+ <ZeO9n6oqXosX1I6C@swahl-home.5wahls.com>
+ <f264a320-3e0d-49b6-962b-e9a741dcdf00@pavinjoseph.com>
+ <ZeXzoTjki+1WR258@swahl-home.5wahls.com>
+ <fe72c912-f1a0-4a53-88ab-b85e8c3f7bd9@pavinjoseph.com>
+ <Zec5Ubr7G9NbnIyq@swahl-home.5wahls.com>
+ <294c28ba-25c2-4db4-9dea-616ed1e2ea30@pavinjoseph.com>
+In-Reply-To: <294c28ba-25c2-4db4-9dea-616ed1e2ea30@pavinjoseph.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.09 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4]
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: C1FDF4007F
 
-On Tue, Mar 5, 2024 at 2:43=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
- wrote:
->
-> On Tue, 2024-03-05 at 11:27 +0100, Herve Codina wrote:
-> > Hi Nuno, Saravana, Rob,
-> >
-> > On Tue, 05 Mar 2024 08:36:45 +0100
-> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> >
-> > > On Mon, 2024-03-04 at 22:47 -0800, Saravana Kannan wrote:
-> > > > On Mon, Mar 4, 2024 at 8:49=E2=80=AFAM Herve Codina <herve.codina@b=
-ootlin.com>
-> > > > wrote:
-> > > > >
-> > > > > Hi Rob,
-> > > > >
-> > > > > On Mon, 4 Mar 2024 09:22:02 -0600
-> > > > > Rob Herring <robh@kernel.org> wrote:
-> > > > >
-> > > > > ...
-> > > > >
-> > > > > > > > @@ -853,6 +854,14 @@ static void free_overlay_changeset(str=
-uct
-> > > > > > > > overlay_changeset *ovcs)
-> > > > > > > >  {
-> > > > > > > >   int i;
-> > > > > > > >
-> > > > > > > > + /*
-> > > > > > > > +  * Wait for any ongoing device link removals before remov=
-ing
-> > > > > > > > some of
-> > > > > > > > +  * nodes. Drop the global lock while waiting
-> > > > > > > > +  */
-> > > > > > > > + mutex_unlock(&of_mutex);
-> > > > > > > > + device_link_wait_removal();
-> > > > > > > > + mutex_lock(&of_mutex);
-> > > > > > >
-> > > > > > > I'm still not convinced we need to drop the lock. What happen=
-s if
-> > > > > > > someone else
-> > > > > > > grabs the lock while we are in device_link_wait_removal()? Ca=
-n we
-> > > > > > > guarantee that
-> > > > > > > we can't screw things badly?
-> > > > > >
-> > > > > > It is also just ugly because it's the callers of
-> > > > > > free_overlay_changeset() that hold the lock and now we're relea=
-sing it
-> > > > > > behind their back.
-> > > > > >
-> > > > > > As device_link_wait_removal() is called before we touch anythin=
-g,
-> > > > > > can't
-> > > > > > it be called before we take the lock? And do we need to call it=
- if
-> > > > > > applying the overlay fails?
-> > > >
-> > > > Rob,
-> > > >
-> > > > This[1] scenario Luca reported seems like a reason for the
-> > > > device_link_wait_removal() to be where Herve put it. That example
-> > > > seems reasonable.
-> > > >
-> > > > [1] - https://lore.kernel.org/all/20231220181627.341e8789@booty/
-> > > >
-> > >
-> > > I'm still not totally convinced about that. Why not putting the check=
- right
-> > > before checking the kref in __of_changeset_entry_destroy(). I'll cont=
-radict
-> > > myself a bit because this is just theory but if we look at pci_stop_d=
-ev(),
-> > > which
-> > > AFAIU, could be reached from a sysfs write(), we have:
-> > >
-> > > device_release_driver(&dev->dev);
-> > > ...
-> > > of_pci_remove_node(dev);
-> > >     of_changeset_revert(np->data);
-> > >     of_changeset_destroy(np->data);
-> > >
-> > > So looking at the above we would hit the same issue if we flush the q=
-ueue in
-> > > free_overlay_changeset() - as the queue won't be flushed at all and w=
-e could
-> > > have devlink removal due to device_release_driver(). Right?
-> > >
-> > > Again, completely theoretical but seems like a reasonable one plus I'=
-m not
-> > > understanding the push against having the flush in
-> > > __of_changeset_entry_destroy(). Conceptually, it looks the best place=
- to me
-> > > but
-> > > I may be missing some issue in doing it there?
-> >
-> > Instead of having the wait called in __of_changeset_entry_destroy() and=
- so
-> > called in a loop. I could move this call in the __of_changeset_entry_de=
-stroy()
-> > caller (without any of_mutex lock drop).
-> >
->
-> Oh, good catch! At this point all the devlinks removals (related to the
-> changeset) should have been queued so yes, we should only need to flush o=
-nce.
->
-> > So this will look like this:
-> > --- 8< ---
-> > void of_changeset_destroy(struct of_changeset *ocs)
-> > {
-> >       struct of_changeset_entry *ce, *cen;
-> >
-> >       device_link_wait_removal();
-> >
-> >       list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
-> >               __of_changeset_entry_destroy(ce);
-> > }
-> > --- 8< ---
-> >
-> > I already tested on my system and it works correctly with
-> > device_link_wait_removal() only called from of_changeset_destroy()
-> > as proposed.
-> >
-> > Saravana, Nuno, Rob does it seems ok for you ?
+Hello everyone,
 
-Looks good to me.
+I tried optimizing the new stable kernel 6.7.8 for space but that did 
+not resolve the issue.
 
--Saravana
+pavin@suse-laptop:~> du -s /usr/lib/modules/6.7.8-local/vmlinuz
+10496	/usr/lib/modules/6.7.8-local/vmlinuz
+pavin@suse-laptop:~> du -s /usr/lib/modules/6.7.6-1-default/vmlinuz
+14012	/usr/lib/modules/6.7.6-1-default/vmlinuz
 
-> >
->
-> It looks good to me...
->
-> - Nuno S=C3=A1
-> >
->
+Kind regards,
+Pavin Joseph.
+
+On 3/6/24 01:28, Pavin Joseph wrote:
+> On 3/5/24 20:55, Steve Wahl wrote:
+>> In the meantime, if you want to try
+>> figuring out how to increase the memory allocated for kexec kernel
+>> purposes, that might correct the problem.
+> 
+> I tried all the options and variations possible in kexec. Don't know how 
+> useful this is but it seems there's a hard limit imposed by kexec on the 
+> size of the kernel image, irrespective of the format.
+> 
+> pavin@suse-laptop:~> sudo /usr/sbin/kexec --debug --kexec-syscall-auto 
+> --load '/usr/lib/modules/6.7.6-1-default/vmlinux' 
+> --initrd='/boot/initrd-6.7.6-1-default' 
+> --append='root=/dev/mapper/suse-system crashkernel=341M,high 
+> crashkernel=72M,low security=apparmor mitigations=auto'
+> Try gzip decompression.
+> Invalid memory segment 0x1000000 - 0x2c60fff
+> pavin@suse-laptop:~> file /usr/lib/modules/6.7.6-1-default/vmlinux
+> /usr/lib/modules/6.7.6-1-default/vmlinux: ELF 64-bit LSB executable, 
+> x86-64, version 1 (SYSV), statically linked, 
+> BuildID[sha1]=cd9816be5099dbe04750b2583fe34462de6dcdca, not stripped
+> 
+> Kind regards,
+> Pavin Joseph.
 
