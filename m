@@ -1,113 +1,110 @@
-Return-Path: <stable+bounces-27016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB314874027
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 20:10:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA518740C0
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 20:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36A812877DE
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 19:10:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA011C2120C
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 19:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324C013E7F2;
-	Wed,  6 Mar 2024 19:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484A0140E23;
+	Wed,  6 Mar 2024 19:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yq+8hOq8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yro2YoIx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD76137C29;
-	Wed,  6 Mar 2024 19:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FD714036A
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 19:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709752222; cv=none; b=kGfDZWS1Dt9aYAGXg4y2lxQvoK6BM8/9l+keHZDGgz2IqJoH9o8F90Wx88nRhEjeqz2JpXH/fbQbxMFFwsRXAxeaY3+4jf9Qn/I7le/xNfX4PKwU7CBvctBgO1Nld3AqxpvNJJJjUAVlrye9/UcyPWfAL/Yiz4ZggDTfZEjrdEY=
+	t=1709754577; cv=none; b=EIPJ18Az+8ld3CiMyTioj+nPEtYqh87w+TxwaAb2/V8bFOAFaQYZ1c0mfrG8LqXk1E9FflTPF+kCMEjfnl5tWJwos1TF9f3nCKl6EWNpMYpF8LHCD6moHYuzLT5PSXdI2ho9MVmAnCL1kcWAhvdOfq3GAwB3erb1uQ48ztzGKtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709752222; c=relaxed/simple;
-	bh=7ZlQAAuTZrSqrwRUl2pqjvZmax0cAWYqHp5B+26aaJI=;
+	s=arc-20240116; t=1709754577; c=relaxed/simple;
+	bh=nPlyaesjYNbkV2scuIPLuOkf3mna0HTcvu1bn+dY8YI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HPQZdHW9lVJCJYfFnV9IODI1r/7KvMri/zp2L76Gxyxx0jNS+Zj5etUcRBSkoVWpRcWWGxTZdm8EjIZarSwm25r9on31xEM0nlbn2cCHoiT8LeoH4L+ZEZo4oESkWH6LluqhXJJC5/HgAlrmT3+OOq2FM/NJHk0kUSqoSeGR59o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yq+8hOq8; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4d37114045bso605369e0c.3;
-        Wed, 06 Mar 2024 11:10:21 -0800 (PST)
+	 To:Cc:Content-Type; b=tWLCLfeqPca6g93qA/a9vdAV2KwMs6OlBbK7W3JhELhdbv47+Qxc4hZjsIav6PTbEIpcwu9FdiqLtDRTgXLIM3W7vCEE540ZBb3uGuDr+3tO9t4A2c0yeKDQ3JhJ9DF94gIcgK+r4e8eXqnibshPVsqb6xKFtxKpRxG6JUnw/1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yro2YoIx; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-609241c2696so1263857b3.0
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 11:49:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709752220; x=1710357020; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HZMgXEdSaT6HJkOI5fBfRL5/6AFPoxBmi8lMmVSghgs=;
-        b=Yq+8hOq85YR41j5dEE8kt4h05aO1cHElIEUEAwTkEfCIfVp+gSRlbHpA/3Vfd0FMIY
-         Nc/mdRsWkrI7V55QXB0ulkLF5aDt//tOmxOGp7BA67OOprG/5rmNoeQjDrWuv8xx7FCd
-         PykaHKLiviNUBghhOwoI9Fx7Lr7nI9MFN9WPwAss7SrOEl7OIv9CDi94jaIJTgg5bgRW
-         4IJS5teJhVG/gYWcYpuTAJ7xeNQnGupWbIYGw4cZNVWFa8yrnGlixwdf+gx3tz4P8FCU
-         UvV5xV8hlgDeAdIFpJfQU+k2zD1Dy+jgESy2UONb7RkSfBCGae9YSX1PGv25wtCpUJ2L
-         TvaQ==
+        d=linaro.org; s=google; t=1709754574; x=1710359374; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nPlyaesjYNbkV2scuIPLuOkf3mna0HTcvu1bn+dY8YI=;
+        b=Yro2YoIxVHiCUZZqMZDh7Vr3vscV+8B6DQ7IKlmr19lRxBaYtcSxKoWbO0k0CgaO1s
+         KSUuDORKC92XCwxtV7sv5hpRRd0fbVnpj8MFsbIYgSC9/TQ0B9Pl/fz3yHXbfiW15jR+
+         svnOfGaQnFWopnVSrmpwmYailosH76Qg1dq0rlxkDF92UNiM+bbmnVJmlshqJPfmzW8K
+         5amp/eVG4vLeukWPqoYzw8CMfiXdpohgmU8cnqnOIoTypNPQ66Vy/jxV3zRAGyMlIzHJ
+         z3xaS4RNHAfpdko42h6iUVLnZ/t/09AGUDvazF2SUXnjvcHpFnknc2zvDIhZKRtCpwmf
+         Hypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709752220; x=1710357020;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HZMgXEdSaT6HJkOI5fBfRL5/6AFPoxBmi8lMmVSghgs=;
-        b=pl3n8GzFhh3sqOCyx/luVQmfH74uOK77p3MVcQ2il9ZTzEJV6xc9zK05kpDPTMZFHt
-         Y4CSbteHGG/LNQRfNPWTjb2bcKGL0N+5Td+y6RJZjEVYI58mI9YCR8Ivcv+uh5pEAk32
-         sm78LpzfE0VgPtSBYdRab80vdIdTZHX6cJL5C10rMm63xWfsU/s4TDihXOXLpaGGxnam
-         SodDk4hrG7a+T+xc6pUd6Ix3/zKjRMOEESUf+EMt0LvKCqRXy2lOUA4AnsOxFv+xV3mE
-         2WGPt6zU37zZamVAD2D046lX0akvBas1Ts2cdR0R9RdPV3JvuDiJkxj0eoUH75hwaYRC
-         mWfw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/tu7AidcJ2sllrqa2nkDL7+jwn8U7V/Oc65PO/Jzq8QSxNj6ewz/9HmWw+yBixU8VmymwiuCbDd18u+HfyNDrwRUYgLGCNfTkgdBv
-X-Gm-Message-State: AOJu0YyJoGfXxqQvw2OrlPEsbgcT+XcxwSab5C5pRPj+PH3DOpM+grpF
-	WayagMgmA2SIlTPk4JOD38EXgrGzWXiCdYT1QdkKO1kGqU7V2I/T+ujyqadR2Wod3pCqfFSFB1n
-	r5ZTOfdVFOG3mnT9yBs4sH4eTG3w=
-X-Google-Smtp-Source: AGHT+IFhwUx/44qzGvR8hpKXNVsA0p4fq+LFRumMitpgUYpQZ2O9PVfcdQSDU4uyAP4fuJwo/aQm+6L9VrsFBL1iFPk=
-X-Received: by 2002:a05:6122:4588:b0:4c0:25db:3618 with SMTP id
- de8-20020a056122458800b004c025db3618mr6312157vkb.0.1709752220162; Wed, 06 Mar
- 2024 11:10:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709754574; x=1710359374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nPlyaesjYNbkV2scuIPLuOkf3mna0HTcvu1bn+dY8YI=;
+        b=P9njENl4TEsEQ4UJzzNbWDRxfyj4buI6hFkhT3lSlBC57JTcbJEhaGrkHmDWnpN71q
+         CkEOJZfa0LbBWpjPbS+t3b1+JUJjwxAvymTGsbWkKZfYBNPJ7PPaZi0A8BzD6Zxe0CfJ
+         1ovl5o9CFn+kbaMd+ARvsvLSYRYC0WREj3ivndB2RFiyRMNBivuaKTM0bypLmEOzJvDj
+         EqplLU5DSJw40HOlLkIDtE53SOuDLSYMYxPCEGucMqThVM1ZeEp6rYVIOtmXeAV1zSia
+         /lt5e1MwwrZdqF6ngvGA58NNc2LjC3QK1jWdESbS/yYVtYCYBzte3w6iYxkK4BO2SoBX
+         nJJg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAiHtu2iPrW5ObsnhmMRyeFT9fL0j+MyEtheWnohJWFZ/iWdS5tnPLfdewj+mf0VbCCLtDJEGjPLQkcgykdNXdTKNj853J
+X-Gm-Message-State: AOJu0Yzzxxb/Bkl8X579xvgaO7Ta4WiPTmKDklgCNPvuGlpQw/rNJkdQ
+	FyBQyzPLPtlvwl/vJc5jhpSN4nBM1sxwMWP9ct1vNp9AS7rPhN/Hot8Q1DWDMHWrVrdYQ5/X3i4
+	LgHBeQHzjVg91q+AsRfpEVqAJC4Y6ldBWj/qAWQ==
+X-Google-Smtp-Source: AGHT+IHxsHr/alraTiTEqBEIabc4AtN/z3ZG5Fo2cAVhC41CbFpwoSrEAqQlrDjlml+vAdN3ScgmBzzdVF0/UxuJffI=
+X-Received: by 2002:a0d:d4c5:0:b0:609:dbbc:451b with SMTP id
+ w188-20020a0dd4c5000000b00609dbbc451bmr2705058ywd.23.1709754574622; Wed, 06
+ Mar 2024 11:49:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211556.993132804@linuxfoundation.org>
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Wed, 6 Mar 2024 11:10:07 -0800
-Message-ID: <CAOMdWSKmEzJa0bP=7kKSf3UV0wc-AbKW2mdA5=AC1DhM2puiMg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/215] 6.1.81-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+ <Zegx5PCtg6hs8zyp@trax> <CACRpkdYZrDgVVCp2bqJqY1BpeHSXDWbRSqk6d=N_QhC4OVv=Ew@mail.gmail.com>
+ <Zeh8HGDToMoHglD2@trax> <CACRpkdZ1ervTXj6++oBPDNJT3TpVgPeYsyhaEMRYavJQ5iZPqg@mail.gmail.com>
+ <CAPDyKFqYDPgNjSkpH=XATkUY2XtjsaDstChcAnGxoas4jgDVfw@mail.gmail.com>
+In-Reply-To: <CAPDyKFqYDPgNjSkpH=XATkUY2XtjsaDstChcAnGxoas4jgDVfw@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 6 Mar 2024 20:49:23 +0100
+Message-ID: <CACRpkdaUUD8UMp9GxNVQfdAM8QV_LASp-k5hh1cvQrGVHKySKA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: part_switch: fixes switch on gp3 partition
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: "Jorge Ramirez-Ortiz, Foundries" <jorge@foundries.io>, Jens Wiklander <jens.wiklander@linaro.org>, 
+	Tomas Winkler <tomas.winkler@intel.com>, Dominique Martinet <asmadeus@codewreck.org>, 
+	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dominique Martinet <dominique.martinet@atmark-techno.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This is the start of the stable review cycle for the 6.1.81 release.
-> There are 215 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.81-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+On Wed, Mar 6, 2024 at 4:57=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org>=
+ wrote:
+> On Wed, 6 Mar 2024 at 15:38, Linus Walleij <linus.walleij@linaro.org> wro=
+te:
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+> > We should probably rename it part_cfg because that is what we
+> > store in it, it's assigned from card->part[idx].part_cfg.
+> >
+> > Then the id field in mmc_rpmb_data should be deleted along
+> > with all the IDA counter code etc and the partition name hardcoded
+> > to be "0" as there will never be anything else.
+>
+> Seems reasonable to me. Are you thinking of sending a cleanup patch on
+> top of $subject patch?
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+Yes I can do that once this patch is finalized and merged.
 
-Thanks.
+Yours,
+Linus Walleij
 
