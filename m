@@ -1,222 +1,192 @@
-Return-Path: <stable+bounces-26993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9AE873A60
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 16:11:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78353873A9E
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 16:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6615289234
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9CD91F219F6
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08F51350CA;
-	Wed,  6 Mar 2024 15:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2875813473D;
+	Wed,  6 Mar 2024 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldW3/d+X"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="YnOkUDS+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08B8134724;
-	Wed,  6 Mar 2024 15:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391E8131E4B;
+	Wed,  6 Mar 2024 15:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709737796; cv=none; b=joaB+apIFWULtiZzurOjbXw+rdNv0zRgUMSRL/iE/SvneMJyNZ71f8x0QnppepLoMLnygLUQ6Ds9jWLP98/Qo81EzeBugoJcllvWjNqpreCb/mRLHd/HWvRv/hFH473DoGY6hSwuG9hExGLrbQuBereBk4oDA3vDxqvNjWLLemk=
+	t=1709738709; cv=none; b=mDSno6cy8euJmrJRnMWO/EyS/kDnihb4uXCnLleEFRWMuEMSUzlRFaey0fWKyh9rf20RqHP6Oo+TzkrAzET33bWwpjlbed7Fz4ycCJCG2M/i9YGadIn8/XTwDLkOk4mboNs5QbfUXs/0Lp5B56oeaZRdVaMtU+pSM1I9jyPx57E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709737796; c=relaxed/simple;
-	bh=qBVex3xnygMUKs/9MpPs3xSIv7C42UXA+0WO0Hejv+E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k7k/wrIm9/8S1XHqT5YZHeqLfGfMyG83lM3Hkch7D34qXxZ4YoRltAcw9WsZ3Z09srVmMHrv1Qnf8WhSYoB/4tijjUS7JcSk2q1vek1wAkC3izgGLBjxjO6LE0E+O4DQCRBX0OYHt8eejvFMMgjhRUwuEIBvr4e6S+w+fS/9J9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldW3/d+X; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a4499ef8b5aso565291066b.0;
-        Wed, 06 Mar 2024 07:09:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709737793; x=1710342593; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qBVex3xnygMUKs/9MpPs3xSIv7C42UXA+0WO0Hejv+E=;
-        b=ldW3/d+XPL49loQCHsgIeiDLoMygl7gifDNNybXoL2yXQbw8qABTMp4nVBU98HIWQ5
-         xL83ptUtnGb1nH797Ij4hDVwuzuJfzqNJaMvAgVwT4/8cC/HJWjorXHa7nSCyT5dIFEO
-         fMrg8df+XN2XF183Kh4/gGUM2ENNKeaDVVBPq8Cf/ALHCctHhvFt9xW/+zjixrcaYBsi
-         QrxoN8NxQ8uSktPgxqIwqKcXd+4fbR9NigMPnEI1Ho+lVpnfDVHUJ6MDhQ12Kit0BI9t
-         kERbRqzTI58vUt/W7FIfFuj5UXed5GGt0XdlFVRtjwe9YV3nUdBeochiKSjyRNThz/Ra
-         dQzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709737793; x=1710342593;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qBVex3xnygMUKs/9MpPs3xSIv7C42UXA+0WO0Hejv+E=;
-        b=TYk5igY9qUJ68T0noSN4Gozcf+i1dNvgz4iuPG+BqGGc3n/waKmfGyjkyTMskYDo1/
-         huksDiv8CoEOy3VO3YsIklpMy2PctV9Hw+Cc/t3GaUmRqMBQPKKJRwBCdoR1WPJGyofn
-         ouIS8P1xXBrDLLJj5sg61a7Ufz36M343Nh48EikTU9pdzLTtINMJ6RGaKFNM3b4Y7vLu
-         eAWdWzltlibbfZH74yBwZ8q91CeLrL/LZmHfnUkgvmmPJvREQHW44DA435EJQ7oBje8B
-         dKprvSe9eAiL5sZqBaJA30XMRYaBnVynT3iPTLz0qWvTsvKR+rKx3rUYYdUvU7t5bkGO
-         cTqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNKmM1GoXmLudIvtXe5K4ZP1XW8AKVyG7Iy/Me49XzRM5KTb1SP9AsR7+H94WLdV9o3guGxDIo/YqTBH8JF2oEEhxv1PPApWVraYBYT9d3mZvEF/2dKy7+4fUhJi7/2XW1D4sjCiFKLoEOzblCEnsShNfkg7J27JvBt0YizEmWEA==
-X-Gm-Message-State: AOJu0YzlZ9BXjnq2FVHR/OrTYfyIJHIwEyUNL/thpPHtOH5jJQKJoCtS
-	9yPPaTYH5uTc/3XKYBUBpPEUlCNgUpt12l/Ndg98dCCpC9AIrVB0
-X-Google-Smtp-Source: AGHT+IHIzvdxGlBv9QyWnuOL+U+llhm3Q5ESAssmDaQ1Ta8U9GagCoxWqbGDB/Xeq+DxAHHqUD2V1Q==
-X-Received: by 2002:a17:906:6813:b0:a43:49ca:2473 with SMTP id k19-20020a170906681300b00a4349ca2473mr10710219ejr.0.1709737790430;
-        Wed, 06 Mar 2024 07:09:50 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id z24-20020a170906669800b00a44ce07ad77sm5227476ejo.166.2024.03.06.07.09.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Mar 2024 07:09:50 -0800 (PST)
-Message-ID: <f42ceee61ddb8b50c347589649d4131476ab5d81.camel@gmail.com>
-Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Frank
- Rowand <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>,
- Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
-  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Wed, 06 Mar 2024 16:13:15 +0100
-In-Reply-To: <20240306160101.25b45335@bootlin.com>
-References: <20240306085007.169771-1-herve.codina@bootlin.com>
-	 <20240306085007.169771-2-herve.codina@bootlin.com>
-	 <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
-	 <CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
-	 <ed442b6916016b3a40782dc32538fc517715db6c.camel@gmail.com>
-	 <CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com>
-	 <ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
-	 <CAJZ5v0iMUOJmm99H6SgfP9179hBsLdyC+1ixJwBxSP0b18V6XA@mail.gmail.com>
-	 <86a0f91675197a00bbd921d6e57d2f3c57796e68.camel@gmail.com>
-	 <20240306160101.25b45335@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+	s=arc-20240116; t=1709738709; c=relaxed/simple;
+	bh=EDc76FHAyYlhGhEF+aSjah9SCCYqShQbC/emjwhHXkg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S4V6EY1tF7E/6JjCckH1dGl9/53OHqS4aDj93D5j4wKliOu1/ppmfMiGvE63Kjs3gtTthN1mXNUuNZe9ftI6m/CUDMJPMdZBgn60LL7IrIwkuPQyBjy63OsGj9xMiwMzghy5NxiLfIBkk1IUYpfzUE6riKMx5QBz5BYslgt7IYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=YnOkUDS+; arc=none smtp.client-ip=167.114.26.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1709738700;
+	bh=EDc76FHAyYlhGhEF+aSjah9SCCYqShQbC/emjwhHXkg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YnOkUDS+IHPn0lJQvlN8WhKDbpSlcVQnSJwwRrYueGB8MJ5FDfNDq/oDA0o+70lN3
+	 LcfAMtGAX6z1f7nfCYfjMA25S7XR4VHogs5D9rTA7A/w+agmGTehnpnd6fV3GAJaPZ
+	 PuPCB7QJGjdmiK6wrO6KOgWkL7SXMeryyFy+JTME/f2hSak2hKjx+XkkVTrFVWRBP/
+	 sovfbmGECCbBIhPkzFVee34VLcJ4ZV0ob6ad4GmBVmy2BaaoLQwDVPCXX71ZX13hxN
+	 gfsX3nR9nCyE0DZS38twlXcMNvp2q4xImvYoQoYs2VRuuOqEHtLdiwYjf24sPj7CoS
+	 MT9gE0i++0CnA==
+Received: from thinkos.internal.efficios.com (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4TqbpM6s7RzfyB;
+	Wed,  6 Mar 2024 10:24:59 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: "levi . yun" <yeoreum.yun@arm.com>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	stable@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Aaron Lu <aaron.lu@intel.com>
+Subject: [RFC PATCH] sched: Add missing memory barrier in switch_mm_cid
+Date: Wed,  6 Mar 2024 10:24:43 -0500
+Message-Id: <20240306152443.6340-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-03-06 at 16:01 +0100, Herve Codina wrote:
-> Hi Nuno,
->=20
-> On Wed, 06 Mar 2024 15:50:44 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> ...
-> > > > > >=20
-> > > > > > That makes sense but then the only thing I still don't fully ge=
-t is
-> > > > > > why
-> > > > > > we
-> > > > > > have
-> > > > > > a separate devlink_class_init() initcall for registering the de=
-vlink
-> > > > > > class
-> > > > > > (which can also fail)...=C2=A0=20
-> > > > >=20
-> > > > > Well, I haven't added it. :-)
-> > > > > =C2=A0=20
-> > > > > > What I take from the above is that we should fail the
-> > > > > > driver model if one of it's fundamental components fails so I w=
-ould
-> > > > > > say
-> > > > > > we
-> > > > > > should merge devlink_class_init() with device_init() otherwise =
-it's
-> > > > > > a
-> > > > > > bit
-> > > > > > confusing (at least to me) and gives the idea that it's ok for =
-the
-> > > > > > driver
-> > > > > > model
-> > > > > > to exist without the links (unless I'm missing some other reaso=
-n for
-> > > > > > the
-> > > > > > devlink
-> > > > > > init function).=C2=A0=20
-> > > > >=20
-> > > > > +1
-> > > > >=20
-> > > > > Feel free to send a patch along these lines, chances are that it =
-will
-> > > > > be popular. ;-)=C2=A0=20
-> > > >=20
-> > > > I was actually thinking about that but I think I encountered the re=
-ason
-> > > > why
-> > > > we
-> > > > have it like this... devices_init() is called from driver_init() an=
-d
-> > > > there
-> > > > we
-> > > > have:
-> > > >=20
-> > > > ...
-> > > >=20
-> > > > devices_init();
-> > > > buses_init();
-> > > > classes_init();
-> > > >=20
-> > > > ...
-> > > >=20
-> > > > So classes are initialized after devices which means we can't reall=
-y do
-> > > > class_register(&devlink_class) from devices_init(). Unless, of cour=
-se,
-> > > > we
-> > > > re-
-> > > > order things in driver_init() but that would be a questionable chan=
-ge at
-> > > > the
-> > > > very least.
-> > > >=20
-> > > > So, while I agree with what you've said, I'm still not sure if mixi=
-ng
-> > > > devlink
-> > > > stuff between devices_init() and devlink_class_init() is the best t=
-hing
-> > > > to
-> > > > do
-> > > > given that we already have the case where devlink_class_init() can =
-fail
-> > > > while
-> > > > the driver model is up.=C2=A0=20
-> > >=20
-> > > So why don't you make devlink_class_init() do a BUG() on failure
-> > > instead of returning an error?=C2=A0 IMO crashing early is better tha=
-n
-> > > crashing later or otherwise failing in a subtle way due to a missed
-> > > dependency.=C2=A0=20
-> >=20
-> > Well, I do agree with that... Maybe that's something that Herve can sne=
-ak in
-> > this patch? Otherwise, I can later (after this one is applied) send a p=
-atch
-> > for
-> > it.
->=20
-> Well, I don't thing that this have to be part of this current series.
-> It is an other topic and should be handled out of this current series.
->=20
+Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
+which the core scheduler code has depended upon since commit:
 
-Yeah, fair enough... IMHO, then I would say that we should still have the
-workqueue moved to devlink_class_init() and I can then follow up with a pat=
-ch to
-do BUG_ON(ret) in it.
+    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
 
-Alternatively I can also just move it in the follow up patch but I don't th=
-ink
-it makes much sense.
+If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
+unset the activly used cid when it fails to observe active task after it
+sets lazy_put.
 
-- Nuno S=C3=A1
+The *is* a memory barrier between storing to rq->curr and _return to
+userspace_ (as required by membarrier), but the rseq mm_cid has stricter
+requirements: the barrier needs to be issued between store to rq->curr
+and switch_mm_cid(), which happens earlier than:
+
+- spin_unlock(),
+- switch_to().
+
+So it's fine when the architecture switch_mm happens to have that barrier
+already, but less so when the architecture only provides the full barrier
+in switch_to() or spin_unlock().
+
+It is a bug in the rseq switch_mm_cid() implementation. All architectures
+that don't have memory barriers in switch_mm(), but rather have the full
+barrier either in finish_lock_switch() or switch_to() have them too late
+for the needs of switch_mm_cid().
+
+Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
+generic barrier.h header, and use it in switch_mm_cid() for scheduler
+transitions where switch_mm() is expected to provide a memory barrier.
+
+Architectures can override smp_mb__after_switch_mm() if their
+switch_mm() implementation provides an implicit memory barrier.
+Override it with a no-op on x86 which implicitly provide this memory
+barrier by writing to CR3.
+
+Reported-by: levi.yun <yeoreum.yun@arm.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Aaron Lu <aaron.lu@intel.com>
+---
+ arch/x86/include/asm/barrier.h |  3 +++
+ include/asm-generic/barrier.h  |  8 ++++++++
+ kernel/sched/sched.h           | 19 +++++++++++++------
+ 3 files changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
+index 35389b2af88e..0d5e54201eb2 100644
+--- a/arch/x86/include/asm/barrier.h
++++ b/arch/x86/include/asm/barrier.h
+@@ -79,6 +79,9 @@ do {									\
+ #define __smp_mb__before_atomic()	do { } while (0)
+ #define __smp_mb__after_atomic()	do { } while (0)
+ 
++/* Writing to CR3 provides a full memory barrier in switch_mm(). */
++#define smp_mb__after_switch_mm()	do { } while (0)
++
+ #include <asm-generic/barrier.h>
+ 
+ /*
+diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
+index 961f4d88f9ef..5a6c94d7a598 100644
+--- a/include/asm-generic/barrier.h
++++ b/include/asm-generic/barrier.h
+@@ -296,5 +296,13 @@ do {									\
+ #define io_stop_wc() do { } while (0)
+ #endif
+ 
++/*
++ * Architectures that guarantee an implicit smp_mb() in switch_mm()
++ * can override smp_mb__after_switch_mm.
++ */
++#ifndef smp_mb__after_switch_mm
++#define smp_mb__after_switch_mm()	smp_mb()
++#endif
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __ASM_GENERIC_BARRIER_H */
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2e5a95486a42..638ebd355912 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -79,6 +79,8 @@
+ # include <asm/paravirt_api_clock.h>
+ #endif
+ 
++#include <asm/barrier.h>
++
+ #include "cpupri.h"
+ #include "cpudeadline.h"
+ 
+@@ -3481,13 +3483,18 @@ static inline void switch_mm_cid(struct rq *rq,
+ 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
+ 		 * Provide it here.
+ 		 */
+-		if (!prev->mm)                          // from kernel
++		if (!prev->mm) {                        // from kernel
+ 			smp_mb();
+-		/*
+-		 * user -> user transition guarantees a memory barrier through
+-		 * switch_mm() when current->mm changes. If current->mm is
+-		 * unchanged, no barrier is needed.
+-		 */
++		} else {				// from user
++			/*
++			 * user -> user transition relies on an implicit the
++			 * memory barrier in switch_mm() when current->mm
++			 * changes. If the architecture switch_mm() does not
++			 * have an implicit memory barrier, it is emitted here.
++			 * If current->mm is unchanged, no barrier is needed.
++			 */
++			smp_mb__after_switch_mm();
++		}
+ 	}
+ 	if (prev->mm_cid_active) {
+ 		mm_cid_snapshot_time(rq, prev->mm);
+-- 
+2.39.2
 
 
