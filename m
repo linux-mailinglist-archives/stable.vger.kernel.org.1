@@ -1,111 +1,162 @@
-Return-Path: <stable+bounces-26935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E5F8733A4
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:09:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2313F8733D5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 11:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60501287AAA
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:09:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8774289EB1
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39D85F855;
-	Wed,  6 Mar 2024 10:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85055FDD1;
+	Wed,  6 Mar 2024 10:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BMq0PKCr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ax8isse2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FE65F549;
-	Wed,  6 Mar 2024 10:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949995FB9C
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 10:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709719724; cv=none; b=cZ81Ug9lcqxgiheTAIbk/ll3iOjs2hFzHBIVcumGRoZs32eFytFV+LcnM8b7S7cqovRd7Do5cUE7bhEwUO6Dw/ZWwMMfrtLVHkydVIbUsLuWSLHVbvMTUDGcVsUNtRiFt2RuqSjjT0RM0N1a9qL34SlgGWjFU2YTJA+lHug4GAI=
+	t=1709720254; cv=none; b=hi/QSKt7KJU5a7MmgL9PMcFmLHRs+yD+A4sltKg/r8sMMzdFE3VuQwSKas3X/r0DaOZu/PKCpA1ofOdZ+0rtIU2OSy3U6hZlICjEzinpGmDIAX+d9M4m+/0OFYAg59mh/41Cg5Mvq0ICbhvJBIQf9yVI2IAYkRGdBq2ooE17u3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709719724; c=relaxed/simple;
-	bh=8uRZFPs9MOHH6l9eL3ZLYPLG5SB90bi0hB1yMklhULc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R47gIgqwMAJiNnnRxpyI4URe8OuL1KNoNc7COa1jGykOTUrs51Ro7hoN9d8JtaC/ZN9MIBr7BEDlJ+gsM9nCcL9T1GPUh+XEIcb3C54Zr93nuq6pmNGCu1jYhrG32oM+znYvexntfFvbYju332DYEVBDgrjPDSDOYKQzwjHICvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BMq0PKCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362F6C433C7;
-	Wed,  6 Mar 2024 10:08:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709719724;
-	bh=8uRZFPs9MOHH6l9eL3ZLYPLG5SB90bi0hB1yMklhULc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BMq0PKCrT3S6Z/INMsvyKQvjOBJm8VEEzbOk4/lkAASQM4tf39FyC9mp0cUngp7ku
-	 TNIqYsrW0nfJXNfQxS2QuxKsBvR6elonYQJCiro6L7P6g93XWQHodV/eFH3Ern6BSr
-	 VTsTuv45OFzjgN0QbJz08zoTQR8d9VlOmjnzaN6xSAwD4D6fF1dsrJJQok7DXz3nVJ
-	 uhq0fi3G0MnfGLgGRI/9XoYeYKBFBT/Re3QQMAEBjmDEqQM6BDP9tipAMbT2WEvyZ/
-	 imLNMVQECwGjlotyQ32rk9Ew8hlsYpeTJFU5F/kXMqk4RUptkKndYgOQeyhj/dQjsL
-	 irqNLXP1VkJSA==
-Received: from ip-185-104-136-29.ptr.icomera.net ([185.104.136.29] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1rhoCY-009tGy-0Z;
-	Wed, 06 Mar 2024 10:08:42 +0000
-Date: Wed, 06 Mar 2024 10:08:40 +0000
-Message-ID: <878r2vr7tj.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Krister Johansen <kjlx@templeofstupid.com>
-Cc: stable@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	David Matlack <dmatlack@google.com>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 5.15.y v2 0/2] fix softlockups in stage2_apply_range()
-In-Reply-To: <cover.1709685364.git.kjlx@templeofstupid.com>
-References: <cover.1709665227.git.kjlx@templeofstupid.com>
-	<cover.1709685364.git.kjlx@templeofstupid.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1709720254; c=relaxed/simple;
+	bh=aftI2J7tWkan9F3k+WavIQOst/Q5zH24e7gYDaM6WSE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=makjnKLtylsSVYqAbKBO9QIYzdYzLdemvKCQ0AosGroyZvPo45O8zt74eqPO20Tc86DSO4PSbHwaV0ONOHDojDZZ6P/+ShwEnzV/4YH1jmQc5s0JuBysuHDDExswS/C+Zsrt+33bDvNBefZQssH+vtetzkYNtXr3HWS6nNvRhg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ax8isse2; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-565223fd7d9so6463a12.1
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 02:17:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709720251; x=1710325051; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KXp3dvj8RXyd5VC25WQpvIY0TxZT9QViO+VH9V+80YQ=;
+        b=ax8isse2Qrt0neu0ZgmwndWhy7bYynNrWDe28OZRNaaw2JYZIq0xVm1XBTNvxoOv3K
+         M+U6YZLd8aP47h6FFpkqu2wx1HnIapmxb1+dfMitbmcrjfnZwb8yiwvpX5ybi/9iJsSH
+         qeJytmX5UIU1kuvKoCs1+uq4uBKG11juCntX9koKVL8yA/NFbagR1OTkI00dArdVOirL
+         yrSLPTSwUgCibfvLxSP5PZVaS+DKTMsR/iIkXMNcrn308VKFdKcL1QdFKC0odHwVAEMP
+         3corNO22Y4tdo1XyBEbGIMJnfUp+3cG9ZXupM0uHaCb+yvA371Ski/dwtenCJ8oF2JCb
+         NSaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709720251; x=1710325051;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KXp3dvj8RXyd5VC25WQpvIY0TxZT9QViO+VH9V+80YQ=;
+        b=Ke3u5cDjLSQJAuEekq1wl0wN33l3EBndcuH+TqmyHqnU0ApL259V2UHLABJxDELVrE
+         ZPelm0UOfgl0w3iG5K1G2tAZXCC0/jG7MjxBPPo+VPSh7SajB8JeCWXOaFwbcm9UaxHd
+         3dpgT77X3pIgdxPVeFSznpRi44+Dc9MGqCho2Gk4roDrEJyRnu4LX7NzLA6KqHjKHGcK
+         +4oEwsA2WvoM+2h3O2ykNC9H1IK7fw8PMs3I/BzppxA62Mu9+WpG9CX6WvjnqQXTfLP5
+         C7PCeL/ZFD1MMFkiiYhZ3z09/qRnr+TEG48HIVQW7TlTipkygpGHF+AgKsadDDBE/qx0
+         JACA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtI9YDj4on+w4PbZXYnZ4tVuaqbgGBjRnM/qinvufflP2aXfn7ggvLqZgvWU953tAqa4gTu4melEq3YaSbWk8hadEgweqz
+X-Gm-Message-State: AOJu0YwfFbp6aQULzZeLikkf9pcfUdDuf/hHoHUuBr78oADNRy6GnZsT
+	nxI3hknKq4foU0ZxMwklWp3eP//oO3xc5xyAqxOcRXgbca/FV1qDCVX1uARPWfhbv6DWKCN3gZQ
+	oNdFniv5HeeaabYb5DnJ4+F2nZqV84PRDBBjO
+X-Google-Smtp-Source: AGHT+IEaRNnQwsDV5h/jJAyuRY2UuSSKqo6/ZssDUcS4IdliuD1AivloeSKEHCB7mXUWavBTCp+AAniu+YaHMq/FGWY=
+X-Received: by 2002:a50:8744:0:b0:567:9d6a:b82b with SMTP id
+ 4-20020a508744000000b005679d6ab82bmr274320edv.7.1709720250668; Wed, 06 Mar
+ 2024 02:17:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.104.136.29
-X-SA-Exim-Rcpt-To: kjlx@templeofstupid.com, stable@vger.kernel.org, oliver.upton@linux.dev, james.morse@arm.com, alexandru.elisei@arm.com, dmatlack@google.com, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20240203190927.19669-1-petr@tesarici.cz> <ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net>
+ <Zct5qJcZw0YKx54r@xhacker> <CANn89i+4tVWezqr=BYZ5AF=9EgV2EPqhdHun=u=ga32CEJ4BXQ@mail.gmail.com>
+ <20d94512-c4f2-49f7-ac97-846dc24a6730@roeck-us.net> <CANn89iL1piwsbsBx4Z=kySUfmPa9LbZn-SNthgA+W6NEnojgSQ@mail.gmail.com>
+ <a3749d3f-ced1-4c48-adaf-348c8dee7610@leemhuis.info> <20240228120308.48d6a9c2@meshulam.tesarici.cz>
+ <e3181555-c08d-463f-a9a9-b08c69875c84@leemhuis.info> <20240306100153.32d305f7@meshulam.tesarici.cz>
+ <20240306110312.04ddcde3@meshulam.tesarici.cz>
+In-Reply-To: <20240306110312.04ddcde3@meshulam.tesarici.cz>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 6 Mar 2024 11:17:17 +0100
+Message-ID: <CANn89iLfgK7zTWMutOycKyVepq=8n26MO_LTsUAy2JdVtXr-_g@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: stmmac: protect updates of 64-bit statistics counters
+To: =?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>
+Cc: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>, 
+	Linux regressions mailing list <regressions@lists.linux.dev>, "David S. Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jisheng Zhang <jszhang@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, Marc Haber <mh+netdev@zugschlus.de>, 
+	Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org, 
+	alexis.lothore@bootlin.com, Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 06 Mar 2024 00:49:34 +0000,
-Krister Johansen <kjlx@templeofstupid.com> wrote:
-> 
-> Hi Stable Team,
-> In 5.15, unmapping large kvm vms on arm64 can generate softlockups.  My team has
-> been hitting this when tearing down VMs > 100Gb in size.
-> 
-> Oliver fixed this with the attached patches.  They've been in mainline since
-> 6.1.
-> 
-> I tested on 5.15.150 with these patches applied. When they're present,
-> both the dirty_log_perf_test detailed in the second patch, and
-> kvm_page_table_test no longer generate softlockups when unmapping VMs
-> with large memory configurations.
-> 
-> Would you please consider these patches for inclusion in an upcoming 5.15
-> release?
-> 
-> Change in v2:  I ran format-patch without the --from option which incorrectly
-> generated the first series without leaving Oliver in place as the author.  The
-> v2 should retain the correct authorship.  Apologies for the mistake.
+On Wed, Mar 6, 2024 at 11:03=E2=80=AFAM Petr Tesa=C5=99=C3=ADk <petr@tesari=
+ci.cz> wrote:
+>
+> On Wed, 6 Mar 2024 10:01:53 +0100
+> Petr Tesa=C5=99=C3=ADk <petr@tesarici.cz> wrote:
+>
+> > On Wed, 6 Mar 2024 09:23:53 +0100
+> > "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.i=
+nfo> wrote:
+> >
+> > > On 28.02.24 12:03, Petr Tesa=C5=99=C3=ADk wrote:
+> > > > On Wed, 28 Feb 2024 07:19:56 +0100
+> > > > "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhu=
+is.info> wrote:
+> > > >
+> > > >> Net maintainers, chiming in here, as it seems handling this regres=
+sion
+> > > >> stalled.
+> > > > Indeed, I was too busy with sandbox mode...
+> > >
+> > > Hmm, no reply in the past week to Petr's request for help from someon=
+e
+> > > with more knowledge about the field. :-/
+> > >
+> > > So I guess this means that this won't be fixed for 6.8? Unfortunate, =
+but
+> > > well, that's how it it sometimes.
+> >
+> > For the record, I _can_ reproduce lockdep splats on my device, but they
+> > don't make any sense to me. They seem to confirm Jisheng Zhang's
+> > conclusion that lockdep conflates two locks which should have different
+> > lock-classes.
+> >
+> > So far I have noticed only one issue: the per-cpu syncp's are not
+> > initialized. I'll recompile and see if that's what confuses lockdep.
+>
+> That wasn't the issue. FTR the syncp was in fact initialized, because
+> devm_netdev_alloc_pcpu_stats() is a macro that also takes care of the
+> initialization of the syncp struct field.
+>
+> The problem is u64_stats_init().
+>
+> Commit 9464ca650008 ("net: make u64_stats_init() a function") changed
+> it to an inline function. But that's wrong. It uses seqcount_init(),
+> which in turn declares:
+>
+>         static struct lock_class_key __key;
+>
+> This assumes that each lock gets its own instance. But if
+> u64_stats_init() is a function (albeit an inline one), all calls
+> within the same file end up using the same instance.
+>
+> Eric, would it be OK to revert the above-mentioned commit?
 
-Thanks for this.
+Oh, nice !
 
-FWIW,
+Well, this would not be a revert, let's keep type safety checks if possible=
+.
 
-Acked-by: Marc Zyngier <maz@kernel.org>
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Thanks.
 
