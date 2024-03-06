@@ -1,182 +1,320 @@
-Return-Path: <stable+bounces-26964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8964187384B
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:05:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F8187387F
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 15:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45DF42848A1
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0B691F2343B
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6CB131759;
-	Wed,  6 Mar 2024 14:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6689F131E4B;
+	Wed,  6 Mar 2024 14:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtTNf9AH"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F80A131E27;
-	Wed,  6 Mar 2024 14:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407BD130E4A;
+	Wed,  6 Mar 2024 14:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709733850; cv=none; b=bWm2FP9VMYjvF1xrp2LQ7dpxwjKlQEbzAY4jI9eDzd8KTJkJK/sFR2MuuBkc7DyqhJvzEWIIIygjhoEvasvb3DQOnUfSasjhi1f6qDmXLc2iTE0NOTIwYf3qcNzaxvGX528zFwV18OlhW92mMFCBCmZ17Fe2hfj2VdAGEC3EFFQ=
+	t=1709734109; cv=none; b=tHGnZSLqQER9N5oxe9SxaMU+ONNPMUFgJuxOuPnMjHOJWv7+SFgtHbxaaVSdCHUztEIo8JkPV0jKYiTyZsn7vhNRl1uWSP3XzlpHqTwUpuhcyG2ZAa4XzLXuUmOUDp/gMThU+gSCW9fKgWkt9qcIBO95rPOKuomfxIrjr40+pK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709733850; c=relaxed/simple;
-	bh=PB1X8HjhDk0oq0CrNU+1M4O2qnfMn33yRD2/aftWKro=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NKCNsQUgsc0vkmP7bROGoaH67LA0h1f1oN5yCUZ1GVSa40DYrASYigfT6O8sM5AbkqovpHVR8eNEc3le7wK4H8VOvnwzEh/2m9egAArrZ24X6FCCSDen8crWKRTAq5bjzse7lavsKeaqkksV6mVaHxG4E8ldGxb2OELt/6ojBNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8FD4C1FB;
-	Wed,  6 Mar 2024 06:04:43 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F5CE3F762;
-	Wed,  6 Mar 2024 06:04:04 -0800 (PST)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	"Huang, Ying" <ying.huang@intel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: swap: Fix race between free_swap_and_cache() and swapoff()
-Date: Wed,  6 Mar 2024 14:03:56 +0000
-Message-Id: <20240306140356.3974886-1-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1709734109; c=relaxed/simple;
+	bh=SoC1j48yTKipJvPrs9pdIYXOSX3FkBcek9RtYK9AqLU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JXw/KESUrmha5rz5DEoPqjlGCJironcnP6xg164er9kS+CKIdkSxoItSqnf/qlNIBnY0QGtGUfhv36Q7IGDdgN+rzM/XNhFxKL6ekJa87UaC4nPj1lwDnzqa367xSVy0uIC/1F94AdKT23g8ry3uOZlJnB7H5bHlydCVx63bxWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtTNf9AH; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5673b5a356eso2253343a12.0;
+        Wed, 06 Mar 2024 06:08:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709734105; x=1710338905; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SoC1j48yTKipJvPrs9pdIYXOSX3FkBcek9RtYK9AqLU=;
+        b=PtTNf9AHAEha2525CWrbnJhxrBFBIO1ThUAXkVtRqJ2L/sF4XoAXuUJwNhg5zRvhQz
+         QxSU9A30FXbEO541Fr/nnr+JbzeVicxVnLcavDkad1Sl2mGMPqIVBr91qcOXGKXPcYVS
+         RDF5+0GrNx8D3pDifR/dQ5bS8/HtUnzvwfzu4aD++BduVSNN8jBXmPqhjy8Ufkg2HVeT
+         naR4NcYr48cmb1YIHuhfIDBQVi/uUzSBaEKDzsn18/q7rJfgzTMNfDO0Y7QA8ipoJrb8
+         LsUd0TKrU7bAYsOpQqiq7Om8vy/BuOiGaUcjpIOgOE+aCZ1my9wCsLPv6O17GEOYOtct
+         qvZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709734105; x=1710338905;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SoC1j48yTKipJvPrs9pdIYXOSX3FkBcek9RtYK9AqLU=;
+        b=W1vkOc3IaHabC53J3yYtZOrOk8zbC0ymcxnvhAmTNDay6evlmTWe7Cae+t3vM0vKQ/
+         rQ4hMadK8RA2oUG8SJj8AO5lVa2XImBcdqmCGP1A6I+zPRfhMCnE8fqDsTFHfaph9Hgr
+         pOeEYFHcqr83FEG9Bc5q+dTZ6vGX/0pM7gqIjxxdSQJrWxw1tZGzTJg+hXu8HQLHAMgg
+         7jgZfQfeOpX4hR2/TCkuNsGA2vQp3UKVaTH5aYMozg0rozNsMkhlR2C2AeLknsXCPrWJ
+         zG0bZX6gftEbqW7jzSY4Odu3V7LNhyd5pZ7KD6MAZIyVJYUxWS1aS33x8KwsO2DketE8
+         j6bw==
+X-Forwarded-Encrypted: i=1; AJvYcCV73GV96CHl8/a/A/m32tjzk5XdCBp0HGdBAr4q2f5FBvglE6lfaEkoDWnsHdpuHK66s171KurpIon+5Q4kGktDt8uaM5fSrrnOR70cpMxlKusr1Kur34WbZNkob3wpeXkx2CDTi+O8FC5mHzV4LnucgZo14dycLx3hsUYEejVx8A==
+X-Gm-Message-State: AOJu0Yx6mom9mWtfXuJAKWZHa3eQDKfo3uxVqIRYQAMrReJNC69YToOu
+	vo1y27fA7kmCa3HFEu0dIynkOzK3+8UeZme27RBLI44f/mh8h7yX
+X-Google-Smtp-Source: AGHT+IH3Qu5XdLUd/GX1N21KjgkQdDBgTwXz0wQbJ34SGNBwbdysHcduprogf2BSKWsqCdfEkdt29w==
+X-Received: by 2002:a50:9b1b:0:b0:567:a8f7:2233 with SMTP id o27-20020a509b1b000000b00567a8f72233mr2520555edi.40.1709734105346;
+        Wed, 06 Mar 2024 06:08:25 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id b20-20020a0564021f1400b00567fa27e75fsm352802edb.32.2024.03.06.06.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Mar 2024 06:08:24 -0800 (PST)
+Message-ID: <ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
+Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, Frank
+ Rowand <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>,
+ Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
+ <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
+  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
+Date: Wed, 06 Mar 2024 15:11:49 +0100
+In-Reply-To: <CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com>
+References: <20240306085007.169771-1-herve.codina@bootlin.com>
+	 <20240306085007.169771-2-herve.codina@bootlin.com>
+	 <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+	 <CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
+	 <ed442b6916016b3a40782dc32538fc517715db6c.camel@gmail.com>
+	 <CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-There was previously a theoretical window where swapoff() could run and
-teardown a swap_info_struct while a call to free_swap_and_cache() was
-running in another thread. This could cause, amongst other bad
-possibilities, swap_page_trans_huge_swapped() (called by
-free_swap_and_cache()) to access the freed memory for swap_map.
+On Wed, 2024-03-06 at 14:05 +0100, Rafael J. Wysocki wrote:
+> On Wed, Mar 6, 2024 at 2:01=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.co=
+m> wrote:
+> >=20
+> > On Wed, 2024-03-06 at 13:43 +0100, Rafael J. Wysocki wrote:
+> > > On Wed, Mar 6, 2024 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gma=
+il.com> wrote:
+> > > >=20
+> > > > On Wed, 2024-03-06 at 09:50 +0100, Herve Codina wrote:
+> > > > > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal"=
+)
+> > > > > introduces a workqueue to release the consumer and supplier devic=
+es
+> > > > > used
+> > > > > in the devlink.
+> > > > > In the job queued, devices are release and in turn, when all the
+> > > > > references to these devices are dropped, the release function of =
+the
+> > > > > device itself is called.
+> > > > >=20
+> > > > > Nothing is present to provide some synchronisation with this work=
+queue
+> > > > > in order to ensure that all ongoing releasing operations are done=
+ and
+> > > > > so, some other operations can be started safely.
+> > > > >=20
+> > > > > For instance, in the following sequence:
+> > > > > =C2=A0 1) of_platform_depopulate()
+> > > > > =C2=A0 2) of_overlay_remove()
+> > > > >=20
+> > > > > During the step 1, devices are released and related devlinks are
+> > > > > removed
+> > > > > (jobs pushed in the workqueue).
+> > > > > During the step 2, OF nodes are destroyed but, without any
+> > > > > synchronisation with devlink removal jobs, of_overlay_remove() ca=
+n
+> > > > > raise
+> > > > > warnings related to missing of_node_put():
+> > > > > =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2
+> > > > >=20
+> > > > > Indeed, the missing of_node_put() call is going to be done, too l=
+ate,
+> > > > > from the workqueue job execution.
+> > > > >=20
+> > > > > Introduce device_link_wait_removal() to offer a way to synchroniz=
+e
+> > > > > operations waiting for the end of devlink removals (i.e. end of
+> > > > > workqueue jobs).
+> > > > > Also, as a flushing operation is done on the workqueue, the workq=
+ueue
+> > > > > used is moved from a system-wide workqueue to a local one.
+> > > > >=20
+> > > > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > > ---
+> > > >=20
+> > > > With the below addressed:
+> > > >=20
+> > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > >=20
+> > > > > =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 26 ++++++++++++++++=
++++++++---
+> > > > > =C2=A0include/linux/device.h |=C2=A0 1 +
+> > > > > =C2=A02 files changed, 24 insertions(+), 3 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > > index d5f4e4aac09b..48b28c59c592 100644
+> > > > > --- a/drivers/base/core.c
+> > > > > +++ b/drivers/base/core.c
+> > > > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> > > > > =C2=A0static void __fw_devlink_link_to_consumers(struct device *d=
+ev);
+> > > > > =C2=A0static bool fw_devlink_drv_reg_done;
+> > > > > =C2=A0static bool fw_devlink_best_effort;
+> > > > > +static struct workqueue_struct *device_link_wq;
+> > > > >=20
+> > > > > =C2=A0/**
+> > > > > =C2=A0 * __fwnode_link_add - Create a link between two fwnode_han=
+dles.
+> > > > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct devi=
+ce
+> > > > > *dev)
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * It may take a while to com=
+plete this work because of the SRCU
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * synchronization in device_=
+link_release_fn() and if the
+> > > > > consumer
+> > > > > or
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * supplier devices get deleted wh=
+en it runs, so put it into the
+> > > > > "long"
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * workqueue.
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * supplier devices get deleted wh=
+en it runs, so put it into the
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * dedicated workqueue.
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(system_long_wq, &link->rm_wo=
+rk);
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(device_link_wq, &link->rm_wo=
+rk);
+> > > > > =C2=A0}
+> > > > >=20
+> > > > > +/**
+> > > > > + * device_link_wait_removal - Wait for ongoing devlink removal j=
+obs
+> > > > > to
+> > > > > terminate
+> > > > > + */
+> > > > > +void device_link_wait_removal(void)
+> > > > > +{
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devlink removal jobs are queued=
+ in the dedicated work queue.
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * To be sure that all removal job=
+s are terminated, ensure that
+> > > > > any
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * scheduled work has run to compl=
+etion.
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 flush_workqueue(device_link_wq);
+> > > > > +}
+> > > > > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> > > > > +
+> > > > > =C2=A0static struct class devlink_class =3D {
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .name =3D "devlink",
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .dev_groups =3D devlink_groups,
+> > > > > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sysfs_dev_char_kobj =3D kobject_cr=
+eate_and_add("char", dev_kobj);
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!sysfs_dev_char_kobj)
+> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 goto char_kobj_err;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 device_link_wq =3D alloc_workqueue("dev=
+ice_link_wq", 0, 0);
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 if (!device_link_wq)
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 goto wq_err;
+> > > > >=20
+> > > >=20
+> > > > I can't still agree with this. Why not doing it in devlink_class_in=
+it()?
+> > > > This is
+> > > > devlink specific so it makes complete sense to me.
+> > >=20
+> > > If you do that in devlink_class_init() and it fails, you essentially
+> > > cause the creation of every device link to fail.=C2=A0 IOW, you try t=
+o live
+> > > without device links and pretend that it is all OK.=C2=A0 That won't =
+get
+> > > you very far, especially on systems where DT is used.
+> > >=20
+> > > Doing it here, if it fails, you prevent the driver model from working
+> > > at all (because one of its necessary components is unavailable), whic=
+h
+> > > arguably is a better choice.
+> >=20
+> > That makes sense but then the only thing I still don't fully get is why=
+ we
+> > have
+> > a separate devlink_class_init() initcall for registering the devlink cl=
+ass
+> > (which can also fail)...
+>=20
+> Well, I haven't added it. :-)
+>=20
+> > What I take from the above is that we should fail the
+> > driver model if one of it's fundamental components fails so I would say=
+ we
+> > should merge devlink_class_init() with device_init() otherwise it's a b=
+it
+> > confusing (at least to me) and gives the idea that it's ok for the driv=
+er
+> > model
+> > to exist without the links (unless I'm missing some other reason for th=
+e
+> > devlink
+> > init function).
+>=20
+> +1
+>=20
+> Feel free to send a patch along these lines, chances are that it will
+> be popular. ;-)
 
-This is a theoretical problem and I haven't been able to provoke it from
-a test case. But there has been agreement based on code review that this
-is possible (see link below).
+I was actually thinking about that but I think I encountered the reason why=
+ we
+have it like this... devices_init() is called from driver_init() and there =
+we
+have:
 
-Fix it by using get_swap_device()/put_swap_device(), which will stall
-swapoff(). There was an extra check in _swap_info_get() to confirm that
-the swap entry was not free. This isn't present in get_swap_device()
-because it doesn't make sense in general due to the race between getting
-the reference and swapoff. So I've added an equivalent check directly in
-free_swap_and_cache().
-
-Details of how to provoke one possible issue (thanks to David
-Hildenbrand for deriving this):
-
---8<-----
-
-__swap_entry_free() might be the last user and result in
-"count == SWAP_HAS_CACHE".
-
-swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
-
-So the question is: could someone reclaim the folio and turn
-si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
-
-Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
-still references by swap entries.
-
-Process 1 still references subpage 0 via swap entry.
-Process 2 still references subpage 1 via swap entry.
-
-Process 1 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-[then, preempted in the hypervisor etc.]
-
-Process 2 quits. Calls free_swap_and_cache().
--> count == SWAP_HAS_CACHE
-
-Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
-__try_to_reclaim_swap().
-
-__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
-put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
-swap_entry_free()->swap_range_free()->
 ...
-WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
 
-What stops swapoff to succeed after process 2 reclaimed the swap cache
-but before process1 finished its call to swap_page_trans_huge_swapped()?
+devices_init();
+buses_init();
+classes_init();
 
---8<-----
+...
 
-Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
-Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
+So classes are initialized after devices which means we can't really do
+class_register(&devlink_class) from devices_init(). Unless, of course, we r=
+e-
+order things in driver_init() but that would be a questionable change at th=
+e
+very least.
 
-Hi Andrew,
+So, while I agree with what you've said, I'm still not sure if mixing devli=
+nk
+stuff between devices_init() and devlink_class_init() is the best thing to =
+do
+given that we already have the case where devlink_class_init() can fail whi=
+le
+the driver model is up.
 
-Please replace v1 of this patch in mm-unstable with this version.
-
-Changes since v1:
-
- - Added comments for get_swap_device() as suggested by David
- - Moved check that swap entry is not free from get_swap_device() to
-   free_swap_and_cache() since there are some paths that legitimately call with
-   a free offset.
-
-I haven't addressed the recommendation by Huang Ying [1] to also revert commit
-23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device"). It
-should be done separately to this, and and we need to conclude discussion
-first.
-
-[1] https://lore.kernel.org/all/875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com/
-
-Thanks,
-Ryan
-
- mm/swapfile.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2b3a2d85e350..1155a6304119 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1232,6 +1232,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
-  * with get_swap_device() and put_swap_device(), unless the swap
-  * functions call get/put_swap_device() by themselves.
-  *
-+ * Note that when only holding the PTL, swapoff might succeed immediately
-+ * after freeing a swap entry. Therefore, immediately after
-+ * __swap_entry_free(), the swap info might become stale and should not
-+ * be touched without a prior get_swap_device().
-+ *
-  * Check whether swap entry is valid in the swap device.  If so,
-  * return pointer to swap_info_struct, and keep the swap entry valid
-  * via preventing the swap device from being swapoff, until
-@@ -1609,13 +1614,19 @@ int free_swap_and_cache(swp_entry_t entry)
- 	if (non_swap_entry(entry))
- 		return 1;
-
--	p = _swap_info_get(entry);
-+	p = get_swap_device(entry);
- 	if (p) {
-+		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
-+			put_swap_device(p);
-+			return 0;
-+		}
-+
- 		count = __swap_entry_free(p, entry);
- 		if (count == SWAP_HAS_CACHE &&
- 		    !swap_page_trans_huge_swapped(p, entry))
- 			__try_to_reclaim_swap(p, swp_offset(entry),
- 					      TTRS_UNMAPPED | TTRS_FULL);
-+		put_swap_device(p);
- 	}
- 	return p != NULL;
- }
---
-2.25.1
+- Nuno S=C3=A1
 
 
