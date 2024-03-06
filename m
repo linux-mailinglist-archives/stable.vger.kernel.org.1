@@ -1,169 +1,148 @@
-Return-Path: <stable+bounces-26910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3FD872E96
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 07:10:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADF087302F
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1D11F25206
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 06:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82151C22ACF
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 08:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFA21BDD3;
-	Wed,  6 Mar 2024 06:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1D05D72F;
+	Wed,  6 Mar 2024 08:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2GzTKDX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E7rujQUV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FBA1BDCE;
-	Wed,  6 Mar 2024 06:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F180A5CDC2
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 08:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709705405; cv=none; b=DO4MCFB6n3zfiRqk62KlrveaxAO+tJ6esNQGD+4aw0ncEd7rJuvjnpOzGMer+f36VB+CVx1ol0wjtaQoy4zx8lgRxSaWKXh0I9LjvMNEgngfD335wtcU9p9y/RyOqHyARo4wnBmDnxwNUjpUBZ4xKs/iTkqIVKlCoAVfsMIIM5k=
+	t=1709712241; cv=none; b=cfuBAtS33BPaDNNFyxJwCK9Lk32INy7knKHY8toEP+J5t6OQEyiSWqwjko8ouBY5tOIOim7XqhaeQnbSZbtyqKi2V0MO8Z7oa7+sEM21qbcp5CdDxVm2sE3gcABvofiQXfldXM43qvpQg94Mmih7dUVxh/mOJcpYEurZCZTS3Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709705405; c=relaxed/simple;
-	bh=lSRRNskVPHhclRoV5Y6ztqZLrpHVOWF8T+IB8L5neFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgYGSVwwPr0f3iJPWfA/xR7SZ729O6BbYjlF+PgbEsMI1J9ParI/HyZZyazfwcD+GL8X4U79qKdZhpKVvHEs1IYom7EB0BJcaf7o6Bh2M6qx65nul+iDyYB7JVhLBMYrXqz85TpG1KaEgbj3C76zFoNCGyQlMNtWAgW7t2LKS+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2GzTKDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E366FC433F1;
-	Wed,  6 Mar 2024 06:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709705405;
-	bh=lSRRNskVPHhclRoV5Y6ztqZLrpHVOWF8T+IB8L5neFM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=N2GzTKDXkzvmqQZqFIP9B4dposW5RuAk23MxpT2SrgG/iNOcDGASuYAC7UiFa/IgS
-	 gpQGZ7J1Bl6uX33NeSdJ/7qNloFEnFslI5PWN39e/x2hqABz+PfZV3uwJPNu47AAbA
-	 tKEfnyNmIyDw9m8ogzaHsDerXRhAnNkQffLBIdN198FX0GiXi70NW0v2UtQhPyf9Aq
-	 /lrW6kgBrIMvpLkAZNUwVLDeKjCyMLifxJ4likYyleTpKQck4gp85om2DwqiHiFcLN
-	 nl1Yo2uKbvKKJOFWGlFz8RYuDKhbtJZLQ5Uw3K7rVcoHZRRK5Rz+0Z2hDmTDqfcFX2
-	 CuY+xdOlyDg1g==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] perf/x86: Fix out of range data
-Date: Tue,  5 Mar 2024 22:10:03 -0800
-Message-ID: <20240306061003.1894224-1-namhyung@kernel.org>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+	s=arc-20240116; t=1709712241; c=relaxed/simple;
+	bh=jodEnASZyLUgeoSk8Z4M/Y1uTQ6Xpxy5XIGxKW5nvb4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UbuJ7l1qNYKX1XOJDeSPVYwzDDC20PnPDMyIRuoxW6VpbWlqyzueJp+Lu84s3Mu7/Bv70cP0zqGvoN/r1btO3uvHXgnQv9VAzEBYDE/KX4AVWaRb05JeOe6GTuXXaOhdosbqu6JW8AIXSK1LoCrBRDywKp4pjT6kRJ0jmUKAtjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E7rujQUV; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dc742543119so6623654276.0
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 00:03:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709712237; x=1710317037; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pNCmhehLL35vXsU0wn+FY52cOQ04rVxtOxTd7hBwrYk=;
+        b=E7rujQUVYeoWx/m8hA9hkx0GDzR3BTMLukF0Jetc4sxIjRUFr6uPVE06y91p4nHvTy
+         MqWqVXe+IUth9hJkCY1x1pYmXZIWtHH+74c7y3vhSnPaSMqS+7lYUmWF4rkd/P6wgQ6b
+         xTFexi7tpMcBqZpQyzn4p8ALXP/NWcpiXE9smPbzk7id/o2A97ZJv7jUjowBmxlhaJTr
+         dAU0nDl4js4tgC2r3suA3rxW8+M+HhRzj+Sp4sPEPegi1yk8IqlUyF4IxWnfcm/MKK2H
+         t4fOQegPJPTLNJ+E8EUUj2utc00LiRk0R6YtP6FIY0rY50QcsVy0s8VIo20hvpPPXtcI
+         Xdwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709712237; x=1710317037;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pNCmhehLL35vXsU0wn+FY52cOQ04rVxtOxTd7hBwrYk=;
+        b=UmkVL926h+ORfzyZVvQC35a5z4KnGhVaphznWxUrs8fp2xmhd64srxI5QiTcUWNeCQ
+         wFxW0T87sfzskEHb5NgvCTyeffkKHingN3mUU0ojynsW5i4LlCKPuo9Fgxcbu1ECjYGD
+         3gp1xLkHTDsSLeEXgJPv4gquk0VVBWPTChEV1j+ZKEJBYx+bn0NQbpsI6+CwXhOo8pGJ
+         osSnsWgwpiURjKQepehQ2jmehLQoTFCNRCCHhabCsTpTaHHE/YCJRKGPqZe59rKqKxDr
+         6VsEGMiEebyLJQCz65kdmfOptETTJ8Qf0d94zfTIbQVLWPj0BXXP3i41EkNqp7PMnE0K
+         8SSg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6Z94Lak1Y4JzxhQNA2m3ojN8RKG2xAtajuhTuuEXBV7lFQxGKTxyBHcrH2Xelt2qz8DH3sPaolULMOagpShqMwnD3xN4n
+X-Gm-Message-State: AOJu0Yyycn75Xpno8goSjFarHl/OUcMHRKQ0uaa85crYAeec6mDNmD/O
+	kXm6YXCdLZuMl1iuZJKtLD81oe4C5tWjLsHq+Km0zIH7rckLMYApNqoxnEDanf5fbz0jD0BWVYK
+	IB+qObdaMU1N8ZWxvIGRjMJljKo5hCmUqPcRXnQ==
+X-Google-Smtp-Source: AGHT+IFiiALvEe20+2jMao6XZwL3rpAKDRZLIqrCiLCGFKth5eRWTowg8OI5xSsdhVEX4ZwNnmupsmHGl44khhJoAAI=
+X-Received: by 2002:a25:aa8b:0:b0:dcf:b5b7:c72 with SMTP id
+ t11-20020a25aa8b000000b00dcfb5b70c72mr11184681ybi.0.1709712236941; Wed, 06
+ Mar 2024 00:03:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+In-Reply-To: <20240306-mmc-partswitch-v1-1-bf116985d950@codewreck.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 6 Mar 2024 09:03:45 +0100
+Message-ID: <CACRpkda4pVotd9Fc2Qn0Ae=89sZR7-rXDiZ7OdHE3eDvO=049Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: part_switch: fixes switch on gp3 partition
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Jorge Ramirez-Ortiz <jorge@foundries.io>, 
+	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dominique Martinet <dominique.martinet@atmark-techno.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On x86 each cpu_hw_events maintains a table for counter assignment but
-it missed to update one for the deleted event in x86_pmu_del().  This
-can make perf_clear_dirty_counters() reset used counter if it's called
-before event scheduling or enabling.  Then it would return out of range
-data which doesn't make sense.
+On Wed, Mar 6, 2024 at 2:45=E2=80=AFAM Dominique Martinet
+<asmadeus@codewreck.org> wrote:
 
-The following code can reproduce the problem.
+> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+>
+> Commit e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB
+> partitions.") added a mask check for 'part_type', but the mask used was
+> wrong leading to the code intended for rpmb also being executed for GP3.
+>
+> On some MMCs (but not all) this would make gp3 partition inaccessible:
+> armadillo:~# head -c 1 < /dev/mmcblk2gp3
+> head: standard input: I/O error
+> armadillo:~# dmesg -c
+> [  422.976583] mmc2: running CQE recovery
+> [  423.058182] mmc2: running CQE recovery
+> [  423.137607] mmc2: running CQE recovery
+> [  423.137802] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op=
+ 0x0:(READ) flags 0x80700 phys_seg 4 prio class 0
+> [  423.237125] mmc2: running CQE recovery
+> [  423.318206] mmc2: running CQE recovery
+> [  423.397680] mmc2: running CQE recovery
+> [  423.397837] blk_update_request: I/O error, dev mmcblk2gp3, sector 0 op=
+ 0x0:(READ) flags 0x0 phys_seg 1 prio class 0
+> [  423.408287] Buffer I/O error on dev mmcblk2gp3, logical block 0, async=
+ page read
+>
+> the part_type values of interest here are defined as follow:
+> main  0
+> boot0 1
+> boot1 2
+> rpmb  3
+> gp0   4
+> gp1   5
+> gp2   6
+> gp3   7
+>
+> so mask with EXT_CSD_PART_CONFIG_ACC_MASK (7) to correctly identify rpmb
+>
+> Fixes: e7794c14fd73 ("mmc: rpmb: fixes pause retune on all RPMB partition=
+s.")
+> Cc: stable@vger.kernel.org
+> Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>
+> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-  $ cat repro.c
-  #include <pthread.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <unistd.h>
-  #include <linux/perf_event.h>
-  #include <sys/ioctl.h>
-  #include <sys/mman.h>
-  #include <sys/syscall.h>
+The patch:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-  struct perf_event_attr attr = {
-  	.type = PERF_TYPE_HARDWARE,
-  	.config = PERF_COUNT_HW_CPU_CYCLES,
-  	.disabled = 1,
-  };
+> A couple of notes:
+> - this doesn't fail on all eMMCs, I can still access gp3 on some models
+>   but it seems to fail reliably with micron's "G1M15L"
+> - I've encountered this on the 5.10 backport (in 5.10.208), so that'll
+>   need to be backported everywhere the fix was taken...
 
-  void *worker(void *arg)
-  {
-  	int cpu = (long)arg;
-  	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
-  	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
-  	void *p;
+Which device is this?
 
-  	do {
-  		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
-  		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
-  		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
+I have never seen an eMMC using the GP:s in my life.
 
-  		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
-  		munmap(p, 4096);
-  		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
-  	} while (1);
+Or did you create the GP manually?
 
-  	return NULL;
-  }
-
-  int main(void)
-  {
-  	int i;
-  	int n = sysconf(_SC_NPROCESSORS_ONLN);
-  	pthread_t *th = calloc(n, sizeof(*th));
-
-  	for (i = 0; i < n; i++)
-  		pthread_create(&th[i], NULL, worker, (void *)(long)i);
-  	for (i = 0; i < n; i++)
-  		pthread_join(th[i], NULL);
-
-  	free(th);
-  	return 0;
-  }
-
-And you can see the out of range data using perf stat like this.
-Probably it'd be easier to see on a large machine.
-
-  $ gcc -o repro repro.c -pthread
-  $ ./repro &
-  $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
-       1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
-       1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
-       1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
-       2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
-       2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
-       2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
-       2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
-       3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
-       3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
-       3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
-       3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
-
-It should move the contents in the cpuc->assign as well.
-
-Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
-* add Kan's reviewed-by tag
-
- arch/x86/events/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 09050641ce5d..5b0dd07b1ef1 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
- 	while (++i < cpuc->n_events) {
- 		cpuc->event_list[i-1] = cpuc->event_list[i];
- 		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
-+		cpuc->assign[i-1] = cpuc->assign[i];
- 	}
- 	cpuc->event_constraint[i-1] = NULL;
- 	--cpuc->n_events;
--- 
-2.44.0.278.ge034bb2e1d-goog
-
+Yours,
+Linus Walleij
 
