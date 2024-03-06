@@ -1,171 +1,135 @@
-Return-Path: <stable+bounces-27010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CEC873D72
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 18:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377F187333F
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 10:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 472E9B2427D
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 17:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8970289267
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 09:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FFE13B2BC;
-	Wed,  6 Mar 2024 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1685F473;
+	Wed,  6 Mar 2024 09:58:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2135.outbound.protection.partner.outlook.cn [139.219.17.135])
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD17605DC;
-	Wed,  6 Mar 2024 17:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.135
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709745846; cv=fail; b=W0b/EDw3F3Cri9dox6z+wX8ea+u8og+TqRPsechZ+ZKzEmEOv2b+ry71Qa5RDJKYjZ+Ift8dDHdNPgaXEujn7zFQX58V9HLF5ujmQZbq4EjGlyX6bfOer6YCZm7SWVMfDv/p+u1jy+6IKYTbgSsbj2cTD3DvEEETSjKBEVFxtUk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709745846; c=relaxed/simple;
-	bh=ruLSbQZfw4F7ha7h+7BUfNVIlsMkIacYgq+qnvgPgQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pawhfh3YRO9+fzr7nsd6/jRedz38CaZdbg+r8TE2IckDBS3oqRDUmTBr1eFrKzCUcHcQPoYIsVuHCbNFRYzkkauTxgSJfulM0fieZKoy0bvnAeASLpXNDQIgiotuvExZ5pZAUENqVs5nUuoX2RFQY824+2LioRAZDXqWjdkrQoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nA9y2LV8QqJJwyZG6VML+ebxhu1x512Ke1raKIQFI/iH07oGbnToGA6F1DAQldweUcD7Efel/0LnSsxnKra7fyKpJcEnrABPTPzceYKuTDS8oWkS0NpVkOxK2K2tRy1uUXImT5+sE//6yBATq+NHmSV42oUnRpINXhbr8WbhbGPAfvDxUCX26Hubd9h0g8t5+uibugbAiOswVvhuM8HRqD5n4CCXSPYxIhR2xuLWCYmqJzEISsau3w7X1hn2en+vJR7z/s2jJmPzJP4FEkvrOwpEjnVZNAtAeq6vP76+shHyF9N/WCvBrggR6546bwKl3sHZ2Vs5bbU0HghL4hYFOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rjPu3HmoRqXxTMrq8/4Xh/+FRgsoE/H1VR/fH/N3uEM=;
- b=nqNN+PoSk4ApZytMsykfFIJYqb6f91d4wRBTG0U2SH4Ncs3/RuV8nKCeI2B1wkI+wB5hBDwyDz9ygnlwHy9Wntpf1y8Bhw84eZNXu/CFMwyHn5SWsr5aNdU8XHN3El0Eih8ykhsWORiHoVtFagl5xcEin2q9KprK0FBSQhUp+U+MstOJpAtwv5su2wBL2Yc/ZHjtsB/TSKvgCPpewsAgHWqpjUgS0wSL6Vm9rqiyk8A6i77OJHaP2rDtK4zmDCzhLEb9U44bxByBtLRXmBt1YWT5ZPGlRpsbm84OzF1vPidEWEZ78uhbvYw4PTOUQGY+/F9ULWMLWilMlGyCXsw28w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12) by ZQZPR01MB1043.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Wed, 6 Mar
- 2024 17:23:58 +0000
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- ([fe80::f2cf:d7c2:e40b:d36e]) by
- ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::f2cf:d7c2:e40b:d36e%5])
- with mapi id 15.20.7270.046; Wed, 6 Mar 2024 17:23:58 +0000
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Albert Ou <aou@eecs.berkeley.edu>
-Cc: atishp@rivosinc.com,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ley Foon Tan <lftan.linux@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] clocksource: timer-riscv: Clear timer interrupt on timer initialization
-Date: Thu,  7 Mar 2024 01:23:30 +0800
-Message-ID: <20240306172330.255844-1-leyfoon.tan@starfivetech.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BJSPR01CA0012.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:c::24) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923695EE9D
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 09:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709719101; cv=none; b=g7oKYifk/ddSfJWRrqJUBGdZbycWh3lLDLXjNygQt3rcRzRwiQN78f257p+cHtTEYdU8J4ZJRq0Vi2f6kiBFwPbA3dkpKm4agCnN3TP77s2pqe69k0F4v3lKF5TvJ6pu0Y75HkBVkKbZz2LxDjhkKi0i/ewUNUGWdYv+W9yEIes=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709719101; c=relaxed/simple;
+	bh=F0VrgEoGn3VKVW7CjuxLe+mN+rspzZTMdmiYktONjv0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ncyn+IcnnKuhq1JnQ3GjgCeXS9WNisxnf0OSkAkSpKIpCXu4J9uIjsqGjM1V1nUpgb0cGR/e39FEPIbcvhEqCCdBPV6VTcmuvjV+yR4+T6FyEJT+668dijbUccwq2pU3wmbfegryE1ho1LJ9DPbJUDi6A74jevqeCwrkc3Rjm38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1709719089-086e23661a01e80001-OJig3u
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx1.zhaoxin.com with ESMTP id s9aSJHPSEpQwNNlP (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 06 Mar 2024 17:58:09 +0800 (CST)
+X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Mar
+ 2024 17:58:08 +0800
+Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 6 Mar
+ 2024 17:58:07 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <3d5254cf-27de-b689-352b-45698e265f5e@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.21
+Date: Thu, 7 Mar 2024 01:58:06 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB1043:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc5e1a72-6791-4f6e-1b24-08dc3e023529
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	iH39KKqYwZopLnHPLu+H9Wfea7LrAtSoEwTfOlbN60JngROcpA9wHX0bdOmHzklQKHbAcbLzMZLRRLAXwwRHk5LEKfjdmfAsR8OkNitm9DicpgTDRv9J5xzstR8U+7bM+H0PgqahCb4joMBlc1ICIf4/cj5GPkTwQ4de4C6JpkBoQcbj8bDztzaEngB0EfjFMs9Mm94IghDyCizuyPoc0YA//IGEdvZbxyjR4iOuzjoHtZEqO/UomJTBsR5LiLscCzbDD99Hy//FBuYjkvlTBP8vMUTZegMqA8zjOqxAYDzP5MOktApyxYnfcAFxh4s8neUH68+zaczJyUETaYLF8k/Gu6GYNXqG3GNWarKzijVKbAhLzSF2fRbXd2iw6EnWyUU6MsiRCmPS1vK8TL3WdJa+r+5vJEG4vbdwsJnmiJ62bP2MkI95RjMaG7my167Mm+5qGf8PJuEcdvJ0am3CXsBmst+8+cC4P393c0zp2iCP9alqNHUkKFlaiD2xK/itMHtPS5U79b/EHUll2KsdcSjzlJljbi9RWtHImeNpPLdnmRu8OtjOvCVKuFtZlY8wsRjKg3G+uLPQUxoSULOEdH11d1cMaayn9byxPxcKWfWVDyqaj2KYnIuo8hnEzSjl
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(41320700004)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s12m7vI4iOByP3EoE/70ntbeK5DYTdHCdSAvC8RjeATvlQEP+i+QJf1o+72e?=
- =?us-ascii?Q?2/8vtKgcb2RHIRGY2u+P9M95Z/hL4U0/ttHy0FhD9U9B+pQ6cvgAbZ/Bx9d6?=
- =?us-ascii?Q?cWcrVkfkdKBi4zdm1kE+du+bwDZhf/89aHCpHMP9VKLyyPP3bVIbnZ3Tz3M8?=
- =?us-ascii?Q?dKqNU5iZtwERjS7BDT+vmBIwg+hv/iBzVQ8Xq5tGj7C+jxI9Jm8ZR+t2sVRy?=
- =?us-ascii?Q?vB4+2mdTccxp63YvyHaOxOL3YJu8NL7o8Pqok5G0esMZz9CfFDS3xTVOYxxQ?=
- =?us-ascii?Q?Jd4HU3XlWKkvvCK310uDL9Qqy0awa+w7EKmfwL7gUmqCrFx2ohGUPg4TMxiZ?=
- =?us-ascii?Q?SZCiZ9T1NPAAVf/L2IvlvUSRxDnqd/TtOzLPWHbX5SIKE9oNUqbNIJet9rvJ?=
- =?us-ascii?Q?5zH+yJDtlgWls+3X2Sa04wOYWM9xpLNki+K79frtEhLKYiIkr8FetGq6Q2t3?=
- =?us-ascii?Q?i5ppwo4RDxlm6wKkgf/1r3SVmbgg3WL8nwePxDcg3xhoMaeJMJPjLHmr5FUo?=
- =?us-ascii?Q?PoUcj/bwX8cQemBytq1ZWJ0FykhiuiE5FiAgujWVoUA4d5kvcQ1ARAuoQtZy?=
- =?us-ascii?Q?6klcnnzwaRWmVPxBgiE1KsKjHwJgpycCuy36eNGDCJ9b4EwskjCCB9eUzw2V?=
- =?us-ascii?Q?H2uZ9arueyHHMxeFeyGTLdyHfgjcELviD3EFUSQQurL5Z01Kg/7+c5niuvmi?=
- =?us-ascii?Q?RqX1OsctJ+FfP5iTVMqjiCP5ucBLB+tesPyE8V5Ztw8IrhJZU3Yb8DhIyBr9?=
- =?us-ascii?Q?2yAZ6Lie7HZzoPh3ububat7EfKpdloB9G4C3ZTHt19loyT++cf3OE9Jf0clc?=
- =?us-ascii?Q?0iOt28QyuPqOlJ5xgoFMIeOw+msUclHK+7B/LkTfig3tOwi3pp2Q8E+9Urlp?=
- =?us-ascii?Q?sYDjl71S31PwKUAGaOD7dKrpnA0sqmhkYjM18iHxWy/7jo8CO9U29IX5xrmQ?=
- =?us-ascii?Q?Im+DhR97paeZvIrtgoERjuRgleLYYedInHzMMth3JaVA6sVxkPaHCt55sF3Z?=
- =?us-ascii?Q?382PqKEfs3NIjsO6EJAKFfJU5dZqNyqZzzibxbc0NCa3mxOVRcs9T/kBWko9?=
- =?us-ascii?Q?WOHdnZoJGK6xQBw3KBRXdj0+9mhNT7ga0jcYZ31EtrZzXSnDJp7JQRRlbix+?=
- =?us-ascii?Q?uHrQbVOxmMdvhFzLME4cUGNdMIL/67x/+YbbJDjrVKj8EhbuXyWRNysVn4vW?=
- =?us-ascii?Q?iWpZAzBvLjGpGt9xhEpMkoeIVd50LSc6dcR9yqSEPnMY92hM9L06FtxEtHId?=
- =?us-ascii?Q?EcI2K53m1qffg82B5fldr8OqmakLBRTT3o5nZKEye+idQCRvWYeMezy8Tlva?=
- =?us-ascii?Q?hQHRgup/r7O95OCLftZlceU/OiBA7dobjK5ze/Sgs3xpz8/YeXskz5mxXVbB?=
- =?us-ascii?Q?FLXSaXD6b/6GM0HoJt65VE1DORjFrJSZh3zdNykCJPMQdnsPwL+7nA9wFKp1?=
- =?us-ascii?Q?oD0sf1GQnLLJdiZ3VTBl2Rrpa1EwUWGKciEP2TE07X63PrGxZcM4qMDckWK3?=
- =?us-ascii?Q?miciC0MnMYH7RKnAg5PXRNjTz8tbWaD/E1ZdRjqfV209UEhmMSlpqYLXn9hK?=
- =?us-ascii?Q?5JD2Mn2INKXVkUYa6dmBUPTkFAYKZ4k/NjHSAnSPAzqUGuGp0MX4OHbSwPue?=
- =?us-ascii?Q?cmq6s2KfocuGkDyaoba+St4=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc5e1a72-6791-4f6e-1b24-08dc3e023529
-X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 17:23:58.4846
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Jmw5zhTrAkPDbGFlCtDB7So/u5ZcrMIwoOOmMCsNaMPSbG7/MCQgLOb8J9TP2OoeefTZ1v5AosMUidI62cHs+ABNjQCpLI8u5XHzrjDQXA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1043
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with
+ device not attached
+Content-Language: en-US
+X-ASG-Orig-Subj: Re: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with
+ device not attached
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <oneukum@suse.com>, <stern@rowland.harvard.edu>,
+	<linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-scsi@vger.kernel.org>, <usb-storage@lists.one-eyed-alien.net>,
+	<WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
+References: <20240229193349.5407-1-WeitaoWang-oc@zhaoxin.com>
+ <2024030530-trinity-triangle-c334@gregkh>
+From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
+In-Reply-To: <2024030530-trinity-triangle-c334@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1709719089
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2055
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: 1.09
+X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121736
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
+	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
 
-In the RISC-V specification, the stimecmp register doesn't have a default
-value. To prevent the timer interrupt from being triggered during timer
-initialization, clear the timer interrupt by writing stimecmp with a
-maximum value.
+On 2024/3/5 21:25, Greg KH wrote:
+> 
+> 
+> On Fri, Mar 01, 2024 at 03:33:49AM +0800, Weitao Wang wrote:
+>> In the scenario of entering hibernation with udisk in the system, if the
+>> udisk was gone or resume fail in the thaw phase of hibernation. Its state
+>> will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
+>> and can't not handle disconnect event. Next, in the poweroff phase of
+>> hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
+>> when poweroff this scsi device, which will cause uas_submit_urbs to be
+>> called to submit URB for sense/data/cmd pipe. However, these URBs will
+>> submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
+>> will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
+>> the SCSI layer go into an ugly loop and system fail to go into hibernation.
+>>
+>> On the other hand, when we specially check for -ENODEV in function
+>> uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
+>> poweroff fail and system shutdown instead of entering hibernation.
+>>
+>> To fix this issue, let uas_submit_urbs to return original generic error
+>> when submitting URB failed. At the same time, we need to translate -ENODEV
+>> to DID_NOT_CONNECT for the SCSI layer.
+>>
+>> Suggested-by: Oliver Neukum <oneukum@suse.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+>> ---
+>> v2->v3
+>>   - Modify the description of this patch.
+>>   - An error is returned directly when submitting URB fails.
+> 
+> This change breaks the build, please be more careful'
+> 
+> drivers/usb/storage/uas.c: In function ‘uas_submit_urbs’:
+> drivers/usb/storage/uas.c:559:21: error: unused variable ‘urb’ [-Werror=unused-variable]
+>    559 |         struct urb *urb;
+>       |                     ^~~
+> 
 
-Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+I'm sorry for the carelessness. Now, I have removed this unused variable
+and completed the compilation test. I'll resubmit this patch with a new version.
 
----
-v3:
-Resolved comment from Samuel Holland.
-- Function riscv_clock_event_stop() needs to be called before
-  clockevents_config_and_register(), move riscv_clock_event_stop().
-
-v2:
-Resolved comments from Anup.
-- Moved riscv_clock_event_stop() to riscv_timer_starting_cpu().
-- Added Fixes tag
----
- drivers/clocksource/timer-riscv.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index e66dcbd66566..79bb9a98baa7 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -108,6 +108,9 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
- {
- 	struct clock_event_device *ce = per_cpu_ptr(&riscv_clock_event, cpu);
- 
-+	/* Clear timer interrupt */
-+	riscv_clock_event_stop();
-+
- 	ce->cpumask = cpumask_of(cpu);
- 	ce->irq = riscv_clock_event_irq;
- 	if (riscv_timer_cannot_wake_cpu)
--- 
-2.43.0
-
+Thanks
+weitao
 
