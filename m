@@ -1,122 +1,114 @@
-Return-Path: <stable+bounces-26891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0661872BEE
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:01:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084B7872BF5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67B11C224A5
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:01:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A49D51F24362
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19032CA7;
-	Wed,  6 Mar 2024 01:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8D463D9;
+	Wed,  6 Mar 2024 01:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="NOLu9Nd0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IRYtzf92"
 X-Original-To: stable@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3570613A
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 01:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EDC4C91
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 01:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709686909; cv=none; b=j41hPZqtra8EvyArJvYn/1sqIJQhs0+596u38az1qoNarlsUxUWspW3Bv7n9Rf2C8Mfn9UWSZmuqSy6Ued2efdpYJemF+Yb1lszfT1sMDBzCJTp2DrLpzkzx0T+nHiGLR94D2kh+IhxPAjp7k+hJVGuyZzGdggCAXkTUeWZL0kA=
+	t=1709687290; cv=none; b=kNp9F1UVq/jZqXwrMcVpxrHxHDWhWI7t5r68UHVM0t8a5i3E+c1v/rQfSH25VZ541x65YgG7FAAIEEp2Xln5HOQ45b68lE0e0/U9KFNAPw45dCF8RBMwttTm+nkxPvUiPM2m1RE1FT9gzvaCGGFRsNrwC12/ijlbBwKJOHbgmaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709686909; c=relaxed/simple;
-	bh=5/ZcX9ajZLf4owQGJwX2dlOzBzGOssvyw5Rcw44gWks=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LOLIsBN5ZJPIWMR0uHX9j5pdobsuN8/S2NNIo3ymsNOcOZvWdhl04yTMQEHPJRsdjWC37ewVbpJcCQMNbZn/nkDy2lZVNNj8oRzya8OP6rc1EiDforNfCOmrKjNfaKJl0+nXJqflIJeW3R2RpfgYPuJmEGW389PQTEamwCOf5K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=NOLu9Nd0; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1709686905;
-	bh=YmcB4bK+MAKOOiOWr/fno4pQrOdfHy3DeEfNvA3NQaI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NOLu9Nd0MJ7pHaMczG24P2AAIjuQhVM3wPtp80cRNUCsBxFuSbZi0rDg8RCJBLKNb
-	 XFRzYoSHM3yALoOIr/THxV8/0FuBguR6Vw/I+aqE+cAOBTQWsqEzKwwuhpJ9+IHrpA
-	 ju3TWGuhoA0jqbHyAZdTmfzhuopD/JXB+zzZuTG+/vdc/dSRd7hcLWxt+6N9pX2xC0
-	 uW4QiRWZncUEoTDNcuOcaOsRjuVp965laKOqAwu2ynMQcFQ8KESP9blQkn9wOOijpi
-	 Zrs1DUqcfyz813+tLqBkYHLuGgEysiDhfYakRkusLJe+/O8f4nzAthwOcf1XGuU3qz
-	 VUhL8TZ4n22GA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	s=arc-20240116; t=1709687290; c=relaxed/simple;
+	bh=SsmH7y7phE3+6HRd1ag269qvwQMP8NQvOUrkGiQ2yWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uPLuGuRfaXGbrJsWq1WxWrJiMAaEmdhdcl797joMR4yPgiJfPvjtj4mlmb/NhaRDG7VAWKMYkyJZX7xh8QtaKZwBCxLKJHdpxRcVVcYm8l9VFbR0CwqHy/4+kahlPoYkLy9SxOjVJuPrEqepSH3UA+DJaEYtZtm9haUwNmxqwdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IRYtzf92; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709687288;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4J6XVV139H2p+jUWQqRDSu5CtocuL0hjR/mC6mRpU1A=;
+	b=IRYtzf92xCqx4iTCyulS4fBJm+Qpy4cN/XlbBN/JQK26Ar1y5nkmzzFYLd2wQfKPIJbIGd
+	MdW+15THZMLqQF/W8u5Lh/M/hhq8kdx+hrMUXhNKPyJEAlv5bAn4CpkJWkye4x2us7S4sy
+	ScVH/pLxOLQM437hZMnfA8Ayxs5aoI0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-sSyz-_hsMe6ZPxEx4RCtBw-1; Tue, 05 Mar 2024 20:08:05 -0500
+X-MC-Unique: sSyz-_hsMe6ZPxEx4RCtBw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TqDfH2BRXz4wc8;
-	Wed,  6 Mar 2024 12:01:43 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
- naveen.n.rao@linux.ibm.com, morbo@google.com, justinstitt@google.com,
- linuxppc-dev@lists.ozlabs.org, patches@lists.linux.dev,
- llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
-In-Reply-To: <20240305224315.GA2361659@dev-arch.thelio-3990X>
-References: <20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org>
- <20240305224315.GA2361659@dev-arch.thelio-3990X>
-Date: Wed, 06 Mar 2024 12:01:42 +1100
-Message-ID: <874jdkp409.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91FE48007B0;
+	Wed,  6 Mar 2024 01:08:04 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.9])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8163C492BE8;
+	Wed,  6 Mar 2024 01:08:00 +0000 (UTC)
+From: xiubli@redhat.com
+To: ceph-devel@vger.kernel.org
+Cc: idryomov@gmail.com,
+	jlayton@kernel.org,
+	vshankar@redhat.com,
+	mchangir@redhat.com,
+	Xiubo Li <xiubli@redhat.com>,
+	stable@vger.kernel.org,
+	Luis Henriques <lhenriques@suse.de>
+Subject: [PATCH v2] libceph: init the cursor when preparing the sparse read
+Date: Wed,  6 Mar 2024 09:05:44 +0800
+Message-ID: <20240306010544.182527-1-xiubli@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-Nathan Chancellor <nathan@kernel.org> writes:
-> Ping? We have been applying this in our CI since it was sent, it would
-> be nice to have this upstream soon so it can start filtering through the
-> stable trees.
+From: Xiubo Li <xiubli@redhat.com>
 
-Sorry, I was away in January and missed this. Will pick it up.
+The osd code has remove cursor initilizing code and this will make
+the sparse read state into a infinite loop. We should initialize
+the cursor just before each sparse-read in messnger v2.
 
-cheers
+Cc: stable@vger.kernel.org
+URL: https://tracker.ceph.com/issues/64607
+Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
+Reported-by: Luis Henriques <lhenriques@suse.de>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
 
-> On Sat, Jan 27, 2024 at 11:07:43AM -0700, Nathan Chancellor wrote:
->> arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
->> powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
->> error when building with clang after a recent change in main:
->> 
->>   error: option '-msoft-float' cannot be specified with '-maltivec'
->>   make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
->> 
->> Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
->> to override the previous inclusion of '-msoft-float' (as the last option
->> wins), which matches how other areas of the kernel use '-maltivec', such
->> as AMDGPU.
->> 
->> Cc: stable@vger.kernel.org
->> Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
->> Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
->> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
->> ---
->>  arch/powerpc/lib/Makefile | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
->> index 6eac63e79a89..0ab65eeb93ee 100644
->> --- a/arch/powerpc/lib/Makefile
->> +++ b/arch/powerpc/lib/Makefile
->> @@ -76,7 +76,7 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
->>  obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
->>  
->>  obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
->> -CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
->> +CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
->>  # Enable <altivec.h>
->>  CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
->>  
->> 
->> ---
->> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
->> change-id: 20240127-ppc-xor_vmx-drop-msoft-float-ad68b437f86c
->> 
->> Best regards,
->> -- 
->> Nathan Chancellor <nathan@kernel.org>
->> 
+V2:
+- Just removed the unnecessary 'sparse_read_total' check.
+
+
+ net/ceph/messenger_v2.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+index a0ca5414b333..ab3ab130a911 100644
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -2034,6 +2034,9 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
+ 	if (!con_secure(con))
+ 		con->in_data_crc = -1;
+ 
++	ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg,
++				  con->in_msg->sparse_read_total);
++
+ 	reset_in_kvecs(con);
+ 	con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
+ 	con->v2.data_len_remain = data_len(msg);
+-- 
+2.43.0
+
 
