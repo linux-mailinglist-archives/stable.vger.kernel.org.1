@@ -1,80 +1,110 @@
-Return-Path: <stable+bounces-26958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC9C873815
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:47:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E651187381D
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 14:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EAA21F24824
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:47:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AB5288125
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB82A130E5C;
-	Wed,  6 Mar 2024 13:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB4C131746;
+	Wed,  6 Mar 2024 13:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWmBS1Ni"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="D1VN1cyu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F0E130AC6;
-	Wed,  6 Mar 2024 13:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B12130E57;
+	Wed,  6 Mar 2024 13:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709732838; cv=none; b=MQl8ICv9IQBd4nXhOORaS0igJhl8p3yIzWfZKK7osC21uuJqcjDYisfYFboHCPAWAjG2djd2bswYFMMn3nTj2NjZzqHJGUpd1o/C6cwXBk+rbYlrnUH1AAlhLvnBl2ftoKWA0gnXdUv9kyyg1dk0oL5IDA67xhAcviWQAj8Qbdc=
+	t=1709733031; cv=none; b=E3DclQ4nirgP41j8A2HUNXV8it/IWWqBcx0o2fI9AtYHhLVMVmvo8VaSfpEfHEGHe5uL21QwniILYRQVYNG8bpq8MquU6oo/YHYO9hKthXGsz7v/FPzSIIsnLlH5YElQPI47XvblUd7e3VU3ta2rTVnFwkfCbgjh5uD8PgoejGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709732838; c=relaxed/simple;
-	bh=R2IvrRW6Bm+d9XStox5A9pSD1kHN6wZYNJdu4xfs/2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBIiwhfDku9sITmublYCMyoeVyUXpdwGKSMxihC7V1xIbaPUUni3Gi43dP1cUcYy60EamLECxyqj5oYP8JCT0SHTmPyGTEgWvw7QuTWD5cfwSXrKQCF3RNnvvh2QBqTm1OgGH92wGt9Mv6YY159cTsN0YxW4Fyl97PNOqcE/0ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWmBS1Ni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4362CC433C7;
-	Wed,  6 Mar 2024 13:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709732837;
-	bh=R2IvrRW6Bm+d9XStox5A9pSD1kHN6wZYNJdu4xfs/2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FWmBS1NilHOe61Jakpl1JlYu/xbPw7oVzRHMl54+S3DbN5XkrmOSFKV+WiQRLTmtG
-	 kGBIKqyg8/489sF2OWkJtm2F2ks8YC3R1dUh9yukcrEJ7DEgJHPlMayeJEGPP/Mkef
-	 bOozQw3YDSfeKgCY9X1PmqZ7PzF/JWB+RhEl3zDY=
-Date: Wed, 6 Mar 2024 13:47:14 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Filipe Manana <fdmanana@suse.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent
- locking
-Message-ID: <2024030601-portable-lunacy-0c99@gregkh>
-References: <20240304211551.833500257@linuxfoundation.org>
- <20240304211551.880347593@linuxfoundation.org>
- <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
+	s=arc-20240116; t=1709733031; c=relaxed/simple;
+	bh=Rz/7QeGwGWVQ23cVl//CoUspDWwVdJjOPTplV8dC39E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ifBVpXLoOTGuMzeINMXbhVl2gnb1s7+JlIvxkoQRP6UYIwk+QZsEqzeJOySLUquOYnJBbDqjx9WfgMfdLWskXRGA6FyQ4NIjDuhgxH9n+/5ogBhmcmWqByURAftrQqk8GVtyyEBN9JmUU1UOMIAq1AVplRdW0P9KRRa5BvG9bB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=D1VN1cyu; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:601e:0:640:ac7:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id E70F16090D;
+	Wed,  6 Mar 2024 16:50:26 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Bogo8U46U0U0-5x8x78mU;
+	Wed, 06 Mar 2024 16:50:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1709733025; bh=si9CmxfbTTi+fzS7ZgV1gg2/IENW5eLorkGc5P/t0aU=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=D1VN1cyuNsIj1u2ombhbQGZLwl6NLZWBoBjvpgF+oBQ0bDbD0i8wrI8SljgXvkQyj
+	 2Vba3U5tDUZqR7YBvxEzfLgA3EL9TI32Roii1o59KBOcyR+ZHoPEuG4d7vhHNF5CDf
+	 aDXNkMROmIdi0tuSn0/SyooTY7XBsmqJ6li6omLw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-38.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+To: Dave Kleikamp <shaggy@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	jfs-discussion@lists.sourceforge.net,
+	stable@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	linux-kernel@vger.kernel.org,
+	Pavel Koshutin <koshutin.pavel@yandex.ru>,
+	Artem Sadovnikov <ancowi69@gmail.com>,
+	Mikhail Ivanov <iwanov-23@bk.ru>
+Subject: [PATCH 5.10/5.15] scsi: add a length check for VARIABLE_LENGTH_CMD commands
+Date: Wed,  6 Mar 2024 16:50:10 +0300
+Message-Id: <20240306135010.9250-1-mish.uxin2012@yandex.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
 
-On Wed, Mar 06, 2024 at 12:39:06PM +0000, Filipe Manana wrote:
-> On Mon, Mar 4, 2024 at 9:26 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > 6.7-stable review patch.  If anyone has any objections, please let me know.
-> 
-> It would be better to delay the backport of this patch (and the
-> followup fix) to any stable release, because it introduced another
-> regression for which there is a reviewed fix but it's not yet in
-> Linus' tree:
-> 
-> https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
+Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
+ata_scsi_pass_thru.
 
-Ok, thanks, now dropped.  Let us know when you want it added back.
+The error is fixed in 5.18 by commit
+ce70fd9a551af7424a7dace2a1ba05a7de8eae27.
+Backporting this commit would require significant changes to the code so
+it is bettter to use a simple fix for that particular error.
 
-greg k-h
+The problem is that the length of the received SCSI command is not
+validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
+reading if the user sends a request with SCSI command of length less than
+32.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+---
+ drivers/ata/libata-scsi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index dfa090ccd21c..77589e911d3d 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4065,6 +4065,9 @@ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev)
+ 
+ 	if (unlikely(!scmd->cmd_len))
+ 		goto bad_cdb_len;
++
++	if (scsi_op == VARIABLE_LENGTH_CMD && scmd->cmd_len < 32)
++		goto bad_cdb_len;
+ 
+ 	if (dev->class == ATA_DEV_ATA || dev->class == ATA_DEV_ZAC) {
+ 		if (unlikely(scmd->cmd_len > dev->cdb_len))
+-- 
+2.25.1
+
 
