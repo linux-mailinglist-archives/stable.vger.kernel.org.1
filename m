@@ -1,393 +1,201 @@
-Return-Path: <stable+bounces-26948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B984F8736B4
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E56F8736D2
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 13:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7030628298F
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45673285913
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 12:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3401272A4;
-	Wed,  6 Mar 2024 12:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="F6xbbpd2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F7F85291;
+	Wed,  6 Mar 2024 12:43:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC7B1E519
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 12:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF491DA4C;
+	Wed,  6 Mar 2024 12:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709728762; cv=none; b=VRx8mACPr5G7Bd6fUnHd+oY9Jyq2H4RWpmjFgJ7fAfSJcFGb+xRb/bm359Nt/aqw8U51+r7z2Qok9TYC5O8PXgNGOXPt7Uft4MfyQpL2fQwKaW2v1F3U4wviwIuoYkZDawRsMojnNeKiQnvCVTSOYfxvnvqrydTLXg7CSb6oFAA=
+	t=1709729031; cv=none; b=J4SlD1FrpYJQqcrIFfkMC8XJh0APcqTc75z5swoBufM6Ha0VhCld1L//ErKMvpfocrrF4/PViMkgEgFes9TH4eTq0gAOuZqNEfUP2f3xdGnS8EX3lZRAcK3tGHVR/RwOI9L1qkTLrrul2YmP9/TZawYb/S41l0zTjnFWsWnXhqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709728762; c=relaxed/simple;
-	bh=sUHS/a2wS8mGD55WrFaxVz4wqrv82q8J8J4QDB97Wmk=;
+	s=arc-20240116; t=1709729031; c=relaxed/simple;
+	bh=o5CYraV7yOFyyWAXdnfgODZ0zbgO7oV1ojCeLS2bet0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C+UPvCEkdxkgt73IrruWhJJV+YRw+xdi9FS3saZHNwjjoMNRmCIyW4PXbFwzkCEmWxoaTySoFurl55PzfCTovO/WQduCWXPIhHjO8zP/1U1E2yGBIP0Y5WzmyYiW3tJ3e6LuZ+fm4DXZM8iRH5Rq7jjzjM+7XyE6GjHbgCb0iFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=F6xbbpd2; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56715a6aa55so4108752a12.2
-        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 04:39:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1709728758; x=1710333558; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VyS1+vKdFfO2wiU1gO6Q7YmFHviftdY/gMUVBF6T6Ys=;
-        b=F6xbbpd299wI0P9lxIrv56G+UMgHByAeB/2oB+sB+bgkvtBuwqyGyX/aAdiY0jPaP5
-         LsFYlCmuZcdGlGMwImcuSG8ByFSYmjfMxW3YtYa9XVb6j+0WbLj/Dp+whwebmRIlUv7r
-         hQQPGl8Aj66UVMCPeuwxIVmZ/Pzcxe+THR1w1iqohEKZ6sRLwQDb0pjK8YpFcp9VxChg
-         kJBqIw4EYbG+VxcLXhp/MUy2aAZIsyXuqThyRM/02FNwsSJWU3M1UmzVYM5RKdhPI0w5
-         6Dj+V+o/QQOSDd8CDpMi9QLwTssnsROP09GhF94+gaHMzHMvhgcX0HZOA0xJJwrwz+ys
-         M2HA==
+	 To:Cc:Content-Type; b=dxlYGXZNeevv9yGp2nDd1mT9ubmy7HYL7LgH4dJjhrTsgwx0BCpN0kTEKK1xQuxYB8t2ETqhEdleylBJ1xBDWrSYZbIJ5uCAFrpLwovnLc0cuoGqcOD5FHW5svSmSeQHwjX7uX2lKfAeTib/BIY+m0l/aCsCVQN55qiFeAXz8gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c21e709953so82651b6e.0;
+        Wed, 06 Mar 2024 04:43:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709728758; x=1710333558;
+        d=1e100.net; s=20230601; t=1709729029; x=1710333829;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VyS1+vKdFfO2wiU1gO6Q7YmFHviftdY/gMUVBF6T6Ys=;
-        b=YZ8xGwydmtuHPTRclFe7gdOaart8MeK8ffsh9WVb0JesTlWTUi6fa+FfP3cQPUDIAy
-         mQMwi+wqYb5Mz/uImD9U1ziMLk+NuJ1MX7fhsCjbLuhQXnvGnMdAIe5HppOat120EXGM
-         41PbhbKEOXR/qcfQCW4sObP8T1U8S/axgBccnKqzx9SVTq8cdrXyPL4//hCSf5d6HE86
-         1MwetpA4arF4qfK0ac1ASWJ8UNFAiyMJbkaNP06Zl2O3iAcjVSrKa7M8HmzilYrQeYy/
-         soPvsrIFmulCmRimWIa+5gqfmqaJ4XKqM4KuDugwWrVkp7Ajc1+ekunupb+xPlHsTHM8
-         UOOQ==
-X-Gm-Message-State: AOJu0YxIbRrKgnKXt7eF9Eul4yNVr95qHCE/yOdA7qNq+/i48Xe7B0bB
-	FOzo/kmlDKyNHNHkjVKiyCTLqKMHzSiEzSRT1bAA6jApWaUqnNhlo9+Y5RJMkM0yT+gmSNkqSRO
-	xNfHLcJyUcYtF++uqRyZYDziYZNhmmOgMlUbt5Q==
-X-Google-Smtp-Source: AGHT+IHYx521363c18fMRU9nNmrQqZGmVTPx1ek5vRUEa2UcMfUJV/7NQs1oA9MSDckKaaj8zkLfRBAHQPMVBkq2FBU=
-X-Received: by 2002:a50:cc08:0:b0:566:8fa7:5d0b with SMTP id
- m8-20020a50cc08000000b005668fa75d0bmr10375185edi.3.1709728757701; Wed, 06 Mar
- 2024 04:39:17 -0800 (PST)
+        bh=Apz5AiwuERNKhLmawgUaC5BdiOhLZhpn7eFMH23CW+k=;
+        b=jKBGlwiRekBOx5VjcocyoqMgPdyngzL8SbCLP9YS/U9xvtSHq0GSB3Qmeo3DYn79LV
+         KZvmpF21qncHpNoho+oXiPaByswOxJlgm0pxCAZkTSt052XdXhODH13hJSJfv3l6iXzg
+         2NpBN+VpvNvxgYHTOtlivBdQS5IlS5MlGP8qYH4ElpqLcbr+5WErK3qWUWTaLhXv7PJL
+         ZECq67t+T/zfXNW7zyWy7ik9gY3Sgqt+XY7CY6VjZBLGj3EAYY6Ptp2Eiubh8G7CZcFG
+         4im0d+sN/VT3SR0+6PfQudPWoDvvy/NGJKa5P8Es/32TgXE7WxQCZmSA7RSDooj+wh2z
+         xzZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTyHKjehM2ItbTeXcns1U+BXUn5xiERgarMWbPQINCZjffm60qxXYBFtx1alriCr8ISb4wGjtVhv0nUE+n43L4yMEwuwPDiLu1LW7BnIiz+oKRKd+/SAwpWT8l6dRKo1+NaJPaTqsLP0TWYijQfDOb15YNrH0LY9gbVihd45lCKA==
+X-Gm-Message-State: AOJu0Yy4UMdS6o1jemYPX+kQJj4c2LLOThYyj2BOxG7bkfiyCvVXpIu2
+	i9xMhX/EssHqoan8v7p5qLvEinfBZLrRrvUA0kdfGkzJduCHA19YJAqWI2WgyfKoZFmjY7SW7Jv
+	IMrtBymmH2qbEoC2zR3OHkVcXSy2NrUd4lks=
+X-Google-Smtp-Source: AGHT+IEtD0JYyYF3z4HrzlsLdW9+siTbM2rhQnz1nnhtLIB2Ejo/fU5WK+YxEVcVKSmTDGZ2UUoG2e3ArDorHsHd3RQ=
+X-Received: by 2002:a05:6871:3418:b0:221:3a21:5b37 with SMTP id
+ nh24-20020a056871341800b002213a215b37mr3725623oac.4.1709729028877; Wed, 06
+ Mar 2024 04:43:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211551.833500257@linuxfoundation.org> <20240304211551.880347593@linuxfoundation.org>
-In-Reply-To: <20240304211551.880347593@linuxfoundation.org>
-From: Filipe Manana <fdmanana@suse.com>
-Date: Wed, 6 Mar 2024 12:39:06 +0000
-Message-ID: <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
-Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent locking
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Sasha Levin <sashal@kernel.org>
+References: <20240306085007.169771-1-herve.codina@bootlin.com>
+ <20240306085007.169771-2-herve.codina@bootlin.com> <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+In-Reply-To: <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 6 Mar 2024 13:43:37 +0100
+Message-ID: <CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Saravana Kannan <saravanak@google.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
+	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 4, 2024 at 9:26=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Wed, Mar 6, 2024 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
 >
-> 6.7-stable review patch.  If anyone has any objections, please let me kno=
-w.
+> On Wed, 2024-03-06 at 09:50 +0100, Herve Codina wrote:
+> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > introduces a workqueue to release the consumer and supplier devices use=
+d
+> > in the devlink.
+> > In the job queued, devices are release and in turn, when all the
+> > references to these devices are dropped, the release function of the
+> > device itself is called.
+> >
+> > Nothing is present to provide some synchronisation with this workqueue
+> > in order to ensure that all ongoing releasing operations are done and
+> > so, some other operations can be started safely.
+> >
+> > For instance, in the following sequence:
+> >   1) of_platform_depopulate()
+> >   2) of_overlay_remove()
+> >
+> > During the step 1, devices are released and related devlinks are remove=
+d
+> > (jobs pushed in the workqueue).
+> > During the step 2, OF nodes are destroyed but, without any
+> > synchronisation with devlink removal jobs, of_overlay_remove() can rais=
+e
+> > warnings related to missing of_node_put():
+> >   ERROR: memory leak, expected refcount 1 instead of 2
+> >
+> > Indeed, the missing of_node_put() call is going to be done, too late,
+> > from the workqueue job execution.
+> >
+> > Introduce device_link_wait_removal() to offer a way to synchronize
+> > operations waiting for the end of devlink removals (i.e. end of
+> > workqueue jobs).
+> > Also, as a flushing operation is done on the workqueue, the workqueue
+> > used is moved from a system-wide workqueue to a local one.
+> >
+> > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > ---
+>
+> With the below addressed:
+>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>
+> >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+> >  include/linux/device.h |  1 +
+> >  2 files changed, 24 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index d5f4e4aac09b..48b28c59c592 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> >  static void __fw_devlink_link_to_consumers(struct device *dev);
+> >  static bool fw_devlink_drv_reg_done;
+> >  static bool fw_devlink_best_effort;
+> > +static struct workqueue_struct *device_link_wq;
+> >
+> >  /**
+> >   * __fwnode_link_add - Create a link between two fwnode_handles.
+> > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *de=
+v)
+> >       /*
+> >        * It may take a while to complete this work because of the SRCU
+> >        * synchronization in device_link_release_fn() and if the consume=
+r or
+> > -      * supplier devices get deleted when it runs, so put it into the
+> > "long"
+> > -      * workqueue.
+> > +      * supplier devices get deleted when it runs, so put it into the
+> > +      * dedicated workqueue.
+> >        */
+> > -     queue_work(system_long_wq, &link->rm_work);
+> > +     queue_work(device_link_wq, &link->rm_work);
+> >  }
+> >
+> > +/**
+> > + * device_link_wait_removal - Wait for ongoing devlink removal jobs to
+> > terminate
+> > + */
+> > +void device_link_wait_removal(void)
+> > +{
+> > +     /*
+> > +      * devlink removal jobs are queued in the dedicated work queue.
+> > +      * To be sure that all removal jobs are terminated, ensure that a=
+ny
+> > +      * scheduled work has run to completion.
+> > +      */
+> > +     flush_workqueue(device_link_wq);
+> > +}
+> > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> > +
+> >  static struct class devlink_class =3D {
+> >       .name =3D "devlink",
+> >       .dev_groups =3D devlink_groups,
+> > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> >       sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kobj);
+> >       if (!sysfs_dev_char_kobj)
+> >               goto char_kobj_err;
+> > +     device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);
+> > +     if (!device_link_wq)
+> > +             goto wq_err;
+> >
+>
+> I can't still agree with this. Why not doing it in devlink_class_init()? =
+This is
+> devlink specific so it makes complete sense to me.
 
-It would be better to delay the backport of this patch (and the
-followup fix) to any stable release, because it introduced another
-regression for which there is a reviewed fix but it's not yet in
-Linus' tree:
+If you do that in devlink_class_init() and it fails, you essentially
+cause the creation of every device link to fail.  IOW, you try to live
+without device links and pretend that it is all OK.  That won't get
+you very far, especially on systems where DT is used.
 
-https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
-
-Thanks.
-
->
->
-> ------------------
->
-> From: Josef Bacik <josef@toxicpanda.com>
->
-> [ Upstream commit b0ad381fa7690244802aed119b478b4bdafc31dd ]
->
-> While working on the patchset to remove extent locking I got a lockdep
-> splat with fiemap and pagefaulting with my new extent lock replacement
-> lock.
->
-> This deadlock exists with our normal code, we just don't have lockdep
-> annotations with the extent locking so we've never noticed it.
->
-> Since we're copying the fiemap extent to user space on every iteration
-> we have the chance of pagefaulting.  Because we hold the extent lock for
-> the entire range we could mkwrite into a range in the file that we have
-> mmap'ed.  This would deadlock with the following stack trace
->
-> [<0>] lock_extent+0x28d/0x2f0
-> [<0>] btrfs_page_mkwrite+0x273/0x8a0
-> [<0>] do_page_mkwrite+0x50/0xb0
-> [<0>] do_fault+0xc1/0x7b0
-> [<0>] __handle_mm_fault+0x2fa/0x460
-> [<0>] handle_mm_fault+0xa4/0x330
-> [<0>] do_user_addr_fault+0x1f4/0x800
-> [<0>] exc_page_fault+0x7c/0x1e0
-> [<0>] asm_exc_page_fault+0x26/0x30
-> [<0>] rep_movs_alternative+0x33/0x70
-> [<0>] _copy_to_user+0x49/0x70
-> [<0>] fiemap_fill_next_extent+0xc8/0x120
-> [<0>] emit_fiemap_extent+0x4d/0xa0
-> [<0>] extent_fiemap+0x7f8/0xad0
-> [<0>] btrfs_fiemap+0x49/0x80
-> [<0>] __x64_sys_ioctl+0x3e1/0xb50
-> [<0>] do_syscall_64+0x94/0x1a0
-> [<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
->
-> I wrote an fstest to reproduce this deadlock without my replacement lock
-> and verified that the deadlock exists with our existing locking.
->
-> To fix this simply don't take the extent lock for the entire duration of
-> the fiemap.  This is safe in general because we keep track of where we
-> are when we're searching the tree, so if an ordered extent updates in
-> the middle of our fiemap call we'll still emit the correct extents
-> because we know what offset we were on before.
->
-> The only place we maintain the lock is searching delalloc.  Since the
-> delalloc stuff can change during writeback we want to lock the extent
-> range so we have a consistent view of delalloc at the time we're
-> checking to see if we need to set the delalloc flag.
->
-> With this patch applied we no longer deadlock with my testcase.
->
-> CC: stable@vger.kernel.org # 6.1+
-> Reviewed-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/btrfs/extent_io.c | 62 ++++++++++++++++++++++++++++++++------------
->  1 file changed, 45 insertions(+), 17 deletions(-)
->
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 8f724c54fc8e9..197b41d02735b 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -2645,16 +2645,34 @@ static int fiemap_process_hole(struct btrfs_inode=
- *inode,
->          * it beyond i_size.
->          */
->         while (cur_offset < end && cur_offset < i_size) {
-> +               struct extent_state *cached_state =3D NULL;
->                 u64 delalloc_start;
->                 u64 delalloc_end;
->                 u64 prealloc_start;
-> +               u64 lockstart;
-> +               u64 lockend;
->                 u64 prealloc_len =3D 0;
->                 bool delalloc;
->
-> +               lockstart =3D round_down(cur_offset, inode->root->fs_info=
-->sectorsize);
-> +               lockend =3D round_up(end, inode->root->fs_info->sectorsiz=
-e);
-> +
-> +               /*
-> +                * We are only locking for the delalloc range because tha=
-t's the
-> +                * only thing that can change here.  With fiemap we have =
-a lock
-> +                * on the inode, so no buffered or direct writes can happ=
-en.
-> +                *
-> +                * However mmaps and normal page writeback will cause thi=
-s to
-> +                * change arbitrarily.  We have to lock the extent lock h=
-ere to
-> +                * make sure that nobody messes with the tree while we're=
- doing
-> +                * btrfs_find_delalloc_in_range.
-> +                */
-> +               lock_extent(&inode->io_tree, lockstart, lockend, &cached_=
-state);
->                 delalloc =3D btrfs_find_delalloc_in_range(inode, cur_offs=
-et, end,
->                                                         delalloc_cached_s=
-tate,
->                                                         &delalloc_start,
->                                                         &delalloc_end);
-> +               unlock_extent(&inode->io_tree, lockstart, lockend, &cache=
-d_state);
->                 if (!delalloc)
->                         break;
->
-> @@ -2822,15 +2840,15 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
-ct fiemap_extent_info *fieinfo,
->                   u64 start, u64 len)
->  {
->         const u64 ino =3D btrfs_ino(inode);
-> -       struct extent_state *cached_state =3D NULL;
->         struct extent_state *delalloc_cached_state =3D NULL;
->         struct btrfs_path *path;
->         struct fiemap_cache cache =3D { 0 };
->         struct btrfs_backref_share_check_ctx *backref_ctx;
->         u64 last_extent_end;
->         u64 prev_extent_end;
-> -       u64 lockstart;
-> -       u64 lockend;
-> +       u64 range_start;
-> +       u64 range_end;
-> +       const u64 sectorsize =3D inode->root->fs_info->sectorsize;
->         bool stopped =3D false;
->         int ret;
->
-> @@ -2841,12 +2859,11 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
-ct fiemap_extent_info *fieinfo,
->                 goto out;
->         }
->
-> -       lockstart =3D round_down(start, inode->root->fs_info->sectorsize)=
-;
-> -       lockend =3D round_up(start + len, inode->root->fs_info->sectorsiz=
-e);
-> -       prev_extent_end =3D lockstart;
-> +       range_start =3D round_down(start, sectorsize);
-> +       range_end =3D round_up(start + len, sectorsize);
-> +       prev_extent_end =3D range_start;
->
->         btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
-> -       lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
->
->         ret =3D fiemap_find_last_extent_offset(inode, path, &last_extent_=
-end);
->         if (ret < 0)
-> @@ -2854,7 +2871,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
- fiemap_extent_info *fieinfo,
->         btrfs_release_path(path);
->
->         path->reada =3D READA_FORWARD;
-> -       ret =3D fiemap_search_slot(inode, path, lockstart);
-> +       ret =3D fiemap_search_slot(inode, path, range_start);
->         if (ret < 0) {
->                 goto out_unlock;
->         } else if (ret > 0) {
-> @@ -2866,7 +2883,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
- fiemap_extent_info *fieinfo,
->                 goto check_eof_delalloc;
->         }
->
-> -       while (prev_extent_end < lockend) {
-> +       while (prev_extent_end < range_end) {
->                 struct extent_buffer *leaf =3D path->nodes[0];
->                 struct btrfs_file_extent_item *ei;
->                 struct btrfs_key key;
-> @@ -2889,19 +2906,19 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
-ct fiemap_extent_info *fieinfo,
->                  * The first iteration can leave us at an extent item tha=
-t ends
->                  * before our range's start. Move to the next item.
->                  */
-> -               if (extent_end <=3D lockstart)
-> +               if (extent_end <=3D range_start)
->                         goto next_item;
->
->                 backref_ctx->curr_leaf_bytenr =3D leaf->start;
->
->                 /* We have in implicit hole (NO_HOLES feature enabled). *=
-/
->                 if (prev_extent_end < key.offset) {
-> -                       const u64 range_end =3D min(key.offset, lockend) =
-- 1;
-> +                       const u64 hole_end =3D min(key.offset, range_end)=
- - 1;
->
->                         ret =3D fiemap_process_hole(inode, fieinfo, &cach=
-e,
->                                                   &delalloc_cached_state,
->                                                   backref_ctx, 0, 0, 0,
-> -                                                 prev_extent_end, range_=
-end);
-> +                                                 prev_extent_end, hole_e=
-nd);
->                         if (ret < 0) {
->                                 goto out_unlock;
->                         } else if (ret > 0) {
-> @@ -2911,7 +2928,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
- fiemap_extent_info *fieinfo,
->                         }
->
->                         /* We've reached the end of the fiemap range, sto=
-p. */
-> -                       if (key.offset >=3D lockend) {
-> +                       if (key.offset >=3D range_end) {
->                                 stopped =3D true;
->                                 break;
->                         }
-> @@ -3005,29 +3022,41 @@ int extent_fiemap(struct btrfs_inode *inode, stru=
-ct fiemap_extent_info *fieinfo,
->         btrfs_free_path(path);
->         path =3D NULL;
->
-> -       if (!stopped && prev_extent_end < lockend) {
-> +       if (!stopped && prev_extent_end < range_end) {
->                 ret =3D fiemap_process_hole(inode, fieinfo, &cache,
->                                           &delalloc_cached_state, backref=
-_ctx,
-> -                                         0, 0, 0, prev_extent_end, locke=
-nd - 1);
-> +                                         0, 0, 0, prev_extent_end, range=
-_end - 1);
->                 if (ret < 0)
->                         goto out_unlock;
-> -               prev_extent_end =3D lockend;
-> +               prev_extent_end =3D range_end;
->         }
->
->         if (cache.cached && cache.offset + cache.len >=3D last_extent_end=
-) {
->                 const u64 i_size =3D i_size_read(&inode->vfs_inode);
->
->                 if (prev_extent_end < i_size) {
-> +                       struct extent_state *cached_state =3D NULL;
->                         u64 delalloc_start;
->                         u64 delalloc_end;
-> +                       u64 lockstart;
-> +                       u64 lockend;
->                         bool delalloc;
->
-> +                       lockstart =3D round_down(prev_extent_end, sectors=
-ize);
-> +                       lockend =3D round_up(i_size, sectorsize);
-> +
-> +                       /*
-> +                        * See the comment in fiemap_process_hole as to w=
-hy
-> +                        * we're doing the locking here.
-> +                        */
-> +                       lock_extent(&inode->io_tree, lockstart, lockend, =
-&cached_state);
->                         delalloc =3D btrfs_find_delalloc_in_range(inode,
->                                                                 prev_exte=
-nt_end,
->                                                                 i_size - =
-1,
->                                                                 &delalloc=
-_cached_state,
->                                                                 &delalloc=
-_start,
->                                                                 &delalloc=
-_end);
-> +                       unlock_extent(&inode->io_tree, lockstart, lockend=
-, &cached_state);
->                         if (!delalloc)
->                                 cache.flags |=3D FIEMAP_EXTENT_LAST;
->                 } else {
-> @@ -3038,7 +3067,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct=
- fiemap_extent_info *fieinfo,
->         ret =3D emit_last_fiemap_cache(fieinfo, &cache);
->
->  out_unlock:
-> -       unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state)=
-;
->         btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
->  out:
->         free_extent_state(delalloc_cached_state);
-> --
-> 2.43.0
->
->
->
+Doing it here, if it fails, you prevent the driver model from working
+at all (because one of its necessary components is unavailable), which
+arguably is a better choice.
 
