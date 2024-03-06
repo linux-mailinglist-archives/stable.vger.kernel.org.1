@@ -1,153 +1,369 @@
-Return-Path: <stable+bounces-27021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C198741DB
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 22:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412D78741F5
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 22:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61D3E1C21504
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 21:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6527C1C2210E
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 21:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365801AAB1;
-	Wed,  6 Mar 2024 21:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92F11B59C;
+	Wed,  6 Mar 2024 21:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b="UdjRCyV+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rsruJP8e"
 X-Original-To: stable@vger.kernel.org
-Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467C019BA2;
-	Wed,  6 Mar 2024 21:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.171.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC9A1B275
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 21:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709759982; cv=none; b=ktMEc7Pc3oDcTXalmkj6drCPFYH4SKzi9QjrrbRYNb9UpY27tVIeCpsRSzlIPGix3qN7KaWZRDHY/gjX3woE468gzCCDuTo7QEcVU8EfgywLQIB6XGmB9S6TXNX2ADnUo7LPWsgjK0DTPL7bJ8BQebWtxB9YTu4W9CcrxCbzhc4=
+	t=1709760411; cv=none; b=mz3W6kS3t+ug2ef4UA1UJBIQHmtkGrQsB30JVpvS9U0HpGIT258pNyCvhxLUm7WAP+5hVD07GfPNTHkPVHmUOFM1oskG9OB1b36m2PhurcsK0cwYTdkX2ixv3xX5Miyg24FXpjUxZUMl2nH50gl3Y6/MVvl81QFifoZalTiwt0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709759982; c=relaxed/simple;
-	bh=XZQmCtyVfRqev09CE7yeyhuO5QpGTnUaZskxIdlyd0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K3SPax5Nsqf4KkB6lZWksAx0Jyg18+GQwLeHZCeqz6kpbl4wfKTWeWqxzbkYVnwAfe358QJJNJayIZf4oeBbrvbUeQEorQW5d8sRxjfxyqOYN/sOA7Cp2ygY05Q3uxsc1pfr79FMhXh/bz3373MvPZvJq6WTJexVwm1xEY0T+gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b=UdjRCyV+; arc=none smtp.client-ip=78.47.171.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datenfreihafen.org
-Received: from [IPV6:2a00:20:700b:bdb7:2491:aaf9:faf7:2090] (unknown [IPv6:2a00:20:700b:bdb7:2491:aaf9:faf7:2090])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: stefan@datenfreihafen.org)
-	by proxima.lasnet.de (Postfix) with ESMTPSA id 1B824C08B2;
-	Wed,  6 Mar 2024 22:19:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
-	s=2021; t=1709759975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6XgPterOI4srsOuxgVWf4AkdxIIFepNm6IWYUB1ZuXk=;
-	b=UdjRCyV+UpxEX6d6xveotqenYSV7y10dJYB5MjF2wPLq2JotONFysOutVFByPd/ugmiSm5
-	M1zfT60WQlmyTGUgg2pUMHtLeY6PPkKiwyysYeadsjJ1uWQKzD1CXVEcXFF0ziqnbkeLoa
-	oEcI6Qr+FuKaaVNYpK1OCgpJ4lgerl72iEUZTraFWjai9cCB5J14R1BmDMwsLBKy3lVAeU
-	GfPF9oABEVeQwX/Cl9n6IRaQl3FvhUxMImFxmd0ZnNXNA9zgOLAiDO7xNFJ2cn5Vj2IEh7
-	7Wh2mSE+24yZ7/PKW1ztu2K2/U7CAtd3umZ/lC8Z3d15yjTyc2Qx5LRHmyYbRw==
-Message-ID: <4c716d9f-fe03-44f7-8cc7-211a64aae94c@datenfreihafen.org>
-Date: Wed, 6 Mar 2024 22:19:34 +0100
+	s=arc-20240116; t=1709760411; c=relaxed/simple;
+	bh=mzwfTi6zd7r9LqxFJaZNt/rUdm12xPXdVwOFQ7hS61Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rSlzKqHu4YP4HPNFgwB4FtQwLK0W4pNM7VvZzpVPtWebEL2c6ieHbI0JLRFUyU0IEjpfv8u/A8vckTx6Pb1d5vTUuXyH/QCJUA5jViNKwts9on9kPtfum1Lm0nUUcIkBqjYox7mhvV3qbO4dXrM06c3QbaRYlQMGZKSx/yXclyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rsruJP8e; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-42ef8193ae6so12881cf.1
+        for <stable@vger.kernel.org>; Wed, 06 Mar 2024 13:26:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709760408; x=1710365208; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6FZuCGcMvxhZgTJoD8ceUikqqJlCEjQzCIvOMDFgMow=;
+        b=rsruJP8ewXwBkPH0kg4chQpHbPLXYipbp0ICyus5nnfDXYqPOCt+7D0O9JM8jSxZQd
+         TxXreGGxo4XrLFJ281e0M8xwGDAStpxLM/75uQU9S9hEkS/FkorQD06YaGtlIQ+XIDUG
+         eGOTwRiFKSIN5RA5e7OSdzyY1hZKVJDra52ABM6XpqRm+UyH4/5qIJd+O7OSGov7UYAP
+         OuvFoISRCWFLxbyrpdEvkl6+LGVr0iAZapYskSSnSbIlVdgbgNYBOPZiS7/H3g3hPfvN
+         ApSqZ7ZtnEYZaRpCobAaIeoGkVSlXyBUW7Wd9AqWC3Lwx8UIi45fyBnuFKzFlW358724
+         bucA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709760408; x=1710365208;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6FZuCGcMvxhZgTJoD8ceUikqqJlCEjQzCIvOMDFgMow=;
+        b=GR1hAGRfroDZIDl9nz1TsFlc2AtP8ai5N5PU+CNxEyMD9NsWdYZ7pMYKiZ6k3fOmVt
+         6gyhmi7zgaHLKDwgqTOLCSH/Big50J4GGmis4l6TBH/vRStB3/MB6V+KZp9+KLvU+R6w
+         ucjvOaq3D6Io8xom9GnsoZuf28TSL3fSMsoXJxyNeWzs7NmMV2IEsaZwkdJ+hKnP9WJF
+         wmlOj79bsQxjWijY6h9px2B3CHe4/ZeFIpsWiYp4pEKmwWjWOYtp+YG11Qob3yU1I1EL
+         LMyde6mxxdG1RyRKhX3rFY/xrBLwNiZloiM0dtsiovULiuVuYjrNBgoMBGTFanYirpfx
+         jzrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHW4MySvWmk6QzdS6fsM87XZyJqtB6wXBBs+5eoswRO/da2qN7Lyh2u4BRr9D1xcnm9ceFuU46BqfsfZ1Qms9Xfl8mwNvT
+X-Gm-Message-State: AOJu0Yz2dwFNNHexMgVBPQ/8X9RQ1uK0DaEw7FBMjjbAaI3PSEvaNYnu
+	ma6blYTuTB0wdn1iTbL6NzD6rii3E95TvT8Bjk8YX3yd2svEPIVGzpS+VZaBXy7t1xXuufJr2cD
+	3tnG5WEmjAtlv3JVJLMC+E21PfY07Wf5zpbVK0FC3F94BtHx00oWn
+X-Google-Smtp-Source: AGHT+IGFctRgTBcRCjPb80TkapZLv/rVBPcsBN5h6OElKH7bsTSniY6hCCQWMyYS+P/29db0lgO0vfA6VxutKw7SE64=
+X-Received: by 2002:a05:622a:148a:b0:42e:f45c:6761 with SMTP id
+ t10-20020a05622a148a00b0042ef45c6761mr98953qtx.22.1709760408460; Wed, 06 Mar
+ 2024 13:26:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wpan] mac802154: fix llsec key resources release in
- mac802154_llsec_key_del
-Content-Language: en-US
-To: Fedor Pchelkin <pchelkin@ispras.ru>,
- Alexander Aring <alex.aring@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Phoebe Buckheister <phoebe.buckheister@itwm.fraunhofer.de>,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Alexey Khoroshilov <khoroshilov@ispras.ru>,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-References: <20240228163840.6667-1-pchelkin@ispras.ru>
-From: Stefan Schmidt <stefan@datenfreihafen.org>
-In-Reply-To: <20240228163840.6667-1-pchelkin@ispras.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240306085007.169771-1-herve.codina@bootlin.com>
+ <20240306085007.169771-2-herve.codina@bootlin.com> <1fff8742a13c28dd7e1dda47ad2d6fa8e21e421e.camel@gmail.com>
+ <CAJZ5v0gWCo9nDAHkzeD08tTKoE0DE0ocht-Qq4zA7P59y9KeuQ@mail.gmail.com>
+ <ed442b6916016b3a40782dc32538fc517715db6c.camel@gmail.com>
+ <CAJZ5v0iQNEj6e_L1=uBTPaWn7BqV4pnoWxUq7LRPe5iVWsaifw@mail.gmail.com>
+ <ec7705f410bc848e79b8ab878b5fbf7618d9456d.camel@gmail.com>
+ <CAJZ5v0iMUOJmm99H6SgfP9179hBsLdyC+1ixJwBxSP0b18V6XA@mail.gmail.com> <86a0f91675197a00bbd921d6e57d2f3c57796e68.camel@gmail.com>
+In-Reply-To: <86a0f91675197a00bbd921d6e57d2f3c57796e68.camel@gmail.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Wed, 6 Mar 2024 13:26:09 -0800
+Message-ID: <CAGETcx_gNWOTsSZMaZu+XU1-5Z60WEcMhw08t4Sn_-YgkCCUmA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] driver core: Introduce device_link_wait_removal()
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
+	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello.
+On Wed, Mar 6, 2024 at 6:47=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com>=
+ wrote:
+>
+> On Wed, 2024-03-06 at 15:37 +0100, Rafael J. Wysocki wrote:
+> > On Wed, Mar 6, 2024 at 3:08=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.=
+com> wrote:
+> > >
+> > > On Wed, 2024-03-06 at 14:05 +0100, Rafael J. Wysocki wrote:
+> > > > On Wed, Mar 6, 2024 at 2:01=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gm=
+ail.com> wrote:
+> > > > >
+> > > > > On Wed, 2024-03-06 at 13:43 +0100, Rafael J. Wysocki wrote:
+> > > > > > On Wed, Mar 6, 2024 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nu=
+no@gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Wed, 2024-03-06 at 09:50 +0100, Herve Codina wrote:
+> > > > > > > > The commit 80dd33cf72d1 ("drivers: base: Fix device link re=
+moval")
+> > > > > > > > introduces a workqueue to release the consumer and supplier
+> > > > > > > > devices
+> > > > > > > > used
+> > > > > > > > in the devlink.
+> > > > > > > > In the job queued, devices are release and in turn, when al=
+l the
+> > > > > > > > references to these devices are dropped, the release functi=
+on of
+> > > > > > > > the
+> > > > > > > > device itself is called.
+> > > > > > > >
+> > > > > > > > Nothing is present to provide some synchronisation with thi=
+s
+> > > > > > > > workqueue
+> > > > > > > > in order to ensure that all ongoing releasing operations ar=
+e done
+> > > > > > > > and
+> > > > > > > > so, some other operations can be started safely.
+> > > > > > > >
+> > > > > > > > For instance, in the following sequence:
+> > > > > > > >   1) of_platform_depopulate()
+> > > > > > > >   2) of_overlay_remove()
+> > > > > > > >
+> > > > > > > > During the step 1, devices are released and related devlink=
+s are
+> > > > > > > > removed
+> > > > > > > > (jobs pushed in the workqueue).
+> > > > > > > > During the step 2, OF nodes are destroyed but, without any
+> > > > > > > > synchronisation with devlink removal jobs, of_overlay_remov=
+e() can
+> > > > > > > > raise
+> > > > > > > > warnings related to missing of_node_put():
+> > > > > > > >   ERROR: memory leak, expected refcount 1 instead of 2
+> > > > > > > >
+> > > > > > > > Indeed, the missing of_node_put() call is going to be done,=
+ too
+> > > > > > > > late,
+> > > > > > > > from the workqueue job execution.
+> > > > > > > >
+> > > > > > > > Introduce device_link_wait_removal() to offer a way to sync=
+hronize
+> > > > > > > > operations waiting for the end of devlink removals (i.e. en=
+d of
+> > > > > > > > workqueue jobs).
+> > > > > > > > Also, as a flushing operation is done on the workqueue, the
+> > > > > > > > workqueue
+> > > > > > > > used is moved from a system-wide workqueue to a local one.
+> > > > > > > >
+> > > > > > > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link remova=
+l")
+> > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > > > > > ---
+> > > > > > >
+> > > > > > > With the below addressed:
+> > > > > > >
+> > > > > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > > > > >
+> > > > > > > >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+> > > > > > > >  include/linux/device.h |  1 +
+> > > > > > > >  2 files changed, 24 insertions(+), 3 deletions(-)
+> > > > > > > >
+> > > > > > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > > > > > index d5f4e4aac09b..48b28c59c592 100644
+> > > > > > > > --- a/drivers/base/core.c
+> > > > > > > > +++ b/drivers/base/core.c
+> > > > > > > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void=
+);
+> > > > > > > >  static void __fw_devlink_link_to_consumers(struct device *=
+dev);
+> > > > > > > >  static bool fw_devlink_drv_reg_done;
+> > > > > > > >  static bool fw_devlink_best_effort;
+> > > > > > > > +static struct workqueue_struct *device_link_wq;
+> > > > > > > >
+> > > > > > > >  /**
+> > > > > > > >   * __fwnode_link_add - Create a link between two fwnode_ha=
+ndles.
+> > > > > > > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struc=
+t
+> > > > > > > > device
+> > > > > > > > *dev)
+> > > > > > > >       /*
+> > > > > > > >        * It may take a while to complete this work because =
+of the
+> > > > > > > > SRCU
+> > > > > > > >        * synchronization in device_link_release_fn() and if=
+ the
+> > > > > > > > consumer
+> > > > > > > > or
+> > > > > > > > -      * supplier devices get deleted when it runs, so put =
+it into
+> > > > > > > > the
+> > > > > > > > "long"
+> > > > > > > > -      * workqueue.
+> > > > > > > > +      * supplier devices get deleted when it runs, so put =
+it into
+> > > > > > > > the
+> > > > > > > > +      * dedicated workqueue.
+> > > > > > > >        */
+> > > > > > > > -     queue_work(system_long_wq, &link->rm_work);
+> > > > > > > > +     queue_work(device_link_wq, &link->rm_work);
+> > > > > > > >  }
+> > > > > > > >
+> > > > > > > > +/**
+> > > > > > > > + * device_link_wait_removal - Wait for ongoing devlink rem=
+oval
+> > > > > > > > jobs
+> > > > > > > > to
+> > > > > > > > terminate
+> > > > > > > > + */
+> > > > > > > > +void device_link_wait_removal(void)
+> > > > > > > > +{
+> > > > > > > > +     /*
+> > > > > > > > +      * devlink removal jobs are queued in the dedicated w=
+ork
+> > > > > > > > queue.
+> > > > > > > > +      * To be sure that all removal jobs are terminated, e=
+nsure
+> > > > > > > > that
+> > > > > > > > any
+> > > > > > > > +      * scheduled work has run to completion.
+> > > > > > > > +      */
+> > > > > > > > +     flush_workqueue(device_link_wq);
+> > > > > > > > +}
+> > > > > > > > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> > > > > > > > +
+> > > > > > > >  static struct class devlink_class =3D {
+> > > > > > > >       .name =3D "devlink",
+> > > > > > > >       .dev_groups =3D devlink_groups,
+> > > > > > > > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> > > > > > > >       sysfs_dev_char_kobj =3D kobject_create_and_add("char"=
+,
+> > > > > > > > dev_kobj);
+> > > > > > > >       if (!sysfs_dev_char_kobj)
+> > > > > > > >               goto char_kobj_err;
+> > > > > > > > +     device_link_wq =3D alloc_workqueue("device_link_wq", =
+0, 0);
+> > > > > > > > +     if (!device_link_wq)
+> > > > > > > > +             goto wq_err;
+> > > > > > > >
+> > > > > > >
+> > > > > > > I can't still agree with this. Why not doing it in
+> > > > > > > devlink_class_init()?
+> > > > > > > This is
+> > > > > > > devlink specific so it makes complete sense to me.
+> > > > > >
+> > > > > > If you do that in devlink_class_init() and it fails, you essent=
+ially
+> > > > > > cause the creation of every device link to fail.  IOW, you try =
+to live
+> > > > > > without device links and pretend that it is all OK.  That won't=
+ get
+> > > > > > you very far, especially on systems where DT is used.
+> > > > > >
+> > > > > > Doing it here, if it fails, you prevent the driver model from w=
+orking
+> > > > > > at all (because one of its necessary components is unavailable)=
+, which
+> > > > > > arguably is a better choice.
+> > > > >
+> > > > > That makes sense but then the only thing I still don't fully get =
+is why
+> > > > > we
+> > > > > have
+> > > > > a separate devlink_class_init() initcall for registering the devl=
+ink
+> > > > > class
+> > > > > (which can also fail)...
+> > > >
+> > > > Well, I haven't added it. :-)
+> > > >
+> > > > > What I take from the above is that we should fail the
+> > > > > driver model if one of it's fundamental components fails so I wou=
+ld say
+> > > > > we
+> > > > > should merge devlink_class_init() with device_init() otherwise it=
+'s a
+> > > > > bit
+> > > > > confusing (at least to me) and gives the idea that it's ok for th=
+e
+> > > > > driver
+> > > > > model
+> > > > > to exist without the links (unless I'm missing some other reason =
+for the
+> > > > > devlink
+> > > > > init function).
+> > > >
+> > > > +1
+> > > >
+> > > > Feel free to send a patch along these lines, chances are that it wi=
+ll
+> > > > be popular. ;-)
+> > >
+> > > I was actually thinking about that but I think I encountered the reas=
+on why
+> > > we
+> > > have it like this... devices_init() is called from driver_init() and =
+there
+> > > we
+> > > have:
+> > >
+> > > ...
+> > >
+> > > devices_init();
+> > > buses_init();
+> > > classes_init();
+> > >
+> > > ...
+> > >
+> > > So classes are initialized after devices which means we can't really =
+do
+> > > class_register(&devlink_class) from devices_init(). Unless, of course=
+, we
+> > > re-
+> > > order things in driver_init() but that would be a questionable change=
+ at the
+> > > very least.
+> > >
+> > > So, while I agree with what you've said, I'm still not sure if mixing
+> > > devlink
+> > > stuff between devices_init() and devlink_class_init() is the best thi=
+ng to
+> > > do
+> > > given that we already have the case where devlink_class_init() can fa=
+il
+> > > while
+> > > the driver model is up.
+> >
+> > So why don't you make devlink_class_init() do a BUG() on failure
+> > instead of returning an error?  IMO crashing early is better than
+> > crashing later or otherwise failing in a subtle way due to a missed
+> > dependency.
+>
+> Well, I do agree with that... Maybe that's something that Herve can sneak=
+ in
+> this patch? Otherwise, I can later (after this one is applied) send a pat=
+ch for
+> it.
 
-On 28.02.24 17:38, Fedor Pchelkin wrote:
-> mac802154_llsec_key_del() can free resources of a key directly without
-> following the RCU rules for waiting before the end of a grace period. This
-> may lead to use-after-free in case llsec_lookup_key() is traversing the
-> list of keys in parallel with a key deletion:
-> 
-> refcount_t: addition on 0; use-after-free.
-> WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x162/0x2a0
-> Modules linked in:
-> CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> RIP: 0010:refcount_warn_saturate+0x162/0x2a0
-> Call Trace:
->   <TASK>
->   llsec_lookup_key.isra.0+0x890/0x9e0
->   mac802154_llsec_encrypt+0x30c/0x9c0
->   ieee802154_subif_start_xmit+0x24/0x1e0
->   dev_hard_start_xmit+0x13e/0x690
->   sch_direct_xmit+0x2ae/0xbc0
->   __dev_queue_xmit+0x11dd/0x3c20
->   dgram_sendmsg+0x90b/0xd60
->   __sys_sendto+0x466/0x4c0
->   __x64_sys_sendto+0xe0/0x1c0
->   do_syscall_64+0x45/0xf0
->   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> 
-> Also, ieee802154_llsec_key_entry structures are not freed by
-> mac802154_llsec_key_del():
-> 
-> unreferenced object 0xffff8880613b6980 (size 64):
->    comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
->    hex dump (first 32 bytes):
->      78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
->      00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
->    backtrace:
->      [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
->      [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
->      [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
->      [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
->      [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
->      [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
->      [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
->      [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
->      [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
->      [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
->      [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
->      [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
->      [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
->      [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
->      [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
->      [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> 
-> Handle the proper resource release in the RCU callback function
-> mac802154_llsec_key_del_rcu().
-> 
-> Note that if llsec_lookup_key() finds a key, it gets a refcount via
-> llsec_key_get() and locally copies key id from key_entry (which is a
-> list element). So it's safe to call llsec_key_put() and free the list
-> entry after the RCU grace period elapses.
-> 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+I'll happily Ack the patch if you want to add a BUG(), but the way
+it's written is still pedantically better than putting it in
+devices_init(). All errors from devices_init() are ignored and not
+even logged by the caller. At least any error from
+devlink_class_init() would be logged if initcall_debug is enabled :-)
 
-This patch has been applied to the wpan-next tree and will be
-part of the next pull request to net-next. Thanks!
+Oh, btw, I wrote devlink_class_init() as a separate initcall because
+it's just another class like any other class that's being registered.
 
-regards
-Stefan Schmidt
+All that said, I think this whole discussion is a pedantic waste of time.
+
+-Saravana
 
