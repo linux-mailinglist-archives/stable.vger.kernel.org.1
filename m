@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-26894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C72D872C2D
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:25:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198AE872C30
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 02:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB9A1C24FDA
-	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:25:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA16FB2839D
+	for <lists+stable@lfdr.de>; Wed,  6 Mar 2024 01:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979E6D26B;
-	Wed,  6 Mar 2024 01:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE82D51E;
+	Wed,  6 Mar 2024 01:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eyPWHlU3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bWSK1Sca"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C25D51D
-	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 01:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEFDD51D
+	for <stable@vger.kernel.org>; Wed,  6 Mar 2024 01:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709688198; cv=none; b=MM2hbXuq4+jfEw4B3C7K+vkbceCAJY3+R1gOLwIKKpmvllObKzfQS3rf109BJD8uc9sip/U+TxFk6K0IkhSNXsxBzoyup66WX1nuaAK/RIFZHBm8B4HY8lASHCj7aRHjAWeyO+c6uZ7YrhWFwsL4sdhpICsFYOzBc8HAzaq4ML4=
+	t=1709688210; cv=none; b=Ng7Hh+XWyRtRasSIb969V2MMjRTV8jCqvqGJRzmylBKRVDqW6w1Ccs0peEIQ+RFf5PeXjrgEj60EjbnLERByX9jS1k+uAgfkk63KWmpcGkiE6KD3f3CTk74z1CX9JIEjJKGFt8ZqRudfHf4WwzMFLZeFTCawHdu1t8MIDM7gqJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709688198; c=relaxed/simple;
-	bh=55cz6R9p9KOyKnGwg64H3XIpw7VvJls03sCwitIbJko=;
+	s=arc-20240116; t=1709688210; c=relaxed/simple;
+	bh=ecdZVCYFIQKJ7XYWiZumdnMJJ0H31nX8duv0O4f5jPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRbZoi2o1Zk0PCSPiql7NN4fwIKqdivJtdfdsjmV6tQUXZh/BZA2ts+ZSLxigm5aBcHx41F9yniq0YE68iHq4H9m4oecNktcXzjyZj6KDo2YC5mTYqX5xaR8Rr5vG1swL9Rvx03p/yLJ9urBByjlxC/RBAObeROu7Z1Y66Y8kcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eyPWHlU3; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=QhWVXmFomleo/FTtdliQbOEJLjvHDlg8UlMI55vNgZjMHpyesZ6J0++WczBuXRTqYTwBLZh6Y8Pe67i6VUj9wzja+PO7A1BW314yEl6wX80t7Iqpn49PGH53THbbgSDG8HVQm0jDMhIGFNvatAnJF8S6eNC5jjEAzqMlwy/9RNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bWSK1Sca; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709688197; x=1741224197;
+  t=1709688209; x=1741224209;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=55cz6R9p9KOyKnGwg64H3XIpw7VvJls03sCwitIbJko=;
-  b=eyPWHlU3cFzNZmj+D/tMVPQBIKrqwBP8HEFbUu0AOC9N+tAeTxA5k3PT
-   z6Xicqjox3AGzDJCTK8MQcecJHZLSe4KI6ReJjkE+XPY//cjBVuvCHVGU
-   Fi+kxr5ZnLO7nCBTXuvxzE2NVV9VGpDqvmd9kuS82hHTjuNuRgQVZhxBV
-   xqnv7Dr12cQ8Kem10s4K9y8GiDrosbNwq+AyPdmKQ2w7Unykgavpo/K3w
-   29Y/SKXlpionEDqNo6igsmREiADuHRwh7OyNnlseQ+ZECDkwoinnL7I6f
-   7QEPuJkfVQWY7uPiTsgChMcsuqdJ3WRw1RBGbYuzajPBZsWIoTQJePxWK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="15423882"
+  bh=ecdZVCYFIQKJ7XYWiZumdnMJJ0H31nX8duv0O4f5jPg=;
+  b=bWSK1Sca9C1KNT+kdPTJVKbSzRLqWo0pw8yhXBsLXumzODAxa8SmzUAA
+   RwrGcD6Qh+Kbung6WcbnUz5epO0pfHq53nwwXRl9ap3mt4UK2nwE/v9fs
+   Es+G78wgbfbnmbdUZQFoOtFXIPOpl6S/fo+uGTFhmal+J7MHcyTR6yIUV
+   pc/Npn6/Pd7815aN73l+q0fMrxk2P3IbwDRa6Iu148n3TJtr+7XpT0H4g
+   lPCWDBwIYXmozZfXYv0joDA2J1ZPgrhZmcFlYRInlwlSfdLPAFbtJpR5+
+   L2hrMmEPazaJcFbiF1BX9X3/mpeoDz+G2NOH1LYoBhw2qxCCVsNv6CWpd
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="8098445"
 X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="15423882"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:17 -0800
+   d="scan'208";a="8098445"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:29 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="9651774"
+   d="scan'208";a="40574384"
 Received: from unknown (HELO intel.com) ([10.247.118.75])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:09 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 17:23:22 -0800
 From: Andi Shyti <andi.shyti@linux.intel.com>
 To: intel-gfx <intel-gfx@lists.freedesktop.org>,
 	dri-devel <dri-devel@lists.freedesktop.org>
@@ -65,9 +65,9 @@ Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
 	Andi Shyti <andi.shyti@linux.intel.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH v4 1/3] drm/i915/gt: Disable HW load balancing for CCS
-Date: Wed,  6 Mar 2024 02:22:45 +0100
-Message-ID: <20240306012247.246003-2-andi.shyti@linux.intel.com>
+Subject: [PATCH v4 2/3] drm/i915/gt: Refactor uabi engine class/instance list creation
+Date: Wed,  6 Mar 2024 02:22:46 +0100
+Message-ID: <20240306012247.246003-3-andi.shyti@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240306012247.246003-1-andi.shyti@linux.intel.com>
 References: <20240306012247.246003-1-andi.shyti@linux.intel.com>
@@ -79,49 +79,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The hardware should not dynamically balance the load between CCS
-engines. Wa_14019159160 recommends disabling it across all
-platforms.
+For the upcoming changes we need a cleaner way to build the list
+of uabi engines.
 
-Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
 Cc: <stable@vger.kernel.org> # v6.2+
 ---
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     | 1 +
- drivers/gpu/drm/i915/gt/intel_workarounds.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_engine_user.c | 29 ++++++++++++---------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index 50962cfd1353..cf709f6c05ae 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1478,6 +1478,7 @@
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+index 833987015b8b..11cc06c0c785 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+@@ -203,7 +203,7 @@ static void engine_rename(struct intel_engine_cs *engine, const char *name, u16
  
- #define GEN12_RCU_MODE				_MMIO(0x14800)
- #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
-+#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
- 
- #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
- #define   CHV_FGT_DISABLE_SS0			(1 << 10)
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index d67d44611c28..a2e78cf0b5f5 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -2945,6 +2945,11 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
- 
- 		/* Wa_18028616096 */
- 		wa_mcr_write_or(wal, LSC_CHICKEN_BIT_0_UDW, UGM_FRAGMENT_THRESHOLD_TO_3);
+ void intel_engines_driver_register(struct drm_i915_private *i915)
+ {
+-	u16 name_instance, other_instance = 0;
++	u16 class_instance[I915_LAST_UABI_ENGINE_CLASS + 2] = { };
+ 	struct legacy_ring ring = {};
+ 	struct list_head *it, *next;
+ 	struct rb_node **p, *prev;
+@@ -214,6 +214,8 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+ 	prev = NULL;
+ 	p = &i915->uabi_engines.rb_node;
+ 	list_for_each_safe(it, next, &engines) {
++		u16 uabi_class;
 +
-+		/*
-+		 * Wa_14019159160: disable the automatic CCS load balancing
-+		 */
-+		wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
- 	}
+ 		struct intel_engine_cs *engine =
+ 			container_of(it, typeof(*engine), uabi_list);
  
- 	if (IS_DG2_G11(i915)) {
+@@ -222,15 +224,14 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+ 
+ 		GEM_BUG_ON(engine->class >= ARRAY_SIZE(uabi_classes));
+ 		engine->uabi_class = uabi_classes[engine->class];
+-		if (engine->uabi_class == I915_NO_UABI_CLASS) {
+-			name_instance = other_instance++;
+-		} else {
+-			GEM_BUG_ON(engine->uabi_class >=
+-				   ARRAY_SIZE(i915->engine_uabi_class_count));
+-			name_instance =
+-				i915->engine_uabi_class_count[engine->uabi_class]++;
+-		}
+-		engine->uabi_instance = name_instance;
++
++		if (engine->uabi_class == I915_NO_UABI_CLASS)
++			uabi_class = I915_LAST_UABI_ENGINE_CLASS + 1;
++		else
++			uabi_class = engine->uabi_class;
++
++		GEM_BUG_ON(uabi_class >= ARRAY_SIZE(class_instance));
++		engine->uabi_instance = class_instance[uabi_class]++;
+ 
+ 		/*
+ 		 * Replace the internal name with the final user and log facing
+@@ -238,11 +239,15 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+ 		 */
+ 		engine_rename(engine,
+ 			      intel_engine_class_repr(engine->class),
+-			      name_instance);
++			      engine->uabi_instance);
+ 
+-		if (engine->uabi_class == I915_NO_UABI_CLASS)
++		if (uabi_class > I915_LAST_UABI_ENGINE_CLASS)
+ 			continue;
+ 
++		GEM_BUG_ON(uabi_class >=
++			   ARRAY_SIZE(i915->engine_uabi_class_count));
++		i915->engine_uabi_class_count[uabi_class]++;
++
+ 		rb_link_node(&engine->uabi_node, prev, p);
+ 		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
+ 
 -- 
 2.43.0
 
