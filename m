@@ -1,74 +1,76 @@
-Return-Path: <stable+bounces-27050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5D18747BF
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 06:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F478747C2
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 06:58:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169AE1F22F4F
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 05:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AC561F24355
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 05:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB71BDDF;
-	Thu,  7 Mar 2024 05:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF4B1BDE2;
+	Thu,  7 Mar 2024 05:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KA0rNkjx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kca758KC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271BA1C6B1;
-	Thu,  7 Mar 2024 05:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3182256A;
+	Thu,  7 Mar 2024 05:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709790658; cv=none; b=mUVmY4bCbaHgglSMCAiNldg3IXT53Girt4voyzAP0JWnh7/7wlDkvIzZT2HCdnYOyO/+ON7CbihGmj6V0KIpuH/I+I9trCS6wtYwDPFpRjEA4s/i3HWRt6LKRW2/qjigUT8eXNdI7ywSawOejllJYGw6d/NJ7gNlYN2QZsXoE4M=
+	t=1709791122; cv=none; b=XRU4qt6HRRbEbxLB3OhTzUPYnQL6lBeUaWuTpu3KejjJqSSoTbl3h086ihGmdoXsP7N6o9T50EyV2s2B15uwNo9qhE+cCWC0SuOTfuqxP19a5ys94QhVodIbKmIldqQoUFKZ61R4Az4PiHVrd5uWf7HNueRKL/RnAoc6ppdWa04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709790658; c=relaxed/simple;
-	bh=AOYEIx+Z/N5GzUBtJ7PgfpiB0pb8WbmYPgvNTS/BmPc=;
+	s=arc-20240116; t=1709791122; c=relaxed/simple;
+	bh=stv0+KAZu3cCYaQgubC9ML8AoaLnW60gSHtE0MTOPJE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mS8dsYDk9WpL+zZ7d4xs2oH4Xck1OMj7MY1lg1lntWLIeLLaCpdZoMOPpGsaJBhrmo1jDrJwm2SlwSSfIgAas45aj9MgFmGAVmS2HH6WIQJdP6PTbaSHhgeGJXmfsS+DQwg4RYWheiQZodq2D9cSlo0DWv3fdoWAFB/4Cr3QRuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KA0rNkjx; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version:Content-Type; b=oHWTFZlsqP2RS3lDYHhe5X2WI4Il/DrsW5KbuEQACDstqSDOsPvNLwx5iL67ewUhAa7zvuD260qeGnBNFbBJvr1Isy02u3cWiK2AI6NR2Ae7pkZZmwvyUMn9eo0I4B2aPTKWdLHGimp14IX/OStvWndkf3np2oxpsqra48ZtiJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kca758KC; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709790656; x=1741326656;
+  t=1709791120; x=1741327120;
   h=from:to:cc:subject:in-reply-to:references:date:
    message-id:mime-version;
-  bh=AOYEIx+Z/N5GzUBtJ7PgfpiB0pb8WbmYPgvNTS/BmPc=;
-  b=KA0rNkjxTdPXbiheaPN1Sc4YMi20FLZKJnXcojIcJ6dv+XTLtkymosPP
-   2oKvmxSLwZ51d+BCv/LnXF5PsgbCJb4UPP6c/ZZQFv69U5j/+2+mN97/Z
-   z0pm7e9unRtLfMj0el//+ggd2BSy/L6o4eah1D9kioJu5QWcklJOCK9Ig
-   wUmyXvciUP+abqfA8Hn9PdnoDcHGwjPfISU7+PLaZje4h6jqI8wJNop1x
-   1xMFPmnOhJXlGocToPx56QC/cNpcvI9vm3jVnuZtApn1vo3eBfw9T/SfF
-   PtN8oyVbiPnWRdI+Ljq42b/eDhd/gZGuPQEElSdWQNmlAo+EY2fsYWD8R
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4565130"
+  bh=stv0+KAZu3cCYaQgubC9ML8AoaLnW60gSHtE0MTOPJE=;
+  b=kca758KCTz4J2UHbzqeX1jC5IRfPej6Ly88NtrsP3WO2NVWhsqBQptmF
+   1sB9lS3uzwKM/s9GRO2S7Im3eH/2ZDAy+1vqpiT7wz23/LFszdcca8uv/
+   SxC41z9gft6TI41m38QBXRPchg0HoIPiKdbgqz5BGEEct9bMCX2Dc48k4
+   vV9O2+Vw2mdxXXvf55G5VdcDYob4s0jo2kTG4EoF5eJ0PyHlZHcQH11Ib
+   M6W1bxkkBqf0nGlj6EcsYFk68U206C8V6YCZCqjL/mgI8LYW8oM9KKPGZ
+   RHvox1tXG0MIX7a1OjCY/hzLvGvSWdjnA9+FxVpZuCaL7JeEkfSHssCsC
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="15017971"
 X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
-   d="scan'208";a="4565130"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:50:55 -0800
+   d="scan'208";a="15017971"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:58:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
-   d="scan'208";a="14692078"
+   d="scan'208";a="9895348"
 Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:50:54 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:58:36 -0800
 From: "Huang, Ying" <ying.huang@intel.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,  Andrew Morton
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,  Andrew Morton
  <akpm@linux-foundation.org>,  David Hildenbrand <david@redhat.com>,
   <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,
   <stable@vger.kernel.org>
 Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
  swapoff()
-In-Reply-To: <86be68f5-546a-422f-8a46-e374d21203f4@arm.com> (Ryan Roberts's
-	message of "Wed, 6 Mar 2024 09:03:25 +0000")
+In-Reply-To: <ff6aec00-f939-b7ba-c127-b133c4d95ee5@huawei.com> (Miaohe Lin's
+	message of "Thu, 7 Mar 2024 10:38:47 +0800")
 References: <20240305151349.3781428-1-ryan.roberts@arm.com>
 	<875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<86be68f5-546a-422f-8a46-e374d21203f4@arm.com>
-Date: Thu, 07 Mar 2024 13:48:59 +0800
-Message-ID: <87frx27fsk.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
+	<af11bbca-3f6a-4db5-916c-b0d5b942352b@arm.com>
+	<ff6aec00-f939-b7ba-c127-b133c4d95ee5@huawei.com>
+Date: Thu, 07 Mar 2024 13:56:42 +0800
+Message-ID: <87bk7q7ffp.fsf@yhuang6-desk2.ccr.corp.intel.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,244 +80,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ascii
 
-Ryan Roberts <ryan.roberts@arm.com> writes:
+Miaohe Lin <linmiaohe@huawei.com> writes:
 
-> On 06/03/2024 02:52, Huang, Ying wrote:
->> Ryan Roberts <ryan.roberts@arm.com> writes:
+> On 2024/3/6 17:31, Ryan Roberts wrote:
+>> On 06/03/2024 08:51, Miaohe Lin wrote:
+>>> On 2024/3/6 10:52, Huang, Ying wrote:
+>>>> Ryan Roberts <ryan.roberts@arm.com> writes:
+>>>>
+>>>>> There was previously a theoretical window where swapoff() could run and
+>>>>> teardown a swap_info_struct while a call to free_swap_and_cache() was
+>>>>> running in another thread. This could cause, amongst other bad
+>>>>> possibilities, swap_page_trans_huge_swapped() (called by
+>>>>> free_swap_and_cache()) to access the freed memory for swap_map.
+>>>>>
+>>>>> This is a theoretical problem and I haven't been able to provoke it from
+>>>>> a test case. But there has been agreement based on code review that this
+>>>>> is possible (see link below).
+>>>>>
+>>>>> Fix it by using get_swap_device()/put_swap_device(), which will stall
+>>>>> swapoff(). There was an extra check in _swap_info_get() to confirm that
+>>>>> the swap entry was valid. This wasn't present in get_swap_device() so
+>>>>> I've added it. I couldn't find any existing get_swap_device() call sites
+>>>>> where this extra check would cause any false alarms.
+>>>>>
+>>>>> Details of how to provoke one possible issue (thanks to David Hilenbrand
+>>>>> for deriving this):
+>>>>>
+>>>>> --8<-----
+>>>>>
+>>>>> __swap_entry_free() might be the last user and result in
+>>>>> "count == SWAP_HAS_CACHE".
+>>>>>
+>>>>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+>>>>>
+>>>>> So the question is: could someone reclaim the folio and turn
+>>>>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+>>>>>
+>>>>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+>>>>> still references by swap entries.
+>>>>>
+>>>>> Process 1 still references subpage 0 via swap entry.
+>>>>> Process 2 still references subpage 1 via swap entry.
+>>>>>
+>>>>> Process 1 quits. Calls free_swap_and_cache().
+>>>>> -> count == SWAP_HAS_CACHE
+>>>>> [then, preempted in the hypervisor etc.]
+>>>>>
+>>>>> Process 2 quits. Calls free_swap_and_cache().
+>>>>> -> count == SWAP_HAS_CACHE
+>>>>>
+>>>>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+>>>>> __try_to_reclaim_swap().
+>>>>>
+>>>>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+>>>>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+>>>>> swap_entry_free()->swap_range_free()->
+>>>>> ...
+>>>>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+>>>>>
+>>>>> What stops swapoff to succeed after process 2 reclaimed the swap cache
+>>>>> but before process1 finished its call to swap_page_trans_huge_swapped()?
+>>>>>
+>>>>> --8<-----
+>>>>
+>>>> I think that this can be simplified.  Even for a 4K folio, this could
+>>>> happen.
+>>>>
+>>>> CPU0                                     CPU1
+>>>> ----                                     ----
+>>>>
+>>>> zap_pte_range
+>>>>   free_swap_and_cache
+>>>>   __swap_entry_free
+>>>>   /* swap count become 0 */
+>>>>                                          swapoff
+>>>>                                            try_to_unuse
+>>>>                                              filemap_get_folio
+>>>>                                              folio_free_swap
+>>>>                                              /* remove swap cache */
+>>>>                                            /* free si->swap_map[] */
+>>>>
+>>>>   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
+>>>
+>>> Sorry for jumping the discussion here. IMHO, free_swap_and_cache is called with pte lock held.
 >> 
->>> There was previously a theoretical window where swapoff() could run and
->>> teardown a swap_info_struct while a call to free_swap_and_cache() was
->>> running in another thread. This could cause, amongst other bad
->>> possibilities, swap_page_trans_huge_swapped() (called by
->>> free_swap_and_cache()) to access the freed memory for swap_map.
->>>
->>> This is a theoretical problem and I haven't been able to provoke it from
->>> a test case. But there has been agreement based on code review that this
->>> is possible (see link below).
->>>
->>> Fix it by using get_swap_device()/put_swap_device(), which will stall
->>> swapoff(). There was an extra check in _swap_info_get() to confirm that
->>> the swap entry was valid. This wasn't present in get_swap_device() so
->>> I've added it. I couldn't find any existing get_swap_device() call sites
->>> where this extra check would cause any false alarms.
->>>
->>> Details of how to provoke one possible issue (thanks to David Hilenbrand
->>> for deriving this):
->>>
->>> --8<-----
->>>
->>> __swap_entry_free() might be the last user and result in
->>> "count == SWAP_HAS_CACHE".
->>>
->>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
->>>
->>> So the question is: could someone reclaim the folio and turn
->>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
->>>
->>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
->>> still references by swap entries.
->>>
->>> Process 1 still references subpage 0 via swap entry.
->>> Process 2 still references subpage 1 via swap entry.
->>>
->>> Process 1 quits. Calls free_swap_and_cache().
->>> -> count == SWAP_HAS_CACHE
->>> [then, preempted in the hypervisor etc.]
->>>
->>> Process 2 quits. Calls free_swap_and_cache().
->>> -> count == SWAP_HAS_CACHE
->>>
->>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
->>> __try_to_reclaim_swap().
->>>
->>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
->>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
->>> swap_entry_free()->swap_range_free()->
->>> ...
->>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
->>>
->>> What stops swapoff to succeed after process 2 reclaimed the swap cache
->>> but before process1 finished its call to swap_page_trans_huge_swapped()?
->>>
->>> --8<-----
->> 
->> I think that this can be simplified.  Even for a 4K folio, this could
->> happen.
+>> I don't beleive it has the PTL when called by shmem.
 >
-> I'm not so sure...
->
->> 
->> CPU0                                     CPU1
->> ----                                     ----
->> 
->> zap_pte_range
->>   free_swap_and_cache
->>   __swap_entry_free
->>   /* swap count become 0 */
->>                                          swapoff
->>                                            try_to_unuse
->>                                              filemap_get_folio
->>                                              folio_free_swap
->>                                              /* remove swap cache */
->>                                            /* free si->swap_map[] */
->> 
->>   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
->
-> I don't think si->inuse_pages is decremented until __try_to_reclaim_swap() is
-> called (per David, above), which is called after swap_page_trans_huge_swapped()
-> has executed. So in CPU1, try_to_unuse() wouldn't see si->inuse_pages being zero
+> In the case of shmem, folio_lock is used to guard against the race.
 
-try_to_unuse() can decrease si->inuse_pages by itself via the following
-loop,
-
-	while (READ_ONCE(si->inuse_pages) &&
-	       !signal_pending(current) &&
-	       (i = find_next_to_unuse(si, i)) != 0) {
-
-		entry = swp_entry(type, i);
-		folio = filemap_get_folio(swap_address_space(entry), i);
-		if (IS_ERR(folio))
-			continue;
-
-		/*
-		 * It is conceivable that a racing task removed this folio from
-		 * swap cache just before we acquired the page lock. The folio
-		 * might even be back in swap cache on another swap area. But
-		 * that is okay, folio_free_swap() only removes stale folios.
-		 */
-		folio_lock(folio);
-		folio_wait_writeback(folio);
-		folio_free_swap(folio);
-		folio_unlock(folio);
-		folio_put(folio);
-	}
-
-Then it can proceed to swapoff.  But as Miaohe pointed out, PTL to
-prevent swapoff to free data structures later via synchronize_rcu().
-
-> until after CPU0 has completed accessing si->swap_map, so if swapoff starts
-> where you have put it, it would get stalled waiting for the PTL which CPU0 has.
->
-> I'm sure there are other ways that this could be racy for 4K folios, but I don't
-> think this is one of them? e.g. if CPU0 does something with si after it has
-> decremented si->inuse_pages, then there is a problem.
->
->> 
->>> Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
->>> Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>> ---
->>>
->>> Applies on top of v6.8-rc6 and mm-unstable (b38c34939fe4).
->>>
->>> Thanks,
->>> Ryan
->>>
->>>  mm/swapfile.c | 14 +++++++++++---
->>>  1 file changed, 11 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/mm/swapfile.c b/mm/swapfile.c
->>> index 2b3a2d85e350..f580e6abc674 100644
->>> --- a/mm/swapfile.c
->>> +++ b/mm/swapfile.c
->>> @@ -1281,7 +1281,9 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->>>  	smp_rmb();
->>>  	offset = swp_offset(entry);
->>>  	if (offset >= si->max)
->>> -		goto put_out;
->>> +		goto bad_offset;
->>> +	if (data_race(!si->swap_map[swp_offset(entry)]))
->>> +		goto bad_free;
->>>
->>>  	return si;
->>>  bad_nofile:
->>> @@ -1289,9 +1291,14 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
->>>  out:
->>>  	return NULL;
->>>  put_out:
->>> -	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->>>  	percpu_ref_put(&si->users);
->>>  	return NULL;
->>> +bad_offset:
->>> +	pr_err("%s: %s%08lx\n", __func__, Bad_offset, entry.val);
->>> +	goto put_out;
->>> +bad_free:
->>> +	pr_err("%s: %s%08lx\n", __func__, Unused_offset, entry.val);
->>> +	goto put_out;
->>>  }
->> 
->> I don't think that it's a good idea to warn for bad free entries.
->> get_swap_device() could be called without enough lock to prevent
->> parallel swap operations on entry.  So, false positive is possible
->> there.  I think that it's good to add more checks in general, for
->> example, in free_swap_and_cache(), we can check more because we are sure
->> the swap entry will not be freed by parallel swap operations.
->
-> Yes, agreed. Johannes also reported that he is seeing false alarms due to this.
-> I'm going to remove it and add it to free_swap_and_cache() as you suggest. This
-> also fits well for the batched version I'm working on where we want to check the
-> global si things once, but need to check !free for every entry in the loop
-> (aiming to post that this week).
->
->   Just
->> don't put the check in general get_swap_device().  We can add another
->> helper to check that.
->> 
->> I found that there are other checks in get_swap_device() already.  I
->> think that we may need to revert,
->> 
->> commit 23b230ba8ac3 ("mm/swap: print bad swap offset entry in get_swap_device")
->
-> Yes agree this should be reverted.
->
->> 
->> which introduces it.  And add check in appropriate places.
->
-> I'm not quite sure what the "appropriate places" are. Looking at the call sites
-> for get_swap_device(), it looks like they are all racy except
-> free_swap_and_cache() which is called with the PTL. So check should only really
-> go there?
->
-> But... free_swap_and_cache() is called without the PTL by shmem (in 2 places -
-> see shmem_free_swap() wrapper). It looks like in one of those places, the folio
-> lock is held, so I guess this has a similar effect to holding the PTL. But the
-> other shmem_free_swap() call site doesn't appear to have the folio lock. Am I
-> missing something, or does this mean that for this path, free_swap_and_cache()
-> is racy and therefore we shouldn't be doing either the `offset >= si->max` or
-> the `!swap_map[offset]` in free_swap_and_cache() either?
-
-In shmem_free_swap(), xa_cmpxchg_irq() is used to get the swap entry and
-clear the original mapping.  So, no other code path can free the swap
-count held by mapping.  But, after dropping the swap count, it appears
-that it's not safe.
+I don't find folio is lock for shmem.  find_lock_entries() will only
+lock the folio if (!xa_is_value()), that is, not swap entry.  Can you
+point out where the folio is locked for shmem?
 
 --
 Best Regards,
 Huang, Ying
 
 >> 
->> --
->> Best Regards,
->> Huang, Ying
+>>> So synchronize_rcu (called by swapoff) will wait zap_pte_range to release the pte lock. So this
+>>> theoretical problem can't happen. Or am I miss something?
 >> 
->>>  static unsigned char __swap_entry_free(struct swap_info_struct *p,
->>> @@ -1609,13 +1616,14 @@ int free_swap_and_cache(swp_entry_t entry)
->>>  	if (non_swap_entry(entry))
->>>  		return 1;
+>> For Huang Ying's example, I agree this can't happen because try_to_unuse() will
+>> be waiting for the PTL (see the reply I just sent).
+>
+> Do you mean the below message?
+> "
+> I don't think si->inuse_pages is decremented until __try_to_reclaim_swap() is
+> called (per David, above), which is called after swap_page_trans_huge_swapped()
+> has executed. So in CPU1, try_to_unuse() wouldn't see si->inuse_pages being zero
+> until after CPU0 has completed accessing si->swap_map, so if swapoff starts
+> where you have put it, it would get stalled waiting for the PTL which CPU0 has.
+> "
+>
+> I agree try_to_unuse() will wait for si->inuse_pages being zero. But why will it waits
+> for the PTL? It seems PTL is not used to protect si->inuse_pages. Or am I miss something?
+>
+>> 
 >>>
->>> -	p = _swap_info_get(entry);
->>> +	p = get_swap_device(entry);
->>>  	if (p) {
->>>  		count = __swap_entry_free(p, entry);
->>>  		if (count == SWAP_HAS_CACHE &&
->>>  		    !swap_page_trans_huge_swapped(p, entry))
->>>  			__try_to_reclaim_swap(p, swp_offset(entry),
->>>  					      TTRS_UNMAPPED | TTRS_FULL);
->>> +		put_swap_device(p);
->>>  	}
->>>  	return p != NULL;
->>>  }
->>> --
->>> 2.25.1
+>>> CPU0                                     CPU1
+>>> ----                                     ----
+>>>
+>>> zap_pte_range
+>>>   pte_offset_map_lock -- spin_lock is held.
+>>>   free_swap_and_cache
+>>>    __swap_entry_free
+>>>    /* swap count become 0 */
+>>>                                          swapoff
+>>>                                            try_to_unuse
+>>>                                              filemap_get_folio
+>>>                                              folio_free_swap
+>>>                                              /* remove swap cache */
+>>> 					    percpu_ref_kill(&p->users);
+>>>    swap_page_trans_huge_swapped
+>>>   pte_unmap_unlock -- spin_lock is released.
+>>> 					    synchronize_rcu();  --> Will wait pte_unmap_unlock to be called?
+>> 
+>> Perhaps you can educate me here; I thought that synchronize_rcu() will only wait
+>> for RCU critical sections to complete. The PTL is a spin lock, so why would
+>> synchronize_rcu() wait for the PTL to become unlocked?
+>
+> I assume PTL will always disable preemption which disables a grace period until PTL is released.
+> But this might be fragile and I'm not really sure. I might be wrong.
+>
+> Thanks.
+>> 
+>> 
+>>>                                            /* free si->swap_map[] */
+>>>
+>>> Thanks.
+>>>
+>>>
+>> 
+>> .
+>> 
 
