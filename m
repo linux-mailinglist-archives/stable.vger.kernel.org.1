@@ -1,166 +1,200 @@
-Return-Path: <stable+bounces-27074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C84874E92
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:05:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF89B874EC1
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01162B25695
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:05:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F34681C20878
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BAE12A14B;
-	Thu,  7 Mar 2024 12:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A927212AAD8;
+	Thu,  7 Mar 2024 12:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mRWhr3gS"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WDWhx17d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FCB129A8A;
-	Thu,  7 Mar 2024 12:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D4C129A77;
+	Thu,  7 Mar 2024 12:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709813139; cv=none; b=W4QnR/YrwdjKe8qTKIeK4YWflhskLyEcjc1NvuVqAYM42j1c1NldKzK9rrUYOBU4zLlq94DOIsXCt55UwAu5JFroFmecJCmJQNWCATXVJKkrlc2P3HNsuO3abOPEezV8VuoDpL+VF2UwzVKYTgEGEHvLqtrFkpxfB2VUrJB0qoI=
+	t=1709813799; cv=none; b=IYVQShlJVOTpTb+DkOXd/PUtj+MmMwbBZzk9Sxl6jG7Njegs59RzKNz3qADM55QqeknsvjyKOekEV3f9cjVraLcEba2kTaollSOXHXvs0fGYSStJDz79QrDE01BdNqm/z6fT/TRcJN4AbyzblpRWfSB5rMmOwx28t71gxN8L/G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709813139; c=relaxed/simple;
-	bh=pRGlR9S8GseTKbNcXNNeULK9Vo1gx3e9SYmVGHthJho=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sZhaQjqtmZbcK/moRPUcmKFo7Mn8olTwsFobEBYDflIRK+Ij0eny1Wu2HGd18upG+ztT8r3tkj78PvmgjFuS5rRUQno6w6mo3B4Odx133c+KCckl5xepmmUp2bu7y6tNUOTNe7n2jEJ72t1dUWlAWdnKiWVxvyLJjrMim7OvZms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mRWhr3gS; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4130ff11782so4406585e9.2;
-        Thu, 07 Mar 2024 04:05:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709813136; x=1710417936; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9fEJLLm0v2I5BjGN6oWEtE7MbEteGlm2M/I0q1BDxg=;
-        b=mRWhr3gSPP5dwevVFTzyupysCp+i/I8CAIfv6oSt5A5W185GHBSQWUj/Ec9MWZZcV8
-         Cibo4qzKtcTqvIiTED1uge/0eoawnfv4s14rg3Ja5HOGDxo1O9qD3GeYKnPVkLCje4vs
-         zMC5OmuxlU43LnxBbuEWWJd1o0iBcJNHkZiMlubgrdQ8R3g3ZWrj5Tgf1XseuFTxKF0x
-         4NjaASpu24vxpQ9Bm1Y5wUQ3BNSBg7HttCNHFJ+9oHt3cbza8NRNpEe7B8SSNhE0LJcC
-         BtGuc6VKLY0/UsAjDVkWCpg8/kToE5LBOXdcIOOPOT+rEsiuhfJ7PzgERAn5nu8Foc/a
-         1bTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709813136; x=1710417936;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X9fEJLLm0v2I5BjGN6oWEtE7MbEteGlm2M/I0q1BDxg=;
-        b=dZgvcepdc2qyVV/kTP1CW+J0HwsQ3VrkNLplE5rwNowa4g4Z36ezBF9ZDTzj3LbzfL
-         fSySvZfE5tuNU9uCgX1M3NJWm5WNW0cmlWcMkyHbGGjfzsNmrdXfKiPU/psBW5vUUGOw
-         yDKSD+bWkFEW8xwY5556v0Txv9lZSLlWKJEyXIqpnZcuXU1+2vUhGjuwAkHFgS05ZvXF
-         Gr5ViAIRqX5AxTQkOZCp91ANnCaCUQo5Olf3cIeQ3kYM8mjxLyC6o49z+Q50bJN5SG6L
-         CaSNLjFIs8GUlGYWaZUBa7kkXpE85MnYcyB5jdHU0FdgNh+mYhDkTh+Da7jJKkQ+HI6K
-         Yf1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWh13SJAkMylhVYWbOt+tAto+WX7TKRXjx8iHO5lzjqI5yB6Yg6WMHi0gdBi8nuVUDeW9obqNw5Bz09TExUz/sTM6dlEpXWWC/Ne4cpqe3LKOJOtLMQJwDkUKasXksRzGzGnUhM
-X-Gm-Message-State: AOJu0YyAeCWBpChZpiNqNrm4FEuCeEklc+YdWmq8H4vCcAeS39Z4rnn3
-	3MZZBBc5Q3PF8kx2GnHT1u5fwHevwtdymU8/9PqA0mak8pfFzO32HBDfYbHLYfU=
-X-Google-Smtp-Source: AGHT+IEn0ZkjIiOXoABUFYJeq/o21joJb7qmlpflmbLPxEJts8WTpE855VFt+K+VLbSzisGYl1mVmQ==
-X-Received: by 2002:a05:600c:500a:b0:413:678:5482 with SMTP id n10-20020a05600c500a00b0041306785482mr1901251wmr.36.1709813136257;
-        Thu, 07 Mar 2024 04:05:36 -0800 (PST)
-Received: from vitor-nb.. ([2001:8a0:e60f:3100:7ed0:94c4:aa7c:4b29])
-        by smtp.gmail.com with ESMTPSA id gw18-20020a05600c851200b00412a31d2e2asm2489810wmb.32.2024.03.07.04.05.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 04:05:35 -0800 (PST)
-From: Vitor Soares <ivitro@gmail.com>
-To: mkl@pengutronix.de,
-	manivannan.sadhasivam@linaro.org,
-	thomas.kopp@microchip.com
-Cc: wg@grandegger.com,
-	linux-can@vger.kernel,
-	linux-kernel@vger.kernel.org,
-	vitor.soares@toradex.com,
-	stable@vger.kernel.org
-Subject: [PATCH] can: mcp251xfd: fix infinite loop when xmit fails
-Date: Thu,  7 Mar 2024 12:04:42 +0000
-Message-Id: <20240307120442.12262-1-ivitro@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709813799; c=relaxed/simple;
+	bh=KWgfXMPIGtA9jZVnBTSIrLNOsC7THayA4/vdwyZmhkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q0mBQ6VKAw9nl0wMIUDbnxE9WvuC7LzjsGw9HqeDCHwW46qEh5qG2MQq42ikjyY/Vh49KIms7cnf2vgFdun1k1b2pXfT2T4U/5MpbYv8PA2rn0jkV61Xq8+odhpqbWUj/weTz4YyVd7cva4cYLlf/Jzq5zvSAisgvTnJ93OdZf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WDWhx17d; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 16F7A240009;
+	Thu,  7 Mar 2024 12:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709813787;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NqBrgQVQ9FvM/GqR9CCaRL1K+LM764H8ixcND3N3l0o=;
+	b=WDWhx17dIRtElrHicmsg00kmcnRh5bBcWVMSPwcJUru0HdeHjZXqMsYzvjTChDa/yhvtdk
+	X+htnSu9lJmEDRVpSaFmGVWEBpLmElgQkJJqrTJ5To8j3eiau/pb8LYKo6IxI4r1au8T6o
+	LVhY2K9htiDEDzZqoVEW1mmQvaH99Y8fFHEfzvDP1712f07iTfslRXOBxPDR9TdxUMd3VA
+	94Obpy4t78knc4GoNkNI4SoDpyuCMW4TcrcJ3D/PJUJ1Fz1fONgwwzwiWCGR52TVafim+q
+	0N4vWgA+pS9LjOI33KISC8jLoFzMN/fA4JcE9FguGkhW9nS1Y2mDwPjrK+REeg==
+Date: Thu, 7 Mar 2024 13:16:23 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+ <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>, Lizhi Hou
+ <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
+ <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] driver core: Introduce
+ device_link_wait_removal()
+Message-ID: <20240307131623.467e1def@bootlin.com>
+In-Reply-To: <94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
+References: <20240307111036.225007-1-herve.codina@bootlin.com>
+	<20240307111036.225007-2-herve.codina@bootlin.com>
+	<94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-From: Vitor Soares <vitor.soares@toradex.com>
+Hi Nuno,
 
-When the mcp251xfd_start_xmit() function fails, the driver stops
-processing messages, and the interrupt routine does not return,
-running indefinitely even after killing the running application.
+On Thu, 07 Mar 2024 12:50:52 +0100
+Nuno Sá <noname.nuno@gmail.com> wrote:
 
-Error messages:
-[  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
-[  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empty. (seq=0x000017c7, tef_tail=0x000017cf, tef_head=0x000017d0, tx_head=0x000017d3).
-... and repeat forever.
+> Hi Herve,
+> 
+> 
+> On Thu, 2024-03-07 at 12:10 +0100, Herve Codina wrote:
+> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > introduces a workqueue to release the consumer and supplier devices used
+> > in the devlink.
+> > In the job queued, devices are release and in turn, when all the
+> > references to these devices are dropped, the release function of the
+> > device itself is called.
+> > 
+> > Nothing is present to provide some synchronisation with this workqueue
+> > in order to ensure that all ongoing releasing operations are done and
+> > so, some other operations can be started safely.
+> > 
+> > For instance, in the following sequence:
+> >   1) of_platform_depopulate()
+> >   2) of_overlay_remove()
+> > 
+> > During the step 1, devices are released and related devlinks are removed
+> > (jobs pushed in the workqueue).
+> > During the step 2, OF nodes are destroyed but, without any
+> > synchronisation with devlink removal jobs, of_overlay_remove() can raise
+> > warnings related to missing of_node_put():
+> >   ERROR: memory leak, expected refcount 1 instead of 2
+> > 
+> > Indeed, the missing of_node_put() call is going to be done, too late,
+> > from the workqueue job execution.
+> > 
+> > Introduce device_link_wait_removal() to offer a way to synchronize
+> > operations waiting for the end of devlink removals (i.e. end of
+> > workqueue jobs).
+> > Also, as a flushing operation is done on the workqueue, the workqueue
+> > used is moved from a system-wide workqueue to a local one.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+> >  include/linux/device.h |  1 +
+> >  2 files changed, 24 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index d5f4e4aac09b..48b28c59c592 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> >  static void __fw_devlink_link_to_consumers(struct device *dev);
+> >  static bool fw_devlink_drv_reg_done;
+> >  static bool fw_devlink_best_effort;
+> > +static struct workqueue_struct *device_link_wq;
+> >  
+> >  /**
+> >   * __fwnode_link_add - Create a link between two fwnode_handles.
+> > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *dev)
+> >  	/*
+> >  	 * It may take a while to complete this work because of the SRCU
+> >  	 * synchronization in device_link_release_fn() and if the consumer or
+> > -	 * supplier devices get deleted when it runs, so put it into the "long"
+> > -	 * workqueue.
+> > +	 * supplier devices get deleted when it runs, so put it into the
+> > +	 * dedicated workqueue.
+> >  	 */
+> > -	queue_work(system_long_wq, &link->rm_work);
+> > +	queue_work(device_link_wq, &link->rm_work);
+> >  }
+> >  
+> > +/**
+> > + * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
+> > + */
+> > +void device_link_wait_removal(void)
+> > +{
+> > +	/*
+> > +	 * devlink removal jobs are queued in the dedicated work queue.
+> > +	 * To be sure that all removal jobs are terminated, ensure that any
+> > +	 * scheduled work has run to completion.
+> > +	 */
+> > +	flush_workqueue(device_link_wq);
+> > +}
+> > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> > +
+> >  static struct class devlink_class = {
+> >  	.name = "devlink",
+> >  	.dev_groups = devlink_groups,
+> > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> >  	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+> >  	if (!sysfs_dev_char_kobj)
+> >  		goto char_kobj_err;
+> > +	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);  
+> 
+> My rb tag was with the assumption this is moved into devlink_class_init(). IIUC,
+> Saravana also agreed with that [1]. But it looks like he missed that we are
+> allocating the queue in devices_init() and not in devlink_class_init().
+> 
+> I'm also not sure if this is in line with what Rafael wanted for ccing stable. How do
+> we know the next patch depends on this one?
+> 
+> [1]: https://lore.kernel.org/lkml/CAGETcx_gNWOTsSZMaZu+XU1-5Z60WEcMhw08t4Sn_-YgkCCUmA@mail.gmail.com/
+> 
 
-The issue can be triggered when multiple devices share the same
-SPI interface. And there is concurrent access to the bus.
+We discussed that point and I understood that you were ok to do that on your
+side:
+  https://lore.kernel.org/linux-kernel/f42ceee61ddb8b50c347589649d4131476ab5d81.camel@gmail.com/
 
-The problem occurs because tx_ring->head increments even if
-mcp251xfd_start_xmit() fails. Consequently, the driver skips one
-TX package while still expecting a response in
-mcp251xfd_handle_tefif_one().
+Sorry if I misunderstood.
 
-This patch resolves the issue by decreasing tx_ring->head if
-mcp251xfd_start_xmit() fails. With the fix, if we attempt to trigger
-the issue again, the driver prints an error and discard the message.
+I am going to wait for other comments on this current series before re-sending
+with our 'Reviewed-by' removed if needed. Let me know.
 
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 27 ++++++++++----------
- 1 file changed, 14 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-index 160528d3cc26..a8eb941c1b95 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-@@ -181,25 +181,26 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff *skb,
- 	tx_obj = mcp251xfd_get_tx_obj_next(tx_ring);
- 	mcp251xfd_tx_obj_from_skb(priv, tx_obj, skb, tx_ring->head);
- 
--	/* Stop queue if we occupy the complete TX FIFO */
- 	tx_head = mcp251xfd_get_tx_head(tx_ring);
--	tx_ring->head++;
--	if (mcp251xfd_get_tx_free(tx_ring) == 0)
--		netif_stop_queue(ndev);
--
- 	frame_len = can_skb_get_frame_len(skb);
--	err = can_put_echo_skb(skb, ndev, tx_head, frame_len);
--	if (!err)
--		netdev_sent_queue(priv->ndev, frame_len);
-+	can_put_echo_skb(skb, ndev, tx_head, frame_len);
-+
-+	tx_ring->head++;
- 
- 	err = mcp251xfd_tx_obj_write(priv, tx_obj);
--	if (err)
--		goto out_err;
-+	if (err) {
-+		can_free_echo_skb(ndev, tx_head, NULL);
- 
--	return NETDEV_TX_OK;
-+		tx_ring->head--;
-+
-+		netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
-+	} else {
-+		/* Stop queue if we occupy the complete TX FIFO */
-+		if (mcp251xfd_get_tx_free(tx_ring) == 0)
-+			netif_stop_queue(ndev);
- 
-- out_err:
--	netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
-+		netdev_sent_queue(priv->ndev, frame_len);
-+	}
- 
- 	return NETDEV_TX_OK;
- }
--- 
-2.34.1
-
+Best regards,
+Hervé
 
