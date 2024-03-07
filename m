@@ -1,222 +1,166 @@
-Return-Path: <stable+bounces-27073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59667874E69
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:57:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C84874E92
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4211C23296
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:57:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01162B25695
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4240512A143;
-	Thu,  7 Mar 2024 11:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BAE12A14B;
+	Thu,  7 Mar 2024 12:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mRlN0nQw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mRWhr3gS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A14129A98;
-	Thu,  7 Mar 2024 11:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FCB129A8A;
+	Thu,  7 Mar 2024 12:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709812665; cv=none; b=IP9cX9lILGBkC/7MV1x2EliMd9OCC4d13aXrD0sd1drlL8oK994sPUhZRYwLy53AK+Xm9dJSuj45akqbwJOCEWLwwLzoGO1njBz1QT7frX8Vv9/pZ4hqQz8el5m7p/Qk5BgFbr03+F8Suc/CyKhSvN9+VsH09ubtb59QL02Tv1E=
+	t=1709813139; cv=none; b=W4QnR/YrwdjKe8qTKIeK4YWflhskLyEcjc1NvuVqAYM42j1c1NldKzK9rrUYOBU4zLlq94DOIsXCt55UwAu5JFroFmecJCmJQNWCATXVJKkrlc2P3HNsuO3abOPEezV8VuoDpL+VF2UwzVKYTgEGEHvLqtrFkpxfB2VUrJB0qoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709812665; c=relaxed/simple;
-	bh=vDgAX6P28rscWYU/Ap03VR4LmAwylCGv7dAfzgFQieo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AozIskKKZZXiWsz7Owf3q7titoE/vrcFoJJSu9oSJsG/uVcKp3ALGX7M9wX6KUXdavRmg9gf2hOgvd3n7dFcgCeDzL0o1d/a3cLoS9ae50yieXusqvw7w2FXOCBM8dxgxannYklpdn1BVJIZksLcjtLnYIsXvNnMfqe63ja/mCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mRlN0nQw; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1709813139; c=relaxed/simple;
+	bh=pRGlR9S8GseTKbNcXNNeULK9Vo1gx3e9SYmVGHthJho=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sZhaQjqtmZbcK/moRPUcmKFo7Mn8olTwsFobEBYDflIRK+Ij0eny1Wu2HGd18upG+ztT8r3tkj78PvmgjFuS5rRUQno6w6mo3B4Odx133c+KCckl5xepmmUp2bu7y6tNUOTNe7n2jEJ72t1dUWlAWdnKiWVxvyLJjrMim7OvZms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mRWhr3gS; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a449c5411e1so107997666b.1;
-        Thu, 07 Mar 2024 03:57:42 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4130ff11782so4406585e9.2;
+        Thu, 07 Mar 2024 04:05:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709812661; x=1710417461; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cJau7i3eV23vAJGOuiZvF0BMLOjfUjwE+0eIoNLgbl4=;
-        b=mRlN0nQw8itg1q/+cUV/R6VTcf5ZuqJa6dLHWWYGZc0auVLPYInHtJPTcdB/0ZPXfS
-         /c3zje+rUaMqGupgCOhPcJtMX09pjK9tkqIkvjroJ6F2X5uieR669Muu1ABRFHVrxure
-         QlFe/b+bNU+EEcRpzV7u+kOc97+FR8BOs8XhtmZFWvE6nZfg4eiUXNGCeqHuj4ijc0K/
-         H2/STOfK1+ghxTl9nEU9RPRV5yjc2DvnX9cZSR3Hkw2KjCsmGYt54ZhNW/ceV5wrKOUn
-         Sc2RjYcImYIKGhZPIlLagkHEBhUgPEviK63h54DrA/YiJjDvzRyZYU6hv8RY0ppQ5uqZ
-         M+UQ==
+        d=gmail.com; s=20230601; t=1709813136; x=1710417936; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X9fEJLLm0v2I5BjGN6oWEtE7MbEteGlm2M/I0q1BDxg=;
+        b=mRWhr3gSPP5dwevVFTzyupysCp+i/I8CAIfv6oSt5A5W185GHBSQWUj/Ec9MWZZcV8
+         Cibo4qzKtcTqvIiTED1uge/0eoawnfv4s14rg3Ja5HOGDxo1O9qD3GeYKnPVkLCje4vs
+         zMC5OmuxlU43LnxBbuEWWJd1o0iBcJNHkZiMlubgrdQ8R3g3ZWrj5Tgf1XseuFTxKF0x
+         4NjaASpu24vxpQ9Bm1Y5wUQ3BNSBg7HttCNHFJ+9oHt3cbza8NRNpEe7B8SSNhE0LJcC
+         BtGuc6VKLY0/UsAjDVkWCpg8/kToE5LBOXdcIOOPOT+rEsiuhfJ7PzgERAn5nu8Foc/a
+         1bTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709812661; x=1710417461;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cJau7i3eV23vAJGOuiZvF0BMLOjfUjwE+0eIoNLgbl4=;
-        b=N14h/6ixkY3Pott0M/9EvuBzFTjsRiKfxIa0g654qlsCj+9JsZqUUNbCqAXqnpzGUV
-         bjzcCgcEDdJ2sjbdbuxB3JLqZ7zv7TQe/hGei6NRJbb/do4If8f023WvTc2ns6TW9Q2p
-         jgv5fIBhr2HqpUU7/j8rTHFaNL916VWBRM671cY8rsmw75B0/Cv70MxF+gGSHkCAqgsi
-         dDBqx9Zif8OTnIpVxkNyOwHpPb9GbY43y3N/q2gkPDyfFfOKN/M2uLF4ZMProj9d/4iz
-         LkN63xEuXCfJnfCn3qdEQaY2mkQYtTFTO6fpf6NH/eW0F4xLXbhnNpAfzY6S/QOw32+2
-         YWgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUt6hNJy/WC1/PyCHpwiIraYK3dha7U9bZnyxsGes/LRqJdss2EL5ftMIO3tO468srQGO+6W8CM26+bOiRIME187HQm/H9c+1B0/NFvYpiHH4MvkPnEjdAho2hYLBPvsHhViUEa0xh1NgbsmtKmhdqXAFKeVDCZ+2k6FNfCzIP0uw==
-X-Gm-Message-State: AOJu0YyEwYaJxVj7+EHo1iLjoY4tPDzwfss9SiRvVHyNbfKS13Q2UZor
-	InSNggiuHpo0rLI2nDNWicRs3nNqW290i3g3CYjt9XC2t3iYVUC7
-X-Google-Smtp-Source: AGHT+IES2n2T5Br6RCNdl+3OZjWous7H8ss7qKSezNckuGCcINqlL+OD2T2Eovh5MbUtGBx8SAdxHw==
-X-Received: by 2002:a17:906:6813:b0:a44:51d8:7dd with SMTP id k19-20020a170906681300b00a4451d807ddmr12385037ejr.0.1709812660908;
-        Thu, 07 Mar 2024 03:57:40 -0800 (PST)
-Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
-        by smtp.gmail.com with ESMTPSA id mc18-20020a170906eb5200b00a3f28bf94f8sm8109585ejb.199.2024.03.07.03.57.40
+        d=1e100.net; s=20230601; t=1709813136; x=1710417936;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X9fEJLLm0v2I5BjGN6oWEtE7MbEteGlm2M/I0q1BDxg=;
+        b=dZgvcepdc2qyVV/kTP1CW+J0HwsQ3VrkNLplE5rwNowa4g4Z36ezBF9ZDTzj3LbzfL
+         fSySvZfE5tuNU9uCgX1M3NJWm5WNW0cmlWcMkyHbGGjfzsNmrdXfKiPU/psBW5vUUGOw
+         yDKSD+bWkFEW8xwY5556v0Txv9lZSLlWKJEyXIqpnZcuXU1+2vUhGjuwAkHFgS05ZvXF
+         Gr5ViAIRqX5AxTQkOZCp91ANnCaCUQo5Olf3cIeQ3kYM8mjxLyC6o49z+Q50bJN5SG6L
+         CaSNLjFIs8GUlGYWaZUBa7kkXpE85MnYcyB5jdHU0FdgNh+mYhDkTh+Da7jJKkQ+HI6K
+         Yf1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWh13SJAkMylhVYWbOt+tAto+WX7TKRXjx8iHO5lzjqI5yB6Yg6WMHi0gdBi8nuVUDeW9obqNw5Bz09TExUz/sTM6dlEpXWWC/Ne4cpqe3LKOJOtLMQJwDkUKasXksRzGzGnUhM
+X-Gm-Message-State: AOJu0YyAeCWBpChZpiNqNrm4FEuCeEklc+YdWmq8H4vCcAeS39Z4rnn3
+	3MZZBBc5Q3PF8kx2GnHT1u5fwHevwtdymU8/9PqA0mak8pfFzO32HBDfYbHLYfU=
+X-Google-Smtp-Source: AGHT+IEn0ZkjIiOXoABUFYJeq/o21joJb7qmlpflmbLPxEJts8WTpE855VFt+K+VLbSzisGYl1mVmQ==
+X-Received: by 2002:a05:600c:500a:b0:413:678:5482 with SMTP id n10-20020a05600c500a00b0041306785482mr1901251wmr.36.1709813136257;
+        Thu, 07 Mar 2024 04:05:36 -0800 (PST)
+Received: from vitor-nb.. ([2001:8a0:e60f:3100:7ed0:94c4:aa7c:4b29])
+        by smtp.gmail.com with ESMTPSA id gw18-20020a05600c851200b00412a31d2e2asm2489810wmb.32.2024.03.07.04.05.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 03:57:40 -0800 (PST)
-Message-ID: <4c84f81c89b58886ad4e9df41f340790d2dee7d9.camel@gmail.com>
-Subject: Re: [PATCH v5 1/2] driver core: Introduce device_link_wait_removal()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
- Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- Saravana Kannan <saravanak@google.com>
-Cc: Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
-  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Thu, 07 Mar 2024 12:57:34 +0100
-In-Reply-To: <94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
-References: <20240307111036.225007-1-herve.codina@bootlin.com>
-	 <20240307111036.225007-2-herve.codina@bootlin.com>
-	 <94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+        Thu, 07 Mar 2024 04:05:35 -0800 (PST)
+From: Vitor Soares <ivitro@gmail.com>
+To: mkl@pengutronix.de,
+	manivannan.sadhasivam@linaro.org,
+	thomas.kopp@microchip.com
+Cc: wg@grandegger.com,
+	linux-can@vger.kernel,
+	linux-kernel@vger.kernel.org,
+	vitor.soares@toradex.com,
+	stable@vger.kernel.org
+Subject: [PATCH] can: mcp251xfd: fix infinite loop when xmit fails
+Date: Thu,  7 Mar 2024 12:04:42 +0000
+Message-Id: <20240307120442.12262-1-ivitro@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-03-07 at 12:50 +0100, Nuno S=C3=A1 wrote:
-> Hi Herve,
->=20
->=20
-> On Thu, 2024-03-07 at 12:10 +0100, Herve Codina wrote:
-> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > introduces a workqueue to release the consumer and supplier devices use=
-d
-> > in the devlink.
-> > In the job queued, devices are release and in turn, when all the
-> > references to these devices are dropped, the release function of the
-> > device itself is called.
-> >=20
-> > Nothing is present to provide some synchronisation with this workqueue
-> > in order to ensure that all ongoing releasing operations are done and
-> > so, some other operations can be started safely.
-> >=20
-> > For instance, in the following sequence:
-> > =C2=A0 1) of_platform_depopulate()
-> > =C2=A0 2) of_overlay_remove()
-> >=20
-> > During the step 1, devices are released and related devlinks are remove=
-d
-> > (jobs pushed in the workqueue).
-> > During the step 2, OF nodes are destroyed but, without any
-> > synchronisation with devlink removal jobs, of_overlay_remove() can rais=
-e
-> > warnings related to missing of_node_put():
-> > =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2
-> >=20
-> > Indeed, the missing of_node_put() call is going to be done, too late,
-> > from the workqueue job execution.
-> >=20
-> > Introduce device_link_wait_removal() to offer a way to synchronize
-> > operations waiting for the end of devlink removals (i.e. end of
-> > workqueue jobs).
-> > Also, as a flushing operation is done on the workqueue, the workqueue
-> > used is moved from a system-wide workqueue to a local one.
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 26 ++++++++++++++++++++++=
-+---
-> > =C2=A0include/linux/device.h |=C2=A0 1 +
-> > =C2=A02 files changed, 24 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index d5f4e4aac09b..48b28c59c592 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
-> > =C2=A0static void __fw_devlink_link_to_consumers(struct device *dev);
-> > =C2=A0static bool fw_devlink_drv_reg_done;
-> > =C2=A0static bool fw_devlink_best_effort;
-> > +static struct workqueue_struct *device_link_wq;
-> > =C2=A0
-> > =C2=A0/**
-> > =C2=A0 * __fwnode_link_add - Create a link between two fwnode_handles.
-> > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *de=
-v)
-> > =C2=A0	/*
-> > =C2=A0	 * It may take a while to complete this work because of the SRCU
-> > =C2=A0	 * synchronization in device_link_release_fn() and if the consum=
-er or
-> > -	 * supplier devices get deleted when it runs, so put it into the "lon=
-g"
-> > -	 * workqueue.
-> > +	 * supplier devices get deleted when it runs, so put it into the
-> > +	 * dedicated workqueue.
-> > =C2=A0	 */
-> > -	queue_work(system_long_wq, &link->rm_work);
-> > +	queue_work(device_link_wq, &link->rm_work);
-> > =C2=A0}
-> > =C2=A0
-> > +/**
-> > + * device_link_wait_removal - Wait for ongoing devlink removal jobs to=
- terminate
-> > + */
-> > +void device_link_wait_removal(void)
-> > +{
-> > +	/*
-> > +	 * devlink removal jobs are queued in the dedicated work queue.
-> > +	 * To be sure that all removal jobs are terminated, ensure that any
-> > +	 * scheduled work has run to completion.
-> > +	 */
-> > +	flush_workqueue(device_link_wq);
-> > +}
-> > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
-> > +
-> > =C2=A0static struct class devlink_class =3D {
-> > =C2=A0	.name =3D "devlink",
-> > =C2=A0	.dev_groups =3D devlink_groups,
-> > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
-> > =C2=A0	sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kobj)=
-;
-> > =C2=A0	if (!sysfs_dev_char_kobj)
-> > =C2=A0		goto char_kobj_err;
-> > +	device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);
->=20
-> My rb tag was with the assumption this is moved into devlink_class_init()=
-. IIUC,
-> Saravana also agreed with that [1]. But it looks like he missed that we a=
-re
-> allocating the queue in devices_init() and not in devlink_class_init().
->=20
-> I'm also not sure if this is in line with what Rafael wanted for ccing st=
-able. How
-> do
-> we know the next patch depends on this one?
+From: Vitor Soares <vitor.soares@toradex.com>
 
-Should have looked before:
+When the mcp251xfd_start_xmit() function fails, the driver stops
+processing messages, and the interrupt routine does not return,
+running indefinitely even after killing the running application.
 
-https://www.kernel.org/doc/Documentation/process/stable-kernel-rules.rst
+Error messages:
+[  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
+[  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empty. (seq=0x000017c7, tef_tail=0x000017cf, tef_head=0x000017d0, tx_head=0x000017d3).
+... and repeat forever.
 
-So, I think what you have is correct :)
+The issue can be triggered when multiple devices share the same
+SPI interface. And there is concurrent access to the bus.
 
-- Nuno S=C3=A1
+The problem occurs because tx_ring->head increments even if
+mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+TX package while still expecting a response in
+mcp251xfd_handle_tefif_one().
+
+This patch resolves the issue by decreasing tx_ring->head if
+mcp251xfd_start_xmit() fails. With the fix, if we attempt to trigger
+the issue again, the driver prints an error and discard the message.
+
+Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 27 ++++++++++----------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+index 160528d3cc26..a8eb941c1b95 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+@@ -181,25 +181,26 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff *skb,
+ 	tx_obj = mcp251xfd_get_tx_obj_next(tx_ring);
+ 	mcp251xfd_tx_obj_from_skb(priv, tx_obj, skb, tx_ring->head);
+ 
+-	/* Stop queue if we occupy the complete TX FIFO */
+ 	tx_head = mcp251xfd_get_tx_head(tx_ring);
+-	tx_ring->head++;
+-	if (mcp251xfd_get_tx_free(tx_ring) == 0)
+-		netif_stop_queue(ndev);
+-
+ 	frame_len = can_skb_get_frame_len(skb);
+-	err = can_put_echo_skb(skb, ndev, tx_head, frame_len);
+-	if (!err)
+-		netdev_sent_queue(priv->ndev, frame_len);
++	can_put_echo_skb(skb, ndev, tx_head, frame_len);
++
++	tx_ring->head++;
+ 
+ 	err = mcp251xfd_tx_obj_write(priv, tx_obj);
+-	if (err)
+-		goto out_err;
++	if (err) {
++		can_free_echo_skb(ndev, tx_head, NULL);
+ 
+-	return NETDEV_TX_OK;
++		tx_ring->head--;
++
++		netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
++	} else {
++		/* Stop queue if we occupy the complete TX FIFO */
++		if (mcp251xfd_get_tx_free(tx_ring) == 0)
++			netif_stop_queue(ndev);
+ 
+- out_err:
+-	netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
++		netdev_sent_queue(priv->ndev, frame_len);
++	}
+ 
+ 	return NETDEV_TX_OK;
+ }
+-- 
+2.34.1
 
 
