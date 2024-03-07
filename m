@@ -1,67 +1,75 @@
-Return-Path: <stable+bounces-27112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39A787573B
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB18757D0
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B1E1C20F2B
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 19:31:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B02F1C21464
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADA31369A4;
-	Thu,  7 Mar 2024 19:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142D5137C45;
+	Thu,  7 Mar 2024 20:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="L0lLEfIo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5lOPuK5"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550871EF13
-	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 19:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB24137C43
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 20:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709839895; cv=none; b=JEijI049lfiDjMrCAzKo3gLy+i0D6OglPRZYX9Z7ZvRJSsGcrRSGXaVbqE506VcMUSFg8/2alAf3qFlzhdxdujX13rYoEhVGXdj7JYjSBkd7mL3LVtgtiIcfLTEVDBtXKWoaJ+CYGISuKEhzDsv/76HbkrQeA+PGOPkWy1ZMy0A=
+	t=1709841755; cv=none; b=pS00IyVGj+tGgPXI3RiXf2pAbsJKhPdZnYghZJd7zXPrtmvRAgKbHFHV4vn8EFL397iTLhsjdDYPa3ADTc8bHgjwqien4uYoehlBm0khjr3wlCmsR2oAhb6a4GRMnlg5bhbfVtlO9uTwdJqDf12+yII+L+U6O31+Y1pbvAaqdv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709839895; c=relaxed/simple;
-	bh=tULaC2SQhleWoaZEgI2k2os0D13fLsMJxodRSZkgdWU=;
+	s=arc-20240116; t=1709841755; c=relaxed/simple;
+	bh=dBHrMs2pjMffipgnmu56a/VvK+7UcCZDn3xvMn1i9DY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ma+yvbZmtEM6WGfPAn8BDpWR5BcdvAw2nQdl6FoAbfgwxvOxDcf8l3whknK2Fk6fBIlyKaC7YCddlV2IpfAhJsS5Vo5lY0MOosGDtMt1ferrQxvsgxJ9SC274y+tZipNss+FYCCHHDmvC3s6IxGB63f1BTbu055YBr2Zx3im5v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=L0lLEfIo; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=claNfNCNdwAuVVdEjxNgaXfvtJQSA+bqs4pghfSbMek=; b=L0lLEfIoPnq8trtY1uMDGCNMBd
-	Jq4cp4z1fj+YfkSg5eb5wrs482LxyceAh/8yWNYtB6gTjMltpTPX8xNg3njS5Tf67QlbkEh36eNnQ
-	Yt2+EQGbYKJ5oN9+g2EKttsu+zbGN0pDjuxKSEr6Zpx1w/4LUv68gFZdrS2qB90dlJSOCH0W/4erM
-	HzzuvRE+aWS7Oz82cnc/2LkeIC/JUcdye4vfkIZ30IIqqOsxaUQl8goFhJuS5HyTi7DH3d1hgxCkX
-	Nxmi5eGsgLV/vmyv8F3AmRboy4/S3pbB+aiOuNr4TRB4q0OU51oEXULqhVP7WrHpvMyUsbScwW9KA
-	lFmHLXqw==;
-Received: from [189.6.17.125] (helo=mail.igalia.com)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1riJSf-007ObZ-9p; Thu, 07 Mar 2024 20:31:25 +0100
-Date: Thu, 7 Mar 2024 16:30:28 -0300
-From: Melissa Wen <mwen@igalia.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>, amd-gfx@lists.freedesktop.org, 
-	Harry.Wentland@amd.com, Sunpeng.Li@amd.com, Rodrigo.Siqueira@amd.com, 
-	Aurabindo.Pillai@amd.com, roman.li@amd.com, wayne.lin@amd.com, agustin.gutierrez@amd.com, 
-	chiahsuan.chung@amd.com, hersenxs.wu@amd.com, jerry.zuo@amd.com, 
-	Muhammad Ahmed <ahmed.ahmed@amd.com>, Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org, 
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Subject: Re: [PATCH 25/34] drm/amd/display: Set the power_down_on_boot
- function pointer to null
-Message-ID: <xuprblokiyqlelwnt5bcauyphsaafvb6hfnbkvodsg2wjp4xjr@renc6bbhfdv6>
-References: <20240228183940.1883742-1-alex.hung@amd.com>
- <20240228183940.1883742-26-alex.hung@amd.com>
- <54c3aa20-f041-4843-b4b5-362b7ff77844@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J15aKorMWeqbGkNlbYoa+QxJPf1jDDWxFGH7Z3svS/Rj0RVUuHmT+iDZs+ehwXGWLP9hsC1jRB421oNegYzsXazOZzElrLi2X6DvUXq6MJPKf1Bl5SQRyUImWTD2nkH57E8JE3QdqMcm+2YGT7j88u3vIlcjTuE9PD1DoWFIskI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5lOPuK5; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709841754; x=1741377754;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dBHrMs2pjMffipgnmu56a/VvK+7UcCZDn3xvMn1i9DY=;
+  b=B5lOPuK5Wy6mg19em5h6EBNrj6QFnGBFXnyf6EzX5eDtYbu8ILSKNzsv
+   dI7Nz4f4tRlALmC5kzrm//+Rrajln4jdFSRkusV2F7Rlmsz28ADddut8H
+   GvH8OTbjHEIF9uKbL0Q332HUo7hDqSq1xLlO+4OB+OKB74guVP9nNw6Sf
+   mu3LkepCob3AWlWPnd4zqxUumaDvz75Rxpev6IUtwnWYVlVmqsI9N8lvN
+   WwNeD/wobnL/M0yC+lgswmNaBAPlc9E+r7KVwfBsyx+1VM4XVN+xHsJW3
+   S/0x9D3PuvDRDwtCeAz8dq33Lpl4P1ZGEO/PoIYBB8jy1tsKa9T6Jzn0+
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15945885"
+X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
+   d="scan'208";a="15945885"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 12:02:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
+   d="scan'208";a="10670374"
+Received: from unknown (HELO intel.com) ([10.247.118.98])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 12:02:24 -0800
+Date: Thu, 7 Mar 2024 21:02:17 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH v4 1/3] drm/i915/gt: Disable HW load balancing for CCS
+Message-ID: <ZeodSUrgZXL_pjy0@ashyti-mobl2.lan>
+References: <20240306012247.246003-1-andi.shyti@linux.intel.com>
+ <20240306012247.246003-2-andi.shyti@linux.intel.com>
+ <20240306234609.GF718896@mdroper-desk1.amr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,56 +78,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <54c3aa20-f041-4843-b4b5-362b7ff77844@amd.com>
+In-Reply-To: <20240306234609.GF718896@mdroper-desk1.amr.corp.intel.com>
 
-On 02/28, Mario Limonciello wrote:
-> On 2/28/2024 12:39, Alex Hung wrote:
-> > From: Muhammad Ahmed <ahmed.ahmed@amd.com>
+Hi Matt,
+
+On Wed, Mar 06, 2024 at 03:46:09PM -0800, Matt Roper wrote:
+> On Wed, Mar 06, 2024 at 02:22:45AM +0100, Andi Shyti wrote:
+> > The hardware should not dynamically balance the load between CCS
+> > engines. Wa_14019159160 recommends disabling it across all
+> > platforms.
 > > 
-> > [WHY]
-> > Blackscreen hang @ PC EF000025 when trying to wake up from S0i3. DCN
-> > gets powered off due to dc_power_down_on_boot() being called after
-> > timeout.
-> > 
-> > [HOW]
-> > Setting the power_down_on_boot function pointer to null since we don't
-> > expect the function to be called for APU.
-> 
-> Perhaps, should we be making the same change for other APUs?
-
-any follow-up to Mario's question?
-
-I wonder if this can help solve other "black screen hangs after suspend"
-reported for other APUs...
-
-Melissa
-
-> 
-> It seems a few others call dcn10_power_down_on_boot() for the callback.
-> 
-> > 
-> > Cc: Mario Limonciello <mario.limonciello@amd.com>
-> > Cc: Alex Deucher <alexander.deucher@amd.com>
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> > Acked-by: Alex Hung <alex.hung@amd.com>
-> > Signed-off-by: Muhammad Ahmed <ahmed.ahmed@amd.com>
+> > Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> > Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.2+
 > > ---
-> >   drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >  drivers/gpu/drm/i915/gt/intel_gt_regs.h     | 1 +
+> >  drivers/gpu/drm/i915/gt/intel_workarounds.c | 5 +++++
+> >  2 files changed, 6 insertions(+)
 > > 
-> > diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-> > index dce620d359a6..d4e0abbef28e 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-> > @@ -39,7 +39,7 @@
-> >   static const struct hw_sequencer_funcs dcn35_funcs = {
-> >   	.program_gamut_remap = dcn30_program_gamut_remap,
-> >   	.init_hw = dcn35_init_hw,
-> > -	.power_down_on_boot = dcn35_power_down_on_boot,
-> > +	.power_down_on_boot = NULL,
-> >   	.apply_ctx_to_hw = dce110_apply_ctx_to_hw,
-> >   	.apply_ctx_for_surface = NULL,
-> >   	.program_front_end_for_ctx = dcn20_program_front_end_for_ctx,
+> > diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > index 50962cfd1353..cf709f6c05ae 100644
+> > --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > @@ -1478,6 +1478,7 @@
+> >  
+> >  #define GEN12_RCU_MODE				_MMIO(0x14800)
+> >  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+> > +#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
+> >  
+> >  #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
+> >  #define   CHV_FGT_DISABLE_SS0			(1 << 10)
+> > diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > index d67d44611c28..a2e78cf0b5f5 100644
+> > --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > @@ -2945,6 +2945,11 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
+> >  
+> >  		/* Wa_18028616096 */
+> >  		wa_mcr_write_or(wal, LSC_CHICKEN_BIT_0_UDW, UGM_FRAGMENT_THRESHOLD_TO_3);
+> > +
+> > +		/*
+> > +		 * Wa_14019159160: disable the automatic CCS load balancing
 > 
+> I'm still a bit concerned that this doesn't really match what this
+> specific workaround is asking us to do.  There seems to be an agreement
+> on various internal email threads that we need to disable load
+> balancing, but there's no single specific workaround that officially
+> documents that decision.
+> 
+> This specific workaround asks us to do a bunch of different things, and
+> the third item it asks for is to disable load balancing in very specific
+> cases (i.e., while the RCS is active at the same time as one or more CCS
+> engines).  Taking this workaround in isolation, it would be valid to
+> keep load balancing active if you were just using the CCS engines and
+> leaving the RCS idle, or if balancing was turned on/off by the GuC
+> scheduler according to engine use at the moment, as the documented
+> workaround seems to assume will be the case.
+> 
+> So in general I think we do need to disable load balancing based on
+> other offline discussion, but blaming that entire change on
+> Wa_14019159160 seems a bit questionable since it's not really what this
+> specific workaround is asking us to do and someone may come back and try
+> to "correct" the implementation of this workaround in the future without
+> realizing there are other factors too.  It would be great if we could
+> get hardware teams to properly document this expectation somewhere
+> (either in a separate dedicated workaround, or in the MMIO tuning guide)
+> so that we'll have a more direct and authoritative source for such a
+> large behavioral change.
+
+On one had I think you are right, on the other hand I think this
+workaround has not properly developed in what we have been
+describing later.
+
+Perhaps, one solution would be to create a new generic workaround
+for all platforms with more than one CCS and put everyone at
+peace. But I don't know the process.
+
+Are you able to help here? Or Joonas?
+
+Thanks, Matt!
+Andi
 
