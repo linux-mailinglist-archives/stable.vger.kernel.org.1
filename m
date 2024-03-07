@@ -1,121 +1,194 @@
-Return-Path: <stable+bounces-27079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD290874EE5
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:23:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B98874EE2
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6893B2857FE
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0747D285715
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3B812AAF6;
-	Thu,  7 Mar 2024 12:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A0312AAD7;
+	Thu,  7 Mar 2024 12:23:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BC512AADB;
-	Thu,  7 Mar 2024 12:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A119D128378
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 12:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709814199; cv=none; b=l/vmhALvqDXz2wQRIHU7WgAr7OavW/ilF+TmWPEVV2ZZ2Zw03hhNk22BeNfKj2OlVVtA1bm8T7BDmWyzR+Pq7PpNFebXIRfijzrFXoSU6+vc69gFCgNL/bu9XKrw8J0elymWM7aUEHtiIf4gMp+JsyKlHa76cyilkQuOP/iTQcQ=
+	t=1709814193; cv=none; b=YQh35YAAkoE3W1YiNtlIGRRhL2VYrzxokFkJpUmeyhETQxTgbMCFEs1ht4uQAoFx/lECF1cxPUWb28Vw1cKimvKLG3OjGKZlNYP96D7Emvi7Z+2iD0VsMehn6Uv7ePXcbHD/lQS/QKPA9gSzLxDE4TFr6Bcn4Ag8Bf77qU5jpZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709814199; c=relaxed/simple;
-	bh=47347CDrcctM5q9XZgq8/xM8yKL2YcYdeT0/hb+myVo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bsJXsEKo8DKwWzf769ANwnzjJzyouVu12lsB/Ys8Gqlm8qzEEnaP8t8Q7YNtnftHc0gWjH+gX6FxS9OQcoyyGugLztxogp05KCcTeqhBAG/wsNAm6NvyUhTZi68lNXDPHTnpr6/M0sQZRpshnrBp3kVnFEgDDYRABN3hxy5W1jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Tr7HG3lf7z9xxml;
-	Thu,  7 Mar 2024 20:03:22 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id AB30214037C;
-	Thu,  7 Mar 2024 20:23:07 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwA3LxihselliRTjAw--.14417S2;
-	Thu, 07 Mar 2024 13:23:07 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	eric.snowberg@oracle.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com
-Cc: linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	stable@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Seth Forshee <sforshee@kernel.org>
-Subject: [PATCH] evm: Change vfs_getxattr() with __vfs_getxattr() in evm_calc_hmac_or_hash()
-Date: Thu,  7 Mar 2024 13:22:39 +0100
-Message-Id: <20240307122240.3560688-1-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709814193; c=relaxed/simple;
+	bh=gCgn0qdMJNBr4dhBbAUi5QMd9i2YnT+21lB2V2syJNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=af78+axCnRoeLnxSo/Pc2KDAWmD4/NwhypAIYODx0Mh6yzq68OMKFlVIys/5dEqBx4dppdw8NFdcgJYdq5lBRm2BC9BC2vb1F38AJhawECslD88piBd774NRSPkpLIlWrP/GsPdvKIBMuGxbJTzuKwYAZSizQvYuqqKM5nbORGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riCm7-0004jX-AP; Thu, 07 Mar 2024 13:23:03 +0100
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riCm6-004w9T-L3; Thu, 07 Mar 2024 13:23:02 +0100
+Received: from pengutronix.de (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1C2A92A086C;
+	Thu,  7 Mar 2024 12:23:02 +0000 (UTC)
+Date: Thu, 7 Mar 2024 13:23:01 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vitor Soares <ivitro@gmail.com>
+Cc: manivannan.sadhasivam@linaro.org, thomas.kopp@microchip.com, 
+	wg@grandegger.com, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	vitor.soares@toradex.com, stable@vger.kernel.org
+Subject: Re: [PATCH] can: mcp251xfd: fix infinite loop when xmit fails
+Message-ID: <xmk5cgskx2ug2psec6qgbxndbuqq5cnin7rd4zt3thnhybxgeo@xudpdob7tcg2>
+References: <20240307120442.12262-1-ivitro@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LxC2BwA3LxihselliRTjAw--.14417S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw4rCw4DAr15Jw45JF17trb_yoW8GFykpF
-	W5Ka9rKrn5JryrKas5GF4kAayF93yUXr47KrsxAa4Iv3Z8ZryxZr92qry7uryFvr18trn5
-	J3yqqr1Yyw13A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAF
-	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU8imRUUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAPBF1jj5cVqAABsT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z7skr4ctodjzwe4v"
+Content-Disposition: inline
+In-Reply-To: <20240307120442.12262-1-ivitro@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Use __vfs_getxattr() instead of vfs_getxattr(), in preparation for
-deprecating using the vfs_ interfaces for retrieving fscaps.
+--z7skr4ctodjzwe4v
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-__vfs_getxattr() is only used for debugging purposes, to check if kernel
-space and user space see the same xattr value.
+Sorry, resend. I fsck up the linux-can ML's address.
 
-Cc: stable@vger.kernel.org # 5.14.x
-Cc: linux-fsdevel@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
-Fixes: 907a399de7b0 ("evm: Check xattr size discrepancy between kernel and user")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/integrity/evm/evm_crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 07.03.2024 12:04:42, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
+>=20
+> When the mcp251xfd_start_xmit() function fails, the driver stops
+> processing messages, and the interrupt routine does not return,
+> running indefinitely even after killing the running application.
+>=20
+> Error messages:
+> [  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
+> [  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empt=
+y. (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0, tx_head=
+=3D0x000017d3).
+> ... and repeat forever.
+>=20
+> The issue can be triggered when multiple devices share the same
+> SPI interface. And there is concurrent access to the bus.
+>=20
+> The problem occurs because tx_ring->head increments even if
+> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> TX package while still expecting a response in
+> mcp251xfd_handle_tefif_one().
+>=20
+> This patch resolves the issue by decreasing tx_ring->head if
+> mcp251xfd_start_xmit() fails. With the fix, if we attempt to trigger
+> the issue again, the driver prints an error and discard the message.
 
-diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/evm_crypto.c
-index b1ffd4cc0b44..168d98c63513 100644
---- a/security/integrity/evm/evm_crypto.c
-+++ b/security/integrity/evm/evm_crypto.c
-@@ -278,8 +278,8 @@ static int evm_calc_hmac_or_hash(struct dentry *dentry,
- 		if (size < 0)
- 			continue;
- 
--		user_space_size = vfs_getxattr(&nop_mnt_idmap, dentry,
--					       xattr->name, NULL, 0);
-+		user_space_size = __vfs_getxattr(dentry, inode, xattr->name,
-+						 NULL, 0);
- 		if (user_space_size != size)
- 			pr_debug("file %s: xattr %s size mismatch (kernel: %d, user: %d)\n",
- 				 dentry->d_name.name, xattr->name, size,
--- 
-2.34.1
+What about returning NETDEV_TX_BUSY, then the networking stack will
+retry.
 
+> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD =
+SPI CAN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> ---
+>  drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 27 ++++++++++----------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c b/drivers/net/c=
+an/spi/mcp251xfd/mcp251xfd-tx.c
+> index 160528d3cc26..a8eb941c1b95 100644
+> --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> @@ -181,25 +181,26 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff *sk=
+b,
+>  	tx_obj =3D mcp251xfd_get_tx_obj_next(tx_ring);
+>  	mcp251xfd_tx_obj_from_skb(priv, tx_obj, skb, tx_ring->head);
+> =20
+> -	/* Stop queue if we occupy the complete TX FIFO */
+>  	tx_head =3D mcp251xfd_get_tx_head(tx_ring);
+> -	tx_ring->head++;
+> -	if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> -		netif_stop_queue(ndev);
+> -
+>  	frame_len =3D can_skb_get_frame_len(skb);
+> -	err =3D can_put_echo_skb(skb, ndev, tx_head, frame_len);
+> -	if (!err)
+> -		netdev_sent_queue(priv->ndev, frame_len);
+> +	can_put_echo_skb(skb, ndev, tx_head, frame_len);
+> +
+> +	tx_ring->head++;
+> =20
+>  	err =3D mcp251xfd_tx_obj_write(priv, tx_obj);
+> -	if (err)
+> -		goto out_err;
+> +	if (err) {
+> +		can_free_echo_skb(ndev, tx_head, NULL);
+> =20
+> -	return NETDEV_TX_OK;
+> +		tx_ring->head--;
+> +
+
+I'm not sure, if we want an error message for -EBUSY. We could add
+proper ethtool statistics.
+
+> +		netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
+> +	} else {
+> +		/* Stop queue if we occupy the complete TX FIFO */
+> +		if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> +			netif_stop_queue(ndev);
+> =20
+> - out_err:
+> -	netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
+> +		netdev_sent_queue(priv->ndev, frame_len);
+> +	}
+> =20
+>  	return NETDEV_TX_OK;
+>  }
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--z7skr4ctodjzwe4v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmXpsaIACgkQKDiiPnot
+vG+Whwf+KRkCgvw56NbiASrI8ezzUbH91uXRXQoqqquK1+9Ipudd3jqizmDkyFLF
+L3Vw0GvrcdO5t3Wv8Tn2JxbfkiZvvfmVFJ7nD0THzqnjJr6ZKR+73okKuwcvxq/Y
+G4lKLnQlgF1AfAsdTCJEuz4SNBrWDx4EsAEuTa2Tp5eBs0ePEPatZyml1wL8l6Dv
+zOPh/Y9c+wWiSzGHFELXnfe9SaoDfUat+NIlJ4AsfxuXMSys4aQ+8Hz+ynoJFBp8
+qYL0/9C/wBCaBF5mlv92guEQN8ZTcD8PxMfa7ZcqhEmO9e/1zET1HCDZYv+6yF/e
+uv1rJNxBSob5knxMJiZUJTUQIACzQA==
+=zeld
+-----END PGP SIGNATURE-----
+
+--z7skr4ctodjzwe4v--
 
