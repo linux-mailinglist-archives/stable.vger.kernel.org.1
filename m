@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-27056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8026387490A
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 08:48:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637A4874A19
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 09:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5281F22472
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 07:48:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D70AF1F24EF1
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 08:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B566B6311B;
-	Thu,  7 Mar 2024 07:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796E88289C;
+	Thu,  7 Mar 2024 08:50:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D42817;
-	Thu,  7 Mar 2024 07:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E42451C54;
+	Thu,  7 Mar 2024 08:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709797723; cv=none; b=VWY6VPC7bI1jDUY5D1pckCxHIqXerJM2H7AqkbUfQoQnjPb34Fdn8Yy85K3+TJ/TguizfY/eNQw1slmBtSnKtatAk7HTrN+r9gXoAqk7UucuYAw2qNU7kLT1xazRaQditkYIxlQOsDKXFipDLrX3CBqmgTnVQnBdRv0wT5q4R4c=
+	t=1709801415; cv=none; b=H/aOmA9ZmEVbuCW6PBTykosnePkqLekQwoA9xFOuUIp0JdPQsDIHz7pgTOMc8o6Dw8l9Ie8rsGzh44B5h2YCvmXPdQXm2jk7Jjn23UnTGOtFANgR64AKJg7aJPvUQnCbNjBLta9fpEbXYYUuxL355O9eUgpJzefpM1AZ42eHae0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709797723; c=relaxed/simple;
-	bh=FhuFSYU9sHOzgH7Iw2//KCChwuAZaI0Z5ejb5UXG9GM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UZ4cjlbNBN+cBdlvd9yD63qWJjdAmjmeEmQ9k/vZUbhRtf3LDNtqvzUeHkMI8ZX1YLlIJP1fICgRb5/lf1cBmPCdPJYx52fdFuKf8RDvGwhacLI9Fa9CvtoRQDIWW0a6Dg6m+qxwMB7s8fAgdNs+jgnP4ww1cQuOMLy15BYhfKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D1DD1FB;
-	Wed,  6 Mar 2024 23:49:17 -0800 (PST)
-Received: from [10.57.68.241] (unknown [10.57.68.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 698E83F73F;
-	Wed,  6 Mar 2024 23:48:39 -0800 (PST)
-Message-ID: <92672c62-47d8-44ff-bd05-951c813c95a5@arm.com>
-Date: Thu, 7 Mar 2024 07:48:37 +0000
-Precedence: bulk
-X-Mailing-List: stable@vger.kernel.org
-List-Id: <stable.vger.kernel.org>
-List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	s=arc-20240116; t=1709801415; c=relaxed/simple;
+	bh=nQj/xlh+sQZ1bYu4/N/LeWGrATg1jqRGDx6ZVgj3WRY=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=nMqYPay+idaGHw8LVfjysDskmIVGwGe7g85ofFKPd7STg/HmNRgkv1p5d7+ClgjY8WPhUHL7N5fa9kcCK3sNxHXYbO7awjHQ0Yjd0xyBeJnhnIV6+3fSy76LGolhflWBZkgfpGQQHWTtH4+zpmHllt/FGJG/dWHELLljFKrMGHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Tr2y24YNtz1Q9P2;
+	Thu,  7 Mar 2024 16:48:10 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id 895611404F6;
+	Thu,  7 Mar 2024 16:50:09 +0800 (CST)
+Received: from [10.173.135.154] (10.173.135.154) by
+ canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 7 Mar 2024 16:50:09 +0800
 Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
  swapoff()
-Content-Language: en-GB
-To: "Huang, Ying" <ying.huang@intel.com>, Miaohe Lin <linmiaohe@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: "Huang, Ying" <ying.huang@intel.com>
+CC: Ryan Roberts <ryan.roberts@arm.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
 References: <20240305151349.3781428-1-ryan.roberts@arm.com>
  <875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
  <c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
@@ -57,12 +54,25 @@ References: <20240305151349.3781428-1-ryan.roberts@arm.com>
  <87bk7q7ffp.fsf@yhuang6-desk2.ccr.corp.intel.com>
  <0925807f-d226-7f08-51d1-ab771b1a6c24@huawei.com>
  <8734t27awd.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <588b8b8f-979c-a4e5-a332-8b0f89421ecd@huawei.com>
+Date: Thu, 7 Mar 2024 16:50:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+Precedence: bulk
+X-Mailing-List: stable@vger.kernel.org
+List-Id: <stable.vger.kernel.org>
+List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 In-Reply-To: <8734t27awd.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-On 07/03/2024 07:34, Huang, Ying wrote:
+On 2024/3/7 15:34, Huang, Ying wrote:
 > Miaohe Lin <linmiaohe@huawei.com> writes:
 > 
 >> On 2024/3/7 13:56, Huang, Ying wrote:
@@ -186,23 +196,15 @@ On 07/03/2024 07:34, Huang, Ying wrote:
 > 
 > shmem_undo_range can run earlier.
 
-Yes that's the shmem problem I've been trying to convey. Perhaps there are other
-(extremely subtle) mechanisms that make this impossible, I don't know.
+Considering above case, I tend to agree it's possible. I can't figure out a mechanism to make it impossible yet.
 
-Either way, given the length of this discussion, and the subtleties in the
-syncrhonization mechanisms that have so far been identified, I think the safest
-thing to do is just apply the patch. Then we have explicit syncrhonization that
-we can trivially reason about.
-
-Thanks,
-Ryan
-
-P.S. Thanks for the explanation about spinlocks being RCU read-side critical
-sections - I didn't know that.
+Thanks.
 
 > 
 > --
 > Best Regards,
 > Huang, Ying
+> .
+> 
 
 
