@@ -1,266 +1,217 @@
-Return-Path: <stable+bounces-27038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC13F87471A
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 05:14:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4193B87473A
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 05:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6155E285AA8
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 04:14:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA42F2848DF
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 04:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA05134BD;
-	Thu,  7 Mar 2024 04:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A29617BB5;
+	Thu,  7 Mar 2024 04:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XQqNJ0g7";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="fafI3dN7"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="CrtVN9bL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F22BEAD4;
-	Thu,  7 Mar 2024 04:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709784835; cv=fail; b=m3pLw1nR2aKts63B3HpQL8dULbMRCs5jr+bJmQB0Y3261LSrR0hnPyOijNRVsvC6TnGQqBOPqHTz8fqe8Yo2TX6nXWogSh7lrxtWEakWTdKmuzbvPyWc7O255cpeQ4L1LEo6GU1EsPHRLzz1F1xtG2E9879kucSfSAnZWrIfo9E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709784835; c=relaxed/simple;
-	bh=NfWV0oYvLorqN0AnLI8w2ruGF0VAr1fEM0UvllstzE4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Siq8V03Ne+LpHMag0lGsoRRWoPEqjTm5KnB/A/QRJWvf2reYuCJzlINhQxJvZIVytAwUcZokmf2X0M+eNbLRgytMLLv7tJeZ38PxL76TxgQ2rwpO3tkVNmGxgnXDuXdnjqb7pLDzxZac489OL1uWe7ydDIBA4tus9z4N7rckHnA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XQqNJ0g7; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=fafI3dN7; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42712wXA006002;
-	Thu, 7 Mar 2024 04:13:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=l+e9hFpDhl4GS5POZulFSNgwflxIA7YKS0j42i0Xz5A=;
- b=XQqNJ0g7wgb3DIKFZmiQ31XpbgZYIIPfcNsk6zgE+efbUAmz4GFP53fEI6RBRVRUAGf1
- uir19Uhq7NWRfnRzLLRU2PgVJiXuU9mekAat4ka99opMFWj/jfTO3pUWu7BFGrjmHkKR
- 9saeea7R22yb+QjZP/2rZ/RDSSdIQImfnXNryuxF+aihGUuZSsLqvcIxKHXA/bTq/zB+
- B5fC4Uc9XxHazl+iFzHVzFZFpl6ZX7Gf5z5aYPFF8cQYWlYDGza9msBhll9vH13ov9xd
- jtwa2f37oTQX2g0es8inWrGpjwAq8BiZoYGZjFWqUKS6YANMRWMNY2KvnG66fJfQs8nL 1A== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wktq2aqqa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 Mar 2024 04:13:38 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4272DSFt013711;
-	Thu, 7 Mar 2024 04:13:37 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3wktjachag-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 07 Mar 2024 04:13:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DxDkFDf2sCfIAZESwTD1j8fcmbAxZfhPIbIER/Idh8UN4ad+9kxQZgDf0AUX49FY4s2Kddr0sIxJ+EhLs0DE6Ld1/4sudTCwxc/XW5VQ8Z8Lr/a8isiETNvS790qylFx/nlAJgRG9TqQMXY70am8iVMjvS+WxrL5J+vvsa9G7gWhnfROZnEc0SloX5cqs+wF5xjFpaVAF0dzI4d5wJmeH0C+2lbyw/qYalzn6VMMIcU/a2GyomK6jK0uYw9Vi/WxUNzjzNLPiqQm7niMST8Ny1Qfeqceq2sCJ08P8dCm4xzeKAPaDAdwbmcoKLAvy4CKwMHp0yUrdYhV1EFhlBR6YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l+e9hFpDhl4GS5POZulFSNgwflxIA7YKS0j42i0Xz5A=;
- b=nZ8DK+JFmNY04JhdWFqpeuHs0sKj3I8AfeTps/aDBQxAwJ6Mh1D9PyeUg7Cg+f4rx9VURE4Tvz+7aSzLZYGW31wsg6J6JlZZV1oPLKa5g1M7QsIgJ/UkvINHJedUTGLdwzzbwLeZ3VEYlMaTqlwCWEmzW1uPkKy1GKKL+20HWO52HnfZdeaMyEPS4p/R/MEUAEjuYBCy9XkJGAPqgxhzw8Y4JoKXoeiUeSE8pxU//fw6QmD5pkkBY3374MXQ+odmz7Jpm50ioySxMY0JeEhxpPOYBPx+/foU72mEdmncESOMrUou4ktrfoxndNUc4lKVKDjCRkPk1nd59OJ+tiiPVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l+e9hFpDhl4GS5POZulFSNgwflxIA7YKS0j42i0Xz5A=;
- b=fafI3dN7E0Nv56aCUwSa1XbtwkiFjugQUjlOgTUQdKdfDUxRKwdA+be3RrCd6iKm5M4VBEZ25tC4YGvQKwlAoDPWlKTSLnYtfS7/3Ix9xf02N0KYwXXR/QkvwoIDjnSs7e4L2Zni3/JcSzW2grzz3UE4cu9zOghEUAYgK0Bl38I=
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com (2603:10b6:510:148::10)
- by SN7PR10MB7074.namprd10.prod.outlook.com (2603:10b6:806:34c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Thu, 7 Mar
- 2024 04:13:13 +0000
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b]) by PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b%7]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
- 04:13:13 +0000
-Message-ID: <ee9aa0b8-bda1-4217-bb9b-fa9b886d6196@oracle.com>
-Date: Thu, 7 Mar 2024 09:43:05 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: do not skip re-registration for the mounted
- device
-To: Filipe Manana <fdmanana@kernel.org>, dsterba@suse.cz
-Cc: linux-btrfs@vger.kernel.org, dsterba@suse.com, aromosan@gmail.com,
-        bernd.feige@gmx.net, CHECK_1234543212345@protonmail.com,
-        stable@vger.kernel.org
-References: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
- <20240214071620.GL355@twin.jikos.cz>
- <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
-Content-Language: en-US
-From: Anand Jain <anand.jain@oracle.com>
-In-Reply-To: <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0P287CA0001.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::6) To PH0PR10MB5706.namprd10.prod.outlook.com
- (2603:10b6:510:148::10)
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4957717BB3;
+	Thu,  7 Mar 2024 04:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709785181; cv=none; b=OZifVjKPBBjDhQMTYoq0o2QztqbdJyyd/tI4fPBpocD28er0U+lsFrgz8i7uBqeSS7LovS36ww8XH1GaguyKbh14LN60wxx4NUP0VHnk1WQkifAc+x1BTeRKVmbeEAaDhe6YAk2yQpAesYFumFQ45r1Vd83dfQWO3y/OLPV+XBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709785181; c=relaxed/simple;
+	bh=6bu/4c6TwZlZLaYOo7fDDH1ti+5fYtSXJoV+eRDtkJc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gS6ZrLExDkhVg+f63RgfE4/Sd5xnUc4nPgC4wVlIw51vhSA7k7ZX9GSHtyIVBs1ZnVxWgqkRPDTo1mmeJbmE3rXRDCzuWg0B2TAHNBKdU+YL+HxMfkBnZUgclmVMeviSKeuDQ3PA03SdeL29/Ee8obTTO6fXxMNlvIeJl5HNol0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=CrtVN9bL; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=w3TqMLeorEO8x2mBtG5UaVwrPWdAcmdw5mh56xxtAqU=;
+	b=CrtVN9bLRWQ+LwY3gl4BEG5CkM1u6/N62lXheYlN9geHWtWJLlL9bFdIiJJfT7
+	E1+kEAE+a3ZsTK2HrPARzJk/jQ/DocswwAIiYZJ4IsZsCSm8NBZF/Nx6R+mg/Ku3
+	xCSV8MB9rvPCdUCMSgO6S6oPd9eo1J5YrfRi6U4DUuL1o=
+Received: from localhost.localdomain (unknown [116.128.244.171])
+	by gzga-smtp-mta-g1-1 (Coremail) with SMTP id _____wBXrmdmP+llh0IFAA--.11885S4;
+	Thu, 07 Mar 2024 12:19:02 +0800 (CST)
+From: Genjian <zhanggenjian@126.com>
+To: stable@vger.kernel.org
+Cc: axboe@kernel.dk,
+	stable@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhanggenjian123@gmail.com,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH linux-5.4.y 0/8] Fix the UAF issue caused by the loop driver
+Date: Thu,  7 Mar 2024 12:14:03 +0800
+Message-Id: <20240307041411.3792061-1-zhanggenjian@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5706:EE_|SN7PR10MB7074:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb340898-c97a-4938-0bbc-08dc3e5ce80b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	VkOFMiBOAVmNBMx6IyLetCdCrlNr2n+m3I0ULu3F4OUdXkK440xlYjgA7DYIfQiKSjJTx+v9ahpKjTwcBdUo9L/U/lJ4uA06YVVsb27x1MW/+RcfBQcuisnhlczKy7YcyIE3I5L01HsWbYpy0+hfMvdaOyVJ3UmEihXGelnzn5r+8ln8pexaSmbkSUbYB7WW1XNpmF4mn49UA3wDK7oE1ChSWRZIvM7ieC8N4xcxPgxm12+Xw7b0FmvDppFpYv1lK5o5u72+YV2Ag6s4pZiUneNlUeempz3vrCwVFS3ug521d1UTeRFSt9TL8Nz5eFx4MkpgAScESt7JSirSPimqSqYZ9zUjiJo2Ed5MuPTrvv5LiYyOEZTI7X5QiRLhHOsWyrsafDsVNxXaMzBD9YbAppgjSwEgTNqD9wGTlAF6O20WzRbX1xXC9YGH7T3N0ujh6E1CUv5CzzJVgR0V6hmitokvM611NVSARzfxG4ME/76h9CXVzoWd6AjCVi29kxuv4eNtcpxcxLQITwNCAG7Ef+ebnkS4cFCCWQ6PB9KahQQLHa6gRRVbOZ6veSQ0nF6nM1a5hS0uVgIEwBsbfr99gqzz+r5LiLRPrD7Q8ImakAngR1/i5V1aABez898G0xO+QrH2JAgCRR144PNVTlwJXCsSRufn9UJSr4ULa6tRZWU=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5706.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?VjZOZzhCZ2V2K1VxcTFBYkdyeGxUTkZCbDR4NlFObHVkamZOV1pOZEhkSEhQ?=
- =?utf-8?B?enFWYU1LQkxCQzBZWDVQOTNZNkdFbEhGYzdadFRBbDNrL1Z5Nkd3d3BpdUoz?=
- =?utf-8?B?dkJrYVRjZEpMNEFJTzZJNUlRN3hQTWhaR0NxUFFmTkNoNVlNWU14ME1FS2Fl?=
- =?utf-8?B?ODZpVktBL0RwL0R6R3diL3FaVFpmRnFJNTFDYUpLcVZNcDZxQmRoS1IwcjlY?=
- =?utf-8?B?VDN5U0xYM1gxdXFxVTFoWVlWRm05SWVhTWpsQWhSYUQ5VkNJWlRlNmQxZmky?=
- =?utf-8?B?MmJrNVAxNWxPL2NBYndtY01CdUdWUE93Ti9NNU5vZXBHZk56YTF6Mk9pbEEv?=
- =?utf-8?B?Uk5ZYVF1UWwwYW5yR01rc3FHRWE2Q0Z2MTg2VjBiZGxtTldVbHdjKzhuY0ta?=
- =?utf-8?B?V3h1SVJEUkxQMnhzZWNsU05qVDJkeHZYS3dxV25qdEptY3dRVDl3TzYwNXgy?=
- =?utf-8?B?ZmdOeldkR1AveE1EREtuUEVLeFFTK1lyamw3bGp3Q0ppdjlCR3R4WEZHeWlU?=
- =?utf-8?B?YjRGV0pxQ3VVOFhwN2w4elNNbk03THVQb2NIWm5qajMvRUNaaGhscHBaQ0dF?=
- =?utf-8?B?d28rdXl0RFpJMS9ZZTc1Y25VNTRvZy9nVHY1SWdGaG41NVltSGVZMCtnNlQ5?=
- =?utf-8?B?TFRzc0hOWG9LTWgyVzJSUWR4dUFnaEVVbU5uazd3dVBvdk9meHdPbE9FK0Ir?=
- =?utf-8?B?RUpyQ2hUSnNwMG5SV3RqOEpFSW9tL2pwV2J6SlB0VEhLeDUrV2p6MTJhNDhk?=
- =?utf-8?B?OFdNaitrb3R4eTF1dGNxSlY5QW8rZmlMTHFMRGtFVml6TTljbWxqVVNteDQ0?=
- =?utf-8?B?NmVxUXRmMU5EZFd5cXphRWI5OUZLMXZkZWhHa0U3dHNyTFBDWW9PcExJN3pn?=
- =?utf-8?B?RWQ4V0VnTDdjUWtiWTdaUmNRQTNCUGU0WmFOaWpJV2pFRUFjajhHY3hyMWpr?=
- =?utf-8?B?YXhoRWRwRXhjcHhROFpJTmZ4OHpoY3JEL29QOTNhUWFqSzRXMXZGdCtoZVFy?=
- =?utf-8?B?d1Fyek55cFRMZkcvTHgvNUw5SG81NnRFNmZqQVFGZFZMZ2JyajJJdTBteGN4?=
- =?utf-8?B?RUJkcThCT1ZhV0p2SWtNSzc2ODl2UFF5UUxrWTJsTkkxNDlEOGpqdld2UCtx?=
- =?utf-8?B?OHoyYm1xSitlaWkxOUVQUFhzT01BTEJsR01vZEhrL0pjcnpyRDlxL1dRc1N6?=
- =?utf-8?B?SS9TSllJWFA5dlZ5NjFyQllxZitqbHBUZGlrK0dmeFM2Qnk3Y1BRbEdTb2Mw?=
- =?utf-8?B?RmlHZ3d5WTBZQmNqUmdGZEllZGMvbTlLWW12eHJGMi9hMDM3VGgyRnlGb1py?=
- =?utf-8?B?YmRvbzlGZExRM3Rydm8yRFlpMkZUcE4zejBJWWZ4NmJ5TEVSRExkVkpiQ0tO?=
- =?utf-8?B?cDBTU3BBMkJpMW9jVXNha0NmYkxSSGtVNStqMUhWSnMwekhiSWZwOTFDbGtr?=
- =?utf-8?B?SjQzNHhFTXV0Z2JkVmV4QStMZFJUaHpJNDBuUmIxSE9YRExJQ0ZObFhmbjU2?=
- =?utf-8?B?TklnK202a29QbmQxYlY0TmFmR1JZczl4YlNPeld2UFdpOTBrOHpzRWtYK2ZF?=
- =?utf-8?B?M2hIY29jcHJ0ZWJkVU13VmdCazRLM2pqNVlpYVVJY0VSbHZwQ3RiWk5DWVJu?=
- =?utf-8?B?Q0ZZNmsyOUF6VlhFektWNlhZK2hQQUpYN2gyNktmYnlRWmc3S3Q2NDlMNTc3?=
- =?utf-8?B?RXVPNWZzMGh1ejU5MUd2cEYyc2puUEdReDdqazdCcDIwWnFFNTZRQTFLMkVV?=
- =?utf-8?B?NUVuWk9Yamd6QXI1WHdMOVdOanI5OW9lTkw2Mkd5aWo5UTd6YnI4SmVzYlJz?=
- =?utf-8?B?dkFzUmlFdTJQTHRNUVRQbEY4RUJnZERXdTN0UUhXeUFCMVJDeGJkNmU1V1l5?=
- =?utf-8?B?cTNRZkZ0bVF1MWp6WHBaMWE0YkQ1M3FVd2U1Ulg5OWN5My90STFkU0dxaXJx?=
- =?utf-8?B?ZGk1NmRNVjFLSHlCS3VqUS9HbDIrdzVoVWxEbkF4QTVwZVNLc3J2S2hpdW9T?=
- =?utf-8?B?RVREc2pWd1RMaTJSUW9pUDc4d3RKd0wrSFQzcnhwWjhiOUZtOHN5Zi9oVjQy?=
- =?utf-8?B?M0dHOVB2RTIvaktiN1pPVEZDRjlxL0dQMm5YZklXcklub3A4T2VHdkcrMGVR?=
- =?utf-8?Q?S5iTmEJ33330gOL5Lo/B81qF3?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	fbt3a2fdecag1aZqu7qsAw2OzhbhyDNr224XWKnSIfsQ29EufEu47i3X/dt+MYpsNZ8uipdrkX//odvxPza1gte5+nypRor3OLmkYRFRe4PYF//HJgrDg5xAM+i+82hZvwdsO+YYjTiB+DBbCMe3O6q/wEvRJyF+sjcyr75wje7d+6Zl/yXp1FovmodtM8KSkiH+JpirOqZOvfAKSpohYzf5X/XoGghwsZBqdytdHq72jpT24NtauKbmRBh6bV2oEtWKRXmkvUMmHkeDx/JMzquT3y1Q7tCt3IgJCYKc9Ce6k6gHNuk4HG4gvGQSxcUKjmML5YE85cQL1sYnMUzl24tTShn1qWtoL/4z25Q+p5nRl1r/YSQKtNsFEJNw0tHYY6WJiJTy6v+N+eScTeamTTPyxP64jXVw2qnCeWTdl8TjYPj1mOI9yL93HLblfUqf66sRLGuU/BPy9ZJV/pngt2cy3h4oeAN33b79EKdLMd5JjrhoeAi/s6lsRZbBPW9AM4GoRPFIHEpvOZcrlaEGjz/FNBce0kw44EF/vfVBIJLhZyEEDLSuDlX7AFfvTX5pcOVYtywtaFTHNo2tBj70mb9o0I047hHWkCJdQShrwtI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb340898-c97a-4938-0bbc-08dc3e5ce80b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5706.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 04:13:13.3880
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HT9Nv4veGlvQDczAgHcgrp36c1IU91qlxa1nTUCdbvk4JS8376wbAcDpV3PF7MoUwh8ax0IrLdiHySYgyVnHaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7074
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-06_14,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403070027
-X-Proofpoint-GUID: SACGy2AXGcuWAdAV6R61g25valPBsYvO
-X-Proofpoint-ORIG-GUID: SACGy2AXGcuWAdAV6R61g25valPBsYvO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXrmdmP+llh0IFAA--.11885S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3AF48Xr4fWw1UKF17Gw1kAFb_yoWxuFykpF
+	nxKrWfGr48GryDXr43ta1UWr18Jayku3Wxtrs2yF1UZa1DZr4Yqr1UC3srWFyUWFy8Ary7
+	WF4YqrW5t3WDZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jK6wtUUUUU=
+X-CM-SenderInfo: x2kd0wxjhqyxldq6ij2wof0z/1tbi5h2afmVLY5SfTAAAsV
 
+From: Genjian Zhang <zhanggenjian@kylinos.cn>
 
-The problem has been highly inconsistent to reproduce. I apologize
-for the delay in sending out the fix.
+Hello!
 
-<snap>
+We found that 13b2856037a6 ("loop: Check for overflow while configuring loop") lost a unlock loop_ctl_mutex in loop_get_status(...).
+which caused syzbot to report a UAF issue. However, the upstream patch does not have this issue.
+So, we revert this patch and directly apply the unmodified upstream patch.
 
-> $ ./check btrfs/14[6-9] btrfs/15[8-9]
-> FSTYP         -- btrfs
-> PLATFORM      -- Linux/x86_64 debian0 6.8.0-rc5-btrfs-next-151+ #1 SMP
-> PREEMPT_DYNAMIC Mon Feb 19 13:38:37 WET 2024
-> MKFS_OPTIONS  -- /dev/sdc
-> MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
-> 
-> btrfs/146 1s ...  2s
-> btrfs/147 0s ...  1s
-> btrfs/148 2s ...  2s
-> btrfs/149 1s ...  1s
-> btrfs/158 1s ...  0s
-> btrfs/159 20s ... - output mismatch (see
-> /home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad)
->      --- tests/btrfs/159.out 2020-10-26 15:31:57.061207266 +0000
->      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad
-> 2024-02-20 13:51:25.707220763 +0000
->      @@ -1,8 +1,11 @@
->       QA output created by 159
->      +mount: /home/fdmanana/btrfs-tests/scratch_1: wrong fs type, bad
-> option, bad superblock on /dev/mapper/flakey-test, missing codepage or
-> helper program, or other error.
->      +       dmesg(1) may have more information after failed mount system call.
->       File digest before power failure:
->      -f049865ed45b1991dc9a299b47d51dbf  SCRATCH_MNT/foobar
->      +b2e8facfb4795185fadd85707fe78973  SCRATCH_MNT/foobar
->      +umount: /home/fdmanana/btrfs-tests/scratch_1: not mounted.
->      ...
->      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/159.out
-> /home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad'  to see
-> the entire diff)
-> Ran: btrfs/146 btrfs/147 btrfs/148 btrfs/149 btrfs/158 btrfs/159
-> 
+This series of patches was also sent to 4.19.y.
+https://lore.kernel.org/all/20240301013028.2293831-1-zhanggenjian@126.com/
 
-<snap>
+Risk use-after-free as reported by syzbot：
 
-btrfs/159 does
+[   84.669496] ==================================================================
+[   84.670021] BUG: KASAN: use-after-free in __mutex_lock.isra.9+0xc13/0xcb0
+[   84.670433] Read of size 4 at addr ffff88808dba43b8 by task syz-executor.22/14230
+[   84.670885] 
+[   84.670987] CPU: 1 PID: 14230 Comm: syz-executor.22 Not tainted 5.4.270 #4
+[   84.671397] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1kylin1 04/01/2014
+[   84.671927] Call Trace:
+[   84.672085]  dump_stack+0x94/0xc7
+[   84.672293]  ? __mutex_lock.isra.9+0xc13/0xcb0
+[   84.672569]  print_address_description.constprop.6+0x16/0x220
+[   84.672915]  ? __mutex_lock.isra.9+0xc13/0xcb0
+[   84.673187]  ? __mutex_lock.isra.9+0xc13/0xcb0
+[   84.673462]  __kasan_report.cold.9+0x1a/0x32
+[   84.673723]  ? __mutex_lock.isra.9+0xc13/0xcb0
+[   84.673993]  kasan_report+0x10/0x20
+[   84.674208]  __mutex_lock.isra.9+0xc13/0xcb0
+[   84.674468]  ? __mutex_lock.isra.9+0x617/0xcb0
+[   84.674739]  ? ww_mutex_lock_interruptible+0x100/0x100
+[   84.675055]  ? ww_mutex_lock_interruptible+0x100/0x100
+[   84.675369]  ? kobject_get_unless_zero+0x144/0x190
+[   84.675668]  ? kobject_del+0x60/0x60
+[   84.675893]  ? __module_get+0x120/0x120
+[   84.676128]  ? __mutex_lock_slowpath+0x10/0x10
+[   84.676399]  mutex_lock_killable+0xde/0xf0
+[   84.676652]  ? __mutex_lock_killable_slowpath+0x10/0x10
+[   84.676967]  ? __mutex_lock_slowpath+0x10/0x10
+[   84.677243]  ? disk_block_events+0x1d/0x120
+[   84.677509]  lo_open+0x16/0xc0
+[   84.677701]  ? lo_compat_ioctl+0x160/0x160
+[   84.677954]  __blkdev_get+0xb0f/0x1160
+[   84.678185]  ? bd_may_claim+0xd0/0xd0
+[   84.678410]  ? bdev_disk_changed+0x190/0x190
+[   84.678674]  ? _raw_spin_lock+0x7c/0xd0
+[   84.678915]  ? _raw_write_lock_bh+0xd0/0xd0
+[   84.679172]  blkdev_get+0x9b/0x290
+[   84.679381]  ? ihold+0x1a/0x40
+[   84.679574]  blkdev_open+0x1bd/0x240
+[   84.679794]  do_dentry_open+0x439/0x1000
+[   84.680035]  ? blkdev_get_by_dev+0x60/0x60
+[   84.680286]  ? __x64_sys_fchdir+0x1a0/0x1a0
+[   84.680557]  ? inode_permission+0x86/0x320
+[   84.680814]  path_openat+0x998/0x4120
+[   84.681044]  ? stack_trace_consume_entry+0x160/0x160
+[   84.681348]  ? do_futex+0x136/0x1880
+[   84.681568]  ? path_mountpoint+0xb50/0xb50
+[   84.681823]  ? save_stack+0x4d/0x80
+[   84.682038]  ? save_stack+0x19/0x80
+[   84.682253]  ? __kasan_kmalloc.constprop.6+0xc1/0xd0
+[   84.682553]  ? kmem_cache_alloc+0xc7/0x210
+[   84.682804]  ? getname_flags+0xc4/0x560
+[   84.683045]  ? do_sys_open+0x1ce/0x450
+[   84.683272]  ? do_syscall_64+0x9a/0x330
+[   84.683509]  ? entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+[   84.683826]  ? _raw_spin_lock+0x7c/0xd0
+[   84.684063]  ? _raw_write_lock_bh+0xd0/0xd0
+[   84.684319]  ? futex_exit_release+0x60/0x60
+[   84.684574]  ? kasan_unpoison_shadow+0x30/0x40
+[   84.684844]  ? __kasan_kmalloc.constprop.6+0xc1/0xd0
+[   84.685149]  ? get_partial_node.isra.83.part.84+0x1e5/0x340
+[   84.685485]  ? __fget_light+0x1d1/0x550
+[   84.685721]  do_filp_open+0x197/0x270
+[   84.685946]  ? may_open_dev+0xd0/0xd0
+[   84.686172]  ? kasan_unpoison_shadow+0x30/0x40
+[   84.686443]  ? __kasan_kmalloc.constprop.6+0xc1/0xd0
+[   84.686743]  ? __alloc_fd+0x1a3/0x580
+[   84.686973]  do_sys_open+0x2c7/0x450
+[   84.687195]  ? filp_open+0x60/0x60
+[   84.687406]  ? __x64_sys_timer_settime32+0x280/0x280
+[   84.687707]  do_syscall_64+0x9a/0x330
+[   84.687931]  ? syscall_return_slowpath+0x17a/0x230
+[   84.688221]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+[   84.688524] 
+[   84.688622] Allocated by task 14056:
+[   84.688842]  save_stack+0x19/0x80
+[   84.689044]  __kasan_kmalloc.constprop.6+0xc1/0xd0
+[   84.689333]  kmem_cache_alloc_node+0xe2/0x230
+[   84.689600]  copy_process+0x165c/0x72d0
+[   84.689833]  _do_fork+0xf9/0x9a0
+[   84.690032]  __x64_sys_clone+0x17a/0x200
+[   84.690271]  do_syscall_64+0x9a/0x330
+[   84.690496]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+[   84.690800] 
+[   84.690903] Freed by task 0:
+[   84.691081]  save_stack+0x19/0x80
+[   84.691287]  __kasan_slab_free+0x125/0x170
+[   84.691535]  kmem_cache_free+0x7a/0x2a0
+[   84.691774]  __put_task_struct+0x1ec/0x4a0
+[   84.692023]  delayed_put_task_struct+0x178/0x1d0
+[   84.692303]  rcu_core+0x538/0x16c0
+[   84.692512]  __do_softirq+0x175/0x63d
+[   84.692741] 
+[   84.692840] The buggy address belongs to the object at ffff88808dba4380
+[   84.692840]  which belongs to the cache task_struct of size 3328
+[   84.693584] The buggy address is located 56 bytes inside of
+[   84.693584]  3328-byte region [ffff88808dba4380, ffff88808dba5080)
+[   84.694272] The buggy address belongs to the page:
+[   84.694563] page:ffffea000236e800 refcount:1 mapcount:0 mapping:ffff8881838acdc0 index:0x0 compound_mapcount: 0
+[   84.695166] flags: 0x100000000010200(slab|head)
+[   84.695457] raw: 0100000000010200 dead000000000100 dead000000000122 ffff8881838acdc0
+[   84.695919] raw: 0000000000000000 0000000000090009 00000001ffffffff 0000000000000000
+[   84.696375] page dumped because: kasan: bad access detected
+[   84.696705] 
+[   84.696801] Memory state around the buggy address:
+[   84.697089]  ffff88808dba4280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   84.697519]  ffff88808dba4300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   84.697945] >ffff88808dba4380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   84.698371]                                         ^
+[   84.698674]  ffff88808dba4400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   84.699111]  ffff88808dba4480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   84.699537] ==================================================================
+[   84.699965] Disabling lock debugging due to kernel taint
 
-         _scratch_mkfs -O no-holes -n $((64 * 1024)) >>$seqres.full 2>&1
-         _require_metadata_journaling $SCRATCH_DEV
-         _init_flakey
-         _mount_flakey
+Best regards
+Genjian
 
-> [79195.612719] BTRFS: device fsid 10184d7d-3ca9-43c1-a6f8-70b134cff828
-> devid 1 transid 6 /dev/sdc scanned by mkfs.btrfs (3413318)
-> [79195.666279] BTRFS: device fsid 10184d7d-3ca9-43c1-a6f8-70b134cff828
-> devid 1 transid 6 /dev/dm-0 scanned by systemd-udevd (3410982)
+Genjian Zhang (1):
+  Revert "loop: Check for overflow while configuring loop"
 
-Both /dev/sdc and /dev/dm-0 get scanned, and the tempfsid
-gets activated wrongly.
+Martijn Coenen (5):
+  loop: Call loop_config_discard() only after new config is applied
+  loop: Remove sector_t truncation checks
+  loop: Factor out setting loop device size
+  loop: Refactor loop_set_status() size calculation
+  loop: Factor out configuring loop from status
 
-The fix is to add another criterion to check if the device is
-already mounted; then only let the thread update the device path.
-However, I'm not sure if it will fix the original problem
-(update-grub). I have sent an RFC patch v3 for verification.
+Siddh Raman Pant (1):
+  loop: Check for overflow while configuring loop
 
-Thanks,  Anand
+Zhong Jinghua (1):
+  loop: loop_set_status_from_info() check before assignment
 
+ drivers/block/loop.c | 185 ++++++++++++++++++++++++-------------------
+ 1 file changed, 104 insertions(+), 81 deletions(-)
 
-> [79195.695774] BTRFS info (device dm-0): first mount of filesystem
-> 10184d7d-3ca9-43c1-a6f8-70b134cff828
-> [79195.695786] BTRFS info (device dm-0): using crc32c (crc32c-intel)
-> checksum algorithm
-> [79195.695789] BTRFS error (device dm-0): superblock fsid doesn't
-> match fsid of fs_devices: 10184d7d-3ca9-43c1-a6f8-70b134cff828 !=
-> 628aff33-4122-4d77-b2a9-2e9a90f27520
-> [79195.696098] BTRFS error (device dm-0): superblock metadata_uuid
-> doesn't match metadata uuid of fs_devices:
-> 10184d7d-3ca9-43c1-a6f8-70b134cff828 !=
-> 628aff33-4122-4d77-b2a9-2e9a90f27520
-> [79195.696419] BTRFS error (device dm-0): dev_item UUID does not match
-> metadata fsid: 628aff33-4122-4d77-b2a9-2e9a90f27520 !=
-> 10184d7d-3ca9-43c1-a6f8-70b134cff828
-> [79195.696765] BTRFS error (device dm-0): superblock contains fatal errors
-> [79195.697447] BTRFS error (device dm-0): open_ctree failed
-> 
-> It always happens with this patch applied in for-next, and never
-> happens with it reverted.
-> 
->>
+-- 
+2.25.1
+
 
