@@ -1,164 +1,128 @@
-Return-Path: <stable+bounces-27113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB18757D0
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:02:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9488757EA
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B02F1C21464
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76B6C287CC0
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142D5137C45;
-	Thu,  7 Mar 2024 20:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5AB137C5F;
+	Thu,  7 Mar 2024 20:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5lOPuK5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLKfRRvo"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB24137C43
-	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 20:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB72A1369B9;
+	Thu,  7 Mar 2024 20:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709841755; cv=none; b=pS00IyVGj+tGgPXI3RiXf2pAbsJKhPdZnYghZJd7zXPrtmvRAgKbHFHV4vn8EFL397iTLhsjdDYPa3ADTc8bHgjwqien4uYoehlBm0khjr3wlCmsR2oAhb6a4GRMnlg5bhbfVtlO9uTwdJqDf12+yII+L+U6O31+Y1pbvAaqdv0=
+	t=1709841950; cv=none; b=L4sDlatTZUSPuB78uKD8O5kET++yD5AKVlXvX70MRLFr+05kUmCEigt4RXuQ3l607Wsf7jt9yb7WVdZIQ1blmqhp0tqek7jR+Z3FJxldyCDiiauIajpzLKMbgXGv0+jQjfih5bsB0dZxkFHioxxMoJ/F3aw1z2vtx23r1TdV8WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709841755; c=relaxed/simple;
-	bh=dBHrMs2pjMffipgnmu56a/VvK+7UcCZDn3xvMn1i9DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J15aKorMWeqbGkNlbYoa+QxJPf1jDDWxFGH7Z3svS/Rj0RVUuHmT+iDZs+ehwXGWLP9hsC1jRB421oNegYzsXazOZzElrLi2X6DvUXq6MJPKf1Bl5SQRyUImWTD2nkH57E8JE3QdqMcm+2YGT7j88u3vIlcjTuE9PD1DoWFIskI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5lOPuK5; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709841754; x=1741377754;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dBHrMs2pjMffipgnmu56a/VvK+7UcCZDn3xvMn1i9DY=;
-  b=B5lOPuK5Wy6mg19em5h6EBNrj6QFnGBFXnyf6EzX5eDtYbu8ILSKNzsv
-   dI7Nz4f4tRlALmC5kzrm//+Rrajln4jdFSRkusV2F7Rlmsz28ADddut8H
-   GvH8OTbjHEIF9uKbL0Q332HUo7hDqSq1xLlO+4OB+OKB74guVP9nNw6Sf
-   mu3LkepCob3AWlWPnd4zqxUumaDvz75Rxpev6IUtwnWYVlVmqsI9N8lvN
-   WwNeD/wobnL/M0yC+lgswmNaBAPlc9E+r7KVwfBsyx+1VM4XVN+xHsJW3
-   S/0x9D3PuvDRDwtCeAz8dq33Lpl4P1ZGEO/PoIYBB8jy1tsKa9T6Jzn0+
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15945885"
-X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
-   d="scan'208";a="15945885"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 12:02:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
-   d="scan'208";a="10670374"
-Received: from unknown (HELO intel.com) ([10.247.118.98])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 12:02:24 -0800
-Date: Thu, 7 Mar 2024 21:02:17 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>,
-	intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: Re: [PATCH v4 1/3] drm/i915/gt: Disable HW load balancing for CCS
-Message-ID: <ZeodSUrgZXL_pjy0@ashyti-mobl2.lan>
-References: <20240306012247.246003-1-andi.shyti@linux.intel.com>
- <20240306012247.246003-2-andi.shyti@linux.intel.com>
- <20240306234609.GF718896@mdroper-desk1.amr.corp.intel.com>
+	s=arc-20240116; t=1709841950; c=relaxed/simple;
+	bh=78Rsj3O/7ufaekATx69zosteYwT6oeClJL8QONwmeTE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Or+yr7mN76eyfvpDRZJtd2vuTfwWlA9UVezZEQ9dGnfG+yE/EDZpzdvIYWyjLRkktK1gMzdZkug6sU7eGy28SDSdBxzPCPE7MiM4XE3oGl4IxEvaMkWyPgXJvRLxXZfzR5HF8Jy5+LQqQdGq+r1nuCwxCfhZFFKEQrnEZMQYRCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLKfRRvo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F44C433C7;
+	Thu,  7 Mar 2024 20:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709841950;
+	bh=78Rsj3O/7ufaekATx69zosteYwT6oeClJL8QONwmeTE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=FLKfRRvo1oaqVmm36Ci4l/y+mhDJg2A7ME0Dvc2Lr4Vzr5i1i/EtQhRsHG+18jAIj
+	 rvG97J3ZSzhlgBLxNPyqlmEoLSRAtgyOAsoyBBX593XX3XsMnfKMc/A4iJmaXdAiCd
+	 AhaqCOHmB0WfvTwNXEMCiwEHw2laOSaY5mduW5GGDuR+6XOG/CvXhHSNoy99snTzSR
+	 uAC0xy9XWijo6rbgHMyhoK6YQYokkscw96oG/We7m2+kNq9a3nRCWcptWmyYYndU3B
+	 wx+hGU92xPgcifhXHZNnvUvlpS6127tTgb5tpb9vlfheiDq2RgYjztgLKYBV33ILKD
+	 0OjpLYYxwyOiw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240306234609.GF718896@mdroper-desk1.amr.corp.intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 07 Mar 2024 22:05:46 +0200
+Message-Id: <CZNSDUEJ4P9S.235D7ZCOV738N@kernel.org>
+Cc: <peterhuewe@gmx.de>, <LinoSanfilippo@gmx.de>,
+ <p.rosenberger@kunbus.com>, <lukas@wunner.de>, <jgg@ziepe.ca>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] tpm,tpm_tis: Avoid warning splat at shutdown
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Paul Menzel" <pmenzel@molgen.mpg.de>, "Lino Sanfilippo"
+ <l.sanfilippo@kunbus.com>
+X-Mailer: aerc 0.17.0
+References: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
+ <84dd5c01-906c-4e13-9d8c-e5350f718d56@molgen.mpg.de>
+In-Reply-To: <84dd5c01-906c-4e13-9d8c-e5350f718d56@molgen.mpg.de>
 
-Hi Matt,
-
-On Wed, Mar 06, 2024 at 03:46:09PM -0800, Matt Roper wrote:
-> On Wed, Mar 06, 2024 at 02:22:45AM +0100, Andi Shyti wrote:
-> > The hardware should not dynamically balance the load between CCS
-> > engines. Wa_14019159160 recommends disabling it across all
-> > platforms.
-> > 
-> > Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> > Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> > Cc: Matt Roper <matthew.d.roper@intel.com>
-> > Cc: <stable@vger.kernel.org> # v6.2+
+On Tue Mar 5, 2024 at 5:43 PM EET, Paul Menzel wrote:
+> Dear Lino,
+>
+>
+> Thank you for the patch.
+>
+> Am 01.02.24 um 12:36 schrieb Lino Sanfilippo:
+> > If interrupts are not activated the work struct 'free_irq_work' is not
+> > initialized. This results in a warning splat at module shutdown.
+> >=20
+> > Fix this by always initializing the work regardless of whether interrup=
+ts
+> > are activated or not.
+> >=20
+> > cc: stable@vger.kernel.org
+> > Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhand=
+led IRQs")
+> > Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.o=
+rg/
+> > Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 > > ---
-> >  drivers/gpu/drm/i915/gt/intel_gt_regs.h     | 1 +
-> >  drivers/gpu/drm/i915/gt/intel_workarounds.c | 5 +++++
-> >  2 files changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> > index 50962cfd1353..cf709f6c05ae 100644
-> > --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> > +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> > @@ -1478,6 +1478,7 @@
-> >  
-> >  #define GEN12_RCU_MODE				_MMIO(0x14800)
-> >  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
-> > +#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
-> >  
-> >  #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
-> >  #define   CHV_FGT_DISABLE_SS0			(1 << 10)
-> > diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> > index d67d44611c28..a2e78cf0b5f5 100644
-> > --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> > +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> > @@ -2945,6 +2945,11 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
-> >  
-> >  		/* Wa_18028616096 */
-> >  		wa_mcr_write_or(wal, LSC_CHICKEN_BIT_0_UDW, UGM_FRAGMENT_THRESHOLD_TO_3);
-> > +
-> > +		/*
-> > +		 * Wa_14019159160: disable the automatic CCS load balancing
-> 
-> I'm still a bit concerned that this doesn't really match what this
-> specific workaround is asking us to do.  There seems to be an agreement
-> on various internal email threads that we need to disable load
-> balancing, but there's no single specific workaround that officially
-> documents that decision.
-> 
-> This specific workaround asks us to do a bunch of different things, and
-> the third item it asks for is to disable load balancing in very specific
-> cases (i.e., while the RCS is active at the same time as one or more CCS
-> engines).  Taking this workaround in isolation, it would be valid to
-> keep load balancing active if you were just using the CCS engines and
-> leaving the RCS idle, or if balancing was turned on/off by the GuC
-> scheduler according to engine use at the moment, as the documented
-> workaround seems to assume will be the case.
-> 
-> So in general I think we do need to disable load balancing based on
-> other offline discussion, but blaming that entire change on
-> Wa_14019159160 seems a bit questionable since it's not really what this
-> specific workaround is asking us to do and someone may come back and try
-> to "correct" the implementation of this workaround in the future without
-> realizing there are other factors too.  It would be great if we could
-> get hardware teams to properly document this expectation somewhere
-> (either in a separate dedicated workaround, or in the MMIO tuning guide)
-> so that we'll have a more direct and authoritative source for such a
-> large behavioral change.
+> >   drivers/char/tpm/tpm_tis_core.c | 3 +--
+> >   1 file changed, 1 insertion(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis=
+_core.c
+> > index 1b350412d8a6..64c875657687 100644
+> > --- a/drivers/char/tpm/tpm_tis_core.c
+> > +++ b/drivers/char/tpm/tpm_tis_core.c
+> > @@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip=
+ *chip, u32 intmask,
+> >   	int rc;
+> >   	u32 int_status;
+> >  =20
+> > -	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+> > -
+> >   	rc =3D devm_request_threaded_irq(chip->dev.parent, irq, NULL,
+> >   				       tis_int_handler, IRQF_ONESHOT | flags,
+> >   				       dev_name(&chip->dev), chip);
+> > @@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct =
+tpm_tis_data *priv, int irq,
+> >   	priv->phy_ops =3D phy_ops;
+> >   	priv->locality_count =3D 0;
+> >   	mutex_init(&priv->locality_count_mutex);
+> > +	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+> >  =20
+> >   	dev_set_drvdata(&chip->dev, priv);
+>
+> This is commit d6fb14208e22 in jarkko/next.
+>
+> I tested this patch on top of Linux 6.8-rc7 on a Dell OptiPlex 5055 [1]=
+=20
+> and it fixes the issue there too.
 
-On one had I think you are right, on the other hand I think this
-workaround has not properly developed in what we have been
-describing later.
+Thanks!
 
-Perhaps, one solution would be to create a new generic workaround
-for all platforms with more than one CCS and put everyone at
-peace. But I don't know the process.
+If you don't mind I'll add your tested-by to the commit before I send
+my next pull request to Linus?
 
-Are you able to help here? Or Joonas?
-
-Thanks, Matt!
-Andi
+BR, Jarkko
 
