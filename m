@@ -1,104 +1,133 @@
-Return-Path: <stable+bounces-27099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E39875506
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 18:19:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A58187551D
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 18:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B74B1F22AC1
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A008B1F22F6F
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E58130AF3;
-	Thu,  7 Mar 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E61C130AF7;
+	Thu,  7 Mar 2024 17:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7kqBOCz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ayz90ujO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B17130AD7;
-	Thu,  7 Mar 2024 17:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7E912FF90
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 17:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709831986; cv=none; b=IXylt/pxChkBm9CyFoRhiG7InN2Itncn40FNNSSGRTx6WLkLuxWoDTgb1bJRE9kQWXemxXmhJxk8aLp4yzuwFtXKbrQYv26++ax2wY3noqu4xszXRPh0wNL9RRdM9CT5s8gaOWm76pjLD2fExNmH6q4i9g2pwS500k+0VT40VLs=
+	t=1709832386; cv=none; b=O5Q39Tw1qzkPbD71WEUNsXfGo9P41rvzrPfwC5c6nQC9yqsMeBcPFoAmPr5fK+/FqHNgXmhUa76OieYOXzEZ5S7iNfKRaRU55/+jHovlopIhK93h0qOtMSCgmPFzjRqC0pL1A+Aq3lTSSJM3gaoIUtHvrlWSQY7uJQdWn345CgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709831986; c=relaxed/simple;
-	bh=H4bD+dUV3U31Y6uSHKD7pEgNk64+g4AzzHDsO0LuDiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=baVzncCwVK95FuUZXYnlpE2hPf8da3jLMuy5xuC1uJjSnbeZLv0rWMzBkC9mEZadjy9gM8ISlH7wvOJvzGOlIlaI73UECGpXhSOHU7+dvKD0ZC6ZXQLm9dP1fm5L6pJvh4WdShfABluo6D1HWyVS76gWTfXihHpXI3Z0yAxYQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7kqBOCz; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1dd3bdb6e9eso8355565ad.3;
-        Thu, 07 Mar 2024 09:19:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709831984; x=1710436784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ANZKvRuKEyk1DbIC8r+j6UA/ZQWjgMtuId0iZKV/RPY=;
-        b=M7kqBOCzUhRDt3LYlJEBzKc1TOtEMumeX4diDCt5YyBtlzOKTF7m1SHx/grvKBrsO6
-         f+dveaWuj7bQ0BkBOBoLZb9P1G/4yVwSuXXQG+2LzzaE0VvyfzpbiUbw8g3ZE2O9SN/+
-         taueVrUx8gXr1fXqn+Y+MTXrhtipYT27Ab24CmjA4x+Lz+Yuzn1cYlrvxVxA8nyTPi9x
-         bijDgw4u/qyuqVY2P1Dz4DPkzhDMm002lViliR9SBXcIk9r7NmLMGIIsU7y5gpavdyGO
-         g/XVhV/QYLJYMQ54Kzdi8usM1++u9xxwjkdwg/tTxWSnbH7mwlCz0RhjftuZSRvCz6Xp
-         sbiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709831984; x=1710436784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ANZKvRuKEyk1DbIC8r+j6UA/ZQWjgMtuId0iZKV/RPY=;
-        b=Ow0tuLdxbraqT0NsgI+MDfM1sQR7rlcvtg83NRBiUddN2DzLpxU4HDvxtfVizuk+sx
-         Hu+aR0JJtwrtg9VL9TNmVBy4yMQoSNTzS6vK8q4ryelRv0SyWVVxVu/Xhtvd0aVhPt6y
-         WsNb1xF0jZJHEsDfIjAmLu7gaeQJgHDJ3iI2YnOq2z8kF6oQPcGZ71HFg15UkP0EvDUA
-         VBrhT9GZjjB6h5dNFqk1e+Fyg8zmZy1wxNBRfp8mfwwcwKqXjZak/HXTuVdzuoSJzqru
-         XryDoMsqYYTjoi84vcXsXismVycCmde1U8FpO7KYorC5pN158hCsGPMIZCO3adF275XH
-         dJWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFHGXABsNaOwc2ifLO2YLMrEl5Plg/orQTlzw6uZYRhL0JGLhkgCxSqyaFRhO726wti2SHCgwfRwcuvdbTkA5Kap+egCFUK3inDoyNmcIEerA1XO2zIGyobUQjEr6ijQwPAxaaqPJJssE+zJxibCq9roVo7XICppYwQQLfJ1LFjao=
-X-Gm-Message-State: AOJu0YwsQSHm8wgWmdQfVg45MxFk/K1c6peQ/Y1KGOupOBqt87v3DHrJ
-	CQ2V3pIjbT0TlfQIUTCFu/EqRS+b32PgfZHJBOb+qOaFsJAAxbZCvYBN2TBM
-X-Google-Smtp-Source: AGHT+IFos/XYvn4pB+sK/6cL2Y948dHXQlJpLckBVtmirW9ysYevsP99gOTZsPgHAYJgQptZYTgINQ==
-X-Received: by 2002:a17:903:2341:b0:1dc:b3ba:40aa with SMTP id c1-20020a170903234100b001dcb3ba40aamr9700353plh.47.1709831983749;
-        Thu, 07 Mar 2024 09:19:43 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e5-20020a170902784500b001dcdf24e32csm14466846pln.111.2024.03.07.09.19.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 09:19:42 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 7 Mar 2024 09:19:41 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Jean Delvare <jdelvare@suse.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Jon Nettleton <jon@solid-run.com>, linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Rabeeh Khoury <rabeeh@solid-run.com>
-Subject: Re: [PATCH] hwmon: (amc6821) add of_match table
-Message-ID: <534a40d5-df07-466c-a27d-030c5bf93070@roeck-us.net>
-References: <20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com>
+	s=arc-20240116; t=1709832386; c=relaxed/simple;
+	bh=4VKRPFROZxhfecLCGFPUt9H94MPeeXyOxYoh30MmVek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qgthapmpf5TcEAFReGUbPCQnrKM0yRAGQ63U/t4xkF71RybjQotutln8NBQ+ajMtvyc+RmM0EzXvauPiW/k91MV38Gr248WyKpCGpIWIJuja0WlpP44OMozT1wL6pAVoEstHZdQZIg6nUQSiUDHx6mnDCkEwaxZw4xHqEvfVePc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ayz90ujO; arc=none smtp.client-ip=91.218.175.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <49ca7920-d429-434a-aede-1a200e8d5ce8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1709832381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=typJzsyCZ7d0N2AWtsRnRkkZEuqyJ1S5uCH3hrAdMlA=;
+	b=Ayz90ujO9VGGPBPBUzhJG/0z3frrtSSosfU6bd3HdfMioTtavGW2EUkG1Ej2q8KtTF8siq
+	RiawcerkWVH1IqmUaJplOxSyFkFQ6Pu5Pbk+Kpe8G0KcewTfjN36YOsuCYE3oGj2f4d4Q5
+	tQ5GrYK9qaIeKxKrjhRKtUdwZsGwHTM=
+Date: Thu, 7 Mar 2024 12:26:00 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com>
+Subject: Re: [RESEND2 PATCH net v4 2/2] soc: fsl: qbman: Use raw spinlock for
+ cgr_lock
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge
+ <roy.pledge@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Camelia Groza <camelia.groza@nxp.com>,
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20240222170749.2607485-1-sean.anderson@linux.dev>
+ <20240222170749.2607485-2-sean.anderson@linux.dev>
+ <53b401d7-934c-4937-ab83-6732af47668d@csgroup.eu>
+ <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
+ <6764b9c5-b61a-4f20-a41a-125d5015a3e6@linux.dev>
+ <63ab7b62-853c-4996-a493-465283252d5a@csgroup.eu>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <63ab7b62-853c-4996-a493-465283252d5a@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Mar 07, 2024 at 12:06:58PM +0100, Josua Mayer wrote:
-> Add of_match table for "ti,amc6821" compatible string.
-> This fixes automatic driver loading by userspace when using device-tree,
-> and if built as a module like major linux distributions do.
+On 3/5/24 17:18, Christophe Leroy wrote:
 > 
-> While devices probe just fine with i2c_device_id table, userspace can't
-> match the "ti,amc6821" compatible string from dt with the plain
-> "amc6821" device id. COnsequently kernel module ca not be loaded.
+> 
+> Le 05/03/2024 à 19:14, Sean Anderson a écrit :
+>> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>> 
+>> Hi,
+>> 
+>> On 2/23/24 11:02, Sean Anderson wrote:
+>>> On 2/23/24 00:38, Christophe Leroy wrote:
+>>>> Le 22/02/2024 à 18:07, Sean Anderson a écrit :
+>>>>> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>>>>
+>>>>> cgr_lock may be locked with interrupts already disabled by
+>>>>> smp_call_function_single. As such, we must use a raw spinlock to avoid
+>>>>> problems on PREEMPT_RT kernels. Although this bug has existed for a
+>>>>> while, it was not apparent until commit ef2a8d5478b9 ("net: dpaa: Adjust
+>>>>> queue depth on rate change") which invokes smp_call_function_single via
+>>>>> qman_update_cgr_safe every time a link goes up or down.
+>>>>
+>>>> Why a raw spinlock to avoid problems on PREEMPT_RT, can you elaborate ?
+>>>
+>>> smp_call_function always runs its callback in hard IRQ context, even on
+>>> PREEMPT_RT, where spinlocks can sleep. So we need to use raw spinlocks
+>>> to ensure we aren't waiting on a sleeping task. See the first bug report
+>>> for more discussion.
+>>>
+>>> In the longer term it would be better to switch to some other
+>>> abstraction.
+>> 
+>> Does this make sense to you?
+> 
+> Yes that fine, thanks for the clarification. Maybe you can explain that 
+> in the patch description in case you send a v5.
 
-Applied, after cleaning up the last sentence above.
+Hm, I thought I put this description in the commit message already.
+Maybe something like
 
-Guenter
+| smp_call_function always runs its callback in hard IRQ context, even on
+| PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
+| for cgr_lock to ensure we aren't waiting on a sleeping task.
+| 
+| Although this bug has existed for a while, it was not apparent until
+| commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
+| which invokes smp_call_function_single via qman_update_cgr_safe every
+| time a link goes up or down.
+
+would be clearer.
+
+--Sean
 
