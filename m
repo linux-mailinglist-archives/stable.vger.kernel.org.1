@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-27090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B546C8753C7
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:01:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116608753C9
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E700F1C22CB3
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 16:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2B71F23C38
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 16:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7BD12F380;
-	Thu,  7 Mar 2024 16:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3C512D765;
+	Thu,  7 Mar 2024 16:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hh86tQZO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FT5Fv8y1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8FF12AACC
-	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 16:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC18E1EEEA
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 16:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709827292; cv=none; b=lldOeJis2TWPV+15NJWGxRoKiYudHddmix4cKKWf/5UP7p7061o4J75TPSrcOmM0UhF0aVohi7hV4edgMl0MnxvnfFJYSLfgfEZILJSMn42wByjTzDH0TIoxn54H+W493/Wo/gmRV6kLghxMQUD2iJrRk7DILgqUIYOTOy9uJD0=
+	t=1709827337; cv=none; b=uIA0eAiZGMIlxfQcKgAtTwfAnw85pbrl66GI8lzJh51HbrdT/7k+eohrwrfaT/hCWuEsCwJNJZq3+LSVw6QHsbXZoNJ0aZD6Z8RUYikpHlBmXJcpNM8NPfC/OnKcyx5NF7dB4M2QvH7TfEiBL2Z4daUFAg4G3ZPkj2STzOzj7Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709827292; c=relaxed/simple;
-	bh=YOzPpMwoSv8pvHXe4H+QzVG2u4UaYCqrBw6pxUbYFEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HsLPB/NqvsGS6A3zDytOeZX8Uw9rk/1Ac1Vwa+zhuMAbL570himaXwiUroE/5KJKGMm7xSMRwqI+RPjMP8E8ciCqFQDkV5+jrONktRMRynDXbqrHo70EZI5uG6zV61HM0IkZOcLeeSx3/Pwn7jGn0SH2gid5nnHvsZrJ9g6QomY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hh86tQZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11160C433C7;
-	Thu,  7 Mar 2024 16:01:29 +0000 (UTC)
+	s=arc-20240116; t=1709827337; c=relaxed/simple;
+	bh=1loEKb5ElTzqia1SThsslt6J7tbaglMc0a5d86yh8Cw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QeOKz+EsT2sPqxny4xDWdPMFMsEyh8uUk5ZSbAsEbKUxb6ngYje3ZvekY2Z481jCcU5xz6fr+/S/jpldpDecgvmt8uSGH4q5qa3daOUioaJMN8m2YtK0Mpl8CY9AYx9PiDIDDNR1x7Q5gURihBwUO4PjtSJnWoS7XDsDFjVyluc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FT5Fv8y1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825A4C433C7;
+	Thu,  7 Mar 2024 16:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709827291;
-	bh=YOzPpMwoSv8pvHXe4H+QzVG2u4UaYCqrBw6pxUbYFEM=;
+	s=k20201202; t=1709827337;
+	bh=1loEKb5ElTzqia1SThsslt6J7tbaglMc0a5d86yh8Cw=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hh86tQZOGZuDyx+/jGTUbUkRICOApUBA7oWQZlOcytfr12Qh5En2dMxoijmrT/77e
-	 OuM7QKV0/SXndlJwUXiYNAotWzRC66NFdYdwdni4afDVRxDztbEmmW+Ua1ifnIHcw+
-	 9cApa0VkZe3wloFiiX/xLtU1Jf3LeELJ/x0zttGN0We/oXUycCAkVcPbKCSmVuZ29t
-	 1W3lQKBCeJ/HHyZnpf/vyihmF4kkbil8i9OEpLHO8uqmW6Vz/MusomePCf7hwgPUrZ
-	 yWX40/4x7DxYdV1B3Lp9FcY2zux28C/e+7wLx0rcAQTR7kQQ5nFRIljkfhvktgAqI0
-	 bkR52S/Hq3PRw==
+	b=FT5Fv8y1+bDkF81RKUPRQ+Wbb+RKD0OgG/NUT+ImjhU8i/7SAhhz0O1+W/+pMv1Wm
+	 cKW7BzTHBdgjodlMXYO22pVkwLkGRfFY565oHHl32giSU6t4LzNm6uAsFXPcxE5xiS
+	 CmEuLf/gwHf5v4D7tZWruN6NTv2wU0SwzUsPKolsfwmTzPuu3W1EdFunTroDKCfin+
+	 5eQovCBhR1f7uCEgxE8BkP0ZKQqNGC/z9BBwG3UmhSRNiIms4L7tevx+/gZCMC97O0
+	 PzNvisfvfrj6EfqUAhcUL8YvTS9t7ykSPgFcPN92jWpZTxmxKX/U94MY6prtOVSjDD
+	 LpcTve5B4X0Cw==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org
 Cc: stable@vger.kernel.org,
@@ -49,9 +49,9 @@ Cc: stable@vger.kernel.org,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 1/1] tls: fix race between tx work scheduling and socket close
-Date: Thu,  7 Mar 2024 16:01:21 +0000
-Message-ID: <20240307160121.914736-1-lee@kernel.org>
+Subject: [PATCH 5.4 1/1] tls: fix race between tx work scheduling and socket close
+Date: Thu,  7 Mar 2024 16:02:08 +0000
+Message-ID: <20240307160208.915314-1-lee@kernel.org>
 X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,10 +86,10 @@ Signed-off-by: Lee Jones <lee@kernel.org>
  1 file changed, 6 insertions(+), 10 deletions(-)
 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 46f1c19f7c60b..25a408206b3e0 100644
+index 910da98d6bfb3..58d9b5c06cf89 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -443,7 +443,6 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
+@@ -440,7 +440,6 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
  	struct scatterlist *sge;
  	struct sk_msg *msg_en;
  	struct tls_rec *rec;
@@ -97,7 +97,7 @@ index 46f1c19f7c60b..25a408206b3e0 100644
  	int pending;
  
  	rec = container_of(aead_req, struct tls_rec, aead_req);
-@@ -475,8 +474,12 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
+@@ -472,8 +471,12 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
  		/* If received record is at head of tx_list, schedule tx */
  		first_rec = list_first_entry(&ctx->tx_list,
  					     struct tls_rec, list);
@@ -112,7 +112,7 @@ index 46f1c19f7c60b..25a408206b3e0 100644
  	}
  
  	spin_lock_bh(&ctx->encrypt_compl_lock);
-@@ -485,13 +488,6 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
+@@ -482,13 +485,6 @@ static void tls_encrypt_done(struct crypto_async_request *req, int err)
  	if (!pending && ctx->async_notify)
  		complete(&ctx->async_wait.completion);
  	spin_unlock_bh(&ctx->encrypt_compl_lock);
