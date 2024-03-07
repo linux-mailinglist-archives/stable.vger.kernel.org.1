@@ -1,95 +1,69 @@
-Return-Path: <stable+bounces-27081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4583C874F09
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:29:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B03874F12
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DBA1F22D48
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E39DB20CC4
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1EB12AAFF;
-	Thu,  7 Mar 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F180C12BF0B;
+	Thu,  7 Mar 2024 12:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FeaVX8Pz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEV7sem3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C624B12AAE5;
-	Thu,  7 Mar 2024 12:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A8A25767;
+	Thu,  7 Mar 2024 12:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709814564; cv=none; b=BKgLETGatcfaBI6FMMER5iQAoCRT5aCib29DMlJFlqdCGpskyb7Tx9fxfnuauX/uwh5qJO/DZKM/sbl3G8A42lLv24/f7ZZaCTak8NuqinOEJKGjIMaIXB5kzOTW4o4S6haKhVN3p6fInJV9df0iK9KBYd/7CZC5P9IYl4ryyOU=
+	t=1709814616; cv=none; b=qn+igGtjob6alRt6oqPddbrKWunCpcXd27xqJx5UXg/VyC08m79GrlrLt1hdGK6p+0efJy7NX8oYcTntzBTka6ajRDNVUUUfrJ1ohk8GBLkXk6EzAs4qLUeixaU8pKnV5/rX3xb4/gTzXlw901RfimDLIklzhySM1hf/JMpB5E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709814564; c=relaxed/simple;
-	bh=TXEiZlFrI3O3jEy5Fg8AeV6L0c2a37TvABNwO3/ujww=;
+	s=arc-20240116; t=1709814616; c=relaxed/simple;
+	bh=rDREcHbUEOzK/GRMRvP1rJ34opqMAk4QFuEjuF/UFz0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NSvqJ4L5IhlPg/DnngGLgm7LACPGqOz2b4IaASKGGlNQfzJZ6SZ5qYmsiiDQvGUZ5/dezUdCsBb4y2ZYdcvGRrrRLUBzCcku7MHCKAUJfhO5dw6K/A0mZm6QOoxvrq1D/ZCCC0CZfTgnGVp+YLt+XXokfiG+7HiLV+bRNVP10qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FeaVX8Pz; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-512b3b04995so608215e87.3;
-        Thu, 07 Mar 2024 04:29:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709814561; x=1710419361; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i63ZUY7XKpQyXAHueT3y2cbAVNLsMRCCki1KAQkz850=;
-        b=FeaVX8Pz2z86Zd8UN4Yk9VOBSa/if4g0MSQf7eaD6o/VOSjOOXC0TwVRGw91GkERsr
-         Cd+hdo10vB8JQ5+lVDI1VKhC99uHqqzRJK3iFQLD2KNRJ2CD0fgEjCrtSpNoREFIJ3rb
-         Ku83GZxlEphqNHAvn/vsJfsJwhI1PZCqd1HPjOsx/g4L4Flb+ZYlBHdRB0xFsoAI9stp
-         6BQze9SSWch2iSIkO/Ff2j+RPNKqwmSY69O7lyCH41hchTHfzge92niYarpjS0qIApR1
-         pfGnK5oF7TQONZWxXo6EqGQYe/6UYY+YpV10lkcY8iE95jTR5eFwhXPWlC7mDOG34k82
-         sO2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709814561; x=1710419361;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i63ZUY7XKpQyXAHueT3y2cbAVNLsMRCCki1KAQkz850=;
-        b=UyKny6NVnIkhNtYU2DJRUU820tgmXAjoaYBVW6aVH4YDxW5JSHp0Y7Y4sMW+wtTXvU
-         IHDifZ2LLRIXCQhAXLeOdc1NCa1kGqJ7jFW6rg4C5UmAv5Vm/kNapfmT6s4fydFYnmzz
-         Q/BStMnNzMMU3X7+4LjtFPCVXWjM98XZ0/pO84KLEN7NgfDy1pvrblLVJfHPMXxrrPOz
-         u51bHsFtSTUWDCC/ItX0QnD+NI2wtAbjFFeTCJVzK/T3DnIUSOJfvEPpbr+q0w8VSvlo
-         u0qWj1htXc/haKlF+pFnvY4d9jjvLOWnfMZ7OCWh3KmJmCP8RuQHwxeyM8lA3SxTBBzd
-         CN5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVddjhySDUqtRyVqzRXuGS1mLIQD/pYxUQ9InnNpd1AR/lxFEF8xmTOBj+YTQWMtPWIlDow5xrt60TTpR7Cqf9D2E8vYkOnjQ/b5UrmSd0v+NRRPRq70QsiX/S9i/2GIsw2FwQuSh/VNkhz6QiTJE0LJzb3wHB8krauEw9PMcBhtA==
-X-Gm-Message-State: AOJu0Yy2Pb0kIkMhamoCvQR4OoEDYlnpSmCLuxm87XcuznW1c5ZnIQmc
-	PV45iyMdayTzbbvpRPAzHlEu8rMwTuPaQsuAWNQshUa01YBczuBp
-X-Google-Smtp-Source: AGHT+IHelcR5ZOyVmkbwCwQ8QjJfDVtAw8aDRRZ7Hsnxo1rdcGIXHa1CI9IXIdmB4PvykPUvOGmiQA==
-X-Received: by 2002:a05:6512:484e:b0:513:5eb5:625f with SMTP id ep14-20020a056512484e00b005135eb5625fmr1204005lfb.31.1709814560578;
-        Thu, 07 Mar 2024 04:29:20 -0800 (PST)
-Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
-        by smtp.gmail.com with ESMTPSA id lo2-20020a170906fa0200b00a45a687b52asm2925721ejb.213.2024.03.07.04.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 04:29:20 -0800 (PST)
-Message-ID: <c0f7ea40a2b1abc22242a892e162e4511a7c99f1.camel@gmail.com>
-Subject: Re: [PATCH v5 1/2] driver core: Introduce device_link_wait_removal()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>, Lizhi Hou
- <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
-  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Thu, 07 Mar 2024 13:29:19 +0100
-In-Reply-To: <20240307131623.467e1def@bootlin.com>
-References: <20240307111036.225007-1-herve.codina@bootlin.com>
-	 <20240307111036.225007-2-herve.codina@bootlin.com>
-	 <94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
-	 <20240307131623.467e1def@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+	 Content-Type:MIME-Version; b=CuR3nodzzeR/EdA7wCt8wKs6U6Mg/0Stnfbz6leZ4QZGVcO7E+wkgZA8k7X061zwLjrPZ9fDaqZFXlzWVjPGtE8rpGB2eV0uCtpW08FV8pUDPeyZnoxIfdEdaB13Wi8aJ+51PWA8mKDCA0AnQLmCBItupCZANS7BV3TRksscHr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEV7sem3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF29DC43394;
+	Thu,  7 Mar 2024 12:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709814616;
+	bh=rDREcHbUEOzK/GRMRvP1rJ34opqMAk4QFuEjuF/UFz0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=KEV7sem3uj1du8/q8zQyNfD6WMPH4KOhot9VPJZWoEgngnHdEilntaX8A9O366AtM
+	 wYPkCvr0AAzUdivTWporCO9gQ3PF49+BiPw52fRh/F3IVLRgT0iufeYK805/0qizau
+	 8POyBzH/WzCVn+tgfFoCYBdl2lp3wV7ClMVf141MVIyRUL2LEx/4kVffo6II6FVxII
+	 vFyg3k3zbxEaymwEzzfrgc/9jhDShNvKqdCHJ/3d1cJyQeoBX5k9E3wF4oAKjk1+6W
+	 IbG5SccxiJD/fxoG9vpVHo73HmfvEtuSSKbw2dwqHbisQpvKnt1q/ALobQ+96VL6NP
+	 nQ+USdrv2xsdw==
+Message-ID: <9e8223c289a4d05cdbbb21c79e5a2439e2dcb5b1.camel@kernel.org>
+Subject: Re: [PATCH stable 6.6 and 6.7] NFS: Fix data corruption caused by
+ congestion.
+From: Jeff Layton <jlayton@kernel.org>
+To: NeilBrown <neilb@suse.de>
+Cc: stable@vger.kernel.org, Trond Myklebust
+ <trond.myklebust@hammerspace.com>,  Anna Schumaker <anna@kernel.org>,
+ linux-nfs@vger.kernel.org, Dan Aloni <dan.aloni@vastdata.com>
+Date: Thu, 07 Mar 2024 12:30:14 +0000
+In-Reply-To: <170981170160.13576.347273159851012933@noble.neil.brown.name>
+References: <170907621128.24797.4390391329078744015@noble.neil.brown.name>
+	, <cfec488eccfc3469d18dd94b05a00919cc152113.camel@kernel.org>
+	 <170981170160.13576.347273159851012933@noble.neil.brown.name>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxwn8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1WvegyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqVT2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtVYrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8snVluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQcDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQfCBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sELZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BBMBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/
+	r0kmR/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2BrQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRIONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZWf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQOlDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7RjiR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27XiQQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBMYXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9qLqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoac8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3FLpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx
+	3bri75n1TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y+jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5dHxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBMBAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4hN9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPepnaQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQRERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8EewP8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0XzhaKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyA
+	nLqRgDgR+wTQT6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7hdMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjruymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItuAXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfDFOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbosZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDvqrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51asjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qGIcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbLUO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0
+	b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSUapy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5ddhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7eflPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7BAKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuac
+	BOTtmOdz4ZN2tdvNgozzuxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9JDfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRDCHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1gYy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVVAaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJOaEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhpf8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+mQZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65ke5Ag0ETpXRPAEQAJkVmzCmF+IEenf9a2nZRXMluJohnfl2wCMmw5qNzyk0f+mYuTwTCpw7BE2H0yXk4ZfAuA+xdj14K0A1Dj52j/fKRuDqoNAhQe0b6ipo85Sz98G+XnmQOMeFVp5G1Z7r/QP/nus3mXvtFsu9lLSjMA0cam2NLDt7vx3l9kUYlQBhyIE7/DkKg+3fdqRg7qJoMHNcODtQY+n3hMyaVpplJ/l0DdQDbRSZi5AzDM3DWZEShhuP6/E2LN4O3xWnZukEiz688d1ppl7vBZO9wBql6Ft9Og74diZrTN6lXGGjEWRvO55h6ijMsLCLNDRAVehPhZvSlPldtUuvhZLAjdWpwmzbRIwgoQcO51aWeKthpcpj8feDdKdlVjvJO9fgFD5kqZ
+	QiErRVPpB7VzA/pYV5Mdy7GMbPjmO0IpoL0tVZ8JvUzUZXB3ErS/dJflvboAAQeLpLCkQjqZiQ/DCmgJCrBJst9Xc7YsKKS379Tc3GU33HNSpaOxs2NwfzoesyjKU+P35czvXWTtj7KVVSj3SgzzFk+gLx8y2Nvt9iESdZ1Ustv8tipDsGcvIZ43MQwqU9YbLg8k4V9ch+Mo8SE+C0jyZYDCE2ZGf3OztvtSYMsTnF6/luzVyej1AFVYjKHORzNoTwdHUeC+9/07GO0bMYTPXYvJ/vxBFm3oniXyhgb5FtABEBAAGJAh8EGAECAAkFAk6V0TwCGwwACgkQAA5oQRlWghXhZRAAyycZ2DDyXh2bMYvI8uHgCbeXfL3QCvcw2XoZTH2l2umPiTzrCsDJhgwZfG9BDyOHaYhPasd5qgrUBtjjUiNKjVM+Cx1DnieR0dZWafnqGv682avPblfi70XXr2juRE/fSZoZkyZhm+nsLuIcXTnzY4D572JGrpRMTpNpGmitBdh1l/9O7Fb64uLOtA5Qj5jcHHOjL0DZpjmFWYKlSAHmURHrE8M0qRryQXvlhoQxlJR4nvQrjOPMsqWD5F9mcRyowOzr8amasLv43w92rD2nHoBK6rbFE/qC7AAjABEsZq8+TQmueN0maIXUQu7TBzejsEbV0i29z+kkrjU2NmK5pcxgAtehVxpZJ14LqmN6E0suTtzjNT1eMoqOPrMSx+6vOCIuvJ/MVYnQgHhjtPPnU86mebTY5Loy9YfJAC2EVpxtcCbx2KiwErTndEyWL+GL53LuScUD7tW8vYbGIp4RlnUgPLbqpgssq2gwYO9m75FGuKuB2+2bCGajqalid5nzeq9v7cYLLRgArJfOIBWZrHy2m0C+pFu9DSuV6SNr2dvMQUv1V58h0FaSOxHVQnJdnoHn13g/CKKvyg2EMrMt/EfcXgvDwQbnG9we4xJiWOIOcsvrWcB6C6lWBDA+In7w7SXnnok
+	kZWuOsJdJQdmwlWC5L5ln9xgfr/4mOY38B0U=
+Content-Type: text/plain; charset="ISO-8859-15"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
@@ -99,158 +73,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-03-07 at 13:16 +0100, Herve Codina wrote:
-> Hi Nuno,
+On Thu, 2024-03-07 at 22:41 +1100, NeilBrown wrote:
+> On Thu, 07 Mar 2024, Jeff Layton wrote:
+> > On Wed, 2024-02-28 at 10:23 +1100, NeilBrown wrote:
+> > > when AOP_WRITEPAGE_ACTIVATE is returned (as NFS does when it detects
+> > > congestion) it is important that the folio is redirtied.
+> > > nfs_writepage_locked() doesn't do this, so files can become corrupted=
+ as
+> > > writes can be lost.
+> > >=20
+> > > Note that this is not needed in v6.8 as AOP_WRITEPAGE_ACTIVATE cannot=
+ be
+> > > returned.  It is needed for kernels v5.18..v6.7.  Prior to 6.3 the pa=
+tch
+> > > is different as it needs to mention "page", not "folio".
+> > >=20
+> >=20
+> > Neil, I have a question about the above statement. In Linus's tree as o=
+f
+> > this morning (v6.8-rc7-ish), it does this in nfs_writepages_locked:
+> >=20
+> >         if (wbc->sync_mode =3D=3D WB_SYNC_NONE &&
+> >             NFS_SERVER(inode)->write_congested)          =20
+> >                 return AOP_WRITEPAGE_ACTIVATE;
+> >=20
+> > The only caller of nfs_writepages_locked, and I don't see where it
+> > redirties the page. Why don't we need this in v6.8?
 >=20
-> On Thu, 07 Mar 2024 12:50:52 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> You are right - it doesn't redirty anything.  But there is no bug
+> here....
+> I didn't see it at first either, but the only caller of
+> nfs_writepage_locked() is nfs_wb_folio() (as you say) and that always
+> passes a wbc with .sync_mode =3D WB_SYNC_ALL.  So sync_mode is never
+> WB_SYNC_NODE and the code snippet you included above is dead code.  I've
+> already posted a patch to Trond and Anna to remove that code.
 >=20
-> > Hi Herve,
+> Thanks for the review!
+>=20
+
+Thanks Neil,
+
+I missed that bit about the sync_mode. I sent a R-b for your other patch
+too.
+
+Cheers,
+Jeff
+
+
 > >=20
 > >=20
-> > On Thu, 2024-03-07 at 12:10 +0100, Herve Codina wrote:
-> > > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > > introduces a workqueue to release the consumer and supplier devices u=
-sed
-> > > in the devlink.
-> > > In the job queued, devices are release and in turn, when all the
-> > > references to these devices are dropped, the release function of the
-> > > device itself is called.
-> > >=20
-> > > Nothing is present to provide some synchronisation with this workqueu=
-e
-> > > in order to ensure that all ongoing releasing operations are done and
-> > > so, some other operations can be started safely.
-> > >=20
-> > > For instance, in the following sequence:
-> > > =C2=A0 1) of_platform_depopulate()
-> > > =C2=A0 2) of_overlay_remove()
-> > >=20
-> > > During the step 1, devices are released and related devlinks are remo=
-ved
-> > > (jobs pushed in the workqueue).
-> > > During the step 2, OF nodes are destroyed but, without any
-> > > synchronisation with devlink removal jobs, of_overlay_remove() can ra=
-ise
-> > > warnings related to missing of_node_put():
-> > > =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2
-> > >=20
-> > > Indeed, the missing of_node_put() call is going to be done, too late,
-> > > from the workqueue job execution.
-> > >=20
-> > > Introduce device_link_wait_removal() to offer a way to synchronize
-> > > operations waiting for the end of devlink removals (i.e. end of
-> > > workqueue jobs).
-> > > Also, as a flushing operation is done on the workqueue, the workqueue
-> > > used is moved from a system-wide workqueue to a local one.
-> > >=20
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > Reported-and-tested-by: Jacek Tomaka <Jacek.Tomaka@poczta.fm>
+> > > Fixes: 6df25e58532b ("nfs: remove reliance on bdi congestion")
+> > > Signed-off-by: NeilBrown <neilb@suse.de>
 > > > ---
-> > > =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 26 ++++++++++++++++++++=
-+++---
-> > > =C2=A0include/linux/device.h |=C2=A0 1 +
-> > > =C2=A02 files changed, 24 insertions(+), 3 deletions(-)
+> > >  fs/nfs/write.c | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
 > > >=20
-> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > index d5f4e4aac09b..48b28c59c592 100644
-> > > --- a/drivers/base/core.c
-> > > +++ b/drivers/base/core.c
-> > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
-> > > =C2=A0static void __fw_devlink_link_to_consumers(struct device *dev);
-> > > =C2=A0static bool fw_devlink_drv_reg_done;
-> > > =C2=A0static bool fw_devlink_best_effort;
-> > > +static struct workqueue_struct *device_link_wq;
-> > > =C2=A0
-> > > =C2=A0/**
-> > > =C2=A0 * __fwnode_link_add - Create a link between two fwnode_handles=
-.
-> > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *=
-dev)
-> > > =C2=A0	/*
-> > > =C2=A0	 * It may take a while to complete this work because of the SR=
-CU
-> > > =C2=A0	 * synchronization in device_link_release_fn() and if the cons=
-umer or
-> > > -	 * supplier devices get deleted when it runs, so put it into the
-> > > "long"
-> > > -	 * workqueue.
-> > > +	 * supplier devices get deleted when it runs, so put it into the
-> > > +	 * dedicated workqueue.
-> > > =C2=A0	 */
-> > > -	queue_work(system_long_wq, &link->rm_work);
-> > > +	queue_work(device_link_wq, &link->rm_work);
-> > > =C2=A0}
-> > > =C2=A0
-> > > +/**
-> > > + * device_link_wait_removal - Wait for ongoing devlink removal jobs =
-to
-> > > terminate
-> > > + */
-> > > +void device_link_wait_removal(void)
-> > > +{
-> > > +	/*
-> > > +	 * devlink removal jobs are queued in the dedicated work queue.
-> > > +	 * To be sure that all removal jobs are terminated, ensure that any
-> > > +	 * scheduled work has run to completion.
-> > > +	 */
-> > > +	flush_workqueue(device_link_wq);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
-> > > +
-> > > =C2=A0static struct class devlink_class =3D {
-> > > =C2=A0	.name =3D "devlink",
-> > > =C2=A0	.dev_groups =3D devlink_groups,
-> > > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
-> > > =C2=A0	sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kob=
-j);
-> > > =C2=A0	if (!sysfs_dev_char_kobj)
-> > > =C2=A0		goto char_kobj_err;
-> > > +	device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);=C2=A0=
-=20
+> > > diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+> > > index b664caea8b4e..9e345d3c305a 100644
+> > > --- a/fs/nfs/write.c
+> > > +++ b/fs/nfs/write.c
+> > > @@ -668,8 +668,10 @@ static int nfs_writepage_locked(struct folio *fo=
+lio,
+> > >  	int err;
+> > > =20
+> > >  	if (wbc->sync_mode =3D=3D WB_SYNC_NONE &&
+> > > -	    NFS_SERVER(inode)->write_congested)
+> > > +	    NFS_SERVER(inode)->write_congested) {
+> > > +		folio_redirty_for_writepage(wbc, folio);
+> > >  		return AOP_WRITEPAGE_ACTIVATE;
+> > > +	}
+> > > =20
+> > >  	nfs_inc_stats(inode, NFSIOS_VFSWRITEPAGE);
+> > >  	nfs_pageio_init_write(&pgio, inode, 0, false,
 > >=20
-> > My rb tag was with the assumption this is moved into devlink_class_init=
-(). IIUC,
-> > Saravana also agreed with that [1]. But it looks like he missed that we=
- are
-> > allocating the queue in devices_init() and not in devlink_class_init().
-> >=20
-> > I'm also not sure if this is in line with what Rafael wanted for ccing =
-stable.
-> > How do
-> > we know the next patch depends on this one?
-> >=20
-> > [1]:
-> > https://lore.kernel.org/lkml/CAGETcx_gNWOTsSZMaZu+XU1-5Z60WEcMhw08t4Sn_=
--YgkCCUmA@mail.gmail.com/
+> > --=20
+> > Jeff Layton <jlayton@kernel.org>
 > >=20
 >=20
-> We discussed that point and I understood that you were ok to do that on y=
-our
-> side:
-> =C2=A0
-> https://lore.kernel.org/linux-kernel/f42ceee61ddb8b50c347589649d4131476ab=
-5d81.camel@gmail.com/
->=20
-> Sorry if I misunderstood.
 
-Oh, yeah, I can do that. But given Saravana reply I thought the expectation=
- is to
-have the queue already allocated in devlink_class_init().
-
->=20
-> I am going to wait for other comments on this current series before re-se=
-nding
-> with our 'Reviewed-by' removed if needed. Let me know.
->=20
-
-Anyways, if your expectation was for me to do it later, fine. No need to re=
-move the
-tag. Sorry for the noise.
-
-- Nuno S=C3=A1
->=20
-
+--=20
+Jeff Layton <jlayton@kernel.org>
 
