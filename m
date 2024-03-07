@@ -1,236 +1,228 @@
-Return-Path: <stable+bounces-27051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F478747C2
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 06:58:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0322C874834
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 07:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AC561F24355
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 05:58:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87E4BB2198D
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 06:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF4B1BDE2;
-	Thu,  7 Mar 2024 05:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E46E81F;
+	Thu,  7 Mar 2024 06:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kca758KC"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IYhvMHvv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2073.outbound.protection.outlook.com [40.107.243.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3182256A;
-	Thu,  7 Mar 2024 05:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709791122; cv=none; b=XRU4qt6HRRbEbxLB3OhTzUPYnQL6lBeUaWuTpu3KejjJqSSoTbl3h086ihGmdoXsP7N6o9T50EyV2s2B15uwNo9qhE+cCWC0SuOTfuqxP19a5ys94QhVodIbKmIldqQoUFKZ61R4Az4PiHVrd5uWf7HNueRKL/RnAoc6ppdWa04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709791122; c=relaxed/simple;
-	bh=stv0+KAZu3cCYaQgubC9ML8AoaLnW60gSHtE0MTOPJE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oHWTFZlsqP2RS3lDYHhe5X2WI4Il/DrsW5KbuEQACDstqSDOsPvNLwx5iL67ewUhAa7zvuD260qeGnBNFbBJvr1Isy02u3cWiK2AI6NR2Ae7pkZZmwvyUMn9eo0I4B2aPTKWdLHGimp14IX/OStvWndkf3np2oxpsqra48ZtiJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kca758KC; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709791120; x=1741327120;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=stv0+KAZu3cCYaQgubC9ML8AoaLnW60gSHtE0MTOPJE=;
-  b=kca758KCTz4J2UHbzqeX1jC5IRfPej6Ly88NtrsP3WO2NVWhsqBQptmF
-   1sB9lS3uzwKM/s9GRO2S7Im3eH/2ZDAy+1vqpiT7wz23/LFszdcca8uv/
-   SxC41z9gft6TI41m38QBXRPchg0HoIPiKdbgqz5BGEEct9bMCX2Dc48k4
-   vV9O2+Vw2mdxXXvf55G5VdcDYob4s0jo2kTG4EoF5eJ0PyHlZHcQH11Ib
-   M6W1bxkkBqf0nGlj6EcsYFk68U206C8V6YCZCqjL/mgI8LYW8oM9KKPGZ
-   RHvox1tXG0MIX7a1OjCY/hzLvGvSWdjnA9+FxVpZuCaL7JeEkfSHssCsC
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="15017971"
-X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
-   d="scan'208";a="15017971"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:58:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
-   d="scan'208";a="9895348"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 21:58:36 -0800
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand <david@redhat.com>,
-  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>,
-  <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
- swapoff()
-In-Reply-To: <ff6aec00-f939-b7ba-c127-b133c4d95ee5@huawei.com> (Miaohe Lin's
-	message of "Thu, 7 Mar 2024 10:38:47 +0800")
-References: <20240305151349.3781428-1-ryan.roberts@arm.com>
-	<875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
-	<af11bbca-3f6a-4db5-916c-b0d5b942352b@arm.com>
-	<ff6aec00-f939-b7ba-c127-b133c4d95ee5@huawei.com>
-Date: Thu, 07 Mar 2024 13:56:42 +0800
-Message-ID: <87bk7q7ffp.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC121CAA4
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 06:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709793030; cv=fail; b=iv6enVQIOaQAWq2IKPotYxR0j1lEJ2MLR3wwUpyYo5VdcHn/gnzpGZIgj2a8+Dg5SoEBc0AZSQIj/Zd11Mkbf1nKq0CdqfIM+8q7/N75X+etq7kFElns/s4Lzy8m2eKTLuQQNn1DAuS3JCjjsHAL3Y5xVotT52cxJL/WkgDeMdI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709793030; c=relaxed/simple;
+	bh=vG6GaHNfav46vQBkdOYSnxupiUrUxtKuJ9nq3TYLeq8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u/XkI1gYgjjjo3pWSiYAT0Gj8PtffOGf/+dBJNIup4C1w7msQ3i3puuKRon1Ib5fLVI6yskaIqJ56Jberjj23DBVz4qQNloeSq0oit7cpEXCALZ3rpVY9ZQFq679Et1b0v3ZXEfNi1DIz0kvmgo2VYoEDMxijhwZHihIkTzRZNM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IYhvMHvv; arc=fail smtp.client-ip=40.107.243.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n2cXJ+m0syPutltptQdDI0fkaJTTFZawwp4hRSUCj35eQ6js4THeV1yb7G/+kmqhUurRVLpitSfzIvhEndl8/e/kbAVyD1GWXktSfyr4cfioviMPzuEpiO+5rMI/+TWUt5/2yfkCbVQWUzizhi8BXbrgDwI7ex6gvZwGhWXMo610hrm9KQODvJmJASky4D5+FbI4SE+0/QtH3yxOqrswwN1h8Ky2Nnab2ec0MwoeOxc6i5K1SkGTQ8/1+vNXh383OjvARKvp3PCzryu2gnV0NKxfFmaHxpsVceNw6M3j79UCraONZNk6bMR1BLHw/wBEB47RzwQwVFCVJdy4bbB/pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vtLSn2+SuLBTcsOr9G7Up5ReL8JqH1qpiX1afZ+NghA=;
+ b=F5WGA+11TfYJi0ppAQ7F8URzic+H64v/8NHifOUWui0j26k2XoXt2mOUENWM2afniZA36CtekAaRorh9v+VuKxUFe6AUbR6vfgZs3nps9ftutsHntQiPUA9Tbwexor/DLXspfS1qp9kClod9mMql08mD7cisUyq/yzSWy3mjbbtWzqzbSekx4qJ7EsvaXIl1RJmT3QHPmqq5g1DE2cvN3/DK0Y88H1mPmPcLNMUVM/fGa6F6NHbgSfYGtewZpIVexHu4E4h1hRwngOchhTNtkjhAdxsPGUc8pb/Ie83UuOJYs5FcsXodvQbgO5Y9rsFtyLDW0cvkRRWu+pwrKSb0hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vtLSn2+SuLBTcsOr9G7Up5ReL8JqH1qpiX1afZ+NghA=;
+ b=IYhvMHvvv6S4JZZf0Z2KqOAh4DZNHLRbUxMpXwr52WIMzDiDX8rDNMPvb1DisX13wd7jOYtmKNJPkOX4R3NQC9NcZNcxP+qrn/sOQ0YiIkLFIJU4fxxFv4jcHexc5LbwkiNOxuPcxkrmd+5bV5WNp6csXxj2X6u/lqu6uusyqOU=
+Received: from SA0PR11CA0201.namprd11.prod.outlook.com (2603:10b6:806:1bc::26)
+ by SJ2PR12MB7893.namprd12.prod.outlook.com (2603:10b6:a03:4cc::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Thu, 7 Mar
+ 2024 06:30:24 +0000
+Received: from SA2PEPF000015C9.namprd03.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::6a) by SA0PR11CA0201.outlook.office365.com
+ (2603:10b6:806:1bc::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26 via Frontend
+ Transport; Thu, 7 Mar 2024 06:30:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SA2PEPF000015C9.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7362.11 via Frontend Transport; Thu, 7 Mar 2024 06:30:24 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 7 Mar
+ 2024 00:30:23 -0600
+Received: from wayne-dev-lnx.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Thu, 7 Mar 2024 00:30:20 -0600
+From: Wayne Lin <Wayne.Lin@amd.com>
+To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<intel-gfx@lists.freedesktop.org>
+CC: <lyude@redhat.com>, <harry.wentland@amd.com>, <imre.deak@intel.com>,
+	"Wayne Lin" <Wayne.Lin@amd.com>, =?UTF-8?q?Leon=20Wei=C3=9F?=
+	<leon.weiss@ruhr-uni-bochum.de>, <stable@vger.kernel.org>,
+	<regressions@lists.linux.dev>
+Subject: [PATCH] drm/mst: Fix NULL pointer dereference at drm_dp_add_payload_part2
+Date: Thu, 7 Mar 2024 14:29:57 +0800
+Message-ID: <20240307062957.2323620-1-Wayne.Lin@amd.com>
+X-Mailer: git-send-email 2.37.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB03.amd.com: Wayne.Lin@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C9:EE_|SJ2PR12MB7893:EE_
+X-MS-Office365-Filtering-Correlation-Id: afd8a756-f805-4b79-5db6-08dc3e701240
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	rVPnLV3MKWxW3IDagIoKoWIKstipolT4k1q7eD7Fga7gOMBNuJi/OGjbVpjCgBDZpBVR8SCMqoAki4acashjrpp0LpLuVcE/gY1HVyZrERwWimVeRPLmi5Vfau1iMvbRisKudgyJMfe0a2iXPa7bXq8JthKi3EsaUka/jCBXgi4dpbzTTeXJ3HKo+/mSmuf3qcP+SnXK1Meyom1Ymm8EmWLAr7ilABNzCBR2T+WJeKV23mwy15ulZnI56GHOm79GsnYTYO4wPRmES+VRhXLhQE1DBsAESxNXvdug/W1rsGxpM1adCD7uNFTZB7PcpQxGZQRLYdbHgVjJ2NJ1s/NBAIeJYc+dnH7zjQqExeyFlYdn6afzas5zG14WaPjbecXTsEXa5Nd+QG3BEAgmG8UNZdyeDzYI9Su6f49ozT8Ul5Qi/T4iAzn6ILb6jfy4jzO5ZlSnrCtepcUwHcxXlcYnhQGDbEVTiQcgIGoES4st5vweNseK5JjKE1Vc6oVm+1CKJjYZvhUEeWGWfRBiF64vHb0CIYFMJd/L8V5DXR0eo2guB3bjmM3WLVO18IZ51EmHIM9j52B4RH8S7DPXXNm+o9N3FTKojYBnlBKFojBa10QZlnlNDuIEpeNEGp0oRG0voEAi6ayljUGuPNTo3hANZP8ZfrLDRjtAPIIlKYGxVUC49mB7nf681gLVpDdGxz9yBySNhSSn9FpKIfysXZsEww==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(376005)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 06:30:24.2610
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: afd8a756-f805-4b79-5db6-08dc3e701240
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015C9.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7893
 
-Miaohe Lin <linmiaohe@huawei.com> writes:
+[Why]
+Commit:
+- commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+accidently overwrite the commit
+- commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in drm_dp_add_payload_part2")
+which cause regression.
 
-> On 2024/3/6 17:31, Ryan Roberts wrote:
->> On 06/03/2024 08:51, Miaohe Lin wrote:
->>> On 2024/3/6 10:52, Huang, Ying wrote:
->>>> Ryan Roberts <ryan.roberts@arm.com> writes:
->>>>
->>>>> There was previously a theoretical window where swapoff() could run and
->>>>> teardown a swap_info_struct while a call to free_swap_and_cache() was
->>>>> running in another thread. This could cause, amongst other bad
->>>>> possibilities, swap_page_trans_huge_swapped() (called by
->>>>> free_swap_and_cache()) to access the freed memory for swap_map.
->>>>>
->>>>> This is a theoretical problem and I haven't been able to provoke it from
->>>>> a test case. But there has been agreement based on code review that this
->>>>> is possible (see link below).
->>>>>
->>>>> Fix it by using get_swap_device()/put_swap_device(), which will stall
->>>>> swapoff(). There was an extra check in _swap_info_get() to confirm that
->>>>> the swap entry was valid. This wasn't present in get_swap_device() so
->>>>> I've added it. I couldn't find any existing get_swap_device() call sites
->>>>> where this extra check would cause any false alarms.
->>>>>
->>>>> Details of how to provoke one possible issue (thanks to David Hilenbrand
->>>>> for deriving this):
->>>>>
->>>>> --8<-----
->>>>>
->>>>> __swap_entry_free() might be the last user and result in
->>>>> "count == SWAP_HAS_CACHE".
->>>>>
->>>>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
->>>>>
->>>>> So the question is: could someone reclaim the folio and turn
->>>>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
->>>>>
->>>>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
->>>>> still references by swap entries.
->>>>>
->>>>> Process 1 still references subpage 0 via swap entry.
->>>>> Process 2 still references subpage 1 via swap entry.
->>>>>
->>>>> Process 1 quits. Calls free_swap_and_cache().
->>>>> -> count == SWAP_HAS_CACHE
->>>>> [then, preempted in the hypervisor etc.]
->>>>>
->>>>> Process 2 quits. Calls free_swap_and_cache().
->>>>> -> count == SWAP_HAS_CACHE
->>>>>
->>>>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
->>>>> __try_to_reclaim_swap().
->>>>>
->>>>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
->>>>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
->>>>> swap_entry_free()->swap_range_free()->
->>>>> ...
->>>>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
->>>>>
->>>>> What stops swapoff to succeed after process 2 reclaimed the swap cache
->>>>> but before process1 finished its call to swap_page_trans_huge_swapped()?
->>>>>
->>>>> --8<-----
->>>>
->>>> I think that this can be simplified.  Even for a 4K folio, this could
->>>> happen.
->>>>
->>>> CPU0                                     CPU1
->>>> ----                                     ----
->>>>
->>>> zap_pte_range
->>>>   free_swap_and_cache
->>>>   __swap_entry_free
->>>>   /* swap count become 0 */
->>>>                                          swapoff
->>>>                                            try_to_unuse
->>>>                                              filemap_get_folio
->>>>                                              folio_free_swap
->>>>                                              /* remove swap cache */
->>>>                                            /* free si->swap_map[] */
->>>>
->>>>   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
->>>
->>> Sorry for jumping the discussion here. IMHO, free_swap_and_cache is called with pte lock held.
->> 
->> I don't beleive it has the PTL when called by shmem.
->
-> In the case of shmem, folio_lock is used to guard against the race.
+[How]
+Recover the original NULL fix and remove the unnecessary input parameter 'state' for
+drm_dp_add_payload_part2().
 
-I don't find folio is lock for shmem.  find_lock_entries() will only
-lock the folio if (!xa_is_value()), that is, not swap entry.  Can you
-point out where the folio is locked for shmem?
+Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+Reported-by: Leon Weiß <leon.weiss@ruhr-uni-bochum.de>
+Link: https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de/
+Cc: lyude@redhat.com
+Cc: imre.deak@intel.com
+Cc: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 2 +-
+ drivers/gpu/drm/display/drm_dp_mst_topology.c             | 4 +---
+ drivers/gpu/drm/i915/display/intel_dp_mst.c               | 2 +-
+ drivers/gpu/drm/nouveau/dispnv50/disp.c                   | 2 +-
+ include/drm/display/drm_dp_mst_helper.h                   | 1 -
+ 5 files changed, 4 insertions(+), 7 deletions(-)
 
---
-Best Regards,
-Huang, Ying
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+index c27063305a13..2c36f3d00ca2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -363,7 +363,7 @@ void dm_helpers_dp_mst_send_payload_allocation(
+ 	mst_state = to_drm_dp_mst_topology_state(mst_mgr->base.state);
+ 	new_payload = drm_atomic_get_mst_payload_state(mst_state, aconnector->mst_output_port);
+ 
+-	ret = drm_dp_add_payload_part2(mst_mgr, mst_state->base.state, new_payload);
++	ret = drm_dp_add_payload_part2(mst_mgr, new_payload);
+ 
+ 	if (ret) {
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 03d528209426..95fd18f24e94 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3421,7 +3421,6 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
+ /**
+  * drm_dp_add_payload_part2() - Execute payload update part 2
+  * @mgr: Manager to use.
+- * @state: The global atomic state
+  * @payload: The payload to update
+  *
+  * If @payload was successfully assigned a starting time slot by drm_dp_add_payload_part1(), this
+@@ -3430,14 +3429,13 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
+  * Returns: 0 on success, negative error code on failure.
+  */
+ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+-			     struct drm_atomic_state *state,
+ 			     struct drm_dp_mst_atomic_payload *payload)
+ {
+ 	int ret = 0;
+ 
+ 	/* Skip failed payloads */
+ 	if (payload->payload_allocation_status != DRM_DP_MST_PAYLOAD_ALLOCATION_DFP) {
+-		drm_dbg_kms(state->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
++		drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
+ 			    payload->port->connector->name);
+ 		return -EIO;
+ 	}
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+index 53aec023ce92..2fba66aec038 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -1160,7 +1160,7 @@ static void intel_mst_enable_dp(struct intel_atomic_state *state,
+ 	if (first_mst_stream)
+ 		intel_ddi_wait_for_fec_status(encoder, pipe_config, true);
+ 
+-	drm_dp_add_payload_part2(&intel_dp->mst_mgr, &state->base,
++	drm_dp_add_payload_part2(&intel_dp->mst_mgr,
+ 				 drm_atomic_get_mst_payload_state(mst_state, connector->port));
+ 
+ 	if (DISPLAY_VER(dev_priv) >= 12)
+diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+index 0c3d88ad0b0e..88728a0b2c25 100644
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -915,7 +915,7 @@ nv50_msto_cleanup(struct drm_atomic_state *state,
+ 		msto->disabled = false;
+ 		drm_dp_remove_payload_part2(mgr, new_mst_state, old_payload, new_payload);
+ 	} else if (msto->enabled) {
+-		drm_dp_add_payload_part2(mgr, state, new_payload);
++		drm_dp_add_payload_part2(mgr, new_payload);
+ 		msto->enabled = false;
+ 	}
+ }
+diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+index 9b19d8bd520a..6c9145abc7e2 100644
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -851,7 +851,6 @@ int drm_dp_add_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
+ 			     struct drm_dp_mst_topology_state *mst_state,
+ 			     struct drm_dp_mst_atomic_payload *payload);
+ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+-			     struct drm_atomic_state *state,
+ 			     struct drm_dp_mst_atomic_payload *payload);
+ void drm_dp_remove_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
+ 				 struct drm_dp_mst_topology_state *mst_state,
+-- 
+2.37.3
 
->> 
->>> So synchronize_rcu (called by swapoff) will wait zap_pte_range to release the pte lock. So this
->>> theoretical problem can't happen. Or am I miss something?
->> 
->> For Huang Ying's example, I agree this can't happen because try_to_unuse() will
->> be waiting for the PTL (see the reply I just sent).
->
-> Do you mean the below message?
-> "
-> I don't think si->inuse_pages is decremented until __try_to_reclaim_swap() is
-> called (per David, above), which is called after swap_page_trans_huge_swapped()
-> has executed. So in CPU1, try_to_unuse() wouldn't see si->inuse_pages being zero
-> until after CPU0 has completed accessing si->swap_map, so if swapoff starts
-> where you have put it, it would get stalled waiting for the PTL which CPU0 has.
-> "
->
-> I agree try_to_unuse() will wait for si->inuse_pages being zero. But why will it waits
-> for the PTL? It seems PTL is not used to protect si->inuse_pages. Or am I miss something?
->
->> 
->>>
->>> CPU0                                     CPU1
->>> ----                                     ----
->>>
->>> zap_pte_range
->>>   pte_offset_map_lock -- spin_lock is held.
->>>   free_swap_and_cache
->>>    __swap_entry_free
->>>    /* swap count become 0 */
->>>                                          swapoff
->>>                                            try_to_unuse
->>>                                              filemap_get_folio
->>>                                              folio_free_swap
->>>                                              /* remove swap cache */
->>> 					    percpu_ref_kill(&p->users);
->>>    swap_page_trans_huge_swapped
->>>   pte_unmap_unlock -- spin_lock is released.
->>> 					    synchronize_rcu();  --> Will wait pte_unmap_unlock to be called?
->> 
->> Perhaps you can educate me here; I thought that synchronize_rcu() will only wait
->> for RCU critical sections to complete. The PTL is a spin lock, so why would
->> synchronize_rcu() wait for the PTL to become unlocked?
->
-> I assume PTL will always disable preemption which disables a grace period until PTL is released.
-> But this might be fragile and I'm not really sure. I might be wrong.
->
-> Thanks.
->> 
->> 
->>>                                            /* free si->swap_map[] */
->>>
->>> Thanks.
->>>
->>>
->> 
->> .
->> 
 
