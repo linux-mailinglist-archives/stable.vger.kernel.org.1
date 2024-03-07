@@ -1,125 +1,235 @@
-Return-Path: <stable+bounces-27119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11314875880
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:34:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1648758AB
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AE32B25FC4
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692882817F8
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 20:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3CA13A256;
-	Thu,  7 Mar 2024 20:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133113959A;
+	Thu,  7 Mar 2024 20:40:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA2C446DE;
-	Thu,  7 Mar 2024 20:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D7F1386BA
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 20:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709843636; cv=none; b=F9sawlPWGNekwHEKdvGmAb571HEFE7c1b3ClpWZI8A8lLkx3htbhuNL5xQWghlBd0LGdLcZTLXDLvFYvTJ8qs52DglWsfm43IqI2Zba+zeJnNfVfUIQ/0L/SKKZh7tvwVG4+BZFLz0KzRJkcmQCACVfFbu1EEqws2Qtw/226TQA=
+	t=1709844050; cv=none; b=WNdIilWdpmGvXwtoyTPo32OxHV1Ajj2BVR6FaukwtJsLjtLNygIIGLZjKtOibXChcFDljfM4rAJizcEao6jPFqrCrKhYS//J6AETum2iTJs24KquSawHrSm58HaqUry7tTOruaGugQRU3d1fASQrD6FBgrHBBVZrRVSTw7PXl+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709843636; c=relaxed/simple;
-	bh=i7NnHGgJh/gaT/CXNqVxZUDLT1k1C/mMAz3cqvpjzZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lq7pZiFpzUFcpt1taU0tjYCt3YJEli7Jdv7yb4y8UGFARHi5RvPBsiIlKqtuA5yjLQ2rZmCjOjmA9cm70bQPSfW1tNLA3CoHEQNz+MOfbhLPpJiWtQpN65PsKxvXHhkoIPgRkjJr4m/aBlmJVjVvc7ThhlwvTd82Bxhdxx4tj+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.2] (ip5f5af4da.dynamic.kabel-deutschland.de [95.90.244.218])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C570B61E5FE06;
-	Thu,  7 Mar 2024 21:33:28 +0100 (CET)
-Message-ID: <58f49929-fbcf-4d8a-bece-c66454ca51bc@molgen.mpg.de>
-Date: Thu, 7 Mar 2024 21:33:28 +0100
+	s=arc-20240116; t=1709844050; c=relaxed/simple;
+	bh=PU/nsmIjvcb9jT9tFNblBBBYPCVtyRr9mA8Zg4T1z34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dk2h1BtMnPx1TAwRN2lz9FPXxj7jFN5wAN1RqiJo6w+3YZB2m9V55Nb901MdTWO7pel0gK7sCaUCqdijDuCov+6j+XPd3QldhQQ5BNZ62djoKYq1HygLtYCcFXvZ0W6G2TIePHQTkE/zvKbdMPybvR8B2BES1FLrfO4xusQSaYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riKXc-0000hJ-SE; Thu, 07 Mar 2024 21:40:36 +0100
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riKXb-0050ZH-EG; Thu, 07 Mar 2024 21:40:35 +0100
+Received: from pengutronix.de (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DE4C32A0DEE;
+	Thu,  7 Mar 2024 20:40:34 +0000 (UTC)
+Date: Thu, 7 Mar 2024 21:40:33 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: vitor <ivitro@gmail.com>
+Cc: manivannan.sadhasivam@linaro.org, thomas.kopp@microchip.com, 
+	wg@grandegger.com, linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	vitor.soares@toradex.com, stable@vger.kernel.org
+Subject: Re: [PATCH] can: mcp251xfd: fix infinite loop when xmit fails
+Message-ID: <20240307-sturdy-cringe-fa9b095b25ab-mkl@pengutronix.de>
+References: <20240307120442.12262-1-ivitro@gmail.com>
+ <xmk5cgskx2ug2psec6qgbxndbuqq5cnin7rd4zt3thnhybxgeo@xudpdob7tcg2>
+ <75fa2711c1aace90a831f95a00b8ba41abf1c883.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tpm,tpm_tis: Avoid warning splat at shutdown
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>, peterhuewe@gmx.de,
- LinoSanfilippo@gmx.de, p.rosenberger@kunbus.com, lukas@wunner.de,
- jgg@ziepe.ca, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
- <84dd5c01-906c-4e13-9d8c-e5350f718d56@molgen.mpg.de>
- <CZNSDUEJ4P9S.235D7ZCOV738N@kernel.org>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <CZNSDUEJ4P9S.235D7ZCOV738N@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Dear Jarkko,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xzpod2lt32mid3zt"
+Content-Disposition: inline
+In-Reply-To: <75fa2711c1aace90a831f95a00b8ba41abf1c883.camel@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
 
-Am 07.03.24 um 21:05 schrieb Jarkko Sakkinen:
-> On Tue Mar 5, 2024 at 5:43 PM EET, Paul Menzel wrote:
+--xzpod2lt32mid3zt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> Am 01.02.24 um 12:36 schrieb Lino Sanfilippo:
->>> If interrupts are not activated the work struct 'free_irq_work' is not
->>> initialized. This results in a warning splat at module shutdown.
->>>
->>> Fix this by always initializing the work regardless of whether interrupts
->>> are activated or not.
->>>
->>> cc: stable@vger.kernel.org
->>> Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
->>> Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
->>> Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org/
->>> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
->>> ---
->>>    drivers/char/tpm/tpm_tis_core.c | 3 +--
->>>    1 file changed, 1 insertion(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
->>> index 1b350412d8a6..64c875657687 100644
->>> --- a/drivers/char/tpm/tpm_tis_core.c
->>> +++ b/drivers/char/tpm/tpm_tis_core.c
->>> @@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
->>>    	int rc;
->>>    	u32 int_status;
->>>    
->>> -	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
->>> -
->>>    	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
->>>    				       tis_int_handler, IRQF_ONESHOT | flags,
->>>    				       dev_name(&chip->dev), chip);
->>> @@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
->>>    	priv->phy_ops = phy_ops;
->>>    	priv->locality_count = 0;
->>>    	mutex_init(&priv->locality_count_mutex);
->>> +	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
->>>    
->>>    	dev_set_drvdata(&chip->dev, priv);
->>
->> This is commit d6fb14208e22 in jarkko/next.
->>
->> I tested this patch on top of Linux 6.8-rc7 on a Dell OptiPlex 5055 [1]
->> and it fixes the issue there too.
-> 
-> Thanks!
-> 
-> If you don't mind I'll add your tested-by to the commit before I send
-> my next pull request to Linus?
+On 07.03.2024 16:54:13, vitor wrote:
+> > On 07.03.2024 12:04:42, Vitor Soares wrote:
+> > > From: Vitor Soares <vitor.soares@toradex.com>
+> > >=20
+> > > When the mcp251xfd_start_xmit() function fails, the driver stops
+> > > processing messages, and the interrupt routine does not return,
+> > > running indefinitely even after killing the running application.
+> > >=20
+> > > Error messages:
+> > > [=C2=A0 441.298819] mcp251xfd spi2.0 can0: ERROR in
+> > > mcp251xfd_start_xmit: -16
+> > > [=C2=A0 441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer
+> > > not empty. (seq=3D0x000017c7, tef_tail=3D0x000017cf,
+> > > tef_head=3D0x000017d0, tx_head=3D0x000017d3).
+> > > ... and repeat forever.
+> > >=20
+> > > The issue can be triggered when multiple devices share the same
+> > > SPI interface. And there is concurrent access to the bus.
+> > >=20
+> > > The problem occurs because tx_ring->head increments even if
+> > > mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> > > TX package while still expecting a response in
+> > > mcp251xfd_handle_tefif_one().
+> > >=20
+> > > This patch resolves the issue by decreasing tx_ring->head if
+> > > mcp251xfd_start_xmit() fails. With the fix, if we attempt to
+> > > trigger
+> > > the issue again, the driver prints an error and discard the
+> > > message.
+> >=20
+> > What about returning NETDEV_TX_BUSY, then the networking stack will
+> > retry.
+>=20
+> Do you mean when err =3D=3D -EBUSY?
 
-Sure, go ahead. I thought, it’s not going to be amended, and therefore 
-didn’t add the tag.
+ACK
 
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> >=20
+> > > Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip
+> > > MCP25xxFD SPI CAN")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > > ---
+> > > =C2=A0drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 27 ++++++++++---=
+---
+> > > ----
+> > > =C2=A01 file changed, 14 insertions(+), 13 deletions(-)
+> > >=20
+> > > diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > > b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > > index 160528d3cc26..a8eb941c1b95 100644
+> > > --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > > +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > > @@ -181,25 +181,26 @@ netdev_tx_t mcp251xfd_start_xmit(struct
+> > > sk_buff *skb,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_obj =3D mcp251xfd_=
+get_tx_obj_next(tx_ring);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mcp251xfd_tx_obj_from=
+_skb(priv, tx_obj, skb, tx_ring-
+> > > >head);
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy=
+ the complete TX FIFO */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_head =3D mcp251xfd=
+_get_tx_head(tx_ring);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(=
+tx_ring) =3D=3D 0)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0netif_stop_queue(ndev);
+> > > -
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0frame_len =3D can_skb=
+_get_frame_len(skb);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D can_put_echo_skb(s=
+kb, ndev, tx_head, frame_len);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!err)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0can_put_echo_skb(skb, ndev=
+, tx_head, frame_len);
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
+> > > =C2=A0
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D mcp251xfd_tx_=
+obj_write(priv, tx_obj);
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0goto out_err;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0can_free_echo_skb(ndev, tx_head, NULL);
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head--;
+> > > +
+>=20
+> I'm testing returning here when err =3D -EBUSY, but can_put_echo_skb()
+> should be invoked after mcp251xfd_tx_obj_write(). Otherwise, I get a
+> Kernel NULL pointer dereference error.
 
+I mean if mcp251xfd_tx_obj_write() returns -EBUSY don't print an error
+message, on any other error it's ok to print the error.
 
-Kind regards,
+> >=20
+> > I'm not sure, if we want an error message for -EBUSY. We could add
+> > proper ethtool statistics.
+> >=20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR in %s: %d\n",
+> > > __func__, err);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy the complete TX FIFO */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0net=
+if_stop_queue(ndev);
+> > > =C2=A0
+> > > - out_err:
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ER=
+ROR in %s: %d\n", __func__, err);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > =C2=A0
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
+> > > =C2=A0}
 
-Paul
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--xzpod2lt32mid3zt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmXqJj4ACgkQKDiiPnot
+vG8ktgf/TaeKvlOG1Zbb+4QPh8JFFJQgGC8Ogk4kWCUziHvwfbBUwXv3gBJfWOvQ
+B7HyS+VTGIPr5oIJWGOYqMeVn2xEIhQj+9iakw1cqaD5Am0j8IPKV0R122mEzGuj
+/5tBnh7vbTI75iySRFz57ZdPU/ExqwXoGkaeeGAUh+YnZnQAaNcxqnv0JlctyaAe
+0YR1PII1tdZ4vS08J6hBwPgg7symH2uBKXra4/eWNxdOZdZimbiIbKn+t+i5vYrT
+SgyA1S+mdiIJpS56V/8s7+huLDtnx06iyUN0GG6pcFck7Mj2KSosodLwjs0xQapF
+Y1HEvd2o0MizYWbgK897zbi7t5um4g==
+=IaEp
+-----END PGP SIGNATURE-----
+
+--xzpod2lt32mid3zt--
 
