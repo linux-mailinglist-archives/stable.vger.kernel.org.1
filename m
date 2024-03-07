@@ -1,200 +1,192 @@
-Return-Path: <stable+bounces-27075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF89B874EC1
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:16:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90639874ED4
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 13:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F34681C20878
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBEC2284A71
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A927212AAD8;
-	Thu,  7 Mar 2024 12:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WDWhx17d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A470812AAE1;
+	Thu,  7 Mar 2024 12:21:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D4C129A77;
-	Thu,  7 Mar 2024 12:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F85312AAC3
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 12:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709813799; cv=none; b=IYVQShlJVOTpTb+DkOXd/PUtj+MmMwbBZzk9Sxl6jG7Njegs59RzKNz3qADM55QqeknsvjyKOekEV3f9cjVraLcEba2kTaollSOXHXvs0fGYSStJDz79QrDE01BdNqm/z6fT/TRcJN4AbyzblpRWfSB5rMmOwx28t71gxN8L/G8=
+	t=1709814086; cv=none; b=TiYI7godUjvmakfC1XYEqE/qsjitEmJlsZCBwb2I2uDIeru0KmewkZWqygMupeq3CQnrp/X9GZrh75ZMRvJQHTpaYC3RMmTtGPGEYCC4NI1kEEANfeP98AkFsB/LgNRDVYKQ/JgY8VRwUajc49BJcNIKxegoMQB/m4pcKUEsZwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709813799; c=relaxed/simple;
-	bh=KWgfXMPIGtA9jZVnBTSIrLNOsC7THayA4/vdwyZmhkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q0mBQ6VKAw9nl0wMIUDbnxE9WvuC7LzjsGw9HqeDCHwW46qEh5qG2MQq42ikjyY/Vh49KIms7cnf2vgFdun1k1b2pXfT2T4U/5MpbYv8PA2rn0jkV61Xq8+odhpqbWUj/weTz4YyVd7cva4cYLlf/Jzq5zvSAisgvTnJ93OdZf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WDWhx17d; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 16F7A240009;
-	Thu,  7 Mar 2024 12:16:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709813787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NqBrgQVQ9FvM/GqR9CCaRL1K+LM764H8ixcND3N3l0o=;
-	b=WDWhx17dIRtElrHicmsg00kmcnRh5bBcWVMSPwcJUru0HdeHjZXqMsYzvjTChDa/yhvtdk
-	X+htnSu9lJmEDRVpSaFmGVWEBpLmElgQkJJqrTJ5To8j3eiau/pb8LYKo6IxI4r1au8T6o
-	LVhY2K9htiDEDzZqoVEW1mmQvaH99Y8fFHEfzvDP1712f07iTfslRXOBxPDR9TdxUMd3VA
-	94Obpy4t78knc4GoNkNI4SoDpyuCMW4TcrcJ3D/PJUJ1Fz1fONgwwzwiWCGR52TVafim+q
-	0N4vWgA+pS9LjOI33KISC8jLoFzMN/fA4JcE9FguGkhW9nS1Y2mDwPjrK+REeg==
-Date: Thu, 7 Mar 2024 13:16:23 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Saravana Kannan <saravanak@google.com>, Lizhi Hou
- <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] driver core: Introduce
- device_link_wait_removal()
-Message-ID: <20240307131623.467e1def@bootlin.com>
-In-Reply-To: <94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
-References: <20240307111036.225007-1-herve.codina@bootlin.com>
-	<20240307111036.225007-2-herve.codina@bootlin.com>
-	<94997e8720bc0a68afa85be3ef521c8844d0f0a0.camel@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1709814086; c=relaxed/simple;
+	bh=Lkz65xopRFkezQafKKmU9YW0VUXK84Tkn/cr5N1VgbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IMnkyaIH5ZMTKlPGsKIa7CHcpjMf/1hsl9UytFPFZgO2hgKAX5xwBkylM4qFpB2zgY3fSATij7jnKKdFWgGWLMOdWw2lecbqbEze4nR079MRkEAHfvWb+ys2gb5cj/iiFICPyLsPV6kuTDloXux7DRI+JOIL0w3tvcDqFpQbMCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riCkI-00035z-6E; Thu, 07 Mar 2024 13:21:10 +0100
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1riCkH-004w9H-6v; Thu, 07 Mar 2024 13:21:09 +0100
+Received: from pengutronix.de (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A50322A0863;
+	Thu,  7 Mar 2024 12:21:08 +0000 (UTC)
+Date: Thu, 7 Mar 2024 13:21:08 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vitor Soares <ivitro@gmail.com>
+Cc: manivannan.sadhasivam@linaro.org, thomas.kopp@microchip.com, 
+	wg@grandegger.com, linux-can@vger.kernel, linux-kernel@vger.kernel.org, 
+	vitor.soares@toradex.com, stable@vger.kernel.org
+Subject: Re: [PATCH] can: mcp251xfd: fix infinite loop when xmit fails
+Message-ID: <20240307-drift-hate-0919e82ee341-mkl@pengutronix.de>
+References: <20240307120442.12262-1-ivitro@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g63t2qxnscz3njvz"
+Content-Disposition: inline
+In-Reply-To: <20240307120442.12262-1-ivitro@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Hi Nuno,
 
-On Thu, 07 Mar 2024 12:50:52 +0100
-Nuno Sá <noname.nuno@gmail.com> wrote:
+--g63t2qxnscz3njvz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Hi Herve,
-> 
-> 
-> On Thu, 2024-03-07 at 12:10 +0100, Herve Codina wrote:
-> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > introduces a workqueue to release the consumer and supplier devices used
-> > in the devlink.
-> > In the job queued, devices are release and in turn, when all the
-> > references to these devices are dropped, the release function of the
-> > device itself is called.
-> > 
-> > Nothing is present to provide some synchronisation with this workqueue
-> > in order to ensure that all ongoing releasing operations are done and
-> > so, some other operations can be started safely.
-> > 
-> > For instance, in the following sequence:
-> >   1) of_platform_depopulate()
-> >   2) of_overlay_remove()
-> > 
-> > During the step 1, devices are released and related devlinks are removed
-> > (jobs pushed in the workqueue).
-> > During the step 2, OF nodes are destroyed but, without any
-> > synchronisation with devlink removal jobs, of_overlay_remove() can raise
-> > warnings related to missing of_node_put():
-> >   ERROR: memory leak, expected refcount 1 instead of 2
-> > 
-> > Indeed, the missing of_node_put() call is going to be done, too late,
-> > from the workqueue job execution.
-> > 
-> > Introduce device_link_wait_removal() to offer a way to synchronize
-> > operations waiting for the end of devlink removals (i.e. end of
-> > workqueue jobs).
-> > Also, as a flushing operation is done on the workqueue, the workqueue
-> > used is moved from a system-wide workqueue to a local one.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
-> >  include/linux/device.h |  1 +
-> >  2 files changed, 24 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index d5f4e4aac09b..48b28c59c592 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
-> >  static void __fw_devlink_link_to_consumers(struct device *dev);
-> >  static bool fw_devlink_drv_reg_done;
-> >  static bool fw_devlink_best_effort;
-> > +static struct workqueue_struct *device_link_wq;
-> >  
-> >  /**
-> >   * __fwnode_link_add - Create a link between two fwnode_handles.
-> > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *dev)
-> >  	/*
-> >  	 * It may take a while to complete this work because of the SRCU
-> >  	 * synchronization in device_link_release_fn() and if the consumer or
-> > -	 * supplier devices get deleted when it runs, so put it into the "long"
-> > -	 * workqueue.
-> > +	 * supplier devices get deleted when it runs, so put it into the
-> > +	 * dedicated workqueue.
-> >  	 */
-> > -	queue_work(system_long_wq, &link->rm_work);
-> > +	queue_work(device_link_wq, &link->rm_work);
-> >  }
-> >  
-> > +/**
-> > + * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
-> > + */
-> > +void device_link_wait_removal(void)
-> > +{
-> > +	/*
-> > +	 * devlink removal jobs are queued in the dedicated work queue.
-> > +	 * To be sure that all removal jobs are terminated, ensure that any
-> > +	 * scheduled work has run to completion.
-> > +	 */
-> > +	flush_workqueue(device_link_wq);
-> > +}
-> > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
-> > +
-> >  static struct class devlink_class = {
-> >  	.name = "devlink",
-> >  	.dev_groups = devlink_groups,
-> > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
-> >  	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
-> >  	if (!sysfs_dev_char_kobj)
-> >  		goto char_kobj_err;
-> > +	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);  
-> 
-> My rb tag was with the assumption this is moved into devlink_class_init(). IIUC,
-> Saravana also agreed with that [1]. But it looks like he missed that we are
-> allocating the queue in devices_init() and not in devlink_class_init().
-> 
-> I'm also not sure if this is in line with what Rafael wanted for ccing stable. How do
-> we know the next patch depends on this one?
-> 
-> [1]: https://lore.kernel.org/lkml/CAGETcx_gNWOTsSZMaZu+XU1-5Z60WEcMhw08t4Sn_-YgkCCUmA@mail.gmail.com/
-> 
+On 07.03.2024 12:04:42, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
+>=20
+> When the mcp251xfd_start_xmit() function fails, the driver stops
+> processing messages, and the interrupt routine does not return,
+> running indefinitely even after killing the running application.
+>=20
+> Error messages:
+> [  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
+> [  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empt=
+y. (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0, tx_head=
+=3D0x000017d3).
+> ... and repeat forever.
+>=20
+> The issue can be triggered when multiple devices share the same
+> SPI interface. And there is concurrent access to the bus.
+>=20
+> The problem occurs because tx_ring->head increments even if
+> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> TX package while still expecting a response in
+> mcp251xfd_handle_tefif_one().
+>=20
+> This patch resolves the issue by decreasing tx_ring->head if
+> mcp251xfd_start_xmit() fails. With the fix, if we attempt to trigger
+> the issue again, the driver prints an error and discard the message.
 
-We discussed that point and I understood that you were ok to do that on your
-side:
-  https://lore.kernel.org/linux-kernel/f42ceee61ddb8b50c347589649d4131476ab5d81.camel@gmail.com/
+What about returning NETDEV_TX_BUSY, then the networking stack will
+retry.
 
-Sorry if I misunderstood.
+> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD =
+SPI CAN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> ---
+>  drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 27 ++++++++++----------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c b/drivers/net/c=
+an/spi/mcp251xfd/mcp251xfd-tx.c
+> index 160528d3cc26..a8eb941c1b95 100644
+> --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> @@ -181,25 +181,26 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff *sk=
+b,
+>  	tx_obj =3D mcp251xfd_get_tx_obj_next(tx_ring);
+>  	mcp251xfd_tx_obj_from_skb(priv, tx_obj, skb, tx_ring->head);
+> =20
+> -	/* Stop queue if we occupy the complete TX FIFO */
+>  	tx_head =3D mcp251xfd_get_tx_head(tx_ring);
+> -	tx_ring->head++;
+> -	if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> -		netif_stop_queue(ndev);
+> -
+>  	frame_len =3D can_skb_get_frame_len(skb);
+> -	err =3D can_put_echo_skb(skb, ndev, tx_head, frame_len);
+> -	if (!err)
+> -		netdev_sent_queue(priv->ndev, frame_len);
+> +	can_put_echo_skb(skb, ndev, tx_head, frame_len);
+> +
+> +	tx_ring->head++;
+> =20
+>  	err =3D mcp251xfd_tx_obj_write(priv, tx_obj);
+> -	if (err)
+> -		goto out_err;
+> +	if (err) {
+> +		can_free_echo_skb(ndev, tx_head, NULL);
+> =20
+> -	return NETDEV_TX_OK;
+> +		tx_ring->head--;
+> +
 
-I am going to wait for other comments on this current series before re-sending
-with our 'Reviewed-by' removed if needed. Let me know.
+I'm not sure, if we want an error message for -EBUSY. We could add
+proper ethtool statistics.
 
-Best regards,
-Hervé
+> +		netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
+> +	} else {
+> +		/* Stop queue if we occupy the complete TX FIFO */
+> +		if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> +			netif_stop_queue(ndev);
+> =20
+> - out_err:
+> -	netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, err);
+> +		netdev_sent_queue(priv->ndev, frame_len);
+> +	}
+> =20
+>  	return NETDEV_TX_OK;
+>  }
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--g63t2qxnscz3njvz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmXpsTAACgkQKDiiPnot
+vG+S3ggAliJL81O5z6GF9c4x5R2wUoT5oWY60OKSo9Z/uEhnEsH2Pt2uaOlXe9LP
+vEXtH8ms8Fj3+91Js3rLGiLEa1xDKlq/u/pbCRQdUGKNpD+AVusB+QEbP0mxhz5P
+1puPong7lP48wzY2FEPzJ//2SyPAwAqJdx0I/7+iKGSJNXVCgyjfD1+vMf11iDDh
+/cT2jxP3TyR/qlcJoSxZathNcHYiPRe1YoJfSa/pAJ15Ahc01+lZ8vRQ/MrUVZ/2
+x4Hghc/+jzkD88JmNYyPI61/G0rjOGhdXEZVLnD4rNscy8YRVCgbbHA4kn/TwEJv
+LQH0RsGzQg9zw2wsOvxQAHdmlbxyWQ==
+=mqKg
+-----END PGP SIGNATURE-----
+
+--g63t2qxnscz3njvz--
 
