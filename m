@@ -1,86 +1,76 @@
-Return-Path: <stable+bounces-27121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E310875967
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 22:33:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816BB875B39
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 00:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED061F2649C
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 21:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B34101C20E51
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 23:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C6313B787;
-	Thu,  7 Mar 2024 21:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16EB3FB2F;
+	Thu,  7 Mar 2024 23:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aeHWc2uL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kd1ZB/h5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EBC634E4;
-	Thu,  7 Mar 2024 21:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC2541A88
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 23:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709847176; cv=none; b=ONJ3av8SPBCnAmSj0VJToqZhorsh5OUMnUxxsRr6Z52Lg8pW3akjR19kNJ2ZZYj0s0dbSanYgZXZANh3IHSyXFis0EjJYel5OndKn/2od5cekmb0TAymCkAALy7NFiPEvRhJGrfXJd0nI0xu3RuslbBNkW8g5k2xf4kTYJwhBbI=
+	t=1709855534; cv=none; b=sqE2xOFpaRt8NJT/6TZ3jYH+T534iEXcT8Rqhf35KSewGXQD/RmLff+teaupelx+Z9Uwb6pF0FytIcuYfXtSDUB3qKC00CoYYP8CXrhcF2alV49Sn4IFl9lYvP3r+u6kM9LVprNQ91l6+oeDdohNw4wl11a+1tdLsBN1yX5M14s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709847176; c=relaxed/simple;
-	bh=T1acbK4syDy12qynlLt3cHonJ2RsscIuuNF0FA+iwB8=;
+	s=arc-20240116; t=1709855534; c=relaxed/simple;
+	bh=g6KNEv97sL21XlZbjXrN4u3C1nl8XOMMFLdNGYOeSWc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o9/jaDVd5v9C9UlXppOg4h59eltrHFvFdNzkxDdNwbhZc9041n/lCnbBm5bL6UpKW7mp8ASvfBEu7rw8dzfpDJs7ZHckiso7THg4H0y1y+M3yy56X6gf1/H28TZDVf7t3wRqBNa4uIKnCHNxY6xvYCaMUQUitRVZPDKS0Q6EO+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aeHWc2uL; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d3f4fef377so18297981fa.1;
-        Thu, 07 Mar 2024 13:32:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709847173; x=1710451973; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BsLM3ni1DoQObcnwbdIeTZvE2aHaqZB+Kv3fZAxgw7k=;
-        b=aeHWc2uLR0vgDWgCa2Ye6ksGip32kOdbalcd0FhkrSVnbq41b6Zv2/yO1F6fixmnKH
-         n1uioYJudNDPPs9rx66ICgZMquwu9yPX/FWIAHXZMoaylwwwWpj34Cac1mki8BsMfO1V
-         HCulHg/O7AphBZFP6oTlm7HyoHkmyE43qokziMi0i5HVSU42aee9gGzbfPBIWHGffllU
-         HEEl3FPWxcsSKqvp2GNr7cD+piJfFVnsrnkMn6nz+I8Wy+QqcKEim0Q63mElMVdMmk5o
-         qMG0aP8C4PwvsBohZJF/tMwPoiOsdwPuqMEh6Kkh3BSs2Z7K9ZuiyoNzR/bUnxYVPiv/
-         g8Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709847173; x=1710451973;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BsLM3ni1DoQObcnwbdIeTZvE2aHaqZB+Kv3fZAxgw7k=;
-        b=FxeFCtp5CYm8yB9E+swq5yrqfVamS12FLdRzbTFIJFZdyCBnJIqFT1BrWHNled5xJ2
-         c1/6VYED5o9o5eLrk8GAuLN1dsEoiM+yyNCj3kSbLaqdlwCjxkI8DQf0jEG5KY/jHuFb
-         lL8Piq/QKvHWhe8xxHnyGMP+Zwi4uLpQ4Y1+nb9L9GcFVLvS3u1F13fX0HFMlIA8lH36
-         it8bBiwomJFxIh+KOxIaPz5yJuB0vSTtLhcYxq9NHzKBylhbY45FHFOm+gaeSCmID/5C
-         8MGtnjvd0rnlethAySlLQCAAY+qgSVsVs5eOJzJ/XmkQG5aJMRrvw4CQJny5X5XtgUAR
-         IxqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXc9FVgH8mESIuaQfZR+Oi8iLTabKI0DkgwYcbm8BTNSaSiOIvXkrrArrbtkDk1t6ZuB6VDVWV3tRHRlZ4g+NxIsrIv+fXOXEhMVo0oXepVpY9mWoBe4SaSck+G2tJmqNWkylh5QwPcoQGvdA==
-X-Gm-Message-State: AOJu0YyeopCwRzckHhHLvzPDV7/+t7hO4FmMZTzBDKtehk2Cpb+6zIst
-	a3kWW5LSVpFMi7VOmfOLgzNStuS7OZblRlxXWTQsQ6Wcjl34GSnxYh2GTdbx9zs=
-X-Google-Smtp-Source: AGHT+IHVDP/rfhfesJ39r7ZJoG3nWsfYfY7twQ8eRzBQ40SS0p8G6JnivZBifvJe0eXxbZJA4aZRFw==
-X-Received: by 2002:a05:651c:10d1:b0:2d2:47e0:4432 with SMTP id l17-20020a05651c10d100b002d247e04432mr2354846ljn.1.1709847167830;
-        Thu, 07 Mar 2024 13:32:47 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id g3-20020a056402180300b00566ea8e9f38sm6968801edy.40.2024.03.07.13.32.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 13:32:47 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 78209BE2EE8; Thu,  7 Mar 2024 22:32:46 +0100 (CET)
-Date: Thu, 7 Mar 2024 22:32:46 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux x86 Platform Drivers <platform-driver-x86@vger.kernel.org>,
-	Linux Stable <stable@vger.kernel.org>
-Subject: Re: Fwd: Continuous ACPI errors resulting in high CPU usage by
- journald
-Message-ID: <ZeoyfjOdHECxn6ck@eldamar.lan>
-References: <Zd2bsV8VsFJMlbFW@archie.me>
- <f7f6bcf7-c919-4077-88f6-bfffe112ba72@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TU7yvzpraXAOurUn5rbZZ3RUegB2WHA6Y1tWECRv3gMLB6qUv39lHqQHHsH/l7rSrMqsNJmPSx9sZyW2qGetnvcrZiZi0j6IKre1vL7KZ6R1GklUKziNM6PC7kwAkbsS/4OSz+JjZqUIte5Ou87cmH+cR5rGHlXwt1Ezs5aCZ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kd1ZB/h5; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709855533; x=1741391533;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=g6KNEv97sL21XlZbjXrN4u3C1nl8XOMMFLdNGYOeSWc=;
+  b=Kd1ZB/h5SrWLECs5xWp8P8xHCS7TYiSfYLxQ0ZY1wo4uOlP1UZ27S1MN
+   lINwZlKnOaOMKgx9yVMl5Wz/jhvPBHBV3SafZlCJhwScC3zmAslmY9pxl
+   a8EzrE9r7hZhTbY3Vv50Qpm3uLh+hJoyCwYIRz8uv23rJjuRPMdwTBy0I
+   c/WFbP0AkJvk4jiE8MaxA7PTn1H9uGGyseb8vkF8fTFtgSS3YrIPaf2wk
+   o1vQke5GY1Av6Ol3N+E5+GTdSwFFX5wwkp6pWDVee0z9WiZbyqbL3S/17
+   scsSPWFveV3RPx/Eh8hhvPr474obzFCiNxqoN5L8rjcro95YSSlhB9Di7
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15988874"
+X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
+   d="scan'208";a="15988874"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 15:52:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,107,1708416000"; 
+   d="scan'208";a="10165628"
+Received: from unknown (HELO intel.com) ([10.247.118.98])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 15:52:07 -0800
+Date: Fri, 8 Mar 2024 00:52:01 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH v4 3/3] drm/i915/gt: Enable only one CCS for compute
+ workload
+Message-ID: <ZepTIWnGe73Qv1_p@ashyti-mobl2.lan>
+References: <20240306012247.246003-1-andi.shyti@linux.intel.com>
+ <20240306012247.246003-4-andi.shyti@linux.intel.com>
+ <20240307001454.GG718896@mdroper-desk1.amr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,38 +79,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f7f6bcf7-c919-4077-88f6-bfffe112ba72@leemhuis.info>
+In-Reply-To: <20240307001454.GG718896@mdroper-desk1.amr.corp.intel.com>
 
-Hi,
+Hi Matt,
 
-On Thu, Feb 29, 2024 at 09:49:08AM +0100, Linux regression tracking #adding (Thorsten Leemhuis) wrote:
-> [TLDR: I'm adding this report to the list of tracked Linux kernel
-> regressions; the text you find below is based on a few templates
-> paragraphs you might have encountered already in similar form.
-> See link in footer if these mails annoy you.]
+> > +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+> > +{
+> > +	u32 mode;
+> > +	int cslice;
+> > +
+> > +	if (!IS_DG2(gt->i915))
+> > +		return;
+> > +
+> > +	/* Set '0' as a default CCS id to all the cslices */
+> > +	mode = 0;
+> > +
+> > +	for (cslice = 0; cslice < hweight32(CCS_MASK(gt)); cslice++)
+> > +		/* Write 0x7 if no CCS context dispatches to this cslice */
+> > +		if (!(CCS_MASK(gt) & BIT(cslice)))
+> > +			mode |= XEHP_CCS_MODE_CSLICE(cslice,
+> > +						     XEHP_CCS_MODE_CSLICE_MASK);
+> > +
+> > +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
 > 
-> On 27.02.24 09:22, Bagas Sanjaya wrote:
-> 
-> > On Bugzilla, danilrybakov249@gmail.com reported stable-specific, ACPI error
-> > regression that led into high CPU temperature [1]. He wrote:
-> > [...]
-> 
-> #regzbot ^introduced 847e1eb30e269a094da046c08273abe3f3361cf2
-> #regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=218531
-> #regzbot title platform/x86: p2sb: Continuous ACPI errors resulting in
-> high CPU usage by journald
-> #regzbot ignore-activity
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> That page also explains what to do if mails like this annoy you.
+> This is still going to hook all available cslices up to hardware engine
+> ccs0.  But what you actually want is to hook them all up to what
+> userspace sees as CCS0 (i.e., the first CCS engine that wasn't fused
+> off).  Hardware's engine numbering and userspace's numbering aren't the
+> same.
 
-The fix for this issue seems to have landed in mainline:
+Yes, correct... we had so many discussions and I forgot about it :-)
 
-aec7d25b497c ("platform/x86: p2sb: On Goldmont only cache P2SB and SPI devfn BAR")
+> Also, if you have a part that only has hardware ccs1/cslice1 for
+> example, you're not going to set cslices 2 & 3 to 0x7 properly.
 
-Regards,
-Salvatore
+Good point also here, the XEHP_CCS_MODE register is indeed
+generic to all platforms.
+
+> So probably what you want is something like this (untested):
+> 
+> static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+> {
+>         u32 mode = 0;
+>         int first_ccs = __ffs(CCS_MASK(gt));
+> 
+>         /*
+>          * Re-assign every present cslice to the first available CCS
+>          * engine; mark unavailable cslices as unused.
+>          */
+>         for (int cslice = 0; cslice < 4; cslice++) {
+>                 if (CCS_MASK(gt) & BIT(cslice))
+>                         mode |= XEHP_CCS_MODE_CSLICE(cslice, first_ccs);
+>                 else
+>                         mode |= XEHP_CCS_MODE_CSLICE(cslice,
+>                                                      XEHP_CCS_MODE_CSLICE_MASK);
+>         }
+> 
+>         intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
+> }
+> 
+> > +}
+> > +
+> >  int intel_gt_init_hw(struct intel_gt *gt)
+> >  {
+> >  	struct drm_i915_private *i915 = gt->i915;
+> > @@ -195,6 +215,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
+> >  
+> >  	intel_gt_init_swizzling(gt);
+> >  
+> > +	/* Configure CCS mode */
+> > +	intel_gt_apply_ccs_mode(gt);
+> 
+> This is only setting this once during init.  The value gets lost on
+> every RCS/CCS reset, so we need to make sure it gets reapplied when
+> necessary.  That means you either need to add this to the GuC regset, or
+> you need to implement the programming as a "fake workaround" so that the
+> workaround framework will take care of the re-application for you.
+
+OK, I'll hook everything up in the ccs_engine_wa_init().
+
+Thanks,
+Andi
 
