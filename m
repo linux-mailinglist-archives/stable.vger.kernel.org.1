@@ -1,194 +1,196 @@
-Return-Path: <stable+bounces-27062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7DC874CFC
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:07:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9A7874D11
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9E00B21088
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:07:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24C31C23695
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA90125DC;
-	Thu,  7 Mar 2024 11:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C5D1292D0;
+	Thu,  7 Mar 2024 11:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b="GRD4P3uW"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A6lqKiF4"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2118.outbound.protection.outlook.com [40.107.14.118])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57679126F3E;
-	Thu,  7 Mar 2024 11:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.118
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709809658; cv=fail; b=RzVLVg5r+ClWfgQdkNElAsSU7mz7rnL+iNRnIbpO9ddZ8ZMp692N0w4In2s+1vnaAoyWwmMKnUOs7JvujwmNXDiizAZBm4CA5Nzumg2urqISQm/hZ6Y/ZcnCNPx75MsLV+EawlN36/QxVeTmXkVzu5O+MLqiUDne5R9yWBFSj3M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709809658; c=relaxed/simple;
-	bh=1yDZ4C+7wuAF4x1/Dy1IbDFKfZNKuDpc1YmpvUUxPqY=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=o9dFCbGZXUG5QPsmFL5bTI1wfwUqqPi8WCETSgy7XxVX8+306IO8q+ClScFkcxjPUVV5XJnpzm7IFFNYnnbnKOUQwo0GH6w+ngqPLxlGmlZVNGHneIbhd+mHAU/vzHyaL3nykkH0beKbnCzKIItWGJgTshabVerlzZyEflqKDN4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=solid-run.com; spf=pass smtp.mailfrom=solid-run.com; dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b=GRD4P3uW; arc=fail smtp.client-ip=40.107.14.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=solid-run.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=solid-run.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CVo7NPYiaJ/tZd5nh8fRFBgwOuSuPW8osXSxqvsPq1cm+Td5XwPVScyKghLibLF1OGU6L1fhBlZkiu2g/8aHhEGYFbymlMhwmeNXwkHYchPP4mH1jMo2Dgm7A2X5MSjspKOCx3h10+Gp8V8AzB///LTHwtFg5Dli97BctE3gATff8oBIhhHQ9cGbjIttSM0sVsXbkfInxu4GPxEt+xqoKhba9i35fKHF2qKh4sZES3SERBoXFsmsUaj4QD20j6hQZHLL0hx4nuxKHE9EiT7ULup1yAQv9rpsiH2Rk21St3HVDdvE3BJSOBk+fcI9owtyxsxCSTcFCdKQF23iaqrCRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hFf+yuUu3Sr7kpoNItzUY7Z35fSz8Du0K/MnmuHsRqs=;
- b=OAwyP+xrSOoQM+f2c6zyLH2KgWO1om32mBi2Ice5M70LY/vJzU5Ub/YMC6IgkYTGLOePiGFz3c2IJhpanpA67G0BvT8QOYu1EOfppSp/Py+XURReE7pzHRKZFx0b/PEP0FtRJYFMzuj5fL4upYaVTd5L3wpp3DiOWdnpfW3udfcbSxm3cxN6CkH2JSucyU/wROlN7+Y7PYSilcPMF+FF79X1BlOjYtBn3yooMBQnR/VFawDcGakyIUBs9k/uRv9czkivnbCyJjbxU8uO5eXoEZ4rX3B0UrmkfJJYjlmDUHPNEXGebL6xq+ZiuGc2XBEPra+RHa25pv/EzyoFdDfQCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=solid-run.com; dmarc=pass action=none
- header.from=solid-run.com; dkim=pass header.d=solid-run.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=solidrn.onmicrosoft.com; s=selector1-solidrn-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hFf+yuUu3Sr7kpoNItzUY7Z35fSz8Du0K/MnmuHsRqs=;
- b=GRD4P3uWWAQPAbE9LT9KcyDR6u0Ntr25JVFU73qrkBGgG3A9qcHA8st8ULEFPwlwpXCk3jCmFYR5d92Hu+BqbNv5bT7SSoCUbOZdRHBX80/wQ9ls9VYQnfy5/XafdR9riIielcwcs0XNxEV+9s+hf8AOKpsAvLfK8unKOoA+eF4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=solid-run.com;
-Received: from AM9PR04MB7586.eurprd04.prod.outlook.com (2603:10a6:20b:2d5::17)
- by DU0PR04MB9298.eurprd04.prod.outlook.com (2603:10a6:10:355::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Thu, 7 Mar
- 2024 11:07:32 +0000
-Received: from AM9PR04MB7586.eurprd04.prod.outlook.com
- ([fe80::57e1:e1cb:74e2:2e9d]) by AM9PR04MB7586.eurprd04.prod.outlook.com
- ([fe80::57e1:e1cb:74e2:2e9d%4]) with mapi id 15.20.7339.035; Thu, 7 Mar 2024
- 11:07:32 +0000
-From: Josua Mayer <josua@solid-run.com>
-Date: Thu, 07 Mar 2024 12:06:58 +0100
-Subject: [PATCH] hwmon: (amc6821) add of_match table
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com>
-X-B4-Tracking: v=1; b=H4sIANGf6WUC/x3MQQqAIBBA0avIrBtQJyq6SrQwG2sWZWhEEN09a
- fkW/z+QOQln6NUDiS/JEvcCUynwq9sXRpmLwWpba9Itus03nTUYA27u9CsSE+kuTMEQQcmOxEH
- ufzmM7/sBwgeMl2IAAAA=
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: Yazan Shhady <yazan.shhady@solid-run.com>, 
- Jon Nettleton <jon@solid-run.com>, linux-hwmon@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Josua Mayer <josua@solid-run.com>, Rabeeh Khoury <rabeeh@solid-run.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: TL2P290CA0030.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::16) To AM9PR04MB7586.eurprd04.prod.outlook.com
- (2603:10a6:20b:2d5::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526F28529C;
+	Thu,  7 Mar 2024 11:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709809849; cv=none; b=mR/yClxlqJ3NuVHUa1yt1ieCOM8rpSWyQgq1lDeuPhGnEro6H6kyUqBUHUW4xI76F9YyDOz8kZTV+MtjX0EaOspO4t/GhFp+p5nfYsyWj6jmvjuHHwrx0LvUYi2f0AcdoIm+Z3lOMjzs9wIycPl8blkpypTebt9zTcrlUja5MRI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709809849; c=relaxed/simple;
+	bh=QKb8Y0+5Befr7x73+f5zDW4KRxUSMOCTpyxsnkuG8xo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WZtQR9URb+KPW4XQIjZ0m4Z2gCbZrP+4/8Yff1E6OfUeXkzn7dbmOtZqPNFpLT7EzDrCntSZGxOncOi2iQYTHoxAglL2P4QdJVRDdG+/dpROL8182ZA7T9E8Rb/YYC8/lZb2h73a/eUQunKE2mYXRwlE5zl8dOnyg8tFXIUOuGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A6lqKiF4; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id 9435660005;
+	Thu,  7 Mar 2024 11:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709809845;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tU47TyT4ht6W8dfbwRiEMrDRHy9bv5aClb8wq33Hq18=;
+	b=A6lqKiF4rsb5rt/aV11LWbgagNJs8j74XtcmCBM+bbJXZhxM/Lsk+VLuTtAYZ2d6djFnLp
+	vLgmVxkeF7+PsmUib0bFtCQiGI0/pMGTaplziu/m4/VbAA79RMUZDWleqnyaKlx5IOOpfp
+	SVwNM0/EneCFoQQ1ZJEaIqY/dE5MHoWh95glbmxuW81KShYG6MZm3Rx1IjW7vTE5wAze2T
+	piVxAg6h8VJK+pqTGEyobV12rRkX5wmI1aizbs+bd3xZvA90auw00hy082rKCiPgXXXTWN
+	Z7jdHclyN94NpLigOa8OF4H5zs/AG2xQsv5yg8FlWgOkc5dL666pPafHK3UFkw==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Saravana Kannan <saravanak@google.com>
+Cc: Lizhi Hou <lizhi.hou@amd.com>,
+	Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/2] driver core: Introduce device_link_wait_removal()
+Date: Thu,  7 Mar 2024 12:10:00 +0100
+Message-ID: <20240307111036.225007-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240307111036.225007-1-herve.codina@bootlin.com>
+References: <20240307111036.225007-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB7586:EE_|DU0PR04MB9298:EE_
-X-MS-Office365-Filtering-Correlation-Id: f34b0e5f-f7c7-4606-58dd-08dc3e96c958
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	fRX6GUnmAzwyO+4mGGpDMEmyU2eluP5gSusYr3oIf13/5EOAwil/SKZxOaxttF5o4sMiN8jpC3ssSzXGmOVO2GQxDTVABAwvmzm4fjZ6YdLxmPXYwZh2xRoRMondvagcgWQrzgfy1+D8kJPvZ3lJ/h4/dJnP3YmI+1n5CV0yHEt/txg1bsGm4FtoSt+9mSUEeYmRIdRZrqRdXkPRRDSUU5fdTbrGx+7HYq175yG4lKBPNBs/jSpO+mT8e083xx3emhSrawEJ+MSiyRnGYTwlHzofADBQ3WOx55U+0803qb24R2bElBNP/NwuewZs1ulqeP21eS+7/ltj66AsISoLiW5EBvzo1+/ezHiEMsf8xD5xnoOA4zOnJ6zoFjZygU20LmJn1uyoTHQX4UW+2vWVoWZIf8Hax3zNNfx9uxt6t7ERlMXJymHoBVWeat8ST8jU+y+wO7OzvzeZcMs7T1fN64JSsP6G8g+PqCvcWv7oSLB+nvFm9VZlF6Y7hCQs/x1m3JfW6/NJJDZzvHNd3xwMyQSmHbmMXAVopei/hayMdk1uAX/zl7tc8pgAjPgcyWwMdJkiRXUv1jihWWRSp4cSjQXoC8Lfb/1oVFVD9hOOxZLN3FazQjC/E23qdiWOaX9rdtB8mL62cLWVZN+XDGl2v4+LA1aTTb4tGC2ig9h01LfoC0skrFrsPIN5R+AHIGlV9FS4LpSGOa+tR7ABOk/v/g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB7586.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(38350700005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aGFVb0tjcnd6ZUd3dFJiTlhSZURCSGhhTUZ6ZjVpeXVFZlZFekNvbUFkWExt?=
- =?utf-8?B?aU5WT1pTN0dkME1WMVlYRmJoZ040MFF1KzltaWcvTHFZWnJQV2VUcDRyQ3Bw?=
- =?utf-8?B?NVo3UVVFdXp0MGsxemtMQnhHaEpKMEkvTkJBeStxU3Q0OGxiR1N5VUlyT0hL?=
- =?utf-8?B?eHg0QmFzRy9uOXBOVkFhRitLU2hCY0Z2eEZFcWcycjByQ3NDOXh6MVYwQ1gr?=
- =?utf-8?B?MzFrNjFlVEk0SGlKTXdzRHBSTUJxS3dyRGlKZkhybnJQcHZlSzQvRy9ZZ1Uz?=
- =?utf-8?B?ZlBPSG85TW80RXpPUXp5MVUwQlpBejFkTVdwNithOW1ObjNlckRISkcvanI4?=
- =?utf-8?B?RHpYdUtMTDBPK0NWVkZUeks0RXc4dU9sYW8yMDF2WGQzVTB4eFZJaTdZbEIr?=
- =?utf-8?B?TVZrK21vVGpuMmM3NmRIb1p5ektZU1pOSXJ1elRiTVQvUGc0YStTRmJZekNn?=
- =?utf-8?B?OFlZSEY5REViaWxmdTExUU41b0JCZHY3YmtvN2s4ZWo0ektnVGQwK29FdDRY?=
- =?utf-8?B?bk1oY3dIVW9acXB5d3BmUEVxdjFqaHJ0QUZtQy9Mdm53YUdKWktaYnNYKzkz?=
- =?utf-8?B?Z1NFbTFhZkpmRWhSbUlWQzlyREh1RndKNE1qdnprQXFWRmpjWDQwczVYdElO?=
- =?utf-8?B?M0JPWjZ5cE9WeHpJeUhaYlpxWm9NUU1BY3JWWnpDUlorWnhjSnhXcWFST2Ex?=
- =?utf-8?B?ajViamdWZTdkVHdhdmY4Mnk3b056SHNjc0hGd2FBaWNxWHNRTmhVUUlpTVlG?=
- =?utf-8?B?bmcrWEhiZTRPRUNMQ2hFNC9yV25aSndGNk42Wk8xWGtUWXg1eUc5UVFBVzlC?=
- =?utf-8?B?amluYkRncWdkangxVERuaWxuTUUxbnJ5a3ovWWpLNlFDNnl5R1J3RFRydzBK?=
- =?utf-8?B?ZkVyZmc3ODVHUG9wcTdXUGtuUXJ0dDBuKzBQdG9NK1FxeXNCSWJoTWNjQThD?=
- =?utf-8?B?cUtwMmJ6bW9VSjJ3RDM5WWl5RjBjbjNuc0lNVThlbThwM2huZnNXUkJhZXR1?=
- =?utf-8?B?ODY2RHVtUnJTSGhmMU9WQVFYdTNaNjlGelNjSWJ3VW1uS3kwQ0JJV3RERGFF?=
- =?utf-8?B?K3VheGNNQzBiTDBvMmNVODNDR2ZQVG9qSW9veEVrUmFlZnFjdEoyM3NMY0tq?=
- =?utf-8?B?dDNMQ1hUSHBlRnhKRDRvcG03OGF4WnVIM0xzL0ZCQ3puc0NudWdJczB1STRY?=
- =?utf-8?B?WE5PeDhUK3VWa1hUN2pyNk9Dcno3V0dNOVZRN01DblBsczl5ZStOQXBrdm5S?=
- =?utf-8?B?L09ocFlhcFE4YkhGQ0hUZ05qbnA2bklSVSsxeTJCNmZGQVZJbnk1eUU1RUY1?=
- =?utf-8?B?dHZtVzhsOTlQaUpnYjE4S2ZOcFV6djR0a0JrTlNJRXFuN1g0T1Y4UzVPckRi?=
- =?utf-8?B?RGpFN1k3Njdra1FtNFRFQXI0aXNkdmkvMCthOGpQeHRidHpQQ2dJcmVya0VH?=
- =?utf-8?B?cmxmc3B2QVRVVThFRUtXMSs4NGV4ckpOSDV3ZTNyLzl2RnN1b0RRNGh2b0xl?=
- =?utf-8?B?azlnakY0WFNHVXB2VVJiY28wa3UvVnhkaTB5TXNSSXFqVkZJbWNvbW8ydDVa?=
- =?utf-8?B?V1M4K0tSN3NsRDJzMFFNNEtGb0lOdlNYanBvR2FFWEE2UFhTbDY3dng3ai9Y?=
- =?utf-8?B?UnNBbmRsdEdxNXZhZnBIT0xEK214WE0wWVNDR3dBZWxGMGd6UlBVVVFLNmh2?=
- =?utf-8?B?bE0xK0NndmFHb2VtNFRKcThpS20zeW5QQ3JsRDdnVGY4UXFxN0xSb2xvd2FG?=
- =?utf-8?B?UEtHWklFRUZQUU9FaVZuSGZ5cS9NUHFkcGgvN2R0bDRMZVNaVzRha2g1U1Uv?=
- =?utf-8?B?cHU4YjhKWitiVTZmdUY3dC92cGJsQjdXTldjVDBmT0xSTVcwNXRSQnM1SGg5?=
- =?utf-8?B?ZC9obDREemJEdi9YTzBDSHQwYVlWdStEaFRSQkdTMmtXUGJPZjM2eEdEOGFL?=
- =?utf-8?B?UkRZM3dkSysxTXNadm9GKzVwQWtIcGlyL3c0dXpFZlp5L3pWVjVoeDBkMUZZ?=
- =?utf-8?B?ZkIzcm0rTDVaTWZiT2tjTW1XcVhTVUxvTXBmbjE2NmY2d0dhSlcybEUzNllr?=
- =?utf-8?B?V1VXQy9yb2dCUzJyT0hHMURxL0JrOCtLd2c4Mmo1MmEwK0N4eGJ6b3lSMEUw?=
- =?utf-8?Q?H8RaKChGvAu5h+zRbFPYyjmpY?=
-X-OriginatorOrg: solid-run.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f34b0e5f-f7c7-4606-58dd-08dc3e96c958
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB7586.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 11:07:32.5886
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a4a8aaf3-fd27-4e27-add2-604707ce5b82
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ypj07NFziTFSdKxu1/r8NxxIWgpEwFJCLW2HfloNcRu/PhEcHZ9e5KpJZJrdwqwfaLolEfM+0Qr4tlf1dcum9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9298
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-Add of_match table for "ti,amc6821" compatible string.
-This fixes automatic driver loading by userspace when using device-tree,
-and if built as a module like major linux distributions do.
+The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+introduces a workqueue to release the consumer and supplier devices used
+in the devlink.
+In the job queued, devices are release and in turn, when all the
+references to these devices are dropped, the release function of the
+device itself is called.
 
-While devices probe just fine with i2c_device_id table, userspace can't
-match the "ti,amc6821" compatible string from dt with the plain
-"amc6821" device id. COnsequently kernel module ca not be loaded.
+Nothing is present to provide some synchronisation with this workqueue
+in order to ensure that all ongoing releasing operations are done and
+so, some other operations can be started safely.
+
+For instance, in the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
+
+During the step 1, devices are released and related devlinks are removed
+(jobs pushed in the workqueue).
+During the step 2, OF nodes are destroyed but, without any
+synchronisation with devlink removal jobs, of_overlay_remove() can raise
+warnings related to missing of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2
+
+Indeed, the missing of_node_put() call is going to be done, too late,
+from the workqueue job execution.
+
+Introduce device_link_wait_removal() to offer a way to synchronize
+operations waiting for the end of devlink removals (i.e. end of
+workqueue jobs).
+Also, as a flushing operation is done on the workqueue, the workqueue
+used is moved from a system-wide workqueue to a local one.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 ---
-Bcc: Rabeeh Khoury <rabeeh@solid-run.com>
----
- drivers/hwmon/amc6821.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/base/core.c    | 26 +++++++++++++++++++++++---
+ include/linux/device.h |  1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
-index 2a7a4b6b0094..9b02b304c2f5 100644
---- a/drivers/hwmon/amc6821.c
-+++ b/drivers/hwmon/amc6821.c
-@@ -934,10 +934,21 @@ static const struct i2c_device_id amc6821_id[] = {
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index d5f4e4aac09b..48b28c59c592 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+ static void __fw_devlink_link_to_consumers(struct device *dev);
+ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
++static struct workqueue_struct *device_link_wq;
  
- MODULE_DEVICE_TABLE(i2c, amc6821_id);
+ /**
+  * __fwnode_link_add - Create a link between two fwnode_handles.
+@@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *dev)
+ 	/*
+ 	 * It may take a while to complete this work because of the SRCU
+ 	 * synchronization in device_link_release_fn() and if the consumer or
+-	 * supplier devices get deleted when it runs, so put it into the "long"
+-	 * workqueue.
++	 * supplier devices get deleted when it runs, so put it into the
++	 * dedicated workqueue.
+ 	 */
+-	queue_work(system_long_wq, &link->rm_work);
++	queue_work(device_link_wq, &link->rm_work);
+ }
  
-+static const struct of_device_id __maybe_unused amc6821_of_match[] = {
-+	{
-+		.compatible = "ti,amc6821",
-+		.data = (void *)amc6821,
-+	},
-+	{ }
-+};
++/**
++ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
++ */
++void device_link_wait_removal(void)
++{
++	/*
++	 * devlink removal jobs are queued in the dedicated work queue.
++	 * To be sure that all removal jobs are terminated, ensure that any
++	 * scheduled work has run to completion.
++	 */
++	flush_workqueue(device_link_wq);
++}
++EXPORT_SYMBOL_GPL(device_link_wait_removal);
 +
-+MODULE_DEVICE_TABLE(of, amc6821_of_match);
-+
- static struct i2c_driver amc6821_driver = {
- 	.class = I2C_CLASS_HWMON,
- 	.driver = {
- 		.name	= "amc6821",
-+		.of_match_table = of_match_ptr(amc6821_of_match),
- 	},
- 	.probe = amc6821_probe,
- 	.id_table = amc6821_id,
-
----
-base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-change-id: 20240307-amc6821-of-match-3e3308fbf133
-
-Best regards,
+ static struct class devlink_class = {
+ 	.name = "devlink",
+ 	.dev_groups = devlink_groups,
+@@ -4099,9 +4114,14 @@ int __init devices_init(void)
+ 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+ 	if (!sysfs_dev_char_kobj)
+ 		goto char_kobj_err;
++	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
++	if (!device_link_wq)
++		goto wq_err;
+ 
+ 	return 0;
+ 
++ wq_err:
++	kobject_put(sysfs_dev_char_kobj);
+  char_kobj_err:
+ 	kobject_put(sysfs_dev_block_kobj);
+  block_kobj_err:
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 1795121dee9a..d7d8305a72e8 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1249,6 +1249,7 @@ void device_link_del(struct device_link *link);
+ void device_link_remove(void *consumer, struct device *supplier);
+ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
++void device_link_wait_removal(void);
+ 
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
 -- 
-Josua Mayer <josua@solid-run.com>
+2.43.0
 
 
