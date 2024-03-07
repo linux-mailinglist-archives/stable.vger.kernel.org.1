@@ -1,230 +1,311 @@
-Return-Path: <stable+bounces-27059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF4F874A95
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 10:19:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAD8874C15
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A7B1F21D63
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 09:19:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19392283DF8
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 10:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3940783A00;
-	Thu,  7 Mar 2024 09:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397883CAD;
+	Thu,  7 Mar 2024 10:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gwjmTJV8"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB113839F4;
-	Thu,  7 Mar 2024 09:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709803167; cv=none; b=utqvuQPAH2eb+s/10JSDSjLY2MlNqCSNDQfhHGgGjz3cNwK9LMsSGcxLJxDOvbtxXDNcpHJbbE58p91gKI6Fr4z3AK8FqgxvW+wE1wiqb6hn+SO89itsf9GdY662v2yJvXLzAc2ONcheaxpe4N+SA7glkmcW4+St/a14t1g+m9g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709803167; c=relaxed/simple;
-	bh=2Ovq5uBAOM0L7vDNedetadWSHR9W5vxYB419k+cm1kU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o2Z2gP2BDImGNtDflv7fZHJu+SMHZxr1TwM/y1nSOXDTtUyqzjuHsn3GrTI9Cm4ik1SWgbWttWBqPV4k/GDoenIuh87FggjATmPz+B14dfEAKC/eKuDCkNjbko4de6H5Cf3fFpvF6CUTO280gvYIbd84bGSbtNkI3/SjrHZXDk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 03D381FB;
-	Thu,  7 Mar 2024 01:20:01 -0800 (PST)
-Received: from [10.57.68.241] (unknown [10.57.68.241])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC6B63F762;
-	Thu,  7 Mar 2024 01:19:22 -0800 (PST)
-Message-ID: <29335a89-b14b-4ef3-abf8-0b41e6d0ec67@arm.com>
-Date: Thu, 7 Mar 2024 09:19:20 +0000
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DDA82880;
+	Thu,  7 Mar 2024 10:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709806557; cv=fail; b=QJJ5a5OLXTxMyl5kvuenCKoSXQ1mgLnNTPIr4sTQJg/Tak8i0cSXesRVO4e4VkYrMiWbUt4vtxBL3VBFLdIBABgfdHo1iNggYEedL8Qd0PICCVo7le4gspqemEqX8L/U781+LC/2n5sfSapowkwTQjj4wkhxi5Uz5/9fm0ajSD0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709806557; c=relaxed/simple;
+	bh=hvZwSROIQ5u9CpQnbaRTZ2sJ8CZbmtM437E9f0XBFiM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l1ABX2t2go11DdB47f7oV7ta2CqrOUOsCjDMHHVFlkxT/5h66LV4aDTmWd7mxuzw6OfWyOWU69lALcF9ZRY3G+WsOV6+/ZeZ+mlDLGiHiFnF+cdwmNIslunXGZMiSzB8FRek3Ukq0FS8XUTJLr5CHfzbRrZ2nP6BNgB9PfeACmg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gwjmTJV8; arc=fail smtp.client-ip=40.107.237.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QqNB3sL362JnYyWh0rFkSZwMb9IzdNGCmQk4hOTmG68So0J668/FBRW2C5r+W46BxkL6mseCd7X4USPIN46ww2Iv7vlWvBj/RA7mbWL8s1R4/D7AGf+AR/X+/GCKPId+A15iopCp29qjoyQNTbqsqE9D0VaPh5hFuK7pgjd2yF1EpFP5CE+h11SzXv84P0UEeolJPvgLDBYhQj8A3wzPh3RYheEdlY5TaJaeN2/qdbuNMq2GbVG88XOn7X3El2odEHWHXDdFaRXuqHrunoiVb4CF8Di4eXsftedj+bm5n5qc8ZdP2dEMudvdHzR9NlJmfVYrh89kek/aUpBm4ZwRxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xvm8rPF2JAXFvg1pzZeYVXkTKxhhEBLTy/NpdSQO5Gg=;
+ b=BQ+zMgsMrRcsFdsdfaCDXUxVFp8087/kBRzF+/zdGuKZOpjEcVIaAKJfiMBTPOU0rYS57OQ2Lae3crWq+WlRxxB+3J4SaOGjQLG6IP3R/eiOajf6ralyV4aZR0uHPHJUabwGCvfxydHvpTMMJt8r0C6LIvhhi/w0SvGWDVS3W9KCRtD54JGS8Eoykmfd5JwfMeg23u65Ueic8jJSxbk7kHxJarGTup6mAwTdrovtoe2GtRGdvY57+PzjiL6mIvO7HdJ00NtiPhr1Gy3SUhLD7lu7hG1T1hrux8r6Ic7V6ljIuR4SR83KycmnN5wd5nS4ooo3tS6zZVu25Gw21svlaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xvm8rPF2JAXFvg1pzZeYVXkTKxhhEBLTy/NpdSQO5Gg=;
+ b=gwjmTJV8Pm7Q4Fs9mtNvSXH3VFM2bHA+9UfehQaG/VHiy4WwHG+itblmoyqrOtWylvudcDyouVmGI3jgtmOpneb0KtYBVD9beW2bVR9l5h5pPw4XYdy/9KA3fjMTutYjgzn64Shr2L4Ca656/5w7QdjkcQIabmpjS52NigaZpmP2BJBMKfYF3ba405OXiZcOvZCWvCJh3mWLTUpcwloIglWg6LfUTi8Cmf96EMf9Y5XTvCKGS+MsD7QKK9yBAexLB5tka5w1yo/OKFWunVbyO97AQlyu7HO3jV3b7wg669T37I4wNy3S0BXv0ZWRo4EcBmBX+dmogHahvs3krKPo8A==
+Received: from CH0PR03CA0281.namprd03.prod.outlook.com (2603:10b6:610:e6::16)
+ by CYYPR12MB8890.namprd12.prod.outlook.com (2603:10b6:930:c7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Thu, 7 Mar
+ 2024 10:15:50 +0000
+Received: from CH1PEPF0000A347.namprd04.prod.outlook.com
+ (2603:10b6:610:e6:cafe::a3) by CH0PR03CA0281.outlook.office365.com
+ (2603:10b6:610:e6::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.32 via Frontend
+ Transport; Thu, 7 Mar 2024 10:15:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH1PEPF0000A347.mail.protection.outlook.com (10.167.244.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7362.11 via Frontend Transport; Thu, 7 Mar 2024 10:15:48 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 7 Mar 2024
+ 02:15:32 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 7 Mar
+ 2024 02:15:32 -0800
+Received: from c-237-113-200-209.mtl.labs.mlnx (10.127.8.14) by
+ mail.nvidia.com (10.129.68.9) with Microsoft SMTP Server id 15.2.1258.12 via
+ Frontend Transport; Thu, 7 Mar 2024 02:15:28 -0800
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: <almasrymina@google.com>, Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+CC: <leonro@nvidia.com>, <gal@nvidia.com>, Dragos Tatulea
+	<dtatulea@nvidia.com>, "Anatoli N . Chechelnickiy"
+	<Anatoli.Chechelnickiy@m.interpipe.biz>, Ian Kumlien <ian.kumlien@gmail.com>,
+	<stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+Subject: [PATCH net] net: esp: fix bad handling of pages from page_pool
+Date: Thu, 7 Mar 2024 12:15:47 +0200
+Message-ID: <20240307101548.815189-1-dtatulea@nvidia.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: swap: Fix race between free_swap_and_cache() and
- swapoff()
-Content-Language: en-GB
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240305151349.3781428-1-ryan.roberts@arm.com>
- <875xy0842q.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <c8fe62d0-78b8-527a-5bef-ee663ccdc37a@huawei.com>
- <af11bbca-3f6a-4db5-916c-b0d5b942352b@arm.com>
- <ff6aec00-f939-b7ba-c127-b133c4d95ee5@huawei.com>
- <87bk7q7ffp.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <0925807f-d226-7f08-51d1-ab771b1a6c24@huawei.com>
- <8734t27awd.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <92672c62-47d8-44ff-bd05-951c813c95a5@arm.com>
- <87y1au5smu.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <87y1au5smu.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A347:EE_|CYYPR12MB8890:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03df9b8c-8e18-4afd-cf76-08dc3e8f8f53
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	cB/hLgDOroMfWAuvfjPN4PVpt49tO8gEmnON03/t4bnfwjIPJDBxwro21NGtogu9q/A8wWBJ38lC64Dej1rJAmfg9XZPIdB4cB9OCljLWwjRFiIQCffNMss10Zew81GOOdNvS6BB/8b81iZioY6nb6RKW8m0UvVUyT/z61IGjhOE1Syhz85hPq1hpX2aSmVzbsJCB+F4wEBXtrKfqoXmUFTPnP9wgIj1zcNz5TFqdupqP+RsmoQ8R1knIqE2GrfCTkHJkGo0PMi0i6cIHZoJrFaiHc2iFsS2avewmEmX15OkH29TGujdiJZg682M/D1N9wRZiGlxhf6Nz3pEeYCfKUGqU7he861/cjC5R5pf3Dq8ECoDGnX+aL0SgyD7rJcJGB4Wp18YPyVvqI1F1KYSWarCp0tzsh7DnXwaYw+cLELMBZ3/NUK/ZlW6vk9NcjUai1fJYGuZTT5K3Kho3VOFJB2dLbw7okB4Knj4gPz76+mRzPRAFf/mC9MRR4WkwwgwPgbAljU8ugvFGoVkj7ZLiGRCT/OCqBWt8laSsWXgmiDRUSWsgktK1xMo082bNARHpkwocouCrK5m0tDdfQvrKPY8+69p94JLBkwEfiKimnDathQmF6NQ7tMZ9dD0DpU0+UL3eqgzshfCiXzaqMNsmMFQx6+zRMu0tLKYyaUFAODfXgpeiZ8U0CgaDpVAPwRRO1aAxH6xhzLRHJdkAkMny5FsPJAKw3UotqMCuqBDqplZRY2IG6ymrx1woC5G2kR6
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(82310400014)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 10:15:48.4085
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03df9b8c-8e18-4afd-cf76-08dc3e8f8f53
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000A347.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8890
 
-On 07/03/2024 08:54, Huang, Ying wrote:
-> Ryan Roberts <ryan.roberts@arm.com> writes:
-> 
->> On 07/03/2024 07:34, Huang, Ying wrote:
->>> Miaohe Lin <linmiaohe@huawei.com> writes:
->>>
->>>> On 2024/3/7 13:56, Huang, Ying wrote:
->>>>> Miaohe Lin <linmiaohe@huawei.com> writes:
->>>>>
->>>>>> On 2024/3/6 17:31, Ryan Roberts wrote:
->>>>>>> On 06/03/2024 08:51, Miaohe Lin wrote:
->>>>>>>> On 2024/3/6 10:52, Huang, Ying wrote:
->>>>>>>>> Ryan Roberts <ryan.roberts@arm.com> writes:
->>>>>>>>>
->>>>>>>>>> There was previously a theoretical window where swapoff() could run and
->>>>>>>>>> teardown a swap_info_struct while a call to free_swap_and_cache() was
->>>>>>>>>> running in another thread. This could cause, amongst other bad
->>>>>>>>>> possibilities, swap_page_trans_huge_swapped() (called by
->>>>>>>>>> free_swap_and_cache()) to access the freed memory for swap_map.
->>>>>>>>>>
->>>>>>>>>> This is a theoretical problem and I haven't been able to provoke it from
->>>>>>>>>> a test case. But there has been agreement based on code review that this
->>>>>>>>>> is possible (see link below).
->>>>>>>>>>
->>>>>>>>>> Fix it by using get_swap_device()/put_swap_device(), which will stall
->>>>>>>>>> swapoff(). There was an extra check in _swap_info_get() to confirm that
->>>>>>>>>> the swap entry was valid. This wasn't present in get_swap_device() so
->>>>>>>>>> I've added it. I couldn't find any existing get_swap_device() call sites
->>>>>>>>>> where this extra check would cause any false alarms.
->>>>>>>>>>
->>>>>>>>>> Details of how to provoke one possible issue (thanks to David Hilenbrand
->>>>>>>>>> for deriving this):
->>>>>>>>>>
->>>>>>>>>> --8<-----
->>>>>>>>>>
->>>>>>>>>> __swap_entry_free() might be the last user and result in
->>>>>>>>>> "count == SWAP_HAS_CACHE".
->>>>>>>>>>
->>>>>>>>>> swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
->>>>>>>>>>
->>>>>>>>>> So the question is: could someone reclaim the folio and turn
->>>>>>>>>> si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
->>>>>>>>>>
->>>>>>>>>> Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
->>>>>>>>>> still references by swap entries.
->>>>>>>>>>
->>>>>>>>>> Process 1 still references subpage 0 via swap entry.
->>>>>>>>>> Process 2 still references subpage 1 via swap entry.
->>>>>>>>>>
->>>>>>>>>> Process 1 quits. Calls free_swap_and_cache().
->>>>>>>>>> -> count == SWAP_HAS_CACHE
->>>>>>>>>> [then, preempted in the hypervisor etc.]
->>>>>>>>>>
->>>>>>>>>> Process 2 quits. Calls free_swap_and_cache().
->>>>>>>>>> -> count == SWAP_HAS_CACHE
->>>>>>>>>>
->>>>>>>>>> Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
->>>>>>>>>> __try_to_reclaim_swap().
->>>>>>>>>>
->>>>>>>>>> __try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
->>>>>>>>>> put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
->>>>>>>>>> swap_entry_free()->swap_range_free()->
->>>>>>>>>> ...
->>>>>>>>>> WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
->>>>>>>>>>
->>>>>>>>>> What stops swapoff to succeed after process 2 reclaimed the swap cache
->>>>>>>>>> but before process1 finished its call to swap_page_trans_huge_swapped()?
->>>>>>>>>>
->>>>>>>>>> --8<-----
->>>>>>>>>
->>>>>>>>> I think that this can be simplified.  Even for a 4K folio, this could
->>>>>>>>> happen.
->>>>>>>>>
->>>>>>>>> CPU0                                     CPU1
->>>>>>>>> ----                                     ----
->>>>>>>>>
->>>>>>>>> zap_pte_range
->>>>>>>>>   free_swap_and_cache
->>>>>>>>>   __swap_entry_free
->>>>>>>>>   /* swap count become 0 */
->>>>>>>>>                                          swapoff
->>>>>>>>>                                            try_to_unuse
->>>>>>>>>                                              filemap_get_folio
->>>>>>>>>                                              folio_free_swap
->>>>>>>>>                                              /* remove swap cache */
->>>>>>>>>                                            /* free si->swap_map[] */
->>>>>>>>>
->>>>>>>>>   swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
->>>>>>>>
->>>>>>>> Sorry for jumping the discussion here. IMHO, free_swap_and_cache is called with pte lock held.
->>>>>>>
->>>>>>> I don't beleive it has the PTL when called by shmem.
->>>>>>
->>>>>> In the case of shmem, folio_lock is used to guard against the race.
->>>>>
->>>>> I don't find folio is lock for shmem.  find_lock_entries() will only
->>>>> lock the folio if (!xa_is_value()), that is, not swap entry.  Can you
->>>>> point out where the folio is locked for shmem?
->>>>
->>>> You're right, folio is locked if not swap entry. That's my mistake. But it seems above race is still nonexistent.
->>>> shmem_unuse() will first be called to read all the shared memory data that resides in the swap device back into
->>>> memory when doing swapoff. In that case, all the swapped pages are moved to page cache thus there won't be any
->>>> xa_is_value(folio) cases when calling shmem_undo_range(). free_swap_and_cache() even won't be called from
->>>> shmem_undo_range() after shmem_unuse(). Or am I miss something?
->>>
->>> I think the following situation is possible.  Right?
->>>
->>> CPU0                               CPU1
->>> ----                               ----
->>> shmem_undo_range
->>>   shmem_free_swap
->>>     xa_cmpxchg_irq
->>>     free_swap_and_cache
->>>       __swap_entry_free
->>>       /* swap count become 0 */
->>>                                    swapoff
->>>                                      try_to_unuse
->>>                                        shmem_unuse /* cannot find swap entry */
->>>                                        find_next_to_unuse
->>>                                        filemap_get_folio
->>>                                        folio_free_swap
->>>                                        /* remove swap cache */
->>>                                        /* free si->swap_map[] */
->>>       swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
->>>
->>> shmem_undo_range can run earlier.
->>
->> Yes that's the shmem problem I've been trying to convey. Perhaps there are other
->> (extremely subtle) mechanisms that make this impossible, I don't know.
->>
->> Either way, given the length of this discussion, and the subtleties in the
->> syncrhonization mechanisms that have so far been identified, I think the safest
->> thing to do is just apply the patch. Then we have explicit syncrhonization that
->> we can trivially reason about.
-> 
-> Yes.  This is tricky and we can improve it.  So I suggest to,
-> 
-> - Revise the patch description to use shmem race as example except
->   someone found it's impossible.
-> 
-> - Revise the comments of get_swap_device() about RCU reader side lock
->   (including IRQ off, spinlock, etc.) can prevent swapoff via
->   synchronize_rcu() in swapoff().
-> 
-> - Revise the comments of synchronize_rcu() in swapoff(), which can
->   prevent swapoff in parallel with RCU reader side lock including swap
->   cache operations, etc.
+When the skb is reorganized during esp_output (!esp->inline), the pages
+coming from the original skb fragments are supposed to be released back
+to the system through put_page. But if the skb fragment pages are
+originating from a page_pool, calling put_page on them will trigger a
+page_pool leak which will eventually result in a crash.
 
-The only problem with this is that Andrew has already put my v2 into mm-*stable* :-|
+This leak can be easily observed when using CONFIG_DEBUG_VM and doing
+ipsec + gre (non offloaded) forwarding:
 
-So (1) from that list isn't possible. I could do a patch for (2) and (3), but to
-be honest, I think you would do a better job of writing it up than I would - any
-chance you could post the patch?
+  BUG: Bad page state in process ksoftirqd/16  pfn:1451b6
+  page:00000000de2b8d32 refcount:0 mapcount:0 mapping:0000000000000000 index:0x1451b6000 pfn:0x1451b6
+  flags: 0x200000000000000(node=0|zone=2)
+  page_type: 0xffffffff()
+  raw: 0200000000000000 dead000000000040 ffff88810d23c000 0000000000000000
+  raw: 00000001451b6000 0000000000000001 00000000ffffffff 0000000000000000
+  page dumped because: page_pool leak
+  Modules linked in: ip_gre gre mlx5_ib mlx5_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm ib_uverbs ib_core overlay zram zsmalloc fuse [last unloaded: mlx5_core]
+  CPU: 16 PID: 96 Comm: ksoftirqd/16 Not tainted 6.8.0-rc4+ #22
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x36/0x50
+   bad_page+0x70/0xf0
+   free_unref_page_prepare+0x27a/0x460
+   free_unref_page+0x38/0x120
+   esp_ssg_unref.isra.0+0x15f/0x200
+   esp_output_tail+0x66d/0x780
+   esp_xmit+0x2c5/0x360
+   validate_xmit_xfrm+0x313/0x370
+   ? validate_xmit_skb+0x1d/0x330
+   validate_xmit_skb_list+0x4c/0x70
+   sch_direct_xmit+0x23e/0x350
+   __dev_queue_xmit+0x337/0xba0
+   ? nf_hook_slow+0x3f/0xd0
+   ip_finish_output2+0x25e/0x580
+   iptunnel_xmit+0x19b/0x240
+   ip_tunnel_xmit+0x5fb/0xb60
+   ipgre_xmit+0x14d/0x280 [ip_gre]
+   dev_hard_start_xmit+0xc3/0x1c0
+   __dev_queue_xmit+0x208/0xba0
+   ? nf_hook_slow+0x3f/0xd0
+   ip_finish_output2+0x1ca/0x580
+   ip_sublist_rcv_finish+0x32/0x40
+   ip_sublist_rcv+0x1b2/0x1f0
+   ? ip_rcv_finish_core.constprop.0+0x460/0x460
+   ip_list_rcv+0x103/0x130
+   __netif_receive_skb_list_core+0x181/0x1e0
+   netif_receive_skb_list_internal+0x1b3/0x2c0
+   napi_gro_receive+0xc8/0x200
+   gro_cell_poll+0x52/0x90
+   __napi_poll+0x25/0x1a0
+   net_rx_action+0x28e/0x300
+   __do_softirq+0xc3/0x276
+   ? sort_range+0x20/0x20
+   run_ksoftirqd+0x1e/0x30
+   smpboot_thread_fn+0xa6/0x130
+   kthread+0xcd/0x100
+   ? kthread_complete_and_exit+0x20/0x20
+   ret_from_fork+0x31/0x50
+   ? kthread_complete_and_exit+0x20/0x20
+   ret_from_fork_asm+0x11/0x20
+   </TASK>
 
+The suggested fix is to introduce a new wrapper (skb_page_unref) that
+covers page refcounting for page_pool pages as well.
 
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reported-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.interpipe.biz>
+Tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.interpipe.biz>
+Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
+Closes: https: //lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsqMYk_Lwh4Md5knTq7AyA@mail.gmail.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Change-Id: I3d2744e1abb33a694a8f49e07f913724a0f8871a
+---
+ include/linux/skbuff.h | 10 ++++++++++
+ net/ipv4/esp4.c        |  8 ++++----
+ net/ipv6/esp6.c        |  8 ++++----
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-
-> 
-> --
-> Best Regards,
-> Huang, Ying
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 696e7680656f..6126fc8e4a89 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3452,6 +3452,16 @@ int skb_cow_data_for_xdp(struct page_pool *pool, struct sk_buff **pskb,
+ 			 struct bpf_prog *prog);
+ bool napi_pp_put_page(struct page *page, bool napi_safe);
+ 
++static inline void
++skb_page_unref(const struct sk_buff *skb, struct page *page, bool napi_safe)
++{
++#ifdef CONFIG_PAGE_POOL
++	if (skb->pp_recycle && napi_pp_put_page(page, napi_safe))
++		return;
++#endif
++	put_page(page);
++}
++
+ static inline void
+ napi_frag_unref(skb_frag_t *frag, bool recycle, bool napi_safe)
+ {
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 4dd9e5040672..d33d12421814 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -95,7 +95,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
+ }
+ 
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ {
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -114,7 +114,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+ 	 */
+ 	if (req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+-			put_page(sg_page(sg));
++			skb_page_unref(skb, sg_page(sg), false);
+ }
+ 
+ #ifdef CONFIG_INET_ESPINTCP
+@@ -260,7 +260,7 @@ static void esp_output_done(void *data, int err)
+ 	}
+ 
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp);
++	esp_ssg_unref(x, tmp, skb);
+ 	kfree(tmp);
+ 
+ 	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+@@ -639,7 +639,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 	}
+ 
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp);
++		esp_ssg_unref(x, tmp, skb);
+ 
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 6e6efe026cdc..7371886d4f9f 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -112,7 +112,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
+ }
+ 
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ {
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -131,7 +131,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+ 	 */
+ 	if (req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+-			put_page(sg_page(sg));
++			skb_page_unref(skb, sg_page(sg), false);
+ }
+ 
+ #ifdef CONFIG_INET6_ESPINTCP
+@@ -294,7 +294,7 @@ static void esp_output_done(void *data, int err)
+ 	}
+ 
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp);
++	esp_ssg_unref(x, tmp, skb);
+ 	kfree(tmp);
+ 
+ 	esp_output_encap_csum(skb);
+@@ -677,7 +677,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 	}
+ 
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp);
++		esp_ssg_unref(x, tmp, skb);
+ 
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
+-- 
+2.42.0
 
 
