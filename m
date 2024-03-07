@@ -1,140 +1,277 @@
-Return-Path: <stable+bounces-27065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C37874D43
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:20:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0949A874DAE
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 12:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 501C31C21E89
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:20:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62EE7B20C29
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 11:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2854E12883C;
-	Thu,  7 Mar 2024 11:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5738612B17E;
+	Thu,  7 Mar 2024 11:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Qp0rPK08"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Y/EKx0x5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FEC839E3
-	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 11:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DDF129A60
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 11:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709810403; cv=none; b=os0q1UllnAoTaBt5ymkEuLSTJ8thEHtZFPkTEUN0C1gRiICegQzwmHtERYqcGKX30HYigG/P7ftrC+RbOmG2Y3AxFnb7QgZTFL/uH2xvrBgI1Fss8D/Nxb+bO6NX6VEOYyKmRjdkKjvjh+8LmAJY4Gn81Qvg66+S2n+g9fP6yKQ=
+	t=1709811585; cv=none; b=aOL3YFju03f6DvvMgbPBvAVdRicHTfvhwc4QyDdt1EokHCTgIBLOov/KmMCt6iLrXhduBTOSPM8ONIoU11BMV/zw+zFGQPBUDuAQzBkmyBfbCkYqvYyvazgNoUO1KonMK/+ZhQ/HZGPy7aYPdbl8QjWoFFH94SEgLYc3csKZbQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709810403; c=relaxed/simple;
-	bh=DfswE7HJLLqy77GWnPiVArfI05VtoLAEZZ8wtl2bLVQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I+/Us344DHp+yim4vMcCQypJu+aHQ6p6DZaPDUcTTJBaCk7wo0BnTFl1Mpt0t/G7Pmmjp60T8aQwlNRuja3lWs7obMNGoAx3zC2AyEk7nfWW3Fq3HA6Z7pDwBL6+Zos4F+XQ9eHNjuMImQupDosO5CHbBLer1LWlAtzU616agng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Qp0rPK08; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d4141c4438so2289571fa.3
-        for <stable@vger.kernel.org>; Thu, 07 Mar 2024 03:20:01 -0800 (PST)
+	s=arc-20240116; t=1709811585; c=relaxed/simple;
+	bh=kUtRXFv03Af2myonOW7iJH+7QC6OB41YDaO4QoZ6erc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bAm5jHerBupaAp7lWDA6QWEggZGSxleQ4L2SQLQUOcwDtALXCjjaqrBWG5mg0Ku60E+56YGN3Ar8mC3omW14putyyanHXEageTjg5WxKz1+m/U2F3t1WFzKA5IMq/EyYQEIpmmtfYEemy4Eat6CcCpoY3DTrJmYZHMHIwcAXiVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Y/EKx0x5; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a449c5411e1so105347066b.1
+        for <stable@vger.kernel.org>; Thu, 07 Mar 2024 03:39:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709810400; x=1710415200; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XTSBVVVJ5YriwXW83Xu49WC7Hj5VHh4fFgiqujVWr9o=;
-        b=Qp0rPK08swaXH27iS0DcRBQgAvckoR8HEpAoYS75USBCO417zqthTf/8gr09pzXI4p
-         uAxVuczpD7demMAmO9HaWD0yfB8mJ4HqDtDv3vGdDFZSTlJ3OzpH7EzAQR95wlpbM9oR
-         d4fLEFmDr1WWv7KDbD8S9gjCAQhFG6nrhA3ekE/8txkEPblhd8mY/SphVCwirZ1kgBXi
-         s03TsrU4L9ByfepDDzgQb0Eq/E4PZZ1kZF0SNcVRvuKBRN8UalR8kKLC/hYGsZlOmgSe
-         RfeF9Nm3vNdxPoT+IwZj1WiO9N+cAp75bsgodOTOvBEWSjmDky+HmXMJcFo7LoKO2XrR
-         4irA==
+        d=amarulasolutions.com; s=google; t=1709811581; x=1710416381; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YmyofjGAATtNfbRkux5Tn72b+cMR3JWBDg4s/dxWhdo=;
+        b=Y/EKx0x5FXWSK4MlpeFFvF/bYC5iptrL7fmE9E2CucLtax9Pc++SOtueQjtpRBd6Qe
+         IVd10xEupxQeXchwYjwfxiNeoJObcSR+hIGuUdWAB6QhL4iqZ5RF7ux8KIga9Fu3AWzR
+         laGbJj0ikVnzSUnGPOvwof/O4w2oGiVHEYdLs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709810400; x=1710415200;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XTSBVVVJ5YriwXW83Xu49WC7Hj5VHh4fFgiqujVWr9o=;
-        b=iUeHTM8hjBuj5r1grrMtt4KFxNtCFxoIu3wv34khnHRYH7NxwAx02szhUexalpN4Dw
-         /XywkKJXvrHjAxjUVUVKRxMnaiBOQPgu3fjaip/kFLdTE7t8s5YM/yk9MD2myPC46sNf
-         yrTzz288jkSDlJ/GAjxzZWQ4oZgNnRQWcp9ltw27UWqhUPhSXaDYQ3aR3lejJYq1zpRC
-         TAGhJr3y9bn36Lqrlg9YWA1AuVvVFgTS/xg0HpUCT8VDu9lyi+RKsVpZ+I0m0n14Ost5
-         fhebj9HhBpfSGCUISKBtMQ1SnMwYFTN5MjvRtIc02nKfpWng68lcPnFN+aKEPYWy9oVD
-         Pk2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVxddQzG0Xym9gGUuItTEZm9UdRsHGIt4xfYUdNxTe4fYSzEacgAOhEKV53WorjtKKO7htqAchPT98JjPJmnu1c4KtKkohh
-X-Gm-Message-State: AOJu0YwAsIXeL5KQDodJ8EmRKUu51ZbtMd6YVXpDBeaWbiJcaV0YgFfT
-	FtdO4N9L0BikM4p9NoczlC+BJUJJ1LfqzCjR9vM7dt5qxedzSxf3jYZVh96N0cU=
-X-Google-Smtp-Source: AGHT+IEJFP45iEkqRIJfjQVGnd9vf8NSboPCjm6h35YrqWvxgwSyal1JJf1HtYzDNDxj06EzP2Td4A==
-X-Received: by 2002:a2e:6804:0:b0:2d4:5f4:dee with SMTP id c4-20020a2e6804000000b002d405f40deemr1190422lja.18.1709810400006;
-        Thu, 07 Mar 2024 03:20:00 -0800 (PST)
-Received: from [172.30.204.36] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id s6-20020a2e9c06000000b002d38f36f3a4sm2003570lji.117.2024.03.07.03.19.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Mar 2024 03:19:59 -0800 (PST)
-Message-ID: <afc709b5-4e4e-4308-a399-e0b521592250@linaro.org>
-Date: Thu, 7 Mar 2024 12:19:56 +0100
+        d=1e100.net; s=20230601; t=1709811581; x=1710416381;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YmyofjGAATtNfbRkux5Tn72b+cMR3JWBDg4s/dxWhdo=;
+        b=uoEnXOpLC0BRQC6dNPB0NIpcyQOHAQ38pJxOOVgFes4w3avIlVm/wqUqJfVwmy/xXA
+         b52Va/Y7xk9KrlPHt7WTI9UJL+/qFd9Cd+JNMDj4dHMEEoqwUPwrmtNB1hYYqIsOcmia
+         3UHpXrWSbIvW7WbgxQ+QIAZzunsXhV6ouBVRx6k0BW7Mkn12yrzwY45EVWF1B5zZTMsH
+         3Ciso6nKaQQ8DzV2YfZeEHKSTV6uOR2tpjZ1hI3CpnyKCuXGTnsgX1RGG8SXI27RPvWl
+         i2ZDnRHgucaY+WKayFKZeQItp5UGhUYwrQzm3Tb/akHLO46Qat8Dhyp0TInxy/RlmKD/
+         ohKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXijhvfDx6xARmZdzPodFX5+2jvHwAwWEx2QQs/XG+PfE692sGKu1bHl4Aou19RJjCiaaOaOVipPxQRJ2DsyI7l6JZBt0wH
+X-Gm-Message-State: AOJu0Ywv06blYSXWm/2G7iDFYwhCUT+VMMFoqSExMrnzTueyAMRUfUL5
+	tI6mqNotV0w9C7YcgNBmq+vMIx1jBlZl8rTO5EMWW924jlvAbZn/QNB2e4KU1k/qOx3g+7TZJWx
+	nPNl9xs5VoPJtO+rz4U7q6SoTbU3aGKjqjSKMsAN0Wk3Uzsv5zcmMpg==
+X-Google-Smtp-Source: AGHT+IEq4uXLnuvDMQxDLscG2Nl653AwCF7NrOD6IMSI06nfTPmzUcMJtV8xTGceFascG/93JVOwtTXBnv4kJciRtnM=
+X-Received: by 2002:a17:906:6049:b0:a45:c8cb:f5c1 with SMTP id
+ p9-20020a170906604900b00a45c8cbf5c1mr1697588ejj.63.1709811580611; Thu, 07 Mar
+ 2024 03:39:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI: qcom: Enable BDF to SID translation properly
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240226100502.1845284-1-michael@amarulasolutions.com>
+ <20240226223643.pay4tb66j3q44cuk@synopsys.com> <CAOf5uwkcFuSRZy3F44pSZFpHk5Hah-r8m01JLt3Gd1ngvg-CPQ@mail.gmail.com>
+ <20240307012847.2tkn7nu3juf2x6w2@synopsys.com>
+In-Reply-To: <20240307012847.2tkn7nu3juf2x6w2@synopsys.com>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Thu, 7 Mar 2024 12:39:29 +0100
+Message-ID: <CAOf5uwnx+VYXZnNHAHK9_6dLh5XsNJaQPSwbfUuER1uWwe4_gw@mail.gmail.com>
+Subject: Re: [PATCH V3] usb: dwc3: gadget: Fix suspend/resume warning when
+ no-gadget is connected
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-amarula@amarulasolutions.com" <linux-amarula@amarulasolutions.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+On Thu, Mar 7, 2024 at 2:30=E2=80=AFAM Thinh Nguyen <Thinh.Nguyen@synopsys.=
+com> wrote:
+>
+> Hi,
+>
+> On Mon, Feb 26, 2024, Michael Nazzareno Trimarchi wrote:
+> > Hi
+> >
+> > On Mon, Feb 26, 2024 at 11:36=E2=80=AFPM Thinh Nguyen <Thinh.Nguyen@syn=
+opsys.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > On Mon, Feb 26, 2024, Michael Trimarchi wrote:
+> > > > This patch avoid to disconnect an already gadget in not connected s=
+tate
+> > > >
+> > > > [   45.597274] dwc3 31000000.usb: wait for SETUP phase timed out
+> > > > [   45.599140] dwc3 31000000.usb: failed to set STALL on ep0out
+> > > > [   45.601069] ------------[ cut here ]------------
+> > > > [   45.601073] WARNING: CPU: 0 PID: 150 at drivers/usb/dwc3/ep0.c:2=
+89 dwc3_ep0_out_start+0xcc/0xd4
+> > > > [   45.601102] Modules linked in: cfg80211 rfkill ipv6 rpmsg_ctrl r=
+pmsg_char crct10dif_ce rti_wdt k3_j72xx_bandgap rtc_ti_k3 omap_mailbox sa2u=
+l authenc [last unloaded: ti_k3_r5_remoteproc]
+> > > > [   45.601151] CPU: 0 PID: 150 Comm: sh Not tainted 6.8.0-rc5 #1
+> > > > [   45.601159] Hardware name: BSH - CCM-M3 (DT)
+> > > > [   45.601164] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSB=
+S BTYPE=3D--)
+> > > > [   45.601172] pc : dwc3_ep0_out_start+0xcc/0xd4
+> > > > [   45.601179] lr : dwc3_ep0_out_start+0x50/0xd4
+> > > > [   45.601186] sp : ffff8000832739e0
+> > > > [   45.601189] x29: ffff8000832739e0 x28: ffff800082a21000 x27: fff=
+f8000808dc630
+> > > > [   45.601200] x26: 0000000000000002 x25: ffff800082530a44 x24: 000=
+0000000000000
+> > > > [   45.601210] x23: ffff000000e079a0 x22: ffff000000e07a68 x21: 000=
+0000000000001
+> > > > [   45.601219] x20: ffff000000e07880 x19: ffff000000e07880 x18: 000=
+0000000000040
+> > > > [   45.601229] x17: ffff7fff8e1ce000 x16: ffff800080000000 x15: fff=
+ffffffffe5260
+> > > > [   45.601239] x14: 0000000000000000 x13: 206e6f204c4c4154 x12: 532=
+0746573206f74
+> > > > [   45.601249] x11: 0000000000000001 x10: 000000000000000a x9 : fff=
+f800083273930
+> > > > [   45.601259] x8 : 000000000000000a x7 : ffffffffffff3f0c x6 : fff=
+fffffffff3f00
+> > > > [   45.601268] x5 : ffffffffffff3f0c x4 : 0000000000000000 x3 : 000=
+0000000000000
+> > > > [   45.601278] x2 : 0000000000000000 x1 : ffff000004e7e600 x0 : 000=
+00000ffffff92
+> > > > [   45.601289] Call trace:
+> > > > [   45.601293]  dwc3_ep0_out_start+0xcc/0xd4
+> > > > [   45.601301]  dwc3_ep0_stall_and_restart+0x98/0xbc
+> > > > [   45.601309]  dwc3_ep0_reset_state+0x5c/0x88
+> > > > [   45.601315]  dwc3_gadget_soft_disconnect+0x144/0x160
+> > > > [   45.601323]  dwc3_gadget_suspend+0x18/0xb0
+> > > > [   45.601329]  dwc3_suspend_common+0x5c/0x18c
+> > > > [   45.601341]  dwc3_suspend+0x20/0x44
+> > > > [   45.601350]  platform_pm_suspend+0x2c/0x6c
+> > > > [   45.601360]  __device_suspend+0x10c/0x34c
+> > > > [   45.601372]  dpm_suspend+0x1a8/0x240
+> > > > [   45.601382]  dpm_suspend_start+0x80/0x9c
+> > > > [   45.601391]  suspend_devices_and_enter+0x1c4/0x584
+> > > > [   45.601402]  pm_suspend+0x1b0/0x264
+> > > > [   45.601408]  state_store+0x80/0xec
+> > > > [   45.601415]  kobj_attr_store+0x18/0x2c
+> > > > [   45.601426]  sysfs_kf_write+0x44/0x54
+> > > > [   45.601434]  kernfs_fop_write_iter+0x120/0x1ec
+> > > > [   45.601445]  vfs_write+0x23c/0x358
+> > > > [   45.601458]  ksys_write+0x70/0x104
+> > > > [   45.601467]  __arm64_sys_write+0x1c/0x28
+> > > > [   45.601477]  invoke_syscall+0x48/0x114
+> > > > [   45.601488]  el0_svc_common.constprop.0+0x40/0xe0
+> > > > [   45.601498]  do_el0_svc+0x1c/0x28
+> > > > [   45.601506]  el0_svc+0x34/0xb8
+> > > > [   45.601516]  el0t_64_sync_handler+0x100/0x12c
+> > > > [   45.601522]  el0t_64_sync+0x190/0x194
+> > > > [   45.601531] ---[ end trace 0000000000000000 ]---
+> > > > [   45.608794] Disabling non-boot CPUs ...
+> > > > [   45.611029] psci: CPU1 killed (polled 0 ms)
+> > > > [   45.611837] Enabling non-boot CPUs ...
+> > > > [   45.612247] Detected VIPT I-cache on CPU1
+> > > >
+> > > > Tested on a am62x board with a usbnet gadget
+> > > >
+> > > > Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereferen=
+ce in dwc3_gadget_suspend)
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> > > > ---
+> > > > V2->V3:
+> > > >       - Change the logic of the patch using the gadget connected st=
+ate
+> > > >       - Change of the commit message
+> > > > V1->V2:
+> > > >       - Add stable in CC
+> > > > ---
+> > > >  drivers/usb/dwc3/gadget.c | 9 +++++++++
+> > > >  1 file changed, 9 insertions(+)
+> > > >
+> > > > diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+> > > > index 4c8dd6724678..a7316a1703ad 100644
+> > > > --- a/drivers/usb/dwc3/gadget.c
+> > > > +++ b/drivers/usb/dwc3/gadget.c
+> > > > @@ -2650,6 +2650,15 @@ static int dwc3_gadget_soft_disconnect(struc=
+t dwc3 *dwc)
+> > > >       int ret;
+> > > >
+> > > >       spin_lock_irqsave(&dwc->lock, flags);
+> > > > +     /*
+> > > > +      * Attempt to disconnect a no connected gadget
+> > > > +      */
+> > > > +     if (!dwc->connected) {
+> > > > +             dev_warn(dwc->dev, "No connected device\n");
+> > > > +             spin_unlock_irqrestore(&dwc->lock, flags);
+> > > > +             return 0;
+> > > > +     }
+> > > > +
+> > > >       dwc->connected =3D false;
+> > > >
+> > > >       /*
+> > > > --
+> > > > 2.40.1
+> > > >
+> > >
+> > > There's already a fix for this, and it's already in mainline. Let me
+> > > know if this works for you:
+> > >
+> > > https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kern=
+el/git/torvalds/linux.git/commit/?id=3Db191a18cb5c47109ca696370a74a5062a70a=
+dfd0__;!!A4F2R9G_pg!dqF-dGSHGR41Bep_7ZG2mWfPNYWfC4T-_FpOf_pFIvqa9L1n1e6l6D3=
+oP9bOlRRFobW4Uvh0VAP8qBkLMfNkUlfaeTc$
+> > >
+> >
+> > Can you explain to me the logic here? I mean pullsup_connected seems
+> > never protected by spin lock and so I can not figure
+> > out it easily and the commit message does not explain so much
+> >
+>
+> Sorry for the delay response.
+>
+> Ah.. you're right, the spin_lock isn't useful there. My intention was to
+> avoid soft disconnect flow to occur during system suspend along with
+> pullup(off). I somehow forgot that it isn't protected with spin_lock.
+>
+
+You reduce the window of failure but we need to rework anyway
+
+> It's a very unlikely scenario. Even if it did happen, it should be
+> harmless. But to solve that perhaps we can:
+> 1) Keep the code simple and enforce no sleep and hold spin_lock during
+>    the entirety of run_stop() sequence
+
+
+If the run_stop is executing I can imagine that you only need to mark it as
+ongoing and protect with a spin_lock, returning -EINVAL on the suspend
+hook. I will keep
+it simple
+
+Michael
+
+> 2) Enforce a must-lock check to run_stop() and unlock during sleep. This
+>    requires more code changes and reviews.
+>
+> If you have some ideas, please share. (Note that using dwc->connected
+> isn't sufficient)
+>
+> Thanks,
+> Thinh
 
 
 
-On 3/7/24 12:05, Manivannan Sadhasivam wrote:
-> Qcom SoCs making use of ARM SMMU require BDF to SID translation table in
-> the driver to properly map the SID for the PCIe devices based on their BDF
-> identifier. This is currently achieved with the help of
-> qcom_pcie_config_sid_1_9_0() function for SoCs supporting the 1_9_0 config.
-> 
-> But With newer Qcom SoCs starting from SM8450, BDF to SID translation is
-> set to bypass mode by default in hardware. Due to this, the translation
-> table that is set in the qcom_pcie_config_sid_1_9_0() is essentially
-> unused and the default SID is used for all endpoints in SoCs starting from
-> SM8450.
-> 
-> This is a security concern and also warrants swapping the DeviceID in DT
-> while using the GIC ITS to handle MSIs from endpoints. The swapping is
-> currently done like below in DT when using GIC ITS:
-> 
-> 			/*
-> 			 * MSIs for BDF (1:0.0) only works with Device ID 0x5980.
-> 			 * Hence, the IDs are swapped.
-> 			 */
-> 			msi-map = <0x0 &gic_its 0x5981 0x1>,
-> 				  <0x100 &gic_its 0x5980 0x1>;
-> 
-> Here, swapping of the DeviceIDs ensure that the endpoint with BDF (1:0.0)
-> gets the DeviceID 0x5980 which is associated with the default SID as per
-> the iommu mapping in DT. So MSIs were delivered with IDs swapped so far.
-> But this also means the Root Port (0:0.0) won't receive any MSIs (for PME,
-> AER etc...)
-> 
-> So let's fix these issues by clearing the BDF to SID bypass mode for all
-> SoCs making use of the 1_9_0 config. This allows the PCIe devices to use
-> the correct SID, thus avoiding the DeviceID swapping hack in DT and also
-> achieving the isolation between devices.
-> 
-> Cc:  <stable@vger.kernel.org> # 5.11
-> Fixes: 4c9398822106 ("PCI: qcom: Add support for configuring BDF to SID mapping for SM8250")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
+--=20
+Michael Nazzareno Trimarchi
+Co-Founder & Chief Executive Officer
+M. +39 347 913 2170
+michael@amarulasolutions.com
+__________________________________
 
-Looks sensible..
-
-Does switching away from bypass show any performance degradation?
-
-Konrad
+Amarula Solutions BV
+Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
+T. +31 (0)85 111 9172
+info@amarulasolutions.com
+www.amarulasolutions.com
 
