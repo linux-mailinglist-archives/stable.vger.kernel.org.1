@@ -1,133 +1,99 @@
-Return-Path: <stable+bounces-27100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A58187551D
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 18:26:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 105A1875525
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 18:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A008B1F22F6F
-	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:26:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B34A1C20F5E
+	for <lists+stable@lfdr.de>; Thu,  7 Mar 2024 17:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E61C130AF7;
-	Thu,  7 Mar 2024 17:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63305130AF3;
+	Thu,  7 Mar 2024 17:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ayz90ujO"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b/IflWcv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7E912FF90
-	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 17:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B346130ADF
+	for <stable@vger.kernel.org>; Thu,  7 Mar 2024 17:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709832386; cv=none; b=O5Q39Tw1qzkPbD71WEUNsXfGo9P41rvzrPfwC5c6nQC9yqsMeBcPFoAmPr5fK+/FqHNgXmhUa76OieYOXzEZ5S7iNfKRaRU55/+jHovlopIhK93h0qOtMSCgmPFzjRqC0pL1A+Aq3lTSSJM3gaoIUtHvrlWSQY7uJQdWn345CgU=
+	t=1709832530; cv=none; b=nmTm7oCzwni9Xa51N7iPjELwcOzi+L531i0HOX5apOWIw46AgHZSV0o06unZ2E5B9ldxGpPWGGNu7dKkuakA8u1h0xcA/Us7oW0/ZUdoSK+v9R81ecmH2xgWbGcl9V5YQDtPc3Qkywfw+8E6N2mnd3KiqoAnKUU+1Jvt0M7bihE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709832386; c=relaxed/simple;
-	bh=4VKRPFROZxhfecLCGFPUt9H94MPeeXyOxYoh30MmVek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qgthapmpf5TcEAFReGUbPCQnrKM0yRAGQ63U/t4xkF71RybjQotutln8NBQ+ajMtvyc+RmM0EzXvauPiW/k91MV38Gr248WyKpCGpIWIJuja0WlpP44OMozT1wL6pAVoEstHZdQZIg6nUQSiUDHx6mnDCkEwaxZw4xHqEvfVePc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ayz90ujO; arc=none smtp.client-ip=91.218.175.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <49ca7920-d429-434a-aede-1a200e8d5ce8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709832381;
+	s=arc-20240116; t=1709832530; c=relaxed/simple;
+	bh=1Nh3LjwUEpTCXcFNd3igNK7G8AUnhMQ9EPuvcLGlfbI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rzmGwjtHjJM0JL9WrxNdX401sBfSv90M3DoXTPWVbmNSqMhE05mn24ygTu3Vm+SAPVFAqhSXUHxR2BcK7O2IzwhrXDCwRiXOawVVzt4JK8fppjVSPEgLoHx4umhifl38QkaR0LmYHljP+N/ZQ0D3+0pQs9QPDGx0PS7SuY2bah4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b/IflWcv; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5B51D40002;
+	Thu,  7 Mar 2024 17:28:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709832526;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=typJzsyCZ7d0N2AWtsRnRkkZEuqyJ1S5uCH3hrAdMlA=;
-	b=Ayz90ujO9VGGPBPBUzhJG/0z3frrtSSosfU6bd3HdfMioTtavGW2EUkG1Ej2q8KtTF8siq
-	RiawcerkWVH1IqmUaJplOxSyFkFQ6Pu5Pbk+Kpe8G0KcewTfjN36YOsuCYE3oGj2f4d4Q5
-	tQ5GrYK9qaIeKxKrjhRKtUdwZsGwHTM=
-Date: Thu, 7 Mar 2024 12:26:00 -0500
+	bh=2e3/6XO20oG2XDljssKzak32D0T1QE2mvDvHVnEscA0=;
+	b=b/IflWcvh+HMQyPmPHjvGylFcoQfn8Vtu3ZBCrT9gPP6WB93KFdDbbjg7oVa5wrTqUhwie
+	C2YHrC3S3TGkLV49Fe3av5FVcXY6Q5tDOfJ47CtkGrSYOXp7vEgC7Bd3KH9M5xBy8wUyh/
+	bCO5jyi/gKxb2x55TklVZL559u3cveKArW9XMoydAPClUmB2IVnRUZ0lrsF8eHjJV10Wdo
+	gETcegNlBykHSLB/7Z2RZpV50T/IklAFgX3wNyKAjRhZO/lSxfZQJY2CWZIHodGF03z+fH
+	bjQnMOWfAkwpqlFOJOWMv9uALIF70/J7bRG0NSvbP5lE+XzRy8j2zPjDAFivgQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	linux-mtd@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Julien Su <juliensu@mxic.com.tw>,
+	Jaime Liao <jaimeliao@mxic.com.tw>,
+	Jaime Liao <jaimeliao.tw@gmail.com>,
+	Alvin Zhou <alvinzhou@mxic.com.tw>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	eagle.alexander923@gmail.com,
+	mans@mansr.com,
+	martin@geanix.com,
+	=?utf-8?q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] mtd: rawnand: Ensure all continuous terms are always in sync
+Date: Thu,  7 Mar 2024 18:28:41 +0100
+Message-Id: <20240307172842.3454534-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240223115545.354541-4-miquel.raynal@bootlin.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RESEND2 PATCH net v4 2/2] soc: fsl: qbman: Use raw spinlock for
- cgr_lock
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Roy Pledge
- <roy.pledge@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Camelia Groza <camelia.groza@nxp.com>,
- Steffen Trumtrar <s.trumtrar@pengutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240222170749.2607485-1-sean.anderson@linux.dev>
- <20240222170749.2607485-2-sean.anderson@linux.dev>
- <53b401d7-934c-4937-ab83-6732af47668d@csgroup.eu>
- <34da1e7b-029e-410b-8735-a10d6d267e2b@linux.dev>
- <6764b9c5-b61a-4f20-a41a-125d5015a3e6@linux.dev>
- <63ab7b62-853c-4996-a493-465283252d5a@csgroup.eu>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <63ab7b62-853c-4996-a493-465283252d5a@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'4a18a8c8ad8a8921004e5c9e3b59223f95d6cb37'
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 3/5/24 17:18, Christophe Leroy wrote:
+On Fri, 2024-02-23 at 11:55:45 UTC, Miquel Raynal wrote:
+> While crossing a LUN boundary, it is probably safer (and clearer) to
+> keep all members of the continuous read structure aligned, including the
+> pause page (which is the last page of the lun or the last page of the
+> continuous read). Once these members properly in sync, we can use the
+> rawnand_cap_cont_reads() helper everywhere to "prepare" the next
+> continuous read if there is one.
 > 
-> 
-> Le 05/03/2024 à 19:14, Sean Anderson a écrit :
->> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->> 
->> Hi,
->> 
->> On 2/23/24 11:02, Sean Anderson wrote:
->>> On 2/23/24 00:38, Christophe Leroy wrote:
->>>> Le 22/02/2024 à 18:07, Sean Anderson a écrit :
->>>>> [Vous ne recevez pas souvent de courriers de sean.anderson@linux.dev. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->>>>>
->>>>> cgr_lock may be locked with interrupts already disabled by
->>>>> smp_call_function_single. As such, we must use a raw spinlock to avoid
->>>>> problems on PREEMPT_RT kernels. Although this bug has existed for a
->>>>> while, it was not apparent until commit ef2a8d5478b9 ("net: dpaa: Adjust
->>>>> queue depth on rate change") which invokes smp_call_function_single via
->>>>> qman_update_cgr_safe every time a link goes up or down.
->>>>
->>>> Why a raw spinlock to avoid problems on PREEMPT_RT, can you elaborate ?
->>>
->>> smp_call_function always runs its callback in hard IRQ context, even on
->>> PREEMPT_RT, where spinlocks can sleep. So we need to use raw spinlocks
->>> to ensure we aren't waiting on a sleeping task. See the first bug report
->>> for more discussion.
->>>
->>> In the longer term it would be better to switch to some other
->>> abstraction.
->> 
->> Does this make sense to you?
-> 
-> Yes that fine, thanks for the clarification. Maybe you can explain that 
-> in the patch description in case you send a v5.
+> Fixes: bbcd80f53a5e ("mtd: rawnand: Prevent crossing LUN boundaries during sequential reads")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Hm, I thought I put this description in the commit message already.
-Maybe something like
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next.
 
-| smp_call_function always runs its callback in hard IRQ context, even on
-| PREEMPT_RT, where spinlocks can sleep. So we need to use a raw spinlock
-| for cgr_lock to ensure we aren't waiting on a sleeping task.
-| 
-| Although this bug has existed for a while, it was not apparent until
-| commit ef2a8d5478b9 ("net: dpaa: Adjust queue depth on rate change")
-| which invokes smp_call_function_single via qman_update_cgr_safe every
-| time a link goes up or down.
-
-would be clearer.
-
---Sean
+Miquel
 
