@@ -1,82 +1,170 @@
-Return-Path: <stable+bounces-27166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B10D8768AE
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:42:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C518768E3
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985131F22C9B
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:42:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 549A9B20BBF
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B266779D1;
-	Fri,  8 Mar 2024 16:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AFB175BE;
+	Fri,  8 Mar 2024 16:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kOGl/9do"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF077484
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 16:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84FA568A
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 16:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709916119; cv=none; b=sL5aCUobLE0pd+rgAYDBbEDSBmDqQL+FOg5g6Pd19RcCF6lSmXhAvDF70fJ25QQGHdBzZquYK2jKWZEcfKryUYloVkCsAbuGfDcCyaTEsABheHOPS+BeiCE9UWwbrGh1/m+y0TsLza5guTda4UcuKgEOrmu9eXo9deez2foO1wM=
+	t=1709916753; cv=none; b=O+pP3QudYLPzeUC7nlESCWIMNjnnOVrF69K+d+EiNu6qVeTg3NDLyPKWCx+zUq/U8QFBsOhf01+FCWnCPhBZRfx6ZDVd7+h+0PQjqm0oyAX+VISSSiR+cvMaO19eHgQTPf7d6QebY2JNhH1a/QXuJlQRSvZsepEYu+czEwGTfiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709916119; c=relaxed/simple;
-	bh=5WS6H0F9Lq465k4u2oZfvIqotHDcnyfc712c7JiVYpI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A//nmx9ASHnXzsazgzY0hJOw0Yccm34ckBTaZOL4YYSQthrxrjMmYnIGJNl07CLem1fQITRW84Hlnc1O8rnOlIQHPrFtR77Mbv1Aqyzo/xVH9eis4kxfapIY8/HVBGqLOfXEkmyCRIWzuKqtLXcsiOZ6xIwMmKTBYDBayKBdWF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1ridI0-0003Pq-9I; Fri, 08 Mar 2024 17:41:44 +0100
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1ridHz-005Afw-J5; Fri, 08 Mar 2024 17:41:43 +0100
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1ridHz-000Ez1-1i;
-	Fri, 08 Mar 2024 17:41:43 +0100
-Message-ID: <62dee175d087ca22315f9a27ce9b1f2b6f7f032d.camel@pengutronix.de>
-Subject: Re: [PATCH 5/8] drm/imx/ipuv3: do not return negative values from
- .get_modes()
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Date: Fri, 08 Mar 2024 17:41:43 +0100
-In-Reply-To: <311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com>
-References: <cover.1709913674.git.jani.nikula@intel.com>
-	 <311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1709916753; c=relaxed/simple;
+	bh=DDSnZRTlhGc3qk0lMGjvCWCH3aGOz39xbRcYWSaetKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VBoLzA1V7kLHaeSWW8OiculUNOucwx8RuNKM8cWFRH2yOURw9JzQTZCixisG42ezYbdsbbgG3NBjvm5ubmhop+cIcovjA6t4hY1tjBj/v+WXjGy27iJpMVqb5GqRDTcWQyIVu08gz66XaogIVVHCCJmKOz5Fj2+iuW15cc4/9Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kOGl/9do; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 428EaMvx025654;
+	Fri, 8 Mar 2024 16:52:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=4h1nrQ0ADPnyDAxNzGXA7guhmQW/Wg/2BTZTLzTrfME=; b=kO
+	Gl/9donaWIaz988tbIl0waBPR1q5/dNV1I0gqapiy5YycaOGrUGUallwHYnjAjTO
+	Fypn2TSFtCHR/fPd1OGovByWwbBI4ABG+uViYKWeq8vkO7AqzOYOXza6NLV7C59/
+	zgmoOSxs+oX9llsfOCvlAnOOZAXoYvHSzxb9VpT0au5XTdq+L5KgxErfD9X8gb2F
+	V1lGWTW+VZcF1ez7poKWp9/dE11Z2w40a9tHGlP++SHSbtkhFeWDbeFHNGBcNF5J
+	Wr6Q7+sjUhiiKMJjOtXrxKsdqZHm8m3YHQsMMRda5dRnaulTxlJmFVpg3FdSztJi
+	Sr85yOxS2BqbzZxx748w==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wr1wj0n1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 16:52:23 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 428GqMJF002623
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 8 Mar 2024 16:52:22 GMT
+Received: from [10.110.41.90] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 8 Mar
+ 2024 08:52:21 -0800
+Message-ID: <ab68d7a0-44a0-4e6a-82ea-7d7e3e9a718e@quicinc.com>
+Date: Fri, 8 Mar 2024 08:52:09 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] drm/panel: do not return negative error codes from
+ drm_panel_get_modes()
+To: Jani Nikula <jani.nikula@intel.com>, <dri-devel@lists.freedesktop.org>
+CC: <intel-gfx@lists.freedesktop.org>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        Sam Ravnborg <sam@ravnborg.org>, <stable@vger.kernel.org>
+References: <cover.1709913674.git.jani.nikula@intel.com>
+ <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
+Content-Language: en-US
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: gyFQ5eOq4cAxLZEH7jMfOsYt57sPU1Ol
+X-Proofpoint-GUID: gyFQ5eOq4cAxLZEH7jMfOsYt57sPU1Ol
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ mlxscore=0 priorityscore=1501 mlxlogscore=999 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2403080134
 
-On Fr, 2024-03-08 at 18:03 +0200, Jani Nikula wrote:
-> The .get_modes() hooks aren't supposed to return negative error
-> codes. Return 0 for no modes, whatever the reason.
->=20
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+
+
+On 3/8/2024 8:03 AM, Jani Nikula wrote:
+> None of the callers of drm_panel_get_modes() expect it to return
+> negative error codes. Either they propagate the return value in their
+> struct drm_connector_helper_funcs .get_modes() hook (which is also not
+> supposed to return negative codes), or add it to other counts leading to
+> bogus values.
+> 
+> On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
+> do return negative error codes, so handle them gracefully instead of
+> propagating further.
+> 
+> Return 0 for no modes, whatever the reason.
+> 
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>   drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
+>   1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+> index e814020bbcd3..cfbe020de54e 100644
+> --- a/drivers/gpu/drm/drm_panel.c
+> +++ b/drivers/gpu/drm/drm_panel.c
+> @@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
+>    * The modes probed from the panel are automatically added to the connector
+>    * that the panel is attached to.
+>    *
+> - * Return: The number of modes available from the panel on success or a
+> - * negative error code on failure.
+> + * Return: The number of modes available from the panel on success, or 0 on
+> + * failure (no modes).
+>    */
+>   int drm_panel_get_modes(struct drm_panel *panel,
+>   			struct drm_connector *connector)
+>   {
+>   	if (!panel)
+> -		return -EINVAL;
+> +		return 0;
+>   
+> -	if (panel->funcs && panel->funcs->get_modes)
+> -		return panel->funcs->get_modes(panel, connector);
+> +	if (panel->funcs && panel->funcs->get_modes) {
+> +		int num;
+>   
+> -	return -EOPNOTSUPP;
+> +		num = panel->funcs->get_modes(panel, connector);
+> +		if (num > 0)
+> +			return num;
 
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Hi Jani,
 
-regards
-Philipp
+The change LGTM:
+
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+
+Thanks,
+
+Jessica Zhang
+
+> +	}
+> +
+> +	return 0;
+>   }
+>   EXPORT_SYMBOL(drm_panel_get_modes);
+>   
+> -- 
+> 2.39.2
+> 
 
