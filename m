@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-27134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABF4875F7D
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:30:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4873E875F9D
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA3A1C217CC
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:30:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27D16B23566
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA01B524AD;
-	Fri,  8 Mar 2024 08:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5573E53800;
+	Fri,  8 Mar 2024 08:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hbyfMh60"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yob93JqC"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2072.outbound.protection.outlook.com [40.107.212.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1563D0C6
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 08:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B0853E1B
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 08:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709886607; cv=fail; b=Zpp2kkAW7HMIY8za9wIrEZuNsCtI0xho6VV9jiIqws8yb0Tt89PA5SzDDmcXNtDYo7shJN5KRUq8IDELoiMsX338Lj5GLByrQ2dipFRYRcYF07QbSay2hHsWGkw9J8o2fVooBHHNxQJklxOMUzO7aA4ZYIpdWRZNXt7xK4+2+qE=
+	t=1709886829; cv=fail; b=S1XmCSK3NvVAV01B6FoJKvkG2810zr9QhKmNHyBduGRQzeEXEj2vFaZ5H3VB3ovZXxCLCqaJfEYTVlp8H2J8o0H3fYfH8wKug3WF8TIwYHYL4j/U+jiWPswxrMHxirY71QRgogCgZ+8pxZYzxGBjx1zFUYGxskLUkzZa+JPh/+8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709886607; c=relaxed/simple;
-	bh=f2Cc0N43Hk3DneqaNUkmixgmgodMAtxvutKwWTTiLkE=;
+	s=arc-20240116; t=1709886829; c=relaxed/simple;
+	bh=YTQWJlhBCINswARrRZPnF9zXHURE+EOtldFO8cT6GfU=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eRnwkAIYz099P1y1arupF4j9c36HalhFDNQA/kws2qCU6AKHB092p3Cd1NH6aEG1GOhPw/LiRihlU7mCIt1rb5LUvhYS/0Ub8fd99cjon/ov2psvL7vfkpdXaiNeHbH2HnrtmxjlYhEZ/aVXQwQvwyEdDCDjQX2AqzaG1xLtx9M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hbyfMh60; arc=fail smtp.client-ip=40.107.237.74
+	 Content-Type:MIME-Version; b=CxWjeODDqCXOClwhmDtbCcDW1ujpy1kx1iP6FIkaNDyIMzOMVjuCMjgDQgIEk/WHYyraJsRQkVFMjm4e7k1MhLiu2Y6EQ8Ji1X+LqxrxCoRy041nI/hFalJKfoIjaXehAA/Cp2us54otE6t32nUHTMIc+zjbM8F6S0A5J1+FGwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yob93JqC; arc=fail smtp.client-ip=40.107.212.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hft1SrLHGZfMlKfJ80Zhprs8u1rbDsX16HiJ2OzBYYWcYMOtCYFt/JC1FhHJ21IUxBhJBQoG3UQfTQ6KVdHnffvUl1PrJSvsXfY77KBklICRGtos68W2G9dzK1mUm+hZFKJ2Vl/gxEtDV31kUr7eJiMazo+Ier89Ih/7YyOq7ilUvsUwHxFzjeaJbbtUiSBf8/i4TI5diNGSs2Uox8BK/51tr7+LlMXGQDre1Y6EkIPiqgvpou5Qa/+3Nij1Nbmu41Bvm4D8vEoUptYWAnwI5RJt78ujTUdZuCwbP4KlZbFKOoJm6D4yPHCysaGm7XSbo7caPhpiI89qOZmCsFbr/w==
+ b=Y4V0h/xGC769oUPluqkV5UXNx0chwwGodaYL0XzglqUY66T7cCrjBUiQ7iibJlVxboMwKIdWazFyOwZKM+0COsmeaKxN1A1Hk6JP6i9j9dW5E8U+j/i+KHn2FJJsoCe5QriU+usRVMdWgYgXVzqbcqGbUWMkpFZB+6r8CeVlP9nr5ZD59NvjaLZ6QleCH5s0LN2RCdbD1cZRN4LqI5ci/BN8F/G5DTScKWkWtZ7YKHq7pfajlYWgN7dLPCA0ksm9kKRVB4CFcE4tkP3gWR6o+TbOxZLQmM8IWNG/hWMokCitJCp/9bClbcmnuGeGXL90cwFAWQ/QLREG1cDNkAA7CQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eo/02buFJgVA56D6k7DzMjPxu1XKVTCVkeXxljQV8CE=;
- b=Rz+e+iWNBmXHd57FXQtV0PIqxUzdVrt/ldanpLb2oyc9NN+eFFTtibCpeuMTs4OK4zlF5CEos46y/ypAwBifwEpRgQjj7zWdXXcYE+8sHH3VUt6q5e6nJJVrfvaVA7jIuSn7RwlrdhkD7gcEI7idulGbuxqcELX8PL5koxlMzqgZmJFi77ZdC0mgSwH78ej7LCNNrFpyz3l1M9Vci+2qYz14u+u63mgpYqcKGthvgj48shHCtSjXQWngSY8YO65ykds8yLu5vlRMF/mGnMJrUxlFLv/uS5HWF1g84ifjj+fbgd8tepYhPpW4EmbDcoqtU+OeJT/y++dgE0cFILoECg==
+ bh=siR3t8j29ovf94wny82YYPJgtRPs9Qz7BuJyodJorHA=;
+ b=S8s/SecyyyOzOpTSYz2F59lhYQccuWpcXmLW3nh9D93zZFxuHXjMoSK7aoAHjI/1esGQG7aMpqVrQ7ju9rfRA4tEHp5Xt+5h04VRhuvgdSQuaMqHyIDy+IoF7ObI7tCJjJbpB18p9X7W9VKme4FsbB7/TnnzO4S68iDAIo89GkUXnOmmn35godMnRda214AMM82JSV6xd8xOF618bPASw9Wet+zoIbYf1Lp7CExE0PY3tXYRCJOeLLTsQL7SomQOjaEwEQohDxYKDb0xIaVh00Zyb0yJ374PLSoU7Ctk5v0jovUKaihYJgJQo6d1q7e90tHX/SzgmT/zHF70C0xpZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eo/02buFJgVA56D6k7DzMjPxu1XKVTCVkeXxljQV8CE=;
- b=hbyfMh605sLcCTCno/c018M09hwIYyH/mAMdF/ZMet7PNPzosiY+7Jquf9pApnJOvCPwxum3e11//r4FT2j3wsRs8sulii1o5V6ditWj+oOXjuHTtwGsvkUxC72A+1SsA3eEkJvbg+k90qFDy0AbY6LzNfsJlp38F0O8RwKSocg=
+ bh=siR3t8j29ovf94wny82YYPJgtRPs9Qz7BuJyodJorHA=;
+ b=yob93JqCRIUIo5N2CUnQBxcjGH35SXdiOG8lui+yJOvatJP7cDWYkwnkAO97K9f8XMs9sR3ljUwAkCD/RojR9Y81PnY8lnxTeWRjtX7wcqx+skH7whmzRN6L90OrpMD1sQ8t9vfJvyrE3CWiv89q6EDAYt24l/AyB15loMaaVro=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS0PR12MB7945.namprd12.prod.outlook.com (2603:10b6:8:153::19) with
+ by CH3PR12MB8936.namprd12.prod.outlook.com (2603:10b6:610:179::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Fri, 8 Mar
- 2024 08:30:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.27; Fri, 8 Mar
+ 2024 08:33:44 +0000
 Received: from PH7PR12MB5685.namprd12.prod.outlook.com
  ([fe80::f2b6:1034:76e8:f15a]) by PH7PR12MB5685.namprd12.prod.outlook.com
  ([fe80::f2b6:1034:76e8:f15a%6]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
- 08:30:03 +0000
-Message-ID: <5f70caef-7c7e-4bad-9de9-f8f61bba2584@amd.com>
-Date: Fri, 8 Mar 2024 09:29:57 +0100
+ 08:33:44 +0000
+Message-ID: <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
+Date: Fri, 8 Mar 2024 09:33:38 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] drm/amdgpu: Increase soft recovery timeout to .5s
+Subject: Re: [PATCH 1/3] drm/amdgpu: Forward soft recovery errors to userspace
 Content-Language: en-US
-To: Joshua Ashton <joshua@froggi.es>, amd-gfx@lists.freedesktop.org
+To: Joshua Ashton <joshua@froggi.es>, amd-gfx@lists.freedesktop.org,
+ "Olsak, Marek" <Marek.Olsak@amd.com>
 Cc: Friedrich Vock <friedrich.vock@gmx.de>,
  Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
  =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
  stable@vger.kernel.org
 References: <20240307190447.33423-1-joshua@froggi.es>
- <20240307190447.33423-3-joshua@froggi.es>
 From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20240307190447.33423-3-joshua@froggi.es>
+In-Reply-To: <20240307190447.33423-1-joshua@froggi.es>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0398.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cf::16) To PH7PR12MB5685.namprd12.prod.outlook.com
+X-ClientProxiedBy: FR3P281CA0066.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4b::17) To PH7PR12MB5685.namprd12.prod.outlook.com
  (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -82,81 +82,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB7945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01c3dae7-65c6-40c0-ead9-08dc3f49f37f
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH3PR12MB8936:EE_
+X-MS-Office365-Filtering-Correlation-Id: 054fdf79-1d4c-422f-2e5f-08dc3f4a7768
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	3QKFoJhnBcB6cArQHwcaKDuwF+QwsmG1CJCOCvLKaMq0cb3o96ZYnQ4Ih+xdzBiDbP0ldIKfBkKlJMgx+lyahz56aIMjkPrD/nCjGiimxIxY+AFwb7XB6Hp91RPAFUn94ADmVFXIu45BZRGWwYkaDJczLdniImN7LNUZcqggtUNhcz4Yvlu1skVJ0aGTOXx+SjUVnjCdXy79G3NHIzrnQdID8BJ2Y64iZkDUQ7JcEN608aQtFvAuhkRIre4KizI3PITx9PEqZgyx4nmoJZUqxjStDyVU0M/5xnZ5quI2/FAV8aHz96oxb/lP61IqXApbB7dYBR7o2xKB9lqAmW1vkDCF1zz/EFH3RAZbX+fYZ1VgLmpVitJOEjVscS6fLU/vb1tJdHSurMl37ceOw9cDBzbbCWrbK4M2gUrZjJMGswxmhxOaGsIJgR3de1jHBbxOBUwwRWy5hVIZlNpLuIh5OmZOdfNkQMnna2j1N0ZbrR18dF7+FsJxLIeu1kwapgLX4ErSxb95m6bNV6Ofq9RuGVaHAmX6LOtH/ffxtXaN1N8dtSrk0Yc42jieeFMqK8QbMOAgRqwKcv2HaXZ1Cu/BrkP7s2OcRJfGNUl4RvjVOsogfZExFOo79HbSpUHatiM8uX65un3lk/8SNEbpeJKUmADfh1y3LJ4fDJyQdLzavzs=
+	DTHVqJD3l2DRsreJbiFq1ywdcN08OCzCkN+WOm0yapndur86DyXDbHJdyJaialGdRnUt31hO92BfxxleVk3J2+vJnSBXKZIBNFqbQA/2wo0idGXkceVM+VNPHyHEHos4ntg1bHKqutiP/BKFEkHs26BA4R0Nd5klAqm+RhRdGIzDy8cvUbcB6cMswqKo2kiGG5ZCXxA3NWs5zDPNPQfpzeUuBfrZRqqWNTI7KYdMt4cYYWnYGp49gbXUBtd/N0ZS0phRTPIWUBls6PIlAOngiHgmKD4cVnOCg9+th7QVH6yU+7G263lMx2idXfYzIKKufj5YoXLbxK7lry/aK8MH4WLpNCookns9oe6b456SQqGzewcQEzzkwSGtU474lI5GrVVN/dQZrQFQF4p9QLhQVWRNjr8yhpJ63EuOld3gTgZdHRYHujm7vDmztXksLUVoL4oEM9BZlR6UQ9ATGPGF8xXuJU2wazPBgk+LgoU8SdYd2RjrD/JqH8VnTLdN7LN5nlpyw39Cv239f1sBtAaZDtCWG4k+JUhfh5KLcVZocaoYvcjf48FqJFw55FkuBd8h4thR5ETPDccPKXjiA09FlJwYf1JxaNDj2/QhUsm6lkg=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VWJWWXZzamYzcXVkZCtjZkRjbU5mK0U0NnkxZXh5M2RWNk1uT29kOTBNR0Jr?=
- =?utf-8?B?azFuUW9kZ0ovcm1rdVh0MGptU2pUTFoxWHV6VjJoRXY4ZTVZWGx2S2pLc2p4?=
- =?utf-8?B?NnlabjFmK3VBOFNrazhHdzh4NXhhWGN1d25abktnUTlJeUdsd2JFR0hvQWh2?=
- =?utf-8?B?UU9GUnB0SDRDRHM1S2hIRlVRQXdxRlp6SGxaZUh1aTBuaENvQmR1dGRhbXM2?=
- =?utf-8?B?VDJtdkxHMlpma2s0bXQ1eHp5Unh5SjNWV3dRTUxoMjY5MmJ4eEdHYVdyYW1i?=
- =?utf-8?B?WUJDNk9jLzRGWGxWRWMxT1NGZFJUOG40dmt1V0k2YXJ6Z3pKMUxsNDZqeXpm?=
- =?utf-8?B?cDc0b0YxVkQyOFZsZG1FUG1ITlNVWk42aWloaGwxOXh3R0ltaEl3eUlZWWN0?=
- =?utf-8?B?VnZaYnM2N1BrMVdUWkRxNzhic2UrVXl4YU5yU0Z2djVGZG54d3E4SGh1MUly?=
- =?utf-8?B?Q2JhYU9leGdtMm5NS3ZKUmpCdlpxY3lmOU1FS0dzRVdTbDVPMkoydXVYR0hh?=
- =?utf-8?B?UGw1c0l6dUlZNERYeEkwNVVFMnNvSW80ZnpZZTJiS0hzZGZHb2w0cGJjRTJt?=
- =?utf-8?B?WDFobHlWYkZiNWNIb3orMzJ3WXFhRWNsa1dKaEV6UU1VNEprSXdQRFRoZ0NP?=
- =?utf-8?B?RVBYVVVkTFQ5N0o5Yy9sLzh3bkJ4S2VFOHZpMzJpSk9VYXl0YUxjMDYxQUUy?=
- =?utf-8?B?cVpKZ2FRVHlveGNIWXVQc1M3T21uVllVZzg3czdWcGpwalpQYjlSUWczQ2Jx?=
- =?utf-8?B?OXVDOS9GNjVkQ0dKYkJ4NDdpTXorNmlJSVdNU0NnN1V2ZXArZytKcHN5UkZt?=
- =?utf-8?B?R09qTkMwMFdPMXlRRkJuNlNScVBtMlc5bUNSTUR2clVFU0JyckJsVVNmTS81?=
- =?utf-8?B?WHBFMVlVQU1iRStnTHk1RUE5ZG1UcmhCSUx5THhQRFNpeHJUdHNrTnI2alh2?=
- =?utf-8?B?dExTNmxHT3cxNVV3UEg1Yldva1BhVmRGUnQ4N3FtNkpDeWZJYm8zMk4wK3ht?=
- =?utf-8?B?NmFhVE1QY2xESzJhdk1jZVZQZ0RTQVdHV1dTV2pkdmwyMDJVc3ZZZkljU1Bu?=
- =?utf-8?B?RHFFYytrekhzYVBvQUtRMHlTRUFqL3RGeGdIQnUrTmc0Y01Eb2JvWVU5d3lz?=
- =?utf-8?B?VkNiWHhXdnRIbFFSOUw4MzdmVTErSVI4OGNFNy90aWNIRW1CRXJTN1lNZ0dj?=
- =?utf-8?B?SlAwb1lRbWx3QzJtbHBkRXVMUmpzOWJEdjBWdFVZV0pXTkRtUy9RSlUxeldD?=
- =?utf-8?B?eGhsTWZyR1NncUo5OXhKVmNzaVBWTnFMUzBjbzE2cmRQd0lINUtBR1hVdDFR?=
- =?utf-8?B?OFJXTld2QWZNajc1dmN3cUlQSjNhN3F6RjZTTTVKMnNKcXZzRzJzbGE1WE1F?=
- =?utf-8?B?L0RSU2VwekppMjdYR3NKdk92TkwwLzc2OGVXT2tSNzhIWHFRNTFQUjBkMTgx?=
- =?utf-8?B?MmZmaTcveThPak80UnJseW54TlFaMjVnbVphS3d1cGkzZElPTlJuNmVscDk2?=
- =?utf-8?B?UVcrVTlDRElvMVlCMjVIZDl4Q2dvd1p0d2t4Y0daTGFWaTFqd1ZxQktUbnU2?=
- =?utf-8?B?SmpxLzJ1RkV6V011YkExTEZmOGFzN1VNL3VJVGE5eHp0RUFScEQ4SnBQNHc0?=
- =?utf-8?B?WWZzKzB1WFpRZUFtMXBLaFVjSVFPT2s4S2VYekhJK0ozYis5Y3BaUTA0eW1i?=
- =?utf-8?B?Uk1uQ1I3Slo5VmtHdTVWbDNKcTFQNWJUSXFZUnZZeDgveWpyRldNQXEvNmFM?=
- =?utf-8?B?MEhITG1KUTgyem51UEhqV1NJa09mb0psVUxRVjZOVDNaWk5EZ1NLWFpxN1JS?=
- =?utf-8?B?S0d6bEVLVmZDenVLWjVWbnJXSlM4WGV1bzF0SUNMT0UwWEJWdEtCZFRSMURU?=
- =?utf-8?B?aWdjemxTTE15UzYyMWdPN2dkK3N5ZjhxZ001eFJkWENTRm8rQTVLUWJWRkYy?=
- =?utf-8?B?T3AzZXkxVHRzTlhIMDlpRmFMUTd0NzJCYmZQZFZmQXB3K3RScjJZUFovVmJs?=
- =?utf-8?B?VHpJYXdVRXpPaThYU0N5NmlJaHFIZk5wbkQ3RXVHOHVjLzQzU2hMbnJWTEZw?=
- =?utf-8?B?aFhpb1k5cHpISDJqcGhVVWlaa3dRbFNvSi9VQVpLVlRmeEhvejJzMm5NenAy?=
- =?utf-8?Q?zjBLe8oWNOLcmp9YCtJytMPnZ?=
+	=?utf-8?B?WGdNNS80NnM0Ty83aVZDVk14SEtYQzQzODRwVDJQUTV4dDBOUUthdXVrYjNL?=
+ =?utf-8?B?QktkazRKSjhkTDdtWU91SEU5UlN2K01xeklZS1ZnaW1mNHM5aG9MVHV1U3pk?=
+ =?utf-8?B?dmdCaCs0T01jaHBXSXF0WndTUUJZNVBzdy9tZ2tDMmRPYW5obTZsU1hYUDFu?=
+ =?utf-8?B?eVlKYk9IaWFuV1dVSC9DakNuSUVwYTc1VnNoV3d2Wmx4czlacmNWZXQ3Y2JW?=
+ =?utf-8?B?c2h4L09KQlNLSVptWmlTdVhaenRGVXlvanhkM3lWQVdWajhONDNFS1BXK0tw?=
+ =?utf-8?B?NlgyWUE1bDhVMlE1M3gySkVzemhtYVZ4K3V3UExLanE5Um1aemVtT0oxeUxX?=
+ =?utf-8?B?OUpLMUk2eWRDc0g5TnMvRDk3UGM5Nm85OU9oR3VubWc2bDhsRFFMbkZvRzNC?=
+ =?utf-8?B?NnJ3bUllckNhZXpZeFZxMEExd3hNWHdNcVVZOWdkM3NUbklsamVyRGRzaEZ5?=
+ =?utf-8?B?YzZZTUwrQjRsemhMWXM3TmNITlM5WURzRWEwa2RQUmkvQ1R2bWx2S015NnFG?=
+ =?utf-8?B?SjhSRnQyR295Rk5QVjlnM05JRkZ2dlJqQ09YSjlvWVEvNisrY3RKZW04M2c5?=
+ =?utf-8?B?cm1IcjAvdXIzU1JwMDhmaFB5cThNWHg4WmppdCtNSWtNUE9zdmhncy9jT0No?=
+ =?utf-8?B?bzc3aG1zTXZ5REhoK3pud2tuQ2R4eTc3eDIzeVZROHgzcGxpbWlLdC9CZkF6?=
+ =?utf-8?B?R1dvelBuOWY1TFBldG13ME83V2M1QlIwSTdXODVZUlZ3NmhyOVNqaG9hSURF?=
+ =?utf-8?B?UmpIZmkrMkJUZWpaOGlEV0F3c0ZwSWtCY283QTBPRXBha1R0d1JhdlFVd1BG?=
+ =?utf-8?B?UXMza1dBbStMQ3EyYS9RVVMzRmdNbjY2Vk55WE9VSmxYZXNKYmQ0dUlYY3l6?=
+ =?utf-8?B?VitFYzl6aG8vSXBMaFJFcm9aYkZpR3oxV2pBTmd6Sk1ESzRXOHVTR3VsRGQy?=
+ =?utf-8?B?NDNUNHF0bWhFeXdTNHcwVEI2aVg5MS9EbmNrcUkzZDlXQ0xPSGFDYVZrUHdz?=
+ =?utf-8?B?TkM1b2xlekRWWkhwR2s4RkF1RGgzSXlvWm54b3czamJIQ2VYODdjZ1ZoMG9l?=
+ =?utf-8?B?RDdwbGp6djlTMWtWU3hOVHhXeEFhMGY0aEl3a0trNlNDYUhXZzBCVGI2U2Vm?=
+ =?utf-8?B?YlJQdVBLNTdDTTAyMTlpcHBSVEt3R3hEZm41dDFwMFZ3WTBOQm0ycTArTVVH?=
+ =?utf-8?B?bHBJMytMQzBIRGtFWk5lempqMmkyWTI1YWwwcWxTaE5aaFRBV0tYdDM4dWpS?=
+ =?utf-8?B?ZFJNckJBQ1BBZEFnbFh4c0xZS2NIc3paZTFsakR4WW5mdUhJLy9ZK2dnV2ZZ?=
+ =?utf-8?B?R05kRmIvN0ZNWHl2QVk1Z0VTaUpYcVdpK2xlcThkMW1FS0lZQnNhRzFUTUJp?=
+ =?utf-8?B?cGlIMUMxTmp6ajhUTVlRVGQwYndJNFk0WmxWbnA2azZENk1kWlp1QkYwQjNH?=
+ =?utf-8?B?MTJ3Y2xGOUNpYWh6bXlOZVRCTC9vcytvMXdSTS9zMTFudE1MOHJkV1J5eTlH?=
+ =?utf-8?B?MmcxVkx1c29OeWlsY21zM1JGQUVxT0FkMFYrV0NYWXJtMUo2d21yd0g3dExj?=
+ =?utf-8?B?UGpWbUtMa2ZvaEk5YUdzdU5jT0xuSjcrR05NK2JyM1RyS1FxQmhUSlIzcDVm?=
+ =?utf-8?B?V21adC92dlAwODN4dENPM1ErVUZnNWRLaWRnbWFnT0lpdHE1SWhkZytkaHhv?=
+ =?utf-8?B?UnVTZXNYTGlUbzIrR3hDVVNrU1h0c1F5V1kyWXBIb3NEekwvTTRMOU5pWWZI?=
+ =?utf-8?B?Zi9Db1lXU2gyN2xTWU5KSS9TTDZwZDhTK2VCeHBydGhKRVBvSlJLMG1ZQXZQ?=
+ =?utf-8?B?QkRzRWJWRGxOc0pnWXFlZHZtNWpmZkplZHo2bUtqL09WWW1kaEVhaXE0Tmh4?=
+ =?utf-8?B?REVxZm42UlF1Q2hONnFSYTNBcXgrKzZKcGJSdFduejRnSy85WVZKRCtTWjQv?=
+ =?utf-8?B?QTBSQXplaTdxOEFIRUc1RlFBMWZjUTNUNUtUYnpVYXhUWFpOdmFvaFY5SGZ1?=
+ =?utf-8?B?TitwcXNVQkwzRUpqdzZMeXpMMGY0c1UwdG52ejVzSXZzYlBlWjhzMXdzeE1j?=
+ =?utf-8?B?KzlNSkdKcG9lUm9nOVVQZk4yelZxV09MY0NrWWE4dmtDQVI4OUR1L0tyYWtk?=
+ =?utf-8?Q?fsKy4ZmeMgsokKCNV4xmMpsek?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01c3dae7-65c6-40c0-ead9-08dc3f49f37f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 054fdf79-1d4c-422f-2e5f-08dc3f4a7768
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 08:30:03.2541
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 08:33:44.5747
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: labqqgCYmpAEYvXSuGa3arBig54ndkLMAvxEPfuGSt7i41CHIeuTxQcuZpnqOFFk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7945
+X-MS-Exchange-CrossTenant-UserPrincipalName: FBdrwyvaHetu6LHZiSGE+i0DW/BNTOAo72TRqhqTnbtivNXnhuPOGq2jCzazYjor
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8936
 
 Am 07.03.24 um 20:04 schrieb Joshua Ashton:
-> Results in much more reliable soft recovery on
-> Steam Deck.
+> As we discussed before[1], soft recovery should be
+> forwarded to userspace, or we can get into a really
+> bad state where apps will keep submitting hanging
+> command buffers cascading us to a hard reset.
 
-Waiting 500ms for a locked up shader is way to long I think. We could 
-increase the 10ms to something like 20ms, but I really wouldn't go much 
-over that.
-
-This here just kills shaders which are in an endless loop, when that 
-takes longer than 10-20ms we really have a hardware problem which needs 
-a full reset to resolve.
+Marek you are in favor of this like forever.  So I would like to request 
+you to put your Reviewed-by on it and I will just push it into our 
+internal kernel branch.
 
 Regards,
 Christian.
 
 >
+> 1: https://lore.kernel.org/all/bf23d5ed-9a6b-43e7-84ee-8cbfd0d60f18@froggi.es/
 > Signed-off-by: Joshua Ashton <joshua@froggi.es>
 >
 > Cc: Friedrich Vock <friedrich.vock@gmx.de>
@@ -165,21 +164,23 @@ Christian.
 > Cc: André Almeida <andrealmeid@igalia.com>
 > Cc: stable@vger.kernel.org
 > ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-> index 57c94901ed0a..be99db0e077e 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-> @@ -448,7 +448,7 @@ bool amdgpu_ring_soft_recovery(struct amdgpu_ring *ring, unsigned int vmid,
->   	spin_unlock_irqrestore(fence->lock, flags);
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+> index 4b3000c21ef2..aebf59855e9f 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+> @@ -262,9 +262,8 @@ amdgpu_job_prepare_job(struct drm_sched_job *sched_job,
+>   	struct dma_fence *fence = NULL;
+>   	int r;
 >   
->   	atomic_inc(&ring->adev->gpu_reset_counter);
-> -	deadline = ktime_add_us(ktime_get(), 10000);
-> +	deadline = ktime_add_ms(ktime_get(), 500);
->   	while (!dma_fence_is_signaled(fence) &&
->   	       ktime_to_ns(ktime_sub(deadline, ktime_get())) > 0)
->   		ring->funcs->soft_recovery(ring, vmid);
+> -	/* Ignore soft recovered fences here */
+>   	r = drm_sched_entity_error(s_entity);
+> -	if (r && r != -ENODATA)
+> +	if (r)
+>   		goto error;
+>   
+>   	if (!fence && job->gang_submit)
 
 
