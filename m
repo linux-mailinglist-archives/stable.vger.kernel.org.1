@@ -1,114 +1,106 @@
-Return-Path: <stable+bounces-27179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E984D876B0B
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 20:11:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0F9876B86
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 21:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7DA1F21C9C
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:11:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6558B216B5
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 20:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A5B58AD9;
-	Fri,  8 Mar 2024 19:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB2D5B043;
+	Fri,  8 Mar 2024 20:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="OkWhs91G"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E189356473;
-	Fri,  8 Mar 2024 19:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A045A7B6;
+	Fri,  8 Mar 2024 20:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709925076; cv=none; b=M6Ylgyy4uJUynZvwqsX6iYtxITzSAgHOaf20ZYLS97BrmRDMBcR73rPCPfWF3Dd3iU1O9BoK+keEl1DUGnlcTAp30y/rcwU+PG5amWqpqHCUgPsTKQNIB9DMlasspaukPZlE8+o3lVBHCWpl6RTV938ej5DxAAScjKOp66NJPMo=
+	t=1709928305; cv=none; b=OFJYLW3j+03Z2li+Tq5PbpOwYHs/9kiqrJ9w6AOmgznbCYa1v3doMYQVeXBybPqmy5nuAYxmAsAmCdlG0t68SwJWyktmFnTluQe6MD1aUBKZT0KxhTu1omGCUoSSqurDZ6VKl5hkGq0o9P3dJ4Ztuabb60erOnzBcP/mGqChNNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709925076; c=relaxed/simple;
-	bh=5iYekLuVg5uyeI7ptQHbUlgVXer2/uWfi4AzNIce3mo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jh7LU1cTYBpKCERt/RywD5uYeIWvvJRSmx3V1al/i/DdFIP8e6H45yV4j91U1ouN3LPSG0TTFJfJd4fSdBWks9fPKqQl/xNNX+2csYGj7Hbae6UIcPWvwi1EDEBPQGmDxV4s1kPAxANJCRe4nMrgB+Y1zXo6p13dKOEBjHo5uO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26841C433F1;
-	Fri,  8 Mar 2024 19:11:14 +0000 (UTC)
-Date: Fri, 8 Mar 2024 14:13:11 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, joel@joelfernandes.org, linke li
- <lilinke99@qq.com>, Rabin Vincent <rabin@rab.in>, stable@vger.kernel.org
-Subject: Re: [PATCH 4/6] tracing: Fix waking up tracing readers
-Message-ID: <20240308141311.03eefef1@gandalf.local.home>
-In-Reply-To: <20240308184007.805898590@goodmis.org>
-References: <20240308183816.676883229@goodmis.org>
-	<20240308184007.805898590@goodmis.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709928305; c=relaxed/simple;
+	bh=hTdDW/QPVrtJ0hv0pJwoncMwRgnDZcmT72YWj8/pWaM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bCr6k/WfEpmXnDeA2exc2vGcCLWZQ7tm8h0DulS6cWnSFZHlJTVtffDy+PeuOCnmAVkIiO/v0dUfpzD6nhmzF+vDe6MZc5nJDg9xmHa7dcRoBRa47vSpWJ37a4faBLVrk3iu3ID8KOJKB+8TfwU5avmiGa5sxKX6p3UtMf25+KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=OkWhs91G; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4TrxwY64p8z684f;
+	Fri,  8 Mar 2024 21:05:01 +0100 (CET)
+Received: from [10.10.15.2] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4TrxwL2MFcz6849;
+	Fri,  8 Mar 2024 21:04:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=unoeuro; t=1709928301;
+	bh=Bz7WFKATpeRUEMd+kK/nmA2pOOoQq0OLYoXU7B2XQAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OkWhs91GDEt0Zv4LTotdE8GdTAx1QI86pbrgCwpaJuXQg9qbBz93m1RFHzbV6axOE
+	 dlJ5xZnAQawP4Sk1UQ/76QeEb0SOu9rgpxABL92ergvCGK5PF2aE0qyJQjQ9sWZaVT
+	 k3redQSwjdQb4WVOyDOkwKEcydyFsLaoQlWeycSA=
+Message-ID: <8123d73f-1e65-4e3b-870d-044df0d38c76@gaisler.com>
+Date: Fri, 8 Mar 2024 21:04:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] sparc32: Fix parport build with sparc32
+Content-Language: en-US
+To: sam@ravnborg.org, "Maciej W. Rozycki" <macro@orcam.me.uk>,
+ sparclinux@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+ linux-parport@lists.infradead.org, "David S. Miller" <davem@davemloft.net>,
+ Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240224-sam-fix-sparc32-all-builds-v2-0-1f186603c5c4@ravnborg.org>
+ <20240224-sam-fix-sparc32-all-builds-v2-6-1f186603c5c4@ravnborg.org>
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <20240224-sam-fix-sparc32-all-builds-v2-6-1f186603c5c4@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 08 Mar 2024 13:38:20 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On 2024-02-24 18:42, Sam Ravnborg via B4 Relay wrote:
+> From: Sam Ravnborg <sam@ravnborg.org>
+> 
+> include/asm/parport.h is sparc64 specific.
+> Rename it to parport_64.h and use the generic version for sparc32.
+> 
+> This fixed all{mod,yes}config build errors like:
+> 
+> parport_pc.c:(.text):undefined-reference-to-ebus_dma_enable
+> parport_pc.c:(.text):undefined-reference-to-ebus_dma_irq_enable
+> parport_pc.c:(.text):undefined-reference-to-ebus_dma_register
+> 
+> The errors occur as the sparc32 build references sparc64 symbols.
+> 
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Maciej W. Rozycki <macro@orcam.me.uk>
+> Closes: https://lore.kernel.org/r/20230406160548.25721-1-rdunlap@infradead.org/
+> Fixes: 66bcd06099bb ("parport_pc: Also enable driver for PCI systems")
+> Cc: stable@vger.kernel.org # v5.18+
+> ---
+>  arch/sparc/include/asm/parport.h    | 259 +-----------------------------------
+>  arch/sparc/include/asm/parport_64.h | 256 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 263 insertions(+), 252 deletions(-)
 
-> +static DEFINE_MUTEX(wait_mutex);
-> +
-> +static bool wait_woken_prepare(struct trace_iterator *iter, int *wait_index)
-> +{
-> +	bool woken = false;
-> +
-> +	mutex_lock(&wait_mutex);
-> +	if (iter->waking)
-> +		woken = true;
-> +	*wait_index = iter->wait_index;
-> +	mutex_unlock(&wait_mutex);
-> +
-> +	return woken;
-> +}
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
 
-The last patch adds this code after a prepare_to_wait(), which triggered
-the warning:
+Picking this up to my for-next
 
-  do not call blocking ops when !TASK_RUNNING; state=1 set at [<00000000797e3e20>] prepare_to_wait+0x48/0xf0
-
-Which is correct. The prepare_to_wait() set task state to
-TASK_INTERRUPTIBLE, so I can not call a mutex after that.
-
-I'll send a v2 where I switch this over to spin locks.
-
--- Steve
-
-
-> +
-> +static bool wait_woken_check(struct trace_iterator *iter, int *wait_index)
-> +{
-> +	bool woken = false;
-> +
-> +	mutex_lock(&wait_mutex);
-> +	if (iter->waking || *wait_index != iter->wait_index)
-> +		woken = true;
-> +	mutex_unlock(&wait_mutex);
-> +
-> +	return woken;
-> +}
-> +
-> +static void wait_woken_set(struct trace_iterator *iter)
-> +{
-> +	mutex_lock(&wait_mutex);
-> +	iter->waking++;
-> +	iter->wait_index++;
-> +	mutex_unlock(&wait_mutex);
-> +}
-> +
-> +static void wait_woken_clear(struct trace_iterator *iter)
-> +{
-> +	mutex_lock(&wait_mutex);
-> +	iter->waking--;
-> +	mutex_unlock(&wait_mutex);
-> +}
-> +
+Thanks,
+Andreas
 
