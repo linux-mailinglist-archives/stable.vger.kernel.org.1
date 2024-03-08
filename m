@@ -1,170 +1,94 @@
-Return-Path: <stable+bounces-27167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C518768E3
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:52:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 020BC8769CB
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 549A9B20BBF
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:52:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96CF5B22F04
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AFB175BE;
-	Fri,  8 Mar 2024 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0282D627;
+	Fri,  8 Mar 2024 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kOGl/9do"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="yoEU1rwB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84FA568A
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 16:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77840861;
+	Fri,  8 Mar 2024 17:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709916753; cv=none; b=O+pP3QudYLPzeUC7nlESCWIMNjnnOVrF69K+d+EiNu6qVeTg3NDLyPKWCx+zUq/U8QFBsOhf01+FCWnCPhBZRfx6ZDVd7+h+0PQjqm0oyAX+VISSSiR+cvMaO19eHgQTPf7d6QebY2JNhH1a/QXuJlQRSvZsepEYu+czEwGTfiI=
+	t=1709918634; cv=none; b=tIT7f8XLvTebYVeBXSt/BHlyKPsuj5s7QAzkAPLHqTmc/YB6YdF5iNhAhvfsna+p3NNc9H/tOTCWI9xBAdebfmYQI/H/1WBy7BwdvjOEIcsqwzIvyr/SS9Xuwr5B+6TyVIH9U03pVFGKkLIF17WmE4oTMBJV+nlwl1TnfZmwGi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709916753; c=relaxed/simple;
-	bh=DDSnZRTlhGc3qk0lMGjvCWCH3aGOz39xbRcYWSaetKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VBoLzA1V7kLHaeSWW8OiculUNOucwx8RuNKM8cWFRH2yOURw9JzQTZCixisG42ezYbdsbbgG3NBjvm5ubmhop+cIcovjA6t4hY1tjBj/v+WXjGy27iJpMVqb5GqRDTcWQyIVu08gz66XaogIVVHCCJmKOz5Fj2+iuW15cc4/9Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kOGl/9do; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 428EaMvx025654;
-	Fri, 8 Mar 2024 16:52:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=4h1nrQ0ADPnyDAxNzGXA7guhmQW/Wg/2BTZTLzTrfME=; b=kO
-	Gl/9donaWIaz988tbIl0waBPR1q5/dNV1I0gqapiy5YycaOGrUGUallwHYnjAjTO
-	Fypn2TSFtCHR/fPd1OGovByWwbBI4ABG+uViYKWeq8vkO7AqzOYOXza6NLV7C59/
-	zgmoOSxs+oX9llsfOCvlAnOOZAXoYvHSzxb9VpT0au5XTdq+L5KgxErfD9X8gb2F
-	V1lGWTW+VZcF1ez7poKWp9/dE11Z2w40a9tHGlP++SHSbtkhFeWDbeFHNGBcNF5J
-	Wr6Q7+sjUhiiKMJjOtXrxKsdqZHm8m3YHQsMMRda5dRnaulTxlJmFVpg3FdSztJi
-	Sr85yOxS2BqbzZxx748w==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wr1wj0n1n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Mar 2024 16:52:23 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 428GqMJF002623
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 8 Mar 2024 16:52:22 GMT
-Received: from [10.110.41.90] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 8 Mar
- 2024 08:52:21 -0800
-Message-ID: <ab68d7a0-44a0-4e6a-82ea-7d7e3e9a718e@quicinc.com>
-Date: Fri, 8 Mar 2024 08:52:09 -0800
+	s=arc-20240116; t=1709918634; c=relaxed/simple;
+	bh=JdhC2lc9HrS1dcjMT+E2Ue8bjLpIuTMFAeGj12xwZLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CrhSpWsyE3ykqHFCGxQ62uUsdrAYJgqyqi44kj6qrD4VkJlzuhxU4EALd4HJO2HClOy7o6ZGzHTD0IxD13tdn2G6yp/MUo4exUj5Ki+egz/kHyvsy366LL2RrBfvqo4ei6Zq2Pc7O4JdVXfeLXR7M52MoqCmcGb0E9IdcxVA4GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=yoEU1rwB; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=h3hF6RNjd/OEL9wHy1dbF2LdOLelVx+45qSHoPQalzc=; b=yoEU1rwBug2LfydZImJYIUpvbi
+	AUE4rfCNzywlInAXqiJvjLoaof5qrFMuDuq8ltcVtHqeE5FEei/g2cQxJ6FTWrYqS64r1gsMaEpD8
+	Z4xP/kZnWyOIiP7ugyxqVFqZnsDHCUCLVwMc6B1UJqYhJ0Lcqpv+Q5pJS3rOE7Wb2VIDeSmn0LPzi
+	ciQpheoO6p3RlGHYOVNfNTpCcit+SuvvvUXt7IyQ8j6++K0sMRckgF4rLQQ86lr/2BPq4oTnkHWVI
+	9qVDYfThQixqZaJ7INs2ZBBjp+UwSXjD0h+SuOYtIQRasgGR1Fwty4NmtCyEdwMgNIa6FEh+b/N+d
+	wlmDlY4w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1ridwm-0000000AUVy-0yWT;
+	Fri, 08 Mar 2024 17:23:52 +0000
+Date: Fri, 8 Mar 2024 09:23:52 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Anand Jain <anand.jain@oracle.com>
+Cc: Christoph Hellwig <hch@infradead.org>, boris@bur.io, dsterba@suse.com,
+	linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] btrfs: validate device maj:min during open
+Message-ID: <ZetJqJH-K-fC-pC-@infradead.org>
+References: <845dfb4fbf36dae204020c6a0a0e027cab42bcf0.1709865032.git.anand.jain@oracle.com>
+ <ZeszQwa8721XnZsY@infradead.org>
+ <be3571d7-2bfe-4bad-b2c6-84a0bf121140@oracle.com>
+ <Zes4i3qvFk2nWjyY@infradead.org>
+ <9a59cfac-2ab4-4c6c-933a-70dcd3e3d80b@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] drm/panel: do not return negative error codes from
- drm_panel_get_modes()
-To: Jani Nikula <jani.nikula@intel.com>, <dri-devel@lists.freedesktop.org>
-CC: <intel-gfx@lists.freedesktop.org>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>, <stable@vger.kernel.org>
-References: <cover.1709913674.git.jani.nikula@intel.com>
- <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
-Content-Language: en-US
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: gyFQ5eOq4cAxLZEH7jMfOsYt57sPU1Ol
-X-Proofpoint-GUID: gyFQ5eOq4cAxLZEH7jMfOsYt57sPU1Ol
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- mlxscore=0 priorityscore=1501 mlxlogscore=999 malwarescore=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403080134
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a59cfac-2ab4-4c6c-933a-70dcd3e3d80b@oracle.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-
-
-On 3/8/2024 8:03 AM, Jani Nikula wrote:
-> None of the callers of drm_panel_get_modes() expect it to return
-> negative error codes. Either they propagate the return value in their
-> struct drm_connector_helper_funcs .get_modes() hook (which is also not
-> supposed to return negative codes), or add it to other counts leading to
-> bogus values.
+On Fri, Mar 08, 2024 at 09:53:07PM +0530, Anand Jain wrote:
+> It's a bit complex, as Boris discovered and has provided a testcase
+> for here:
 > 
-> On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
-> do return negative error codes, so handle them gracefully instead of
-> propagating further.
+> https://lore.kernel.org/fstests/f40e347d5a4b4b28201b1a088d38a3c75dd10ebd.1709251328.git.boris@bur.io/
 > 
-> Return 0 for no modes, whatever the reason.
+> In essence:
 > 
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->   drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
->   1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-> index e814020bbcd3..cfbe020de54e 100644
-> --- a/drivers/gpu/drm/drm_panel.c
-> +++ b/drivers/gpu/drm/drm_panel.c
-> @@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
->    * The modes probed from the panel are automatically added to the connector
->    * that the panel is attached to.
->    *
-> - * Return: The number of modes available from the panel on success or a
-> - * negative error code on failure.
-> + * Return: The number of modes available from the panel on success, or 0 on
-> + * failure (no modes).
->    */
->   int drm_panel_get_modes(struct drm_panel *panel,
->   			struct drm_connector *connector)
->   {
->   	if (!panel)
-> -		return -EINVAL;
-> +		return 0;
->   
-> -	if (panel->funcs && panel->funcs->get_modes)
-> -		return panel->funcs->get_modes(panel, connector);
-> +	if (panel->funcs && panel->funcs->get_modes) {
-> +		int num;
->   
-> -	return -EOPNOTSUPP;
-> +		num = panel->funcs->get_modes(panel, connector);
-> +		if (num > 0)
-> +			return num;
+>  - Create two devices, d1 and d2.
+>  - Both devices will be scanned into the kernel by Mfks.
+>  - Use an external method to alter the devt of the d2 device.
+>  - Mount using d1.
+>  - You end up with a 2 devices Btrfs with an incorrect device->devt.
+>  - Delete d1.
+>  - Now you have a single-device Btrfs on d2 with a stale device->devt.
 
-Hi Jani,
+But how do you get mismatching devices in this exact place?
 
-The change LGTM:
+  - bdev->bd_dev is immutable and never updated
+  - device->devt can be changed by device_list_add, but if that happens
+    underneath us here between btrfs_get_bdev_and_sb and the code a few
+    lines below the call to it in btrfs_open_one_device there is a huge
+    synchronization problem
 
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-
-Thanks,
-
-Jessica Zhang
-
-> +	}
-> +
-> +	return 0;
->   }
->   EXPORT_SYMBOL(drm_panel_get_modes);
->   
-> -- 
-> 2.39.2
-> 
 
