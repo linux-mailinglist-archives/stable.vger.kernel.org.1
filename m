@@ -1,115 +1,115 @@
-Return-Path: <stable+bounces-27148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298D887656A
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 14:34:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D84876665
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 15:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597F71C2180C
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 13:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8BE282BF0
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 14:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22B6381C1;
-	Fri,  8 Mar 2024 13:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C28EBB;
+	Fri,  8 Mar 2024 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="pUolcqdL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="VMwJ+zar"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4C23612C;
-	Fri,  8 Mar 2024 13:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AC0173;
+	Fri,  8 Mar 2024 14:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709904856; cv=none; b=Fi7Hwd3d2WnFRsdXH8v3c3lVBdgbc9sqNOJQbWMt6uSvBeELdZy3TNApSfmiIQz4yp2bPTMzYlc4C/xVGkD3KWXpBw/iv3DD/Wk3PX0o4jxEZav1cZTeeGdJC6FhQcarTSz+juOaZTK9pVncK/q/zcZ+mXxqfy4ZG429aCRBJlM=
+	t=1709908469; cv=none; b=kz6x/pSk0pV4oW7ojJ/FzPWEFJTB8m7EwWjRb+5sujOJGxCQ9Q67yhUQPjSuH2Nj80A25WlRMlr9olEbRp8lo9FOBTGCxwfrecPAvnir/1dUJh6ymUrv4QmPSt4/Jty74GPnu7L7EoeO83QViS09PsdJBLBNRWnWGfUb3EP1Egg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709904856; c=relaxed/simple;
-	bh=wtzrEfjCpn2S+S3f35TVkH99zb8AiS5TmWJuuoHXmU4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Koj30o6Bdf6W4xBMLpC2+bVSA3xRk1dqTphfhSct3pg9ooWc8t5boQ2ik1F23/26kPuMn1ZRuBzJ6Jr7j2Dd+XkKSPJhW033GFAW3gPLILUVQhV2lInFaLyKFWP9NxTdCpVxMIWn1EgLhuwWU85tmrDXl1LPQRaw9mgO9YbeJ8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=pUolcqdL; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1709904854; x=1741440854;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wtzrEfjCpn2S+S3f35TVkH99zb8AiS5TmWJuuoHXmU4=;
-  b=pUolcqdLC4Cj+xKA2seYYw09dvpiEdJyyX+G5WIjdvgv5YfKK7wubiKP
-   X0MVHL77LOWLvstaQRLdnrfedrMg9IMZSH+kOhUns02uUfgmBg/LLdoVl
-   EuAfhTm16Y8cTcIHGJlAa1X9Fe90gdy8tb4jOq61gVbHNC/B+Qyh1Y8qW
-   gOfpIn2HPdS/6G2Y2rqO//IJfgrKSX5GwF5yUx2b/f53gdS6nUjIZ6wth
-   jQIKAgdz5gxjqG9YULWqJcb98Bp+XfQ1YImbVkwQSwsLw3BVD2wPs8/OP
-   IF2Pz0iZ5/HawbQwuqPi23RxznycAtuq4Oa17tNycmd64raxBUBiD9rl3
-   Q==;
-X-CSE-ConnectionGUID: VD82c0PPRy2Nn/u1qslXzg==
-X-CSE-MsgGUID: o6a2Q6TZS8aGv9j+QzMa4Q==
-X-IronPort-AV: E=Sophos;i="6.07,109,1708412400"; 
-   d="asc'?scan'208";a="184672992"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Mar 2024 06:34:12 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Mar 2024 06:34:06 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Fri, 8 Mar 2024 06:34:03 -0700
-Date: Fri, 8 Mar 2024 13:33:19 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-	<akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
-	<patches@kernelci.org>, <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
-	<srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
-	<allen.lkml@gmail.com>
-Subject: Re: [PATCH 6.1 000/219] 6.1.77-rc1 review
-Message-ID: <20240308-unpaved-greeter-d665418b2e1d@wendy>
-References: <20240203035317.354186483@linuxfoundation.org>
+	s=arc-20240116; t=1709908469; c=relaxed/simple;
+	bh=iR2HDRYdl3kEYPLqKR2vIC9j8WLlVsgpS+eB1ICs/2A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=slvVRx3U8R/jDMDpBPA3GsjKRZqf4cCT1dBZPm6BWDXX5xU080iN1a4W6TFfVZ1IQPGIuqHGkuI1kV8psXfESSMZLsYxXWr5z3pUBJKfIXrJnXIiHJPBeucnK/2J9PW25Eth0b5kVqfYAjVN1P1je7b4oCQnKMK1NzL6Oebw4Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=VMwJ+zar; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=SvCqnE1sc6/yLfNTVKRPKG7Xabu6+CcefkiE3L8kYbE=; b=VMwJ+zaruZzA2E9dp4mWe+qfWV
+	XBJbPsDud128dPJmdBX93J3WBfQqb1vw9y41GCIfMLFQRl+/gI0QDQUWwHCJM+chnX1fgnNzWneX2
+	KciUh2W7FtMvbzUinb3P9ie5RGdCQwc8gATTGE7kZiKvn/SsVzK9nplDjGF5XDKWjrrNbu6Bl9O5T
+	5Ld0LzoxAf5yhdxX5xfl195VzB+WTv2H7bHcbaIMBmIuQpewJoTplzo9rqxz9YlW4ocfxwkOMq/qp
+	Ji3PdVMG8NwWJqEQk6ZX4ejWKSgmBl2F45bFqECjgxMuXjkfWybcV7e5v/AXTaBO75XEICw8dsB/Z
+	lVUbXneA==;
+Received: from [177.62.247.190] (helo=[192.168.1.60])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1ribIg-007oYz-H9; Fri, 08 Mar 2024 15:34:18 +0100
+Message-ID: <cac3f811-189f-be7f-e5fa-12ee6ca8a62a@igalia.com>
+Date: Fri, 8 Mar 2024 11:34:13 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dzUFsazBGNPyODmn"
-Content-Disposition: inline
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] usb: dwc3: Properly set system wakeup
+Content-Language: en-US
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: John Youn <John.Youn@synopsys.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ John Schoenick <johns@valvesoftware.com>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Vivek Dasmohapatra <vivek@collabora.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
+References: <667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
---dzUFsazBGNPyODmn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 07/03/2024 23:40, Thinh Nguyen wrote:
+> If the device is configured for system wakeup, then make sure that the
+> xHCI driver knows about it and make sure to permit wakeup only at the
+> appropriate time.
+> 
+> For host mode, if the controller goes through the dwc3 code path, then a
+> child xHCI platform device is created. Make sure the platform device
+> also inherits the wakeup setting for xHCI to enable remote wakeup.
+> 
+> For device mode, make sure to disable system wakeup if no gadget driver
+> is bound. We may experience unwanted system wakeup due to the wakeup
+> signal from the controller PMU detecting connection/disconnection when
+> in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
+> the system staying in suspend.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
+> Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
+> Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-On Fri, Feb 02, 2024 at 08:02:53PM -0800, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.77 release.
-> There are 219 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+[CCing some interested parties here from Deck development teams]
 
-Again, I'm super late here but I did test this the other day..
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Hi Thinh, thanks a bunch for the fix, and all the support and attention
+on this issue - much appreciated!
 
-Thanks,
-Conor.
+I've tested this fix on top of v6.8-rc7, in the Steam Deck, and it
+manages to resolve the sleep problems we have on device mode.
+So, feel free to add:
 
---dzUFsazBGNPyODmn
-Content-Type: application/pgp-signature; name="signature.asc"
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZesTnwAKCRB4tDGHoIJi
-0rfEAQCNKqC+fC+rw8+CbZLtht2tc29yoTm26p2VIAy31JFFdQD+Ma9jKC5Q3zB9
-YfeKWtS6nxOGy0+KWn/D8m4HyFLESAA=
-=8rQb
------END PGP SIGNATURE-----
+Should we try to get it included last minute on v6.8, or better to make
+use of the merge window opening next week?
+Cheers,
 
---dzUFsazBGNPyODmn--
+
+Guilherme
 
