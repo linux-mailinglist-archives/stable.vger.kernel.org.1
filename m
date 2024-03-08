@@ -1,71 +1,74 @@
-Return-Path: <stable+bounces-27150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE90876708
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:07:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6D8876728
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BED021F241C7
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 15:07:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AA251C215D8
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 15:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5331CD20;
-	Fri,  8 Mar 2024 15:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BB11D54D;
+	Fri,  8 Mar 2024 15:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="lqymgjoO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EwBsVQWt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69B11BF37;
-	Fri,  8 Mar 2024 15:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3AA1DDEC
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 15:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709910441; cv=none; b=jRvs7RkaDeJnOQMgpPrEqx1MZLHil2gaCn1h9647M4r/ToAMnmlyQORQed7Ea/Gs2h0kPFHiFdZKK6V0ZIORZr2fuKZrRnS7kZBjD4y489gIxoFGHUl05RYsoFN6jCOFv8FTbZuKDeyoaK3KMz0/uFrZB+BD9YTZc/Kh3UNU3Rw=
+	t=1709911011; cv=none; b=AQRyN7JkpueH8bbpGLMSkwklHduGwHRek4UiqtH8QN3Z4bAsBGcsUdlxychJ4s0TzeXP4NBa2vJB7pwFliDnzWS3z7AsdfWvbXak/zcra+85RJmsxTJyay3veumgXCYpo9h1RDWtFSkM51PE7QSf9CS0aS67y1037VLpGpwJfhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709910441; c=relaxed/simple;
-	bh=cVFfc9GiI9uwQvvc+1EtU0M4+VVT4wxEv4PSJ/Z5oE0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rk29SGFXUqlDBeYCuw5aB6BildS5YQ9jDvu5o4jn5ydDRcqmaCE9abCeRJiJT5XPlud+szzlb8ZZvcbKtbEA9llv/QV/dSNQYsanOl16R43Lve4q+Bata3No072KSuMuX95rlXEAv+vL7qGIliWCHREVmxrkiI7m/IPTVrwWPz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=lqymgjoO; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1709910436;
-	bh=cVFfc9GiI9uwQvvc+1EtU0M4+VVT4wxEv4PSJ/Z5oE0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lqymgjoOEnp19WEbvh+oiQeuNIZ28AMyDXsM9gvrneELn7qlZUi/RuGXwQTifuP7G
-	 e9N/xZGx1tIhmKEYrJSXzuB9aJVlT0zd4B9fzatV477RAobdiv2k5N2ol3gdr6GlME
-	 5H1Xa6PLqoIIcLybAgN96P8frK4d6QRlA+hpoMpq9Gg4gXdCr5B9VYDwgnLtfjRIX6
-	 OYQrDo4Sszh5kBL97lC59+RQmxP5nJvNaBQ4x7FD2NMzsXmnduO5Yoj8SyylvDl3YD
-	 buurQyyO3MsbY+mjMmzYXqVwhuW4fNqOc0QrL/m6GGumY3TwvLKnWkbpFu87aZBVga
-	 klLCcSo65EuDw==
-Received: from thinkos.internal.efficios.com (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4TrqK026JczgCR;
-	Fri,  8 Mar 2024 10:07:16 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"levi . yun" <yeoreum.yun@arm.com>,
-	stable@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	s=arc-20240116; t=1709911011; c=relaxed/simple;
+	bh=M3TBwDflkS4tioem08wLQkcoO3ethpXeXv66QOk3U2M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KO6u9pqFpGDqzvcnLQr2HA7bowBRub17g0sDDQWVjYW/o2kMpgo00r8CQiKZNCn4i9KIU3FVgszl/CpQYoxEqtBVAKRaLo3AVCoOl/aN0GXsBIJYP+NdflDeoetYIdFi+8aYGVTL1io7DIQOv7HDLBxd38jM0HbsgXcfry0GDOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EwBsVQWt; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709911009; x=1741447009;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=M3TBwDflkS4tioem08wLQkcoO3ethpXeXv66QOk3U2M=;
+  b=EwBsVQWthwnhYk0pc4mP2vT8TdpAm+AmqRhDlRmY4b3o08p38l5/uPfv
+   cQFiFZQxnUglbMx/l57tOfxsqzsqYL2jiT/0+DwyUcsWIaDPV3UOQsvp6
+   OoOxMFOJz9nNmHkLVDKbv9bEUnxkxqN/TJjCwY5zHE7iFFpVgShSw/RYU
+   /iRTe/p9gRX/4t7Q0MbLQfcTTxqPV/WSiY9FW0a/FhmFfmfKA+Qy5OLaC
+   yYY452xFi6Lugwu9iPpfv2TqAi0e8fn2AGLRU6Z4q5kiZYO967S3CB0Va
+   ZMKDR/vHkQXQ/uOWA0oj1AJddTmDFqc5CuWpngVGcXAS5BNH5wco6YBRR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="5233275"
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
+   d="scan'208";a="5233275"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 07:13:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
+   d="scan'208";a="47948775"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa001.jf.intel.com with ESMTP; 08 Mar 2024 07:13:30 -0800
+From: kan.liang@linux.intel.com
+To: stable@vger.kernel.org
+Cc: andrew.brown@intel.com,
+	dave.hansen@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Hector Martin <marcan@marcan.st>,
+	Marc Zyngier <maz@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Aaron Lu <aaron.lu@intel.com>
-Subject: [PATCH] sched: Add missing memory barrier in switch_mm_cid
-Date: Fri,  8 Mar 2024 10:07:19 -0500
-Message-Id: <20240308150719.676738-1-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.39.2
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH stable 6.6 and 6.7 1/2] perf top: Use evsel's cpus to replace user_requested_cpus
+Date: Fri,  8 Mar 2024 07:12:38 -0800
+Message-Id: <20240308151239.2414774-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,140 +77,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Many architectures' switch_mm() (e.g. arm64) do not have an smp_mb()
-which the core scheduler code has depended upon since commit:
+From: Kan Liang <kan.liang@linux.intel.com>
 
-    commit 223baf9d17f25 ("sched: Fix performance regression introduced by mm_cid")
+[The patch set is to fix the perf top failure on all Intel hybrid
+machines. Without the patch, the default perf top command is broken.
 
-If switch_mm() doesn't call smp_mb(), sched_mm_cid_remote_clear() can
-unset the actively used cid when it fails to observe active task after it
-sets lazy_put.
+I have verified that the patches on both stable 6.6 and 6.7. They can
+be applied to stable 6.6 and 6.7 tree without any modification as well.
 
-There *is* a memory barrier between storing to rq->curr and _return to
-userspace_ (as required by membarrier), but the rseq mm_cid has stricter
-requirements: the barrier needs to be issued between store to rq->curr
-and switch_mm_cid(), which happens earlier than:
+Please consider to apply them to stable 6.6 and 6.7. Thanks]
 
-- spin_unlock(),
-- switch_to().
+------------------
 
-So it's fine when the architecture switch_mm happens to have that barrier
-already, but less so when the architecture only provides the full barrier
-in switch_to() or spin_unlock().
+From: Kan Liang <kan.liang@linux.intel.com>
 
-It is a bug in the rseq switch_mm_cid() implementation. All architectures
-that don't have memory barriers in switch_mm(), but rather have the full
-barrier either in finish_lock_switch() or switch_to() have them too late
-for the needs of switch_mm_cid().
+[ Upstream commit 5fa695e7da4975e8d21ce49f3718d6cf00ecb75e ]
 
-Introduce a new smp_mb__after_switch_mm(), defined as smp_mb() in the
-generic barrier.h header, and use it in switch_mm_cid() for scheduler
-transitions where switch_mm() is expected to provide a memory barrier.
+perf top errors out on a hybrid machine
+ $perf top
 
-Architectures can override smp_mb__after_switch_mm() if their
-switch_mm() implementation provides an implicit memory barrier.
-Override it with a no-op on x86 which implicitly provide this memory
-barrier by writing to CR3.
+ Error:
+ The cycles:P event is not supported.
 
-Link: https://lore.kernel.org/lkml/20240305145335.2696125-1-yeoreum.yun@arm.com/
-Reported-by: levi.yun <yeoreum.yun@arm.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 223baf9d17f2 ("sched: Fix performance regression introduced by mm_cid")
-Cc: <stable@vger.kernel.org> # 6.4.x
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
+The perf top expects that the "cycles" is collected on all CPUs in the
+system. But for hybrid there is no single "cycles" event which can cover
+all CPUs. Perf has to split it into two cycles events, e.g.,
+cpu_core/cycles/ and cpu_atom/cycles/. Each event has its own CPU mask.
+If a event is opened on the unsupported CPU. The open fails. That's the
+reason of the above error out.
+
+Perf should only open the cycles event on the corresponding CPU. The
+commit ef91871c960e ("perf evlist: Propagate user CPU maps intersecting
+core PMU maps") intersect the requested CPU map with the CPU map of the
+PMU. Use the evsel's cpus to replace user_requested_cpus.
+
+The evlist's threads are also propagated to the evsel's threads in
+__perf_evlist__propagate_maps(). For a system-wide event, perf appends
+a dummy event and assign it to the evsel's threads. For a per-thread
+event, the evlist's thread_map is assigned to the evsel's threads. The
+same as the other tools, e.g., perf record, using the evsel's threads
+when opening an event.
+
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Aaron Lu <aaron.lu@intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Closes: https://lore.kernel.org/linux-perf-users/ZXNnDrGKXbEELMXV@kernel.org/
+Link: https://lore.kernel.org/r/20231214144612.1092028-1-kan.liang@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- arch/x86/include/asm/barrier.h |  3 +++
- include/asm-generic/barrier.h  |  8 ++++++++
- kernel/sched/sched.h           | 20 ++++++++++++++------
- 3 files changed, 25 insertions(+), 6 deletions(-)
+ tools/perf/builtin-top.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index 35389b2af88e..0d5e54201eb2 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -79,6 +79,9 @@ do {									\
- #define __smp_mb__before_atomic()	do { } while (0)
- #define __smp_mb__after_atomic()	do { } while (0)
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index ea8c7eca5eee..cce9350177e2 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1027,8 +1027,8 @@ static int perf_top__start_counters(struct perf_top *top)
  
-+/* Writing to CR3 provides a full memory barrier in switch_mm(). */
-+#define smp_mb__after_switch_mm()	do { } while (0)
-+
- #include <asm-generic/barrier.h>
+ 	evlist__for_each_entry(evlist, counter) {
+ try_again:
+-		if (evsel__open(counter, top->evlist->core.user_requested_cpus,
+-				     top->evlist->core.threads) < 0) {
++		if (evsel__open(counter, counter->core.cpus,
++				counter->core.threads) < 0) {
  
- /*
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 961f4d88f9ef..5a6c94d7a598 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -296,5 +296,13 @@ do {									\
- #define io_stop_wc() do { } while (0)
- #endif
- 
-+/*
-+ * Architectures that guarantee an implicit smp_mb() in switch_mm()
-+ * can override smp_mb__after_switch_mm.
-+ */
-+#ifndef smp_mb__after_switch_mm
-+#define smp_mb__after_switch_mm()	smp_mb()
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 2e5a95486a42..044d842c696c 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -79,6 +79,8 @@
- # include <asm/paravirt_api_clock.h>
- #endif
- 
-+#include <asm/barrier.h>
-+
- #include "cpupri.h"
- #include "cpudeadline.h"
- 
-@@ -3481,13 +3483,19 @@ static inline void switch_mm_cid(struct rq *rq,
- 		 * between rq->curr store and load of {prev,next}->mm->pcpu_cid[cpu].
- 		 * Provide it here.
- 		 */
--		if (!prev->mm)                          // from kernel
-+		if (!prev->mm) {                        // from kernel
- 			smp_mb();
--		/*
--		 * user -> user transition guarantees a memory barrier through
--		 * switch_mm() when current->mm changes. If current->mm is
--		 * unchanged, no barrier is needed.
--		 */
-+		} else {				// from user
-+			/*
-+			 * user -> user transition relies on an implicit
-+			 * memory barrier in switch_mm() when
-+			 * current->mm changes. If the architecture
-+			 * switch_mm() does not have an implicit memory
-+			 * barrier, it is emitted here.  If current->mm
-+			 * is unchanged, no barrier is needed.
-+			 */
-+			smp_mb__after_switch_mm();
-+		}
- 	}
- 	if (prev->mm_cid_active) {
- 		mm_cid_snapshot_time(rq, prev->mm);
+ 			/*
+ 			 * Specially handle overwrite fall back.
 -- 
-2.39.2
+2.34.1
 
 
