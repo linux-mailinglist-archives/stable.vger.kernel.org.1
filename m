@@ -1,216 +1,156 @@
-Return-Path: <stable+bounces-27130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79A0875C7B
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 03:47:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5F4875C69
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 03:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991241C20FF7
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 02:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 905DC1C21020
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 02:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC90F28DD6;
-	Fri,  8 Mar 2024 02:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70728DCA;
+	Fri,  8 Mar 2024 02:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Q7TsLwun";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="EO2j1sbR"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="dDbSCWkV"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171922F1E;
-	Fri,  8 Mar 2024 02:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709866045; cv=fail; b=TrvEX4Lwh1gEoIdQbanEGpNvZ/YYDkJ0BuHG7B5mRAhHdMTE/WZJXNyRPQqj0/idh4wwSC0Y3FwfnR012RMzRdfElQsJ0HgoCPVCcGHRa51hxmj6ADrcHbP6z164SGyHBuncT9W1VgYm1pCSD6Ye1yJvnvwlbpJqez7fh1898L4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709866045; c=relaxed/simple;
-	bh=/LWQydewJIADno1exfk0OFSWPYva+DcrFQByI+5vE0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LIc+3NiNTwW+BYbgIB4XLlHK+t3HpDmljeH88Jz/UP240BMewGRD69FGaMEQNSlSQNMtMHWXfj1EBek8V84WGqvhmtzXNFoA734BU2gRRVZJVXogSUj3kgCRthMWFItdqKaQ788kZPbIW/WPFL3PCveyDfhs/sMmgg2KXB5dFWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Q7TsLwun; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=EO2j1sbR; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4281iJ4i019928;
-	Fri, 8 Mar 2024 02:47:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=corp-2023-11-20;
- bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
- b=Q7TsLwunF+zn1FHybOLsprCxQM7Mf1g+/E+OnV4soGJvNaI0/dY/q4cM0pSaTCxsbmTB
- y73+KuI3vfxWUh/pJu2GONzrWufSOlIiJDmvn0dF3hp+hzm/3Q5gsJFOI/f+lSagojV5
- ZTxfMqd+q/luffEpy10xiKxhtwaZdI9gI6zJrOOqI1MdS47r88BpsbXK/NvcX0Nmvka1
- NM+gsA2RK7hBl7r5Nht+asztXCexrOeQmLSydYZGNPghhPicdJvwXMzT8O8YVYp7kPlo
- rMnokLhBsKVtbccaKr5k2Jsc/5TYkKVAKt1ARIYVc0ZbFCAEx4aMY5arBSSsDLmyd0if aA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkv0bms4e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 08 Mar 2024 02:47:17 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4282e0wf016023;
-	Fri, 8 Mar 2024 02:47:16 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3wktjc58fq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 08 Mar 2024 02:47:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WF0Nlt46/WLRdsmX/rugM7RNHtG6ZGEDAn94u3Yp+c1vRM8W5ITwhMbQLxuZi5eQ7mcyhJr8qj1cY/aOjzqMcglD/rPlEFJEa3Eu2P5YMGJyvz76GMHPUimC5ctk/KQnnaaOpW2ZsOLz4S0sUjSJYmv0cKTd+7F4QaQlJuSTOy2ugh/yfH56OnNZQuHmxnkA9THnEXnMj7gwBvgljKcFE0JoTeZrWOijsu9YyySTS9d9CbjLKa+Z5tmFqI6oFBPY3s86klmL6bokxxAhIMIP7jPtDoe0w2HSbR/3dxOxzWfa4uvHgFaDHXFNHkEefqCMCi9zT4J213ekZkjevAEZyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
- b=hHXiCM5vb3Y3gfQ2kw1/J5QADUU0DNkHGl5Or+BoW3HfUq/YlN00yGcJeKrHE3lMgYHnM8BVbz3UUzxiwyeaYPvBPe8Maxrwrq7G4xWlYn2H+BgH1c47HagUrkjzKiFAtnVzSoitAsBSg4bWxH1Y8CXH0vRTee/yabfNHYeBrywZWxkJovR6lXYnNTGkpm0ulTI/uGLgQWXUU+jjXRPavYIjAbjLNnpeGXaquNVQACD6iAguF8CmWZKlBmID6zbvoKfas5w4WcWeHF4dNBA/7Mh2vbLPmzTE/eenfqUse2EtfCB7AViErBiF8a8/Z328GWD8FWwvhXSG1fGNj+Ajhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E94722F1E
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 02:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709865946; cv=none; b=GKf+QADzaQH9S44fwd9IYi8trqS0MYVz4m7AjDwf7qSv5RsHvJXAfJjkSKfQs0Gw4qJ1nsRGlTmECyaBba/Gz5HnSq942b7BNTatUQeGLsXwpmAsZPCSrniDznT6unt9dkEwGAJ3HXKs80/l2zwrAUl3jMc1WqDQuc86dbL2JIA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709865946; c=relaxed/simple;
+	bh=A9JJZAf4f0qBrIUH970XEhb6Gx3TLdc7GMVQz+Xz/gA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=k49Hl0iay9MXjqiAZ2gYoTQoArLbeP4OmhRvEsKvK46C3JtvmbyFuluQ1gyFK6TQ/J0nOlJF8haVhuSjnutGMzQirSGV8PlyyRSr05+0bRowt8RmpGOEzqY07+3cYgwOAS3Mb/nK53SzKnh7VbgKnzTjmCV4BaG2vaTuZUpEio8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dDbSCWkV; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1dc49b00bdbso2634565ad.3
+        for <stable@vger.kernel.org>; Thu, 07 Mar 2024 18:45:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
- b=EO2j1sbRHmqFWun8b+NUI8B5E7TkJi+LKq4Wf+UfFcfDIlkBFhdsXh8uhqgGZYSfx3VpxWx+AZsHD4Mop4EaxCcq4Gfmia6+W2gdzHh9Ky/u4x1dLJ1cMwllJ7KIAyTTBUjDBu1j/xmiCuFCyUZkezx150yoXBRNU3SITsDehqo=
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com (2603:10b6:510:148::10)
- by SN7PR10MB6405.namprd10.prod.outlook.com (2603:10b6:806:26b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Fri, 8 Mar
- 2024 02:47:14 +0000
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b]) by PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b%7]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
- 02:47:14 +0000
-From: Anand Jain <anand.jain@oracle.com>
-To: boris@bur.io, dsterba@suse.com, linux-btrfs@vger.kernel.org
-Cc: Anand Jain <anand.jain@oracle.com>, stable@vger.kernel.org
-Subject: [PATCH v2] btrfs: validate device maj:min during open
-Date: Fri,  8 Mar 2024 08:15:07 +0530
-Message-ID: <845dfb4fbf36dae204020c6a0a0e027cab42bcf0.1709865032.git.anand.jain@oracle.com>
-X-Mailer: git-send-email 2.42.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA1PR01CA0178.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::7) To PH0PR10MB5706.namprd10.prod.outlook.com
- (2603:10b6:510:148::10)
+        d=bytedance.com; s=google; t=1709865944; x=1710470744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EBTcuM34vazcQ8FUxJ81MwY9Go5tsnqrD1TprkB4i6c=;
+        b=dDbSCWkVLpaQjGRAcqadwYyZtMODURCP43NcFG+ooH+yBz/jDnRmPzvDHpLLxDTYvW
+         L/EVz9fU8V1YY9KGOmqe7fuI8DzCNYu0vcKef13Kqg/QmOm8l92V1BiR9IDY+tsEhyk6
+         S4OvlgU1ElEoUVdL8MR7l63IkZxBHpZQbhDWwcXruIaGPH5Nz4jP9i3ySuova5fKl5so
+         BMO1rzD/6zJqmW2aDuNST4EQGWDrBgWxEjNXmQ7t60eniAU0Su9ObFTeWzclelkLn2mD
+         8Ukfjx6ri9brDTp/NVCgWprgmgOjim1ZWEJGNid5atcmaSzBspUA6PwNVaEU9pgOmo3M
+         4yTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709865944; x=1710470744;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EBTcuM34vazcQ8FUxJ81MwY9Go5tsnqrD1TprkB4i6c=;
+        b=GFK+MDToZ4e/nUJIo2P3N9p8cgMOzPvRWiyKKre/8enlzvZFVNUaZVtyXNCfcw0oLm
+         5hm6Wz7bZixktuUxI17hltOi2ahFWvcB9joWCT3zOGGabwGsPdxUj554hP1nONo5Dtl7
+         pur9M7qnK1EXKp5qBzUwoNjFAFn0HAzc8W6AQTetHZzOAqA33CWqkvgetUU0ZWfGj2aQ
+         A8Wur4oZGR/K4NYag9XaNgdRnhw3TibWZLU9+k+f6m8sqbwMYkvLNd5V5Ie8CwXwA3V2
+         DtuABy+ibihNyfLD7GCnGjwPnqecWhg5A8j4oTgbgikJGRE/K8ndaCxMumOeW3B7To00
+         Q25w==
+X-Forwarded-Encrypted: i=1; AJvYcCXiqCXMSN7bl41xoNXsk+3o5IJqD2zSV/VE5GGOPZV0KMrRC3Yg2IV2JOHisMlf1HYaPrU+kWoMs8/C21jRG/iXHVlqL5In
+X-Gm-Message-State: AOJu0Yx+CJqKQD+nvI6P+67Co+xnQrmU6jpPYjE6e80CD3sK6SbY3ryf
+	/RZbrmYHgnjM7F6bVupA837xPA/HsCgHCivGKmhAK1hxF+O0Jnx2wq1UBAygP9A=
+X-Google-Smtp-Source: AGHT+IEvIAI8sq/1OcNEGlOk2q3petZc1tRcphID3Cuq03oBgO9LU/5Qyoqw+BszQpjMEbkERqXMzw==
+X-Received: by 2002:a17:902:7847:b0:1dd:6174:c63e with SMTP id e7-20020a170902784700b001dd6174c63emr1880622pln.54.1709865943683;
+        Thu, 07 Mar 2024 18:45:43 -0800 (PST)
+Received: from C02CV19DML87.bytedance.net ([2001:c10:ff04:0:1000:0:1:4])
+        by smtp.gmail.com with ESMTPSA id q9-20020a170902b10900b001d8a93fa5b1sm15244360plr.131.2024.03.07.18.45.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 18:45:43 -0800 (PST)
+From: Rui Qi <qirui.001@bytedance.com>
+To: bp@alien8.de,
+	mingo@redhat.com,
+	tglx@linutronix.de,
+	hpa@zytor.com,
+	jpoimboe@redhat.com,
+	peterz@infradead.org,
+	mbenes@suse.cz,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	alexandre.chartre@oracle.com
+Cc: x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	yuanzhu@bytedance.com,
+	Rui Qi <qirui.001@bytedance.com>
+Subject: [PATCH v3 0/3] Support intra-function call validation
+Date: Fri,  8 Mar 2024 10:45:15 +0800
+Message-Id: <20240308024518.19294-1-qirui.001@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5706:EE_|SN7PR10MB6405:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c36fdf4-e12a-493d-0c26-08dc3f1a0f7f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	N7HzqLZnTjets76zEiqGWI9H3t0Oa//9H4Vd0QkEF/MQewOtyck/wEzjanv7Bb43CPq5Zq+9Ou2T8mz+03cgVH2jDgUqx+6MrStv/567Uzlk6q42f7ePhclmQXSVHWe5cuchtB0HfptjNqhVfDTAfPp7CpuKAATJblxxgo9sZK/SAd8nOeixle4mtJ1yeO/JjNx8Hmhw6eAIeCgS3elfEZNehojnDy8Aa+zslKzOXHxkdzm1ta0wbXsH8gNuj3byHLUM+IluilM08MCTHk43im+5g/e8gp4FOHtaV1AjOdzo+qJJddd1j1xfQg5n+WTq1wfOk298JU27gwaEEwB6H8FOwO/p9UOL7H3Gynj8GLoFiJjHSy9je0D/QxkYTJ0+ezc9iVfcXZUN9/yodmEjUqEaiVSLljQBLJTgCczvK4XrQu3nI6+JndF/4qufkK8AbbufMV9mPuuH5If1P/pscaOgw/k2b1/pE+nAMsXnrW1VeiPpDnmafFsSuJxQCCTqpFgZ5+SKujSsb5iBRjkqjn51OUMdhdQ8ShWxEWOJ4aAp5O2Haypm/r6jWVHCeVc1AY18i1ABAXxfxT47LY8BgrFgiSoh738ARsjXUDlLJUY=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5706.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?UXbbFm5S8KyqSDioESA8OK2GPzKqDlAOK6FfhssK/Gg+S/DqY8qvBjwt9QMj?=
- =?us-ascii?Q?mX2SMDP0VlWf+E3DYlzVmJTKxPuIjQIqRsU3iCHAw4ncemPyoZtDSS8qfyLC?=
- =?us-ascii?Q?+z993Rn0cMz8eA8c89UxNuWOFjfrkQFZKOeGBnlqwxhDRe43nuITwZK/PFOx?=
- =?us-ascii?Q?VNda4szmg4bdfNdl8EjLWAaq2G/Eq8DW2lAxkuu4SN6T5CElkEQmhesy7f/G?=
- =?us-ascii?Q?XAnuLXTNRzuET/LCL4CgmqoKD3SaU7lOX1TCv5wZzVYc2oqnl31BMP/4IOzm?=
- =?us-ascii?Q?ljv95seWJRuddwAXGjmnyFtyKOFD1ankk/Jq+zrJtH/y1Hi76mT4pX2vl1Zh?=
- =?us-ascii?Q?ipE8hoQcyBXhCHe6U5xJV+Q0G9Mf7Eow5tDXQGd7cIuzo11mZ3RiEtiIxmXN?=
- =?us-ascii?Q?HSj//J4/OYNyYlfjscqmBFjTzIaKNYwvyVNnAwZC/ZAtjotR2ku+T3c5+fqi?=
- =?us-ascii?Q?IqEhydZSL3U4RncXDTTxKsO3BuOED9cjNEHR+pVw6pzu9dyC7mX0WldC8MBl?=
- =?us-ascii?Q?zCxnlkfAyRhF8yiA22MwNdjXsrdv4Nw72mUi7Dc+P5v0ZcvMX8sEUyZj7bdK?=
- =?us-ascii?Q?C7LxnlOjsahXuCAjwJgr7dFQXr1/R4dwwnsnWVqFMyvId6/wg394UsggRnMi?=
- =?us-ascii?Q?OiUSTrdUSvYRQPCGrvIC5pve2EYIWoI/HkQQd05CNSdqBQl0TzzGF1eHWrTZ?=
- =?us-ascii?Q?aoLN6CpTDd9KyTYg8qVvlXFbL8DHuN3x1b3uVpnupqheOJzN0oDYGWVszZ32?=
- =?us-ascii?Q?jehjBe2S9eNR9ooD8hRZbmXeagmEc5GXKclR/xthu+YL9qUYHqdVxidA7IXY?=
- =?us-ascii?Q?Map3I74C7mRrK+s8t6Q1ha8SmVGxJWzhCTm0RNtw5V2wtMG3nOHpqkjMlc6g?=
- =?us-ascii?Q?mGN61OX6Nzn660W0jt5N0mUkEFIuufynzI/uggVtf51LvhtfSSTAmgUx2DHX?=
- =?us-ascii?Q?FkrQgPCDYC3CCz8RzIM0cAw5/dKGQaHu7sfqaqhpORWbOtMcFAWcb0CQTnHB?=
- =?us-ascii?Q?IlBYIQbQC9VLel1TwPX2gC0zt7nLRmAJ9T2BE2i+/TGMsDu6TlVKDHdGxDZY?=
- =?us-ascii?Q?zuM3EmiLoWy/6a6YMa4d0zPkLXuvLyadY1Uy0b9JvWqtQsQixk8th9BHj+gZ?=
- =?us-ascii?Q?OtX2KBD72AGNAaasye4CXetouJShLvZr85pSFixj0m3xHBlA8+xfoM7se2YN?=
- =?us-ascii?Q?nKU9CPwxYXCk47p8VKZPFYG/Pt9+abkXoOuc8DO4H6ys2Ulv5xlnQDwsctxT?=
- =?us-ascii?Q?RpDLoCrR41GRuEzW8ltv7kMZ3A5AgOnMWJsDTwgpXOdUpn3le4jnE1X1McQv?=
- =?us-ascii?Q?VgadNYnttGrYA0nAOl3tK2qGhbf42HNUcdsDCXU3zjpuJIM+GyIdmPeDvkQZ?=
- =?us-ascii?Q?eDQhgaQABuNDC/jg90bunPcO+CLvykgL+BfnvOlhr9k+mPCcfYUQd1NxRmZW?=
- =?us-ascii?Q?kI16e6NS+EuVR7U+KXmwBieQczTA7ma2oIyHz/jXtKE1YxSbltlh7llRfuno?=
- =?us-ascii?Q?XW/iLxY1aJJ5rbiCIxbsOGdXU+aMznNmTw64kpAeqj+7I1FxoXrJhDc2+7bJ?=
- =?us-ascii?Q?+JCDOJxY+9wOCks0Dy/V2SpNX1BWyS9BPizBuu20?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	9Uw0fhuVsG1aphWstGjflOJnw0zpvaKDX8p4M9egFomgzggAw4GJNFbSZW+KGO4fNQX2cDg5l/qWRxD5C/v+n8ssiXzDlBvCVfNqS2UKqqDjg2odor0Gsn5/v9maQ3jKoG2sXsFVO56sv991iixP6fZc7sNT0UHZ69cWod3A3pVPJC3UGeOFM+gDNdbZVCU6k0bpHHHe8SL5S5DhrINt7dIlT5KFKh6Jx94F1s6y7NVjDWhJGGY2kLYyFPXwsrS2VQmD05EYEfd1Sr9VCFQ6DmJA6iaCqoComuY/xWRsFcJoabn+sKSFs5/mxV8tr4FrdBg49ZGme9gMbCt2dfnCyN50WBDb6adMGLVv8cJQNdTeF3Z8Yx49ozbDjDyKMkPHb730H+sNUyeR7EnVOMNjKt7/69V5FWEUo3bt3IVJgsCk70I8TDK8HvS3edDrbrx5XXCcAH/WRPifhp+24Ht1tf0FZEn4ZVeWyJSKuXNY27k8wm68XWLPmwsHPbjG3iE4mBZUNCO6kZie8/rJurX9T2LOa/LA4I+YoKS2zTPG/ijpuXz+6u7ya5Rn6Ak1NKFiJ5QVGv513dBtUc3pVaGWYEm5qfwSfS0ZDEZG3pcH2XU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c36fdf4-e12a-493d-0c26-08dc3f1a0f7f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5706.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 02:47:14.4591
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Iy1mUF7bZv2K34+YZ7yauKplhnocMTPbtjbQMluF6Dpf4cK7siXLta9XGgWxwgsXTISHrgOVUBatBJ9LzVtqmg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6405
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_02,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403080022
-X-Proofpoint-ORIG-GUID: CnS2Ep2R4UQsDhjYfm1kwdVE0qOdT0gH
-X-Proofpoint-GUID: CnS2Ep2R4UQsDhjYfm1kwdVE0qOdT0gH
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Boris managed to create a device capable of changing its maj:min without
-altering its device path.
+Since kernel version 5.4.217 LTS, there has been an issue with the kernel live patching feature becoming unavailable. 
+When compiling the sample code for kernel live patching, the following message is displayed when enabled:
 
-Only multi-devices can be scanned. A device that gets scanned and remains
-in the Btrfs kernel cache might end up with an incorrect maj:min.
+livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
 
-Despite the tempfsid feature patch did not introduce this bug, it could
-lead to issues if the above multi-device is converted to a single device
-with a stale maj:min. Subsequently, attempting to mount the same device
-with the correct maj:min might mistake it for another device with the same
-fsid, potentially resulting in wrongly auto-enabling the tempfsid feature.
+Reproduction steps:
+1.git checkout v5.4.269 -b v5.4.269
+2.make defconfig
+3. Set CONFIG_LIVEPATCH=y、CONFIG_SAMPLE_LIVEPATCH=m
+4. make -j bzImage
+5. make samples/livepatch/livepatch-sample.ko
+6. qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage -nographic -append "console=ttyS0" -initrd initrd.img -m 1024M
+7. insmod livepatch-sample.ko
 
-To address this, this patch validates the device's maj:min at the time of
-device open and updates it if it has changed since the last scan.
+Kernel live patch cannot complete successfully.
 
-CC: stable@vger.kernel.org # 6.7+
-Fixes: a5b8a5f9f835 ("btrfs: support cloned-device mount capability")
-Reported-by: Boris Burkov <boris@bur.io>
-Co-developed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
----
-v2:
-Drop using lookup_bdev() instead, get it from device->bdev->bd_dev.
+After some debugging, the immediate cause of the patch failure is an error in stack checking. The logs are as follows:
+[ 340.974853] livepatch: klp_check_stack: kworker/u256:0:23486 has an unreliable stack
+[ 340.974858] livepatch: klp_check_stack: kworker/u256:1:23487 has an unreliable stack
+[ 340.974863] livepatch: klp_check_stack: kworker/u256:2:23488 has an unreliable stack
+[ 340.974868] livepatch: klp_check_stack: kworker/u256:5:23489 has an unreliable stack
+[ 340.974872] livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
+......
 
-v1:
-https://lore.kernel.org/linux-btrfs/752b8526be21d984e0ee58c7f66d312664ff5ac5.1709256891.git.anand.jain@oracle.com/
+BTW,if you use the v5.4.217 tag for testing, make sure to set CONFIG_RETPOLINE = y and CONFIG_LIVEPATCH = y, and other steps are consistent with v5.4.269
 
- fs/btrfs/volumes.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+After investigation, The problem is strongly related to the commit 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER to work with objtool"),
+which would cause incorrect ORC entries to be generated, and the v5.4.217 version can undo this commit to make kernel livepatch work normally. 
+It is a back-ported upstream patch with some code adjustments,from the git log, the author also mentioned no intra-function call validation support.
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index e49935a54da0..c318640b4472 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -692,6 +692,16 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
- 	device->bdev = bdev_handle->bdev;
- 	clear_bit(BTRFS_DEV_STATE_IN_FS_METADATA, &device->dev_state);
- 
-+	if (device->devt != device->bdev->bd_dev) {
-+		btrfs_warn(NULL,
-+			   "device %s maj:min changed from %d:%d to %d:%d",
-+			   device->name->str, MAJOR(device->devt),
-+			   MINOR(device->devt), MAJOR(device->bdev->bd_dev),
-+			   MINOR(device->bdev->bd_dev));
-+
-+		device->devt = device->bdev->bd_dev;
-+	}
-+
- 	fs_devices->open_devices++;
- 	if (test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state) &&
- 	    device->devid != BTRFS_DEV_REPLACE_DEVID) {
+Based on commit 6e1f54a4985b63bc1b55a09e5e75a974c5d6719b (Linux 5.4.269), This patchset adds stack validation support for intra-function calls, 
+allowing the kernel live patching feature to work correctly.
+
+v3 - v2
+ - fix the compile error in arch/x86/kvm/svm.c, the error message is../arch/x86/include/asm/nospec-branch.h: 313: Error: no such instruction: 'unwind_hint_empty'
+
+v2 - v1
+ - add the tag "Cc: stable@vger.kernel.org" in the sign-off area for patch x86/speculation: Support intra-function call
+ - add my own Signed-off to all patches
+
+
+
+Alexandre Chartre (2):
+  objtool: is_fentry_call() crashes if call has no destination
+  objtool: Add support for intra-function calls
+
+Rui Qi (1):
+  x86/speculation: Support intra-function call validation
+
+ arch/x86/include/asm/nospec-branch.h          |  7 ++
+ arch/x86/include/asm/unwind_hints.h           |  2 +-
+ include/linux/frame.h                         | 11 ++++
+ .../Documentation/stack-validation.txt        |  8 +++
+ tools/objtool/arch/x86/decode.c               |  6 ++
+ tools/objtool/check.c                         | 64 +++++++++++++++++--
+ 6 files changed, 92 insertions(+), 6 deletions(-)
+
 -- 
-2.38.1
+2.20.1
 
 
