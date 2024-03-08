@@ -1,70 +1,68 @@
-Return-Path: <stable+bounces-27158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0134D8767F8
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8818767F9
 	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968CF1F22F30
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4681C21FD5
 	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 16:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00781D54D;
-	Fri,  8 Mar 2024 16:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F9125759;
+	Fri,  8 Mar 2024 16:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ehj/IN1d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ch+woEEY"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7E4539C
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 16:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11727539C
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 16:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709913856; cv=none; b=NoJVD9u/Y43FHII9xLusCuCqyguRlaA+kdHrRPOKTAjClAEX1B5JBnKOWqoa0QCUcj9MelR3VX5PzjzP6CwmC8HxP4JzZwUAbSTUYkQNokMKukLF3fXI89pF7kks04uVymxwK0I+i3l9Ho4ZtfSfBxiOa/OYVrVPFsN+5tFb3GE=
+	t=1709913858; cv=none; b=QpLDKXmjJSSPsz5MNUP8AWA+y2XhZ3YRcmPdZBo2znl+yrMWz5ZknDbDG2NSjI0m59qe3qk+934stN/BjmROigoQtUH+2p+yhjUM3iAzSHwZpqHNlvhLfaPIymoTb4cpFWAjfN6p8kIn49yHFx98vi0UrmwUH4dL2qIBJbEqLLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709913856; c=relaxed/simple;
-	bh=vrWbOe5+BZRW0WiHXavMZZBz1nlMZZjGQmysNDc8VUE=;
+	s=arc-20240116; t=1709913858; c=relaxed/simple;
+	bh=5ACKWBOnYZXB8L9TEhtkoXnFKFcLS6B6Kj7MamCUiO0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u7TseHwKeIfZV7aAUKUCCdbRn+ByJfXxuMWoUOSVk8aXfQx6cbRceyE6wd2yiasVMgPDn01jNHJmR8wuXNoHPQUZTq92qOSzZZ2daeeRfbbXbgLnQHt7Vhs77/JaGL0fsOFp1GAFvMgFPNqIjpUBAvdzdQiWEj2724am6SrMJ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ehj/IN1d; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=hug6A82MPW9Lc9S9SPoqwuof2K10OkcJkQ3T7+OhA0Q8FIP7Er69eQ2TiBjDYiFmjsEzyUGuNjnMHwaUqiv+VyBlikJPqrL9XK7AemWPEht0JJoRtQorM2HiGMuOCT3wtrRjfpsQFF5O3aJf2DtvnXKYSW20M7MNl4IKzoEBKdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ch+woEEY; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709913855; x=1741449855;
+  t=1709913857; x=1741449857;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vrWbOe5+BZRW0WiHXavMZZBz1nlMZZjGQmysNDc8VUE=;
-  b=Ehj/IN1dmhUIcDYzmuEW8v575cSZWGamly1s6FnENuPGZujPjiOoZpHG
-   wB18/Y5AHWKi8Ky5zhS4Jd8vkQGFKPnasoss9K5IPibkYUdvvK/Xnv3Ao
-   bwO9nS1dh+rHj07ft0g6Je770IObpVAjKyeb9JUNKQ2pF0syCr9zNPcDY
-   eEdGSAYcyO4smuHMmT+z8nZX3owJCwTNfqIVBdnfKs6neK/rBMmYBVbxM
-   t27IZ/d/58x5eT3Xvp8zvXWPfca5vsZnBCI5R5bmyDsQJUpvPUO0Ig6as
-   XTaNlV6/F+tFlojjUQM7bwi23bSlTX/skjvk5/AS7HbMG5d8KB2jOZjFE
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4522237"
+  bh=5ACKWBOnYZXB8L9TEhtkoXnFKFcLS6B6Kj7MamCUiO0=;
+  b=Ch+woEEYiuJP/iqxRwI91nN8iQmVF7OGeG5GL5FG1IxhspXEjDXaX/Aq
+   5kFysDm8LFb3oI+b8MSbYZjFi3sDypI+YKzXKB9wTPK6b5sai8UgCWuGn
+   L3rY3SqDnlN/McE7ykOu0b7mzLy3s0U5F1FNwLmvXq8hCPvGNI6QqmFPf
+   kilrr1rKdTf/EqTsQRwDKTTITTvz5w0otebNiF2+NCQIiN5NFb7b6Zjyi
+   GIX0fEMd/72avp9iagUc9DF4xsXwNed9AiewvvvhOD5ynqipl5c1RQD1X
+   vTF/m8uKT/GUOJAXnNbqIVUc7X9ZYDpzjkDsFyE24R8gUJeWKhSqs1kWF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4522248"
 X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; 
-   d="scan'208";a="4522237"
+   d="scan'208";a="4522248"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 08:04:14 -0800
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 08:04:17 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,110,1708416000"; 
-   d="scan'208";a="15172824"
+   d="scan'208";a="15172853"
 Received: from unknown (HELO localhost) ([10.252.34.187])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 08:04:07 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 08:04:14 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: dri-devel@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org,
 	jani.nikula@intel.com,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
+	Adrien Grassein <adrien.grassein@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/8] drm/exynos: do not return negative values from .get_modes()
-Date: Fri,  8 Mar 2024 18:03:41 +0200
-Message-Id: <d8665f620d9c252aa7d5a4811ff6b16e773903a2.1709913674.git.jani.nikula@intel.com>
+Subject: [PATCH 4/8] drm/bridge: lt8912b: do not return negative values from .get_modes()
+Date: Fri,  8 Mar 2024 18:03:42 +0200
+Message-Id: <dcdddcbcb64b6f6cdc55022ee50c10dee8ddbc3d.1709913674.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1709913674.git.jani.nikula@intel.com>
 References: <cover.1709913674.git.jani.nikula@intel.com>
@@ -80,55 +78,48 @@ Content-Transfer-Encoding: 8bit
 The .get_modes() hooks aren't supposed to return negative error
 codes. Return 0 for no modes, whatever the reason.
 
-Cc: Inki Dae <inki.dae@samsung.com>
-Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Adrien Grassein <adrien.grassein@gmail.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 4 ++--
- drivers/gpu/drm/exynos/exynos_hdmi.c     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 00382f28748a..f5bbba9ad225 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -316,14 +316,14 @@ static int vidi_get_modes(struct drm_connector *connector)
- 	 */
- 	if (!ctx->raw_edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
--		return -EFAULT;
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index e7c4bef74aa4..4b2ae27f0a57 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -441,23 +441,21 @@ lt8912_connector_mode_valid(struct drm_connector *connector,
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+ 	const struct drm_edid *drm_edid;
+-	int ret = -1;
+-	int num = 0;
+ 	struct lt8912 *lt = connector_to_lt8912(connector);
+ 	u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++	int ret, num;
+ 
+ 	drm_edid = drm_bridge_edid_read(lt->hdmi_port, connector);
+ 	drm_edid_connector_update(connector, drm_edid);
+-	if (drm_edid) {
+-		num = drm_edid_connector_add_modes(connector);
+-	} else {
+-		return ret;
+-	}
++	if (!drm_edid)
 +		return 0;
- 	}
++
++	num = drm_edid_connector_add_modes(connector);
  
- 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
- 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
- 	if (!edid) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
--		return -ENOMEM;
-+		return 0;
- 	}
+ 	ret = drm_display_info_set_bus_formats(&connector->display_info,
+ 					       &bus_format, 1);
+-	if (ret)
+-		num = ret;
++	if (ret < 0)
++		num = 0;
  
- 	drm_connector_update_edid_property(connector, edid);
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 43bed6cbaaea..b1d02dec3774 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
- 	int ret;
- 
- 	if (!hdata->ddc_adpt)
--		return -ENODEV;
-+		return 0;
- 
- 	edid = drm_get_edid(connector, hdata->ddc_adpt);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
- 
- 	hdata->dvi_mode = !connector->display_info.is_hdmi;
- 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
+ 	drm_edid_free(drm_edid);
+ 	return num;
 -- 
 2.39.2
 
