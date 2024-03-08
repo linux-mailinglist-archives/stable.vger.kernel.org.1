@@ -1,127 +1,122 @@
-Return-Path: <stable+bounces-27136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F57875FF1
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:45:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88181876018
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C70CD1C2262E
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42642282A13
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C675477C;
-	Fri,  8 Mar 2024 08:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="i9+FQsaY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6652263E;
+	Fri,  8 Mar 2024 08:48:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAB954776;
-	Fri,  8 Mar 2024 08:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEED92C85C;
+	Fri,  8 Mar 2024 08:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709887343; cv=none; b=RmGngrbsbtkYewznxKYAOYub+grlxwGhiDTsOrJ9yoSkhskLD2rHIkyQv3wx552YRoZFgJyvpduRP3ihXWJU04/mSOkUDty5ftOtsxa1q3zDblmYn0H4sfYh9NhiIDd+xdNrFSESvv6RyMr6qXZLx+Czy/aA9RCyyqU/MDVjytI=
+	t=1709887729; cv=none; b=rk041+5s0EpiUaPbN3FrrGFjj56mDCUA6tGNR7rPOP1rOx5RGqMdxLx6aW+996Or2EF6qvfn9xlaIf5BGLeD2riJ4cwSp7sTvDQ3k5E9Lzlg7h+X2HcwFbadjxTumZWwI/KFIml+b50WS3vCpyRmYLl8wdwqnQdYGclehmV9II0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709887343; c=relaxed/simple;
-	bh=s88irfz7m+sRHWvnmgLwOPyx6mqYwlkGAi77IMc7hR0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kdHKNvXJbu2ByUJ5bLvPgzVu7+5He//xxegfX7yD9RLiINjmzLvmo3u+NLPmbCGBSaOpS9swTryyGP9L2u81dVpWYG9eJ7EG1fVtHQYPE5OpbYG5IfsPEfcGqCb3ugAtRAY7oodqDRe530ZdBPVuQL9XvMNvRc1Ki2YmHTJsxmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=i9+FQsaY; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 6FC3220799;
-	Fri,  8 Mar 2024 09:42:12 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 72PgWZLeFruj; Fri,  8 Mar 2024 09:42:11 +0100 (CET)
-Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 0C753201A1;
-	Fri,  8 Mar 2024 09:42:11 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 0C753201A1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1709887331;
-	bh=h+QvIqcEOBZeX3HX3jXFcru8qdY9Nqf6U5ZFLW+/S2g=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=i9+FQsaY5oKqrd/LN9XIiEpRHIFSSfxLQf0QsZbXTDN5/PBBf9Bx2fwpo/E+BtQpm
-	 VqYstTpRiLnJVKmsWozA5txWtj47LuMYh6fNr8nsUl8ewDB02LHmZs5H4gwqNbIQbC
-	 CyBFcVIb2LlI6GDrW+QJWIXGIXgcu//oeGRdZ8qvVWAVPtS+toUPsR5Nk1jpY/zG2L
-	 e5it12+5PGCW8eXrE2UZvU8HnzG7Z4tsXdcAk0O3p/8kE1BmKXqpcHcaCbn8oA3Vkm
-	 VYW1tlMDdlTV5gohaqX5Zkyh+5pbpuBOS+FsZPFdTfP5c6Vkg4r9jldmgzK2fj/Ag/
-	 a38ZyaPWsvCMA==
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout1.secunet.com (Postfix) with ESMTP id EF23380004A;
-	Fri,  8 Mar 2024 09:42:10 +0100 (CET)
-Received: from mbx-essen-02.secunet.de (10.53.40.198) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Mar 2024 09:42:10 +0100
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
- (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 8 Mar
- 2024 09:42:10 +0100
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 2511F3184110; Fri,  8 Mar 2024 09:42:10 +0100 (CET)
-Date: Fri, 8 Mar 2024 09:42:10 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-CC: <almasrymina@google.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, "Matteo
- Croce" <mcroce@microsoft.com>, Jesper Dangaard Brouer <brouer@redhat.com>,
-	<leonro@nvidia.com>, <gal@nvidia.com>, <stable@vger.kernel.org>, "Anatoli N .
- Chechelnickiy" <Anatoli.Chechelnickiy@m.interpipe.biz>, Ian Kumlien
-	<ian.kumlien@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-Subject: Re: [PATCH net v2] net: esp: fix bad handling of pages from page_pool
-Message-ID: <ZerPYroeK/pltA9I@gauss3.secunet.de>
-References: <20240307182946.821568-1-dtatulea@nvidia.com>
+	s=arc-20240116; t=1709887729; c=relaxed/simple;
+	bh=2EhPOInGWCrsY5uTbTdzHscFzz1mz3zEHPzsntxauqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HKZKB798hGPW+18SZuNCB9fUOvbwIcoALYSxt8olkC4FuhqpzNt1uUvj4GIOHXgPIn/UszNUIhc9/KIsfzPn+GBZ5vXmzWZT4KEhpqyrb3GmvB0Y4P882N1omi//CaWPVo1CENVMBZx/sck1paKmbJwKeOSKgq9F6EMgIfb9y5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 8965672C8CC;
+	Fri,  8 Mar 2024 11:48:44 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+	by imap.altlinux.org (Postfix) with ESMTPSA id 7AB4036D0168;
+	Fri,  8 Mar 2024 11:48:44 +0300 (MSK)
+Date: Fri, 8 Mar 2024 11:48:44 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
+Message-ID: <20240308084844.xo333plkzxtssbqj@altlinux.org>
+References: <20230215000832.never.591-kees@kernel.org>
+ <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
+ <202402091559.52D7C2AC@keescook>
+ <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
+ <2024021034-populace-aerospace-03f3@gregkh>
+ <20240210102145.p4diskhnevicn6am@altlinux.org>
+ <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
+ <2024021808-coach-wired-41cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=koi8-r
 Content-Disposition: inline
-In-Reply-To: <20240307182946.821568-1-dtatulea@nvidia.com>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-02.secunet.de (10.53.40.198)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+In-Reply-To: <2024021808-coach-wired-41cb@gregkh>
 
-On Thu, Mar 07, 2024 at 08:28:58PM +0200, Dragos Tatulea wrote:
-> When the skb is reorganized during esp_output (!esp->inline), the pages
-> coming from the original skb fragments are supposed to be released back
-> to the system through put_page. But if the skb fragment pages are
-> originating from a page_pool, calling put_page on them will trigger a
-> page_pool leak which will eventually result in a crash.
+Greg, Sasha,
+
+Ping.
+
+On Sun, Feb 18, 2024 at 10:31:29AM +0100, Greg Kroah-Hartman wrote:
+> On Sun, Feb 18, 2024 at 12:50:16AM +0300, Vitaly Chikunov wrote:
+> > On Sat, Feb 10, 2024 at 01:21:45PM +0300, Vitaly Chikunov wrote:
+> > > On Sat, Feb 10, 2024 at 10:19:46AM +0000, Greg Kroah-Hartman wrote:
+> > > > On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
+> > > > > 
+> > > > > Can you please backport this commit (below) to a stable 6.1.y tree, it's
+> > > > > confirmed be Kees this could cause kernel panic due to false positive
+> > > > > strncpy fortify, and this is already happened for some users.
+> > > > 
+> > > > What is the git commit id?
+> > > 
+> > > 398d5843c03261a2b68730f2f00643826bcec6ba
+> > 
+> > Can you please apply this to the next 6.1.y release?
+> > 
+> > There is still non-theoretical crash as reported in
+> >   https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
+> > 
+> > If commit hash was not enough:
+> > 
+> >   commit 398d5843c03261a2b68730f2f00643826bcec6ba
+> >   Author:     Kees Cook <keescook@chromium.org>
+> >   AuthorDate: Tue Feb 14 16:08:39 2023 -0800
+> > 
+> >       cifs: Convert struct fealist away from 1-element array
+> > 
+> > The commit is in mainline and is applying well to linux-6.1.y:
+> > 
+> >   (linux-6.1.y)$ git cherry-pick 398d5843c03261a2b68730f2f00643826bcec6ba
+> >   Auto-merging fs/smb/client/cifspdu.h
+> >   Auto-merging fs/smb/client/cifssmb.c
+> >   [linux-6.1.y 4a80b516f202] cifs: Convert struct fealist away from 1-element array
+> >    Author: Kees Cook <keescook@chromium.org>
+> >    Date: Tue Feb 14 16:08:39 2023 -0800
+> >    2 files changed, 10 insertions(+), 10 deletions(-)
 > 
-> This leak can be easily observed when using CONFIG_DEBUG_VM and doing
-> ipsec + gre (non offloaded) forwarding:
+> It does not apply cleanly due to renames, can you provide a backported,
+> and tested, patch please?
 
-...
+Can you explain please why the patch submission [1] is silently not
+accepted so I could possibly resubmit it?
 
-> The suggested fix is to introduce a new wrapper (skb_page_unref) that
-> covers page refcounting for page_pool pages as well.
+[1] https://lore.kernel.org/stable/20240218111538.2592901-1-vt@altlinux.org/
+
+It's tested to compile well and to fix the real crash.
+
+I also think the submission conforms to Option 3 of
+process/stable-kernel-rules.rst so I would be glad to know why if it
+isn't.
+
+Thanks,
+
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling")
-> Reported-and-tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.interpipe.biz>
-> Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
-> Link: https://lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsqMYk_Lwh4Md5knTq7AyA@mail.gmail.com
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-
-This patch does not apply to the ipsec tree. Can you please rebase onto:
-
-git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git
-
-Thanks!
+> thanks,
+> 
+> greg k-h
 
