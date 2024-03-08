@@ -1,130 +1,298 @@
-Return-Path: <stable+bounces-27172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA0F876A30
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:50:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33552876AD3
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 358A9284205
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 17:50:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F47D1C214F5
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3A220B04;
-	Fri,  8 Mar 2024 17:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="fWfzQ1mm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DCcxJW/u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FD756B7F;
+	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D5536D;
-	Fri,  8 Mar 2024 17:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104332BD12;
+	Fri,  8 Mar 2024 18:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709920236; cv=none; b=Geo/wqQMARAqAYGjKHNjbtU6CriWD3m6ez0nuJBGIOuu1Nv8bloSO409M82xKvBH9cBBMFIlPuO9GHH9IKMOb5bfMo73VKcXU+mTbq/YzygAwFF3aHxcyRHPzswolGUvK3Jo/DPGJj8kAPkK+Ci9h8lKnyI/XbFxAN0R79XXat4=
+	t=1709923090; cv=none; b=AUSwuPR1P/yADDcvfwKbYrBqRF2uaVfS6rtfCi1HuM7iifkg05UIobL9DO+1O9/I8jzBm+QuwsiOWXINtrD7x+gbJT6lugOujOaTKV6Oksm+e229FOABdYDcvTVRX88KNc7izob81mfWnLs6bMIvOoK4nw44u52krc2oGUsU0lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709920236; c=relaxed/simple;
-	bh=aYXoxvwXoUsxi6I7vgRzh91vMh9HuctcWj0j38Bq/zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IQPvhHaT+NGy2m2untr/cEYRdoEPJH9BVHtdMiTnLZJm3XoDPbU8mBnWdmCupgKgBaIbqDiRorrZzHR320qdNPc7//O8cMhtihMs1X2vQmvAZ4z4Dsoii+AhjrIFS4ybGr3Ar1aWrR3r5AtdL5vCZKhMssj48+FYvmXkm5KHNpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=fWfzQ1mm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DCcxJW/u; arc=none smtp.client-ip=64.147.123.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.west.internal (Postfix) with ESMTP id 4FBBE32000D9;
-	Fri,  8 Mar 2024 12:50:33 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Fri, 08 Mar 2024 12:50:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1709920232; x=1710006632; bh=7sGeJhFAFJ
-	8YQ/zgmxNLJ814/abg8l/UGPrscT28aeA=; b=fWfzQ1mm2BYSCIQwFOHHlGDYTK
-	EOLWrruOjYhUd8Y2b3HHPKwtcBFn+9GHmsLKPey3ZIYiM/yj1DJ4HDAWjrU/7sjM
-	tsr1bLfioIuyrVo9DogUuMxV8MXNvOd2Le9loONjle3CmM/sr2mpkL96WJFByaiH
-	7aSS6fyu40nrKqimPhAOf6ScZclRlP0amJ3fWlh1Qf19bqPvOBu74oD1K9+xEa1g
-	dcc5T9GBe0dUghFgGf6t//sIXrxxfou8Pzzkpa8bpabLH8E5LDKInLiSut6k9bhb
-	WtkB8EtYsTF7omULFor/isWZEN+OoaciON8utg7quVV8J+kxQZezs2fC6T1w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1709920232; x=1710006632; bh=7sGeJhFAFJ8YQ/zgmxNLJ814/abg
-	8l/UGPrscT28aeA=; b=DCcxJW/u3haCziJ/WSCqupTNfc8IRro2kSamHoH9cUW5
-	F8jvf3JlpfxzUGNBnNgNBTDUWll7ROq4oUF9v7YixTrWRLjEViH6YFDEWUs8Opbt
-	zeaxmWR+IttrFcIjGESm59wZ4N3Lf6+tfx52Ady0qgaM33zs7yHCXcxkB+henX0o
-	aIzrf7rCx1UjDzQTQmi0fSQB4dpuzk3hrM4Sj5xDhpE2pYDAhUELDt+UGq+EIi27
-	QdSyJsfGwVLt2DIqDQhlf+ZBEBBRxGW+c//lqnpIzb8nnZdwxR/EnmxLXlOJO9jc
-	28Fii4viILCNiXVwvnTvpspkJ/U0g0pvVGRyjb/iHQ==
-X-ME-Sender: <xms:6E_rZWQ4GHsqKeuZvOOG1LS4CR_mIKLjnvveAzDVzL8ZkR9EqmjkPg>
-    <xme:6E_rZbz2HyirO9-iUXhMg3Q98kr7blWeCjpEka5emK5Oy_XXgbesqHyq6H1052H33
-    NNFiIcPp5mluw0wgV0>
-X-ME-Received: <xmr:6E_rZT1O-UHWfHK5pX3Cylv1T-YYbTPbiI_Q1OfHPEjjZtHL24iAMA4aiF1t40OeyAM5xMSSkD1vBF8aKh2JWHhGFJM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrieehgddutdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehorhhi
-    shcuuehurhhkohhvuceosghorhhishessghurhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ekvdekffejleelhfevhedvjeduhfejtdfhvdevieeiiedugfeugfdtjefgfeeljeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhrihhsse
-    gsuhhrrdhioh
-X-ME-Proxy: <xmx:6E_rZSCKkF6AtDjK3cFWbQpqarBUN_Tuuzot4fFK_yijV0xfpywQYA>
-    <xmx:6E_rZfhTZ3H6UWmhS8Il8TIvmlwWPFfnDZEGbt01UwPDU84xwc6MjQ>
-    <xmx:6E_rZeos9hczaK4rEXRjkLViDB4tM-cFScrWgdVBDmj0bumDtrO9Bw>
-    <xmx:6E_rZcuFG7bj4B34B4z1j_yCO1pUA2z7mKedjBuKw6YdWxwHIua1Hw>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 8 Mar 2024 12:50:32 -0500 (EST)
-Date: Fri, 8 Mar 2024 09:51:33 -0800
-From: Boris Burkov <boris@bur.io>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Anand Jain <anand.jain@oracle.com>, dsterba@suse.com,
-	linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] btrfs: validate device maj:min during open
-Message-ID: <20240308175133.GA2470614@zen.localdomain>
-References: <845dfb4fbf36dae204020c6a0a0e027cab42bcf0.1709865032.git.anand.jain@oracle.com>
- <ZeszQwa8721XnZsY@infradead.org>
- <be3571d7-2bfe-4bad-b2c6-84a0bf121140@oracle.com>
- <Zes4i3qvFk2nWjyY@infradead.org>
- <9a59cfac-2ab4-4c6c-933a-70dcd3e3d80b@oracle.com>
- <ZetJqJH-K-fC-pC-@infradead.org>
- <20240308173254.GA2469063@zen.localdomain>
- <ZetOIKNJRsdFNJ3A@infradead.org>
+	s=arc-20240116; t=1709923090; c=relaxed/simple;
+	bh=r46s1KKgH/Sznd2W3PttlYa1kDm8+z7ysNUjjpJi6YE=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=C+ex6UucvEtWz7+ts2jTpEv3RPG/Z9PCdIE7lOLFKEqqEFi4D510uXUmTwWd4uAXTYS+n/JQnBJjYD8pxQVEY6YqeZxW8EEYP1T/ZHC9M7qbn8aXhXYeVAyj6Xans516hRBDTY+pMEyL+H+JqDq/Yt4Ct6krR6CrXolWXAOQe/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06A6C43390;
+	Fri,  8 Mar 2024 18:38:09 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rif8Z-00000000xWG-1wzS;
+	Fri, 08 Mar 2024 13:40:07 -0500
+Message-ID: <20240308184007.322683965@goodmis.org>
+User-Agent: quilt/0.67
+Date: Fri, 08 Mar 2024 13:38:17 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ joel@joelfernandes.org,
+ linke li <lilinke99@qq.com>,
+ Rabin Vincent <rabin@rab.in>,
+ stable@vger.kernel.org
+Subject: [PATCH 1/6] ring-buffer: Fix waking up ring buffer readers
+References: <20240308183816.676883229@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZetOIKNJRsdFNJ3A@infradead.org>
+Content-Type: text/plain; charset=UTF-8
 
-On Fri, Mar 08, 2024 at 09:42:56AM -0800, Christoph Hellwig wrote:
-> On Fri, Mar 08, 2024 at 09:32:54AM -0800, Boris Burkov wrote:
-> > You remove/add the device in a way that results in a new bd_dev while
-> > the filesystem is unmounted but btrfs is still caching the struct
-> > btrfs_device. When we unmount a multi-device fs, we don't clear the
-> > device cache, since we need it to remount with just one device name
-> > later.
-> > 
-> > The mechanism I used for getting a different bd_dev was partitioning two
-> > different devices in two different orders.
-> 
-> Ok, so we have a btrfs_device without a bdev around, which seems a bit
-> dangerous.  Also relying on the dev_t for any kind of device identify
-> seems very dangerous.  Aren't there per-device UUIDs or similar
-> identifiers that are actually reliabe and can be used instead of the
-> dev_t?
-> 
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-I was led to believe this wasn't possible while still actually
-implementing temp_fsid. But now that I think of it again, I am less sure.
-You could imagine them having identical images except a device uuid and the
-code being smart enough to handle that.
+A task can wait on a ring buffer for when it fills up to a specific
+watermark. The writer will check the minimum watermark that waiters are
+waiting for and if the ring buffer is past that, it will wake up all the
+waiters.
 
-Maybe Anand can explain why that wouldn't work :)
+The waiters are in a wait loop, and will first check if a signal is
+pending and then check if the ring buffer is at the desired level where it
+should break out of the loop.
+
+If a file that uses a ring buffer closes, and there's threads waiting on
+the ring buffer, it needs to wake up those threads. To do this, a
+"wait_index" was used.
+
+Before entering the wait loop, the waiter will read the wait_index. On
+wakeup, it will check if the wait_index is different than when it entered
+the loop, and will exit the loop if it is. The waker will only need to
+update the wait_index before waking up the waiters.
+
+This had a couple of bugs. One trivial one and one broken by design.
+
+The trivial bug was that the waiter checked the wait_index after the
+schedule() call. It had to be checked between the prepare_to_wait() and
+the schedule() which it was not.
+
+The main bug is that the first check to set the default wait_index will
+always be outside the prepare_to_wait() and the schedule(). That's because
+the ring_buffer_wait() doesn't have enough context to know if it should
+break out of the loop.
+
+The loop itself is not needed, because all the callers to the
+ring_buffer_wait() also has their own loop, as the callers have a better
+sense of what the context is to decide whether to break out of the loop
+or not.
+
+Just have the ring_buffer_wait() block once, and if it gets woken up, exit
+the function and let the callers decide what to do next.
+
+Link: https://lore.kernel.org/all/CAHk-=whs5MdtNjzFkTyaUy=vHi=qwWgPi0JgTe6OYUYMNSRZfg@mail.gmail.com/
+
+Cc: stable@vger.kernel.org
+Fixes: e30f53aad2202 ("tracing: Do not busy wait in buffer splice")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/ring_buffer.c | 139 ++++++++++++++++++-------------------
+ 1 file changed, 68 insertions(+), 71 deletions(-)
+
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 0699027b4f4c..3400f11286e3 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -384,7 +384,6 @@ struct rb_irq_work {
+ 	struct irq_work			work;
+ 	wait_queue_head_t		waiters;
+ 	wait_queue_head_t		full_waiters;
+-	long				wait_index;
+ 	bool				waiters_pending;
+ 	bool				full_waiters_pending;
+ 	bool				wakeup_full;
+@@ -798,14 +797,40 @@ void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu)
+ 		rbwork = &cpu_buffer->irq_work;
+ 	}
+ 
+-	rbwork->wait_index++;
+-	/* make sure the waiters see the new index */
+-	smp_wmb();
+-
+ 	/* This can be called in any context */
+ 	irq_work_queue(&rbwork->work);
+ }
+ 
++static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
++{
++	struct ring_buffer_per_cpu *cpu_buffer;
++	bool ret = false;
++
++	/* Reads of all CPUs always waits for any data */
++	if (cpu == RING_BUFFER_ALL_CPUS)
++		return !ring_buffer_empty(buffer);
++
++	cpu_buffer = buffer->buffers[cpu];
++
++	if (!ring_buffer_empty_cpu(buffer, cpu)) {
++		unsigned long flags;
++		bool pagebusy;
++
++		if (!full)
++			return true;
++
++		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
++		ret = !pagebusy && full_hit(buffer, cpu, full);
++
++		if (!cpu_buffer->shortest_full ||
++		    cpu_buffer->shortest_full > full)
++			cpu_buffer->shortest_full = full;
++		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
++	}
++	return ret;
++}
++
+ /**
+  * ring_buffer_wait - wait for input to the ring buffer
+  * @buffer: buffer to wait on
+@@ -821,7 +846,6 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
+ 	struct ring_buffer_per_cpu *cpu_buffer;
+ 	DEFINE_WAIT(wait);
+ 	struct rb_irq_work *work;
+-	long wait_index;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -840,81 +864,54 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
+ 		work = &cpu_buffer->irq_work;
+ 	}
+ 
+-	wait_index = READ_ONCE(work->wait_index);
+-
+-	while (true) {
+-		if (full)
+-			prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
+-		else
+-			prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
+-
+-		/*
+-		 * The events can happen in critical sections where
+-		 * checking a work queue can cause deadlocks.
+-		 * After adding a task to the queue, this flag is set
+-		 * only to notify events to try to wake up the queue
+-		 * using irq_work.
+-		 *
+-		 * We don't clear it even if the buffer is no longer
+-		 * empty. The flag only causes the next event to run
+-		 * irq_work to do the work queue wake up. The worse
+-		 * that can happen if we race with !trace_empty() is that
+-		 * an event will cause an irq_work to try to wake up
+-		 * an empty queue.
+-		 *
+-		 * There's no reason to protect this flag either, as
+-		 * the work queue and irq_work logic will do the necessary
+-		 * synchronization for the wake ups. The only thing
+-		 * that is necessary is that the wake up happens after
+-		 * a task has been queued. It's OK for spurious wake ups.
+-		 */
+-		if (full)
+-			work->full_waiters_pending = true;
+-		else
+-			work->waiters_pending = true;
+-
+-		if (signal_pending(current)) {
+-			ret = -EINTR;
+-			break;
+-		}
+-
+-		if (cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer))
+-			break;
+-
+-		if (cpu != RING_BUFFER_ALL_CPUS &&
+-		    !ring_buffer_empty_cpu(buffer, cpu)) {
+-			unsigned long flags;
+-			bool pagebusy;
+-			bool done;
+-
+-			if (!full)
+-				break;
+-
+-			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-			pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
+-			done = !pagebusy && full_hit(buffer, cpu, full);
++	if (full)
++		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
++	else
++		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
+ 
+-			if (!cpu_buffer->shortest_full ||
+-			    cpu_buffer->shortest_full > full)
+-				cpu_buffer->shortest_full = full;
+-			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+-			if (done)
+-				break;
+-		}
++	/*
++	 * The events can happen in critical sections where
++	 * checking a work queue can cause deadlocks.
++	 * After adding a task to the queue, this flag is set
++	 * only to notify events to try to wake up the queue
++	 * using irq_work.
++	 *
++	 * We don't clear it even if the buffer is no longer
++	 * empty. The flag only causes the next event to run
++	 * irq_work to do the work queue wake up. The worse
++	 * that can happen if we race with !trace_empty() is that
++	 * an event will cause an irq_work to try to wake up
++	 * an empty queue.
++	 *
++	 * There's no reason to protect this flag either, as
++	 * the work queue and irq_work logic will do the necessary
++	 * synchronization for the wake ups. The only thing
++	 * that is necessary is that the wake up happens after
++	 * a task has been queued. It's OK for spurious wake ups.
++	 */
++	if (full)
++		work->full_waiters_pending = true;
++	else
++		work->waiters_pending = true;
+ 
+-		schedule();
++	if (rb_watermark_hit(buffer, cpu, full))
++		goto out;
+ 
+-		/* Make sure to see the new wait index */
+-		smp_rmb();
+-		if (wait_index != work->wait_index)
+-			break;
++	if (signal_pending(current)) {
++		ret = -EINTR;
++		goto out;
+ 	}
+ 
++	schedule();
++ out:
+ 	if (full)
+ 		finish_wait(&work->full_waiters, &wait);
+ 	else
+ 		finish_wait(&work->waiters, &wait);
+ 
++	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
++		ret = -EINTR;
++
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
+
 
