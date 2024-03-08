@@ -1,166 +1,164 @@
-Return-Path: <stable+bounces-27145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC415876395
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 12:47:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD86876452
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 13:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83792281A19
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 11:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846531F21E88
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 12:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63F356471;
-	Fri,  8 Mar 2024 11:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887FA57335;
+	Fri,  8 Mar 2024 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O1G0eL1u"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="F79ItZ//"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC156456
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 11:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D4B56456
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 12:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709898454; cv=none; b=jnI6bY+0j7efLMWm2/zdhQLZQZ8G0ZvZIjBXHj5foPMrxqiKFcpJTTgk0eAjKikU1DHaIXejerbi5XgQIX5KjULw3AuhVjKlIe4zllcUQvJc6xegUNVC0cmO6gEUY41pYm/uFuXRsIhbT8ZCCCtrlYwd1IpWaf5bVryHeDPxWB8=
+	t=1709900958; cv=none; b=BEa+W+ImCSHz5kqzhHXLtW5PB3SnmR72cXX8cPjRYPzTlrtR6GSe2+Dcj63b8J0+COw8BPoxoCxHhwKtIOeI9IbsNEX8jReGTNcNOTYakhC0CVZ9iRXf38d0rV+Uq/+jcoX1YlPNyMP/MOwqn1PYlblTOGrmlaSJV5k4P0bMwBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709898454; c=relaxed/simple;
-	bh=1cmWuxioymsaJqObFxvlX94MIOPKMFzPNwfpzu9hVrQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eVnqTjrOW+JHpAVk5LfngV0Q8IOBNTrp1Gl0wGFAWJ+swrbUl3M88jEW0QbpsWLIlLlwf7UlKP+6Q1HkkP4dGXKcJlirHuycQWCzdkikzdgsxJoZ4bLJmx4p0KC0VcSPdh7dAoKwsMVxgZOx2dMdMEl1ts07UWE11n4GbtzxU7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O1G0eL1u; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-42ee0c326e8so224241cf.0
-        for <stable@vger.kernel.org>; Fri, 08 Mar 2024 03:47:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709898452; x=1710503252; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1cmWuxioymsaJqObFxvlX94MIOPKMFzPNwfpzu9hVrQ=;
-        b=O1G0eL1u/3mOURwEQuGdxge0CsUMXguS3aoOiT59Lno04BAfLP/tT7lq3689jJHb8k
-         Wtq3pbSKBwP9euzrfvk4nR8KEdlc6JfgBr4kfvYAVkZrin76Cn25TSyhWbYlGLy68RSv
-         gUOyqT2ZJbJ8dDWZdq/71M376oivL4bH29dA4hwk5An/73lamgSIhRgSNP807sxQHy2/
-         xnJVxuIJBWVOcmsZMI+I602o2AfVf/75vTVqLh9zP5vZuBaddh7Eyx1CdulWM+HDFjIB
-         RIxm8B3cqTuhGA+HuO+HpnNudUhdNrhgZrfIAZSI1usvWXUQ1DleH3q3d5T5l2Frvq8/
-         a4dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709898452; x=1710503252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1cmWuxioymsaJqObFxvlX94MIOPKMFzPNwfpzu9hVrQ=;
-        b=VlSOgdkDF7fvPugGp2rjpC8XAxWzqHBcCziuqoAV5eu7qiq3zTynJBzSSlPg/YL2Rs
-         mPU96lt8tiwyIEjgAoTwLS5TwU9PED9SI85fUNdKLnQB3Tovnro8+hkI4EhDkNoJNIcI
-         yA4NRGq0HTrCmwuw3rC+TMtxmeB7zGdoBSsfJNZmZ/Pjq6jWhQp1gu56GZWo8ZgDlbBS
-         E+58pyBee7mGRRungL6z8JbiNV29k2tWoJv4RaraGkD6v6ow0EbmqQCKAPaGHh+EvfDa
-         HCgE05cJljsaUQRwb/4k+6jryyYihvwQoaC0NiqW+Lmo9Wy4cmOpvf9+0pqZ98AsD44x
-         TJrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQeI9NuRdryNb+PRZiYfNlxAI7UAY8Hewt6zkOPBoNiheHojqhYZTMPDcIo9MgzKpyldFawxDWdEVI46r/00/8kg8qOdrB
-X-Gm-Message-State: AOJu0YyawgU5IzrPf1lEJ8rmVWMjXAcmyg6O4HXh6oyRwQaAke4LKMjc
-	iD1rb/xlMySBxyNSzjrmVQ3LIOemznt9p+PzT+xkQ6o34gi7A8iS0S/1LxfDwXbZ4Gu5H9M8pfK
-	DfegLGtVnwSBzs8hpIpByzJzgV+sDwXBK/nM/
-X-Google-Smtp-Source: AGHT+IGPOqprHhMJkgjBrB+wgYAmcpdie7nmOd7ylnxVDyd8IN6rpm51JSosupi80fyFkW0i7mkNRzWnZlD92z0nDCk=
-X-Received: by 2002:ac8:5e0b:0:b0:42e:b7b2:2e99 with SMTP id
- h11-20020ac85e0b000000b0042eb7b22e99mr697473qtx.2.1709898451413; Fri, 08 Mar
- 2024 03:47:31 -0800 (PST)
+	s=arc-20240116; t=1709900958; c=relaxed/simple;
+	bh=r98TWa6jKn7SWqaCQEQXXY3/2dDHD6OyWFAqsZz5p8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=k0+aOKDDYGjeKkwc9uEeX+ndy/s7gOCbiY/XwE3vM535jtAADrchXPLDz0OokakL6Yk46T9ku6QCRkfFJ/WWLxakPmUvTRCiuZW0ieodwF5zMdMAiG5NKhfIbYoIjDB0WDC0PTI8dmNSer2KxUL0HjTAUvlfxFkSgCxeGHWyXsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=F79ItZ//; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 428Ab1A9022424;
+	Fri, 8 Mar 2024 13:28:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=XKGlTKcB76WSjtXRqXEchAI0+D7g3eog2GfYhv6SP0w=; b=F7
+	9ItZ//pH3XOIFsfaA5nfafDjMMKeb+f1J2VeEjrkzBsgTmpM4VW2YfA4ffeqsa5f
+	KF8DAmuqgBpfbp+bSWBrf6XIAsZyLzDfVNADg+SUTdEZtlcqT7Ky3YpnebQ20RnX
+	t5orRYdY0thEwv9V85y6oJycWkA/41SkqKp3FzwdMhqZo1JX7msQmtxtC5v6C/2F
+	xsap+lYLs7qzeQ7fze4DuiwjtkBv+UTHk2QFldxQr+5E12nlDQ2DXlQLrPZyk9Vw
+	klCxcmFMm1teU4oFK/vkmnV3Yrn7xWT7RLEUAV3EShzf7Wk6fyLOlwhk6ClBI9VU
+	Ycd0KgbE1VGr+xjhy84w==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3wkuvj4mv1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 13:28:21 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 3577C4002D;
+	Fri,  8 Mar 2024 13:28:14 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 60B4A26C463;
+	Fri,  8 Mar 2024 13:27:01 +0100 (CET)
+Received: from [10.201.21.177] (10.201.21.177) by SHFDAG1NODE3.st.com
+ (10.75.129.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 8 Mar
+ 2024 13:27:00 +0100
+Message-ID: <5f1a8a9f-0f35-4028-9d5e-d5ff624124b8@foss.st.com>
+Date: Fri, 8 Mar 2024 13:26:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116141801.396398-1-khtsai@google.com> <02bec7b8-7754-4b9d-84ae-51621d6aa7ec@kernel.org>
- <2024012724-chirpy-google-51bb@gregkh> <CAKzKK0oEO5_-CBKvYSw4DKY4Wp5UPrrt1ehBFRd79idy7FsUuQ@mail.gmail.com>
-In-Reply-To: <CAKzKK0oEO5_-CBKvYSw4DKY4Wp5UPrrt1ehBFRd79idy7FsUuQ@mail.gmail.com>
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Fri, 8 Mar 2024 19:47:04 +0800
-Message-ID: <CAKzKK0pmswLnGa8zabp_wo=6BcvCd9DR368FCJ5mcpZ38i4Jdw@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: u_serial: Add null pointer checks after
- RX/TX submission
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>, quic_prashk@quicinc.com, 
-	stern@rowland.harvard.edu, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mtd: rawnand: Constrain even more when continuous
+ reads are enabled
+Content-Language: en-US
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger
+	<richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tudor Ambarus
+	<tudor.ambarus@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael
+ Walle <michael@walle.cc>, <linux-mtd@lists.infradead.org>
+CC: Julien Su <juliensu@mxic.com.tw>, Jaime Liao <jaimeliao@mxic.com.tw>,
+        Jaime Liao <jaimeliao.tw@gmail.com>,
+        Alvin Zhou <alvinzhou@mxic.com.tw>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        <eagle.alexander923@gmail.com>, <mans@mansr.com>, <martin@geanix.com>,
+        =?UTF-8?Q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
+        <stable@vger.kernel.org>
+References: <20240307115315.1942678-1-miquel.raynal@bootlin.com>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
+In-Reply-To: <20240307115315.1942678-1-miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_08,2024-03-06_01,2023-05-22_02
 
-Hi Greg & Jiri,
+Hi Miquel,
 
-On Sun, Jan 28, 2024 at 9:29=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Jan 18, 2024 at 10:27:54AM +0100, Jiri Slaby wrote:
-> > On 16. 01. 24, 15:16, Kuen-Han Tsai wrote:
-> > > Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check i=
-n
-> > > gs_start_io") adds null pointer checks to gs_start_io(), but it doesn=
-'t
-> > > fully fix the potential null pointer dereference issue. While
-> > > gserial_connect() calls gs_start_io() with port_lock held, gs_start_r=
-x()
-> > > and gs_start_tx() release the lock during endpoint request submission=
-.
-> > > This creates a window where gs_close() could set port->port_tty to NU=
-LL,
-> > > leading to a dereference when the lock is reacquired.
-> > >
-> > > This patch adds a null pointer check for port->port_tty after RX/TX
-> > > submission, and removes the initial null pointer check in gs_start_io=
-()
-> > > since the caller must hold port_lock and guarantee non-null values fo=
-r
-> > > port_usb and port_tty.
-> >
-> > Or you switch to tty_port refcounting and need not fiddling with this a=
-t all
-> > ;).
->
-> I agree, Kuen-Han, why not do that instead?
+On 3/7/24 12:53, Miquel Raynal wrote:
+> As a matter of fact, continuous reads require additional handling at the
+> operation level in order for them to work properly. The core helpers do
+> have this additional logic now, but any time a controller implements its
+> own page helper, this extra logic is "lost". This means we need another
+> level of per-controller driver checks to ensure they can leverage
+> continuous reads. This is for now unsupported, so in order to ensure
+> continuous reads are enabled only when fully using the core page
+> helpers, we need to add more initial checks.
+> 
+> Also, as performance is not relevant during raw accesses, we also
+> prevent these from enabling the feature.
+> 
+> This should solve the issue seen with controllers such as the STM32 FMC2
+> when in sequencer mode. In this case, the continuous read feature would
+> be enabled but not leveraged, and most importantly not disabled, leading
+> to further operations to fail.
+> 
+> Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
+> Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-The u_serial driver has already maintained the usage count of a TTY
-structure for open and close. While the driver tracks the usage count
-via open/close, it doesn't fully eliminate race conditions. Below are
-two potential scenarios:
-
-Case 1 (Observed):
-1. gs_open() sets usage count to 1.
-2. gserial_connect(), gs_start_io(), and gs_start_rx() execute in
-sequence (lock held).
-3. Lock released, usb_ep_queue() called.
-4. In parallel, gs_close() executes, sees count of 1, clears TTY, releases =
-lock.
-5. Original thread resumes in gs_start_rx(), potentially leading to
-kernel panic on an invalid TTY.
-
----
-
-Case 2: Hypothesis. Similar to Case 1, but the race occurs between
-gs_open() and gs_close(), also potentially causing a kernel panic.
-1. gserial_connect() enables usb endpoints.
-2. gs_open(), gs_start_io(), and gs_start_rx() execute in sequence (lock he=
-ld).
-3. Lock released, usb_ep_queue() called.
-4. In parallel, gs_close() executes, sees count of 1, clears TTY, releases =
-lock.
-5. Original thread resumes in gs_start_rx(), potentially leading to
-kernel panic on an invalid TTY.
-
----
-
-Since both gserial_connect() and gs_open() initiate gs_start_io(),
-there's a brief window where gs_start_rx() releases a spinlock for USB
-submission. If gs_close() executes during this window, it could
-acquire the lock and clear the TTY structure prematurely. This happens
-because the lock is released and the usage count remains 1, making it
-appear like a valid final reference, even though gs_start_io() is
-still in progress.
-
-My only solution so far is to recheck the TTY structure after
-gs_start_rx() or gs_start_tx(). I would greatly appreciate your
-insights on how to address this race condition effectively.
+Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
 
 Regards,
-Kuen-Han
+Christophe Kerello.
+
+> ---
+>   drivers/mtd/nand/raw/nand_base.c | 12 +++++++++++-
+>   1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+> index 4d5a663e4e05..2479fa98f991 100644
+> --- a/drivers/mtd/nand/raw/nand_base.c
+> +++ b/drivers/mtd/nand/raw/nand_base.c
+> @@ -3594,7 +3594,8 @@ static int nand_do_read_ops(struct nand_chip *chip, loff_t from,
+>   	oob = ops->oobbuf;
+>   	oob_required = oob ? 1 : 0;
+>   
+> -	rawnand_enable_cont_reads(chip, page, readlen, col);
+> +	if (likely(ops->mode != MTD_OPS_RAW))
+> +		rawnand_enable_cont_reads(chip, page, readlen, col);
+>   
+>   	while (1) {
+>   		struct mtd_ecc_stats ecc_stats = mtd->ecc_stats;
+> @@ -5212,6 +5213,15 @@ static void rawnand_late_check_supported_ops(struct nand_chip *chip)
+>   	if (!nand_has_exec_op(chip))
+>   		return;
+>   
+> +	/*
+> +	 * For now, continuous reads can only be used with the core page helpers.
+> +	 * This can be extended later.
+> +	 */
+> +	if (!(chip->ecc.read_page == nand_read_page_hwecc ||
+> +	      chip->ecc.read_page == nand_read_page_syndrome ||
+> +	      chip->ecc.read_page == nand_read_page_swecc))
+> +		return;
+> +
+>   	rawnand_check_cont_read_support(chip);
+>   }
+>   
 
