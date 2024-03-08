@@ -1,201 +1,172 @@
-Return-Path: <stable+bounces-27139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAE4876073
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE89876097
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 10:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81A92855E3
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A468284490
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2427752F75;
-	Fri,  8 Mar 2024 08:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E11152F86;
+	Fri,  8 Mar 2024 09:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IJS8NfJQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duRn1SRP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4210FCA78
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 08:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A494E1DC;
+	Fri,  8 Mar 2024 09:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709888296; cv=none; b=a0CY9VcZQOqRuD3Jc1w5Tl67Rd7cJpEa/a329vl+iSZ4lcTR2cbWxr3de5M9rcd91LJ0ZPT+5+5ZJTUuF7prgZLnLyvTy7Sgb7hi7/uS0mI8dF919WOTn1HtzIiR4NrilsDigmeZxk9I4YILzFn9NgXEifImO1als8RJM7gXtu0=
+	t=1709888715; cv=none; b=lwFkuJ+iuLnjGnqfTcf+0y7forpKBmyc6TxZGb8GL5DwTbq9o6Tm9Vanf73G8ZBo3rhvAkkBssqubzM5QVJ2nG2gkwqjKJdHFdPmo0qa0qtl783Rj7TVJA048TdYe/CPNLlKu2kFBAAhC9g7xvRi4gED8KZ1wBDBa0xEQdcrvn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709888296; c=relaxed/simple;
-	bh=b8ivDDjtF1p3LyYlCNRZWGf35Ky0K7fkV+0dsPl5AJc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q0POf6aef/QI118I3WJWh0D5eeYxaQ/booTcIpeS/XXzjRqbGDSdK8xaNW/RyzU3c9Kx8GOTAnFQ9313OGyN0XxORjfGEXxaD6rXw4G8BtybJIOojx48BH7luq7lZMbVUvSluWaNV52U1fRLcB8MwgeRLzcD6GtVpngqWq+IL7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IJS8NfJQ; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6b26eef6cso2641388276.3
-        for <stable@vger.kernel.org>; Fri, 08 Mar 2024 00:58:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709888294; x=1710493094; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A6z+zN9ImE4xwUb7/dRfou4mLormWnKZkZKNlSdeP+c=;
-        b=IJS8NfJQI6WIdGxFqClvd9wGW2nN041H5pvaCT9Z66mgAdIP87Dai2ZG6hmmhydQv9
-         aO5GDX3eXjsnUzWhCd9snBFaYrfcl7RSDYCabdeXWyv9lWt/z14r4enuww7bVkVExI5A
-         4P9yDR8VfSpg8it/fo+Em5QX2mCFDi77TCrazterMhrXu/vHtkemI5QOZCRqOUTApVxe
-         q8NXmojMtrha137YHLnMWcEPEIDUrZJAIF6ZtLulApThIiXdCZLfGAD6CQBxNn3yK2Ph
-         qnSF/SeCtxiBmAqAcbSzOj5gOGw7PeA7Gpe6GnVPsyHqJHJgKQ1GtTyihHxugZt/WEVO
-         1deA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709888294; x=1710493094;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A6z+zN9ImE4xwUb7/dRfou4mLormWnKZkZKNlSdeP+c=;
-        b=uNfUHpg0hCe4C7GYOIbWyEsLgFqjkLrkcThYbI0jognCe/VXD5i7hliqhmN2tI2Dva
-         fkrNHLwypkl5lD27jrwbCtfSbkAWJbRO/9l6lcGsZXkPlGDfZFMqU+7TItBKHvGW6GKB
-         StDTtu9Xppo7W5OXJfkcwQ/jHt1S0fJiNbAdJhVq3a+aUPRferPhJ6V++QaboCRtfeUU
-         GWi7hHKgN84nAGFdI+Oau5+NkWsP/BDo9j5r05VFP2q+SoxOrZWRU1VE5iOObIYS0UGR
-         Tl4ov+pqhI48rnt9wK+8Htq3gVhbG60xk/P5skaOTlZwv+hjj0M6oo68Y6z1k2kW3LtV
-         ZvDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+AK5Cod/pse6svMX5b3w6GDIKOZ3OeYSKJwx0G09QGw9Y+LVxe04cWzyVuG5uSvpiTwWhdyaQBrCdlfTv13QhCttHbTYk
-X-Gm-Message-State: AOJu0Yz03MCIn1iaXFJEmfOxZj/qETXXtOpu53Qe+QfpJwUdlD8hsH3U
-	jkHRKC57SkG612YermfE/ekwCal/E8Q3Fy8+nVgKs6hry8uDauzpsM8iPWZSlTy26jFz7A==
-X-Google-Smtp-Source: AGHT+IH9WUFgRCwJEh32egOuauvZKhSy6ydz1UiCGIJYMPsHZHSZu6AjcwL8wxdFzKtlMNFWc7Rh69E9
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:6902:1081:b0:dcc:41ad:fb3b with SMTP id
- v1-20020a056902108100b00dcc41adfb3bmr824921ybu.10.1709888294125; Fri, 08 Mar
- 2024 00:58:14 -0800 (PST)
-Date: Fri,  8 Mar 2024 09:57:56 +0100
-In-Reply-To: <20240308085754.476197-7-ardb+git@google.com>
+	s=arc-20240116; t=1709888715; c=relaxed/simple;
+	bh=Wa1CCeGm7aGsyJ70EYwRjL0CHz7Mbn5iEzYxL4NaEK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gu3EpkW2uCO7utHDa/mx8WKb9EXY6cc8WZWYIhbsIUg0/TkEqZIqHxd0WGNJzJTD/4U8XV/TXx+UJUcrAG7tT2SayW7z89/IbOtLF47F5wB8ZSPr6kncYpJzfu2MxOYXs79a9fTqcP3QIgQvDFzYHGBUe6vf+PTe2y4ZZrnz71I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duRn1SRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A2DC43390;
+	Fri,  8 Mar 2024 09:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709888714;
+	bh=Wa1CCeGm7aGsyJ70EYwRjL0CHz7Mbn5iEzYxL4NaEK4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=duRn1SRPSaLGXolrWDQvKS+HoVctSh7jbAYlJ8DvxG8Cvy9rpBsXPhDWU6tbvBNDm
+	 jDisxatsNjaGtq0h+FLGFRHhYcoTuQ3pmINxwNbAECqIKRJzA8QZrmkIABCkJCMdIH
+	 u4iyFN8rbS5E0xGnuT9ldN6cYr/FwqcE+XgWUPcJWgQ6Z6oV3KGPLv77ip1WAToVTr
+	 075s3rOt+2M2mBUVVTiKd49ThhbIUmjaz/PKW6MQ8X3kYuIy0Bh8qPYLrJIJ8gwmfG
+	 kPRufdRlvFmqR8LSoKyum+mWgyZsliICJvV8oMGnRMpF/TXQiLIE4dVtGGISRKDdJE
+	 dXwJv7CT+9dbQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1riWAL-000000002I0-0dHq;
+	Fri, 08 Mar 2024 10:05:21 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH stable-6.7] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free
+Date: Fri,  8 Mar 2024 10:03:57 +0100
+Message-ID: <20240308090357.8758-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240308085754.476197-7-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3906; i=ardb@kernel.org;
- h=from:subject; bh=2xlGpPZ2KXRAhQWGXtcuPOB2hLa2jwtfBLys2womY6Q=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXVZeFiecFl0TG+VxhKDAqKyy1mCE88YsHy5OzPrst8O
- 17+2PWoo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEwkdxrDXynftCPvhY7f7f7k
- knfr5QyNdXuTXJqn6u2tmSu8SX7ra25GhvM85458MXOtL+rR4imS4C0tDmjWnHn4ZERNxuyjf/Z MZAMA
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240308085754.476197-8-ardb+git@google.com>
-Subject: [PATCH v3 1/5] efi/libstub: Use correct event size when measuring
- data into the TPM
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
+commit b979f2d50a099f3402418d7ff5f26c3952fb08bb upstream.
 
-Our efi_tcg2_tagged_event is not defined in the EFI spec, but it is not
-a local invention either: it was taken from the TCG PC Client spec,
-where it is called TCG_PCClientTaggedEvent.
+A recent DRM series purporting to simplify support for "transparent
+bridges" and handling of probe deferrals ironically exposed a
+use-after-free issue on pmic_glink_altmode probe deferral.
 
-This spec also contains some guidance on how to populate it, which
-is not being followed closely at the moment; the event size should cover
-the TCG_PCClientTaggedEvent and its payload only, but it currently
-covers the preceding efi_tcg2_event too, and this may result in trailing
-garbage being measured into the TPM.
+This has manifested itself as the display subsystem occasionally failing
+to initialise and NULL-pointer dereferences during boot of machines like
+the Lenovo ThinkPad X13s.
 
-So rename the struct and document its provenance, and fix up the use so
-only the tagged event data is represented in the size field.
+Specifically, the dp-hpd bridge is currently registered before all
+resources have been acquired which means that it can also be
+deregistered on probe deferrals.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+In the meantime there is a race window where the new aux bridge driver
+(or PHY driver previously) may have looked up the dp-hpd bridge and
+stored a (non-reference-counted) pointer to the bridge which is about to
+be deallocated.
+
+When the display controller is later initialised, this triggers a
+use-after-free when attaching the bridges:
+
+	dp -> aux -> dp-hpd (freed)
+
+which may, for example, result in the freed bridge failing to attach:
+
+	[drm:drm_bridge_attach [drm]] *ERROR* failed to attach bridge /soc@0/phy@88eb000 to encoder TMDS-31: -16
+
+or a NULL-pointer dereference:
+
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+	...
+	Call trace:
+	  drm_bridge_attach+0x70/0x1a8 [drm]
+	  drm_aux_bridge_attach+0x24/0x38 [aux_bridge]
+	  drm_bridge_attach+0x80/0x1a8 [drm]
+	  dp_bridge_init+0xa8/0x15c [msm]
+	  msm_dp_modeset_init+0x28/0xc4 [msm]
+
+The DRM bridge implementation is clearly fragile and implicitly built on
+the assumption that bridges may never go away. In this case, the fix is
+to move the bridge registration in the pmic_glink_altmode driver to
+after all resources have been looked up.
+
+Incidentally, with the new dp-hpd bridge implementation, which registers
+child devices, this is also a requirement due to a long-standing issue
+in driver core that can otherwise lead to a probe deferral loop (see
+commit fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER")).
+
+[DB: slightly fixed commit message by adding the word 'commit']
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Fixes: 2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
+Cc: <stable@vger.kernel.org>      # 6.3
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240217150228.5788-4-johan+linaro@kernel.org
+[ johan: backport to 6.7 which does not have DRM aux bridge ]
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 20 +++++++++++---------
- drivers/firmware/efi/libstub/efistub.h         | 12 ++++++------
- 2 files changed, 17 insertions(+), 15 deletions(-)
+ drivers/soc/qcom/pmic_glink_altmode.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index bfa30625f5d0..16843ab9b64d 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index ad922f0dca6b..a890fafdafb8 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -469,12 +469,6 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		alt_port->bridge.ops = DRM_BRIDGE_OP_HPD;
+ 		alt_port->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
  
- #include <linux/efi.h>
- #include <linux/kernel.h>
-+#include <linux/overflow.h>
- #include <asm/efi.h>
- #include <asm/setup.h>
- 
-@@ -219,23 +220,24 @@ static const struct {
- 	},
- };
- 
-+struct efistub_measured_event {
-+	efi_tcg2_event_t	event_data;
-+	TCG_PCClientTaggedEvent tagged_event;
-+} __packed;
-+
- static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
- 					     unsigned long load_size,
- 					     enum efistub_event event)
- {
-+	struct efistub_measured_event *evt;
-+	int size = struct_size(&evt->tagged_event, tagged_event_data,
-+			       events[event].event_data_len);
- 	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
- 	efi_tcg2_protocol_t *tcg2 = NULL;
- 	efi_status_t status;
- 
- 	efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
- 	if (tcg2) {
--		struct efi_measured_event {
--			efi_tcg2_event_t	event_data;
--			efi_tcg2_tagged_event_t tagged_event;
--			u8			tagged_event_data[];
--		} *evt;
--		int size = sizeof(*evt) + events[event].event_data_len;
+-		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
+-		if (ret) {
+-			fwnode_handle_put(fwnode);
+-			return ret;
+-		}
 -
- 		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
- 				     (void **)&evt);
- 		if (status != EFI_SUCCESS)
-@@ -249,12 +251,12 @@ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
- 			.event_header.event_type	= EV_EVENT_TAG,
- 		};
+ 		alt_port->dp_alt.svid = USB_TYPEC_DP_SID;
+ 		alt_port->dp_alt.mode = USB_TYPEC_DP_MODE;
+ 		alt_port->dp_alt.active = 1;
+@@ -525,6 +519,16 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		}
+ 	}
  
--		evt->tagged_event = (struct efi_tcg2_tagged_event){
-+		evt->tagged_event = (TCG_PCClientTaggedEvent){
- 			.tagged_event_id		= events[event].event_id,
- 			.tagged_event_data_size		= events[event].event_data_len,
- 		};
- 
--		memcpy(evt->tagged_event_data, events[event].event_data,
-+		memcpy(evt->tagged_event.tagged_event_data, events[event].event_data,
- 		       events[event].event_data_len);
- 
- 		status = efi_call_proto(tcg2, hash_log_extend_event, 0,
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index c04b82ea40f2..043a3ff435f3 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -843,14 +843,14 @@ struct efi_tcg2_event {
- 	/* u8[] event follows here */
- } __packed;
- 
--struct efi_tcg2_tagged_event {
--	u32 tagged_event_id;
--	u32 tagged_event_data_size;
--	/* u8  tagged event data follows here */
--} __packed;
-+/* from TCG PC Client Platform Firmware Profile Specification */
-+typedef struct tdTCG_PCClientTaggedEvent {
-+	u32	tagged_event_id;
-+	u32	tagged_event_data_size;
-+	u8	tagged_event_data[];
-+} TCG_PCClientTaggedEvent;
- 
- typedef struct efi_tcg2_event efi_tcg2_event_t;
--typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
- typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
- 
- union efi_tcg2_protocol {
++	for (port = 0; port < ARRAY_SIZE(altmode->ports); port++) {
++		alt_port = &altmode->ports[port];
++		if (!alt_port->altmode)
++			continue;
++
++		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
++		if (ret)
++			return ret;
++	}
++
+ 	altmode->client = devm_pmic_glink_register_client(dev,
+ 							  altmode->owner_id,
+ 							  pmic_glink_altmode_callback,
 -- 
-2.44.0.278.ge034bb2e1d-goog
+2.43.0
 
 
