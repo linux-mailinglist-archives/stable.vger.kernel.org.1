@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-27173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33552876AD3
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:39:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E01C876AD5
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F47D1C214F5
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8F111F21D25
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FD756B7F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8EF5A7AF;
 	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104332BD12;
-	Fri,  8 Mar 2024 18:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C35B5A0E9;
+	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709923090; cv=none; b=AUSwuPR1P/yADDcvfwKbYrBqRF2uaVfS6rtfCi1HuM7iifkg05UIobL9DO+1O9/I8jzBm+QuwsiOWXINtrD7x+gbJT6lugOujOaTKV6Oksm+e229FOABdYDcvTVRX88KNc7izob81mfWnLs6bMIvOoK4nw44u52krc2oGUsU0lM=
+	t=1709923090; cv=none; b=bouHhQZU1QGnupLjxD6WTUauXtNDyJAhcMG+yGsN09uPBdi6DEkyAVFOJROpmpc3na/DXHocpnXwUGXDFYZdc8DyRbuBHyvb0mi3STPkzpQ47jIlrusNDzn3MueQ/GgCMNoQdQvlazLVvx5BcexXVcGZ2926UjEai5kuztl5r9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1709923090; c=relaxed/simple;
-	bh=r46s1KKgH/Sznd2W3PttlYa1kDm8+z7ysNUjjpJi6YE=;
+	bh=YI8/vnqPugKBuZi57m6Pdrz5Fc9pTxcOvLj/2eGyPhk=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=C+ex6UucvEtWz7+ts2jTpEv3RPG/Z9PCdIE7lOLFKEqqEFi4D510uXUmTwWd4uAXTYS+n/JQnBJjYD8pxQVEY6YqeZxW8EEYP1T/ZHC9M7qbn8aXhXYeVAyj6Xans516hRBDTY+pMEyL+H+JqDq/Yt4Ct6krR6CrXolWXAOQe/0=
+	 Content-Type; b=q3f59j80hqCQUJy+4p4iTDmfTI02b161Id9CwupuHe6l71QAxLVKIqsp88D2DAD2CUCl/Y7L4+q1g88lS9h2iyQiPf/xwsTFIqxiV4F4S5tN2irrO/vfJ2Xsih/n/vWwJsXpbvxDnB7N51UkxIWcBwKcbVM0bj4YvlcsTyL3LRE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06A6C43390;
-	Fri,  8 Mar 2024 18:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6A3C433B2;
+	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1rif8Z-00000000xWG-1wzS;
+	id 1rif8Z-00000000xXE-3I8j;
 	Fri, 08 Mar 2024 13:40:07 -0500
-Message-ID: <20240308184007.322683965@goodmis.org>
+Message-ID: <20240308184007.645792712@goodmis.org>
 User-Agent: quilt/0.67
-Date: Fri, 08 Mar 2024 13:38:17 -0500
+Date: Fri, 08 Mar 2024 13:38:19 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
@@ -48,7 +48,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  linke li <lilinke99@qq.com>,
  Rabin Vincent <rabin@rab.in>,
  stable@vger.kernel.org
-Subject: [PATCH 1/6] ring-buffer: Fix waking up ring buffer readers
+Subject: [PATCH 3/6] tracing: Use .flush() call to wake up readers
 References: <20240308183816.676883229@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,237 +60,78 @@ Content-Type: text/plain; charset=UTF-8
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-A task can wait on a ring buffer for when it fills up to a specific
-watermark. The writer will check the minimum watermark that waiters are
-waiting for and if the ring buffer is past that, it will wake up all the
-waiters.
+The .release() function does not get called until all readers of a file
+descriptor are finished.
 
-The waiters are in a wait loop, and will first check if a signal is
-pending and then check if the ring buffer is at the desired level where it
-should break out of the loop.
+If a thread is blocked on reading a file descriptor in ring_buffer_wait(),
+and another thread closes the file descriptor, it will not wake up the
+other thread as ring_buffer_wake_waiters() is called by .release(), and
+that will not get called until the .read() is finished.
 
-If a file that uses a ring buffer closes, and there's threads waiting on
-the ring buffer, it needs to wake up those threads. To do this, a
-"wait_index" was used.
+The issue originally showed up in trace-cmd, but the readers are actually
+other processes with their own file descriptors. So calling close() would wake
+up the other tasks because they are blocked on another descriptor then the
+one that was closed(). But there's other wake ups that solve that issue.
 
-Before entering the wait loop, the waiter will read the wait_index. On
-wakeup, it will check if the wait_index is different than when it entered
-the loop, and will exit the loop if it is. The waker will only need to
-update the wait_index before waking up the waiters.
+When a thread is blocked on a read, it can still hang even when another
+thread closed its descriptor.
 
-This had a couple of bugs. One trivial one and one broken by design.
-
-The trivial bug was that the waiter checked the wait_index after the
-schedule() call. It had to be checked between the prepare_to_wait() and
-the schedule() which it was not.
-
-The main bug is that the first check to set the default wait_index will
-always be outside the prepare_to_wait() and the schedule(). That's because
-the ring_buffer_wait() doesn't have enough context to know if it should
-break out of the loop.
-
-The loop itself is not needed, because all the callers to the
-ring_buffer_wait() also has their own loop, as the callers have a better
-sense of what the context is to decide whether to break out of the loop
-or not.
-
-Just have the ring_buffer_wait() block once, and if it gets woken up, exit
-the function and let the callers decide what to do next.
-
-Link: https://lore.kernel.org/all/CAHk-=whs5MdtNjzFkTyaUy=vHi=qwWgPi0JgTe6OYUYMNSRZfg@mail.gmail.com/
+This is what the .flush() callback is for. Have the .flush() wake up the
+readers.
 
 Cc: stable@vger.kernel.org
-Fixes: e30f53aad2202 ("tracing: Do not busy wait in buffer splice")
+Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 139 ++++++++++++++++++-------------------
- 1 file changed, 68 insertions(+), 71 deletions(-)
+ kernel/trace/trace.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 0699027b4f4c..3400f11286e3 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -384,7 +384,6 @@ struct rb_irq_work {
- 	struct irq_work			work;
- 	wait_queue_head_t		waiters;
- 	wait_queue_head_t		full_waiters;
--	long				wait_index;
- 	bool				waiters_pending;
- 	bool				full_waiters_pending;
- 	bool				wakeup_full;
-@@ -798,14 +797,40 @@ void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu)
- 		rbwork = &cpu_buffer->irq_work;
- 	}
- 
--	rbwork->wait_index++;
--	/* make sure the waiters see the new index */
--	smp_wmb();
--
- 	/* This can be called in any context */
- 	irq_work_queue(&rbwork->work);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index d16b95ca58a7..c9c898307348 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8393,6 +8393,20 @@ tracing_buffers_read(struct file *filp, char __user *ubuf,
+ 	return size;
  }
  
-+static bool rb_watermark_hit(struct trace_buffer *buffer, int cpu, int full)
++static int tracing_buffers_flush(struct file *file, fl_owner_t id)
 +{
-+	struct ring_buffer_per_cpu *cpu_buffer;
-+	bool ret = false;
++	struct ftrace_buffer_info *info = file->private_data;
++	struct trace_iterator *iter = &info->iter;
 +
-+	/* Reads of all CPUs always waits for any data */
-+	if (cpu == RING_BUFFER_ALL_CPUS)
-+		return !ring_buffer_empty(buffer);
++	iter->wait_index++;
++	/* Make sure the waiters see the new wait_index */
++	smp_wmb();
 +
-+	cpu_buffer = buffer->buffers[cpu];
++	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
 +
-+	if (!ring_buffer_empty_cpu(buffer, cpu)) {
-+		unsigned long flags;
-+		bool pagebusy;
-+
-+		if (!full)
-+			return true;
-+
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
-+		pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
-+		ret = !pagebusy && full_hit(buffer, cpu, full);
-+
-+		if (!cpu_buffer->shortest_full ||
-+		    cpu_buffer->shortest_full > full)
-+			cpu_buffer->shortest_full = full;
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
-+	}
-+	return ret;
++	return 0;
 +}
 +
- /**
-  * ring_buffer_wait - wait for input to the ring buffer
-  * @buffer: buffer to wait on
-@@ -821,7 +846,6 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
- 	struct ring_buffer_per_cpu *cpu_buffer;
- 	DEFINE_WAIT(wait);
- 	struct rb_irq_work *work;
--	long wait_index;
- 	int ret = 0;
+ static int tracing_buffers_release(struct inode *inode, struct file *file)
+ {
+ 	struct ftrace_buffer_info *info = file->private_data;
+@@ -8404,12 +8418,6 @@ static int tracing_buffers_release(struct inode *inode, struct file *file)
  
- 	/*
-@@ -840,81 +864,54 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
- 		work = &cpu_buffer->irq_work;
- 	}
+ 	__trace_array_put(iter->tr);
  
--	wait_index = READ_ONCE(work->wait_index);
+-	iter->wait_index++;
+-	/* Make sure the waiters see the new wait_index */
+-	smp_wmb();
 -
--	while (true) {
--		if (full)
--			prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
--		else
--			prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
+-	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
 -
--		/*
--		 * The events can happen in critical sections where
--		 * checking a work queue can cause deadlocks.
--		 * After adding a task to the queue, this flag is set
--		 * only to notify events to try to wake up the queue
--		 * using irq_work.
--		 *
--		 * We don't clear it even if the buffer is no longer
--		 * empty. The flag only causes the next event to run
--		 * irq_work to do the work queue wake up. The worse
--		 * that can happen if we race with !trace_empty() is that
--		 * an event will cause an irq_work to try to wake up
--		 * an empty queue.
--		 *
--		 * There's no reason to protect this flag either, as
--		 * the work queue and irq_work logic will do the necessary
--		 * synchronization for the wake ups. The only thing
--		 * that is necessary is that the wake up happens after
--		 * a task has been queued. It's OK for spurious wake ups.
--		 */
--		if (full)
--			work->full_waiters_pending = true;
--		else
--			work->waiters_pending = true;
--
--		if (signal_pending(current)) {
--			ret = -EINTR;
--			break;
--		}
--
--		if (cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer))
--			break;
--
--		if (cpu != RING_BUFFER_ALL_CPUS &&
--		    !ring_buffer_empty_cpu(buffer, cpu)) {
--			unsigned long flags;
--			bool pagebusy;
--			bool done;
--
--			if (!full)
--				break;
--
--			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
--			pagebusy = cpu_buffer->reader_page == cpu_buffer->commit_page;
--			done = !pagebusy && full_hit(buffer, cpu, full);
-+	if (full)
-+		prepare_to_wait(&work->full_waiters, &wait, TASK_INTERRUPTIBLE);
-+	else
-+		prepare_to_wait(&work->waiters, &wait, TASK_INTERRUPTIBLE);
- 
--			if (!cpu_buffer->shortest_full ||
--			    cpu_buffer->shortest_full > full)
--				cpu_buffer->shortest_full = full;
--			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
--			if (done)
--				break;
--		}
-+	/*
-+	 * The events can happen in critical sections where
-+	 * checking a work queue can cause deadlocks.
-+	 * After adding a task to the queue, this flag is set
-+	 * only to notify events to try to wake up the queue
-+	 * using irq_work.
-+	 *
-+	 * We don't clear it even if the buffer is no longer
-+	 * empty. The flag only causes the next event to run
-+	 * irq_work to do the work queue wake up. The worse
-+	 * that can happen if we race with !trace_empty() is that
-+	 * an event will cause an irq_work to try to wake up
-+	 * an empty queue.
-+	 *
-+	 * There's no reason to protect this flag either, as
-+	 * the work queue and irq_work logic will do the necessary
-+	 * synchronization for the wake ups. The only thing
-+	 * that is necessary is that the wake up happens after
-+	 * a task has been queued. It's OK for spurious wake ups.
-+	 */
-+	if (full)
-+		work->full_waiters_pending = true;
-+	else
-+		work->waiters_pending = true;
- 
--		schedule();
-+	if (rb_watermark_hit(buffer, cpu, full))
-+		goto out;
- 
--		/* Make sure to see the new wait index */
--		smp_rmb();
--		if (wait_index != work->wait_index)
--			break;
-+	if (signal_pending(current)) {
-+		ret = -EINTR;
-+		goto out;
- 	}
- 
-+	schedule();
-+ out:
- 	if (full)
- 		finish_wait(&work->full_waiters, &wait);
- 	else
- 		finish_wait(&work->waiters, &wait);
- 
-+	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
-+		ret = -EINTR;
-+
- 	return ret;
- }
- 
+ 	if (info->spare)
+ 		ring_buffer_free_read_page(iter->array_buffer->buffer,
+ 					   info->spare_cpu, info->spare);
+@@ -8625,6 +8633,7 @@ static const struct file_operations tracing_buffers_fops = {
+ 	.read		= tracing_buffers_read,
+ 	.poll		= tracing_buffers_poll,
+ 	.release	= tracing_buffers_release,
++	.flush		= tracing_buffers_flush,
+ 	.splice_read	= tracing_buffers_splice_read,
+ 	.unlocked_ioctl = tracing_buffers_ioctl,
+ 	.llseek		= no_llseek,
 -- 
 2.43.0
 
