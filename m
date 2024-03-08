@@ -1,305 +1,225 @@
-Return-Path: <stable+bounces-27176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92582876ADA
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:39:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2D876AF9
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ACE11F217B0
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:39:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2367A28277F
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B775B5C3;
-	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48485788F;
+	Fri,  8 Mar 2024 18:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kf1JhdDm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EFE2A8C1;
-	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967BB5646D;
+	Fri,  8 Mar 2024 18:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709923090; cv=none; b=IP+t+sWxkw5Gqz/4Qxw0dEXMizfd4wmdscswaTJjIVV6Iw9YwBnvUd6lYe47Hi0Q1va8EhsWAsTk/KL37rB7OuV8k78CfWKmHxpI3q0E3iMsvMevtB0FBrAkIf64l4ukaq5tVYyQRfIriqGnn8P12GXtVyZPyci0VHiEAy5XM4s=
+	t=1709924237; cv=none; b=updM53HJZh6J6OWPPytaFFedgiFG4ni5CYnzP5Xal49ICA+UlWViVB3fStLWf1a6J+KLCOj6+KrLjX38hHr8L4zTEqJhkBG80wyuLMLVcGHDGVjnDr49IQkEWC51N8MaVGP+qewbWUSi6DaWxpHOeR8tI1OrmXJA4KX8T5aQhFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709923090; c=relaxed/simple;
-	bh=w/Zk0nnX24fbKNl6dHVI5TcQ68z72hFSO937IkSltBo=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=PlGF0dRwfi6RH5ADG3XAdck4PKam189nqa2assEpkwVy04JDnE+jrthAzK82CRnzBSA0J9061zopr2NCm8HHW4IarLY2VFmCpd+6Bt5+vEA4H32mc/2xRB9OJaoj0i5teHYFrXXixsLMxQLQkTBeyL1utPhfQYBDS3+lzuu/ogA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D15CC4166B;
-	Fri,  8 Mar 2024 18:38:10 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1rif8a-00000000xYg-13yq;
-	Fri, 08 Mar 2024 13:40:08 -0500
-Message-ID: <20240308184008.120434979@goodmis.org>
-User-Agent: quilt/0.67
-Date: Fri, 08 Mar 2024 13:38:22 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- joel@joelfernandes.org,
- linke li <lilinke99@qq.com>,
- Rabin Vincent <rabin@rab.in>,
- stable@vger.kernel.org
-Subject: [PATCH 6/6] tracing/ring-buffer: Fix wait_on_pipe() race
-References: <20240308183816.676883229@goodmis.org>
+	s=arc-20240116; t=1709924237; c=relaxed/simple;
+	bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=W4n/hZTsHN+VC8AixolMqqnFffaF9K2zxGqeFeBSrphPC1kRwUNlEeIQTV3TAGRFbM+o8y/t1R0hbgwNEWtC2AvIEpwYHPP+oT7ja9Umht3mO4P7oy77UgAeQU65VnatbmsVTADwhux3piuiqjj4rmTGe8anW57oHX+lct+XSlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kf1JhdDm; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-51364c3d5abso2712221e87.2;
+        Fri, 08 Mar 2024 10:57:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709924234; x=1710529034; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
+        b=kf1JhdDmJlaIpU3VBjzwGeFuen+DpVS85iCt+qThum26VQjL24HD3GfvVi/oRJ4W9H
+         4gAhfel8QrZutSUBTQHyBasYyk31ujPeVmTQrJO0O8/9xb5rwNStMMVkcCXIi9jwTsr2
+         GyZJPXGuBpclSqdzpKUMtGoATf2M/8EA1j3KU76xPCQz9FieGRJU65/Z7Wp09aFTLu9H
+         KrMZ1Z/NrSj2hy4v1FUQ0qBEN4rQtQnFRLYjWPbJcpemtwcXTp+5uuCcvr3x7PqmGd+f
+         YLVPGXeuDNKjo9LaO4VQ0a+VP9LiokOldWWlw1LJdzDU/Wg1ZRJR2V8skrqzTgTA8On7
+         Z5zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709924234; x=1710529034;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
+        b=dUvRA1IB6wWXSrepokSXtQKykhydK5zxWIG3ubQKC7gCzY3lohv5QmPJNfcTkZTmY1
+         RY65UU7GP7eS7gV+BGSoqf+rCCUcKhsbQQXenaCE6k0JU7MwPR1pJn4ngb4qs6oyIfIH
+         kWZUGSrInH6N9J3nttGVOO78+IvVCygBSEudAaMDr4tbOLuVoj8bgdK6LtQ6OCmYMDmq
+         c3VC0YqppuytsF9Y/dta5ZH+cOBjNCs5ZBEyv3XImGJp27Vq66lOlUxoWCRu6iGJVUKq
+         7QJGswn1Zjze3QE2X1P7g81hsbTp+n9LAo3vyrlGJWla2jf1fy7HEjS1QUKeqBGSnb28
+         f1zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWyfT+S2NCPWzTmVpXUfz9pB0ShYTVizucjFwonQT6OZikJpAcIoYJYss+bz4/0BPwuWKQaT4wBNQLryah019vKE6gIcjLAZMy56jH1hq0VtiGi+IE46W1VkTAPYw++3tclwRsdGToUhtp/1dF7rv3hm1XW6aUzjbYVuixiKLzdWbxifwOBAR/cGpWxZ/nPmnT8rgmt0BG
+X-Gm-Message-State: AOJu0Yz3JgFAN/J2AJXq1i7KjDkFPf0+YKtkh2P9HwIjJeeHmmzQbTw5
+	5j9OlXZKWCsPQLZ/FEJ/OSEFmRlVuWOqAKlK9OEJpggatG0/5wPR
+X-Google-Smtp-Source: AGHT+IFb+l5lb3Rt/se2MEwUbkeIsA8alEVe6QpXMRmHCrxeUIUjHWtLgHUhvNRZB35lAOZhG2h2Kg==
+X-Received: by 2002:ac2:5f08:0:b0:513:1e47:bc5b with SMTP id 8-20020ac25f08000000b005131e47bc5bmr3833679lfq.25.1709924233403;
+        Fri, 08 Mar 2024 10:57:13 -0800 (PST)
+Received: from ?IPv6:2001:8a0:e60f:3100:f642:8b0a:d2f8:3e61? ([2001:8a0:e60f:3100:f642:8b0a:d2f8:3e61])
+        by smtp.gmail.com with ESMTPSA id m24-20020a195218000000b005130bbcd263sm19374lfb.271.2024.03.08.10.57.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Mar 2024 10:57:12 -0800 (PST)
+Message-ID: <e19cafe1a7933d1e35ee4715fa36df8090c100eb.camel@gmail.com>
+Subject: Re: [PATCH v2] can: mcp251xfd: fix infinite loop when xmit fails
+From: vitor <ivitro@gmail.com>
+To: mkl@pengutronix.de, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>,  Thomas Kopp
+ <thomas.kopp@microchip.com>, Wolfgang Grandegger <wg@grandegger.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, linux-can@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Fri, 08 Mar 2024 18:57:10 +0000
+In-Reply-To: <20240308151523.191860-1-ivitro@gmail.com>
+References: <20240308151523.191860-1-ivitro@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Fri, 2024-03-08 at 15:15 +0000, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
+>=20
+> When the mcp251xfd_start_xmit() function fails, the driver stops
+> processing messages and the interrupt routine does not return,
+> running indefinitely even after killing the running application.
+>=20
+> Error messages:
+> [=C2=A0 441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit:
+> -16
+> [=C2=A0 441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not
+> empty. (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0,
+> tx_head=3D0x000017d3).
+> ... and repeat forever.
+>=20
+> The issue can be triggered when multiple devices share the same
+> SPI interface. And there is concurrent access to the bus.
+>=20
+> The problem occurs because tx_ring->head increments even if
+> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> TX package while still expecting a response in
+> mcp251xfd_handle_tefif_one().
+>=20
+> This patch resolves the issue by decreasing tx_ring->head if
+> mcp251xfd_start_xmit() fails. With the fix, if we trigger the issue
+> and
+> the err =3D -EBUSY, the driver returns NETDEV_TX_BUSY. The network
+> stack
+> retries to transmit the message.
+> Otherwise, it prints an error and discards the message.
+>=20
+> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip
+> MCP25xxFD SPI CAN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> ---
+>=20
+> V1->V2:
+> =C2=A0 - Return NETDEV_TX_BUSY if mcp251xfd_tx_obj_write() =3D=3D -EBUSY
+> =C2=A0 - Rework the commit message to address the change above
+> =C2=A0 - Change can_put_echo_skb() to be called after
+> mcp251xfd_tx_obj_write() succeed. Otherwise, we get Kernel NULL
+> pointer dereference error.
+>=20
+> =C2=A0drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 29 +++++++++++------=
+-
+> --
+> =C2=A01 file changed, 16 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> index 160528d3cc26..0fdaececebdd 100644
+> --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> @@ -181,25 +181,28 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff
+> *skb,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_obj =3D mcp251xfd_get_=
+tx_obj_next(tx_ring);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mcp251xfd_tx_obj_from_skb=
+(priv, tx_obj, skb, tx_ring->head);
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy the=
+ complete TX FIFO */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_head =3D mcp251xfd_get=
+_tx_head(tx_ring);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(tx_r=
+ing) =3D=3D 0)
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0netif_stop_queue(ndev);
+> -
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0frame_len =3D can_skb_get=
+_frame_len(skb);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D can_put_echo_skb(skb, =
+ndev, tx_head, frame_len);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!err)
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D mcp251xfd_tx_obj_=
+write(priv, tx_obj);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err)
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0goto out_err;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0tx_ring->head--;
+> =C2=A0
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0if (err =3D=3D -EBUSY)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NE=
+TDEV_TX_BUSY;
 
-When the trace_pipe_raw file is closed, there should be no new readers on
-the file descriptor. This is mostly handled with the waking and wait_index
-fields of the iterator. But there's still a slight race.
+Missing the stats for dropped packages. I will add on v3.
 
-     CPU 0				CPU 1
-     -----				-----
- wait_woken_prepare()
-    if (waking)
-       woken = true;
-    index = wait_index;
-				   wait_woken_set()
-				      waking = true
-				      wait_index++;
-				   ring_buffer_wake_waiters();
- wait_on_pipe()
-    ring_buffer_wait();
+> =C2=A0
+> - out_err:
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR =
+in %s: %d\n", __func__, err);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__,
+> err);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0can_put_echo_skb(skb, ndev, tx_head, frame_len);
 
-The ring_buffer_wait() will miss the wakeup from CPU 1. The problem is
-that the ring_buffer_wait() needs the logic of:
+Not sure if it is save to call this here.
 
-	prepare_to_wait();
-	if (!condition)
-		schedule();
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy the complete TX FIFO */
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netif_sto=
+p_queue(ndev);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
 
-Where the missing condition check is the iter->waking.
+This is not correct. Should be called only if can_put_echo_skb()
+succeed. I will fix this in v3.
 
-Either that condition check needs to be passed to ring_buffer_wait() or
-the function needs to be broken up into three parts. This chooses to do
-the break up.
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
+> =C2=A0}
 
-Break ring_buffer_wait() into:
-
-	ring_buffer_prepare_to_wait();
-	ring_buffer_wait();
-	ring_buffer_finish_wait();
-
-Now wait_on_pipe() can have:
-
-	ring_buffer_prepare_to_wait();
-	if (!iter->waking)
-		ring_buffer_wait();
-	ring_buffer_finish_wait();
-
-And this will catch the above race, as the waiter will either see waking,
-or already have been woken up.
-
-Link: https://lore.kernel.org/all/CAHk-=whs5MdtNjzFkTyaUy=vHi=qwWgPi0JgTe6OYUYMNSRZfg@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- include/linux/ring_buffer.h |  4 ++
- kernel/trace/ring_buffer.c  | 88 ++++++++++++++++++++++++++-----------
- kernel/trace/trace.c        | 14 +++++-
- 3 files changed, 78 insertions(+), 28 deletions(-)
-
-diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
-index fa802db216f9..e5b5903cdc21 100644
---- a/include/linux/ring_buffer.h
-+++ b/include/linux/ring_buffer.h
-@@ -98,7 +98,11 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
- 	__ring_buffer_alloc((size), (flags), &__key);	\
- })
- 
-+int ring_buffer_prepare_to_wait(struct trace_buffer *buffer, int cpu, int *full,
-+				struct wait_queue_entry *wait);
- int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
-+void ring_buffer_finish_wait(struct trace_buffer *buffer, int cpu, int full,
-+				 struct wait_queue_entry *wait);
- __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full);
- void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu);
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 856d0e5b0da5..fa7090f6b4fc 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -868,29 +868,29 @@ rb_get_work_queue(struct trace_buffer *buffer, int cpu, int *full)
- }
- 
- /**
-- * ring_buffer_wait - wait for input to the ring buffer
-+ * ring_buffer_prepare_to_wait - Prepare to wait for data on the ring buffer
-  * @buffer: buffer to wait on
-  * @cpu: the cpu buffer to wait on
-- * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ * @full: wait until the percentage of pages are available,
-+ *         if @cpu != RING_BUFFER_ALL_CPUS. It may be updated via this function.
-+ * @wait: The wait queue entry.
-  *
-- * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-- * as data is added to any of the @buffer's cpu buffers. Otherwise
-- * it will wait for data to be added to a specific cpu buffer.
-+ * This must be called before ring_buffer_wait(). It calls the prepare_to_wait()
-+ * on @wait for the necessary wait queue defined by @buffer, @cpu, and @full.
-  */
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+int ring_buffer_prepare_to_wait(struct trace_buffer *buffer, int cpu, int *full,
-+				 struct wait_queue_entry *wait)
- {
- 	struct rb_irq_work *rbwork;
--	DEFINE_WAIT(wait);
--	int ret = 0;
- 
--	rbwork = rb_get_work_queue(buffer, cpu, &full);
-+	rbwork = rb_get_work_queue(buffer, cpu, full);
- 	if (IS_ERR(rbwork))
- 		return PTR_ERR(rbwork);
- 
--	if (full)
--		prepare_to_wait(&rbwork->full_waiters, &wait, TASK_INTERRUPTIBLE);
-+	if (*full)
-+		prepare_to_wait(&rbwork->full_waiters, wait, TASK_INTERRUPTIBLE);
- 	else
--		prepare_to_wait(&rbwork->waiters, &wait, TASK_INTERRUPTIBLE);
-+		prepare_to_wait(&rbwork->waiters, wait, TASK_INTERRUPTIBLE);
- 
- 	/*
- 	 * The events can happen in critical sections where
-@@ -912,30 +912,66 @@ int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
- 	 * that is necessary is that the wake up happens after
- 	 * a task has been queued. It's OK for spurious wake ups.
- 	 */
--	if (full)
-+	if (*full)
- 		rbwork->full_waiters_pending = true;
- 	else
- 		rbwork->waiters_pending = true;
- 
--	if (rb_watermark_hit(buffer, cpu, full))
--		goto out;
-+	return 0;
-+}
- 
--	if (signal_pending(current)) {
--		ret = -EINTR;
--		goto out;
--	}
-+/**
-+ * ring_buffer_finish_wait - clean up of ring_buffer_prepare_to_wait()
-+ * @buffer: buffer to wait on
-+ * @cpu: the cpu buffer to wait on
-+ * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ * @wait: The wait queue entry.
-+ *
-+ * This must be called after ring_buffer_prepare_to_wait(). It cleans up
-+ * the @wait for the queue defined by @buffer, @cpu, and @full.
-+ */
-+void ring_buffer_finish_wait(struct trace_buffer *buffer, int cpu, int full,
-+				 struct wait_queue_entry *wait)
-+{
-+	struct rb_irq_work *rbwork;
-+
-+	rbwork = rb_get_work_queue(buffer, cpu, &full);
-+	if (WARN_ON_ONCE(IS_ERR(rbwork)))
-+		return;
- 
--	schedule();
-- out:
- 	if (full)
--		finish_wait(&rbwork->full_waiters, &wait);
-+		finish_wait(&rbwork->full_waiters, wait);
- 	else
--		finish_wait(&rbwork->waiters, &wait);
-+		finish_wait(&rbwork->waiters, wait);
-+}
- 
--	if (!ret && !rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
--		ret = -EINTR;
-+/**
-+ * ring_buffer_wait - wait for input to the ring buffer
-+ * @buffer: buffer to wait on
-+ * @cpu: the cpu buffer to wait on
-+ * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ *
-+ * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-+ * as data is added to any of the @buffer's cpu buffers. Otherwise
-+ * it will wait for data to be added to a specific cpu buffer.
-+ *
-+ * ring_buffer_prepare_to_wait() must be called before this function
-+ * and ring_buffer_finish_wait() must be called after.
-+ */
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+{
-+	if (rb_watermark_hit(buffer, cpu, full))
-+		return 0;
- 
--	return ret;
-+	if (signal_pending(current))
-+		return -EINTR;
-+
-+	schedule();
-+
-+	if (!rb_watermark_hit(buffer, cpu, full) && signal_pending(current))
-+		return -EINTR;
-+
-+	return 0;
- }
- 
- /**
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 4e8f6cdeafd5..790ce3ba2acb 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1981,7 +1981,8 @@ static bool wait_woken_prepare(struct trace_iterator *iter, int *wait_index)
- 	mutex_lock(&wait_mutex);
- 	if (iter->waking)
- 		woken = true;
--	*wait_index = iter->wait_index;
-+	if (wait_index)
-+		*wait_index = iter->wait_index;
- 	mutex_unlock(&wait_mutex);
- 
- 	return woken;
-@@ -2016,13 +2017,22 @@ static void wait_woken_clear(struct trace_iterator *iter)
- 
- static int wait_on_pipe(struct trace_iterator *iter, int full)
- {
-+	struct trace_buffer *buffer;
-+	DEFINE_WAIT(wait);
- 	int ret;
- 
- 	/* Iterators are static, they should be filled or empty */
- 	if (trace_buffer_iter(iter, iter->cpu_file))
- 		return 0;
- 
--	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full);
-+	buffer = iter->array_buffer->buffer;
-+
-+	ret = ring_buffer_prepare_to_wait(buffer, iter->cpu_file, &full, &wait);
-+	if (ret < 0)
-+		return ret;
-+	if (!wait_woken_prepare(iter, NULL))
-+		ret = ring_buffer_wait(buffer, iter->cpu_file, full);
-+	ring_buffer_finish_wait(buffer, iter->cpu_file, full, &wait);
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	/*
--- 
-2.43.0
-
-
+Best regards,
+Vitor Soares
 
