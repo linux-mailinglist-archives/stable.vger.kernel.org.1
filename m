@@ -1,225 +1,114 @@
-Return-Path: <stable+bounces-27178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2D876AF9
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:57:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E984D876B0B
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 20:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2367A28277F
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 18:57:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7DA1F21C9C
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 19:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48485788F;
-	Fri,  8 Mar 2024 18:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kf1JhdDm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A5B58AD9;
+	Fri,  8 Mar 2024 19:11:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967BB5646D;
-	Fri,  8 Mar 2024 18:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E189356473;
+	Fri,  8 Mar 2024 19:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709924237; cv=none; b=updM53HJZh6J6OWPPytaFFedgiFG4ni5CYnzP5Xal49ICA+UlWViVB3fStLWf1a6J+KLCOj6+KrLjX38hHr8L4zTEqJhkBG80wyuLMLVcGHDGVjnDr49IQkEWC51N8MaVGP+qewbWUSi6DaWxpHOeR8tI1OrmXJA4KX8T5aQhFQ=
+	t=1709925076; cv=none; b=M6Ylgyy4uJUynZvwqsX6iYtxITzSAgHOaf20ZYLS97BrmRDMBcR73rPCPfWF3Dd3iU1O9BoK+keEl1DUGnlcTAp30y/rcwU+PG5amWqpqHCUgPsTKQNIB9DMlasspaukPZlE8+o3lVBHCWpl6RTV938ej5DxAAScjKOp66NJPMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709924237; c=relaxed/simple;
-	bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=W4n/hZTsHN+VC8AixolMqqnFffaF9K2zxGqeFeBSrphPC1kRwUNlEeIQTV3TAGRFbM+o8y/t1R0hbgwNEWtC2AvIEpwYHPP+oT7ja9Umht3mO4P7oy77UgAeQU65VnatbmsVTADwhux3piuiqjj4rmTGe8anW57oHX+lct+XSlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kf1JhdDm; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-51364c3d5abso2712221e87.2;
-        Fri, 08 Mar 2024 10:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709924234; x=1710529034; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
-        b=kf1JhdDmJlaIpU3VBjzwGeFuen+DpVS85iCt+qThum26VQjL24HD3GfvVi/oRJ4W9H
-         4gAhfel8QrZutSUBTQHyBasYyk31ujPeVmTQrJO0O8/9xb5rwNStMMVkcCXIi9jwTsr2
-         GyZJPXGuBpclSqdzpKUMtGoATf2M/8EA1j3KU76xPCQz9FieGRJU65/Z7Wp09aFTLu9H
-         KrMZ1Z/NrSj2hy4v1FUQ0qBEN4rQtQnFRLYjWPbJcpemtwcXTp+5uuCcvr3x7PqmGd+f
-         YLVPGXeuDNKjo9LaO4VQ0a+VP9LiokOldWWlw1LJdzDU/Wg1ZRJR2V8skrqzTgTA8On7
-         Z5zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709924234; x=1710529034;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FJgFmqNXVg7ulbIhGqVx48qvgnBGK9ovdaTclrAmH14=;
-        b=dUvRA1IB6wWXSrepokSXtQKykhydK5zxWIG3ubQKC7gCzY3lohv5QmPJNfcTkZTmY1
-         RY65UU7GP7eS7gV+BGSoqf+rCCUcKhsbQQXenaCE6k0JU7MwPR1pJn4ngb4qs6oyIfIH
-         kWZUGSrInH6N9J3nttGVOO78+IvVCygBSEudAaMDr4tbOLuVoj8bgdK6LtQ6OCmYMDmq
-         c3VC0YqppuytsF9Y/dta5ZH+cOBjNCs5ZBEyv3XImGJp27Vq66lOlUxoWCRu6iGJVUKq
-         7QJGswn1Zjze3QE2X1P7g81hsbTp+n9LAo3vyrlGJWla2jf1fy7HEjS1QUKeqBGSnb28
-         f1zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWyfT+S2NCPWzTmVpXUfz9pB0ShYTVizucjFwonQT6OZikJpAcIoYJYss+bz4/0BPwuWKQaT4wBNQLryah019vKE6gIcjLAZMy56jH1hq0VtiGi+IE46W1VkTAPYw++3tclwRsdGToUhtp/1dF7rv3hm1XW6aUzjbYVuixiKLzdWbxifwOBAR/cGpWxZ/nPmnT8rgmt0BG
-X-Gm-Message-State: AOJu0Yz3JgFAN/J2AJXq1i7KjDkFPf0+YKtkh2P9HwIjJeeHmmzQbTw5
-	5j9OlXZKWCsPQLZ/FEJ/OSEFmRlVuWOqAKlK9OEJpggatG0/5wPR
-X-Google-Smtp-Source: AGHT+IFb+l5lb3Rt/se2MEwUbkeIsA8alEVe6QpXMRmHCrxeUIUjHWtLgHUhvNRZB35lAOZhG2h2Kg==
-X-Received: by 2002:ac2:5f08:0:b0:513:1e47:bc5b with SMTP id 8-20020ac25f08000000b005131e47bc5bmr3833679lfq.25.1709924233403;
-        Fri, 08 Mar 2024 10:57:13 -0800 (PST)
-Received: from ?IPv6:2001:8a0:e60f:3100:f642:8b0a:d2f8:3e61? ([2001:8a0:e60f:3100:f642:8b0a:d2f8:3e61])
-        by smtp.gmail.com with ESMTPSA id m24-20020a195218000000b005130bbcd263sm19374lfb.271.2024.03.08.10.57.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Mar 2024 10:57:12 -0800 (PST)
-Message-ID: <e19cafe1a7933d1e35ee4715fa36df8090c100eb.camel@gmail.com>
-Subject: Re: [PATCH v2] can: mcp251xfd: fix infinite loop when xmit fails
-From: vitor <ivitro@gmail.com>
-To: mkl@pengutronix.de, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>,  Thomas Kopp
- <thomas.kopp@microchip.com>, Wolfgang Grandegger <wg@grandegger.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, linux-can@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Fri, 08 Mar 2024 18:57:10 +0000
-In-Reply-To: <20240308151523.191860-1-ivitro@gmail.com>
-References: <20240308151523.191860-1-ivitro@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1709925076; c=relaxed/simple;
+	bh=5iYekLuVg5uyeI7ptQHbUlgVXer2/uWfi4AzNIce3mo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jh7LU1cTYBpKCERt/RywD5uYeIWvvJRSmx3V1al/i/DdFIP8e6H45yV4j91U1ouN3LPSG0TTFJfJd4fSdBWks9fPKqQl/xNNX+2csYGj7Hbae6UIcPWvwi1EDEBPQGmDxV4s1kPAxANJCRe4nMrgB+Y1zXo6p13dKOEBjHo5uO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26841C433F1;
+	Fri,  8 Mar 2024 19:11:14 +0000 (UTC)
+Date: Fri, 8 Mar 2024 14:13:11 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, joel@joelfernandes.org, linke li
+ <lilinke99@qq.com>, Rabin Vincent <rabin@rab.in>, stable@vger.kernel.org
+Subject: Re: [PATCH 4/6] tracing: Fix waking up tracing readers
+Message-ID: <20240308141311.03eefef1@gandalf.local.home>
+In-Reply-To: <20240308184007.805898590@goodmis.org>
+References: <20240308183816.676883229@goodmis.org>
+	<20240308184007.805898590@goodmis.org>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2024-03-08 at 15:15 +0000, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
->=20
-> When the mcp251xfd_start_xmit() function fails, the driver stops
-> processing messages and the interrupt routine does not return,
-> running indefinitely even after killing the running application.
->=20
-> Error messages:
-> [=C2=A0 441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit:
-> -16
-> [=C2=A0 441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not
-> empty. (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0,
-> tx_head=3D0x000017d3).
-> ... and repeat forever.
->=20
-> The issue can be triggered when multiple devices share the same
-> SPI interface. And there is concurrent access to the bus.
->=20
-> The problem occurs because tx_ring->head increments even if
-> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
-> TX package while still expecting a response in
-> mcp251xfd_handle_tefif_one().
->=20
-> This patch resolves the issue by decreasing tx_ring->head if
-> mcp251xfd_start_xmit() fails. With the fix, if we trigger the issue
-> and
-> the err =3D -EBUSY, the driver returns NETDEV_TX_BUSY. The network
-> stack
-> retries to transmit the message.
-> Otherwise, it prints an error and discards the message.
->=20
-> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip
-> MCP25xxFD SPI CAN")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> ---
->=20
-> V1->V2:
-> =C2=A0 - Return NETDEV_TX_BUSY if mcp251xfd_tx_obj_write() =3D=3D -EBUSY
-> =C2=A0 - Rework the commit message to address the change above
-> =C2=A0 - Change can_put_echo_skb() to be called after
-> mcp251xfd_tx_obj_write() succeed. Otherwise, we get Kernel NULL
-> pointer dereference error.
->=20
-> =C2=A0drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c | 29 +++++++++++------=
--
-> --
-> =C2=A01 file changed, 16 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-> b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-> index 160528d3cc26..0fdaececebdd 100644
-> --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-> +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
-> @@ -181,25 +181,28 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff
-> *skb,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_obj =3D mcp251xfd_get_=
-tx_obj_next(tx_ring);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mcp251xfd_tx_obj_from_skb=
-(priv, tx_obj, skb, tx_ring->head);
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy the=
- complete TX FIFO */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_head =3D mcp251xfd_get=
-_tx_head(tx_ring);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(tx_r=
-ing) =3D=3D 0)
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0netif_stop_queue(ndev);
-> -
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0frame_len =3D can_skb_get=
-_frame_len(skb);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D can_put_echo_skb(skb, =
-ndev, tx_head, frame_len);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!err)
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
+On Fri, 08 Mar 2024 13:38:20 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
+
+> +static DEFINE_MUTEX(wait_mutex);
 > +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head++;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D mcp251xfd_tx_obj_=
-write(priv, tx_obj);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err)
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0goto out_err;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0tx_ring->head--;
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0if (err =3D=3D -EBUSY)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NE=
-TDEV_TX_BUSY;
+> +static bool wait_woken_prepare(struct trace_iterator *iter, int *wait_index)
+> +{
+> +	bool woken = false;
+> +
+> +	mutex_lock(&wait_mutex);
+> +	if (iter->waking)
+> +		woken = true;
+> +	*wait_index = iter->wait_index;
+> +	mutex_unlock(&wait_mutex);
+> +
+> +	return woken;
+> +}
 
-Missing the stats for dropped packages. I will add on v3.
+The last patch adds this code after a prepare_to_wait(), which triggered
+the warning:
 
-> =C2=A0
-> - out_err:
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR =
-in %s: %d\n", __func__, err);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__,
-> err);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0can_put_echo_skb(skb, ndev, tx_head, frame_len);
+  do not call blocking ops when !TASK_RUNNING; state=1 set at [<00000000797e3e20>] prepare_to_wait+0x48/0xf0
 
-Not sure if it is save to call this here.
+Which is correct. The prepare_to_wait() set task state to
+TASK_INTERRUPTIBLE, so I can not call a mutex after that.
+
+I'll send a v2 where I switch this over to spin locks.
+
+-- Steve
+
 
 > +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0/* Stop queue if we occupy the complete TX FIFO */
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0if (mcp251xfd_get_tx_free(tx_ring) =3D=3D 0)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netif_sto=
-p_queue(ndev);
+> +static bool wait_woken_check(struct trace_iterator *iter, int *wait_index)
+> +{
+> +	bool woken = false;
 > +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0netdev_sent_queue(priv->ndev, frame_len);
-
-This is not correct. Should be called only if can_put_echo_skb()
-succeed. I will fix this in v3.
-
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
-> =C2=A0}
-
-Best regards,
-Vitor Soares
+> +	mutex_lock(&wait_mutex);
+> +	if (iter->waking || *wait_index != iter->wait_index)
+> +		woken = true;
+> +	mutex_unlock(&wait_mutex);
+> +
+> +	return woken;
+> +}
+> +
+> +static void wait_woken_set(struct trace_iterator *iter)
+> +{
+> +	mutex_lock(&wait_mutex);
+> +	iter->waking++;
+> +	iter->wait_index++;
+> +	mutex_unlock(&wait_mutex);
+> +}
+> +
+> +static void wait_woken_clear(struct trace_iterator *iter)
+> +{
+> +	mutex_lock(&wait_mutex);
+> +	iter->waking--;
+> +	mutex_unlock(&wait_mutex);
+> +}
+> +
 
