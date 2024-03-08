@@ -1,327 +1,216 @@
-Return-Path: <stable+bounces-27125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDB4875C5F
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 03:41:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79A0875C7B
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 03:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 060E8B21DBE
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 02:41:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991241C20FF7
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 02:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BEC28DB3;
-	Fri,  8 Mar 2024 02:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC90F28DD6;
+	Fri,  8 Mar 2024 02:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="EvzK9J/n";
-	dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="cDLl+BPx";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b="f+cloPI6"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Q7TsLwun";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="EO2j1sbR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00230701.pphosted.com (mx0a-00230701.pphosted.com [148.163.156.19])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836155C8B;
-	Fri,  8 Mar 2024 02:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171922F1E;
+	Fri,  8 Mar 2024 02:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709865683; cv=fail; b=MRPTm+UW2AfhneRl445dTewoQ17pRx8Djw4d/2qbEZa1A8+1PrrTIRL1BGvfvJpntKyME14aOER9eG7V6FLnNFa9ToXYdS6AMLLMc86ciMHqtGgwamPht6epRIWB+3H6e7c0MUaxWy12fDPrRjyUsb0q0h2Orz8TrgMYilNkw6E=
+	t=1709866045; cv=fail; b=TrvEX4Lwh1gEoIdQbanEGpNvZ/YYDkJ0BuHG7B5mRAhHdMTE/WZJXNyRPQqj0/idh4wwSC0Y3FwfnR012RMzRdfElQsJ0HgoCPVCcGHRa51hxmj6ADrcHbP6z164SGyHBuncT9W1VgYm1pCSD6Ye1yJvnvwlbpJqez7fh1898L4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709865683; c=relaxed/simple;
-	bh=LndmdE5mjRQ1pPwvPw8AfNt5+/i5sdm2WbFeFs8dV4s=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=B5xWbTDpoT0ekYAfTgwoOvAujYJv4kPq1r1WtBIxaMtDquGuPQXa//BU5oKFIokhBF1ueXaPb5j26t0U4PB4Mt6p5wVxdB6mUc0gs63TGas4ZDzSJa9uaR8xaonkCU/cQg5CQ7yQYEuxquZGFH37a3Y9JcvCS4BmgAZB7x9fmJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com; spf=pass smtp.mailfrom=synopsys.com; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=EvzK9J/n; dkim=pass (2048-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=cDLl+BPx; dkim=fail (1024-bit key) header.d=synopsys.com header.i=@synopsys.com header.b=f+cloPI6 reason="signature verification failed"; arc=fail smtp.client-ip=148.163.156.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synopsys.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=synopsys.com
-Received: from pps.filterd (m0098571.ppops.net [127.0.0.1])
-	by mx0a-00230701.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 427Kpxok004401;
-	Thu, 7 Mar 2024 18:41:02 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com; h=
-	from:to:cc:subject:date:message-id:content-type
-	:content-transfer-encoding:mime-version; s=pfptdkimsnps; bh=pQL2
-	G3moONdf+8UUNqoLHEKYdqMpnqB1RL9pj375100=; b=EvzK9J/nCW5YTgB6n2/2
-	Hf3opyuQuXUwniw2KKR5hD/C7t1kplCVZ01xtYfvFOQCvlIRnqTkh+wb1F/7sW8f
-	TEQEtZmjewjOFqyvAc2RhBHl6pOKCrVr4sKG/VKHF1za3JV/3yiXh59C3B6TeOxL
-	qgNwXuLOqHMHEuN/Zy9utk31JqoxSetywDAsveiMtod8nI5WaM17G5vN0ONrRze4
-	urRNyMQjkJXmDfdB6moWuQMq3Mmk8/kR1rfQgxWZwo9wHaSk+uXO9RDF0ColV/c7
-	xz1tJCiTlZwMgjzI2IXOKa6kRbymqq6AKBTLfqGj4MExlqFNEIVoYTPlE1t9P6IM
-	fQ==
-Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.73.133])
-	by mx0a-00230701.pphosted.com (PPS) with ESMTPS id 3wm40qgdt3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Mar 2024 18:40:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-	t=1709865631; bh=LndmdE5mjRQ1pPwvPw8AfNt5+/i5sdm2WbFeFs8dV4s=;
-	h=From:To:CC:Subject:Date:From;
-	b=cDLl+BPxl+j5UtXbA9mQPsaY3e0hRgz7sR23yodpfgfy9R8IbwOiKllAKArz+iC6Y
-	 iZDfetL63uZUOZpK0aX1EG9OJTcXC0GUaFBYRBfE8t4POPD8MQPqDwcPM+Pas8Ri9B
-	 VJKwNiU4o8b/kzlfEMIJUbyTQOPLFOvGXeG5um7TzAqmWinIaCqO0BBCPwnI7TjUNe
-	 QFXv3fVcdG6Rm0kMOc/4hXxwTXrRiL0RujraL7sFSPn65i8cipujAL/642Ew3JOetD
-	 ygcnq5YOjNWwANlJHPBdj+KlVRHF8x/5+zKnuHjwRInAPV3Ccr7xTnnCFy9ydMgNG8
-	 Ju158h3SEBArA==
-Received: from mailhost.synopsys.com (badc-mailhost1.synopsys.com [10.192.0.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits)
-	 client-signature RSA-PSS (2048 bits))
-	(Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
-	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 5BECD4035A;
-	Fri,  8 Mar 2024 02:40:31 +0000 (UTC)
-Received: from o365relay-in.synopsys.com (sv2-o365relay1.synopsys.com [10.202.1.137])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(Client CN "o365relay-in.synopsys.com", Issuer "Entrust Certification Authority - L1K" (verified OK))
-	by mailhost.synopsys.com (Postfix) with ESMTPS id 0BD2CA0071;
-	Fri,  8 Mar 2024 02:40:30 +0000 (UTC)
-Authentication-Results: o365relay-in.synopsys.com; dmarc=pass (p=reject dis=none) header.from=synopsys.com
-Authentication-Results: o365relay-in.synopsys.com; spf=pass smtp.mailfrom=synopsys.com
-Authentication-Results: o365relay-in.synopsys.com;
-	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=f+cloPI6;
-	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail.protection.outlook.com", Issuer "DigiCert Cloud Services CA-1" (verified OK))
-	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 2A88440235;
-	Fri,  8 Mar 2024 02:40:28 +0000 (UTC)
+	s=arc-20240116; t=1709866045; c=relaxed/simple;
+	bh=/LWQydewJIADno1exfk0OFSWPYva+DcrFQByI+5vE0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LIc+3NiNTwW+BYbgIB4XLlHK+t3HpDmljeH88Jz/UP240BMewGRD69FGaMEQNSlSQNMtMHWXfj1EBek8V84WGqvhmtzXNFoA734BU2gRRVZJVXogSUj3kgCRthMWFItdqKaQ788kZPbIW/WPFL3PCveyDfhs/sMmgg2KXB5dFWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Q7TsLwun; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=EO2j1sbR; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4281iJ4i019928;
+	Fri, 8 Mar 2024 02:47:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
+ b=Q7TsLwunF+zn1FHybOLsprCxQM7Mf1g+/E+OnV4soGJvNaI0/dY/q4cM0pSaTCxsbmTB
+ y73+KuI3vfxWUh/pJu2GONzrWufSOlIiJDmvn0dF3hp+hzm/3Q5gsJFOI/f+lSagojV5
+ ZTxfMqd+q/luffEpy10xiKxhtwaZdI9gI6zJrOOqI1MdS47r88BpsbXK/NvcX0Nmvka1
+ NM+gsA2RK7hBl7r5Nht+asztXCexrOeQmLSydYZGNPghhPicdJvwXMzT8O8YVYp7kPlo
+ rMnokLhBsKVtbccaKr5k2Jsc/5TYkKVAKt1ARIYVc0ZbFCAEx4aMY5arBSSsDLmyd0if aA== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkv0bms4e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 08 Mar 2024 02:47:17 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4282e0wf016023;
+	Fri, 8 Mar 2024 02:47:16 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3wktjc58fq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 08 Mar 2024 02:47:16 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UVVnIlHbd9guJb5rBG8t1RoI6in7eDgOUKRwQuMczI2BJ8+MYNieoePT96Yktyc893NeZXiZQGIOQ+EEDV2WRMSVt+YO+y+xS1We8LCZddfSuW7ELOsbbLKD9rd1dUw2VrMKROnBazTUJz26f24HefkH53TOFciq2BJvEaxoVeraWTFZA1EU9mQsbd+bA6D6Gk9CAVnIYMccEioV2BQW9Rg1G9QsOW8xvIVdwiO86ENjdNiZzHxWNFfe3gyHGCNpH71gHCs8Z1raYOJhkiBucUjvqrFcEjTM1YlZYsAeQuXFKLivc1aoUWVth+C/qExC78jPlE1NVsP4CLz/xmtMNw==
+ b=WF0Nlt46/WLRdsmX/rugM7RNHtG6ZGEDAn94u3Yp+c1vRM8W5ITwhMbQLxuZi5eQ7mcyhJr8qj1cY/aOjzqMcglD/rPlEFJEa3Eu2P5YMGJyvz76GMHPUimC5ctk/KQnnaaOpW2ZsOLz4S0sUjSJYmv0cKTd+7F4QaQlJuSTOy2ugh/yfH56OnNZQuHmxnkA9THnEXnMj7gwBvgljKcFE0JoTeZrWOijsu9YyySTS9d9CbjLKa+Z5tmFqI6oFBPY3s86klmL6bokxxAhIMIP7jPtDoe0w2HSbR/3dxOxzWfa4uvHgFaDHXFNHkEefqCMCi9zT4J213ekZkjevAEZyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pQL2G3moONdf+8UUNqoLHEKYdqMpnqB1RL9pj375100=;
- b=RCuqSDGMGRtFcdQaIOzEpMm/qNq16tHpLS6/EAjn6ul1pzfyR6PSfMkhIcoEbWqqMMnXb9x2HsmPa1b6RPjmN8iCSMiR0d1PaFUNol7Od5He2NSqPVnJH7JFNqB9DSH4jTjvyt2kVmP+JXC76kzgMlPjSZuOmIg7P0WAHlCySFcK8/NuNBUpFVxswYdTfUGGR02ddOrppqRxZ105Yexb6947+HmWrYntLqZFWH5dCNMjJrtNIKz46vw9M87Ty1KArwRa9PyRfDo5cDx1SyBkWPszmH58Fzp4ms+w+ZNPqo7+cs18SApef3Wa7gultkK5fBogt8YqVdEwrkwoJnu/zg==
+ bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
+ b=hHXiCM5vb3Y3gfQ2kw1/J5QADUU0DNkHGl5Or+BoW3HfUq/YlN00yGcJeKrHE3lMgYHnM8BVbz3UUzxiwyeaYPvBPe8Maxrwrq7G4xWlYn2H+BgH1c47HagUrkjzKiFAtnVzSoitAsBSg4bWxH1Y8CXH0vRTee/yabfNHYeBrywZWxkJovR6lXYnNTGkpm0ulTI/uGLgQWXUU+jjXRPavYIjAbjLNnpeGXaquNVQACD6iAguF8CmWZKlBmID6zbvoKfas5w4WcWeHF4dNBA/7Mh2vbLPmzTE/eenfqUse2EtfCB7AViErBiF8a8/Z328GWD8FWwvhXSG1fGNj+Ajhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
- s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pQL2G3moONdf+8UUNqoLHEKYdqMpnqB1RL9pj375100=;
- b=f+cloPI6Bqhp1LqSp47HO+uYIyADQC1+qeNVr8iu44jP7JsYUI9utBuHEwsYWm5c0uHDuGoKypBxdYWsJ8VDzsTRplEVN2m90pNcG559xUicdBq2afMOnfGTHdjpfHO+mA+n4FTiP9l9oUmWoaU8omnqIumKsIjoePENJ96kPVw=
-Received: from LV2PR12MB5990.namprd12.prod.outlook.com (2603:10b6:408:170::16)
- by IA0PR12MB9047.namprd12.prod.outlook.com (2603:10b6:208:402::8) with
+ bh=R3PVBIAux8MTABMox4QWz0iKyPZ4dD7DWEKJghbhDCs=;
+ b=EO2j1sbRHmqFWun8b+NUI8B5E7TkJi+LKq4Wf+UfFcfDIlkBFhdsXh8uhqgGZYSfx3VpxWx+AZsHD4Mop4EaxCcq4Gfmia6+W2gdzHh9Ky/u4x1dLJ1cMwllJ7KIAyTTBUjDBu1j/xmiCuFCyUZkezx150yoXBRNU3SITsDehqo=
+Received: from PH0PR10MB5706.namprd10.prod.outlook.com (2603:10b6:510:148::10)
+ by SN7PR10MB6405.namprd10.prod.outlook.com (2603:10b6:806:26b::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Fri, 8 Mar
- 2024 02:40:25 +0000
-Received: from LV2PR12MB5990.namprd12.prod.outlook.com
- ([fe80::c87:4fbe:a367:419c]) by LV2PR12MB5990.namprd12.prod.outlook.com
- ([fe80::c87:4fbe:a367:419c%3]) with mapi id 15.20.7362.019; Fri, 8 Mar 2024
- 02:40:25 +0000
-X-SNPS-Relay: synopsys.com
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-CC: John Youn <John.Youn@synopsys.com>,
-        Guilherme G.Piccoli <gpiccoli@igalia.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] usb: dwc3: Properly set system wakeup
-Thread-Topic: [PATCH] usb: dwc3: Properly set system wakeup
-Thread-Index: AQHacQH5WA93E3+nbk+4E8/DCd+zxA==
-Date: Fri, 8 Mar 2024 02:40:25 +0000
-Message-ID: 
- <667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV2PR12MB5990:EE_|IA0PR12MB9047:EE_
-x-ms-office365-filtering-correlation-id: 9d9eab1c-c8ea-4289-81e7-08dc3f191bc9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- DtlkYZSpMEQtBmm7fu1kYuo+oKRZe/+XNs7dwriOd/9rE+cYhDtiIq9i3UT4D2iSjC1nsaCirxu0xHUcYwRno5xF8Jr56i6ZnrL5WdmNnx1VHX+Y1JEG2UfQrOTjX4eQIwKlX6tycXk3HXEl5Jr3nro5m5BsCSTFaln/puX3/Wa6LrcDQc1JS+w0ftT3Ns7NmjCh7gXs8+4iGkoun+1BZO+A2CAUN+QTYI5ofoAtin9fzCFHw3LVt7KE7ZW8pfy4pJaLwVE3Rg/zDhjyfLpNKeGLYhZAOcBWopdXg7HmD5Mn6Qw0J62N7kGpZNojBO6W6llSN3raM0GCIWtBovcvi5gZIIxishWOHCxSG71JUNT24Bj4KsdoZiyqGt2pJe2qDPv2q3KUgoj0+X7chd+VVHhdBdD7UBwAul6bVw8WoZhhwRxPnhrTzsSlbY+xiOwoT+Kpknq8WITVeZSf7xJC/z4He7+gLdmDIWyBwR3/c//ZoYuQqKdEWrHw95wO9S3WkArLhfrnTZi7cehuUUy+ivfDjTtNYkSSto4SURul5rq55YTUaTDNzk/ykHwbb4OKpaV8cDDe+OD9XSD2s99YY+9sgLRqulukI/2kqxldeSvTKUD43476pTs1PxUxeUHgtUo35SGicTf4371orQ8h1OiyV5xi6zOp4by2NzjqXus=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?oqs5/34LwxixLgoZ/RTk83o1hbmA30s6WAJKMFkTNc6lmak3RTFvg5XHof?=
- =?iso-8859-1?Q?Znkp7WXc0rfEs0nkruqwaFyS5azYEbhQJy9GzpSsAp9aDjvKjv6CJwhRkh?=
- =?iso-8859-1?Q?DN8H12GJevCngbIIkulCT4Ix+mWo4A5oFsyLm8lc5/5SDeY0eKLY3ABoLv?=
- =?iso-8859-1?Q?gHpU2tstfmyApARAlPKF8DECBsvexs20/PLStwFEBRrv6mGlQ8SLETHsPW?=
- =?iso-8859-1?Q?TgaVDd+z1CeM4jSANiVzc2IU9VgGoktrydq5GYuCDh++WmXzenGSlRQ2eC?=
- =?iso-8859-1?Q?DT5lV8Eruy5Oy5lGPMtIB1Wiph0ai39IVBDbzQt1Af66rBtOJN3tYOzt4Q?=
- =?iso-8859-1?Q?YCUtiMn79MWhA2hJc1yotWne5cZGKuGTabCkdAjrdTUOAWTuq/rc2iLyR/?=
- =?iso-8859-1?Q?4tUCnKP0EjTO4ZJcmxEPlgVoG0t6GcvmeLhMFoKZ8orsjaQ8osIQdy0Jjf?=
- =?iso-8859-1?Q?2usR53rg96ccKjbqPSX/YRNL/uB7Zb5c23y8sQq1YIY2xZbKLg/7+7Za48?=
- =?iso-8859-1?Q?oczFWmUnZNQdwCF8rCD249MHOS4A5ROsYkytgqdtPNShnXT9nJ6jmQHyMT?=
- =?iso-8859-1?Q?eSgo53rOSx12OlcNa1PkN4C/V+OYKkn4x6kRWWwhxM5nvAE+Na17R8zrz+?=
- =?iso-8859-1?Q?Y4Exbtl8xstPCEsZJwqfnWwRpQqIdtu8p/ke3Gh3J/ZM0OhCZ5pwH3A4ii?=
- =?iso-8859-1?Q?PZ7fF2AtQjQLNpjLqORH3yLVE0hDl3lyfCHxLTC2nZtFLrJwFq6uyypk6z?=
- =?iso-8859-1?Q?Y+XcBqCcqbfvfxFTYTBMqnaHQXTx57cNjdvdLsNqzapNSKJDnJkUcNPw6p?=
- =?iso-8859-1?Q?Dew4AR7gCAfX/GgwrhMN34Zw4CGtK2TlNEoUYhu6PJj6Rc5XV6X8Frq7fp?=
- =?iso-8859-1?Q?lsJ6IhoVJ763sLtmhcvo/jLIqyqYSLuzs4sLBPN73g2x35Cg2kx2U12bU2?=
- =?iso-8859-1?Q?lpDcFljFqOlSQ4EJQS6Z9yyOi2dqshG8qs2yTa/1sYbFuN3dgqeUveXbY0?=
- =?iso-8859-1?Q?/nSmt4TtNOVRrnjpEyhKtyafcm1ehyQimhOOVbgce511tYOp5IjdePUZDZ?=
- =?iso-8859-1?Q?GqgHL0oZ+cwKKCN6TDLC6r13ShiOJpcvWUCoPqP4myHT6Z2/Ww4aRHxekQ?=
- =?iso-8859-1?Q?xrj5PXHXPKvKZ30TqF8TWux6GfmF+sYcfa/pHBuexkpTH4uArwvHJi95MP?=
- =?iso-8859-1?Q?ykygNZ678d6c5DfVAlpSRiVZOSVkHkSsEqcERUsHJmQHdGKxGteuGLJUs+?=
- =?iso-8859-1?Q?VeS1EaH9erc/R8GAUyMGck2VuyKJWeGZG2RdbEoc5QYP3eWzXgxJ7/CNBF?=
- =?iso-8859-1?Q?F9zSmEc2VjgK1BO9urJAM4wFwrR09qXnRGKAvERCfgSy8IkYWoq4Hmn7Aq?=
- =?iso-8859-1?Q?sBFwlcseUtLddSIgO/RqZRAOqeB51gVoBkfgZEsR4rJEO//+R9DwVdmQ7j?=
- =?iso-8859-1?Q?Cm5YUX94vjFGkKTekS5Twludcywt6VZK70dTBRtWtADl/YXHWiWfYy/KbL?=
- =?iso-8859-1?Q?Em2PQDhYL7WKUJ6eTPO+Mk8uqaFek0jfL/1/pbREkHcUYAlYhUwpMrUcrH?=
- =?iso-8859-1?Q?eacndHOOG6zAg9t1DPGT+Ziu9NL3JSZlDIxArnItXpl2Q5VQtaqgk3sY8e?=
- =?iso-8859-1?Q?7xiaRcJQTlhFo674Q/r3f4VMPCHaUokD35?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ 2024 02:47:14 +0000
+Received: from PH0PR10MB5706.namprd10.prod.outlook.com
+ ([fe80::814:3d5c:443b:17b]) by PH0PR10MB5706.namprd10.prod.outlook.com
+ ([fe80::814:3d5c:443b:17b%7]) with mapi id 15.20.7362.024; Fri, 8 Mar 2024
+ 02:47:14 +0000
+From: Anand Jain <anand.jain@oracle.com>
+To: boris@bur.io, dsterba@suse.com, linux-btrfs@vger.kernel.org
+Cc: Anand Jain <anand.jain@oracle.com>, stable@vger.kernel.org
+Subject: [PATCH v2] btrfs: validate device maj:min during open
+Date: Fri,  8 Mar 2024 08:15:07 +0530
+Message-ID: <845dfb4fbf36dae204020c6a0a0e027cab42bcf0.1709865032.git.anand.jain@oracle.com>
+X-Mailer: git-send-email 2.42.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA1PR01CA0178.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:d::7) To PH0PR10MB5706.namprd10.prod.outlook.com
+ (2603:10b6:510:148::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5706:EE_|SN7PR10MB6405:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c36fdf4-e12a-493d-0c26-08dc3f1a0f7f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	N7HzqLZnTjets76zEiqGWI9H3t0Oa//9H4Vd0QkEF/MQewOtyck/wEzjanv7Bb43CPq5Zq+9Ou2T8mz+03cgVH2jDgUqx+6MrStv/567Uzlk6q42f7ePhclmQXSVHWe5cuchtB0HfptjNqhVfDTAfPp7CpuKAATJblxxgo9sZK/SAd8nOeixle4mtJ1yeO/JjNx8Hmhw6eAIeCgS3elfEZNehojnDy8Aa+zslKzOXHxkdzm1ta0wbXsH8gNuj3byHLUM+IluilM08MCTHk43im+5g/e8gp4FOHtaV1AjOdzo+qJJddd1j1xfQg5n+WTq1wfOk298JU27gwaEEwB6H8FOwO/p9UOL7H3Gynj8GLoFiJjHSy9je0D/QxkYTJ0+ezc9iVfcXZUN9/yodmEjUqEaiVSLljQBLJTgCczvK4XrQu3nI6+JndF/4qufkK8AbbufMV9mPuuH5If1P/pscaOgw/k2b1/pE+nAMsXnrW1VeiPpDnmafFsSuJxQCCTqpFgZ5+SKujSsb5iBRjkqjn51OUMdhdQ8ShWxEWOJ4aAp5O2Haypm/r6jWVHCeVc1AY18i1ABAXxfxT47LY8BgrFgiSoh738ARsjXUDlLJUY=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5706.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?UXbbFm5S8KyqSDioESA8OK2GPzKqDlAOK6FfhssK/Gg+S/DqY8qvBjwt9QMj?=
+ =?us-ascii?Q?mX2SMDP0VlWf+E3DYlzVmJTKxPuIjQIqRsU3iCHAw4ncemPyoZtDSS8qfyLC?=
+ =?us-ascii?Q?+z993Rn0cMz8eA8c89UxNuWOFjfrkQFZKOeGBnlqwxhDRe43nuITwZK/PFOx?=
+ =?us-ascii?Q?VNda4szmg4bdfNdl8EjLWAaq2G/Eq8DW2lAxkuu4SN6T5CElkEQmhesy7f/G?=
+ =?us-ascii?Q?XAnuLXTNRzuET/LCL4CgmqoKD3SaU7lOX1TCv5wZzVYc2oqnl31BMP/4IOzm?=
+ =?us-ascii?Q?ljv95seWJRuddwAXGjmnyFtyKOFD1ankk/Jq+zrJtH/y1Hi76mT4pX2vl1Zh?=
+ =?us-ascii?Q?ipE8hoQcyBXhCHe6U5xJV+Q0G9Mf7Eow5tDXQGd7cIuzo11mZ3RiEtiIxmXN?=
+ =?us-ascii?Q?HSj//J4/OYNyYlfjscqmBFjTzIaKNYwvyVNnAwZC/ZAtjotR2ku+T3c5+fqi?=
+ =?us-ascii?Q?IqEhydZSL3U4RncXDTTxKsO3BuOED9cjNEHR+pVw6pzu9dyC7mX0WldC8MBl?=
+ =?us-ascii?Q?zCxnlkfAyRhF8yiA22MwNdjXsrdv4Nw72mUi7Dc+P5v0ZcvMX8sEUyZj7bdK?=
+ =?us-ascii?Q?C7LxnlOjsahXuCAjwJgr7dFQXr1/R4dwwnsnWVqFMyvId6/wg394UsggRnMi?=
+ =?us-ascii?Q?OiUSTrdUSvYRQPCGrvIC5pve2EYIWoI/HkQQd05CNSdqBQl0TzzGF1eHWrTZ?=
+ =?us-ascii?Q?aoLN6CpTDd9KyTYg8qVvlXFbL8DHuN3x1b3uVpnupqheOJzN0oDYGWVszZ32?=
+ =?us-ascii?Q?jehjBe2S9eNR9ooD8hRZbmXeagmEc5GXKclR/xthu+YL9qUYHqdVxidA7IXY?=
+ =?us-ascii?Q?Map3I74C7mRrK+s8t6Q1ha8SmVGxJWzhCTm0RNtw5V2wtMG3nOHpqkjMlc6g?=
+ =?us-ascii?Q?mGN61OX6Nzn660W0jt5N0mUkEFIuufynzI/uggVtf51LvhtfSSTAmgUx2DHX?=
+ =?us-ascii?Q?FkrQgPCDYC3CCz8RzIM0cAw5/dKGQaHu7sfqaqhpORWbOtMcFAWcb0CQTnHB?=
+ =?us-ascii?Q?IlBYIQbQC9VLel1TwPX2gC0zt7nLRmAJ9T2BE2i+/TGMsDu6TlVKDHdGxDZY?=
+ =?us-ascii?Q?zuM3EmiLoWy/6a6YMa4d0zPkLXuvLyadY1Uy0b9JvWqtQsQixk8th9BHj+gZ?=
+ =?us-ascii?Q?OtX2KBD72AGNAaasye4CXetouJShLvZr85pSFixj0m3xHBlA8+xfoM7se2YN?=
+ =?us-ascii?Q?nKU9CPwxYXCk47p8VKZPFYG/Pt9+abkXoOuc8DO4H6ys2Ulv5xlnQDwsctxT?=
+ =?us-ascii?Q?RpDLoCrR41GRuEzW8ltv7kMZ3A5AgOnMWJsDTwgpXOdUpn3le4jnE1X1McQv?=
+ =?us-ascii?Q?VgadNYnttGrYA0nAOl3tK2qGhbf42HNUcdsDCXU3zjpuJIM+GyIdmPeDvkQZ?=
+ =?us-ascii?Q?eDQhgaQABuNDC/jg90bunPcO+CLvykgL+BfnvOlhr9k+mPCcfYUQd1NxRmZW?=
+ =?us-ascii?Q?kI16e6NS+EuVR7U+KXmwBieQczTA7ma2oIyHz/jXtKE1YxSbltlh7llRfuno?=
+ =?us-ascii?Q?XW/iLxY1aJJ5rbiCIxbsOGdXU+aMznNmTw64kpAeqj+7I1FxoXrJhDc2+7bJ?=
+ =?us-ascii?Q?+JCDOJxY+9wOCks0Dy/V2SpNX1BWyS9BPizBuu20?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	on4X23MgZyDFq9M5LerIkrT/uYoyeOR00DMFLBsafVKX0ni/df2aVPNYH+WzNuYEu3PqDbrWwIhr2goornZjPf+RgEoRbckPjNgDgWLwM05x6Emvy6S8ep7tR9/CoBIluELMhCf3dOF0ZWe5p1SfUk2VTEFET6dAa5DzxS/D1H8u5Z7EE70L68t+7Y5Jmr5eK6+rEzS0jiIFmCxREDWI58zNcymA9CAgFJFJ0LWzIroYRQPestHPeB2pbxCiY5/m7pXmPPvaIw6hl1HvRZRm92wkqNBX+++6wQhrOvIvXfBx0z84/TmO8rpPPrIl5lgns0H7YZgnfp6hsYz+uKLZtUAHbrChrnozlQQbEUCjo5/btg22GqAG8pLvJmKBOXNVb2CeuB6zEqC0vbrr9GLaYyVBb/tpo9QEyNru914Ot52Z0rutPtNh+YUqZlywVLzKQQH/t/qA3wIJCPFTqw3n3GGrcVDuq0kQn/v5anNWGFjYMvHhhky8a5tOEG1AvDgJvpgMQYDAfXu5ldrmpxp7XVNGHbMK/LjLg7Iovh2hsbnqtuUMFnG1kWMBWfx+BxWDRPB3bxsEZkIsrtOuuIS0WTExG1gqxsvtsI3GIZR4FnaPon7VB7gYGWTOr/mj53trzVe/xljsPr7nswdyuBDO4Q==
-X-OriginatorOrg: synopsys.com
+	9Uw0fhuVsG1aphWstGjflOJnw0zpvaKDX8p4M9egFomgzggAw4GJNFbSZW+KGO4fNQX2cDg5l/qWRxD5C/v+n8ssiXzDlBvCVfNqS2UKqqDjg2odor0Gsn5/v9maQ3jKoG2sXsFVO56sv991iixP6fZc7sNT0UHZ69cWod3A3pVPJC3UGeOFM+gDNdbZVCU6k0bpHHHe8SL5S5DhrINt7dIlT5KFKh6Jx94F1s6y7NVjDWhJGGY2kLYyFPXwsrS2VQmD05EYEfd1Sr9VCFQ6DmJA6iaCqoComuY/xWRsFcJoabn+sKSFs5/mxV8tr4FrdBg49ZGme9gMbCt2dfnCyN50WBDb6adMGLVv8cJQNdTeF3Z8Yx49ozbDjDyKMkPHb730H+sNUyeR7EnVOMNjKt7/69V5FWEUo3bt3IVJgsCk70I8TDK8HvS3edDrbrx5XXCcAH/WRPifhp+24Ht1tf0FZEn4ZVeWyJSKuXNY27k8wm68XWLPmwsHPbjG3iE4mBZUNCO6kZie8/rJurX9T2LOa/LA4I+YoKS2zTPG/ijpuXz+6u7ya5Rn6Ak1NKFiJ5QVGv513dBtUc3pVaGWYEm5qfwSfS0ZDEZG3pcH2XU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c36fdf4-e12a-493d-0c26-08dc3f1a0f7f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5706.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d9eab1c-c8ea-4289-81e7-08dc3f191bc9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Mar 2024 02:40:25.2494
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Mar 2024 02:47:14.4591
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yS55g848E2GZiddrVmyQSD4GixBJ+vGWPHpKl6IOYGeebyRrXWmoC3mAZcGoHcujX3guZAe6dtJ5FcI93/bRgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9047
-X-Proofpoint-ORIG-GUID: 1KlaKqZ_GTR-OKvm_TkDbAz0_ipvXUn1
-X-Proofpoint-GUID: 1KlaKqZ_GTR-OKvm_TkDbAz0_ipvXUn1
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Iy1mUF7bZv2K34+YZ7yauKplhnocMTPbtjbQMluF6Dpf4cK7siXLta9XGgWxwgsXTISHrgOVUBatBJ9LzVtqmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6405
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_01,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_active_cloned_notspam policy=outbound_active_cloned score=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- clxscore=1015 mlxscore=0 mlxlogscore=781 adultscore=0 phishscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2403080021
+ definitions=2024-03-08_02,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403080022
+X-Proofpoint-ORIG-GUID: CnS2Ep2R4UQsDhjYfm1kwdVE0qOdT0gH
+X-Proofpoint-GUID: CnS2Ep2R4UQsDhjYfm1kwdVE0qOdT0gH
 
-If the device is configured for system wakeup, then make sure that the
-xHCI driver knows about it and make sure to permit wakeup only at the
-appropriate time.
+Boris managed to create a device capable of changing its maj:min without
+altering its device path.
 
-For host mode, if the controller goes through the dwc3 code path, then a
-child xHCI platform device is created. Make sure the platform device
-also inherits the wakeup setting for xHCI to enable remote wakeup.
+Only multi-devices can be scanned. A device that gets scanned and remains
+in the Btrfs kernel cache might end up with an incorrect maj:min.
 
-For device mode, make sure to disable system wakeup if no gadget driver
-is bound. We may experience unwanted system wakeup due to the wakeup
-signal from the controller PMU detecting connection/disconnection when
-in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
-the system staying in suspend.
+Despite the tempfsid feature patch did not introduce this bug, it could
+lead to issues if the above multi-device is converted to a single device
+with a stale maj:min. Subsequently, attempting to mount the same device
+with the correct maj:min might mistake it for another device with the same
+fsid, potentially resulting in wrongly auto-enabling the tempfsid feature.
 
-Cc: stable@vger.kernel.org
-Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77=
-294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
-Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+To address this, this patch validates the device's maj:min at the time of
+device open and updates it if it has changed since the last scan.
+
+CC: stable@vger.kernel.org # 6.7+
+Fixes: a5b8a5f9f835 ("btrfs: support cloned-device mount capability")
+Reported-by: Boris Burkov <boris@bur.io>
+Co-developed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
 ---
- drivers/usb/dwc3/core.c   |  2 ++
- drivers/usb/dwc3/core.h   |  2 ++
- drivers/usb/dwc3/gadget.c | 10 ++++++++++
- drivers/usb/dwc3/host.c   | 11 +++++++++++
- 4 files changed, 25 insertions(+)
+v2:
+Drop using lookup_bdev() instead, get it from device->bdev->bd_dev.
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 3e55838c0001..31684cdaaae3 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1519,6 +1519,8 @@ static void dwc3_get_properties(struct dwc3 *dwc)
- 	else
- 		dwc->sysdev =3D dwc->dev;
-=20
-+	dwc->sys_wakeup =3D device_may_wakeup(dwc->sysdev);
+v1:
+https://lore.kernel.org/linux-btrfs/752b8526be21d984e0ee58c7f66d312664ff5ac5.1709256891.git.anand.jain@oracle.com/
+
+ fs/btrfs/volumes.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index e49935a54da0..c318640b4472 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -692,6 +692,16 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+ 	device->bdev = bdev_handle->bdev;
+ 	clear_bit(BTRFS_DEV_STATE_IN_FS_METADATA, &device->dev_state);
+ 
++	if (device->devt != device->bdev->bd_dev) {
++		btrfs_warn(NULL,
++			   "device %s maj:min changed from %d:%d to %d:%d",
++			   device->name->str, MAJOR(device->devt),
++			   MINOR(device->devt), MAJOR(device->bdev->bd_dev),
++			   MINOR(device->bdev->bd_dev));
 +
- 	ret =3D device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
- 	if (ret >=3D 0) {
- 		dwc->usb_psy =3D power_supply_get_by_name(usb_psy_name);
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index e120611a5174..893b1e694efe 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1132,6 +1132,7 @@ struct dwc3_scratchpad_array {
-  *	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-  * @dis_split_quirk: set to disable split boundary.
-+ * @sys_wakeup: set if the device may do system wakeup.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-@@ -1355,6 +1356,7 @@ struct dwc3 {
-=20
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
-+	unsigned		sys_wakeup:1;
- 	unsigned		wakeup_configured:1;
- 	unsigned		suspended:1;
-=20
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 28f49400f3e8..07820b1a88a2 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2968,6 +2968,9 @@ static int dwc3_gadget_start(struct usb_gadget *g,
- 	dwc->gadget_driver	=3D driver;
- 	spin_unlock_irqrestore(&dwc->lock, flags);
-=20
-+	if (dwc->sys_wakeup)
-+		device_wakeup_enable(dwc->sysdev);
-+
- 	return 0;
- }
-=20
-@@ -2983,6 +2986,9 @@ static int dwc3_gadget_stop(struct usb_gadget *g)
- 	struct dwc3		*dwc =3D gadget_to_dwc(g);
- 	unsigned long		flags;
-=20
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc->gadget_driver	=3D NULL;
- 	dwc->max_cfg_eps =3D 0;
-@@ -4664,6 +4670,10 @@ int dwc3_gadget_init(struct dwc3 *dwc)
- 	else
- 		dwc3_gadget_set_speed(dwc->gadget, dwc->maximum_speed);
-=20
-+	/* No system wakeup if no gadget driver bound */
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	return 0;
-=20
- err5:
-diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
-index 43230915323c..f6a020d77fa1 100644
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -123,6 +123,14 @@ int dwc3_host_init(struct dwc3 *dwc)
- 		goto err;
- 	}
-=20
-+	if (dwc->sys_wakeup) {
-+		/* Restore wakeup setting if switched from device */
-+		device_wakeup_enable(dwc->sysdev);
-+
-+		/* Pass on wakeup setting to the new xhci platform device */
-+		device_init_wakeup(&xhci->dev, true);
++		device->devt = device->bdev->bd_dev;
 +	}
 +
- 	return 0;
- err:
- 	platform_device_put(xhci);
-@@ -131,6 +139,9 @@ int dwc3_host_init(struct dwc3 *dwc)
-=20
- void dwc3_host_exit(struct dwc3 *dwc)
- {
-+	if (dwc->sys_wakeup)
-+		device_init_wakeup(&dwc->xhci->dev, false);
-+
- 	platform_device_unregister(dwc->xhci);
- 	dwc->xhci =3D NULL;
- }
+ 	fs_devices->open_devices++;
+ 	if (test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state) &&
+ 	    device->devid != BTRFS_DEV_REPLACE_DEVID) {
+-- 
+2.38.1
 
-base-commit: b234c70fefa7532d34ebee104de64cc16f1b21e4
---=20
-2.28.0
 
