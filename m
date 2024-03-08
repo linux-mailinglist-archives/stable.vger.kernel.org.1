@@ -1,182 +1,201 @@
-Return-Path: <stable+bounces-27138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D49876070
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:57:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAE4876073
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 09:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 966612833EC
-	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:57:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81A92855E3
+	for <lists+stable@lfdr.de>; Fri,  8 Mar 2024 08:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54E252F90;
-	Fri,  8 Mar 2024 08:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2427752F75;
+	Fri,  8 Mar 2024 08:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jb5XH+of"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IJS8NfJQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D502D056
-	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 08:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4210FCA78
+	for <stable@vger.kernel.org>; Fri,  8 Mar 2024 08:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709888267; cv=none; b=Rrtvse3tGg9soq1RwQrasy+SE39MYl6LgBZCgJKN6cCABqmTlZ5y+xGWFBx1EzXCHSxjDnY7TmeuWO5qy3XQJTLVK2rqvQPcr3Oj2XTLUPaysA+ZvwAJQx0lgA4PVjo3+RkKcrugEh7nFaSYopJ8utbeK+y3WCBAt9NGr30haqk=
+	t=1709888296; cv=none; b=a0CY9VcZQOqRuD3Jc1w5Tl67Rd7cJpEa/a329vl+iSZ4lcTR2cbWxr3de5M9rcd91LJ0ZPT+5+5ZJTUuF7prgZLnLyvTy7Sgb7hi7/uS0mI8dF919WOTn1HtzIiR4NrilsDigmeZxk9I4YILzFn9NgXEifImO1als8RJM7gXtu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709888267; c=relaxed/simple;
-	bh=s/B/lI37MmVIK+eCD5q2S/+KQd67T07rkaNUMjkXjd8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l3v8B9KTH8N7aXVIgkqtc4wpSaZGYQvVodrRCPPql1Me4CkC28VS1l/Ku94xj1SgmeFwF65B2wJz+tcmHvJG6XTDOiRZkDPyk9ykZaVU1DFqxY0jSv+IVaDfX7X3QpGLG+3K1Lvzmwr0lI1H3YekkroFLQdkQ+PSJYWFXRZZqdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jb5XH+of; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-68fb3a3f1c5so10149576d6.3
-        for <stable@vger.kernel.org>; Fri, 08 Mar 2024 00:57:45 -0800 (PST)
+	s=arc-20240116; t=1709888296; c=relaxed/simple;
+	bh=b8ivDDjtF1p3LyYlCNRZWGf35Ky0K7fkV+0dsPl5AJc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Q0POf6aef/QI118I3WJWh0D5eeYxaQ/booTcIpeS/XXzjRqbGDSdK8xaNW/RyzU3c9Kx8GOTAnFQ9313OGyN0XxORjfGEXxaD6rXw4G8BtybJIOojx48BH7luq7lZMbVUvSluWaNV52U1fRLcB8MwgeRLzcD6GtVpngqWq+IL7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IJS8NfJQ; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6b26eef6cso2641388276.3
+        for <stable@vger.kernel.org>; Fri, 08 Mar 2024 00:58:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709888265; x=1710493065; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LkJjoKDdSZiJb0nnseQFMkR3M153lSP9yMaCF3TNUdg=;
-        b=jb5XH+of76EgFAB4nU7Kc4pUbDyYst1z+4HzOYXquZICDnuDQJJHw7sN7spTuaX232
-         oZEBktdwH5VYiIMJLGEXedvY1bp8/N7ztajLNYObD4eMIXamV9QaAZZGEOro+TsUbtZs
-         +ks+9Uj0JzqINVYkbKi2Ku7mm2ti9mEQE9yPsieeNsJieEesKpQRRyXUjVx+vsGRA43O
-         Dcrvrcm9ihMRnCJMfu+ShIWasSx9S7DqO+NxRQp3V2Qfw9dSkJRIMUG6yZh0P2MEj8su
-         uejO0Sftar6LHuIdF/tcvRmHaaxvgKZugTuk54UinAdGNydeAGXkmYPiM9fHdlcjc4+T
-         j4IQ==
+        d=google.com; s=20230601; t=1709888294; x=1710493094; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A6z+zN9ImE4xwUb7/dRfou4mLormWnKZkZKNlSdeP+c=;
+        b=IJS8NfJQI6WIdGxFqClvd9wGW2nN041H5pvaCT9Z66mgAdIP87Dai2ZG6hmmhydQv9
+         aO5GDX3eXjsnUzWhCd9snBFaYrfcl7RSDYCabdeXWyv9lWt/z14r4enuww7bVkVExI5A
+         4P9yDR8VfSpg8it/fo+Em5QX2mCFDi77TCrazterMhrXu/vHtkemI5QOZCRqOUTApVxe
+         q8NXmojMtrha137YHLnMWcEPEIDUrZJAIF6ZtLulApThIiXdCZLfGAD6CQBxNn3yK2Ph
+         qnSF/SeCtxiBmAqAcbSzOj5gOGw7PeA7Gpe6GnVPsyHqJHJgKQ1GtTyihHxugZt/WEVO
+         1deA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709888265; x=1710493065;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LkJjoKDdSZiJb0nnseQFMkR3M153lSP9yMaCF3TNUdg=;
-        b=El6MCwDFV+tUsW+sma+tIvnznHegvcnA9D4QaIOvCDvVWJ5R+qcIf31neFJIlCAp+r
-         nhiESlUzOgjdXAXNXiSKD/OGpz/H1TTV0s/L5dJINnqYJLQv+TwwbTefG94urhbbkrPQ
-         od+8bHpx4HaGTSPAW2oqqqeJrdkmLsg5/pMYSTTZPly3VvdS3zWTiliwB0wkva9va44R
-         cMUSs0q9uxFA06lztJDm+LApATcHqNtAiq1uJX76CvrOL5c1JqRIbv+6ECGDF4SIY1rS
-         PFg84LOIATGJynOqrrhyWowMnlYeeKdeD+SaGl9xsbVcq5fSqM+ySLoIiVADyYaKv3Yf
-         kf6g==
-X-Forwarded-Encrypted: i=1; AJvYcCWuSJhiCAuwYUMGwXM/j/78zELYRip1kjy6iMy3L631Kxow5KPUExf0uwfyjXHCIOH9wjgh8ezmkHujnKB7OP6+/ZOXfmwQ
-X-Gm-Message-State: AOJu0YwLwCeJaJW5EmodkvPMZEi+fHS9zWyhiKAu1OJkPhqUj5cQK98H
-	XHwr3sf2miz7eGMSE9/ve2Q3UtcNtmgLcnFqEgMCcSxzk1k41rXgiVA9WMGqTpWa6cD00la4wdc
-	6y+Aa9VgCZ/E9/Ibt9GW2nsCM5aU=
-X-Google-Smtp-Source: AGHT+IG4NixuhtB4eeA8srzLlmP0hTjQOgMWIcgjgTzndP5KGqJwcev3c8JBOK7Yu5SDvuTvecfDgMwcsPrT/Sc8blU=
-X-Received: by 2002:a0c:cdc6:0:b0:68f:5926:59ea with SMTP id
- a6-20020a0ccdc6000000b0068f592659eamr11097670qvn.28.1709888264842; Fri, 08
- Mar 2024 00:57:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709888294; x=1710493094;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A6z+zN9ImE4xwUb7/dRfou4mLormWnKZkZKNlSdeP+c=;
+        b=uNfUHpg0hCe4C7GYOIbWyEsLgFqjkLrkcThYbI0jognCe/VXD5i7hliqhmN2tI2Dva
+         fkrNHLwypkl5lD27jrwbCtfSbkAWJbRO/9l6lcGsZXkPlGDfZFMqU+7TItBKHvGW6GKB
+         StDTtu9Xppo7W5OXJfkcwQ/jHt1S0fJiNbAdJhVq3a+aUPRferPhJ6V++QaboCRtfeUU
+         GWi7hHKgN84nAGFdI+Oau5+NkWsP/BDo9j5r05VFP2q+SoxOrZWRU1VE5iOObIYS0UGR
+         Tl4ov+pqhI48rnt9wK+8Htq3gVhbG60xk/P5skaOTlZwv+hjj0M6oo68Y6z1k2kW3LtV
+         ZvDw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+AK5Cod/pse6svMX5b3w6GDIKOZ3OeYSKJwx0G09QGw9Y+LVxe04cWzyVuG5uSvpiTwWhdyaQBrCdlfTv13QhCttHbTYk
+X-Gm-Message-State: AOJu0Yz03MCIn1iaXFJEmfOxZj/qETXXtOpu53Qe+QfpJwUdlD8hsH3U
+	jkHRKC57SkG612YermfE/ekwCal/E8Q3Fy8+nVgKs6hry8uDauzpsM8iPWZSlTy26jFz7A==
+X-Google-Smtp-Source: AGHT+IH9WUFgRCwJEh32egOuauvZKhSy6ydz1UiCGIJYMPsHZHSZu6AjcwL8wxdFzKtlMNFWc7Rh69E9
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6902:1081:b0:dcc:41ad:fb3b with SMTP id
+ v1-20020a056902108100b00dcc41adfb3bmr824921ybu.10.1709888294125; Fri, 08 Mar
+ 2024 00:58:14 -0800 (PST)
+Date: Fri,  8 Mar 2024 09:57:56 +0100
+In-Reply-To: <20240308085754.476197-7-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240307031952.2123-1-laoar.shao@gmail.com> <20240307090618.50da28040e1263f8af39046f@linux-foundation.org>
-In-Reply-To: <20240307090618.50da28040e1263f8af39046f@linux-foundation.org>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Fri, 8 Mar 2024 16:57:08 +0800
-Message-ID: <CALOAHbAsyT9ms739DLZeAf88XsrxjJgm1D8wr+dKNFxROOQFFw@mail.gmail.com>
-Subject: Re: [PATCH] mm: mglru: Fix soft lockup attributed to scanning folios
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: yuzhao@google.com, linux-mm@kvack.org, stable@vger.kernel.org
+Mime-Version: 1.0
+References: <20240308085754.476197-7-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3906; i=ardb@kernel.org;
+ h=from:subject; bh=2xlGpPZ2KXRAhQWGXtcuPOB2hLa2jwtfBLys2womY6Q=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIfXVZeFiecFl0TG+VxhKDAqKyy1mCE88YsHy5OzPrst8O
+ 17+2PWoo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEwkdxrDXynftCPvhY7f7f7k
+ knfr5QyNdXuTXJqn6u2tmSu8SX7ra25GhvM85458MXOtL+rR4imS4C0tDmjWnHn4ZERNxuyjf/Z MZAMA
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <20240308085754.476197-8-ardb+git@google.com>
+Subject: [PATCH v3 1/5] efi/libstub: Use correct event size when measuring
+ data into the TPM
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 8, 2024 at 1:06=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Thu,  7 Mar 2024 11:19:52 +0800 Yafang Shao <laoar.shao@gmail.com> wro=
-te:
->
-> > After we enabled mglru on our 384C1536GB production servers, we
-> > encountered frequent soft lockups attributed to scanning folios.
-> >
-> > The soft lockup as follows,
-> >
-> > ...
-> >
-> > There were a total of 22 tasks waiting for this spinlock
-> > (RDI: ffff99d2b6ff9050):
-> >
-> >  crash> foreach RU bt | grep -B 8  queued_spin_lock_slowpath |  grep "R=
-DI: ffff99d2b6ff9050" | wc -l
-> >  22
->
-> If we're holding the lock for this long then there's a possibility of
-> getting hit by the NMI watchdog also.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-The NMI watchdog is disabled as these servers are KVM guest.
+Our efi_tcg2_tagged_event is not defined in the EFI spec, but it is not
+a local invention either: it was taken from the TCG PC Client spec,
+where it is called TCG_PCClientTaggedEvent.
 
-    kernel.nmi_watchdog =3D 0
-    kernel.soft_watchdog =3D 1
+This spec also contains some guidance on how to populate it, which
+is not being followed closely at the moment; the event size should cover
+the TCG_PCClientTaggedEvent and its payload only, but it currently
+covers the preceding efi_tcg2_event too, and this may result in trailing
+garbage being measured into the TPM.
 
->
-> > Additionally, two other threads were also engaged in scanning folios, o=
-ne
-> > with 19 waiters and the other with 15 waiters.
-> >
-> > To address this issue under heavy reclaim conditions, we introduced a
-> > hotfix version of the fix, incorporating cond_resched() in scan_folios(=
-).
-> > Following the application of this hotfix to our servers, the soft locku=
-p
-> > issue ceased.
-> >
-> > ...
-> >
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4367,6 +4367,10 @@ static int scan_folios(struct lruvec *lruvec, st=
-ruct scan_control *sc,
-> >
-> >                       if (!--remaining || max(isolated, skipped_zone) >=
-=3D MIN_LRU_BATCH)
-> >                               break;
-> > +
-> > +                     spin_unlock_irq(&lruvec->lru_lock);
-> > +                     cond_resched();
-> > +                     spin_lock_irq(&lruvec->lru_lock);
-> >               }
->
-> Presumably wrapping this with `if (need_resched())' will save some work.
+So rename the struct and document its provenance, and fix up the use so
+only the tagged event data is represented in the size field.
 
-good suggestion.
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 20 +++++++++++---------
+ drivers/firmware/efi/libstub/efistub.h         | 12 ++++++------
+ 2 files changed, 17 insertions(+), 15 deletions(-)
 
->
-> This lock is held for a reason.  I'd like to see an analysis of why
-> this change is safe.
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index bfa30625f5d0..16843ab9b64d 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/efi.h>
+ #include <linux/kernel.h>
++#include <linux/overflow.h>
+ #include <asm/efi.h>
+ #include <asm/setup.h>
+ 
+@@ -219,23 +220,24 @@ static const struct {
+ 	},
+ };
+ 
++struct efistub_measured_event {
++	efi_tcg2_event_t	event_data;
++	TCG_PCClientTaggedEvent tagged_event;
++} __packed;
++
+ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+ 					     unsigned long load_size,
+ 					     enum efistub_event event)
+ {
++	struct efistub_measured_event *evt;
++	int size = struct_size(&evt->tagged_event, tagged_event_data,
++			       events[event].event_data_len);
+ 	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+ 	efi_tcg2_protocol_t *tcg2 = NULL;
+ 	efi_status_t status;
+ 
+ 	efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
+ 	if (tcg2) {
+-		struct efi_measured_event {
+-			efi_tcg2_event_t	event_data;
+-			efi_tcg2_tagged_event_t tagged_event;
+-			u8			tagged_event_data[];
+-		} *evt;
+-		int size = sizeof(*evt) + events[event].event_data_len;
+-
+ 		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
+ 				     (void **)&evt);
+ 		if (status != EFI_SUCCESS)
+@@ -249,12 +251,12 @@ static efi_status_t efi_measure_tagged_event(unsigned long load_addr,
+ 			.event_header.event_type	= EV_EVENT_TAG,
+ 		};
+ 
+-		evt->tagged_event = (struct efi_tcg2_tagged_event){
++		evt->tagged_event = (TCG_PCClientTaggedEvent){
+ 			.tagged_event_id		= events[event].event_id,
+ 			.tagged_event_data_size		= events[event].event_data_len,
+ 		};
+ 
+-		memcpy(evt->tagged_event_data, events[event].event_data,
++		memcpy(evt->tagged_event.tagged_event_data, events[event].event_data,
+ 		       events[event].event_data_len);
+ 
+ 		status = efi_call_proto(tcg2, hash_log_extend_event, 0,
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index c04b82ea40f2..043a3ff435f3 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -843,14 +843,14 @@ struct efi_tcg2_event {
+ 	/* u8[] event follows here */
+ } __packed;
+ 
+-struct efi_tcg2_tagged_event {
+-	u32 tagged_event_id;
+-	u32 tagged_event_data_size;
+-	/* u8  tagged event data follows here */
+-} __packed;
++/* from TCG PC Client Platform Firmware Profile Specification */
++typedef struct tdTCG_PCClientTaggedEvent {
++	u32	tagged_event_id;
++	u32	tagged_event_data_size;
++	u8	tagged_event_data[];
++} TCG_PCClientTaggedEvent;
+ 
+ typedef struct efi_tcg2_event efi_tcg2_event_t;
+-typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
+ typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
+ 
+ union efi_tcg2_protocol {
+-- 
+2.44.0.278.ge034bb2e1d-goog
 
-I believe the key point here is whether we can reduce the scope of
-this lock from:
-
-  evict_folios
-      spin_lock_irq(&lruvec->lru_lock);
-      scanned =3D isolate_folios(lruvec, sc, swappiness, &type, &list);
-      scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-      if (get_nr_gens(lruvec, !swappiness) =3D=3D MIN_NR_GENS)
-          scanned =3D 0;
-      spin_unlock_irq(&lruvec->lru_lock);
-
-to:
-
-  evict_folios
-      spin_lock_irq(&lruvec->lru_lock);
-      scanned =3D isolate_folios(lruvec, sc, swappiness, &type, &list);
-      spin_unlock_irq(&lruvec->lru_lock);
-
-      spin_lock_irq(&lruvec->lru_lock);
-      scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-      if (get_nr_gens(lruvec, !swappiness) =3D=3D MIN_NR_GENS)
-          scanned =3D 0;
-      spin_unlock_irq(&lruvec->lru_lock);
-
-In isolate_folios(), it merely utilizes the min_seq to retrieve the
-generation without modifying it. If multiple tasks are running
-evict_folios() concurrently, it seems inconsequential whether min_seq
-is incremented by one task or another. I'd appreciate Yu's
-confirmation on this matter.
-
---=20
-Regards
-Yafang
 
