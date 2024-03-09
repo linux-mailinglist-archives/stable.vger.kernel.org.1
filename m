@@ -1,140 +1,124 @@
-Return-Path: <stable+bounces-27208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB26877233
-	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 17:27:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3725387724C
+	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 17:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 441171C20A78
-	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 16:27:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8311F21531
+	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 16:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D52745949;
-	Sat,  9 Mar 2024 16:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2E8FC1F;
+	Sat,  9 Mar 2024 16:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iwPyDF5Z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CtftAZmq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB9C44C9C
-	for <stable@vger.kernel.org>; Sat,  9 Mar 2024 16:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2631368
+	for <stable@vger.kernel.org>; Sat,  9 Mar 2024 16:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710001662; cv=none; b=EtoxIk9660SswwD5tWAqr2g35nYCkoC/xocs6UztZ6hg05DSPSCFPb0OrGXWyO5f5tPxjKk1th1qXml8ctwmjjJhPwplmamvj220jpIC9tGY/YzyComZLn4QLvDTXc2ZzxVVrbXA+K1g1Sc4vhvhOLAe3uVlh5QzECEGNRdTZYk=
+	t=1710001881; cv=none; b=TGRZmQfkJJ1GC+siWg9pAEf94jf+QdS2wWJfJElS6gubUT3Bc2mgzHFSuW0S64RbXBTC8v2Vz+grVmtI2i5ndWrrjnQVnyHqWssiXpnguP52QmK/6lcF13kb6fFFdPZA10T983WbyDArYivxGHk8fl0ihnJUyAQY4rX/kexsDpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710001662; c=relaxed/simple;
-	bh=0gEYkOpIYZ9Ap+830hqyTJiV4I/XaxioEPsfigh8q6o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nnSzyKa4lLj6/RQiIjB76HNaTk96y0DgIv7KeAmJ9VWhXOyE6onQfUxGMUkJdMfw1pjFbo02hHXD+FTGTZXL2d402BIY/ikKrm7horQKsDzWjFmFMuaolBEaQhyHZNadQmhugt5JEkXpQ5FAvTi9EV2fvU+nrwn8AfuJNz2iSzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iwPyDF5Z; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a450615d1c4so539210366b.0
-        for <stable@vger.kernel.org>; Sat, 09 Mar 2024 08:27:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710001659; x=1710606459; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1P1wwMFoY2RUh7Yj+jL9MiMM7Nkvq6eanhZxeCT4jZI=;
-        b=iwPyDF5ZH8pi0h4cwQ7gjMar1uNkstZa8TEdNFjCYKPBdREDTj85lTbWR2TliCgzda
-         OHvqkLxXO6Y8HzknYN9PV79SeF0QbvGtSuLj2wpAeeC4TvuI+LABj3ATdM46hW7qQ6A+
-         9EmgGWHrEleZrdN7wO+BCf9Mo0LaPVuIMakaW3XRStIZEIdDDhZP+H9EQ5UHx/YIi6+b
-         lIReiQK9YtFmR/cDQlvTigX26ZkuoBk8jRv8XjQkOdryIlA0TjoPM4opEqB3Wr6/nUlq
-         5j9Mh19pF9avLh15oZLbOwtC3g49r87QcXWVNzmRbmnoZF0GfwH3ZnObSp6osSXbOefl
-         IkRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710001659; x=1710606459;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1P1wwMFoY2RUh7Yj+jL9MiMM7Nkvq6eanhZxeCT4jZI=;
-        b=IOl1DM1rWKmh7pF6XWXx50tyUVAYgAgTkgS+c/fzaEFKANzfstFn8uhhQYDidDh1m/
-         CxxSXgDi9c8+x3qHO8wRq53X8UmXwjL63qpplIxb2hYfXUVc6I2gArp1+D4R+rb5P4LY
-         d9KOMmzkXL6eob5ipcas0hGdfDBYTlyZcG40CRLZTjA28+gVljjFy0IGPqsTpG1u8Ewv
-         6i0P8iy2ge2X8GNv0hZpq4yHx78d96TU1IwHREoruU5v5G2JBdRUpP26RwOvbU+UZK5l
-         pgM+ybo+l+bdPZr2R5svvmbvmKQIyFiwBsj+YcVdIYFpYk0+h/pM5ToE7plBmFIcK8mj
-         KIXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWjcqmLLqtIoOl0o2bRDw+rCF0Z1ZDvmbckRE5d/ON0SE6COf5KtD8yuiScob+LDDttiHC/LEt/Pc44CTyolAWddSNI24n
-X-Gm-Message-State: AOJu0YzKUSmUp85TmdhoS88S9pVOunCqey4dg6+Ar7zL3v7BfBOnNZV5
-	+yEAUUWpLQfn2i8nyfF2mPGh2AXRiDYn+hTnXDOIzq31QCO7gf8rEI0VWe5wQpO10+bSwbvZUuW
-	IrvK2uUqiuVcnLBrhcuwjHH9OwcFs94g5
-X-Google-Smtp-Source: AGHT+IHHMNeP3+/otXi0qgvrZdjaTaAaOTiIqnN+erSanUTc3T8EWwNBtBOFWRSZpBbDRHpMPmETU7F++zaJ5QPVdQo=
-X-Received: by 2002:a17:906:a14c:b0:a45:fa87:b011 with SMTP id
- bu12-20020a170906a14c00b00a45fa87b011mr1606134ejb.20.1710001659328; Sat, 09
- Mar 2024 08:27:39 -0800 (PST)
+	s=arc-20240116; t=1710001881; c=relaxed/simple;
+	bh=UQc3izrgQr12h3Xm9t3aa7jRiYIq8O1PvIR3W3XHYC0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tZoyCI4SX4cynErgeZE+bFkRa21O5WZ4bgrXJ3YzE9CLkprwTQ3XO0YxNp55vz8KzhD1xJT6xc+vwIxL+VOrANDCkZAGj4pO2JSFZnGMc89H5YspvRa+pOEgPtHosZuhQF7dfSwkVx8G5p8ZU1TYROC+BOvNNMCw60bBRgmEa/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CtftAZmq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710001878;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U/gHXMil7a5VrcnGbVUk1+YLbdf6KR/XO3UxnJ9TTQQ=;
+	b=CtftAZmqvJyjvh62DKZXo+PNb71mecoOdea40xh/cN4ztR1GumyrlaH1aiaebDNBDmRNUs
+	FwNAxXwuAVM14oadT5QdKsZMoICFgkT2wJuBjMipTIFVz2rpIapuqMVPtaJR+/d+Amr0p+
+	tStOjUlKpYVfzXxngu/fNa9pVDNy86I=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-s-jvVsfJNZ2UCQRK9TVDZQ-1; Sat,
+ 09 Mar 2024 11:31:15 -0500
+X-MC-Unique: s-jvVsfJNZ2UCQRK9TVDZQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4E2C3C025D0;
+	Sat,  9 Mar 2024 16:31:14 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BEDC3200E28D;
+	Sat,  9 Mar 2024 16:31:14 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	stable@vger.kernel.org
+Subject: [PATCH] SEV: disable SEV-ES DebugSwap by default
+Date: Sat,  9 Mar 2024 11:31:14 -0500
+Message-Id: <20240309163114.2368452-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240307190447.33423-1-joshua@froggi.es> <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
-In-Reply-To: <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
-From: =?UTF-8?B?TWFyZWsgT2zFocOhaw==?= <maraeo@gmail.com>
-Date: Sat, 9 Mar 2024 11:27:03 -0500
-Message-ID: <CAAxE2A7SV2cwBAFKikKDjeHzWQMU+emXG7kR2okt0C9WvD6Hfw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] drm/amdgpu: Forward soft recovery errors to userspace
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Joshua Ashton <joshua@froggi.es>, amd-gfx@lists.freedesktop.org, 
-	"Olsak, Marek" <Marek.Olsak@amd.com>, Friedrich Vock <friedrich.vock@gmx.de>, 
-	Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>, =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Reviewed-by: Marek Ol=C5=A1=C3=A1k <marek.olsak@amd.com>
+The DebugSwap feature of SEV-ES provides a way for confidential guests to use
+data breakpoints.  However, because the status of the DebugSwap feature is
+recorded in the VMSA, enabling it by default invalidates the attestation
+signatures.  In 6.10 we will introduce a new API to create SEV VMs that
+will allow enabling DebugSwap based on what the user tells KVM to do.
+Contextually, we will change the legacy KVM_SEV_ES_INIT API to never
+enable DebugSwap.
 
-Marek
+For compatibility with kernels that pre-date the introduction of DebugSwap,
+as well as with those where KVM_SEV_ES_INIT will never enable it, do not enable
+the feature by default.  If anybody wants to use it, for now they can enable
+the sev_es_debug_swap_enabled module parameter, but this will result in a
+warning.
 
-On Fri, Mar 8, 2024 at 3:43=E2=80=AFAM Christian K=C3=B6nig <christian.koen=
-ig@amd.com> wrote:
->
-> Am 07.03.24 um 20:04 schrieb Joshua Ashton:
-> > As we discussed before[1], soft recovery should be
-> > forwarded to userspace, or we can get into a really
-> > bad state where apps will keep submitting hanging
-> > command buffers cascading us to a hard reset.
->
-> Marek you are in favor of this like forever.  So I would like to request
-> you to put your Reviewed-by on it and I will just push it into our
-> internal kernel branch.
->
-> Regards,
-> Christian.
->
-> >
-> > 1: https://lore.kernel.org/all/bf23d5ed-9a6b-43e7-84ee-8cbfd0d60f18@fro=
-ggi.es/
-> > Signed-off-by: Joshua Ashton <joshua@froggi.es>
-> >
-> > Cc: Friedrich Vock <friedrich.vock@gmx.de>
-> > Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-> > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-> > Cc: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
-> >   1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/=
-amd/amdgpu/amdgpu_job.c
-> > index 4b3000c21ef2..aebf59855e9f 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-> > @@ -262,9 +262,8 @@ amdgpu_job_prepare_job(struct drm_sched_job *sched_=
-job,
-> >       struct dma_fence *fence =3D NULL;
-> >       int r;
-> >
-> > -     /* Ignore soft recovered fences here */
-> >       r =3D drm_sched_entity_error(s_entity);
-> > -     if (r && r !=3D -ENODATA)
-> > +     if (r)
-> >               goto error;
-> >
-> >       if (!fence && job->gang_submit)
->
+Fixes: d1f85fbe836e ("KVM: SEV: Enable data breakpoints in SEV-ES")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/svm/sev.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index f760106c31f8..69b37956c1c8 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -57,7 +57,7 @@ static bool sev_es_enabled = true;
+ module_param_named(sev_es, sev_es_enabled, bool, 0444);
+ 
+ /* enable/disable SEV-ES DebugSwap support */
+-static bool sev_es_debug_swap_enabled = true;
++static bool sev_es_debug_swap_enabled = false;
+ module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
+ #else
+ #define sev_enabled false
+@@ -612,8 +612,11 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+ 	save->xss  = svm->vcpu.arch.ia32_xss;
+ 	save->dr6  = svm->vcpu.arch.dr6;
+ 
+-	if (sev_es_debug_swap_enabled)
++	if (sev_es_debug_swap_enabled) {
+ 		save->sev_features |= SVM_SEV_FEAT_DEBUG_SWAP;
++		pr_warn_once("Enabling DebugSwap with KVM_SEV_ES_INIT. "
++			     "This will not work starting with Linux 6.10\n");
++	}
+ 
+ 	pr_debug("Virtual Machine Save Area (VMSA):\n");
+ 	print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*save), false);
+-- 
+2.39.1
+
 
