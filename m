@@ -1,70 +1,54 @@
-Return-Path: <stable+bounces-27221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46AE8777CE
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 18:45:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00917877858
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 20:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697551F210FB
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 17:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A97EE280F26
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 19:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD50D3985A;
-	Sun, 10 Mar 2024 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF3A3A1BB;
+	Sun, 10 Mar 2024 19:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ufksA6oH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71B21115;
-	Sun, 10 Mar 2024 17:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF43539FF4
+	for <stable@vger.kernel.org>; Sun, 10 Mar 2024 19:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710092746; cv=none; b=e8/I4fv+sjYdR4hx3q0bPAor2djXiIx4cpSO/3ogMHHOSIoDzGitY8ZhSqwilq9fF9nyHTFF3dZSZeyDdlZrpfqF9X8mQ+qDfBsG8RsXZQqjh0xcUrZXepyrgotHUUXeuGoUWjiNxc2oVjLine2OeGHjrBu7OMnCcDQpuUkj9Yg=
+	t=1710100337; cv=none; b=N2uQ5no0EqGGSmBaWFXL+aJ+BoXylY+H1SQueHm2aM2H81uyV2ePXYelahiWZ7dSGe+vqThaztgsdaGyGliVlIDUDb8z7bNaTINfYHxw7gNGLmiQORzlPRBhGVy4uoUj/+cyJoPigKaLlzF0iZC70bmxVlmHCj6O7Ye74UGktoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710092746; c=relaxed/simple;
-	bh=hrQnUxJLirdyrN46Viu7HBOjLYptBIcrVHgHTEz5FvI=;
+	s=arc-20240116; t=1710100337; c=relaxed/simple;
+	bh=RcToUl56w4yDBVjDVP90f4jCCZEx8YxDvxWKN2KseMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LBWaLukqt2onftfdiVIkmb4hiMpV1AJbbdFWtNHFBo7+E8jTBe8dXRwyq9Xf8yGT9oMkGO8mBzqsMVBlG4LW/jlBt5sv7+4cLO1Nn9fEjcMG958iTsHsX59j70118KWeBWefw429hR8vgrBR/wfWaSuxxAI2uM8P2L0+0vE1fCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6ddf26eba3cso2824790a34.0;
-        Sun, 10 Mar 2024 10:45:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710092744; x=1710697544;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S7iPTCl8r4EkA4EfZ5hPRJf4v1rg1K2hUgK6qm67XQU=;
-        b=pq65PE40YWaeoc1lsDTD4P9ekbP5WOqEdGE8FYI8IvfCSjHU2wYEXirtpw2tqK+fkl
-         ZPMU2Bu8e3yKBhabnM9/aCtJYsthTk4t0+snwJlASXm8Nwi7a3/tzN6TeH77CoUlENBn
-         ywIrpX9fu+eAo5CbppmCghyGR2r5n+dfqiDXwdazI7+8DEdbGLOGiK7To1u69VixBWMl
-         srR1XGMQiKMWrYs/MEge+AHYtyndUJDobo3eaQQAZ8XDbAsvYwpXMJyBskx/GcRqk36w
-         uRcVh1Lu+1I15X5iT0Fu6FqdCf0rVF/7F+eZJiI8KcDuNCrC+gC17H3vmBfSAlpVxl8R
-         kEog==
-X-Forwarded-Encrypted: i=1; AJvYcCXmSVxQBQAL1uJRKncLR8/nNRJxwUnZEiarhTklSzyWk9x/rdAIpYqpB7Jc25wnrZRek8mwdeQr/nlxyKIEip6LwWcH27xIDoaaRn5OZzXHyEcKeoP0I2xw26OB+yapOxbRg/5vyXsBzGrFLrGqL+9dlJlUp6R+4ZxQ5Lx7DIm7Kg+95F4fhLI2Chq+FATyrfZyztIQq2S7grtWk76znA==
-X-Gm-Message-State: AOJu0Ywvd0OS3NIHgRf+tuYM8Ur7QQ7WZDNx8m9BH1US33Ux7Nu/cvMa
-	NKHb4YNZSkQfeGdNmVVDMD8++f4IArEPLbfYFVe687ipKCdlqyV5I/oC7W+xWLYw+A==
-X-Google-Smtp-Source: AGHT+IEcfNjhsv73rREw3FDt64vqTpH5i74RFUwWehwR6mOMV0r1WNXFeD8Aop5kBWRwiJ04EI+nvg==
-X-Received: by 2002:a9d:69cc:0:b0:6e5:5cd:6b08 with SMTP id v12-20020a9d69cc000000b006e505cd6b08mr6147920oto.32.1710092744079;
-        Sun, 10 Mar 2024 10:45:44 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id c13-20020a63350d000000b0059b2316be86sm2733363pga.46.2024.03.10.10.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Mar 2024 10:45:43 -0700 (PDT)
-Date: Mon, 11 Mar 2024 02:45:41 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: qcom: Enable BDF to SID translation properly
-Message-ID: <20240310174541.GA2765217@rocinante>
-References: <20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9BN+hWEiN6Tda3oH7y5L9yy3Az9tC8XuuPCQpbINwDKjQp2C+Zleo3J2IKDtTETOn7h7TZVp0/czNDS3JB0Z4llOSOCC0I42cgMjKP64w/bUu95tWgfNB3KhEN0z5X7kyjkXay3S8gNd5JsDlF8znbUZNjsyDn3oOdUUhsANXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ufksA6oH; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Sun, 10 Mar 2024 15:52:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710100333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UcswkkerU0TvFOs/zruoze8pg+mzMuhwyFE8tuMQ3dw=;
+	b=ufksA6oHYBKlbGnKzEOeTxol5JwzZ8249RA6kdGLeDUsJNI6PiSUCpwg864JRJWrRMNm53
+	6zxOBS7D12L4u0L56or1pL9LUpDGzJnP7h7vINUQ/YihzLj738okR1LLGchKvNh2YMVK2D
+	I/vhQSzwd3zdoPUxATTKQIq0vWI3CyI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] bcachefs fixes for 6.7.y
+Message-ID: <tjgrhcqgfc5oghnli63pftb3bieecm27mokd5veilhpalpp6cy@ralxgoy3yyqg>
+References: <2zaqetj6wlxgpbxgex643dnudgwhcrz23xgfuai3t3hgavjb2d@vwhyha3hlg5y>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,47 +57,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240307-pci-bdf-sid-fix-v1-1-9423a7e2d63c@linaro.org>
+In-Reply-To: <2zaqetj6wlxgpbxgex643dnudgwhcrz23xgfuai3t3hgavjb2d@vwhyha3hlg5y>
+X-Migadu-Flow: FLOW_OUT
 
-Hello,
-
-> Qcom SoCs making use of ARM SMMU require BDF to SID translation table in
-> the driver to properly map the SID for the PCIe devices based on their BDF
-> identifier. This is currently achieved with the help of
-> qcom_pcie_config_sid_1_9_0() function for SoCs supporting the 1_9_0 config.
+On Sun, Mar 10, 2024 at 03:43:38PM -0400, Kent Overstreet wrote:
+> The following changes since commit 2e7cdd29fc42c410eab52fffe5710bf656619222:
 > 
-> But With newer Qcom SoCs starting from SM8450, BDF to SID translation is
-> set to bypass mode by default in hardware. Due to this, the translation
-> table that is set in the qcom_pcie_config_sid_1_9_0() is essentially
-> unused and the default SID is used for all endpoints in SoCs starting from
-> SM8450.
+>   Linux 6.7.9 (2024-03-06 14:54:01 +0000)
 > 
-> This is a security concern and also warrants swapping the DeviceID in DT
-> while using the GIC ITS to handle MSIs from endpoints. The swapping is
-> currently done like below in DT when using GIC ITS:
+> are available in the Git repository at:
 > 
-> 			/*
-> 			 * MSIs for BDF (1:0.0) only works with Device ID 0x5980.
-> 			 * Hence, the IDs are swapped.
-> 			 */
-> 			msi-map = <0x0 &gic_its 0x5981 0x1>,
-> 				  <0x100 &gic_its 0x5980 0x1>;
+>   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240310
 > 
-> Here, swapping of the DeviceIDs ensure that the endpoint with BDF (1:0.0)
-> gets the DeviceID 0x5980 which is associated with the default SID as per
-> the iommu mapping in DT. So MSIs were delivered with IDs swapped so far.
-> But this also means the Root Port (0:0.0) won't receive any MSIs (for PME,
-> AER etc...)
+> for you to fetch changes up to 560ceb6a4d9e3bea57c29f5f3a7a1d671dfc7983:
 > 
-> So let's fix these issues by clearing the BDF to SID bypass mode for all
-> SoCs making use of the 1_9_0 config. This allows the PCIe devices to use
-> the correct SID, thus avoiding the DeviceID swapping hack in DT and also
-> achieving the isolation between devices.
-
-Applied to controller/qcom, thank you!
-
-[1/1] PCI: qcom: Enable BDF to SID translation properly
-      https://git.kernel.org/pci/pci/c/b9bc750e1193
-
-	Krzysztof
+>   bcachefs: Fix BTREE_ITER_FILTER_SNAPSHOTS on inodes btree (2024-03-10 14:36:57 -0400)
+> 
+> ----------------------------------------------------------------
+> bcachefs fixes for 6.7 stable
+> 
+> "bcachefs: fix simulateously upgrading & downgrading" is the important
+> one here. This fixes a really nasty bug where in a rare situation we
+> wouldn't downgrade; we'd write a superblock where the version number is
+> higher than the currently supported version.
+> 
+> This caused total failure to mount multi device filesystems with the
+> splitbrain checking in 6.8, since now we wouldn't be updating the member
+> sequence numbers used for splitbrain checking, but the version number
+> said we would be - and newer versions would attempt to kick every device
+> out of the fs.
+> 
+> ----------------------------------------------------------------
+> Helge Deller (1):
+>       bcachefs: Fix build on parisc by avoiding __multi3()
+> 
+> Kent Overstreet (3):
+>       bcachefs: check for failure to downgrade
+>       bcachefs: fix simulateously upgrading & downgrading
+>       bcachefs: Fix BTREE_ITER_FILTER_SNAPSHOTS on inodes btree
+> 
+> Mathias Krause (1):
+>       bcachefs: install fd later to avoid race with close
+> 
+>  fs/bcachefs/btree_iter.c        |  4 +++-
+>  fs/bcachefs/chardev.c           |  3 +--
+>  fs/bcachefs/errcode.h           |  1 +
+>  fs/bcachefs/mean_and_variance.h |  2 +-
+>  fs/bcachefs/super-io.c          | 27 ++++++++++++++++++++++++---
+>  5 files changed, 30 insertions(+), 7 deletions(-)
 
