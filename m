@@ -1,116 +1,145 @@
-Return-Path: <stable+bounces-27210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7B387755E
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 06:13:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C958776DF
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 13:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED3F1F2188B
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 05:13:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78918B20B6A
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 12:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1237010A0E;
-	Sun, 10 Mar 2024 05:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6EE2110F;
+	Sun, 10 Mar 2024 12:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="HSuH3Roe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVMavDlf"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-zteg06011501.me.com (mr85p00im-zteg06011501.me.com [17.58.23.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B1316FF58
-	for <stable@vger.kernel.org>; Sun, 10 Mar 2024 05:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450A919479;
+	Sun, 10 Mar 2024 12:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710047607; cv=none; b=IBe9En6nL7uw3YIr2tMVGscri5SmUIXReMWy4k4ArIv0PW/YlRwslzyjRwmkT1/TNuTuVqB4ChV9rgglEKgl5ed1qFX2Mz59s5O3jKgECCzo6Wm9edIvzKsQ0upv1hNZJSmevnou9hjK+44D87EkFrtC0m7H4k2BFiEs1A0rDHQ=
+	t=1710075273; cv=none; b=MWXYepyqJcRGIK1LhZ+tBr2TKQwh346/udMxYvrCYpkF5mq32U76hvfm6bjIpBSLYbyk3yPpnT7BVxWoLCA1hk9EnjEnIgacGFBQICPXCEu3/nJcCq3gFsJH9aDE2dbt94wSitetmlEctOvYlooGR+e+btmTiEbywbuGN0jg6Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710047607; c=relaxed/simple;
-	bh=T6XjRhnGO6nIaTDzl99aOQ6bUYJdL4xvjrQ7ZIMu54s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fi4qNo24nCbT6qvVTC1pArqpJs+PsFD5+rTbfPa9qMKR51Wl90UU8qQDfx5U1enk2u0tSE5papgPQqt7srih/jdfkxstk34C9/PpQZdcAs/zDjnJUVReglF6GkTxSNnHodZAsXYVj39gXL9b/HMBkXta6ymZduHkwsB816iCyOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=HSuH3Roe; arc=none smtp.client-ip=17.58.23.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
-	t=1710047604; bh=w5RhIat3cVeSw5iGnaflty1U4Kd5aUaXoJYaNdQwBJA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=HSuH3RoerZbtH1tXsy/ZzNESP80YvZeB7v60YYjpz4+FBKQjP4C21DxYFGdREgCcN
-	 TCAm+JqJbfo8mnvYAAJr0ACqBB5ifQTLtaH3zAR68L/X6/LfmmMM9FO0ROkwAQ3x+n
-	 YGb1unOUgwznjUkp7C2N4mMI2hcL15hF7KZT3kohMDpBJamDofMZ+ajsLfJZz+tHos
-	 d01NXUxwMtiF/tfYpUjMiTOup+QGhAg9bfbSBvBBT+VS2rFgLDUXlfnm9XkNKb/2Nv
-	 qrIGw8KrpFTemMPCR211U+pfiKDNuPpNEHyRIcmVFowh1PfaAelTkSl2uQR7utAdb3
-	 EUrmHFASJ/5zg==
-Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-zteg06011501.me.com (Postfix) with ESMTPSA id 1AF6748012F;
-	Sun, 10 Mar 2024 05:13:22 +0000 (UTC)
-From: Dan Moulding <dan@danm.net>
-To: junxiao.bi@oracle.com
-Cc: dan@danm.net,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	regressions@lists.linux.dev,
-	song@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
-Date: Sat,  9 Mar 2024 22:13:21 -0700
-Message-ID: <20240310051321.9812-1-dan@danm.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <d3cdebfe-17c0-4f61-9ad9-71d9de2339b2@oracle.com>
-References: <d3cdebfe-17c0-4f61-9ad9-71d9de2339b2@oracle.com>
+	s=arc-20240116; t=1710075273; c=relaxed/simple;
+	bh=VpKLCwYi8ECcz/PjTPwyhblCBIuecHsOQGNCRoTlXCA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Aj1m7bSrzxqlhtdOMYZtecQLRfg+eBdVKSHRPQJilWaibbvEX8QhwLQyIogWnBT94x58U19kIPTjpWu8rZxQr5m2QgWvnlu1x7CM1WWlhRde//LkIKat5tWVl+VGh/jEWQVuyC40vZX7t38PQ5+WfgvJrsOBKfXdya5eopLJJog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVMavDlf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E0EC43394;
+	Sun, 10 Mar 2024 12:54:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710075272;
+	bh=VpKLCwYi8ECcz/PjTPwyhblCBIuecHsOQGNCRoTlXCA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IVMavDlf0WLAAB58uHJ7OV0N2RHlSsmzGX61bR6GcAfB8Og7XcviYj8Qg7tKDixNP
+	 8Q1Pwy2xgEEaWnLt3/6IDTTmmDCOCTnobmNj6V8oPgKUhGFFMuRi0AYsnMVTCPgjkE
+	 oLjij/vjCMNkNXKLyImvsRtZIGbjoVbQhXSqyvXyQTvDkNXj6YO92i2ndfiSumUO1O
+	 pZSx17oSekX652GUmdy1JFexjd4ouPEekLOoqPphUz950+1/gugScFRaCFVxnCEChE
+	 QIs0txUwr9mL0egGbuOed9knnNmReH91GBWYKHswhNuWYcc+/eXwpYXKpuoO6cEhzT
+	 4J81o8DGQj0BA==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5131bec457eso2700493e87.0;
+        Sun, 10 Mar 2024 05:54:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWfoIdXPnJPJakOSxtl3c6iyGO7wzJ3tBxqmQMG6ZIhGle2ZsqeWmhmCY9t8MR0YCNKFBSLNuZg9ZTqQI4eqyN0SgXQ5X2u95PsA4VdjWwTK7gTTRWX25BMK0k5SVa3N4vTRiIg
+X-Gm-Message-State: AOJu0Yx6otwVFdoQHLnzbD/db0g1dSucxxvijkrY9t5va9swA+UkdbuU
+	DJ0CnJDS/TSm7W1jDg02Dt7+HZYInDvdq6Q+Tjz1U5F+bi9dClqaSNENAW1jQQUvig9xVESKn3D
+	lXq+aMnuadtYRRrTEfvEK8HHVol4=
+X-Google-Smtp-Source: AGHT+IE3mdTMa/DFw9WedI569OsVd//PftXjaGjzyjgzPj5PLZ3CM7RD3glXQ6TAZjzIdzVfPVGYpK+lflnVOXU746U=
+X-Received: by 2002:a05:6512:328c:b0:513:38ad:66bc with SMTP id
+ p12-20020a056512328c00b0051338ad66bcmr1767370lfe.23.1710075271266; Sun, 10
+ Mar 2024 05:54:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: VCMOOETFy1S8Cuqw7AMi3jOVnDROoe4i
-X-Proofpoint-ORIG-GUID: VCMOOETFy1S8Cuqw7AMi3jOVnDROoe4i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-10_02,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1030
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2403100041
+References: <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
+In-Reply-To: <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 10 Mar 2024 21:53:53 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATPqxYub0eRXhedTpB-oAn_9Egbe+nXzGa=4RRpxq3bpw@mail.gmail.com>
+Message-ID: <CAK7LNATPqxYub0eRXhedTpB-oAn_9Egbe+nXzGa=4RRpxq3bpw@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: Move -Wenum-{compare-conditional,enum-conversion}
+ into W=1
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, arnd@arndb.de, yonghong.song@linux.dev, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Dan, can you try the following patch?
-> 
-> diff --git a/block/blk-core.c b/block/blk-core.c
-> index de771093b526..474462abfbdc 100644
-> --- a/block/blk-core.c
-> +++ b/block/blk-core.c
-> @@ -1183,6 +1183,7 @@ void __blk_flush_plug(struct blk_plug *plug, bool 
-> from_schedule)
->          if (unlikely(!rq_list_empty(plug->cached_rq)))
->                  blk_mq_free_plug_rqs(plug);
->   }
-> +EXPORT_SYMBOL(__blk_flush_plug);
-> 
->   /**
->    * blk_finish_plug - mark the end of a batch of submitted I/O
-> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-> index 8497880135ee..26e09cdf46a3 100644
-> --- a/drivers/md/raid5.c
-> +++ b/drivers/md/raid5.c
-> @@ -6773,6 +6773,11 @@ static void raid5d(struct md_thread *thread)
-> spin_unlock_irq(&conf->device_lock);
->                          md_check_recovery(mddev);
->                          spin_lock_irq(&conf->device_lock);
-> +               } else {
-> + spin_unlock_irq(&conf->device_lock);
-> +                       blk_flush_plug(&plug, false);
-> +                       cond_resched();
-> +                       spin_lock_irq(&conf->device_lock);
->                  }
->          }
->          pr_debug("%d stripes handled\n", handled);
+On Wed, Mar 6, 2024 at 7:12=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
+> wrote:
+>
+> Clang enables -Wenum-enum-conversion and -Wenum-compare-conditional
+> under -Wenum-conversion. A recent change in Clang strengthened these
+> warnings and they appear frequently in common builds, primarily due to
+> several instances in common headers but there are quite a few drivers
+> that have individual instances as well.
+>
+>   include/linux/vmstat.h:508:43: warning: arithmetic between different en=
+umeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-e=
+num-conversion]
+>     508 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+>         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+>     509 |                            item];
+>         |                            ~~~~
+>
+>   drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:955:24: warning: cond=
+itional expression between different enumeration types ('enum iwl_mac_beaco=
+n_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+>     955 |                 flags |=3D is_new_rate ? IWL_MAC_BEACON_CCK
+>         |                                      ^ ~~~~~~~~~~~~~~~~~~
+>     956 |                           : IWL_MAC_BEACON_CCK_V1;
+>         |                             ~~~~~~~~~~~~~~~~~~~~~
+>   drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c:1120:21: warning: con=
+ditional expression between different enumeration types ('enum iwl_mac_beac=
+on_flags' and 'enum iwl_mac_beacon_flags_v1') [-Wenum-compare-conditional]
+>    1120 |                                                0) > 10 ?
+>         |                                                        ^
+>    1121 |                         IWL_MAC_BEACON_FILS :
+>         |                         ~~~~~~~~~~~~~~~~~~~
+>    1122 |                         IWL_MAC_BEACON_FILS_V1;
+>         |                         ~~~~~~~~~~~~~~~~~~~~~~
+>
+> Doing arithmetic between or returning two different types of enums could
+> be a bug, so each of the instance of the warning needs to be evaluated.
+> Unfortunately, as mentioned above, there are many instances of this
+> warning in many different configurations, which can break the build when
+> CONFIG_WERROR is enabled.
+>
+> To avoid introducing new instances of the warnings while cleaning up the
+> disruption for the majority of users, disable these warnings for the
+> default build while leaving them on for W=3D1 builds.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2002
+> Link: https://github.com/llvm/llvm-project/commit/8c2ae42b3e1c6aa7c18f873=
+edcebff7c0b45a37e
+> Acked-by: Yonghong Song <yonghong.song@linux.dev>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> Changes in v2:
+> - Only disable the warning for the default build, leave it on for W=3D1 (=
+Arnd)
+> - Add Yonghong's ack, as the warning is still disabled for the default
+>   build.
+> - Link to v1: https://lore.kernel.org/r/20240305-disable-extra-clang-enum=
+-warnings-v1-1-6a93ef3d35ff@kernel.org
 
-This patch seems to work! I can no longer reproduce the problem after
-applying this.
 
-Thanks,
+Applied to linux-kbuild.
+Thanks.
 
--- Dan
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
