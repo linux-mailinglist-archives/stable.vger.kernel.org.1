@@ -1,124 +1,116 @@
-Return-Path: <stable+bounces-27209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3725387724C
-	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 17:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7B387755E
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 06:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8311F21531
-	for <lists+stable@lfdr.de>; Sat,  9 Mar 2024 16:31:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED3F1F2188B
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 05:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2E8FC1F;
-	Sat,  9 Mar 2024 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1237010A0E;
+	Sun, 10 Mar 2024 05:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CtftAZmq"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="HSuH3Roe"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mr85p00im-zteg06011501.me.com (mr85p00im-zteg06011501.me.com [17.58.23.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2631368
-	for <stable@vger.kernel.org>; Sat,  9 Mar 2024 16:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B1316FF58
+	for <stable@vger.kernel.org>; Sun, 10 Mar 2024 05:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710001881; cv=none; b=TGRZmQfkJJ1GC+siWg9pAEf94jf+QdS2wWJfJElS6gubUT3Bc2mgzHFSuW0S64RbXBTC8v2Vz+grVmtI2i5ndWrrjnQVnyHqWssiXpnguP52QmK/6lcF13kb6fFFdPZA10T983WbyDArYivxGHk8fl0ihnJUyAQY4rX/kexsDpQ=
+	t=1710047607; cv=none; b=IBe9En6nL7uw3YIr2tMVGscri5SmUIXReMWy4k4ArIv0PW/YlRwslzyjRwmkT1/TNuTuVqB4ChV9rgglEKgl5ed1qFX2Mz59s5O3jKgECCzo6Wm9edIvzKsQ0upv1hNZJSmevnou9hjK+44D87EkFrtC0m7H4k2BFiEs1A0rDHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710001881; c=relaxed/simple;
-	bh=UQc3izrgQr12h3Xm9t3aa7jRiYIq8O1PvIR3W3XHYC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tZoyCI4SX4cynErgeZE+bFkRa21O5WZ4bgrXJ3YzE9CLkprwTQ3XO0YxNp55vz8KzhD1xJT6xc+vwIxL+VOrANDCkZAGj4pO2JSFZnGMc89H5YspvRa+pOEgPtHosZuhQF7dfSwkVx8G5p8ZU1TYROC+BOvNNMCw60bBRgmEa/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CtftAZmq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710001878;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U/gHXMil7a5VrcnGbVUk1+YLbdf6KR/XO3UxnJ9TTQQ=;
-	b=CtftAZmqvJyjvh62DKZXo+PNb71mecoOdea40xh/cN4ztR1GumyrlaH1aiaebDNBDmRNUs
-	FwNAxXwuAVM14oadT5QdKsZMoICFgkT2wJuBjMipTIFVz2rpIapuqMVPtaJR+/d+Amr0p+
-	tStOjUlKpYVfzXxngu/fNa9pVDNy86I=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-s-jvVsfJNZ2UCQRK9TVDZQ-1; Sat,
- 09 Mar 2024 11:31:15 -0500
-X-MC-Unique: s-jvVsfJNZ2UCQRK9TVDZQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4E2C3C025D0;
-	Sat,  9 Mar 2024 16:31:14 +0000 (UTC)
-Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BEDC3200E28D;
-	Sat,  9 Mar 2024 16:31:14 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
+	s=arc-20240116; t=1710047607; c=relaxed/simple;
+	bh=T6XjRhnGO6nIaTDzl99aOQ6bUYJdL4xvjrQ7ZIMu54s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fi4qNo24nCbT6qvVTC1pArqpJs+PsFD5+rTbfPa9qMKR51Wl90UU8qQDfx5U1enk2u0tSE5papgPQqt7srih/jdfkxstk34C9/PpQZdcAs/zDjnJUVReglF6GkTxSNnHodZAsXYVj39gXL9b/HMBkXta6ymZduHkwsB816iCyOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=HSuH3Roe; arc=none smtp.client-ip=17.58.23.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1710047604; bh=w5RhIat3cVeSw5iGnaflty1U4Kd5aUaXoJYaNdQwBJA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=HSuH3RoerZbtH1tXsy/ZzNESP80YvZeB7v60YYjpz4+FBKQjP4C21DxYFGdREgCcN
+	 TCAm+JqJbfo8mnvYAAJr0ACqBB5ifQTLtaH3zAR68L/X6/LfmmMM9FO0ROkwAQ3x+n
+	 YGb1unOUgwznjUkp7C2N4mMI2hcL15hF7KZT3kohMDpBJamDofMZ+ajsLfJZz+tHos
+	 d01NXUxwMtiF/tfYpUjMiTOup+QGhAg9bfbSBvBBT+VS2rFgLDUXlfnm9XkNKb/2Nv
+	 qrIGw8KrpFTemMPCR211U+pfiKDNuPpNEHyRIcmVFowh1PfaAelTkSl2uQR7utAdb3
+	 EUrmHFASJ/5zg==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06011501.me.com (Postfix) with ESMTPSA id 1AF6748012F;
+	Sun, 10 Mar 2024 05:13:22 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: junxiao.bi@oracle.com
+Cc: dan@danm.net,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev,
+	song@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] SEV: disable SEV-ES DebugSwap by default
-Date: Sat,  9 Mar 2024 11:31:14 -0500
-Message-Id: <20240309163114.2368452-1-pbonzini@redhat.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Sat,  9 Mar 2024 22:13:21 -0700
+Message-ID: <20240310051321.9812-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <d3cdebfe-17c0-4f61-9ad9-71d9de2339b2@oracle.com>
+References: <d3cdebfe-17c0-4f61-9ad9-71d9de2339b2@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Proofpoint-GUID: VCMOOETFy1S8Cuqw7AMi3jOVnDROoe4i
+X-Proofpoint-ORIG-GUID: VCMOOETFy1S8Cuqw7AMi3jOVnDROoe4i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-10_02,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1030
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2403100041
 
-The DebugSwap feature of SEV-ES provides a way for confidential guests to use
-data breakpoints.  However, because the status of the DebugSwap feature is
-recorded in the VMSA, enabling it by default invalidates the attestation
-signatures.  In 6.10 we will introduce a new API to create SEV VMs that
-will allow enabling DebugSwap based on what the user tells KVM to do.
-Contextually, we will change the legacy KVM_SEV_ES_INIT API to never
-enable DebugSwap.
+> Dan, can you try the following patch?
+> 
+> diff --git a/block/blk-core.c b/block/blk-core.c
+> index de771093b526..474462abfbdc 100644
+> --- a/block/blk-core.c
+> +++ b/block/blk-core.c
+> @@ -1183,6 +1183,7 @@ void __blk_flush_plug(struct blk_plug *plug, bool 
+> from_schedule)
+>          if (unlikely(!rq_list_empty(plug->cached_rq)))
+>                  blk_mq_free_plug_rqs(plug);
+>   }
+> +EXPORT_SYMBOL(__blk_flush_plug);
+> 
+>   /**
+>    * blk_finish_plug - mark the end of a batch of submitted I/O
+> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+> index 8497880135ee..26e09cdf46a3 100644
+> --- a/drivers/md/raid5.c
+> +++ b/drivers/md/raid5.c
+> @@ -6773,6 +6773,11 @@ static void raid5d(struct md_thread *thread)
+> spin_unlock_irq(&conf->device_lock);
+>                          md_check_recovery(mddev);
+>                          spin_lock_irq(&conf->device_lock);
+> +               } else {
+> + spin_unlock_irq(&conf->device_lock);
+> +                       blk_flush_plug(&plug, false);
+> +                       cond_resched();
+> +                       spin_lock_irq(&conf->device_lock);
+>                  }
+>          }
+>          pr_debug("%d stripes handled\n", handled);
 
-For compatibility with kernels that pre-date the introduction of DebugSwap,
-as well as with those where KVM_SEV_ES_INIT will never enable it, do not enable
-the feature by default.  If anybody wants to use it, for now they can enable
-the sev_es_debug_swap_enabled module parameter, but this will result in a
-warning.
+This patch seems to work! I can no longer reproduce the problem after
+applying this.
 
-Fixes: d1f85fbe836e ("KVM: SEV: Enable data breakpoints in SEV-ES")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/sev.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Thanks,
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index f760106c31f8..69b37956c1c8 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -57,7 +57,7 @@ static bool sev_es_enabled = true;
- module_param_named(sev_es, sev_es_enabled, bool, 0444);
- 
- /* enable/disable SEV-ES DebugSwap support */
--static bool sev_es_debug_swap_enabled = true;
-+static bool sev_es_debug_swap_enabled = false;
- module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
- #else
- #define sev_enabled false
-@@ -612,8 +612,11 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- 	save->xss  = svm->vcpu.arch.ia32_xss;
- 	save->dr6  = svm->vcpu.arch.dr6;
- 
--	if (sev_es_debug_swap_enabled)
-+	if (sev_es_debug_swap_enabled) {
- 		save->sev_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-+		pr_warn_once("Enabling DebugSwap with KVM_SEV_ES_INIT. "
-+			     "This will not work starting with Linux 6.10\n");
-+	}
- 
- 	pr_debug("Virtual Machine Save Area (VMSA):\n");
- 	print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*save), false);
--- 
-2.39.1
-
+-- Dan
 
