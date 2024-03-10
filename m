@@ -1,108 +1,106 @@
-Return-Path: <stable+bounces-27222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00917877858
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 20:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF0D8778A3
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 22:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A97EE280F26
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 19:52:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C252811B4
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 21:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF3A3A1BB;
-	Sun, 10 Mar 2024 19:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D6C3A8CA;
+	Sun, 10 Mar 2024 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ufksA6oH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWKz5aAT"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF43539FF4
-	for <stable@vger.kernel.org>; Sun, 10 Mar 2024 19:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6062DF7D;
+	Sun, 10 Mar 2024 21:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710100337; cv=none; b=N2uQ5no0EqGGSmBaWFXL+aJ+BoXylY+H1SQueHm2aM2H81uyV2ePXYelahiWZ7dSGe+vqThaztgsdaGyGliVlIDUDb8z7bNaTINfYHxw7gNGLmiQORzlPRBhGVy4uoUj/+cyJoPigKaLlzF0iZC70bmxVlmHCj6O7Ye74UGktoU=
+	t=1710107540; cv=none; b=lD5mvrijQjRaIurpshThGP+nuZWNMKjZCAmzdWr8KWjU2DAvXDutOTKFCUyorZvNh/dyp1XCdenyXEJle0nPRryTRMUXv/lD6H6Jd+xNJ2Bn8m/BZn+iU7snNsEkn1kZUt2YcrJTtXKOkKFu5k/MbIfIJ4qZUCXdz5UJ2+KY12c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710100337; c=relaxed/simple;
-	bh=RcToUl56w4yDBVjDVP90f4jCCZEx8YxDvxWKN2KseMI=;
+	s=arc-20240116; t=1710107540; c=relaxed/simple;
+	bh=Nu+HpKTnprxT1UB9q0gUEwsAEM927nwo9ElTKHsVT+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l9BN+hWEiN6Tda3oH7y5L9yy3Az9tC8XuuPCQpbINwDKjQp2C+Zleo3J2IKDtTETOn7h7TZVp0/czNDS3JB0Z4llOSOCC0I42cgMjKP64w/bUu95tWgfNB3KhEN0z5X7kyjkXay3S8gNd5JsDlF8znbUZNjsyDn3oOdUUhsANXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ufksA6oH; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sun, 10 Mar 2024 15:52:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710100333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UcswkkerU0TvFOs/zruoze8pg+mzMuhwyFE8tuMQ3dw=;
-	b=ufksA6oHYBKlbGnKzEOeTxol5JwzZ8249RA6kdGLeDUsJNI6PiSUCpwg864JRJWrRMNm53
-	6zxOBS7D12L4u0L56or1pL9LUpDGzJnP7h7vINUQ/YihzLj738okR1LLGchKvNh2YMVK2D
-	I/vhQSzwd3zdoPUxATTKQIq0vWI3CyI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [GIT PULL] bcachefs fixes for 6.7.y
-Message-ID: <tjgrhcqgfc5oghnli63pftb3bieecm27mokd5veilhpalpp6cy@ralxgoy3yyqg>
-References: <2zaqetj6wlxgpbxgex643dnudgwhcrz23xgfuai3t3hgavjb2d@vwhyha3hlg5y>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WP0q9rn/QxZfXQbZjjkdJsaiNMBFLwg/PGSBydLQoEI7Kz/tXccaO8LNXyaG//PkHyWa/cYaJJNf+eBmqoaAZqBpQ/L6diPx/3hgdxsa1ZJcTSwul26ucQ8HYFm2viFoDp5CyzxWSBmkDKaG9IHJpnd71FUI44SOjuEsQASPDxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWKz5aAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2984C433C7;
+	Sun, 10 Mar 2024 21:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710107540;
+	bh=Nu+HpKTnprxT1UB9q0gUEwsAEM927nwo9ElTKHsVT+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NWKz5aATe06FU9a1jAlZYEsNTgmp2bLl66ZAj0LwloMVaO+7fy7Cf1YnraUIMLf/K
+	 aBRw1L9WfvN2OXD+u3bwzmpMY1AZ/kNRwUhVO82135WwxhK0mQVy8VcDhRNMDiFTzV
+	 Ku9w81HytWVWPF8+WFDYrhAqlJMZBG8b53lLobO8Dc912gqD4Zet8kww9sv31SJpnK
+	 QhBvYTiKTNM8KFmuc34KIXGye7YKAecz39fGCaNjf90p8fXKGnpOlF4oCWgFna6Fd/
+	 VTqSq8jLSENjjGtXDT1DRu5QzfKAxNHFIkJTvmV7B1ILs8XTw8WyScdc2BlFoB+1EG
+	 Igaut7Rso2SOA==
+Date: Sun, 10 Mar 2024 17:52:18 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, stable-commits@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: Patch "selftests: mptcp: simult flows: format subtests results
+ in TAP" has been added to the 6.1-stable tree
+Message-ID: <Ze4rksofBwNxQkFL@sashalap>
+References: <20240310023325.119298-1-sashal@kernel.org>
+ <9f185a3f-9373-401c-9a5c-ec0f106c0cbc@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <2zaqetj6wlxgpbxgex643dnudgwhcrz23xgfuai3t3hgavjb2d@vwhyha3hlg5y>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <9f185a3f-9373-401c-9a5c-ec0f106c0cbc@kernel.org>
 
-On Sun, Mar 10, 2024 at 03:43:38PM -0400, Kent Overstreet wrote:
-> The following changes since commit 2e7cdd29fc42c410eab52fffe5710bf656619222:
-> 
->   Linux 6.7.9 (2024-03-06 14:54:01 +0000)
-> 
-> are available in the Git repository at:
-> 
->   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240310
-> 
-> for you to fetch changes up to 560ceb6a4d9e3bea57c29f5f3a7a1d671dfc7983:
-> 
->   bcachefs: Fix BTREE_ITER_FILTER_SNAPSHOTS on inodes btree (2024-03-10 14:36:57 -0400)
-> 
-> ----------------------------------------------------------------
-> bcachefs fixes for 6.7 stable
-> 
-> "bcachefs: fix simulateously upgrading & downgrading" is the important
-> one here. This fixes a really nasty bug where in a rare situation we
-> wouldn't downgrade; we'd write a superblock where the version number is
-> higher than the currently supported version.
-> 
-> This caused total failure to mount multi device filesystems with the
-> splitbrain checking in 6.8, since now we wouldn't be updating the member
-> sequence numbers used for splitbrain checking, but the version number
-> said we would be - and newer versions would attempt to kick every device
-> out of the fs.
-> 
-> ----------------------------------------------------------------
-> Helge Deller (1):
->       bcachefs: Fix build on parisc by avoiding __multi3()
-> 
-> Kent Overstreet (3):
->       bcachefs: check for failure to downgrade
->       bcachefs: fix simulateously upgrading & downgrading
->       bcachefs: Fix BTREE_ITER_FILTER_SNAPSHOTS on inodes btree
-> 
-> Mathias Krause (1):
->       bcachefs: install fd later to avoid race with close
-> 
->  fs/bcachefs/btree_iter.c        |  4 +++-
->  fs/bcachefs/chardev.c           |  3 +--
->  fs/bcachefs/errcode.h           |  1 +
->  fs/bcachefs/mean_and_variance.h |  2 +-
->  fs/bcachefs/super-io.c          | 27 ++++++++++++++++++++++++---
->  5 files changed, 30 insertions(+), 7 deletions(-)
+On Sun, Mar 10, 2024 at 03:21:49PM +0100, Matthieu Baerts wrote:
+>Hi Sasha,
+>
+>On 10/03/2024 03:33, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     selftests: mptcp: simult flows: format subtests results in TAP
+>>
+>> to the 6.1-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      selftests-mptcp-simult-flows-format-subtests-results.patch
+>> and it can be found in the queue-6.1 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>
+>Thank you for having backported this commit 675d99338e7a ("selftests:
+>mptcp: simult flows: format subtests results in TAP") -- as well as
+>commit 4d8e0dde0403 ("selftests: mptcp: simult flows: fix some subtest
+>names"), a fix for it -- as a "dependence" for commit 5e2f3c65af47
+>("selftests: mptcp: decrease BW in simult flows"), but I think it is
+>better not to include 675d99338e7a (and 4d8e0dde0403): they are not
+>dependences, just modifying the lines around, and they depend on other
+>commits to have this feature to work.
+>
+>In other words, commit 675d99338e7a ("selftests: mptcp: simult flows:
+>format subtests results in TAP") -- and 4d8e0dde0403 ("selftests: mptcp:
+>simult flows: fix some subtest names") -- is now causing the MPTCP
+>simult flows selftest to fail. Could it be possible to remove them from
+>6.1 and 5.15 queues please?
+
+I'll drop it, thanks!
+
+-- 
+Thanks,
+Sasha
 
