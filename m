@@ -1,146 +1,104 @@
-Return-Path: <stable+bounces-27219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0078F87779E
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 17:38:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073338777AE
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 18:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A97281666
-	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 16:38:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B29EB20C1D
+	for <lists+stable@lfdr.de>; Sun, 10 Mar 2024 17:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF01039846;
-	Sun, 10 Mar 2024 16:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D8139ADD;
+	Sun, 10 Mar 2024 17:02:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F7F2B9DA;
-	Sun, 10 Mar 2024 16:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BFE39850
+	for <stable@vger.kernel.org>; Sun, 10 Mar 2024 17:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710088673; cv=none; b=nCmi1lve9/oX0Uavq3SbeY1xbYJMhW66oWCOBs3/KxoHTSbREX4i7i6GijoSayEuzdqWSSTI6cPClXV/MebS2Dx0LOBciXqzbEmZQx+y1LC/RaCaHArpHIcZDFi6bD8QRA4Si6s4HzkBBSaVaGjZ/F9JH5y1fpDWolh+IK+6p5I=
+	t=1710090156; cv=none; b=n6Raih3sxbszn8YfDQS86dTfJACJ8Ged3nHeCqkNiGSVgt2oSPoXvi6y9xL1xUmZGZNYkX1yJf7tDYYmZ+/+8a9GKQZrPVaWoJoKFujZBfS3cdfsXb9oD0Qin+2Wez77Byoq/CEKBuTMs8bjubcfoNJkYaSJMIlArO3BDJB/DsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710088673; c=relaxed/simple;
-	bh=x++FexBDevj2+uPhfxhqFB91G8i40sg/g/6wDDyegcg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=n/XBtiFkyXP9L3b8vbK66T+/WwKiQoOk2saBNx+nJBwTbs0yNG3xiGKj6en8MwcA8+AkzCd644ducUO9rFBt0VJv/RsV8phaN0A69xTQ2Bhg06/rDAkJksGhIv8zytnuPYISva8RmwAk4MM7t+RmI8FJhgv9NcNcYhUty7MjAf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA5FC43394;
-	Sun, 10 Mar 2024 16:37:53 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1rjMDL-00000001Pc3-2o3E;
-	Sun, 10 Mar 2024 12:39:55 -0400
-Message-ID: <20240310163955.534979305@goodmis.org>
-User-Agent: quilt/0.67
-Date: Sun, 10 Mar 2024 12:32:21 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linke li <lilinke99@qq.com>,
- Rabin Vincent <rabin@rab.in>
-Subject: [for-linus][PATCH 3/3] tracing: Use .flush() call to wake up readers
-References: <20240310163218.425365963@goodmis.org>
+	s=arc-20240116; t=1710090156; c=relaxed/simple;
+	bh=I9x7BdyUUczq88YNuTHstKnsDTlJVDfJv3A8utHm/1w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=tgJu3ULySqGz1HFDym8l1lFWoYw8Ersw4VtHkV7gVlkrZoY7K8o1tIQHaZp7FQZWVjjYm7X1GjJjepD8Gz+EKa/SjRymggmxea65gfPAgqx7goEGfy9hcpDL6UqVYmILId+9ZqX09HhZKfE1Cd+vB8bmH/w3s3394J94OXtR+PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-169-FjRJos4bP-SvaGBz03k0zA-1; Sun, 10 Mar 2024 17:02:25 +0000
+X-MC-Unique: FjRJos4bP-SvaGBz03k0zA-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 10 Mar
+ 2024 17:02:35 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sun, 10 Mar 2024 17:02:35 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Nathan Chancellor' <nathan@kernel.org>, "masahiroy@kernel.org"
+	<masahiroy@kernel.org>
+CC: "nicolas@fjasle.eu" <nicolas@fjasle.eu>, "ndesaulniers@google.com"
+	<ndesaulniers@google.com>, "morbo@google.com" <morbo@google.com>,
+	"justinstitt@google.com" <justinstitt@google.com>, "arnd@arndb.de"
+	<arnd@arndb.de>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>, "patches@lists.linux.dev"
+	<patches@lists.linux.dev>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2] kbuild: Move
+ -Wenum-{compare-conditional,enum-conversion} into W=1
+Thread-Topic: [PATCH v2] kbuild: Move
+ -Wenum-{compare-conditional,enum-conversion} into W=1
+Thread-Index: AQHab0pcJ+ohPpECwEa4FIxcfG/R2bExObUA
+Date: Sun, 10 Mar 2024 17:02:34 +0000
+Message-ID: <8a7d0115e41949429e43e06b9479a781@AcuMS.aculab.com>
+References: <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
+In-Reply-To: <20240305-disable-extra-clang-enum-warnings-v2-1-ba529ec15f95@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-
-The .release() function does not get called until all readers of a file
-descriptor are finished.
-
-If a thread is blocked on reading a file descriptor in ring_buffer_wait(),
-and another thread closes the file descriptor, it will not wake up the
-other thread as ring_buffer_wake_waiters() is called by .release(), and
-that will not get called until the .read() is finished.
-
-The issue originally showed up in trace-cmd, but the readers are actually
-other processes with their own file descriptors. So calling close() would wake
-up the other tasks because they are blocked on another descriptor then the
-one that was closed(). But there's other wake ups that solve that issue.
-
-When a thread is blocked on a read, it can still hang even when another
-thread closed its descriptor.
-
-This is what the .flush() callback is for. Have the .flush() wake up the
-readers.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240308202432.107909457@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index d16b95ca58a7..c9c898307348 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -8393,6 +8393,20 @@ tracing_buffers_read(struct file *filp, char __user *ubuf,
- 	return size;
- }
- 
-+static int tracing_buffers_flush(struct file *file, fl_owner_t id)
-+{
-+	struct ftrace_buffer_info *info = file->private_data;
-+	struct trace_iterator *iter = &info->iter;
-+
-+	iter->wait_index++;
-+	/* Make sure the waiters see the new wait_index */
-+	smp_wmb();
-+
-+	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
-+
-+	return 0;
-+}
-+
- static int tracing_buffers_release(struct inode *inode, struct file *file)
- {
- 	struct ftrace_buffer_info *info = file->private_data;
-@@ -8404,12 +8418,6 @@ static int tracing_buffers_release(struct inode *inode, struct file *file)
- 
- 	__trace_array_put(iter->tr);
- 
--	iter->wait_index++;
--	/* Make sure the waiters see the new wait_index */
--	smp_wmb();
--
--	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
--
- 	if (info->spare)
- 		ring_buffer_free_read_page(iter->array_buffer->buffer,
- 					   info->spare_cpu, info->spare);
-@@ -8625,6 +8633,7 @@ static const struct file_operations tracing_buffers_fops = {
- 	.read		= tracing_buffers_read,
- 	.poll		= tracing_buffers_poll,
- 	.release	= tracing_buffers_release,
-+	.flush		= tracing_buffers_flush,
- 	.splice_read	= tracing_buffers_splice_read,
- 	.unlocked_ioctl = tracing_buffers_ioctl,
- 	.llseek		= no_llseek,
--- 
-2.43.0
-
+RnJvbTogTmF0aGFuIENoYW5jZWxsb3INCj4gU2VudDogMDUgTWFyY2ggMjAyNCAyMjoxMw0KLi4u
+DQo+ICAgZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9tdm0vbWFjLWN0eHQuYzox
+MTIwOjIxOiB3YXJuaW5nOiBjb25kaXRpb25hbA0KPiBleHByZXNzaW9uIGJldHdlZW4gZGlmZmVy
+ZW50IGVudW1lcmF0aW9uIHR5cGVzICgnZW51bSBpd2xfbWFjX2JlYWNvbl9mbGFncycgYW5kDQo+
+ICdlbnVtIGl3bF9tYWNfYmVhY29uX2ZsYWdzX3YxJykgWy1XZW51bS1jb21wYXJlLWNvbmRpdGlv
+bmFsXQ0KPiAgICAxMTIwIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAwKSA+IDEwID8NCj4gICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeDQo+ICAgIDExMjEgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICBJV0xfTUFDX0JFQUNPTl9GSUxTIDoNCj4gICAgICAgICB8ICAgICAgICAgICAg
+ICAgICAgICAgICAgIH5+fn5+fn5+fn5+fn5+fn5+fn4NCj4gICAgMTEyMiB8ICAgICAgICAgICAg
+ICAgICAgICAgICAgIElXTF9NQUNfQkVBQ09OX0ZJTFNfVjE7DQo+ICAgICAgICAgfCAgICAgICAg
+ICAgICAgICAgICAgICAgICB+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+IA0KPiBEb2luZyBhcml0
+aG1ldGljIGJldHdlZW4gb3IgcmV0dXJuaW5nIHR3byBkaWZmZXJlbnQgdHlwZXMgb2YgZW51bXMg
+Y291bGQNCj4gYmUgYSBidWcsIHNvIGVhY2ggb2YgdGhlIGluc3RhbmNlIG9mIHRoZSB3YXJuaW5n
+IG5lZWRzIHRvIGJlIGV2YWx1YXRlZC4NCj4gVW5mb3J0dW5hdGVseSwgYXMgbWVudGlvbmVkIGFi
+b3ZlLCB0aGVyZSBhcmUgbWFueSBpbnN0YW5jZXMgb2YgdGhpcw0KPiB3YXJuaW5nIGluIG1hbnkg
+ZGlmZmVyZW50IGNvbmZpZ3VyYXRpb25zLCB3aGljaCBjYW4gYnJlYWsgdGhlIGJ1aWxkIHdoZW4N
+Cj4gQ09ORklHX1dFUlJPUiBpcyBlbmFibGVkLg0KDQpJJ20gbm90IHN1cmUgd2hhdCBpcyBiZWlu
+ZyBkb25lIHRvIGF2b2lkIHRoaXMgd2FybmluZy4NCihBcGFydCBmcm9tIG5vdCB1c2luZyBlbnVt
+IHRvIGRlZmluZSByZWxhdGVkIGludGVnZXIgY29uc3RhbnRzLikNClVudGlsIHRoZSBjb21waWxl
+cnMgZ2V0IGV2ZW4gbW9yZSBjbGV2ZXJeV3N0dXBpZCBwZXJoYXBzIHRoZQ0Kc2ltcGxlc3Qgd2F5
+IGlzIHRvIGp1c3QgYWRkICcrIDAnIHRvIG9uZSBvZiB0aGUgZW51bSB2YWx1ZXMuDQoNCkluIGNv
+ZGUgdGVybXMgaXQgaXMgbXVjaCBzYWZlciB0aGFuIGFueSBjYXN0Lg0KDQoJRGF2aWQNCg0KLQ0K
+UmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1p
+bHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVz
+KQ0K
 
 
