@@ -1,174 +1,118 @@
-Return-Path: <stable+bounces-27245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B8A877D25
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 10:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0444877EA5
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 12:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D89D11C20EEC
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DDEB1C210D6
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 11:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A0182D2;
-	Mon, 11 Mar 2024 09:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A57A38F97;
+	Mon, 11 Mar 2024 11:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knA8hxiz"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3476D17BD9;
-	Mon, 11 Mar 2024 09:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1128C22338;
+	Mon, 11 Mar 2024 11:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710150294; cv=none; b=gCsQWacMQHI+7x7sEYrUZTl29ZRF4guPa8TzGknAesd7K8GhW2HsuJYw/XF0r8Oa73r82uwGniHMbxVDC/OquVOGoEua1SJcchRjeFObFCs02OHI1MQ3J1iKzVIS0WzrXNEpGZwK/BPcVB8C98Oasbg/MbCfti2ypxW5eDBoVqU=
+	t=1710155577; cv=none; b=tdF+8uLprvVOQ91TX8w8BR+cRmv2nJDi9wRnNR3pO527qc8vpiQvq4puvT05LIIDekFvNFfeenOZ6K23+WKCzim2iuVpwbl4PsejCmHx3MkMGBlWtEFpO1XlzFlfSxrxmB0Ho34c6LANLVqTWHCs5VINNBxEFBCKVYVekD/0oB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710150294; c=relaxed/simple;
-	bh=mxn6v4qsoLRyc07OUq5fk0S7LTDOD/Zmjqwktx+NXBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T5WOEiFO8/noZDypbBIPDZptawDwOAb84kHyvBiB4acv5UH8tzfBW4RXfV23K8zo8tTsPaI5r6Lm+shYWGSh9icA5lsvfcnRLicrO7EZ3wHPfsJfE8lob9w6KCsOBoCPoSnWxbnK+u7AsjZylq7iDd6HgGSBqXxbCFP8Fjgf1zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD1CBFEC;
-	Mon, 11 Mar 2024 02:45:27 -0700 (PDT)
-Received: from [10.57.68.246] (unknown [10.57.68.246])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3CA03F762;
-	Mon, 11 Mar 2024 02:44:49 -0700 (PDT)
-Message-ID: <1d27e93b-1c6b-4909-859f-e0756974a640@arm.com>
-Date: Mon, 11 Mar 2024 09:44:47 +0000
+	s=arc-20240116; t=1710155577; c=relaxed/simple;
+	bh=CM+eUDxsbUMpQRvQcjibOZWF3uIbEEXRCINaMz1kBbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/qBpmkf8Tc026LwcRCboOxDi8Zs03gj2Rvp0Zhr3aoxpEmIFDWgAWjvT3rJTD1dyKOzW6FB40PV0CYMneZ0Bb944FhTcarjRMUOWKokvbx04oiO9doHkvqgqJJgcfpLTLJxX3+Id2JORw3He/afoSqXsEykIT+Ylq0yhLD5SRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=knA8hxiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64D1C433F1;
+	Mon, 11 Mar 2024 11:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710155576;
+	bh=CM+eUDxsbUMpQRvQcjibOZWF3uIbEEXRCINaMz1kBbE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=knA8hxizA9rXH9/26tN0j1sIIey3s+We7M3iMFepnLYJoprifjdgtG1Glv7f7RZd8
+	 F9yyTGqt6WrpXA5sNNtvZ2BghSc7qkh1fYMNZvxImF71YgZe5xlXi8s1PWns/B70ag
+	 +vktA06oQnWK2bA2oFk96O7JkPgAlE+U4lYhI9yo6XKYZEUS7ymdlmBS+y71UFKWyK
+	 0WXLkYmv/Q/+jbdr/THPBBR8S3HP93cZQvEe0tBi2aLfeb4R5oSf7n1qs7hNvRTaip
+	 of1cwwi4GY51+8IBMgyiV7PlxSwaVPk3TWI2UEdsc7lEWp5OA9jw8GxioyXz8E6UBI
+	 +/zluqLX3fw6A==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1.y] selftests: mptcp: decrease BW in simult flows
+Date: Mon, 11 Mar 2024 12:12:25 +0100
+Message-ID: <20240311111224.1421344-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v3] mm: swap: fix race between free_swap_and_cache() and
- swapoff()
-Content-Language: en-GB
-To: Huang Ying <ying.huang@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, stable@vger.kernel.org
-References: <20240311084426.447164-1-ying.huang@intel.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240311084426.447164-1-ying.huang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2405; i=matttbe@kernel.org; h=from:subject; bh=CM+eUDxsbUMpQRvQcjibOZWF3uIbEEXRCINaMz1kBbE=; b=kA0DAAgB9reCT0JpoHMByyZiAGXu5xijlujc4Eq7FYNQYc2FZj4LM/es0sLblHzNR0/bOazkH 4kCMwQAAQgAHRYhBOjLhfdodwV6bif3eva3gk9CaaBzBQJl7ucYAAoJEPa3gk9CaaBzQpoQALWj 7XtI47zYtB8DnCcJvBbPqz8Skrp4To+rIPpbU4/NebbVL/QG8Bg1/VvWnA7xRtMfYUcPiwjpm2j qDNiN6kJxIGuUYzk/mIsO6YZ3zV6bY8y7/R98tJPOwiJxZ1inu9zYGK3Cqac+TyR3LU8h2yU8II fuazvPs+yT3LBJ/oa/Igx935CGFwz4gyJPJXZKL59/1jfedXqdwP2BC/VLpSiQ4lYWkMrviIMdB Q/LmlNnvRuuPFvdr6fZmhuEsJLgoOKxjG+UmqU/K5FN01MRLlAgorGLV32lrwLn4kNuZ1Tp+MSu B6YtV0ja/X8rKNAxxDG+bSl+itwsKEWxL3Hv0elyJmSOTPGfsTRfSe6Kslu+XjuGHqIeaGtsY/p 3BPbxl6OcQQ8oGOX8EFvRpCUD78s3IC3C8+ZS29ASpvgbirDB6jfa4zmy0L6cOxHvkR8WsaJrRz uSFkcLRCtmjZ6ozTRkZY6WhqQpsPAp2GtwEeMI1BeXv/10YymwismQb1A7KnmpjBURb0P12aF+Y Yd6jfyuRX6AgKD9HYZ7jN4cSqYhDqO9le7fi6LVkj0A1AmaqJNNHmGyoodl3COjF5ZIvu6oAic5 HlmmRaePWEq6dZomg/23NJf74kz8GE0egNToErBK/XFagBE9z63HfyaxEPhoGE+wSLfjeSsoZlL 3rtH+
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-On 11/03/2024 08:44, Huang Ying wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> There was previously a theoretical window where swapoff() could run and
-> teardown a swap_info_struct while a call to free_swap_and_cache() was
-> running in another thread.  This could cause, amongst other bad
-> possibilities, swap_page_trans_huge_swapped() (called by
-> free_swap_and_cache()) to access the freed memory for swap_map.
-> 
-> This is a theoretical problem and I haven't been able to provoke it from a
-> test case.  But there has been agreement based on code review that this is
-> possible (see link below).
-> 
-> Fix it by using get_swap_device()/put_swap_device(), which will stall
-> swapoff().  There was an extra check in _swap_info_get() to confirm that
-> the swap entry was not free.  This isn't present in get_swap_device()
-> because it doesn't make sense in general due to the race between getting
-> the reference and swapoff.  So I've added an equivalent check directly in
-> free_swap_and_cache().
-> 
-> Details of how to provoke one possible issue:
-> 
-> --8<-----
-> 
-> CPU0                               CPU1
-> ----                               ----
-> shmem_undo_range
->   shmem_free_swap
->     xa_cmpxchg_irq
->     free_swap_and_cache
->       __swap_entry_free
->       /* swap_count() become 0 */
->                                    swapoff
->                                      try_to_unuse
->                                        shmem_unuse /* cannot find swap entry */
->                                        find_next_to_unuse
->                                        filemap_get_folio
->                                        folio_free_swap
->                                        /* remove swap cache */
->                                        /* free si->swap_map[] */
->       swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
-> 
-> --8<-----
-> 
-> Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
-> Closes: https://lore.kernel.org/linux-mm/8734t27awd.fsf@yhuang6-desk2.ccr.corp.intel.com/
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: "Huang, Ying" <ying.huang@intel.com> [patch description]
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> Hi, Andrew,
-> 
-> If it's not too late.  Please replace v2 of this patch in mm-stable
-> with this version.
+When running the simult_flow selftest in slow environments -- e.g. QEmu
+without KVM support --, the results can be unstable. This selftest
+checks if the aggregated bandwidth is (almost) fully used as expected.
 
-Thanks for sorting this out, Huang, Ying! I saw your note asking if I could do
-it, and it was on my list, but I've been busy debugging other urgent issues in
-mm-stable. That should be solved now so unblocks me finishing the testing on my
-large folios swap-out v4 series. Hopefully that will be incomming in the next
-couple of days.
+To help improving the stability while still keeping the same validation
+in place, the BW and the delay are reduced to lower the pressure on the
+CPU.
 
-You did previously suggest you wanted some comments around synchronise_rcu() in
-swapoff(), but I don't see those here. I don't think that should hold this up
-though.
+Fixes: 1a418cb8e888 ("mptcp: simult flow self-tests")
+Fixes: 219d04992b68 ("mptcp: push pending frames when subflow has free space")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-6-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 5e2f3c65af47e527ccac54060cf909e3306652ff)
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Notes:
+ - Conflicts in simult_flows.sh, because v6.1 doesn't have commit
+   675d99338e7a ("selftests: mptcp: simult flows: format subtests
+   results in TAP") which modifies the context for a new but unrelated
+   feature.
+ - This is a new version to the one recently proposed by Sasha, this
+   time without dependences:
+   https://lore.kernel.org/stable/9f185a3f-9373-401c-9a5c-ec0f106c0cbc@kernel.org/
+---
+ tools/testing/selftests/net/mptcp/simult_flows.sh | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Thanks,
-Ryan
-
-
-> 
-> Changes since v2:
-> 
->  - Remove comments for get_swap_device() because it's not correct.
->  - Revised patch description about the race condition description.
-> 
-> Changes since v1:
-> 
->  - Added comments for get_swap_device() as suggested by David
->  - Moved check that swap entry is not free from get_swap_device() to
->    free_swap_and_cache() since there are some paths that legitimately call with
->    a free offset.
-> 
-> Best Regards,
-> Huang, Ying
-> 
->  mm/swapfile.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2b3a2d85e350..9e0691276f5e 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1609,13 +1609,19 @@ int free_swap_and_cache(swp_entry_t entry)
->  	if (non_swap_entry(entry))
->  		return 1;
->  
-> -	p = _swap_info_get(entry);
-> +	p = get_swap_device(entry);
->  	if (p) {
-> +		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
-> +			put_swap_device(p);
-> +			return 0;
-> +		}
-> +
->  		count = __swap_entry_free(p, entry);
->  		if (count == SWAP_HAS_CACHE &&
->  		    !swap_page_trans_huge_swapped(p, entry))
->  			__try_to_reclaim_swap(p, swp_offset(entry),
->  					      TTRS_UNMAPPED | TTRS_FULL);
-> +		put_swap_device(p);
->  	}
->  	return p != NULL;
->  }
+diff --git a/tools/testing/selftests/net/mptcp/simult_flows.sh b/tools/testing/selftests/net/mptcp/simult_flows.sh
+index 4a417f9d51d6..ee24e06521e6 100755
+--- a/tools/testing/selftests/net/mptcp/simult_flows.sh
++++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
+@@ -301,10 +301,11 @@ done
+ 
+ setup
+ run_test 10 10 0 0 "balanced bwidth"
+-run_test 10 10 1 50 "balanced bwidth with unbalanced delay"
++run_test 10 10 1 25 "balanced bwidth with unbalanced delay"
+ 
+ # we still need some additional infrastructure to pass the following test-cases
+-run_test 30 10 0 0 "unbalanced bwidth"
+-run_test 30 10 1 50 "unbalanced bwidth with unbalanced delay"
+-run_test 30 10 50 1 "unbalanced bwidth with opposed, unbalanced delay"
++run_test 10 3 0 0 "unbalanced bwidth"
++run_test 10 3 1 25 "unbalanced bwidth with unbalanced delay"
++run_test 10 3 25 1 "unbalanced bwidth with opposed, unbalanced delay"
++
+ exit $ret
+-- 
+2.43.0
 
 
