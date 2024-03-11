@@ -1,96 +1,147 @@
-Return-Path: <stable+bounces-27338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDFD878564
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 17:29:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514F2878595
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 17:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A04EE1C21AD0
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55351F22412
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFF952F72;
-	Mon, 11 Mar 2024 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9D047F77;
+	Mon, 11 Mar 2024 16:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PRLgYYyY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bv7q5Bim"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E49E53E13
-	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 16:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB82405DB
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 16:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710174199; cv=none; b=GYFCWTsukcSPMlXSjZqoOBDcY2jWdwvJ5tapLnUNLOty+xNJ13KuqjPKWnoqOPnYQrgVy9MwrjwbMjowCdJh1lRrFipNcl86WFcfuOJwIks13ME/fILwEb6XIuKs5oEJxwoUCaH2wzufQx2G1INKePQgRq+7T32vZnj7dVz5au8=
+	t=1710175121; cv=none; b=DwOWTi18U+Fg18TFCuvkCdV4SfxbKdfsbxyHenB6MVYUJy7RfxrrDsa0rKIsARP+qgy+98pM5yTMKb7DPM/VySLmSEdZFjq+c/v5i+HmmVFwESNyPHaBXfv361qRiQkVAx/Rh5umUDi8M65oFbvjGzPymk0Iub4q6eH1jraZAvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710174199; c=relaxed/simple;
-	bh=Kah76cTaW2IU+EreLgWAExquwnDIyQpSWwsIWH/rPjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OQOU+wuG/+ehZ70ogdKSHNYHUS2J8OnXcgjYjhcKEazC3hnQ5j+izuqEMW66lKw5Z9oL9bAGWw/Wnhu/jgPYvEm+6811gVKX1uFev9nW5p33uUAcwgoVpjNyCKHV8JyqtaSEia7BzhasgCdHflRrUpbzVw8Nfod+Wl9/KwfM9gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PRLgYYyY; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710174197; x=1741710197;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Kah76cTaW2IU+EreLgWAExquwnDIyQpSWwsIWH/rPjM=;
-  b=PRLgYYyYUT9S7dG/SpzP7PvAQux1b3XxQG37sypV3HYnm2yFaly41mtz
-   B6UEwVSW3hzwwHE7zU+9ByX0JkVNvkYBnq6KGkAat/lpNFoKX6dn+veah
-   ozB/E02q/GLX0wC75KYUUOKbVeRxmLQ0bDHhq1CdKfgZLgj2hiC9m34iC
-   kIG5weIG4nbmZISpV3Wcj58qScjHGrFz3UQeg/M50r9vLSuLWwuWb/QDK
-   Hhv6TemP5PUZK9y2ViKflWfYrd4BK5NsCsmyHwkamFZlUx7pOXHAJ94/L
-   2KJhTjeYVQkrWGKPO7Cf1zFVtr3HkvUwfPRL9mI1/J6PDZFhyWaN4Ol3W
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5028658"
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="5028658"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 09:21:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,117,1708416000"; 
-   d="scan'208";a="11659842"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 11 Mar 2024 09:21:48 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rjiPK-0009F9-0L;
-	Mon, 11 Mar 2024 16:21:46 +0000
-Date: Tue, 12 Mar 2024 00:21:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vasant Karasulli <vsntk18@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 2/9] x86/sev: Save and print negotiated GHCB protocol
- version
-Message-ID: <Ze8vcPlNLoyo6SQm@28e5c5ca316a>
+	s=arc-20240116; t=1710175121; c=relaxed/simple;
+	bh=bjbBKm61sS3OCiUiTraEzgDb0fORpdkoRq5LcJPn/Iw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g8Z5QRjK8Az+RpZttZ7Ux6Q4neu7qAY71w6l4awUfWmABg99DEhoQQTSRdtx7Vl/sMu+vKQZB+IhRcxmJczZAGZhA6EUl9sLXe3R3vTS9Xbx+xyOHMf4avB2nEif12ULlnsyhBS0InZv84v9J8fEiS/K5W2PgWKu2MrjPgvTO1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bv7q5Bim; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710175117;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=O7tlgS7MkdA1L6vxpIiDfXudireah7BPJ6Dyc7UeOKw=;
+	b=Bv7q5BimvkpO9anPRBMYoOspFxVDOVVeean5r4hhR5qcI67SSwkdmHXBWSfRuoUrVAtONA
+	jSJFmD4UCmRU1PkDPNdkWxAQlym/zE9CqmNL+Ruq8UggVTFYTeaRVKnZTPSC+xlvEbCxXH
+	uCgVk+o8tWjxaDXctw24umeB9lIYu5g=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Roy Pledge <roy.pledge@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Scott Wood <oss@buserror.net>,
+	Camelia Groza <camelia.groza@nxp.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH net v5 1/2] soc: fsl: qbman: Always disable interrupts when taking cgr_lock
+Date: Mon, 11 Mar 2024 12:38:29 -0400
+Message-Id: <20240311163830.12952-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311161727.14916-3-vsntk18@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
+smp_call_function_single disables IRQs when executing the callback. To
+prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
+This is already done by qman_update_cgr and qman_delete_cgr; fix the
+other lockers.
 
-Thanks for your patch.
+Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()")
+CC: stable@vger.kernel.org
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+Resent from a non-mangling email.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+(no changes since v3)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Changes in v3:
+- Change blamed commit to something more appropriate
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4 2/9] x86/sev: Save and print negotiated GHCB protocol version
-Link: https://lore.kernel.org/stable/20240311161727.14916-3-vsntk18%40gmail.com
+Changes in v2:
+- Fix one additional call to spin_unlock
 
+ drivers/soc/fsl/qbman/qman.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 739e4eee6b75..1bf1f1ea67f0 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -1456,11 +1456,11 @@ static void qm_congestion_task(struct work_struct *work)
+ 	union qm_mc_result *mcr;
+ 	struct qman_cgr *cgr;
+ 
+-	spin_lock(&p->cgr_lock);
++	spin_lock_irq(&p->cgr_lock);
+ 	qm_mc_start(&p->p);
+ 	qm_mc_commit(&p->p, QM_MCC_VERB_QUERYCONGESTION);
+ 	if (!qm_mc_result_timeout(&p->p, &mcr)) {
+-		spin_unlock(&p->cgr_lock);
++		spin_unlock_irq(&p->cgr_lock);
+ 		dev_crit(p->config->dev, "QUERYCONGESTION timeout\n");
+ 		qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+ 		return;
+@@ -1476,7 +1476,7 @@ static void qm_congestion_task(struct work_struct *work)
+ 	list_for_each_entry(cgr, &p->cgr_cbs, node)
+ 		if (cgr->cb && qman_cgrs_get(&c, cgr->cgrid))
+ 			cgr->cb(p, cgr, qman_cgrs_get(&rr, cgr->cgrid));
+-	spin_unlock(&p->cgr_lock);
++	spin_unlock_irq(&p->cgr_lock);
+ 	qman_p_irqsource_add(p, QM_PIRQ_CSCI);
+ }
+ 
+@@ -2440,7 +2440,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	preempt_enable();
+ 
+ 	cgr->chan = p->config->channel;
+-	spin_lock(&p->cgr_lock);
++	spin_lock_irq(&p->cgr_lock);
+ 
+ 	if (opts) {
+ 		struct qm_mcc_initcgr local_opts = *opts;
+@@ -2477,7 +2477,7 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
+ 	    qman_cgrs_get(&p->cgrs[1], cgr->cgrid))
+ 		cgr->cb(p, cgr, 1);
+ out:
+-	spin_unlock(&p->cgr_lock);
++	spin_unlock_irq(&p->cgr_lock);
+ 	put_affine_portal();
+ 	return ret;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.35.1.1320.gc452695387.dirty
 
 
