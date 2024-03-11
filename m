@@ -1,109 +1,168 @@
-Return-Path: <stable+bounces-27252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4268781E6
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:45:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30B28782C1
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86F63B20C69
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 14:45:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76C51C210B5
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FC7405F9;
-	Mon, 11 Mar 2024 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F8C41C7C;
+	Mon, 11 Mar 2024 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZH9tGnJf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNgN3+cu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493783FB9D
-	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 14:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FB240BF5;
+	Mon, 11 Mar 2024 15:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710168326; cv=none; b=rpt0K/ZkucnVmdyaEmtH/0oAOjTcJHC5XnYJm9xFHhVxLuqUy6vlTlof1Ry4+DmXEoJ5dSjV630alGWuogCNzeMHFGdnlmIQJ+yDZNpEXDzkFaCMXxZ0JjP9b7yxMWZkDfvAWTAJXCffcLq+IGiZNYwjIfZK4kGObqfWwjQ2lhA=
+	t=1710169607; cv=none; b=kW/dxye6uc6ZcWGXhScfikNvO+FOkbaHOtsKqht33OFzk6McAlX8ajE0w4pyagQcOGx8mpxn2gxE2Y/hRk5C7IqcKn+vcKdK4FnN1KbQOeRdGTSkCE0Ue2u/AKwOF8qDMmMiIVI8Ecz0rDaURepabBWcHdO5ZrfGM0e10Ms/Gkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710168326; c=relaxed/simple;
-	bh=i6ug7ibJ0/Kb9CafhzbFo1ueKa9zp2O6WyiYRxRdtrY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lID24NRWgpvTY/kd7CEBqKgXYUFptfWsFeF2tKc+yNkoqo16QUZhfKh61HVsDn0cCydnppbMpn90HwaWW5Tp9qbf2Yiw7+60/McBrXESlhro/nfnSbfxgGCj44hFSUw1t5V3QDSLhuVC5XMXdpfCj2k6KHw+8WgwfNbLdZLAZEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZH9tGnJf; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dce775fa8adso7599013276.1
-        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 07:45:25 -0700 (PDT)
+	s=arc-20240116; t=1710169607; c=relaxed/simple;
+	bh=jM8qojVi9Uw9YkOakv3MCyDt+Qa2825phjpnwYFimNw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P73y9SWg6ct5ZpQ4Zl5BbNposeHUj+vsKdmMPo51MNH1SaZzxx24rQwvJzsgb/WoXrOU2RDmHdzpqFy5f3Fh++2Ux8bUwS8heF3KKMJJQBd2i6F1sAaBafy7ZhdPYiFo6w0XRexISQ75YO8IoLrMaKahSL/Wct5nY2VrstjA9Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNgN3+cu; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4132fc7dea7so2455185e9.3;
+        Mon, 11 Mar 2024 08:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710168324; x=1710773124; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dS0RD4NP4nYM0xX9pXu7CBpa5Z7kk4eKmZrP0C7k8oY=;
-        b=ZH9tGnJfUNwiRlzJIKwSIhhnHAcY4Cc5ADBwGH3hKkJlmXODXcILbIEwJ6TGokIAfT
-         Z40R8n1jI35Yu8o2MMea8JiYH4jXW0rBMq22TPb62oZjwUQ/AWXKBLC/MK4hZ7rm6VZe
-         JG6hO3Ltfa0/iRfNjkTsZaWd3+nmIwEEPBknZY9EVXmwHrtuIgKy4aXPA0jrCXCw5xed
-         KTP6jvEkAyWgu0G8DDlQauRV/PxZJNInsxNaYfCr6W8/0pj1tqjyit6sVc6i1YM3FLUI
-         liQ+U7sKXOTH3s9QfqM7/Y2DuZlW//ada4Fp9igEZM+ckAAxi4YbyvHs0fWP5do0w20E
-         jzkA==
+        d=gmail.com; s=20230601; t=1710169604; x=1710774404; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mKYFGKVLjA7DwPR4EWY/H053eab3hrbKh5vIgRJziLY=;
+        b=GNgN3+cu/Ttc/OdlRUVbqcrWZEvtgTczDqPN8fN5HQXo+4UjAREbIafamCPfHTf6JZ
+         MnYbwhlJ9aw50ROs9pARDE+GpB6K9ljwHsJjtavO0r8Mit/xyDLZMgv6youVSzkZcEWD
+         E0UePVGYEZExQqtrZCugYYinICZwaQBPVpVR1E0dPfr9qLn0digTBy+FeF1mRrQPF50F
+         ieDJ2HMu4UOyWaxzSXin/Ovi+V7dF3VzZTLjta1pY1TZzy+C2jWu5Iq2mEm1vbYe4Jeb
+         /HeB71YgVNk8Ljnlqc1AdmNP49/yvGO8oC2WyJ4VaCKkiAFXB/qMhSyDDaV2/TflM3/s
+         iIEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710168324; x=1710773124;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dS0RD4NP4nYM0xX9pXu7CBpa5Z7kk4eKmZrP0C7k8oY=;
-        b=emdtMVtTg8dPF33DhKxUHS/16KjGxTgb+SIV0dpRih56/EU59/iuv1zSnYk0dT0FFN
-         dFtzVjls2Am0Ju5cXIQ+fNOcQkGoveQ3g7CYXFSba/VXBGD4I/JnrG/ktwhFZCb0ZY1K
-         h0wOg5keiuwYE7wU//vP5ddsF7vvbtcnnGgrc51/zvJFWenug+mk4KbuiM2u1nKq/mr/
-         OxF2oM/VQDkdAHoup8jCN7Vn61ACzLOjf/1PQ9zjO4aHOTbc1QhbIfCMU13trT7vtTej
-         V4B898bvCXZmfC5zDNUZW5etwuFWA+dD4XoH2VQNJfIX1jNeaPSeHisH9gXuHTvmh1Gm
-         QfTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWgFPT2vgcMvdGXRPrF3jdJksgYj5UAWuXd3sxlmOPYneWJBqR/22qVlcZRvhO+v61eMRRXezQgA6fneOHiPS7sW20EuVlU
-X-Gm-Message-State: AOJu0YzLGSwpAq1i1Gi7qdO2u7v8OeAAD58f5CBUMRQx74QwyAzKdtrH
-	vybP9Cb6lstBfG4QsWr8qBKe6KFlfoEXE2zbzob5xTT1erP8D4DfPCSplLNFSJuPypiarnhFB1F
-	BUk0vZg==
-X-Google-Smtp-Source: AGHT+IHdZiZaHMJe56VAsU48z7RxtFDHe9tn3wMla7NpWgQzixeZhSJxWsqVVEukii4H1npzGFX76HZGQpiw
-X-Received: from kyletso-p620lin01.ntc.corp.google.com ([2401:fa00:fc:202:a76e:a92b:1d72:6e4b])
- (user=kyletso job=sendgmr) by 2002:a05:6902:124c:b0:dc6:d678:371d with SMTP
- id t12-20020a056902124c00b00dc6d678371dmr1856163ybu.3.1710168324317; Mon, 11
- Mar 2024 07:45:24 -0700 (PDT)
-Date: Mon, 11 Mar 2024 22:45:00 +0800
+        d=1e100.net; s=20230601; t=1710169604; x=1710774404;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mKYFGKVLjA7DwPR4EWY/H053eab3hrbKh5vIgRJziLY=;
+        b=RhmbnapV4+uItNCg6ag/foqqYdHfSGyebq57oJpiOKr0KEvXkO+S0OpRqUbVjziugV
+         EyiU8z5LrNrd1Sx/dcQ8AFXSRzGdI0FkcIOZwaUCb6PFk9XX2K2x5oipyLa3exfWlUw7
+         Yk6TmcPpRB0JGZFUMykZa1ZamTvZb8iI5xcZ6ezrlUPaWxw0lxIk8x4EquuoZKDusR88
+         jbYEorXszIXTVMJ3Q5BloqBcf9+1jEMTLFoVM2IUS/FKAHqrZKjLd/t+6IFXDRplkNVk
+         dxJwt8F883xo4FEePTTAPLjZferbNcut62DlYqVjBkB5QmiENz5EHuorBoayuZYgEzLq
+         diMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtf2j3MqnbjcAlIoZXwS9/yG2iaoyYh2FK3pfslM+jZtQaxjBgJYhHici5wPW1Lk29XsH8MhssbFqlT/HY7swKVZI9BvhjPfM9wnmLX0OEwIhbEtpmtKKoszBgZJ9YV80zY8XCXwO+5hzoUDhO22y5C5NNQnnNvY7YpE9OQKzt
+X-Gm-Message-State: AOJu0Yx2wZxyZddUd90npoTbhF+bWHa4YEg8Yvv38N+06QJ88k7fzlZj
+	hjCcG9fiEFhQXBKWlKN6m1zXw0yRT9G4ImZrDJ9rTN8UiI1JZJo8
+X-Google-Smtp-Source: AGHT+IEZ3SyLmfuwQKnCqTycMi4T+LKgFX0T9zZ0XLJoTBQ5xOjNpdcNEPfnrFYRTNBW4NJq+8WLaA==
+X-Received: by 2002:a05:600c:1e28:b0:413:2e8b:ecd with SMTP id ay40-20020a05600c1e2800b004132e8b0ecdmr945167wmb.19.1710169604416;
+        Mon, 11 Mar 2024 08:06:44 -0700 (PDT)
+Received: from [192.168.20.102] (57657817.catv.pool.telekom.hu. [87.101.120.23])
+        by smtp.googlemail.com with ESMTPSA id p15-20020a05600c468f00b00413011933e6sm9477766wmo.39.2024.03.11.08.06.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 08:06:44 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Mon, 11 Mar 2024 16:06:36 +0100
+Subject: [PATCH] clk: qcom: apss-ipq-pll: use stromer ops for IPQ5018 to
+ fix boot failure
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Message-ID: <20240311144500.3694849-1-kyletso@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: Correct port source pdo array in pd_set callback
-From: Kyle Tso <kyletso@google.com>
-To: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org
-Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240311-apss-ipq-pll-ipq5018-hang-v1-1-8ed42b7a904d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPsd72UC/x2MSwqAMAwFryJZG2i0fq8iLopGDYjWBkQQ7251N
+ QzMezcoB2GFNrkh8Ckq+xaF0gSGxW0zo4zRITOZNTkROq+K4g/06/qxMFTjV2Jlx8bVk60oLyH
+ ufeBJrv+765/nBZC/M75rAAAA
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.12.3
 
-In tcpm_pd_set, the array of port source capabilities is port->src_pdo,
-not port->snk_pdo.
+Booting v6.8 results in a hang on various IPQ5018 based boards.
+Investigating the problem showed that the hang happens when the
+clk_alpha_pll_stromer_plus_set_rate() function tries to write
+into the PLL_MODE register of the APSS PLL.
 
-Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+Checking the downstream code revealed that it uses [1] stromer
+specific operations for IPQ5018, whereas in the current code
+the stromer plus specific operations are used.
+
+The ops in the 'ipq_pll_stromer_plus' clock definition can't be
+changed since that is needed for IPQ5332, so add a new alpha pll
+clock declaration which uses the correct stromer ops and use this
+new clock for IPQ5018 to avoid the boot failure.
+
+1. https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/blob/NHSS.QSDK.12.4/drivers/clk/qcom/apss-ipq5018.c#L67
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
+Fixes: 50492f929486 ("clk: qcom: apss-ipq-pll: add support for IPQ5018")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Based on v6.8.
+---
+ drivers/clk/qcom/apss-ipq-pll.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 3d505614bff1..9485f6373de4 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6858,7 +6858,7 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
+diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+index 678b805f13d45..11f1ae59438f7 100644
+--- a/drivers/clk/qcom/apss-ipq-pll.c
++++ b/drivers/clk/qcom/apss-ipq-pll.c
+@@ -55,6 +55,24 @@ static struct clk_alpha_pll ipq_pll_huayra = {
+ 	},
+ };
  
- 	if (data->source_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
--			port->snk_pdo[i] = data->source_desc.pdo[i];
-+			port->src_pdo[i] = data->source_desc.pdo[i];
- 		port->nr_src_pdo = i + 1;
- 	}
++static struct clk_alpha_pll ipq_pll_stromer = {
++	.offset = 0x0,
++	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
++	.flags = SUPPORTS_DYNAMIC_UPDATE,
++	.clkr = {
++		.enable_reg = 0x0,
++		.enable_mask = BIT(0),
++		.hw.init = &(struct clk_init_data){
++			.name = "a53pll",
++			.parent_data = &(const struct clk_parent_data) {
++				.fw_name = "xo",
++			},
++			.num_parents = 1,
++			.ops = &clk_alpha_pll_stromer_ops,
++		},
++	},
++};
++
+ static struct clk_alpha_pll ipq_pll_stromer_plus = {
+ 	.offset = 0x0,
+ 	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
+@@ -145,7 +163,7 @@ struct apss_pll_data {
  
+ static const struct apss_pll_data ipq5018_pll_data = {
+ 	.pll_type = CLK_ALPHA_PLL_TYPE_STROMER_PLUS,
+-	.pll = &ipq_pll_stromer_plus,
++	.pll = &ipq_pll_stromer,
+ 	.pll_config = &ipq5018_pll_config,
+ };
+ 
+
+---
+base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+change-id: 20240311-apss-ipq-pll-ipq5018-hang-74d9a8f47136
+
+Best regards,
 -- 
-2.44.0.278.ge034bb2e1d-goog
+Gabor Juhos <j4g8y7@gmail.com>
 
 
