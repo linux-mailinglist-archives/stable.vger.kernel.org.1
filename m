@@ -1,90 +1,140 @@
-Return-Path: <stable+bounces-27411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF73878A6F
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 23:02:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C849A878AC4
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 23:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EACF1F21F97
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:02:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 685BBB21180
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806F957304;
-	Mon, 11 Mar 2024 22:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE633FE28;
+	Mon, 11 Mar 2024 22:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="jHobgi1K"
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="EQRJ3ksG"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D04D54BFD;
-	Mon, 11 Mar 2024 22:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D779432C88
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 22:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710194553; cv=none; b=b+/OVOpm2+9ZtBqy6+jU7OhJ7q4tVZ5633tiJ7sXHPQtXcabs921GBkoRvRRnEllcYBqYAC2A1n6iW5MI7R5m0iOmN+zR6kF3tedjw4fS0bveuOssstr5ZU6qbFMawtjJwCxQE5NFl0FuaD1ENn1NIubGw99s/uBS7O9yLYyU2I=
+	t=1710196243; cv=none; b=nhGzzicxaaPmba0DKX/Z3WWBgWKlFgK5G5YanXyTzH0XtvU0fj8XQzhLrH4Xfx15Tt9lr1HGci7S5GVn1CwsVccxnlwG7+t259sEyI4OVYGp6CKNr8T+0BgX+xs5J0Pg5GGPheP4/loT+e1aItA8D4XfDjhkuYva6ACwjlo7xdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710194553; c=relaxed/simple;
-	bh=WZMSDmt6EsOb1aEu+xZqL6SvRsH+HrfqyguRVvtYbFE=;
-	h=Message-ID:Date:MIME-Version:In-Reply-To:To:Cc:From:Subject:
-	 Content-Type; b=Kv0yslhTteOFLw+g1ccivOHRFMDJ4rEe6+MPtpvn1nv7jBqsehiDek9xY5v4YiNNC3ioUC6ym+nRjFqpL71hMShrlMLhdiUXo2IsX7QjH3etO0rV+0PWmFQYRejrYg+yJ2nWrjv7SYliF1WWzeSYNgPDROcaYkLDvkFlq4MOXRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=jHobgi1K; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:Subject:From:Cc:To:
-	In-Reply-To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WZMSDmt6EsOb1aEu+xZqL6SvRsH+HrfqyguRVvtYbFE=; b=jHobgi1KJjgRsh+WYLcvUwDItI
-	Q4b9axTfIs82qvCXZQoVtR0ElHVmUc+0Xt+iv6Q9PV4rSkFKdsjhiP5o9bheq3eYqGGPuqjfOoM4K
-	D+qKXjicoI/hTYuIUisdmq4VnqThGnIorownXoGSEMjjXXTLOrXVcsAi+ZxuiyqwCYkN1D2GVU75B
-	24GPWlFC/YaGr2XTEiLJYjEcHkF7LGcwzXl92YA7NHyMa6RZjagrE/LSYd4J4d1u/HjPaVo8N3Wtw
-	ri4ESRUbnMaeOBY/ZtTLZc6/ghQSAd+zLVGVGewpu4F+KXTwQ6qtzxhYLS2uW6PWLQ/cuJ345GA3B
-	eTPyGg8Q==;
-Received: from [177.62.247.190] (helo=[192.168.1.60])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1rjnig-0093qt-VA; Mon, 11 Mar 2024 23:02:07 +0100
-Message-ID: <05870905-f592-186c-146f-0dfe734cec60@igalia.com>
-Date: Mon, 11 Mar 2024 19:01:58 -0300
+	s=arc-20240116; t=1710196243; c=relaxed/simple;
+	bh=OdMd+J50CNM+50f8uOMI7+ZekRCkUMCn9VJu8tzX+/s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qtoepI8ZvtdY04b2AeECgDc5MxwSnONK+zkisPu3+956s05WI993yD4obEir66ifCiKtpWqFuL/zUmPaDAJCGcOlpv5VJe49BmWReo/Vt9xA1yIA1bXtSoVSZq/HxKA0+otUlFe+b2HONWWIuQvZ2Quukt4X2aUToBhAhzcrqcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=EQRJ3ksG; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3c1ea59cf81so2382229b6e.1
+        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 15:30:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1710196239; x=1710801039; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EUgfNiSuiTtBVNEOakTU6DEDXoHV6YA4dJcvkvf2wRA=;
+        b=EQRJ3ksGEJfiPWiyb1C5o4HUUIJKuzKy6HMRmEOyrSHTD0EyPpdDPccXtGjGKp1+km
+         a7vVvzvOwwuK9pUccmOW+/3HmzcwVix/w7tALNxjPwOYhTLnhgTng5RyorPrDwFU5coy
+         WsQo8sYfNl9uKUbNq/n4W4jAUZEy7zKxd5Tgzkb3gxyTvL9hS03IefzTCCILUyGTvl9b
+         Gj23R1UoKMylhSTz047MyM1y5Ad4WlQo78pvc2l9o1iXxpfyBKabvLfcFTxfUx4PewGW
+         HG9xTkoUiZuY0VaTCRxMQcPlmu6594a8VOOrSqQchN8xGp4TAYqp5DVAl5qnBthUdXYr
+         BCMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710196239; x=1710801039;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EUgfNiSuiTtBVNEOakTU6DEDXoHV6YA4dJcvkvf2wRA=;
+        b=Nhzd8UaagJFW3WCDelLKOuyv4Nuz2pJCtAv2HrfV6/l46dQksGXdwPtk1bmhYzvH81
+         o4T7Z49U9dsCGKOVOcpdo4lV0OdYdNFMzK6vwWbpbC1AI5NC3O947+Kx+F7izVOSMLwu
+         43VBiUCdaXD2x3GMb9GYhv5md0/WDBh6OtCXcBsiiU3Y2i8FOGkEzf+Ku3joHxfTvY3A
+         2Pop5NBdQvTntqxggcvKBel/f4vgEEtokZzHznmvECLjhH9IMAHccXPQQxCFE04GCC3c
+         uwvyn0HdD35RCt32G2cLGu8Xg0ifsc+G5AzffKsHnSYfC/9zwvBgkNvI7/9ZqL8ySjlx
+         hwcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV1Vd1Pl6HaGfKvnG5HJZjRfjAOxaer6BBQ5r56Z5lmJxaFm07NgYanJYg4OMKXc++3/OMwHRYdRshVvEK6gljIBH0QQN1
+X-Gm-Message-State: AOJu0YyXoatALTTwvi7dSF1q/aS/8ykZhN/pn/doYJfcmwK2BERWDULS
+	yUv6b67knCnJ24pbc3ncQ+0AxzVMK+373nciBt2uzejV505H9jl9if62sQqSN0M=
+X-Google-Smtp-Source: AGHT+IHzsBVmxmvEd9yydjX8lSJ0aEa8zA7lYZdmXFKIknpvvZOV4bw6iQkCUwQW11vi3oEDLGEQsg==
+X-Received: by 2002:a05:6808:1403:b0:3c2:3a65:eaf9 with SMTP id w3-20020a056808140300b003c23a65eaf9mr2279381oiv.9.1710196238894;
+        Mon, 11 Mar 2024 15:30:38 -0700 (PDT)
+Received: from dev-mliang.dev.purestorage.com ([208.88.159.128])
+        by smtp.gmail.com with ESMTPSA id gu17-20020a056a004e5100b006e572d86152sm4964638pfb.91.2024.03.11.15.30.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 15:30:38 -0700 (PDT)
+From: Michael Liang <mliang@purestorage.com>
+To: Saeed Mahameed <saeedm@nvidia.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Michael Liang <mliang@purestorage.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Yuanyuan Zhong <yzhong@purestorage.com>
+Subject: [PATCH] net/mlx5: offset comp irq index in name by one
+Date: Mon, 11 Mar 2024 16:30:18 -0600
+Message-Id: <20240311223018.580975-1-mliang@purestorage.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-In-Reply-To: <20240229204107.2861780-5-sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>, Borislav Petkov <bp@alien8.de>,
- bpf <bpf@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- houtao1@huawei.com, linux-kernel <linux-kernel@vger.kernel.org>,
- "luto@kernel.org" <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org,
- "x86@kernel.org" <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- sohil.mehta@intel.com, xrivendell7@gmail.com
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH AUTOSEL 5.15 5/9] x86/mm: Disallow vsyscall page read for
- copy_from_kernel_nofault()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha et. al.,
+The mlx5 comp irq name scheme is changed a little bit between
+commit 3663ad34bc70 ("net/mlx5: Shift control IRQ to the last index")
+and commit 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation").
+The index in the comp irq name used to start from 0 but now it starts
+from 1. There is nothing critical here, but it's harmless to change
+back to the old behavior, a.k.a starting from 0.
 
-thanks for this backport! I'm not sure how common is to send a Tested-by
-to stable in these cases, but since I tested this one anyway, given that
-I was working with this syzkaller report...feel free to add my:
+Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 4dcf995cb1a2..6bac8ad70ba6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -19,6 +19,7 @@
+ #define MLX5_IRQ_CTRL_SF_MAX 8
+ /* min num of vectors for SFs to be enabled */
+ #define MLX5_IRQ_VEC_COMP_BASE_SF 2
++#define MLX5_IRQ_VEC_COMP_BASE 1
+ 
+ #define MLX5_EQ_SHARE_IRQ_MAX_COMP (8)
+ #define MLX5_EQ_SHARE_IRQ_MAX_CTRL (UINT_MAX)
+@@ -246,6 +247,7 @@ static void irq_set_name(struct mlx5_irq_pool *pool, char *name, int vecidx)
+ 		return;
+ 	}
+ 
++	vecidx -= MLX5_IRQ_VEC_COMP_BASE;
+ 	snprintf(name, MLX5_MAX_IRQ_NAME, "mlx5_comp%d", vecidx);
+ }
+ 
+@@ -585,7 +587,7 @@ struct mlx5_irq *mlx5_irq_request_vector(struct mlx5_core_dev *dev, u16 cpu,
+ 	struct mlx5_irq_table *table = mlx5_irq_table_get(dev);
+ 	struct mlx5_irq_pool *pool = table->pcif_pool;
+ 	struct irq_affinity_desc af_desc;
+-	int offset = 1;
++	int offset = MLX5_IRQ_VEC_COMP_BASE;
+ 
+ 	if (!pool->xa_num_irqs.max)
+ 		offset = 0;
+-- 
+2.34.1
 
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # v5.15.y
-
-Cheers,
-
-
-Guilherme
 
