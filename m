@@ -1,189 +1,177 @@
-Return-Path: <stable+bounces-27228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC94E8779B0
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 02:56:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566D6877B09
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 07:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34824B21233
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 01:56:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2A52822D6
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 06:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420AFA3F;
-	Mon, 11 Mar 2024 01:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06893F4E7;
+	Mon, 11 Mar 2024 06:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MY96SlgW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LNs3w59q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA425231;
-	Mon, 11 Mar 2024 01:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710122174; cv=fail; b=hi0TBCaayPpZoet3LKGLzR0CYJwLYE/7b8azLkyIfI6YO0uoAXrdO3F5asmExdO8Tt5tpDcTL6euj0OVOz371yr2mvB8qPC7zxqITarByMrqFqiMxpR6G0WXQ1/+m3TiVSnMqIWwm13aI1xkbvpUfCPEVuq/vb2tk72d9f+REBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710122174; c=relaxed/simple;
-	bh=FHGr6MBs2vanqL7pLB403oFXllxvqJ+JfpxBExzsa8Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cg7n3tvjy8MFsTMhmNF9HTiXrJ5vVUx5d0gC7e5Q/X1a63mxoAdLrkJrzW/iH3+MtPJ9BcJY5XcQi5TU10J0vLtPcgjeHdEzvN8AQYyD/5LsQ5JCf9cnVScP8naubsCHmU16EXub8JflHUnl/gSzi/EUw+/KkFd5WlIH5uGdars=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MY96SlgW; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710122172; x=1741658172;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=FHGr6MBs2vanqL7pLB403oFXllxvqJ+JfpxBExzsa8Y=;
-  b=MY96SlgWvIMRSR74O17WmN8RBSMSAJy4f9JANLi0kNt9dQEsxfyQLyY3
-   RcQRxPjkPxr7ygTI3OWLUl45zchDLvm1N+b41CVxg7BCwVnvvdPfKQkWr
-   ztNVA9eKL1ZGzeRaegPUSM4TJVvH3MRYSJhLazCoV0AkW8gVTfTd5IZzP
-   S5pXPZKFUkNh36SjIgBlQpSz9h8UUVZtwaghbZDYMHgFr4f7WOJQVZLf6
-   yQx8P2dxHW5ugB1S3wazt/0DXb23rVOszI9TP9HBvDghuKE7YHrLiswPl
-   Yk2u3T28+e60IgNX6OnduFNMKdnEp57d6D1Zz80FAgZYsegr+qvCo6Z0D
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="22290368"
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
-   d="scan'208";a="22290368"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 18:56:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,115,1708416000"; 
-   d="scan'208";a="11025250"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 10 Mar 2024 18:56:11 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 10 Mar 2024 18:56:10 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Sun, 10 Mar 2024 18:56:10 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sun, 10 Mar 2024 18:56:09 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cVSZyHnT1MPLGOMjlcNDvolmp7YeaGkvaxcITYBpRxoc1PSfciVxsxqVuHU0B5ZbR/INZRkfM9xP13wsD5TsW4qD4Xx4NOa2ngVSqaSsU+/wQfEHlo3OACWqmKLNmeM37rFkqPt+mYjeqHhb4IGq6cH1phNGlRLytoSdKpB49FihhtWhvwIWPBs079REImteMaHCWcUNwDCmk6gDweXoTChnpB5ANPTc5njxkky2WvlEDUTIEp58BSrLqHCfz7uZkbDlBLXLw95GQtOgl7yBnfB5sDThR4lwHTIDfDhKAiw++KZ1rxCb8OxwF+ve7LctEVGIPZG20HULn88SqzXKTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z/4slqHzBhgIqIrjpS4E2mgnQoUbeEX2QBng35kog7w=;
- b=d8KCeAGyZiwUzXvHDvzkIGsSzsRkjX4gDwVcU2mCs4jIMxWQwoFoCCJN6lLQd/87cGdAuqf6UKbfqV+d3aAoSyLk00ZW62OrZUnZj9+ks4vxLOeQyVBaLQ/+QPyu4xMbcS9MKo6j8Gl5zyGqXG0SzIO2VnV+EDMvfyVFhym4U7kew6LCcyfvUCNDmEUnQLA7VxR7GBXBx+eNbBQMr2WhhL5KdF2Yi/WkAjVhgcJF6slqI38tWBRJawMJYvLMgDdADrm2NECKCE6Fcq5eiXwcYeBO9FRaPQsjznLyzQ9aHwnR/93B5pF6ykMZ3vnrJHC71PX8J1WSsHj9e8TqjCci/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
- by SA0PR11MB4719.namprd11.prod.outlook.com (2603:10b6:806:95::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.16; Mon, 11 Mar
- 2024 01:56:08 +0000
-Received: from BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::39d:5a9c:c9f5:c327]) by BN9PR11MB5276.namprd11.prod.outlook.com
- ([fe80::39d:5a9c:c9f5:c327%5]) with mapi id 15.20.7386.016; Mon, 11 Mar 2024
- 01:56:07 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "eric.auger@redhat.com"
-	<eric.auger@redhat.com>, "clg@redhat.com" <clg@redhat.com>, "Chatre,
- Reinette" <reinette.chatre@intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "diana.craciun@oss.nxp.com"
-	<diana.craciun@oss.nxp.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 7/7] vfio/fsl-mc: Block calling interrupt handler
- without trigger
-Thread-Topic: [PATCH v2 7/7] vfio/fsl-mc: Block calling interrupt handler
- without trigger
-Thread-Index: AQHaca1RWvaU13rq+UiFS5yrw6Cg7bExyyBg
-Date: Mon, 11 Mar 2024 01:56:07 +0000
-Message-ID: <BN9PR11MB52768B392819FB724E70EC908C242@BN9PR11MB5276.namprd11.prod.outlook.com>
-References: <20240308230557.805580-1-alex.williamson@redhat.com>
- <20240308230557.805580-8-alex.williamson@redhat.com>
-In-Reply-To: <20240308230557.805580-8-alex.williamson@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|SA0PR11MB4719:EE_
-x-ms-office365-filtering-correlation-id: 78594ecc-ec03-41d8-e8d8-08dc416e6b27
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QPgDWvs0cWSEgyxDBWk1V4GUg8hRfYV13TxldbYcSxC8cHlwUY7njqwU/Ic96nE3TZQrjy0OF+ZMtP2jk9jKYn1976RguF6bnBjUUGPJO1UM3r6ixEtPgD9SUe+3c3SNyAm3JNfSpyVRzo8/yT5mM4Yqc3eVZf283qbOSUArGo/cFQfidLpMhpXAGnuBxNKbZ9ksKEG4zBv5r1seex2WYCRW4rW/UAVN8ScPmgJLZADfqdkDJeuzmmXqGZ2hf8IZCXmnHU6Bs0xeIauv6hJ3kuNseCvu+ZC5WfB4rCEsZR8pnArr51VouhD8TEMprE8Smi+p3XY/pf9luyZ2IR3BBh3RHbN/mJ3VRDF97EGKejGeCH7TG1vkpy65Kcti9VK6rsMrk1YZwGbSRZ2QHHspC0i3F+6KJSego5N/gEhwfsrEVSsCfYztQxYoeGnuS9abvGyCjACA5VK88W5iauO7mzVB9hAz9gzUtiKSGdM0qtJM8lPNjC707qrx6UMeO8wwlm19RHZOEVMtGofSkSyArW7srmZjoSpXe3+E8NPEUOpTLwx+AUxjXyQnDKP5I4zlWVo96XVrokWmlmGbURWtK2cWK2JyShIEL51Ex/1YWJDWodxnnyh75FcSMU14rqlg+kOfd1+1MIgJ9JMJhdYo7bGRDXM6AMd15GvsrZdPxz+j1PyV8EHr75mMWEQSh9yVcdRettpKWBCEBwBbf5Vku7+t4qJYigp9A7CEVtCVRFA=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8ciPD3QdzTQ0gNeafe2VHPWN4zCWPou+CrzbCTb720ob5LbMVJelz55k9yRA?=
- =?us-ascii?Q?rsdCcEuMMj9oNiWwqjSUQ1LTfrOfCXZD16nPz7u1nrHTT3k92d2491ouM9xW?=
- =?us-ascii?Q?o0BwkIdSPaiAvtnXHljsWkXhLEbaf3UWlIIN6fgv3ZLtHUutQjuJkHPt/P2m?=
- =?us-ascii?Q?OosgbgsBvp7p1C4A1uXMR01XgN5xlTNlllXh8YkoVEzohQo2C+zGNWYu1XXb?=
- =?us-ascii?Q?e2oP9F1ku+pURCEnP/w0IyDI1gyl3XcJMOkTWWuAlZMuZUTIV5divPizMQG0?=
- =?us-ascii?Q?+KtxUOR/rN8FnUn8fXANLtWG04jc22hxFtKrIqddIrR1B+ZGxTwuzflqZUVL?=
- =?us-ascii?Q?eTB7aPXisBsFI2yWI1fQ7Iut+DDfusxZGpoeDcvCau+ZFcrbny3HI/3P6UEJ?=
- =?us-ascii?Q?D0iN910o+64Nai77Ej88kyAznkBiQyjgFGNffA1PHitX3Q3fcOYuQ5/LBU36?=
- =?us-ascii?Q?V2mWXyjT6W1kUT3ibDzfqF0ZFhoa3RuYG5DS7qf/Ui2aeHFV6hr5GODTshFd?=
- =?us-ascii?Q?K/NS3uTjugjLDkfFBpZ0gHY80txywZ04MGLFckLVLrycVGEx/quoBvDPLvoe?=
- =?us-ascii?Q?jtZMaaeElZ8/wiOpwp2X0Wd3LfbL9P3/VX52UskcMpcbl1tQldEoJdr/JfKi?=
- =?us-ascii?Q?a14+S9JABS27dSqP9CcXx0Q1wOF3PAw06ly2bwMxeIaCPY41wpTou1wAPw42?=
- =?us-ascii?Q?W6D9/C4CPIK81hhxw6vgvviVhVsqc89LxFxtNJAIRLwzqD9pL8aAJ6fivKYc?=
- =?us-ascii?Q?Duogo2Y7oD8CesQHw9KFJHoTj5vc76mXy/N8bS3FZPmQGIO2cIZBCjEh5Ok0?=
- =?us-ascii?Q?OGP1n7ob6/U+bYNtVpqzScR+pmox/qXCJSxFGwwFJuoMwtYhF3aDjotqy2JY?=
- =?us-ascii?Q?7JYlMecpJ/V1B8Rkx6vF+M3Zl+iBna5Q/tUfRqffiQwbtxqeTSg6oNVUe1nd?=
- =?us-ascii?Q?ZdHxwhBhh79xeNZKBCTKRUBMCV5PiT49vgFDBo/6tWJfEKTgFupzMj4rIQ/7?=
- =?us-ascii?Q?nmJsLA4o1jdtWgG9XTna3hIFvgYFZJAnRckb5RtoMNOpXJ1QcIZYzS2Pdsfw?=
- =?us-ascii?Q?IOEq5AEDkdTUiIrGWHPQ4tLTflZIBg1/iqiMSifDTDL3/FUxa/IcpMkiYsFT?=
- =?us-ascii?Q?IdlCWWb57jH+5pqJcRy+cXG/LYdR3KqvSPfhZDEcVZsCu/jVCvKjIliuySSV?=
- =?us-ascii?Q?nwIJW8vCz/8arSItG56wRO8v8rRk5cQWgwozblBIEGmNdLjL7GKGimgE29QV?=
- =?us-ascii?Q?3DMR6cvjkzVgFRwXABjS1hKaNSx2mOExdsDwUM1WL/8OFxBjIpj7lmZzUMqW?=
- =?us-ascii?Q?38LFSWGrj5zLRy59oqDQVz5Z+mZU03h0liuphQ36ERkADYba1mNQpqEFmB1p?=
- =?us-ascii?Q?gvsy03MHZgjFahXRkY4cBjBhvrVPldTSHECHmpBBXP5WpikY7iRjY9jBazVT?=
- =?us-ascii?Q?D+ZCJERUlVkkQZecSdZKkLjJsNISVBmaRddW9WPKdgLD/k4UdILYdA+UFrdv?=
- =?us-ascii?Q?G32TyKUIiDN4hWd1Nic/K1DzMUh3b9IUvn1deMJSFbA+6lF3csAZC/lWuVGa?=
- =?us-ascii?Q?BOq9KvzemPNWfL8+vV0yeuvEEB3Dqlj3pNBGSswS?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DEC847B
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 06:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710139565; cv=none; b=DR6HsszetycL5h9P/xjj4qCrto6yRNDKUx2zNAq99i8J8hh+nE6cNXN19IzN0eEadePFP6+PS1F9WcoDy8CBosmGjEayQaiNViQtUFYdjFx28cMBClEtu+EPhS+sDoiR51Ss8x8B5YKpOYJ90jcVrFZhLm5wUcJETEDzjzxARns=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710139565; c=relaxed/simple;
+	bh=KGKD9sMwS585C+x8vbvBvu7un2Du98T7hid9Nz804Hg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hAsQHgMzRZMLK/JJyfOSIbibHLaglz+IELtndfswIHnaVFZ0b51KKwp9pe5rFQ6ftEVFVwP/Ubhim9Ytkadbq7L06sYnqhB04hrHuytea9URiClrlUWVBv+SLk4M9WA/sIdp+hOpBZ9mr9Rga+EA/nNaJJ466DqVgFWRLyEBGQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LNs3w59q; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5139d80f8b6so1621619e87.1
+        for <stable@vger.kernel.org>; Sun, 10 Mar 2024 23:46:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710139560; x=1710744360; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qll/LXCj9io37xmVDKRD/JmJOJFmsP9Qd8oxeZeNLK0=;
+        b=LNs3w59qTAxVqCYQZSKxtXt7dszgl43/bmqiqbtZLKwAYBYK9GzVV0pjYABC1YoVYr
+         HQt7GEXCqxxeHewIldmyijIhOQf3sSAKcIaOS5B34N+oahplpuSYwHi5jRcCzSBBgVqO
+         riqSfz21fR2dX2TaXD7i91U3l1ApQZI9iX4AE/JHI0vAHr3N6E293OJDf3E/P6WmDkIK
+         M3GDfnKFnYDE4ZEiit/6Xh3Hy62eeu7gLck2QyvQ8jGU/KG2DLDiPLkPP4b5SSd51p9s
+         y6KUGePn419b3PHO6YJBiuw0ef70xDmWpdnUVk+QKfdp6RqAoMPt+LyQSwC9RZOISkbx
+         T8lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710139560; x=1710744360;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qll/LXCj9io37xmVDKRD/JmJOJFmsP9Qd8oxeZeNLK0=;
+        b=avDue9z0JbVunYBc29BcaphiZEWwd/QvbAVIOgAi+Yz7E42aMSRBAXsZQFYXhuITcr
+         xwHhKKFo8/bz348VEIeWZhVAseqvKW4Jj0G4wGx2TjPytyckD4BfG3NUDkCJ1Fr0WS9b
+         oreuxFCgFDgGm7t8yab6MkR+XDPlQLUV47aeL0hjgUGJCteJBlA7BZggrtsyh5UQEq6N
+         7fwLEaPltzs0RSD4kLnh1RkcybTpMnzIxsn711/dfy3RW8VnB+wc49GYAeCCeTl0BVBH
+         7/GmOI+dTooybTwzfbJ1+0JoVquxzEdTlu3hCWaFchCXgem7cpTkjaPrjk8PfVnof2Lq
+         YgGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUF0m5jnmbBJBo/i+pv2IqQnQJ6kZafC4iJUfEt9D91sIpGzfouicHM44kixJSiTjZMIUYKMwEL4fw0/70gLFISKj3IcM+6
+X-Gm-Message-State: AOJu0YxCNodY4Clh50CL2felVFchL3tRHX3ekKlVfclL4CsMQMh9S83q
+	cU3Ymm/K2OQPjKOIeR3TJU8Gp2rUvDmeNthvZu8PqmqRW31dk7UEyQA45ac76pE=
+X-Google-Smtp-Source: AGHT+IFmvuglqGER74qi1M1YFUvf342Xos8X0iV57Box7xhAC8x2KwIhhEtZm8PvRD1wW5OWc5TJgA==
+X-Received: by 2002:a19:911d:0:b0:513:994e:ace0 with SMTP id t29-20020a19911d000000b00513994eace0mr3576225lfd.15.1710139559803;
+        Sun, 10 Mar 2024 23:45:59 -0700 (PDT)
+Received: from [10.254.108.81] (munvpn.amd.com. [165.204.72.6])
+        by smtp.gmail.com with ESMTPSA id t15-20020a05600c450f00b0041329a43941sm2643812wmo.19.2024.03.10.23.45.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Mar 2024 23:45:59 -0700 (PDT)
+Message-ID: <c1f80459-bf9c-439f-bdba-e08f13aea272@gmail.com>
+Date: Mon, 11 Mar 2024 07:46:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78594ecc-ec03-41d8-e8d8-08dc416e6b27
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2024 01:56:07.9491
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IaecbVPdeQ/theuYGyAFYYDra6+V1055xyNEoPLXPZUReVK0c3dakANkv3ZNLGZGcUmohONjExZMqR9O5eSN4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4719
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] drm/amdgpu: Increase soft recovery timeout to .5s
+Content-Language: en-US
+To: Joshua Ashton <joshua@froggi.es>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org
+Cc: Friedrich Vock <friedrich.vock@gmx.de>,
+ Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+ =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
+ stable@vger.kernel.org
+References: <20240307190447.33423-1-joshua@froggi.es>
+ <20240307190447.33423-3-joshua@froggi.es>
+ <5f70caef-7c7e-4bad-9de9-f8f61bba2584@amd.com>
+ <d537a460-6e6e-4bda-895c-c687be00ac29@froggi.es>
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <d537a460-6e6e-4bda-895c-c687be00ac29@froggi.es>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> From: Alex Williamson <alex.williamson@redhat.com>
-> Sent: Saturday, March 9, 2024 7:05 AM
->=20
-> The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-> initially NULL and may become NULL if the user sets the trigger
-> eventfd to -1.  The interrupt handler itself is guaranteed that
-> trigger is always valid between request_irq() and free_irq(), but
-> the loopback testing mechanisms to invoke the handler function
-> need to test the trigger.  The triggering and setting ioctl paths
-> both make use of igate and are therefore mutually exclusive.
->=20
-> The vfio-fsl-mc driver does not make use of irqfds, nor does it
-> support any sort of masking operations, therefore unlike vfio-pci
-> and vfio-platform, the flow can remain essentially unchanged.
->=20
-> Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-> Cc: stable@vger.kernel.org
-> Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Am 08.03.24 um 23:31 schrieb Joshua Ashton:
+> It definitely takes much longer than 10-20ms in some instances.
+>
+> Some of these instances can even be shown in Freidrich's hang test 
+> suite -- specifically when there are a lot of page faults going on.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Exactly that's the part I want to avoid. The context based recovery is 
+to break out of shaders with endless loops.
+
+When there are page faults going on I would rather recommend a hard 
+reset of the GPU.
+
+>
+> The work (or parts of the work) could also be pending and not in any 
+> wave yet, just hanging out in the ring. There may be a better solution 
+> to that, but I don't know it.
+
+Yeah, but killing anything of that should never take longer than what 
+the original submission supposed to take.
+
+In other words when we assume that we should have at least 20fps then we 
+should never go over 50ms. And even at this point we have already waited 
+much longer than that for the shader to complete.
+
+If you really want to raise that this high I would rather say to make it 
+configurable.
+
+Regards,
+Christian.
+
+>
+> Raising it to .5s still makes sense to me.
+>
+> - Joshie 🐸✨
+>
+> On 3/8/24 08:29, Christian König wrote:
+>> Am 07.03.24 um 20:04 schrieb Joshua Ashton:
+>>> Results in much more reliable soft recovery on
+>>> Steam Deck.
+>>
+>> Waiting 500ms for a locked up shader is way to long I think. We could 
+>> increase the 10ms to something like 20ms, but I really wouldn't go 
+>> much over that.
+>>
+>> This here just kills shaders which are in an endless loop, when that 
+>> takes longer than 10-20ms we really have a hardware problem which 
+>> needs a full reset to resolve.
+>>
+>> Regards,
+>> Christian.
+>>
+>>>
+>>> Signed-off-by: Joshua Ashton <joshua@froggi.es>
+>>>
+>>> Cc: Friedrich Vock <friedrich.vock@gmx.de>
+>>> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+>>> Cc: Christian König <christian.koenig@amd.com>
+>>> Cc: André Almeida <andrealmeid@igalia.com>
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>>   drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c 
+>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+>>> index 57c94901ed0a..be99db0e077e 100644
+>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+>>> @@ -448,7 +448,7 @@ bool amdgpu_ring_soft_recovery(struct 
+>>> amdgpu_ring *ring, unsigned int vmid,
+>>>       spin_unlock_irqrestore(fence->lock, flags);
+>>>       atomic_inc(&ring->adev->gpu_reset_counter);
+>>> -    deadline = ktime_add_us(ktime_get(), 10000);
+>>> +    deadline = ktime_add_ms(ktime_get(), 500);
+>>>       while (!dma_fence_is_signaled(fence) &&
+>>>              ktime_to_ns(ktime_sub(deadline, ktime_get())) > 0)
+>>>           ring->funcs->soft_recovery(ring, vmid);
+>>
+>
+
 
