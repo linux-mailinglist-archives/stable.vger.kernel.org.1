@@ -1,258 +1,316 @@
-Return-Path: <stable+bounces-27233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6846877BD1
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:41:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBC8877BDA
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C28E28165A
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:41:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED7171F21A34
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC283125B4;
-	Mon, 11 Mar 2024 08:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE91911CA0;
+	Mon, 11 Mar 2024 08:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nhLR0DFM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LihrBgwI";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nhLR0DFM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LihrBgwI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pGy0NHHU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8321B263
-	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 08:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D86134C0
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 08:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710146430; cv=none; b=jYcTBVGYpTtlA7xgTznigTOT7LaqfRc/MF6lMYjPbuAAXCl29x5MmuJekydaNgjYkJJVEM/Mc5oO4JT6tTeEQRI+nVDSukLGHaBPcBrz82YYUzij4MsUjuOO/HYCECYpi4FNTz1R4p2ybFV3QpEQpNNuN+zBKiQAaNbG3pQEEnE=
+	t=1710146646; cv=none; b=fbpinsmzbFAevpQFjAxGUx9JBjpJSI+imqvRsmKXtDHJ6ag9REsiLbZGyufndq2qN/ktFkGWITYXTE9LQLEBTjRdaAkrgg9X/5QTNZKiArTYu8k+s4lIqEznytxR6Qtvcu22QaYUgzRHY/Ah7nmY2GX8XHHLi5qJVvtHSjA86DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710146430; c=relaxed/simple;
-	bh=Eh9VTzm/a/DkwRM2InaiQBV4+EoocpnFGkH0B7/4ods=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jPY8R++/Xe3e71LN1Z8ty6lOXfmKztUqq4ph/87D9c9toXPPdjxlzrQIVnRk00giXpUQulaxfHbdTCYcA5RaeMXsacNEJKYXBPPR4IAjISFjwUc3NLONQZzJCm5oaNyQkCECHSmLSO1CE63/hyGD4CIAt9zQ/JzufPo1BnxTtJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nhLR0DFM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LihrBgwI; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nhLR0DFM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LihrBgwI; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 97F3934A17;
-	Mon, 11 Mar 2024 08:40:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710146426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cRc0a+aATq2UY+1X/t+lznE5No0cAlgFI2V7cc5rHLg=;
-	b=nhLR0DFMkYmbzMsWsbSWwm75eLBJrO8Q/aNxZ8RVlahBOtRg301vkARt3vewss0Qe74fIr
-	d6dpYgqlUSejDeOY3clJ77NQ9Bd5tj4B6bM59eF8JCyhR8NEw4ZEQlMYYOE/bIKpLCbddc
-	pHh2B1unNwOZFLOsjUB3Wq6YCdImkxA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710146426;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cRc0a+aATq2UY+1X/t+lznE5No0cAlgFI2V7cc5rHLg=;
-	b=LihrBgwIdFhdq+W93tYbVxmJgutU4RRHiAL+cmI2BrIi+EQ3bWq+SPpGzp2Li6drwH+AV7
-	D2PJz3L7kq8wrKAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710146426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cRc0a+aATq2UY+1X/t+lznE5No0cAlgFI2V7cc5rHLg=;
-	b=nhLR0DFMkYmbzMsWsbSWwm75eLBJrO8Q/aNxZ8RVlahBOtRg301vkARt3vewss0Qe74fIr
-	d6dpYgqlUSejDeOY3clJ77NQ9Bd5tj4B6bM59eF8JCyhR8NEw4ZEQlMYYOE/bIKpLCbddc
-	pHh2B1unNwOZFLOsjUB3Wq6YCdImkxA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710146426;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cRc0a+aATq2UY+1X/t+lznE5No0cAlgFI2V7cc5rHLg=;
-	b=LihrBgwIdFhdq+W93tYbVxmJgutU4RRHiAL+cmI2BrIi+EQ3bWq+SPpGzp2Li6drwH+AV7
-	D2PJz3L7kq8wrKAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CBC613695;
-	Mon, 11 Mar 2024 08:40:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5l1DCXrD7mXBcQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 11 Mar 2024 08:40:26 +0000
-Message-ID: <c3203f70-0e8c-493b-813e-1dff93a28323@suse.de>
-Date: Mon, 11 Mar 2024 09:40:25 +0100
+	s=arc-20240116; t=1710146646; c=relaxed/simple;
+	bh=4yAabAOW5y86cLzd/eEKqcAB/jCkZr6aV2T8AY250g4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NRgW/gf7Q/wsDo8KIJfyA8SAHFCg9k/CEsT3riNCuIhmM2DcY2qM+tHjD8x3MFZCwmIPCKslFSOq1ihkBOKVLMOquDiO6TccKvykTxoBLsn8x0g3AqDoyNNvr8s0ABf/khU7Adyx3tqchXfUEXhROmtTabqCrO8nmTQtwwwfNTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pGy0NHHU; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d21cdbc85bso63571711fa.2
+        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 01:44:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710146643; x=1710751443; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7eBCaB1KJSJv4nuU5XUfD5CciJ2EmxrAEpbHEbAM5m0=;
+        b=pGy0NHHUVeP57AriTAZK9diNpUQ/NMyuwd6NA72PeAES3sKCHUakG4pmuCor+YIAiZ
+         meEs827GLxvF2dHSFPven9FDjYykUiakFDAGbriOt4G5xMIIMghUEAKCCrPeJJZH4jiN
+         ciN6IOBaeULL3NwohL0z8LE9mHpOmyr9gJ8rICFJGshu+BkJU++FTZANxcXUI4EDvVhB
+         cdLcKizvC0PijBrYiPHSOh0QYIvmZM3bYwNWgRVvLU1HYoUZRqzCTTrm+FD3P1cG5Mjx
+         3hijAaX3Fb454lU749+4PSp7HmbwLZHpG12pn+CRB3VPJ6l6xK+raMz2V53BKPEBDxi5
+         kYiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710146643; x=1710751443;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7eBCaB1KJSJv4nuU5XUfD5CciJ2EmxrAEpbHEbAM5m0=;
+        b=S0ajkuXKfb4jxbaRUWnztc/lQSx4c+IZ+5hlCA0ZRKl2oU0EXXN0dWMKP899L9uwlA
+         MzzDvTcUg5QiQt3kpWfPP42BtHUzhkBph5suEH+7iLLaLfOKj2Eo2uCZ91UOcPqnxZ7U
+         mSvI1L+Pz89ThVTpQXYkwTdqzRupkBza9lBaaAtbE2WljmruRwRnLAb2IDl+xYLMdJAk
+         LDRAz6N/dLsRMVZCaO6SoEVP7LnBaRXvz27UZ88kDT4KNRg2ca3ONmnZoGOhpufQmCgO
+         6GAI4RNeJnDncWR+K8Sbnczvx80LuLu4UyTDnN8DqZcHiWXDLWkdacuEA0TwhC0Hip1y
+         BHoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsB/xy6PjlDEMtW7yNot9Xuq3/CGCS37ZhsWW1SgvFeXWQO6Ez03hGNowxj4AZWsAgJ/mEKRXDLrD1jARlNglhGbneeM4/
+X-Gm-Message-State: AOJu0Yyv9l1Gn0Gn0DcNzE4SG4G1hRwxVU4/vw/a/4i797jSf+XXbuUT
+	QeEaIpt7KMgXjIZB40fjOY1ygpouiEIRlxydfnzJex+zsBxBE7looa0BUaEDvqeLCjODG9/8E6f
+	e+FsdIz+6UkAeN5CZX9Eso2zRnu6tM9WPN2qF6w==
+X-Google-Smtp-Source: AGHT+IGd74H0Tb8RkEUhAjuh5XS90k+4Px0sLtRsOQcICeykxEYg8zLOFufJFbWW7qQkb5jU/EmxBljEWy75QB9CPN4=
+X-Received: by 2002:a2e:850e:0:b0:2d3:982d:aaee with SMTP id
+ j14-20020a2e850e000000b002d3982daaeemr3258850lji.16.1710146642679; Mon, 11
+ Mar 2024 01:44:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: Don't return unsupported formats in
- drm_mode_legacy_fb_format
-Content-Language: en-US
-To: Frej Drejhammar <frej.drejhammar@gmail.com>,
- dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Javier Martinez Canillas <javierm@redhat.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <20240310152803.3315-1-frej.drejhammar@gmail.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20240310152803.3315-1-frej.drejhammar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -2.76
-X-Spamd-Result: default: False [-2.76 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.17)[-0.828];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RCPT_COUNT_TWELVE(0.00)[17];
-	 FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,armlinux.org.uk,gmail.com,ffwll.ch,linux.intel.com,kernel.org,linaro.org,quicinc.com,ideasonboard.com,redhat.com,igalia.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+References: <20240308152723.831620-1-dtatulea@nvidia.com>
+In-Reply-To: <20240308152723.831620-1-dtatulea@nvidia.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Mon, 11 Mar 2024 10:43:26 +0200
+Message-ID: <CAC_iWjJyDUbK+2+u=Uqeo7r7-Hy5aZQ=12eTEKaBnm8qYnR_8Q@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: esp: fix bad handling of pages from page_pool
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: almasrymina@google.com, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jesper Dangaard Brouer <brouer@redhat.com>, Matteo Croce <mcroce@microsoft.com>, leonro@nvidia.com, 
+	gal@nvidia.com, stable@vger.kernel.org, 
+	"Anatoli N . Chechelnickiy" <Anatoli.Chechelnickiy@m.interpipe.biz>, Ian Kumlien <ian.kumlien@gmail.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Dragos,
 
-thanks for the patch.
-
-Am 10.03.24 um 16:28 schrieb Frej Drejhammar:
-[...]
->   	size = cmd.pitches[0] * cmd.height;
-> diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-> index ab89b7fc7bf6..ded868601aea 100644
-> --- a/drivers/gpu/drm/tiny/ofdrm.c
-> +++ b/drivers/gpu/drm/tiny/ofdrm.c
-> @@ -100,14 +100,14 @@ static const struct drm_format_info *display_get_validated_format(struct drm_dev
->   
->   	switch (depth) {
->   	case 8:
-> -		format = drm_mode_legacy_fb_format(8, 8);
-> +		format = drm_mode_legacy_fb_format(dev, 8, 8);
->   		break;
->   	case 15:
->   	case 16:
-> -		format = drm_mode_legacy_fb_format(16, depth);
-> +		format = drm_mode_legacy_fb_format(dev, 16, depth);
->   		break;
->   	case 32:
-> -		format = drm_mode_legacy_fb_format(32, 24);
-> +		format = drm_mode_legacy_fb_format(dev, 32, 24);
->   		break;
-
-This will break ofdrm, which needs the returned value as-is to build its 
-internal list of plane formats.
-
-I suggest to switch all fbdev code over to drm_driver_legacy_fb_format 
-<https://elixir.bootlin.com/linux/latest/C/ident/drm_driver_legacy_fb_format>() 
-first and then modify the format indrm_driver_legacy_fb_format 
-<https://elixir.bootlin.com/linux/latest/C/ident/drm_driver_legacy_fb_format>() 
-after reading it from drm_fb_legacy_fb_format(). I can help a bit with 
-testing the fbdev changes.
-
-Best regards
-Thomas
-
-
->   	default:
->   		drm_err(dev, "unsupported framebuffer depth %u\n", depth);
-> diff --git a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-> index 51ae3561fd0d..a38a8143d632 100644
-> --- a/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-> +++ b/drivers/gpu/drm/xe/display/intel_fbdev_fb.c
-> @@ -32,7 +32,8 @@ struct drm_framebuffer *intel_fbdev_fb_alloc(struct drm_fb_helper *helper,
->   
->   	mode_cmd.pitches[0] = ALIGN(mode_cmd.width *
->   				    DIV_ROUND_UP(sizes->surface_bpp, 8), XE_PAGE_SIZE);
-> -	mode_cmd.pixel_format = drm_mode_legacy_fb_format(sizes->surface_bpp,
-> +	mode_cmd.pixel_format = drm_mode_legacy_fb_format(dev,
-> +							  sizes->surface_bpp,
->   							  sizes->surface_depth);
->   
->   	size = mode_cmd.pitches[0] * mode_cmd.height;
-> diff --git a/include/drm/drm_fourcc.h b/include/drm/drm_fourcc.h
-> index ccf91daa4307..75d06393a564 100644
-> --- a/include/drm/drm_fourcc.h
-> +++ b/include/drm/drm_fourcc.h
-> @@ -310,7 +310,8 @@ const struct drm_format_info *drm_format_info(u32 format);
->   const struct drm_format_info *
->   drm_get_format_info(struct drm_device *dev,
->   		    const struct drm_mode_fb_cmd2 *mode_cmd);
-> -uint32_t drm_mode_legacy_fb_format(uint32_t bpp, uint32_t depth);
-> +uint32_t drm_mode_legacy_fb_format(struct drm_device *dev,
-> +				   uint32_t bpp, uint32_t depth);
->   uint32_t drm_driver_legacy_fb_format(struct drm_device *dev,
->   				     uint32_t bpp, uint32_t depth);
->   unsigned int drm_format_info_block_width(const struct drm_format_info *info,
+On Fri, 8 Mar 2024 at 17:27, Dragos Tatulea <dtatulea@nvidia.com> wrote:
 >
-> base-commit: b9511c6d277c31b13d4f3128eba46f4e0733d734
+> When the skb is reorganized during esp_output (!esp->inline), the pages
+> coming from the original skb fragments are supposed to be released back
+> to the system through put_page.
+>  But if the skb fragment pages are
+> originating from a page_pool, calling put_page on them will trigger a
+> page_pool leak which will eventually result in a crash.
+>
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Indeed if you call put_page, you will leak a page. But won't that skb
+eventually be freed by skb_free_head()?
 
+Thanks
+/Ilias
+
+> This leak can be easily observed when using CONFIG_DEBUG_VM and doing
+> ipsec + gre (non offloaded) forwarding:
+>
+>   BUG: Bad page state in process ksoftirqd/16  pfn:1451b6
+>   page:00000000de2b8d32 refcount:0 mapcount:0 mapping:0000000000000000 in=
+dex:0x1451b6000 pfn:0x1451b6
+>   flags: 0x200000000000000(node=3D0|zone=3D2)
+>   page_type: 0xffffffff()
+>   raw: 0200000000000000 dead000000000040 ffff88810d23c000 000000000000000=
+0
+>   raw: 00000001451b6000 0000000000000001 00000000ffffffff 000000000000000=
+0
+>   page dumped because: page_pool leak
+>   Modules linked in: ip_gre gre mlx5_ib mlx5_core xt_conntrack xt_MASQUER=
+ADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfil=
+ter rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm =
+ib_ipoib iw_cm ib_cm ib_uverbs ib_core overlay zram zsmalloc fuse [last unl=
+oaded: mlx5_core]
+>   CPU: 16 PID: 96 Comm: ksoftirqd/16 Not tainted 6.8.0-rc4+ #22
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-g=
+f21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+>   Call Trace:
+>    <TASK>
+>    dump_stack_lvl+0x36/0x50
+>    bad_page+0x70/0xf0
+>    free_unref_page_prepare+0x27a/0x460
+>    free_unref_page+0x38/0x120
+>    esp_ssg_unref.isra.0+0x15f/0x200
+>    esp_output_tail+0x66d/0x780
+>    esp_xmit+0x2c5/0x360
+>    validate_xmit_xfrm+0x313/0x370
+>    ? validate_xmit_skb+0x1d/0x330
+>    validate_xmit_skb_list+0x4c/0x70
+>    sch_direct_xmit+0x23e/0x350
+>    __dev_queue_xmit+0x337/0xba0
+>    ? nf_hook_slow+0x3f/0xd0
+>    ip_finish_output2+0x25e/0x580
+>    iptunnel_xmit+0x19b/0x240
+>    ip_tunnel_xmit+0x5fb/0xb60
+>    ipgre_xmit+0x14d/0x280 [ip_gre]
+>    dev_hard_start_xmit+0xc3/0x1c0
+>    __dev_queue_xmit+0x208/0xba0
+>    ? nf_hook_slow+0x3f/0xd0
+>    ip_finish_output2+0x1ca/0x580
+>    ip_sublist_rcv_finish+0x32/0x40
+>    ip_sublist_rcv+0x1b2/0x1f0
+>    ? ip_rcv_finish_core.constprop.0+0x460/0x460
+>    ip_list_rcv+0x103/0x130
+>    __netif_receive_skb_list_core+0x181/0x1e0
+>    netif_receive_skb_list_internal+0x1b3/0x2c0
+>    napi_gro_receive+0xc8/0x200
+>    gro_cell_poll+0x52/0x90
+>    __napi_poll+0x25/0x1a0
+>    net_rx_action+0x28e/0x300
+>    __do_softirq+0xc3/0x276
+>    ? sort_range+0x20/0x20
+>    run_ksoftirqd+0x1e/0x30
+>    smpboot_thread_fn+0xa6/0x130
+>    kthread+0xcd/0x100
+>    ? kthread_complete_and_exit+0x20/0x20
+>    ret_from_fork+0x31/0x50
+>    ? kthread_complete_and_exit+0x20/0x20
+>    ret_from_fork_asm+0x11/0x20
+>    </TASK>
+>
+> The suggested fix is to introduce a new wrapper (skb_page_unref) that
+> covers page refcounting for page_pool pages as well.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling")
+> Reported-and-tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.=
+interpipe.biz>
+> Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
+> Link: https://lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsqMYk_=
+Lwh4Md5knTq7AyA@mail.gmail.com
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> Changes in v2:
+> - Fixes in tags.
+>
+> Changes in v3:
+> - Rebased to ipsec tree.
+> ---
+>  include/linux/skbuff.h | 10 ++++++++++
+>  net/ipv4/esp4.c        |  8 ++++----
+>  net/ipv6/esp6.c        |  8 ++++----
+>  3 files changed, 18 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index 2dde34c29203..d9a1ccfb5708 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -3448,6 +3448,16 @@ static inline void skb_frag_ref(struct sk_buff *sk=
+b, int f)
+>
+>  bool napi_pp_put_page(struct page *page, bool napi_safe);
+>
+> +static inline void
+> +skb_page_unref(const struct sk_buff *skb, struct page *page, bool napi_s=
+afe)
+> +{
+> +#ifdef CONFIG_PAGE_POOL
+> +       if (skb->pp_recycle && napi_pp_put_page(page, napi_safe))
+> +               return;
+> +#endif
+> +       put_page(page);
+> +}
+> +
+>  static inline void
+>  napi_frag_unref(skb_frag_t *frag, bool recycle, bool napi_safe)
+>  {
+> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+> index 4dd9e5040672..d33d12421814 100644
+> --- a/net/ipv4/esp4.c
+> +++ b/net/ipv4/esp4.c
+> @@ -95,7 +95,7 @@ static inline struct scatterlist *esp_req_sg(struct cry=
+pto_aead *aead,
+>                              __alignof__(struct scatterlist));
+>  }
+>
+> -static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+> +static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buf=
+f *skb)
+>  {
+>         struct crypto_aead *aead =3D x->data;
+>         int extralen =3D 0;
+> @@ -114,7 +114,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void =
+*tmp)
+>          */
+>         if (req->src !=3D req->dst)
+>                 for (sg =3D sg_next(req->src); sg; sg =3D sg_next(sg))
+> -                       put_page(sg_page(sg));
+> +                       skb_page_unref(skb, sg_page(sg), false);
+>  }
+>
+>  #ifdef CONFIG_INET_ESPINTCP
+> @@ -260,7 +260,7 @@ static void esp_output_done(void *data, int err)
+>         }
+>
+>         tmp =3D ESP_SKB_CB(skb)->tmp;
+> -       esp_ssg_unref(x, tmp);
+> +       esp_ssg_unref(x, tmp, skb);
+>         kfree(tmp);
+>
+>         if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+> @@ -639,7 +639,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_b=
+uff *skb, struct esp_info *
+>         }
+>
+>         if (sg !=3D dsg)
+> -               esp_ssg_unref(x, tmp);
+> +               esp_ssg_unref(x, tmp, skb);
+>
+>         if (!err && x->encap && x->encap->encap_type =3D=3D TCP_ENCAP_ESP=
+INTCP)
+>                 err =3D esp_output_tail_tcp(x, skb);
+> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+> index 6e6efe026cdc..7371886d4f9f 100644
+> --- a/net/ipv6/esp6.c
+> +++ b/net/ipv6/esp6.c
+> @@ -112,7 +112,7 @@ static inline struct scatterlist *esp_req_sg(struct c=
+rypto_aead *aead,
+>                              __alignof__(struct scatterlist));
+>  }
+>
+> -static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+> +static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buf=
+f *skb)
+>  {
+>         struct crypto_aead *aead =3D x->data;
+>         int extralen =3D 0;
+> @@ -131,7 +131,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void =
+*tmp)
+>          */
+>         if (req->src !=3D req->dst)
+>                 for (sg =3D sg_next(req->src); sg; sg =3D sg_next(sg))
+> -                       put_page(sg_page(sg));
+> +                       skb_page_unref(skb, sg_page(sg), false);
+>  }
+>
+>  #ifdef CONFIG_INET6_ESPINTCP
+> @@ -294,7 +294,7 @@ static void esp_output_done(void *data, int err)
+>         }
+>
+>         tmp =3D ESP_SKB_CB(skb)->tmp;
+> -       esp_ssg_unref(x, tmp);
+> +       esp_ssg_unref(x, tmp, skb);
+>         kfree(tmp);
+>
+>         esp_output_encap_csum(skb);
+> @@ -677,7 +677,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_=
+buff *skb, struct esp_info
+>         }
+>
+>         if (sg !=3D dsg)
+> -               esp_ssg_unref(x, tmp);
+> +               esp_ssg_unref(x, tmp, skb);
+>
+>         if (!err && x->encap && x->encap->encap_type =3D=3D TCP_ENCAP_ESP=
+INTCP)
+>                 err =3D esp_output_tail_tcp(x, skb);
+> --
+> 2.42.0
+>
 
