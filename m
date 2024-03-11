@@ -1,103 +1,166 @@
-Return-Path: <stable+bounces-27396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FCB87882E
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 19:52:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F57D878857
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 19:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8C8281E63
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 18:52:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8566285496
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 18:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00ED5664D6;
-	Mon, 11 Mar 2024 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C865E40846;
+	Mon, 11 Mar 2024 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZrX1bLy"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="JDtWb1dI";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ONKc+iQJ";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="JDtWb1dI";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ONKc+iQJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D7F664D4;
-	Mon, 11 Mar 2024 18:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C7D59148;
+	Mon, 11 Mar 2024 18:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710182437; cv=none; b=tZV7hmf1mR7evqAsejS3GikNmrLnx66WKB/y5mq4eZ8D2ONJdcQVAWqN3vySqv2UMelPNVs7xMYAOfYkEPh/OBtzjYGRdf/iVj3BKbhwiMKiyLiXGsLpaUKq/OFW/swN2c+R/zbC7bcfvLhTDa5b7S62cO9YEa5oyDU6FCf7mfw=
+	t=1710182905; cv=none; b=Me1edpeErImkqf+IsBhrgQ7t/DqvpQIG6tNaHh+hOzmOMX+SOsISEUXDP9jbxYVZj42sYbICNHl7fu9K15zXnqGea8EaUFsRriEcvJrTWdglGbrdq895zbrr38sa/e7fEijcR9AYsmAyqVaUq/Me+dahBPbrzRkAM010WllV8gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710182437; c=relaxed/simple;
-	bh=NbFoFKDFJZ/lAIRyGGvrwioKM5cI7LsQ0SBfnOwu3Sg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpA4+3MKvBVJzZiPKjoFGHOxbkGecGk394QzxG2rCa4vLv1FIhbzjbgSsrK6Ow1z3LevJW9l/Tfjwhs+yl7MhUvo2SpipdhLCFd6vf1UGswhe27YdbOkBrqjTg456A8g/+n82EVpJdENeR1zR+Ofl++BmflJYBwK+clbBa5WVhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZrX1bLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B7EC43399;
-	Mon, 11 Mar 2024 18:40:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710182437;
-	bh=NbFoFKDFJZ/lAIRyGGvrwioKM5cI7LsQ0SBfnOwu3Sg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZrX1bLyIzljat8nEoaKKSd2xkU1YoZFY0lNKZarRlrtwm87McyvJbOFyIhgPS3Oq
-	 xSlcaE/s6dag8E9JSBWQKLcx23JGnxwHvPReBsjXiUBqQYweGpFOffDNuLPBUHvrco
-	 qCpf7rQvBS2uGv4oMpAzd3KQ/wSWPLu3M0MfGmtZqlJHMs0zCqFlE7fYbSB/1jJ9FM
-	 C+miP+9lMGbLDU+G+tx5f4Uw9WiuZGfj3aTBjfas3wkm9D0mCR5wzlZQ7Jb87fr9uk
-	 DWzRGp0HCcfIzGBcMRuxTY8xx7aKd+oCAUfMJlUVyAsIYuB02zOQ6CwHfgLxa0GFQT
-	 M/TuksDGEh3TQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Stuart Henderson <stuarth@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	patches@opensource.cirrus.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH AUTOSEL 4.19 5/5] ASoC: wm8962: Fix up incorrect error message in wm8962_set_fll
-Date: Mon, 11 Mar 2024 14:40:11 -0400
-Message-ID: <20240311184011.329314-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240311184011.329314-1-sashal@kernel.org>
-References: <20240311184011.329314-1-sashal@kernel.org>
+	s=arc-20240116; t=1710182905; c=relaxed/simple;
+	bh=1ITc6fS71N5fn7IPkKbleMIYuCc76Gh9T8fxKOMottU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rb8pYfVxTsBq7kcj8KR6J6yRiNTCgETPDLgTO4H9rwHEHNHqBPaukTMGZ+CEXw5kOzpEaHfEAo3xn7APrp3iOOgNBi3tvA2T1/B25MM6GyqvtjwtXhpFZGEedZkCzeWdCDZM08RvnjFrx+otBMCTCr14qGbuc463iFxJyGkCWZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=JDtWb1dI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ONKc+iQJ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=JDtWb1dI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ONKc+iQJ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3DB2C34F83;
+	Mon, 11 Mar 2024 18:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1710182902;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1gW/cs08wXpsQGb0z1TBwnPJpVO0bgSQkKtya/Mw1tM=;
+	b=JDtWb1dIVDo474APekp8jGZqIYnb5BuGINDaN5Z3ma10FGfu46gVu8BQWhs/NyZQ78Jc2u
+	eVNpxURRPl7VwL8a02g6kHU2Oa5w8XSygLFfsynoAyYsKq/MHSYz4NzlFAtYdGYtjxr8M+
+	IO1IwwmXCn2HWvUje6oDIgQmFy4NNhE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1710182902;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1gW/cs08wXpsQGb0z1TBwnPJpVO0bgSQkKtya/Mw1tM=;
+	b=ONKc+iQJ3kxSAOVx+wwG3+eiJG/5N8bgOYFm8/FOxIvmZJPHxb1vtex62a9lFWvoEbtJHk
+	juSbLDUsIh+t/qCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1710182902;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1gW/cs08wXpsQGb0z1TBwnPJpVO0bgSQkKtya/Mw1tM=;
+	b=JDtWb1dIVDo474APekp8jGZqIYnb5BuGINDaN5Z3ma10FGfu46gVu8BQWhs/NyZQ78Jc2u
+	eVNpxURRPl7VwL8a02g6kHU2Oa5w8XSygLFfsynoAyYsKq/MHSYz4NzlFAtYdGYtjxr8M+
+	IO1IwwmXCn2HWvUje6oDIgQmFy4NNhE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1710182902;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1gW/cs08wXpsQGb0z1TBwnPJpVO0bgSQkKtya/Mw1tM=;
+	b=ONKc+iQJ3kxSAOVx+wwG3+eiJG/5N8bgOYFm8/FOxIvmZJPHxb1vtex62a9lFWvoEbtJHk
+	juSbLDUsIh+t/qCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1E96713695;
+	Mon, 11 Mar 2024 18:48:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KvM0B/ZR72VwQgAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Mon, 11 Mar 2024 18:48:22 +0000
+Date: Mon, 11 Mar 2024 19:41:08 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Filipe Manana <fdmanana@suse.com>, David Sterba <dsterba@suse.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	Josef Bacik <josef@toxicpanda.com>, Sasha Levin <sashal@kernel.org>,
+	Chris Mason <clm@fb.com>, linux-btrfs <linux-btrfs@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent
+ locking
+Message-ID: <20240311184108.GS2604@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20240304211551.833500257@linuxfoundation.org>
+ <20240304211551.880347593@linuxfoundation.org>
+ <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
+ <da17e97b-1880-415d-8cdb-07e79808e702@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.309
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <da17e97b-1880-415d-8cdb-07e79808e702@leemhuis.info>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -3.39
+X-Spamd-Result: default: False [-3.39 / 50.00];
+	 ARC_NA(0.00)[];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.11)[-0.550];
+	 RCPT_COUNT_SEVEN(0.00)[10];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-2.48)[97.64%]
+X-Spam-Flag: NO
 
-From: Stuart Henderson <stuarth@opensource.cirrus.com>
+On Mon, Mar 11, 2024 at 10:15:31AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 06.03.24 13:39, Filipe Manana wrote:
+> > On Mon, Mar 4, 2024 at 9:26 PM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> >>
+> >> 6.7-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > It would be better to delay the backport of this patch (and the
+> > followup fix) to any stable release, because it introduced another
+> > regression for which there is a reviewed fix but it's not yet in
+> > Linus' tree:
+> > 
+> > https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
+> 
+> Those two missed 6.8 afaics. Will those be heading to mainline any time
+> soon?
 
-[ Upstream commit 96e202f8c52ac49452f83317cf3b34cd1ad81e18 ]
+Yes, in the 6.9 pull request.
 
-Use source instead of ret, which seems to be unrelated and will always
-be zero.
+> And how fast afterwards will it be wise to backport them to 6.8?
+> Will anyone ask Greg for that when the time has come?
 
-Signed-off-by: Stuart Henderson <stuarth@opensource.cirrus.com>
-Link: https://msgid.link/r/20240306161439.1385643-5-stuarth@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/codecs/wm8962.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/soc/codecs/wm8962.c b/sound/soc/codecs/wm8962.c
-index 55e041031d398..74321c16e41f4 100644
---- a/sound/soc/codecs/wm8962.c
-+++ b/sound/soc/codecs/wm8962.c
-@@ -2867,7 +2867,7 @@ static int wm8962_set_fll(struct snd_soc_component *component, int fll_id, int s
- 				    WM8962_FLL_FRC_NCO, WM8962_FLL_FRC_NCO);
- 		break;
- 	default:
--		dev_err(component->dev, "Unknown FLL source %d\n", ret);
-+		dev_err(component->dev, "Unknown FLL source %d\n", source);
- 		return -EINVAL;
- 	}
- 
--- 
-2.43.0
-
+The commits have stable tags and will be processed in the usual way.
 
