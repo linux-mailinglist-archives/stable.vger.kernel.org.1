@@ -1,82 +1,52 @@
-Return-Path: <stable+bounces-27240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F5E877C6B
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 10:16:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BCA877C6E
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 10:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B26E228232E
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9513C1C20E44
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D44C17578;
-	Mon, 11 Mar 2024 09:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28B722324;
+	Mon, 11 Mar 2024 09:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oxyu17tc"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="VoylY6yu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F3B2E40E
-	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 09:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB67733070;
+	Mon, 11 Mar 2024 09:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710148535; cv=none; b=XIPMHwOTqsZpBztcdWwYPbnrN2MKlO545vKke6yBj7CITh2aYN6hO2S15d+iUG6qHzRDqhBDdxP2czCxPWcdadkBW+g4LuFfZ2BMJ3ra7CNvDHr+TUNSsNJJwlwfgu9QbYw4TBkbgDJBLp4AzjXB13O4jtN7p2V5M6uTRQWidhs=
+	t=1710148538; cv=none; b=JIf6UaIMQZQr3NsL7iZI+B8HEXrsses38xXThxo+gxOuJ9Apgch1/V+NJfkoxeYsZOTjATYM0eL+e9sNGO8Gkq3ofh+omgbUpNeAHY2+eVSV7LWyEXNMJSrLR29ECmfe59nwJY0zUB4i5m4MyUrh6MS6XSeeOlZWNhGRV7WuPvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710148535; c=relaxed/simple;
-	bh=OljCXpTTC9xEaAZuuMjFKsBZIOGdHba4C+7wKVG9xqY=;
+	s=arc-20240116; t=1710148538; c=relaxed/simple;
+	bh=fDcyWtsKLpMUlBDZfvyHMi0/iqNhwLjnewlmBXGhQeg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rx1b0POBE3+MjE8971pJiUupGvpC5r5myZCRjwCBDlfkRQFNTdYXS8UmTyemaDmNw+Mdc0lgHdB/t8K/+O6fvfCw6C/GosFmqAzZs85E+OL4g0YdSRiog0YMYJveSswnro1y/fRemZOj+Pojghgcvdvs8gS5VY6+od2U2J0DxaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oxyu17tc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710148533;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rq057kQqGxIYfRwHYU+lAiC5V15R+aNnjhBGpM/TJFk=;
-	b=Oxyu17tcjnvHh81kuVLXFyB8KOkUJGkvwNQ8nCzfKRP/WhJ5pYjPEtaiUoM5hiY+l9i/49
-	xPslZLe/xQjEi5gbjScyNb0T6jBQFzd0Rs7upMy18niO9LVYn9ImN7f6M3zikd8fjwk9Ol
-	2nEtBi9H9AO6vD0pfEmWz74imxVx8po=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-oibTkR2JOTKtzH7gX9HDTA-1; Mon, 11 Mar 2024 05:15:31 -0400
-X-MC-Unique: oibTkR2JOTKtzH7gX9HDTA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-412e4d20b28so25641045e9.1
-        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 02:15:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710148530; x=1710753330;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rq057kQqGxIYfRwHYU+lAiC5V15R+aNnjhBGpM/TJFk=;
-        b=ZqoLDy3xFHtrKxfaaiQjkbDgHqm4Idhf48S1KoQIX4UTwJBB9Pv+lUVCEwb1khzCE8
-         6RwiKSj4jmNO9fbvQ4wr0SLhaW2+cvV6cPvz5B/B0l+PODEwDcWDPjSjfIFmZpsna8bI
-         q7kkxT+IF1a61VkCJUlJM4Fn++/7htoLEqpuPJtroipF68ikMUodUZXIBgOenmiuS4Uo
-         E3/v+i5bP/dVE3n4cDcJ4AkghkIZlc6tOSSWQT3nlLSxyOQLJHf4+qS0T2sWDu+IqfRx
-         REp56Z6WpP5C/eiWkj//9oeZy50LPYkwh/0e4hYt0+3cwMt8/KU4sP8GNCGCn2bxllm1
-         ouSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJZkKh7NcJ9t0nJ9WpAtJPf+lHtIZtFTSlOZbZK5prA/UcbyNDQbMxTQTQFcYQ8D2fAyUuxT1RzQL5kxfj2enagGJ5AkwI
-X-Gm-Message-State: AOJu0YwO2HS/iuLWsqyIrFGQTasx6BipdrK6NaBmVoILaAf0J+EtvBhL
-	y6w5RvZ6Ue/z+y1+GJq/7NEdf93jBc064kHO/CVrp5TnEilk/SNgDvPspNOPn+YL7/3RYQ/i5TE
-	Ry4pS52wAY/UzUE7C4qlXZHJ7ZOhIn6NNDDnx7NXnCfibc47ZefpZ0Q==
-X-Received: by 2002:a05:600c:1e17:b0:413:2f3b:1d42 with SMTP id ay23-20020a05600c1e1700b004132f3b1d42mr159623wmb.18.1710148530145;
-        Mon, 11 Mar 2024 02:15:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECTj7+qhQBRTz6RPuyxVPemGxXBcSMWnmrmKwsBP1VHKV5OyEHl4RI88jsU4vFl5t0vOWYFg==
-X-Received: by 2002:a05:600c:1e17:b0:413:2f3b:1d42 with SMTP id ay23-20020a05600c1e1700b004132f3b1d42mr159608wmb.18.1710148529725;
-        Mon, 11 Mar 2024 02:15:29 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id n4-20020a05600c4f8400b00412ff941abasm14934328wmq.21.2024.03.11.02.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Mar 2024 02:15:29 -0700 (PDT)
-Message-ID: <39b0ed62-58e0-4e71-ac22-6426d9ded2e7@redhat.com>
-Date: Mon, 11 Mar 2024 10:15:28 +0100
+	 In-Reply-To:Content-Type; b=d2gOmZSZUmLkBLA4TqOygCzCbZC59DwGNeTZkxzpehrlrjWs5Al1p8wZoMy5GvZSI6JhtrzLe9LtHof0KfD4VnkpAuc+k6WyC0AoFh4a5pOgLztQSLZR/RDPRbQQiU7J1a4eWzKevfJmypP+5oUP2XR/GNflbp/eVYdWlnJIAoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=VoylY6yu; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=rm2u1DC2SQLO/GhCuJ2mUooy8fntRke757nFqBbgD2k=;
+	t=1710148535; x=1710580535; b=VoylY6yuRK/0sU0/64QivCQqs7GgA+0GYsaXHS9Y8ujtSUD
+	ECdC4j18kyxN08AF6biBu3ezMk89hwF/TYJjXcYBYPWM9zy4BJJ7jheGQiQsUdoLvOfKfJ7Mlytgf
+	rSDrEg/4Gas0CZUBVx9GLLj2HxOFZ7dmGyuIw7LdIlWLUXcpgHZNUCXZ8i42bvn750pVPZx+gFEt2
+	2O2GmZHc3s73uQB2ovJ9N3LhNqZgBwkIOIFd7QyE4K5tzKlD/rlWaItPU6/ij9kb2FHZfrNktLwvS
+	qXgwD83WYQjibFrnB9pM7SxjZ9LpGg+6/SwWwXLe4kU1rSNsYxQe6Um1w5pjsK3g==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rjbkq-0001Hx-Kh; Mon, 11 Mar 2024 10:15:32 +0100
+Message-ID: <da17e97b-1880-415d-8cdb-07e79808e702@leemhuis.info>
+Date: Mon, 11 Mar 2024 10:15:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,280 +54,292 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH v2 4/7] vfio/pci: Create persistent INTx handler
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: kvm@vger.kernel.org, clg@redhat.com, reinette.chatre@intel.com,
- linux-kernel@vger.kernel.org, kevin.tian@intel.com, stable@vger.kernel.org
-References: <20240308230557.805580-1-alex.williamson@redhat.com>
- <20240308230557.805580-5-alex.williamson@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240308230557.805580-5-alex.williamson@redhat.com>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent
+ locking
+Content-Language: en-US, de-DE
+To: Filipe Manana <fdmanana@suse.com>, David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Josef Bacik <josef@toxicpanda.com>, Sasha Levin <sashal@kernel.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Chris Mason <clm@fb.com>, linux-btrfs <linux-btrfs@vger.kernel.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
+ <20240304211551.880347593@linuxfoundation.org>
+ <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+In-Reply-To: <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1710148535;60c88d1c;
+X-HE-SMSGID: 1rjbkq-0001Hx-Kh
 
+On 06.03.24 13:39, Filipe Manana wrote:
+> On Mon, Mar 4, 2024 at 9:26 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>>
+>> 6.7-stable review patch.  If anyone has any objections, please let me know.
+> 
+> It would be better to delay the backport of this patch (and the
+> followup fix) to any stable release, because it introduced another
+> regression for which there is a reviewed fix but it's not yet in
+> Linus' tree:
+> 
+> https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
 
+Those two missed 6.8 afaics. Will those be heading to mainline any time
+soon? And how fast afterwards will it be wise to backport them to 6.8?
+Will anyone ask Greg for that when the time has come? Same for
+backporting "btrfs: fix deadlock with fiemap and extent locking", the
+followup fix and the two fixed mentioned above for 6.6 and 6.7?
 
-On 3/9/24 00:05, Alex Williamson wrote:
-> A vulnerability exists where the eventfd for INTx signaling can be
-> deconfigured, which unregisters the IRQ handler but still allows
-> eventfds to be signaled with a NULL context through the SET_IRQS ioctl
-> or through unmask irqfd if the device interrupt is pending.
->
-> Ideally this could be solved with some additional locking; the igate
-> mutex serializes the ioctl and config space accesses, and the interrupt
-> handler is unregistered relative to the trigger, but the irqfd path
-> runs asynchronous to those.  The igate mutex cannot be acquired from the
-> atomic context of the eventfd wake function.  Disabling the irqfd
-> relative to the eventfd registration is potentially incompatible with
-> existing userspace.
->
-> As a result, the solution implemented here moves configuration of the
-> INTx interrupt handler to track the lifetime of the INTx context object
-> and irq_type configuration, rather than registration of a particular
-> trigger eventfd.  Synchronization is added between the ioctl path and
-> eventfd_signal() wrapper such that the eventfd trigger can be
-> dynamically updated relative to in-flight interrupts or irqfd callbacks.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-> Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Cioa, Thorsten
 
-Eric
-> ---
->  drivers/vfio/pci/vfio_pci_intrs.c | 145 ++++++++++++++++--------------
->  1 file changed, 78 insertions(+), 67 deletions(-)
->
-> diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-> index 75c85eec21b3..fb5392b749ff 100644
-> --- a/drivers/vfio/pci/vfio_pci_intrs.c
-> +++ b/drivers/vfio/pci/vfio_pci_intrs.c
-> @@ -90,11 +90,15 @@ static void vfio_send_intx_eventfd(void *opaque, void *unused)
->  
->  	if (likely(is_intx(vdev) && !vdev->virq_disabled)) {
->  		struct vfio_pci_irq_ctx *ctx;
-> +		struct eventfd_ctx *trigger;
->  
->  		ctx = vfio_irq_ctx_get(vdev, 0);
->  		if (WARN_ON_ONCE(!ctx))
->  			return;
-> -		eventfd_signal(ctx->trigger);
-> +
-> +		trigger = READ_ONCE(ctx->trigger);
-> +		if (likely(trigger))
-> +			eventfd_signal(trigger);
->  	}
->  }
->  
-> @@ -253,100 +257,100 @@ static irqreturn_t vfio_intx_handler(int irq, void *dev_id)
->  	return ret;
->  }
->  
-> -static int vfio_intx_enable(struct vfio_pci_core_device *vdev)
-> +static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
-> +			    struct eventfd_ctx *trigger)
->  {
-> +	struct pci_dev *pdev = vdev->pdev;
->  	struct vfio_pci_irq_ctx *ctx;
-> +	unsigned long irqflags;
-> +	char *name;
-> +	int ret;
->  
->  	if (!is_irq_none(vdev))
->  		return -EINVAL;
->  
-> -	if (!vdev->pdev->irq)
-> +	if (!pdev->irq)
->  		return -ENODEV;
->  
-> +	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
-> +	if (!name)
-> +		return -ENOMEM;
-> +
->  	ctx = vfio_irq_ctx_alloc(vdev, 0);
->  	if (!ctx)
->  		return -ENOMEM;
->  
-> +	ctx->name = name;
-> +	ctx->trigger = trigger;
-> +
->  	/*
-> -	 * If the virtual interrupt is masked, restore it.  Devices
-> -	 * supporting DisINTx can be masked at the hardware level
-> -	 * here, non-PCI-2.3 devices will have to wait until the
-> -	 * interrupt is enabled.
-> +	 * Fill the initial masked state based on virq_disabled.  After
-> +	 * enable, changing the DisINTx bit in vconfig directly changes INTx
-> +	 * masking.  igate prevents races during setup, once running masked
-> +	 * is protected via irqlock.
-> +	 *
-> +	 * Devices supporting DisINTx also reflect the current mask state in
-> +	 * the physical DisINTx bit, which is not affected during IRQ setup.
-> +	 *
-> +	 * Devices without DisINTx support require an exclusive interrupt.
-> +	 * IRQ masking is performed at the IRQ chip.  Again, igate protects
-> +	 * against races during setup and IRQ handlers and irqfds are not
-> +	 * yet active, therefore masked is stable and can be used to
-> +	 * conditionally auto-enable the IRQ.
-> +	 *
-> +	 * irq_type must be stable while the IRQ handler is registered,
-> +	 * therefore it must be set before request_irq().
->  	 */
->  	ctx->masked = vdev->virq_disabled;
-> -	if (vdev->pci_2_3)
-> -		pci_intx(vdev->pdev, !ctx->masked);
-> +	if (vdev->pci_2_3) {
-> +		pci_intx(pdev, !ctx->masked);
-> +		irqflags = IRQF_SHARED;
-> +	} else {
-> +		irqflags = ctx->masked ? IRQF_NO_AUTOEN : 0;
-> +	}
->  
->  	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
->  
-> +	ret = request_irq(pdev->irq, vfio_intx_handler,
-> +			  irqflags, ctx->name, vdev);
-> +	if (ret) {
-> +		vdev->irq_type = VFIO_PCI_NUM_IRQS;
-> +		kfree(name);
-> +		vfio_irq_ctx_free(vdev, ctx, 0);
-> +		return ret;
-> +	}
-> +
->  	return 0;
->  }
->  
-> -static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
-> +static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev,
-> +				struct eventfd_ctx *trigger)
->  {
->  	struct pci_dev *pdev = vdev->pdev;
-> -	unsigned long irqflags = IRQF_SHARED;
->  	struct vfio_pci_irq_ctx *ctx;
-> -	struct eventfd_ctx *trigger;
-> -	unsigned long flags;
-> -	int ret;
-> +	struct eventfd_ctx *old;
->  
->  	ctx = vfio_irq_ctx_get(vdev, 0);
->  	if (WARN_ON_ONCE(!ctx))
->  		return -EINVAL;
->  
-> -	if (ctx->trigger) {
-> -		free_irq(pdev->irq, vdev);
-> -		kfree(ctx->name);
-> -		eventfd_ctx_put(ctx->trigger);
-> -		ctx->trigger = NULL;
-> -	}
-> -
-> -	if (fd < 0) /* Disable only */
-> -		return 0;
-> -
-> -	ctx->name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)",
-> -			      pci_name(pdev));
-> -	if (!ctx->name)
-> -		return -ENOMEM;
-> -
-> -	trigger = eventfd_ctx_fdget(fd);
-> -	if (IS_ERR(trigger)) {
-> -		kfree(ctx->name);
-> -		return PTR_ERR(trigger);
-> -	}
-> +	old = ctx->trigger;
->  
-> -	ctx->trigger = trigger;
-> +	WRITE_ONCE(ctx->trigger, trigger);
->  
-> -	/*
-> -	 * Devices without DisINTx support require an exclusive interrupt,
-> -	 * IRQ masking is performed at the IRQ chip.  The masked status is
-> -	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
-> -	 * unmask as necessary below under lock.  DisINTx is unmodified by
-> -	 * the IRQ configuration and may therefore use auto-enable.
-> -	 */
-> -	if (!vdev->pci_2_3)
-> -		irqflags = IRQF_NO_AUTOEN;
-> -
-> -	ret = request_irq(pdev->irq, vfio_intx_handler,
-> -			  irqflags, ctx->name, vdev);
-> -	if (ret) {
-> -		ctx->trigger = NULL;
-> -		kfree(ctx->name);
-> -		eventfd_ctx_put(trigger);
-> -		return ret;
-> +	/* Releasing an old ctx requires synchronizing in-flight users */
-> +	if (old) {
-> +		synchronize_irq(pdev->irq);
-> +		vfio_virqfd_flush_thread(&ctx->unmask);
-> +		eventfd_ctx_put(old);
->  	}
->  
-> -	spin_lock_irqsave(&vdev->irqlock, flags);
-> -	if (!vdev->pci_2_3 && !ctx->masked)
-> -		enable_irq(pdev->irq);
-> -	spin_unlock_irqrestore(&vdev->irqlock, flags);
-> -
->  	return 0;
->  }
->  
->  static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
->  {
-> +	struct pci_dev *pdev = vdev->pdev;
->  	struct vfio_pci_irq_ctx *ctx;
->  
->  	ctx = vfio_irq_ctx_get(vdev, 0);
-> @@ -354,10 +358,13 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
->  	if (ctx) {
->  		vfio_virqfd_disable(&ctx->unmask);
->  		vfio_virqfd_disable(&ctx->mask);
-> +		free_irq(pdev->irq, vdev);
-> +		if (ctx->trigger)
-> +			eventfd_ctx_put(ctx->trigger);
-> +		kfree(ctx->name);
-> +		vfio_irq_ctx_free(vdev, ctx, 0);
->  	}
-> -	vfio_intx_set_signal(vdev, -1);
->  	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-> -	vfio_irq_ctx_free(vdev, ctx, 0);
->  }
->  
->  /*
-> @@ -641,19 +648,23 @@ static int vfio_pci_set_intx_trigger(struct vfio_pci_core_device *vdev,
->  		return -EINVAL;
->  
->  	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
-> +		struct eventfd_ctx *trigger = NULL;
->  		int32_t fd = *(int32_t *)data;
->  		int ret;
->  
-> -		if (is_intx(vdev))
-> -			return vfio_intx_set_signal(vdev, fd);
-> +		if (fd >= 0) {
-> +			trigger = eventfd_ctx_fdget(fd);
-> +			if (IS_ERR(trigger))
-> +				return PTR_ERR(trigger);
-> +		}
->  
-> -		ret = vfio_intx_enable(vdev);
-> -		if (ret)
-> -			return ret;
-> +		if (is_intx(vdev))
-> +			ret = vfio_intx_set_signal(vdev, trigger);
-> +		else
-> +			ret = vfio_intx_enable(vdev, trigger);
->  
-> -		ret = vfio_intx_set_signal(vdev, fd);
-> -		if (ret)
-> -			vfio_intx_disable(vdev);
-> +		if (ret && trigger)
-> +			eventfd_ctx_put(trigger);
->  
->  		return ret;
->  	}
-
+>> ------------------
+>>
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> [ Upstream commit b0ad381fa7690244802aed119b478b4bdafc31dd ]
+>>
+>> While working on the patchset to remove extent locking I got a lockdep
+>> splat with fiemap and pagefaulting with my new extent lock replacement
+>> lock.
+>>
+>> This deadlock exists with our normal code, we just don't have lockdep
+>> annotations with the extent locking so we've never noticed it.
+>>
+>> Since we're copying the fiemap extent to user space on every iteration
+>> we have the chance of pagefaulting.  Because we hold the extent lock for
+>> the entire range we could mkwrite into a range in the file that we have
+>> mmap'ed.  This would deadlock with the following stack trace
+>>
+>> [<0>] lock_extent+0x28d/0x2f0
+>> [<0>] btrfs_page_mkwrite+0x273/0x8a0
+>> [<0>] do_page_mkwrite+0x50/0xb0
+>> [<0>] do_fault+0xc1/0x7b0
+>> [<0>] __handle_mm_fault+0x2fa/0x460
+>> [<0>] handle_mm_fault+0xa4/0x330
+>> [<0>] do_user_addr_fault+0x1f4/0x800
+>> [<0>] exc_page_fault+0x7c/0x1e0
+>> [<0>] asm_exc_page_fault+0x26/0x30
+>> [<0>] rep_movs_alternative+0x33/0x70
+>> [<0>] _copy_to_user+0x49/0x70
+>> [<0>] fiemap_fill_next_extent+0xc8/0x120
+>> [<0>] emit_fiemap_extent+0x4d/0xa0
+>> [<0>] extent_fiemap+0x7f8/0xad0
+>> [<0>] btrfs_fiemap+0x49/0x80
+>> [<0>] __x64_sys_ioctl+0x3e1/0xb50
+>> [<0>] do_syscall_64+0x94/0x1a0
+>> [<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+>>
+>> I wrote an fstest to reproduce this deadlock without my replacement lock
+>> and verified that the deadlock exists with our existing locking.
+>>
+>> To fix this simply don't take the extent lock for the entire duration of
+>> the fiemap.  This is safe in general because we keep track of where we
+>> are when we're searching the tree, so if an ordered extent updates in
+>> the middle of our fiemap call we'll still emit the correct extents
+>> because we know what offset we were on before.
+>>
+>> The only place we maintain the lock is searching delalloc.  Since the
+>> delalloc stuff can change during writeback we want to lock the extent
+>> range so we have a consistent view of delalloc at the time we're
+>> checking to see if we need to set the delalloc flag.
+>>
+>> With this patch applied we no longer deadlock with my testcase.
+>>
+>> CC: stable@vger.kernel.org # 6.1+
+>> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> Reviewed-by: David Sterba <dsterba@suse.com>
+>> Signed-off-by: David Sterba <dsterba@suse.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  fs/btrfs/extent_io.c | 62 ++++++++++++++++++++++++++++++++------------
+>>  1 file changed, 45 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+>> index 8f724c54fc8e9..197b41d02735b 100644
+>> --- a/fs/btrfs/extent_io.c
+>> +++ b/fs/btrfs/extent_io.c
+>> @@ -2645,16 +2645,34 @@ static int fiemap_process_hole(struct btrfs_inode *inode,
+>>          * it beyond i_size.
+>>          */
+>>         while (cur_offset < end && cur_offset < i_size) {
+>> +               struct extent_state *cached_state = NULL;
+>>                 u64 delalloc_start;
+>>                 u64 delalloc_end;
+>>                 u64 prealloc_start;
+>> +               u64 lockstart;
+>> +               u64 lockend;
+>>                 u64 prealloc_len = 0;
+>>                 bool delalloc;
+>>
+>> +               lockstart = round_down(cur_offset, inode->root->fs_info->sectorsize);
+>> +               lockend = round_up(end, inode->root->fs_info->sectorsize);
+>> +
+>> +               /*
+>> +                * We are only locking for the delalloc range because that's the
+>> +                * only thing that can change here.  With fiemap we have a lock
+>> +                * on the inode, so no buffered or direct writes can happen.
+>> +                *
+>> +                * However mmaps and normal page writeback will cause this to
+>> +                * change arbitrarily.  We have to lock the extent lock here to
+>> +                * make sure that nobody messes with the tree while we're doing
+>> +                * btrfs_find_delalloc_in_range.
+>> +                */
+>> +               lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>                 delalloc = btrfs_find_delalloc_in_range(inode, cur_offset, end,
+>>                                                         delalloc_cached_state,
+>>                                                         &delalloc_start,
+>>                                                         &delalloc_end);
+>> +               unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>                 if (!delalloc)
+>>                         break;
+>>
+>> @@ -2822,15 +2840,15 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>                   u64 start, u64 len)
+>>  {
+>>         const u64 ino = btrfs_ino(inode);
+>> -       struct extent_state *cached_state = NULL;
+>>         struct extent_state *delalloc_cached_state = NULL;
+>>         struct btrfs_path *path;
+>>         struct fiemap_cache cache = { 0 };
+>>         struct btrfs_backref_share_check_ctx *backref_ctx;
+>>         u64 last_extent_end;
+>>         u64 prev_extent_end;
+>> -       u64 lockstart;
+>> -       u64 lockend;
+>> +       u64 range_start;
+>> +       u64 range_end;
+>> +       const u64 sectorsize = inode->root->fs_info->sectorsize;
+>>         bool stopped = false;
+>>         int ret;
+>>
+>> @@ -2841,12 +2859,11 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>                 goto out;
+>>         }
+>>
+>> -       lockstart = round_down(start, inode->root->fs_info->sectorsize);
+>> -       lockend = round_up(start + len, inode->root->fs_info->sectorsize);
+>> -       prev_extent_end = lockstart;
+>> +       range_start = round_down(start, sectorsize);
+>> +       range_end = round_up(start + len, sectorsize);
+>> +       prev_extent_end = range_start;
+>>
+>>         btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
+>> -       lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>
+>>         ret = fiemap_find_last_extent_offset(inode, path, &last_extent_end);
+>>         if (ret < 0)
+>> @@ -2854,7 +2871,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>         btrfs_release_path(path);
+>>
+>>         path->reada = READA_FORWARD;
+>> -       ret = fiemap_search_slot(inode, path, lockstart);
+>> +       ret = fiemap_search_slot(inode, path, range_start);
+>>         if (ret < 0) {
+>>                 goto out_unlock;
+>>         } else if (ret > 0) {
+>> @@ -2866,7 +2883,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>                 goto check_eof_delalloc;
+>>         }
+>>
+>> -       while (prev_extent_end < lockend) {
+>> +       while (prev_extent_end < range_end) {
+>>                 struct extent_buffer *leaf = path->nodes[0];
+>>                 struct btrfs_file_extent_item *ei;
+>>                 struct btrfs_key key;
+>> @@ -2889,19 +2906,19 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>                  * The first iteration can leave us at an extent item that ends
+>>                  * before our range's start. Move to the next item.
+>>                  */
+>> -               if (extent_end <= lockstart)
+>> +               if (extent_end <= range_start)
+>>                         goto next_item;
+>>
+>>                 backref_ctx->curr_leaf_bytenr = leaf->start;
+>>
+>>                 /* We have in implicit hole (NO_HOLES feature enabled). */
+>>                 if (prev_extent_end < key.offset) {
+>> -                       const u64 range_end = min(key.offset, lockend) - 1;
+>> +                       const u64 hole_end = min(key.offset, range_end) - 1;
+>>
+>>                         ret = fiemap_process_hole(inode, fieinfo, &cache,
+>>                                                   &delalloc_cached_state,
+>>                                                   backref_ctx, 0, 0, 0,
+>> -                                                 prev_extent_end, range_end);
+>> +                                                 prev_extent_end, hole_end);
+>>                         if (ret < 0) {
+>>                                 goto out_unlock;
+>>                         } else if (ret > 0) {
+>> @@ -2911,7 +2928,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>                         }
+>>
+>>                         /* We've reached the end of the fiemap range, stop. */
+>> -                       if (key.offset >= lockend) {
+>> +                       if (key.offset >= range_end) {
+>>                                 stopped = true;
+>>                                 break;
+>>                         }
+>> @@ -3005,29 +3022,41 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>         btrfs_free_path(path);
+>>         path = NULL;
+>>
+>> -       if (!stopped && prev_extent_end < lockend) {
+>> +       if (!stopped && prev_extent_end < range_end) {
+>>                 ret = fiemap_process_hole(inode, fieinfo, &cache,
+>>                                           &delalloc_cached_state, backref_ctx,
+>> -                                         0, 0, 0, prev_extent_end, lockend - 1);
+>> +                                         0, 0, 0, prev_extent_end, range_end - 1);
+>>                 if (ret < 0)
+>>                         goto out_unlock;
+>> -               prev_extent_end = lockend;
+>> +               prev_extent_end = range_end;
+>>         }
+>>
+>>         if (cache.cached && cache.offset + cache.len >= last_extent_end) {
+>>                 const u64 i_size = i_size_read(&inode->vfs_inode);
+>>
+>>                 if (prev_extent_end < i_size) {
+>> +                       struct extent_state *cached_state = NULL;
+>>                         u64 delalloc_start;
+>>                         u64 delalloc_end;
+>> +                       u64 lockstart;
+>> +                       u64 lockend;
+>>                         bool delalloc;
+>>
+>> +                       lockstart = round_down(prev_extent_end, sectorsize);
+>> +                       lockend = round_up(i_size, sectorsize);
+>> +
+>> +                       /*
+>> +                        * See the comment in fiemap_process_hole as to why
+>> +                        * we're doing the locking here.
+>> +                        */
+>> +                       lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>                         delalloc = btrfs_find_delalloc_in_range(inode,
+>>                                                                 prev_extent_end,
+>>                                                                 i_size - 1,
+>>                                                                 &delalloc_cached_state,
+>>                                                                 &delalloc_start,
+>>                                                                 &delalloc_end);
+>> +                       unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>                         if (!delalloc)
+>>                                 cache.flags |= FIEMAP_EXTENT_LAST;
+>>                 } else {
+>> @@ -3038,7 +3067,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+>>         ret = emit_last_fiemap_cache(fieinfo, &cache);
+>>
+>>  out_unlock:
+>> -       unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+>>         btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
+>>  out:
+>>         free_extent_state(delalloc_cached_state);
+>> --
+>> 2.43.0
+>>
+>>
+>>
 
