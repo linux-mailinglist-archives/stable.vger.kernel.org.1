@@ -1,312 +1,349 @@
-Return-Path: <stable+bounces-27237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77861877BEB
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:51:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142A8877C0E
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1D86B209FF
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:51:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F586B20A47
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5199B125B4;
-	Mon, 11 Mar 2024 08:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815B412E52;
+	Mon, 11 Mar 2024 08:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ledpIvFC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KmGulzZO"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2071.outbound.protection.outlook.com [40.107.237.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A572134AB;
-	Mon, 11 Mar 2024 08:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710147086; cv=fail; b=JgsgO9cdalQ+oPa8IRQ7OACtTziKlcWWyM54SknwpK/XfLRCqNN3JJGV8a2ZNi/eREvoBWlKzficXOJpz4ktQis8tHRFdTxTN+Jc40U/hYhYeX0L3K2QnhtCnooswRiltGJRn/p9AeH7UF/vDcEGbK0JeQGR0OtlH1sMupJiV5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710147086; c=relaxed/simple;
-	bh=+A4BdfrNj8IaPadmTE832/f1X3r8BldhFp2yNblgBLA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XU1BF84aw/G7zd1TZGnu3TpsEOTVmTPe2N0f4mj/r2YqadBaJ4c6JrNd+ruAmKJJC/rk3ZZuq7G+NhfI/SrC+s0Zj/J5x5BmHZItESPch+QihUmxF2Hn3QWUmUFCALHnY7vYuYZjI4ACvv3dyIIjd2UmIbokUVhUovtnC35iX54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ledpIvFC; arc=fail smtp.client-ip=40.107.237.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f/snb1kj5w58VnhEIABI3EmA231mLGW1EuDB5VbrXCsg9ZrHc4TmlcWbChUI8J9Xrhi8HtvFxZfXQDTrwGZYWsdoFyzcOTwsYepNnWOUetZC1+VaJ2rBC7bbnbosEZVwk26fnr31JhOm52/+DhMbz7FHVCbJk3JszSn581z5sew3bxUuTmCca82+R2c5nsXdLZNJvpVGCG0Lpy80yNe2gAzUqSFc99qCfCo61B2TgN0/ImHrVKqiJDZadB4mfbYVTPuRJRmnLnUtRteHFnumX+vSdob4U32SBYXgki+iiEMhjWRPfbayvHQjmhYH5HMB5HCBpyH3+H+dorUEGBwpdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+A4BdfrNj8IaPadmTE832/f1X3r8BldhFp2yNblgBLA=;
- b=npxT/LbZ73abGy2sxqza3V7PMht0GLYE1jASNwywek3C8gMrBv8gkpTXvS8FBlsca/SFhw0rLlS/xMTDI5xeb1D1gmZ70nR3hBx+zVfLsWIYTp2CAUlKz2AVglgAhVWy9RAtYAIhFYOTfEDcPDi6bmeg8WvGX8xyPO5UvAxmNG6xbDV2I7qocil622qpzWXiEaEhbTu7kGJ4ZAAAZbq/AQPxIYMPM2ZBrlorE9dJCpk2kQZJ4Qh9yeBghsSQkxZsMgVJTauVfht04VVgUH8VNy6lWe7Ijw+m2I77ZUWNoESN9yjYS7RkxBiXOPGFyQHTZPZ9y7ApqaN9VaIQpQpuiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+A4BdfrNj8IaPadmTE832/f1X3r8BldhFp2yNblgBLA=;
- b=ledpIvFC6paDTcoFn5wgtm6xJGguLXFiZR/nH/t8rUtBoaaHss4sd9jhmDS1+t1sJKekN73zojN1MXjQq1qBc0bINTJ/r7GbNUuXB754L+QdMBTQWS+ttJljC/dDPa6K5gNE3Vyo4lucaC1WFaJrHImimRB6XVKP0G3MXDOBeu8O4/LqCEprjm4DY7hsmAvsDEpwD86ksmVutGj0V16MmNtZHUcfGSXo3WvIy9neCykGTMNQlTesxaalf+jEhaHNQNoQj06R+ED2GG/p6LPTEspaF1rrWGvGdo2dDjKbK2moVSzTApwJdTKhPNbheUGw+vNvybLYo7nTnqEzLjtz+Q==
-Received: from DM6PR12MB5565.namprd12.prod.outlook.com (2603:10b6:5:1b6::13)
- by PH7PR12MB5878.namprd12.prod.outlook.com (2603:10b6:510:1d6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
- 2024 08:51:20 +0000
-Received: from DM6PR12MB5565.namprd12.prod.outlook.com
- ([fe80::bfce:51e5:6c7b:98ae]) by DM6PR12MB5565.namprd12.prod.outlook.com
- ([fe80::bfce:51e5:6c7b:98ae%3]) with mapi id 15.20.7362.035; Mon, 11 Mar 2024
- 08:51:20 +0000
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: "ilias.apalodimas@linaro.org" <ilias.apalodimas@linaro.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "herbert@gondor.apana.org.au"
-	<herbert@gondor.apana.org.au>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Leon Romanovsky <leonro@nvidia.com>,
-	"Anatoli.Chechelnickiy@m.interpipe.biz"
-	<Anatoli.Chechelnickiy@m.interpipe.biz>, "brouer@redhat.com"
-	<brouer@redhat.com>, "almasrymina@google.com" <almasrymina@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "dsahern@kernel.org"
-	<dsahern@kernel.org>, "mcroce@microsoft.com" <mcroce@microsoft.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"steffen.klassert@secunet.com" <steffen.klassert@secunet.com>, Gal Pressman
-	<gal@nvidia.com>, "ian.kumlien@gmail.com" <ian.kumlien@gmail.com>
-Subject: Re: [PATCH net v3] net: esp: fix bad handling of pages from page_pool
-Thread-Topic: [PATCH net v3] net: esp: fix bad handling of pages from
- page_pool
-Thread-Index: AQHacW0YMWBRSKbl8kqnLD8ji9fDILEyPYMAgAACNIA=
-Date: Mon, 11 Mar 2024 08:51:20 +0000
-Message-ID: <23514ae26df83dbc700474d74466734680657cd2.camel@nvidia.com>
-References: <20240308152723.831620-1-dtatulea@nvidia.com>
-	 <CAC_iWjJyDUbK+2+u=Uqeo7r7-Hy5aZQ=12eTEKaBnm8qYnR_8Q@mail.gmail.com>
-In-Reply-To:
- <CAC_iWjJyDUbK+2+u=Uqeo7r7-Hy5aZQ=12eTEKaBnm8qYnR_8Q@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.50.4 (3.50.4-1.fc39) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR12MB5565:EE_|PH7PR12MB5878:EE_
-x-ms-office365-filtering-correlation-id: 1f6fcf7f-94b1-4899-8f48-08dc41a86c2d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- swTSp38EV9nban9boF8PDmtmaHWH5hPT/njF5mN6J3LAqqF6HpUydDur3za+/urNTkp9InMwRWarBK4zMlsHoCkuZN0EV+FrAgcVjWpN194JmR8uHM/ljgMCeflg7piwEgARqNCqr0tCSkgClfN3bnRm5xgYwyt3PeohuLe90043POrJMqd+wBXcKn9tbbuj7xEv5v1DSbX2wUK4yxOEdlxKnlPWVOHtwNdkK4WBEckPuCIfgLJtXen4q20agODToZpi30jhjr0sN7N5eLief/t76Js1kfuYs2KZw9g8u2f7T7DmjSfhBTsrU9AtAhjvRNU7ARBivQFevFBM638emp7YjU7pRmQ5ir6fSftF9aI/7fD37Xjmma0iIxYTERyNc7IyTjKs/FjSNEjwJCEYnpcxjsYQwwXBN1wIrrat4cXXHWmiqD/VmZayUXFEaeKY0I4YJ1QF/xkFV9njxj/yzmg8CRPg3DHEnvo/wLH/CnK9bMuD/h1D4phmWY9TZ0oIPGBUOTpSMTV5rxZsHgFrZVjYzy6WFEA2PCHrOKtox5vATn1/hJHJBd+R+sM9DXx143v3I9i9gv8bBYtZdOesdl1V4z49mK7S2F23QRLmfXGuOGD7EKPDt7x6+CyfjYc0u15trEKHuCRSh6ar5VptOGTLv8PMm8o+/Hndr9jhDePU3jAMIJ5mlyMepxIEhPSg4Wnhaxi2ZB+mCu/F9m0rkR7afGMS+a+VVGRiyTElLus=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB5565.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?QUJGNEZweDAvVUdlVDJEQStoTEJHZHdxdm5BWHEzd2dUUU15OFJrMnQ5MDZI?=
- =?utf-8?B?UG4weW9pSWFvcjFSZWQ0SVI0Uk9Td3Y0clhOK01VOG8zaWlYSzREczEyMmx6?=
- =?utf-8?B?WDlESmZBZGpMNkREaXBPMFNaakdENEZpN0ZXaERjWEpYTkZWRXlGZVJTeU1W?=
- =?utf-8?B?NlpkaTd6SjFiUFgrQmsyTHk0Z1E5S2VsT2s3UkpKWmtOVXgrSHBpMmdpTHZF?=
- =?utf-8?B?RXQ2MzA3UnNzN1MvSDNnMXZlalh4aytvUkpJQ092UDBMRnVlamFEQTdXSTMx?=
- =?utf-8?B?MGZZSUx0U0lVc3RWOVRqalhSUG41dnNaVnNDNVdKaS9FSGZFaDZlME9Oemo0?=
- =?utf-8?B?SklEMDZvQ2ViNWprMTZvcmIzUnBNNE5KMUNxK1FVZUEzVmlQeUZvL3kyc2Fa?=
- =?utf-8?B?dXpHaGtPamZITnp6ZkRHTlJoUjJiN2VZdlJMOWZmc0FVL3NPamRRaXVGWlRp?=
- =?utf-8?B?ODlkbnBvblhvcTZWVzZaTkhIK2xoNTJQTkkxVmlrNkJzb3VMWDVvYjFqWlZJ?=
- =?utf-8?B?em90b3NRTGhia3JMUFVVUGRGbGd4dVR0Q2wyT01BaFNEWEd6UlBHN0NxUWIv?=
- =?utf-8?B?ZWZQVE03ZkxXbWdKUVBMZ2pqcldNS2RqaGJLc3h0cVhEQ2hFQlpKcnRtaGsw?=
- =?utf-8?B?WDZTVkRwdk9aTktaTk1LaGNzcS83QkwyU1g5cVp5b25EOUxIWXZHYW5CcmdO?=
- =?utf-8?B?aDBuWjIvYWdiTDhzTXdBWDNvYmloTlV1azY3TS8yWUxVdzlFOUM1anJNNGFJ?=
- =?utf-8?B?Q0xNbTVyY2l6UjE3VlpSaU9xZ2ptNHBqVWVuQ3p1Z1VnTzROOGV5U200TTJ0?=
- =?utf-8?B?ZXczR0t1RlBMaWl0Rk5mamtUbWNUcFZITTl1ZEhCeXJpL2RObWdLMWFHZkhT?=
- =?utf-8?B?OGNCaVlTK1F2R2R5bG1XUnVkVkpHRExXQm5qTWk1Q0VyRmdQMFBoOG94aGgx?=
- =?utf-8?B?Q01FV1dGN2JldkRVYnJ5WFhkUk1SblpscEZkY1hhUDJpVlZBc0VHWXZJdkFY?=
- =?utf-8?B?WDBsMkN6QTFlRTN1NG1oVmJWRUwrTUVCS0xEaUpteWlwaTV6bnhKN0lpS2tu?=
- =?utf-8?B?aXhBN2JPWnhmWEdHVUVYQ00zWjRoMkI3VWNVVVRhMGdDOVRTOFJPY2F3UVVa?=
- =?utf-8?B?M1J0Y05hTTBUczFKWS8wTCtvWVlDN3hMc2NhVEtsSjJObWR1cGsvUkRtK0du?=
- =?utf-8?B?cTBXbHQvNEtZbk9JT1RIOWFDZEhmTlVEMGdpRGRtU1B0VWVwWDh6WmhuYUd4?=
- =?utf-8?B?dXBMaFhxVUhSbklscUVmdXpaY2pLZlJLQ0l3eWNVMkJsMDRQVlMvN2I2MFFL?=
- =?utf-8?B?aklaVmhMRTVtWmlXSkI2M3RXVTduQTJGMC9ta251RThjZXBCclNHZXJGNHBB?=
- =?utf-8?B?bTZrT0Fpam1UZ2ViK2N3a01sTWcyeWJoVXhXSWV4N09uNUIyM3M4dzY3ODh3?=
- =?utf-8?B?emdTdmZvN1JrdUxjYWt5YSsyQlJZdW1VY1ZwTHZJeVVDNUJpVzY3YmV0Y0lN?=
- =?utf-8?B?Z3cwK2FWa08yMXJYZkptYlVWTW1VcjlZVEtmY09ONzlDcWVEOWtENTV2MEs3?=
- =?utf-8?B?Q3E4MUdoekllYVJ1ck0xQ0x1WTB2TFdld05vMGVrbWZhTDkzQ1Q3VjVDSllR?=
- =?utf-8?B?cDZsZU4wUFRnbGpJN1JUYlIvdEc5azRzRWlSL0FWUW5hMCtxazlIczJsMUw3?=
- =?utf-8?B?ZmtYWDZTQVl0KzIvL1lCTWhCS3F6Y3o3TnZuT3dpdjFiRzhnUmxGVzByMGto?=
- =?utf-8?B?WU83WER0NFZzdXVucExnSDNMK2ZsZnAzTWxpNHlDTEllNGVqN0pmbHdvZkF3?=
- =?utf-8?B?Q0RPRmJTRDhQT3dyamY5WW8xNnBNSEszU2ZNWHB1WVBjOVdmZG9LLzRqUHF5?=
- =?utf-8?B?eS9RenFQckVyQjZnU05TUmlFMkJSMmdTc1NlTzhpZXhndVNBMnZzWm9TMFFW?=
- =?utf-8?B?YlJyTkZhdVhhT0tHWFR4SUFMaDZzQU4xMEJTb1N4Tjg1dHoxZTUxcGdlWUNi?=
- =?utf-8?B?WHNydFkxVXI2ZlFyd2FwRWp6ckhuR1FnNXpUT0tRWjdJS1ZoZURXMmN3SHF6?=
- =?utf-8?B?NlRKTStJUmM0clBBSUVFM014eDBRaFc2WXFsSnRzNlVoVkVDOGg2eWp1QmtJ?=
- =?utf-8?B?RWREM1pFYk5oMHJZL0hDYVlvdDZ2dEl4akNXYVhGSnVPYklaLzlwM1VtbHNi?=
- =?utf-8?Q?kcZPor75YlPXncnBcvy8xuW+TJBICjl+wmGz9HG2s9KK?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <712D8AFEF719524AB7A06B5848BE204A@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BE5374DB
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 08:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710147546; cv=none; b=RBLS7lhcrCbSaBZxMjoyVQ6V/zd+YFE9nBAoerbMHoWxeEvkTbOSyN2i06/oLes3sGYYHqWMuZWh9x1x8/PMZR285Z9CqmBJ0OcWLKyyazBLU4CflA727nReSg2YQhXD9EFv7rijFpHWXZCdxeXf8X+UBWSr6I5HGLmfoHMcwcU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710147546; c=relaxed/simple;
+	bh=+Q+fZIf/3tpaLdCAvKpIPWxPOj8fd2CONGt5XGoTfV4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z1OVf6FY8sR5f6oadwPQ9mvidkUHtXHe6oAznfsXYmGUT/0bYnD7eFKO/s6NqYnNBwOAIFrZj47be7VaoLQ+9lfLgj9OuEGS9Dp9sB+WhzDJl0DJqlcOc0C+tlacQ8+e0w9JyvkfLOqf0XXaL/A1mR0eBQi+mxpdJRkAAmFm274=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KmGulzZO; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-513b1c69cb8so122876e87.1
+        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 01:59:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710147542; x=1710752342; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6quCqTERuQXSWVpIHU/UfMAkW79KK4YYk+htmPUgKvQ=;
+        b=KmGulzZOwxWrjjRZ5kfLWHTOBc/0i8syTchxXuTGJVyWpw2zuWCTrjvzAIho2BgZvN
+         0pnUrxcMdG4cdScd+I2Mzkpnkozvau6lr6aUFuf+Pl0HUtZXFu6uN6AReTxwVqwjmQgF
+         J0ly0XiPyz6xlnBu4ECIkHsFpexeKN34xPPUKf83Rv4ZWu7XMs6IXrGa4MR2m2UmnQh1
+         BFTAWjd5j15Uwsn/BPv/8IymCvUhyWGgGqSISiO4IxwgFsuO+cgRl9yEGtsQC9+8Dl7C
+         qn/CffrRVLZa123Vhaye5W1Im9QCAaUnQQLMfdjg6dJFxD62rGXISUPLsOHBzTpigocc
+         swnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710147542; x=1710752342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6quCqTERuQXSWVpIHU/UfMAkW79KK4YYk+htmPUgKvQ=;
+        b=XTmSbAbKYVOmwpZzuD5iEjAbNtq7Prhud7ZMLfYbMqPhPFFk/fT6dY3gwWz1qonIM4
+         dz5M/Ua/PZQHUcW2gLTrc7abpfxhTXH1DkpwlEzW18EoIzkRBuSwgJrvJmIMO6DWqVeJ
+         ZkTZkpeciAMraikC2crRcVLsW8qZr40/zduzJFpRM4hLUyFDXSNVMF+yFAgnJv6lILRU
+         +nZ6hi9flajSBBXroxY0qBOD+dSRtEz07onxyLxcrAsfUwMvD69r+K3ETb8atGBs8idw
+         FQ79mFZOT7/VB0H4b4Qh5fcXTrWbBX2zBxL8ArDBbmo4+xDRs1Al+XdGuuG4hKcSLT0G
+         kX9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUeWI4BjotKPYofp10s0H/QkpT4p7dwe7oRy9v/KkaQmgHzLLP1rttdi6eqANDa0nOXTwIkDCrd+vf5StgYgnQRhji71ZXQ
+X-Gm-Message-State: AOJu0YzRSJdY2lVqb2Iys7eT5gwJehrbP7SrBqELrwZjWo0HgPHNWNWi
+	pG0iF0pqX7qF1rsg/4Sp2pYfUye9zOJn/1mED0FE/LdIGRDpMXz2ctDT9ZW1Os8j24th934MV7D
+	u+BymhB8VPbOE5vu+YTHVlQhxPJi48P65kwesKA==
+X-Google-Smtp-Source: AGHT+IFlkp3e4CtgfZVZ28SL5BFEktrP86Rzjen4+ZM9NYBNVmupVzUpaE4EocAABRs/fT2Qa39ZpMmx84njJT6mxAg=
+X-Received: by 2002:ac2:5e91:0:b0:513:9f3e:7a69 with SMTP id
+ b17-20020ac25e91000000b005139f3e7a69mr3350212lfq.21.1710147542312; Mon, 11
+ Mar 2024 01:59:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5565.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f6fcf7f-94b1-4899-8f48-08dc41a86c2d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2024 08:51:20.4711
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 28nRbMZeBkYtt5iQDhzalYDd9xZfyirmDtEbGDa6rTHP1iDEnliwXhlpbr7Zf0vyW/OxjqfxJR4XmMfKe1kdeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5878
+References: <20240308152723.831620-1-dtatulea@nvidia.com> <CAC_iWjJyDUbK+2+u=Uqeo7r7-Hy5aZQ=12eTEKaBnm8qYnR_8Q@mail.gmail.com>
+ <23514ae26df83dbc700474d74466734680657cd2.camel@nvidia.com>
+In-Reply-To: <23514ae26df83dbc700474d74466734680657cd2.camel@nvidia.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Mon, 11 Mar 2024 10:58:26 +0200
+Message-ID: <CAC_iWjKtQ7O+CQOmjtm55Qhs1GN8mYu1o=etvhtMRLC6Re46ew@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: esp: fix bad handling of pages from page_pool
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: "davem@davemloft.net" <davem@davemloft.net>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	"Anatoli.Chechelnickiy@m.interpipe.biz" <Anatoli.Chechelnickiy@m.interpipe.biz>, 
+	"brouer@redhat.com" <brouer@redhat.com>, "almasrymina@google.com" <almasrymina@google.com>, 
+	"kuba@kernel.org" <kuba@kernel.org>, "dsahern@kernel.org" <dsahern@kernel.org>, 
+	"mcroce@microsoft.com" <mcroce@microsoft.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"steffen.klassert@secunet.com" <steffen.klassert@secunet.com>, Gal Pressman <gal@nvidia.com>, 
+	"ian.kumlien@gmail.com" <ian.kumlien@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGkgSWxpYXMsDQoNCk9uIE1vbiwgMjAyNC0wMy0xMSBhdCAxMDo0MyArMDIwMCwgSWxpYXMgQXBh
-bG9kaW1hcyB3cm90ZToNCj4gSGkgRHJhZ29zLA0KPiANCj4gT24gRnJpLCA4IE1hciAyMDI0IGF0
-IDE3OjI3LCBEcmFnb3MgVGF0dWxlYSA8ZHRhdHVsZWFAbnZpZGlhLmNvbT4gd3JvdGU6DQo+ID4g
-DQo+ID4gV2hlbiB0aGUgc2tiIGlzIHJlb3JnYW5pemVkIGR1cmluZyBlc3Bfb3V0cHV0ICghZXNw
-LT5pbmxpbmUpLCB0aGUgcGFnZXMNCj4gPiBjb21pbmcgZnJvbSB0aGUgb3JpZ2luYWwgc2tiIGZy
-YWdtZW50cyBhcmUgc3VwcG9zZWQgdG8gYmUgcmVsZWFzZWQgYmFjaw0KPiA+IHRvIHRoZSBzeXN0
-ZW0gdGhyb3VnaCBwdXRfcGFnZS4NCj4gPiAgQnV0IGlmIHRoZSBza2IgZnJhZ21lbnQgcGFnZXMg
-YXJlDQo+ID4gb3JpZ2luYXRpbmcgZnJvbSBhIHBhZ2VfcG9vbCwgY2FsbGluZyBwdXRfcGFnZSBv
-biB0aGVtIHdpbGwgdHJpZ2dlciBhDQo+ID4gcGFnZV9wb29sIGxlYWsgd2hpY2ggd2lsbCBldmVu
-dHVhbGx5IHJlc3VsdCBpbiBhIGNyYXNoLg0KPiA+IA0KPiANCj4gSW5kZWVkIGlmIHlvdSBjYWxs
-IHB1dF9wYWdlLCB5b3Ugd2lsbCBsZWFrIGEgcGFnZS4gQnV0IHdvbid0IHRoYXQgc2tiDQo+IGV2
-ZW50dWFsbHkgYmUgZnJlZWQgYnkgc2tiX2ZyZWVfaGVhZCgpPw0KPiANCkkgZG9uJ3QgdGhpbmsg
-aXQgd2lsbDogaWYgeW91IGxvb2sgYXQgZXNwX291dHB1dF90YWlsICghZXNwLT5pbnBsYWNlIGNh
-c2UpLCB0aGUNCnNrYiBmcmFncyBhcmUgcHV0IG9uIHRoZSBzZyBsaXN0IGFuZCB0aGVuIHRoZSBz
-a2IgaXMgY3V0IG9mZiB0byBoYXZlIGEgc2luZ2xlDQpmcmFnICh3aXRoIGEgInJlZ3VsYXIiIHBh
-Z2UgZnJvbSB4LT54ZnJhZykuIFNvIGlmIHRoZSBwYWdlcyBmcm9tIHRoZSBvbGQNCmZyYWdtZW50
-cyBhcmUgbm90IGZyZWVkIGhlcmUgdGhleSB3aWxsIGxlYWsgYWx0b2dldGhlci4gDQoNClRoYW5r
-cywNCkRyYWdvcw0KDQo+IFRoYW5rcw0KPiAvSWxpYXMNCj4gDQo+ID4gVGhpcyBsZWFrIGNhbiBi
-ZSBlYXNpbHkgb2JzZXJ2ZWQgd2hlbiB1c2luZyBDT05GSUdfREVCVUdfVk0gYW5kIGRvaW5nDQo+
-ID4gaXBzZWMgKyBncmUgKG5vbiBvZmZsb2FkZWQpIGZvcndhcmRpbmc6DQo+ID4gDQo+ID4gICBC
-VUc6IEJhZCBwYWdlIHN0YXRlIGluIHByb2Nlc3Mga3NvZnRpcnFkLzE2ICBwZm46MTQ1MWI2DQo+
-ID4gICBwYWdlOjAwMDAwMDAwZGUyYjhkMzIgcmVmY291bnQ6MCBtYXBjb3VudDowIG1hcHBpbmc6
-MDAwMDAwMDAwMDAwMDAwMCBpbmRleDoweDE0NTFiNjAwMCBwZm46MHgxNDUxYjYNCj4gPiAgIGZs
-YWdzOiAweDIwMDAwMDAwMDAwMDAwMChub2RlPTB8em9uZT0yKQ0KPiA+ICAgcGFnZV90eXBlOiAw
-eGZmZmZmZmZmKCkNCj4gPiAgIHJhdzogMDIwMDAwMDAwMDAwMDAwMCBkZWFkMDAwMDAwMDAwMDQw
-IGZmZmY4ODgxMGQyM2MwMDAgMDAwMDAwMDAwMDAwMDAwMA0KPiA+ICAgcmF3OiAwMDAwMDAwMTQ1
-MWI2MDAwIDAwMDAwMDAwMDAwMDAwMDEgMDAwMDAwMDBmZmZmZmZmZiAwMDAwMDAwMDAwMDAwMDAw
-DQo+ID4gICBwYWdlIGR1bXBlZCBiZWNhdXNlOiBwYWdlX3Bvb2wgbGVhaw0KPiA+ICAgTW9kdWxl
-cyBsaW5rZWQgaW46IGlwX2dyZSBncmUgbWx4NV9pYiBtbHg1X2NvcmUgeHRfY29ubnRyYWNrIHh0
-X01BU1FVRVJBREUgbmZfY29ubnRyYWNrX25ldGxpbmsgbmZuZXRsaW5rIGlwdGFibGVfbmF0IG5m
-X25hdCB4dF9hZGRydHlwZSBicl9uZXRmaWx0ZXIgcnBjcmRtYSByZG1hX3VjbSBpYl9pc2VyIGxp
-YmlzY3NpIHNjc2lfdHJhbnNwb3J0X2lzY3NpIGliX3VtYWQgcmRtYV9jbSBpYl9pcG9pYiBpd19j
-bSBpYl9jbSBpYl91dmVyYnMgaWJfY29yZSBvdmVybGF5IHpyYW0genNtYWxsb2MgZnVzZSBbbGFz
-dCB1bmxvYWRlZDogbWx4NV9jb3JlXQ0KPiA+ICAgQ1BVOiAxNiBQSUQ6IDk2IENvbW06IGtzb2Z0
-aXJxZC8xNiBOb3QgdGFpbnRlZCA2LjguMC1yYzQrICMyMg0KPiA+ICAgSGFyZHdhcmUgbmFtZTog
-UUVNVSBTdGFuZGFyZCBQQyAoUTM1ICsgSUNIOSwgMjAwOSksIEJJT1MgcmVsLTEuMTMuMC0wLWdm
-MjFiNWE0YWViMDItcHJlYnVpbHQucWVtdS5vcmcgMDQvMDEvMjAxNA0KPiA+ICAgQ2FsbCBUcmFj
-ZToNCj4gPiAgICA8VEFTSz4NCj4gPiAgICBkdW1wX3N0YWNrX2x2bCsweDM2LzB4NTANCj4gPiAg
-ICBiYWRfcGFnZSsweDcwLzB4ZjANCj4gPiAgICBmcmVlX3VucmVmX3BhZ2VfcHJlcGFyZSsweDI3
-YS8weDQ2MA0KPiA+ICAgIGZyZWVfdW5yZWZfcGFnZSsweDM4LzB4MTIwDQo+ID4gICAgZXNwX3Nz
-Z191bnJlZi5pc3JhLjArMHgxNWYvMHgyMDANCj4gPiAgICBlc3Bfb3V0cHV0X3RhaWwrMHg2NmQv
-MHg3ODANCj4gPiAgICBlc3BfeG1pdCsweDJjNS8weDM2MA0KPiA+ICAgIHZhbGlkYXRlX3htaXRf
-eGZybSsweDMxMy8weDM3MA0KPiA+ICAgID8gdmFsaWRhdGVfeG1pdF9za2IrMHgxZC8weDMzMA0K
-PiA+ICAgIHZhbGlkYXRlX3htaXRfc2tiX2xpc3QrMHg0Yy8weDcwDQo+ID4gICAgc2NoX2RpcmVj
-dF94bWl0KzB4MjNlLzB4MzUwDQo+ID4gICAgX19kZXZfcXVldWVfeG1pdCsweDMzNy8weGJhMA0K
-PiA+ICAgID8gbmZfaG9va19zbG93KzB4M2YvMHhkMA0KPiA+ICAgIGlwX2ZpbmlzaF9vdXRwdXQy
-KzB4MjVlLzB4NTgwDQo+ID4gICAgaXB0dW5uZWxfeG1pdCsweDE5Yi8weDI0MA0KPiA+ICAgIGlw
-X3R1bm5lbF94bWl0KzB4NWZiLzB4YjYwDQo+ID4gICAgaXBncmVfeG1pdCsweDE0ZC8weDI4MCBb
-aXBfZ3JlXQ0KPiA+ICAgIGRldl9oYXJkX3N0YXJ0X3htaXQrMHhjMy8weDFjMA0KPiA+ICAgIF9f
-ZGV2X3F1ZXVlX3htaXQrMHgyMDgvMHhiYTANCj4gPiAgICA/IG5mX2hvb2tfc2xvdysweDNmLzB4
-ZDANCj4gPiAgICBpcF9maW5pc2hfb3V0cHV0MisweDFjYS8weDU4MA0KPiA+ICAgIGlwX3N1Ymxp
-c3RfcmN2X2ZpbmlzaCsweDMyLzB4NDANCj4gPiAgICBpcF9zdWJsaXN0X3JjdisweDFiMi8weDFm
-MA0KPiA+ICAgID8gaXBfcmN2X2ZpbmlzaF9jb3JlLmNvbnN0cHJvcC4wKzB4NDYwLzB4NDYwDQo+
-ID4gICAgaXBfbGlzdF9yY3YrMHgxMDMvMHgxMzANCj4gPiAgICBfX25ldGlmX3JlY2VpdmVfc2ti
-X2xpc3RfY29yZSsweDE4MS8weDFlMA0KPiA+ICAgIG5ldGlmX3JlY2VpdmVfc2tiX2xpc3RfaW50
-ZXJuYWwrMHgxYjMvMHgyYzANCj4gPiAgICBuYXBpX2dyb19yZWNlaXZlKzB4YzgvMHgyMDANCj4g
-PiAgICBncm9fY2VsbF9wb2xsKzB4NTIvMHg5MA0KPiA+ICAgIF9fbmFwaV9wb2xsKzB4MjUvMHgx
-YTANCj4gPiAgICBuZXRfcnhfYWN0aW9uKzB4MjhlLzB4MzAwDQo+ID4gICAgX19kb19zb2Z0aXJx
-KzB4YzMvMHgyNzYNCj4gPiAgICA/IHNvcnRfcmFuZ2UrMHgyMC8weDIwDQo+ID4gICAgcnVuX2tz
-b2Z0aXJxZCsweDFlLzB4MzANCj4gPiAgICBzbXBib290X3RocmVhZF9mbisweGE2LzB4MTMwDQo+
-ID4gICAga3RocmVhZCsweGNkLzB4MTAwDQo+ID4gICAgPyBrdGhyZWFkX2NvbXBsZXRlX2FuZF9l
-eGl0KzB4MjAvMHgyMA0KPiA+ICAgIHJldF9mcm9tX2ZvcmsrMHgzMS8weDUwDQo+ID4gICAgPyBr
-dGhyZWFkX2NvbXBsZXRlX2FuZF9leGl0KzB4MjAvMHgyMA0KPiA+ICAgIHJldF9mcm9tX2Zvcmtf
-YXNtKzB4MTEvMHgyMA0KPiA+ICAgIDwvVEFTSz4NCj4gPiANCj4gPiBUaGUgc3VnZ2VzdGVkIGZp
-eCBpcyB0byBpbnRyb2R1Y2UgYSBuZXcgd3JhcHBlciAoc2tiX3BhZ2VfdW5yZWYpIHRoYXQNCj4g
-PiBjb3ZlcnMgcGFnZSByZWZjb3VudGluZyBmb3IgcGFnZV9wb29sIHBhZ2VzIGFzIHdlbGwuDQo+
-ID4gDQo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gPiBGaXhlczogNmE1YmNkODRl
-ODg2ICgicGFnZV9wb29sOiBBbGxvdyBkcml2ZXJzIHRvIGhpbnQgb24gU0tCIHJlY3ljbGluZyIp
-DQo+ID4gUmVwb3J0ZWQtYW5kLXRlc3RlZC1ieTogQW5hdG9saSBOLkNoZWNoZWxuaWNraXkgPEFu
-YXRvbGkuQ2hlY2hlbG5pY2tpeUBtLmludGVycGlwZS5iaXo+DQo+ID4gUmVwb3J0ZWQtYnk6IElh
-biBLdW1saWVuIDxpYW4ua3VtbGllbkBnbWFpbC5jb20+DQo+ID4gTGluazogaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvbmV0ZGV2L0NBQTg1c1p2dkh0cnBUUVJxZGFPeDZnZDU1elBBVnNxTVlrX0x3
-aDRNZDVrblRxN0F5QUBtYWlsLmdtYWlsLmNvbQ0KPiA+IFNpZ25lZC1vZmYtYnk6IERyYWdvcyBU
-YXR1bGVhIDxkdGF0dWxlYUBudmlkaWEuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBNaW5hIEFsbWFz
-cnkgPGFsbWFzcnltaW5hQGdvb2dsZS5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6IEpha3ViIEtpY2lu
-c2tpIDxrdWJhQGtlcm5lbC5vcmc+DQo+ID4gLS0tDQo+ID4gQ2hhbmdlcyBpbiB2MjoNCj4gPiAt
-IEZpeGVzIGluIHRhZ3MuDQo+ID4gDQo+ID4gQ2hhbmdlcyBpbiB2MzoNCj4gPiAtIFJlYmFzZWQg
-dG8gaXBzZWMgdHJlZS4NCj4gPiAtLS0NCj4gPiAgaW5jbHVkZS9saW51eC9za2J1ZmYuaCB8IDEw
-ICsrKysrKysrKysNCj4gPiAgbmV0L2lwdjQvZXNwNC5jICAgICAgICB8ICA4ICsrKystLS0tDQo+
-ID4gIG5ldC9pcHY2L2VzcDYuYyAgICAgICAgfCAgOCArKysrLS0tLQ0KPiA+ICAzIGZpbGVzIGNo
-YW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAt
-LWdpdCBhL2luY2x1ZGUvbGludXgvc2tidWZmLmggYi9pbmNsdWRlL2xpbnV4L3NrYnVmZi5oDQo+
-ID4gaW5kZXggMmRkZTM0YzI5MjAzLi5kOWExY2NmYjU3MDggMTAwNjQ0DQo+ID4gLS0tIGEvaW5j
-bHVkZS9saW51eC9za2J1ZmYuaA0KPiA+ICsrKyBiL2luY2x1ZGUvbGludXgvc2tidWZmLmgNCj4g
-PiBAQCAtMzQ0OCw2ICszNDQ4LDE2IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBza2JfZnJhZ19yZWYo
-c3RydWN0IHNrX2J1ZmYgKnNrYiwgaW50IGYpDQo+ID4gDQo+ID4gIGJvb2wgbmFwaV9wcF9wdXRf
-cGFnZShzdHJ1Y3QgcGFnZSAqcGFnZSwgYm9vbCBuYXBpX3NhZmUpOw0KPiA+IA0KPiA+ICtzdGF0
-aWMgaW5saW5lIHZvaWQNCj4gPiArc2tiX3BhZ2VfdW5yZWYoY29uc3Qgc3RydWN0IHNrX2J1ZmYg
-KnNrYiwgc3RydWN0IHBhZ2UgKnBhZ2UsIGJvb2wgbmFwaV9zYWZlKQ0KPiA+ICt7DQo+ID4gKyNp
-ZmRlZiBDT05GSUdfUEFHRV9QT09MDQo+ID4gKyAgICAgICBpZiAoc2tiLT5wcF9yZWN5Y2xlICYm
-IG5hcGlfcHBfcHV0X3BhZ2UocGFnZSwgbmFwaV9zYWZlKSkNCj4gPiArICAgICAgICAgICAgICAg
-cmV0dXJuOw0KPiA+ICsjZW5kaWYNCj4gPiArICAgICAgIHB1dF9wYWdlKHBhZ2UpOw0KPiA+ICt9
-DQo+ID4gKw0KPiA+ICBzdGF0aWMgaW5saW5lIHZvaWQNCj4gPiAgbmFwaV9mcmFnX3VucmVmKHNr
-Yl9mcmFnX3QgKmZyYWcsIGJvb2wgcmVjeWNsZSwgYm9vbCBuYXBpX3NhZmUpDQo+ID4gIHsNCj4g
-PiBkaWZmIC0tZ2l0IGEvbmV0L2lwdjQvZXNwNC5jIGIvbmV0L2lwdjQvZXNwNC5jDQo+ID4gaW5k
-ZXggNGRkOWU1MDQwNjcyLi5kMzNkMTI0MjE4MTQgMTAwNjQ0DQo+ID4gLS0tIGEvbmV0L2lwdjQv
-ZXNwNC5jDQo+ID4gKysrIGIvbmV0L2lwdjQvZXNwNC5jDQo+ID4gQEAgLTk1LDcgKzk1LDcgQEAg
-c3RhdGljIGlubGluZSBzdHJ1Y3Qgc2NhdHRlcmxpc3QgKmVzcF9yZXFfc2coc3RydWN0IGNyeXB0
-b19hZWFkICphZWFkLA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19hbGlnbm9m
-X18oc3RydWN0IHNjYXR0ZXJsaXN0KSk7DQo+ID4gIH0NCj4gPiANCj4gPiAtc3RhdGljIHZvaWQg
-ZXNwX3NzZ191bnJlZihzdHJ1Y3QgeGZybV9zdGF0ZSAqeCwgdm9pZCAqdG1wKQ0KPiA+ICtzdGF0
-aWMgdm9pZCBlc3Bfc3NnX3VucmVmKHN0cnVjdCB4ZnJtX3N0YXRlICp4LCB2b2lkICp0bXAsIHN0
-cnVjdCBza19idWZmICpza2IpDQo+ID4gIHsNCj4gPiAgICAgICAgIHN0cnVjdCBjcnlwdG9fYWVh
-ZCAqYWVhZCA9IHgtPmRhdGE7DQo+ID4gICAgICAgICBpbnQgZXh0cmFsZW4gPSAwOw0KPiA+IEBA
-IC0xMTQsNyArMTE0LDcgQEAgc3RhdGljIHZvaWQgZXNwX3NzZ191bnJlZihzdHJ1Y3QgeGZybV9z
-dGF0ZSAqeCwgdm9pZCAqdG1wKQ0KPiA+ICAgICAgICAgICovDQo+ID4gICAgICAgICBpZiAocmVx
-LT5zcmMgIT0gcmVxLT5kc3QpDQo+ID4gICAgICAgICAgICAgICAgIGZvciAoc2cgPSBzZ19uZXh0
-KHJlcS0+c3JjKTsgc2c7IHNnID0gc2dfbmV4dChzZykpDQo+ID4gLSAgICAgICAgICAgICAgICAg
-ICAgICAgcHV0X3BhZ2Uoc2dfcGFnZShzZykpOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
-IHNrYl9wYWdlX3VucmVmKHNrYiwgc2dfcGFnZShzZyksIGZhbHNlKTsNCj4gPiAgfQ0KPiA+IA0K
-PiA+ICAjaWZkZWYgQ09ORklHX0lORVRfRVNQSU5UQ1ANCj4gPiBAQCAtMjYwLDcgKzI2MCw3IEBA
-IHN0YXRpYyB2b2lkIGVzcF9vdXRwdXRfZG9uZSh2b2lkICpkYXRhLCBpbnQgZXJyKQ0KPiA+ICAg
-ICAgICAgfQ0KPiA+IA0KPiA+ICAgICAgICAgdG1wID0gRVNQX1NLQl9DQihza2IpLT50bXA7DQo+
-ID4gLSAgICAgICBlc3Bfc3NnX3VucmVmKHgsIHRtcCk7DQo+ID4gKyAgICAgICBlc3Bfc3NnX3Vu
-cmVmKHgsIHRtcCwgc2tiKTsNCj4gPiAgICAgICAgIGtmcmVlKHRtcCk7DQo+ID4gDQo+ID4gICAg
-ICAgICBpZiAoeG8gJiYgKHhvLT5mbGFncyAmIFhGUk1fREVWX1JFU1VNRSkpIHsNCj4gPiBAQCAt
-NjM5LDcgKzYzOSw3IEBAIGludCBlc3Bfb3V0cHV0X3RhaWwoc3RydWN0IHhmcm1fc3RhdGUgKngs
-IHN0cnVjdCBza19idWZmICpza2IsIHN0cnVjdCBlc3BfaW5mbyAqDQo+ID4gICAgICAgICB9DQo+
-ID4gDQo+ID4gICAgICAgICBpZiAoc2cgIT0gZHNnKQ0KPiA+IC0gICAgICAgICAgICAgICBlc3Bf
-c3NnX3VucmVmKHgsIHRtcCk7DQo+ID4gKyAgICAgICAgICAgICAgIGVzcF9zc2dfdW5yZWYoeCwg
-dG1wLCBza2IpOw0KPiA+IA0KPiA+ICAgICAgICAgaWYgKCFlcnIgJiYgeC0+ZW5jYXAgJiYgeC0+
-ZW5jYXAtPmVuY2FwX3R5cGUgPT0gVENQX0VOQ0FQX0VTUElOVENQKQ0KPiA+ICAgICAgICAgICAg
-ICAgICBlcnIgPSBlc3Bfb3V0cHV0X3RhaWxfdGNwKHgsIHNrYik7DQo+ID4gZGlmZiAtLWdpdCBh
-L25ldC9pcHY2L2VzcDYuYyBiL25ldC9pcHY2L2VzcDYuYw0KPiA+IGluZGV4IDZlNmVmZTAyNmNk
-Yy4uNzM3MTg4NmQ0ZjlmIDEwMDY0NA0KPiA+IC0tLSBhL25ldC9pcHY2L2VzcDYuYw0KPiA+ICsr
-KyBiL25ldC9pcHY2L2VzcDYuYw0KPiA+IEBAIC0xMTIsNyArMTEyLDcgQEAgc3RhdGljIGlubGlu
-ZSBzdHJ1Y3Qgc2NhdHRlcmxpc3QgKmVzcF9yZXFfc2coc3RydWN0IGNyeXB0b19hZWFkICphZWFk
-LA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19hbGlnbm9mX18oc3RydWN0IHNj
-YXR0ZXJsaXN0KSk7DQo+ID4gIH0NCj4gPiANCj4gPiAtc3RhdGljIHZvaWQgZXNwX3NzZ191bnJl
-ZihzdHJ1Y3QgeGZybV9zdGF0ZSAqeCwgdm9pZCAqdG1wKQ0KPiA+ICtzdGF0aWMgdm9pZCBlc3Bf
-c3NnX3VucmVmKHN0cnVjdCB4ZnJtX3N0YXRlICp4LCB2b2lkICp0bXAsIHN0cnVjdCBza19idWZm
-ICpza2IpDQo+ID4gIHsNCj4gPiAgICAgICAgIHN0cnVjdCBjcnlwdG9fYWVhZCAqYWVhZCA9IHgt
-PmRhdGE7DQo+ID4gICAgICAgICBpbnQgZXh0cmFsZW4gPSAwOw0KPiA+IEBAIC0xMzEsNyArMTMx
-LDcgQEAgc3RhdGljIHZvaWQgZXNwX3NzZ191bnJlZihzdHJ1Y3QgeGZybV9zdGF0ZSAqeCwgdm9p
-ZCAqdG1wKQ0KPiA+ICAgICAgICAgICovDQo+ID4gICAgICAgICBpZiAocmVxLT5zcmMgIT0gcmVx
-LT5kc3QpDQo+ID4gICAgICAgICAgICAgICAgIGZvciAoc2cgPSBzZ19uZXh0KHJlcS0+c3JjKTsg
-c2c7IHNnID0gc2dfbmV4dChzZykpDQo+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgcHV0X3Bh
-Z2Uoc2dfcGFnZShzZykpOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIHNrYl9wYWdlX3Vu
-cmVmKHNrYiwgc2dfcGFnZShzZyksIGZhbHNlKTsNCj4gPiAgfQ0KPiA+IA0KPiA+ICAjaWZkZWYg
-Q09ORklHX0lORVQ2X0VTUElOVENQDQo+ID4gQEAgLTI5NCw3ICsyOTQsNyBAQCBzdGF0aWMgdm9p
-ZCBlc3Bfb3V0cHV0X2RvbmUodm9pZCAqZGF0YSwgaW50IGVycikNCj4gPiAgICAgICAgIH0NCj4g
-PiANCj4gPiAgICAgICAgIHRtcCA9IEVTUF9TS0JfQ0Ioc2tiKS0+dG1wOw0KPiA+IC0gICAgICAg
-ZXNwX3NzZ191bnJlZih4LCB0bXApOw0KPiA+ICsgICAgICAgZXNwX3NzZ191bnJlZih4LCB0bXAs
-IHNrYik7DQo+ID4gICAgICAgICBrZnJlZSh0bXApOw0KPiA+IA0KPiA+ICAgICAgICAgZXNwX291
-dHB1dF9lbmNhcF9jc3VtKHNrYik7DQo+ID4gQEAgLTY3Nyw3ICs2NzcsNyBAQCBpbnQgZXNwNl9v
-dXRwdXRfdGFpbChzdHJ1Y3QgeGZybV9zdGF0ZSAqeCwgc3RydWN0IHNrX2J1ZmYgKnNrYiwgc3Ry
-dWN0IGVzcF9pbmZvDQo+ID4gICAgICAgICB9DQo+ID4gDQo+ID4gICAgICAgICBpZiAoc2cgIT0g
-ZHNnKQ0KPiA+IC0gICAgICAgICAgICAgICBlc3Bfc3NnX3VucmVmKHgsIHRtcCk7DQo+ID4gKyAg
-ICAgICAgICAgICAgIGVzcF9zc2dfdW5yZWYoeCwgdG1wLCBza2IpOw0KPiA+IA0KPiA+ICAgICAg
-ICAgaWYgKCFlcnIgJiYgeC0+ZW5jYXAgJiYgeC0+ZW5jYXAtPmVuY2FwX3R5cGUgPT0gVENQX0VO
-Q0FQX0VTUElOVENQKQ0KPiA+ICAgICAgICAgICAgICAgICBlcnIgPSBlc3Bfb3V0cHV0X3RhaWxf
-dGNwKHgsIHNrYik7DQo+ID4gLS0NCj4gPiAyLjQyLjANCj4gPiANCg0K
+Hi Dragos
+
+On Mon, 11 Mar 2024 at 10:51, Dragos Tatulea <dtatulea@nvidia.com> wrote:
+>
+> Hi Ilias,
+>
+> On Mon, 2024-03-11 at 10:43 +0200, Ilias Apalodimas wrote:
+> > Hi Dragos,
+> >
+> > On Fri, 8 Mar 2024 at 17:27, Dragos Tatulea <dtatulea@nvidia.com> wrote=
+:
+> > >
+> > > When the skb is reorganized during esp_output (!esp->inline), the pag=
+es
+> > > coming from the original skb fragments are supposed to be released ba=
+ck
+> > > to the system through put_page.
+> > >  But if the skb fragment pages are
+> > > originating from a page_pool, calling put_page on them will trigger a
+> > > page_pool leak which will eventually result in a crash.
+> > >
+> >
+> > Indeed if you call put_page, you will leak a page. But won't that skb
+> > eventually be freed by skb_free_head()?
+> >
+> I don't think it will: if you look at esp_output_tail (!esp->inplace case=
+), the
+> skb frags are put on the sg list and then the skb is cut off to have a si=
+ngle
+> frag (with a "regular" page from x->xfrag). So if the pages from the old
+> fragments are not freed here they will leak altogether.
+
+Ok, if they won't reach that function -- which calls napi_pp_put_page
+itself, then this looks sane
+
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+
+>
+> Thanks,
+> Dragos
+>
+> > Thanks
+> > /Ilias
+> >
+> > > This leak can be easily observed when using CONFIG_DEBUG_VM and doing
+> > > ipsec + gre (non offloaded) forwarding:
+> > >
+> > >   BUG: Bad page state in process ksoftirqd/16  pfn:1451b6
+> > >   page:00000000de2b8d32 refcount:0 mapcount:0 mapping:000000000000000=
+0 index:0x1451b6000 pfn:0x1451b6
+> > >   flags: 0x200000000000000(node=3D0|zone=3D2)
+> > >   page_type: 0xffffffff()
+> > >   raw: 0200000000000000 dead000000000040 ffff88810d23c000 00000000000=
+00000
+> > >   raw: 00000001451b6000 0000000000000001 00000000ffffffff 00000000000=
+00000
+> > >   page dumped because: page_pool leak
+> > >   Modules linked in: ip_gre gre mlx5_ib mlx5_core xt_conntrack xt_MAS=
+QUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_ne=
+tfilter rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi ib_umad rdma=
+_cm ib_ipoib iw_cm ib_cm ib_uverbs ib_core overlay zram zsmalloc fuse [last=
+ unloaded: mlx5_core]
+> > >   CPU: 16 PID: 96 Comm: ksoftirqd/16 Not tainted 6.8.0-rc4+ #22
+> > >   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0=
+-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+> > >   Call Trace:
+> > >    <TASK>
+> > >    dump_stack_lvl+0x36/0x50
+> > >    bad_page+0x70/0xf0
+> > >    free_unref_page_prepare+0x27a/0x460
+> > >    free_unref_page+0x38/0x120
+> > >    esp_ssg_unref.isra.0+0x15f/0x200
+> > >    esp_output_tail+0x66d/0x780
+> > >    esp_xmit+0x2c5/0x360
+> > >    validate_xmit_xfrm+0x313/0x370
+> > >    ? validate_xmit_skb+0x1d/0x330
+> > >    validate_xmit_skb_list+0x4c/0x70
+> > >    sch_direct_xmit+0x23e/0x350
+> > >    __dev_queue_xmit+0x337/0xba0
+> > >    ? nf_hook_slow+0x3f/0xd0
+> > >    ip_finish_output2+0x25e/0x580
+> > >    iptunnel_xmit+0x19b/0x240
+> > >    ip_tunnel_xmit+0x5fb/0xb60
+> > >    ipgre_xmit+0x14d/0x280 [ip_gre]
+> > >    dev_hard_start_xmit+0xc3/0x1c0
+> > >    __dev_queue_xmit+0x208/0xba0
+> > >    ? nf_hook_slow+0x3f/0xd0
+> > >    ip_finish_output2+0x1ca/0x580
+> > >    ip_sublist_rcv_finish+0x32/0x40
+> > >    ip_sublist_rcv+0x1b2/0x1f0
+> > >    ? ip_rcv_finish_core.constprop.0+0x460/0x460
+> > >    ip_list_rcv+0x103/0x130
+> > >    __netif_receive_skb_list_core+0x181/0x1e0
+> > >    netif_receive_skb_list_internal+0x1b3/0x2c0
+> > >    napi_gro_receive+0xc8/0x200
+> > >    gro_cell_poll+0x52/0x90
+> > >    __napi_poll+0x25/0x1a0
+> > >    net_rx_action+0x28e/0x300
+> > >    __do_softirq+0xc3/0x276
+> > >    ? sort_range+0x20/0x20
+> > >    run_ksoftirqd+0x1e/0x30
+> > >    smpboot_thread_fn+0xa6/0x130
+> > >    kthread+0xcd/0x100
+> > >    ? kthread_complete_and_exit+0x20/0x20
+> > >    ret_from_fork+0x31/0x50
+> > >    ? kthread_complete_and_exit+0x20/0x20
+> > >    ret_from_fork_asm+0x11/0x20
+> > >    </TASK>
+> > >
+> > > The suggested fix is to introduce a new wrapper (skb_page_unref) that
+> > > covers page refcounting for page_pool pages as well.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycli=
+ng")
+> > > Reported-and-tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnicki=
+y@m.interpipe.biz>
+> > > Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
+> > > Link: https://lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsq=
+MYk_Lwh4Md5knTq7AyA@mail.gmail.com
+> > > Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> > > Reviewed-by: Mina Almasry <almasrymina@google.com>
+> > > Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+> > > ---
+> > > Changes in v2:
+> > > - Fixes in tags.
+> > >
+> > > Changes in v3:
+> > > - Rebased to ipsec tree.
+> > > ---
+> > >  include/linux/skbuff.h | 10 ++++++++++
+> > >  net/ipv4/esp4.c        |  8 ++++----
+> > >  net/ipv6/esp6.c        |  8 ++++----
+> > >  3 files changed, 18 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> > > index 2dde34c29203..d9a1ccfb5708 100644
+> > > --- a/include/linux/skbuff.h
+> > > +++ b/include/linux/skbuff.h
+> > > @@ -3448,6 +3448,16 @@ static inline void skb_frag_ref(struct sk_buff=
+ *skb, int f)
+> > >
+> > >  bool napi_pp_put_page(struct page *page, bool napi_safe);
+> > >
+> > > +static inline void
+> > > +skb_page_unref(const struct sk_buff *skb, struct page *page, bool na=
+pi_safe)
+> > > +{
+> > > +#ifdef CONFIG_PAGE_POOL
+> > > +       if (skb->pp_recycle && napi_pp_put_page(page, napi_safe))
+> > > +               return;
+> > > +#endif
+> > > +       put_page(page);
+> > > +}
+> > > +
+> > >  static inline void
+> > >  napi_frag_unref(skb_frag_t *frag, bool recycle, bool napi_safe)
+> > >  {
+> > > diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+> > > index 4dd9e5040672..d33d12421814 100644
+> > > --- a/net/ipv4/esp4.c
+> > > +++ b/net/ipv4/esp4.c
+> > > @@ -95,7 +95,7 @@ static inline struct scatterlist *esp_req_sg(struct=
+ crypto_aead *aead,
+> > >                              __alignof__(struct scatterlist));
+> > >  }
+> > >
+> > > -static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+> > > +static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk=
+_buff *skb)
+> > >  {
+> > >         struct crypto_aead *aead =3D x->data;
+> > >         int extralen =3D 0;
+> > > @@ -114,7 +114,7 @@ static void esp_ssg_unref(struct xfrm_state *x, v=
+oid *tmp)
+> > >          */
+> > >         if (req->src !=3D req->dst)
+> > >                 for (sg =3D sg_next(req->src); sg; sg =3D sg_next(sg)=
+)
+> > > -                       put_page(sg_page(sg));
+> > > +                       skb_page_unref(skb, sg_page(sg), false);
+> > >  }
+> > >
+> > >  #ifdef CONFIG_INET_ESPINTCP
+> > > @@ -260,7 +260,7 @@ static void esp_output_done(void *data, int err)
+> > >         }
+> > >
+> > >         tmp =3D ESP_SKB_CB(skb)->tmp;
+> > > -       esp_ssg_unref(x, tmp);
+> > > +       esp_ssg_unref(x, tmp, skb);
+> > >         kfree(tmp);
+> > >
+> > >         if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+> > > @@ -639,7 +639,7 @@ int esp_output_tail(struct xfrm_state *x, struct =
+sk_buff *skb, struct esp_info *
+> > >         }
+> > >
+> > >         if (sg !=3D dsg)
+> > > -               esp_ssg_unref(x, tmp);
+> > > +               esp_ssg_unref(x, tmp, skb);
+> > >
+> > >         if (!err && x->encap && x->encap->encap_type =3D=3D TCP_ENCAP=
+_ESPINTCP)
+> > >                 err =3D esp_output_tail_tcp(x, skb);
+> > > diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+> > > index 6e6efe026cdc..7371886d4f9f 100644
+> > > --- a/net/ipv6/esp6.c
+> > > +++ b/net/ipv6/esp6.c
+> > > @@ -112,7 +112,7 @@ static inline struct scatterlist *esp_req_sg(stru=
+ct crypto_aead *aead,
+> > >                              __alignof__(struct scatterlist));
+> > >  }
+> > >
+> > > -static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+> > > +static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk=
+_buff *skb)
+> > >  {
+> > >         struct crypto_aead *aead =3D x->data;
+> > >         int extralen =3D 0;
+> > > @@ -131,7 +131,7 @@ static void esp_ssg_unref(struct xfrm_state *x, v=
+oid *tmp)
+> > >          */
+> > >         if (req->src !=3D req->dst)
+> > >                 for (sg =3D sg_next(req->src); sg; sg =3D sg_next(sg)=
+)
+> > > -                       put_page(sg_page(sg));
+> > > +                       skb_page_unref(skb, sg_page(sg), false);
+> > >  }
+> > >
+> > >  #ifdef CONFIG_INET6_ESPINTCP
+> > > @@ -294,7 +294,7 @@ static void esp_output_done(void *data, int err)
+> > >         }
+> > >
+> > >         tmp =3D ESP_SKB_CB(skb)->tmp;
+> > > -       esp_ssg_unref(x, tmp);
+> > > +       esp_ssg_unref(x, tmp, skb);
+> > >         kfree(tmp);
+> > >
+> > >         esp_output_encap_csum(skb);
+> > > @@ -677,7 +677,7 @@ int esp6_output_tail(struct xfrm_state *x, struct=
+ sk_buff *skb, struct esp_info
+> > >         }
+> > >
+> > >         if (sg !=3D dsg)
+> > > -               esp_ssg_unref(x, tmp);
+> > > +               esp_ssg_unref(x, tmp, skb);
+> > >
+> > >         if (!err && x->encap && x->encap->encap_type =3D=3D TCP_ENCAP=
+_ESPINTCP)
+> > >                 err =3D esp_output_tail_tcp(x, skb);
+> > > --
+> > > 2.42.0
+> > >
+>
 
