@@ -1,164 +1,126 @@
-Return-Path: <stable+bounces-27407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D43B8789E6
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE76D8789E3
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:12:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314911C21352
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 21:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E033E1C20E63
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 21:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742725677A;
-	Mon, 11 Mar 2024 21:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4692856772;
+	Mon, 11 Mar 2024 21:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3Cb/nP0I";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Jz0KQVjA";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3Cb/nP0I";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Jz0KQVjA"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="kInH08S0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF05A54744;
-	Mon, 11 Mar 2024 21:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A6356B6A;
+	Mon, 11 Mar 2024 21:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710191578; cv=none; b=CpA5vq6u1DxtGyR27VpqijtPd0J7JdSH/YWr2IefC3vBbtWcYXystag81inBeRKEG0R2T9Mz32XHQDoDeK/jN7TqzFPr/4Gts6UPdfxzwGNAgqDzuyi29BPj1kNcAh+sxYNx7OJdxd8ns4i12ge/FtWqaiJDZCty5Hm2XxRq0mg=
+	t=1710191528; cv=none; b=YHFgplJgrbHJYOd7GQ5S9pfIS62hwthUxGnHQkcPvH3+2fIdfYYO1j9pCEbuoQs0ytLfHO9QWxOX+7aLP8N9q8IFo8zpMG4OntsWtTjazvqgIF6c+dIxct6lhUZEDqxSxSwDR5wKErd1NaC+0pEvqomy9UkeTiqYirSwIFKV+PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710191578; c=relaxed/simple;
-	bh=ymIRjKPF05PZewLisrG0ZcCdHvSirNn8nsBXFGQq2CM=;
+	s=arc-20240116; t=1710191528; c=relaxed/simple;
+	bh=iemc9BTvqpWfP6M7W2cS/ZtgzbQgKVdjsex36dyysc8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Alv2/rEqCV6GqhUrXhdA2hU3muyntKqXwUXIB5i1/uoGdHcLmoEXre4P+kKDgRy1sj6+4DeOtwvAKRMXm0X3wORlH2QZZ2I1nKcfBfXQF94vaWBActRvR4FH3BJHNYky8NDF1uAlUq10VGiBuG/cB/uXwTgQZad258G0gssm4W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3Cb/nP0I; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Jz0KQVjA; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3Cb/nP0I; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Jz0KQVjA; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F788350BF;
-	Mon, 11 Mar 2024 21:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710191573;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rxOrajjum7dqfhEwOPoqyoF5JSD6MrVu9QKEqBHX4K0x1SLf+nZoAQLqZeqcq5rQ5VQ/xXknocW18rVEm19FBt1843y8cICc+XeCzkQ571DBq3PzKv+jXi9IQaTPsnc6VrM7v0Ke8O2my9+EyxJAUZR5OWjhNXB0u3KqOzr4wy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=kInH08S0; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id CB43C1C006B; Mon, 11 Mar 2024 22:12:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1710191522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s+AGE7RjnnQunZRwxXkho+EGWQnOSV7m+Iu1aFkXwxE=;
-	b=3Cb/nP0IEkTnr0afkVI5Enhiu8hgbHcFi5z8IStfPcQyv9elELnmJ3c9snDiUGnY23dCbo
-	IFQUa38PU+U7mYxQmZP0hY4LK4F+B925BQAZH4JFj1NeOg0NcqCRZT8avLgGi8AXczcJgb
-	YFbLbVbDT0Pdl77guTfbjuW+L2qaVFQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710191573;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+AGE7RjnnQunZRwxXkho+EGWQnOSV7m+Iu1aFkXwxE=;
-	b=Jz0KQVjArop3YO9Khzq8lnCE673MM56QPUgQeR2Ao6a3cKdQqF6mvnbPa5L70SvcBnFFLh
-	vqZSy2OxtXtAuvDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710191573;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+AGE7RjnnQunZRwxXkho+EGWQnOSV7m+Iu1aFkXwxE=;
-	b=3Cb/nP0IEkTnr0afkVI5Enhiu8hgbHcFi5z8IStfPcQyv9elELnmJ3c9snDiUGnY23dCbo
-	IFQUa38PU+U7mYxQmZP0hY4LK4F+B925BQAZH4JFj1NeOg0NcqCRZT8avLgGi8AXczcJgb
-	YFbLbVbDT0Pdl77guTfbjuW+L2qaVFQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710191573;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+AGE7RjnnQunZRwxXkho+EGWQnOSV7m+Iu1aFkXwxE=;
-	b=Jz0KQVjArop3YO9Khzq8lnCE673MM56QPUgQeR2Ao6a3cKdQqF6mvnbPa5L70SvcBnFFLh
-	vqZSy2OxtXtAuvDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7AD5513695;
-	Mon, 11 Mar 2024 21:12:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9BVvHdVz72VSagAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Mon, 11 Mar 2024 21:12:53 +0000
-Date: Mon, 11 Mar 2024 22:05:40 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>, Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>, clm@fb.com,
-	linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 1/7] btrfs: add and use helper to check if
- block group is used
-Message-ID: <20240311210540.GU2604@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20240229155112.2851155-1-sashal@kernel.org>
- <Ze9w+3cUTI0mSDlL@duo.ucw.cz>
+	bh=suhwUbS3La/q9vF4wC7Q3GDRSJw09sPh4CSFxcpujg0=;
+	b=kInH08S0Pt8uBvMxcP2uhk8fWfeAb1okNTMDd6vuBWEt3dAOcKwqxJJ1cpPZAK1WLVFiQh
+	CFoWxwsObpDqARMRm0n+908kBVZpGjO6ZqsBFx9BD8evC2Fje4b1W6e3H/IydCt/yV2+iN
+	J+tUvKlRjhMj0hOuS/9ufn4Dg+oHkvE=
+Date: Mon, 11 Mar 2024 22:12:02 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Hou Tao <houtao1@huawei.com>, Sohil Mehta <sohil.mehta@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19 1/4] x86/mm: Move is_vsyscall_vaddr() into
+ asm/vsyscall.h
+Message-ID: <Ze9zol7kZucywfOy@duo.ucw.cz>
+References: <20240229204208.2862333-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="J1nK2iNWXPRkPHfT"
+Content-Disposition: inline
+In-Reply-To: <20240229204208.2862333-1-sashal@kernel.org>
+
+
+--J1nK2iNWXPRkPHfT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Ze9w+3cUTI0mSDlL@duo.ucw.cz>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="3Cb/nP0I";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Jz0KQVjA
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.03 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-0.82)[85.00%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-0.998];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -2.03
-X-Rspamd-Queue-Id: 9F788350BF
-X-Spam-Flag: NO
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2024 at 10:00:43PM +0100, Pavel Machek wrote:
-> Hi!
-> 
-> > From: Filipe Manana <fdmanana@suse.com>
-> > 
-> > [ Upstream commit 1693d5442c458ae8d5b0d58463b873cd879569ed ]
-> > 
-> > Add a helper function to determine if a block group is being used and make
-> > use of it at btrfs_delete_unused_bgs(). This helper will also be used in
-> > future code changes.
-> 
-> Does not fix a bug and does not seem to be preparation for anything,
-> so probably should not be here.
+Hi!
 
-Agreed, this patch does not belong to stable and I objected in
-https://lore.kernel.org/all/20240229155207.GA2604@suse.cz/
+> Move is_vsyscall_vaddr() into asm/vsyscall.h to make it available for
+> copy_from_kernel_nofault_allowed() in arch/x86/mm/maccess.c.
 
-for version 6.7 and all other stable versions.
+This seems to be just part of a patch -- it does not move anything --
+and we should not really need it for 4.19, as we don't have those
+copy_from_kernel_nofault_allowed changes.
+
+Best regards,
+								Pavel
+							=09
+
+> +++ b/arch/x86/include/asm/vsyscall.h
+> @@ -4,6 +4,7 @@
+> =20
+>  #include <linux/seqlock.h>
+>  #include <uapi/asm/vsyscall.h>
+> +#include <asm/page_types.h>
+> =20
+>  #ifdef CONFIG_X86_VSYSCALL_EMULATION
+>  extern void map_vsyscall(void);
+> @@ -22,4 +23,13 @@ static inline bool emulate_vsyscall(struct pt_regs *re=
+gs, unsigned long address)
+>  }
+>  #endif
+> =20
+> +/*
+> + * The (legacy) vsyscall page is the long page in the kernel portion
+> + * of the address space that has user-accessible permissions.
+> + */
+> +static inline bool is_vsyscall_vaddr(unsigned long vaddr)
+> +{
+> +	return unlikely((vaddr & PAGE_MASK) =3D=3D VSYSCALL_ADDR);
+> +}
+> +
+>  #endif /* _ASM_X86_VSYSCALL_H */
+
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--J1nK2iNWXPRkPHfT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZe9zogAKCRAw5/Bqldv6
+8hbCAJ90bmk+FFZg/PTzuaLCwvZ7uaouHACfSIPDNgnMYXrB2dTvZ2dSQb5mO4g=
+=OE+O
+-----END PGP SIGNATURE-----
+
+--J1nK2iNWXPRkPHfT--
 
