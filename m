@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-27283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E60878339
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:21:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FE187833C
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C727282DB4
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:21:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76A6CB23C50
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D671A5EE9B;
-	Mon, 11 Mar 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF1D5F548;
+	Mon, 11 Mar 2024 15:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgBkeELP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sj2YDuPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7575EE97;
-	Mon, 11 Mar 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA935F486;
+	Mon, 11 Mar 2024 15:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710170007; cv=none; b=Z2Fp46ESMLlO56rBZcPBTBKEEsEYyPrxUn7iSnOAXnIQMW7AQa5MhWgXIktHFrs3IPlPVn2D+1NIsgZyImBlO5sWG31mnM6UgLMuMV73X9bzpnM41T6iWPMzVZ9DzRtRqQFKPc5bTG+aIYm82Ie+/wkYlOsABv9R2H5CfGyZUWQ=
+	t=1710170009; cv=none; b=dyj5oeLtQmiJryPWdV8BJMpiNcbHaXo1liJuGE/bjj3AjoBZiiiyLsukASlcE4NWPQi7ivVsjbs3rbKcUs5z/1q7DPjR4TAbXYXwfXmdHDd/P7H/yJGsDuzMh4CCmLehiAwqd2saFZ+WN24ozATD8ZBDp6ux1SwNIF9XQ/scbQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710170007; c=relaxed/simple;
-	bh=l/Bd3krpOcAVTkApY/kXI+PTs5uv+u9Z0EBakS4REvI=;
+	s=arc-20240116; t=1710170009; c=relaxed/simple;
+	bh=fcYzSLOFq5sMLBWQn8a4zJLsYwI3TPCX+aV1ze6z2EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtCBSXqfRzvr3VojZc5kWIMs5u44dR7QcbrvJnrvYpZ1m4JG0gFjws1f99n1GLrzRPKLGk8836+eRH/9rFRQKZBafOq2lfjJtH+jGazHs0WBB1Dp+tcWumLr65kX5HLzBjj2NSWYpB0W7OdeQc7W53Lq1TyQTH6nju1fqHjsU+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgBkeELP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE042C43394;
-	Mon, 11 Mar 2024 15:13:25 +0000 (UTC)
+	 MIME-Version; b=ZOTCsd5dpZ2nWQLDwA2Maa+pheMjqY0fIIunSgYHWlzZzAVpSAVV761WOoca3FQVzZqfw5Mqk2f5dBh9ft8rH/71madNuDYvEIOf8xOSpT2dyNcLSaAlvHSHB1kU166w9g45gCatORWRhg98uHwtI5PbBVVtz3lN0lCHOpWiOII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sj2YDuPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE79C4166B;
+	Mon, 11 Mar 2024 15:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710170007;
-	bh=l/Bd3krpOcAVTkApY/kXI+PTs5uv+u9Z0EBakS4REvI=;
+	s=k20201202; t=1710170008;
+	bh=fcYzSLOFq5sMLBWQn8a4zJLsYwI3TPCX+aV1ze6z2EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgBkeELPhcLraOKKj94cX4rNA0WIpkRf4HZYNl8ERHzeJt6pQjX6bo8BWzA8X/TpT
-	 /X1MjMbejIOCQejGgu5VsAdlvm6OV/SEhc54wdXWYGokprvM4z1dFPbEPrSMfgoIlB
-	 yBu+s8aiLups+SVrH6ds6pwPkzPnVjyGcVRFtrHBsqEjd+iyjgBBco9utvUOEQIro2
-	 P39ej9hTDH15jhpUF2lm/YIi85yfA+EchkNoC4VGG3t/8Mceicy0DTFk11DAfJWE7M
-	 hAuXZf7t9XeeArR7DJVwUUDM/fsXpwYim5XdFu0UjqNCebBk7OLbrz+Ma3VHqTuh+K
-	 gdAFiFaOes6vA==
+	b=Sj2YDuPg8HFa0cGq19wTZOhq6jhNEaYBRFY/OMTcnKAluLJE0wLlV+BmT3DTtqVd2
+	 0ilJsRvDiVtc3zkeIrdqQAkeHrA+MfH47nS/sdvwjS3bQhKEBsVn+uMNgdfzP2MREB
+	 Mz1txhpJP0rz1GsBSmwidsYQpMyLBbd4Q15XdhWHY9JaIaaaeF/Pzj2TPiUo4zpoGG
+	 uyS7pTBtsa833L/ac0a0qqyYZjwdSObYVJBgLH+QTgl7NlNzsxnW4omlCjCJUY4dR9
+	 PAKbF7cLJQlz82KWN1dOWLhTktzUlJ8ra1YfuBfaX8JI5DSQ/h2ii05/gf8aQ5y7O9
+	 OAu9EE0z4hrpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johnny Hsieh <mnixry@outlook.com>,
-	linux-sound@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
+Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	jeremy@system76.com,
-	git@augustwikerfors.se
-Subject: [PATCH AUTOSEL 6.6 07/17] ASoC: amd: yc: Add Lenovo ThinkBook 21J0 into DMI quirk table
-Date: Mon, 11 Mar 2024 11:12:58 -0400
-Message-ID: <20240311151314.317776-7-sashal@kernel.org>
+	sathya.prakash@broadcom.com,
+	sreekanth.reddy@broadcom.com,
+	suganath-prabu.subramani@broadcom.com,
+	jejb@linux.ibm.com,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/17] scsi: mpt3sas: Prevent sending diag_reset when the controller is ready
+Date: Mon, 11 Mar 2024 11:12:59 -0400
+Message-ID: <20240311151314.317776-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240311151314.317776-1-sashal@kernel.org>
 References: <20240311151314.317776-1-sashal@kernel.org>
@@ -71,40 +70,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.21
 Content-Transfer-Encoding: 8bit
 
-From: Johnny Hsieh <mnixry@outlook.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 50ee641643dd0f46702e9a99354398196e1734c2 ]
+[ Upstream commit ee0017c3ed8a8abfa4d40e42f908fb38c31e7515 ]
 
-This patch adds Lenovo 21J0 (ThinkBook 16 G5+ ARP) to the DMI quirks table
-to enable internal microphone array.
+If the driver detects that the controller is not ready before sending the
+first IOC facts command, it will wait for a maximum of 10 seconds for it to
+become ready. However, even if the controller becomes ready within 10
+seconds, the driver will still issue a diagnostic reset.
 
-Cc: linux-sound@vger.kernel.org
-Signed-off-by: Johnny Hsieh <mnixry@outlook.com>
-Link: https://msgid.link/r/TYSPR04MB8429D62DFDB6727866ECF1DEC55A2@TYSPR04MB8429.apcprd04.prod.outlook.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Modify the driver to avoid sending a diag reset if the controller becomes
+ready within the 10-second wait time.
+
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20240221071724.14986-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 80ad60d485ea0..17c8ff7558694 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -199,6 +199,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21HY"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J0"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index a75f670bf5519..aa29e250cf15f 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -7387,7 +7387,9 @@ _base_wait_for_iocstate(struct MPT3SAS_ADAPTER *ioc, int timeout)
+ 		return -EFAULT;
+ 	}
+ 
+- issue_diag_reset:
++	return 0;
++
++issue_diag_reset:
+ 	rc = _base_diag_reset(ioc);
+ 	return rc;
+ }
 -- 
 2.43.0
 
