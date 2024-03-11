@@ -1,178 +1,205 @@
-Return-Path: <stable+bounces-27236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20C0877BE1
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:45:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A172A877BDF
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11F5B1C20CEC
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 572B62813E3
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2178D125B2;
-	Mon, 11 Mar 2024 08:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B41125A9;
+	Mon, 11 Mar 2024 08:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C38SafKz"
+	dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b="7yNmZXum";
+	dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b="7yNmZXum"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2070.outbound.protection.outlook.com [40.107.21.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB24D125A9;
-	Mon, 11 Mar 2024 08:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710146748; cv=none; b=V13ao0P+jGF9zCB6g+cymGZWcWvq6gQOpFMYhIB3r+g7HjQqbYk8NcBqNkfJM0Xh2VuNMVYUJt2lNFFABHbc/RaSbXtW3tNasaFqHrAmx+JuEo86zFQ+59qq0jkoQjYAzGjBR4+a9OgmJfKPSXbxjRpq1fyFO24G+8dEoPLSalI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710146748; c=relaxed/simple;
-	bh=5zZfkh7bTy10cbt+byFNi1KVFCC5exwzUgnJ75DgeOM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lhk/drbJ2E/XaM8T8+CBnpQOVw9w2mL0uzPA4oEOr5h0qJTjXbJAtSGkh3EyIEf833TM8eojzCNdzGtcI+ePwWPFAIugZd13If7eN351VXLmZlNlUslZNGFOAk6q/5N3pQJ/1X/dy1xbKgKOCAzinccU5QhcLsHpv/T3DZ8vdMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C38SafKz; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710146747; x=1741682747;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5zZfkh7bTy10cbt+byFNi1KVFCC5exwzUgnJ75DgeOM=;
-  b=C38SafKzUdAwb+LI1VWbsRiPY8w5ZSz0+3XNJYHNR0xe5xcgWbQFtWsT
-   4FZ1oSpShbUvP8L0GABxCmjVmM7Wo9ZFlRDislIjcrZwkdjz8oO7DQ2uc
-   LRqIMEA20XFhaQGslSVAVBdPmz83v24Md1i9kYVcwRfusEp+/SjB4oG4e
-   Ys6V0VBrOwzLJbrOvmXeIIhafsut4JfFk2gihbRUDhZeCNxCaafFwvNnH
-   a6O7CkGFDvvSx07MGUIDMlCKVCCaZkwOmXhiSveyOGcvfUNry5k5dUTvM
-   9oRq6pRQPGbw6sP2KFe2s/xpJ9eIVSKaWQg0VXni1ngnECAft5uJ4YXlG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="27267162"
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="27267162"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 01:45:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="11535184"
-Received: from yhuang6-mobl2.sh.intel.com ([10.238.6.133])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 01:45:43 -0700
-From: Huang Ying <ying.huang@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH -v3] mm: swap: fix race between free_swap_and_cache() and swapoff()
-Date: Mon, 11 Mar 2024 16:44:26 +0800
-Message-Id: <20240311084426.447164-1-ying.huang@intel.com>
-X-Mailer: git-send-email 2.39.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3F914271;
+	Mon, 11 Mar 2024 08:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.70
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710146723; cv=fail; b=AA8jLWtIjx9PW77fyDHoTcvs4ZGBvzR7ovJR/lLCssexx562eOjJtQdSv7NUldF+sfVuiN6CgDBjSlLUyqe/IPnINSCjWMnG0sTFjnsH2v8XccUFdgGkmTxkX7jEPZTu9UqdDjRB6Ipu2l12n9HCKSYXOMRzRHBrd+YXpiX1eHo=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710146723; c=relaxed/simple;
+	bh=xlXcpoW1HY5XbY2tIqG2I0ioy0GbnhsMyif1T7i30YM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=N9Eyk6zIfLfyOm2+kGpT6fsGjaNHMHn5jtBGoUvAcU4C0aZWHVVkADIzK3eaARdrORWAwu6gLzJMVqF9BcHBdm70czGgqqIYNLkinW/G1FEV2TljG93OEA/gulY5N7cxpSWN5Fvm++3bwODsacyToWiPGb5rJn8doHdSTP0a0ak=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b=7yNmZXum; dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com header.b=7yNmZXum; arc=fail smtp.client-ip=40.107.21.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
+ b=C8o+Pv0E+QifhksaoX608sclBfCX8O7evble/uY2uk8FK72abjhzYJWj5fVqpPMdmgqTU9yUZU8Cv/SRQOvgOy+kC/frnb8iau2EcTgBs3SVK8JVUe0ryaupyJkqB1AQteM26ZjH4VRvm8JK2n+9Rv6Akzzq/Mf6EZEZkb2CBigDzTj7m3wvI0SMubmE7mbl1buVkHJHml/yZ9k9Lk7N5Xix65wWCSY/8IyQlI/PDk9Aii+Y2emS98mFmF2zk41d59RR8fNmnXlGd50YEYkj9ZH5QGpZk8/RT08I9g+Hl6C/0tNSv+Q/nN9JLDiulM7eGUoLnCufSHNWtnjaAfi25w==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3na7lJ+9uU8/Azhtx/hu4dGwwlR8YPrHIpb4S7bXxtA=;
+ b=NRwzEHs6Sn8RNlhKz6kj0rDiINOiI0+OVReNGBjQkvqqlHxFX5YsdhiPnyjn+HL6l2HjuHhQ1EfaRqEssaHfWzKAcUIORxUtJnry/oKXSsu50kaZtlCDN+qXidI/ZCVLEek3V9jvhGJAIdOxZvJNcCMDBtlWycITN75Elr7MEzYGpMkngt5rjGpmAr5WW/p3UiKfrFgBfuD0/M8dT6m0ADKHJC2dgguSJuTyAleBW7xVlWIRis72f+PIskcxFo+ql9NjTlGiv+xFZ3JyGBQfEhkVlC5rTw7HslkXReXkSaP2T+5q7wAAEF8ZbdPfBvtzZhyqO79yhwyjxrLfCF7c7w==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 63.35.35.123) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=armh.onmicrosoft.com; arc=pass (0
+ oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3na7lJ+9uU8/Azhtx/hu4dGwwlR8YPrHIpb4S7bXxtA=;
+ b=7yNmZXumfOqotPYRRJmKYyuFg76szPhCjqBxWotNr1h9hOxL4WLM51khDQ4zSlqpsShA0JBVAHkSGI8hgbx8A1ApC/Ay1l6JZV45enRoMIn399zZic0oUmstMJWt5rdqCKDHv0hHwqLXodlPwQ1uAfLmmCwZg7V69rQcPqRJlFI=
+Received: from DUZPR01CA0080.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46a::9) by PA4PR08MB7435.eurprd08.prod.outlook.com
+ (2603:10a6:102:2a6::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
+ 2024 08:45:17 +0000
+Received: from DU2PEPF00028CFC.eurprd03.prod.outlook.com
+ (2603:10a6:10:46a:cafe::3e) by DUZPR01CA0080.outlook.office365.com
+ (2603:10a6:10:46a::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35 via Frontend
+ Transport; Mon, 11 Mar 2024 08:45:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+ pr=C
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ DU2PEPF00028CFC.mail.protection.outlook.com (10.167.242.180) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7386.12 via Frontend Transport; Mon, 11 Mar 2024 08:45:16 +0000
+Received: ("Tessian outbound 456a16a4297b:v276"); Mon, 11 Mar 2024 08:45:16 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 5d63408888937d48
+X-CR-MTA-TID: 64aa7808
+Received: from de800c37d027.2
+	by 64aa7808-outbound-1.mta.getcheckrecipient.com id A5C68ABE-42F4-45D0-AB3B-2B77DCE60F8A.1;
+	Mon, 11 Mar 2024 08:45:10 +0000
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id de800c37d027.2
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Mon, 11 Mar 2024 08:45:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WR7muyITHQSmDPsW3keDiZ7N4TgLl4KmWOS0drHRq8YyA9Rn/dkqX1kebveM8GRJvod/YLTUEWcukRq9Wbo8xMHctBgpE2YXnVEOWCTlrbgwFXzpUB/Q2pYWhYQVk0HYu6dUCMpa1eY5++Ic8DQ55UkBV7lZj3Zal/AdRcDPX/3GUQVRgFH0Yn9KTjx6u9H9fFzKBTbV2U11qSrbFkSCVZLpNRqoROf4VLdDCEcN2e0rKEnQZGrgxrzjZFDPbqzZlC4hbdez931a8yQwRx3PGUTCNQmbzl7xguIQjIAZaYifPUq+xYKbugmWeeSifXsBkD8OMzq2dVk62gOW7Rs48A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3na7lJ+9uU8/Azhtx/hu4dGwwlR8YPrHIpb4S7bXxtA=;
+ b=VWK/Pj4NJEgIcVXCqF585Y6tpYj82gutO/t8nb7aZsbPNm/0bcbxlaAJaTTTyIF2aLyVtV+cSF8ChPYlTPXjSq4Bws0wSigNdM3Z7XROYefH9Drl2uMpivuRE4Qo6FHk0ZIE2IV/qHOGD0H/3roZBwtZ/mSOFzdmuus23DKzpiKmDUQENd13rZrbD9ItwT419M+iL5kPQ0CBHlOXajYJ4GPg0vUOqMiTE3EYRILRPvuNfj+8Jo/dHM4dMmrO4kqTDRAJrMWPQSPeFROcKfFm7huuR8ozY6p88tfmnQFq2e2F6uDVhotDBlpPfhKq0XLnDBp7aXt1JV9jkel3T6Es+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3na7lJ+9uU8/Azhtx/hu4dGwwlR8YPrHIpb4S7bXxtA=;
+ b=7yNmZXumfOqotPYRRJmKYyuFg76szPhCjqBxWotNr1h9hOxL4WLM51khDQ4zSlqpsShA0JBVAHkSGI8hgbx8A1ApC/Ay1l6JZV45enRoMIn399zZic0oUmstMJWt5rdqCKDHv0hHwqLXodlPwQ1uAfLmmCwZg7V69rQcPqRJlFI=
+Received: from AM0PR08MB4289.eurprd08.prod.outlook.com (2603:10a6:208:148::12)
+ by AS2PR08MB9391.eurprd08.prod.outlook.com (2603:10a6:20b:595::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Mon, 11 Mar
+ 2024 08:45:08 +0000
+Received: from AM0PR08MB4289.eurprd08.prod.outlook.com
+ ([fe80::4a5d:48:bf49:a524]) by AM0PR08MB4289.eurprd08.prod.outlook.com
+ ([fe80::4a5d:48:bf49:a524%7]) with mapi id 15.20.7362.035; Mon, 11 Mar 2024
+ 08:45:08 +0000
+From: Yeo Reum Yun <YeoReum.Yun@arm.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Catalin Marinas
+	<Catalin.Marinas@arm.com>, Mark Rutland <Mark.Rutland@arm.com>, Will Deacon
+	<will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Aaron Lu
+	<aaron.lu@intel.com>
+Subject: Re: [RFC PATCH] sched: Add missing memory barrier in switch_mm_cid
+Thread-Topic: [RFC PATCH] sched: Add missing memory barrier in switch_mm_cid
+Thread-Index: AQHab9qBv07DN8ioIEGwFWG/l1dpWLEyNKPT
+Date: Mon, 11 Mar 2024 08:45:07 +0000
+Message-ID:
+ <AM0PR08MB428936EACB47856176BFDD8CFB242@AM0PR08MB4289.eurprd08.prod.outlook.com>
+References: <20240306152443.6340-1-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20240306152443.6340-1-mathieu.desnoyers@efficios.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic:
+	AM0PR08MB4289:EE_|AS2PR08MB9391:EE_|DU2PEPF00028CFC:EE_|PA4PR08MB7435:EE_
+X-MS-Office365-Filtering-Correlation-Id: 836abd7a-06ff-4894-f0b8-08dc41a7937b
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ DJgp73ATeKEPSfl96XHw2jR5IFWG/4teD77Kdos1O+zJBEzL45FBmzkBOhECsvYGJdc8yE1o2kMo0nDQu8FPPxpypR5gYnkQBvEYPj/ES+RSMk6S4sPHhlMJNymEugxehsCYiDshi8DfSSpfa/yFg3mTd/xi8q7e5qOMng0QjniyrGwU9nb1w0vMCKTZpLVT0TVczJ7OQjNueRWV6vzlrQArxQxkaJcXRzM9L54CLoM4Br2GOXKCrDpnrSktNmAOPc76FP7uBEI1AAXtJe3ysmJQR06CM5+fVaZkKchrMzWMomZDn5daIht4XRFkNlVG18NhN6k6YSyPM9uOvJ51Bq0UkQ0KYdoL7fk5yXFfhiNNzecJHChij+Egm4AGY9IBqM0t70647JhpLXJ+DzmZdKSaARs12i14TtWLm81pNfTdqL2vGAosfDxSoz0KHFVJONLuXPlBAmhp1Q6o5oWEYlJTBVZm5Iq4ilVZDGAA1oU4y37hTERORNPMMhgAQnblvzu0CF2ZEJrAmLFge6MkD72uAimyDC8NFBa5XFXQxHasIEVL7o/i9nOMIF6mh90J3ZIhwZklLLjhyrL4K6FYb64nE/1GCvML7pC8IWCosW4wcUCMq6VLlb9xZgfpo33qb/E+nkNII+fPtbkzDU0FaGNVdfL+0wt+yXYk9qzGRyILKAqBYYD/3bBF4Fkcp73vhIQijrhVp/OqpKJ+z/sKCim3gT9ZEHkLinzkf3QNDgw=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB4289.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9391
+Original-Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028CFC.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	1dcad2f7-caf0-4963-56a7-08dc41a78e20
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	p7wWLvdHgGxIPLkTB7fQ4h3w1OdtzOgZ53v4uGFDgt3ii6Zk7CiV9TwVHjwBw45CAyApqesA9WJOs3UBzq2jJ+WXTIsyvaufTqQstEHpQI/aSCkqtHEBPFo85lgHXTcriHPVh6qR7IRdkLtP3LOdduGuuOpKHlHQkVpMXW3BUL5UGQXltd41o3J9v4hFyI3G1JRqMs+Q1folVwkjKh/yzeQjPiKCf26NHcR2sP1UFkJhAxudTr7AmnayrWX6iz9czT2cBL7idOBYqo9udGWVOZPlHPOC34+pK78oHyRNsHUeXkxVRV8wXEV6DD+f3o4BUpHdSRfcy5XNNnz6ObW6U4asVeE/8IY52WdgAg5mkc7CoymzMPVSl8VOzPZPVCO1tE0e1IjVk7B+z6hECLb6UGngD2bWfP96FROcRdFRALuUt2l27ltq6BG34y/8MAFhHVNQiJdv70IDcHrqHyFs2wNkz0CsZsT4xuvb7udFSg0UDPu/Ki2KhBGA8qD1zFE10xOMnJkhAF1OO778tdJZp5bpudYcF5wZkB+CT0KmmqDjpPr0DCtcDqis7UmEzQBPapKzGmV77T1KylRKp00i6S2PVQryuKtNwmGVavSWa3OGH0Ka+KHUDXXXaQecuBsQ7xt2Tp8JV+OWoRH0NnqAGl18VXN+sdDNWWpDzCvYK7bRdPMz1mcT6n5kIV58qqxXY29DLKRG+OTYYaKl7B5q14fPHOSZaNfR5NXv3WuVWNk1N026CQzg9HcLwoGrBoyl
+X-Forefront-Antispam-Report:
+	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230031)(376005)(36860700004)(1800799015)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2024 08:45:16.9484
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 836abd7a-06ff-4894-f0b8-08dc41a7937b
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028CFC.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB7435
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+Hi. Mathieu. Sorry to late answer.
 
-There was previously a theoretical window where swapoff() could run and
-teardown a swap_info_struct while a call to free_swap_and_cache() was
-running in another thread.  This could cause, amongst other bad
-possibilities, swap_page_trans_huge_swapped() (called by
-free_swap_and_cache()) to access the freed memory for swap_map.
+> diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrie=
+r.h
+> index 35389b2af88e..0d5e54201eb2 100644
+> --- a/arch/x86/include/asm/barrier.h
+> +++ b/arch/x86/include/asm/barrier.h
+> @@ -79,6 +79,9 @@ do {                                                   =
+               \
+>  #define __smp_mb__before_atomic()      do { } while (0)
+>  #define __smp_mb__after_atomic()       do { } while (0)
 
-This is a theoretical problem and I haven't been able to provoke it from a
-test case.  But there has been agreement based on code review that this is
-possible (see link below).
+> +/* Writing to CR3 provides a full memory barrier in switch_mm(). */
+> +#define smp_mb__after_switch_mm()      do { } while (0)
+> +
+> #include <asm-generic/barrier.h>
 
-Fix it by using get_swap_device()/put_swap_device(), which will stall
-swapoff().  There was an extra check in _swap_info_get() to confirm that
-the swap entry was not free.  This isn't present in get_swap_device()
-because it doesn't make sense in general due to the race between getting
-the reference and swapoff.  So I've added an equivalent check directly in
-free_swap_and_cache().
+IIUC, ppc already does smp_mb() in switch_mm.
 
-Details of how to provoke one possible issue:
+Would it better to add the same macro which do nothing to pcc?\\
 
---8<-----
+Thanks!
 
-CPU0                               CPU1
-----                               ----
-shmem_undo_range
-  shmem_free_swap
-    xa_cmpxchg_irq
-    free_swap_and_cache
-      __swap_entry_free
-      /* swap_count() become 0 */
-                                   swapoff
-                                     try_to_unuse
-                                       shmem_unuse /* cannot find swap entry */
-                                       find_next_to_unuse
-                                       filemap_get_folio
-                                       folio_free_swap
-                                       /* remove swap cache */
-                                       /* free si->swap_map[] */
-      swap_page_trans_huge_swapped <-- access freed si->swap_map !!!
-
---8<-----
-
-Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
-Closes: https://lore.kernel.org/linux-mm/8734t27awd.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: "Huang, Ying" <ying.huang@intel.com> [patch description]
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-Hi, Andrew,
-
-If it's not too late.  Please replace v2 of this patch in mm-stable
-with this version.
-
-Changes since v2:
-
- - Remove comments for get_swap_device() because it's not correct.
- - Revised patch description about the race condition description.
-
-Changes since v1:
-
- - Added comments for get_swap_device() as suggested by David
- - Moved check that swap entry is not free from get_swap_device() to
-   free_swap_and_cache() since there are some paths that legitimately call with
-   a free offset.
-
-Best Regards,
-Huang, Ying
-
- mm/swapfile.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2b3a2d85e350..9e0691276f5e 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1609,13 +1609,19 @@ int free_swap_and_cache(swp_entry_t entry)
- 	if (non_swap_entry(entry))
- 		return 1;
- 
--	p = _swap_info_get(entry);
-+	p = get_swap_device(entry);
- 	if (p) {
-+		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
-+			put_swap_device(p);
-+			return 0;
-+		}
-+
- 		count = __swap_entry_free(p, entry);
- 		if (count == SWAP_HAS_CACHE &&
- 		    !swap_page_trans_huge_swapped(p, entry))
- 			__try_to_reclaim_swap(p, swp_offset(entry),
- 					      TTRS_UNMAPPED | TTRS_FULL);
-+		put_swap_device(p);
- 	}
- 	return p != NULL;
- }
--- 
-2.39.2
-
+IMPORTANT NOTICE: The contents of this email and any attachments are confid=
+ential and may also be privileged. If you are not the intended recipient, p=
+lease notify the sender immediately and do not disclose the contents to any=
+ other person, use it for any purpose, or store or copy the information in =
+any medium. Thank you.
 
