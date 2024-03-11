@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-27354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805928787A2
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 19:40:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637758787A5
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 19:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20121C21795
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 18:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F9D3287581
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 18:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787B05677A;
-	Mon, 11 Mar 2024 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D47256B6C;
+	Mon, 11 Mar 2024 18:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeXSrNa9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBudWVwC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324185A4C6;
-	Mon, 11 Mar 2024 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069665B1E4;
+	Mon, 11 Mar 2024 18:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710182233; cv=none; b=jqf2MkPkWnKsS+hrxFMncdISxLAXey54DvdvCYWEhI2Vwd1jXEVl9Xn/MyJbTw39HZdLePQ3uRkT+jZXY8sOTOAXC8sII9BqblNa6VgJHyJ3UHCAEGQDekbreYpDpp8CGp5RqJyfhQj+9cr40H2IvoHH0f8NzjGy22bhYHahoPs=
+	t=1710182239; cv=none; b=E2lMmh5r4Or1lSGGxAFoMZtx1YbAUww6wcQeoZqOc6RKHj5ouv/V6/K12fBu0s4MFH9I3XOVxeuZw+t14k++ffKrueFVisLJhOFGdLa9Nnktf3pEwQIWBsBXxZKVPRwjbgJ9qgcqbrYxpGpvU3i//bxYqA5KKF9T2pQPQhQj6Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710182233; c=relaxed/simple;
-	bh=a90TlNcd55CuvJI7AGBcJt7/5SipQJTr/jE8uvYuenY=;
+	s=arc-20240116; t=1710182239; c=relaxed/simple;
+	bh=+QnN6eBvfT5YP0LZVKnQaEsUmmjbX3a5mPdlwG1VBws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s3/+RNR2H/XeHJe/enBZ7rdZtyFBVK6TQM75Dk7fMY7FR1cRcVtJXdRmbaDK2LZ9Nt6Uzs7BnNJXtMf+M+xGl8MIY9/dwZOLMxErc6TXa5K0Tvbj0JF3wbZgrs5XHXTNp+K4iNSAnGWLmOA+dJjJlNIZYFJ/ruJX+3bDsuLEl0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeXSrNa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92152C43394;
-	Mon, 11 Mar 2024 18:37:09 +0000 (UTC)
+	 MIME-Version; b=HS+YxvVsKcCl8TaxPZimQegI3sKGQ+uJ74ulEjtgL8qopRexksvVC/FllWHEE7w2cZot3K/yBCVnpBCG4/JCNHGBYB9ZseyOC01JKFosDXVdgsXpRo0j7sLaiSQ+ayUDAqTxZP0HrmZHkEO4kS4VBsjGLRkvo46+QyakLZGrXGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBudWVwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E10C43394;
+	Mon, 11 Mar 2024 18:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710182233;
-	bh=a90TlNcd55CuvJI7AGBcJt7/5SipQJTr/jE8uvYuenY=;
+	s=k20201202; t=1710182238;
+	bh=+QnN6eBvfT5YP0LZVKnQaEsUmmjbX3a5mPdlwG1VBws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeXSrNa9KvMFEnuCwREYZAoOsRQwHHgLDppMUqBrGuf7FHWUj9kI6rX3D/P+xwvul
-	 drOYqry4ZpQx4tEeLaMBwJVILU7oV5G2JLckkHpxBU6Uv5UXf2NV2lbiiT2oTC9tBJ
-	 n4eOOqts1MZeGzPRApz/StHq5Os0HEFNy+p0u+y/POC3c6vsP8g1Uc3fRRlPKteNIp
-	 5SWKZ2etoCyc6kjRyrUoKIpYgGR+YLt2HhuknT5qGZVy70WNGP2kzH+Ou9eNFActhJ
-	 L2gUkBBcnYAxtDres1AQ6P1+b/9FGsPBzg3N9Q4diFrgirgy+ZlbkCh6n+LJ74/kIn
-	 zblztGRiZmK0Q==
+	b=jBudWVwCDBxjsOJUmT51tXNsJzNZpQ3eHYRfVhncJ4J6R0gQOySNCwSEkbO6hlLfa
+	 TXgbmdtFYktVnLyWog5iwUo5l2XBS5+AHwtE57/yz2PIjcYYRdYW1aXDOSxoHc8GdA
+	 NvfCNMMDp2lTPbnJE6yFMDlVplPM4Pi0rK5pDHxvFtzwcDmZ7AS5jV70QPddmeiRJS
+	 ci+cVCXyPJWXdkpza1yQ3UcJqKz/NrceilSsCamyczH9ojD6+y17BTfo5EGuHVLCOJ
+	 sHvYLGEzBYmRGF2Djwmq3+oX06dMNjR3TopB81vDk0WyYFOjLQNqyB3z2UwuaY9clj
+	 W1iETTGhdL0Ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Stuart Henderson <stuarth@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 11/14] Input: gpio_keys_polled - suppress deferred probe error for gpio
-Date: Mon, 11 Mar 2024 14:36:14 -0400
-Message-ID: <20240311183618.327694-11-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	patches@opensource.cirrus.com,
+	alsa-devel@alsa-project.org
+Subject: [PATCH AUTOSEL 6.7 12/14] ASoC: wm8962: Enable oscillator if selecting WM8962_FLL_OSC
+Date: Mon, 11 Mar 2024 14:36:15 -0400
+Message-ID: <20240311183618.327694-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240311183618.327694-1-sashal@kernel.org>
 References: <20240311183618.327694-1-sashal@kernel.org>
@@ -61,56 +64,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7.9
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Stuart Henderson <stuarth@opensource.cirrus.com>
 
-[ Upstream commit 963465a33141d0d52338e77f80fe543d2c9dc053 ]
+[ Upstream commit 03c7874106ca5032a312626b927b1c35f07b1f35 ]
 
-On a PC Engines APU our admins are faced with:
-
-	$ dmesg | grep -c "gpio-keys-polled gpio-keys-polled: unable to claim gpio 0, err=-517"
-	261
-
-Such a message always appears when e.g. a new USB device is plugged in.
-
-Suppress this message which considerably clutters the kernel log for
-EPROBE_DEFER (i.e. -517).
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240305101042.10953-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Stuart Henderson <stuarth@opensource.cirrus.com>
+Link: https://msgid.link/r/20240306161439.1385643-1-stuarth@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/gpio_keys_polled.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ sound/soc/codecs/wm8962.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/input/keyboard/gpio_keys_polled.c b/drivers/input/keyboard/gpio_keys_polled.c
-index ba00ecfbd343b..b41fd1240f431 100644
---- a/drivers/input/keyboard/gpio_keys_polled.c
-+++ b/drivers/input/keyboard/gpio_keys_polled.c
-@@ -315,12 +315,10 @@ static int gpio_keys_polled_probe(struct platform_device *pdev)
- 
- 			error = devm_gpio_request_one(dev, button->gpio,
- 					flags, button->desc ? : DRV_NAME);
--			if (error) {
--				dev_err(dev,
--					"unable to claim gpio %u, err=%d\n",
--					button->gpio, error);
--				return error;
--			}
-+			if (error)
-+				return dev_err_probe(dev, error,
-+						     "unable to claim gpio %u\n",
-+						     button->gpio);
- 
- 			bdata->gpiod = gpio_to_desc(button->gpio);
- 			if (!bdata->gpiod) {
+diff --git a/sound/soc/codecs/wm8962.c b/sound/soc/codecs/wm8962.c
+index fb90ae6a8a344..6d7bb696b1356 100644
+--- a/sound/soc/codecs/wm8962.c
++++ b/sound/soc/codecs/wm8962.c
+@@ -2914,8 +2914,12 @@ static int wm8962_set_fll(struct snd_soc_component *component, int fll_id, int s
+ 	switch (fll_id) {
+ 	case WM8962_FLL_MCLK:
+ 	case WM8962_FLL_BCLK:
++		fll1 |= (fll_id - 1) << WM8962_FLL_REFCLK_SRC_SHIFT;
++		break;
+ 	case WM8962_FLL_OSC:
+ 		fll1 |= (fll_id - 1) << WM8962_FLL_REFCLK_SRC_SHIFT;
++		snd_soc_component_update_bits(component, WM8962_PLL2,
++					      WM8962_OSC_ENA, WM8962_OSC_ENA);
+ 		break;
+ 	case WM8962_FLL_INT:
+ 		snd_soc_component_update_bits(component, WM8962_FLL_CONTROL_1,
 -- 
 2.43.0
 
