@@ -1,126 +1,130 @@
-Return-Path: <stable+bounces-27406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE76D8789E3
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:12:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D946F878A0E
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 22:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E033E1C20E63
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 21:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1003B1C20EB8
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 21:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4692856772;
-	Mon, 11 Mar 2024 21:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54C056B79;
+	Mon, 11 Mar 2024 21:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="kInH08S0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qt8xAWtV"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A6356B6A;
-	Mon, 11 Mar 2024 21:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADD656B63
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 21:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710191528; cv=none; b=YHFgplJgrbHJYOd7GQ5S9pfIS62hwthUxGnHQkcPvH3+2fIdfYYO1j9pCEbuoQs0ytLfHO9QWxOX+7aLP8N9q8IFo8zpMG4OntsWtTjazvqgIF6c+dIxct6lhUZEDqxSxSwDR5wKErd1NaC+0pEvqomy9UkeTiqYirSwIFKV+PY=
+	t=1710192630; cv=none; b=L/YFfsbMx/Pb50eXfd/6gNVM2T4HjhM9H7+Zt8+zGvnFOqUj2PTnxaQbD7qvyWUrcfja6R5fr8wwU8fO1stzyX6dDv/78+jGm1vTqj2HedBDqzW/uFCM+iRDUlISStyXO7ais6/or+KjR93587UI7JQzdARqPiGRcdUGFrqjPCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710191528; c=relaxed/simple;
-	bh=iemc9BTvqpWfP6M7W2cS/ZtgzbQgKVdjsex36dyysc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rxOrajjum7dqfhEwOPoqyoF5JSD6MrVu9QKEqBHX4K0x1SLf+nZoAQLqZeqcq5rQ5VQ/xXknocW18rVEm19FBt1843y8cICc+XeCzkQ571DBq3PzKv+jXi9IQaTPsnc6VrM7v0Ke8O2my9+EyxJAUZR5OWjhNXB0u3KqOzr4wy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=kInH08S0; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id CB43C1C006B; Mon, 11 Mar 2024 22:12:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1710191522;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=suhwUbS3La/q9vF4wC7Q3GDRSJw09sPh4CSFxcpujg0=;
-	b=kInH08S0Pt8uBvMxcP2uhk8fWfeAb1okNTMDd6vuBWEt3dAOcKwqxJJ1cpPZAK1WLVFiQh
-	CFoWxwsObpDqARMRm0n+908kBVZpGjO6ZqsBFx9BD8evC2Fje4b1W6e3H/IydCt/yV2+iN
-	J+tUvKlRjhMj0hOuS/9ufn4Dg+oHkvE=
-Date: Mon, 11 Mar 2024 22:12:02 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Hou Tao <houtao1@huawei.com>, Sohil Mehta <sohil.mehta@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: Re: [PATCH AUTOSEL 4.19 1/4] x86/mm: Move is_vsyscall_vaddr() into
- asm/vsyscall.h
-Message-ID: <Ze9zol7kZucywfOy@duo.ucw.cz>
-References: <20240229204208.2862333-1-sashal@kernel.org>
+	s=arc-20240116; t=1710192630; c=relaxed/simple;
+	bh=Dfk4ovR29+VM2K+8Ky3cH4P5tDJyC5cHjp8bG8giKPo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jY3OZ6e5QAeAh7dkmgpgSTxlM1Bs/EPuGKOaHHJtI6EDhdnfazwHFkO5Fp7tstqGNiAX9WB3oFCffxlGd/tL+1i7BovZEEh4lnzU1KCxo1LPeOijIMf1g10amqKBQaIF5v+GlbJqmD81e3CSW8VdIX4nBlcL5wzWlaCUvyI48dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rkolchmeyer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qt8xAWtV; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rkolchmeyer.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dbf216080f5so5614530276.1
+        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 14:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710192628; x=1710797428; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YvmpJ8ct33PRrafpbaVo1kzce/fkn32WN7BYeSu41lk=;
+        b=qt8xAWtVFzr4qR1++/z4BrJVQdqsY/0WcQqzmfAGrUE8QD31fNPDXDnKq7X7KtD2E8
+         +CjBIl72Uq9uJqMqBBr89GhGObdApTc5j7cd3U+VgPYAn4Tt1vdRFdD/PuB8O8Qj5cRM
+         5M+iC8Dp2nuAQT4/37kRJmT73wvJr7NBvlSofJ7z0SHIg1LrScPoOshpMz5qd9GFFdZB
+         zzZ99l/cGSXV96wUkKmah2UdmNFt+OAoyroPiaOkV1AD6hQ60gqNrXJCiI6Pr7H43ohB
+         /+wFE4jFNDW72OwaC4L7Y9SZNGUXY+TUkgOEAbXwjzQhH02VeL4CPKeJwlS07GQDrug0
+         czDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710192628; x=1710797428;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YvmpJ8ct33PRrafpbaVo1kzce/fkn32WN7BYeSu41lk=;
+        b=n79u+A8xK4+edRqeuWTHZs4/tkWDWzeYu7JMm5RS8YWjY33fnOqsybZDZoYQac2I+l
+         Op+bp78pNwWMfB+lO7zIYrpzR2nNS15xRXDhTPV7MvKVuzMRPCwZnkW3WgEhpBqruii6
+         2JXySetwt95GDMreVx5yBGRepPlUfUqkzrMNUwPQvnMA7PsyNuGyN4oFomUQxZYDOcTp
+         Ybd6IaYmqjAH42AAExlNa4Z/HEmyjGi9ooJtvkbdXwh9dR/IFQDEJttr6LbAicYc6SKi
+         ttMs62F+gRZuF/1Agy0SRgXTcHi+4yfbVK2jVEwAhdol2JyEFWLUbUn9WkzF7oTYsXoh
+         a54g==
+X-Gm-Message-State: AOJu0YxRUaH0paJng+ZVdfhGHrqHr9szNRkTub4ZqI8tiKj7FKCc2hsU
+	BG+6VrgJTrm9q3s2ZeVuexM7y1TKoIn0T6dEonPGa3W1oUd7Wg3MPbWTH3vwLBzREHiuaA/RR2M
+	4qzdIP/Jn4Do+xW3OA0XOfzGeeKderue8vMo3n/NmOI79bOtc12IoziQGBTHkjC/o/Mys7TcVHi
+	k3MukhG64z4uflH9OfatLX+rMrrB4QsqWQjh6ZJ/S5ozky1n+xzM70S5DSvQ==
+X-Google-Smtp-Source: AGHT+IGf9pfY6DmJ6xaAqYigZwjChvdQhkVF7miHCYl1Ck6sdKrGMZzd1F+fRagZ4ewyq81aPliPnO2OEwXnx1HvOw==
+X-Received: from rkolchmeyer.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:7f04])
+ (user=rkolchmeyer job=sendgmr) by 2002:a05:6902:1889:b0:dcb:abcc:62be with
+ SMTP id cj9-20020a056902188900b00dcbabcc62bemr2019992ybb.6.1710192628124;
+ Mon, 11 Mar 2024 14:30:28 -0700 (PDT)
+Date: Mon, 11 Mar 2024 14:30:20 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="J1nK2iNWXPRkPHfT"
-Content-Disposition: inline
-In-Reply-To: <20240229204208.2862333-1-sashal@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
+Message-ID: <cover.1710187165.git.rkolchmeyer@google.com>
+Subject: [PATCH v5.15 0/2] v5.15 backports for CVE-2023-52447
+From: Robert Kolchmeyer <rkolchmeyer@google.com>
+To: stable@vger.kernel.org
+Cc: Robert Kolchmeyer <rkolchmeyer@google.com>, Hou Tao <houtao1@huawei.com>, 
+	Alexei Starovoitov <ast@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+
+Hi all,
+
+This patch series includes backports for the changes that fix CVE-2023-52447.
+
+Commit e6c86c513f44 ("rcu-tasks: Provide rcu_trace_implies_rcu_gp()")
+applied cleanly.
+
+Commit 876673364161 ("bpf: Defer the free of inner map when necessary")
+had one significant conflict, which was due to missing commit
+8d5a8011b35d ("bpf: Batch call_rcu callbacks instead of SLAB_TYPESAFE_BY_RCU.").
+The conflict was because of the switch to queue_work() from schedule_work() in
+__bpf_map_put(). From what I can tell, the switch to queue_work() from
+schedule_work() isn't relevant in the context of this bug, so I resolved the
+conflict by keeping schedule_work() and not including 8d5a8011b35d
+("bpf: Batch call_rcu callbacks instead of SLAB_TYPESAFE_BY_RCU.").
+
+I also noticed that commit a6fb03a9c9c8
+("bpf: add percpu stats for bpf_map elements insertions/deletions") is tagged as
+a stable dependency of commit 876673364161. However, I don't see the functions
+and fields added in that patch used at all in commit 876673364161. This patch
+was backported to linux-6.1.y, but a `git grep` seems to show that
+`bpf_map_init_elem_count` is never referenced in linux-6.1.y. It seems to me
+that this patch is not actually a dependency of commit 876673364161, so I didn't
+include it in this backport.
+
+I ran the selftests added in commit 1624918be84a
+("selftests/bpf: Add test cases for inner map"), and they passed with no KASAN
+warnings. However, I did not manage to find a kernel on which these tests did
+generate a KASAN warning, so the test result may not be very meaningful. Apart
+from that, my typical build+boot test passed.
 
 
---J1nK2iNWXPRkPHfT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hou Tao (1):
+  bpf: Defer the free of inner map when necessary
 
-Hi!
+Paul E. McKenney (1):
+  rcu-tasks: Provide rcu_trace_implies_rcu_gp()
 
-> Move is_vsyscall_vaddr() into asm/vsyscall.h to make it available for
-> copy_from_kernel_nofault_allowed() in arch/x86/mm/maccess.c.
+ include/linux/bpf.h      |  7 ++++++-
+ include/linux/rcupdate.h | 12 ++++++++++++
+ kernel/bpf/map_in_map.c  | 11 ++++++++---
+ kernel/bpf/syscall.c     | 26 ++++++++++++++++++++++++--
+ kernel/rcu/tasks.h       |  2 ++
+ 5 files changed, 52 insertions(+), 6 deletions(-)
 
-This seems to be just part of a patch -- it does not move anything --
-and we should not really need it for 4.19, as we don't have those
-copy_from_kernel_nofault_allowed changes.
+-- 
+2.44.0.278.ge034bb2e1d-goog
 
-Best regards,
-								Pavel
-							=09
-
-> +++ b/arch/x86/include/asm/vsyscall.h
-> @@ -4,6 +4,7 @@
-> =20
->  #include <linux/seqlock.h>
->  #include <uapi/asm/vsyscall.h>
-> +#include <asm/page_types.h>
-> =20
->  #ifdef CONFIG_X86_VSYSCALL_EMULATION
->  extern void map_vsyscall(void);
-> @@ -22,4 +23,13 @@ static inline bool emulate_vsyscall(struct pt_regs *re=
-gs, unsigned long address)
->  }
->  #endif
-> =20
-> +/*
-> + * The (legacy) vsyscall page is the long page in the kernel portion
-> + * of the address space that has user-accessible permissions.
-> + */
-> +static inline bool is_vsyscall_vaddr(unsigned long vaddr)
-> +{
-> +	return unlikely((vaddr & PAGE_MASK) =3D=3D VSYSCALL_ADDR);
-> +}
-> +
->  #endif /* _ASM_X86_VSYSCALL_H */
-
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---J1nK2iNWXPRkPHfT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZe9zogAKCRAw5/Bqldv6
-8hbCAJ90bmk+FFZg/PTzuaLCwvZ7uaouHACfSIPDNgnMYXrB2dTvZ2dSQb5mO4g=
-=OE+O
------END PGP SIGNATURE-----
-
---J1nK2iNWXPRkPHfT--
 
