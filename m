@@ -1,128 +1,132 @@
-Return-Path: <stable+bounces-27321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B778783A7
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:30:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE49F8783C7
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 16:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C09A7281D2F
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:30:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1EB1C2144C
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 15:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746C26A028;
-	Mon, 11 Mar 2024 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B4A482C2;
+	Mon, 11 Mar 2024 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drUYlyLt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1IfIw1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338C56A01C;
-	Mon, 11 Mar 2024 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597F4436C;
+	Mon, 11 Mar 2024 15:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710170100; cv=none; b=YW4uelz+5b3ptHuOPCYvbYgxYmpCQWUmZ9GnuZ/0rKlDlhq9IO9B6YY0aOJWpJ0KkUeq87y5ydqTljC8rsNAP2AKCv17LSj8wSwhCmVXLVhJ8yZpWC6565cuzM0BsIOkUJoUyLwYFM90Lkb0H7PZ7UClvi7KcYNM55i7IXzdjds=
+	t=1710170889; cv=none; b=aLOmtUj4BXT3cQ7prxDaHZJXh1ijux2Mngu6Y00V1YFZulgBkdzomofj2NcjnTZEM1GRtvfLu9iWRvvWBm0JJ6Atg4BKydeNhhRY7zM/1zdUfuj2AKihllsIXqnDWWSkULL+KwBtWLu6QFsBk4Rznbfqjbt2fsq/yogFEUyRCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710170100; c=relaxed/simple;
-	bh=kXACYfDvNXWJZ25333pEuC5/kN5XG42wdVPy74Tagjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKu4oNfaFQcvq6O1vgbbOu8weotuf2gRanOttg7EEMvFraHXPo0xIuq7gXMro+wP+YEYB51n4xelxYPUaYPNx1eEA6odArxmvudjzVrzdYt4Zv+y3nthv4NQ1z/teSJ3SodxJ87b1RDsTnyZj57b4u5WrVOhT9O9zJ1/39/YPnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drUYlyLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01052C433F1;
-	Mon, 11 Mar 2024 15:14:58 +0000 (UTC)
+	s=arc-20240116; t=1710170889; c=relaxed/simple;
+	bh=em3Se+P5Xrx+0GAaBd00VDrmf7quAlX2gF/aXmOjg44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B4PP2hE+a8EvM0TRX4g8NlfObo46QpLIG1bkTFQWuUKKI4FtU7xtaanmiXGQQ0o+9LYYeRLkJQBinl3rb8Qipo5WpfsDLJyh323qlEe0m4wTwCNrAJP07/r9PhZHjSZh2daywWF1GQT0U82f5URQq0PsBFKNPZBi/E8BlgqAK4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1IfIw1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78064C433F1;
+	Mon, 11 Mar 2024 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710170099;
-	bh=kXACYfDvNXWJZ25333pEuC5/kN5XG42wdVPy74Tagjk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drUYlyLtaNR5rUHLnsb32SBwqig5A4q4tkZ9IXXz3TjjiSQem3CPhRf3G4WPVKAOi
-	 ZhgPVxD5cQ92+X/+NXo4l04G9zsBio3fd8F+7Ke6E6vKVLl5z/EbmuSqKrdM2HUxFr
-	 +tXFf7ARKF6Q05KeXeUPW05lGFfwU0UR/fsElrmWKVghzLSXTCaL/+uvx4gIUl5fry
-	 +xK8W+hKcc7OlcnOu9Vm9gwHTWwLA3pF1A7XvbYK8GwcZnNso7obL3RWq7/SMCfBVw
-	 kxTBRZGidVv/2GcdVwDdl91bPnYx6I1NEYuxtmUqFoWypcSI+/DteCjjcARNJZUYio
-	 P6ztIE4FbtykQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Adam Goldman <adamg@pobox.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux1394-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 4.19 3/3] firewire: core: use long bus reset on gap count error
-Date: Mon, 11 Mar 2024 11:14:53 -0400
-Message-ID: <20240311151454.318918-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240311151454.318918-1-sashal@kernel.org>
-References: <20240311151454.318918-1-sashal@kernel.org>
+	s=k20201202; t=1710170888;
+	bh=em3Se+P5Xrx+0GAaBd00VDrmf7quAlX2gF/aXmOjg44=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y1IfIw1VUAO6yVnYWHqnM6x3qLyaUGPSZ3qSWE620X0mQMIuJc/CJN3QOYlILZZWD
+	 b6Ym8qqIc/7i/HhouTgEmCykq8SSfTLEji6qb2nwFoZe1po1trqNgZW5BuV7aJ0ANP
+	 mbCqfNiX6Wlasdg7uJBi7ybloBpi/5dwTWd7xVIsxF64eEIkb4N9rAbkvPUhNvfp0V
+	 IBixDJCT999m5RpBVCDuAF8XC3czA+d2QI+ff2ei0Xxj7638VxSgNWIOlW/CMjBvsU
+	 Gt48mLTWEp84D46PDDy3nKxyhe69K/9UoY9fWjE+nGVFqp1p71YVCt8js6brMJ3oL9
+	 hxet0uBW3DISQ==
+Message-ID: <afd248db-921f-4067-b917-a7ea3e807816@kernel.org>
+Date: Mon, 11 Mar 2024 16:28:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.309
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH AUTOSEL 6.7 14/23] selftests: mptcp: explicitly trigger
+ the listener diag code-path
+Content-Language: en-US
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, martineau@kernel.org, davem@davemloft.net,
+ edumazet@google.com, shuah@kernel.org, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, linux-kselftest@vger.kernel.org
+References: <20240311151217.317068-1-sashal@kernel.org>
+ <20240311151217.317068-14-sashal@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240311151217.317068-14-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Hi Sasha,
 
-[ Upstream commit d0b06dc48fb15902d7da09c5c0861e7f042a9381 ]
+On 11/03/2024 16:11, Sasha Levin wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
+> 
+> [ Upstream commit b4b51d36bbaa3ddb93b3e1ca3a1ef0aa629d6521 ]
 
-When resetting the bus after a gap count error, use a long rather than
-short bus reset.
+Thank you for having backported this patch to v6.7 and v6.6 versions.
+But it looks like it depends on commit 9369777c2939 ("selftests: mptcp:
+add mptcp_lib_wait_local_port_listen") which is not in these versions.
 
-IEEE 1394-1995 uses only long bus resets. IEEE 1394a adds the option of
-short bus resets. When video or audio transmission is in progress and a
-device is hot-plugged elsewhere on the bus, the resulting bus reset can
-cause video frame drops or audio dropouts. Short bus resets reduce or
-eliminate this problem. Accordingly, short bus resets are almost always
-preferred.
+Because CIs will soon use the kselftests from the new v6.8, I think it
+is better to drop this patch from v6.7 and v6.6 versions.
 
-However, on a mixed 1394/1394a bus, a short bus reset can trigger an
-immediate additional bus reset. This double bus reset can be interpreted
-differently by different nodes on the bus, resulting in an inconsistent gap
-count after the bus reset. An inconsistent gap count will cause another bus
-reset, leading to a neverending bus reset loop. This only happens for some
-bus topologies, not for all mixed 1394/1394a buses.
-
-By instead sending a long bus reset after a gap count inconsistency, we
-avoid the doubled bus reset, restoring the bus to normal operation.
-
-Signed-off-by: Adam Goldman <adamg@pobox.com>
-Link: https://sourceforge.net/p/linux1394/mailman/message/58741624/
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firewire/core-card.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/firewire/core-card.c b/drivers/firewire/core-card.c
-index 0e6f96c0e3957..6c464c75ac9d5 100644
---- a/drivers/firewire/core-card.c
-+++ b/drivers/firewire/core-card.c
-@@ -513,7 +513,19 @@ static void bm_work(struct work_struct *work)
- 		fw_notice(card, "phy config: new root=%x, gap_count=%d\n",
- 			  new_root_id, gap_count);
- 		fw_send_phy_config(card, new_root_id, generation, gap_count);
--		reset_bus(card, true);
-+		/*
-+		 * Where possible, use a short bus reset to minimize
-+		 * disruption to isochronous transfers. But in the event
-+		 * of a gap count inconsistency, use a long bus reset.
-+		 *
-+		 * As noted in 1394a 8.4.6.2, nodes on a mixed 1394/1394a bus
-+		 * may set different gap counts after a bus reset. On a mixed
-+		 * 1394/1394a bus, a short bus reset can get doubled. Some
-+		 * nodes may treat the double reset as one bus reset and others
-+		 * may treat it as two, causing a gap count inconsistency
-+		 * again. Using a long bus reset prevents this.
-+		 */
-+		reset_bus(card, card->gap_count != 0);
- 		/* Will allocate broadcast channel after the reset. */
- 		goto out;
- 	}
+Cheers,
+Matt
 -- 
-2.43.0
+Sponsored by the NGI0 Core fund.
 
 
