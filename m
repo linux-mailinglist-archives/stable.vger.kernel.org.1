@@ -1,180 +1,111 @@
-Return-Path: <stable+bounces-27231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA5C877BA5
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:23:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76941877BAA
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 09:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6911C20CEC
-	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163221F2105E
+	for <lists+stable@lfdr.de>; Mon, 11 Mar 2024 08:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F1111AA;
-	Mon, 11 Mar 2024 08:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466BA111AC;
+	Mon, 11 Mar 2024 08:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dG5BIkoP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bm0tUKlh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54861119A
-	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 08:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A6F519
+	for <stable@vger.kernel.org>; Mon, 11 Mar 2024 08:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710145413; cv=none; b=ZnBSqXNZdgU0wb0xM+YuRFDkfIeI5z8vMpT8tIWxcQ+3bqGVPbNr5Lt/ZUzpp3fwx6GsgKFRDuiFSSxkfNAlEsBH1Y+ut5wT2/oQb73dLONZPnNfOGjGfUoSrdGEsG61TxgOO6BfMH7joKRKjzqLyAHjK9LoqtooeaMb40PtYtE=
+	t=1710145508; cv=none; b=TQzEriVZmmM9fuBNXd53Z2zfUnuLgHcvMLdG/FaPempBitpx8Guh+cZoGW6Yse0wu2BkyKxRFWKCiGWfQRSKSIolR6L+0eUQt/isOnNk5oMN4KzTfX2m5vjnO12h2/GMwYC0SUpAJOAMjusgHOY7SdciriYjj7pRynnxhwWbd/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710145413; c=relaxed/simple;
-	bh=WV+ampiNXt59HPbUhKEKsNt0WDsax4NhKbkgRy0DI6w=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gWg5PeA6+YvXJqmXKJJi/jzUIl4jHLZ8TLkqQN2ZfrUpfGI8lV/NNretdMVEr1yoP7aodsW5gF47J9Z/ygZWSvVhRjsGdsj8L77Jd//uKdSmOw4Zq4KX6HKo8IoqAj621ro32wzi6jlkwxYOz22lqmb3F7uSxDUld1QAXllpg0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dG5BIkoP; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-412f1961101so31385395e9.0
-        for <stable@vger.kernel.org>; Mon, 11 Mar 2024 01:23:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710145409; x=1710750209; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AMJIYAT1aoLggdRB8puSiHOpe8FLhZyNAYzFcBUjOwA=;
-        b=dG5BIkoPx/+GWMgqQ2mRmt5mc9TJ20Qwv1mXQisH+Ot08Se1mzBbLf0hpPOC/Kjhal
-         OL8xTgY0dVfFsr3v/OMzO1y72jDAphJeRFFPuhC5NKI6C47hSNi15AhSEjT/8gZTiQKW
-         NSuM5BVDa2SfeWfaMmIPIQ8zKym3wzjduEhc+5ybkUGaD2qtDbNTFh2j3EcPvDCiemfk
-         obaKqvPYWcNNMA8/nwfQpZInq8ecSiuB6iE/bsY+Tz/y82KplIPZl6pRCiZZc2U21mak
-         5P/2lkj5rHAMdw5gHMpaTa4bWatWBGIRyvtcaN9LEj+x2bpW97PPYXKdBSZyB4Nx3AFO
-         Qhrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710145409; x=1710750209;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AMJIYAT1aoLggdRB8puSiHOpe8FLhZyNAYzFcBUjOwA=;
-        b=Sqz9rjODe0QaiKrJBzk8ZHGAFzZ6Tchtp4QxjKLD67/v7i5YaasnX77mAFwrumeeUm
-         y9G2frKfuurmAQ94m9JL7Fb7QM/yZAImqZWFUdD6iOQddZ6oDJY/nWLj/1FXTYWIQuft
-         rXvZlzzRgT9qK4BbL+S7cLM4+gJdFcthUZMZT+B09q7tJiKbbNDtU9RZyjM6DF89kJSM
-         PPDoz8LTVlXoxGu4pEq+gMul17SBmlaSjYab/niE4NHREh9hZi5L4oRwLd23txKwv2do
-         3KSJQcckdBOnhuzqjWTHygCOCuZs9Kw2N1ddloTYblPxy+UwVAN199ZYjJac4GODkRfd
-         u6pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHqvdC/LwpYA5rG8YkhcSMWwHU6w9nJ/UBEeN7U4pgvC9hQxkHHedOlxxBPU1RCQ/dxGHgboL3lU6bvtLpIrCF1ceWQ9vk
-X-Gm-Message-State: AOJu0Yx4PbVlh3ImU6tMn7h2pDci/to2bx0ARa5GT5istlLwZqr1I7te
-	YidcSv2ULbyzUc3q2qmR7a8FEYLz9O+vkK7I10UyMK3KSMlhfvoTkeI4xiTwcqw=
-X-Google-Smtp-Source: AGHT+IGojr92IZ9JNjUk6i05tLWnB0/kzB3DppIN43i5jY2MgknDStpDu7m0C6KmkiaP5e7N7wDdDA==
-X-Received: by 2002:a05:600c:3d88:b0:413:2a07:20d3 with SMTP id bi8-20020a05600c3d8800b004132a0720d3mr1254967wmb.35.1710145409494;
-        Mon, 11 Mar 2024 01:23:29 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:48be:feb9:192b:f402? ([2a01:e0a:982:cbb0:48be:feb9:192b:f402])
-        by smtp.gmail.com with ESMTPSA id u12-20020a05600c19cc00b004126afe04f6sm14688429wmq.32.2024.03.11.01.23.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Mar 2024 01:23:29 -0700 (PDT)
-Message-ID: <af099226-6644-46c5-b424-3c3a61e454c4@linaro.org>
-Date: Mon, 11 Mar 2024 09:23:28 +0100
+	s=arc-20240116; t=1710145508; c=relaxed/simple;
+	bh=Ja4+d5hYZ1J/GTTxla0JnUKg+/OJjUeJl5kxGxwqXHc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kplijJvsg7FlvPLySDsF3QMt/kNVUCyKDsgwSd6+m3depOXvELRVjQmo5sVAoceQg5oja/eTyzF1pu3zNrsvfP1xrpl9oXMBr6y4DiWo87c0//exY7xFCQcEWrI8V7XmbNlB+/wiuQNP2C9lU/MgR1qUtZz4rmaqT+pRID6n/Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bm0tUKlh; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F190120004;
+	Mon, 11 Mar 2024 08:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1710145497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bLjA14wnYsJnSoHGoJfzY/KdBjvo43UoNn4NETMONSQ=;
+	b=bm0tUKlhxxd+6ItRceW9ceUHPdDMneQi4vgivtfcBtWNg0NjTNFYdwFtFCEg/eafGu0BBa
+	oV/7MeV4XKcAfKXGVeRNnLiuRwaKt7+1l1uQaQfhM7Uak21QBgLNYYu60600JVdQTS1A0P
+	5aJkqc9fSoodAZhxvv4unkhCzRHBt1CT8qBwdPvzsr/u3HzyoLhFSgCDG7Q+HcnKYF3107
+	7yw0ezcnhvMnaCVm4UBNEjUwGmzET6g5hK63cORtu3kFuR7S0ccRPthO1wveNmicLP4VM4
+	nqGISpr1ICeQHt2W9hBFWRdp6QwP+8MiGXjyo8I5DIYCFIrPlmsUPw4iz/3CRA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	linux-mtd@lists.infradead.org
+Cc: Julien Su <juliensu@mxic.com.tw>,
+	Jaime Liao <jaimeliao@mxic.com.tw>,
+	Jaime Liao <jaimeliao.tw@gmail.com>,
+	Alvin Zhou <alvinzhou@mxic.com.tw>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	eagle.alexander923@gmail.com,
+	mans@mansr.com,
+	martin@geanix.com,
+	=?utf-8?q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mtd: rawnand: Constrain even more when continuous reads are enabled
+Date: Mon, 11 Mar 2024 09:24:50 +0100
+Message-Id: <20240311082450.4191310-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240307115315.1942678-1-miquel.raynal@bootlin.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 2/8] drm/panel: do not return negative error codes from
- drm_panel_get_modes()
-To: Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Jessica Zhang
- <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
- stable@vger.kernel.org
-References: <cover.1709913674.git.jani.nikula@intel.com>
- <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro Developer Services
-In-Reply-To: <79f559b72d8c493940417304e222a4b04dfa19c4.1709913674.git.jani.nikula@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'64b35c8a3acaa1236e642f4ccfc401d394f85fe8'
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 08/03/2024 17:03, Jani Nikula wrote:
-> None of the callers of drm_panel_get_modes() expect it to return
-> negative error codes. Either they propagate the return value in their
-> struct drm_connector_helper_funcs .get_modes() hook (which is also not
-> supposed to return negative codes), or add it to other counts leading to
-> bogus values.
+On Thu, 2024-03-07 at 11:53:14 UTC, Miquel Raynal wrote:
+> As a matter of fact, continuous reads require additional handling at the
+> operation level in order for them to work properly. The core helpers do
+> have this additional logic now, but any time a controller implements its
+> own page helper, this extra logic is "lost". This means we need another
+> level of per-controller driver checks to ensure they can leverage
+> continuous reads. This is for now unsupported, so in order to ensure
+> continuous reads are enabled only when fully using the core page
+> helpers, we need to add more initial checks.
 > 
-> On the other hand, many of the struct drm_panel_funcs .get_modes() hooks
-> do return negative error codes, so handle them gracefully instead of
-> propagating further.
+> Also, as performance is not relevant during raw accesses, we also
+> prevent these from enabling the feature.
 > 
-> Return 0 for no modes, whatever the reason.
+> This should solve the issue seen with controllers such as the STM32 FMC2
+> when in sequencer mode. In this case, the continuous read feature would
+> be enabled but not leveraged, and most importantly not disabled, leading
+> to further operations to fail.
 > 
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Jessica Zhang <quic_jesszhan@quicinc.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
+> Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->   drivers/gpu/drm/drm_panel.c | 17 +++++++++++------
->   1 file changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-> index e814020bbcd3..cfbe020de54e 100644
-> --- a/drivers/gpu/drm/drm_panel.c
-> +++ b/drivers/gpu/drm/drm_panel.c
-> @@ -274,19 +274,24 @@ EXPORT_SYMBOL(drm_panel_disable);
->    * The modes probed from the panel are automatically added to the connector
->    * that the panel is attached to.
->    *
-> - * Return: The number of modes available from the panel on success or a
-> - * negative error code on failure.
-> + * Return: The number of modes available from the panel on success, or 0 on
-> + * failure (no modes).
->    */
->   int drm_panel_get_modes(struct drm_panel *panel,
->   			struct drm_connector *connector)
->   {
->   	if (!panel)
-> -		return -EINVAL;
-> +		return 0;
->   
-> -	if (panel->funcs && panel->funcs->get_modes)
-> -		return panel->funcs->get_modes(panel, connector);
-> +	if (panel->funcs && panel->funcs->get_modes) {
-> +		int num;
->   
-> -	return -EOPNOTSUPP;
-> +		num = panel->funcs->get_modes(panel, connector);
-> +		if (num > 0)
-> +			return num;
-> +	}
-> +
-> +	return 0;
->   }
->   EXPORT_SYMBOL(drm_panel_get_modes);
->   
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next.
+
+Miquel
 
