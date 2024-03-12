@@ -1,108 +1,179 @@
-Return-Path: <stable+bounces-27433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C76787906D
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8251A879070
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D9DB219AC
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:13:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D110DB21877
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6967277F3B;
-	Tue, 12 Mar 2024 09:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDC677F2E;
+	Tue, 12 Mar 2024 09:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="AFTEPtwt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dbf/Ic9U"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834E677F2C;
-	Tue, 12 Mar 2024 09:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9926997B;
+	Tue, 12 Mar 2024 09:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710234786; cv=none; b=OwjQdu2SNmbYBVoXsJzJ2WV+V5hSmc71oB2mjNn3haQZ+ggyWBD9MmOzmj2U9jt1vhZxwAa8JnPPFmTLrwmdIwqIZt3plw/oPpUvWymEFL+cA6le2Bbr/cZNgFICutS5VXnIgWxrcu1bdejFoNiLBkDGeIJ+CSZ9uk5BAw1OfRk=
+	t=1710234970; cv=none; b=RN3N+6y5RtzvPDFOqXPy7oR60btmhL52xxdDDOQh5aRPFsh9xyCRsarYf0CzHVem7Tufu3SjLvyskdTd7Nc65h4deqPy/3hYcIJTGtRpWNFXZWZ3IshPrCreLxaXCzeECcrInNaiWKMCVZ44f9QAROkUjePfw82DkuzHbGopUHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710234786; c=relaxed/simple;
-	bh=hUK9GKxZcqwSKCCM/G5VBf6KN+AtFWuXgVSp0rInAbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tNY1tP7mQxSLZg1Cs9hBn40bwpvoTMKF+X4sk5yrsP8U/1LhDO7D1p+l67so8YBJbNP0apnDhmvMzIp2q5yv3G7UGkWjzy8YskDqUNjSptI550LBspWyqqAc9tprQb2yPEsJeVfpEUeMlKVfpHmvb7v8PBAB66IoErJ725GNjIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=AFTEPtwt; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1710234776;
-	bh=hUK9GKxZcqwSKCCM/G5VBf6KN+AtFWuXgVSp0rInAbk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AFTEPtwt7N6hWovL7mBHbeTD6vKYsE9vI9nfgS9jjnF6czX5W0q8fLc5W638qcjHP
-	 eeL4zfrhocVaFUsEsJ1KYDGsiIrjAS35apSECSppKgkFVY9+MzmOBUAxFTr77nTzd/
-	 xazwIKA+mZu63G6UXPcm1xoM57l6Xa2QY3dRxOri+Tq6kYltQ2wKmqlFu3BNvp9arp
-	 BJq/vDV4/vGfLZh+Dx3X6UrE3frebdJS6vi4ZrK/iy+DjertMOM/2gRQDz1Tjf3nh5
-	 k+D65UxAcclepGTLsrFKiXoNxBQBBU+722oQDTAxtFu7KEEvUHTnGRjRT9i/etZ5VC
-	 cGUGpWjAnfRkg==
-Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 737983780029;
-	Tue, 12 Mar 2024 09:12:55 +0000 (UTC)
-Message-ID: <56fe79a2-8c39-455c-a402-06c9ae7b5bd1@collabora.com>
-Date: Tue, 12 Mar 2024 10:12:54 +0100
+	s=arc-20240116; t=1710234970; c=relaxed/simple;
+	bh=U8Bew2R19R1dmK0w/Sze3/oX4ouZZi6iE/VeohOzCF8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfZXHjhxCXWIfSvahNC+fjo6ZiZm5qglVLDD4CdxeoGVX7z5M1oWogJhL/yu+IL6dYSW7ZIB/JYf/DgixsYEpphUSwSILMoGTNP6PUB8C8GvBMl/VNgQuiHbvXQnPhj2lujPSuCE3fxyY+LifJ1VqVZ5AuN3q+Ln699EF4mMVmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dbf/Ic9U; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710234969; x=1741770969;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U8Bew2R19R1dmK0w/Sze3/oX4ouZZi6iE/VeohOzCF8=;
+  b=Dbf/Ic9UR6y0LLmgEmxIW30CvRXOXElhoeJif8ble21pKJNSN1vQzZ3P
+   kp5pqUxl3piSlN1PgSe40dlZDnzEzBxzWYnRtBSTClWZ6ju0B/pCg+tbn
+   TcdbEIV+r2qtHnUB4Piv+gO8x8Kj03MIdxddH4rYE9mcrkhTJsyPTFvSi
+   XtyU+6WIqfGVb1Ev/4EufMzDMsKR+di+mEweIKoR9rE2VWN5DjgP7kwf0
+   9AsyYnabz0/Tl9N+JvCsDWpULk+9m4H9EzbW7bY5Rz8AL94xL0ej9D3By
+   V1DLXa1KJQYTQQmz30VSK8gGkBDXjslSXsDrhTwI+FRuVV+iZWOd41Lw+
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4784069"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="4784069"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 02:16:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051535"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="937051535"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 02:16:03 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 11:16:02 +0200
+Date: Tue, 12 Mar 2024 11:16:02 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Krishna Kurapati <quic_kriskura@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Min-Hua Chen <minhuadotchen@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	quic_ppratap@quicinc.com, quic_jackp@quicinc.com,
+	quic_wcheng@quicinc.com, quic_subbaram@quicinc.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: ucsi: Fix race between typec_switch and
+ role_switch
+Message-ID: <ZfAdUhbsVpMVFmYJ@kuha.fi.intel.com>
+References: <20240301040914.458492-1-quic_kriskura@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.1 12/12] arm64: dts: Fix dtc interrupt_provider
- warnings
-To: Pavel Machek <pavel@ucw.cz>, Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Chanho Min <chanho.min@lge.com>, Arnd Bergmann <arnd@arndb.de>,
- tsahee@annapurnalabs.com, atenart@kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, rjui@broadcom.com,
- sbranden@broadcom.com, andrew@lunn.ch, gregory.clement@bootlin.com,
- sebastian.hesselbarth@gmail.com, matthias.bgg@gmail.com,
- magnus.damm@gmail.com, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org
-References: <20240229204039.2861519-1-sashal@kernel.org>
- <20240229204039.2861519-12-sashal@kernel.org> <Ze9x6qqGYdRiWy3h@duo.ucw.cz>
- <CAMuHMdX-ht_Vetq7+Xh0TqWOcnCdi=3d0VvfgXBF4ExtzGcRDg@mail.gmail.com>
- <ZfAUgYj0ksDmGuhN@amd.ucw.cz>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <ZfAUgYj0ksDmGuhN@amd.ucw.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240301040914.458492-1-quic_kriskura@quicinc.com>
 
-Il 12/03/24 09:38, Pavel Machek ha scritto:
-> Hi!
+On Fri, Mar 01, 2024 at 09:39:14AM +0530, Krishna Kurapati wrote:
+> When orientation switch is enabled in ucsi glink, there is a xhci
+> probe failure seen when booting up in host mode in reverse
+> orientation.
 > 
->>>> From: Rob Herring <robh@kernel.org>
->>>>
->>>> [ Upstream commit 91adecf911e5df78ea3e8f866e69db2c33416a5c ]
->>>>
->>>> The dtc interrupt_provider warning is off by default. Fix all the warnings
->>>> so it can be enabled.
->>>
->>> We don't have that warning in 6.1 and likely won't enable it, so we
->>> should not need this.
->>
->> Still, this fixes issues in DTS that were not noticed before because
->> the checks were disabled.
+> During bootup the following things happen in multiple drivers:
 > 
-> Is this patch known to fix user-visible behaviour?
+> a) DWC3 controller driver initializes the core in device mode when the
+> dr_mode is set to DRD. It relies on role_switch call to change role to
+> host.
 > 
+> b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
+> normal routine. It relies on the typec_switch_set call to get notified
+> of orientation changes.
+> 
+> c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
+> provides initial role switch to dwc3 controller.
+> 
+> When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
+> then we see the following things happening in order:
+> 
+> a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
+> Upon receiving this notification, the dwc3 core needs to program GCTL from
+> PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
+> Core soft reset and waits for it to be  completed before shifting it to
+> host. Only after the reset is done will the dwc3_host_init be invoked and
+> xhci is probed. DWC3 controller expects that the usb phy's are stable
+> during this process i.e., the phy init is already done.
+> 
+> b) During the 100ms wait for GCTL core soft reset, the actual notification
+> from PPM is received by ucsi_glink via pmic glink for changing role to
+> host. The pmic_glink_ucsi_notify routine first sends the orientation
+> change to QMP and then sends role to dwc3 via ucsi framework. This is
+> happening exactly at the time GCTL core soft reset is being processed.
+> 
+> c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
+> then re-programs the phy at the instant GCTL core soft reset has been
+> asserted by dwc3 controller due to which the QMP PLL lock fails in
+> qmp_combo_usb_power_on.
+> 
+> d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
+> goes for initializing the host mode and invokes xhci probe. But at this
+> point the QMP is non-responsive and as a result, the xhci plat probe fails
+> during xhci_reset.
+> 
+> Fix this by passing orientation switch to available ucsi instances if
+> their gpio configuration is available before ucsi_register is invoked so
+> that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
+> the lane is already configured and the call would be a NOP thus not racing
+> with role switch.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+> Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-No, doesn't fix any user-visible issue.
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Cheers,
-Angelo
+> ---
+>  drivers/usb/typec/ucsi/ucsi_glink.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+> index 0bd3f6dee678..466df7b9f953 100644
+> --- a/drivers/usb/typec/ucsi/ucsi_glink.c
+> +++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+> @@ -255,6 +255,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
+>  static void pmic_glink_ucsi_register(struct work_struct *work)
+>  {
+>  	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
+> +	int orientation;
+> +	int i;
+> +
+> +	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
+> +		if (!ucsi->port_orientation[i])
+> +			continue;
+> +		orientation = gpiod_get_value(ucsi->port_orientation[i]);
+> +
+> +		if (orientation >= 0) {
+> +			typec_switch_set(ucsi->port_switch[i],
+> +					 orientation ? TYPEC_ORIENTATION_REVERSE
+> +					     : TYPEC_ORIENTATION_NORMAL);
+> +		}
+> +	}
+>  
+>  	ucsi_register(ucsi->ucsi);
+>  }
+> -- 
+> 2.34.1
+
+-- 
+heikki
 
