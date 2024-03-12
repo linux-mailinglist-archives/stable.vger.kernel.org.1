@@ -1,309 +1,176 @@
-Return-Path: <stable+bounces-27540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD29879E5F
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:20:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998BE879EF8
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0E2C1C22200
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:20:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF13EB21EA9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF13214404B;
-	Tue, 12 Mar 2024 22:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57D914293;
+	Tue, 12 Mar 2024 22:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KnmzIyws"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1AE144035;
-	Tue, 12 Mar 2024 22:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C713541740
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 22:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710282016; cv=none; b=rQnW7/I6Ay/bPxtI0YY3HwJblaEXIR/uVM8D5kzH/WM4kQM0AJzn5k0NAzdHKTbZgdsw2Ld+yDZ0l9uTQ7ZHniHO8N67rIXzEWXQz6pWlsfhC1zxqREsNmJn0NzAhwrAzZByGJItSvuYRu2C02dgrCGxRYESYB3VjsTFXf9Zi0s=
+	t=1710283225; cv=none; b=Uc0VKAh2lOLtky85WaIyCJ541FILW3MRbvXx5EEaLzUVWuPgaZ9ypJZV1h/B5uFU3ZGOKI5Jid/S4A6lUilj7K+QyNTGLf/ItwPh4z5dhLuZsBNN/62pt+ucqgt2IpSHA4zTb9prP+xvGShIUUBXQUvwtcOceFqvEOdQbbxPMTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710282016; c=relaxed/simple;
-	bh=iTw5kR7kfBMzMXiIiBL42jbAINeWjxv9L/l8ib0Ty8s=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=dTmD2VS+njrl2TRaMCCDaijh+tSlKvbCvP/YFttl38rCB0c25IPR+f8P7HQ0WSI/W05RWYcAuSpQtoCtf32dN/NQEEj8HZS9v/rAhCemJNxiCJwZInLrr3dwmYtoWVTN2FgJJ2+DkFqOluRiiq46iuqcM1r3/3PStEAarjJlWtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A3AC43601;
-	Tue, 12 Mar 2024 22:20:16 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1rkAVr-000000022Ly-3yWY;
-	Tue, 12 Mar 2024 18:22:23 -0400
-Message-ID: <20240312222223.814675113@goodmis.org>
-User-Agent: quilt/0.67
-Date: Tue, 12 Mar 2024 18:21:04 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linke li <lilinke99@qq.com>,
- Rabin Vincent <rabin@rab.in>
-Subject: [for-linus][PATCH 5/5] tracing/ring-buffer: Fix wait_on_pipe() race
-References: <20240312222059.823191689@goodmis.org>
+	s=arc-20240116; t=1710283225; c=relaxed/simple;
+	bh=3f3nXXhzc4vFZZb7ejI9cUV6A/VdCzD/nL3BfKIlEA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=lUNx886uupeh6lBtGR8AGw/8jSxE4x7DavfLcE56wPGapmSiI1ba9iagEXcATzdPUzhheNUIVk5l99gSUcpLIIQEu9LvxMos7apgbtNBnIyFcnv4htf1DnoCRdXFOd0SX82ZIT5LdG70oSNJLOITqC2UqQuyFmILyIH9nL7Nw04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KnmzIyws; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710283224; x=1741819224;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=3f3nXXhzc4vFZZb7ejI9cUV6A/VdCzD/nL3BfKIlEA0=;
+  b=KnmzIywsbxbxEdBOdZcNloAu3u8vKYN7XGSD434k63BWztQfcimUUTTt
+   IYxs4YtwGyyexVSX8JbJgXmLRV8QqAMoq0lSeCaTPCS1CLhEKFgepH4r7
+   86J+WCqkExZd4T90wpJ0PFC9ABPTfjk90v39DhlK6LAX/y2u48Xjcqunf
+   F/Wdp40FZnXgB4IgBvMKBrea+gDwSKuVhS6q+WfBTllcQ3vaR/u8gbUa5
+   h1xwHSlAhz8gxlfBx474w3ndGe82qQfk7KdWFJCAokxDLXcC4VsfhtyAl
+   07Nj+g3xW0IW+RAI/4sZdSOJfRPtJQ4/UGsBJXyq/NowU8RlyYrah+2Jz
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="22475815"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="22475815"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="12115969"
+Received: from arnabkar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.69.57])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:23 -0700
+Date: Tue, 12 Mar 2024 15:40:21 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Borislav Petkov <bp@suse.de>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.10.y v2 00/11] Delay VERW + RFDS 5.10.y backport
+Message-ID: <20240312-delay-verw-backport-5-10-y-v2-0-ad081ccd89ca@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAE3Z8GUC/33NwQqDMBAE0F+RPXfDGhPBnvofxUPUtYZalcSmB
+ vHfG6TnHmcG3uzg2Vn2cM12cByst/OUgrxk0A5mejDaLmWQJBUVpLDj0UQM7D7YmPa5zG5FjTl
+ hRCJjurJShewVJGBx3NvtxO+gRU4iQp36wfp1dvH8DPm5/nj9jw85EmpqeqUlV2VjbqOd3puw0
+ 8qjaOcX1MdxfAG71+pW0gAAAA==
+X-Mailer: b4 0.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+v2:
+- This includes the backport of recently upstreamed mitigation of a CPU
+  vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746).
+  This is because RFDS has a dependency on "Delay VERW" series, and it
+  is convenient to merge them together.
+- rebased to v5.10.212
 
-When the trace_pipe_raw file is closed, there should be no new readers on
-the file descriptor. This is mostly handled with the waking and wait_index
-fields of the iterator. But there's still a slight race.
+v1: https://lore.kernel.org/r/20240305-delay-verw-backport-5-10-y-v1-0-50bf452e96ba@linux.intel.com
 
-     CPU 0                              CPU 1
-     -----                              -----
-                                   wait_index++;
-   index = wait_index;
-                                   ring_buffer_wake_waiters();
-   wait_on_pipe()
-     ring_buffer_wait();
+This is the backport of recently upstreamed series that moves VERW
+execution to a later point in exit-to-user path. This is needed because
+in some cases it may be possible for data accessed after VERW executions
+may end into MDS affected CPU buffers. Moving VERW closer to ring
+transition reduces the attack surface.
 
-The ring_buffer_wait() will miss the wakeup from CPU 1. The problem is
-that the ring_buffer_wait() needs the logic of:
+- The series includes a dependency commit f87bc8dc7a7c ("x86/asm: Add
+  _ASM_RIP() macro for x86-64 (%rip) suffix").
 
-        prepare_to_wait();
-        if (!condition)
-                schedule();
+- Patch 2 includes a change that adds runtime patching for jmp (instead
+  of verw in original series) due to lack of rip-relative relocation
+  support in kernels <v6.5.
 
-Where the missing condition check is the iter->wait_index update.
+- Fixed warning:
+  arch/x86/entry/entry.o: warning: objtool: mds_verw_sel+0x0: unreachable instruction.
 
-Have the ring_buffer_wait() take a conditional callback function and a
-data parameter that can be used within the wait_event_interruptible() of
-the ring_buffer_wait() function.
+- Resolved merge conflicts in:
+	syscall_return_via_sysret in entry_64.S
+	swapgs_restore_regs_and_return_to_usermode in entry_64.S.
+	__vmx_vcpu_run in vmenter.S.
+	vmx_update_fb_clear_dis in vmx.c.
 
-In wait_on_pipe(), pass a condition function that will check if the
-wait_index has been updated, if it has, it will return true to break out
-of the wait_event_interruptible() loop.
+- Boot tested with KASLR and KPTI enabled.
 
-Create a new field "closed" in the trace_iterator and set it in the
-.flush() callback before calling ring_buffer_wake_waiters().
-This will keep any new readers from waiting on a closed file descriptor.
+- Verified VERW being executed with mitigation ON.
 
-Have the wait_on_pipe() condition callback also check the closed field.
+To: stable@vger.kernel.org
 
-Change the wait_index field of the trace_iterator to atomic_t. There's no
-reason it needs to be 'long' and making it atomic and using
-atomic_read_acquire() and atomic_fetch_inc_release() will provide the
-necessary memory barriers.
-
-Add a "woken" flag to tracing_buffers_splice_read() to exit the loop after
-one more try to fetch data. That is, if it waited for data and something
-woke it up, it should try to collect any new data and then exit back to
-user space.
-
-Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wgsNgewHFxZAJiAQznwPMqEtQmi1waeS2O1v6L4c_Um5A@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240312121703.557950713@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linke li <lilinke99@qq.com>
-Cc: Rabin Vincent <rabin@rab.in>
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- include/linux/ring_buffer.h  |  3 ++-
- include/linux/trace_events.h |  5 ++++-
- kernel/trace/ring_buffer.c   | 13 ++++++-----
- kernel/trace/trace.c         | 43 ++++++++++++++++++++++++++----------
- 4 files changed, 45 insertions(+), 19 deletions(-)
+H. Peter Anvin (Intel) (1):
+      x86/asm: Add _ASM_RIP() macro for x86-64 (%rip) suffix
 
-diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
-index 338a33db1577..dc5ae4e96aee 100644
---- a/include/linux/ring_buffer.h
-+++ b/include/linux/ring_buffer.h
-@@ -99,7 +99,8 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
- })
- 
- typedef bool (*ring_buffer_cond_fn)(void *data);
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full,
-+		     ring_buffer_cond_fn cond, void *data);
- __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full);
- void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu);
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index d68ff9b1247f..fc6d0af56bb1 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -103,13 +103,16 @@ struct trace_iterator {
- 	unsigned int		temp_size;
- 	char			*fmt;	/* modified format holder */
- 	unsigned int		fmt_size;
--	long			wait_index;
-+	atomic_t		wait_index;
- 
- 	/* trace_seq for __print_flags() and __print_symbolic() etc. */
- 	struct trace_seq	tmp_seq;
- 
- 	cpumask_var_t		started;
- 
-+	/* Set when the file is closed to prevent new waiters */
-+	bool			closed;
-+
- 	/* it's true when current open file is snapshot */
- 	bool			snapshot;
- 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index f4c34b7c7e1e..350607cce869 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -902,23 +902,26 @@ static bool rb_wait_once(void *data)
-  * @buffer: buffer to wait on
-  * @cpu: the cpu buffer to wait on
-  * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ * @cond: condition function to break out of wait (NULL to run once)
-+ * @data: the data to pass to @cond.
-  *
-  * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-  * as data is added to any of the @buffer's cpu buffers. Otherwise
-  * it will wait for data to be added to a specific cpu buffer.
-  */
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full,
-+		     ring_buffer_cond_fn cond, void *data)
- {
- 	struct ring_buffer_per_cpu *cpu_buffer;
- 	struct wait_queue_head *waitq;
--	ring_buffer_cond_fn cond;
- 	struct rb_irq_work *rbwork;
--	void *data;
- 	long once = 0;
- 	int ret = 0;
- 
--	cond = rb_wait_once;
--	data = &once;
-+	if (!cond) {
-+		cond = rb_wait_once;
-+		data = &once;
-+	}
- 
- 	/*
- 	 * Depending on what the caller is waiting for, either any
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index c9c898307348..d390fea3a6a5 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1955,15 +1955,36 @@ update_max_tr_single(struct trace_array *tr, struct task_struct *tsk, int cpu)
- 
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
-+struct pipe_wait {
-+	struct trace_iterator		*iter;
-+	int				wait_index;
-+};
-+
-+static bool wait_pipe_cond(void *data)
-+{
-+	struct pipe_wait *pwait = data;
-+	struct trace_iterator *iter = pwait->iter;
-+
-+	if (atomic_read_acquire(&iter->wait_index) != pwait->wait_index)
-+		return true;
-+
-+	return iter->closed;
-+}
-+
- static int wait_on_pipe(struct trace_iterator *iter, int full)
- {
-+	struct pipe_wait pwait;
- 	int ret;
- 
- 	/* Iterators are static, they should be filled or empty */
- 	if (trace_buffer_iter(iter, iter->cpu_file))
- 		return 0;
- 
--	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full);
-+	pwait.wait_index = atomic_read_acquire(&iter->wait_index);
-+	pwait.iter = iter;
-+
-+	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full,
-+			       wait_pipe_cond, &pwait);
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	/*
-@@ -8398,9 +8419,9 @@ static int tracing_buffers_flush(struct file *file, fl_owner_t id)
- 	struct ftrace_buffer_info *info = file->private_data;
- 	struct trace_iterator *iter = &info->iter;
- 
--	iter->wait_index++;
-+	iter->closed = true;
- 	/* Make sure the waiters see the new wait_index */
--	smp_wmb();
-+	(void)atomic_fetch_inc_release(&iter->wait_index);
- 
- 	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
- 
-@@ -8500,6 +8521,7 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 		.spd_release	= buffer_spd_release,
- 	};
- 	struct buffer_ref *ref;
-+	bool woken = false;
- 	int page_size;
- 	int entries, i;
- 	ssize_t ret = 0;
-@@ -8573,17 +8595,17 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 
- 	/* did we read anything? */
- 	if (!spd.nr_pages) {
--		long wait_index;
- 
- 		if (ret)
- 			goto out;
- 
-+		if (woken)
-+			goto out;
-+
- 		ret = -EAGAIN;
- 		if ((file->f_flags & O_NONBLOCK) || (flags & SPLICE_F_NONBLOCK))
- 			goto out;
- 
--		wait_index = READ_ONCE(iter->wait_index);
--
- 		ret = wait_on_pipe(iter, iter->snapshot ? 0 : iter->tr->buffer_percent);
- 		if (ret)
- 			goto out;
-@@ -8592,10 +8614,8 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 		if (!tracer_tracing_is_on(iter->tr))
- 			goto out;
- 
--		/* Make sure we see the new wait_index */
--		smp_rmb();
--		if (wait_index != iter->wait_index)
--			goto out;
-+		/* Iterate one more time to collect any new data then exit */
-+		woken = true;
- 
- 		goto again;
- 	}
-@@ -8618,9 +8638,8 @@ static long tracing_buffers_ioctl(struct file *file, unsigned int cmd, unsigned
- 
- 	mutex_lock(&trace_types_lock);
- 
--	iter->wait_index++;
- 	/* Make sure the waiters see the new wait_index */
--	smp_wmb();
-+	(void)atomic_fetch_inc_release(&iter->wait_index);
- 
- 	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
- 
+Pawan Gupta (9):
+      x86/bugs: Add asm helpers for executing VERW
+      x86/entry_64: Add VERW just before userspace transition
+      x86/entry_32: Add VERW just before userspace transition
+      x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
+      KVM/VMX: Move VERW closer to VMentry for MDS mitigation
+      x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
+      Documentation/hw-vuln: Add documentation for RFDS
+      x86/rfds: Mitigate Register File Data Sampling (RFDS)
+      KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
+
+Sean Christopherson (1):
+      KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../admin-guide/hw-vuln/reg-file-data-sampling.rst | 104 ++++++++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  21 ++++
+ Documentation/x86/mds.rst                          |  38 +++++---
+ arch/x86/Kconfig                                   |  11 +++
+ arch/x86/entry/entry.S                             |  23 +++++
+ arch/x86/entry/entry_32.S                          |   3 +
+ arch/x86/entry/entry_64.S                          |  10 ++
+ arch/x86/entry/entry_64_compat.S                   |   1 +
+ arch/x86/include/asm/asm.h                         |   5 +
+ arch/x86/include/asm/cpufeatures.h                 |   2 +
+ arch/x86/include/asm/entry-common.h                |   1 -
+ arch/x86/include/asm/irqflags.h                    |   1 +
+ arch/x86/include/asm/msr-index.h                   |   8 ++
+ arch/x86/include/asm/nospec-branch.h               |  27 +++---
+ arch/x86/kernel/cpu/bugs.c                         | 107 ++++++++++++++++++---
+ arch/x86/kernel/cpu/common.c                       |  38 +++++++-
+ arch/x86/kernel/nmi.c                              |   3 -
+ arch/x86/kvm/vmx/run_flags.h                       |   7 +-
+ arch/x86/kvm/vmx/vmenter.S                         |   9 +-
+ arch/x86/kvm/vmx/vmx.c                             |  12 ++-
+ arch/x86/kvm/x86.c                                 |   5 +-
+ drivers/base/cpu.c                                 |   8 ++
+ include/linux/cpu.h                                |   2 +
+ 25 files changed, 394 insertions(+), 54 deletions(-)
+---
+base-commit: 7cfcd0ed929b28ff6942c2bee15816d08d6f7266
+change-id: 20240304-delay-verw-backport-5-10-y-00aad69432f4
+
+Best regards,
 -- 
-2.43.0
+Thanks,
+Pawan
 
 
 
