@@ -1,74 +1,75 @@
-Return-Path: <stable+bounces-27484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C05879AC3
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:40:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC85A879AD6
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED3E284CBD
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:40:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9550628406F
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6753D1386AE;
-	Tue, 12 Mar 2024 17:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EF41386B9;
+	Tue, 12 Mar 2024 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="W+TkKQkE"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="LyOMGNti"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81670137C24
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D73940864
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710265214; cv=none; b=sFW0GnUrfcv+lYiAmiNSkseqWQFfMFTjO/LFhuH7JkL+EFS+/KeHmAZF45rk1gw0JGbjVCK71YBF4tBLErQqFGfvdY8pRTsZhgtN7LId0AwKUQuT5ACMprHpEAnt0qJE8VM58ltJilHwRWdeSu3JxXg6Jt76ny1b3sy16dqXLRU=
+	t=1710266078; cv=none; b=BAbteqG7rIpPDGvpLdH3GfjVaNxUdMrWLzR/5pirBousZx8Rlhqog/toOPmUxEoek3AVn7oeU+XDjQ3eiAPmu+oJbZNtsHoqtGJDM5olBm5MoUFPSscJYyx3j3k3a6u/eQV1aaeABY7q6WVKo8R+wT/nhDBqCMQGp+aPymtMbGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710265214; c=relaxed/simple;
-	bh=JuEmybPeAFM2LXxM+nRHiwifY+hWL0Xv8pXcFAmrED0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XPM0olSHyqpLPVMBIUELjDB3j8q7ZItPKnihIBt2Y4NL31LgdriA7igtghVZZR95CKjW8OFIcP5y+ZPqpbmvlLlDzXUEDUqr73fpCv+bAkDWVpa3MD9d/N5WXyLQFMsPFc0qIG7eCK2R/d5jVXSTKrvnqp+5D7r7gORuv+WCsc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=W+TkKQkE; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4d35666c4bcso41445e0c.0
-        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 10:40:12 -0700 (PDT)
+	s=arc-20240116; t=1710266078; c=relaxed/simple;
+	bh=1dMqk2JDvIME7s9z3lYxtaHNAky6PAHnCcMJUONdnAM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=l6Z0CTnARKgHJZ3AHQNRcKcThZuyF31CcD5C/DQPZnmcN8M+OUIIjDChz+ddIfIH+6pV4GObBOhuttWZEzjB0c295+clPMNZXwJTB4vJcZWRGSQqGdaMyJHVIcFZVfJhSZ72pfpn4FUxaLMQU+ukFAhpx2Ec3oy8N4tngeXLxHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=LyOMGNti; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1dd6d4832dcso8021095ad.0
+        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 10:54:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1710265211; x=1710870011; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1710266075; x=1710870875; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mpw2E4SJc0M22jdFp92JFgYe9UBmYMEBdWoo4cjNNVw=;
-        b=W+TkKQkEpb4Zao7wbb1+ptCv8+DxRgNs96EbQF5pnz/Pc6z5D33oRxC7TFLehvC+bN
-         aWaB9clofrKyENEW/60uHOKEY1XLPuOd9LnzWlZAODLh8flucAbCEy+rsPpOo0M2qwjr
-         D+8g88+XPDURVFqQvWtzICvkx47p1ZRNJ6kBWkmhUcHw99TRgOvUCrJrx3WFDzDHIAVA
-         fj7aEflJ7gGJk9eDCRT/1AdPo25In50/x/+49ZQy07rpbLva+kyM0YFjCrxA/2+nNkF+
-         w/wO+V5CbWOAE+sVMAkWZ1OZhFMma0DK1kwQdq7YLBf1ZN1f9GQpdp+5VvlP07S+vH9b
-         lHWg==
+        bh=7Lc1k3V9a/jyoMl1MPlT4vJVEugebv8lX4qr+r+dj/4=;
+        b=LyOMGNtib6fhUmht/Y2QKIU68g7NV8cMONB0Qy4GSngMWqYVgwmKDUwA4litHJ1DQd
+         G44O4t6Hn7Hh49ueRaIaCY222dMtELYMOZDe3YR2Fd6vnCuzK6ScJQRRlKEUmN0e6nid
+         dbZhDWk0hHFcbZGdQ9fNlppbkUmTNgOj4Ah+OF4TzmSbRBCWgMn8W/HnfOfQ3TdYxHJO
+         TeNtcXfLzsYJRJdtZNvJeg5prcBo3fDn/l1FNDuQmok08hZ4dcUM4Gn0GmKP8huR9GDB
+         mL9CJ8ky5E729+61Lz6JzFwkmQMI+EBrFzVnbMEpZfrF9hR4dHCxSaNcG815bUlcTn3m
+         6JfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710265211; x=1710870011;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=1e100.net; s=20230601; t=1710266075; x=1710870875;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mpw2E4SJc0M22jdFp92JFgYe9UBmYMEBdWoo4cjNNVw=;
-        b=NGDMcjyWFsjpdm5h8HFcp8Dl7EvQGwQsP9Haptbx2OL7H1HJrKMtG7Qizk6WDFehks
-         hz+hLCnm7XrFML2mbZPL0SB5BroaANJrtzemGGnFF7MRC8PV+heZTHq6IircTilpXudm
-         ZWw/d1tOc7CIgZZt539Fuhoshf6gINL87byu5gxIU+5EG6GL4MIBFswwqQKEyAdlTYlD
-         vtXnzXbYv3hMgW9vM4zilc+BHwasmEAi8lnQF/MJ5KmOuNkJkuRjBdgRQA+oB+dYfxRi
-         0BlXGqY981k/Uiy1IUUwaL2Uyu9Vur1aG6P37wJmeOWGs1o9RsKnTSVKX9HuZSjM063K
-         AL/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWN6TQudJIuXlvBQ5Uw2Kzca2FYF4Unp2s725YhzsHy5uCGuFN3cewQTwRdDh0+DzkwcsqQUGOYAq054PQTYnjr+cnszvid
-X-Gm-Message-State: AOJu0YxnOLCAujw03Z4X+Ewa8vXM6Du1TcneC7kwrloOKHQzkNhOxW7J
-	kJE/VJIWYWqbjPytv4+JJ4RR3pvNkXfL4VZ2bS2mX6GBuDkpgTaaes0y8kly9xc=
-X-Google-Smtp-Source: AGHT+IEd4hdtpXCmBTFIuQSY5VdumAtaZdC3rn4gdZrVXmnlmWQRxKpf+oJQ07k7pUQvySNuNaMayA==
-X-Received: by 2002:a1f:7d07:0:b0:4d3:4aad:1b9c with SMTP id y7-20020a1f7d07000000b004d34aad1b9cmr911341vkc.0.1710265211052;
-        Tue, 12 Mar 2024 10:40:11 -0700 (PDT)
-Received: from [100.64.0.1] ([170.85.8.176])
-        by smtp.gmail.com with ESMTPSA id j6-20020a0cc346000000b0068f6e1c3582sm3790897qvi.146.2024.03.12.10.40.09
+        bh=7Lc1k3V9a/jyoMl1MPlT4vJVEugebv8lX4qr+r+dj/4=;
+        b=OiGzxjtvRzUaRXuRtEiiAq3S/pz9Hnnr6tLw9AQiB/TKOzJt+bahxCEnaeGlcdYIG+
+         iZ++7qH+y+DcvhkLJvuTM4/KeZkl/H6Y1TvHqy9W2Ch2SVRBeOrx+g9Fhk/10pthNzTU
+         A2Ambn7OFzM7npKnEOh59UqKHqv0o0Z2tLUv+KppAh5ch5tiV0+hfzzLpdumOaHYoQ0a
+         tw1ZRyJVTnTzabykRj4rH+y3ATtQYMEDRn+k1NsEAhaR1GGlX1YEfdY5sJxMdeya+8oz
+         uFktxASrlPuK5UF2Fw0sCjKN5vXVjeUaQxnY5/AmGCJ6Op48s8Z0apSv0S5pLhi62qrV
+         czIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVzajF6i+W5d249ac34BC8DnejjgbD27/Ox9pxu7FCHxuKar/97GnWiNeHCo8dxIm8SqKXDqhHq5KuaVjUqk8yjQoNIAVRK
+X-Gm-Message-State: AOJu0Yym8mFZxiU0p8SxHPKCbLcUS7+Ea0TxYMb7mnt/oco41l3ocHak
+	SiYBEN6VlK7Bct316tqjucOu7XAj6Gg2JEVx4xy2hzLiAKRnAw0wSkTe50K7sEvHso+NouUqWNj
+	e
+X-Google-Smtp-Source: AGHT+IFU7Wcw3x+gYZo9ooLBLSB40PkntNMm1FYmyQCfzwq08peolf7EsabpWj4e6VcNcbf/cLTDVg==
+X-Received: by 2002:a17:902:8a91:b0:1dd:7350:29f6 with SMTP id p17-20020a1709028a9100b001dd735029f6mr2507951plo.3.1710266075395;
+        Tue, 12 Mar 2024 10:54:35 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.194])
+        by smtp.gmail.com with ESMTPSA id kj14-20020a17090306ce00b001dd3bc79142sm7004708plb.264.2024.03.12.10.54.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 10:40:10 -0700 (PDT)
-Message-ID: <f9cc5817-234e-4612-acbb-29977e0da760@sifive.com>
-Date: Tue, 12 Mar 2024 12:40:09 -0500
+        Tue, 12 Mar 2024 10:54:34 -0700 (PDT)
+Message-ID: <085beb85-d1a4-4cb0-969b-e0f895a95738@kernel.dk>
+Date: Tue, 12 Mar 2024 11:54:33 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,47 +77,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] clocksource: timer-riscv: Clear timer interrupt on
- timer initialization
+Subject: Re: [PATCH 5.10/5.15] io_uring: fix registered files leak
 Content-Language: en-US
-To: Ley Foon Tan <leyfoon.tan@starfivetech.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>
-Cc: atishp@rivosinc.com, Anup Patel <apatel@ventanamicro.com>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- Ley Foon Tan <lftan.linux@gmail.com>, stable@vger.kernel.org
-References: <20240306172330.255844-1-leyfoon.tan@starfivetech.com>
-From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <20240306172330.255844-1-leyfoon.tan@starfivetech.com>
+From: Jens Axboe <axboe@kernel.dk>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org,
+ Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+ Roman Belyaev <belyaevrd@yandex.ru>
+References: <20240312142313.3436-1-pchelkin@ispras.ru>
+ <8a9993c7-fd4d-44ff-8971-af59c7f3052c@kernel.dk>
+ <466e842f-66c6-4530-8c16-2b008fc3fbc6-pchelkin@ispras.ru>
+ <fb57be64-4da6-418b-9369-eae0db42a570@kernel.dk>
+In-Reply-To: <fb57be64-4da6-418b-9369-eae0db42a570@kernel.dk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2024-03-06 11:23 AM, Ley Foon Tan wrote:
-> In the RISC-V specification, the stimecmp register doesn't have a default
-> value. To prevent the timer interrupt from being triggered during timer
-> initialization, clear the timer interrupt by writing stimecmp with a
-> maximum value.
+On 3/12/24 9:21 AM, Jens Axboe wrote:
+> On 3/12/24 9:14 AM, Fedor Pchelkin wrote:
+>> On 24/03/12 08:34AM, Jens Axboe wrote:
+>>> On 3/12/24 8:23 AM, Fedor Pchelkin wrote:
+>>
+>> [...]
+>>
+>>>> I feel io_uring-SCM related code should be dropped entirely from the
+>>>> stable branches as the backports already differ greatly between versions
+>>>> and some parts are still kept, some have been dropped in a non-consistent
+>>>> order. Though this might contradict with stable kernel rules or be
+>>>> inappropriate for some other reason.
+>>>
+>>> Looks fine to me, and I agree, it makes much more sense to drop it all
+>>> from 5.10/5.15-stable as well to keep them in sync with upstream. And I
+>>> think this is fine for stable, dropping code is always a good thing.
+>>>
+>>
+>> Alright, got it. So that would require dropping it from all of the
+>> supported 5.4, 6.1, 6.6, 6.7, too.
+>>
+>> Would it be okay if I'll send this as a series?
 > 
-> Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-> 
-> ---
-> v3:
-> Resolved comment from Samuel Holland.
-> - Function riscv_clock_event_stop() needs to be called before
->   clockevents_config_and_register(), move riscv_clock_event_stop().
-> 
-> v2:
-> Resolved comments from Anup.
-> - Moved riscv_clock_event_stop() to riscv_timer_starting_cpu().
-> - Added Fixes tag
-> ---
->  drivers/clocksource/timer-riscv.c | 3 +++
->  1 file changed, 3 insertions(+)
+> Yeah I think so, keeping the code more in sync is always a good thing
+> when it comes to stable. Just make sure you mark the backport commits
+> with the appropriate upstream shas. Thanks!
 
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Tested-by: Samuel Holland <samuel.holland@sifive.com>
+I'll just do these backports myself, thanks for bringing it up.
+
+-- 
+Jens Axboe
 
 
