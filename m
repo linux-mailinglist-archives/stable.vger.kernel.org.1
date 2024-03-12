@@ -1,71 +1,69 @@
-Return-Path: <stable+bounces-27486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBD9879ADC
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CDB879ADD
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3B11C22536
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BC451F22897
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB4B1386B1;
-	Tue, 12 Mar 2024 17:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFB01386BB;
+	Tue, 12 Mar 2024 17:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DoDk9Z9T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ac2/sc4W"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7651386B5
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C91386B5
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710266131; cv=none; b=BF02dIZbUxgM3hFcQecOeHWGQmwEu++y9rmBZYS6DpxY5Xmhz/12JcTacLF5F2/U0EmF35PLRkjtMjSV06Wydv8BpsEigcd4K8iO1AEYa+ka6ZU8+dUikunUSKaTQjInMH/vIfTe36BRg4iRD99bvohu51RhFwfULwg7cGKtnx8=
+	t=1710266136; cv=none; b=dcTNwgB3iVhhjyew96O/Gp75DuT3dPK0WduHH0VNmz91PC7svDKH/1EAPOTduDJvBbzB5e/GPTGI1J+4bxB+Nti2BHI//1HDyF7udhh6Xe781zQZS5aGtxZUgZ+PPAO4i4i//+719aNUIRqOXL95QJdfLlaYiBZ6gB1zNm1cDNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710266131; c=relaxed/simple;
-	bh=XJjKSI0f6uv8S1DrFTLFjXSBJLOzRijfecjdEL3/ltA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ItZ1wUOiQqAeQ4J8dJWVkErU4iSYJjhTFqqFjKirzloCAba3AlCNrgL5SWoSNAvELPJqZrkfvgVGal5gA53UH1TacoUfzI+N5eJNYTXwp4xu0EzgVd2vTy3blz35zuoWXLMi5dWnksrj/c9bPsVdEHR0tfpdzjE82akFENJKMBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DoDk9Z9T; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1710266136; c=relaxed/simple;
+	bh=9bLlE36uQTDhTz8hAxTHZSsMKNGhdNf0Jmi/XbXdbGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hp/WunjOlRcGsysiefCt0oB28O6g1vbenTNeAYInHBgzMGfYTOEkQgBy6OfhdnkLfj1eEnkf+ZyZXPk1iNKxPoYNqX2xGbXUlMGWecwf1atJDZDEC77orNvEeq6bbB2uc+cor2VxKXsy807XNyUQk9xVtgoz2vH7bhMYX4vxzlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ac2/sc4W; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710266130; x=1741802130;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=XJjKSI0f6uv8S1DrFTLFjXSBJLOzRijfecjdEL3/ltA=;
-  b=DoDk9Z9TP2u6R1Fms44LOGBoGqV+JYgeW+2K4TY0a4uJwIffwWBUeHcu
-   PptvRGjBxfOojxfDZ+024nEOy2sFgHjXx7qkpE91/dIgt8ojKAwTxSPLk
-   SO2DsfQM+aJM6w2/KHYFNFUYiYeXHudEr+/EmAUWWfGuwRhC6Mj0Cnsya
-   SfqwA/yU089Zg8vCeysqGRVvsPI43hBoK5TzX1sR4COLYM/m+DzA8kcDo
-   3mKGnNA12ZUGIxvixUZQH4MHh6GaMAVqwWx8OjHc2h/CeCKAQlrW4LP6m
-   nBje0dv4BwQs3pZN7zZHr9y+tCk3KSXbkShrzwV34LYYZYEWA7lbyLzoO
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="22444338"
+  t=1710266135; x=1741802135;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9bLlE36uQTDhTz8hAxTHZSsMKNGhdNf0Jmi/XbXdbGo=;
+  b=ac2/sc4WqYmZVXTin8OZ6YaDVmgOzRqJVuu0xAnqe08FRyNLx3IeBYOE
+   KV3sIy1eeGsz7a5T2XxYSO716Sa9Kx5LieXxsJQuZ+KeOB+1IbpSIDhmI
+   2rQB5LkOmdntG0MtfJlqvGQPJj70mopg/oi/qw90x1QaxRsS9jyfMlDlb
+   X6BFlLnryr8+SbPxob/N2ayPliAYpKXE4AhFFWgaw1Y9tTdgoE729rbvA
+   9HRy3fcIU4+waXLpRpkxvjb1vjDYDGkXhc+rmdPrFZEIDrCgQV92Ylvlc
+   GbORoXn1IUXhHKggiwotA0BG0LUimEEeOS4CZzZrhbqqpYSU0voJvGdPJ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5598567"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="22444338"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 10:55:29 -0700
+   d="scan'208";a="5598567"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 10:55:35 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="16222860"
+   d="scan'208";a="11713167"
 Received: from arnabkar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.69.57])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 10:55:28 -0700
-Date: Tue, 12 Mar 2024 10:55:27 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 10:55:34 -0700
+Date: Tue, 12 Mar 2024 10:55:33 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 0/4] RFDS backport 6.8.y
-Message-ID: <20240312-rfds-backport-6-8-y-v1-0-d4ab515a4b4f@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIADKV8GUC/x3MSwqAMAwA0atI1gZs/eJVxIU2qQZBJRVRxLtbX
- L7FzAOBVThAmzygfEqQbY0waQJuHtaJUSgabGaLLDcW1VPAcXDLvumBFTZ4I1U1OfJccGkglru
- yl+u/dv37fhvTcIhlAAAA
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 1/4] x86/mmio: Disable KVM mitigation when
+ X86_FEATURE_CLEAR_CPU_BUF is set
+Message-ID: <20240312-rfds-backport-6-8-y-v1-1-d4ab515a4b4f@linux.intel.com>
 X-Mailer: b4 0.12.3
+References: <20240312-rfds-backport-6-8-y-v1-0-d4ab515a4b4f@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,46 +72,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240312-rfds-backport-6-8-y-v1-0-d4ab515a4b4f@linux.intel.com>
 
-This is a backport of recently upstreamed mitigation of a CPU
-vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746). It
-has a dependency on "Delay VERW" series which is already present in
-v6.8.
+commit e95df4ec0c0c9791941f112db699fae794b9862a upstream.
 
-v6.8 just got released so the backport was very smooth.
+Currently MMIO Stale Data mitigation for CPUs not affected by MDS/TAA is
+to only deploy VERW at VMentry by enabling mmio_stale_data_clear static
+branch. No mitigation is needed for kernel->user transitions. If such
+CPUs are also affected by RFDS, its mitigation may set
+X86_FEATURE_CLEAR_CPU_BUF to deploy VERW at kernel->user and VMentry.
+This could result in duplicate VERW at VMentry.
 
-Cc: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+Fix this by disabling mmio_stale_data_clear static branch when
+X86_FEATURE_CLEAR_CPU_BUF is enabled.
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
-Pawan Gupta (4):
-      x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
-      Documentation/hw-vuln: Add documentation for RFDS
-      x86/rfds: Mitigate Register File Data Sampling (RFDS)
-      KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
+ arch/x86/kernel/cpu/bugs.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
- Documentation/admin-guide/hw-vuln/index.rst        |   1 +
- .../admin-guide/hw-vuln/reg-file-data-sampling.rst | 104 +++++++++++++++++++++
- Documentation/admin-guide/kernel-parameters.txt    |  21 +++++
- arch/x86/Kconfig                                   |  11 +++
- arch/x86/include/asm/cpufeatures.h                 |   1 +
- arch/x86/include/asm/msr-index.h                   |   8 ++
- arch/x86/kernel/cpu/bugs.c                         |  92 +++++++++++++++++-
- arch/x86/kernel/cpu/common.c                       |  38 +++++++-
- arch/x86/kvm/x86.c                                 |   5 +-
- drivers/base/cpu.c                                 |   3 +
- include/linux/cpu.h                                |   2 +
- 12 files changed, 278 insertions(+), 9 deletions(-)
----
-base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
-change-id: 20240312-rfds-backport-6-8-y-d67dcdfe4e51
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 48d049cd74e7..cd6ac89c1a0d 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -422,6 +422,13 @@ static void __init mmio_select_mitigation(void)
+ 	if (boot_cpu_has_bug(X86_BUG_MDS) || (boot_cpu_has_bug(X86_BUG_TAA) &&
+ 					      boot_cpu_has(X86_FEATURE_RTM)))
+ 		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
++
++	/*
++	 * X86_FEATURE_CLEAR_CPU_BUF could be enabled by other VERW based
++	 * mitigations, disable KVM-only mitigation in that case.
++	 */
++	if (boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
++		static_branch_disable(&mmio_stale_data_clear);
+ 	else
+ 		static_branch_enable(&mmio_stale_data_clear);
+ 
+@@ -498,8 +505,11 @@ static void __init md_clear_update_mitigation(void)
+ 		taa_mitigation = TAA_MITIGATION_VERW;
+ 		taa_select_mitigation();
+ 	}
+-	if (mmio_mitigation == MMIO_MITIGATION_OFF &&
+-	    boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
++	/*
++	 * MMIO_MITIGATION_OFF is not checked here so that mmio_stale_data_clear
++	 * gets updated correctly as per X86_FEATURE_CLEAR_CPU_BUF state.
++	 */
++	if (boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
+ 		mmio_mitigation = MMIO_MITIGATION_VERW;
+ 		mmio_select_mitigation();
+ 	}
 
-Best regards,
 -- 
-Thanks,
-Pawan
+2.34.1
 
 
 
