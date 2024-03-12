@@ -1,177 +1,182 @@
-Return-Path: <stable+bounces-27462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121968794D6
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 14:12:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC028794EF
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 14:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349D21C2171A
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 13:12:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8C1283EB9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 13:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0735914E;
-	Tue, 12 Mar 2024 13:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFvNsaN7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E507A154;
+	Tue, 12 Mar 2024 13:17:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A179811;
-	Tue, 12 Mar 2024 13:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE5F6997E;
+	Tue, 12 Mar 2024 13:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710249127; cv=none; b=cx7Kl30yfHNf0GcdIYCxi0ey/mASoKm27WrVTm2tAt/nXOVGV7weyFGauy336U+eb5YAi06QrRRIMPX2lEWj2r4SSV1dmaZ3FDlAwsTAcnJZOTq/8fj+4k9jp0Xbmnayyb1Y5XAmr69AaHQPefF7ph7Ua12KquHIJT6XhvVaaKM=
+	t=1710249466; cv=none; b=Gp1/EnvxFFvlREGs/oAyN9IufrVAKCEnkkzk1AqvUtpTu5CG8jeo2uMQXc2j0N1bbX9ppDpOdjhu4X+eIuRAlfflvlRj5nIEiXvYxxLJqNGPVVchnJEdWzIlJfP1TEsGFlQ4elQ2zI4tDt7DVX5jPHgwkXAlN6slDGS90C8I7xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710249127; c=relaxed/simple;
-	bh=HQmXSsmyUcj8tgSlEA+p2fWtbXGFRAy0mt/mVaVTx2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zf8TMCC5F/iy7E21+XtHurzdHc/7amCtpU0UdXaIexfgxsCHpyTIZHJfi03L6VPaBEM42y2jTiV3/GmGQQMWbpgqbNfs0Kw2grHpxLo0EBooP6Bbdv2pWdElPE3CCl/oVDXTf8a8sYYrkzir/pJkW7jn47V4kIWcwNbajzmOHSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFvNsaN7; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-33e92b3b5c9so2640514f8f.2;
-        Tue, 12 Mar 2024 06:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710249124; x=1710853924; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q+a7BPWzUxNuZnAXNJ4Uc90cX0RiZZroJoXZLVPXUqo=;
-        b=jFvNsaN7QKXeK03InC5Qw0DRlqk7CBZthm1/2At+VoQCd7WNttUh+jUB9FxkFp8gCm
-         +qsGHUmsGuYGBwDqNCjbOEd2nVQvJbPWhYFbknmbkdqg9hDfBFwW8UWeFg/UPyVguskx
-         G+cTilQ7O4rI4IYJnU+evgfBm0jnl9y6ifXAo98p5ZAcf8cighUXl6YQcFJkzJe4a5PL
-         Me7WGNoc3RTRO4Ljv0ZRR2tsnVEoNNqlSLMO5D3ptcBySwdCI+t3Yh2toSchGB6hnwQx
-         GIerR/92Y/fXYlslwIG6tUQf/Z9xoxOJSxL3Esc/qn9btnCBz/o06RoK9fBYaxByxbV+
-         7ijA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710249124; x=1710853924;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q+a7BPWzUxNuZnAXNJ4Uc90cX0RiZZroJoXZLVPXUqo=;
-        b=qTW09wiYCdylsQuTyLCAcJ2umUEYB5R6Y1/gZ7mLODE/Kw3x/QD9MD38g+ECS0YL9m
-         QfXpk4noWE6I9n7D/xlHDUbxycMvNE+ldCvF++lBx8WZbEDqcPtAx19eVYI26pnAxzgh
-         EWsosrSAsrkDDlocwhBsx0fhlcWIrtEBTFBzRD27K9dl+etH8wl6vYbeJ/0UUZ1mEdjL
-         RQd97ABxafrRQHc7vFEPfeezVQ4CJDljStoF+PD/s/wOHOPAOVPC4l4ApZZ8RYlH6Hkh
-         HiuDRuWA5scNA8IKdpsflLqA8RI6+PfIVtq5+wVEOwUGLa/ZtjkBDeCYLxr96YCfB0YY
-         l6ig==
-X-Forwarded-Encrypted: i=1; AJvYcCU/MBYpCduG375zoNvMI/PipD9m6mOEDVzuuGOUDkXXwJ5bg6QYlovJCIPKfHS12yecvrSHaGSdJfEypsvcTcICnuuBKJK+1K/cFJtXClsEKfXH5+8d7f4vVD6C893c2e1GfXE=
-X-Gm-Message-State: AOJu0Ywcw0kjVTVkPjcuwS3PyBrfL3WR5ejRlU5eNEHYtbHOz1OAatQR
-	RwWeihtZMnXcCuf35grTWAViVzIiVxh2omqNto8D5Wsg/G9UnBxY
-X-Google-Smtp-Source: AGHT+IFIN4QxCgPYlcLBTLVsJ9oo9tcjA0Zmai7qLH+/hSTttZx6bWp5xNfnKeL9o+npx+bY3pHRAg==
-X-Received: by 2002:a5d:604f:0:b0:33e:798f:6d1e with SMTP id j15-20020a5d604f000000b0033e798f6d1emr6508595wrt.37.1710249123767;
-        Tue, 12 Mar 2024 06:12:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e34:ec5f:c111:da0f:dec2:677b:7567? ([2a01:e34:ec5f:c111:da0f:dec2:677b:7567])
-        by smtp.gmail.com with ESMTPSA id g13-20020a05600c310d00b004131bb71c07sm12403772wmo.11.2024.03.12.06.12.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 06:12:03 -0700 (PDT)
-Message-ID: <64e1cd22-5536-4de1-b3e6-da83aad24a8b@gmail.com>
-Date: Tue, 12 Mar 2024 14:12:02 +0100
+	s=arc-20240116; t=1710249466; c=relaxed/simple;
+	bh=AA3vT42uXJUTEwQhKXY70OTOE0y5XchQ4pdvFf+D2J4=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=ahtqkF8ODKclxngUPIYTsVlOo3jmThWqJPcWVV/3q8a+doMvlt3xuRQCSf5136pia9gQzAQzYAxoIH0NExa+xNYMWO854nUm92dly3DEaH4KTK/rGM0gnpxDiYB3obI6luQd2v99bzWAJRqiYA465/xyTfXtMlas01U6xye6sXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4C3C43390;
+	Tue, 12 Mar 2024 13:17:46 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rk22q-00000001vJn-3HFz;
+	Tue, 12 Mar 2024 09:19:52 -0400
+Message-ID: <20240312131952.630922155@goodmis.org>
+User-Agent: quilt/0.67
+Date: Tue, 12 Mar 2024 09:19:20 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org
+Subject: [PATCH v2 1/2] ring-buffer: Fix full_waiters_pending in poll
+References: <20240312131919.314231457@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
-Content-Language: fr-FR, en-US
-To: Mikhail Khvoinitsky <me@khvoinitsky.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- Jiri Kosina <jikos@jikos.cz>,
- Linux Input Mailing List <linux-input@vger.kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Linux Stable Mailing List <stable@vger.kernel.org>
-References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
- <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
- <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
- <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com>
- <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
- <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
- <9db59ae4-be28-4ab3-a2ae-0b0f661f56be@gmail.com>
- <3bb95fcd-65cf-45dd-8d81-1a41b1ae0288@leemhuis.info>
- <CAMMabwNo_yT4S3LaMV16Rmj6MiWL=TRYtB9wspfs_LWVgM=U8Q@mail.gmail.com>
- <b30dc4a1-57aa-4ff5-ae52-7a01203b8be9@gmail.com>
- <CAMMabwNVwapthrDkCLOQsWkObzvTKVzDMiod3KPVa1hoy0CzRA@mail.gmail.com>
- <0d2b0c46-4d84-4279-8964-589d77435e6a@gmail.com>
- <9a55659c-86a6-4d9a-ab4f-94fbfb72e7c4@gmail.com>
- <CAMMabwMDvumbNOvFk3mdqXfprO_xy4gB5R0KangvzJatv8BhUw@mail.gmail.com>
-From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
-Autocrypt: addr=raphael.halimi@gmail.com; keydata=
- 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
- Wxcwwn0N
-In-Reply-To: <CAMMabwMDvumbNOvFk3mdqXfprO_xy4gB5R0KangvzJatv8BhUw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 
-Le 12/03/2024 à 14:05, Mikhail Khvoinitsky a écrit :
->> (I'm not sure of what you mean by "hi-res scrolling",
->> is it about 4K displays ?).
-> 
-> No, it's about scrolling not by a fixed amount of lines but by
-> individual pixels depending on how strongly you press the trackpoint.
-> More like modern touchpads work.
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-I didn't even know that the TrackPoint was pressure-sensitive :) I 
-quickly tested this (not with scrolling, only cursor movement) and 
-indeed, if I apply stronger pressure, the cursor moves faster. I never 
-noticed that. We learn something everyday.
+If a reader of the ring buffer is doing a poll, and waiting for the ring
+buffer to hit a specific watermark, there could be a case where it gets
+into an infinite ping-pong loop.
 
->> So as far as I'm concerned, this patch should be included ASAP in the
->> next kernels releases (both latest and stable).
-> 
-> Yes, as soon as it gets into master (given that 6.8 has just been
-> released it will be soon), I'll make sure it will be included in
-> stable (either automatically or manually).
+The poll code has:
 
-Perfect. Thank you for your work !
+  rbwork->full_waiters_pending = true;
+  if (!cpu_buffer->shortest_full ||
+      cpu_buffer->shortest_full > full)
+         cpu_buffer->shortest_full = full;
 
-Regards,
+The writer will see full_waiters_pending and check if the ring buffer is
+filled over the percentage of the shortest_full value. If it is, it calls
+an irq_work to wake up all the waiters.
 
+But the code could get into a circular loop:
+
+	CPU 0					CPU 1
+	-----					-----
+ [ Poll ]
+   [ shortest_full = 0 ]
+   rbwork->full_waiters_pending = true;
+					  if (rbwork->full_waiters_pending &&
+					      [ buffer percent ] > shortest_full) {
+					         rbwork->wakeup_full = true;
+					         [ queue_irqwork ]
+
+   cpu_buffer->shortest_full = full;
+
+					  [ IRQ work ]
+					  if (rbwork->wakeup_full) {
+					        cpu_buffer->shortest_full = 0;
+					        wakeup poll waiters;
+  [woken]
+   if ([ buffer percent ] > full)
+      break;
+   rbwork->full_waiters_pending = true;
+					  if (rbwork->full_waiters_pending &&
+					      [ buffer percent ] > shortest_full) {
+					         rbwork->wakeup_full = true;
+					         [ queue_irqwork ]
+
+   cpu_buffer->shortest_full = full;
+
+					  [ IRQ work ]
+					  if (rbwork->wakeup_full) {
+					        cpu_buffer->shortest_full = 0;
+					        wakeup poll waiters;
+  [woken]
+
+ [ Wash, rinse, repeat! ]
+
+In the poll, the shortest_full needs to be set before the
+full_pending_waiters, as once that is set, the writer will compare the
+current shortest_full (which is incorrect) to decide to call the irq_work,
+which will reset the shortest_full (expecting the readers to update it).
+
+Also move the setting of full_waiters_pending after the check if the ring
+buffer has the required percentage filled. There's no reason to tell the
+writer to wake up waiters if there are no waiters.
+
+Cc: stable@vger.kernel.org
+Fixes: 42fb0a1e84ff5 ("tracing/ring-buffer: Have polling block on watermark")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/ring_buffer.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index aa332ace108b..adfe603a769b 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -964,16 +964,32 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 		poll_wait(filp, &rbwork->full_waiters, poll_table);
+ 
+ 		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+-		rbwork->full_waiters_pending = true;
+ 		if (!cpu_buffer->shortest_full ||
+ 		    cpu_buffer->shortest_full > full)
+ 			cpu_buffer->shortest_full = full;
+ 		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+-	} else {
+-		poll_wait(filp, &rbwork->waiters, poll_table);
+-		rbwork->waiters_pending = true;
++		if (full_hit(buffer, cpu, full))
++			return EPOLLIN | EPOLLRDNORM;
++		/*
++		 * Only allow full_waiters_pending update to be seen after
++		 * the shortest_full is set. If the writer sees the
++		 * full_waiters_pending flag set, it will compare the
++		 * amount in the ring buffer to shortest_full. If the amount
++		 * in the ring buffer is greater than the shortest_full
++		 * percent, it will call the irq_work handler to wake up
++		 * this list. The irq_handler will reset shortest_full
++		 * back to zero. That's done under the reader_lock, but
++		 * the below smp_mb() makes sure that the update to
++		 * full_waiters_pending doesn't leak up into the above.
++		 */
++		smp_mb();
++		rbwork->full_waiters_pending = true;
++		return 0;
+ 	}
+ 
++	poll_wait(filp, &rbwork->waiters, poll_table);
++	rbwork->waiters_pending = true;
++
+ 	/*
+ 	 * There's a tight race between setting the waiters_pending and
+ 	 * checking if the ring buffer is empty.  Once the waiters_pending bit
+@@ -989,9 +1005,6 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 	 */
+ 	smp_mb();
+ 
+-	if (full)
+-		return full_hit(buffer, cpu, full) ? EPOLLIN | EPOLLRDNORM : 0;
+-
+ 	if ((cpu == RING_BUFFER_ALL_CPUS && !ring_buffer_empty(buffer)) ||
+ 	    (cpu != RING_BUFFER_ALL_CPUS && !ring_buffer_empty_cpu(buffer, cpu)))
+ 		return EPOLLIN | EPOLLRDNORM;
 -- 
-Raphaël Halimi
+2.43.0
+
+
 
