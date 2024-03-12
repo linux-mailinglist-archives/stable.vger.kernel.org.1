@@ -1,217 +1,170 @@
-Return-Path: <stable+bounces-27423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F175878ED1
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 07:29:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205C1878EFC
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 08:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FDAE1C21E9C
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 06:29:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0EC2B21095
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 07:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C7C3FB8E;
-	Tue, 12 Mar 2024 06:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAA469956;
+	Tue, 12 Mar 2024 07:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BAvnY2j1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MTbYQNFe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F30BE7D;
-	Tue, 12 Mar 2024 06:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED756C2FD;
+	Tue, 12 Mar 2024 07:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710224963; cv=none; b=ishCshaQNPNPoQxC2vGCQ/R29OnOs1XK4AdqSlUAdaQ2tG5y2/mz2U8l8unSru/x8UoLK7pJBxUfj3H1s4Tz1Fo4lO2bY8Rebh0qF5Zj6FbUrFBUeEONuP6srhHX9JQlXV+VXgBmBmOkgMtLsRBxjNgvwrb4Whxfcr9yGFHxNTw=
+	t=1710227165; cv=none; b=CgyFAF2SGs/NooUolIk5XVN0VxBeoFxKZ6cIZvZUZCedPUVqpXLa35Oi2t3ZPsZbtMCcb74/1hGMW2GiI5ojctf35di21GoPuEmAuXXjysnSFwd1EMDPAMVBJl9V1RDJm0LaiPhORnrf9EjCe+LdTlRl1LeDGyL6wi/PadJtWc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710224963; c=relaxed/simple;
-	bh=QoqZYy9lPfVpRgnuVW0vZgmrFe4O5UM+4bXUCtEpTg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TrO9WS15RzNApSJqYqFQQVNw7Gz9cSD6EA+SJ4y81IrgLaCc+ql9lLrN+34LjyAgrDGxg3Q5PeSZWTVNfD/6o+pYm4AWbiIRc+jdfvA+ZVHYxPHxBRoi3QaO8QiLbPP2i3NWfDYkuyYzRUapJHNSEU6rCY9QL6RX1a6QNsU/Zzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BAvnY2j1; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6e649a2548cso3536769b3a.3;
-        Mon, 11 Mar 2024 23:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710224961; x=1710829761; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pWqbglYQGjvnglnnweQhZidIduJU/3ZkKBz6DYUqscE=;
-        b=BAvnY2j1oKGSE/HLMd1Qj8RLQOuJW8AfIbmmFlDNfdw824iPsxllAUNF5qnQCxqevO
-         qioLfMsmGF0rnow2g/O23Yv84eB/d//GgXukB9VUyEBVzUY9/JDQoGqyrTOTPmivcnAJ
-         IzIIPrM2AHrNq7nPjyRy6uow3KVfuCd1JGO3cZ0n3hkoXNnmvv9IxTVA4boC/COL756z
-         ANAGxxM9ab3zLqCCmG+K1olL+MRS6Cb2LaocHEWI9TVV6kUEtWjHM+zmvAb7VhJp6Ad2
-         r/cS4tCoyW6GQPlsHnDkZ9Mm21IlBET99oEJGZQcO2fNuRERwdv1965mGDStAOaqMwSy
-         GX8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710224961; x=1710829761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pWqbglYQGjvnglnnweQhZidIduJU/3ZkKBz6DYUqscE=;
-        b=bEgaypEPcaDMd7rfwGvPzaOGSzWE3RRk7WUM9gIdf9n1tDgYmkEDecUMMMNSJl7TXf
-         jtjBFjazEagplHtvNi7AKvZ/15JBdAlVW/zNAIkjkgwv4Zy/Ah0IpFfZO8Xb0QXTMxe4
-         nMcEZnDvTMhGJQK6PhhERt5MzOg9mjCeygkSS0AV7nfjHrySE/5lcYN9xe7XhMjOIgd2
-         rRb6LH+MMdPEQ7EZhEx0phyLZzmx4BJXAdPJohwtGyFWLPqsNOGztO+3fWmdItUOZhU0
-         +Cs2wyKRdkpXvLX/mm4hZ4DLZ7xyZjf8LcisCWl+gsv5VCXJzmuDkYwI/t1jsN2P/zp+
-         j9kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXx0kKDWP0dd6iztWkB8PSlHyA2yPPfQ//3D3FkYJBmOueNml4ZBTlcDIHEhUthzXj4KBGk4D0mRNrqDA1NIv0DT46SPDsVV7ybQFZ4lzWQ0RiiOSOQWvXgIhuyzmonf/BlnKDuFxJ1EOSBj0q2WKMuzZPEeJ5Dg8jlLj7rRIMQ
-X-Gm-Message-State: AOJu0YxFYj/7qkMkbhtGJVo7llLU+TP1xJ9XbGjA1I9deRLbrU048jRH
-	MaPEfx1qQvmMHOv9C5UaRPyVT9l4BqNL6JUTkaJd6Ag6f893Zfzg
-X-Google-Smtp-Source: AGHT+IFxUymmrhttXmQOFbKXQ015dVs+uZ7Vq1h3E1+dxY/w/pmG5TZyaOSqoRAkGgbiu6lAZn0ZmA==
-X-Received: by 2002:a05:6a00:1944:b0:6e5:89f3:298b with SMTP id s4-20020a056a00194400b006e589f3298bmr12854131pfk.13.1710224961050;
-        Mon, 11 Mar 2024 23:29:21 -0700 (PDT)
-Received: from guoguo-thinkbook.lan ([2a09:bac5:1efd:16d2::246:a0])
-        by smtp.gmail.com with ESMTPSA id o2-20020a629a02000000b006e5736e9e46sm5593292pfe.42.2024.03.11.23.29.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 23:29:20 -0700 (PDT)
-From: Chuanhong Guo <gch981213@gmail.com>
-To: Johan Hovold <johan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Chuanhong Guo <gch981213@gmail.com>,
-	stable@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] USB: serial: option: add support for Fibocom FM650/FG650
-Date: Tue, 12 Mar 2024 14:29:12 +0800
-Message-ID: <20240312062913.12723-1-gch981213@gmail.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710227165; c=relaxed/simple;
+	bh=JocwIlLZjm9gCYFghV8+dAjoZOh1i8sXxt+NJb3kdU4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=f317CTnrmFq0ClQl+c2a56aZDtJCR5AqbWFYv2V7Tpgx/kEbZDRZkdukTktZ+j1ts4bZOL3IhpzrMcfdU0v1NJs17DbXyU2WIDuOhlgPdoluC/jtXNYupldPRoFmSJvvpgKE3bH31Xn7tpcFQX5XaNMVS6lSH54ZfRy89DV6Uj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MTbYQNFe; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42C6Hj1p024963;
+	Tue, 12 Mar 2024 07:05:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=wH+mvWcyy2v9McJVwf0Nnv0Qi7tO2fnY7lw9wytsMe8=; b=MT
+	bYQNFeeRbZp+eh+OiG1mTRIpRJ6Kryc0pXGcHaKOcJH2gzFwraAjC8cz6repyNs4
+	YF1zx2a9ee0nGep5lIMPHulz8G0qVZ8eTvUug9N6pSICr0JyldHpksp0mg9MhTPK
+	5XxDuNyTndyKYHPoowhyUAMvAizgyjvR6TrLeigeuNWnwVgnTJqGJF5n8GJ2wFip
+	Jsrvn4AnLPOD76VpvEC+WU4HWPVffDnakz0ufOINbXK2F7VFY09Jf3nfoYoDAROl
+	wAn1kXncYY80oAmya0+UhcLkPaOAJuL9DFxou2nO7jKJEQC014PUOKx3r4a3x39s
+	tz7S8OVrnpMY1xp3qIFQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wtfwn08g5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 07:05:56 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42C75tc4011990
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 07:05:55 GMT
+Received: from [10.214.18.146] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Mar
+ 2024 00:05:53 -0700
+Message-ID: <2521790d-2676-43af-bdac-76043fd63dd6@quicinc.com>
+Date: Tue, 12 Mar 2024 12:35:46 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] soc: qcom: mdt_loader: Add Upperbounds check for
+ program header access
+From: Auditya Bhattaram <quic_audityab@quicinc.com>
+To: Bjorn Andersson <andersson@kernel.org>
+CC: <konrad.dybcio@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240213080010.16924-1-quic_audityab@quicinc.com>
+ <y6em73mzbh47fzpgfvfsrypw5ktgt6zaqfujscaxkjuqivlxcr@vcke7w4omq7b>
+ <38e6cf32-78fc-4a5a-a98c-18b126bdf50f@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <38e6cf32-78fc-4a5a-a98c-18b126bdf50f@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: nZv5UbID9omxc2EP9MeKPXrrWihXnuOz
+X-Proofpoint-GUID: nZv5UbID9omxc2EP9MeKPXrrWihXnuOz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_06,2024-03-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403120053
 
-Fibocom FM650/FG650 are 5G modems with ECM/NCM/RNDIS/MBIM modes.
-This patch adds support to all 4 modes.
 
-usb-devices output for all modes:
 
-ECM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a04 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+On 2/14/2024 11:27 AM, Auditya Bhattaram wrote:
+> 
+> 
+> On 2/14/2024 11:12 AM, Bjorn Andersson wrote:
+>> On Tue, Feb 13, 2024 at 01:30:10PM +0530, Auditya Bhattaram wrote:
+>>> hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
+>>> is found. Add an upperbound check to phdrs to access within elf size.
+>>>
+>>
+>> How is this compatible with what is being observed on SM8450 and
+>> implemented in commit 8bd42e2341a7 ("soc: qcom: mdt_loader: Allow hash
+>> segment to be split out"?
+>>
+>> Regards,
+>> Bjorn
+>>
+> 
+> Calculating hash_index is introduced with this commit 8bd42e2341a7 
+> ("soc: qcom: mdt_loader: Allow hash segment to be split out"
+> 
+>      for (i = 1; i < ehdr->e_phnum; i++) {
+>       if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) ...
+> 
+> I'm trying to add an upper bound for this access "phdrs[i]"
+> 
 
-NCM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a05 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0d Prot=00 Driver=cdc_ncm
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=01 Driver=cdc_ncm
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Any further questions on this Bjorn.
 
-RNDIS:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a06 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-MBIM:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  7 Spd=5000 MxCh= 0
-D:  Ver= 3.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0a07 Rev=04.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=FG650 Module
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=c0 MxPwr=504mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/usb/serial/option.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 55a65d941ccb..964d3fffa545 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2277,6 +2277,10 @@ static const struct usb_device_id option_ids[] = {
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a04, 0xff) },			/* Fibocom FM650-CN (ECM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
--- 
-2.44.0
-
+>>> Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in 
+>>> any segment")
+>>> Cc: <stable@vger.kernel.org>
+>>> Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
+>>> Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+>>> ---
+>>> Changes in v4:
+>>>   - Added additional prints incase of Invalid access.
+>>> Link to v3 
+>>> https://lore.kernel.org/stable/1c91c653-cebe-4407-bdd6-cfc73b64c0fb@quicinc.com
+>>> Link to v2 
+>>> https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
+>>> Link to v1 
+>>> https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
+>>> ---
+>>>   drivers/soc/qcom/mdt_loader.c | 7 +++++++
+>>>   1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/drivers/soc/qcom/mdt_loader.c 
+>>> b/drivers/soc/qcom/mdt_loader.c
+>>> index 6f177e46fa0f..1a79a7bba468 100644
+>>> --- a/drivers/soc/qcom/mdt_loader.c
+>>> +++ b/drivers/soc/qcom/mdt_loader.c
+>>> @@ -145,6 +143,13 @@ void *qcom_mdt_read_metadata(const struct 
+>>> firmware *fw, size_t *data_len,
+>>>       if (phdrs[0].p_type == PT_LOAD)
+>>>           return ERR_PTR(-EINVAL);
+>>>
+>>> +    if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + 
+>>> fw->size)) {
+>>> +        dev_err(dev,
+>>> +            "Invalid phdrs access for fw: %s, e_phnum: %u, fw->size: 
+>>> %zu\n",
+>>> +            fw_name, ehdr->e_phnum, fw->size);
+>>> +        return ERR_PTR(-EINVAL);
+>>> +    }
+>>> +
+>>>       for (i = 1; i < ehdr->e_phnum; i++) {
+>>>           if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == 
+>>> QCOM_MDT_TYPE_HASH) {
+>>>               hash_segment = i;
+>>> -- 
+>>> 2.17.1
+>>>
 
