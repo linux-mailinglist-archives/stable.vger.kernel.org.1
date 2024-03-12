@@ -1,143 +1,164 @@
-Return-Path: <stable+bounces-27467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E9C879679
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:35:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CC0879724
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 16:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520091C20D07
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 14:35:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E25AB20BC7
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A577AE52;
-	Tue, 12 Mar 2024 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C9C7BB08;
+	Tue, 12 Mar 2024 15:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="groIalZQ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AW6CvO8p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF251DFCE
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 14:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F0678286
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710254085; cv=none; b=GYqpFrnAHL3ipFYdTSZ1E1xBbCgr3Ufd/J+KVQhwkMU97kuaNQMOBRR2VpJy6LHLLZZutq2M5ucuXJxWwCdb3Fi53yS7gmgwik5uEFdF9JimbVmsDnCFSmf2ymqxH14yuDZr4EThVUjn7Rw3bNv3MxLNPvVP4hlh+Q1Vgj6CfU4=
+	t=1710256046; cv=none; b=i6oEZo7sbfw/K596zEBawF2vtLKwaK+F+oC1xA6jIhoM6wjWN0E3qt3qFng8vGNad9+M0bTwt9uBYJaxEuTd3Soc6/gJ1KX3hKrx4pbwaceg/S0ArRp1qyWk/hcPplUtAdUbKc68DAwHPL/UEJwJzV5tgwxn1MaVHdTulJpSI5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710254085; c=relaxed/simple;
-	bh=cXh3uEsgWMI8iZusOPz9HdPAX+leG9wjwQ9vb4XC4vE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F9DuFpnNcQPT3NrKgbmMoQTuZeqjCv1eNCfueMDaqVooNVckjeK+tQVRcQSc8NVV1Lb1cOQN9fh42bNEdWRDZX6+KSga8NB2tv0mULkcO39H+ZqYyCm1Ol8Kr4+pGneS4X9hWVOi4vfZrw++8CwU1jc+cBjDmUi+uPROEDukBO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=groIalZQ; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6e693adc8a2so273647b3a.1
-        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 07:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1710254082; x=1710858882; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MzzmKMopoCRQwM8a7mNzAcigvxiHAg2EWip7lmqWvzY=;
-        b=groIalZQcyiVJwNREciuCO+9Sq6vGaaFVANzHujV980JGPrKTOZIzhx0SsPBP7SpBk
-         /G+WK/cBQO1i0AJveQtuzt/QfGvE7BqRExr6tIJHnh4kzqCqY/RzN1eNMbwsv80dU8oT
-         jLjWD4SziWWQdKDgXL1KsFZ9KqazFOZbgRIgQlp9KLxe7gSxR4N7KQWgjQRVjpzcRuu4
-         Q1Ffdtg7ifplLpDR0f2ezSLqjFEtBT0b5E8Y2Kz+bJpADkuWaPmcUjuKGiXhVlwasrDz
-         FsGtSW91l2ue5yNSehfO8PjJvMvIITL3VgmI9xGVdZs5MzXAtcCx45SR81DGqgcsILLJ
-         DNDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710254082; x=1710858882;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MzzmKMopoCRQwM8a7mNzAcigvxiHAg2EWip7lmqWvzY=;
-        b=Wyq/NTa10xan6RyxzJvHq0faNZU8bIWsoJLUSTiBWNeBbFkEgwTS5Uje0beIA+0neL
-         7PjvZFPQDhWmGkYSkuyC5b0B0BU+Cvo8TIOMSDNDXJiaof0htDdDNWedjMR9F2BbqUX8
-         MGOwk/HaDSgxABLpwwtgpC8uBZaSzP9BiOMTcZ/P5G37KxyLsALsOcVAFhFFM/igmmQH
-         qUQ/5cZhNjR8zOMIunHJUMadQ2kyNDun25IbYuSZTZ989nyuJcyrk5VH64M3wnWYEeY5
-         u+jlikBUPC2UNwVnjsIuYnkUOYrrUw6TiCxvx9DmwoGPiG9TUiatWluMW4GuFXZzVkPz
-         xouA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjTaEoM7ekpny6nBvmsCIDNxHLSP0un8jgbEhUmXCrXYhi6pLKmM2EjlpcWiFu3H4ZjO5gZfBQ/J6ccUARE00kXq33gf8w
-X-Gm-Message-State: AOJu0YyTFkwt2bOeMPmPqba/fyMcis5ZL/MTbd8RUExD6ttSCt0jshuh
-	FIYYnalii7Zcm6B3/EpVAJiYQGhioKPzqtB4RPj5CBEnK3QtJm9snKv8CxoH49Q=
-X-Google-Smtp-Source: AGHT+IFDcI8mS2gs9NO0X5lrcuBm9Bmac4hHIKD3R57tXZnBo1tuk7q6bjTSHz+jRGAp0khnB4GNIQ==
-X-Received: by 2002:a05:6a00:2384:b0:6e6:13ec:7170 with SMTP id f4-20020a056a00238400b006e613ec7170mr12480717pfc.0.1710254081762;
-        Tue, 12 Mar 2024 07:34:41 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c085:21d6::1197? ([2620:10d:c090:400::5:d2d7])
-        by smtp.gmail.com with ESMTPSA id v129-20020a626187000000b006e6988c64a5sm3312432pfb.208.2024.03.12.07.34.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 07:34:41 -0700 (PDT)
-Message-ID: <8a9993c7-fd4d-44ff-8971-af59c7f3052c@kernel.dk>
-Date: Tue, 12 Mar 2024 08:34:39 -0600
+	s=arc-20240116; t=1710256046; c=relaxed/simple;
+	bh=4wEPk3ucT1MSdnEYfIIbwGnz4T5dazUC9VXCvGosiDk=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=isgo+eaQSALFI5urtP3ccdS05ykC17OGHsSbTtLOR5/GSxxYJRrX1RSRxVzwcGZBlpplPum541zVn2JV1iPxxwVfiig1bHt8ktJeIFJ4kChSp9nCDqMEFvhnE7tdXZTpWJKSfWu2uQHnoqq+KUBJfb6PvSfYo5JrVjhnA8t6Av0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AW6CvO8p; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CE42Q2019520
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:07:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=W1umPr9bOpZhWNhvzeQQArY4S4sjpYhMXY60kQzIvwA=;
+ b=AW6CvO8pocQ1wRDGnf7or/talK/+LZukouU5cDPpGSCiAJCPRUbv9E2jr0F21ub919X7
+ 7u0OseiEao+XI8wQULig//5oaxY3+eM9sNJDKII/21g1Higxg3fVgq9+Kp2w8pl0K+Sf
+ tZnTijpz3wB6Yg0Z3N2EZtYOIkRFRFqu7pZN6I71xO8rEmv9RTvMSThIvlj6QZXKdWj2
+ AhuWuT9kD+ucF5ADePgaTiHlspCM6FXiqsOVDUELLao7YmaaFcKOZAhRJ2J39KxS/d9S
+ Rm4AjzUe2S1NEzLSDIFv4FtcbdhQu2CcL1b5TIBIGLItuAe10/HO1ZP4o+U9xfNKARrA ZQ== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wrfcuea6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:07:17 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 42CDnwsT037708
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:07:16 GMT
+Received: from localhost.localdomain (dhcp-10-191-130-14.vpn.oracle.com [10.191.130.14])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3wre77bm83-1
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:07:16 +0000
+From: Imran Khan <imran.f.khan@oracle.com>
+To: stable@vger.kernel.org
+Subject: [PATCH v4.14, v4.19, v5.4, v5.10, v5.15] igb: free up irq resources in device shutdown path.
+Date: Wed, 13 Mar 2024 02:07:13 +1100
+Message-Id: <20240312150713.3231723-1-imran.f.khan@oracle.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10/5.15] io_uring: fix registered files leak
-Content-Language: en-US
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Pavel Begunkov <asml.silence@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org,
- Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
- Roman Belyaev <belyaevrd@yandex.ru>
-References: <20240312142313.3436-1-pchelkin@ispras.ru>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20240312142313.3436-1-pchelkin@ispras.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_10,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 adultscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403120115
+X-Proofpoint-ORIG-GUID: vPigWvcww17F9qb_Sj4jobUutzGMxz7x
+X-Proofpoint-GUID: vPigWvcww17F9qb_Sj4jobUutzGMxz7x
 
-On 3/12/24 8:23 AM, Fedor Pchelkin wrote:
-> No upstream commit exists for this patch.
-> 
-> Backport of commit 705318a99a13 ("io_uring/af_unix: disable sending
-> io_uring over sockets") introduced registered files leaks in 5.10/5.15
-> stable branches when CONFIG_UNIX is enabled.
-> 
-> The 5.10/5.15 backports removed io_sqe_file_register() calls from
-> io_install_fixed_file() and __io_sqe_files_update() so that newly added
-> files aren't passed to UNIX-related skbs and thus can't be put during
-> unregistering process. Skbs in the ring socket receive queue are released
-> but there is no skb having reference to the newly updated file.
-> 
-> In other words, when CONFIG_UNIX is enabled there would be no fput() when
-> files are unregistered for the corresponding fget() from
-> io_install_fixed_file() and __io_sqe_files_update().
-> 
-> Drop several code paths related to SCM_RIGHTS as a partial change from
-> commit 6e5e6d274956 ("io_uring: drop any code related to SCM_RIGHTS").
-> This code is useless in stable branches now, too, but is causing leaks in
-> 5.10/5.15.
-> 
-> As stated above, the affected code was removed in upstream by
-> commit 6e5e6d274956 ("io_uring: drop any code related to SCM_RIGHTS").
-> 
-> Fresher stables from 6.1 have io_file_need_scm() stub function which
-> usage is effectively equivalent to dropping most of SCM-related code.
-> 
-> 5.4 seems not to be affected with this problem since SCM-related
-> functions have been dropped there by the backport-patch.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: 705318a99a13 ("io_uring/af_unix: disable sending io_uring over sockets")
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
-> I feel io_uring-SCM related code should be dropped entirely from the
-> stable branches as the backports already differ greatly between versions
-> and some parts are still kept, some have been dropped in a non-consistent
-> order. Though this might contradict with stable kernel rules or be
-> inappropriate for some other reason.
+[ Upstream commit 9fb9eb4b59acc607e978288c96ac7efa917153d4 ]
 
-Looks fine to me, and I agree, it makes much more sense to drop it all
-from 5.10/5.15-stable as well to keep them in sync with upstream. And I
-think this is fine for stable, dropping code is always a good thing.
+systems, using igb driver, crash while executing poweroff command
+as per following call stack:
 
+crash> bt -a
+PID: 62583    TASK: ffff97ebbf28dc40  CPU: 0    COMMAND: "poweroff"
+ #0 [ffffa7adcd64f8a0] machine_kexec at ffffffffa606c7c1
+ #1 [ffffa7adcd64f900] __crash_kexec at ffffffffa613bb52
+ #2 [ffffa7adcd64f9d0] panic at ffffffffa6099c45
+ #3 [ffffa7adcd64fa50] oops_end at ffffffffa603359a
+ #4 [ffffa7adcd64fa78] die at ffffffffa6033c32
+ #5 [ffffa7adcd64faa8] do_trap at ffffffffa60309a0
+ #6 [ffffa7adcd64faf8] do_error_trap at ffffffffa60311e7
+ #7 [ffffa7adcd64fbc0] do_invalid_op at ffffffffa6031320
+ #8 [ffffa7adcd64fbd0] invalid_op at ffffffffa6a01f2a
+    [exception RIP: free_msi_irqs+408]
+    RIP: ffffffffa645d248  RSP: ffffa7adcd64fc88  RFLAGS: 00010286
+    RAX: ffff97eb1396fe00  RBX: 0000000000000000  RCX: ffff97eb1396fe00
+    RDX: ffff97eb1396fe00  RSI: 0000000000000000  RDI: 0000000000000000
+    RBP: ffffa7adcd64fcb0   R8: 0000000000000002   R9: 000000000000fbff
+    R10: 0000000000000000  R11: 0000000000000000  R12: ffff98c047af4720
+    R13: ffff97eb87cd32a0  R14: ffff97eb87cd3000  R15: ffffa7adcd64fd57
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #9 [ffffa7adcd64fc80] free_msi_irqs at ffffffffa645d0fc
+ #10 [ffffa7adcd64fcb8] pci_disable_msix at ffffffffa645d896
+ #11 [ffffa7adcd64fce0] igb_reset_interrupt_capability at ffffffffc024f335 [igb]
+ #12 [ffffa7adcd64fd08] __igb_shutdown at ffffffffc0258ed7 [igb]
+ #13 [ffffa7adcd64fd48] igb_shutdown at ffffffffc025908b [igb]
+ #14 [ffffa7adcd64fd70] pci_device_shutdown at ffffffffa6441e3a
+ #15 [ffffa7adcd64fd98] device_shutdown at ffffffffa6570260
+ #16 [ffffa7adcd64fdc8] kernel_power_off at ffffffffa60c0725
+ #17 [ffffa7adcd64fdd8] SYSC_reboot at ffffffffa60c08f1
+ #18 [ffffa7adcd64ff18] sys_reboot at ffffffffa60c09ee
+ #19 [ffffa7adcd64ff28] do_syscall_64 at ffffffffa6003ca9
+ #20 [ffffa7adcd64ff50] entry_SYSCALL_64_after_hwframe at ffffffffa6a001b1
+
+This happens because igb_shutdown has not yet freed up allocated irqs and
+free_msi_irqs finds irq_has_action true for involved msi irqs here and this
+condition triggers BUG_ON.
+
+Freeing irqs before proceeding further in igb_clear_interrupt_scheme,
+fixes this problem.
+
+Signed-off-by: Imran Khan <imran.f.khan@oracle.com>
+---
+
+This issue does not happen in v5.17 or later kernel versions because
+'commit 9fb9eb4b59ac ("PCI/MSI: Let core code free MSI descriptors")',
+explicitly frees up MSI based irqs and hence indirectly fixes this issue
+as well. Also this is why I have mentioned this commit as equivalent
+upstream commit. But this upstream change itself is dependent on a bunch
+of changes starting from 'commit 288c81ce4be7 ("PCI/MSI: Move code into a 
+separate directory")', which refactored msi driver into multiple parts.
+So another way of fixing this issue would be to backport these patches and
+get this issue implictly fixed.
+Kindly let me know if my current patch is not acceptable and in that case
+will it be fine if I backport the above mentioned msi driver refactoring
+patches to LST.
+ 
+
+ drivers/net/ethernet/intel/igb/igb_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 7c42a99be5065..5b59fb65231ba 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -107,6 +107,7 @@ static int igb_setup_all_rx_resources(struct igb_adapter *);
+ static void igb_free_all_tx_resources(struct igb_adapter *);
+ static void igb_free_all_rx_resources(struct igb_adapter *);
+ static void igb_setup_mrqc(struct igb_adapter *);
++static void igb_free_irq(struct igb_adapter *adapter);
+ static int igb_probe(struct pci_dev *, const struct pci_device_id *);
+ static void igb_remove(struct pci_dev *pdev);
+ static int igb_sw_init(struct igb_adapter *);
+@@ -1080,6 +1081,7 @@ static void igb_free_q_vectors(struct igb_adapter *adapter)
+  */
+ static void igb_clear_interrupt_scheme(struct igb_adapter *adapter)
+ {
++	igb_free_irq(adapter);
+ 	igb_free_q_vectors(adapter);
+ 	igb_reset_interrupt_capability(adapter);
+ }
 -- 
-Jens Axboe
+2.34.1
 
 
