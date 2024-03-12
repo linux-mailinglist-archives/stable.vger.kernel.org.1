@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-27431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37375879043
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:04:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0B887905D
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A77A1F22000
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:04:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED7B6B21545
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2BD77F1E;
-	Tue, 12 Mar 2024 09:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05A777F2C;
+	Tue, 12 Mar 2024 09:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jviAa95p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AfLpJMkF"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A6077F11;
-	Tue, 12 Mar 2024 09:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7191077A03;
+	Tue, 12 Mar 2024 09:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710234240; cv=none; b=nQqBoJgydakRRnJhWh92ygs03qtSLwo1DWD1jnfBDR5qwzDRG43gnH5TkCVNtJQFEwwFHNMt8TDfRk2PnBeI041Blv3nsXgEo5PQH+diNSkISKH/wCle/71zvUIfqBlOXQ7z54yHIb5BKLhtHJAHY6Oe8dEChIO+relhGg4DuEs=
+	t=1710234389; cv=none; b=envz9VZ5SC9a4PBIgL0GdQe0R2e5PzRFDVIhnCvg4/5zshoHLVRPnAlwEob4riL4u8F/A7TraPfawepK+rWiY9uiK3eb2wKng5ZrnDgSxc/s8OLKpkm8mvu0WQKvCFtZTyunxx/8Ic+sVWymFhqWpHv++6GKGzabYXUonbumUaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710234240; c=relaxed/simple;
-	bh=W4G5BhdxZmlJ41Wnqy5XXt4T0CHK1owb8sqTcX8e2nM=;
+	s=arc-20240116; t=1710234389; c=relaxed/simple;
+	bh=CdCjIk0bgMmKT5rhRO2SSXtQNGEFBKH06lI9dt9QC9o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uwrmxo/n8cF6ES8BI0iM+y2icxW7It43dd2O1xwcxBLYC4q1hHGdREGkJ4tlh9zDYVLwImRrCxpr9/0UZhU0+D2h8hSuHgPtHhQ7lmkgHCU3zjKK/meabrGIA0htpA/QfuTw2Q65Qzh4Y+MXpyQi8PNIrtkF6EOmPwWGzVxZi5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jviAa95p; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=jkEDiM8hbDg1m+M8+QUtoBnS15roCjF/vOoECXNns0Rb1WUYig3NzpZEsKvvyE7UEjJrlOTXmcRgeCqXBK5cNkows04FAhwHEYOv8QIKH3tA3RDyjQSSijrTBfmwvuGV/wUz6GZzIy/AYuHhwk7RcT85FqVJaCHYGCLvWrIMaYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AfLpJMkF; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710234239; x=1741770239;
+  t=1710234388; x=1741770388;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=W4G5BhdxZmlJ41Wnqy5XXt4T0CHK1owb8sqTcX8e2nM=;
-  b=jviAa95p/3SuASUx4a5hRBF1Mvz0y3IqK/Z2KpCm6NFBXQoYOTZPXbSt
-   bSYXOYjKDzZUfWQ+o7L32AHpS4VMV5WqOsYBqtiTvHqu5gJ9ATGYHqNtk
-   0Yzju4IKCOR+nav3ZGaZTIphwEkJmFKUw7tlD8dbAzoV1mKMe969XegrG
-   v1SQHXzxXo2t+GCbad490i5GdFTnuWqb/uUJh9GH4C+JIBkfB0jqzDMWV
-   40HQiBUrjopj/q0ChOs1lt46HpGeuFBZYwyifTY0q4P7UxFMSpSg5lCEE
-   zlyycoWZqNbpecySHhYMyKSo6/fsSICooBJybzvyoUAfC6oaXUrYi0qWy
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4782826"
+  bh=CdCjIk0bgMmKT5rhRO2SSXtQNGEFBKH06lI9dt9QC9o=;
+  b=AfLpJMkFDvf4zkGWTNwEomoUZIbr6mQEeUSnDkp9vXPwK783PSCTQqfx
+   JDfU41mzi6qDAWfcqr33A15djELq07FsvxYSJgRe2Qq00fMFm6fQXTeBJ
+   DkbwWeazRknt3CB7D7ISShOyp8g/i3zO0SEeY9PyrNysW1suRXAyVJb1M
+   QWAwrlLGHwonCKqJZn2Z75ByKTEW6+tk7Ntg0Ut32Ng8LpY07R/TiqCbM
+   pTxj+8cpP9I56KgOnn5n83Ox3Sl2s/go9meD3PrHzG9FmlD283NeZaB8C
+   Pw1UkMwqU2qyHVgH19nIrTnkHAWCHjVWlmLVZmxM8UyA26OeX7MfKKwyS
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4783119"
 X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="4782826"
+   d="scan'208";a="4783119"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 02:03:58 -0700
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 02:06:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051515"
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="937051515"
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051516"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="937051516"
 Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 02:03:54 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 11:03:53 +0200
-Date: Tue, 12 Mar 2024 11:03:53 +0200
+  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 02:06:24 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 11:06:23 +0200
+Date: Tue, 12 Mar 2024 11:06:23 +0200
 From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
+To: RD Babiera <rdbabiera@google.com>
+Cc: gregkh@linuxfoundation.org, badhri@google.com,
 	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rdbabiera@google.com, amitsd@google.com, stable@vger.kernel.org,
-	frank.wang@rock-chips.com, broonie@kernel.org
-Subject: Re: [PATCH v2] usb: typec: tpcm: Fix PORT_RESET behavior for self
- powered devices
-Message-ID: <ZfAaea3+HJ0P2zXn@kuha.fi.intel.com>
-References: <20240228000512.746252-1-badhri@google.com>
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: typec: altmodes/displayport: create sysfs nodes
+ as driver's default device attribute group
+Message-ID: <ZfAbDxq1yGfUdHo/@kuha.fi.intel.com>
+References: <20240229001101.3889432-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,64 +74,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240228000512.746252-1-badhri@google.com>
+In-Reply-To: <20240229001101.3889432-2-rdbabiera@google.com>
 
-On Wed, Feb 28, 2024 at 12:05:12AM +0000, Badhri Jagan Sridharan wrote:
-> While commit 69f89168b310 ("usb: typec: tpcm: Fix issues with power being
-> removed during reset") fixes the boot issues for bus powered devices such
-> as LibreTech Renegade Elite/Firefly, it trades off the CC pins NOT being
-> Hi-Zed during errory recovery (i.e PORT_RESET) for devices which are NOT
-> bus powered(a.k.a self powered). This change Hi-Zs the CC pins only for
-> self powered devices, thus preventing brown out for bus powered devices
+On Thu, Feb 29, 2024 at 12:11:02AM +0000, RD Babiera wrote:
+> The DisplayPort driver's sysfs nodes may be present to the userspace before
+> typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+> a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+> hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+> NULL in those cases.
 > 
-> Adhering to spec is gaining more importance due to the Common charger
-> initiative enforced by the European Union.
+> Remove manual sysfs node creation in favor of adding attribute group as
+> default for devices bound to the driver. The ATTRIBUTE_GROUPS() macro is
+> not used here otherwise the path to the sysfs nodes is no longer compliant
+> with the ABI.
 > 
-> Quoting from the spec:
->     4.5.2.2.2.1 ErrorRecovery State Requirements
->     The port shall not drive VBUS or VCONN, and shall present a
->     high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
-> 
-> Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
-> CC pins are set to default state after tErrorRecovery in
-> PORT_RESET_WAIT_OFF.
-> 
->     4.5.2.2.2.2 Exiting From ErrorRecovery State
->     A Sink shall transition to Unattached.SNK after tErrorRecovery.
->     A Source shall transition to Unattached.SRC after tErrorRecovery.
-> 
-> Fixes: 69f89168b310 ("usb: typec: tpcm: Fix issues with power being removed during reset")
+> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
 > Cc: stable@vger.kernel.org
-> Cc: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
 > ---
-> Changes since V1:
-> * Fix CC for linux stable
+> Changes from v1:
+> * Moved sysfs node creation instead of NULL checking dev_get_drvdata().
+> Changes from v2:
+> * Removed manual sysfs node creation, now added as default device group in
+> driver.
 > ---
->  drivers/usb/typec/tcpm/tcpm.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/usb/typec/altmodes/displayport.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index c9a78f55ca48..bbe1381232eb 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -5593,8 +5593,11 @@ static void run_state_machine(struct tcpm_port *port)
->  		break;
->  	case PORT_RESET:
->  		tcpm_reset_port(port);
-> -		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-> -			    TYPEC_CC_RD : tcpm_rp_cc(port));
-> +		if (port->self_powered)
-> +			tcpm_set_cc(port, TYPEC_CC_OPEN);
-> +		else
-> +			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-> +				    TYPEC_CC_RD : tcpm_rp_cc(port));
->  		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
->  			       PD_T_ERROR_RECOVERY);
->  		break;
+> diff --git a/drivers/us<F16>b/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+> index 5a80776c7255..94e1b43a862d 100644
+> --- a/drivers/usb/typec/altmodes/displayport.c
+> +++ b/drivers/usb/typec/altmodes/displayport.c
+> @@ -702,16 +702,21 @@ static ssize_t hpd_show(struct device *dev, struct device_attribute *attr, char
+>  }
+>  static DEVICE_ATTR_RO(hpd);
+>  
+> -static struct attribute *dp_altmode_attrs[] = {
+> +static struct attribute *displayport_attrs[] = {
+>  	&dev_attr_configuration.attr,
+>  	&dev_attr_pin_assignment.attr,
+>  	&dev_attr_hpd.attr,
+>  	NULL
+>  };
+>  
+> -static const struct attribute_group dp_altmode_group = {
+> +static const struct attribute_group displayport_group = {
+>  	.name = "displayport",
+> -	.attrs = dp_altmode_attrs,
+> +	.attrs = displayport_attrs,
+> +};
+> +
+> +static const struct attribute_group *displayport_groups[] = {
+> +	&displayport_group,
+> +	NULL,
+>  };
+>  
+>  int dp_altmode_probe(struct typec_altmode *alt)
+> @@ -720,7 +725,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
+>  	struct typec_altmode *plug = typec_altmode_get_plug(alt, TYPEC_PLUG_SOP_P);
+>  	struct fwnode_handle *fwnode;
+>  	struct dp_altmode *dp;
+> -	int ret;
+>  
+>  	/* FIXME: Port can only be DFP_U. */
+>  
+> @@ -731,10 +735,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
+>  	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
+>  		return -ENODEV;
+>  
+> -	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+> -	if (ret)
+> -		return ret;
+> -
+>  	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
+>  	if (!dp)
+>  		return -ENOMEM;
+> @@ -777,7 +777,6 @@ void dp_altmode_remove(struct typec_altmode *alt)
+>  {
+>  	struct dp_altmode *dp = typec_altmode_get_drvdata(alt);
+>  
+> -	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
+>  	cancel_work_sync(&dp->work);
+>  	typec_altmode_put_plug(dp->plug_prime);
+>  
+> @@ -803,6 +802,7 @@ static struct typec_altmode_driver dp_altmode_driver = {
+>  	.driver = {
+>  		.name = "typec_displayport",
+>  		.owner = THIS_MODULE,
+> +		.dev_groups = displayport_groups,
+>  	},
+>  };
+>  module_typec_altmode_driver(dp_altmode_driver);
 > 
 > base-commit: a560a5672826fc1e057068bda93b3d4c98d037a2
 > -- 
