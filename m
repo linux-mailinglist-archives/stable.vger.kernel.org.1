@@ -1,149 +1,90 @@
-Return-Path: <stable+bounces-27515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B08879CA6
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:10:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81F2879CCF
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E503284411
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:10:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB4511C21348
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2DF14290A;
-	Tue, 12 Mar 2024 20:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE468142907;
+	Tue, 12 Mar 2024 20:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="WibrX5wU"
+	dkim=pass (4096-bit key) header.d=valentin-vidic.from.hr header.i=@valentin-vidic.from.hr header.b="ki+OoF2p"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+Received: from valentin-vidic.from.hr (valentin-vidic.from.hr [116.203.65.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1F14265A;
-	Tue, 12 Mar 2024 20:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52188142908
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 20:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.65.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710274210; cv=none; b=RwO7YCgAdp6dSWoj3qS5jrmeBUCma8na4NFVGI5jx+K2WmGWg9wunuH4bkjkGei9jlTy9fr/o82wZGAbSCdwWnCFuzBmJdTEhGTJcf5o9dJ2kNSt1fmu2HAdes1RadqhURQ0cxalcTk5bLpkBvAtXVFaYy0EKxQDMKXLy0jmT0o=
+	t=1710275137; cv=none; b=oQ+wa6KvaPe65cYlq6MgKIPVHA3B7HsxP/4QaJ7EzixXrPTJa12iC6MJKMFzTIklIMKhjXQBWUqPOI6wCYo1pfPJcAcbXbMODmRUxhuppeadddplwCzvXUx7t7dZZrCvLCVqQWOO71+CVlrwFQnbGYrZUy9evsM9TDGSeYdReFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710274210; c=relaxed/simple;
-	bh=afb+J2W1RZOvBUpT1q1VDqOla0v+GNPldfNpGi6NmXU=;
-	h=Date:From:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=aMmy1ERej9XCxdmVm3d+WajoAITDaNCvSN6fA1hckcUTZQOe6Ahxu9TJ6nVJWsh/mTWD9snD2oFlzCaNSQhV1xemgzMXb6EX9txalWTDbTAwUW4IHeePR3psH9QBDXf9XuSIYLbFx3J6HJT7UBFAJL7oxYtp60x0FXyafxs7/JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=WibrX5wU; arc=none smtp.client-ip=148.163.143.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CJgFuw001162;
-	Tue, 12 Mar 2024 20:10:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pps0720; bh=VnYb1j2+6PuZRCVUgTvKkrGm5+N4Va1AiIS3ecX1k3M=;
- b=WibrX5wUkkHVo8AAWxqnzQVTR7yngJpCe0/XkzX8o7+84/ZRZj8w+8L+TRBI5KN0k5ly
- 1rGwndPXKQJs4evW1/TV3fk1xzwEFy2CV/xJ3a/2RVPZPwcEzsHgCR3m5+daZP5MLCMx
- j0/8bnra9B91SBT3GtE14VkTbIb7o1S4uu2L6zXX4hjyS4hi8/YWHhFkR9QE4HuT0/bM
- lk7+Jhrb2+2BKkQarKCTMEjJopHUtfqgjCJh68vxuwijioOOOEJo/2llrvpGp8beaWiK
- LZvu50cCnBtKAnKm/i6F44A5pC+4SYoHfcA1mZKzXKmjek9kwjqpE6VXzkKu+Y1n8Cmf Ig== 
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3wts7su02b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 20:09:59 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id CFADB12E9C;
-	Tue, 12 Mar 2024 20:09:58 +0000 (UTC)
-Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 37928800EF7;
-	Tue, 12 Mar 2024 20:09:57 +0000 (UTC)
-Date: Tue, 12 Mar 2024 15:09:55 -0500
-From: Steve Wahl <steve.wahl@hpe.com>
-Cc: Steve Wahl <steve.wahl@hpe.com>, Eric Hagberg <ehagberg@gmail.com>,
-        dave.hansen@linux.intel.com, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-Message-ID: <ZfC2k66jb8CcupYm@swahl-home.5wahls.com>
-References: <CAJbxNHe3EJ88ABB1aZ8bYZq=a36F0TFST1Fqu4fkugvyU_fjhw@mail.gmail.com>
- <ZensTNC72DJeaYMo@swahl-home.5wahls.com>
- <CAJbxNHfPHpbzRwfuFw6j7SxR1OsgBH2VJFPnchBHTtRueJna4A@mail.gmail.com>
- <ZfBxIykq3LwPq34M@swahl-home.5wahls.com>
- <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
-X-Proofpoint-GUID: jkORMdzEPtbMJn1k3DXDtW93TkvInsdf
-X-Proofpoint-ORIG-GUID: jkORMdzEPtbMJn1k3DXDtW93TkvInsdf
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1710275137; c=relaxed/simple;
+	bh=twDyd8XtyARuIynyt/yejmxOwEaYl4mikiQ2nZ8ASxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTYPM6VfJUYMspvKg9tWvfDWubkB4Nad/s08G2l7136PnOKdCvQgIM2aq78Bl2iYJZOaCpmB3dB8DAOSA/RbOp7RDW/efDPwgB1yswaOCRFUSH9BvYGQwJCx4zv3gGNqX6Ec/JBMBV6sBLQrud129MVUUz6RakGWnmJVOuijYdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=valentin-vidic.from.hr; spf=pass smtp.mailfrom=valentin-vidic.from.hr; dkim=pass (4096-bit key) header.d=valentin-vidic.from.hr header.i=@valentin-vidic.from.hr header.b=ki+OoF2p; arc=none smtp.client-ip=116.203.65.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=valentin-vidic.from.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentin-vidic.from.hr
+X-Virus-Scanned: Debian amavis at valentin-vidic.from.hr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=valentin-vidic.from.hr; s=2020; t=1710275127;
+	bh=twDyd8XtyARuIynyt/yejmxOwEaYl4mikiQ2nZ8ASxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ki+OoF2puXZq6Mpv1iu4UgHO13gCDE8cGFD/nACB76sA+6nIVURpjnJIyORYvjr4V
+	 gmikO6JWjwlOTX6wfOtyM2mbBnI9avBl05b2XbA6oSnlZcuCNA6zMArTwSYzmreEPg
+	 tT7qhCAIWWWc0GHGiDX9LzCdyI4AZ3K/213dImwqRehAvjDvO0/n+6S7LePTNM9HfS
+	 /OqP4ZlN2eEX83mcOc3JSFOOHbr+g4rZZ/fgdiSvP3nn5YvwCOANN5oAcaUlKXsiJA
+	 hSA2eDXkNsOV/9XLzqdwmvV4u17kIwj/Iq2uX14a6iH/+GBxP7ijPyJNXYwVptZypP
+	 K+SigrmqU0DHpgRwK91VjWR+fz8Kt5al1r3WayYPaHSAZXlUHlrIxKlJmMYGAeJ35u
+	 HQkVjWgY7u+jHgutLfyT7ps1DL2H7VtA8j2t0PkJ/zUeTuaq2Y9E/uwbENmTbOX96X
+	 ajXWHkixNop+bwcabDzpBMisv5++fSn1fBS/qrcTI2wF6zh/Lfe8T5rMXP2dBuH9g8
+	 OsJdqVGKLFs4UAoaKPivZE7ScbCz1F465VboWLUt+JPbzyRu4FqE4IZssl7/eqLZS2
+	 Hbb5BxClGplTZCl76XZasIAuTqViXjmMIaEy7tqSRKpSJJEoXTt5jjqt37JnLsb5v2
+	 GpRDBlBZgscz8Hf/A88SoGYA=
+Received: by valentin-vidic.from.hr (Postfix, from userid 1000)
+	id EDBCA2D2EF; Tue, 12 Mar 2024 21:25:27 +0100 (CET)
+Date: Tue, 12 Mar 2024 21:25:27 +0100
+From: Valentin =?utf-8?B?VmlkacSH?= <vvidic@valentin-vidic.from.hr>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: teigland@redhat.com, gfs2@lists.linux.dev, stable@vger.kernel.org,
+	joseph.qi@linux.alibaba.com, ocfs2-devel@oss.oracle.com,
+	heming.zhao@suse.com
+Subject: Re: [PATCH 2/2] dlm: fix off-by-one waiters refcount handling
+Message-ID: <ZfC6NxRpmAFSNg79@valentin-vidic.from.hr>
+References: <20240312170508.3590306-1-aahringo@redhat.com>
+ <20240312170508.3590306-2-aahringo@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_12,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0 phishscore=0
- clxscore=1015 priorityscore=1501 adultscore=0 impostorscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403120154
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240312170508.3590306-2-aahringo@redhat.com>
 
-[Added kexec maintainers]
-
-Full thread starts here:
-https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-
-On Wed, Mar 13, 2024 at 12:12:31AM +0530, Pavin Joseph wrote:
-> On 3/12/24 20:43, Steve Wahl wrote:
-> > But I don't want to introduce a new command line parameter if the
-> > actual problem can be understood and fixed.  The question is how much
-> > time do I have to persue a direct fix before some other action needs
-> > to be taken?
+On Tue, Mar 12, 2024 at 01:05:08PM -0400, Alexander Aring wrote:
+> There was a wrong conversion to atomic counters in commit 75a7d60134ce
+> ("fs: dlm: handle lkb wait count as atomic_t"), when
+> atomic_dec_and_test() returns true it will decrement at first and
+> then return true if it hits zero. This means we will mis a unhold_lkb()
+> for the last iteration. This patch fixes this issue and if the last
+> reference is taken we will remove the lkb from the waiters list as this
+> is how it's supposed to work.
 > 
-> Perhaps the kexec maintainers [0] can be made aware of this and you could
-> coordinate with them on a potential fix?
-> 
-> Currently maintained by
-> P:      Simon Horman
-> M:      horms@verge.net.au
-> L:      kexec@lists.infradead.org
+> Cc: stable@vger.kernel.org
+> Fixes: 75a7d60134ce ("fs: dlm: handle lkb wait count as atomic_t")
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
 
-Probably a good idea to add kexec people to the list, so I've added
-them to this email.
-
-Everyone, my recent patch to the kernel that changed identity mapping:
-
-7143c5f4cf2073193 x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
-
-... has broken kexec on a few machines.  The symptom is they do a full
-BIOS reboot instead of a kexec of the new kernel.  Seems to be limited
-to AMD processors, but it's not all AMD processors, probably just some
-characteristic that they happen to share.
-
-The same machines that are broken by my patch, are also broken in
-previous kernels if you add "nogbpages" to the kernel command line
-(which makes the identity map bigger, "nogbpages" doing for all parts
-of the identity map what my patch does only for some parts of it).
-
-I'm still hoping to find a machine I can reproduce this on to try and
-debug it myself.
-
-If any of you have any assistance or advice to offer, it would be most
-welcome!
-
-> I hope the root cause can be fixed instead of patching it over with a flag
-> to suppress the problem, but I don't know how regressions are handled here.
-
-That would be my preference as well.
-
-Thanks,
-
---> Steve Wahl
+Tested-by: Valentin Vidić <vvidic@valentin-vidic.from.hr>
 
 -- 
-Steve Wahl, Hewlett Packard Enterprise
+Valentin
 
