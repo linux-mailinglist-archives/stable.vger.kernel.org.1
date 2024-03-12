@@ -1,240 +1,250 @@
-Return-Path: <stable+bounces-27535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B77879E3A
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:12:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0488A879E4E
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F3CB2145E
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A4C1C216D2
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D25814375A;
-	Tue, 12 Mar 2024 22:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13151143C60;
+	Tue, 12 Mar 2024 22:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z1JhmZ8k"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="FM779HfQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE277A730
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 22:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D31143C4A
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 22:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710281523; cv=none; b=IwFWRJj5YUEP4B8sNiLj0YjBjnpfsKhNAMUFaMeDC+QjaoCAi5sm1n5JCFpXe6R41O2deIM1XTEjGVXi0wVn2Oh3gT6aZ35k6/xC3A+5lgO24XO/iKyzBJxt+nKIy0sf4QnWx507zgojI+wmsOUbANyMdhMv4EsmwrnwmNNBg80=
+	t=1710281799; cv=none; b=BD+zVtzKuMB09PAlf6TnqnRcwZYHIWdhtYctV/+E4dVQIuqe/QiyU1OEZKCU1C49xHPwr4NUx4A7WMDgRSw6Am2DF2+qPY7RKUnqYKdIijv3A6ZZqWKpX7QTPEk231xp6vOE71FOcpqm6PGL0L27cwCVh4fMvM5I0+E7VXUHWcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710281523; c=relaxed/simple;
-	bh=of+4iiFOJBjOA3kpKuxP9ruMd01LKlIOjerKDOA/l7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nz44rFqekoeaEtzopZHf2x9EFC7oriwtM9c6l2/yc1M/fyrlZY4pegwzevnXq/d0D/gElYjQN1AVHcw1/4Ppuggai26yzLOebi8jU8HHDdLw0rAXtD7nBuALOp0MXRSClfbpON3+odz8Ff49+Ht/OkV8yRKWoYq4y1vkbW4s3vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z1JhmZ8k; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-36646d1c2b7so15835ab.1
-        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:12:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710281521; x=1710886321; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aHhknlqvNfTdhS7268rU8Y8hdQqP/mq9n0R8UEetUI8=;
-        b=z1JhmZ8kAQCoaT6Q+148OgZhiuoWqWkXjNKriankrflxyP2ocAC5hxxUzhDElVA99O
-         brAe03DkVkKTfupCuufo3VGRAD2yr5J8G2LUEfKZqnabNRwqxufd3DsPF+JTnyxlTkaU
-         wodcSh1Oq8MSlw7SHVB5W91ZRBtNbo9NdvDxnwa5h9JqF7h/8ySAxXMtxvKN0jvXyu14
-         42qxzS7H8MpnDfHJ7XjNl4FYrvpiqBuI8eQbihT3s7hqcawI4Mi+rgxR9Bh7DAxlcvft
-         XKNhBTX5RNe9FK34BgziLVmYIRSAr5S1oilwVi9rLetASW1ltRytaLY5HReptRim1CUS
-         1hxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710281521; x=1710886321;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aHhknlqvNfTdhS7268rU8Y8hdQqP/mq9n0R8UEetUI8=;
-        b=irpRtfljBgy+ueyfLptCCQv2g1RzdkTLeWGZQsVBzrpuAKjL9eK76/X2VpjfdIiv+Y
-         2gLu6OYj4ZkvHcel/P7MGb4O15rkDjJhque56PBSk00yjatLjsdxXiUd2AQ+t9LH/1a6
-         VOw/r0FctfCYTZzy7BL3obdJNRU873FAsUv26MkJxmLkgl4gy/R9M/j3p6Lm4Mtz0bv9
-         irhf6mDXfrPTo9kiIZZdivLE+qjU53eNMQGUi53Eqv8bLSrbM5j2i4NZVksg5NiJatrC
-         4sHUCbYrQamZBtGiWA2ZQP3OGHgppaYCggDw/ydyopzBnvir387hiHVRxYc4tBmb4Bd4
-         PgLA==
-X-Forwarded-Encrypted: i=1; AJvYcCX85cnhcwpyf3x5rQlZCFd6Uck/Lz0u1MJvUX8kyQ4qRMYWqn+/gWxj6LodkocJhmmtIXcfCBGu1bw68Kg0Vi/jzLGLOxmk
-X-Gm-Message-State: AOJu0YyLC7HTJ40Xw4I2y8Q2/47YzdCxcHCICdGn5TV747TkBED3ZkOi
-	lPrquFU2g63MSpiONv51t/dcEC8OZx1IAaeW1wOy8tbCByLjoE31DfKECeEjGw==
-X-Google-Smtp-Source: AGHT+IGQ/ZlKlS1lCQethqtslXn37Rb1npiCTAGmypdYNYmQ/gfgoKMfjvGdrTzQRF2gWpV2EuFTqg==
-X-Received: by 2002:a05:6e02:1cab:b0:363:e69d:896a with SMTP id x11-20020a056e021cab00b00363e69d896amr54805ill.18.1710281520620;
-        Tue, 12 Mar 2024 15:12:00 -0700 (PDT)
-Received: from google.com ([100.64.188.49])
-        by smtp.gmail.com with ESMTPSA id n10-20020a02a90a000000b00474d2a8e83fsm2548322jam.83.2024.03.12.15.11.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 15:12:00 -0700 (PDT)
-Date: Tue, 12 Mar 2024 16:11:55 -0600
-From: Yu Zhao <yuzhao@google.com>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	s=arc-20240116; t=1710281799; c=relaxed/simple;
+	bh=29lGtt+FNCN9S2KQf6kk94AOhKW6QWHPkOKp+UlxMXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ahfz0S95PV5aT+YLb5xFRoLsRLfyJ86hGsKeRxgnqYUnScg1QSfGlYH+r/Tt5JFoI2yMjcho/eZuMKp61+YtIWWYP92nmZ3BVje5K7rUtceiPUfbK0nPiTc0p5wdTkCNTPXRokocqrOQ+LgGLPQdsxaIsX8oV4g0ePberXqPhT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=FM779HfQ; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EB8FB2C02A7;
+	Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1710281794;
+	bh=QkDvjqXPbE0D7ZwwFAxzlxE4F1vMbl+jYl4PeFHElW0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FM779HfQbBK/kf1/Z52N+32dKIO/ksjXXz/rG2NQfomXSyBY3tnRAnlXW8x62AI6k
+	 F+lrYa1A30c6pXZeyDrVjoqcZ0296TKTFML3saV1X5WF2LyzgVkPZu8V/9SQQLjuge
+	 RZNHOEWAvTkxUNluXfOzCTv5DVhVIai4VwuOKBHoAcB+lUrn/IBFwW7YJir9J3Nleo
+	 3le3U/vLu/nRKmBWVclzXh5y2DGjJm2fZqjtZsC3h+wWO+1xGSNd0hdGIv0V/6Hjun
+	 kr8lmPvZknby0ZKJ1DknTVIRh0jdyqy4WJJG8fbXLNyGRC/odKEqr18K9QKYnyeb5T
+	 h6sDHqC/lBi2Q==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65f0d4420000>; Wed, 13 Mar 2024 11:16:34 +1300
+Received: from hamishm-dl.ws.atlnz.lc (hamishm-dl.ws.atlnz.lc [10.33.24.13])
+	by pat.atlnz.lc (Postfix) with ESMTP id B2B7613ED56;
+	Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+Received: by hamishm-dl.ws.atlnz.lc (Postfix, from userid 1133)
+	id B4EDF2408B9; Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+To: mika.westerberg@linux.intel.com,
+	wsa+renesas@sang-engineering.com
+Cc: linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: mglru: Fix soft lockup attributed to scanning folios
-Message-ID: <ZfDTK79iQNlax-h6@google.com>
-References: <20240307031952.2123-1-laoar.shao@gmail.com>
- <20240307090618.50da28040e1263f8af39046f@linux-foundation.org>
- <CALOAHbAsyT9ms739DLZeAf88XsrxjJgm1D8wr+dKNFxROOQFFw@mail.gmail.com>
- <ZfC7PO0-3Kg88Wj3@google.com>
+Subject: [PATCH v4] i2c: acpi: Unbind mux adapters before delete
+Date: Wed, 13 Mar 2024 11:16:32 +1300
+Message-ID: <20240312221632.859695-1-hamish.martin@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZfC7PO0-3Kg88Wj3@google.com>
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BKkQr0QG c=1 sm=1 tr=0 ts=65f0d442 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=K6JAEmCyrfEA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=yJIMdjkqGNwF9fQ3hkEA:9 a=3ZKOabzyN94A:10 a=AjGcO6oz07-iQ99wixmX:22 a=cvBusfyB2V15izCimMoJ:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-On Tue, Mar 12, 2024 at 02:29:48PM -0600, Yu Zhao wrote:
-> On Fri, Mar 08, 2024 at 04:57:08PM +0800, Yafang Shao wrote:
-> > On Fri, Mar 8, 2024 at 1:06 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> > >
-> > > On Thu,  7 Mar 2024 11:19:52 +0800 Yafang Shao <laoar.shao@gmail.com> wrote:
-> > >
-> > > > After we enabled mglru on our 384C1536GB production servers, we
-> > > > encountered frequent soft lockups attributed to scanning folios.
-> > > >
-> > > > The soft lockup as follows,
-> > > >
-> > > > ...
-> > > >
-> > > > There were a total of 22 tasks waiting for this spinlock
-> > > > (RDI: ffff99d2b6ff9050):
-> > > >
-> > > >  crash> foreach RU bt | grep -B 8  queued_spin_lock_slowpath |  grep "RDI: ffff99d2b6ff9050" | wc -l
-> > > >  22
-> > >
-> > > If we're holding the lock for this long then there's a possibility of
-> > > getting hit by the NMI watchdog also.
-> > 
-> > The NMI watchdog is disabled as these servers are KVM guest.
-> > 
-> >     kernel.nmi_watchdog = 0
-> >     kernel.soft_watchdog = 1
-> > 
-> > >
-> > > > Additionally, two other threads were also engaged in scanning folios, one
-> > > > with 19 waiters and the other with 15 waiters.
-> > > >
-> > > > To address this issue under heavy reclaim conditions, we introduced a
-> > > > hotfix version of the fix, incorporating cond_resched() in scan_folios().
-> > > > Following the application of this hotfix to our servers, the soft lockup
-> > > > issue ceased.
-> > > >
-> > > > ...
-> > > >
-> > > > --- a/mm/vmscan.c
-> > > > +++ b/mm/vmscan.c
-> > > > @@ -4367,6 +4367,10 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
-> > > >
-> > > >                       if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
-> > > >                               break;
-> > > > +
-> > > > +                     spin_unlock_irq(&lruvec->lru_lock);
-> > > > +                     cond_resched();
-> > > > +                     spin_lock_irq(&lruvec->lru_lock);
-> > > >               }
-> > >
-> > > Presumably wrapping this with `if (need_resched())' will save some work.
-> > 
-> > good suggestion.
-> > 
-> > >
-> > > This lock is held for a reason.  I'd like to see an analysis of why
-> > > this change is safe.
-> > 
-> > I believe the key point here is whether we can reduce the scope of
-> > this lock from:
-> > 
-> >   evict_folios
-> >       spin_lock_irq(&lruvec->lru_lock);
-> >       scanned = isolate_folios(lruvec, sc, swappiness, &type, &list);
-> >       scanned += try_to_inc_min_seq(lruvec, swappiness);
-> >       if (get_nr_gens(lruvec, !swappiness) == MIN_NR_GENS)
-> >           scanned = 0;
-> >       spin_unlock_irq(&lruvec->lru_lock);
-> > 
-> > to:
-> > 
-> >   evict_folios
-> >       spin_lock_irq(&lruvec->lru_lock);
-> >       scanned = isolate_folios(lruvec, sc, swappiness, &type, &list);
-> >       spin_unlock_irq(&lruvec->lru_lock);
-> > 
-> >       spin_lock_irq(&lruvec->lru_lock);
-> >       scanned += try_to_inc_min_seq(lruvec, swappiness);
-> >       if (get_nr_gens(lruvec, !swappiness) == MIN_NR_GENS)
-> >           scanned = 0;
-> >       spin_unlock_irq(&lruvec->lru_lock);
-> > 
-> > In isolate_folios(), it merely utilizes the min_seq to retrieve the
-> > generation without modifying it. If multiple tasks are running
-> > evict_folios() concurrently, it seems inconsequential whether min_seq
-> > is incremented by one task or another. I'd appreciate Yu's
-> > confirmation on this matter.
-> 
-> Hi Yafang,
-> 
-> Thanks for the patch!
-> 
-> Yes, your second analysis is correct -- we can't just drop the lock
-> as the original patch does because min_seq can be updated in the mean
-> time. If this happens, the gen value becomes invalid, since it's based
-> on the expired min_seq:
-> 
->   sort_folio()
->   {
->     ..
->     gen = lru_gen_from_seq(lrugen->min_seq[type]);
->     ..
->   }
-> 
-> The following might be a better approach (untested):
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 4255619a1a31..6fe53cfa8ef8 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4365,7 +4365,8 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
->  				skipped_zone += delta;
->  			}
->  
-> -			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
-> +			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH ||
-> +			    spin_is_contended(&lruvec->lru_lock))
->  				break;
->  		}
->  
-> @@ -4375,7 +4376,8 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
->  			skipped += skipped_zone;
->  		}
->  
-> -		if (!remaining || isolated >= MIN_LRU_BATCH)
-> +		if (!remaining || isolated >= MIN_LRU_BATCH ||
-> +		    (scanned && spin_is_contended(&lruvec->lru_lock)))
->  			break;
->  	}
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
 
-A better way might be:
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4255619a1a31..ac59f064c4e1 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4367,6 +4367,11 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 
- 			if (!--remaining || max(isolated, skipped_zone) >= MIN_LRU_BATCH)
- 				break;
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
+
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+=
+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a=
+7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc =
+0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000=
+000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
+
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
+
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
+
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifi=
+cations")
+Cc: <stable@vger.kernel.org> # v4.8+
+---
+
+Notes:
+    v4:
+      Resolve Build failure noted by:
+        Linux Kernel Functional Testing <lkft@linaro.org>, and
+        kernel test robot <lkp@intel.com>
+      These failures led to revert of the v3 version of this patch that h=
+ad been accepted earlier.
+    v3:
+      Add reviewed by tags (Mika Westerberg and Andi Shyti) and Fixes tag=
+.
+    v2:
+      Moved long problem description from cover letter to commit descript=
+ion at Mika's suggestion
+
+ drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d6037a328669..14ae0cfc325e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_ad=
+ev(struct acpi_device *adev)
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
+=20
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_dev=
+ice *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
 +
-+			if (need_resched() || spin_is_contended(&lruvec->lru_lock)) {
-+				remaining = 0;
-+				break;
-+			}
- 		}
- 
- 		if (skipped_zone) {
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long valu=
+e,
+ 			   void *arg)
+ {
+@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *n=
+b, unsigned long value,
+ 			break;
+=20
+ 		client =3D i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter =3D i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_unbind_one(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+=20
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
+ 	}
+=20
+--=20
+2.43.2
+
 
