@@ -1,303 +1,135 @@
-Return-Path: <stable+bounces-27460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A05A8793E9
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 13:15:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536A78794C7
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 14:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FFB6285A2F
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 12:15:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85F5C1C21DFF
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 13:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26307A713;
-	Tue, 12 Mar 2024 12:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC55258112;
+	Tue, 12 Mar 2024 13:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b="V8At0smJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796167A12C;
-	Tue, 12 Mar 2024 12:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE51BBE5B
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 13:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710245697; cv=none; b=Mb6Eqz4imPFMJ8Q3UjxZIVqnHz5fxKuoazgOT4eSQnJT2vX0tY5Q8nELFgAiq9iSfy1O8KQ9BGgEfEgf1kqwmiePwIRwJy1REQdjrRIxqQ9b6rAISD7+P7eVOosv14fgJIKSsJbioV16n8CzLNVBeqxwg6iMXz8r+Y4ABuombE0=
+	t=1710248736; cv=none; b=SJBfFdfHNeLAJunwInjnWKomRU0b/raWOU/Y0VBAfPTXin2Uxh6vDoXP6rXowopildtHp9wZx//oEnRlGF85KHmZvT/P63FIQeZ2oCZb6+7uC/M6s6nb3aHhZXJ+zfUVkyUym4Ho0OfG3FIwxFXOOqroHggJXLFQ11zYyYvtS10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710245697; c=relaxed/simple;
-	bh=YsssiuiqEvxFvCvcRJa8Z8JONNFwmgSGLT8cNZAvKAU=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=MkdUCNyvfJNoY3Jr6K7uUw2dxXEiTX0DKf0GTVKAiRI5RI8MJ9kxEwbW3H/npMHBUIcZiB5mfRrFcxnQmgHWBvt/mkJm9ZpbQ4jnIiNMBjDssgUbgqyHrUEmKbuTZt0oxqifNIR29gWSsE/9Z2RKSYz1Ybh2lWBDN2sDyUIxPbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE5BC43399;
-	Tue, 12 Mar 2024 12:14:57 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1rk143-00000001uZj-2taL;
-	Tue, 12 Mar 2024 08:17:03 -0400
-Message-ID: <20240312121703.557950713@goodmis.org>
-User-Agent: quilt/0.67
-Date: Tue, 12 Mar 2024 08:15:08 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- joel@joelfernandes.org,
- linke li <lilinke99@qq.com>,
- Rabin Vincent <rabin@rab.in>,
- stable@vger.kernel.org
-Subject: [PATCH v4 2/2] tracing/ring-buffer: Fix wait_on_pipe() race
-References: <20240312121506.972039112@goodmis.org>
+	s=arc-20240116; t=1710248736; c=relaxed/simple;
+	bh=LtUpf8o4cRDws08hBEsHiAvXVpFfY7ndPUFj4Qdryug=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VODm7zzvp4wQcqqg1jEe6hnvAmJZhapaJeC52RjmLl7Sji9Msxumfz0MedfQ/jsN/k5Q9wkTrldfKTdGO+jwKcGk2we1rYbGu/Xv9AEVMewf9YzUzXu+ioKwoQoEK0vqanqthCEHrWRBzv8Ll4jHA7RoBrfqmGK/9xkPuY2Fq8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org; spf=pass smtp.mailfrom=khvoinitsky.org; dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b=V8At0smJ; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=khvoinitsky.org
+X-Forwarded-Encrypted: i=1; AJvYcCVNq0CM3JINqsRCDCRPmiQ6Y8uKmLv7+aEQphSQ5nIE9xX+ae4yjw+j8OWN3RjTi5ZuRnuhIvdobRP5TaJ6yj+r1kRmqTp69K8CU+7eNj6zfmywCBd6fBnbqHqvvHk3fYFPH0w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=khvoinitsky.org;
+	s=key1; t=1710248731;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LtUpf8o4cRDws08hBEsHiAvXVpFfY7ndPUFj4Qdryug=;
+	b=V8At0smJG2pyIIg1cJAl/sd2t33YxgAtVA/swgU63NwkxYnQV+qK3FE7/t9NRCfINadqV5
+	MNGQZSWNxcab/Twb4GcglkOcl3wNfDPAHTaa/J3wTwkYz5+a5kfs9MYX73M++QAenFqAUx
+	j5DE9p9r9AYaThQ2rzgbG/WbQF8JpUU=
+X-Gm-Message-State: AOJu0Yzvg6jAKsVT/uoENdVBPpy3ojBBClqVVqHO2y5++P+kD82kbnMl
+	H54CxALyNCKZ47zFNlMQxQK+nz4ThjQcbrFYMOV78idHn058aXXTkAqLVfPplUTXptDRBPLR3pA
+	c+LNb3zCP+4doG+7AKpvmQeYVcRE=
+X-Google-Smtp-Source: AGHT+IGnOFxOFezHjAmJUlxEr9UulxKpV48algWbNSGjNho00p9nrQZda/a1daNl4tfE0qC6Ts7OMKpXCGv54vGRZkM=
+X-Received: by 2002:a05:6512:3af:b0:513:ace2:ed64 with SMTP id
+ v15-20020a05651203af00b00513ace2ed64mr2564951lfp.6.1710248729831; Tue, 12 Mar
+ 2024 06:05:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
+ <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info> <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
+ <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com> <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
+ <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com> <9db59ae4-be28-4ab3-a2ae-0b0f661f56be@gmail.com>
+ <3bb95fcd-65cf-45dd-8d81-1a41b1ae0288@leemhuis.info> <CAMMabwNo_yT4S3LaMV16Rmj6MiWL=TRYtB9wspfs_LWVgM=U8Q@mail.gmail.com>
+ <b30dc4a1-57aa-4ff5-ae52-7a01203b8be9@gmail.com> <CAMMabwNVwapthrDkCLOQsWkObzvTKVzDMiod3KPVa1hoy0CzRA@mail.gmail.com>
+ <0d2b0c46-4d84-4279-8964-589d77435e6a@gmail.com> <9a55659c-86a6-4d9a-ab4f-94fbfb72e7c4@gmail.com>
+In-Reply-To: <9a55659c-86a6-4d9a-ab4f-94fbfb72e7c4@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Mikhail Khvoinitsky <me@khvoinitsky.org>
+Date: Tue, 12 Mar 2024 15:05:18 +0200
+X-Gmail-Original-Message-ID: <CAMMabwMDvumbNOvFk3mdqXfprO_xy4gB5R0KangvzJatv8BhUw@mail.gmail.com>
+Message-ID: <CAMMabwMDvumbNOvFk3mdqXfprO_xy4gB5R0KangvzJatv8BhUw@mail.gmail.com>
+Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
+To: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Jiri Kosina <jikos@jikos.cz>, 
+	Linux Input Mailing List <linux-input@vger.kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
+	Linux Stable Mailing List <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> Not a single spurious middle-click, which is not surprising since, if I
+> understand correctly, this last patch just disables 46a0a2c and makes it
+> optional, allowing to enable it on demand with a setting in sysfs.
 
-When the trace_pipe_raw file is closed, there should be no new readers on
-the file descriptor. This is mostly handled with the waking and wait_index
-fields of the iterator. But there's still a slight race.
+That's correct.
 
-     CPU 0                              CPU 1
-     -----                              -----
-                                   wait_index++;
-   index = wait_index;
-                                   ring_buffer_wake_waiters();
-   wait_on_pipe()
-     ring_buffer_wait();
+> And I have vertical and horizontal scrolling with the middle button
+> working reliably
 
-The ring_buffer_wait() will miss the wakeup from CPU 1. The problem is
-that the ring_buffer_wait() needs the logic of:
+If you mean my statement in the initial commit that the original
+firmware doesn't support horizontal scrolling, I might be wrong, looks
+like I've mixed it up with something. But the main reason for the
+change was hi-res scrolling.
 
-        prepare_to_wait();
-        if (!condition)
-                schedule();
+> (I'm not sure of what you mean by "hi-res scrolling",
+> is it about 4K displays ?).
 
-Where the missing condition check is the iter->wait_index update.
+No, it's about scrolling not by a fixed amount of lines but by
+individual pixels depending on how strongly you press the trackpoint.
+More like modern touchpads work.
 
-Have the ring_buffer_wait() take a conditional callback function and a
-data parameter that can be used within the wait_event_interruptible() of
-the ring_buffer_wait() function.
+> So as far as I'm concerned, this patch should be included ASAP in the
+> next kernels releases (both latest and stable).
 
-In wait_on_pipe(), pass a condition function that will check if the
-wait_index has been updated, if it has, it will return true to break out
-of the wait_event_interruptible() loop.
-
-Create a new field "closed" in the trace_iterator and set it in the
-.flush() callback before calling ring_buffer_wake_waiters().
-This will keep any new readers from waiting on a closed file descriptor.
-
-Have the wait_on_pipe() condition callback also check the closed field.
-
-Change the wait_index field of the trace_iterator to atomic_t. There's no
-reason it needs to be 'long' and making it atomic and using
-atomic_read_acquire() and atomic_fetch_inc_release() will provide the
-necessary memory barriers.
-
-Add a "woken" flag to tracing_buffers_splice_read() to exit the loop after
-one more try to fetch data. That is, if it waited for data and something
-woke it up, it should try to collect any new data and then exit back to
-user space.
-
-Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wgsNgewHFxZAJiAQznwPMqEtQmi1waeS2O1v6L4c_Um5A@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Fixes: f3ddb74ad0790 ("tracing: Wake up ring buffer waiters on closing of the file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- include/linux/ring_buffer.h  |  3 ++-
- include/linux/trace_events.h |  5 ++++-
- kernel/trace/ring_buffer.c   | 13 ++++++-----
- kernel/trace/trace.c         | 43 ++++++++++++++++++++++++++----------
- 4 files changed, 45 insertions(+), 19 deletions(-)
-
-diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
-index 338a33db1577..dc5ae4e96aee 100644
---- a/include/linux/ring_buffer.h
-+++ b/include/linux/ring_buffer.h
-@@ -99,7 +99,8 @@ __ring_buffer_alloc(unsigned long size, unsigned flags, struct lock_class_key *k
- })
- 
- typedef bool (*ring_buffer_cond_fn)(void *data);
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full);
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full,
-+		     ring_buffer_cond_fn cond, void *data);
- __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
- 			  struct file *filp, poll_table *poll_table, int full);
- void ring_buffer_wake_waiters(struct trace_buffer *buffer, int cpu);
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index d68ff9b1247f..fc6d0af56bb1 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -103,13 +103,16 @@ struct trace_iterator {
- 	unsigned int		temp_size;
- 	char			*fmt;	/* modified format holder */
- 	unsigned int		fmt_size;
--	long			wait_index;
-+	atomic_t		wait_index;
- 
- 	/* trace_seq for __print_flags() and __print_symbolic() etc. */
- 	struct trace_seq	tmp_seq;
- 
- 	cpumask_var_t		started;
- 
-+	/* Set when the file is closed to prevent new waiters */
-+	bool			closed;
-+
- 	/* it's true when current open file is snapshot */
- 	bool			snapshot;
- 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index c198ba466853..67d8405f4451 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -901,23 +901,26 @@ static bool rb_wait_once(void *data)
-  * @buffer: buffer to wait on
-  * @cpu: the cpu buffer to wait on
-  * @full: wait until the percentage of pages are available, if @cpu != RING_BUFFER_ALL_CPUS
-+ * @cond: condition function to break out of wait (NULL to run once)
-+ * @data: the data to pass to @cond.
-  *
-  * If @cpu == RING_BUFFER_ALL_CPUS then the task will wake up as soon
-  * as data is added to any of the @buffer's cpu buffers. Otherwise
-  * it will wait for data to be added to a specific cpu buffer.
-  */
--int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full)
-+int ring_buffer_wait(struct trace_buffer *buffer, int cpu, int full,
-+		     ring_buffer_cond_fn cond, void *data)
- {
- 	struct ring_buffer_per_cpu *cpu_buffer;
- 	struct wait_queue_head *waitq;
--	ring_buffer_cond_fn cond;
- 	struct rb_irq_work *rbwork;
--	void *data;
- 	long once = 0;
- 	int ret = 0;
- 
--	cond = rb_wait_once;
--	data = &once;
-+	if (!cond) {
-+		cond = rb_wait_once;
-+		data = &once;
-+	}
- 
- 	/*
- 	 * Depending on what the caller is waiting for, either any
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index c9c898307348..d390fea3a6a5 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1955,15 +1955,36 @@ update_max_tr_single(struct trace_array *tr, struct task_struct *tsk, int cpu)
- 
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
-+struct pipe_wait {
-+	struct trace_iterator		*iter;
-+	int				wait_index;
-+};
-+
-+static bool wait_pipe_cond(void *data)
-+{
-+	struct pipe_wait *pwait = data;
-+	struct trace_iterator *iter = pwait->iter;
-+
-+	if (atomic_read_acquire(&iter->wait_index) != pwait->wait_index)
-+		return true;
-+
-+	return iter->closed;
-+}
-+
- static int wait_on_pipe(struct trace_iterator *iter, int full)
- {
-+	struct pipe_wait pwait;
- 	int ret;
- 
- 	/* Iterators are static, they should be filled or empty */
- 	if (trace_buffer_iter(iter, iter->cpu_file))
- 		return 0;
- 
--	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full);
-+	pwait.wait_index = atomic_read_acquire(&iter->wait_index);
-+	pwait.iter = iter;
-+
-+	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full,
-+			       wait_pipe_cond, &pwait);
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	/*
-@@ -8398,9 +8419,9 @@ static int tracing_buffers_flush(struct file *file, fl_owner_t id)
- 	struct ftrace_buffer_info *info = file->private_data;
- 	struct trace_iterator *iter = &info->iter;
- 
--	iter->wait_index++;
-+	iter->closed = true;
- 	/* Make sure the waiters see the new wait_index */
--	smp_wmb();
-+	(void)atomic_fetch_inc_release(&iter->wait_index);
- 
- 	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
- 
-@@ -8500,6 +8521,7 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 		.spd_release	= buffer_spd_release,
- 	};
- 	struct buffer_ref *ref;
-+	bool woken = false;
- 	int page_size;
- 	int entries, i;
- 	ssize_t ret = 0;
-@@ -8573,17 +8595,17 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 
- 	/* did we read anything? */
- 	if (!spd.nr_pages) {
--		long wait_index;
- 
- 		if (ret)
- 			goto out;
- 
-+		if (woken)
-+			goto out;
-+
- 		ret = -EAGAIN;
- 		if ((file->f_flags & O_NONBLOCK) || (flags & SPLICE_F_NONBLOCK))
- 			goto out;
- 
--		wait_index = READ_ONCE(iter->wait_index);
--
- 		ret = wait_on_pipe(iter, iter->snapshot ? 0 : iter->tr->buffer_percent);
- 		if (ret)
- 			goto out;
-@@ -8592,10 +8614,8 @@ tracing_buffers_splice_read(struct file *file, loff_t *ppos,
- 		if (!tracer_tracing_is_on(iter->tr))
- 			goto out;
- 
--		/* Make sure we see the new wait_index */
--		smp_rmb();
--		if (wait_index != iter->wait_index)
--			goto out;
-+		/* Iterate one more time to collect any new data then exit */
-+		woken = true;
- 
- 		goto again;
- 	}
-@@ -8618,9 +8638,8 @@ static long tracing_buffers_ioctl(struct file *file, unsigned int cmd, unsigned
- 
- 	mutex_lock(&trace_types_lock);
- 
--	iter->wait_index++;
- 	/* Make sure the waiters see the new wait_index */
--	smp_wmb();
-+	(void)atomic_fetch_inc_release(&iter->wait_index);
- 
- 	ring_buffer_wake_waiters(iter->array_buffer->buffer, iter->cpu_file);
- 
--- 
-2.43.0
+Yes, as soon as it gets into master (given that 6.8 has just been
+released it will be soon), I'll make sure it will be included in
+stable (either automatically or manually).
 
 
+
+On Tue, 12 Mar 2024 at 13:57, Rapha=C3=ABl Halimi <raphael.halimi@gmail.com=
+> wrote:
+>
+> Le 04/03/2024 =C3=A0 17:09, Rapha=C3=ABl Halimi a =C3=A9crit :
+> > Thanks, it's done. I'll test and report.
+>
+> Nearly a week testing this patch (with kernels 6.6.15, 6.7.7 and 6.7.9,
+> following Debian unstable updates) and it's working well so far.
+>
+> Not a single spurious middle-click, which is not surprising since, if I
+> understand correctly, this last patch just disables 46a0a2c and makes it
+> optional, allowing to enable it on demand with a setting in sysfs.
+>
+> And I have vertical and horizontal scrolling with the middle button
+> working reliably (I'm not sure of what you mean by "hi-res scrolling",
+> is it about 4K displays ?).
+>
+> So as far as I'm concerned, this patch should be included ASAP in the
+> next kernels releases (both latest and stable).
+>
+> Regards,
+>
+> --
+> Rapha=C3=ABl Halimi
 
