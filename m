@@ -1,126 +1,103 @@
-Return-Path: <stable+bounces-27429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900D5878FE4
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:44:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA21C878FF9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D42A1C2160D
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 08:44:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CB19B21180
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 08:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C62777F02;
-	Tue, 12 Mar 2024 08:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4FF6997B;
+	Tue, 12 Mar 2024 08:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zf5RqzBC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9095E76EEA;
-	Tue, 12 Mar 2024 08:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6AD77F00;
+	Tue, 12 Mar 2024 08:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710233049; cv=none; b=Uz//WUfu1/w3P24X/kLjo9FfhvdsXtKCyVQzjWF4hap6DTwLYreCaL5FqbM5wdFpCmktR7Zpcf4V1UYiZbZWt3akF4R85A0f9gnyBfF8PSd78UtvermEjH4KqYQ/X4lusYqQfbqtFpnSkhw0FNsYjRDlzgu9xZI0rKKVWxQ829o=
+	t=1710233437; cv=none; b=OxrJymGGuPA4aK4BDxsY2+Hl0tM0vJYZ5ZbB81K+lXmP4z6RU2y2CKbQgvFvY7YscGAZ11Zu8yfEaFZRdoyIJhD0P2RZD3UXXZQ2ZWN/3zz9Agk4x8zHgJ1l9egGfO3Yqy1kJcaBnLMzrZ6TLyUZpgxwHCw4/bBCt34YB5x7vwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710233049; c=relaxed/simple;
-	bh=Ko17xREfnVJ9Q5io/toRscNTgq+ljN4IWA6tUQbIDlw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MSAROLV4FDjQgXp8WLY7jvLc43Oc0pQItJhFJL5/xUy4ax3epcBWW4MMLHFrk0B01ad/9gCo3PavLUfBD443JrjWoOU4qkhoiKxG8IJI5IMUXOkjTHc5aCoGaCPMAh/cVzaDHdEcnBmPot0+Oh6dR1QLvqdSxot9Ux9IL2k9AeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-60a0a54869bso28092797b3.1;
-        Tue, 12 Mar 2024 01:44:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710233044; x=1710837844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BpBVGXK2hwvv9G4vuoIjIOAjMy0hLwpCGg7dYfSa+5Q=;
-        b=XjQeJ5g3t+Qt/u9cXSTcVrF041/9R0lWmbOyoHOwGCtq7WUOV/3pOvdaSp55ExR0bL
-         h/bSmWLpVpnCu0Vbt001JzD9wOMs6FUP43pVQOkV4mwNVkKT/tKNChuoPuP/E3kFKiOy
-         xp28GfMc22i14SJAztVQhBSD0QNn50nKIxNfs0aT4SEIBj+FG/QHQ6zOCbkTe/6tvVNk
-         WwySZpJLYuRcNuZgYauXQaxfaemRWJUfkYCU7CoCeVp9Ff6f22AZiodOBAA2Uipp5LvX
-         LGdhwrNpiDlnju9cwELsFCVRAUBW24oAajfU5ImXKZLskWZuk8RGQ/I8Yqx9ZW21Toc2
-         uNXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX85gB5xUttrxgB90hC4Al/wzqws0BUTehcJvzJH60hubONvBBVeuuT6rG3uFIzFHCUSoCkBaOvcVO0eY99WNyHOHWvKw7VCmn4Yeu+6GQtszCRSpstvd0ACDLl6BIPOHTOy4e3MvpFHiAwUwmluGu+kPxfxUTE628o2vtQWljzvk12fVs+KWjg1MYeSsXYHAi3NYJ9PSwg3M1s5F8O2otFT7HL
-X-Gm-Message-State: AOJu0YyRcCYeVjiDPgTQIKFxWWfVTHhSu3a5trrwlX4lobM+JXx3dj/s
-	W9qWmH/ckLbNOjvfgZ73U63mNl6vWCj8hBIfGDLt8vvZUIRPWVnnfE7UvWttEZ0=
-X-Google-Smtp-Source: AGHT+IHUx+pbNmqsxtbHSGk4Vf8bAiZn6JFHiMHA3b9jK4MV2hR2LblXne40u3jAzeSNSZr+o+Ammw==
-X-Received: by 2002:a0d:db0c:0:b0:60a:57fa:2e45 with SMTP id d12-20020a0ddb0c000000b0060a57fa2e45mr646745ywe.1.1710233043674;
-        Tue, 12 Mar 2024 01:44:03 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id fq7-20020a05690c350700b006049315b542sm1746900ywb.136.2024.03.12.01.44.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 01:44:02 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-609f4d8551eso40205287b3.1;
-        Tue, 12 Mar 2024 01:44:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW5gZtJ3hwJDAXCDinypTkfzRFSXMpW1qOXDej4x6jVyUMRpwXbzW9J7oIqmo/SnVEzXAPEtOzcCTvg+ZuPE9yYiIcVCUJFTvQKy0U6bG0sMycMdp+SgTUDKwhVDZPwsak7X17SK2naX8g0oANO74WAFVpjH4OvGKtUZUZ9jXyK/BgOe3i5CmXUMOnhAqXhsRWSSul30llORJU+TWoH+8EDZvqw
-X-Received: by 2002:a81:4806:0:b0:609:a1ed:5558 with SMTP id
- v6-20020a814806000000b00609a1ed5558mr5385429ywa.11.1710233042268; Tue, 12 Mar
- 2024 01:44:02 -0700 (PDT)
+	s=arc-20240116; t=1710233437; c=relaxed/simple;
+	bh=GdeE6lcRivj60/3NRRKImzQ+ghFrr2mA897OtI5eU9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Er+u12BdHVyrjwxp3W3kzcoTrMX/r/R+3kTn8xyextsc3LZ57cGshfOAWFjE1xh5rlVjmvSmxufOx0aSFMY0GFUP3R7GrSzwuUBbdpahHt+slzMOKc4Nvg7VAs1W3b8pim2zv/4d+Yj6lHW0a+Jr6CzLXrlzAOL2Vk8rL9npkF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zf5RqzBC; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710233436; x=1741769436;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GdeE6lcRivj60/3NRRKImzQ+ghFrr2mA897OtI5eU9w=;
+  b=Zf5RqzBCKcy/Xr9MkxaM/FfSJPuU5uhTt8mTt7Gn3ox9s6ho/1F6QGIQ
+   hCFj9gPDmyPbSuaTabO79CDDeSAB+iWWk6hLV9NXnguahfidKCOqWR5n0
+   m1g4482qNb1TdIR2SC4rXr/ZjEbetycAfFxm/IENyfRD1d3D5JxJcTZl3
+   PYnEJeZP/fjwFFW9HAwqdv4/qBCV7Kfx7/wayWR50Tk2I8rZT33w0VDZR
+   1JKoCwVmEZo1D6SpLkDrvxMnswrM7d3LjxktMaWN4GI767QJphCFdULEG
+   YCg9oj7jqxksSVyNCLchP5MMVTNx7NnnwHeAtU1ROt8v3/bAOzZMX1X3W
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4783671"
+X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
+   d="scan'208";a="4783671"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 01:50:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051422"
+X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
+   d="scan'208";a="937051422"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmsmga001.fm.intel.com with ESMTP; 12 Mar 2024 01:50:21 -0700
+Message-ID: <b1a5498d-09a8-b979-7ae7-0820ed4297fe@linux.intel.com>
+Date: Tue, 12 Mar 2024 10:52:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229204039.2861519-1-sashal@kernel.org> <20240229204039.2861519-12-sashal@kernel.org>
- <Ze9x6qqGYdRiWy3h@duo.ucw.cz> <CAMuHMdX-ht_Vetq7+Xh0TqWOcnCdi=3d0VvfgXBF4ExtzGcRDg@mail.gmail.com>
- <ZfAUgYj0ksDmGuhN@amd.ucw.cz>
-In-Reply-To: <ZfAUgYj0ksDmGuhN@amd.ucw.cz>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 12 Mar 2024 09:43:50 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXdTG=r8CJOGg2+xqMbrJ_uA3_EkoU9F2gq+zok2cGJpQ@mail.gmail.com>
-Message-ID: <CAMuHMdXdTG=r8CJOGg2+xqMbrJ_uA3_EkoU9F2gq+zok2cGJpQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.1 12/12] arm64: dts: Fix dtc interrupt_provider warnings
-To: Pavel Machek <pavel@ucw.cz>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Chanho Min <chanho.min@lge.com>, 
-	Arnd Bergmann <arnd@arndb.de>, tsahee@annapurnalabs.com, atenart@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	rjui@broadcom.com, sbranden@broadcom.com, andrew@lunn.ch, 
-	gregory.clement@bootlin.com, sebastian.hesselbarth@gmail.com, 
-	matthias.bgg@gmail.com, magnus.damm@gmail.com, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
+Content-Language: en-US
+To: Chris Yokum <linux-usb@mail.totalphase.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ stable <stable@vger.kernel.org>, linux-usb <linux-usb@vger.kernel.org>,
+ Niklas Neronin <niklas.neronin@linux.intel.com>
+References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com>
+ <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info>
+ <2024030246-wife-detoxify-08c0@gregkh>
+ <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
+ <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com>
+ <3a560c60-ffa2-a511-98d3-d29ef807b213@linux.intel.com>
+ <717413307.861315.1709596258844.JavaMail.zimbra@totalphase.com>
+ <1525093096.37868.1710176587331.JavaMail.zimbra@totalphase.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <1525093096.37868.1710176587331.JavaMail.zimbra@totalphase.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Pavel,
+On 11.3.2024 19.03, Chris Yokum wrote:
+> Hello Mathias,
+> 
+> Thanks for the help with this! We saw that it's made it into 6.8. Is it possible to get this into 6.6 and 6.7?
+> 
 
-On Tue, Mar 12, 2024 at 9:38=E2=80=AFAM Pavel Machek <pavel@ucw.cz> wrote:
-> > > > From: Rob Herring <robh@kernel.org>
-> > > >
-> > > > [ Upstream commit 91adecf911e5df78ea3e8f866e69db2c33416a5c ]
-> > > >
-> > > > The dtc interrupt_provider warning is off by default. Fix all the w=
-arnings
-> > > > so it can be enabled.
-> > >
-> > > We don't have that warning in 6.1 and likely won't enable it, so we
-> > > should not need this.
-> >
-> > Still, this fixes issues in DTS that were not noticed before because
-> > the checks were disabled.
->
-> Is this patch known to fix user-visible behaviour?
+Patch is tagged for stable 6.5+.
+If all goes well it should end up in 6.5 and later stable kernels
 
-None that I am aware of.
+https://lore.kernel.org/all/20240305132312.955171-2-mathias.nyman@linux.intel.com/
 
-Gr{oetje,eeting}s,
+Thanks
+Mathias
 
-                        Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
