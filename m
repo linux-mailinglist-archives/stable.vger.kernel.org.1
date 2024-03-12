@@ -1,67 +1,66 @@
-Return-Path: <stable+bounces-27544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283D3879EFB
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB8B879EFC
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 23:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939301F22926
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071A5281D99
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1BB1CA8F;
-	Tue, 12 Mar 2024 22:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69891CA8F;
+	Tue, 12 Mar 2024 22:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X+ZdT+0D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eTDQ1MoF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C095426286
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 22:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B2EBE7D
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 22:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710283241; cv=none; b=gZupdNy4ckGJOP91EiGqNFzZu1dpPhzGzmT7NM9WUB0tkvZB5c+BSm2JgQmwVddKR5egOJf0248fTMBCBsTBUEY87803LEQgoje8KZ/oZW0wCQMG/tQOQfAjZNhMqg3HW46nUY3ZU/1Q0IhJ5EhAwY2iFHY0OpQE600uMipIyZw=
+	t=1710283247; cv=none; b=hARMbw6fijhU/YgJSojN2NRgpP3YTkhzVReHjh0oMtaUs/bHvU9HrxroB/0BoiOVBIOX1/BYMsek1jFv+Axc14h3XlGQcUi0g5x6KFPxY22aJIgW3vku+vfFtaHqfcf5cT+Ka7KKjB7xUCypXL0hPEUeu5ag9A8HclsPOwTssjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710283241; c=relaxed/simple;
-	bh=QJk7+rDOFBmXDYiizUoh8an0yb95FTgkKApqEUDwEac=;
+	s=arc-20240116; t=1710283247; c=relaxed/simple;
+	bh=AkCWN3AsdaO6n62Nyp/Vb6Qxgxa/JaG386UFDCtkgOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jED62gjd+VHRkCx2vk22UF9k9btQgOHuKP/rQIX6yocPtoT7iWLakT/hZIth+R4m9e5NruvybPHi64Hu/qF3ZVlgyHyHsmjo9AoeqqTI4idmrTZerIhyE/uNOep93zM0IscTCDd+6/YzHa6H4b+dj07fDyxyarFvQLe+X9S3zJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X+ZdT+0D; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=rhvWpzXaZ2kAFiSp5kt4vhDU6thz9q27VtIJOyIge6kvWmiBt5eSrbgxyHh7sirmd9EgmwBFGDYwyYK1zq3fBgx4tV1IGn/j25p1NfLkBg7krWqPtCk473cCDzolkoF7drdnqPzXDez50KPBrM6aBuGjkfaoCkYgM8MzdtHBgUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eTDQ1MoF; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710283240; x=1741819240;
+  t=1710283246; x=1741819246;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=QJk7+rDOFBmXDYiizUoh8an0yb95FTgkKApqEUDwEac=;
-  b=X+ZdT+0DE7yOmsDORiIgD06VuXCWMoSLRGt+uSxTJvIfzNv/5sDql8vf
-   hJjEgp6NAsy9G7Eu8Bdhj+wT2xaKC76CIYyOv/ia7vuAGf3rDE8ljZDu9
-   9Y58hYSridxhX1XdGHbZIpjcv7SaZF9aGOvZ9uiNu1C4VBJQmitNRzwJn
-   +afI8/iJzoT81Xe3tK8yjZkCCI03h6QP4RLfjoZ+AvBY8AU0IZ4A20v0V
-   vJaeZ8xvhIsUC0iJ2j0N9lVr1dPQ5kYT2la1haSjhmnsDbj0mEbhQcvtB
-   B8IHNji8pmet+3ZdSB6KTYyGPvN+VFBmlyMgpr+TSlTYofarnu7Bk2E+I
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="22475890"
+  bh=AkCWN3AsdaO6n62Nyp/Vb6Qxgxa/JaG386UFDCtkgOM=;
+  b=eTDQ1MoFTVt/j/2j9Y0EtkGtFG0a1mex9vcdBglU8J22lZzQ0dpwCGDz
+   J9G3K6ibKG/TDQvfX3QMolr/L+ag/TbDO5E75OFmKu+LM71KQU+N3c1KU
+   JUbn+/mO3VXWKO2MBG7eBdxu5LL6Hav5MlmYVMzs+p9S/NIUUZ5Qcnssm
+   2YY8KSWicY3Uq6TjRRC3mqOxds8PuTHxk6oGZqCkRQdN5Qly0vENRmqo5
+   wY4TCn3hwYd2Jf2l7nESt7I1ngdXLV1H4UpV2CH/nVp1Umwbv1a1sQtPV
+   3zQARV/wXn3Cga4gl134aK8kB5iM7OGgZMw6FtxffGlPiVY+l49MfrPDZ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4892348"
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="22475890"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:40 -0700
+   d="scan'208";a="4892348"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:46 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="12116160"
+   d="scan'208";a="11593236"
 Received: from arnabkar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.69.57])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:40 -0700
-Date: Tue, 12 Mar 2024 15:40:39 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:40:45 -0700
+Date: Tue, 12 Mar 2024 15:40:44 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.10.y v2 03/11] x86/entry_64: Add VERW just before userspace
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 5.10.y v2 04/11] x86/entry_32: Add VERW just before userspace
  transition
-Message-ID: <20240312-delay-verw-backport-5-10-y-v2-3-ad081ccd89ca@linux.intel.com>
+Message-ID: <20240312-delay-verw-backport-5-10-y-v2-4-ad081ccd89ca@linux.intel.com>
 X-Mailer: b4 0.12.3
 References: <20240312-delay-verw-backport-5-10-y-v2-0-ad081ccd89ca@linux.intel.com>
 Precedence: bulk
@@ -74,117 +73,46 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20240312-delay-verw-backport-5-10-y-v2-0-ad081ccd89ca@linux.intel.com>
 
-commit 3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a upstream.
+commit a0e2dab44d22b913b4c228c8b52b2a104434b0b3 upstream.
 
-Mitigation for MDS is to use VERW instruction to clear any secrets in
-CPU Buffers. Any memory accesses after VERW execution can still remain
-in CPU buffers. It is safer to execute VERW late in return to user path
-to minimize the window in which kernel data can end up in CPU buffers.
-There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
+As done for entry_64, add support for executing VERW late in exit to
+user path for 32-bit mode.
 
-Add support for deploying VERW mitigation after user register state is
-restored. This helps minimize the chances of kernel data ending up into
-CPU buffers after executing VERW.
-
-Note that the mitigation at the new location is not yet enabled.
-
-  Corner case not handled
-  =======================
-  Interrupts returning to kernel don't clear CPUs buffers since the
-  exit-to-user path is expected to do that anyways. But, there could be
-  a case when an NMI is generated in kernel after the exit-to-user path
-  has cleared the buffers. This case is not handled and NMI returning to
-  kernel don't clear CPU buffers because:
-
-  1. It is rare to get an NMI after VERW, but before returning to user.
-  2. For an unprivileged user, there is no known way to make that NMI
-     less rare or target it.
-  3. It would take a large number of these precisely-timed NMIs to mount
-     an actual attack.  There's presumably not enough bandwidth.
-  4. The NMI in question occurs after a VERW, i.e. when user state is
-     restored and most interesting data is already scrubbed. Whats left
-     is only the data that NMI touches, and that may or may not be of
-     any interest.
-
-  [ pawan: resolved conflict in syscall_return_via_sysret, added
-           CLEAR_CPU_BUFFERS to USERGS_SYSRET64 ]
-
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-2-a6216d83edb7%40linux.intel.com
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-3-a6216d83edb7%40linux.intel.com
 ---
- arch/x86/entry/entry_64.S        | 10 ++++++++++
- arch/x86/entry/entry_64_compat.S |  1 +
- arch/x86/include/asm/irqflags.h  |  1 +
- 3 files changed, 12 insertions(+)
+ arch/x86/entry/entry_32.S | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index 23212c53cef7..1631a9a1566e 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -615,6 +615,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_return_to_usermode, SYM_L_GLOBAL)
- 	/* Restore RDI. */
- 	popq	%rdi
- 	SWAPGS
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 70bd81b6c612..840e4f01005c 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -997,6 +997,7 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 	BUG_IF_WRONG_CR3 no_user_check=1
+ 	popfl
+ 	popl	%eax
 +	CLEAR_CPU_BUFFERS
- 	INTERRUPT_RETURN
  
- 
-@@ -721,6 +722,8 @@ native_irq_return_ldt:
- 	 */
- 	popq	%rax				/* Restore user RAX */
- 
-+	CLEAR_CPU_BUFFERS
-+
  	/*
- 	 * RSP now points to an ordinary IRET frame, except that the page
- 	 * is read-only and RSP[31:16] are preloaded with the userspace
-@@ -1487,6 +1490,12 @@ nmi_restore:
- 	std
- 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
+ 	 * Return back to the vDSO, which will pop ecx and edx.
+@@ -1069,6 +1070,7 @@ restore_all_switch_stack:
  
-+	/*
-+	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
-+	 * NMI in kernel after user state is restored. For an unprivileged user
-+	 * these conditions are hard to meet.
-+	 */
-+
+ 	/* Restore user state */
+ 	RESTORE_REGS pop=4			# skip orig_eax/error_code
++	CLEAR_CPU_BUFFERS
+ .Lirq_return:
  	/*
- 	 * iretq reads the "iret" frame and exits the NMI stack in a
- 	 * single instruction.  We are returning to kernel mode, so this
-@@ -1504,6 +1513,7 @@ SYM_CODE_END(asm_exc_nmi)
- SYM_CODE_START(ignore_sysret)
- 	UNWIND_HINT_EMPTY
- 	mov	$-ENOSYS, %eax
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(ignore_sysret)
- #endif
-diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
-index 4d637a965efb..7f09e7ad3c74 100644
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -319,6 +319,7 @@ sysret32_from_system_call:
- 	xorl	%r9d, %r9d
- 	xorl	%r10d, %r10d
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(entry_SYSCALL_compat)
+ 	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on IRET core serialization
+@@ -1267,6 +1269,7 @@ SYM_CODE_START(asm_exc_nmi)
  
-diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
-index 8c86edefa115..f40dea50dfbf 100644
---- a/arch/x86/include/asm/irqflags.h
-+++ b/arch/x86/include/asm/irqflags.h
-@@ -134,6 +134,7 @@ static __always_inline unsigned long arch_local_irq_save(void)
- #define INTERRUPT_RETURN	jmp native_iret
- #define USERGS_SYSRET64				\
- 	swapgs;					\
-+	CLEAR_CPU_BUFFERS;			\
- 	sysretq;
- #define USERGS_SYSRET32				\
- 	swapgs;					\
+ 	/* Not on SYSENTER stack. */
+ 	call	exc_nmi
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnmi_return
+ 
+ .Lnmi_from_sysenter_stack:
 
 -- 
 2.34.1
