@@ -1,92 +1,129 @@
-Return-Path: <stable+bounces-27418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B09878C54
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 02:34:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41775878C8E
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 02:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0B2FB213C3
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 01:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70C531C21119
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 01:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB70A10E6;
-	Tue, 12 Mar 2024 01:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hYhAXa0c"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0C61C17;
+	Tue, 12 Mar 2024 01:52:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCE67494
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 01:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8452469D;
+	Tue, 12 Mar 2024 01:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710207237; cv=none; b=RLyRfQdFtw1dcV11LxPXj6V2ztmWf6x04h6fkH6aVGJXZV35wVWWDfv6HBI3O7F4ODW+NJkHOEiZnF5VvBhqrAqaxzO6zPNcV4BtKdnwpNKYFYTz1Zj2ji0AYeW7+SQUvKiwqlb+Mw6Ebfjzn0EagmY6VluXv0NTAZWeUSUB+jU=
+	t=1710208355; cv=none; b=BUSs4UC4oX5sJvfitbDWXZmPdJj5UJ9UrFQjAxh73J8xl9D0b0a3VGuUKV/c3zHULA/mT4JDYeO99rfePQvM7dRFzSpi9T/PifcBeSWjkS/Vaut4m8wJZv3icJAmh7+u3P7NdZ6Y2pq9lyZ10nK/4X5enLQnTqdOM9xDBMmqIzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710207237; c=relaxed/simple;
-	bh=4r6JczK4zI3K74a39D7+iL4uiScxtntnqph+kScT0CE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N5A/GgJC28qPCPc6wqZLrb/fcO/SbwhsqevcQyFxYf1iSdlgyI6zwUYWZhkXjJ7NVEdCxtWUfg5unK/C9GwNAzPvVF/fyhEjgpv5Oo/DVjNTNs9kGugOE80uLSrpWPN3iuW+ovZ8LAEYQJc+0TgdYVMnn1P/fEQYS3AVq5Au89g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hYhAXa0c; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710207236; x=1741743236;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4r6JczK4zI3K74a39D7+iL4uiScxtntnqph+kScT0CE=;
-  b=hYhAXa0c4GqfcWKQckkisI8FlDP7sFjowmbZQhINGah6w5LXfQN9CUO0
-   pHlt4te7zQw6akS2I9lhPfLJPxifeA9wvT94zLarWu3LETLd6Csj8g7g7
-   8MPlpG/vNbd/ZlLXoNmTu3B13YG41ydxngAcP0r+oOq2BeZcOYAFjhxmq
-   CGzj2BYenMhAljoLvPuQsd1EDPs+C/sJes54Pik9PQ0QpkLlUr+2nfO53
-   3bcOMS+qANYig4dTOAMaGJ28bvWfarSmrBEZewXq8UPcDeN1kMvC96PrD
-   ylqEJQprrcnuj3W1aFHxfi8uIJsYPUGwiXdoFY/jqNv9uaCiaN/bCCu7H
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="5019135"
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="5019135"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 18:33:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="15929402"
-Received: from psdamle-mobl1.amr.corp.intel.com (HELO desk) ([10.255.229.113])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 18:33:54 -0700
-Date: Mon, 11 Mar 2024 18:33:38 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: stable@vger.kernel.org, "H. Peter Anvin (Intel)" <hpa@zytor.com>
-Subject: Re: [PATCH v2 1/7] x86/asm: Add _ASM_RIP() macro for x86-64 (%rip)
- suffix
-Message-ID: <20240312013317.7k6vlhs6iqgxbbru@desk>
-References: <20240226122237.198921-1-nik.borisov@suse.com>
- <20240226122237.198921-2-nik.borisov@suse.com>
+	s=arc-20240116; t=1710208355; c=relaxed/simple;
+	bh=oZSt8rOcfsApDGaXioQ83dqa7XFV7dDDeX7YZCZIXWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qjFzsdOGiOHt9eDon2HoTqMH9nfNRjO6zPRISximx74/9ERa4sBh6gyEBNgbD1yh4mJ9sn7Xo0DUhQIy89bF1flNg9VSIN3t9SGgG6eufpJyu7hiE0GQQX5bKIXyYKQanmjyQznX+j9V7Vo2vyw6gs/pJOv/4KTOM9VmVCAbFnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+X-QQ-mid: bizesmtp90t1710208311tl9p0klz
+X-QQ-Originating-IP: s65UGkHpF2o9p4eY6Dtwin3B09Ieh1+LZF8N2A+5T0M=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 12 Mar 2024 09:51:50 +0800 (CST)
+X-QQ-SSF: 01400000000000C0B000000A0000000
+X-QQ-FEAT: +ynUkgUhZJknQdj8DNcL8xe+8WjYPGdGsyvtr2K5zIPQKmQCiczINsccDoZnI
+	HJVUjYUBSd8lDwyrexXgUWl244sLWMjP/w183+z4b7bftBLDzY8Av2OVl0ez4k8xWxj4Ez6
+	9bVlrmszXEyztdKczipe13X4bYZh5IuP41Fln6ESwV+oA6cicmCuKIwX7ZNkZJz93pIUj7v
+	K1mnHPGJ90iJTHa42FrY7yqdJfyTmUY9CCMSQZ63hJbTL/gFnxQGDXbRfvAWznFG7sQs2Re
+	ZNzEZHRww3pRL4dz/zhx/1Un5HB+rQsTUwDuXR0C+bVsLICZ6YakvdM0lacMi7Y3lLjFS1e
+	bkslMyyfKivbHZAYWVB+XnhmA1TuQ71x+ZCKACRgFIB4IO3XDOJprc4GMqP0dnDc8DtVFwD
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 4870457541553938088
+From: WangYuli <wangyuli@uniontech.com>
+To: wangyuli@uniontech.com,
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com
+Cc: Larry.Finger@lwfinger.net,
+	guanwentao@uniontech.com,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: Add device 0bda:4853 to blacklist/quirk table
+Date: Tue, 12 Mar 2024 09:51:33 +0800
+Message-ID: <893FB314C6C03130+20240312015133.232214-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240226122237.198921-2-nik.borisov@suse.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-On Mon, Feb 26, 2024 at 02:22:31PM +0200, Nikolay Borisov wrote:
-> From: "H. Peter Anvin (Intel)" <hpa@zytor.com>
-> 
-> [ Upstream commit 0576d1ed1e153bf34b54097e0561ede382ba88b0 ]
+This new device is part of a Realtek RTW8852BE chip. Without this change
+the device utilizes an obsolete version of the firmware that is encoded
+in it rather than the updated Realtek firmware and config files from
+the firmware directory. The latter files implement many new features.
 
-Looks like the correct sha is f87bc8dc7a7c438c70f97b4e51c76a183313272e
+The device table is as follows:
 
-> Add a macro _ASM_RIP() to add a (%rip) suffix on 64 bits only. This is
-> useful for immediate memory references where one doesn't want gcc
-> to possibly use a register indirection as it may in the case of an "m"
-> constraint.
-> 
-> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> Signed-off-by: Borislav Petkov <bp@suse.de>
-> Link: https://lkml.kernel.org/r/20210910195910.2542662-3-hpa@zytor.com
-> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+
+Link: https://lore.kernel.org/all/20230810144507.9599-1-Larry.Finger@lwfinger.net/
+Cc: stable@vger.kernel.org
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 06e915b57283..d9c621d15fee 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -542,6 +542,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
+-- 
+2.43.0
+
 
