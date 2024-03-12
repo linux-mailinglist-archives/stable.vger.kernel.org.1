@@ -1,148 +1,117 @@
-Return-Path: <stable+bounces-27474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBD887978C
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 16:30:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8E58797C9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 16:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49BED286906
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 891B51F20F7D
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F50C7C0B4;
-	Tue, 12 Mar 2024 15:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C057CF22;
+	Tue, 12 Mar 2024 15:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="thF9tFO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFABF7B3EF;
-	Tue, 12 Mar 2024 15:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD057CF29;
+	Tue, 12 Mar 2024 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710257450; cv=none; b=rpsz8pZ9xFO0XANOKFs89O7ixgP7CWREtD+5UANdPLRLvNfs7pZ8t202DjlIsMahYP3iFGrBhlk38MCTpAwiZsOAoj52GARFY2ykZk4mKDrTEippn2VClRjwuoo1+EFIVjcyKG70Fm21Dxi58Zz4WrMzcivNX6hMl+KEtcmLRA4=
+	t=1710257927; cv=none; b=JPA1bwwtiaXDj8PES+FrbH4lV0b2/i5eXJ3egfnN8ILSbBzDtQHH160UO0HjWacfSoavNDveZ5LETStv9JKG0OUzLTg+wB4vHmoFxKM3wNQsNB9YrhCnwy+8kuRe+kcb7GhAxDPK7KAC4X0+JAdSndDYqq9S99xNXaSolFtpZ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710257450; c=relaxed/simple;
-	bh=Z2McJvRwMphtzX4Zb63W7c5mKRkPIJErF1gDpAxflBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NDUgVDVFZK+4wvnQbAKpkP41e6jtzG1NY/qJ0Ior+zE1zHCFZezp5EcNBjb/sLCDN5HZVvpMguPKsUGEZADsC4pT5mx9R2mWLqCWX2UYbc4rhUBsfrTAxYaNzHCT8a9JA2YtNfu8ASf65m9SBvS9FPR0g/bp0Mz/4OMXgrNiaPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3E3C43390;
-	Tue, 12 Mar 2024 15:30:48 +0000 (UTC)
-Date: Tue, 12 Mar 2024 11:32:54 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Mark
- Rutland <mark.rutland@arm.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Andrew Morton
- <akpm@linux-foundation.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ring-buffer: Fix full_waiters_pending in poll
-Message-ID: <20240312113254.78455352@gandalf.local.home>
-In-Reply-To: <20240313002210.d89600218f78a4c55f56b998@kernel.org>
-References: <20240312131919.314231457@goodmis.org>
-	<20240312131952.630922155@goodmis.org>
-	<20240313002210.d89600218f78a4c55f56b998@kernel.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1710257927; c=relaxed/simple;
+	bh=JEe1p4YuAcLTcqOzPOtIkFuMmTKp7ljr+tOfaoGOZp4=;
+	h=Date:To:From:Subject:Message-Id; b=P4qQXTHcXT6IroOAGcXJjG3j6y3xhXE7p5HQH1Cl9su1CJtk4mFtE0fNLcYxO/UwiO/4pTH8/qFyWiAJhEGyRGoie9QSNOBpt2Ss4cBN+20ZP2B3LB2QxCBakTW6c9jS2e187A9jMnuLsNkIB99GnhN/H/46CUZHtKnoDtPN4gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=thF9tFO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39DDC43390;
+	Tue, 12 Mar 2024 15:38:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1710257926;
+	bh=JEe1p4YuAcLTcqOzPOtIkFuMmTKp7ljr+tOfaoGOZp4=;
+	h=Date:To:From:Subject:From;
+	b=thF9tFO4B1Zv0TNjOkT1gCbJL3QY6IinPBEO9tqGLlvsHhKlBXRoZjPHV8yVY4b3Q
+	 /l1HHVWl7bpi0/q4bA0G45nItxekDFACv+ujP6bUGbnV3F7VY/8xtvzqlYstQdODM9
+	 qvDtvp5LATAeBXn6AQIsPpBRg9P6F47AL0DILHsQ=
+Date: Tue, 12 Mar 2024 08:38:46 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ndesaulniers@google.com,nathan@kernel.org,morbo@google.com,justinstitt@google.com,qiang4.zhang@intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + memtest-use-readwrite_once-in-memory-scanning.patch added to mm-unstable branch
+Message-Id: <20240312153846.D39DDC43390@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Mar 2024 00:22:10 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
 
-> On Tue, 12 Mar 2024 09:19:20 -0400
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> 
-> > From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> > 
-> > If a reader of the ring buffer is doing a poll, and waiting for the ring
-> > buffer to hit a specific watermark, there could be a case where it gets
-> > into an infinite ping-pong loop.
-> > 
-> > The poll code has:
-> > 
-> >   rbwork->full_waiters_pending = true;
-> >   if (!cpu_buffer->shortest_full ||
-> >       cpu_buffer->shortest_full > full)
-> >          cpu_buffer->shortest_full = full;
-> > 
-> > The writer will see full_waiters_pending and check if the ring buffer is
-> > filled over the percentage of the shortest_full value. If it is, it calls
-> > an irq_work to wake up all the waiters.
-> > 
-> > But the code could get into a circular loop:
-> > 
-> > 	CPU 0					CPU 1
-> > 	-----					-----
-> >  [ Poll ]
-> >    [ shortest_full = 0 ]
-> >    rbwork->full_waiters_pending = true;
-> > 					  if (rbwork->full_waiters_pending &&
-> > 					      [ buffer percent ] > shortest_full) {
-> > 					         rbwork->wakeup_full = true;
-> > 					         [ queue_irqwork ]  
-> 
-> Oh, so `[ buffer percent ] > shortest_full` does not work because
-> if this happens in this order, shortest_full may be 0.
+The patch titled
+     Subject: memtest: use {READ,WRITE}_ONCE in memory scanning
+has been added to the -mm mm-unstable branch.  Its filename is
+     memtest-use-readwrite_once-in-memory-scanning.patch
 
-Exactly!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memtest-use-readwrite_once-in-memory-scanning.patch
 
-> 
-> > 
-> >    cpu_buffer->shortest_full = full;
-> > 
-> > 					  [ IRQ work ]
-> > 					  if (rbwork->wakeup_full) {
-> > 					        cpu_buffer->shortest_full = 0;
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-And here shortest_full gets set back to zero! (But that's not the bug).
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> > 					        wakeup poll waiters;
-> >   [woken]
-> >    if ([ buffer percent ] > full)
-> >       break;
-> >    rbwork->full_waiters_pending = true;
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-The bug is setting full_waiters_pending before updating the shortest_full.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-> > 					  if (rbwork->full_waiters_pending &&
-> > 					      [ buffer percent ] > shortest_full) {
-> > 					         rbwork->wakeup_full = true;
-> > 					         [ queue_irqwork ]
-> > 
-> >    cpu_buffer->shortest_full = full;
-> > 
-> > 					  [ IRQ work ]
-> > 					  if (rbwork->wakeup_full) {
-> > 					        cpu_buffer->shortest_full = 0;
-> > 					        wakeup poll waiters;
-> >   [woken]
-> > 
-> >  [ Wash, rinse, repeat! ]
-> > 
-> > In the poll, the shortest_full needs to be set before the
-> > full_pending_waiters, as once that is set, the writer will compare the
-> > current shortest_full (which is incorrect) to decide to call the irq_work,
-> > which will reset the shortest_full (expecting the readers to update it).
-> > 
-> > Also move the setting of full_waiters_pending after the check if the ring
-> > buffer has the required percentage filled. There's no reason to tell the
-> > writer to wake up waiters if there are no waiters.
-> >   
-> 
-> Looks good to me.
-> 
-> Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+------------------------------------------------------
+From: Qiang Zhang <qiang4.zhang@intel.com>
+Subject: memtest: use {READ,WRITE}_ONCE in memory scanning
+Date: Tue, 12 Mar 2024 16:04:23 +0800
 
-Thanks!
+memtest failed to find bad memory when compiled with clang.  So use
+{WRITE,READ}_ONCE to access memory to avoid compiler over optimization.
 
-I'm running it through my tests and when they finish, I'll be posting the
-for-linus patches.
+Link: https://lkml.kernel.org/r/20240312080422.691222-1-qiang4.zhang@intel.com
+Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
--- Steve
+ mm/memtest.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/mm/memtest.c~memtest-use-readwrite_once-in-memory-scanning
++++ a/mm/memtest.c
+@@ -51,10 +51,10 @@ static void __init memtest(u64 pattern,
+ 	last_bad = 0;
+ 
+ 	for (p = start; p < end; p++)
+-		*p = pattern;
++		WRITE_ONCE(*p, pattern);
+ 
+ 	for (p = start; p < end; p++, start_phys_aligned += incr) {
+-		if (*p == pattern)
++		if (READ_ONCE(*p) == pattern)
+ 			continue;
+ 		if (start_phys_aligned == last_bad + incr) {
+ 			last_bad += incr;
+_
+
+Patches currently in -mm which might be from qiang4.zhang@intel.com are
+
+memtest-use-readwrite_once-in-memory-scanning.patch
+
 
