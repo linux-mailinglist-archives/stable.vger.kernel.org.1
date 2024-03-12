@@ -1,163 +1,111 @@
-Return-Path: <stable+bounces-27446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A498887913E
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:46:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC6A8791F9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 11:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D687F1C215BF
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:46:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8F4C1F212A6
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20E478683;
-	Tue, 12 Mar 2024 09:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F778686;
+	Tue, 12 Mar 2024 10:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="e+KRCly9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QaImXwUQ"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C6C76F08
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 09:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3848C7867A;
+	Tue, 12 Mar 2024 10:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710236560; cv=none; b=HDRseyZeaCJ8/cpw7B7uMN/gc/ruEQt7H0wcYRWnt3OpqEDow2RHGOtxxeCx18Tlij0NplzFf38oKJAvAu8gL5CvA1FCl4Yzprg6ZJW+0vIzOPylhZNQTFUcc3IPsYNNNzEI/orWqiPjkROppz/W+fcvHAdEThVqDnJYl7NcL8I=
+	t=1710239107; cv=none; b=JriJRcfs5M4Ug0pjC+aet6z+Z/IbWKDB8suNfYFjdBJlN5KG6ym8FSCJt1kIf3IMPUM/VNO99zIis+QC17ps4ABfGiMzPN8iXx9wWlW4RwjkUSK2UUTTsK+8A1BVjD5qqztcQYM/N2oLM+6hxXeHeeVaP6ZVMMvhpCK+qV8svgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710236560; c=relaxed/simple;
-	bh=/f8y+TMUvrlpIgK91aHd2HLVUROoUhkOQLE3nG5I2Sk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C0CfUv/dFkh7ECWR4FBUsfOQRLYp9OCipTRankuGtPlfnIl/s26MrkukA1MYiWEFNzoNPVR5QgyvVduPC2Zvl0Ej+at941MPCk/s/cl8npfvMKlkMK+QAHiv/QAfkAEIm4FLjBySiiidJDwT6KhOB4XtaVmYzWN/Ho1cdApu+uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=e+KRCly9; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710236556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8ibHCSWXBDpEiyIGIABI4/uyt+WILP5chV0cMqeviXU=;
-	b=e+KRCly91dCbU0NOoBLckdyuoYzG+84pVrF2OA8pxa5i7DpQEsN+3rGna4o5uKvo/X4gFq
-	p1uLdJFgnu3a/jsRp6iw8E8GIEtWdtHuG85OjOTwwBIDaMmPwFedj9YpAYwohMrcmDhnet
-	PlZo9EGeOG2Je6js/EPjUMOIsp0NZEk=
-From: George Guo <dongtai.guo@linux.dev>
-To: gregkh@linuxfoundation.org
-Cc: George Guo <guodongtai@kylinos.cn>,
+	s=arc-20240116; t=1710239107; c=relaxed/simple;
+	bh=hotPCNb1kaQBw2oByCCBdxHBnXbzkoL5OpIfzNYHNgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X5fNfvWQ96SKgaDt6gKcv4SQ6aEhlrWUhZbXGfV4VUuAszOXXqnNNLQyUG/cRzRf/dTgeI/JH178i2KMSSe4uL99DoRKs2NgBwVkDokJQxoUtwTgnr8pJcAfnXZHedElJ9kmSsjf3FJFLAN3c6lYbcqsb5HOOyAzZpSlFUvqqEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QaImXwUQ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710239105; x=1741775105;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hotPCNb1kaQBw2oByCCBdxHBnXbzkoL5OpIfzNYHNgg=;
+  b=QaImXwUQzjhgxDLXzBR+OJpikrqARRWviTLI74F9Tl+DFz1e6j22XRjd
+   WkJoN5+u1+z6CRK4YrbLyRwlD7gcPwvGEvJ+MmbKLuDGBGZOGbUAYu710
+   LjfS4SxpyiAB880hG7+GnAlCIpZv80fTBy/asltHLBVoMAKDkWPxvYnQN
+   i1E6HHccfKlVYasITTjPj4wkAeXFF8H5fpL+lY0mPwtaGfotwGsNBJ2yk
+   39a2viBOpU9+4LiaA25q9QTwYget+vYW+nY24c2XOa6Y/OmBuVE2oBXQd
+   XeMHYy1kH4yZaSu0PhJdasN5C/+60ZtASNNL3wZXGEdpXrd940SeioxZ/
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="4795312"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="4795312"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 03:25:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="937051639"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="937051639"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 12 Mar 2024 03:25:01 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 12 Mar 2024 12:25:00 +0200
+Date: Tue, 12 Mar 2024 12:25:00 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Kyle Tso <kyletso@google.com>
+Cc: linux@roeck-us.net, gregkh@linuxfoundation.org, badhri@google.com,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] tracing: Remove unnecessary var destroy in onmax_destroy()
-Date: Tue, 12 Mar 2024 17:42:33 +0800
-Message-Id: <20240312094233.445337-3-dongtai.guo@linux.dev>
-In-Reply-To: <20240312094233.445337-1-dongtai.guo@linux.dev>
-References: <20240312094233.445337-1-dongtai.guo@linux.dev>
+Subject: Re: [PATCH v1] usb: typec: tcpm: Correct port source pdo array in
+ pd_set callback
+Message-ID: <ZfAtfPciw8O6A+uS@kuha.fi.intel.com>
+References: <20240311144500.3694849-1-kyletso@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311144500.3694849-1-kyletso@google.com>
 
-From: George Guo <guodongtai@kylinos.cn>
+On Mon, Mar 11, 2024 at 10:45:00PM +0800, Kyle Tso wrote:
+> In tcpm_pd_set, the array of port source capabilities is port->src_pdo,
+> not port->snk_pdo.
+> 
+> Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kyle Tso <kyletso@google.com>
 
-The onmax_destroy() destroyed the onmax var, casusing a double-free error
-flagged by KASAN.
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-This is tested via "./ftracetest test.d/trigger/inter-event/
-trigger-onmatch-onmax-action-hist.tc".
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 3d505614bff1..9485f6373de4 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -6858,7 +6858,7 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
+>  
+>  	if (data->source_desc.pdo[0]) {
+>  		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
+> -			port->snk_pdo[i] = data->source_desc.pdo[i];
+> +			port->src_pdo[i] = data->source_desc.pdo[i];
+>  		port->nr_src_pdo = i + 1;
+>  	}
+>  
+> -- 
+> 2.44.0.278.ge034bb2e1d-goog
 
-==================================================================
-BUG: KASAN: use-after-free in destroy_hist_field+0x1c2/0x200
-Read of size 8 at addr ffff88800a4ad100 by task ftracetest/4731
-
-CPU: 0 PID: 4731 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #77
-Source Version: Unknown
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
-Call Trace:
- dump_stack+0xcb/0x10b
- print_address_description.cold+0x54/0x249
- kasan_report_error.cold+0x63/0xab
- ? destroy_hist_field+0x1c2/0x200
- ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
- __asan_report_load8_noabort+0x8d/0xa0
- ? destroy_hist_field+0x1c2/0x200
- destroy_hist_field+0x1c2/0x200
- onmax_destroy+0x72/0x1e0
- ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
- destroy_hist_data+0x236/0xa40
- event_hist_trigger_free+0x212/0x2f0
- ? update_cond_flag+0x128/0x170
- ? event_hist_trigger_func+0x2880/0x2880
- hist_unregister_trigger+0x2f2/0x4f0
- event_hist_trigger_func+0x168c/0x2880
- ? tracing_map_cmp_u64+0xa0/0xa0
- ? onmatch_create.constprop.0+0xf50/0xf50
- ? __mutex_lock_slowpath+0x10/0x10
- event_trigger_write+0x2f4/0x490
- ? trigger_start+0x180/0x180
- ? __fget_light+0x369/0x5d0
- ? count_memcg_event_mm+0x104/0x2b0
- ? trigger_start+0x180/0x180
- __vfs_write+0x81/0x100
- vfs_write+0x1e1/0x540
- ksys_write+0x12a/0x290
- ? __ia32_sys_read+0xb0/0xb0
- ? __close_fd+0x1d3/0x280
- do_syscall_64+0xe3/0x2d0
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-RIP: 0033:0x7fd7f4c44e04
-Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 
-48 8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 
-f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
-RSP: 002b:00007fff10370df8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000000000000010f RCX: 00007fd7f4c44e04
-RDX: 000000000000010f RSI: 000055fa765df650 RDI: 0000000000000001
-RBP: 000055fa765df650 R08: 000000000000000a R09: 0000000000000000
-R10: 000000000000000a R11: 0000000000000246 R12: 00007fd7f4d035c0
-R13: 000000000000010f R14: 00007fd7f4d037c0 R15: 000000000000010f
-==================================================================
-
-So remove the onmax_destroy() destroy_hist_field() call for that var.
-
-Fixes: 50450603ec9c("tracing: Add 'onmax' hist trigger action support")
-Cc: stable@vger.kernel.org
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- kernel/trace/trace_events_hist.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 7dcb96305e56..58b8a2575b8c 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -337,7 +337,6 @@ struct action_data {
- 			char			*fn_name;
- 			unsigned int		max_var_ref_idx;
- 			struct hist_field	*max_var;
--			struct hist_field	*var;
- 		} onmax;
- 	};
- };
-@@ -3489,7 +3488,6 @@ static void onmax_destroy(struct action_data *data)
- 	unsigned int i;
- 
- 	destroy_hist_field(data->onmax.max_var, 0);
--	destroy_hist_field(data->onmax.var, 0);
- 
- 	kfree(data->onmax.var_str);
- 	kfree(data->onmax.fn_name);
-@@ -3528,8 +3526,6 @@ static int onmax_create(struct hist_trigger_data *hist_data,
- 	if (!ref_field)
- 		return -ENOMEM;
- 
--	data->onmax.var = ref_field;
--
- 	data->fn = onmax_save;
- 	data->onmax.max_var_ref_idx = var_ref_idx;
- 	max_var = create_var(hist_data, file, "max", sizeof(u64), "u64");
 -- 
-2.34.1
-
+heikki
 
