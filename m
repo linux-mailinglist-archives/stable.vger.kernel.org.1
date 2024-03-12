@@ -1,135 +1,119 @@
-Return-Path: <stable+bounces-27496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F969879AF7
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 19:07:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4E0879B0A
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 19:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10FBDB22B45
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5971F22069
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D251386D9;
-	Tue, 12 Mar 2024 18:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15811386D1;
+	Tue, 12 Mar 2024 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="U0lxIATC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ng0k6iSY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04E153BE;
-	Tue, 12 Mar 2024 18:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0969153BE
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 18:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710266833; cv=none; b=l3OeUakJt4KXXZKpDG48GGUFokaJBY3Yy580fsnpQwk6rtP9PskHai7HbLFU1jmuR56Vg/yCXSTuPGfNDuQJPa/Skfb1qw/l6k3+w/gS03OQfyIYB6hg1wvC27tw58s+tkWDKv24lhbofos8Peq4g+aewPxQdbssL01cRoR8i38=
+	t=1710267207; cv=none; b=X5GZWLBmy1W6br4f0I5bi1xfVJz00s9+sOf/I0aT+bEEG0wIKUqj5QV/lvhkx4886arNaXRvUZ7dJi40Ie0nW2Lj7n71BrrqSZ1d9ZqPTDUUENs77vnjaoUW9iE7AyrhO6/hcffIOqgnT/06hp7m5vUIRLjVpTZYatHnipPiNFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710266833; c=relaxed/simple;
-	bh=xDMpf32XdN9mFoxvXmkOJMQv+yi7XgTifA78SnuM9qM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YR5cIhfsN5/WN5ynnirTW1VwwqL3hT10oKlJw8dssQiJH3n444r65eY7xoRI6AAfdZ3JnW8olNVZmbXmWwCGW9q2Ms3ZPtOrirY8clxPAK7onCKR7jEO/1LwcmV2vAGyVGgnoC9skEm5+qgu5PTT5RUlIAFUIIPKEBseqvGyQZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=U0lxIATC; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1710266824;
-	bh=xDMpf32XdN9mFoxvXmkOJMQv+yi7XgTifA78SnuM9qM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U0lxIATCYVsgwa37ot09cJBoT6fXos59dZxsvraVILXcSpziqGDUrJF2sOgi6qEfT
-	 noRRWsccNTmlqFZofSTwkl/kLdHrMZJQDq5gw3qab2l5v1zXrRV3GBjm7YuXXWeTNZ
-	 xWRhnVaS7UiOkW6ADptv7GjTKPqKjqXLyP3Oz6Li1/r1bveGrjo4UWRqJtiQSB31CO
-	 Wb8VcsTGo39E9Qwqq0bL95YMaEUj0VptN/3TOeAkw9Y3nzDdiJZksgklgXekOjz2dN
-	 ihaY2eoFlTf0JJSsY1SEqnuszHIA07KoXNVMKhbxOyiyxOF+jD9E9X87T8eyiX4DB3
-	 mTd3pJSJZa3MQ==
-Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4TvM6c1n4dzh0K;
-	Tue, 12 Mar 2024 14:07:04 -0400 (EDT)
-Message-ID: <b7660de7-03ad-4d6c-b135-998d2cc0c80e@efficios.com>
-Date: Tue, 12 Mar 2024 14:07:18 -0400
+	s=arc-20240116; t=1710267207; c=relaxed/simple;
+	bh=hSrEy20qedgKsQA8cv6twFl5A5bMWHmJwJPoJehc8DI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uQtfmTofLsQX+JQU4iUjTR9NfjTSyfC1WM0cfO1lCeCXmkDN/Sn7dPAGpTJJSeV7AEF88/iJPO5Lf14P8uZdFisfgieEsLcLnRjrSJ2hF7anqWD2KHxAiBAt4gbCKJotbQxl+8DJO15Eguthtf/Lx1UhZjOI0kwbuFHC0NjXNy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ng0k6iSY; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710267207; x=1741803207;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=hSrEy20qedgKsQA8cv6twFl5A5bMWHmJwJPoJehc8DI=;
+  b=ng0k6iSYBKrV+aOXZYTJRDKLJnct4X7GREmJjIGQyq5IJ3QvLIhV63FH
+   menwYI6owEyJC7v5OjEMGOyyRR0GEWsbENydLA3DbN6Ngk9Hn3QoYmVYt
+   ONaQmeozv9pVEc7tn79zou2UB9WraMGLtWQYqvsEHnDV5Zl0NmLVCyE6F
+   ZjPoCioqYSJtCf93C8KjJud+SwE9zv4KCuovEvTcOfQLJz9hlb/2KkJjA
+   8W6rSvZ7M19LsZxpvt/93jmLunkoL6+JkVU4GnSve15FmLGfINSYGJFfu
+   kpr6DOYdN019doLlSS0YjA21MBewGfM4j+mRO4MVv+VZyKbb5RCZvqIdA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="15550029"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="15550029"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 11:13:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="11525431"
+Received: from arnabkar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.69.57])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 11:13:24 -0700
+Date: Tue, 12 Mar 2024 11:13:23 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 0/4] RFDS backport 6.6.y
+Message-ID: <20240312-rfds-backport-6-6-y-v1-0-8a47699f1e6c@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAO+a8GUC/x2MMQqAMAwAv1IyG7BRO/gVcWg1ahC0pCKK+HeL3
+ HTD3QOJVThBax5QPiXJvmWxhYFh8dvMKGN2oJLqsrKEOo0Jgx/WuOuBLnMj25oaZ11oyEMuo/I
+ k13/t+vf9APH1LsJlAAAA
+X-Mailer: b4 0.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] sched: Add missing memory barrier in switch_mm_cid
-Content-Language: en-US
-To: Yeo Reum Yun <YeoReum.Yun@arm.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Catalin Marinas <Catalin.Marinas@arm.com>,
- Mark Rutland <Mark.Rutland@arm.com>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Aaron Lu <aaron.lu@intel.com>
-References: <20240306152443.6340-1-mathieu.desnoyers@efficios.com>
- <AM0PR08MB428936EACB47856176BFDD8CFB242@AM0PR08MB4289.eurprd08.prod.outlook.com>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <AM0PR08MB428936EACB47856176BFDD8CFB242@AM0PR08MB4289.eurprd08.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 2024-03-11 04:45, Yeo Reum Yun wrote:
-> Hi. Mathieu. Sorry to late answer.
-> 
->> diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
->> index 35389b2af88e..0d5e54201eb2 100644
->> --- a/arch/x86/include/asm/barrier.h
->> +++ b/arch/x86/include/asm/barrier.h
->> @@ -79,6 +79,9 @@ do {                                                                  \
->>   #define __smp_mb__before_atomic()      do { } while (0)
->>   #define __smp_mb__after_atomic()       do { } while (0)
-> 
->> +/* Writing to CR3 provides a full memory barrier in switch_mm(). */
->> +#define smp_mb__after_switch_mm()      do { } while (0)
->> +
->> #include <asm-generic/barrier.h>
-> 
-> IIUC, ppc already does smp_mb() in switch_mm.
-> 
-> Would it better to add the same macro which do nothing to pcc?\\
+This is a backport of recently upstreamed mitigation of a CPU
+vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746). It
+has a dependency on "Delay VERW" series which is already backported and
+merged in linux-6.6.y.
 
-Does it ?
+There were no hiccups in backporting this.
 
-Based on arch/powerpc/include/asm/membarrier.h, it appears that
-powerpc does _not_ have a guaranteed barrier in switch_mm():
+Cc: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
 
-static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
-                                              struct mm_struct *next,
-                                              struct task_struct *tsk)
-{
-         /*
-          * Only need the full barrier when switching between processes.
-          * Barrier when switching from kernel to userspace is not
-          * required here, given that it is implied by mmdrop(). Barrier
-          * when switching from userspace to kernel is not needed after
-          * store to rq->curr.
-          */
-         if (IS_ENABLED(CONFIG_SMP) &&
-             likely(!(atomic_read(&next->membarrier_state) &
-                      (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
-                       MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
-                 return;
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+---
+Pawan Gupta (4):
+      x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
+      Documentation/hw-vuln: Add documentation for RFDS
+      x86/rfds: Mitigate Register File Data Sampling (RFDS)
+      KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
 
-         /*
-          * The membarrier system call requires a full memory barrier
-          * after storing to rq->curr, before going back to user-space.
-          */
-         smp_mb();
-}
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../admin-guide/hw-vuln/reg-file-data-sampling.rst | 104 +++++++++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  21 +++++
+ arch/x86/Kconfig                                   |  11 +++
+ arch/x86/include/asm/cpufeatures.h                 |   1 +
+ arch/x86/include/asm/msr-index.h                   |   8 ++
+ arch/x86/kernel/cpu/bugs.c                         |  92 +++++++++++++++++-
+ arch/x86/kernel/cpu/common.c                       |  38 +++++++-
+ arch/x86/kvm/x86.c                                 |   5 +-
+ drivers/base/cpu.c                                 |   3 +
+ include/linux/cpu.h                                |   2 +
+ 12 files changed, 278 insertions(+), 9 deletions(-)
+---
+base-commit: 62e5ae5007ef14cf9b12da6520d50fe90079d8d4
+change-id: 20240312-rfds-backport-6-6-y-e1425616b52a
 
-AFAIU the barrier provided in powerpc switch_mm_irqs_off() is only in the
-"new_on_cpu" case. Am I missing something ?
-
-Thanks,
-
-Mathieu
-
-> 
-> Thanks!
-> 
+Best regards,
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+Thanks,
+Pawan
+
 
 
