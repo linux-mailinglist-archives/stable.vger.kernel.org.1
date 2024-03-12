@@ -1,180 +1,149 @@
-Return-Path: <stable+bounces-27514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B318D879C2D
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:16:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B08879CA6
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107C91F213A6
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 19:16:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E503284411
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B85D142630;
-	Tue, 12 Mar 2024 19:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2DF14290A;
+	Tue, 12 Mar 2024 20:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="c+gh9Z/J";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kOp69Aly"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="WibrX5wU"
 X-Original-To: stable@vger.kernel.org
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BF97E761;
-	Tue, 12 Mar 2024 19:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1F14265A;
+	Tue, 12 Mar 2024 20:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710271002; cv=none; b=hdc3EZOWVYtcs+dDeR/RpRy5t/4h4Rn0C9lmGagniBXG2hI6avovFW0FvJUxD1ILHf3jRlTH+Db6cun7EH3g1jDCPTHaroDdl9YbB9Zitv2aN6odBt14TJjz2B1PJpo1uJ/kotozRIKRnR9L57Lh+1mFlo7FgplDkDRipCBLqls=
+	t=1710274210; cv=none; b=RwO7YCgAdp6dSWoj3qS5jrmeBUCma8na4NFVGI5jx+K2WmGWg9wunuH4bkjkGei9jlTy9fr/o82wZGAbSCdwWnCFuzBmJdTEhGTJcf5o9dJ2kNSt1fmu2HAdes1RadqhURQ0cxalcTk5bLpkBvAtXVFaYy0EKxQDMKXLy0jmT0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710271002; c=relaxed/simple;
-	bh=5j6QeDtWO58mmaTdwshkUJxyTsa96Ky/7JBvc4Mgyzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kBfPL4qs8Sd+jPO3F5mhas+CFean433LyOiHscZmOdGYZc3k+3NNqeOR+Isb2h4jS0e43iw78VNYsQxeUcoYxTeKPEvq+qXNDst21QdYMdX0buEnOBtTRBOKmwl5Nz47EzMVjGhjeJ+QNbyUU2up5WQJsV+UEcysg4A6INf+x+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=c+gh9Z/J; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kOp69Aly; arc=none smtp.client-ip=66.111.4.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 2D20D5C0062;
-	Tue, 12 Mar 2024 15:16:39 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 12 Mar 2024 15:16:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1710270999; x=1710357399; bh=zSAHdQop2U
-	bbpk6h+DLvM6shV2H5ZnQtgNpwK+0CbOA=; b=c+gh9Z/J2ZJp92oKM8eS25+0As
-	nL6K0MLg+eO75RuF8SYHM9T2JddWJXPhc+7CE6kvGT8HSPsUpfTae7r2vRj8QLej
-	qHY8n9BbFL60ZI5R1nEnE/Xlqp5kHASAssJF2P9ZNM14LMOLodnyvlNpw85e9K+H
-	PXaOKuc6U1aavqofj4rHnSvbWSvniFW14z/ZaFxzjdxEHWVSeuIKdRhvL3WKrUuD
-	T+Yyw+MG3ENJyiN4tGBceWcDqJB98MZWcphQPT8xDoTwG2ST4WgY96IsZi3v46eZ
-	0nuG2Og71m2SxfCwr36nmKOlFtrTpMlYLCXiRSyVJ+Tutnq2IAnh5mjbxAaA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1710270999; x=1710357399; bh=zSAHdQop2Ubbpk6h+DLvM6shV2H5
-	ZnQtgNpwK+0CbOA=; b=kOp69Aly9CeH215lxdoBYXlN6cj0NG0oiGALCY6MRil/
-	nmW7OqAbRF/NbfVjFcJdwoEvz9ezeD51bbBvjM1Fy60t6o/WZo+fyB+wSH/4lTNN
-	ST0JjVfIz0Y5Ziu3984wa8TJUNWAAS7m3ACA4BQ9/+JcpgiJIAZsLHP+gbhwlwuJ
-	mKmH+ZIgQEoQOn+0gcnpgcIk5hkYLl6NBkCx0Cpw+BCCtv8nS6ZBeQ81hbFye6Np
-	k9io4rlmCU/ZhQ4ndqi9aoCDKL8doldkm/3i5O5OKOBnWiZc5yNdgxmHLaAX/UA6
-	T2/P0bnJyP9WzJ8BaK27KojkfTLbO9efzIpRcKCM7A==
-X-ME-Sender: <xms:FqrwZSZxFrQftV9BZC7acTEbaWa6rCsW2Tw6pIDn8W2lIMNL5QSWag>
-    <xme:FqrwZVZtNGLtpUr3Fqisz1gUFwwNpyWRwDukRI5OXrw2uNL7vZTo0iO7bq4cN0R7T
-    s2GVfwpRmu0Cz-lXOk>
-X-ME-Received: <xmr:FqrwZc8pNkEHSemM64KAbdUKXtORgkzQMD9NCF5BBjPVnDY1Q1iyYLqVj9UXxKHx62gVn9UCdo1-Nigg1NO-C1fn944>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeefgdduvddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehorhhi
-    shcuuehurhhkohhvuceosghorhhishessghurhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehtdfhvefghfdtvefghfelhffgueeugedtveduieehieehteelgeehvdefgeefgeenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghorhhishessghurhdrihho
-X-ME-Proxy: <xmx:F6rwZUozV78bl_55lLyUAPU2mKxoMJbWcXLvADlAwowC2fnVoYVCSg>
-    <xmx:F6rwZdoWsYDRRzjXySkNUfWxwNaghGVY3tk7unzhlIdR7gLInEuAcA>
-    <xmx:F6rwZSQzzYN6H6ODehdZOdd7UA9Hx2UE9ATB3L4NS57xyHoZDxj4EQ>
-    <xmx:F6rwZdqvHkqnHtYbiw6-a4VzxfdNPZXcidILtQS2SMghnw-GVWr2ug>
-    <xmx:F6rwZUVZExbnFB_GQWQetMmQndEd-MvFixUcZYWTZq9JWAc73yId6g>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Mar 2024 15:16:38 -0400 (EDT)
-Date: Tue, 12 Mar 2024 12:17:32 -0700
-From: Boris Burkov <boris@bur.io>
-To: Anand Jain <anand.jain@oracle.com>
-Cc: dsterba@suse.com, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] btrfs: validate device maj:min during open
-Message-ID: <20240312191732.GB2898816@zen.localdomain>
-References: <845dfb4fbf36dae204020c6a0a0e027cab42bcf0.1709865032.git.anand.jain@oracle.com>
- <20240308174138.GB2469063@zen.localdomain>
+	s=arc-20240116; t=1710274210; c=relaxed/simple;
+	bh=afb+J2W1RZOvBUpT1q1VDqOla0v+GNPldfNpGi6NmXU=;
+	h=Date:From:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aMmy1ERej9XCxdmVm3d+WajoAITDaNCvSN6fA1hckcUTZQOe6Ahxu9TJ6nVJWsh/mTWD9snD2oFlzCaNSQhV1xemgzMXb6EX9txalWTDbTAwUW4IHeePR3psH9QBDXf9XuSIYLbFx3J6HJT7UBFAJL7oxYtp60x0FXyafxs7/JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=WibrX5wU; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CJgFuw001162;
+	Tue, 12 Mar 2024 20:10:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pps0720; bh=VnYb1j2+6PuZRCVUgTvKkrGm5+N4Va1AiIS3ecX1k3M=;
+ b=WibrX5wUkkHVo8AAWxqnzQVTR7yngJpCe0/XkzX8o7+84/ZRZj8w+8L+TRBI5KN0k5ly
+ 1rGwndPXKQJs4evW1/TV3fk1xzwEFy2CV/xJ3a/2RVPZPwcEzsHgCR3m5+daZP5MLCMx
+ j0/8bnra9B91SBT3GtE14VkTbIb7o1S4uu2L6zXX4hjyS4hi8/YWHhFkR9QE4HuT0/bM
+ lk7+Jhrb2+2BKkQarKCTMEjJopHUtfqgjCJh68vxuwijioOOOEJo/2llrvpGp8beaWiK
+ LZvu50cCnBtKAnKm/i6F44A5pC+4SYoHfcA1mZKzXKmjek9kwjqpE6VXzkKu+Y1n8Cmf Ig== 
+Received: from p1lg14879.it.hpe.com ([16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3wts7su02b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 20:09:59 +0000
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id CFADB12E9C;
+	Tue, 12 Mar 2024 20:09:58 +0000 (UTC)
+Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 37928800EF7;
+	Tue, 12 Mar 2024 20:09:57 +0000 (UTC)
+Date: Tue, 12 Mar 2024 15:09:55 -0500
+From: Steve Wahl <steve.wahl@hpe.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>, Eric Hagberg <ehagberg@gmail.com>,
+        dave.hansen@linux.intel.com, regressions@lists.linux.dev,
+        stable@vger.kernel.org
+Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
+Message-ID: <ZfC2k66jb8CcupYm@swahl-home.5wahls.com>
+References: <CAJbxNHe3EJ88ABB1aZ8bYZq=a36F0TFST1Fqu4fkugvyU_fjhw@mail.gmail.com>
+ <ZensTNC72DJeaYMo@swahl-home.5wahls.com>
+ <CAJbxNHfPHpbzRwfuFw6j7SxR1OsgBH2VJFPnchBHTtRueJna4A@mail.gmail.com>
+ <ZfBxIykq3LwPq34M@swahl-home.5wahls.com>
+ <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42e3e931-2883-4faf-8a15-2d7660120381@pavinjoseph.com>
+X-Proofpoint-GUID: jkORMdzEPtbMJn1k3DXDtW93TkvInsdf
+X-Proofpoint-ORIG-GUID: jkORMdzEPtbMJn1k3DXDtW93TkvInsdf
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308174138.GB2469063@zen.localdomain>
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_12,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0 phishscore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403120154
 
-On Fri, Mar 08, 2024 at 09:41:38AM -0800, Boris Burkov wrote:
-> On Fri, Mar 08, 2024 at 08:15:07AM +0530, Anand Jain wrote:
-> > Boris managed to create a device capable of changing its maj:min without
-> > altering its device path.
-> > 
-> > Only multi-devices can be scanned. A device that gets scanned and remains
-> > in the Btrfs kernel cache might end up with an incorrect maj:min.
-> > 
-> > Despite the tempfsid feature patch did not introduce this bug, it could
-> > lead to issues if the above multi-device is converted to a single device
-> > with a stale maj:min. Subsequently, attempting to mount the same device
-> > with the correct maj:min might mistake it for another device with the same
-> > fsid, potentially resulting in wrongly auto-enabling the tempfsid feature.
-> > 
-> > To address this, this patch validates the device's maj:min at the time of
-> > device open and updates it if it has changed since the last scan.
+[Added kexec maintainers]
+
+Full thread starts here:
+https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+
+On Wed, Mar 13, 2024 at 12:12:31AM +0530, Pavin Joseph wrote:
+> On 3/12/24 20:43, Steve Wahl wrote:
+> > But I don't want to introduce a new command line parameter if the
+> > actual problem can be understood and fixed.  The question is how much
+> > time do I have to persue a direct fix before some other action needs
+> > to be taken?
 > 
-> You and Dave have convinced me that it is important to fix this in the
-> kernel. I still have a hope of simplifying this further, while we are
-> here and have the code kicking around in our heads.
+> Perhaps the kexec maintainers [0] can be made aware of this and you could
+> coordinate with them on a potential fix?
 > 
+> Currently maintained by
+> P:      Simon Horman
+> M:      horms@verge.net.au
+> L:      kexec@lists.infradead.org
 
-I don't want to get stuck on this forever, so feel free to add
-Reviewed-by: Boris Burkov <boris@bur.io>
+Probably a good idea to add kexec people to the list, so I've added
+them to this email.
 
-However, I would still love to get rid of device->devt if possible. It
-seems like it might be needed for that other grub bug you fixed. Though
-perhaps not, since we do skip stale devices in much of the logic.
+Everyone, my recent patch to the kernel that changed identity mapping:
 
-Anyway, let's move forward with this! Thanks for hacking on it with me.
+7143c5f4cf2073193 x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
 
-> > 
-> > CC: stable@vger.kernel.org # 6.7+
-> > Fixes: a5b8a5f9f835 ("btrfs: support cloned-device mount capability")
-> > Reported-by: Boris Burkov <boris@bur.io>
-> > Co-developed-by: Boris Burkov <boris@bur.io>
-> > Signed-off-by: Anand Jain <anand.jain@oracle.com>
-> > ---
-> > v2:
-> > Drop using lookup_bdev() instead, get it from device->bdev->bd_dev.
-> > 
-> > v1:
-> > https://lore.kernel.org/linux-btrfs/752b8526be21d984e0ee58c7f66d312664ff5ac5.1709256891.git.anand.jain@oracle.com/
-> > 
-> >  fs/btrfs/volumes.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> > 
-> > diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> > index e49935a54da0..c318640b4472 100644
-> > --- a/fs/btrfs/volumes.c
-> > +++ b/fs/btrfs/volumes.c
-> > @@ -692,6 +692,16 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
-> >  	device->bdev = bdev_handle->bdev;
-> >  	clear_bit(BTRFS_DEV_STATE_IN_FS_METADATA, &device->dev_state);
-> >  
-> > +	if (device->devt != device->bdev->bd_dev) {
-> > +		btrfs_warn(NULL,
-> > +			   "device %s maj:min changed from %d:%d to %d:%d",
-> > +			   device->name->str, MAJOR(device->devt),
-> > +			   MINOR(device->devt), MAJOR(device->bdev->bd_dev),
-> > +			   MINOR(device->bdev->bd_dev));
-> > +
-> > +		device->devt = device->bdev->bd_dev;
-> > +	}
-> > +
-> 
-> If we are permanently maintaining an invariant that device->devt ==
-> device->bdev->bd_dev, do we even need device->devt? As far as I can
-> tell, all the logic that uses device->devt assumes that the device is
-> not stale, both in the temp_fsid found_by_devt lookup and in the "device
-> changed name" check. If so, we could just always use
-> device->bdev->bd_dev and eliminate this confusion/source of bugs
-> entirely.
-> 
-> >  	fs_devices->open_devices++;
-> >  	if (test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state) &&
-> >  	    device->devid != BTRFS_DEV_REPLACE_DEVID) {
-> > -- 
-> > 2.38.1
-> > 
+... has broken kexec on a few machines.  The symptom is they do a full
+BIOS reboot instead of a kexec of the new kernel.  Seems to be limited
+to AMD processors, but it's not all AMD processors, probably just some
+characteristic that they happen to share.
+
+The same machines that are broken by my patch, are also broken in
+previous kernels if you add "nogbpages" to the kernel command line
+(which makes the identity map bigger, "nogbpages" doing for all parts
+of the identity map what my patch does only for some parts of it).
+
+I'm still hoping to find a machine I can reproduce this on to try and
+debug it myself.
+
+If any of you have any assistance or advice to offer, it would be most
+welcome!
+
+> I hope the root cause can be fixed instead of patching it over with a flag
+> to suppress the problem, but I don't know how regressions are handled here.
+
+That would be my preference as well.
+
+Thanks,
+
+--> Steve Wahl
+
+-- 
+Steve Wahl, Hewlett Packard Enterprise
 
