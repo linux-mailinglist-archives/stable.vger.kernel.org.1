@@ -1,157 +1,125 @@
-Return-Path: <stable+bounces-27471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9CB879747
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 16:16:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECEF879766
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 16:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3265BB220EE
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BC128215C
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 15:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBB17C0A8;
-	Tue, 12 Mar 2024 15:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088CD7C0A3;
+	Tue, 12 Mar 2024 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EcXKC1CL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JAe0qVzb";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EcXKC1CL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JAe0qVzb"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="elI2bz84"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577767BB16;
-	Tue, 12 Mar 2024 15:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E67C096
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 15:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710256605; cv=none; b=pZqtgBgIybdUhCpBA3j7HkKn13mJ8vZIESfPspp+bfa5kxZSywyaF1kyw+xUiNn2H0kU7hbIcVF2Nycgb6e0AqxOuzsd5ibloCP+LkwdQML5F7Ss5Vy9jcNBustKR6j9yY5wnqgoqfZoHuIvRQK0H8V1Loz10DL2RLqpVvUuuU4=
+	t=1710256895; cv=none; b=AmIXT+NbxjJSaVnDdF4akcskL04ua1TD5k4TQv9XVzkEHKvMRLfvGOxBmRyhSGSx3zuP9VTb1QCRMUcUrMe4tZpx+Crd69LU7yu9LlJ8pLBZKvzLhpKPWK4qgBZUVJrT9cLxbwQCiF1It9f7a6VYEVgS/6U9AUK3zuesd/LH1pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710256605; c=relaxed/simple;
-	bh=AeExeGN+wDjOLKqYJs7IrVaPcAZMhUvQdnV9d1mWiGs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sC7Uv9YiIhr3f+2JBJKtGchGg9xS/vtDar5eNW4pLp6KWeJo1JVHsVHHj94smrO/OLMiO42MlgZGRwLGVF/NvRyCvpXTEal0sT5XaoOOAnlQG4EOOUfl3OBv57AFCln367CYr6Yp1A2hArXs7jL2XqX/I0maZquzm6Ar7jXbIEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EcXKC1CL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JAe0qVzb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EcXKC1CL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JAe0qVzb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 89A125D666;
-	Tue, 12 Mar 2024 15:16:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710256602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BQk1AYXpxqnAnevl0wbO8bx38n5uosNZevuvD043lpQ=;
-	b=EcXKC1CL/YQKQnY0zdB6+U5X5kNJ5+cG0o+ZSEHD0RfKNPh9fP04c7xuDqn7uM7+ZfC7yZ
-	+fCo9LP6p09xNxmys/iB1qOyAl/dc1xYCchvmTxV7p74UeLv6IKjxDgDaBzdy2g/q8RU4/
-	HKUdNBtgUbM/U0x8wUwXKCFu5sCtSLQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710256602;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BQk1AYXpxqnAnevl0wbO8bx38n5uosNZevuvD043lpQ=;
-	b=JAe0qVzbWGU8kGVz+EtiebkYSvj4bn/eyZ692mQS7kkV5pbUpoz5ueDNmadp6tm6GM+d9B
-	4r2UvKHFLMIpXAAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710256602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BQk1AYXpxqnAnevl0wbO8bx38n5uosNZevuvD043lpQ=;
-	b=EcXKC1CL/YQKQnY0zdB6+U5X5kNJ5+cG0o+ZSEHD0RfKNPh9fP04c7xuDqn7uM7+ZfC7yZ
-	+fCo9LP6p09xNxmys/iB1qOyAl/dc1xYCchvmTxV7p74UeLv6IKjxDgDaBzdy2g/q8RU4/
-	HKUdNBtgUbM/U0x8wUwXKCFu5sCtSLQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710256602;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BQk1AYXpxqnAnevl0wbO8bx38n5uosNZevuvD043lpQ=;
-	b=JAe0qVzbWGU8kGVz+EtiebkYSvj4bn/eyZ692mQS7kkV5pbUpoz5ueDNmadp6tm6GM+d9B
-	4r2UvKHFLMIpXAAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 393A91364F;
-	Tue, 12 Mar 2024 15:16:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mbBuDdpx8GX6MwAAD6G6ig
-	(envelope-from <vkarasulli@suse.de>); Tue, 12 Mar 2024 15:16:42 +0000
-Date: Tue, 12 Mar 2024 16:16:41 +0100
-From: Vasant Karasulli <vkarasulli@suse.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Vasant k <vsntk18@gmail.com>, x86@kernel.org, joro@8bytes.org,
-	cfir@google.com, dan.j.williams@intel.com,
-	dave.hansen@linux.intel.com, ebiederm@xmission.com,
-	erdemaktas@google.com, hpa@zytor.com, jgross@suse.com,
-	jslaby@suse.cz, keescook@chromium.org, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, luto@kernel.org,
-	martin.b.radev@gmail.com, mhiramat@kernel.org, mstunes@vmware.com,
-	nivedita@alum.mit.edu, peterz@infradead.org, rientjes@google.com,
-	seanjc@google.com, stable@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v4 0/9] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-Message-ID: <ZfBx2ewmB06qQajs@vasant-suse>
-References: <20240311161727.14916-1-vsntk18@gmail.com>
- <f1ff678d-88fd-4893-b01a-04e1a60670ce@amd.com>
- <CAF2zH5qZKEmECy=9vG4sLmdDt5k7nC=MwjKvJLyVfPyFzt+0hA@mail.gmail.com>
- <c8c88a28-30be-4034-9fe7-9c9de5247c53@amd.com>
+	s=arc-20240116; t=1710256895; c=relaxed/simple;
+	bh=6POe+SvA0dsjF01BwyLDxeHg0sPG7dx2CVsJuWVp/J4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ThWMeENDXXdxbx/et/MWJ3PCP3lqufIdqrrGGIfWXqZbt4CaRE5OM7g65yVUjyUiYd8y4tjHCePNGXkslJNlmAEbInBREWWKi3qe5Q7hz43sato2Gu/p9RkRnsW4AV0+dIwpgINlkEC2k097WdD4h9WMWgQuc/S9RfGfTu//gP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=elI2bz84; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-55b5a37acb6so2126353a12.0
+        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 08:21:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1710256893; x=1710861693; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WA+2UZeZ/+bV4iFdtAOVHcnQcmWrPZic0/TGwaAO4ME=;
+        b=elI2bz84nuZuKwEB9YYcvLOhSiBh7Ri8q4cDdboR58mijHN8V/OpC5Y42/nv+MZu0Y
+         0pKsM9LS79Z5EQqUzvv+XRcUon87yapV4xfJ8+3FkeOnFxXFQqQIK/h3ewcgIL7oPT47
+         0DTSblNWs97xP6DPoj7r01EI3tdzCJi7N/v5gKaOjJJd+zFyGk+UhXh3oam0xvWRSbW9
+         kAJJ+OAEATdfyoHNb45s7NVI1LYcSD7K4MD3tTcOpeTuR9TKcJLafkxs4RnPqrmCUWHT
+         J1htpbf5XoA9e5j19JlL6+vQTI6ra8zv9Zu0DRIvfNHKDc6Rn5cRwYCguPhFyZKsKxqf
+         M/uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710256893; x=1710861693;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WA+2UZeZ/+bV4iFdtAOVHcnQcmWrPZic0/TGwaAO4ME=;
+        b=j4YSZWRhEvHfikpDxnqssiq/MyPJ3yytdjEMMcHKeRI8YuHAuyEVyyqaAvYb2a3vEw
+         8BBhlQcWnxiv2H56nU7ps3nxFhSWdVcCjdrO0b1CupGZjm4484dS4d2KqVuLkn8nzyVh
+         X73rk2/yh/8Q/YQ+h7+DqRVs1njIapnsns2NyTbHz2B7fcKVpUNVE0JreMS0+zwd63+e
+         FOHBWeU4ME+g23OtofiVOLRQ6q/rRgEilloy8EhJEamohx7H11t/XBoROQeDqs0iw//t
+         xaArlUFY8orPQueD2B9Qh21/qjdfByPO0IKNF24nMwKwtvZ3wEpIJ3BzRGdRMcTYSga0
+         ciEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXbt1IqJONYbjQgUZ+dIQsxtQX/sZb9H/yLW1YA+39NEBU1fmiMjO0UlLIeSkz0Lif/F00okWwZP25rX9E4APIFng4vX9gQ
+X-Gm-Message-State: AOJu0YygW5ma8ZbrEf4IaDmJ0AIBodCY1YT6+iemyQgD9kiJ1KJbN4oq
+	l9DqyVBcOD8BfwHbnDxBYJRuzf4eZgK0SbgJiNxe7RaXIuzFcFacMv956Sx/S4c=
+X-Google-Smtp-Source: AGHT+IGijTtYOFstxKa7CmdTQdRjum5vSSCFAy8GTqnPUizXeUrItZIeWJrTy+ZtvVMFfRAtlpuR4g==
+X-Received: by 2002:a05:6a00:939a:b0:6e6:9560:fcf1 with SMTP id ka26-20020a056a00939a00b006e69560fcf1mr2337834pfb.1.1710256892849;
+        Tue, 12 Mar 2024 08:21:32 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.194])
+        by smtp.gmail.com with ESMTPSA id r2-20020aa79ec2000000b006e31f615af6sm6446435pfq.17.2024.03.12.08.21.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Mar 2024 08:21:32 -0700 (PDT)
+Message-ID: <fb57be64-4da6-418b-9369-eae0db42a570@kernel.dk>
+Date: Tue, 12 Mar 2024 09:21:30 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c8c88a28-30be-4034-9fe7-9c9de5247c53@amd.com>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-0.00)[22.84%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 R_RATELIMIT(0.00)[to_ip_from(RLdz9bntmsbxsz5ozaiow1ygjn)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_TWELVE(0.00)[27];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[gmail.com,kernel.org,8bytes.org,google.com,intel.com,linux.intel.com,xmission.com,zytor.com,suse.com,suse.cz,chromium.org,lists.infradead.org,vger.kernel.org,lists.linux.dev,vmware.com,alum.mit.edu,infradead.org,lists.linux-foundation.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10/5.15] io_uring: fix registered files leak
+Content-Language: en-US
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org,
+ Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+ Roman Belyaev <belyaevrd@yandex.ru>
+References: <20240312142313.3436-1-pchelkin@ispras.ru>
+ <8a9993c7-fd4d-44ff-8971-af59c7f3052c@kernel.dk>
+ <466e842f-66c6-4530-8c16-2b008fc3fbc6-pchelkin@ispras.ru>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <466e842f-66c6-4530-8c16-2b008fc3fbc6-pchelkin@ispras.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Di 12-03-24 09:04:13, Tom Lendacky wrote:
-> On 3/11/24 15:32, Vasant k wrote:
-> > Hi Tom,
-> >
-> >         Right,  it just escaped my mind that the SNP uses the secrets page
-> > to hand over APs to the next stage.  I will correct that in the next
->
-> Not quite... The MADT table lists the APs and the GHCB AP Create NAE event
-> is used to start the APs.
+On 3/12/24 9:14 AM, Fedor Pchelkin wrote:
+> On 24/03/12 08:34AM, Jens Axboe wrote:
+>> On 3/12/24 8:23 AM, Fedor Pchelkin wrote:
+> 
+> [...]
+> 
+>>> I feel io_uring-SCM related code should be dropped entirely from the
+>>> stable branches as the backports already differ greatly between versions
+>>> and some parts are still kept, some have been dropped in a non-consistent
+>>> order. Though this might contradict with stable kernel rules or be
+>>> inappropriate for some other reason.
+>>
+>> Looks fine to me, and I agree, it makes much more sense to drop it all
+>> from 5.10/5.15-stable as well to keep them in sync with upstream. And I
+>> think this is fine for stable, dropping code is always a good thing.
+>>
+> 
+> Alright, got it. So that would require dropping it from all of the
+> supported 5.4, 6.1, 6.6, 6.7, too.
+> 
+> Would it be okay if I'll send this as a series?
 
-Alright. So AP Jump Table is not used like in the case of SEV-ES. Thanks,
-I will keep the changes in the patch set exclusively for SEV-ES then.
+Yeah I think so, keeping the code more in sync is always a good thing
+when it comes to stable. Just make sure you mark the backport commits
+with the appropriate upstream shas. Thanks!
 
-- Vasant
+-- 
+Jens Axboe
+
 
