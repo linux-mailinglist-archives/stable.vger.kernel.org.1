@@ -1,274 +1,122 @@
-Return-Path: <stable+bounces-27483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1909879A58
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:10:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C05879AC3
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 18:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CE11F24389
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:10:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED3E284CBD
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 17:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836D4137C47;
-	Tue, 12 Mar 2024 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6753D1386AE;
+	Tue, 12 Mar 2024 17:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BNDC2I9D"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="W+TkKQkE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA17D409
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710263323; cv=fail; b=ZV34Idfm06rAJE62G6HNDp6NZL8USgiFCl+fBm1/KaBNe+TuWrqLM8/RP5CdUeYYmsSSkewxht14zivLHXJSLUf24i6yUbIRSMv1uey6qGeFYakQkQbJyjiilS8zhfLUEmXba11soiOEGODZfB18dugOXcB/6wsJSmJYg2xiyz0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710263323; c=relaxed/simple;
-	bh=L8mPI6evqIBbxNWtu4ZKsExedYTBT4cVnMAQS/BO6gQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jVZSSClduJzfXfQA0WYuzXkrslNsVyuO8y9FNoP4T2E3Mkf80XxGN6WH8h+v7cAvB2F+oJzXZ4nMrFzZzYyXRLEnnuBKTgEVUZDxkQMQnrv+Te4ns/EGP5s9gQdNBxczZ0mShfTjgz/BonGI7ysKuXfzGWbzI1jAIETqZK1C2Yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BNDC2I9D; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710263322; x=1741799322;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=L8mPI6evqIBbxNWtu4ZKsExedYTBT4cVnMAQS/BO6gQ=;
-  b=BNDC2I9DNJeps2Ufioti4PvmncB3j6Ydywz42F17AnEG2EPHKV/kisNl
-   IAoDhRbyFFK9yTdHBwXGzTIswnH9foZQ3X8NDWyI/ncHPw1vv82eAnHUV
-   169kI1UKIDL+cNLqBEOCqnj8DURXZyRlkvJJeVs2Qco/z/hyyjdQJ677L
-   Xh6bQ324DUSDNP79KrqullfKUzYZAGSoQb7KFh4QJgYa3UCZ/s7ojS8WK
-   Vcl045lOEOYx1IFyNZdMXuWocWBvbjx7PdQT4ZP46r6cx6lZvp4bz/Hqq
-   hKlBS6OKeB5/pDG6fDb/E8z0CGGDH/gzpJBUzgX/wSyY6CHgbEnciD5nY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="27462992"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="27462992"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 10:08:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="12203836"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Mar 2024 10:08:41 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Mar 2024 10:08:40 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Mar 2024 10:08:39 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 12 Mar 2024 10:08:39 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 12 Mar 2024 10:08:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CrjmZNCofIEdgUQWOluB2aiam+VPfu0ZZ/bVedWz4oJMQuRlAkCvN/HiLTtDgjZ9sD15vcgX/EOKD3LFLINvYiNtOLHjgJBrjluntYhla/i05pVwkMu8AaZZ0r4YuY3yD2XMYNkWqxy7rlFZuoMcE0mXCn7EoT7wnu9uTDKiaiMwCFf5tOSXROdtUye9PZjDAA/RrVzmJSxovc+MZZGrYMtAnh0l6dpDj2QuCmx44eh1XSk2v/id79vLNUbiboFeNmJxTU41I3gu3qcneOWNGcbhA4hxMgdX0l3qY5cGE+ATDgITiOO6lfTMuDFZwogxoQRnOpFYAlwPQeeO7Vez2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IOzpvZMy6evtwZqwIZcqI8R4InretygVJneWih8O6eY=;
- b=ERJTPAqxgG6P+9l55R+3Q5iuT1OuUtVFFEQ2zEN1ahrQdR3CqLCduuw8QI4b7LS0F+FmukjGjn+ysbD3h6wPFYGUabJgsZ4NOR53A6K30zFL260/f7wzszejTg9cSRg5oyAVgkSwjy+BX3rxpPy7/9nuicsOfwL0G9jzs+qMMWWWlqjoMmEGMx4g1sEH1ekeqDbG5/sPkZZx3oWTwst+FFWWdg+UHeb9OOi+plYSEhvD4AXajoe3k+qiDg0N2/Ad4w9x9k1aR4NOXi7u9o8GOyKFaCGkOYIeps6Ywctsz3Oq/vI2n44JzdemuqEoCsPMSZBQ3Wap+YdukUmum0hKzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by SJ0PR11MB5790.namprd11.prod.outlook.com (2603:10b6:a03:422::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.17; Tue, 12 Mar
- 2024 17:08:36 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493%6]) with mapi id 15.20.7386.016; Tue, 12 Mar 2024
- 17:08:36 +0000
-Date: Tue, 12 Mar 2024 10:08:33 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
-	<stable@vger.kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Tvrtko Ursulin
-	<tursulin@ursulin.net>
-Subject: Re: [PATCH v5 2/4] drm/i915/gt: Refactor uabi engine class/instance
- list creation
-Message-ID: <20240312170833.GL718896@mdroper-desk1.amr.corp.intel.com>
-References: <20240308202223.406384-1-andi.shyti@linux.intel.com>
- <20240308202223.406384-3-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240308202223.406384-3-andi.shyti@linux.intel.com>
-X-ClientProxiedBy: SJ0PR03CA0389.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::34) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81670137C24
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 17:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710265214; cv=none; b=sFW0GnUrfcv+lYiAmiNSkseqWQFfMFTjO/LFhuH7JkL+EFS+/KeHmAZF45rk1gw0JGbjVCK71YBF4tBLErQqFGfvdY8pRTsZhgtN7LId0AwKUQuT5ACMprHpEAnt0qJE8VM58ltJilHwRWdeSu3JxXg6Jt76ny1b3sy16dqXLRU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710265214; c=relaxed/simple;
+	bh=JuEmybPeAFM2LXxM+nRHiwifY+hWL0Xv8pXcFAmrED0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XPM0olSHyqpLPVMBIUELjDB3j8q7ZItPKnihIBt2Y4NL31LgdriA7igtghVZZR95CKjW8OFIcP5y+ZPqpbmvlLlDzXUEDUqr73fpCv+bAkDWVpa3MD9d/N5WXyLQFMsPFc0qIG7eCK2R/d5jVXSTKrvnqp+5D7r7gORuv+WCsc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=W+TkKQkE; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4d35666c4bcso41445e0c.0
+        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 10:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1710265211; x=1710870011; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mpw2E4SJc0M22jdFp92JFgYe9UBmYMEBdWoo4cjNNVw=;
+        b=W+TkKQkEpb4Zao7wbb1+ptCv8+DxRgNs96EbQF5pnz/Pc6z5D33oRxC7TFLehvC+bN
+         aWaB9clofrKyENEW/60uHOKEY1XLPuOd9LnzWlZAODLh8flucAbCEy+rsPpOo0M2qwjr
+         D+8g88+XPDURVFqQvWtzICvkx47p1ZRNJ6kBWkmhUcHw99TRgOvUCrJrx3WFDzDHIAVA
+         fj7aEflJ7gGJk9eDCRT/1AdPo25In50/x/+49ZQy07rpbLva+kyM0YFjCrxA/2+nNkF+
+         w/wO+V5CbWOAE+sVMAkWZ1OZhFMma0DK1kwQdq7YLBf1ZN1f9GQpdp+5VvlP07S+vH9b
+         lHWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710265211; x=1710870011;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mpw2E4SJc0M22jdFp92JFgYe9UBmYMEBdWoo4cjNNVw=;
+        b=NGDMcjyWFsjpdm5h8HFcp8Dl7EvQGwQsP9Haptbx2OL7H1HJrKMtG7Qizk6WDFehks
+         hz+hLCnm7XrFML2mbZPL0SB5BroaANJrtzemGGnFF7MRC8PV+heZTHq6IircTilpXudm
+         ZWw/d1tOc7CIgZZt539Fuhoshf6gINL87byu5gxIU+5EG6GL4MIBFswwqQKEyAdlTYlD
+         vtXnzXbYv3hMgW9vM4zilc+BHwasmEAi8lnQF/MJ5KmOuNkJkuRjBdgRQA+oB+dYfxRi
+         0BlXGqY981k/Uiy1IUUwaL2Uyu9Vur1aG6P37wJmeOWGs1o9RsKnTSVKX9HuZSjM063K
+         AL/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWN6TQudJIuXlvBQ5Uw2Kzca2FYF4Unp2s725YhzsHy5uCGuFN3cewQTwRdDh0+DzkwcsqQUGOYAq054PQTYnjr+cnszvid
+X-Gm-Message-State: AOJu0YxnOLCAujw03Z4X+Ewa8vXM6Du1TcneC7kwrloOKHQzkNhOxW7J
+	kJE/VJIWYWqbjPytv4+JJ4RR3pvNkXfL4VZ2bS2mX6GBuDkpgTaaes0y8kly9xc=
+X-Google-Smtp-Source: AGHT+IEd4hdtpXCmBTFIuQSY5VdumAtaZdC3rn4gdZrVXmnlmWQRxKpf+oJQ07k7pUQvySNuNaMayA==
+X-Received: by 2002:a1f:7d07:0:b0:4d3:4aad:1b9c with SMTP id y7-20020a1f7d07000000b004d34aad1b9cmr911341vkc.0.1710265211052;
+        Tue, 12 Mar 2024 10:40:11 -0700 (PDT)
+Received: from [100.64.0.1] ([170.85.8.176])
+        by smtp.gmail.com with ESMTPSA id j6-20020a0cc346000000b0068f6e1c3582sm3790897qvi.146.2024.03.12.10.40.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Mar 2024 10:40:10 -0700 (PDT)
+Message-ID: <f9cc5817-234e-4612-acbb-29977e0da760@sifive.com>
+Date: Tue, 12 Mar 2024 12:40:09 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|SJ0PR11MB5790:EE_
-X-MS-Office365-Filtering-Correlation-Id: 806c5452-0ec8-4b1a-5818-08dc42b70dd8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: VHzqcTHoDWQ+/ge2A7AAv+lWDEEYrxMQHad+Ex6mreQEtn2ZEF4WCaMKw8ukSVqJXg/bVp5XQdOkMz3ekSS+kgAhbzUeIKUVqW+Y3THNu/YH5eukTC90lhMJRri7kSUtH+t9CcBAaAly/UnPvFrd9D+7UGcGdkN+4bLAUohqoXTLkLnM0FAPwdxR+c/ikNHzgTWZmaYZ+J79UbH6gxoyKY7e57u1bLcZH0WgGGoxpUohdDMreCxEo3eoWf5IcMcNxnR1BZv9ZqcstWmMilga5onjpvM/v8JwLwJxijyiCoDVtF+Kf+eTBkVhvRoVvpmFcBk0rug3uUW/iOhYZi6JiD9lBMgNbLkyk4McgQ4OiXoPoJtV/RRit8qjSvXo+9ek4nv2CucwkdDuOFdc9+4EqtqOXbf4AUkf/pebYc8Id2/OpXc8uzOoTfm/tbXRWmobrG3qspwS24uyNVgzYfXo02OjUt5GeNgr7MdrUNshQ2o6O6lIKMg62wco0JYEptYLQqgQs4Adz6lZ+A0TXoF23kqjBRq27KjlByAMArEvLckYUbqpoT73Ubx/u33P73uGo19kjQR5pm3QtcHkVK/egKD2bsaFoXzn1BcMTFIRLyjht4JlbCv7zHYK2dgl1wjzTz3tG4gKs+9NXDBOK4CRViZJbLWKDyjiNZDpfNpgmkE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?U8oWqUHtemj9vxt59XfWWrwVRvXBcqbYbKPpgAhik3qNTOugDxUAPb6ZwVvs?=
- =?us-ascii?Q?+I7npSj72y87d6oDQGMH9ITrTOvXM3Nu3YSE2QxliOZrOXMEwoJ6wOTc3AGU?=
- =?us-ascii?Q?KfbSmCM77702zTHcEQ5Z27TDqvzxVUvJ+vIYrWwfvScvTTpIabkmmf/F2H98?=
- =?us-ascii?Q?GRQg8sloGj11W3U+jikhv2E537n5CsR7I0rIpTujjPwZoUTB1r808LdMpjxq?=
- =?us-ascii?Q?8XbV4xPakW0ByPGn+CluxS1m3UmF05BqZQa95rK2ZA63ZHSwyPb+XYlH5ee9?=
- =?us-ascii?Q?WEgGkEP5FBCkc0DddIOF0j0/taVGXq8WERsjP2XnvroeySLCROifxr7Ta3qc?=
- =?us-ascii?Q?9xBIhcAjbeRsd8BnJJUqEBq55/ZbQ0K0V+RPYR3O4h7RjOYlnBkvhpGKYOwY?=
- =?us-ascii?Q?lrydcR7t+Qw0/tjPRlYh5vnETcqePWnkN3zEs0ALYJXnOGWEp08+CBq2o3wf?=
- =?us-ascii?Q?d6pNAE2mlqA/zYe6lgHtG0PUsheR1Rlcz+KHNcu6M45Xp8k0vOES5mvjJ3rN?=
- =?us-ascii?Q?H2JAD+JAL9ATB+xMUywhiPWFrPA9U4xBGCwcJl6U1IepnNPefRpc7ibPdPov?=
- =?us-ascii?Q?cfsoPd5nqhb3toEcNxpw8QPy2XOthwCU5eoqw2d3WodQHldxiTtrl64jDyYM?=
- =?us-ascii?Q?o6Xiw3FpAjwZHHSlp68slC11x0nSdDWfeuzBfK3KNJ9BM1zFLHOMoacswFy/?=
- =?us-ascii?Q?ZRdpWCz/Sb3CUQ3ESYYgw0PHmwPYeyJNMGB5wXVcU6+6zuuIowE0tIIgC8Ga?=
- =?us-ascii?Q?FEYgaEIYhJCUF2STNT8bRmyFFvZYv4tuVFUwdZ1/wbN2JNgp97AJkHFUWOn3?=
- =?us-ascii?Q?9UkndfMUpjnOViSN0ILBC3etJTtiFgtpMLwND2dZwgiOsvfQ8flPCRR7wfRp?=
- =?us-ascii?Q?wf0+bdqBl6KUNfSkWJTjL8wF3Eaj3PCm7Xf6MXDIX8hP0z3VJRNeBVdYvDvB?=
- =?us-ascii?Q?utWYRBmuwqpbohkqbt3ojey20gGJbIwQEGveYyDX4GGJ2cDaF5irpfmkZlWK?=
- =?us-ascii?Q?VQHoFevqBO2f3IrspElFd6LdrLtspXXD7Y/n8XRSXipYHwT3JE2ceBAFI3tS?=
- =?us-ascii?Q?UPSvVjVGEJxZBUH0xDU8THxLd2h+dQimOSriPxJht0mg1zPm9N1kRB6DUHEI?=
- =?us-ascii?Q?pWgtJnvijhyYz1tlJ+7yq437m1QE9Q8skOzMVYBX7/YDaT6JcMZiLsJuqylZ?=
- =?us-ascii?Q?36jUljK8qp8SHFGUQgu63FsEL6kOxAl4YwnmQ9txGwZ87vvdgnLNQPv6ERna?=
- =?us-ascii?Q?/Pvk1LNrIgRHvclKsB3aN67Rid3R1jurKPuOFOey7/7GYBZ1zfliTQSLSlFD?=
- =?us-ascii?Q?4BSVNdwCDxtOU/7F+zifPxK3EwrvEnARArq6LZuABesnSjhzAkBGfBNLnf+0?=
- =?us-ascii?Q?vYB+7kWRV+UYM5btUqUc4rxP0c09x3tzOQl3Tjrba6DBWZtXFkjRIeaCMIpJ?=
- =?us-ascii?Q?BE6yg264wEtN36CQFISH00qOs13ximfnoAG4cVs8GV/B8w+evyI9s4U3oLeD?=
- =?us-ascii?Q?DoLzGFc9AlO/A0c+P33r6R8F+9KeJLpb6lDWhZi7JmBcHte6B6kses0H+9kX?=
- =?us-ascii?Q?H6BcQVVoKHY6mc/92Ef9+SBjzJh6S3EBHacENtKqVU9cZwI5SVXOgsmMsbN2?=
- =?us-ascii?Q?iw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 806c5452-0ec8-4b1a-5818-08dc42b70dd8
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 17:08:35.9716
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8AuSRnURa43hioiLQ8Iiw3JIydjmJ05jtpE0sit8IZxCrH451egysEF8Cfzd3teb73lWlLah34SGJBA4RJDlycZskZidl0wKwOIshQDYksA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5790
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] clocksource: timer-riscv: Clear timer interrupt on
+ timer initialization
+Content-Language: en-US
+To: Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: atishp@rivosinc.com, Anup Patel <apatel@ventanamicro.com>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Ley Foon Tan <lftan.linux@gmail.com>, stable@vger.kernel.org
+References: <20240306172330.255844-1-leyfoon.tan@starfivetech.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+In-Reply-To: <20240306172330.255844-1-leyfoon.tan@starfivetech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 08, 2024 at 09:22:17PM +0100, Andi Shyti wrote:
-> For the upcoming changes we need a cleaner way to build the list
-> of uabi engines.
+On 2024-03-06 11:23 AM, Ley Foon Tan wrote:
+> In the RISC-V specification, the stimecmp register doesn't have a default
+> value. To prevent the timer interrupt from being triggered during timer
+> initialization, clear the timer interrupt by writing stimecmp with a
+> maximum value.
 > 
-> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-
-I don't really see why we need patches 2 & 3 in this series.  If we want
-to restrict the platform to a single CCS engine for now (and give that
-single engine access to all of the cslices), it would be much simpler to
-only create a single intel_engine_cs which which would then cause both
-i915 and userspace to only consider a single engine, even if more than
-one is physically present.  That could be done with a simple adjustment
-to engine_mask_apply_compute_fuses() to mask off extra bits from the
-engine mask such that only a single CCS can get returned rather than the
-mask of all CCSs that are present.
-
-Managing all of the engines in the KMD but only exposing one (some) of
-them to userspace might be something we need if you want to add extra
-functionality down to road to "hotplug" extra engines, or to allow
-userspace to explicitly request multi-CCS mode.  But none of that seems
-necessary for this series, especially for something you're backporting
-to stable kernels.
-
-
-Matt
-
+> Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+> 
 > ---
->  drivers/gpu/drm/i915/gt/intel_engine_user.c | 29 ++++++++++++---------
->  1 file changed, 17 insertions(+), 12 deletions(-)
+> v3:
+> Resolved comment from Samuel Holland.
+> - Function riscv_clock_event_stop() needs to be called before
+>   clockevents_config_and_register(), move riscv_clock_event_stop().
 > 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> index 833987015b8b..11cc06c0c785 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> @@ -203,7 +203,7 @@ static void engine_rename(struct intel_engine_cs *engine, const char *name, u16
->  
->  void intel_engines_driver_register(struct drm_i915_private *i915)
->  {
-> -	u16 name_instance, other_instance = 0;
-> +	u16 class_instance[I915_LAST_UABI_ENGINE_CLASS + 2] = { };
->  	struct legacy_ring ring = {};
->  	struct list_head *it, *next;
->  	struct rb_node **p, *prev;
-> @@ -214,6 +214,8 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
->  	prev = NULL;
->  	p = &i915->uabi_engines.rb_node;
->  	list_for_each_safe(it, next, &engines) {
-> +		u16 uabi_class;
-> +
->  		struct intel_engine_cs *engine =
->  			container_of(it, typeof(*engine), uabi_list);
->  
-> @@ -222,15 +224,14 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
->  
->  		GEM_BUG_ON(engine->class >= ARRAY_SIZE(uabi_classes));
->  		engine->uabi_class = uabi_classes[engine->class];
-> -		if (engine->uabi_class == I915_NO_UABI_CLASS) {
-> -			name_instance = other_instance++;
-> -		} else {
-> -			GEM_BUG_ON(engine->uabi_class >=
-> -				   ARRAY_SIZE(i915->engine_uabi_class_count));
-> -			name_instance =
-> -				i915->engine_uabi_class_count[engine->uabi_class]++;
-> -		}
-> -		engine->uabi_instance = name_instance;
-> +
-> +		if (engine->uabi_class == I915_NO_UABI_CLASS)
-> +			uabi_class = I915_LAST_UABI_ENGINE_CLASS + 1;
-> +		else
-> +			uabi_class = engine->uabi_class;
-> +
-> +		GEM_BUG_ON(uabi_class >= ARRAY_SIZE(class_instance));
-> +		engine->uabi_instance = class_instance[uabi_class]++;
->  
->  		/*
->  		 * Replace the internal name with the final user and log facing
-> @@ -238,11 +239,15 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
->  		 */
->  		engine_rename(engine,
->  			      intel_engine_class_repr(engine->class),
-> -			      name_instance);
-> +			      engine->uabi_instance);
->  
-> -		if (engine->uabi_class == I915_NO_UABI_CLASS)
-> +		if (uabi_class > I915_LAST_UABI_ENGINE_CLASS)
->  			continue;
->  
-> +		GEM_BUG_ON(uabi_class >=
-> +			   ARRAY_SIZE(i915->engine_uabi_class_count));
-> +		i915->engine_uabi_class_count[uabi_class]++;
-> +
->  		rb_link_node(&engine->uabi_node, prev, p);
->  		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
->  
-> -- 
-> 2.43.0
-> 
+> v2:
+> Resolved comments from Anup.
+> - Moved riscv_clock_event_stop() to riscv_timer_starting_cpu().
+> - Added Fixes tag
+> ---
+>  drivers/clocksource/timer-riscv.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+Tested-by: Samuel Holland <samuel.holland@sifive.com>
+
 
