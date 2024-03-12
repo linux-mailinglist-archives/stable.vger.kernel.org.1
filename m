@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-27442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B340D87910D
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:36:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B8879117
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43811C21F75
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B9C282495
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B7F77F3E;
-	Tue, 12 Mar 2024 09:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2537827C;
+	Tue, 12 Mar 2024 09:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BaqBDrmK"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="al5ADPw3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42377826B
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 09:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69C478267
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 09:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710236164; cv=none; b=hi7BpUzSUm/z3VUz2lHo8yqNDqJQdFT/VHjOQPRWEp15Ly8RFE3g3tfGo0mn3RWniWZscNkMp3vRAPCA7JIhWeuYNq+wUAHp5AGnqRUndhOx7kiq9hlwwuQi4P6GjCWxvReLCyoXyF6MVkSP7nONVP3Xel1GhmqRy0Y9tIigA9U=
+	t=1710236483; cv=none; b=C8gO0lE9u/M7nZ3mjuzuUkON3Zh/wZ+Bl1pP3U1T5pbDNl2FgkQ0bLt3ZAQ4wUZQGETtKJqYpX0kliJZnfT4srdkfDq2/dwsuaHO+v4TuH2TjNdC5KcDOi+PZQDCCSeUNkhE7gb/GJoMD2l4BwylUyx7nRxjm1ZVOOnf1AiZLqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710236164; c=relaxed/simple;
-	bh=nmVqxAOsqkIQKkepuQ9eUV6bIt5gw9prcP80FlzkR+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UZnNpCeS0VtkdF2VNxXKjruIXvSx5n/GDUkOy7WzwCRUGJ46dI/TIRkxlX5Tc7ipEnlw2qHXfIP3hKHGEcumvuCDJd88rV7Pjvk+tV+24/xIBNDwvxrIY2M9sH88QY0oHVi1r6Hmzfr4oKZsEcRH40dMe9fq9fP8TtoVqqyUQHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BaqBDrmK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710236161;
+	s=arc-20240116; t=1710236483; c=relaxed/simple;
+	bh=JCmcx2Tm8U9+atlNfB94cDGk2fIveME0levHSB2ubJw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uYELmSnImBPHIxXRp9MDyjn6YfH1nW+4O7Xmr2N9wrq4/ZgSD02AZBibmyLWrZ8knDMNkkbdOl51kZT7GH61Mcnzqej3TO4opLOuhwUiXsMCYZRIM+kKGfHr/mkpBiLIsXpW+ELOMROKmqBx7d/L0S3QfJfbvHHDBf5FjJGCvMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=al5ADPw3; arc=none smtp.client-ip=95.215.58.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710236478;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UpQt4rFmaG+pnh1jxHreV7eEP/lKtwbHt1vwmJNiSUE=;
-	b=BaqBDrmKttYUalqVaZ5HPhF+athHz3eUrouk+myaSZW7pZKP8hwcC+iPccaq6o0MWs01VW
-	S4QYUkxVGFjjd1k1m1F1oQUuh4p795JQofefibOIZENVnQpX798fHEQMVOOxUCznXuXW0g
-	L9ma7PjrULHw9x431M+tHArQJncHr+0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-663-ULZCs2HVMSCMs3spfJNIXQ-1; Tue,
- 12 Mar 2024 05:35:58 -0400
-X-MC-Unique: ULZCs2HVMSCMs3spfJNIXQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E612F3801F52;
-	Tue, 12 Mar 2024 09:35:57 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.39.193.51])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 084A12022EDB;
-	Tue, 12 Mar 2024 09:35:55 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	zack.rusin@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	tzimmermann@suse.de,
-	airlied@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	daniel@ffwll.ch
-Cc: Jocelyn Falempe <jfalempe@redhat.com>,
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o+3TKD1nHwiScEPhIkr89my4pDFZYvP/btUyY+bLwCU=;
+	b=al5ADPw3KWlLDv5fM9zgYpARu7WdmvWKvn7mqSuaFsavGiy2q0/tpcYog5II7CDLCbuv2K
+	NlNzCsLsq98tpcZh2uRAsuwhPaWjfO3KERmPof57NgVgyP3x2FDlD8xmVHR5V1KtzZth54
+	5jkGSH1zd4hq4He6RjZ08zDVOYBfBCo=
+From: George Guo <dongtai.guo@linux.dev>
+To: 366233434@qq.com
+Cc: George Guo <guodongtai@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] vmwgfx: Create debugfs ttm_resource_manager entry only if needed
-Date: Tue, 12 Mar 2024 10:35:12 +0100
-Message-ID: <20240312093551.196609-1-jfalempe@redhat.com>
+Subject: [PATCH 1/2] tracing: Remove unnecessary hist_data destroy in destroy_synth_var_refs()
+Date: Tue, 12 Mar 2024 17:41:15 +0800
+Message-Id: <20240312094116.439615-2-dongtai.guo@linux.dev>
+In-Reply-To: <20240312094116.439615-1-dongtai.guo@linux.dev>
+References: <20240312094116.439615-1-dongtai.guo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,79 +58,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Migadu-Flow: FLOW_OUT
 
-The driver creates /sys/kernel/debug/dri/0/mob_ttm even when the
-corresponding ttm_resource_manager is not allocated.
-This leads to a crash when trying to read from this file.
+From: George Guo <guodongtai@kylinos.cn>
 
-Add a check to create mob_ttm, system_mob_ttm, and gmr_ttm debug file
-only when the corresponding ttm_resource_manager is allocated.
+The destroy_synth_var_refs() destroyed hist_data, casusing a double-free 
+error flagged by KASAN.
 
-crash> bt
-PID: 3133409  TASK: ffff8fe4834a5000  CPU: 3    COMMAND: "grep"
- #0 [ffffb954506b3b20] machine_kexec at ffffffffb2a6bec3
- #1 [ffffb954506b3b78] __crash_kexec at ffffffffb2bb598a
- #2 [ffffb954506b3c38] crash_kexec at ffffffffb2bb68c1
- #3 [ffffb954506b3c50] oops_end at ffffffffb2a2a9b1
- #4 [ffffb954506b3c70] no_context at ffffffffb2a7e913
- #5 [ffffb954506b3cc8] __bad_area_nosemaphore at ffffffffb2a7ec8c
- #6 [ffffb954506b3d10] do_page_fault at ffffffffb2a7f887
- #7 [ffffb954506b3d40] page_fault at ffffffffb360116e
-    [exception RIP: ttm_resource_manager_debug+0x11]
-    RIP: ffffffffc04afd11  RSP: ffffb954506b3df0  RFLAGS: 00010246
-    RAX: ffff8fe41a6d1200  RBX: 0000000000000000  RCX: 0000000000000940
-    RDX: 0000000000000000  RSI: ffffffffc04b4338  RDI: 0000000000000000
-    RBP: ffffb954506b3e08   R8: ffff8fee3ffad000   R9: 0000000000000000
-    R10: ffff8fe41a76a000  R11: 0000000000000001  R12: 00000000ffffffff
-    R13: 0000000000000001  R14: ffff8fe5bb6f3900  R15: ffff8fe41a6d1200
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
- #8 [ffffb954506b3e00] ttm_resource_manager_show at ffffffffc04afde7 [ttm]
- #9 [ffffb954506b3e30] seq_read at ffffffffb2d8f9f3
-    RIP: 00007f4c4eda8985  RSP: 00007ffdbba9e9f8  RFLAGS: 00000246
-    RAX: ffffffffffffffda  RBX: 000000000037e000  RCX: 00007f4c4eda8985
-    RDX: 000000000037e000  RSI: 00007f4c41573000  RDI: 0000000000000003
-    RBP: 000000000037e000   R8: 0000000000000000   R9: 000000000037fe30
-    R10: 0000000000000000  R11: 0000000000000246  R12: 00007f4c41573000
-    R13: 0000000000000003  R14: 00007f4c41572010  R15: 0000000000000003
-    ORIG_RAX: 0000000000000000  CS: 0033  SS: 002b
+This is tested via "./ftracetest test.d/trigger/inter-event/
+trigger-field-variable-support.tc"
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: af4a25bbe5e7 ("drm/vmwgfx: Add debugfs entries for various ttm resource managers")
-Cc: <stable@vger.kernel.org>
+==================================================================
+BUG: KASAN: use-after-free in destroy_hist_field+0x115/0x140
+Read of size 4 at addr ffff888012e95318 by task ftracetest/1858
+
+CPU: 1 PID: 1858 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #24
+Source Version: Unknown
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
+Call Trace:
+ dump_stack+0xcb/0x10b
+ print_address_description.cold+0x54/0x249
+ kasan_report_error.cold+0x63/0xab
+ ? destroy_hist_field+0x115/0x140
+ __asan_report_load4_noabort+0x8d/0xa0
+ ? destroy_hist_field+0x115/0x140
+ destroy_hist_field+0x115/0x140
+ destroy_hist_data+0x4e4/0x9a0
+ event_hist_trigger_free+0x212/0x2f0
+ ? update_cond_flag+0x128/0x170
+ ? event_hist_trigger_func+0x2880/0x2880
+ hist_unregister_trigger+0x2f2/0x4f0
+ event_hist_trigger_func+0x168c/0x2880
+ ? tracing_map_read_var_once+0xd0/0xd0
+ ? create_key_field+0x520/0x520
+ ? __mutex_lock_slowpath+0x10/0x10
+ event_trigger_write+0x2f4/0x490
+ ? trigger_start+0x180/0x180
+ ? __fget_light+0x369/0x5d0
+ ? count_memcg_event_mm+0x104/0x2b0
+ ? trigger_start+0x180/0x180
+ __vfs_write+0x81/0x100
+ vfs_write+0x1e1/0x540
+ ksys_write+0x12a/0x290
+ ? __ia32_sys_read+0xb0/0xb0
+ ? __close_fd+0x1d3/0x280
+ do_syscall_64+0xe3/0x2d0
+ entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+RIP: 0033:0x7efdd342ee04
+Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 48 
+8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff 
+ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+RSP: 002b:00007ffda01f5e08 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00000000000000b4 RCX: 00007efdd342ee04
+RDX: 00000000000000b4 RSI: 000055c5b41b1e90 RDI: 0000000000000001
+RBP: 000055c5b41b1e90 R08: 000000000000000a R09: 0000000000000000
+R10: 000000000000000a R11: 0000000000000246 R12: 00007efdd34ed5c0
+R13: 00000000000000b4 R14: 00007efdd34ed7c0 R15: 00000000000000b4
+==================================================================
+
+So remove the destroy_synth_var_refs() call for that hist_data.
+
+Fixes: c282a386a397("tracing: Add 'onmatch' hist trigger action support")
+Cc: stable@vger.kernel.org
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/trace/trace_events_hist.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-index d3e308fdfd5b..c7d90f96d16a 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -1444,12 +1444,15 @@ static void vmw_debugfs_resource_managers_init(struct vmw_private *vmw)
- 					    root, "system_ttm");
- 	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, TTM_PL_VRAM),
- 					    root, "vram_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
--					    root, "gmr_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
--					    root, "mob_ttm");
--	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
--					    root, "system_mob_ttm");
-+	if (vmw->has_gmr)
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
-+						    root, "gmr_ttm");
-+	if (vmw->has_mob) {
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
-+						    root, "mob_ttm");
-+		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
-+						    root, "system_mob_ttm");
-+	}
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index e004daf8cad5..7dcb96305e56 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -280,8 +280,6 @@ struct hist_trigger_data {
+ 	struct action_data		*actions[HIST_ACTIONS_MAX];
+ 	unsigned int			n_actions;
+ 
+-	struct hist_field               *synth_var_refs[SYNTH_FIELDS_MAX];
+-	unsigned int                    n_synth_var_refs;
+ 	struct field_var		*field_vars[SYNTH_FIELDS_MAX];
+ 	unsigned int			n_field_vars;
+ 	unsigned int			n_field_var_str;
+@@ -1363,8 +1361,8 @@ static struct hist_field *find_var_ref(struct hist_trigger_data *hist_data,
+ 			return found;
+ 	}
+ 
+-	for (i = 0; i < hist_data->n_synth_var_refs; i++) {
+-		hist_field = hist_data->synth_var_refs[i];
++	for (i = 0; i < hist_data->n_var_refs; i++) {
++		hist_field = hist_data->var_refs[i];
+ 		found = check_field_for_var_refs(hist_data, hist_field,
+ 						 var_data, var_idx, 0);
+ 		if (found)
+@@ -3707,21 +3705,6 @@ static void save_field_var(struct hist_trigger_data *hist_data,
+ 		hist_data->n_field_var_str++;
  }
  
- static int vmwgfx_pm_notifier(struct notifier_block *nb, unsigned long val,
-
-base-commit: b33651a5c98dbd5a919219d8c129d0674ef74299
+-
+-static void destroy_synth_var_refs(struct hist_trigger_data *hist_data)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < hist_data->n_synth_var_refs; i++)
+-		destroy_hist_field(hist_data->synth_var_refs[i], 0);
+-}
+-
+-static void save_synth_var_ref(struct hist_trigger_data *hist_data,
+-			 struct hist_field *var_ref)
+-{
+-	hist_data->synth_var_refs[hist_data->n_synth_var_refs++] = var_ref;
+-}
+-
+ static int check_synth_field(struct synth_event *event,
+ 			     struct hist_field *hist_field,
+ 			     unsigned int field_pos)
+@@ -3884,7 +3867,6 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
+ 				goto err;
+ 			}
+ 
+-			save_synth_var_ref(hist_data, var_ref);
+ 			field_pos++;
+ 			kfree(p);
+ 			continue;
+@@ -4631,7 +4613,6 @@ static void destroy_hist_data(struct hist_trigger_data *hist_data)
+ 	destroy_actions(hist_data);
+ 	destroy_field_vars(hist_data);
+ 	destroy_field_var_hists(hist_data);
+-	destroy_synth_var_refs(hist_data);
+ 
+ 	kfree(hist_data);
+ }
 -- 
-2.44.0
+2.34.1
 
 
