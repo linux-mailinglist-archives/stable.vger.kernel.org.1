@@ -1,104 +1,100 @@
-Return-Path: <stable+bounces-27518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202A8879CFD
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:35:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024F6879D06
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5434B24021
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:35:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97635B23404
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2599142907;
-	Tue, 12 Mar 2024 20:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48331142907;
+	Tue, 12 Mar 2024 20:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="RGkPoje2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j0dOAMSp"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34387382;
-	Tue, 12 Mar 2024 20:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD701E529
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 20:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710275735; cv=none; b=A4uXq468gHnkdoZmYc7XsavQjRVs8vNvAlfQ94b6U1ZPe2ed4iKEwECyNZNmLFV3gUgW+3cNykReLRHtwDAEBgaDCIrbi5nh0fs2WDrpESNnAbtmCubwut1v76T2uBQcIXn81Veh1CgqwSVomsWeu97na1MZ0XHweSJeumeUtt4=
+	t=1710275885; cv=none; b=L9BiX81veChb8TO4T9vjs+Q99odz6VJams6AOHBQ38l8a4C39dMBXG3SodcRVjVJbBfNUmkImfOOBA448wxUR9/foGg0HXlWuDdFeOR/VG8mfEaumxsROirwigl4A8zAr2ONL50UAGcmrH7eAK+SueksBPM1Hcud0pOzphbLG18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710275735; c=relaxed/simple;
-	bh=fKgQaaspTGFzvzo/bz2ErnQPBXcO9olZD3j4RL0bxrI=;
+	s=arc-20240116; t=1710275885; c=relaxed/simple;
+	bh=wUxiOyax77zUtSgs22IqO/hNnlK6lYN7E6k4/7hTRDQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=No6XCiSV1GgLYwxcaYg+uP88K+KbrjfqWJhW20/nKndtUj/k1UwgOjd3tZ0xIlgYCSvynCh4a4RNvUDa04AY+wSL2ACX+hhu1rVB50xr1mVfJth5l6+wAy3slWanpnE2aNhtHQTWWxSHzvvAVUrLflkI5K/GfzIfp5TknD8QxKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=RGkPoje2; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 86FA21C006B; Tue, 12 Mar 2024 21:35:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1710275727;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HNuaGq7efeL3zZ9PVtEBZwNZ/Oitr+2+cYKedn9BI08=;
-	b=RGkPoje2O9DvNxoRXqyhz2QrfHvoTo4F2wbq1D0c00Rxfs7+2wzX0NXy5xMAPRQ7q18tIS
-	Q8VtuVD4dPyr4NkThpGAgxg3/qK3nR/7+UMW90isqjTK9pVRieuCzTE41zilKwAKFxYJsT
-	u0u2J16bXexO2KSbsCkVJ2gnYMVY/Kw=
-Date: Tue, 12 Mar 2024 21:35:27 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Wei Liu <wei.liu@kernel.org>, kys@microsoft.com,
-	haiyangz@microsoft.com, sthemmin@microsoft.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	devel@linuxdriverproject.org
-Subject: Re: [PATCH AUTOSEL 6.1 3/7] x86/hyperv: Use slow_virt_to_phys() in
- page transition hypervisor callback
-Message-ID: <ZfC8j2eUP/139bSh@duo.ucw.cz>
-References: <20240311183826.328535-1-sashal@kernel.org>
- <20240311183826.328535-3-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WyRlLYKRZVO7bWknSUi4nhB6tw28rYpk+BK5/YJkoZBuZE2ylR038fOVVA1ht5OCJRUXEq0RALZJd2Pc+VgwHp0OWYw7/V8X8rSeGFpFGZ7Kq/s23eR0ezdIW/cC8BxVbAf1n1jFhpfzd4v3uhuhxI9Qul7mBdJaVp47HUj21ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j0dOAMSp; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710275883; x=1741811883;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wUxiOyax77zUtSgs22IqO/hNnlK6lYN7E6k4/7hTRDQ=;
+  b=j0dOAMSpdIR83qQk7Wt70MODje5V9PzzNdqDvAk2AknVsCn3V4wdDaUL
+   alUsWPwoKF6Zv61R/bLVlawgGeNH9uI745dR4Z28gVk0Oomw4LnSGAdJk
+   fOU88JqTiZVQ3729I0ZjqpfUZCjVWcx7nbYN2vBrTgOjLCJ56dGmzcCVJ
+   1cAxKkpWedPupkC2r30q4H105v9doF8Rlw2K0TqNUUyzSnGbrFr5+trXt
+   rzgBoAylcYLkq1V5Kzq6Z0B8u2kZL/+kHVTt7gyc8/wZRA9CLhvVrxAmP
+   4p/TcFvAmPuaPAuLlb/f+qc5RGRGEC9C4nWHuz/GBugeT6M+lwNhqnQB/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4861905"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="4861905"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 13:38:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="16311033"
+Received: from unknown (HELO intel.com) ([10.247.118.142])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 13:37:56 -0700
+Date: Tue, 12 Mar 2024 21:37:50 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH v5 1/4] drm/i915/gt: Disable HW load balancing for CCS
+Message-ID: <ZfC9Ho6zAxjZDQ-O@ashyti-mobl2.lan>
+References: <20240308202223.406384-1-andi.shyti@linux.intel.com>
+ <20240308202223.406384-2-andi.shyti@linux.intel.com>
+ <20240312165825.GK718896@mdroper-desk1.amr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hdxVmSkgdoQeUsAT"
-Content-Disposition: inline
-In-Reply-To: <20240311183826.328535-3-sashal@kernel.org>
-
-
---hdxVmSkgdoQeUsAT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240312165825.GK718896@mdroper-desk1.amr.corp.intel.com>
 
-Hi!
+Hi Matt,
 
-> In preparation for temporarily marking pages not present during a
-> transition between encrypted and decrypted, use slow_virt_to_phys()
-> in the hypervisor callback. As long as the PFN is correct,
+...
 
-This seems to be preparation for something we don't plan to do in
--stable. Please drop.
+> >  #define GEN12_RCU_MODE				_MMIO(0x14800)
+> >  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+> > +#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
+> 
+> Nitpick: we usually order register bits in descending order.  Aside from
+> that,
 
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+I can take care of it.
 
---hdxVmSkgdoQeUsAT
-Content-Type: application/pgp-signature; name="signature.asc"
+> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfC8jwAKCRAw5/Bqldv6
-8koDAJ9q8exh6UyNP6LQHyZQLDOy6tr8IwCfbTuTK6Fh951cIruZfOENraPzaa8=
-=Q6XM
------END PGP SIGNATURE-----
-
---hdxVmSkgdoQeUsAT--
+Thanks!
+Andi
 
