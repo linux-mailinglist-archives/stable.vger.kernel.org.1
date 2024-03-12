@@ -1,90 +1,94 @@
-Return-Path: <stable+bounces-27440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1E68790EB
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:26:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047148790EC
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 10:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CDC28745C
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 860F51F25AC8
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 09:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3A38464;
-	Tue, 12 Mar 2024 09:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF33677F3E;
+	Tue, 12 Mar 2024 09:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="D8JComJH"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WFVQNL6x"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2079.outbound.protection.outlook.com [40.107.94.79])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2066.outbound.protection.outlook.com [40.107.93.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868DD78267
-	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 09:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1616877658
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 09:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710235463; cv=fail; b=dQhQFcu4PbwZAelMQ1eZEGpHhA/vLnZ6goOElD2KDdlgZwThiz735Sn9NahjFffjfvn/voMvYuxXLnIHpZgRewfmd1xzvfei8NS09FYTooZIun5q/K/dC3sAPExHh9ycb+dJhurQSO0bv9yb2SbMGNil3wQIhgnehPxA/eXbBOU=
+	t=1710235514; cv=fail; b=lRl3MsOKNQdalTyigEk4ZiLqGii8jxxABHxakGDA3ZsnvbiTBDddRpdCE9u2QeDiQm0YUQOJIGyZtHxrDdE8gxfrJcGirbNscPteffToOUIgBo6eQH5evwzgGPiEEGI1KASM7yMj1VJGF40y3ZtekS7g/RNVIz5zIsMu5Wli5fc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710235463; c=relaxed/simple;
-	bh=kmgUVH7eeQvn1s9NP4l0TaLJi711C+SRdQ8njvTDTeA=;
+	s=arc-20240116; t=1710235514; c=relaxed/simple;
+	bh=yxCOgT787IC7xRArBpyUcqy4kPXIIKqfnAippWzQ80Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IpGQb9lgEmhvY38TwIpE7AJ+BA9HLGQDbFO69PWiluIUKv2Ni8DCln/j5SwlGYt17dM2yZROsEOs00V1tyGnrl+3kEcJ6blhNnV8NaWDEon+vbmZS3pYToKm2y0Gwtxx2sySb9N6E/cBzqK8VT0euPqsSjGbc/manTFUsz512rc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=D8JComJH; arc=fail smtp.client-ip=40.107.94.79
+	 MIME-Version:Content-Type; b=S5AROYjESU2vnJaoqHWFnTejxsXdsr29oWnSDisEIfDhc0I+XxyE3lY7fHFPvqamZi7eL/n+uySHh1QmUczqgVYNwh1025kzj3QBkvwNBV7h5fltrxsgkQ2HDl5QamhWjCBP8cfvaAQEpoOolD73lJ5NsGbvI6/Rkri9UCBcq24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WFVQNL6x; arc=fail smtp.client-ip=40.107.93.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QRIuDTT3FKj4uDJWlXikY0Zs6mF9Zk+icu0cvWIi+G1ouIibSFNy4pt3C4gdeRkqw7Kl8N20zbMb5Pc+S6ev6wsmXCtmnuJEd4ESAhVYib3zcmkqqfC6m0PGzFRxl52Z8sXA3T+gY3V7vd8cceIXIKguJO1OszD+yHjPhDE97V1eTWzZQArOVTRp125rAXWkJptjPsNsMUiXEjTLH+Obv8jaiavAfcG0E6OtA3niqcvxToEnk18hmSfa5HIOr4hliSryeVdyGx3TQyGxip7s9MaQ7mGNwxND6lzd3oLUR5JkzhhCCBxEzOUE29muYvEVmWYRgWlCqfIH0cXjlnkXYQ==
+ b=V7UMFtCrsU2L0kTHrxRIRMdY8YiLKERELxfC6mDjhLZr1ZyYPhUyrDM6BBjVwskm2clAZrtYSlkNYp+EjBSGo34+yGXg+nAWoUKVPHQyGz4SWHL9otUUQiOfixmBafIQ5XFNV5TkZmsyX7JDhwp/Xj6lHxY7fKG2Oo4Hhwm2rjk7hDsg6eDAVRTHKPVsN8iegTpkxlUElT5BjWESaiP+T9nZDiqf20N57NN6c/PveVGJPuY/ENU/sdQQlu1o7IoToyvvQSf4KbQgDFfWRJT+Ej4LnxPoTf0bb+ZL6mn39s+8D3JTFFFDaIAL0vLjAF33aI4rdWryj5BiT7GRCo3P+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uzyyT2p6ZjtVnHGFy68MmIsilMm6Lj9zO+aAb17wUHM=;
- b=ejxXWkaWiDQASAai7g4k+DE1YkwVj45YnqBQ1v8UDF0mEKnPGWXE/6CJhQCFV28U+8hWLndpXIZlTpugVtd0u5z99rfXkzYzHFVkM7LgcwXxw238arbgXKkXcB+w3e+R8mIZrjy9IqN5AGgMK6AH6gi4UoBb+gUl1jfafy9igyCEEy0VnbwajSdTOlREOd4Zl1N2mqn4GTlo9VsTK+nvc9t72Nboex4yDBeixZE8X+IhdclMzhTZDOaf28BKtkK1D9GkKDmvn/R6yaayTYXGp7UJBRAeei26T3P6xYHgoUvkCqLPgLv4cFQZ6jLNqKsjYnbyg7vxmT9Edgaj+18Aug==
+ bh=K/IzfeX3pRcwPD7nL764wtPTgAljoQ2bISq+Sdox/iA=;
+ b=L1xpUAEW0DCp3CCIdf4YiO/R7lz2CeNF1x3vpxP50d09dQl4csrwTVdVang6l2Xw4q7TZfbJ0UZHuoBdVsW6afBt9jBxhaNf1kKdqUNRdI6Fo8YTK6mGkvJxfjsJKFeIAbw8TMmNrpy7E2C4vzQHrixveHwvZpuBVJcyYJphy/hcU1B4U2jnGUIF8GNYZj/VbKCbrBpxL8g1K+ifCPU6Fl4bsDsQ4tuVmSeB6JG+279nFIcjGKLruknkbGzL/GO1S8I/KZjP8THueoreAm5V1Q6rRJo9xmEUSqtTqSp7jlOmOMUOnzXTugCKH7YTIGh9JYzUbcPHKXPVSJz/Iy5vqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uzyyT2p6ZjtVnHGFy68MmIsilMm6Lj9zO+aAb17wUHM=;
- b=D8JComJHv9rnoIJkj5+i1zj+ELSFcVvlPZZw3hYiaf2lUC6ljsTcffBS4HEzOIqAOx3C34OF4bI1Ig3ZzoeZgxYMwKOT2uucNKOxhlZscNtVMrd5ho0xklTUGW4yU0kaewqwKFp8hszvdc2HFP0LTLT7G4AwLen6uf2o4AJ6YpI=
-Received: from CY5PR04CA0020.namprd04.prod.outlook.com (2603:10b6:930:1e::10)
- by SA1PR12MB7270.namprd12.prod.outlook.com (2603:10b6:806:2b9::11) with
+ bh=K/IzfeX3pRcwPD7nL764wtPTgAljoQ2bISq+Sdox/iA=;
+ b=WFVQNL6xHgt5CQTGyhOu9AlXYpxXlMTkvT0SbMw4LZdNFBS3rKP7ChycoYj69iyEnCVFBrjqYD9YKEmiO1WAFir03yuqMbTWeSiG2lfVSytp1e+Rcg69kc/JxIYValnPfzF2w6I112nNERcy9Lw1n2bVY3LB8g7iNyIy1X+b6jg=
+Received: from CH0PR03CA0038.namprd03.prod.outlook.com (2603:10b6:610:b3::13)
+ by CH3PR12MB7714.namprd12.prod.outlook.com (2603:10b6:610:14e::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.35; Tue, 12 Mar
- 2024 09:24:19 +0000
-Received: from CY4PEPF0000E9DB.namprd05.prod.outlook.com
- (2603:10b6:930:1e:cafe::34) by CY5PR04CA0020.outlook.office365.com
- (2603:10b6:930:1e::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.37 via Frontend
- Transport; Tue, 12 Mar 2024 09:24:19 +0000
+ 2024 09:25:10 +0000
+Received: from DS2PEPF00003444.namprd04.prod.outlook.com
+ (2603:10b6:610:b3:cafe::e1) by CH0PR03CA0038.outlook.office365.com
+ (2603:10b6:610:b3::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.45 via Frontend
+ Transport; Tue, 12 Mar 2024 09:25:10 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000E9DB.mail.protection.outlook.com (10.167.241.81) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF00003444.mail.protection.outlook.com (10.167.17.71) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7386.12 via Frontend Transport; Tue, 12 Mar 2024 09:24:19 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.7386.12 via Frontend Transport; Tue, 12 Mar 2024 09:25:10 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 12 Mar
- 2024 04:24:18 -0500
+ 2024 04:25:09 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 12 Mar
+ 2024 04:25:09 -0500
 Received: from wayne-dev-lnx.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Tue, 12 Mar 2024 04:24:13 -0500
+ Transport; Tue, 12 Mar 2024 04:25:04 -0500
 From: Wayne Lin <Wayne.Lin@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
 	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
 	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Chris Park <chris.park@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Charlene Liu
-	<charlene.liu@amd.com>
-Subject: [PATCH 33/43] drm/amd/display: Prevent crash on bring-up
-Date: Tue, 12 Mar 2024 17:20:26 +0800
-Message-ID: <20240312092036.3283319-34-Wayne.Lin@amd.com>
+	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Wenjing Liu
+	<wenjing.liu@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
+ Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Josip Pavic
+	<josip.pavic@amd.com>
+Subject: [PATCH 41/43] drm/amd/display: fix a bug to dereference already freed old current state memory
+Date: Tue, 12 Mar 2024 17:20:34 +0800
+Message-ID: <20240312092036.3283319-42-Wayne.Lin@amd.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20240312092036.3283319-1-Wayne.Lin@amd.com>
 References: <20240312092036.3283319-1-Wayne.Lin@amd.com>
@@ -96,64 +100,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: Wayne.Lin@amd.com does not designate
+Received-SPF: None (SATLEXMB05.amd.com: Wayne.Lin@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DB:EE_|SA1PR12MB7270:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ce64ddc-619e-44be-0cc2-08dc42763229
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003444:EE_|CH3PR12MB7714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 727a30b5-6281-4387-7d3f-08dc4276507d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	AL4WGOLgFmq8xBMxDYs7phvVSyuLXA4tJseABzVaJszFR3wSAvdYKSlFfIKVOU6lbvqYNCFNECHrlDLVKN9pW4ymaT6MVbg/U+U58+BiPOYFx9vFbARoY2BUNC8vU9/2k3Xg0jfeZQAhiILSvhSDnegg6L2bKcnF/0ecF18mZlV5vMcq/8A8n8baqXjMwcneyL8f81nH0RBtM/2OFrFqmj7IBurR0roH7DfF9vv2M3/GoKijyo55cl+ebi9Ysab4UXJAKkm4Oro4QkpatKcGaus0+Mn+090dnFv2Tidy+9CO8gn7hlfX0T+u+nF16M6TvZlbtR3S1U7gN8e4IzUdabanetGlDJ2WwLIR85eNdskuTx9egT9aqLvYaxE0TGDWtLWozP9fMptkQqXUi2iAohdc8rO3vlRDf5rGQfwAXra1TBNKx8yFiRGC331IhlY3Dx1gZEsk6d0U4MswCAsK/lAbY4D4FQp5/vRtJfETFlEH2DGS8FqhvkfgG+V8+YUqFKOn/DbwzO9Cp837OvMu4CujSjTqhB2Wq9DiNLuXxvhgKO+xoLhE+0C1H886fHmy68zaGsOz7HhZum5724LLHLEE5qainizrhfwew+ulU27A+b5vCxhFHCVguwaFNw5CUVoLzsJYadT0g18cQDYyexEQ+Tfjz0FdjQTem1fKcDSi3If6BmgxFBnsrSy3sZCVF8DRhTAA2o17iwcW93Mm8mInxc80Q1YhsmC1x/9II+PqyvQr4X/x0kL+85+TVYnA
+	H1/UR1H8yOClnIpnJNhZ8g7BRLX9Trkp6whVmFihfjsfFVsy8njMqJqGeWZe+FzeE1QQRK8gR0p4sksxwqob3Uglt1eDYdrPoq7SrCRC6z8T7kEd8OY250GxnRXSlppL4PG4Uv4whNJhamnKT+I1TQ0Ye7oaTRoB3NVxAF9qsRPuSo8AdNKHY6NRGN39WM/pdb3Y3lAITZH1YWMAKVlBaNEer7s9ruRmznSf9rPSvxo82IpxsGKpMYJVfJTrB4ckzkrVSh1GpYWLz3MZ6DgiQYJSmMPNjaN1eezvcaI3vE4OBZyckjCiU2Jbky2RqIBix9rPtcu7E+yeDaAgTJJFOdQSWJMh+h27kJDztIecaPqUQN22eUTYQt6VcuoZfaPHURxo4niozcBegLGC97ijXhHxDzr0NfdScElZ8pjQ/15QIF2ZVIE8/HntvO4ngNgfzKEamtUU4gwbP33aoHHeQB2abgFcJ+JUPh4FOM2u5Mn7c54O3g360B6QaTuXy6D8Ac1vK3c5NRd7c9HbodMxGctbfLRuDpU9L8f4AGcvpEtdTjHcBg0MmOi8o6X0e/LUEfNLIXHStLFA+bECiWunfh6GXRi3i5yvwhTsw1MQe4g8G3Tt36aWB7QxuzNsvio2hdqs5cM+HQnvuEuYjA0HuU1++QRzwXRQ3oF/TxfXX8JGWJPV+YbfyxEz9hhz0BnxAM/AkKfojkSk4TbcceXqe+GfSo8AXfGrwRWxpcw9KdPIXxhXyCi985SwgSIAjkmw
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(82310400014)(376005)(36860700004);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014)(376005)(1800799015);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 09:24:19.3642
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 09:25:10.2805
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ce64ddc-619e-44be-0cc2-08dc42763229
+X-MS-Exchange-CrossTenant-Network-Message-Id: 727a30b5-6281-4387-7d3f-08dc4276507d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DB.namprd05.prod.outlook.com
+	DS2PEPF00003444.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7270
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7714
 
-From: Chris Park <chris.park@amd.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[Why]
-Disabling stream encoder invokes a function that no longer exists
-in bring-up.
-
-[How]
-Check if the function declaration is NULL in disable stream encoder.
+[why]
+During minimal transition commit, the base state could be freed if it is current state.
+This is because after committing minimal transition state, the current state will be
+swapped to the minimal transition state and the old current state will be released.
+the release could cause the old current state's memory to be freed. However dc
+will derefernce this memory when release minimal transition state. Therefore, we
+need to retain the old current state until we release minimal transition state.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Reviewed-by: Josip Pavic <josip.pavic@amd.com>
 Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Chris Park <chris.park@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 9d5df4c0da59..0ba1feaf96c0 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -1185,7 +1185,8 @@ void dce110_disable_stream(struct pipe_ctx *pipe_ctx)
- 		if (dccg) {
- 			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
- 			dccg->funcs->set_dpstreamclk(dccg, REFCLK, tg->inst, dp_hpo_inst);
--			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
-+			if (dccg && dccg->funcs->set_dtbclk_dto)
-+				dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index a372c4965adf..ab0c920333be 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4203,7 +4203,6 @@ static void release_minimal_transition_state(struct dc *dc,
+ {
+ 	restore_minimal_pipe_split_policy(dc, base_context, policy);
+ 	dc_state_release(minimal_transition_context);
+-	/* restore previous pipe split and odm policy */
+ }
+ 
+ static void force_vsync_flip_in_minimal_transition_context(struct dc_state *context)
+@@ -4258,7 +4257,7 @@ static bool is_pipe_topology_transition_seamless_with_intermediate_step(
+ 					intermediate_state, final_state);
+ }
+ 
+-static void swap_and_free_current_context(struct dc *dc,
++static void swap_and_release_current_context(struct dc *dc,
+ 		struct dc_state *new_context, struct dc_stream_state *stream)
+ {
+ 
+@@ -4321,7 +4320,7 @@ static bool commit_minimal_transition_based_on_new_context(struct dc *dc,
+ 			commit_planes_for_stream(dc, srf_updates,
+ 					surface_count, stream, NULL,
+ 					UPDATE_TYPE_FULL, intermediate_context);
+-			swap_and_free_current_context(
++			swap_and_release_current_context(
+ 					dc, intermediate_context, stream);
+ 			dc_state_retain(dc->current_state);
+ 			success = true;
+@@ -4338,6 +4337,7 @@ static bool commit_minimal_transition_based_on_current_context(struct dc *dc,
+ 	bool success = false;
+ 	struct pipe_split_policy_backup policy;
+ 	struct dc_state *intermediate_context;
++	struct dc_state *old_current_state = dc->current_state;
+ 	struct dc_surface_update srf_updates[MAX_SURFACE_NUM];
+ 	int surface_count;
+ 
+@@ -4353,8 +4353,10 @@ static bool commit_minimal_transition_based_on_current_context(struct dc *dc,
+ 	 * with the current state.
+ 	 */
+ 	restore_planes_and_stream_state(&dc->scratch.current_state, stream);
++	dc_state_retain(old_current_state);
+ 	intermediate_context = create_minimal_transition_state(dc,
+-			dc->current_state, &policy);
++			old_current_state, &policy);
++
+ 	if (intermediate_context) {
+ 		if (is_pipe_topology_transition_seamless_with_intermediate_step(
+ 				dc,
+@@ -4367,14 +4369,15 @@ static bool commit_minimal_transition_based_on_current_context(struct dc *dc,
+ 			commit_planes_for_stream(dc, srf_updates,
+ 					surface_count, stream, NULL,
+ 					UPDATE_TYPE_FULL, intermediate_context);
+-			swap_and_free_current_context(
++			swap_and_release_current_context(
+ 					dc, intermediate_context, stream);
+ 			dc_state_retain(dc->current_state);
+ 			success = true;
  		}
- 	} else if (dccg && dccg->funcs->disable_symclk_se) {
- 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
+ 		release_minimal_transition_state(dc, intermediate_context,
+-				dc->current_state, &policy);
++				old_current_state, &policy);
+ 	}
++	dc_state_release(old_current_state);
+ 	/*
+ 	 * Restore stream and plane states back to the values associated with
+ 	 * new context.
+@@ -4496,12 +4499,14 @@ static bool commit_minimal_transition_state(struct dc *dc,
+ 			dc->debug.pipe_split_policy != MPC_SPLIT_AVOID ? "MPC in Use" :
+ 			"Unknown");
+ 
++	dc_state_retain(transition_base_context);
+ 	transition_context = create_minimal_transition_state(dc,
+ 			transition_base_context, &policy);
+ 	if (transition_context) {
+ 		ret = dc_commit_state_no_check(dc, transition_context);
+ 		release_minimal_transition_state(dc, transition_context, transition_base_context, &policy);
+ 	}
++	dc_state_release(transition_base_context);
+ 
+ 	if (ret != DC_OK) {
+ 		/* this should never happen */
+@@ -4839,7 +4844,7 @@ static bool update_planes_and_stream_v2(struct dc *dc,
+ 				context);
+ 	}
+ 	if (dc->current_state != context)
+-		swap_and_free_current_context(dc, context, stream);
++		swap_and_release_current_context(dc, context, stream);
+ 	return true;
+ }
+ 
+@@ -4941,7 +4946,7 @@ static bool update_planes_and_stream_v3(struct dc *dc,
+ 		commit_planes_and_stream_update_with_new_context(dc,
+ 				srf_updates, surface_count, stream,
+ 				stream_update, update_type, new_context);
+-		swap_and_free_current_context(dc, new_context, stream);
++		swap_and_release_current_context(dc, new_context, stream);
+ 	}
+ 
+ 	return true;
 -- 
 2.37.3
 
