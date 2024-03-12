@@ -1,151 +1,177 @@
-Return-Path: <stable+bounces-27521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714DB879D1C
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:53:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759ED879D43
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 22:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F04D4283F89
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 20:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17041F22C25
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 21:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE07C142645;
-	Tue, 12 Mar 2024 20:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF25142916;
+	Tue, 12 Mar 2024 21:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kQKdatTc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kZ6c5v+m"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2055.outbound.protection.outlook.com [40.92.18.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E090E382;
-	Tue, 12 Mar 2024 20:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.18.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710276815; cv=fail; b=G8GR0YYAIZAVYLB5mMzAh0wYuIz8umFFNQZ82dAiQvkCpFHHV78lI29nc146dY0BFzGVyARoIaJy8KNAmaiI0KF3YJBzuH+5+bGmLsbaoHKahRKG817fSlITAlwAgoLtX8nyt11RBr1COpNhTNFH21bWyk4xuc/Mk5VvgmXgzbY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710276815; c=relaxed/simple;
-	bh=1I1HO3lFWvGy7TtQYHdQN/BuERhN9IiQ4TtWWWoMdBs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IgPchGg79XQRm6tRRX4OSfJrb9DyQ5dUR3T8Fqs4PmWQO6bLdECSaK18scNObEo4qomdP+Rjn4RJamaOwZxpxig0ohUVjGtVgvDbaRdcbyBw66XOe98J81Raf9MyHL/W/yX39sHzwfQ8WNmYP/z6HXBFaUrtYeRxvXQVCK12Q/c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kQKdatTc; arc=fail smtp.client-ip=40.92.18.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aPNQh+JZ86vaUm2osokvF0PqY3ouxG4zoGlImeBEYMuOc9frS3cAnfC6I/sxMOKgR3N76mKogcaYSTTxv9nzOfLvrS6uWJJgwlISekjJwyDlMfsSBXkObFagV2uO+p12q3Jh6XT+e0uf4VGkXSAw3Cso/XOPDC/WS07ybK1yi8nMSVx3a90rhOlNcaq6/ipAyfzy4KRLXvZImNCdGRiT4+HmuKQl45DzEGNHDcI/oin0WEjAFzYFs/1ERNZ69pQ638tGjwHRa+rr/HNaASjRu9BzN/yuf3Q5ppzJKzszhiXtC+XE+ZaHoclpTiQESI4l/p0raE9DxOAyY2IubRnB7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1I1HO3lFWvGy7TtQYHdQN/BuERhN9IiQ4TtWWWoMdBs=;
- b=QoWNLguXXoUCk+p7Bs1rNh7/G9IU+oUsgbIWZouh5wnhvnUTV0zf3WTKJRZkpz5BYbZL9b8vzdnavalWJtmkayhWEaDkwHwGbGV+UX42P8Z5R02ZTkCgOu2QkqH/S1cDjpzC6Jg298qiDxDxUwF7W9IgItQHjmJTgxdpP4mqWL7VaIME/lMQC14QbJmHCpHfUrObMlqfYfcYE5Jwy7vr/lAobl0aCklSsHSKxXvNzzVaagLlKfecMLc8R9hTbWTC7h3JP+meSdAZxCBZlI2/NynDxD2nbFM4UAFl1PIoRb7tmUyzUQlUIqVnN4WUvnwQcQwfb4gwkRJu0tvb33tX6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1I1HO3lFWvGy7TtQYHdQN/BuERhN9IiQ4TtWWWoMdBs=;
- b=kQKdatTcTObje0a+Syfb2Ygm5jIDlH6nBNEwSSpTJkUrkGtQlWLd4hsfjT0eilyhSZu70ZvLXqY0Kf7GsdNYz9J2/qqWTsGOPkJ+LjFBiTEh1RlA5RyFK2K8WCNES+wtvqs46p1J9Zce/SpetUh1bX1bxIV/NJGFq5vE050ZubtPqoznDKpdsB08FbHxvNEfqnoED538hn5Q9RwCRFvn2jlb7x39ZzHMufxQJIbUEBjLw8t7BHgdQOgcD1UcglwONNNnFCrgPMe/1X56FalcYCRE3dHEIqOoc5T74kYCTtIR4R9dhYh14gPtN+R0Y6bRturliByVn/DCSGPcP+7F6A==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by BY5PR02MB6659.namprd02.prod.outlook.com (2603:10b6:a03:20b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.18; Tue, 12 Mar
- 2024 20:53:31 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7362.035; Tue, 12 Mar 2024
- 20:53:31 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Pavel Machek <pavel@ucw.cz>, Sasha Levin <sashal@kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Kirill A . Shutemov"
-	<kirill.shutemov@linux.intel.com>, Rick Edgecombe
-	<rick.p.edgecombe@intel.com>, Wei Liu <wei.liu@kernel.org>,
-	"kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
-	<haiyangz@microsoft.com>, "sthemmin@microsoft.com" <sthemmin@microsoft.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org"
-	<x86@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>, "devel@linuxdriverproject.org"
-	<devel@linuxdriverproject.org>
-Subject: RE: [PATCH AUTOSEL 6.1 3/7] x86/hyperv: Use slow_virt_to_phys() in
- page transition hypervisor callback
-Thread-Topic: [PATCH AUTOSEL 6.1 3/7] x86/hyperv: Use slow_virt_to_phys() in
- page transition hypervisor callback
-Thread-Index: AQHadLzVAkgWooNpOke57f1qHnLiFrE0lO2g
-Date: Tue, 12 Mar 2024 20:53:30 +0000
-Message-ID:
- <SN6PR02MB41573B4014405943158B8F31D42B2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240311183826.328535-1-sashal@kernel.org>
- <20240311183826.328535-3-sashal@kernel.org> <ZfC8j2eUP/139bSh@duo.ucw.cz>
-In-Reply-To: <ZfC8j2eUP/139bSh@duo.ucw.cz>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [p4AxuvCEP9ab2a/wg0UxEbie6jPmHgLe]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BY5PR02MB6659:EE_
-x-ms-office365-filtering-correlation-id: 8124531d-182f-4a87-df63-08dc42d679b7
-x-ms-exchange-slblob-mailprops:
- Cq7lScuPrnoAVlBsXi+5fvsd/1azsy4llBB8dZyMzxQY0WiF4l6L+rY+Qbb1zFGaQn+wQ/kn8iEScsYZTrGSNviEe2RQrMGKt0V4xQL2EaNMiD03rZj7gjbhe6elPFfg7k6It5k5rFQeC7SWkqyPto/723vJVRSlkJTgrte/eAxss7cR4jqvWvBpdx7DP+eLtbgoRUueyKWWQSL7N5g3IHvAq8ex+3USnEFkUuTNE2yAZmm7Zt2G8OE4XJy0HGwJKpT0WTNxZFGOnxGGlxNwW4HsDnssibKBfQn4xxs5Yy1UNYtz3Pa2JWluxcKNrk6BJMs9h71wfFVkVplUXKZvh+BeRNxfWYpzD8/eYGYIqyi3ZBsgbALN69oo1AztHHd6hdp4bEdFnCex+XUgFe7dPiOf/lQ9NNfJhLC9Jt1QPf5zCA7LTHOQp09tG7ia/KoM+vkMdqLqnNUPmFsZ316/5jqaaKxP7EI22cjnvKQhdJx/zhzH3S9LpbK9HHU6UfnUr2o+Xz0EYfxFu/52v+5BBEDEiqNausTlOSaTC8oq1pSad1sO9TKymV/B1a1uzEUiVB0rIsrdgh54zgu5UWWj55RAKGfF7J6caJuF5lZ7DuhoJ2q4yymCVIeTKTRNc99Dk4x4OydhsL+LdQrHnq7wD7uFtRIHAeK2Njmy/i1qWDk7MEJPtrXOyneHjkXMgUb87ol8c/N71KiZsLrlt0HGn+lst1sqM/iYAfeZJicO/uMyTGzMm1B0MWb0lEhaG7PxQKVlr0xUU28=
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- at1/mPvQL4+XLawtqVGQk/3EPFsejh0g1UgMo7Tbf/wqMqKjNdNCdwG55dVNpNz/jr5owqkie09/48d8PGTi2AKZxevnF0J5tRZUFmNIfVAV4UK1oCWpU4ZDeoyze8ni6cDbPbDGYZPVPbsYA9IFjgi4ACcnGtxD/Kqv3M1NOGXCk+yKCWDZl5JL5rOPwpwJGD/b7GjzmzsAeS9jDPnFSNbopl8S1QjsDh4TzgzpGq4JBIU9D3HQgZkZ4+JGANiaEr4Ka8IpH11DA2zG8ndgICMXGVAauphxgWFeoTYG2iiFswZQ9Cm6JHjWO+JobQ2jm4d60Q370sDFgoIATkp+9JD8W1j1hhgQhMJRa6nsCRWXlqv3AuHmTwTCgYc64SQ6PSOZeHXfgZtXkzw/wMF0MmFYetJMFuA9AduCr81Ik7JKN4Km2MPiXN5z3D70/0PNUfSPV/y96QaPqccri1xxaLQsQTxA6zZgT0FJBDY3gj7QcdzO6H7uVFKK0O/97OiwsWel49OBS7w6x4vjgmTeljYqX5kznsuYEFAqUJ3UJmT0axg9HeNUqdeA9At9S1hb
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?f+PuGFZfH5YHlZFnWGfKLsyg9pt3+BP3ATX82seJhdQdiECQjF1ckfZOHZHQ?=
- =?us-ascii?Q?47YnupYZnmDSK0DTqCnYzXE+AcjmXqEs564pABctOxUZqfHSHXkVfKEL+7o0?=
- =?us-ascii?Q?8LpU7tMqPw6c3IDtsgPvy6aOAtiuFgjhkeSz/h9NdHh9SyH77EhW9jyBmYaJ?=
- =?us-ascii?Q?PVyYC0kZ1sTbG0D74rPICsbEY7ypM0/+6hCUKQ5x+63PCo7X19o9Jzo6K4WS?=
- =?us-ascii?Q?Uyvc+3Lc+ErBHWdB+c/J9czEM+ic1EPMVqr61/3ij+u/mnCXJx8+ac5/c6Rl?=
- =?us-ascii?Q?wAU5U4/aXt8CM+GVtUowax/LjGHCg/PdDTJyawJVoweYCb32/IuY2EeOetPE?=
- =?us-ascii?Q?lSmg2ugFqz3YluxAZS5AclTKDVSc8MR+oLZLpqhuTw+joGt7CCx1s7kwWVWY?=
- =?us-ascii?Q?YMno/pwGhA2EbVfKykNT/TZcISUwXmIrUo57hClPg2jAZiMT/9Hk3hCpuDzG?=
- =?us-ascii?Q?Jqr4C/WB0G3ITx281uBTeAicEWpZz6QRF1QZb024QnM8JfNN+qczptvljVdO?=
- =?us-ascii?Q?8IBaGpPjkQmsTyX9JNYtFrUOE/0/+urRhwhMG4GJeMn9A3frttH0HdN1qMJU?=
- =?us-ascii?Q?W9l8rvUvNFUOD8vRafYCW7895OhwvgCOyqKtZp9g+spQIsKNd2abxR5YT+z2?=
- =?us-ascii?Q?07gzzi1Rei4oFh9pHDQDjQ3rzhn/O4WVGXOCRiAFgm/XlGTFltiWOJKEqAkH?=
- =?us-ascii?Q?UcsiNyPO7/taXFs7+qDH1VLjnPTcslRqVsE9mlqwGnNMxMgfu72SnnxIk/lN?=
- =?us-ascii?Q?+ErvQWwSWM63a7v7BrblnHJfkPARzgRxO2UYOR9zMP+efvHrWbrpliN9Lh0d?=
- =?us-ascii?Q?kd5KxH+4ES/o3Pc3q9zY3JoYWBgnx9D3tDNDm7gPf0mp+R4TZYf1lErGzuNc?=
- =?us-ascii?Q?uZ2VizLXAvYckt2PBW3mjL+/in7RXlAv6sV2fJkzNTG7V6JKWBETZ+OwgUtq?=
- =?us-ascii?Q?zONn4fDXnNB1957Tpuu3C0aTD2NL0SplYiL6Q4WxKjEpEq7WfCLN+PgY7/xk?=
- =?us-ascii?Q?f2ZLNnSYOQanVEeYAgzSmZOR4dc86AEk/MU0V3mP8m+bpI5xoQWvsLueykRa?=
- =?us-ascii?Q?kfdsFoXHGqelHw6KOrmVBVmr8y0kNZdJFs4O7CyrFuyIdaPcobXllNuXOAdG?=
- =?us-ascii?Q?49qwaxU74szkbMjlL4qMLTFfm2WS2kSV4jeNVA59uXYW+j77aUT7oUxzeXBy?=
- =?us-ascii?Q?03wkjAQcnHE8EaFlxvjgyAXePogj5o7iHw5RPw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E03214290A
+	for <stable@vger.kernel.org>; Tue, 12 Mar 2024 21:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710277837; cv=none; b=HycXq8WmJSsu8Oeu7gjVrYz5KoQVXH9tDhdlbc+xeyRUTd7Smc62ZoyjW7us2eoOg3Q6LgqmjoOsR75lxAjutzpoLnfbv8QeDafLheAYEuukJHevGbAcFght7Q7TueZyo5KC0tCK4YHfhUt1OE+C3rfOz9FCqeh1JG0HCk2i2J8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710277837; c=relaxed/simple;
+	bh=xBIKA3ePQBgw3K8JbQtqqWPl43/wdfy9XCEYM9B9MOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uELe/yzfUa5tbqmI+OWDIlO47SBazoB+59YJTTjiSDMzYpUj7aXEWLIbnJyxeSba4PAhZz7AUw02FU3M9H6Rp+06T4cPrQWpgrgu/LzqCJvOqxGfcGZH+UKxSC7t/Mu5F0SY4hFgsyTlXbxgUReFVU0caC+/EnhjaUr4awQVnyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kZ6c5v+m; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710277836; x=1741813836;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=xBIKA3ePQBgw3K8JbQtqqWPl43/wdfy9XCEYM9B9MOY=;
+  b=kZ6c5v+mLHN5kebS6f6AUHJOfsG8BBiCW1reTMYPKUZgQ5vlgfGuAymA
+   hPRW5ptBVORX8ftZlAcO4JBoK9E0AC/kd4aWiEgTibC83DyC4IS1SuzZp
+   wRmhMLcTYfdVcVnnk6nSc/XAzClGt+yRDzzxhe5XqyDvQj6wJLPQYoSPv
+   asT+UVXXaWaresc5Mle7pMOILItUaGgufD1+URzwgdptt/2L/EXSuN9Z7
+   0adqB/DeIAxNNQGngAkwcKPIl/YcHblsSkuQFBsULYC41416pPl8FbunC
+   bo+fWK4Ql9SX2SU3IGwfZROJjfRJq9g+5z/PChFPk3pNTCCoeRpxdd9Yx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5138791"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="5138791"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 14:10:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="16322649"
+Received: from arnabkar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.69.57])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 14:10:35 -0700
+Date: Tue, 12 Mar 2024 14:10:34 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>, Borislav Petkov <bp@suse.de>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.15.y v2 00/11] Delay VERW + RFDS 5.15.y backport
+Message-ID: <20240312-delay-verw-backport-5-15-y-v2-0-e0f71d17ed1b@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIACfE8GUC/42NQQ7CIBBFr2Jm7RDAYhNX3sN0QelgiRUaqFjS9
+ O6SnsDlez95f4NE0VGC22mDSNklF3wFeT6BGbV/ErqhMkguG37hDQ406YKZ4hd7bV5ziAsqFAo
+ Lkrha3tq+bwVBDcyRrFuP+AMUE4oV6KofXVpCLMdnFsf6Tz4L5GgHLrU1nFsy98n5z8qcX2hiJ
+ ryh2/f9Bz2jaOrSAAAA
+X-Mailer: b4 0.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8124531d-182f-4a87-df63-08dc42d679b7
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2024 20:53:31.1811
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6659
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Pavel Machek <pavel@ucw.cz> Sent: Tuesday, March 12, 2024 1:35 PM
->=20
-> > In preparation for temporarily marking pages not present during a
-> > transition between encrypted and decrypted, use slow_virt_to_phys()
-> > in the hypervisor callback. As long as the PFN is correct,
->=20
-> This seems to be preparation for something we don't plan to do in
-> -stable. Please drop.
->=20
+v2:
+- This includes the backport of recently upstreamed mitigation of a CPU
+  vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746).
+  This is because RFDS has a dependency on "Delay VERW" series, and it
+  is convenient to merge them together.
+- rebased to v5.15.151
 
-As the author of the patch, I agree.
+v1: https://lore.kernel.org/r/20240304-delay-verw-backport-5-15-y-v1-0-fd02afc00fec@linux.intel.com
 
-Michael
+This is the backport of recently upstreamed series that moves VERW
+execution to a later point in exit-to-user path. This is needed because
+in some cases it may be possible for data accessed after VERW executions
+may end into MDS affected CPU buffers. Moving VERW closer to ring
+transition reduces the attack surface.
+
+- The series includes a dependency commit f87bc8dc7a7c ("x86/asm: Add
+  _ASM_RIP() macro for x86-64 (%rip) suffix").
+
+- Patch 2 includes a change that adds runtime patching for jmp (instead
+  of verw in original series) due to lack of rip-relative relocation
+  support in kernels <v6.5.
+
+- Fixed warning:
+  arch/x86/entry/entry.o: warning: objtool: mds_verw_sel+0x0: unreachable instruction.
+
+- Resolved merge conflicts in:
+	swapgs_restore_regs_and_return_to_usermode in entry_64.S.
+	__vmx_vcpu_run in vmenter.S.
+	vmx_update_fb_clear_dis in vmx.c.
+
+- Boot tested with KASLR and KPTI enabled.
+
+- Verified VERW being executed with mitigation ON, and not being
+  executed with mitigation turned OFF.
+
+To: stable@vger.kernel.org
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+---
+
+---
+H. Peter Anvin (Intel) (1):
+      x86/asm: Add _ASM_RIP() macro for x86-64 (%rip) suffix
+
+Pawan Gupta (9):
+      x86/bugs: Add asm helpers for executing VERW
+      x86/entry_64: Add VERW just before userspace transition
+      x86/entry_32: Add VERW just before userspace transition
+      x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
+      KVM/VMX: Move VERW closer to VMentry for MDS mitigation
+      x86/mmio: Disable KVM mitigation when X86_FEATURE_CLEAR_CPU_BUF is set
+      Documentation/hw-vuln: Add documentation for RFDS
+      x86/rfds: Mitigate Register File Data Sampling (RFDS)
+      KVM/x86: Export RFDS_NO and RFDS_CLEAR to guests
+
+Sean Christopherson (1):
+      KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../admin-guide/hw-vuln/reg-file-data-sampling.rst | 104 ++++++++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  21 ++++
+ Documentation/x86/mds.rst                          |  38 +++++---
+ arch/x86/Kconfig                                   |  11 +++
+ arch/x86/entry/entry.S                             |  23 +++++
+ arch/x86/entry/entry_32.S                          |   3 +
+ arch/x86/entry/entry_64.S                          |  11 +++
+ arch/x86/entry/entry_64_compat.S                   |   1 +
+ arch/x86/include/asm/asm.h                         |   5 +
+ arch/x86/include/asm/cpufeatures.h                 |   3 +-
+ arch/x86/include/asm/entry-common.h                |   1 -
+ arch/x86/include/asm/msr-index.h                   |   8 ++
+ arch/x86/include/asm/nospec-branch.h               |  27 +++---
+ arch/x86/kernel/cpu/bugs.c                         | 107 ++++++++++++++++++---
+ arch/x86/kernel/cpu/common.c                       |  38 +++++++-
+ arch/x86/kernel/nmi.c                              |   3 -
+ arch/x86/kvm/vmx/run_flags.h                       |   7 +-
+ arch/x86/kvm/vmx/vmenter.S                         |   9 +-
+ arch/x86/kvm/vmx/vmx.c                             |  12 ++-
+ arch/x86/kvm/x86.c                                 |   5 +-
+ drivers/base/cpu.c                                 |   8 ++
+ include/linux/cpu.h                                |   2 +
+ 24 files changed, 394 insertions(+), 55 deletions(-)
+---
+base-commit: 57436264850706f50887bbb2148ee2cc797c9485
+change-id: 20240304-delay-verw-backport-5-15-y-e16f07fbb71e
+
+Best regards,
+-- 
+Thanks,
+Pawan
+
+
 
