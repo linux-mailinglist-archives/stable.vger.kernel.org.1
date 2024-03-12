@@ -1,171 +1,145 @@
-Return-Path: <stable+bounces-27454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CA087936A
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 12:57:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736FD879376
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 12:59:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEC751F22492
-	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 11:57:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F5652846F9
+	for <lists+stable@lfdr.de>; Tue, 12 Mar 2024 11:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8056779DBB;
-	Tue, 12 Mar 2024 11:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRKCQ0PS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FF679DC6;
+	Tue, 12 Mar 2024 11:58:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D566979B98;
-	Tue, 12 Mar 2024 11:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245679B98;
+	Tue, 12 Mar 2024 11:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710244622; cv=none; b=Z/Nn3Cf+3YAEM9K9RSyPuGcjgRBWOXQUeTcjeMlEyLkTPXjVsPAyymgsLK4NLlBmz60/cpm9gZDWPAjFuktK3Ub/XT8YvKvkfodP2bB4DCipTPvrfsQiIDF4uzyCH87wj8vbCo3TNcmiMPH8H2BI3Fn5Flo+laa/aR7WrdkQDBA=
+	t=1710244736; cv=none; b=tA3BDTdJaQuh2KexFSc//auAGTwYHgkh/PoqxcuahNCd0elfgUvc0pyz8A6ABC8UpGNCdqsvIJih3Z+KrZwfHbQaHgfzOvAoKj8T8ebGlOEhTq9hVKeD8LlgEekKSxsnHBXArxFzk3TfsGVqEMdPs09F6ycdEhlV/3T8sFrDWBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710244622; c=relaxed/simple;
-	bh=wfW86cAWjuHv8tAgpmI7qyE2JitkFD6Ruc75dc3RV50=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Z/1xxjJ6+lh/R9T6s8aEhndvd2PRKddqx95vSmyo8vJbYdJsgR1sc8VExqHv3vRPG5L48pCD+dphJNQiAWSxVnDfj9c+tyhhprXHhMIQ/qlrX5j6IsE0Is/O+IZkmp2EU+4jXHxuWUbZJV9ubkYfs3qUJ4TEcAnWmUHsAb+3NkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRKCQ0PS; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4affeacaff9so1099494e0c.3;
-        Tue, 12 Mar 2024 04:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710244620; x=1710849420; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cn/VEXIH6lQ92zgU3vkBBRVaJjpWDSl6DhJmBBWjxpo=;
-        b=nRKCQ0PSfy0s9DxaclK914pfd1xC54ju5Cr88u6VlR93z3YLc/Bp14OhQKUo5ZZuIo
-         CDaQkCUVM/giCizqOSupafTb+QJmuap2Rkx8HWIywP7AhjaJCQ4FOkEi+oNOf75jWexI
-         0fC6XzIJL15EaCqCwSnWNLDPvvzVijHc1rKXl7Q7VSKTV7Fy0MY5a/yubh8mgYa88yhm
-         erbY0rO+TgYFSSRHSRc4x7+EwlMCvuCaZOaUY7NmhiHnkc1AOjx2zbHjNoh92f4wzjB5
-         1eP3GD34X6DFMG8M+CHJydJkrhzzv8Jxqje0E31XWbXwWZ24MyR2nNhEUg2Xor/KXIFx
-         zyig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710244620; x=1710849420;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cn/VEXIH6lQ92zgU3vkBBRVaJjpWDSl6DhJmBBWjxpo=;
-        b=E8FilbTLp8uB2TdUW12fbVnLk8gerXCRJEgW//G74xPnHt/yw85y/uSyu3zM2PQqx1
-         rCBEODL+8rOCA1+IU3NNCWR8ffzKRyZ74bRSLZ4hi696/dQ38IfYMgGMTZUs5zjbHj5l
-         dxU34Zakg3i++yVIIRStf5ZsbL8SWFaoc21cvTOfvwFoe25NbQ1CmbQVctucU/N/PnRa
-         tGc7fR0XWiSMUtVu2UVpYRLHm+KFhBMEJEDWwdaa826M6loVxfv1oWc3KtcsWZiXDeiu
-         0BJN+sFr4czZf5QlwL5r7Ep0Xg71NSvAt6DsaeXL4xHQmKOAnkFMfosfhVgMZQQALqjf
-         cRxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXFzjIReLA7aQCqklb33PG6m+sKcQ4suIfW6ji4zdlUwvnsbrH4xIhz1iZxpB9qaRudIi8wAW8Bf6/nQjJyom3QcMA9zRluf6VYrN4NrNyRFLqEPMeZSVzwtT0dPdAslM8xAs0=
-X-Gm-Message-State: AOJu0YwUSL36RVpSvEXLB90hx6hm2lOUNk2jK1eMeMjcb8wNhe+E3qbe
-	KDuv/kEMncava9J7KCaZssxmEalytuP3Tex3h0ME6p8ZwIDDn2kY
-X-Google-Smtp-Source: AGHT+IFItdNRzQJR0nSD1zbVMjsWP4NZsO2D4yJ9dZIwUzfCUb6SFRA6bSjvBeegyLddddX5tUE0vg==
-X-Received: by 2002:a05:6122:169f:b0:4d3:5eb3:f64f with SMTP id 31-20020a056122169f00b004d35eb3f64fmr6064767vkl.9.1710244619793;
-        Tue, 12 Mar 2024 04:56:59 -0700 (PDT)
-Received: from ?IPV6:2a01:e34:ec5f:c111:da0f:dec2:677b:7567? ([2a01:e34:ec5f:c111:da0f:dec2:677b:7567])
-        by smtp.gmail.com with ESMTPSA id ef23-20020a056122481700b004c07cad31d5sm879739vkb.3.2024.03.12.04.56.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Mar 2024 04:56:59 -0700 (PDT)
-Message-ID: <9a55659c-86a6-4d9a-ab4f-94fbfb72e7c4@gmail.com>
-Date: Tue, 12 Mar 2024 12:56:56 +0100
+	s=arc-20240116; t=1710244736; c=relaxed/simple;
+	bh=PLmC6BbRmhT98s/2WERHDrru1CT+5wjpeaXBWOT4hco=;
+	h=Message-ID:Date:From:MIME-Version:To:CC:Subject:References:
+	 In-Reply-To:Content-Type; b=FVaCpaCFmCuOETS2a1ylfEL4QZnu4r6MAltxLsjnHwROKBB1Vd9fkFZ0HlRajqdR+g2uVL9PNJk3tv7QUUjtDYQqb5A+CJSx6lkWFWOJG107iSkYP7wl06AxqNwTaAUkvvccWpXBELaFQ0uyMTPNjeLPiN6dAHbYfCPPStvF8zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TvBtq5Qzkz1gxtv;
+	Tue, 12 Mar 2024 19:56:19 +0800 (CST)
+Received: from kwepemd100008.china.huawei.com (unknown [7.221.188.193])
+	by mail.maildlp.com (Postfix) with ESMTPS id 00D001A016C;
+	Tue, 12 Mar 2024 19:58:46 +0800 (CST)
+Received: from [10.67.121.2] (10.67.121.2) by kwepemd100008.china.huawei.com
+ (7.221.188.193) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Tue, 12 Mar
+ 2024 19:58:45 +0800
+Message-ID: <65F04374.20308@hisilicon.com>
+Date: Tue, 12 Mar 2024 19:58:44 +0800
+From: Wei Xu <xuwei5@hisilicon.com>
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.2.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
-From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
-To: Mikhail Khvoinitsky <me@khvoinitsky.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- Jiri Kosina <jikos@jikos.cz>,
- Linux Input Mailing List <linux-input@vger.kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Linux Stable Mailing List <stable@vger.kernel.org>
-References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
- <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
- <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
- <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com>
- <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
- <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
- <9db59ae4-be28-4ab3-a2ae-0b0f661f56be@gmail.com>
- <3bb95fcd-65cf-45dd-8d81-1a41b1ae0288@leemhuis.info>
- <CAMMabwNo_yT4S3LaMV16Rmj6MiWL=TRYtB9wspfs_LWVgM=U8Q@mail.gmail.com>
- <b30dc4a1-57aa-4ff5-ae52-7a01203b8be9@gmail.com>
- <CAMMabwNVwapthrDkCLOQsWkObzvTKVzDMiod3KPVa1hoy0CzRA@mail.gmail.com>
- <0d2b0c46-4d84-4279-8964-589d77435e6a@gmail.com>
-Content-Language: fr-FR, en-US
-Autocrypt: addr=raphael.halimi@gmail.com; keydata=
- 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
- Wxcwwn0N
-In-Reply-To: <0d2b0c46-4d84-4279-8964-589d77435e6a@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Yang Xiwen <forbidden405@outlook.com>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+	<conor+dt@kernel.org>, Jiancheng Xue <xuejiancheng@hisilicon.com>, Alex Elder
+	<elder@linaro.org>, Peter Griffin <peter.griffin@linaro.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 0/3] arm64: dts: hi3798cv200: fix GICR size, add cache
+ info, maintenance irq and GICH, GICV spaces
+References: <20240219-cache-v3-0-a33c57534ae9@outlook.com> <SEZPR06MB695952078B51C4549191F8AB962B2@SEZPR06MB6959.apcprd06.prod.outlook.com> <65F03D79.2070008@hisilicon.com> <SEZPR06MB69599C39A47E625A0C3CB83F962B2@SEZPR06MB6959.apcprd06.prod.outlook.com>
+In-Reply-To: <SEZPR06MB69599C39A47E625A0C3CB83F962B2@SEZPR06MB6959.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemd100008.china.huawei.com (7.221.188.193)
 
-Le 04/03/2024 à 17:09, Raphaël Halimi a écrit :
-> Thanks, it's done. I'll test and report.
+Hi Yang,
 
-Nearly a week testing this patch (with kernels 6.6.15, 6.7.7 and 6.7.9, 
-following Debian unstable updates) and it's working well so far.
+On 2024/3/12 19:46, Yang Xiwen wrote:
+> On 3/12/2024 7:33 PM, Wei Xu wrote:
+>> Hi Yang,
+>>
+>> On 2024/3/12 19:19, Yang Xiwen wrote:
+>>> On 2/19/2024 11:05 PM, Yang Xiwen via B4 Relay wrote:
+>>>> The patchset fixes some warnings reported by the kernel during boot.
+>>>>
+>>>> The cache size info is from Processor_Datasheet_v2XX.pdf [1], Section
+>>>> 2.2.1 Master Processor.
+>>>>
+>>>> The cache line size and the set-associative info are from Cortex-A53
+>>>> Documentation [2].
+>>>>
+>>>>   From the doc, it can be concluded that L1 i-cache is 4-way assoc, L1
+>>>> d-cache is 2-way assoc and L2 cache is 16-way assoc. Calculate the dts
+>>>> props accordingly.
+>>>>
+>>>> Also, to use KVM's VGIC code, GICH, GICV registers spaces and maintenance
+>>>> IRQ are added to the dts with verification.
+>>>>
+>>>> [1]: https://github.com/96boards/documentation/blob/master/enterprise/poplar/hardware-docs/Processor_Datasheet_v2XX.pdf
+>>>> [2]: https://developer.arm.com/documentation/ddi0500/j/Level-1-Memory-System
+>>>>
+>>>> Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+>>>> ---
+>>>> Changes in v3:
+>>>> - send patches to stable (Andrew Lunn)
+>>>> - rewrite the commit logs more formally (Andrew Lunn)
+>>>> - rename l2-cache0 to l2-cache (Krzysztof Kozlowski)
+>>>> - Link to v2: https://lore.kernel.org/r/20240218-cache-v2-0-1fd919e2bd3e@outlook.com
+>>>>
+>>>> Changes in v2:
+>>>> - arm64: dts: hi3798cv200: add GICH, GICV register spces and
+>>>>     maintainance IRQ.
+>>>> - Link to v1: https://lore.kernel.org/r/20240218-cache-v1-0-2c0a8a4472e7@outlook.com
+>>>>
+>>>> ---
+>>>> Yang Xiwen (3):
+>>>>         arm64: dts: hi3798cv200: fix the size of GICR
+>>>>         arm64: dts: hi3798cv200: add GICH, GICV register space and irq
+>>>>         arm64: dts: hi3798cv200: add cache info
+>>>>
+>>>>    arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi | 43 +++++++++++++++++++++++++-
+>>>>    1 file changed, 42 insertions(+), 1 deletion(-)
+>>>> ---
+>>>> base-commit: 8d3dea210042f54b952b481838c1e7dfc4ec751d
+>>>> change-id: 20240218-cache-11c8bf7566c2
+>>>>
+>>>> Best regards,
+>>> May someone apply this patchset to their tree so that it can land in stable at the end? This is a fix, not adding new functionalities. It's been 2 weeks already.
+>>>
+>> Sorry for the delay, I am too busy to catch up with this cycle.
+>> I will go through this patch set and maybe apply it during the next cycle.
+> 
+> 
+> No problem. I'm just a bit worried if this patch is getting lost. It's good to know it's still maintained. Because i've seen some maintainers not reviewing any patches for over 1 year already, with their names and emails still in MAINTAINERS.
 
-Not a single spurious middle-click, which is not surprising since, if I 
-understand correctly, this last patch just disables 46a0a2c and makes it 
-optional, allowing to enable it on demand with a setting in sysfs.
+Thanks for the understanding!
 
-And I have vertical and horizontal scrolling with the middle button 
-working reliably (I'm not sure of what you mean by "hi-res scrolling", 
-is it about 4K displays ?).
+> 
+> 
+> By the way, I think fixes and new features are in different cycles? Most maintainers seem to have multiple branches to handle this.
 
-So as far as I'm concerned, this patch should be included ASAP in the 
-next kernels releases (both latest and stable).
+Yes, they can be in different cycle. But now is the merge window.
 
-Regards,
+Best Regards,
+Wei
 
--- 
-Raphaël Halimi
+> 
+> 
+>>
+>> Best Regards,
+>> Wei
+> 
+> 
 
