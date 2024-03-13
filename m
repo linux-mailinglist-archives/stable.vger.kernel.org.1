@@ -1,92 +1,102 @@
-Return-Path: <stable+bounces-28065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F2587AFCA
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:35:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E430587AFDD
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AA01F2DA0F
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:35:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219461C26084
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F957F481;
-	Wed, 13 Mar 2024 17:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F407551005;
+	Wed, 13 Mar 2024 17:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBSMeSui"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnNlYLBO"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEBE612DC;
-	Wed, 13 Mar 2024 17:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC62950A6C;
+	Wed, 13 Mar 2024 17:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710350192; cv=none; b=WgZ40kBjnRooezSDSvtlHE9257ZoIp1q4jkuxdPaoG54OAF2fCCzF9zr4/znCDhk/kRECGIvSaOOYm2+FnksIxVWqhcr7YhvMJqEIAVTfI9/x51IOmwDVIOr+LoDdv6iZ8beiMHXXfd/W43e/vxx+1yKbvPdxaaMNQJCVpIjIPA=
+	t=1710350503; cv=none; b=BunFUkTnldBA4bwmGGLS4jnmgCOREFPZzjWAxCG/KcnQvLemnng7zNWnPBXcRENLvAb9yHC46gf/fUsi0QzoIkWxZkaaEtpzQnXaSonpBcO26xmUuqSI/P+LtKykXIoyI4jQacKUsvi1DucRkCKNP6ixhc35MK5Lm4NmJOehgwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710350192; c=relaxed/simple;
-	bh=KBmGVG0tShTIOfu5Kdwsr3zszT6tpzb6w2J0pA0Nv0o=;
+	s=arc-20240116; t=1710350503; c=relaxed/simple;
+	bh=2+HrNPQNNrVW2SJnqA5HjU8yBIrVF6D+riwSfpUrNxw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n/qvek9zP+cQF16/Cr7oV4sfV00hCBNnrVIZmzBlGgEUa7hjD9mi/Na3SZ6oOlRL41dHCbesT17I/Ueu/79161KwAYcAp1uWkJ4SWGTRUuD7F3Yj26knzm1WsGT9PBzkz3LS9QIJYil1RKexs58RMElrW60QEZnQWdj2B4QIPtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBSMeSui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E4AC433C7;
-	Wed, 13 Mar 2024 17:16:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lllLrNmlIhNwbQeCPfBLYhD6EZpw3xwwSgYeqMLMcdmRTbV26ZBmeLzH/tdbPQy1/tQJ/8ozHhzK0LfSZYOD/gHOEs1BxqhpKNZ87yQzTkjPS27Hq9uIAtyfGCh4xaubiRuT2/xLriDDTGhh+G9epb6bcKzXW3dygh0D6aPaJnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnNlYLBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB54FC433F1;
+	Wed, 13 Mar 2024 17:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710350191;
-	bh=KBmGVG0tShTIOfu5Kdwsr3zszT6tpzb6w2J0pA0Nv0o=;
+	s=k20201202; t=1710350503;
+	bh=2+HrNPQNNrVW2SJnqA5HjU8yBIrVF6D+riwSfpUrNxw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eBSMeSuiQlglw1FhL+jFT9AKmI7Ubp2QrXMzGbvo+ajlxcARM0ID+esgAz3OUVIqv
-	 knlq4Zf4VdJXAeFrWNNevaR0HLUWTyM2zKStDhkEsHiEZ673PBluNaGPDuT75cYYpZ
-	 2x73+u6Lg3CizeYPJ7XEXveHQIxrGcVs0b6zUWYo+wBm5UvRJ+2IGbPfRUko9ZU+Ea
-	 T++884U512glJM+BwQKWR1ebxay+tWOdovBslKMj6SYH1cGI6KDfD7sefGuxdF9O5a
-	 oGY6Rb/M69JaCMh5JvpXyMkRaXtEbkqb5BmZPt2BJ7jo4JHUxk5XbZnKXL5nvXf0fQ
-	 cx12YbFzuz3Wg==
-Date: Wed, 13 Mar 2024 13:16:29 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Ansuel Smith <ansuelsmth@gmail.com>
-Subject: Re: [PATCH 5.15 72/76] regmap: allow to define reg_update_bits for
- no bus configuration
-Message-ID: <ZfHfbYg8HmIRsdBV@sashalap>
-References: <20240313164223.615640-1-sashal@kernel.org>
- <20240313164223.615640-73-sashal@kernel.org>
- <6274f1ce-f2e0-414b-b9a9-bf2840fefd90@sirena.org.uk>
+	b=nnNlYLBOEBemLClK28M3tirohPxrI8276u9bgKJNFG7AT4s1MUEOQIyZgoGzSD12+
+	 ZvZR4ab6rf/N/GYcd2cEyziyM5H1Nr3IgUNtc5XE310ejJK2Rvpg1N24u5EWuRN/g/
+	 T2Dt7Scnc0QZf2f5qhWSa3pBA3lec6w1jaPeTCj6QwyNVmtgrNgfMG/TAOAq02Qs2D
+	 2n6NvKzuuH/k/Wmf+9ao4Azr0QhIA3vts5c0bYjjTMPOnJCBtYrAPT4KATDTb1YeMt
+	 pCTL2EvdQykyihCSponjrJmQyX8TqE8zopRYMDCeHS7Enzt/Dcovtpo+O1XCio1eAo
+	 j6VkmEIRpYMRw==
+Date: Wed, 13 Mar 2024 10:21:41 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Qiang Zhang <qiang4.zhang@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	Stable@vger.kernel.org
+Subject: Re: [PATCH] memtest: use {READ,WRITE}_ONCE in memory scanning
+Message-ID: <20240313172141.GB3064248@dev-arch.thelio-3990X>
+References: <20240312080422.691222-1-qiang4.zhang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6274f1ce-f2e0-414b-b9a9-bf2840fefd90@sirena.org.uk>
+In-Reply-To: <20240312080422.691222-1-qiang4.zhang@intel.com>
 
-On Wed, Mar 13, 2024 at 04:46:04PM +0000, Mark Brown wrote:
->On Wed, Mar 13, 2024 at 12:42:19PM -0400, Sasha Levin wrote:
->> From: Ansuel Smith <ansuelsmth@gmail.com>
->>
->> [ Upstream commit 02d6fdecb9c38de19065f6bed8d5214556fd061d ]
->>
->> Some device requires a special handling for reg_update_bits and can't use
->> the normal regmap read write logic. An example is when locking is
->> handled by the device and rmw operations requires to do atomic operations.
->> Allow to declare a dedicated function in regmap_config for
->> reg_update_bits in no bus configuration.
->
->This is fairly clearly new functionality?
+On Tue, Mar 12, 2024 at 04:04:23PM +0800, Qiang Zhang wrote:
+> memtest failed to find bad memory when compiled with clang. So use
+> {WRITE,READ}_ONCE  to access memory to avoid compiler over optimization.
 
-It is, but like the other commit, this new functionality is needed for a
-later fix. We indicate this in the commit message by adding a trailer:
+This commit message is severely lacking in details in my opinion,
+especially for a patch marked for stable. Did a kernel or LLVM change
+cause this (i.e., has this always been an issue or is it a recent
+regression)? What is the transformation that LLVM does to break the test
+and why is using READ_ONCE() or WRITE_ONCE() sufficient to resolve it?
 
-	Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
-	Link: https://lore.kernel.org/r/20211104150040.1260-1-ansuelsmth@gmail.com
-	Signed-off-by: Mark Brown <broonie@kernel.org>
-	Stable-dep-of: 3f42b142ea11 ("serial: max310x: fix IO data corruption in batched operations")
-	  ^^^^^^^^^
-	Signed-off-by: Sasha Levin <sashal@kernel.org>
-
--- 
-Thanks,
-Sasha
+> Cc: <Stable@vger.kernel.org>
+> Signed-off-by: Qiang Zhang <qiang4.zhang@intel.com>
+> ---
+>  mm/memtest.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memtest.c b/mm/memtest.c
+> index 32f3e9dda837..c2c609c39119 100644
+> --- a/mm/memtest.c
+> +++ b/mm/memtest.c
+> @@ -51,10 +51,10 @@ static void __init memtest(u64 pattern, phys_addr_t start_phys, phys_addr_t size
+>  	last_bad = 0;
+>  
+>  	for (p = start; p < end; p++)
+> -		*p = pattern;
+> +		WRITE_ONCE(*p, pattern);
+>  
+>  	for (p = start; p < end; p++, start_phys_aligned += incr) {
+> -		if (*p == pattern)
+> +		if (READ_ONCE(*p) == pattern)
+>  			continue;
+>  		if (start_phys_aligned == last_bad + incr) {
+>  			last_bad += incr;
+> -- 
+> 2.39.2
+> 
 
