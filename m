@@ -1,80 +1,81 @@
-Return-Path: <stable+bounces-27569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A0887A513
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 10:37:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DB387A514
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 10:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77481C2105C
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 09:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2671F21EFF
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 09:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9D9FC16;
-	Wed, 13 Mar 2024 09:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9361B7F3;
+	Wed, 13 Mar 2024 09:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="P8LEkXod"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Tq9LuCck"
 X-Original-To: stable@vger.kernel.org
 Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E7B1B943
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 09:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B40BE4B
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 09:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710322652; cv=none; b=kFZgi5gKWY8s5t4Vd82f9AJYM2qAPifCMN0xDnTUQsoHyB8gDDb6i4js70yQZHJHI0jdUIazd+Qqdrenw5oFqhtdqk7nLYi417Ab8+w9ZPYEqEKg3VIJnJ9A1dZ51cuN1hhbEZtgS1xUsgEY01FO9+k5QtO5dO/lCVGkoGII5wk=
+	t=1710322661; cv=none; b=G9z9kD2kRhF88w4vFjLN5L32eJmtGYWAXEAMxb32gz716q1v3mitxvAEmmMjkbDnZhAi2dF07RsCmbdjMUHTIzOsJCbo01roatf4IIR7uf/u7+t/dOHot/4xBNWG7w3nx+ylv2gwKZkDxSSfGhrw7vBZCmH4rwBEDQsFBa/bWEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710322652; c=relaxed/simple;
-	bh=+LcApEg+vJPDJwGPrHqvqQ7dveEeuw2Pgfbgx5VJouo=;
+	s=arc-20240116; t=1710322661; c=relaxed/simple;
+	bh=ibuFnaxCw1yYzoKodAZfidCXLJM4EZM9GtAsA8KxuWU=;
 	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=c6ME1obja8tAS+1pHiPcn2dL97vtFE11E/oICcbltIRzu6BvdKx15NZLTHQJaETdjVISc69gek2JgAFQwOcL7/NUpGOpzNjTUbQhXG6AcXB/fFJZdNHj0i4QtWGzulW4Rbwcf8YtbcdHhTkjFrA2AXbd0r4B7JHDQ2JRQkRGxnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=P8LEkXod; arc=none smtp.client-ip=203.254.224.25
+	 References; b=hu2C3S0QXM2yaL2kcvuye4RXYRKaqdXOXRFxN+EpsZ3TYXGdhBP8xRzMvwHXXZtdU6nfgnuczePPgT2u4evbidqMTiF6+866Vp/TPM4yKujU09o5n7EKItzRUG0Dvz6UeC2B2e58mlzj8m2hbfgzidcz6ClGlu2APQnaxh8fWv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=Tq9LuCck; arc=none smtp.client-ip=203.254.224.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20240313093726epoutp02af223fbf3f6f8e868eaa72a0fb8124b7~8SWK_r9fo1193011930epoutp02_
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 09:37:26 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20240313093726epoutp02af223fbf3f6f8e868eaa72a0fb8124b7~8SWK_r9fo1193011930epoutp02_
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20240313093736epoutp02c71ed637ba94c596e44bb99280ba9f25~8SWUK7UZw1193011930epoutp02C
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 09:37:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20240313093736epoutp02c71ed637ba94c596e44bb99280ba9f25~8SWUK7UZw1193011930epoutp02C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1710322646;
-	bh=z08h1lCgV6Ps5471i14pREUyZQdGTMiu44USx+m44z4=;
+	s=mail20170921; t=1710322656;
+	bh=Hm8a3x/KZKPwiJDSuXepOBMnMYOlTzyO986ys28fTTY=;
 	h=From:To:Cc:Subject:Date:References:From;
-	b=P8LEkXodxmABu/VM93K3DcmMyg5TweyAOsLsQTKtRFS7D3pAFuKapgQIiR6yEmRIZ
-	 7LaPLwhfUHL0cS/xsn8MnqeBfYZg1MeBeV1H5n1DtM0guBj4E+Wj94atbOu5wi8EpX
-	 qmTWrXOdhKTrw8LvgA4IFaGLlL86juFvqPp2QsCE=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-	epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240313093726epcas1p14e14ab3a2b4c86db66f5fa7d3a175ae5~8SWKq3fM90818308183epcas1p19;
-	Wed, 13 Mar 2024 09:37:26 +0000 (GMT)
-Received: from epsmges1p4.samsung.com (unknown [182.195.36.223]) by
-	epsnrtp2.localdomain (Postfix) with ESMTP id 4Tvlm61vp9z4x9Py; Wed, 13 Mar
-	2024 09:37:26 +0000 (GMT)
+	b=Tq9LuCckf7oyP5qWFOklgZd5dg1IZqxYHKu24fi/TaakjB1pcJUv4efqKrb9wikha
+	 0ndnSV9bUtYMK1OkjM097WcuTVoijwt9N3cc6/Cx71yIYhERZZiR/HmsY91FsLg7GK
+	 aydn5dW+/8UjjBR2nmWtyTN7aykmVsFruWZqlCNA=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+	20240313093736epcas1p3f79f4996be3fcb4b8207a4adcd6f08e2~8SWTtBLp21213712137epcas1p3i;
+	Wed, 13 Mar 2024 09:37:36 +0000 (GMT)
+Received: from epsmges1p1.samsung.com (unknown [182.195.36.223]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4TvlmH6t4tz4x9Q2; Wed, 13 Mar
+	2024 09:37:35 +0000 (GMT)
 Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-	epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
-	7D.28.10211.6D371F56; Wed, 13 Mar 2024 18:37:26 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240313093725epcas1p353a6346547d3bb31feee7d82e57f32f9~8SWJyj46c1031710317epcas1p37;
-	Wed, 13 Mar 2024 09:37:25 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240313093725epsmtrp1801519f374800ee1e383a8aee6639a5d~8SWJx8NwE1994619946epsmtrp1y;
-	Wed, 13 Mar 2024 09:37:25 +0000 (GMT)
-X-AuditID: b6c32a38-6d3fd700000027e3-e9-65f173d6d11a
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	09.BD.07368.5D371F56; Wed, 13 Mar 2024 18:37:25 +0900 (KST)
+	epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	FF.23.11177.FD371F56; Wed, 13 Mar 2024 18:37:35 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240313093735epcas1p1f430de620d9ef667f30cc112c7ca99c5~8SWS8fBzY0819008190epcas1p17;
+	Wed, 13 Mar 2024 09:37:35 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240313093735epsmtrp2a3d8345d143860f055235f44d4c93ad3~8SWS76PuA2576425764epsmtrp2e;
+	Wed, 13 Mar 2024 09:37:35 +0000 (GMT)
+X-AuditID: b6c32a35-a17ff70000002ba9-dc-65f173dfc915
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	64.49.08755.FD371F56; Wed, 13 Mar 2024 18:37:35 +0900 (KST)
 Received: from localhost.localdomain (unknown [10.253.98.34]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240313093725epsmtip2e59399e21d4d156c0abffcdabbfd3da0~8SWJkAbIe1720817208epsmtip2W;
-	Wed, 13 Mar 2024 09:37:25 +0000 (GMT)
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240313093735epsmtip13a305c3e90d9a8831a09e215ca39e91d~8SWSvK-371056010560epsmtip1a;
+	Wed, 13 Mar 2024 09:37:35 +0000 (GMT)
 From: Sunmin Jeong <s_min.jeong@samsung.com>
 To: s_min.jeong@samsung.com, youngjin.gil@samsung.com,
 	sj1557.seo@samsung.com
 Cc: stable@vger.kernel.org
-Subject: [PATCH 1/2] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
-Date: Wed, 13 Mar 2024 18:37:21 +0900
-Message-Id: <20240313093721.1059566-1-s_min.jeong@samsung.com>
+Subject: [PATCH 2/2] f2fs: truncate page cache before clearing flags when
+ aborting atomic file
+Date: Wed, 13 Mar 2024 18:37:31 +0900
+Message-Id: <20240313093731.1059621-1-s_min.jeong@samsung.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -83,84 +84,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrGKsWRmVeSWpSXmKPExsWy7bCmge614o+pBs+v8VosaP3NYrHl3xFW
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrKKsWRmVeSWpSXmKPExsWy7bCmge794o+pBlfemFksaP3NYrHl3xFW
 	iwUbHzFazNj/lN2BxaNvyypGj8+b5AKYorJtMlITU1KLFFLzkvNTMvPSbZW8g+Od403NDAx1
 	DS0tzJUU8hJzU22VXHwCdN0yc4AWKSmUJeaUAoUCEouLlfTtbIryS0tSFTLyi0tslVILUnIK
-	zAr0ihNzi0vz0vXyUkusDA0MjEyBChOyM5b0fGEr+Mtd8X7TAeYGxnMcXYycHBICJhLXfv5i
-	62Lk4hAS2MEosWHzUVYI5xOjxKR3U6Ccb4wSBz78ZIZpmd03HaplL6PE0sPr2eFalr4/yg5S
-	xSagI/Fw6m2WLkYODhEBf4mL3U4gYWYBKYl1nw6xgdjCAh4SXa3PWUBsFgFViUvLFrOC2LwC
-	dhLvWtvZIZbJS8y89J0dIi4ocXLmExaIOfISzVtnM4PslRBYxi5xdOFeRogGF4m3G6ZDXSos
-	8er4FqhBUhIv+9ug7GKJo/M3sEM0NzBK3Ph6EyphL9Hc2swGcjSzgKbE+l36EMv4JN597WEF
-	CUsI8Ep0tAlBVKtKdD9aArVKWmLZsYNQUzwkPk2aDWYLCcRK9Fw5wj6BUW4WkhdmIXlhFsKy
-	BYzMqxjFUguKc9NTiw0LTOAxmZyfu4kRnMC0LHYwzn37Qe8QIxMH4yFGCQ5mJRHeOsWPqUK8
-	KYmVValF+fFFpTmpxYcYTYGBOpFZSjQ5H5hC80riDU0sDUzMjEwsjC2NzZTEec9cKUsVEkhP
-	LEnNTk0tSC2C6WPi4JRqYKp7llq74FnyuXbT0v9XKnkLuqffrchMerlYMKNvgg3XDR/vmW1d
-	eo/fLj5vySrXmiXCXBt71iZ7z87nH/bYl94UKq16cEUsljXxUM8Gt9ZTj+WVM0LS1B4qzRKd
-	fkv1qGflue8u2248r/3aukbtcOT6/9LHlDYbHDpa4tH1X0bfoJg55K7xl7W3+gtmHjSd6STy
-	eVamxwSvlZtCL3A853xWs9LQyUJHqyz885H6yDK30+3Pih5yTdQQVJEJ27zAqadmJ4PQlHKm
-	r29n6kU9TWh9+8/51alS3ycT+zotdac4yAuWXYhuVBSdrOH9TGmt9C+xBwxnN8iwR+xgFog8
-	fyWx26n7kxvbuwefgoQClFiKMxINtZiLihMBLe4XkukDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjluLIzCtJLcpLzFFi42LZdlhJXvdq8cdUg8U75S0WtP5msdjy7wir
-	xYKNjxgtZux/yu7A4tG3ZRWjx+dNcgFMUVw2Kak5mWWpRfp2CVwZS3q+sBX85a54v+kAcwPj
-	OY4uRk4OCQETidl909m6GLk4hAR2M0pcfn6cpYuRAyghLXHsTxGEKSxx+HAxSLmQwAdGiQff
-	IkBsNgEdiYdTb7OA2CICgRLL3pxmBbGZBaQk1n06xAZiCwt4SHS1PgerYRFQlbi0bDFYDa+A
-	ncS71nZ2iBPkJWZe+s4OEReUODnzCQvEHHmJ5q2zmScw8s1CkpqFJLWAkWkVo2RqQXFuem6y
-	YYFhXmq5XnFibnFpXrpecn7uJkZwkGlp7GC8N/+f3iFGJg7GQ4wSHMxKIrx1ih9ThXhTEiur
-	Uovy44tKc1KLDzFKc7AoifMazpidIiSQnliSmp2aWpBaBJNl4uCUamDifbP90/Msjj3tqbuz
-	75a2PKsrVrpb3iXQkz/vOcOTaB5Jo7gGob3ZzA8NHd+uq+O8v6cm17swdqrJwxXRK7z8KoWy
-	XKTPr9xxhG37OnmeVnGJkKzws+tXsCypa0+S1K1ouJ4stI5vGavfFYad7+5H7zxpyaup+eWG
-	9NMFu4JPNbE+frB2kdu5ve8NPgYyNd1X2pf4mqe8c+e5sg3b1d+fL9g3JybG9esH1z3SHJH1
-	Hk0TEjbpfJyYeZl/ffiixV0lMS4LbdTets+d/i5yav2Ze3GcHy+vv3U5WE9vvfXURfwrEya8
-	+57x/9Cifvc3TVWbFrSuP7b67ovk+TPLDr7farQ+74KfxNd7G+3buszvK7EUZyQaajEXFScC
-	AKKuptWhAgAA
-X-CMS-MailID: 20240313093725epcas1p353a6346547d3bb31feee7d82e57f32f9
+	zAr0ihNzi0vz0vXyUkusDA0MjEyBChOyMx7f72UreMVbcf3+T+YGxrNcXYycHBICJhKnV/Qz
+	dzFycQgJ7GCU+HrkOROE84lR4sOVFSwQzjdGibXnVrLDtKzbPI0RIrGXUeJ2czc7XEtfx3s2
+	kCo2AR2Jh1NvA7VzcIgI+Etc7HYCCTMLSEms+3SIDSQsLJAgMXu5MEiYRUBV4ua8WUwgNq+A
+	ncSEY6eYIXbJS8y89J0dIi4ocXLmExaIMfISzVtng50tIbCMXWLa7ylMEA0uEi0/vrNC2MIS
+	r45vgTpaSuLzu71sEHaxxNH5G9ghmhsYJW58vQlVZC/R3NoMdhyzgKbE+l36EMv4JN597WEF
+	CUsI8Ep0tAlBVKtKdD9aAnWntMSyYwehpnhITD97DSwuJBArcfrgFaYJjHKzkLwwC8kLsxCW
+	LWBkXsUollpQnJueWmxYYAiPyOT83E2M4PSlZbqDceLbD3qHGJk4GA8xSnAwK4nw1il+TBXi
+	TUmsrEotyo8vKs1JLT7EaAoM1InMUqLJ+cAEmlcSb2hiaWBiZmRiYWxpbKYkznvmSlmqkEB6
+	YklqdmpqQWoRTB8TB6dUA1Pe/VuaSfOu7Da/NXmWwtmvKzJWH3yi2/trR/JfFnZhKXu9vPCE
+	ZBZ3Ge+8CSt+bvu2fc/dHbcZvDoqWt4ZHNvgNcvo14tJH/ZxLvqyb6eS3BOOH6dFv178YHNK
+	d4tOdOArkaQlBhozIm63XxMrXylXdPLb1v2m3CKPvhUUrF78iK9drEHslsakCja+rELhoI/t
+	klnfk8U3Lvy+xnrbtd5c5dmpKyvWRj/dWnhs+/QYwXcMW72FwsuXLr8ldFD9xXppbovn6vXv
+	r+bbv14y4QDH68aXV7TnOj32TLD4KFv1OverL2/YpIzG0NjEubmR/7JZ7p1PedYg4n7gu3vA
+	04mKZqLHHv3dt+1Z387kVvXPSizFGYmGWsxFxYkA/ci5hegDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnluLIzCtJLcpLzFFi42LZdlhJTvd+8cdUg+N/RC0WtP5msdjy7wir
+	xYKNjxgtZux/yu7A4tG3ZRWjx+dNcgFMUVw2Kak5mWWpRfp2CVwZj+/3shW84q24fv8ncwPj
+	Wa4uRk4OCQETiXWbpzF2MXJxCAnsZpT4/HMbaxcjB1BCWuLYnyIIU1ji8OFiiJIPjBJLHxxg
+	BullE9CReDj1NguILSIQKLHszWlWEJtZQEpi3adDbCC2sECcxP1jN8HqWQRUJW7Om8UEYvMK
+	2ElMOHaKGeIGeYmZl76zQ8QFJU7OfMICMUdeonnrbOYJjHyzkKRmIUktYGRaxSiZWlCcm55b
+	bFhgmJdarlecmFtcmpeul5yfu4kRHGZamjsYt6/6oHeIkYmD8RCjBAezkghvneLHVCHelMTK
+	qtSi/Pii0pzU4kOM0hwsSuK84i96U4QE0hNLUrNTUwtSi2CyTBycUg1MR6tv8PaZvQr/9eHC
+	nX23tntVBPjmiIn83yW5ZmrOhI2CEtEPvh9iyn537JjOnbzcEJl//5leBVqwlb3cLnDihB1z
+	mU/CiQm1Vw2K7R/PWmycePZ8a4Pgp932mW8/v7yx0mE930Y//7RbfQIeD653vdlds3+/aqDv
+	93cRrS+qWRTnKF2vblr+R/ZnTduiw8eKM99MFPjfwdKusNlDRt/EJsBZMb1xQZ+b0KaznTce
+	ePxlOW3BIP6dV6PNdk48A4d2iET86pM2IosXStxLSHhquVlPdFs4h2HwHtVZQfePVi4v2msh
+	e14vlOWk3G1Or8vewRLRZ06uqZq+uGXDrpJDX/a7sXBcy3qh637tSkKuEktxRqKhFnNRcSIA
+	X4uTwqICAAA=
+X-CMS-MailID: 20240313093735epcas1p1f430de620d9ef667f30cc112c7ca99c5
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 101P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240313093725epcas1p353a6346547d3bb31feee7d82e57f32f9
-References: <CGME20240313093725epcas1p353a6346547d3bb31feee7d82e57f32f9@epcas1p3.samsung.com>
+X-CMS-RootMailID: 20240313093735epcas1p1f430de620d9ef667f30cc112c7ca99c5
+References: <CGME20240313093735epcas1p1f430de620d9ef667f30cc112c7ca99c5@epcas1p1.samsung.com>
 
-In f2fs_update_inode, i_size of the atomic file isn't updated until
-FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
-after the writeback of the inode, i_size of the raw inode will not be
-updated. It can cause the atomicity corruption due to a mismatch between
-old file size and new data.
+In f2fs_do_write_data_page, FI_ATOMIC_FILE flag selects the target inode
+between the original inode and COW inode. When aborting atomic write and
+writeback occur simultaneously, invalid data can be written to original
+inode if the FI_ATOMIC_FILE flag is cleared meanwhile.
 
-To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+To prevent the problem, let's truncate all pages before clearing the flag
 
-Atomic write thread                   Writeback thread
-                                        __writeback_single_inode
-                                          write_inode
-                                            f2fs_update_inode
-                                              - skip i_size update
-  f2fs_ioc_commit_atomic_write
-    f2fs_commit_atomic_write
-      set_inode_flag(inode, FI_ATOMIC_COMMITTED)
-    f2fs_do_sync_file
-      f2fs_fsync_node_pages
-        - skip f2fs_update_inode since the inode is clean
+Atomic write thread              Writeback thread
+  f2fs_abort_atomic_write
+    clear_inode_flag(inode, FI_ATOMIC_FILE)
+                                  __writeback_single_inode
+                                    do_writepages
+                                      f2fs_do_write_data_page
+                                        - use dn of original inode
+    truncate_inode_pages_final
 
 Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
 Cc: stable@vger.kernel.org #v5.19+
 Signed-off-by: Sunmin Jeong <s_min.jeong@samsung.com>
 ---
- fs/f2fs/f2fs.h | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/segment.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 543898482f8b..a000cb024dbe 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3039,6 +3039,7 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
- 	case FI_INLINE_DOTS:
- 	case FI_PIN_FILE:
- 	case FI_COMPRESS_RELEASED:
-+	case FI_ATOMIC_COMMITTED:
- 		f2fs_mark_inode_dirty_sync(inode, true);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 7901ede58113..7e47b8054413 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -192,6 +192,9 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	if (!f2fs_is_atomic_file(inode))
+ 		return;
+ 
++	if (clean)
++		truncate_inode_pages_final(inode->i_mapping);
++
+ 	release_atomic_write_cnt(inode);
+ 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+ 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+@@ -201,7 +204,6 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	F2FS_I(inode)->atomic_write_task = NULL;
+ 
+ 	if (clean) {
+-		truncate_inode_pages_final(inode->i_mapping);
+ 		f2fs_i_size_write(inode, fi->original_i_size);
+ 		fi->original_i_size = 0;
  	}
- }
 -- 
 2.25.1
 
