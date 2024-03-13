@@ -1,109 +1,132 @@
-Return-Path: <stable+bounces-27594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526A687A902
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 15:05:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DF787A8CB
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069291F24BEC
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640742879E9
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 13:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6D44437D;
-	Wed, 13 Mar 2024 14:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="skwZd2/F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D9843AC3;
+	Wed, 13 Mar 2024 13:56:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B449C4120B;
-	Wed, 13 Mar 2024 14:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.203.221.185
+Received: from vm3.sequanux.org (static.68.236.76.144.clients.your-server.de [144.76.236.68])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3BC39860;
+	Wed, 13 Mar 2024 13:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.236.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710338735; cv=none; b=fIrrDtKjhbcxdVASwO40j4TAv4IFxXvmuvBywuRUzNSNuUk2yY4N8DGL3lBqowxWR3eftB2ZYASjj4nJVLxGYWLfBCu0/3pttbOiHI71vXTpAHCoSgZzdMOsQpLox0ndNSJAS259PedkLXoT+ruCQWlr8lsZTg+5dGtgC2m5b2o=
+	t=1710338176; cv=none; b=MPUHcOpCpxPQ6bFf9PdElOlxlj0yqMyFL7tDhlCsh9d9HGPzIlSe4mRGjehCxHKTSbetM0mBZmCgJPsZAVnWquNpqj5VAdFBgV86FBOjS5ugfp+VE3d2g60fGwPptM0Q6Ju01XFq+Q3sH5UuD3oXyNPpzuVtziNooS9HxwZ+VrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710338735; c=relaxed/simple;
-	bh=8qtHRFqFZ2rbe52sUD4by7YDRxEdBcPf5IDzrs6Gjqk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cSjWXsMG+ZJLiVpMl+BnoSfZVlEiFGsOaecf5EpPaidZeCO9Em3kilnsLiGg4z4cW18Nx6DnU/Luv8QyaW8g1F1dUZJbRbIFuqocmiXj4CK2n/BGYNg1apho72Yk6o6vsJmDgdjz6vr5TG5+jbv5G05Cu8SPKgyqwvsrjHPFHKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=skwZd2/F; arc=none smtp.client-ip=159.203.221.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=puri.sm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
-Received: from localhost (localhost [127.0.0.1])
-	by comms.puri.sm (Postfix) with ESMTP id 4B155E7CE6;
-	Wed, 13 Mar 2024 06:56:12 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-	by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UKUs71YCXFd8; Wed, 13 Mar 2024 06:56:11 -0700 (PDT)
-From: Jonathon Hall <jonathon.hall@puri.sm>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-	t=1710338171; bh=8qtHRFqFZ2rbe52sUD4by7YDRxEdBcPf5IDzrs6Gjqk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=skwZd2/FqDgucBW9TVZI7DDHLSeEqLuS6GX+OxZWnbxS94J7b5xXqbyf4dB2LCC7t
-	 rkPNwVVnSTzp+Z4/DZNVjs8R4PtJ1KvjJGSf3p/p4RaVfmINKTtatBrXSmzzWB/mf9
-	 x8lPunfhdCNq7U39Eb8Nu0oZxfUTI1RmlHVNpvMt3JkxM6awOnjzG4k7Rwkm6vdQEB
-	 7xuvk1SeePRNVBruhxrcSNvXFXTUsQRIAm3OviQ2DTyXCJfjz6LFUWg/v76egWXC5L
-	 2E0CRRgWGybYV8g/A3DA+bxoWgdhJlAogbAFjhOKvYLW9SLs3OT+msma+0x8Nymt8K
-	 tJgmp+ZDJRI5w==
-To: linux-kernel@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com,
-	rodrigo.viv@intel.com,
-	tursulin@ursulin.net
-Cc: Jonathon Hall <jonathon.hall@puri.sm>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Do not match JSL in ehl_combo_pll_div_frac_wa_needed()
-Date: Wed, 13 Mar 2024 09:54:25 -0400
-Message-Id: <20240313135424.3731410-1-jonathon.hall@puri.sm>
+	s=arc-20240116; t=1710338176; c=relaxed/simple;
+	bh=3xfXWowKXIUy7WOzMOjdDR46YrTwruVTW+DQSDGDdL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JBNe6bjV5Xs1cz3JB55CKrTCPzpaPHk2dpT8Nyx2i0Jc9YtGYKHDoOasrpJgeD4ztLom+gJ55znnNP2eMT9agP4RkZM7LAnrCBc86pPvBZhoL4zfFDXu2MRbV1DJ62vtTm4htQr/Web4EaOMgnTsZ2hdDTxOGaI2S60U6EWDZCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sequanux.org; spf=pass smtp.mailfrom=sequanux.org; arc=none smtp.client-ip=144.76.236.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sequanux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sequanux.org
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by vm3.sequanux.org (Postfix) with ESMTP id 75860108ACB;
+	Wed, 13 Mar 2024 14:55:48 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at vm3.sequanux.org
+Received: from vm3.sequanux.org ([127.0.0.1])
+	by localhost (vm3.sequanux.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 8xtazUWw3KBV; Wed, 13 Mar 2024 14:55:20 +0100 (CET)
+Received: from localhost (ns3093303.ip-145-239-244.eu [145.239.244.120])
+	by vm3.sequanux.org (Postfix) with ESMTPSA id 1D9DE108A60;
+	Wed, 13 Mar 2024 14:55:20 +0100 (CET)
+Date: Wed, 13 Mar 2024 14:55:03 +0100
+From: simon.guinot@sequanux.org
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Simon Guinot <simon.guinot@seagate.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>, linux-pci@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: fix link retrain status in
+ pcie_wait_for_link_delay()
+Message-ID: <ZfGwN0PWF6M9kp0v@localhost>
+References: <20240313094938.484113-1-simon.guinot@seagate.com>
+ <53b2239b-4a23-a948-a422-4005cbf76148@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FV8bZ/8jnt890/Cz"
+Content-Disposition: inline
+In-Reply-To: <53b2239b-4a23-a948-a422-4005cbf76148@linux.intel.com>
 
-Since commit 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for
-platform/subplatform defines"), boot freezes on a Jasper Lake tablet
-(Librem 11), usually with graphical corruption on the eDP display,
-but sometimes just a black screen.  This commit was included in 6.6 and
-later.
 
-That commit was intended to refactor EHL and JSL macros, but the change
-to ehl_combo_pll_div_frac_wa_needed() started matching JSL incorrectly
-when it was only intended to match EHL.
+--FV8bZ/8jnt890/Cz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It replaced:
-	return ((IS_PLATFORM(i915, INTEL_ELKHARTLAKE) &&
-		 IS_JSL_EHL_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
-with:
-	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
-		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+On Wed, Mar 13, 2024 at 02:00:21PM +0200, Ilpo J=C3=A4rvinen wrote:
+> On Wed, 13 Mar 2024, Simon Guinot wrote:
+>=20
+> > The current code in pcie_wait_for_link_delay() handles the value
+> > returned by pcie_failed_link_retrain() as an integer, expecting 0
+> > when the link has been successfully retrained. The issue is that
+> > pcie_failed_link_retrain() returns a boolean: "true" if the link
+> > has been successfully retrained and "false" otherwise. This leads
+> > pcie_wait_for_link_delay() to return an incorrect "active link"
+> > status when pcie_failed_link_retrain() is called.
+> >=20
+> > This patch fixes the check of the value returned by
+> > pcie_failed_link_retrain() in pcie_wait_for_link_delay().
+> >=20
+> > Note that this bug induces abnormal timeout delays when a PCI device
+> > is unplugged (around 60 seconds per bridge / secondary bus removed).
+> >=20
+> > Cc: stable@vger.kernel.org
+> > Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
+> > Signed-off-by: Simon Guinot <simon.guinot@seagate.com>
+>=20
+> Hi Simon,
+>=20
+> Thanks for your patch. There's, however, already a better series to fix=
+=20
+> this and other related issues. Bjorn just hasn't gotten into applying the=
+m=20
+> yet:
+>=20
+> https://patchwork.kernel.org/project/linux-pci/list/?series=3D824858
+>=20
+> (I proposed a patch very similar to yours month ago, but Maciej came up=
+=20
+> a better way to fix all the issues.)
 
-Remove IS_JASPERLAKE() to fix the regression.
+Hi Ilpo,
 
-Signed-off-by: Jonathon Hall <jonathon.hall@puri.sm>
-Cc: stable@vger.kernel.org
----
- drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for pointing this patch series. This indeed fixes the timeout delay
+issue I observed.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-index ef57dad1a9cb..57a97880dcb3 100644
---- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-+++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-@@ -2509,7 +2509,7 @@ static void icl_wrpll_params_populate(struct skl_wrpll_params *params,
- static bool
- ehl_combo_pll_div_frac_wa_needed(struct drm_i915_private *i915)
- {
--	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
-+	return ((IS_ELKHARTLAKE(i915) &&
- 		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
- 		 IS_TIGERLAKE(i915) || IS_ALDERLAKE_S(i915) || IS_ALDERLAKE_P(i915)) &&
- 		 i915->display.dpll.ref_clks.nssc == 38400;
--- 
-2.39.2
+Simon
 
+--FV8bZ/8jnt890/Cz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEXW8DgovlR3VS5hA0zyg/RDPmszoFAmXxsDQACgkQzyg/RDPm
+szpC7RAAz4J+6UCQTn9hQ6BWFzd6ZG5Zc/U4EngEO9f4l9qVqC/EyZW9Q3fm9rms
+oj5tuUPW5SlbX+ZwO9xL3Hqb4vtRZfeNSEam4Pt4CQnDEV1d0E9mmj+Qt36b1rTc
+xOROQ86VHgKZSXu8PrMqfVKaWBUeUr3tuwO1LjU/RsmAUWNJtwPuBtBrQlBG/UU9
+WpfvZ+W2XyudnTH3ItLkE/sz06i51659+zkjDSdeggoZQPG6AZ6DdKz7UH8KOqoZ
+xu4jFrwQuoGyHB/S1umY2ozxglCZNwMdg5QHVWjgwAjTZIwD+cfTsQ5AOmx4BK3J
+HOqeL2ZBL1/gSkgFsjqnP+0TMVNjeWu1AjADmtZaBPnBIH0G+Ig0wdt4IA1QUJ1Z
+Q21qLL6w2DltvPBP1X1DK8vm49zvEpo7ESbXKTeeTLvXkCeMg41jPAixJKlAGLIl
+gGodBF+vjDWgWoJmGbV2NAUcWTM39+TaaVSag81Y+binDxEttjxiHgPcxC34VQzU
+Xghq/Hrz8tBZflWsRtsxtohbkBrLeyF1Pw0MmNYkLPD4KPUB8uNsIU+ffKXZLrBh
+AACWGmo2BQCaRraQnTBCsP34sN2cjh88KgLGHHeJ4hFJ1Nu2Ma4Jvn6L29QcNoaT
+aleFsGK1RHgFjP/NN7dV7VXEzy601LOscZA7nJAYr4ldEbMl/40=
+=5eFO
+-----END PGP SIGNATURE-----
+
+--FV8bZ/8jnt890/Cz--
 
