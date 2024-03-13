@@ -1,112 +1,102 @@
-Return-Path: <stable+bounces-28100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937C287B3AF
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 22:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBB987B3BB
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 22:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F06028619F
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:42:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71CA2880DC
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C6853E3D;
-	Wed, 13 Mar 2024 21:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="3WEJx/Y/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F327854BF4;
+	Wed, 13 Mar 2024 21:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04D5535B7;
-	Wed, 13 Mar 2024 21:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523A154BD3;
+	Wed, 13 Mar 2024 21:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710366175; cv=none; b=YE9GCwmgsWbQYKQswUfwAIHO9OsCURpYKgA82GWngwm5GGaRIo6ylI7Zjlsbk3aYu2rTFRSK0MWhYQdVNXw5/fUjGCBeh/vxq95+lfbW1f/1KBGPdoEdKFgWZvVzwFZcx3C9K6OHyJt/QqolzvPgmw1DfzeosZemQzmiUEMMwA0=
+	t=1710366422; cv=none; b=q0D4hCSL2rSw1MyNmOV/W+yOxPjNUug9rg5NgGcV2GKAuymYX3PozzuLsTZveMZBVeTRrg7QK84EVJQProCeNHvphpjcRjMykbe4RNH8OAqNUV+GNmY7J73iQompp8P1508uwPYWxQcL2CWU/tkassyYxBhBzh1FUocIAXECIhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710366175; c=relaxed/simple;
-	bh=xiohMvsrascjDVtTBsfkkdTLd00QtRp/eG3o/ZtjDv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PPbpDNQL+EhF77Rt25idEbxaaP0mQA0sS+ofISEligKAAdcMrrDOawfx+x1UQ9yJxEUQJGUQ4R2UpUjLIhs/4kKxzgU3Xb2W37NnL2zbJjsUsAfSzk3198eOn08VhzQTmlEnwcc6Vj6+l6ykMyCSB9FbXR9353++UXb8iv22V1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=3WEJx/Y/; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4Tw3s90Gh7zlgVnY;
-	Wed, 13 Mar 2024 21:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1710366170; x=1712958171; bh=QsRxIrFbAsE0tyCFnHMufAaG3Y3KZleW2Dr
-	XUuR1ry0=; b=3WEJx/Y/VzEfiI+nfFPMGGVjKy/EfxaPejYUTr8LrrTiCQSp3Ph
-	Jzb2J0OFeN0esH76c7u8OMlJn2dLTlSCzaaSdV94sTKvcYswIzY73/1FgXpwu+7a
-	3hxZraOOxzWQhJf1RWylDAjFve2o8A5djDFKcjzHyltbbqWXWtbF5ko3OfE3Ea3f
-	5JuheGK09few+WuoPiW0ZO/gBU9jcCY0hA+uPW/UYrA0QZvTA4QHhRWlEKregIFH
-	JgHMIH4QlsVzmwA/4SRd5u22kBSFjtVSMybMioyAk97DczQ8zcPseEcNZf8Um5gm
-	uT9Ipfm5HE4XOJ5rEDniJzG6nI3crZgYVuw==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id VR8FvFI4lSqx; Wed, 13 Mar 2024 21:42:50 +0000 (UTC)
-Received: from bvanassche-linux.mtv.corp.google.com (unknown [104.132.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4Tw3s42RB1zlgVnN;
-	Wed, 13 Mar 2024 21:42:47 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	stable@vger.kernel.org,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Zhiguo Niu <Zhiguo.Niu@unisoc.com>
-Subject: [PATCH] Revert "block/mq-deadline: use correct way to throttling write requests"
-Date: Wed, 13 Mar 2024 14:42:18 -0700
-Message-ID: <20240313214218.1736147-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+	s=arc-20240116; t=1710366422; c=relaxed/simple;
+	bh=YnTsv4l7YntrlQny1K+MvgOeYZrWvQDqmF/Vt3RmSIE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gqixkebpR9SdomXhrL/CEPtQwevlCS+ZGPBP8NMc19i1CbxBym49mtjph/6vzFMo6IK/xX1xvxKrhzvoPa0nMCkMsmy1hgO45cn1fStp5odtK0W9rNWytjuX9j5MgBbdyrUxrLyWkfIFhbmz27Mb5yZHsjoD6DuVuKfjLpXFAJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+From: Conrad Kostecki <conikost@gentoo.org>
+To: linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	dlemoal@kernel.org,
+	hdegoede@redhat.com,
+	cryptearth@googlemail.com
+Subject: [PATCH] ahci: asm1064: asm1166: don't limit reported ports
+Date: Wed, 13 Mar 2024 22:46:50 +0100
+Message-ID: <20240313214650.2165-1-conikost@gentoo.org>
+X-Mailer: git-send-email 2.44.0
+Reply-To: linux-ide@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
-scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
-and hence derives its async_depth from the number of hwq tags. Using
-this approach for the mq-deadline scheduler is wrong since the
-mq-deadline scheduler maintains one internal queue for all hwqs
-combined. Hence this revert.
+Previously, patches have been added to limit the reported count of SATA
+ports for asm1064 and asm1166 SATA controllers, as those controllers do
+report more ports than physical having.
 
+Unfortunately, this causes trouble for users, which are using SATA
+controllers, which provide more ports through SATA PMP
+(Port-MultiPlier) and are now not any more recognized.
+
+This happens, as asm1064 and 1166 are handling SATA PMP transparently,
+so all non-physical ports needs to be enabled to use that feature.
+
+This patch reverts both patches for asm1064 and asm1166, so old
+behavior is restored and SATA PMP will work again, so all physical and
+non-physical ports will work again.
+
+Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
+Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
 Cc: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
-Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling wr=
-ite requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reported-by: Matt <cryptearth@googlemail.com>
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
 ---
- block/mq-deadline.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/ahci.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index f958e79277b8..02a916ba62ee 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -646,9 +646,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hc=
-tx)
- 	struct request_queue *q =3D hctx->queue;
- 	struct deadline_data *dd =3D q->elevator->elevator_data;
- 	struct blk_mq_tags *tags =3D hctx->sched_tags;
--	unsigned int shift =3D tags->bitmap_tags.sb.shift;
-=20
--	dd->async_depth =3D max(1U, 3 * (1U << shift)  / 4);
-+	dd->async_depth =3D max(1UL, 3 * q->nr_requests / 4);
-=20
- 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
- }
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 78570684ff68..562302e2e57c 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -669,19 +669,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
+-	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
+-		switch (pdev->device) {
+-		case 0x1166:
+-			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
+-			hpriv->saved_port_map = 0x3f;
+-			break;
+-		case 0x1064:
+-			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
+-			hpriv->saved_port_map = 0xf;
+-			break;
+-		}
+-	}
+-
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->saved_port_map = 1;
+-- 
+2.44.0
+
 
