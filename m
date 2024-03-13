@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-28087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10D887B280
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FD087B286
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8BD828AC06
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:05:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F61028ADC5
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6D4CB47;
-	Wed, 13 Mar 2024 20:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA254CB57;
+	Wed, 13 Mar 2024 20:06:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E95F4CB38;
-	Wed, 13 Mar 2024 20:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34434CB35;
+	Wed, 13 Mar 2024 20:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360329; cv=none; b=TlYTML6hqrkMmpZxrJD7JEa7rhGK5BQFTAm0seyCjEkvSXG/fwd0zeP9IZOLNcmcB0x2Vs52hTnRgxZWth2wiu/oa3ZzS2S/kIf4bFvm2SFRyhcP6FCdjS4Na5+CajL3Q6qa0d+ZTCaDCjFCsD9eU27wEkjrq8ruef1t9+E5wGg=
+	t=1710360387; cv=none; b=hNkGnfDBXfIOwFUm7a2Vjqh4LpcM+cax/ECdJDdaQU+dohc9ydVDCRfLN6wUT9qbrw8syHgd8QwBB4ogn94Az1iRkjYPr93V4HKrdKDX7kO5tTAlK5AVmMFGaX40isIJMFRRcXrcMOIUFXPl2xUTNncWP9EwqeJeBSlb5nTtPi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360329; c=relaxed/simple;
-	bh=8hlRcyn8kNzAc+CW7wZF9drqj0UA89dnfbm27Kc4srs=;
+	s=arc-20240116; t=1710360387; c=relaxed/simple;
+	bh=p/hL7G6DTqdGC4plqAuQPn88MiV8zEJbpylpsKFNSBo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rFcFZDU+KA1rb/UGbuX+wi2dqB8a6WE4dsctfGB/g9XCzLMWoO0S9v4qBc0zHu/Y0Vr6jfr24bhr4Nu3MS/hQPgbr9cfRpN1G5KI7GxKZ6j9OlL6gtIn2E88RvbG7+v2Cufr+LEHHwWYSln6GE5yNerrDLvmk797DQtHJX/nw/k=
+	 Content-Type:Content-Disposition:In-Reply-To; b=OHhAVZpMUQqRiacwHAEf/ZMOK+FK6HoBKldiPxHgTskp2CXX2If2TR6PnY5MT9ueQPaYjRr3OvMJrdp/A3y5wh66yjbNm85WqNxZ8QctUxa///S2ZMczN3TgC/fDEChnhhuAt1ZH9vYJXotHBNoVdx7pLQeA1az0ih+Nvbyq5bo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id B4DCB1C0071; Wed, 13 Mar 2024 21:05:25 +0100 (CET)
-Date: Wed, 13 Mar 2024 21:05:25 +0100
+	id ED7B71C0071; Wed, 13 Mar 2024 21:06:22 +0100 (CET)
+Date: Wed, 13 Mar 2024 21:06:22 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	torvalds@linux-foundation.org, akpm@linux-foundation.org,
 	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
 	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-Message-ID: <ZfIHBcHa5h4y+sRU@duo.ucw.cz>
-References: <20240313164640.616049-1-sashal@kernel.org>
+Subject: Re: [PATCH 4.19 00/41] 4.19.310-rc1 review
+Message-ID: <ZfIHPieUhBMel+9y@duo.ucw.cz>
+References: <20240313170435.616724-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,47 +48,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="39aN2Nmnt+/8MpmK"
+	protocol="application/pgp-signature"; boundary="ISjWDLO/gv8AAdAj"
 Content-Disposition: inline
-In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
+In-Reply-To: <20240313170435.616724-1-sashal@kernel.org>
 
 
---39aN2Nmnt+/8MpmK
+--ISjWDLO/gv8AAdAj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 5.10.213 release.
-> There are 73 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 4.19.310 release.
+> There are 41 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 CIP testing did not find any problems here:
 
 https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.10.y
+4.19.y
 
 Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
+5.15, 5.4, 6.6 and 6.7 seem to be ok, too.
+
 Best regards,
                                                                 Pavel
-
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---39aN2Nmnt+/8MpmK
+--ISjWDLO/gv8AAdAj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfIHBQAKCRAw5/Bqldv6
-8pFMAKDARsOzZ0ZjxM7WcNznMUg4bO/PjQCgqGr1MrWHg1bA104eVlq61+cM0kc=
-=4agR
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfIHPgAKCRAw5/Bqldv6
+8kyRAJ4qwZmn3jmixaKQ5c4PGEVGCAQ/lgCgnW88NlCU+UEYrq+dSIbQWxroRiE=
+=lRBd
 -----END PGP SIGNATURE-----
 
---39aN2Nmnt+/8MpmK--
+--ISjWDLO/gv8AAdAj--
 
