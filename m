@@ -1,124 +1,147 @@
-Return-Path: <stable+bounces-27601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1414287A971
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 15:29:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CAF87A89F
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459061C21503
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:29:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C75AB20C3A
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 13:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75324652F;
-	Wed, 13 Mar 2024 14:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808E54120B;
+	Wed, 13 Mar 2024 13:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="RS4frlmb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.kapsi.fi (mail.kapsi.fi [91.232.154.25])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DB741238;
-	Wed, 13 Mar 2024 14:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.232.154.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067040872;
+	Wed, 13 Mar 2024 13:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710340149; cv=none; b=Vt0/x3mWNX4cpj2Uzc+B03O1rE5HEvV625AowrXPjhaTBX6WF0Eh/hXFySA9Qw2/GgpZhP7Rgm6pjkrwbSSNrEm7WkgvKf1U4wUocfAU714n4vw/siXTiQC89lNWy5l1aOEX/gZVYMa5aHu5ryqaajPFrELhackxicuIrjkglFw=
+	t=1710337356; cv=none; b=lu9mr8lMxkbfoI2PqF05mhjN3cNFIBWkkq6SNHJW0RdqaTSEmbbbFNRouthImEAQc7FZ3hXJY71YbWpKFCkP5C/U7urYZzFmi4c+iOHQ65S+ZSLSMJUyIcXQQESGp6Hm7VyzK+d4rf1VnuuSztPgPbc5oeo/nsBMj2rgoGL/0ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710340149; c=relaxed/simple;
-	bh=+SzE9YhmbZq0ZkHDLA2Is5ynCd9pXgBS2FEXqZp09Ms=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p8l2EierqsmZej5Ljia9c6daZXVUr9xC8cdhJvhy6OkmgsnzSsui1grg8yxFEjUV5Or7D+AjrOwP/OGKSh7WNTFmqn653x07qAiefXf1eQ5cN2ROJ1yzE1qZSdy6FcS8LCzZCSpAnd/fp4VGaH8ZOBHie0DxVxwHS+Bj4YE59A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=lakka.kapsi.fi; arc=none smtp.client-ip=91.232.154.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lakka.kapsi.fi
-Received: from kapsi.fi ([2001:67c:1be8::11] helo=lakka.kapsi.fi)
-	by mail.kapsi.fi with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1rkP6Q-007fpl-1T;
-	Wed, 13 Mar 2024 15:57:06 +0200
-Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1rkP6Q-00AVj1-6D; Wed, 13 Mar 2024 15:57:06 +0200
-From: mikko.rapeli@linaro.org
-To: linux-mmc@vger.kernel.org
-Cc: Mikko Rapeli <mikko.rapeli@linaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] mmc core block.c: avoid negative index with array access
-Date: Wed, 13 Mar 2024 15:37:44 +0200
-Message-Id: <20240313133744.2405325-2-mikko.rapeli@linaro.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
-References: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
+	s=arc-20240116; t=1710337356; c=relaxed/simple;
+	bh=UyOhCjSML0VfOog5YATAYY8b1aciv63c9TKupf5crvY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ktak511zW/hZFYsGtFJRxHL+Eu5bLlztI+oZiScVQ/RpE19/0EcI80WntRueNPGGeslfwTw15CvdbNXwCSwp7+bRVevYEsBO2SgCO4fXgEIf1LbmgdZVG1HJqrVvag3v9cAcNPBvCEbbcfj1vNoA2rKdinopSj8jAFTIf1kmko8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=RS4frlmb; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=Y3oMhcZME0r0444aBXodVZ/n3VCs9nbwgGmgbmvNTYI=;
+	t=1710337353; x=1710769353; b=RS4frlmbol/P6bE3Sn+42G0oFr8eu4XhdYbqfP+M2RaF0eC
+	p6Umntr/gz4QNjVu41Xv7bCWWW+ha6mu0E0V18FlvfzSql5A3LolrTaD7kCzz1pH9rOai/ZptWyfX
+	UI0/GAYh0+1GvngLFlRHELS/MO7eyjgk859/B2SfXnrYq21c3VOwzB76jJVQOuNMTObH574fkZvPY
+	K9/5BldsDrA6TnNtPylcaQwaQIJ/giwf5wATDflJA/HWAhTZ2SlFkeSL9/ClfPxKSyR/ZBOov8liq
+	DL8NLRPHEPki68/ClUYY94XGOES8REsiO6XuJypUgVePCtYBZwanuua6K8QevapA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rkOsI-0001T5-O0; Wed, 13 Mar 2024 14:42:30 +0100
+Message-ID: <5f7b720c-3516-42b2-826c-68fb5ba18353@leemhuis.info>
+Date: Wed, 13 Mar 2024 14:42:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent
+ locking
+Content-Language: en-US, de-DE
+To: Filipe Manana <fdmanana@kernel.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: dsterba@suse.cz, Filipe Manana <fdmanana@suse.com>,
+ David Sterba <dsterba@suse.com>, stable@vger.kernel.org,
+ patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+ Sasha Levin <sashal@kernel.org>, Chris Mason <clm@fb.com>,
+ linux-btrfs <linux-btrfs@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
+ <20240304211551.880347593@linuxfoundation.org>
+ <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
+ <da17e97b-1880-415d-8cdb-07e79808e702@leemhuis.info>
+ <20240311184108.GS2604@twin.jikos.cz>
+ <d9d46e16-ae73-4495-98a4-ab08ac501132@leemhuis.info>
+ <CAL3q7H7kZkTMfzb0Xg_m1EbNyjj1eqqs4m=ovHM80MqCCCD7gw@mail.gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAL3q7H7kZkTMfzb0Xg_m1EbNyjj1eqqs4m=ovHM80MqCCCD7gw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspam-Score: -1.4 (-)
-X-Rspam-Report: Action: no action
- Symbol: FROM_NEQ_ENVFROM(0.00)
- Symbol: RCVD_COUNT_TWO(0.00)
- Symbol: MID_CONTAINS_FROM(1.00)
- Symbol: BAYES_HAM(-3.00)
- Symbol: TO_MATCH_ENVRCPT_ALL(0.00)
- Symbol: RCVD_TLS_LAST(0.00)
- Symbol: DMARC_POLICY_SOFTFAIL(0.10)
- Symbol: MIME_GOOD(-0.10)
- Symbol: FUZZY_BLOCKED(0.00)
- Symbol: R_DKIM_NA(0.00)
- Symbol: R_SPF_ALLOW(-0.20)
- Symbol: ARC_NA(0.00)
- Symbol: ASN(0.00)
- Symbol: FROM_NO_DN(0.00)
- Symbol: MIME_TRACE(0.00)
- Symbol: TO_DN_SOME(0.00)
- Symbol: FORGED_SENDER(0.30)
- Symbol: NEURAL_SPAM(0.00)
- Symbol: RCPT_COUNT_FIVE(0.00)
- Symbol: R_MISSING_CHARSET(0.50)
- Message-ID: 20240313133744.2405325-2-mikko.rapeli@linaro.org
-X-SA-Exim-Connect-IP: 2001:67c:1be8::11
-X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1710337353;0a49aaee;
+X-HE-SMSGID: 1rkOsI-0001T5-O0
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+On 11.03.24 21:06, Filipe Manana wrote:
+> On Mon, Mar 11, 2024 at 7:23 PM Linux regression tracking (Thorsten
+> Leemhuis) <regressions@leemhuis.info> wrote:
+>>
+>> On 11.03.24 19:41, David Sterba wrote:
+>>> On Mon, Mar 11, 2024 at 10:15:31AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>>> On 06.03.24 13:39, Filipe Manana wrote:
+>>>>> On Mon, Mar 4, 2024 at 9:26 PM Greg Kroah-Hartman
+>>>>> <gregkh@linuxfoundation.org> wrote:
+>>>>>>
+>>>>>> 6.7-stable review patch.  If anyone has any objections, please let me know.
+>>>>> It would be better to delay the backport of this patch (and the
+>>>>> followup fix) to any stable release, because it introduced another
+>>>>> regression for which there is a reviewed fix but it's not yet in
+>>>>> Linus' tree:
+>>>>> https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@suse.com/
+>>>> Those two missed 6.8 afaics. Will those be heading to mainline any time
+>>>> soon?
+>>> Yes, in the 6.9 pull request.
+>> Great!
+>>
+>>>> And how fast afterwards will it be wise to backport them to 6.8?
+>>>> Will anyone ask Greg for that when the time has come?
+>>> The commits have stable tags and will be processed in the usual way.
+>
+>> I'm missing something. The first change from Filipe's series linked
+>> above has a fixes tag, but no stable tag afaics:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux.git/commit/?h=for-6.9&id=978b63f7464abcfd364a6c95f734282c50f3decf
+> 
+> It has no stable tag because when I sent the patch there was yet no
+> kernel release with the buggy commit
 
-Commit "mmc: core: Use mrq.sbc in close-ended ffu" assigns
-prev_idata = idatas[i - 1] but doesn't check that int iterator
-i is greater than zero. Add the check.
+Obviously, no need to explain, the discussion got unintentionally
+sideways after David mistakenly said "The commits have stable tags
+[...]". Happens, no worries.
 
-Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+>> So there is no guarantee that Greg will pick it up; and I assume if he
+>> does he only will do so after -rc1 (or later, if the CVE stuff continues
+>> to keep him busy).
+> 
+> Don't worry, we are paying attention to that and we'll remind Greg if necessary.
 
-Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+Thx. But well, for the record: I would really have liked if you or David
+would simply have just answered my earlier "And how fast afterwards will
+it be wise to backport them to 6.8?" question instead of avoiding it.
+Just knowing a rough estimate would have helped. And I guess Greg might
+have liked to know the answer, too. But whatever.
 
-Cc: Avri Altman <avri.altman@wdc.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: linux-mmc@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
----
- drivers/mmc/core/block.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Side note: I'm here to "worry". It's not that I don't trust you or would
+ask Greg behind your back to pick the patches up. It's just that we are
+all humans[1]. And regression tracking is here to help with the flaws
+humans have: they miss things, they suddenly need to go to hospitals for
+a while, they become preoccupied with solving the next complicated and
+big bug of the month, or just forget something they wanted to do because
+something unexpected happens, like aliens landing in a unidentified
+flying object. And from all the regressions I see that are not handled
+well and the feedback I got it seems doing this work seems to be worth it.
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 0df627de9cee..7f275b4ca9fa 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -488,7 +488,7 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	if (idata->flags & MMC_BLK_IOC_DROP)
- 		return 0;
- 
--	if (idata->flags & MMC_BLK_IOC_SBC)
-+	if (idata->flags & MMC_BLK_IOC_SBC && i > 0)
- 		prev_idata = idatas[i - 1];
- 
- 	/*
--- 
-2.34.1
+Ciao, Thorsten
 
+[1] at least I think so...
+https://en.wikipedia.org/wiki/On_the_Internet,_nobody_knows_you%27re_a_dog
+:-D
 
