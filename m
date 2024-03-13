@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-28089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE3587B298
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:11:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD6687B2AE
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD461C25CB5
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2707E1F22D82
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B954CE11;
-	Wed, 13 Mar 2024 20:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7534D599;
+	Wed, 13 Mar 2024 20:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUv4aBLv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBd6Rwno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89544CB47;
-	Wed, 13 Mar 2024 20:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C224CDE0;
+	Wed, 13 Mar 2024 20:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360661; cv=none; b=WYdDgnhO37C/NR8Sl8xu//NCxLrdnP6zl+avIR/92M9zTpW3by5yEM/WFgBd55+sucx1QErrd2NW4tAizi/UD6h001iJPkhYReJWOHF8YTUi/qLJN5f7bA1ZiFQftobyfPk6kGNJkOMnfv6f/yGaTHZG6g1H97/6fpaaxc3WChI=
+	t=1710360795; cv=none; b=XyLwwOWT8yhf1bVvoDqUt+xXp+dOrlBK5ylPxGYeXJOblx+KLuuTgiVlmS3uyc0kMKl4fC2YQyAyw3YArTKBR/WXCCU+hqtb2AMKsxBkMJAPTGumG9CDjxg3e+AHa/36KtFXK2HQh7VnGl3NkoViNwQEJ63hSBIpJc1Hd9LCcCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360661; c=relaxed/simple;
-	bh=Gbe78oPrZIjwxy4gU1xh5rmWojqg3p1VZPqzkmibQP4=;
+	s=arc-20240116; t=1710360795; c=relaxed/simple;
+	bh=c64cY2qgtziptw227hn4tBZzUV80RXRr2wvr31Rcm2I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O01UHnGaDgbjsXY+L2W+nwzIp8FQb3MafQPjCxeGdS0Sa7yrUhadmkgsl5uz0/bccsVUUGPGqpmfC/fva6nGHFnB656WHsuEUW+dr35HITWb5x/hQ3cY3Mk/t1ZSlbRJV3l84JfJZCZ4O82DB6rfEAZy2DWtXtboGXoxUDrgrrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUv4aBLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF4FC433F1;
-	Wed, 13 Mar 2024 20:11:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=q6TLSbCFh6G3MGutcUv59vL3SD1jbvLKylH4h/TipKCK/iQPVrXwNnHwkjRjFHQdRpjzqYJQPepooMSDW97+uLzRSZl3f1Lw0pE88C1SMN+DJY7Z8EsgJNHCF3YFFrcCozprgN3Av9OpdnjjJzMxR2OJ6knywv4hTSKSV/raR1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBd6Rwno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63FEC433F1;
+	Wed, 13 Mar 2024 20:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710360660;
-	bh=Gbe78oPrZIjwxy4gU1xh5rmWojqg3p1VZPqzkmibQP4=;
+	s=k20201202; t=1710360795;
+	bh=c64cY2qgtziptw227hn4tBZzUV80RXRr2wvr31Rcm2I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kUv4aBLvFp/QJhhBbuekWZP+DQDxFAxAqsGFZb3Ymp653rzPJkj/xRuF0MsPZFcrw
-	 P74ez6hqNbAxoLJgX29uCKP7lzqCpmrYAufzw9zobb430XkdJcNb/pP0GfsJGxG5Cq
-	 WpNiukMEZmjklUEE5mi+xsW1d5F9Ac0cZESX8uNGwWB9GcecjjVq7a7ACGpLb8Lytg
-	 3gt1Xm/yPtx/y3FfF8TSKOUd1wyvzAyy/FlOoH4SFdzAmyNldZl+hU2DAxmmcaW54o
-	 xJpksuhw9iWSHp1mTXZuDl1jD3B5ekJJ2JGIyRcxl9t04z5xMk3MhZ7qpewJfHuxpp
-	 KJMIhaPO0cWJg==
-Date: Wed, 13 Mar 2024 16:10:58 -0400
+	b=pBd6RwnokLPitlwriypZTz3KnoincvFjruThclF1F6u/abqvBZMOlhd2eVEU7qMOs
+	 PCqxeRJWHtMQ/YwZB24PrOyvAdqVC3Wlo2nIpLyUOCbGbzLL/RA+9cjGOdDcf5Tkxc
+	 PwKNrCyvK0EvTtS30vchOg7t3x5kh4faIjf1v0fFoSzgwyyxs9RddXMV/txBHRSg9S
+	 YlMgrT+x4mtgdyJECGtngFahtUMKZ4thGDpW/gla2CtN0KK+LPcaDXe0ieRuThAUpb
+	 7c4JaBhQi7xMLwycXhdJkz5Iy4mHCEJSymFT76T8omGMq5MxSAvVCK0LoqvT/hbzKr
+	 nAejlPyVNASuw==
+Date: Wed, 13 Mar 2024 16:13:13 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
+To: Nathan Chancellor <nathan@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dylan Hatch <dylanbhatch@google.com>,
-	"Eric W . Biederman" <ebiederm@xmission.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5.10 65/73] exit: wait_task_zombie: kill the no longer
- necessary spin_lock_irq(siglock)
-Message-ID: <ZfIIUkJYIZ323Rkx@sashalap>
-References: <20240313164640.616049-1-sashal@kernel.org>
- <20240313164640.616049-66-sashal@kernel.org>
- <20240313170324.GC25452@redhat.com>
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 5.15 45/76] modpost: Add '.ltext' and '.ltext.*' to
+ TEXT_SECTIONS
+Message-ID: <ZfII2Rrv452_5hrw@sashalap>
+References: <20240313164223.615640-1-sashal@kernel.org>
+ <20240313164223.615640-46-sashal@kernel.org>
+ <20240313171229.GA3064248@dev-arch.thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,19 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240313170324.GC25452@redhat.com>
+In-Reply-To: <20240313171229.GA3064248@dev-arch.thelio-3990X>
 
-On Wed, Mar 13, 2024 at 06:03:24PM +0100, Oleg Nesterov wrote:
->I do not know what does 5.10 mean. Does this tree has all the changes
->this patch depends on? Say, 1df4bd83cdfdbd0720dd ("do_io_accounting:
->use sig->stats_lock") ?
+On Wed, Mar 13, 2024 at 10:12:29AM -0700, Nathan Chancellor wrote:
+>Hi Sasha,
+>
+>On Wed, Mar 13, 2024 at 12:41:52PM -0400, Sasha Levin wrote:
+>> From: Nathan Chancellor <nathan@kernel.org>
+>>
+>> [ Upstream commit 397586506c3da005b9333ce5947ad01e8018a3be ]
+>>
+>> After the linked LLVM change, building ARCH=um defconfig results in a
+>> segmentation fault in modpost. Prior to commit a23e7584ecf3 ("modpost:
+>> unify 'sym' and 'to' in default_mismatch_handler()"), there was a
+>> warning:
+>>
+>>   WARNING: modpost: vmlinux.o(__ex_table+0x88): Section mismatch in reference to the .ltext:(unknown)
+>>   WARNING: modpost: The relocation at __ex_table+0x88 references
+>>   section ".ltext" which is not in the list of
+>>   authorized sections.  If you're adding a new section
+>>   and/or if this reference is valid, add ".ltext" to the
+>>   list of authorized sections to jump to on fault.
+>>   This can be achieved by adding ".ltext" to
+>>   OTHER_TEXT_SECTIONS in scripts/mod/modpost.c.
+>>
+>> The linked LLVM change moves global objects to the '.ltext' (and
+>> '.ltext.*' with '-ffunction-sections') sections with '-mcmodel=large',
+>> which ARCH=um uses. These sections should be handled just as '.text'
+>> and '.text.*' are, so add them to TEXT_SECTIONS.
+>>
+>> Cc: stable@vger.kernel.org
+>> Closes: https://github.com/ClangBuiltLinux/linux/issues/1981
+>> Link: https://github.com/llvm/llvm-project/commit/4bf8a688956a759b7b6b8d94f42d25c13c7af130
+>> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This causes a warning when building with HOSTCC=clang:
+>
+>  scripts/mod/modpost.c:1123:37: warning: excess elements in array initializer [-Wexcess-initializers]
+>   1123 |         .good_tosec = {ALL_TEXT_SECTIONS , NULL},
+>        |                                            ^~~~
+>  .../lib/clang/17/include/stddef.h:89:16: note: expanded from macro 'NULL'
+>     89 | #  define NULL ((void*)0)
+>        |                ^~~~~~~~~~
+>  1 warning generated.
+>
+>Same comment as on the other UML clang-18 patch, I do not think this is
+>necessary right now in 5.15 and earlier. The other modpost patch can go
+>as well, as it is only a prerequisite change.
 
-I have no idea, the trees are up at https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-
->In any case please remove this patch from all your queues, it got the
->"stable" tag by mistake.
-
-Sure, now dropped.
+Dropped, thanks!
 
 -- 
 Thanks,
