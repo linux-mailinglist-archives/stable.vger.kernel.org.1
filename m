@@ -1,95 +1,82 @@
-Return-Path: <stable+bounces-28088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FD087B286
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:06:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE3587B298
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F61028ADC5
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD461C25CB5
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA254CB57;
-	Wed, 13 Mar 2024 20:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B954CE11;
+	Wed, 13 Mar 2024 20:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUv4aBLv"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34434CB35;
-	Wed, 13 Mar 2024 20:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89544CB47;
+	Wed, 13 Mar 2024 20:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360387; cv=none; b=hNkGnfDBXfIOwFUm7a2Vjqh4LpcM+cax/ECdJDdaQU+dohc9ydVDCRfLN6wUT9qbrw8syHgd8QwBB4ogn94Az1iRkjYPr93V4HKrdKDX7kO5tTAlK5AVmMFGaX40isIJMFRRcXrcMOIUFXPl2xUTNncWP9EwqeJeBSlb5nTtPi4=
+	t=1710360661; cv=none; b=WYdDgnhO37C/NR8Sl8xu//NCxLrdnP6zl+avIR/92M9zTpW3by5yEM/WFgBd55+sucx1QErrd2NW4tAizi/UD6h001iJPkhYReJWOHF8YTUi/qLJN5f7bA1ZiFQftobyfPk6kGNJkOMnfv6f/yGaTHZG6g1H97/6fpaaxc3WChI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360387; c=relaxed/simple;
-	bh=p/hL7G6DTqdGC4plqAuQPn88MiV8zEJbpylpsKFNSBo=;
+	s=arc-20240116; t=1710360661; c=relaxed/simple;
+	bh=Gbe78oPrZIjwxy4gU1xh5rmWojqg3p1VZPqzkmibQP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OHhAVZpMUQqRiacwHAEf/ZMOK+FK6HoBKldiPxHgTskp2CXX2If2TR6PnY5MT9ueQPaYjRr3OvMJrdp/A3y5wh66yjbNm85WqNxZ8QctUxa///S2ZMczN3TgC/fDEChnhhuAt1ZH9vYJXotHBNoVdx7pLQeA1az0ih+Nvbyq5bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id ED7B71C0071; Wed, 13 Mar 2024 21:06:22 +0100 (CET)
-Date: Wed, 13 Mar 2024 21:06:22 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=O01UHnGaDgbjsXY+L2W+nwzIp8FQb3MafQPjCxeGdS0Sa7yrUhadmkgsl5uz0/bccsVUUGPGqpmfC/fva6nGHFnB656WHsuEUW+dr35HITWb5x/hQ3cY3Mk/t1ZSlbRJV3l84JfJZCZ4O82DB6rfEAZy2DWtXtboGXoxUDrgrrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUv4aBLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF4FC433F1;
+	Wed, 13 Mar 2024 20:11:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710360660;
+	bh=Gbe78oPrZIjwxy4gU1xh5rmWojqg3p1VZPqzkmibQP4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kUv4aBLvFp/QJhhBbuekWZP+DQDxFAxAqsGFZb3Ymp653rzPJkj/xRuF0MsPZFcrw
+	 P74ez6hqNbAxoLJgX29uCKP7lzqCpmrYAufzw9zobb430XkdJcNb/pP0GfsJGxG5Cq
+	 WpNiukMEZmjklUEE5mi+xsW1d5F9Ac0cZESX8uNGwWB9GcecjjVq7a7ACGpLb8Lytg
+	 3gt1Xm/yPtx/y3FfF8TSKOUd1wyvzAyy/FlOoH4SFdzAmyNldZl+hU2DAxmmcaW54o
+	 xJpksuhw9iWSHp1mTXZuDl1jD3B5ekJJ2JGIyRcxl9t04z5xMk3MhZ7qpewJfHuxpp
+	 KJMIhaPO0cWJg==
+Date: Wed, 13 Mar 2024 16:10:58 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 4.19 00/41] 4.19.310-rc1 review
-Message-ID: <ZfIHPieUhBMel+9y@duo.ucw.cz>
-References: <20240313170435.616724-1-sashal@kernel.org>
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 5.10 65/73] exit: wait_task_zombie: kill the no longer
+ necessary spin_lock_irq(siglock)
+Message-ID: <ZfIIUkJYIZ323Rkx@sashalap>
+References: <20240313164640.616049-1-sashal@kernel.org>
+ <20240313164640.616049-66-sashal@kernel.org>
+ <20240313170324.GC25452@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ISjWDLO/gv8AAdAj"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240313170435.616724-1-sashal@kernel.org>
+In-Reply-To: <20240313170324.GC25452@redhat.com>
 
+On Wed, Mar 13, 2024 at 06:03:24PM +0100, Oleg Nesterov wrote:
+>I do not know what does 5.10 mean. Does this tree has all the changes
+>this patch depends on? Say, 1df4bd83cdfdbd0720dd ("do_io_accounting:
+>use sig->stats_lock") ?
 
---ISjWDLO/gv8AAdAj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have no idea, the trees are up at https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 
-Hi!
+>In any case please remove this patch from all your queues, it got the
+>"stable" tag by mistake.
 
-> This is the start of the stable review cycle for the 4.19.310 release.
-> There are 41 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Sure, now dropped.
 
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-4.19.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-5.15, 5.4, 6.6 and 6.7 seem to be ok, too.
-
-Best regards,
-                                                                Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---ISjWDLO/gv8AAdAj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfIHPgAKCRAw5/Bqldv6
-8kyRAJ4qwZmn3jmixaKQ5c4PGEVGCAQ/lgCgnW88NlCU+UEYrq+dSIbQWxroRiE=
-=lRBd
------END PGP SIGNATURE-----
-
---ISjWDLO/gv8AAdAj--
+-- 
+Thanks,
+Sasha
 
