@@ -1,102 +1,114 @@
-Return-Path: <stable+bounces-28101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBB987B3BB
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 22:47:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D79987B3FC
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 22:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71CA2880DC
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:47:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 534BD1C2316A
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 21:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F327854BF4;
-	Wed, 13 Mar 2024 21:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA145644F;
+	Wed, 13 Mar 2024 21:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="UIArm7EV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523A154BD3;
-	Wed, 13 Mar 2024 21:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB6E5381A
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 21:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710366422; cv=none; b=q0D4hCSL2rSw1MyNmOV/W+yOxPjNUug9rg5NgGcV2GKAuymYX3PozzuLsTZveMZBVeTRrg7QK84EVJQProCeNHvphpjcRjMykbe4RNH8OAqNUV+GNmY7J73iQompp8P1508uwPYWxQcL2CWU/tkassyYxBhBzh1FUocIAXECIhk=
+	t=1710366989; cv=none; b=ItpYKPF+uVx3aqK6b/NyJzShcxGXM+PB5QXo3rcDMsDD8LVuGFbaO5o7UEqUa0aZYN4YKQNEHDzYhcgktlEiEA7ypzlQ5RQvxDBOhQAeBp/gBXTMj78Cs9bNDwgoJeItwyFVLLlRYqmp8WY2+Bavv6UV64AZKwwDJouXPMtkUPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710366422; c=relaxed/simple;
-	bh=YnTsv4l7YntrlQny1K+MvgOeYZrWvQDqmF/Vt3RmSIE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gqixkebpR9SdomXhrL/CEPtQwevlCS+ZGPBP8NMc19i1CbxBym49mtjph/6vzFMo6IK/xX1xvxKrhzvoPa0nMCkMsmy1hgO45cn1fStp5odtK0W9rNWytjuX9j5MgBbdyrUxrLyWkfIFhbmz27Mb5yZHsjoD6DuVuKfjLpXFAJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-From: Conrad Kostecki <conikost@gentoo.org>
-To: linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	dlemoal@kernel.org,
-	hdegoede@redhat.com,
-	cryptearth@googlemail.com
-Subject: [PATCH] ahci: asm1064: asm1166: don't limit reported ports
-Date: Wed, 13 Mar 2024 22:46:50 +0100
-Message-ID: <20240313214650.2165-1-conikost@gentoo.org>
-X-Mailer: git-send-email 2.44.0
-Reply-To: linux-ide@vger.kernel.org
+	s=arc-20240116; t=1710366989; c=relaxed/simple;
+	bh=pidpON54GW2OoE9CebhOz2WDcDEEEN6krgz/X36cGXg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=bRtGFE6gq1qAHTD8BEhxmDlJxxoGpRiTs3/vEH4xCb0kHBGpe3L2e0ENZoPgl5UpAqXlYlAmWJ2WQzQf/R2WFt9t455dHE0KKdK6pVgwXiM+ku/ieCrQdh89CFaMWwpAcDTmltQlnmQ6lc7+2yY532qV4BRAvwZX6VVEuNM+zyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=UIArm7EV; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-36649b5bee6so538865ab.1
+        for <stable@vger.kernel.org>; Wed, 13 Mar 2024 14:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1710366986; x=1710971786; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6iWZ6WN+sGJpmwLxRnmW8Nu23rbrdVhJvGirE7oMTKI=;
+        b=UIArm7EVJMWBwjZ8dpgqgQfQSKzQRX51ZhOElGut0kRT0FctTsnKEXCEIZG9hzqDhc
+         tCTyFeHLo7+0cf19eyCazT66TCFZXtueaCjFpSjNZDybvFQx81KR4I4jm7zqICxzOy36
+         MRWgmRJwO3FalqxN6cGbkM3vMlQcIp5JIYxlTwHqCq0ZYukdGsoSnFJMX20Pz3vKvEII
+         7npW2DFlyjA87XFMsh1oElsDb67oc3y88dku+6TxM1kNjNgniyVcOBRsQZESdvhDNX0w
+         OXAdgrGWo7tzgrmu4IMYXQvIDq66pdPSbc9vNFFmRPqLxjS9ausonWy3SvlNH7ltRpbO
+         Rd8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710366986; x=1710971786;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6iWZ6WN+sGJpmwLxRnmW8Nu23rbrdVhJvGirE7oMTKI=;
+        b=uRdu7mXGYvwKUQYnQdFTuB/HGDWZWK+bvTgItFIZrD+G/spj/kKg1RWkj340sY5YuL
+         FsDUeiT3t3Vk6YJcdjPO12KqVn76Ggymc0L/M4YLA9j05HchMW2ks8j8ZX2Gr7gPoiv/
+         eeeqBW7YZsqAq3GI3aAQkN8Qdt936npDkeZeOdFez8M7Hfw/2ZT1JS16XB7CpyDPwI/X
+         3aOcpgIBE1A1OQTQElCEHeoYAkam7PiI53pnli4VjnhpG1TFxjInWnREthc6/58avLmK
+         6EViEvG4HhO7O6+z4aC4AQ4urLP14adBIywng4v3dDvlOwTMVAAp7aph01LM9n40eaTS
+         tfGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXa2kC/jtR6D6+x+S1KsiXYd6GJxd3J7R9EkWEO26Vk+Mp9w/X17J66F2HaZDdXiexkUtalnWzj6LoR2RbrjI5REjrDjwf6
+X-Gm-Message-State: AOJu0Yy9/gyf39X/3F7wPeQQqAZagmu6CcEvWuu/uyyhC4jqtsA4M40k
+	K3XmOvdHAsPRCs8orMnm6rnNiu1NiClRkQF/JyH9DzZ1JQhEDFq1NEOyWvYiJjA=
+X-Google-Smtp-Source: AGHT+IE/xLkfGNFymYNc+g5qKiot5aXuVHBXHPVH0zz8MpJV0hR9J89BmuxJq1ImY2nHQCiwbu7duw==
+X-Received: by 2002:a92:c548:0:b0:365:224b:e5f7 with SMTP id a8-20020a92c548000000b00365224be5f7mr14176282ilj.1.1710366986625;
+        Wed, 13 Mar 2024 14:56:26 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id q3-20020a056e02096300b0036426373792sm56959ilt.87.2024.03.13.14.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Mar 2024 14:56:25 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>, 
+ stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, 
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
+ Zhiguo Niu <Zhiguo.Niu@unisoc.com>
+In-Reply-To: <20240313214218.1736147-1-bvanassche@acm.org>
+References: <20240313214218.1736147-1-bvanassche@acm.org>
+Subject: Re: [PATCH] Revert "block/mq-deadline: use correct way to
+ throttling write requests"
+Message-Id: <171036698538.360413.6777553266929994961.b4-ty@kernel.dk>
+Date: Wed, 13 Mar 2024 15:56:25 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.5-dev-2aabd
 
-Previously, patches have been added to limit the reported count of SATA
-ports for asm1064 and asm1166 SATA controllers, as those controllers do
-report more ports than physical having.
 
-Unfortunately, this causes trouble for users, which are using SATA
-controllers, which provide more ports through SATA PMP
-(Port-MultiPlier) and are now not any more recognized.
+On Wed, 13 Mar 2024 14:42:18 -0700, Bart Van Assche wrote:
+> The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
+> scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
+> and hence derives its async_depth from the number of hwq tags. Using
+> this approach for the mq-deadline scheduler is wrong since the
+> mq-deadline scheduler maintains one internal queue for all hwqs
+> combined. Hence this revert.
+> 
+> [...]
 
-This happens, as asm1064 and 1166 are handling SATA PMP transparently,
-so all non-physical ports needs to be enabled to use that feature.
+Applied, thanks!
 
-This patch reverts both patches for asm1064 and asm1166, so old
-behavior is restored and SATA PMP will work again, so all physical and
-non-physical ports will work again.
+[1/1] Revert "block/mq-deadline: use correct way to throttling write requests"
+      commit: 256aab46e31683d76d45ccbedc287b4d3f3e322b
 
-Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
-Cc: stable@vger.kernel.org
-Reported-by: Matt <cryptearth@googlemail.com>
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
----
- drivers/ata/ahci.c | 13 -------------
- 1 file changed, 13 deletions(-)
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 78570684ff68..562302e2e57c 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -669,19 +669,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
--		switch (pdev->device) {
--		case 0x1166:
--			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--			hpriv->saved_port_map = 0x3f;
--			break;
--		case 0x1064:
--			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
--			hpriv->saved_port_map = 0xf;
--			break;
--		}
--	}
--
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->saved_port_map = 1;
+Best regards,
 -- 
-2.44.0
+Jens Axboe
+
+
 
 
