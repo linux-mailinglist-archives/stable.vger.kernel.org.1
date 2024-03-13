@@ -1,144 +1,114 @@
-Return-Path: <stable+bounces-28082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4650F87B1C4
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:26:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90ACF87B207
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 20:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780231C29871
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:26:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D9D82827C6
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1BA42075;
-	Wed, 13 Mar 2024 19:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C166379DD;
+	Wed, 13 Mar 2024 19:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RyU4OZqh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EI9bAHPC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560FB5A0F5
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 19:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3E405DF
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 19:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710357686; cv=none; b=GntGY1G16zH1PuLNaSLieuXo6p/LDeukWI/wl5pWMtgnA9VWbCJzTeu+DChnYEkEKdvlRCCYWhcSWVBNORHHhBtcYnu9fs9eHLXT7MkuelhuTgdzebZn7E2uSOGN3Kghr+rRnqaD4uPI89ley87SidT3W+wnzHTfV70hkf3rmLg=
+	t=1710358786; cv=none; b=iNWV0L8pAX83SG071IVY/61nsH/BtyxEnAIjXS/FO/oaW3KCkb1CyeiUeDGlCDX7pbWFcRCETw0f8rhsx/51w2X2v5Zt0pJ558QjGHKEtYwDg0MVXl4E8HaXVUH4oLoEdM9Uky6TafEjz7BIum6JPulpflG/2Eopgvuiwk0Dqe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710357686; c=relaxed/simple;
-	bh=iZYmwsM238XNM8Ka0wxu6uYfCPdbHZABFgW2AEZ2A5A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pShMqKYCnwLMaBcwJlVcoi7sBJvbni9yEvaAbRExDY5tFHLYZQql/v2a0ihCGzBTljGdkbOSBLbByDWw5pJP75W4EdBkSI3Sr/OeMgSiKUYlqMGk4IiW1HPiqydVkAt4H+r33X9K4WKLPcgX6x1ITudgfo0t6Z8ITdYcRsFnnVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RyU4OZqh; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-22195b3a8fbso214341fac.3
-        for <stable@vger.kernel.org>; Wed, 13 Mar 2024 12:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710357684; x=1710962484; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0nX9WeXEjo5PIfyS44ffFidwlQU53WgsdSl+O4sm0lo=;
-        b=RyU4OZqhbaquR1sr2ajJpKrbFz+23Nk48Eq+U4r+jm9lOt0t2ai/D3MVC22VcBZAVO
-         6BQopXT1cnK/cm009vnw8wMhDAMdHBV6yQKnpbhNKW/QZuxCQdUwlWR3tHRHWSz6O0tU
-         C3wF7k22b4p0mLCrDEHZhlA1Ig84BaOgdpHAyAGXqzU4AHw+z07Zcc1rguxcNEWorVMW
-         sWGoWrjlWUXy+03lc77tWTpRYpCyySUL8H2PK1/PK3u2XSR7PKqv3MWwehxoAWVe+UNS
-         ac8gIHqpd2U67Z9cD8MoOq4AllGAv1VQ0//Ro5mts2GL9wj0SsmJI7uDtpeSGK9poksX
-         1i/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710357684; x=1710962484;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0nX9WeXEjo5PIfyS44ffFidwlQU53WgsdSl+O4sm0lo=;
-        b=GL4SmMJGLoY/pg3vJM9sy7jAgpv4rq8scQaqdzYVJa40dfkz+XBE8hQP8kh85LBi1P
-         uplSCCishiIQh9mxt/jtdA/bBjxUzjA//D1vFKCG2w9HRrPU11n3TGhUcvB7udvpgHA1
-         8IYN/2qnnxTupxYuKDuAp+yFjEwN+AV42PvsLEwEu2BUSUM1C4dZ10UAvbInSMHtEXaH
-         FrH2OY1o9YknNFOAzpSO0jXjmozMWxbIuvILrIwM8mpAK2US4NEpWaofbglsODhucYDa
-         0Rw/FHpOjqWB/Y1ORyNzZDNFCBP/ZHeHj2RWscyyczOCXPZgXvtjofFiV6lVg9O5gMk4
-         e3pw==
-X-Forwarded-Encrypted: i=1; AJvYcCVDzjKAgJS9eaC535rXjPyczn41YL/ptjN+GgZkHNxLnKeWlxkYXDk9fCuhubLQe5mdKyBrCrV5QmRj1EIOFd0Z8PWIWeYy
-X-Gm-Message-State: AOJu0Yxh3NNGV4rnSg1qpbHGNfOrthFSialp+JOjZuFDMy0Hw5bjWQQh
-	AH7c/LBbveCyjbXTnk/Qlw3HectDCTFyQgQpY6ZFe9b4BBiR9xco92ZLnSli/dU=
-X-Google-Smtp-Source: AGHT+IEtnW1J7GXHGOqaIzmbtOjHec4OFcEwDYVWwXFNvZ5VPNlUHz9si/ANbbnG1Y+dvgioohgMcg==
-X-Received: by 2002:a05:6870:210f:b0:21e:fc35:73ef with SMTP id f15-20020a056870210f00b0021efc3573efmr8191998oae.38.1710357684512;
-        Wed, 13 Mar 2024 12:21:24 -0700 (PDT)
-Received: from [192.168.17.16] ([149.19.169.183])
-        by smtp.gmail.com with ESMTPSA id gk17-20020a0568703c1100b00221b5fb8a3csm2874235oab.27.2024.03.13.12.21.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Mar 2024 12:21:24 -0700 (PDT)
-Message-ID: <2f15e804-a2d7-4ad0-9b84-02db8c89985d@linaro.org>
-Date: Wed, 13 Mar 2024 13:21:21 -0600
+	s=arc-20240116; t=1710358786; c=relaxed/simple;
+	bh=hP51Mm0AciQDP+IQLyCe+K1HU+tgmUtTsBVz5z5MNlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LDSzMCqL4HBKP9etoitFw/GK+xKPXDkb7zW7T6vMSaD6defsp1wk/5mbpbUtDLUnUMQpkXA2y7BZWlC31ATaSQt4Co4lKMblD6Dg+10SfwobcrHYzSnwCuT2jfQZingJ8L+Rex+jMQTzv1xmggRkOHu7yFCjiJNZvMmsmXRHfUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EI9bAHPC; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710358784; x=1741894784;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hP51Mm0AciQDP+IQLyCe+K1HU+tgmUtTsBVz5z5MNlE=;
+  b=EI9bAHPClIgFScvNHl6Y+iBcrZVJCv9P2v2ZAg1in0+i2RCib6U4qHtY
+   mc9yDTqsw0j9uOmg1L7VcZ1VbcZgprx7asSw5Iv2f4QhHYlP9mg0U0Aki
+   UEBS1xhqSrqbC6zVeH77hJLMhivlwmLDTg/LWP7P2sKOh7RtvQqqftbyb
+   Cxgtdh2vhv8r4ikv5zUjmyB6d8TNvMSt9EALVU8Gdvis8483xFIwZ7RIe
+   rZ6zIG3moeQBVmBgGqXFcbqRsxpXVc9zk+uOECdOUq4TB+gd5Rg8g0STx
+   669tsG7I/7CwZh2aU0k9i+N/7SaUey/vxtmnVodhFV33rHO1xap0EWd6U
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="4996555"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="4996555"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 12:39:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="16633361"
+Received: from unknown (HELO intel.com) ([10.247.118.152])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 12:39:36 -0700
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/gt: Report full vm address range
+Date: Wed, 13 Mar 2024 20:39:06 +0100
+Message-ID: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/76] 5.15.152-rc1 review
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, nathan@kernel.org
-References: <20240313164223.615640-1-sashal@kernel.org>
-From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20240313164223.615640-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hello!
+Commit 9bb66c179f50 ("drm/i915: Reserve some kernel space per
+vm") has reserved an object for kernel space usage.
 
-On 13/03/24 10:41 a. m., Sasha Levin wrote:
-> This is the start of the stable review cycle for the 5.15.152 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri Mar 15 04:42:22 PM UTC 2024.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.151
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+Userspace, though, needs to know the full address range.
 
-We see new warnings everywhere:
+Fixes: 9bb66c179f50 ("drm/i915: Reserve some kernel space per vm")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: <stable@vger.kernel.org> # v6.2+
+---
+ drivers/gpu/drm/i915/gt/gen8_ppgtt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
------8<-----
-   /builds/linux/scripts/mod/modpost.c:1123:44: warning: excess elements in array initializer
-    1123 |         .good_tosec = {ALL_TEXT_SECTIONS , NULL},
-         |                                            ^~~~
------>8-----
-
-Bisection points to:
-
-   commit 4060bae9dab232eb15bc7ddaaeb278b39456adf9
-   Author: Nathan Chancellor <nathan@kernel.org>
-   Date:   Tue Jan 23 15:59:55 2024 -0700
-
-       modpost: Add '.ltext' and '.ltext.*' to TEXT_SECTIONS
-       
-       [ Upstream commit 397586506c3da005b9333ce5947ad01e8018a3be ]
-
-Reverting that commits makes the warning go away.
-
-One reproducer:
-
-   tuxmake --runtime podman --target-arch arm64 --toolchain gcc-12 --kconfig tinyconfig
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
+diff --git a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c b/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
+index fa46d2308b0e..d76831f50106 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
++++ b/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
+@@ -982,8 +982,9 @@ static int gen8_init_rsvd(struct i915_address_space *vm)
+ 
+ 	vm->rsvd.vma = i915_vma_make_unshrinkable(vma);
+ 	vm->rsvd.obj = obj;
+-	vm->total -= vma->node.size;
++
+ 	return 0;
++
+ unref:
+ 	i915_gem_object_put(obj);
+ 	return ret;
+-- 
+2.43.0
 
 
