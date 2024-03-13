@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-28064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B018087AFC4
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:34:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F2587AFCA
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4336628AB57
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:34:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AA01F2DA0F
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DC17D417;
-	Wed, 13 Mar 2024 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F957F481;
+	Wed, 13 Mar 2024 17:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E14v5X+T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBSMeSui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44D67D3FA;
-	Wed, 13 Mar 2024 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEBE612DC;
+	Wed, 13 Mar 2024 17:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710350102; cv=none; b=JNUYaPWG5HwnNJGAafcbFRQ21X2fj/Q96I1AhfSt1g2dcmmiAx/FTJqzEN1Ft15NvlkM/HyfqW6zDWjsUS2XCbgyPza5RZrYRViIhuyDk8+Tbpj4neWMMhRlxKm8yH7zjDVp96WjSg6gEmOPbTzD8UjhA7CRmLv0Vdu4uJxzql0=
+	t=1710350192; cv=none; b=WgZ40kBjnRooezSDSvtlHE9257ZoIp1q4jkuxdPaoG54OAF2fCCzF9zr4/znCDhk/kRECGIvSaOOYm2+FnksIxVWqhcr7YhvMJqEIAVTfI9/x51IOmwDVIOr+LoDdv6iZ8beiMHXXfd/W43e/vxx+1yKbvPdxaaMNQJCVpIjIPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710350102; c=relaxed/simple;
-	bh=Sq41bGnsArB+oqY0Vaks8WTm1oPv+4GYhpODJO3UZFs=;
+	s=arc-20240116; t=1710350192; c=relaxed/simple;
+	bh=KBmGVG0tShTIOfu5Kdwsr3zszT6tpzb6w2J0pA0Nv0o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q3ZSVpCtlYN4IUlMY+zt1xGkZTU19GO+klb4FidC3zTJ5SjLQBHTeHyGhM7yGt3AQemL7ESn8h8061cUfzi00q6vjxYkDOZtgFflyxSdqp7zmNtTnz53wOc/06RRWfevV1MGvRoNlQV+ArSd9ahkgFf2vr1vs99ojX/9UmTt//s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E14v5X+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43443C433F1;
-	Wed, 13 Mar 2024 17:15:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=n/qvek9zP+cQF16/Cr7oV4sfV00hCBNnrVIZmzBlGgEUa7hjD9mi/Na3SZ6oOlRL41dHCbesT17I/Ueu/79161KwAYcAp1uWkJ4SWGTRUuD7F3Yj26knzm1WsGT9PBzkz3LS9QIJYil1RKexs58RMElrW60QEZnQWdj2B4QIPtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBSMeSui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E4AC433C7;
+	Wed, 13 Mar 2024 17:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710350101;
-	bh=Sq41bGnsArB+oqY0Vaks8WTm1oPv+4GYhpODJO3UZFs=;
+	s=k20201202; t=1710350191;
+	bh=KBmGVG0tShTIOfu5Kdwsr3zszT6tpzb6w2J0pA0Nv0o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E14v5X+Tm66BatPOqoGRr8GrD22zbnVSAr88Bws7vW81dsvo2iYcjED3uatQcClOw
-	 172aJSO/LVLQyGVqgcCvGV8rpafalE8QOsalqLHEdMpNsVW7OnNonV/9XTLhtToFZx
-	 lrYXOv5cbsE6Zr/6aUEDSPrx9EmA+zp8tuYH58eYoDvBXW3TLVnhxklHgF2mS6UM9H
-	 ZviBXD507Q5eLKLbLm9aF1+aF/b/yVD/+X0gfnXmdymfg8hMNHt5juJMXKyqyUIjWw
-	 e5v/q4K0CV0se5hZyB6DPX8v4JThMC/M97Y0UWpwPnhFgKObW3g4XZ3o27kL4W7cHz
-	 tzBDvDEBbkCUw==
-Date: Wed, 13 Mar 2024 13:14:59 -0400
+	b=eBSMeSuiQlglw1FhL+jFT9AKmI7Ubp2QrXMzGbvo+ajlxcARM0ID+esgAz3OUVIqv
+	 knlq4Zf4VdJXAeFrWNNevaR0HLUWTyM2zKStDhkEsHiEZ673PBluNaGPDuT75cYYpZ
+	 2x73+u6Lg3CizeYPJ7XEXveHQIxrGcVs0b6zUWYo+wBm5UvRJ+2IGbPfRUko9ZU+Ea
+	 T++884U512glJM+BwQKWR1ebxay+tWOdovBslKMj6SYH1cGI6KDfD7sefGuxdF9O5a
+	 oGY6Rb/M69JaCMh5JvpXyMkRaXtEbkqb5BmZPt2BJ7jo4JHUxk5XbZnKXL5nvXf0fQ
+	 cx12YbFzuz3Wg==
+Date: Wed, 13 Mar 2024 13:16:29 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Marek Vasut <marex@denx.de>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Robert Foss <robert.foss@linaro.org>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 5.15 73/76] regmap: Add bulk read/write callbacks into
- regmap_config
-Message-ID: <ZfHfEyb6XKrE2MBE@sashalap>
+	Ansuel Smith <ansuelsmth@gmail.com>
+Subject: Re: [PATCH 5.15 72/76] regmap: allow to define reg_update_bits for
+ no bus configuration
+Message-ID: <ZfHfbYg8HmIRsdBV@sashalap>
 References: <20240313164223.615640-1-sashal@kernel.org>
- <20240313164223.615640-74-sashal@kernel.org>
- <8bcd85fb-401f-4a3b-b10e-633a0478c0da@sirena.org.uk>
+ <20240313164223.615640-73-sashal@kernel.org>
+ <6274f1ce-f2e0-414b-b9a9-bf2840fefd90@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,26 +60,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <8bcd85fb-401f-4a3b-b10e-633a0478c0da@sirena.org.uk>
+In-Reply-To: <6274f1ce-f2e0-414b-b9a9-bf2840fefd90@sirena.org.uk>
 
-On Wed, Mar 13, 2024 at 04:46:56PM +0000, Mark Brown wrote:
->On Wed, Mar 13, 2024 at 12:42:20PM -0400, Sasha Levin wrote:
->> From: Marek Vasut <marex@denx.de>
+On Wed, Mar 13, 2024 at 04:46:04PM +0000, Mark Brown wrote:
+>On Wed, Mar 13, 2024 at 12:42:19PM -0400, Sasha Levin wrote:
+>> From: Ansuel Smith <ansuelsmth@gmail.com>
 >>
->> [ Upstream commit d77e745613680c54708470402e2b623dcd769681 ]
+>> [ Upstream commit 02d6fdecb9c38de19065f6bed8d5214556fd061d ]
 >>
->> Currently the regmap_config structure only allows the user to implement
->> single element register read/write using .reg_read/.reg_write callbacks.
->> The regmap_bus already implements bulk counterparts of both, and is being
->> misused as a workaround for the missing bulk read/write callbacks in
->> regmap_config by a couple of drivers. To stop this misuse, add the bulk
->> read/write callbacks to regmap_config and call them from the regmap core
->> code.
+>> Some device requires a special handling for reg_update_bits and can't use
+>> the normal regmap read write logic. An example is when locking is
+>> handled by the device and rmw operations requires to do atomic operations.
+>> Allow to declare a dedicated function in regmap_config for
+>> reg_update_bits in no bus configuration.
 >
->This fairly clearly new functionality.
+>This is fairly clearly new functionality?
 
-It is, but its needed for 3f42b142ea11 ("serial: max310x: fix IO data
-corruption in batched operations") which uses this new functionality.
+It is, but like the other commit, this new functionality is needed for a
+later fix. We indicate this in the commit message by adding a trailer:
+
+	Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
+	Link: https://lore.kernel.org/r/20211104150040.1260-1-ansuelsmth@gmail.com
+	Signed-off-by: Mark Brown <broonie@kernel.org>
+	Stable-dep-of: 3f42b142ea11 ("serial: max310x: fix IO data corruption in batched operations")
+	  ^^^^^^^^^
+	Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 -- 
 Thanks,
