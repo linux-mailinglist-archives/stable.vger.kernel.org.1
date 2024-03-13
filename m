@@ -1,108 +1,113 @@
-Return-Path: <stable+bounces-28062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A304587AFA2
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:30:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB5187AFB7
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E738289E49
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:30:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0A9B2406D
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B802D77645;
-	Wed, 13 Mar 2024 17:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B36166F;
+	Wed, 13 Mar 2024 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhCb20h/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7ZV37c+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DC41A38FC;
-	Wed, 13 Mar 2024 17:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9786A60DDD;
+	Wed, 13 Mar 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710349756; cv=none; b=eriAaE3iOKi7cgyMHsmtcwkynpo5hkZhLAn4fZX7kGC3m0KfzaqKBd9mtLkBI2DCbhM3YM0fb82djyph7JhEnv/AX9NWQN0A84gwVsPFZWsaJ1m9uHlp2W5VSs9mr9LrFWETY3hnUTQpsc3QRlRli1oB+LvFCaemPubCZLNlETw=
+	t=1710349952; cv=none; b=aiJJY7HzC9coNsmMLVyTss9Kw4ftXNdqAiroO1SXWf1qFF6IQVfrt0KL+TZIITOAyuI4HPjv5n+Zt2I+NsfbDFulHTs0yn0KkIOTI/SOfEdmJLp6VinGIhZfZ7bNGsHILSYUtR4a8WDkOn0rriYFZdixUWuOawaIkzOD/EolEWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710349756; c=relaxed/simple;
-	bh=ioJ2BZjpPgaqeC0AtukiiPlc0mA5O/xNI4j2xvOl6FU=;
+	s=arc-20240116; t=1710349952; c=relaxed/simple;
+	bh=P6edbYcrI8nT1RQqI4ia/s7CJ831ZSWH4YbGScmu1xI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AmXp/8Ugf6IT7aFz1GJ+hgSEPRgwPWT8Rqce1eUROfBf3rMChpdwhleRmgwi83q0LnURh+QJ3Tu4unfFYJ88KJXLIETRfasuTAn+PrqtwmON/HjJdBumvT+B6o2y4mpWoi3ZObXwTvrnkOUGrsMkJfXg0Xw7N8j88/mWTl2wDds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhCb20h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0209C433C7;
-	Wed, 13 Mar 2024 17:09:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODhmx/NyQzQXXHuGLxgEQaLpyHyN6VWEZnwe6Bibgo7U6xQ96VYSQpFDV1bvM9HnqdJtj/VVHyEKhSRVwD3BSAv+FGcwXoagKLHqnEY0kS2DKzLRQAZKvP3StOaCOR+BYYA3CMq/a6TtLAEMR9gN25xmsjh4Ou7X2iKhMHC2gEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7ZV37c+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3778CC433F1;
+	Wed, 13 Mar 2024 17:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710349756;
-	bh=ioJ2BZjpPgaqeC0AtukiiPlc0mA5O/xNI4j2xvOl6FU=;
+	s=k20201202; t=1710349951;
+	bh=P6edbYcrI8nT1RQqI4ia/s7CJ831ZSWH4YbGScmu1xI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dhCb20h/r2WQ6R9xd7S/kYj/Hr0WbPhawbqXHt7I+qQ06nLbHocLrjaEa0OlwWXpn
-	 bQX3YVALeczP74Gx1gZRzfSlPYd22eU3rFF9WiamGAlOXLf0ouVJ58mz8eZRfKx5d+
-	 HBbVx0tq0JlV9w+7ywgLEuktKJo735BxO6cSlQVh9wcRbe1JQOcspyGnSedM3GNOU7
-	 Ax4/I7zC25MF+cyT9WI83ua/b/OYIMOS+NM2l092D53GBwBIfWxhWiaCWwncDrco0z
-	 ycPCiWUBzs7tbS2gwW5YJ/Pq5lr5Kj12eJ4DYyYHlsq5i9rYXIW+OWi7y32PvWQKKw
-	 lC3uHD8ap0YBg==
-Date: Wed, 13 Mar 2024 17:09:10 +0000
-From: Mark Brown <broonie@kernel.org>
+	b=R7ZV37c+CXO3OTsdcEETlOHei6+cF1IAnNh4K6RQEz59QPShKdUKIBN192k2mSvnx
+	 NK+98Vf3gfKKj3MzzTFFfpbyOW/LHP9vX3omJ9/z2mEgvXEd+3e9p5LrOII/wDk6T0
+	 jcAz3B1TcNFlZEF4UbaA/AR0XFhZkhFBY3ZFwEYU79TXYyjTFPkhfXfVkJmIVEW8FE
+	 5FjonMBI38PT2w9Ix5WmWf1lWIHfhDA4Xq/m7ObEDyYtbmc5zyhrdtD7SObDk767LL
+	 niCvs6S4y8MhsHAnxtnwzJTZduSr3Du7MrCJ6viNV6PH66oUUzyJPYRb2kF/7f9Alr
+	 jH8uUPQY7NUnw==
+Date: Wed, 13 Mar 2024 10:12:29 -0700
+From: Nathan Chancellor <nathan@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Marek Vasut <marex@denx.de>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Robert Foss <robert.foss@linaro.org>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 5.4 47/51] regmap: Add bulk read/write callbacks into
- regmap_config
-Message-ID: <eea5677a-734a-41c0-97fa-93cf9cd1340e@sirena.org.uk>
-References: <20240313170212.616443-1-sashal@kernel.org>
- <20240313170212.616443-48-sashal@kernel.org>
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 5.15 45/76] modpost: Add '.ltext' and '.ltext.*' to
+ TEXT_SECTIONS
+Message-ID: <20240313171229.GA3064248@dev-arch.thelio-3990X>
+References: <20240313164223.615640-1-sashal@kernel.org>
+ <20240313164223.615640-46-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="QR2Zq33ZLLgndqGX"
-Content-Disposition: inline
-In-Reply-To: <20240313170212.616443-48-sashal@kernel.org>
-X-Cookie: It's later than you think.
-
-
---QR2Zq33ZLLgndqGX
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240313164223.615640-46-sashal@kernel.org>
 
-On Wed, Mar 13, 2024 at 01:02:08PM -0400, Sasha Levin wrote:
-> From: Marek Vasut <marex@denx.de>
->=20
-> [ Upstream commit d77e745613680c54708470402e2b623dcd769681 ]
->=20
-> Currently the regmap_config structure only allows the user to implement
-> single element register read/write using .reg_read/.reg_write callbacks.
-> The regmap_bus already implements bulk counterparts of both, and is being
-> misused as a workaround for the missing bulk read/write callbacks in
-> regmap_config by a couple of drivers. To stop this misuse, add the bulk
-> read/write callbacks to regmap_config and call them from the regmap core
-> code.
+Hi Sasha,
 
-New feature.
+On Wed, Mar 13, 2024 at 12:41:52PM -0400, Sasha Levin wrote:
+> From: Nathan Chancellor <nathan@kernel.org>
+> 
+> [ Upstream commit 397586506c3da005b9333ce5947ad01e8018a3be ]
+> 
+> After the linked LLVM change, building ARCH=um defconfig results in a
+> segmentation fault in modpost. Prior to commit a23e7584ecf3 ("modpost:
+> unify 'sym' and 'to' in default_mismatch_handler()"), there was a
+> warning:
+> 
+>   WARNING: modpost: vmlinux.o(__ex_table+0x88): Section mismatch in reference to the .ltext:(unknown)
+>   WARNING: modpost: The relocation at __ex_table+0x88 references
+>   section ".ltext" which is not in the list of
+>   authorized sections.  If you're adding a new section
+>   and/or if this reference is valid, add ".ltext" to the
+>   list of authorized sections to jump to on fault.
+>   This can be achieved by adding ".ltext" to
+>   OTHER_TEXT_SECTIONS in scripts/mod/modpost.c.
+> 
+> The linked LLVM change moves global objects to the '.ltext' (and
+> '.ltext.*' with '-ffunction-sections') sections with '-mcmodel=large',
+> which ARCH=um uses. These sections should be handled just as '.text'
+> and '.text.*' are, so add them to TEXT_SECTIONS.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/1981
+> Link: https://github.com/llvm/llvm-project/commit/4bf8a688956a759b7b6b8d94f42d25c13c7af130
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
---QR2Zq33ZLLgndqGX
-Content-Type: application/pgp-signature; name="signature.asc"
+This causes a warning when building with HOSTCC=clang:
 
------BEGIN PGP SIGNATURE-----
+  scripts/mod/modpost.c:1123:37: warning: excess elements in array initializer [-Wexcess-initializers]
+   1123 |         .good_tosec = {ALL_TEXT_SECTIONS , NULL},
+        |                                            ^~~~
+  .../lib/clang/17/include/stddef.h:89:16: note: expanded from macro 'NULL'
+     89 | #  define NULL ((void*)0)
+        |                ^~~~~~~~~~
+  1 warning generated.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXx3bUACgkQJNaLcl1U
-h9CGGgf/Tg0S2g5h9O9iPyWzm2HInqU1EH/s084iQJfQV/VAUgHTP7d5XyOrC06O
-E+K0V/ZZ6yEEmmV9NbrWy0mFq2pchFij0ciw7KHJOAA+GrYUqmrPH2Qu1uAcni4/
-yjauQz6Oqb8Aac/6H2rK5bbS7OSDccmjkG7LI1H75v6qkZ0dGnvG2DDCfxNvaXGJ
-xjcMj8n6rOM90JWxukQTnuGm096lYY+Yui1wrPxPQBNJROhzrLki8R7LXUp9DwVz
-CjI3Nit+PpZOsACZXKMeVn/U2/N6ZIJbUceeRe91GbQWcaDdY5BAyluyUHp+Z08T
-p1y7YldbHvFiM6hWoTyMe9dvbGephw==
-=DXAD
------END PGP SIGNATURE-----
+Same comment as on the other UML clang-18 patch, I do not think this is
+necessary right now in 5.15 and earlier. The other modpost patch can go
+as well, as it is only a prerequisite change.
 
---QR2Zq33ZLLgndqGX--
+Cheers,
+Nathan
 
