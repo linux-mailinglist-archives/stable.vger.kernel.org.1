@@ -1,264 +1,166 @@
-Return-Path: <stable+bounces-27555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE62287A197
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 03:22:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291BB87A1C3
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 03:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD3A1F22598
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 02:22:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9460282985
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 02:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC13BA27;
-	Wed, 13 Mar 2024 02:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F3DC144;
+	Wed, 13 Mar 2024 02:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JxtLE6bO"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="qJEHcIVT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD298125C0
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 02:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAC710953
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 02:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710296548; cv=none; b=oBWwfHdLmi0SDaaCu+lffDyA0BDYpaJ6RzvEf67ysL4H8CnR4CnZGkDm49t0alKYqaVV+DgT+ST/cZ/xFzuMswd7sF8mKoQE+oaz2RFbEbKETbU3ul0Ie6Vhwpb88b/kTWwIj7+kl3WnBlcrgdwbr309qbSCu2JQY5z4t9SygVg=
+	t=1710298428; cv=none; b=mvtKGnJFwHrIUL/TL1nCNpcsEs0e//SqiJAz2jE/n102XHZO3NW4UkgxH0UaVmCxxev8p8fKlz4U+cOXtX1T+QcEFkc4tQwn7q92qYkPdGPUEieviKGPIRPetY0RsadAHbTiD1AnzbVup6Qn888iDVw5/jdxWU4kyzQGq9n9PgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710296548; c=relaxed/simple;
-	bh=AkrU4EC8QiNo1TmQWVI75Brne6zt86jU7dwMw3KnUak=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bLOA8kLW+PGozl/5oSAU18Jd7A/6AzUejJDhjVoCFwXKZAI0rzSd0hH5OyzxHs+lgPTzYOeX9Jagxk3GcjFkXPWn7ArlVHJODFLLqmWnEzCrTq9oWNb29PFwqdycZ6LW46iXz1yczD4oqru6aCCkbWbmGQkPVYEdT6+sLqnkVeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JxtLE6bO; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-690c821e088so3782436d6.0
-        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 19:22:26 -0700 (PDT)
+	s=arc-20240116; t=1710298428; c=relaxed/simple;
+	bh=NTReDqVivR5/vZLdG6BnZ/KUXkuOSC6UjdiNqkzytqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tg594TRvuU2pFP9cssxiiAo2UtnuWPdL4IfwTgHzRcECE3MPP6UGL6u6uJzq4tqQc6VcFHTMKEDGsgx86Pr5yIeylJqwUBZauPh9SjotPuEFcxCizeY2FWxeEJ0B0I8UIyuIOu8u+0Pl+xomcnifto08BNVeJOweljesEtyRg4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=qJEHcIVT; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1dc49b00bdbso37851625ad.3
+        for <stable@vger.kernel.org>; Tue, 12 Mar 2024 19:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710296545; x=1710901345; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0zm7KTlg2XztzGKUYwxOz8ydvaIZ+iWJFSeIhbfCjRA=;
-        b=JxtLE6bOQT7j24LwMijzX4IOGw6BpVwmNVc1NHvDX3PIJa+z7crgrbglkuhw1F63YM
-         rpPei51Wo+3cJq5a9EkppdoddZgeVjayE/7iACS4UjwoYmtegpSCdhbokhzXvYQ8VMM6
-         MWciKKqIFtlDNuRNiegrHhwRG290ySDTp11QPOnv+R3Vnb6WOtCdYgLLM8LJopFQ/7Rd
-         rcK0QBme++H6is5pfy3xXFf8Spe+IN0yH3CTRN6MyuclBlaHuW7VqUV0Oz0adBYLTpgR
-         MTaZ8HZekmsx13YWNprLsGPFpRcEjJEqYApG26aKnAZEUWNFi/7nJ8QXXnSbDmvZsAKK
-         CXfg==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1710298424; x=1710903224; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nm82SO2BpNSLFwSI+4lS3PD4XXk2jhZjxDf4bI5jTqc=;
+        b=qJEHcIVTcj6GmJpb6OE16HbVqrcC2kZ5qEah7cpZwtRRaLG65cUBJG+qZwEq7o35Ta
+         kGqetRykhN0mwUkkd0B250yGIpgmyQqtmV8+YFDe/U1+HBMTskioGFNA8Paj5M9hLnTc
+         wo1f3phW7GR5eCLT1PZW8B70XOPi016+BVU6hAjePU9Io2nW6pRbYvSZA26RBJ5OjLpK
+         oBH6Sj4Xx8/qZT1T/l7TNiwBkvhkGEAhGyML9FGaHVjsAyxvpuSmSWiemWsTzLUNHOR1
+         9h4JFZmUDHluCfCGlxgYqF7VYdSZGTAbB/XUXEAWmxq5+JN9thmnHOPjikamTlinHL6H
+         Hajw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710296545; x=1710901345;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0zm7KTlg2XztzGKUYwxOz8ydvaIZ+iWJFSeIhbfCjRA=;
-        b=Wio83i3jSKZ8e/aoFP/iDqx1TvunzBI2fByh0+JuwTQVQ/rvW5qh0rys62C3Ab6dM6
-         PAb+yI+RQfiGWX0b9kkt/zBZ8xJZFnvExpmK0hQJl/AUKMq6WYNG7KH31rKtQtl5dTCv
-         /hyW6fzRDy3/B7RbJX9L9MWrv5Xlc4ldIjvZDhOlF7fQ9Y7GfFeocLScloJh064TASK/
-         mO+LAsrxiGMN31VCOsP5bBRBDoEpdrBQSvdy9mgPPIzP1EltlaClovjzal8pU7TLN+/n
-         ILXKhA3CI82dkK8p9Q4inq+je97/VEn+KXtXOi4VbewfpmN2ib9iiqHdB5hqpj8cyeLd
-         x6Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrxYxtXLQAkWxysdDnQ/fhWVNJmOte/NvsC/y6ayCSnaTxIal/zjVdV7zeDusan+sGYUDoEwv5R641ZCKuI/zLMfApxGx2
-X-Gm-Message-State: AOJu0Yy0m4Ln58Q/eS4FUyGkre6YxjNXruN9aisT8RQ4ihNj5rk9I0j/
-	n09v6L7kUeyZhDbXDK3BAQPCXybwsYWYKKrFzPgVA3SsdCvQo2M6npN126yuiqE3QR5G9YGJ/FV
-	sTNqJLf4u7zNRRSPBHCid4a2sYWw=
-X-Google-Smtp-Source: AGHT+IGRwvfE1LQv/A5aE8860oiNVgY2jYqJZ6xX8ndl3d0ba0sI87aq2RQhhti4cdMl8ibjUrlozIWSUN4tLfj9hjI=
-X-Received: by 2002:a0c:e84c:0:b0:690:f92e:79c9 with SMTP id
- l12-20020a0ce84c000000b00690f92e79c9mr2531410qvo.9.1710296545480; Tue, 12 Mar
- 2024 19:22:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710298424; x=1710903224;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nm82SO2BpNSLFwSI+4lS3PD4XXk2jhZjxDf4bI5jTqc=;
+        b=LBTRCseLKy/p9qxuetAAeVHJ75cLTPfBylFzoEMSTxv4a63QiIvKIYXG3h84/Z4d/3
+         eCcIZyiuXIWm7auH4UFtKqEcf3Z7B4aP024LuAUqdJIm9znvKH+8NoB+ltMejgGrUKFV
+         4vjkJNUMxlIKdWdtFTd/6bViuN3oN7nApgz+elF7fLUlR3TRsymMyeMp6Z6Mf7xC+BzL
+         xKBeiPmhPyrIWOZoqzV7I4yAfxlytBTxZKHgRU9L7TRV1EllMeyINJTiiGF99trd/3YW
+         4bFQZYdEt799VUPX3q6glTA6MbvlascUKt/sAmAOG4GgpZYRa1W1/LyoFeBmwGtaxQcV
+         2vmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyt6q6/TVn9zmhboe60YAHgylfx04KbZ6zCOiHg/DZBN60m6Ut7lx4hN160rG6G9exx5GHuldFHRMoG8xmlTCUf4wouu/D
+X-Gm-Message-State: AOJu0Yw+OD3fqEZCIjKWh29yzvhoDLYc/N6JQV838ZTHMgPXyw2kJ+ZE
+	TceKHge400YaJn316K5MtSgMnrRByh3M3iYFbWMl50BnjLX3RDxfP/rJ9ZzOSgo=
+X-Google-Smtp-Source: AGHT+IGWxCpTXsK47de51P3AiM9hzji/3eB3TD8nuRB8rKNVi8mjNxa71yE5XsNC9R6lpX1df1eX9w==
+X-Received: by 2002:a17:902:d2c5:b0:1dd:9984:29d3 with SMTP id n5-20020a170902d2c500b001dd998429d3mr9473835plc.32.1710298424071;
+        Tue, 12 Mar 2024 19:53:44 -0700 (PDT)
+Received: from ghost ([2601:647:5700:6860:733c:479a:4b7b:f77b])
+        by smtp.gmail.com with ESMTPSA id e15-20020a17090301cf00b001dd55ac5d78sm7442926plh.184.2024.03.12.19.53.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Mar 2024 19:53:43 -0700 (PDT)
+Date: Tue, 12 Mar 2024 19:53:41 -0700
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] riscv: Fix spurious errors from __get/put_kernel_nofault
+Message-ID: <ZfEVNbt9AMeVJS0k@ghost>
+References: <20240312022030.320789-1-samuel.holland@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240307031952.2123-1-laoar.shao@gmail.com> <20240307090618.50da28040e1263f8af39046f@linux-foundation.org>
- <CALOAHbAsyT9ms739DLZeAf88XsrxjJgm1D8wr+dKNFxROOQFFw@mail.gmail.com>
- <ZfC7PO0-3Kg88Wj3@google.com> <ZfDTK79iQNlax-h6@google.com>
-In-Reply-To: <ZfDTK79iQNlax-h6@google.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 13 Mar 2024 10:21:49 +0800
-Message-ID: <CALOAHbAMPEikjt2vxpWqsifKfYwcEMoF0BSXqpLPgtoJMHDmxQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: mglru: Fix soft lockup attributed to scanning folios
-To: Yu Zhao <yuzhao@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240312022030.320789-1-samuel.holland@sifive.com>
 
-On Wed, Mar 13, 2024 at 6:12=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote:
->
-> On Tue, Mar 12, 2024 at 02:29:48PM -0600, Yu Zhao wrote:
-> > On Fri, Mar 08, 2024 at 04:57:08PM +0800, Yafang Shao wrote:
-> > > On Fri, Mar 8, 2024 at 1:06=E2=80=AFAM Andrew Morton <akpm@linux-foun=
-dation.org> wrote:
-> > > >
-> > > > On Thu,  7 Mar 2024 11:19:52 +0800 Yafang Shao <laoar.shao@gmail.co=
-m> wrote:
-> > > >
-> > > > > After we enabled mglru on our 384C1536GB production servers, we
-> > > > > encountered frequent soft lockups attributed to scanning folios.
-> > > > >
-> > > > > The soft lockup as follows,
-> > > > >
-> > > > > ...
-> > > > >
-> > > > > There were a total of 22 tasks waiting for this spinlock
-> > > > > (RDI: ffff99d2b6ff9050):
-> > > > >
-> > > > >  crash> foreach RU bt | grep -B 8  queued_spin_lock_slowpath |  g=
-rep "RDI: ffff99d2b6ff9050" | wc -l
-> > > > >  22
-> > > >
-> > > > If we're holding the lock for this long then there's a possibility =
-of
-> > > > getting hit by the NMI watchdog also.
-> > >
-> > > The NMI watchdog is disabled as these servers are KVM guest.
-> > >
-> > >     kernel.nmi_watchdog =3D 0
-> > >     kernel.soft_watchdog =3D 1
-> > >
-> > > >
-> > > > > Additionally, two other threads were also engaged in scanning fol=
-ios, one
-> > > > > with 19 waiters and the other with 15 waiters.
-> > > > >
-> > > > > To address this issue under heavy reclaim conditions, we introduc=
-ed a
-> > > > > hotfix version of the fix, incorporating cond_resched() in scan_f=
-olios().
-> > > > > Following the application of this hotfix to our servers, the soft=
- lockup
-> > > > > issue ceased.
-> > > > >
-> > > > > ...
-> > > > >
-> > > > > --- a/mm/vmscan.c
-> > > > > +++ b/mm/vmscan.c
-> > > > > @@ -4367,6 +4367,10 @@ static int scan_folios(struct lruvec *lruv=
-ec, struct scan_control *sc,
-> > > > >
-> > > > >                       if (!--remaining || max(isolated, skipped_z=
-one) >=3D MIN_LRU_BATCH)
-> > > > >                               break;
-> > > > > +
-> > > > > +                     spin_unlock_irq(&lruvec->lru_lock);
-> > > > > +                     cond_resched();
-> > > > > +                     spin_lock_irq(&lruvec->lru_lock);
-> > > > >               }
-> > > >
-> > > > Presumably wrapping this with `if (need_resched())' will save some =
-work.
-> > >
-> > > good suggestion.
-> > >
-> > > >
-> > > > This lock is held for a reason.  I'd like to see an analysis of why
-> > > > this change is safe.
-> > >
-> > > I believe the key point here is whether we can reduce the scope of
-> > > this lock from:
-> > >
-> > >   evict_folios
-> > >       spin_lock_irq(&lruvec->lru_lock);
-> > >       scanned =3D isolate_folios(lruvec, sc, swappiness, &type, &list=
-);
-> > >       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-> > >       if (get_nr_gens(lruvec, !swappiness) =3D=3D MIN_NR_GENS)
-> > >           scanned =3D 0;
-> > >       spin_unlock_irq(&lruvec->lru_lock);
-> > >
-> > > to:
-> > >
-> > >   evict_folios
-> > >       spin_lock_irq(&lruvec->lru_lock);
-> > >       scanned =3D isolate_folios(lruvec, sc, swappiness, &type, &list=
-);
-> > >       spin_unlock_irq(&lruvec->lru_lock);
-> > >
-> > >       spin_lock_irq(&lruvec->lru_lock);
-> > >       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-> > >       if (get_nr_gens(lruvec, !swappiness) =3D=3D MIN_NR_GENS)
-> > >           scanned =3D 0;
-> > >       spin_unlock_irq(&lruvec->lru_lock);
-> > >
-> > > In isolate_folios(), it merely utilizes the min_seq to retrieve the
-> > > generation without modifying it. If multiple tasks are running
-> > > evict_folios() concurrently, it seems inconsequential whether min_seq
-> > > is incremented by one task or another. I'd appreciate Yu's
-> > > confirmation on this matter.
-> >
-> > Hi Yafang,
-> >
-> > Thanks for the patch!
-> >
-> > Yes, your second analysis is correct -- we can't just drop the lock
-> > as the original patch does because min_seq can be updated in the mean
-> > time. If this happens, the gen value becomes invalid, since it's based
-> > on the expired min_seq:
-> >
-> >   sort_folio()
-> >   {
-> >     ..
-> >     gen =3D lru_gen_from_seq(lrugen->min_seq[type]);
-> >     ..
-> >   }
-> >
-> > The following might be a better approach (untested):
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 4255619a1a31..6fe53cfa8ef8 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4365,7 +4365,8 @@ static int scan_folios(struct lruvec *lruvec, str=
-uct scan_control *sc,
-> >                               skipped_zone +=3D delta;
-> >                       }
-> >
-> > -                     if (!--remaining || max(isolated, skipped_zone) >=
-=3D MIN_LRU_BATCH)
-> > +                     if (!--remaining || max(isolated, skipped_zone) >=
-=3D MIN_LRU_BATCH ||
-> > +                         spin_is_contended(&lruvec->lru_lock))
-> >                               break;
-> >               }
-> >
-> > @@ -4375,7 +4376,8 @@ static int scan_folios(struct lruvec *lruvec, str=
-uct scan_control *sc,
-> >                       skipped +=3D skipped_zone;
-> >               }
-> >
-> > -             if (!remaining || isolated >=3D MIN_LRU_BATCH)
-> > +             if (!remaining || isolated >=3D MIN_LRU_BATCH ||
-> > +                 (scanned && spin_is_contended(&lruvec->lru_lock)))
-> >                       break;
-> >       }
->
-> A better way might be:
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 4255619a1a31..ac59f064c4e1 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4367,6 +4367,11 @@ static int scan_folios(struct lruvec *lruvec, stru=
-ct scan_control *sc,
->
->                         if (!--remaining || max(isolated, skipped_zone) >=
-=3D MIN_LRU_BATCH)
->                                 break;
-> +
-> +                       if (need_resched() || spin_is_contended(&lruvec->=
-lru_lock)) {
-> +                               remaining =3D 0;
-> +                               break;
-> +                       }
->                 }
->
->                 if (skipped_zone) {
+On Mon, Mar 11, 2024 at 07:19:13PM -0700, Samuel Holland wrote:
+> These macros did not initialize __kr_err, so they could fail even if
+> the access did not fault.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d464118cdc41 ("riscv: implement __get_kernel_nofault and __put_user_nofault")
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> ---
+> Found while testing the unaligned access speed series[1]. The observed
+> behavior was that with RISCV_EFFICIENT_UNALIGNED_ACCESS=y, the
+> copy_from_kernel_nofault() in prepend_copy() failed every time when
+> filling out /proc/self/mounts, so all of the mount points were "xxx".
+> 
+> I'm surprised this hasn't been seen before. For reference, I'm compiling
+> with clang 18.
+> 
+> [1]: https://lore.kernel.org/linux-riscv/20240308-disable_misaligned_probe_config-v9-0-a388770ba0ce@rivosinc.com/
+> 
+>  arch/riscv/include/asm/uaccess.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+> index ec0cab9fbddd..72ec1d9bd3f3 100644
+> --- a/arch/riscv/include/asm/uaccess.h
+> +++ b/arch/riscv/include/asm/uaccess.h
+> @@ -319,7 +319,7 @@ unsigned long __must_check clear_user(void __user *to, unsigned long n)
+>  
+>  #define __get_kernel_nofault(dst, src, type, err_label)			\
+>  do {									\
+> -	long __kr_err;							\
+> +	long __kr_err = 0;						\
+>  									\
+>  	__get_user_nocheck(*((type *)(dst)), (type *)(src), __kr_err);	\
+>  	if (unlikely(__kr_err))						\
+> @@ -328,7 +328,7 @@ do {									\
+>  
+>  #define __put_kernel_nofault(dst, src, type, err_label)			\
+>  do {									\
+> -	long __kr_err;							\
+> +	long __kr_err = 0;						\
+>  									\
+>  	__put_user_nocheck(*((type *)(src)), (type *)(dst), __kr_err);	\
+>  	if (unlikely(__kr_err))						\
+> -- 
+> 2.43.1
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
-It is better. Thanks for your suggestion.
-I will verify it on our production servers, which may take several days.
+I am not able to reproduce this using Clang 18 with
+RISCV_EFFICIENT_UNALIGNED_ACCESS=y on 6.8. However I can see how this
+could be an issue.
 
---=20
-Regards
-Yafang
+Going down the rabbit hold of macros here, I end up at
+arch/riscv/include/asm/asm-extable.h where the register that hold 'err'
+is written into the __ex_table section:
+
+#define EX_DATA_REG(reg, gpr)						\
+	"((.L__gpr_num_" #gpr ") << " __stringify(EX_DATA_REG_##reg##_SHIFT) ")"
+
+#define _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, zero)		\
+	__DEFINE_ASM_GPR_NUMS						\
+	__ASM_EXTABLE_RAW(#insn, #fixup, 				\
+			  __stringify(EX_TYPE_UACCESS_ERR_ZERO),	\
+			  "("						\
+			    EX_DATA_REG(ERR, err) " | "			\
+			    EX_DATA_REG(ZERO, zero)			\
+			  ")")
+
+I am wondering if setting this value to zero solves the problem by
+hiding another issue. It seems like this shouldn't need to be
+initialized to zero, however I am lost as to how this extable setup
+works so perhaps this is the proper solution.
+
+- Charlie
+
 
