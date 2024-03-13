@@ -1,96 +1,134 @@
-Return-Path: <stable+bounces-27586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4652687A758
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 12:58:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8435D87A75D
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 13:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20F528567E
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 11:58:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72806B22971
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 12:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153613FB17;
-	Wed, 13 Mar 2024 11:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FF83FB19;
+	Wed, 13 Mar 2024 12:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b5KbJ7PR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305721CD00;
-	Wed, 13 Mar 2024 11:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648623F9D5;
+	Wed, 13 Mar 2024 12:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710331124; cv=none; b=ZFOdnw22u68D+gAk5xrbYw/SLQDyQss8skWBbH3GSHFXb3mgPbW0TsiBWSblK2FUojjy5sYpMas0butaguuUYm3+WqPvZe8yZzbIP5Vquz8atO1CqjCoBAy/AFbQlTGA1cuDwdHdhFi7XOJVrmuTAvSjO6zFDjIyrVP6L4zu4iw=
+	t=1710331231; cv=none; b=HrXwvfzxf6sgRzSkGI2vuO5hSftOH+XPSGglHTD7jeHjh6dnjHSiqHnDAR75lwwTAWVEI3u6Kudnc4LjRmfYrvouoXVufo+jsqBDBaJeJDUs1U9jpp8y081iz9DGxxOWR8Ik+ZY1BBbKjY4sKFswyreC6K2cBbz1iearB/OrTYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710331124; c=relaxed/simple;
-	bh=aoEvFdGB+nG2R9xqMooV1MLL4u52sFIKEJkfVFd6HaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WzQ/+L2qFhXcOwNZB8oIs6dzBSOP4JypnzM2F8nsMitjyI0sZfRc+Gx8t1hC43YjtUHPPu6rz7saxeHFXxEfAACawbaga4bfGLuh6+Z9yz2ot8xN9JmlCL16W7GbvmLtxUdjxt8kDTF3ofgtltQMCAgKhVSNuACducyJ426FqRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42DBwUok065194
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Wed, 13 Mar 2024 12:58:31 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
-From: Karel Balej <balejk@matfyz.cz>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, balejk@matfyz.cz
-Subject: [PATCH] input: ioc3kbd: add device table
-Date: Wed, 13 Mar 2024 12:53:42 +0100
-Message-ID: <20240313115832.8052-1-balejk@matfyz.cz>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710331231; c=relaxed/simple;
+	bh=oTmsZxsDwI243Hwkzpf2lxroCsnB9x2YChpMLaPvfP4=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=VwpajFPYW7rB2Yu8lyjDpredr9UdaIRzUgXeDqUYEFxklMceDIHdFyX57oueQDdE9x30nIwWNkGiFtOMuLE3dcHtSIGOwIcZh5r0thWbFuhgMwL6tia4269R33cr7nGnjUcqPsGNqnxDBWmDbj4VPweodJiixSOIpren9bAVwO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b5KbJ7PR; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710331229; x=1741867229;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=oTmsZxsDwI243Hwkzpf2lxroCsnB9x2YChpMLaPvfP4=;
+  b=b5KbJ7PR4YhP7VjpgLL9jPxlb1F4zSCvuUy4jeoekSs8keTmG/YFWJyt
+   czG+HFVLyFr6ZmkhoZ2Oom+G44IyU414S4tiVRZsHg2MvBaGVjoNa+HO6
+   jhkaaBSOyz5BMyjRS+7Cbxru+ftMLDBYYiDKMCzLulpnLmdYRpKWdGnY1
+   fCR6NE46O7UQNH7QCmnDjVKKdWvSxA10dSMp/KApqB3IhwyeiZXPCxC65
+   owX+bA48w9MiDXpnKH4OO4aDdnTuYGBRwpXVOLTsxuH2U2CgB0Optu+20
+   pf1Zqia0w6grQyJB/N0znBRHDYknqsgTBiCQnZt4CdJ+F1R25xCIdkHVS
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="4954283"
+X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; 
+   d="scan'208";a="4954283"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 05:00:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,122,1708416000"; 
+   d="scan'208";a="11782605"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.7])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 05:00:25 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 13 Mar 2024 14:00:21 +0200 (EET)
+To: Simon Guinot <simon.guinot@seagate.com>, 
+    Bjorn Helgaas <bhelgaas@google.com>
+cc: "Maciej W . Rozycki" <macro@orcam.me.uk>, linux-pci@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: fix link retrain status in
+ pcie_wait_for_link_delay()
+In-Reply-To: <20240313094938.484113-1-simon.guinot@seagate.com>
+Message-ID: <53b2239b-4a23-a948-a422-4005cbf76148@linux.intel.com>
+References: <20240313094938.484113-1-simon.guinot@seagate.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-Without the device table the driver will not auto-load when compiled as
-a module.
+On Wed, 13 Mar 2024, Simon Guinot wrote:
 
-Fixes: 273db8f03509 ("Input: add IOC3 serio driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
----
-I do not own any device using this driver, but I verified that modinfo
-does not show the "platform:ioc3-kbd" alias when run on the module
-compiled without this patch and it does with it.
+> The current code in pcie_wait_for_link_delay() handles the value
+> returned by pcie_failed_link_retrain() as an integer, expecting 0
+> when the link has been successfully retrained. The issue is that
+> pcie_failed_link_retrain() returns a boolean: "true" if the link
+> has been successfully retrained and "false" otherwise. This leads
+> pcie_wait_for_link_delay() to return an incorrect "active link"
+> status when pcie_failed_link_retrain() is called.
+> 
+> This patch fixes the check of the value returned by
+> pcie_failed_link_retrain() in pcie_wait_for_link_delay().
+> 
+> Note that this bug induces abnormal timeout delays when a PCI device
+> is unplugged (around 60 seconds per bridge / secondary bus removed).
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
+> Signed-off-by: Simon Guinot <simon.guinot@seagate.com>
 
- drivers/input/serio/ioc3kbd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Hi Simon,
 
-diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
-index 50552dc7b4f5..676b0bda3d72 100644
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -200,9 +200,16 @@ static void ioc3kbd_remove(struct platform_device *pdev)
- 	serio_unregister_port(d->aux);
- }
- 
-+static const struct platform_device_id ioc3kbd_id_table[] = {
-+	{ "ioc3-kbd", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, ioc3kbd_id_table);
-+
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
- 	.remove_new     = ioc3kbd_remove,
-+	.id_table	= ioc3kbd_id_table,
- 	.driver = {
- 		.name = "ioc3-kbd",
- 	},
+Thanks for your patch. There's, however, already a better series to fix 
+this and other related issues. Bjorn just hasn't gotten into applying them 
+yet:
+
+https://patchwork.kernel.org/project/linux-pci/list/?series=824858
+
+(I proposed a patch very similar to yours month ago, but Maciej came up 
+a better way to fix all the issues.)
+
+--
+ i.
+
+> ---
+>  drivers/pci/pci.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ccee56615f78..7ec91b4c5d03 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -5101,9 +5101,7 @@ static bool pcie_wait_for_link_delay(struct pci_dev *pdev, bool active,
+>  		msleep(20);
+>  	rc = pcie_wait_for_link_status(pdev, false, active);
+>  	if (active) {
+> -		if (rc)
+> -			rc = pcie_failed_link_retrain(pdev);
+> -		if (rc)
+> +		if (rc && !pcie_failed_link_retrain(pdev))
+>  			return false;
+>  
+>  		msleep(delay);
+> 
+
 -- 
-2.44.0
+ i.
 
 
