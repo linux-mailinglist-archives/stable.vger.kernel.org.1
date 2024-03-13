@@ -1,93 +1,101 @@
-Return-Path: <stable+bounces-28059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C42187AF94
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:29:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA5D87AF9F
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7DE91F2A248
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4491F2B42B
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C449F151122;
-	Wed, 13 Mar 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3287777626;
+	Wed, 13 Mar 2024 17:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZ2TFM26"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbdUdZY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A73A76F01;
-	Wed, 13 Mar 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CA577624;
+	Wed, 13 Mar 2024 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710349524; cv=none; b=qBIYrGCOurb20n09tNmH6AuYx0EjbqhFIm2XCjlKo5mEKDs30Hlt778mw8yPRUavByiOEq+SjIxXpRFhEYfFemjqekJUdmWXc1hNFQ0xk3Vqptb0lnmOmgW3emc3qYp0Ww0lb6e9bX/DgIfd7rxyLjrZtQH4KiZqGqlD8UuooHY=
+	t=1710349733; cv=none; b=GzNTl1bQPTVrL9wBUzJXCe2N3VErvXQeKkwI5JsBqIKQfFzUC+e9gWJTrz2n9XB2CC2c+rhLxboYzRBU6HTJaD3BKKHa4okBP13NltySLombpI0HGaPB314wHM6xQPD54a4X63qOBptrCbvoF0peVTo5MDu4PO/8swA9wfhmW4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710349524; c=relaxed/simple;
-	bh=8pPanzqmda9HQRheRwuL+iwvrL5EGjFgJRManGKVxic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onvYeGZwZBGV6FXHLno5/GqXcl9gXnC3Q7uakTJwtUhilsaMVwFvtXR//5iDJ5JHxLbmrtkUYS9hDNWZ1RdGYCUsxFHl1bb/hoHhDIKlBlkIw58VavE2ATTgBteH/tCfZsuC7LWCPWRD2YzEl/c+YMpoWebthjP77TlcBppjwkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZ2TFM26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60C6C433C7;
-	Wed, 13 Mar 2024 17:05:23 +0000 (UTC)
+	s=arc-20240116; t=1710349733; c=relaxed/simple;
+	bh=keuQhg3foI7ik3PHzL1Oy5CNygbpYHEt35VrYX/ALYk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RywGQavqBj7b7PJf95QSbyEs+YtHlP3Wp1Z6U57Q6hPf0lqA0ZhkYUmuS+XsPRjxuv14E9T6OwegDmmhSCi0c8SmrUL0mbVk9AC3CXU7vZfuuPcGwv9Wla2BHkplK9VBv54KVTe8djhldLBOW+P4f6WJdg4QVydWWTiT0188ALY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbdUdZY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67415C433F1;
+	Wed, 13 Mar 2024 17:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710349524;
-	bh=8pPanzqmda9HQRheRwuL+iwvrL5EGjFgJRManGKVxic=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ2TFM26jcdkz1k+lDAKfnmk9brZ4Lpfyq+Dz1YQzK0epOsSHT8wShOAu8L37tJE4
-	 o5BVZbE3dFCltQBlmq1yhHuO64V7+4hAYBuqVwFSA3f2Riyp/rJgui/MJ4jYGIGNFo
-	 gm1kqvI0QtBWkDh1tGTPOe9HVKYUSHnmaRAi20+daEnmoe+yf/rmt+DmjPGzFqcIXa
-	 dc17s4qlMJiSFPsGUkX+1Hggqb3SuvKPGt5HUFMHoGXAGieOISPqtKZx3+Ktla0WEU
-	 Z0R3pCAcz2Q8Tomf1KvEoeC82eVEduDzXaPn6sguupNW07ToQeyLLk69+EwkxFb7z8
-	 Sf1L5Zb8IVqkw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/41] Linux 4.19.310-rc1
-Date: Wed, 13 Mar 2024 13:04:35 -0400
-Message-ID: <20240313170435.616724-42-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240313170435.616724-1-sashal@kernel.org>
-References: <20240313170435.616724-1-sashal@kernel.org>
+	s=k20201202; t=1710349732;
+	bh=keuQhg3foI7ik3PHzL1Oy5CNygbpYHEt35VrYX/ALYk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XbdUdZY3fNNyx7zu62uuMWbKSy37FYls313diUx44FimNBczrShLJtvJpxe2ceMG7
+	 jT6MgVHff/GD/xL+gda4+vBHkuWGuAPT3Sbxfe86PCxhjy4+S8LvC/GLPc8yJxdPEj
+	 DMtHnWxVb+GEX7nMsjjFfZXXqDIQ2b1JjLyjWayKZqHGmY2ie93Ts/bDt6I9qZUdrp
+	 7QFh09DFT41juaQY4R42LJXyiiiYG40uBrHH8Ug8yidGlgmJGzGqL9D02KQpwYVr9Z
+	 o52hju9oI4dBvO31FHjQJO2o1Fe+J4+ZYAN0YAlyHM0IyJbHFz36qryKI3GLGRgi48
+	 iZmcTNCJmdOiA==
+Date: Wed, 13 Mar 2024 17:08:48 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Ansuel Smith <ansuelsmth@gmail.com>
+Subject: Re: [PATCH 5.4 46/51] regmap: allow to define reg_update_bits for no
+ bus configuration
+Message-ID: <a8a62275-bcd7-4652-8a21-758f8e5f4911@sirena.org.uk>
+References: <20240313170212.616443-1-sashal@kernel.org>
+ <20240313170212.616443-47-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.310-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.19.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.19.310-rc1
-X-KernelTest-Deadline: 2024-03-15T17:04+00:00
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6l1XsiI6r34fGSja"
+Content-Disposition: inline
+In-Reply-To: <20240313170212.616443-47-sashal@kernel.org>
+X-Cookie: It's later than you think.
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 9648c95ee3201..2e45148cd10b2 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 4
- PATCHLEVEL = 19
--SUBLEVEL = 309
--EXTRAVERSION =
-+SUBLEVEL = 310
-+EXTRAVERSION = -rc1
- NAME = "People's Front"
- 
- # *DOCUMENTATION*
--- 
-2.43.0
+--6l1XsiI6r34fGSja
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Mar 13, 2024 at 01:02:07PM -0400, Sasha Levin wrote:
+> From: Ansuel Smith <ansuelsmth@gmail.com>
+>=20
+> [ Upstream commit 02d6fdecb9c38de19065f6bed8d5214556fd061d ]
+>=20
+> Some device requires a special handling for reg_update_bits and can't use
+> the normal regmap read write logic. An example is when locking is
+> handled by the device and rmw operations requires to do atomic operations.
+> Allow to declare a dedicated function in regmap_config for
+> reg_update_bits in no bus configuration.
+
+New feature.
+
+--6l1XsiI6r34fGSja
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXx3Z8ACgkQJNaLcl1U
+h9CkSgf/XLOZB7MDULvxqB9e9n1SAiTj7Bn6Ax4WwW3rBmhQ0XLUQkhrg2VIp5cY
+Cp5rjkbHD5qYnjp4/0hVfzCRcnr7H6pSeMU6FlgpIgV8zxxfmaPnXTqHWZN6dqmF
+RFJU6wJ6uy8ThaTpfqkZ+lpoIF70gsYdEUpPPWb87frQefbZs35U5WsjvB3gWhtK
+SUjLJQFLewR+XVySZb9qWcI25wYe/3tW/D6/+SiIGXTSzCRTc/HVS2Joc9SCAoj6
+UXRnNsO2/EILJqLgPqYTMDx93vYxDTHuJAIujdX+lEAyYoXrY34N9zKBykztFkC+
+Y9HyHafzYEp/zn3qcpi7vOBaAPFsKA==
+=7zit
+-----END PGP SIGNATURE-----
+
+--6l1XsiI6r34fGSja--
 
