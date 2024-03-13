@@ -1,167 +1,136 @@
-Return-Path: <stable+bounces-27585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056C787A71C
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 12:30:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A937687A70B
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 12:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36E841C20DDA
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 11:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 542621F22CF4
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 11:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FAC3F8EA;
-	Wed, 13 Mar 2024 11:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E943F8D4;
+	Wed, 13 Mar 2024 11:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JHTkQMP3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hP/L08/s"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B8A3EA72;
-	Wed, 13 Mar 2024 11:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E73EA6C
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 11:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710329430; cv=none; b=L591MWBMTZnk81D3gEn8KZ6AhEIXkigVmCaO+DpNU7DNhjbIidPk3LI1vtqIJriEITGqBLyvM6UsrC59hfeCAGfNq5q9st7Xys0gvRlltrtMpzk+LF1QZ0rS1li7WdusZC+q5p5PU3QuTBuPKFd4s7wB14FBqaMNm18Ds44Xnkc=
+	t=1710329020; cv=none; b=uGhlzXfls70NsjaFM4VWfyopes/azfYzfVs7FzEADGvfAnS2PK9FT5NUARpNcnRHbuo5C7X+9F6mM2j2jgEChSjLZkCFkSNnXLHLaeeEckJgua0CL4k3h0XqAkMrpQMPHv+lJTpguBZln31Uv0Mu+9IwK94sxgpRL6M/ON6UaWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710329430; c=relaxed/simple;
-	bh=rwEW4ySKbuvJZTu5EpEHtshEWyyGgcijixSrw4EKNwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nyZvgj2IWacyZfRc/oTrEwPyh/1nUvF4VmD5nNS/gL78uCicSk9j2f7oCNkl+/v8e3CqvLADCea58nYUnXdm3ROxzdA3vNXS6Bd6u5AELuGbCkc95nqpkCpt3qsW25DJlw5BotOa7ZqA4NBVpPxhZzGYOn0VTMWMM8bISdsU+h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JHTkQMP3; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=kky/dRJyKBUx3h381cnSb+YhqF1W+SBQhMlIYZOCUjM=; b=JHTkQMP3eWxl1jUynSym40Wck1
-	g2mAz51Fn20s+96CmQHKcDABvD0U7X7MAh8NV7U2WODtevqXR+r8b54O4wETah2klzrZr0JSF9Klr
-	JCO6EBtnGl4WIzUgTXbxYw8ATutMGifsELKriAZe14vi2xe3feV3COcNe8fh8P5QEBP8muiGfF5uh
-	PIR55YxKP0+WQEuJZYhrb7gt9/hMS65JrRi+SAeubqb4sxzT5LY1sMc122Z2V+cPs9h0g7WbFc0W5
-	dTuICzDf03P8r0XenOZhJqn45vVLCoiFWmmaKunBfnN3Wn6DpGh/WHZ+7gzsYscYbvrM6z5xnQylM
-	VGF4cc5w==;
-Received: from [177.62.247.190] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1rkMoN-009vIC-01; Wed, 13 Mar 2024 12:30:19 +0100
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To: linux-scsi@vger.kernel.org
-Cc: jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	stern@rowland.harvard.edu,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	kernel-dev@igalia.com,
-	kernel@gpiccoli.net,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Subject: [PATCH] scsi: core: Fix unremoved procfs host directory regression
-Date: Wed, 13 Mar 2024 08:21:20 -0300
-Message-ID: <20240313113006.2834799-1-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1710329020; c=relaxed/simple;
+	bh=snCtwmWFz2VQkRVkYgDqqbYQNPCAkM8uboUeL8aDobI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tkL1RJGi6pUYitmkjefpTsupCX/8qqv9eW02RGNH50ISLTqD422n+KZEWYwHqNA24OV+Z3/jgi9PlKpvn8H4/Qq8luAFypbiogueTZV9meiWNsQSi0zHFMSNXpWQ9svlUD0QOIe5Wyp/bUaAlBdG672HgwxYc4OTqhT0o2aKLus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hP/L08/s; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42D9v8uR007212;
+	Wed, 13 Mar 2024 11:23:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=NQpXNVfH+tJUTwyZ+SqQMBl5k1g/PXORYi/fo/4MB8s=; b=hP
+	/L08/sno3oCbu0ePSUoxEizITZ4NYhlB81C3yF/mSFDEJ9FX44PPFkXWgrhN7R2p
+	rHVFIVehgAjBKWUaqf/CPt2ilc/MbxmaH2m93RgmJtPD12M+zpPq5cYINjAx4kai
+	0KStzxe/5WhjbOLg0lbWoaRCB7nln8OUx3WDEFAz6AExCM67rLIPdvYggdxKjjko
+	y757XtBiJJjlKBNDU5qx+jt+QisPVNUmsmreZRqL/RANXfAutqjayTS+kFLYuM/0
+	BMcSJ0ZqWXSFTHsVovrevNYr9js7W2YJleevIPgDmsHz/FZabIa6QueEuF6FVTAe
+	wxcxSEp4Z7IoDu68q4kA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wu9y3r57y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 11:23:17 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42DBNGeE017532
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 11:23:16 GMT
+Received: from [10.214.226.177] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 13 Mar
+ 2024 04:23:13 -0700
+Message-ID: <8dd12cfc-e5bd-caae-5a32-e1203a478bac@quicinc.com>
+Date: Wed, 13 Mar 2024 16:53:10 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name} directory
-earlier") fixed a bug related to modules loading/unloading, by adding a
-call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led to a
-potential duplicate call to the hostdir_rm() routine, since it's also
-called from scsi_host_dev_release(). That triggered a regression report,
-which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
-directory removal regression"). The fix just dropped the hostdir_rm() call
-from dev_release().
-
-But happens that this proc directory is created on scsi_host_alloc(),
-and that function "pairs" with scsi_host_dev_release(), while
-scsi_remove_host() pairs with scsi_add_host(). In other words, it seems
-the reason for removing the proc directory on dev_release() was meant to
-cover cases in which a SCSI host structure was allocated, but the call
-to scsi_add_host() didn't happen. And that pattern happens to exist in
-some error paths, for example.
-
-Syzkaller causes that by using USB raw gadget device, error'ing on usb-storage
-driver, at usb_stor_probe2(). By checking that path, we can see that the
-BadDevice label leads to a scsi_host_put() after a SCSI host allocation, but
-there's no call to scsi_add_host() in such path. That leads to messages like
-this in dmesg (and a leak of the SCSI host proc structure):
-
-usb-storage 4-1:87.51: USB Mass Storage device detected
-proc_dir_entry 'scsi/usb-storage' already registered
-WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
-
-The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
-but guard that with the state check for SHOST_CREATED; there is even a
-comment in scsi_host_dev_release() detailing that: such conditional is
-meant for cases where the SCSI host was allocated but there was no calls
-to {add,remove}_host(), like the usb-storage case.
-
-This is what we propose here and with that, the error path of usb-storage
-does not trigger the warning anymore.
-
-Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
-Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
-Cc: stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
----
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH STABLE v6.1.y] mm/migrate: set swap entry values of THP
+ tail pages properly.
+To: Zi Yan <ziy@nvidia.com>, <gregkh@linuxfoundation.org>,
+        <stable@vger.kernel.org>
+CC: <linux-mm@kvack.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Huang Ying <ying.huang@intel.com>,
+        Naoya
+ Horiguchi <naoya.horiguchi@linux.dev>
+References: <20240306155217.118467-1-zi.yan@sent.com>
+Content-Language: en-US
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <20240306155217.118467-1-zi.yan@sent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: BQLT4tyFDTUi3-WYfkazEnPF2aXjRTnr
+X-Proofpoint-GUID: BQLT4tyFDTUi3-WYfkazEnPF2aXjRTnr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_07,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 clxscore=1011 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403130083
 
 
-Hi folks, thanks in advance for reviews.
+On 3/6/2024 9:22 PM, Zi Yan wrote:
+> From: Zi Yan <ziy@nvidia.com>
+> 
+> The tail pages in a THP can have swap entry information stored in their
+> private field. When migrating to a new page, all tail pages of the new
+> page need to update ->private to avoid future data corruption.
+> 
+> This fix is stable-only, since after commit 07e09c483cbe ("mm/huge_memory:
+> work on folio->swap instead of page->private when splitting folio"),
+> subpages of a swapcached THP no longer requires the maintenance.
+> 
+> Adding THPs to the swapcache was introduced in commit
+> 38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"),
+> where each subpage of a THP added to the swapcache had its own swapcache
+> entry and required the ->private field to point to the correct swapcache
+> entry. Later, when THP migration functionality was implemented in commit
+> 616b8371539a6 ("mm: thp: enable thp migration in generic path"),
+> it initially did not handle the subpages of swapcached THPs, failing to
+> update their ->private fields or replace the subpage pointers in the
+> swapcache. Subsequently, commit e71769ae5260 ("mm: enable thp migration
+> for shmem thp") addressed the swapcache update aspect. This patch fixes
+> the update of subpage ->private fields.
+> 
+> Closes: https://lore.kernel.org/linux-mm/1707814102-22682-1-git-send-email-quic_charante@quicinc.com/
+> Fixes: 616b8371539a ("mm: thp: enable thp migration in generic path")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-The issue  with usb-storage happens upstream but despite we have a
-repro in the aforementioned Syzkaller report, it's only easy to reproduce
-the proc_dir_entry warning in a timely manner on stable right now.
+Tested this patch for 6.1 kernel and observed no issues. With that,
 
-The reason for that is commit 036abd614007 ("scsi: core: Introduce a new
-list for SCSI proc directory entries") not being present on stable. This
-commit (indirectly) bumps the ->present field from unsigned char to uint,
-and the bug reproducer shows the warning whenever such field overflows,
-hence it's way easier/faster to see this problem in stable, though it's
-present in latest v6.8.0 too.
+Reported-and-tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
 
-Cheers,
-
-Guilherme
-
-
- drivers/scsi/hosts.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index d7f51b84f3c7..445f4a220df3 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -353,12 +353,13 @@ static void scsi_host_dev_release(struct device *dev)
- 
- 	if (shost->shost_state == SHOST_CREATED) {
- 		/*
--		 * Free the shost_dev device name here if scsi_host_alloc()
--		 * and scsi_host_put() have been called but neither
-+		 * Free the shost_dev device name and remove the proc host dir
-+		 * here if scsi_host_{alloc,put}() have been called but neither
- 		 * scsi_host_add() nor scsi_remove_host() has been called.
- 		 * This avoids that the memory allocated for the shost_dev
--		 * name is leaked.
-+		 * name as well as the proc dir structure are leaked.
- 		 */
-+		scsi_proc_hostdir_rm(shost->hostt);
- 		kfree(dev_name(&shost->shost_dev));
- 	}
- 
--- 
-2.43.0
-
+Thanks,
+Charan
 
