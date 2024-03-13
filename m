@@ -1,53 +1,69 @@
-Return-Path: <stable+bounces-28107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C70587B51B
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 00:10:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB5C87B535
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 00:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1F57B21883
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 23:10:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4721F22110
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 23:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D57C5CDF3;
-	Wed, 13 Mar 2024 23:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6646D5D725;
+	Wed, 13 Mar 2024 23:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fTo9IO2q"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MMtq5M5M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EBC5C606
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 23:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFF25EE64;
+	Wed, 13 Mar 2024 23:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710371409; cv=none; b=nbYOAHuLJwdJcZOjDESWThx4ufoMuGvKie/K4CoGkvoTqVae0kxgC1VRhGb8Vugv9Iaqp2+beond1E0guMGwm4XoV3vGtniRccyQzMyno656iAbHgnUq83FQEAwBgU5vOjkrcbJMNBd4lRFwPQmQtR+DT5qKpKRA22O5sJCnsCU=
+	t=1710372848; cv=none; b=S5iLXgZ1xmptVwMA6i5sUwDI4TLWoPf3hzSki45IMZ7+NNGdVbK2SwUMDZgmSDjFq2+9p4kBFwL4TlDZubTOhOM434Dcshgcdf358TKIt3U+JQ21H4eDRaRUy5PIsY7yspMDDgIvdAt3zR+UiTsLuve2lAWH1Y66OGntCNj2QHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710371409; c=relaxed/simple;
-	bh=kdHGNf15Fkji+Yncd0qKZLXXXshvhJrNdSwpkSrHW2E=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=i8gCEcbKro5Jt0PiPUVRbX7aqhw36G6aPB+HOg5duUmdLRI0YZacUDu/D9i355B7LrLST78wV0ylaJmLxzjgOxJTSsNpfxB6vNk1FiVtV9NqSWUbZcUzeIyYPyWR0zUh2+FcJMmNm7sWznUdvelZCuybokUlfRxuTH8jolYAllk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fTo9IO2q; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=3qu2niw75nb2xbjezbisjc3dce.protonmail; t=1710371398; x=1710630598;
-	bh=rYZPrBzSjkyRIMR5GIwY/KAK6jPdoSu7grZu7ns8X4Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=fTo9IO2qtRKJE1X29fMuTUGTtSPKC1Y/lyivka8OWJABM8Bpd764HMOCR/vxeW14V
-	 zRJkNTTeUe7eHXqgM5qKGYS8Uhm/UbJbRFPOa6CbeBdO0ATMw2WB+UtCiDBTp8e8YH
-	 0m05TS0wYo+qGfDNZXJM1Ic0RKKgmJszbR4TXGMqiSZ3uYrAXU/y839sKjLmDMZrbG
-	 64VvCO3nt9XSKT3ZRLQvua04GOU8o+G59eGJ46X3azCa5xo3rPTKnNjww8WzpUqFXe
-	 54UOdOd/L2el/nKQuZ96+hDYefQj+UIJEDJgICx2rEvmccewi0z3ks832LpCQmb/Cl
-	 ZryR0wOx3uSqQ==
-Date: Wed, 13 Mar 2024 23:09:37 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Laine Taffin Altman <alexanderaltman@me.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: init: remove impl Zeroable for Infallible
-Message-ID: <20240313230713.987124-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1710372848; c=relaxed/simple;
+	bh=whkIXUwacmK25UpsXAzYc6urI2QdGo2r/V3+fH0Eoxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dWXsEMbxMJK4qWzMAG9GssDHb7eNOfI/8bdFwdmfQW2pBjo9R4KJOirnckPiJeB1HhHlucZCHBH1zZdUz8oHO19T9pyxXqE5SGVnhmHkilY/oasHwy1Il/kVB1T4Nk/aVur2BNjsQeLgtnHMAcJIJy+GiBzD6ByKSyfCn20uLao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=MMtq5M5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F86C433C7;
+	Wed, 13 Mar 2024 23:34:06 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MMtq5M5M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1710372844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p3zmeXxzdCToZqnWjGmQGSAP39p4sNEysp0MFtFKYJM=;
+	b=MMtq5M5MQcos/Ph8psXzmSyXjTuUQ/ubznxBpoI2RhOlajKhs39s8O+ntSa6Q20xd7UVKZ
+	5DRGlUxFw+rTlqzXUtni5BbBDWqvtaJkFfLyQarKQ8OYpPtZNLzJ1sSW1b1cWwareRuAi1
+	DRMEYR3P7NSr51tsYEZ3ATK8PMKciB0=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6a922124 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 13 Mar 2024 23:34:04 +0000 (UTC)
+Date: Thu, 14 Mar 2024 00:34:03 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>,
+	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH v5] x86/coco: Require seeding RNG with RDRAND on CoCo
+ systems
+Message-ID: <ZfI366mQplePkvHv@zx2c4.com>
+References: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
+ <20240224011921.2663985-1-Jason@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,47 +71,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240224011921.2663985-1-Jason@zx2c4.com>
 
-From: Laine Taffin Altman <alexanderaltman@me.com>
+Hi Borislav,
 
-It is not enough for a type to be a ZST to guarantee that zeroed memory
-is a valid value for it; it must also be inhabited. Creating a value of
-an uninhabited type, ZST or no, is immediate UB.
-Thus remove the implementation of `Zeroable` for `Infallible`, since
-that type is not inhabited.
+On Sat, Feb 24, 2024 at 02:18:56AM +0100, Jason A. Donenfeld wrote:
+> There are few uses of CoCo that don't rely on working cryptography and
+> hence a working RNG. Unfortunately, the CoCo threat model means that the
+> VM host cannot be trusted and may actively work against guests to
+> extract secrets or manipulate computation. Since a malicious host can
+> modify or observe nearly all inputs to guests, the only remaining source
+> of entropy for CoCo guests is RDRAND.
+> 
+> If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
+> is meant to gracefully continue on gathering entropy from other sources,
+> but since there aren't other sources on CoCo, this is catastrophic.
+> This is mostly a concern at boot time when initially seeding the RNG, as
+> after that the consequences of a broken RDRAND are much more
+> theoretical.
+> 
+> So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
+> fails, panic(). This will also trigger if the system is booted without
+> RDRAND, as RDRAND is essential for a safe CoCo boot.
+> 
+> This patch is deliberately written to be "just a CoCo x86 driver
+> feature" and not part of the RNG itself. Many device drivers and
+> platforms have some desire to contribute something to the RNG, and
+> add_device_randomness() is specifically meant for this purpose. Any
+> driver can call this with seed data of any quality, or even garbage
+> quality, and it can only possibly make the quality of the RNG better or
+> have no effect, but can never make it worse. Rather than trying to
+> build something into the core of the RNG, this patch interprets the
+> particular CoCo issue as just a CoCo issue, and therefore separates this
+> all out into driver (well, arch/platform) code.
+> 
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Daniel P. Berrangé <berrange@redhat.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
+> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` f=
-unction")
-Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
-Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
- rust/kernel/init.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This has been sitting on the list for a while with a few positive
+reviews and no outstanding objections, afaict. Can you merge this to
+tip?
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 424257284d16..538e03cfc84a 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
-     i8, i16, i32, i64, i128, isize,
-     f32, f64,
-=20
--    // SAFETY: These are ZSTs, there is nothing to zero.
--    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallible,=
- (),
-+    // SAFETY: These are inhabited ZSTs, there is nothing to zero and a va=
-lid value exists.
-+    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
-=20
-     // SAFETY: Type is allowed to take any value, including all zeros.
-     {<T>} MaybeUninit<T>,
-
-base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
---=20
-2.42.0
-
-
+Thanks,
+Jason
 
