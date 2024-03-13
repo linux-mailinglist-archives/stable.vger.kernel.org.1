@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-28067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7597087AFFA
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AB987B002
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A664B1C2563F
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6ADC1C25FC4
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13AE63411;
-	Wed, 13 Mar 2024 17:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DC486251;
+	Wed, 13 Mar 2024 17:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tMGKg4EC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P3pHXiar"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8C66281D
-	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 17:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511366350A
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 17:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710351012; cv=none; b=R0J/pfZAQxX3hr8un8OFIIqfYEubCiZlK0xYaoQPWQy1XeBg0EVQX/8jA3r5L337sPgO9WMNKM+6yVphH9TqiklERMC55KQznKjUuzJQQgF09wfT6lBcbj7O6P2sOePhrszeMHepz9F6kA+ImS55GqIOiKZd5lDJkI5TALa5ARI=
+	t=1710351093; cv=none; b=X7ccJCEolnqZDUqXZP0MOuJVtt+Z55mRY06jCGj6FoGFP8fZW9Xy4NGVjmcdgaxWl0/YfPEg0bf0WouvdM1z75NQ/f3EnDuZrRXfazmY0CBwGAyMGWfiPddJtvICc3gXsmY+VS+ez9iPIjvnzbPA4/JcnCZc+a3K/5edslBD+HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710351012; c=relaxed/simple;
-	bh=qE9WN0G7vqIW6urvfjtascr1kEa+MwOFnJlUgn9El1E=;
+	s=arc-20240116; t=1710351093; c=relaxed/simple;
+	bh=GWANjV8MPosZMudkYmWwAdXHm3I7Rfz0GYSZJhw8r6o=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=MyOvb5Q0KQ/qSCVaSw3lqrqBZfluZnQQy+Lkx7Cm36IVIVPY/llYBddpgIw2KvynEmaw1li9QeTbyQFQBXuWOdBihq0qr8RSh92XTCArwgoeTnqwsRedYB8VEgqPpnb7POF9jR4DnZukx4uKwaMSOIFTKBaviqqx1uxXZg91kJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tMGKg4EC; arc=none smtp.client-ip=209.85.128.169
+	 MIME-Version:Content-Type; b=GHMmp73A8IGXyAKyqv+R0edvB1nkM4OH0N73oCR8G4a7HwQYLRl0PhPCGovIkJR55VzW44nVAwDCe2yhxQgX0E17n0pZyDvQ+VhJmvBaLGkogH7RncSlb6WkTo/eQQms3u4UlVRqWW/Z5pb/yack9Hu8k6ECxms8R099G/OVHmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P3pHXiar; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-609fc742044so1241377b3.1
-        for <stable@vger.kernel.org>; Wed, 13 Mar 2024 10:30:10 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-60a0a54869bso1291347b3.1
+        for <stable@vger.kernel.org>; Wed, 13 Mar 2024 10:31:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710351010; x=1710955810; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1710351090; x=1710955890; darn=vger.kernel.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDZyfj8uQkTVjkzThm7shPFLmVnEzQeIt/9Q/lnq+ak=;
-        b=tMGKg4ECLT9JyOxL046zaLNag1Wk1iyvLsQ3J8va+kp1LIXJWF6uqZWOKeQncpeqYT
-         XL1kdw8YkE2pj7lCoae4YJBmZTnC0W0XE/Pzl/ZR62LWZi6SPcL2kSNua60TKeCrkGXl
-         0902DTRt2DicgB8Ef+LjEtWjiV00V8CF11sDkHqYsvJcaXQYPU3uac7MNhGJfdcRFks6
-         AIAZ3I5CbzLhavtgOX6kRvtpcJMtOjs8nRLuP7dYoFMGWmPIeQkdT2icwoEhPm+UOlw3
-         L6pt7NuK18xYBWTYkmx/A7C633WQQoYSXvUpmIYuyREP3zeoi2Xdhv8pVdsap+LTRVYQ
-         QgqA==
+        bh=yb4/do1pROjeTju1s/xyNesTFTYE8gM2f/me0LbmaOw=;
+        b=P3pHXiarU/BMho1vE3WdMkbKq1Mn27fMPTqG3GygJ3XH+a+N+zpbslACpYblsZCgrc
+         +0PNw6m9RCFuVp+x5qjfUzemX/cPgntzzTxT2hXZ3SnoJxNfSJm/upedptPkxATs5A9n
+         ox0e7f9RIjRiWicgk6HRF8h33+ojOjnxi5pUnP34jItF2+5TQELSFFaB4aRU5W/uoGDo
+         bziR8vtuWCGTwtBMDMC1wJ3JPlU+Wc2WrbfQ4ry3HhNfbJZOMsqGJelDoUpCB+Hl6519
+         ABVwAH33g6S3oFeSfE/erRZdtGSkARAh3K8/6x4Nz26WR5oyAoC19PwLQgWzEHDbUkrs
+         Mhvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710351010; x=1710955810;
+        d=1e100.net; s=20230601; t=1710351090; x=1710955890;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDZyfj8uQkTVjkzThm7shPFLmVnEzQeIt/9Q/lnq+ak=;
-        b=GkE9EhV2SmTH2PGGLJQgEEW5/gruyYA5hfQl2UcyvV4vPi9+ZxAsO1A+Dy5Kf2CfLJ
-         1V6MOmudqghAXQ4suqG+z4RSmCDXcIPX5lppTRyqXEHq6G6J3ur2GBCSFHduz9dPDN7V
-         ysFwJg+7zyClk3V7xP7Y6qHKyRj/nVoifzHFGLNOp1jYrGPQXjT52yD9NET93ZSMH08s
-         n2bE9uK5r+wtnXJc5/m5zCElEmu9LGLFj0n4xQv+loLD7cYA8oSVJhkxTCoIw2ebX9IF
-         1g+pjQfln/p4dQKT+Bg/35KabyjrVTUza2cm4Bs6YTTGvIStMgR43a7AXQ1Cm2ZCkBrF
-         VGeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUa0nSND/0PyPGl6MALRrm4zMJCm+xzO7aU/kiWhNrBHvcXMEttkPgZQobLINo18z0+oxmS0CCM1rVYa5/pkd2C3r0rRBAG
-X-Gm-Message-State: AOJu0YysUqXPH4Mxol7183uwtaTv6MeECgFq/HeG6MMYZJjemxhpzzU1
-	eXFa7Qkut6o335fLu7Z0Xrx1K8mnZgYrvptvMcF9xZU7voz8HSIOfvqwZbu0Xg==
-X-Google-Smtp-Source: AGHT+IGubD4Di1OqoOZhz8NRbIKSGmeys0QcYHPC2dp20EmYgN3ILwPFrQbaE4JB5gpUAvenkkwgqQ==
-X-Received: by 2002:a81:7cc4:0:b0:609:f5b5:5731 with SMTP id x187-20020a817cc4000000b00609f5b55731mr3580689ywc.21.1710351008104;
-        Wed, 13 Mar 2024 10:30:08 -0700 (PDT)
+        bh=yb4/do1pROjeTju1s/xyNesTFTYE8gM2f/me0LbmaOw=;
+        b=MbvRWebrquU1++NZbl5S462FJwnC+8Mu8r0zkaFD/tcliOsnwCXrvLiCzMFjzKllRS
+         QEjvZa6qH+L1DD6P9eMSjWLchJ2f6ujn+qWGC8zdVifoytJaP3U9qyz9uaDFHYsx3gnS
+         J02g8bQZYO7uDCpSh+e1HYDlOcxZwsxLQgcuAY2VUDeks82AeNlfQGvrazzQGCXpoSCJ
+         JdFb1kRupdSy+O/cedT4KagkQ0mDMfLpDF1EOoVeHUMUfeV8F7SUfBA4lRbgn/Af+sgM
+         4iOtEmuByw74t1jIc//J20QBzHbCb1tSKn9l6XwpT3vgKjt/vDVwj0LsSPVz7opiE0w7
+         rQ2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX5yncUqvNFUx77HQ3u4oderKW78pm3OMEmKbZ4sK62EjI7a5By8mdUR4U4bOmj0JEk+ZnDWnXOelulFeVHDKevUPmQRa9C
+X-Gm-Message-State: AOJu0YyWBxdTuPnBdXQG7IPI2c7PSSO7QrblJiwHwbk9fXZ4pVILt4rw
+	reMsC6jCVYY7IOQlhX9YzPWk1kOj55OXqNw9g0b72FvEDhpUUq/lZeALkWwsug==
+X-Google-Smtp-Source: AGHT+IHIxyeZrRDcA0+VGiUFeh7A7NOw0l84hWBqdGKwSNmlmn1RVN2dpsnyBZxM1nruchewFxHtOg==
+X-Received: by 2002:a81:4011:0:b0:609:b1ec:3ffb with SMTP id l17-20020a814011000000b00609b1ec3ffbmr2321912ywn.6.1710351090126;
+        Wed, 13 Mar 2024 10:31:30 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id q74-20020a81994d000000b006097887f574sm2557690ywg.80.2024.03.13.10.30.06
+        by smtp.gmail.com with ESMTPSA id l31-20020a81ad1f000000b0060a3ac68cfasm1772032ywh.61.2024.03.13.10.31.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 10:30:07 -0700 (PDT)
-Date: Wed, 13 Mar 2024 10:29:56 -0700 (PDT)
+        Wed, 13 Mar 2024 10:31:29 -0700 (PDT)
+Date: Wed, 13 Mar 2024 10:31:27 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Sasha Levin <sashal@kernel.org>
 cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
     Kefeng Wang <wangkefeng.wang@huawei.com>, 
-    Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, 
-    Huang Ying <ying.huang@intel.com>, Hugh Dickins <hughd@google.com>, 
+    Matthew Wilcox <willy@infradead.org>, "Huang, Ying" <ying.huang@intel.com>, 
+    David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
     Mike Kravetz <mike.kravetz@oracle.com>, Zi Yan <ziy@nvidia.com>, 
     Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.6 05/60] mm: migrate: remove PageTransHuge check in
+Subject: Re: [PATCH 6.6 06/60] mm: migrate: remove THP mapcount check in
  numamigrate_isolate_page()
-In-Reply-To: <20240313163707.615000-6-sashal@kernel.org>
-Message-ID: <e4f8cd8f-db70-5a09-ad6e-6ec5fa2788b0@google.com>
-References: <20240313163707.615000-1-sashal@kernel.org> <20240313163707.615000-6-sashal@kernel.org>
+In-Reply-To: <20240313163707.615000-7-sashal@kernel.org>
+Message-ID: <320639a0-74fe-9a9b-864b-b0c5ab6ff15d@google.com>
+References: <20240313163707.615000-1-sashal@kernel.org> <20240313163707.615000-7-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,36 +91,21 @@ On Wed, 13 Mar 2024, Sasha Levin wrote:
 
 > From: Kefeng Wang <wangkefeng.wang@huawei.com>
 > 
-> [ Upstream commit a8ac4a767dcd9d87d8229045904d9fe15ea5e0e8 ]
+> [ Upstream commit 728be28fae8c838d52c91dce4867133798146357 ]
 > 
-> Patch series "mm: migrate: more folio conversion and unification", v3.
+> The check of THP mapped by multiple processes was introduced by commit
+> 04fa5d6a6547 ("mm: migrate: check page_count of THP before migrating") and
+> refactor by commit 340ef3902cf2 ("mm: numa: cleanup flow of transhuge page
+> migration"), which is out of date, since migrate_misplaced_page() is now
+> using the standard migrate_pages() for small pages and THPs, the reference
+> count checking is in folio_migrate_mapping(), so let's remove the special
+> check for THP.
 > 
-> Convert more migrate functions to use a folio, it is also a preparation
-> for large folio migration support when balancing numa.
-> 
-> This patch (of 8):
-> 
-> The assert VM_BUG_ON_PAGE(order && !PageTransHuge(page), page) is not very
-> useful,
-> 
->    1) for a tail/base page, order = 0, for a head page, the order > 0 &&
->       PageTransHuge() is true
->    2) there is a PageCompound() check and only base page is handled in
->       do_numa_page(), and do_huge_pmd_numa_page() only handle PMD-mapped
->       THP
->    3) even though the page is a tail page, isolate_lru_page() will post
->       a warning, and fail to isolate the page
->    4) if large folio/pte-mapped THP migration supported in the future,
->       we could migrate the entire folio if numa fault on a tail page
-> 
-> so just remove the check.
-> 
-> Link: https://lkml.kernel.org/r/20230913095131.2426871-1-wangkefeng.wang@huawei.com
-> Link: https://lkml.kernel.org/r/20230913095131.2426871-2-wangkefeng.wang@huawei.com
+> Link: https://lkml.kernel.org/r/20230913095131.2426871-3-wangkefeng.wang@huawei.com
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > Suggested-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
 > Cc: David Hildenbrand <david@redhat.com>
-> Cc: Huang Ying <ying.huang@intel.com>
 > Cc: Hugh Dickins <hughd@google.com>
 > Cc: Mike Kravetz <mike.kravetz@oracle.com>
 > Cc: Zi Yan <ziy@nvidia.com>
@@ -133,22 +118,24 @@ Hugh
 
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  mm/migrate.c | 2 --
->  1 file changed, 2 deletions(-)
+>  mm/migrate.c | 4 ----
+>  1 file changed, 4 deletions(-)
 > 
 > diff --git a/mm/migrate.c b/mm/migrate.c
-> index b4d972d80b10c..6f8ad6b64c9bc 100644
+> index 6f8ad6b64c9bc..c9fabb960996f 100644
 > --- a/mm/migrate.c
 > +++ b/mm/migrate.c
-> @@ -2506,8 +2506,6 @@ static int numamigrate_isolate_page(pg_data_t *pgdat, struct page *page)
+> @@ -2506,10 +2506,6 @@ static int numamigrate_isolate_page(pg_data_t *pgdat, struct page *page)
 >  	int nr_pages = thp_nr_pages(page);
 >  	int order = compound_order(page);
 >  
-> -	VM_BUG_ON_PAGE(order && !PageTransHuge(page), page);
+> -	/* Do not migrate THP mapped by multiple processes */
+> -	if (PageTransHuge(page) && total_mapcount(page) > 1)
+> -		return 0;
 > -
->  	/* Do not migrate THP mapped by multiple processes */
->  	if (PageTransHuge(page) && total_mapcount(page) > 1)
->  		return 0;
+>  	/* Avoid migrating to a node that is nearly full */
+>  	if (!migrate_balanced_pgdat(pgdat, nr_pages)) {
+>  		int z;
 > -- 
 > 2.43.0
 > 
