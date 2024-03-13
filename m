@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-27985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0672387AEC0
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:07:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F1F87AEC2
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 19:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37EF91C22559
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:07:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B007B203D4
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E696271B40;
-	Wed, 13 Mar 2024 17:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00C173177;
+	Wed, 13 Mar 2024 17:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYxwE0+7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrQggCwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3A71756;
-	Wed, 13 Mar 2024 17:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97A573167;
+	Wed, 13 Mar 2024 17:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710349355; cv=none; b=jhYfDeVn7T+QTmDmGJHsIaUmaQmgLFLSLjg/Gk5omYjeit1Tuhq3QCs9GVeo+JL/astTnJUs2JI32zyAjZoK2mxuYE87kj19lQmyWT5uaWa8/9ahjNeEZ9tqgYkxaYa2AQRGAURJIw2IbfDTAORxFJ2xtUUIWrIp31fNbnxPhTY=
+	t=1710349356; cv=none; b=MPjxiUe0WsB8Fe8RSFhCe9bsTvlrBbIHvsigXFOmbKlIiSnWmHKzO6YoFhSYOPJ8oS2WoMIQRi0WhagEzfsijmaqfM/QTzvhogqFDogjDuubTULNCCigjB9Fao5hHjO2J5zXR+y6A9Py5BuKcTu4LBxhHaTPjnqucPWZHXS/u9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710349355; c=relaxed/simple;
-	bh=0LJ2CWf8dZ+ux98zpD23ZC+0kzCfQP0p3T3DPZ2ji5I=;
+	s=arc-20240116; t=1710349356; c=relaxed/simple;
+	bh=UGTS1l72uXNu6ldUQ6JlOoZmBkgNjDDfy824JbPUXKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCHEK/NNGBw/OEn+hjZHCuBctnND3f+vReWzmUNzhs9r1+33HaZMnSN3vXKaX1L/4cPMorBEyRE3N+O+FaKUKzLi3wJY4XKZjbq62ZGmZKvYwWJ1ffb5jTHMAzFlGsO1P4vO4wboCmZaGMq5e+JfpoJrl3uTt1SfR8yjW997g8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYxwE0+7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2727C433F1;
-	Wed, 13 Mar 2024 17:02:34 +0000 (UTC)
+	 MIME-Version; b=WO2FZ1YbGQGBtj7gWo6750DqH+1xnSoBJTpaiXmnJ8Sog1NkQRcYgykTO24WqNI14B1uHZ7MMC4J/Qm+8MNECm1k5uXzBj5tR7DheuKTb9CWPSr2EKYJlzC7CYNaVjvoaMV8+JoJ+Jj9cnx3nQmjfmDGIpv0OFbNh8M8khfxpJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrQggCwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0F2C43390;
+	Wed, 13 Mar 2024 17:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710349355;
-	bh=0LJ2CWf8dZ+ux98zpD23ZC+0kzCfQP0p3T3DPZ2ji5I=;
+	s=k20201202; t=1710349356;
+	bh=UGTS1l72uXNu6ldUQ6JlOoZmBkgNjDDfy824JbPUXKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYxwE0+7rgbHZlEvQm3SRbRV3UPBI+Ma31gvlnG/IEglVqHddzHRpm+hq9b6/sH+Y
-	 5be+MBwKUUkdhg2GMwEaC90tPowzhGyexgprfDH5u0FY6OeK+DugxYfQXV+dOYl/xr
-	 pfvqZ74pWyzBDwNgAM5lqhoAvoRKIj9Wnl5fiZtNkwuFQlO3cAPtBEsP3pLLtNxLpx
-	 g801MmCKIjDB1eUq21EdvxKzBI9GRJkWdRqJBZUSBR0b8Je6EO0PUbII4lQgw+t5Cv
-	 pwt/ePb8200kpDrBc0cjU1bRwwJSW9VXRL/n3x9HF/ZeEYgf8+CliDKIqfcZOalXKR
-	 USDF5l71Cfh/w==
+	b=QrQggCwHIXWUXh7GDf7PcNfARkmaXFWN5g20NqcdYcz6sgKPQp7mBBPDLgqTY6bhY
+	 snVlX/2PCtwN80AQ91VvFcMkmZfNPUlmO9+VcDC8/OMq9tyqggoDOwyO5bbUWrOCmR
+	 5x44z7tFG5o4uDKS0DbxNo5N9WsMzYaTyHbqJyzRsSrDmilfmguNNLL67ifPO1ipTr
+	 GEul0Yg4DCA0cEmyhf9FLE4jOlWdOB/5w69skQ3O3ef4ftQPCtuVnHuVd05sSPJENx
+	 JsQFIC2e3c8ko3pzPB+iwODONxEkBdu8Rrdm70vhuxLPyESfko4gWgcznEk9lZp/M2
+	 t7xbqZ3htGa4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Jason Xing <kernelxing@tencent.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/51] netrom: Fix a data-race around sysctl_netrom_transport_busy_delay
-Date: Wed, 13 Mar 2024 13:01:40 -0400
-Message-ID: <20240313170212.616443-20-sashal@kernel.org>
+Subject: [PATCH 5.4 20/51] netrom: Fix a data-race around sysctl_netrom_transport_requested_window_size
+Date: Wed, 13 Mar 2024 13:01:41 -0400
+Message-ID: <20240313170212.616443-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240313170212.616443-1-sashal@kernel.org>
 References: <20240313170212.616443-1-sashal@kernel.org>
@@ -71,7 +71,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 43547d8699439a67b78d6bb39015113f7aa360fd ]
+[ Upstream commit a2e706841488f474c06e9b33f71afc947fb3bf56 ]
 
 We need to protect the reader reading the sysctl value because the
 value can be changed concurrently.
@@ -85,18 +85,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
-index 97a13de007e12..d02db01edf2fd 100644
+index d02db01edf2fd..bf29260f6e52a 100644
 --- a/net/netrom/af_netrom.c
 +++ b/net/netrom/af_netrom.c
-@@ -437,7 +437,7 @@ static int nr_create(struct net *net, struct socket *sock, int protocol,
- 	nr->n2     =
- 		msecs_to_jiffies(READ_ONCE(sysctl_netrom_transport_maximum_tries));
- 	nr->t4     =
--		msecs_to_jiffies(sysctl_netrom_transport_busy_delay);
-+		msecs_to_jiffies(READ_ONCE(sysctl_netrom_transport_busy_delay));
+@@ -440,7 +440,7 @@ static int nr_create(struct net *net, struct socket *sock, int protocol,
+ 		msecs_to_jiffies(READ_ONCE(sysctl_netrom_transport_busy_delay));
  	nr->idle   =
  		msecs_to_jiffies(sysctl_netrom_transport_no_activity_timeout);
- 	nr->window = sysctl_netrom_transport_requested_window_size;
+-	nr->window = sysctl_netrom_transport_requested_window_size;
++	nr->window = READ_ONCE(sysctl_netrom_transport_requested_window_size);
+ 
+ 	nr->bpqext = 1;
+ 	nr->state  = NR_STATE_0;
 -- 
 2.43.0
 
