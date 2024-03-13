@@ -1,165 +1,109 @@
-Return-Path: <stable+bounces-27591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEFE87A8B7
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:48:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526A687A902
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 15:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C1A286EC6
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 13:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069291F24BEC
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4834E43AB5;
-	Wed, 13 Mar 2024 13:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6D44437D;
+	Wed, 13 Mar 2024 14:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gysu9iY5"
+	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="skwZd2/F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ECB46535;
-	Wed, 13 Mar 2024 13:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B449C4120B;
+	Wed, 13 Mar 2024 14:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.203.221.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710337707; cv=none; b=F00m24NjhJhdYfEuH3DHLqdgNyF87cIXzGql9ks3RW76tTJ38LSQm+3hv+8cXGHWg8UaT2k49vyuvCz0XvZXbW0j6TAou84H2XjdMNOaVBNpRQmkZZ3yHIdkUncj2lJuDF4Ta19z9g9k8sigYhKXkoR9W+i+ynTrkBzWnkwNPg0=
+	t=1710338735; cv=none; b=fIrrDtKjhbcxdVASwO40j4TAv4IFxXvmuvBywuRUzNSNuUk2yY4N8DGL3lBqowxWR3eftB2ZYASjj4nJVLxGYWLfBCu0/3pttbOiHI71vXTpAHCoSgZzdMOsQpLox0ndNSJAS259PedkLXoT+ruCQWlr8lsZTg+5dGtgC2m5b2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710337707; c=relaxed/simple;
-	bh=1vk1dW5yulwl98bZqyU0j1DXY9vZePqONTWNRuWKVdo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aV7G/JKGr2Yb0qqvTEHhofzhzQfQRkbpVx1RKrYtcAM2P66oYexP+nmLCXrYxALaeAOJ0CIy7Js/7qSNW+KzTADzP8tgzonMtwgp4e6R5yVqalrI0rWL1stz42yP2QU9iQ5eiZZha3zptx31Xzmf7wHtONyuHF5TwUvbZAFEOZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gysu9iY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA89C433C7;
-	Wed, 13 Mar 2024 13:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710337706;
-	bh=1vk1dW5yulwl98bZqyU0j1DXY9vZePqONTWNRuWKVdo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Gysu9iY5eVpRhX+phTpgU7qWi+1P/J7ppsO2XIJV2IF3chQKSZl5ivxrwyX5DJNSl
-	 NtWBtv2cdlajq4nh9JXqMqxgOzGK1au+i+HYkH0vFf03azCLLRtzSg4vYEDMTpqkOK
-	 86pxiLz1VTyt7oROFfDPB2BEtREw5zbQaKS3vclmPn5CRL9O2apuMSyKq01YfHbJpg
-	 2+r/IiKrX9zxIm8zYpr/9tCxYL6praPAwBnZMbepCdLK8Fakn1nI7HSdkOZlv/jB8v
-	 JusNJOWSGss+0rKb/niI+7tm7jf4CkW/ryvjIsN8Q0zgzvQhZHjU71cwR5zxZfbylK
-	 xLJO4Xts3rhqQ==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-512e4f4e463so1201171e87.1;
-        Wed, 13 Mar 2024 06:48:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWvvtCVz71dsVQY43/C47Qt65gI2onZjLdbpO0/muyyyNNu0rRvMrRVAVKMKFqL52ec3yOTMaCKlqZyW0JdGtHmbsyag1/pps/O8ZXusgTu2dTW+Dx2+sFIehKV6YoiZmJFCYI=
-X-Gm-Message-State: AOJu0Yyp/pE9S0H+SKc5vBGdLZlc6eeWGQkQcn3dlMMRGCsibwhabx1O
-	ox0FvsujEzq1yqe4aHcIdCcGVYzad6Gz2YCwIcbC2DlPKMV/kt8LzRTxGMrkZyLxqSYSSDHdQKW
-	hdXtazHH5Wh70ZTdk1fgzyRMsrIY=
-X-Google-Smtp-Source: AGHT+IEVlJlsAN6K07N+wQAFEo4ls5fHweELumESuiLz248WzwUqQxvzIc75kcPW8hPB8rs4CfPlqS16WCiaYe9WXAc=
-X-Received: by 2002:ac2:4c42:0:b0:513:3dc5:cd5f with SMTP id
- o2-20020ac24c42000000b005133dc5cd5fmr6564753lfk.40.1710337704736; Wed, 13 Mar
- 2024 06:48:24 -0700 (PDT)
+	s=arc-20240116; t=1710338735; c=relaxed/simple;
+	bh=8qtHRFqFZ2rbe52sUD4by7YDRxEdBcPf5IDzrs6Gjqk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cSjWXsMG+ZJLiVpMl+BnoSfZVlEiFGsOaecf5EpPaidZeCO9Em3kilnsLiGg4z4cW18Nx6DnU/Luv8QyaW8g1F1dUZJbRbIFuqocmiXj4CK2n/BGYNg1apho72Yk6o6vsJmDgdjz6vr5TG5+jbv5G05Cu8SPKgyqwvsrjHPFHKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=skwZd2/F; arc=none smtp.client-ip=159.203.221.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=puri.sm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
+Received: from localhost (localhost [127.0.0.1])
+	by comms.puri.sm (Postfix) with ESMTP id 4B155E7CE6;
+	Wed, 13 Mar 2024 06:56:12 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+	by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id UKUs71YCXFd8; Wed, 13 Mar 2024 06:56:11 -0700 (PDT)
+From: Jonathon Hall <jonathon.hall@puri.sm>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+	t=1710338171; bh=8qtHRFqFZ2rbe52sUD4by7YDRxEdBcPf5IDzrs6Gjqk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=skwZd2/FqDgucBW9TVZI7DDHLSeEqLuS6GX+OxZWnbxS94J7b5xXqbyf4dB2LCC7t
+	 rkPNwVVnSTzp+Z4/DZNVjs8R4PtJ1KvjJGSf3p/p4RaVfmINKTtatBrXSmzzWB/mf9
+	 x8lPunfhdCNq7U39Eb8Nu0oZxfUTI1RmlHVNpvMt3JkxM6awOnjzG4k7Rwkm6vdQEB
+	 7xuvk1SeePRNVBruhxrcSNvXFXTUsQRIAm3OviQ2DTyXCJfjz6LFUWg/v76egWXC5L
+	 2E0CRRgWGybYV8g/A3DA+bxoWgdhJlAogbAFjhOKvYLW9SLs3OT+msma+0x8Nymt8K
+	 tJgmp+ZDJRI5w==
+To: linux-kernel@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.viv@intel.com,
+	tursulin@ursulin.net
+Cc: Jonathon Hall <jonathon.hall@puri.sm>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915: Do not match JSL in ehl_combo_pll_div_frac_wa_needed()
+Date: Wed, 13 Mar 2024 09:54:25 -0400
+Message-Id: <20240313135424.3731410-1-jonathon.hall@puri.sm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304211551.833500257@linuxfoundation.org> <20240304211551.880347593@linuxfoundation.org>
- <CAKisOQGCiJUUc62ptxp08LkR88T5t1swcBPYi84y2fLP6Tag7g@mail.gmail.com>
- <da17e97b-1880-415d-8cdb-07e79808e702@leemhuis.info> <20240311184108.GS2604@twin.jikos.cz>
- <d9d46e16-ae73-4495-98a4-ab08ac501132@leemhuis.info> <CAL3q7H7kZkTMfzb0Xg_m1EbNyjj1eqqs4m=ovHM80MqCCCD7gw@mail.gmail.com>
- <5f7b720c-3516-42b2-826c-68fb5ba18353@leemhuis.info>
-In-Reply-To: <5f7b720c-3516-42b2-826c-68fb5ba18353@leemhuis.info>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Wed, 13 Mar 2024 13:47:47 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H6jVfg2GkhEsJk64+TdRq5CdapfSfSgXvqoCa4U6zXbKg@mail.gmail.com>
-Message-ID: <CAL3q7H6jVfg2GkhEsJk64+TdRq5CdapfSfSgXvqoCa4U6zXbKg@mail.gmail.com>
-Subject: Re: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent locking
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: dsterba@suse.cz, Filipe Manana <fdmanana@suse.com>, David Sterba <dsterba@suse.com>, 
-	stable@vger.kernel.org, patches@lists.linux.dev, 
-	Josef Bacik <josef@toxicpanda.com>, Sasha Levin <sashal@kernel.org>, Chris Mason <clm@fb.com>, 
-	linux-btrfs <linux-btrfs@vger.kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 13, 2024 at 1:42=E2=80=AFPM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> On 11.03.24 21:06, Filipe Manana wrote:
-> > On Mon, Mar 11, 2024 at 7:23=E2=80=AFPM Linux regression tracking (Thor=
-sten
-> > Leemhuis) <regressions@leemhuis.info> wrote:
-> >>
-> >> On 11.03.24 19:41, David Sterba wrote:
-> >>> On Mon, Mar 11, 2024 at 10:15:31AM +0100, Linux regression tracking (=
-Thorsten Leemhuis) wrote:
-> >>>> On 06.03.24 13:39, Filipe Manana wrote:
-> >>>>> On Mon, Mar 4, 2024 at 9:26=E2=80=AFPM Greg Kroah-Hartman
-> >>>>> <gregkh@linuxfoundation.org> wrote:
-> >>>>>>
-> >>>>>> 6.7-stable review patch.  If anyone has any objections, please let=
- me know.
-> >>>>> It would be better to delay the backport of this patch (and the
-> >>>>> followup fix) to any stable release, because it introduced another
-> >>>>> regression for which there is a reviewed fix but it's not yet in
-> >>>>> Linus' tree:
-> >>>>> https://lore.kernel.org/linux-btrfs/cover.1709202499.git.fdmanana@s=
-use.com/
-> >>>> Those two missed 6.8 afaics. Will those be heading to mainline any t=
-ime
-> >>>> soon?
-> >>> Yes, in the 6.9 pull request.
-> >> Great!
-> >>
-> >>>> And how fast afterwards will it be wise to backport them to 6.8?
-> >>>> Will anyone ask Greg for that when the time has come?
-> >>> The commits have stable tags and will be processed in the usual way.
-> >
-> >> I'm missing something. The first change from Filipe's series linked
-> >> above has a fixes tag, but no stable tag afaics:
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux.git/commit=
-/?h=3Dfor-6.9&id=3D978b63f7464abcfd364a6c95f734282c50f3decf
-> >
-> > It has no stable tag because when I sent the patch there was yet no
-> > kernel release with the buggy commit
->
-> Obviously, no need to explain, the discussion got unintentionally
-> sideways after David mistakenly said "The commits have stable tags
-> [...]". Happens, no worries.
->
-> >> So there is no guarantee that Greg will pick it up; and I assume if he
-> >> does he only will do so after -rc1 (or later, if the CVE stuff continu=
-es
-> >> to keep him busy).
-> >
-> > Don't worry, we are paying attention to that and we'll remind Greg if n=
-ecessary.
->
-> Thx. But well, for the record: I would really have liked if you or David
-> would simply have just answered my earlier "And how fast afterwards will
-> it be wise to backport them to 6.8?" question instead of avoiding it.
+Since commit 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for
+platform/subplatform defines"), boot freezes on a Jasper Lake tablet
+(Librem 11), usually with graphical corruption on the eDP display,
+but sometimes just a black screen.  This commit was included in 6.6 and
+later.
 
-If I avoided that question it's because I can't give an answer to it.
+That commit was intended to refactor EHL and JSL macros, but the change
+to ehl_combo_pll_div_frac_wa_needed() started matching JSL incorrectly
+when it was only intended to match EHL.
 
-David is the maintainer who picks patches for Linus and does the pull reque=
-sts.
-So the "how fast" depends on him and then how fast Linus merges and
-then how fast Greg and the stable people pick it.
+It replaced:
+	return ((IS_PLATFORM(i915, INTEL_ELKHARTLAKE) &&
+		 IS_JSL_EHL_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+with:
+	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
+		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
 
-> Just knowing a rough estimate would have helped. And I guess Greg might
-> have liked to know the answer, too. But whatever.
->
-> Side note: I'm here to "worry". It's not that I don't trust you or would
-> ask Greg behind your back to pick the patches up. It's just that we are
-> all humans[1]. And regression tracking is here to help with the flaws
-> humans have: they miss things, they suddenly need to go to hospitals for
-> a while, they become preoccupied with solving the next complicated and
-> big bug of the month, or just forget something they wanted to do because
-> something unexpected happens, like aliens landing in a unidentified
-> flying object. And from all the regressions I see that are not handled
-> well and the feedback I got it seems doing this work seems to be worth it=
-.
->
-> Ciao, Thorsten
->
-> [1] at least I think so...
-> https://en.wikipedia.org/wiki/On_the_Internet,_nobody_knows_you%27re_a_do=
-g
-> :-D
->
+Remove IS_JASPERLAKE() to fix the regression.
+
+Signed-off-by: Jonathon Hall <jonathon.hall@puri.sm>
+Cc: stable@vger.kernel.org
+---
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+index ef57dad1a9cb..57a97880dcb3 100644
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -2509,7 +2509,7 @@ static void icl_wrpll_params_populate(struct skl_wrpll_params *params,
+ static bool
+ ehl_combo_pll_div_frac_wa_needed(struct drm_i915_private *i915)
+ {
+-	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
++	return ((IS_ELKHARTLAKE(i915) &&
+ 		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+ 		 IS_TIGERLAKE(i915) || IS_ALDERLAKE_S(i915) || IS_ALDERLAKE_P(i915)) &&
+ 		 i915->display.dpll.ref_clks.nssc == 38400;
+-- 
+2.39.2
+
 
