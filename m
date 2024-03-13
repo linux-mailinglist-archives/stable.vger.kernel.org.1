@@ -1,132 +1,134 @@
-Return-Path: <stable+bounces-27592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DF787A8CB
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:56:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F30587A8F2
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 15:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640742879E9
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 13:56:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8136286D83
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 14:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D9843AC3;
-	Wed, 13 Mar 2024 13:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B33C4437C;
+	Wed, 13 Mar 2024 14:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b="PQLA1zVL"
 X-Original-To: stable@vger.kernel.org
-Received: from vm3.sequanux.org (static.68.236.76.144.clients.your-server.de [144.76.236.68])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3BC39860;
-	Wed, 13 Mar 2024 13:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.236.68
+Received: from mail.cybernetics.com (mail.cybernetics.com [72.215.153.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98139AC3
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 14:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.215.153.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710338176; cv=none; b=MPUHcOpCpxPQ6bFf9PdElOlxlj0yqMyFL7tDhlCsh9d9HGPzIlSe4mRGjehCxHKTSbetM0mBZmCgJPsZAVnWquNpqj5VAdFBgV86FBOjS5ugfp+VE3d2g60fGwPptM0Q6Ju01XFq+Q3sH5UuD3oXyNPpzuVtziNooS9HxwZ+VrQ=
+	t=1710338574; cv=none; b=GyTI7F783rbeh8yqn9/RXkkO0jxO56VAZmofE7QTYUmMuYCgrmTARFvEE8dqveAaId1LvDx/fG8SgVEFEfFFWiUvuBJ0oRBzEMI2uh0gIGMCM6cdlmQ6XHnAf37hj9iVW7fnybgi704xXy5kSE065xNLkaPgFdb/WUU2clmNCSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710338176; c=relaxed/simple;
-	bh=3xfXWowKXIUy7WOzMOjdDR46YrTwruVTW+DQSDGDdL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBNe6bjV5Xs1cz3JB55CKrTCPzpaPHk2dpT8Nyx2i0Jc9YtGYKHDoOasrpJgeD4ztLom+gJ55znnNP2eMT9agP4RkZM7LAnrCBc86pPvBZhoL4zfFDXu2MRbV1DJ62vtTm4htQr/Web4EaOMgnTsZ2hdDTxOGaI2S60U6EWDZCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sequanux.org; spf=pass smtp.mailfrom=sequanux.org; arc=none smtp.client-ip=144.76.236.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sequanux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sequanux.org
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by vm3.sequanux.org (Postfix) with ESMTP id 75860108ACB;
-	Wed, 13 Mar 2024 14:55:48 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at vm3.sequanux.org
-Received: from vm3.sequanux.org ([127.0.0.1])
-	by localhost (vm3.sequanux.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 8xtazUWw3KBV; Wed, 13 Mar 2024 14:55:20 +0100 (CET)
-Received: from localhost (ns3093303.ip-145-239-244.eu [145.239.244.120])
-	by vm3.sequanux.org (Postfix) with ESMTPSA id 1D9DE108A60;
-	Wed, 13 Mar 2024 14:55:20 +0100 (CET)
-Date: Wed, 13 Mar 2024 14:55:03 +0100
-From: simon.guinot@sequanux.org
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: Simon Guinot <simon.guinot@seagate.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Maciej W . Rozycki" <macro@orcam.me.uk>, linux-pci@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: fix link retrain status in
- pcie_wait_for_link_delay()
-Message-ID: <ZfGwN0PWF6M9kp0v@localhost>
-References: <20240313094938.484113-1-simon.guinot@seagate.com>
- <53b2239b-4a23-a948-a422-4005cbf76148@linux.intel.com>
+	s=arc-20240116; t=1710338574; c=relaxed/simple;
+	bh=AX7xmkO30QA98nigOmzlZWAfs+apei7HSsoFjSpZWZo=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=j4/qVnIN0Peso0eWbdyFBD7Q9grzHSe6q6/DPOb+QONx4QpyW+bdrD1WCH+Qtt9uXBPJtOv0KjSopTRpBKgSS9iJR+4ETy5TksMZLzddWzCWY46yMh/OowW8Ci6rhONmgRB063he0/tx4AdtG/vVQozdhbaoKrfrW+53Q3AQECE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com; spf=pass smtp.mailfrom=cybernetics.com; dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b=PQLA1zVL; arc=none smtp.client-ip=72.215.153.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cybernetics.com
+X-ASG-Debug-ID: 1710338543-1cf4391a1cd52b0001-OJig3u
+Received: from cybernetics.com ([10.10.4.126]) by mail.cybernetics.com with ESMTP id 5Ejmn0ZAPZlUvRxC for <stable@vger.kernel.org>; Wed, 13 Mar 2024 10:02:45 -0400 (EDT)
+X-Barracuda-Envelope-From: tonyb@cybernetics.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.10.4.126
+X-ASG-Whitelist: Client
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cybernetics.com; s=mail;
+	bh=5ilevwRMTps9hdgnJbjN5uNvkki7F+RF5YHPE/SgtyE=;
+	h=Content-Transfer-Encoding:Content-Type:Subject:From:To:Content-Language:
+	MIME-Version:Date:Message-ID; b=PQLA1zVLTBUxUxvixYd+S3cwFPMfISrUmwGHBXGEw4Cyw
+	RGUD92V/x6F/iyt50C1NQSscEDIExlaAugFF3Fjzs0t2R7hSLNwrzD2kb8UrCbMTDJa1HQ/YzOuVq
+	ehAuGTtCVnrDhlQtfjLS7So5c1QNYswB+UWQQ1zYN4jJo1Ti0=
+Received: from [10.157.2.224] (HELO [192.168.200.1])
+  by cybernetics.com (CommuniGate Pro SMTP 7.1.1)
+  with ESMTPS id 13125185 for stable@vger.kernel.org; Wed, 13 Mar 2024 10:02:23 -0400
+Message-ID: <a764cc80-5b7c-4186-a66d-5957de5beee4@cybernetics.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.157.2.224
+Date: Wed, 13 Mar 2024 10:02:23 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FV8bZ/8jnt890/Cz"
-Content-Disposition: inline
-In-Reply-To: <53b2239b-4a23-a948-a422-4005cbf76148@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable <stable@vger.kernel.org>
+From: Tony Battersby <tonyb@cybernetics.com>
+Subject: [PATCH] block: Fix page refcounts for unaligned buffers in
+ __bio_release_pages()
+Content-Type: text/plain; charset=UTF-8
+X-ASG-Orig-Subj: [PATCH] block: Fix page refcounts for unaligned buffers in
+ __bio_release_pages()
+Content-Transfer-Encoding: 7bit
+X-Barracuda-Connect: UNKNOWN[10.10.4.126]
+X-Barracuda-Start-Time: 1710338565
+X-Barracuda-URL: https://10.10.4.122:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at cybernetics.com
+X-Barracuda-Scan-Msg-Size: 1876
+X-Barracuda-BRTS-Status: 1
 
+commit 38b43539d64b2fa020b3b9a752a986769f87f7a6 upstream.
 
---FV8bZ/8jnt890/Cz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix an incorrect number of pages being released for buffers that do not
+start at the beginning of a page.
 
-On Wed, Mar 13, 2024 at 02:00:21PM +0200, Ilpo J=C3=A4rvinen wrote:
-> On Wed, 13 Mar 2024, Simon Guinot wrote:
->=20
-> > The current code in pcie_wait_for_link_delay() handles the value
-> > returned by pcie_failed_link_retrain() as an integer, expecting 0
-> > when the link has been successfully retrained. The issue is that
-> > pcie_failed_link_retrain() returns a boolean: "true" if the link
-> > has been successfully retrained and "false" otherwise. This leads
-> > pcie_wait_for_link_delay() to return an incorrect "active link"
-> > status when pcie_failed_link_retrain() is called.
-> >=20
-> > This patch fixes the check of the value returned by
-> > pcie_failed_link_retrain() in pcie_wait_for_link_delay().
-> >=20
-> > Note that this bug induces abnormal timeout delays when a PCI device
-> > is unplugged (around 60 seconds per bridge / secondary bus removed).
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
-> > Signed-off-by: Simon Guinot <simon.guinot@seagate.com>
->=20
-> Hi Simon,
->=20
-> Thanks for your patch. There's, however, already a better series to fix=
-=20
-> this and other related issues. Bjorn just hasn't gotten into applying the=
-m=20
-> yet:
->=20
-> https://patchwork.kernel.org/project/linux-pci/list/?series=3D824858
->=20
-> (I proposed a patch very similar to yours month ago, but Maciej came up=
-=20
-> a better way to fix all the issues.)
+  [ Tony: backport to v6.1 by replacing bio_release_page() loop with
+    folio_put_refs() as commits fd363244e883 and e4cc64657bec are not
+    present. ]
 
-Hi Ilpo,
+Fixes: 1b151e2435fc ("block: Remove special-casing of compound pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Tested-by: Greg Edwards <gedwards@ddn.com>
+Link: https://lore.kernel.org/r/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
 
-Thanks for pointing this patch series. This indeed fixes the timeout delay
-issue I observed.
+This is the backport for 6.1.
 
-Simon
+The upstream patch should apply cleanly to 6.6, 6.7, and 6.8.
 
---FV8bZ/8jnt890/Cz
-Content-Type: application/pgp-signature; name="signature.asc"
+This patch does not need to be backported to 5.15, 5.10, 5.4, or 4.19,
+since the backport of 1b151e2435fc to those kernels did not include
+the bug fixed by this patch.
 
------BEGIN PGP SIGNATURE-----
+ block/bio.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-iQIzBAABCgAdFiEEXW8DgovlR3VS5hA0zyg/RDPmszoFAmXxsDQACgkQzyg/RDPm
-szpC7RAAz4J+6UCQTn9hQ6BWFzd6ZG5Zc/U4EngEO9f4l9qVqC/EyZW9Q3fm9rms
-oj5tuUPW5SlbX+ZwO9xL3Hqb4vtRZfeNSEam4Pt4CQnDEV1d0E9mmj+Qt36b1rTc
-xOROQ86VHgKZSXu8PrMqfVKaWBUeUr3tuwO1LjU/RsmAUWNJtwPuBtBrQlBG/UU9
-WpfvZ+W2XyudnTH3ItLkE/sz06i51659+zkjDSdeggoZQPG6AZ6DdKz7UH8KOqoZ
-xu4jFrwQuoGyHB/S1umY2ozxglCZNwMdg5QHVWjgwAjTZIwD+cfTsQ5AOmx4BK3J
-HOqeL2ZBL1/gSkgFsjqnP+0TMVNjeWu1AjADmtZaBPnBIH0G+Ig0wdt4IA1QUJ1Z
-Q21qLL6w2DltvPBP1X1DK8vm49zvEpo7ESbXKTeeTLvXkCeMg41jPAixJKlAGLIl
-gGodBF+vjDWgWoJmGbV2NAUcWTM39+TaaVSag81Y+binDxEttjxiHgPcxC34VQzU
-Xghq/Hrz8tBZflWsRtsxtohbkBrLeyF1Pw0MmNYkLPD4KPUB8uNsIU+ffKXZLrBh
-AACWGmo2BQCaRraQnTBCsP34sN2cjh88KgLGHHeJ4hFJ1Nu2Ma4Jvn6L29QcNoaT
-aleFsGK1RHgFjP/NN7dV7VXEzy601LOscZA7nJAYr4ldEbMl/40=
-=5eFO
------END PGP SIGNATURE-----
+diff --git a/block/bio.c b/block/bio.c
+index 74c2818c7ec9..3318e0022fdf 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1112,19 +1112,16 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
+ 	struct folio_iter fi;
+ 
+ 	bio_for_each_folio_all(fi, bio) {
+-		struct page *page;
+-		size_t done = 0;
++		size_t nr_pages;
+ 
+ 		if (mark_dirty) {
+ 			folio_lock(fi.folio);
+ 			folio_mark_dirty(fi.folio);
+ 			folio_unlock(fi.folio);
+ 		}
+-		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
+-		do {
+-			folio_put(fi.folio);
+-			done += PAGE_SIZE;
+-		} while (done < fi.length);
++		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
++			   fi.offset / PAGE_SIZE + 1;
++		folio_put_refs(fi.folio, nr_pages);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(__bio_release_pages);
 
---FV8bZ/8jnt890/Cz--
+base-commit: 61adba85cc40287232a539e607164f273260e0fe
+-- 
+2.25.1
+
 
