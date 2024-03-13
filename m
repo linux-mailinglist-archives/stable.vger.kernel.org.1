@@ -1,105 +1,93 @@
-Return-Path: <stable+bounces-27884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C862B87AD9E
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:39:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E6487ADA5
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8439F283AA8
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 17:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 889AC1C22789
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 17:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6FF53364;
-	Wed, 13 Mar 2024 16:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8238A657AF;
+	Wed, 13 Mar 2024 16:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiTMbvmK"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="CN8A/RbA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF1647A6F;
-	Wed, 13 Mar 2024 16:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C4C47A6F;
+	Wed, 13 Mar 2024 16:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710348252; cv=none; b=Iqu82Q2eCXHyrXRisiPBhJaPn6i2rNRNUhbvgdgU9o9vqLoyQuvMTO9ZoKIc7PGnmf+I0qStIMnmPvWba2QZFQimzdJHKwvv6WKNa5SeX6PPoWk/C+yblgzhZyRBbUJRZcCITwCD8IE30VS+rvbkiM4jvr/Y1Qo4LTCdcOYYJ5M=
+	t=1710348270; cv=none; b=uC+sDhtU45Q83UGB8XGJpLBb/vIVCU8waUSyYOKPHY3jppgglZifZV5ZQnI0O+gUKEl3rfa92ipkllZhI/sIX7TLKOf2J3stmQw9uWX4bN4vzCFuE+NEiLlDLNIdBZnOPMKI/1oZOZA3E/H4pfnIbe+8Vqhgn9+QQAMiNZ8eCmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710348252; c=relaxed/simple;
-	bh=hu6DpvE5WrtXLVtktC2RDOr1HzwCQFEFXKkD6CCXoEY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZjXL3R9HVEB2Yk6eAjudE1DWM3d/9xlexLl4oCSfJaOpGwJRjf+akh9ksPDIjbiwPXdlbJD4Mo1j3lLO7g5WYcugrAL82P6cA+AJbAsn+eKmR3nMPsRfYYzxPZCX2Lam53unXNeLzNJR4tv7NOCb6AMqqUhMxpinJqdJtiT5U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiTMbvmK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0640C433F1;
-	Wed, 13 Mar 2024 16:44:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710348252;
-	bh=hu6DpvE5WrtXLVtktC2RDOr1HzwCQFEFXKkD6CCXoEY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiTMbvmKsyx73w93QN46IBb2DHWPyCDhJne0/OXUI93WUuu8GYWMh4rALJ94WrhDP
-	 2WgG2A221GyBBoNi2aWVhvfTtJLxvqVAIN6wdoGd4u+FccgB772Kh8gVWQjYo/HSN8
-	 obGqFzUrEBNJVdvsPdJUkHpK9feCq7n9kYwo7VUC8fdL96HvKpVbbCA++qr782BkUl
-	 RRAo71ipEk7P3TxmY5bn7KcWAWhcxtrqlZo6k6IsV7/kwZldlzlNd8Ec79ScfBZDOI
-	 cSHmgkHo+ClUz4L9C7HDxiG+2+P+wUB996/Sz/xLhANkWP2ynLBlL2LWIw4d5fWdd0
-	 ZTt79M+XF0wJg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rkRiG-0000000062D-0QH9;
-	Wed, 13 Mar 2024 17:44:20 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Rob Clark <robdclark@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] drm/msm/dp: fix runtime PM leak on connect failure
-Date: Wed, 13 Mar 2024 17:43:06 +0100
-Message-ID: <20240313164306.23133-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240313164306.23133-1-johan+linaro@kernel.org>
-References: <20240313164306.23133-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1710348270; c=relaxed/simple;
+	bh=+j4MnK8yhYNXo+bM95kvafS7T8rM0IDGcmMjawvqJlA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TAfdHgXdMqdAXqdBzGuf7MSKv6WK4NjAQdAy6SpJw5zIiCA5LhQsNSPCIqM0QJhGOBRxveslRgxlignkD/QPrx1AACZpp9GPUjK5VOxnXX9SIPIVtRycJSpM1XV5vTJaKtr9QZrK0L1FVVailAAToxGIUQLZB8habfVPQb0RDiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=CN8A/RbA; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4TvxDk1mczzlgVnY;
+	Wed, 13 Mar 2024 16:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1710348258; x=1712940259; bh=+j4MnK8yhYNXo+bM95kvafS7
+	T8rM0IDGcmMjawvqJlA=; b=CN8A/RbAmz+zbf0DpgisXuF0mIn5y25apVnP6Sq2
+	A8lmrxn1JsWRUV/o1c0x2MTLuqvU37Ar5Sd6Xl2GlwXBuQcZsg1imEwjaIoHH6d9
+	GlYR6VY67QuF+W0o6IJ9gIOwN3NbJYxtKil7aRzVfGjCBGxC2b8bhdS8Iha0gy+C
+	P/hiQ73bjRRrcm9LCcUa7u4xf0dDylJgUFkliwchl1r+43HjqkxHAE/gavrK7XEq
+	eEjhVMnpICnTwaTX1bGwLaQRrurO+cX4SB2LlvxdM3NUUsQABsGA0fT3glZWUSsX
+	nLMdvbJWqIplWtY6tf5Ke2riXG2Bt7yX9m/vNQm38SzHiw==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id VLYf3Jaka_yc; Wed, 13 Mar 2024 16:44:18 +0000 (UTC)
+Received: from [100.96.154.173] (unknown [104.132.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4TvxDb2X9XzlgVnW;
+	Wed, 13 Mar 2024 16:44:14 +0000 (UTC)
+Message-ID: <c8683449-1545-4372-b937-dbd0e023c22d@acm.org>
+Date: Wed, 13 Mar 2024 09:44:12 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: core: Fix unremoved procfs host directory
+ regression
+Content-Language: en-US
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-scsi@vger.kernel.org
+Cc: jejb@linux.ibm.com, martin.petersen@oracle.com,
+ stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
+ usb-storage@lists.one-eyed-alien.net, kernel-dev@igalia.com,
+ kernel@gpiccoli.net, syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
+ stable@vger.kernel.org, John Garry <john.g.garry@oracle.com>,
+ Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+References: <20240313113006.2834799-1-gpiccoli@igalia.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240313113006.2834799-1-gpiccoli@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Make sure to balance the runtime PM usage counter (and suspend) before
-returning on connect failures (e.g. DPCD read failures after a spurious
-connect event or if link training fails).
+On 3/13/24 04:21, Guilherme G. Piccoli wrote:
+> The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
+> but guard that with the state check for SHOST_CREATED; there is even a
+> comment in scsi_host_dev_release() detailing that: such conditional is
+> meant for cases where the SCSI host was allocated but there was no calls
+> to {add,remove}_host(), like the usb-storage case.
 
-Fixes: 5814b8bf086a ("drm/msm/dp: incorporate pm_runtime framework into DP driver")
-Cc: stable@vger.kernel.org      # 6.8
-Cc: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/gpu/drm/msm/dp/dp_display.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index 8e8cf531da45..78464c395c3d 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -598,6 +598,7 @@ static int dp_hpd_plug_handle(struct dp_display_private *dp, u32 data)
- 	ret = dp_display_usbpd_configure_cb(&pdev->dev);
- 	if (ret) {	/* link train failed */
- 		dp->hpd_state = ST_DISCONNECTED;
-+		pm_runtime_put_sync(&pdev->dev);
- 	} else {
- 		dp->hpd_state = ST_MAINLINK_READY;
- 	}
--- 
-2.43.2
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
 
