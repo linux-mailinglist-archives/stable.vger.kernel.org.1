@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-27905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E75587ADD2
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:44:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10B387AE7C
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 18:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604231C22090
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 17:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C17E283FC1
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 17:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EE1151CF3;
-	Wed, 13 Mar 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3037C5E22C;
+	Wed, 13 Mar 2024 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwUoKOhd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="igpBMHdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF1151CE9;
-	Wed, 13 Mar 2024 16:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFA55EE8A;
+	Wed, 13 Mar 2024 16:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710348421; cv=none; b=s64O75QPd68f21ZvAbgDEgdVJ7Pk0PK7iNJ5I0BYqAH/iwWPVEh20jlRkVe7m2PtwxV3RJV2d0tCQ3p1K+fxpdVy41bXaAUagRe/YRD3b2uRZRitYwPHb0yEuA+PyKEpxWDL4mNqQjeETrEdQhnnFGBMIty/9DWgDySwjLvRrMM=
+	t=1710348778; cv=none; b=ucqoVxIS+gtUUHO4uhJHijJ9/ZqGnzMSYTFB4iHyHkaSJQVjZTfXcgVJb6b9WJvFkyeE7GBTTbOf+oL4Ic4m65NNH2kOMFtwz8uyof3rblPEDG84C+MjjboS04hnh1bgIEcrihXBB35b0Fud0VdhFQ7pN1D9YaeCTrPxU+TWoU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710348421; c=relaxed/simple;
-	bh=+jwr+E1e7wjKU4lCYHP4hUUWX5Os8W7OxhqpQQ3L72Q=;
+	s=arc-20240116; t=1710348778; c=relaxed/simple;
+	bh=J1Pr+3VpE8ZujbDGegT2LVHFhljCEB6ex2jUS77yFFM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aslq9DYmAjHHDgeuooNKvxcsHqgEX90luWZgJBDkxeMGLNR3TP7MTmBH+55L3Rw0k8q8GI4blFANCoAakcm3qtNo1HqsmxScPWg1y7+3dvTgDJ0H1rKHGAVjVVauDnEK7BLvpwqTGeJRNnzQP/Ax8cfypggY5HF3CKc3LyF/q2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwUoKOhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29FEC433B1;
-	Wed, 13 Mar 2024 16:46:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=E9G/K+V0f7qOsUWidWQcV/OR8Rwv8NnCLo9jL8F6BsihlwVJMy9hVEOI0IqypXPZYX44IuNnO6uOUgmDWdvRlfAW553ug6WZrzCkliqc/9lX78I+XbReT6zMzusczZQouHlebj0w/ZrVEhBo0yveHIMeXIfO4e3CDHHY+uFGJSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=igpBMHdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65590C3278C;
+	Wed, 13 Mar 2024 16:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710348420;
-	bh=+jwr+E1e7wjKU4lCYHP4hUUWX5Os8W7OxhqpQQ3L72Q=;
+	s=k20201202; t=1710348777;
+	bh=J1Pr+3VpE8ZujbDGegT2LVHFhljCEB6ex2jUS77yFFM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwUoKOhdXe4FseNs+S7XWJGKhWSMSKg7T/KSJliml6a0KSPPDHP7JLVnGGY+t18xG
-	 1Fdb+vsEd5iGgmcVZrnwas/Zjjq/d3rvy0Nl1YhGDegsGFZC1lFOW9jfwyq+1gF/XO
-	 /S25fZwxkyHDfn8qKuz2y8bimUIJ5OGD5fv09tscft7nbTLnqVV7v2RQyQ/NMeZ0QF
-	 yiT4RT4B5mAnJIYEoB+BRiRNMgek46pO6JsFnFvB00nJDwpbsT1l39f4qLW/Lu+dLR
-	 tYEyGDz3oh0mwmd4EAoTyLAlw46AEJ4v7I+hlZaqF5ssJ+TDuz4aFkvoYjWtAjk8Ig
-	 EcqXaww2UUF7w==
-Date: Wed, 13 Mar 2024 16:46:56 +0000
+	b=igpBMHdgHOhVvxi7FhTiwMWpiJ3vzwt0kyQiVqizWRuUUfr76520EoH1oED4kHfc3
+	 k7DzCQMfOpfBDkhipvKo4BHWx2eEMyXZTsvI+DC55bSOxVAVESB/lI3TIah4cVfCbP
+	 LLUguCpLzGeZMm8MUHkEqF88OhON98rARSQdCzWn/qqaIy5G5X2NO0p9ZD6tErBM3Q
+	 QWJH2TtciAQIKdcJMdrv38yIeJQJ7HXn/fFpwEXgSPZ2tSOM32P7YGiTmRtf5fctfE
+	 XMCCowCWVUqZxvCMCaW25Bu2/wUJnImqFlMveduY9ib/r/M72YoIwqfH9xfyQwlIQa
+	 0L/gNx9YN7aqw==
+Date: Wed, 13 Mar 2024 16:52:53 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Marek Vasut <marex@denx.de>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Robert Foss <robert.foss@linaro.org>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH 5.15 73/76] regmap: Add bulk read/write callbacks into
- regmap_config
-Message-ID: <8bcd85fb-401f-4a3b-b10e-633a0478c0da@sirena.org.uk>
-References: <20240313164223.615640-1-sashal@kernel.org>
- <20240313164223.615640-74-sashal@kernel.org>
+	Ansuel Smith <ansuelsmth@gmail.com>
+Subject: Re: [PATCH 5.10 68/73] regmap: allow to define reg_update_bits for
+ no bus configuration
+Message-ID: <b8f5a59e-6ecc-4440-9fbc-b9932bd6ddd7@sirena.org.uk>
+References: <20240313164640.616049-1-sashal@kernel.org>
+ <20240313164640.616049-69-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,46 +58,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3+1Eqv4y7vYH/W56"
+	protocol="application/pgp-signature"; boundary="AoEQviumDTaIy5xI"
 Content-Disposition: inline
-In-Reply-To: <20240313164223.615640-74-sashal@kernel.org>
+In-Reply-To: <20240313164640.616049-69-sashal@kernel.org>
 X-Cookie: It's later than you think.
 
 
---3+1Eqv4y7vYH/W56
+--AoEQviumDTaIy5xI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 12:42:20PM -0400, Sasha Levin wrote:
-> From: Marek Vasut <marex@denx.de>
+On Wed, Mar 13, 2024 at 12:46:35PM -0400, Sasha Levin wrote:
+> From: Ansuel Smith <ansuelsmth@gmail.com>
 >=20
-> [ Upstream commit d77e745613680c54708470402e2b623dcd769681 ]
+> [ Upstream commit 02d6fdecb9c38de19065f6bed8d5214556fd061d ]
 >=20
-> Currently the regmap_config structure only allows the user to implement
-> single element register read/write using .reg_read/.reg_write callbacks.
-> The regmap_bus already implements bulk counterparts of both, and is being
-> misused as a workaround for the missing bulk read/write callbacks in
-> regmap_config by a couple of drivers. To stop this misuse, add the bulk
-> read/write callbacks to regmap_config and call them from the regmap core
-> code.
+> Some device requires a special handling for reg_update_bits and can't use
+> the normal regmap read write logic. An example is when locking is
+> handled by the device and rmw operations requires to do atomic operations.
+> Allow to declare a dedicated function in regmap_config for
+> reg_update_bits in no bus configuration.
 
-This fairly clearly new functionality.
+Again, new feature.
 
---3+1Eqv4y7vYH/W56
+--AoEQviumDTaIy5xI
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXx2H8ACgkQJNaLcl1U
-h9AqFQf/WwV/cfcvn0xEPiR1Iu4kGZrxV+FEqIJx2I/a9DFvGuJ4MZVtStbeJSE2
-wbbtPFkwrF0CStlUJ6YduFszBdZKVWhYa9WX47VgNnZTuJYRV05P1aus5tdxpBWz
-yWr0wux8hXOcMppDU4j8IrqTAmC5viR8bE45PhoHPjBMgpDMmag5kDV8Vjz13wlj
-vQDuDIwunF38LGlWzkZHTZqBSNLmOcVmh/Odf2hEz2gOWlyK0vSS2U+HI+Xc95yP
-dpC386MsF1DYwGpJdwKKUK6OBFHvs7S9Ij/5/M4M4zpdPgCsrbEYkHaSTMzqYOq4
-zKbh6AXrmFb4x52I16OI9saNlxCxqg==
-=EWp9
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXx2eQACgkQJNaLcl1U
+h9Dx3Qf/dAU7Fa7U+qSwLcAxAzKL0s4SMZcAq7Z5XFA+EjHdje3GcwvhUl3NeX9v
+v2aXUzPgihhvNz2zWnJp394VZBMVk2eut9SfnK1OL+O50hXFf7uGJCS+ajXe5gr8
+S+UrTRG4bGbW5zkzhrr5nU1iGQeulqSSZ4IOhgpMVAzJtEMGOmj5wDUc+//bXIKp
+0FMyJaEMGv1L1rHJneM7TuoKJPJ6vkYOxvjwv3NYd566QMuZUuuhY4w1fzsDJNp2
+SEiTfjsxXty/jmtVz45SnTvUgrQyu3t4V6IGV10+u5zl/nLAd0lJEuOYzOaOMaFr
+wjgBSEI9lkGmv7FKLOplJY2RvF5fvQ==
+=cmvV
 -----END PGP SIGNATURE-----
 
---3+1Eqv4y7vYH/W56--
+--AoEQviumDTaIy5xI--
 
