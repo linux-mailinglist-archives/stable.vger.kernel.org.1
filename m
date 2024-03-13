@@ -1,196 +1,133 @@
-Return-Path: <stable+bounces-27574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-27575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B156E87A608
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 11:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4809A87A60E
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 11:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B4901C21CB1
-	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 10:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 799C71C21829
+	for <lists+stable@lfdr.de>; Wed, 13 Mar 2024 10:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6534D3D3B1;
-	Wed, 13 Mar 2024 10:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28463D386;
+	Wed, 13 Mar 2024 10:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4KOQBJJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Q6cBH+OD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D73383BD;
-	Wed, 13 Mar 2024 10:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC50EAC8
+	for <stable@vger.kernel.org>; Wed, 13 Mar 2024 10:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710326461; cv=none; b=Pr65I3rbWwyCCnqVXL/xlr5gYzxqZVxGZVZQUnwvChbcyqMDrHCjRZc/NLxC6rqWAn2NXURAl1+S7DI6ZpMoi4neo40oYhxlZU5xsr+l8MungYDFT43C6OHOT4av+d3ZI93KYxmx8Qf+LfXlEkCYUM8S0H0p/NzbG7yZ80mbLe0=
+	t=1710326608; cv=none; b=mdE3z13OFuAxFmhNri6TnguvAYZA6NLizb7Xy/BGIHUTRdGcPKpTTQIzWwKhjtQQAS0rjNWH8PwRY33F+3dxSqhG8CS/xfjvjQ7vmvlrhe9OQEtu5Sf3ZsI/8toLus5cVAf0KNQEMSe0VTWLwOUtcn2i1vzPe/pzIDv4WpbK75c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710326461; c=relaxed/simple;
-	bh=iniw4FjfzHJdtwpcTqrZL65yCg8M9Kq+nWaVRTEzJ7c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LGSPW6FtZPdPksZK8sI21aLClX0Lw2g4IUKrXtPZ6uVRkA2T8T56MZVwlDu/9Px//q3XXOvBy+b15sbFF1b9OfRwVvTX+KLH8b9HIGaL/iAL9K41e2im8Rid7SHwURR0gfuxyXcRrO6N6M39hRq+QyuQWcYoAyxE9eGSFhHNpp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4KOQBJJ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1dd7df835a8so36844315ad.1;
-        Wed, 13 Mar 2024 03:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710326458; x=1710931258; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6MTmoXI1DvsvyziwsWc47N2vchUh9twoshfIbZ2A0NI=;
-        b=V4KOQBJJPM9XSDSh0WHQR/Ev9Cm6dsXrgyOGNxIV9qwnyG7KNaMXn7MDdUwRxrQwMk
-         JGiV3B5KI9vaXZXphjIC8FwAOxqlwhRxpHukupc1auC0S4kO0v+5E+O5gbSsOAOcNBZt
-         DzUstrH1GQSIRFhvpC9Aii02Tdc05zawSoKRYsGlIfDQz6GvogmL8vJGpl/QngmakT8N
-         N7mTHFKIxTVLCgS6QQInAbLWKwOg4ibRi+lSBB93HesOEnC86tadUemRMF7eZ2Mjajfg
-         JBhH8yIDaeV9t0XdcPf1GBCNjUzT8y0SpSkI/PwPmuzWrUDpR7iDEZnQcokWiuKokQoA
-         D/Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710326458; x=1710931258;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6MTmoXI1DvsvyziwsWc47N2vchUh9twoshfIbZ2A0NI=;
-        b=wyoEXZomTlb6fk0hiNR/3lG66GhByGTcda1h2cgnLRaTLhe5J1u0msWjt+wxvC29cm
-         gLi4Rdke5UoWzhx7b0+BKGp8FWOHaMnFQw/44FRR3iQijzMFLVZ+zZmxSBj+RTJmAzRa
-         R1K66TXApRN50tbCWC0Z7r9fRVXLFofQVwX7z4GkY6HgLvM2V811aG4rSz1mFQ2U6K29
-         KslSDWqBDiHZg3QpCDti1TLYEtQ83PW8SuiG3IJl74fdercHQDrZesL5uE5ZCp44bORv
-         KbSV/6COL5hJDkkLqgFA1ZJH2H2cW79jlGz1DBteMst8KiLMWJ9lglXT5FL1bSmXjdDl
-         lYng==
-X-Forwarded-Encrypted: i=1; AJvYcCXrEHhWLcdMVSn1T8qYBAmil+xpIeJzJGtve6rC8ITLSm3Pe9cq7t2SuWzZYdJiteAnvDAh3uBet26pmgpQRj5jhXZePdbp
-X-Gm-Message-State: AOJu0Yyg5rOmTEmw90VEhoRL/ZJuXxS/x5zSbWjlgho2BH5mo4dGKm2J
-	BZhtw4OuT7AoF9KKofzl/8bpsox1PQc2YnihNZ0khruskzW5nmceqIZIw/3E+tA=
-X-Google-Smtp-Source: AGHT+IHLGc6WF2afTyIgZU+HNVN527Kh1r1dFBHrijZ8ZZIu5s966ZxkKGm5flnZSAJGAa7AJpwM1g==
-X-Received: by 2002:a17:902:f813:b0:1db:7c5e:f07c with SMTP id ix19-20020a170902f81300b001db7c5ef07cmr2573491plb.66.1710326458008;
-        Wed, 13 Mar 2024 03:40:58 -0700 (PDT)
-Received: from lindev-local-latest.corp.microsoft.com ([2404:f801:8028:1:7e0e:5dff:fea8:2c14])
-        by smtp.gmail.com with ESMTPSA id u6-20020a170902e80600b001dd88cf204dsm7175433plg.80.2024.03.13.03.40.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 03:40:57 -0700 (PDT)
-From: nspmangalore@gmail.com
-X-Google-Original-From: sprasad@microsoft.com
-To: linux-cifs@vger.kernel.org,
-	smfrench@gmail.com,
-	pc@manguebit.com,
-	bharathsm@microsoft.com
-Cc: Shyam Prasad N <sprasad@microsoft.com>,
-	Stable <stable@vger.kernel.org>,
-	=?UTF-8?q?Jan=20=C4=8Cerm=C3=A1k?= <sairon@sairon.cz>
-Subject: [PATCH 2/2] cifs: make sure server interfaces are requested only for SMB3+
-Date: Wed, 13 Mar 2024 10:40:41 +0000
-Message-Id: <20240313104041.188204-2-sprasad@microsoft.com>
+	s=arc-20240116; t=1710326608; c=relaxed/simple;
+	bh=XdTByhI3NfPTzTlPrEE9Lr5dHeP+cYuRQYHbAQep2MU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YFzht907apzY1z1ESSosV2umRJ7ia4MUW1KbM02V0DD9Si/QsWMHHMSX5nPQVwIH7zjaCo6wR2tWqAI1+mABUKOj4EQNPJFukfrLkl5ndHqYK7h/s2fYEhqiSc1SNVXZPY5Frq+hb2xatlzQdyxPi5+WCs24HsZTH71Gp7x3fck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Q6cBH+OD; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=sHbjWnJOJpxSt07N9ix9ycpLnUCtLU5joDjm2AxXvGI=; b=Q6cBH+ODliVUHjOPfdXR4NcssO
+	cDdyMn6wVRgfJ3aJgnaT7b8O782PhiBjINm3jGK2/JAsJAmnlnB/N2JHFxOT2TV+i4JSdIujyVl79
+	4Wf++oabsGpNPDyfl8Ydj9gd7tJyJinsgQvYp5LUY+CGuVUWdR35K1CONj6PBFAEXLsF+R/DdSJLw
+	cali0W3/ss/zF+Ae4Yu4Dl7tV8zoH5+CH1YgPlW8LVpP3MSXV0mPR3Xl1qdrce4OuDMcG+LBSWRB5
+	veR7doEqD3Pl1/++fcrpUPGq0T1DRezSFjy4mgp1MG7ZcANExpY77knA4eg3t0HzZGfNQ0I/W06zY
+	VY2rL+Og==;
+Received: from 179-125-71-247-dinamico.pombonet.net.br ([179.125.71.247] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1rkM4q-009uZG-C8; Wed, 13 Mar 2024 11:43:16 +0100
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	kernel-dev@igalia.com
+Subject: [PATCH 5.15 0/5] Support static calls with LLVM-built kernels
+Date: Wed, 13 Mar 2024 07:42:50 -0300
+Message-Id: <20240313104255.1083365-1-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240313104041.188204-1-sprasad@microsoft.com>
-References: <20240313104041.188204-1-sprasad@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+Otherwise, we see warnings like this:
 
-Some code paths for querying server interfaces make a false
-assumption that it will only get called for SMB3+. Since this
-function now can get called from a generic code paths, the correct
-thing to do is to have specific handler for this functionality
-per SMB dialect, and call this handler.
+[    0.000000][    T0] ------------[ cut here ]------------
+[    0.000000][    T0] unexpected static_call insn opcode 0xf at kvm_vcpu_reload_apic_access_page+0x17/0x30
+[    0.000000][    T0] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/static_call.c:88 __static_call_validate+0x68/0x70
+[    0.000000][    T0] Modules linked in:
+[    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper Not tainted 5.15.151-00083-gf200c7260296 #68 fe3cb25cf78cb710722bb5acd1cadddd35172924
+[    0.000000][    T0] RIP: 0010:__static_call_validate+0x68/0x70
+[    0.000000][    T0] Code: 0f b6 4a 04 81 f1 c0 00 00 00 09 c1 74 cc 80 3d be 2c 02 02 00 75 c3 c6 05 b5 2c 02 02 01 48 c7 c7 38 4f c3 82 e8 e8 c8 09 00 <0f> 0b c3 00 00 cc cc 00 53 48 89 fb 48 63 15 31 71 06 02 e8 b0 b8
+[    0.000000][    T0] RSP: 0000:ffffffff82e03e70 EFLAGS: 00010046 ORIG_RAX: 0000000000000000
+[    0.000000][    T0] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000002
+[    0.000000][    T0] RDX: 0000000000000000 RSI: ffffffff82e03ce0 RDI: 0000000000000001
+[    0.000000][    T0] RBP: 0000000000000001 R08: 00000000ffffffff R09: ffffffff82eaab70
+[    0.000000][    T0] R10: ffffffff82e2e900 R11: 205d305420202020 R12: ffffffff82e51960
+[    0.000000][    T0] R13: ffffffff81038987 R14: ffffffff81038987 R15: 0000000000000001
+[    0.000000][    T0] FS:  0000000000000000(0000) GS:ffffffff83726000(0000) knlGS:0000000000000000
+[    0.000000][    T0] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.000000][    T0] CR2: ffff888000014be8 CR3: 00000000037b2000 CR4: 00000000000000a0
+[    0.000000][    T0] Call Trace:
+[    0.000000][    T0]  <TASK>
+[    0.000000][    T0]  ? __warn+0x75/0xe0
+[    0.000000][    T0]  ? report_bug+0x81/0xe0
+[    0.000000][    T0]  ? kvm_vcpu_reload_apic_access_page+0x17/0x30
+[    0.000000][    T0]  ? kvm_vcpu_reload_apic_access_page+0x17/0x30
+[    0.000000][    T0]  ? early_fixup_exception+0x44/0xa0
+[    0.000000][    T0]  ? early_idt_handler_common+0x2f/0x40
+[    0.000000][    T0]  ? kvm_vcpu_reload_apic_access_page+0x17/0x30
+[    0.000000][    T0]  ? kvm_vcpu_reload_apic_access_page+0x17/0x30
+[    0.000000][    T0]  ? __static_call_validate+0x68/0x70
+[    0.000000][    T0]  ? arch_static_call_transform+0x5c/0x90
+[    0.000000][    T0]  ? __static_call_init+0x1ec/0x230
+[    0.000000][    T0]  ? static_call_init+0x32/0x70
+[    0.000000][    T0]  ? setup_arch+0x36/0x4f0
+[    0.000000][    T0]  ? start_kernel+0x67/0x400
+[    0.000000][    T0]  ? secondary_startup_64_no_verify+0xb1/0xbb
+[    0.000000][    T0]  </TASK>
+[    0.000000][    T0] ---[ end trace 8c8589c01f370686 ]---
 
-This change adds such a handler and implements this handler only
-for SMB 3.0 and 3.1.1.
 
-Cc: Stable <stable@vger.kernel.org>
-Cc: Jan Čermák <sairon@sairon.cz>
-Reported-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
----
- fs/smb/client/cifsglob.h | 3 +++
- fs/smb/client/connect.c  | 6 +++++-
- fs/smb/client/smb2ops.c  | 2 ++
- fs/smb/client/smb2pdu.c  | 5 +++--
- 4 files changed, 13 insertions(+), 3 deletions(-)
+Peter Zijlstra (4):
+  arch: Introduce CONFIG_FUNCTION_ALIGNMENT
+  x86/alternatives: Introduce int3_emulate_jcc()
+  x86/alternatives: Teach text_poke_bp() to patch Jcc.d32 instructions
+  x86/static_call: Add support for Jcc tail-calls
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 53c75cfb33ab..b29b57ab9807 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -346,6 +346,9 @@ struct smb_version_operations {
- 	/* informational QFS call */
- 	void (*qfs_tcon)(const unsigned int, struct cifs_tcon *,
- 			 struct cifs_sb_info *);
-+	/* query for server interfaces */
-+	int (*query_server_interfaces)(const unsigned int, struct cifs_tcon *,
-+				       bool);
- 	/* check if a path is accessible or not */
- 	int (*is_path_accessible)(const unsigned int, struct cifs_tcon *,
- 				  struct cifs_sb_info *, const char *);
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index ac9595504f4b..234160460615 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -123,12 +123,16 @@ static void smb2_query_server_interfaces(struct work_struct *work)
- 	struct cifs_tcon *tcon = container_of(work,
- 					struct cifs_tcon,
- 					query_interfaces.work);
-+	struct TCP_Server_Info *server = tcon->ses->server;
- 
- 	/*
- 	 * query server network interfaces, in case they change
- 	 */
-+	if (!server->ops->query_server_interfaces)
-+		return;
-+
- 	xid = get_xid();
--	rc = SMB3_request_interfaces(xid, tcon, false);
-+	rc = server->ops->query_server_interfaces(xid, tcon, false);
- 	free_xid(xid);
- 
- 	if (rc) {
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4695433fcf39..3b8896987197 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5538,6 +5538,7 @@ struct smb_version_operations smb30_operations = {
- 	.tree_connect = SMB2_tcon,
- 	.tree_disconnect = SMB2_tdis,
- 	.qfs_tcon = smb3_qfs_tcon,
-+	.query_server_interfaces = SMB3_request_interfaces,
- 	.is_path_accessible = smb2_is_path_accessible,
- 	.can_echo = smb2_can_echo,
- 	.echo = SMB2_echo,
-@@ -5653,6 +5654,7 @@ struct smb_version_operations smb311_operations = {
- 	.tree_connect = SMB2_tcon,
- 	.tree_disconnect = SMB2_tdis,
- 	.qfs_tcon = smb3_qfs_tcon,
-+	.query_server_interfaces = SMB3_request_interfaces,
- 	.is_path_accessible = smb2_is_path_accessible,
- 	.can_echo = smb2_can_echo,
- 	.echo = SMB2_echo,
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 608ee05491e2..4fa47c59cc04 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -409,14 +409,15 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	spin_unlock(&ses->ses_lock);
- 
- 	if (!rc &&
--	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
-+	    server->ops->query_server_interfaces) {
- 		mutex_unlock(&ses->session_mutex);
- 
- 		/*
- 		 * query server network interfaces, in case they change
- 		 */
- 		xid = get_xid();
--		rc = SMB3_request_interfaces(xid, tcon, false);
-+		rc = server->ops->query_server_interfaces(xid, tcon, false);
- 		free_xid(xid);
- 
- 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+Thomas Gleixner (1):
+  x86/asm: Differentiate between code and function alignment
+
+ Makefile                             |  4 +-
+ arch/Kconfig                         | 24 ++++++++++++
+ arch/ia64/Kconfig                    |  1 +
+ arch/ia64/Makefile                   |  2 +-
+ arch/x86/Kconfig                     |  2 +
+ arch/x86/boot/compressed/head_64.S   |  8 ++++
+ arch/x86/include/asm/linkage.h       | 12 +++---
+ arch/x86/include/asm/text-patching.h | 31 +++++++++++++++
+ arch/x86/kernel/alternative.c        | 56 +++++++++++++++++++++++-----
+ arch/x86/kernel/kprobes/core.c       | 38 ++++---------------
+ arch/x86/kernel/static_call.c        | 50 +++++++++++++++++++++++--
+ include/asm-generic/vmlinux.lds.h    |  4 +-
+ include/linux/linkage.h              |  4 +-
+ lib/Kconfig.debug                    |  1 +
+ 14 files changed, 183 insertions(+), 54 deletions(-)
+
 -- 
 2.34.1
 
