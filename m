@@ -1,114 +1,115 @@
-Return-Path: <stable+bounces-28206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CDC87C4D8
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 22:47:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C298E87C4E3
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 22:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FBC21F2224D
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:47:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76191C215F4
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842F7768E0;
-	Thu, 14 Mar 2024 21:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF59768EF;
+	Thu, 14 Mar 2024 21:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKCGxtdc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FbzfDuKG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979C576412;
-	Thu, 14 Mar 2024 21:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1120276416
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 21:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710452846; cv=none; b=qgw3jMip+YXrueYms1YsPmSps6yizvzdmwGiqlLwOAkGdOCNSbnlofAl2mAvjdA2j1TAsi9mDFqqmBEtyJQIkpliENcSmD0mslOne4iJyOF8tUzrorpoEmfRJ77hGiqjZ8myFdEfcTFIntcnCTgDlHNxDynpAxkQxaqwlYjCi+Y=
+	t=1710453196; cv=none; b=EeO4bqt4QuVQR9hLiyMNQIlkt0JxQEe/02QzbReYUbY5P5vXLVLWTqO7d34SE/xBMO/qHozcGCTLkvBUOf0nCG9JgkhvRAfbV1tDZ2gOLh0Ajgkv1E9iEnpppy7z0m03bx0c0KbtcEZ3Och8GHUVQcM8vpmDJi9h+mkEwv8aW+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710452846; c=relaxed/simple;
-	bh=BHM3ilCcEMf3RVGPfy62NJbGpgMj4Pcu6SfDkxglR4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NaWyeegTLozBLTIpGRFMCFMcRhzQIcbGlzvwI4+2wDiwMJxIxU6nhen75URDx8N/trmBouSccGKAIPWMy5uQgvV2tlicaEsV8paUxbLmPVV10WC5owdaejH69xiRPFuyENEL69ZjMZzFy7+9zr/yxJD6AOYwPmrrTKx43erDFmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKCGxtdc; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-413f76fcf41so7371315e9.3;
-        Thu, 14 Mar 2024 14:47:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710452843; x=1711057643; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Laxe1h99cHydEOQ68WurdnvO/J/l86hrfaGpwpfsGxo=;
-        b=NKCGxtdcrAmEnJUg8T7qDKRPq2rz3krSFi+hcbbYJyjyAT1qZp1gRWYeexK7fm81UN
-         0wsZlXaDw29NyEOAI3bK+YEuUZjwoCiIC2hfKZqHeebQFpu2rBixQCPjAFzWQUk+nLIS
-         nQr5xrQ+MmmPeyRS0SrrFPVTA6iXKlZjMX8HUqGJ4wmKr/ZXTah/V8PygqesdUtVCDva
-         DipB2rNdhh7YfLcwOfQu9PSDo6kzHcqEt9854tmkiRtRrzebRV5BbLUmwlbGm8iZr3sO
-         bW84fPcrhU6qRH0FbbQBJ0tJa+HntZeMe7+48/RwaUHpABq7LDd9YSaDHhJhbHfwMxQW
-         0T2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710452843; x=1711057643;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Laxe1h99cHydEOQ68WurdnvO/J/l86hrfaGpwpfsGxo=;
-        b=cUvrjiMU9GJrLi0V+NpEDFdl6MLHqGTwLUM0IK5aRGbd4Hl994V0K3QRCZLo1qGcbd
-         /bSeLfI4DQGJQuUzIZxdRNZwNvoyRWMEv2lL84Db22/t00GEBGAgybetE+i1nQmmCbKY
-         HSDsRdFfPmdhXXlmQ1038ilRtbf2O1/+10lmaIW3N9S3Q+j8/bKRlbZEs7MZHQ2Pung4
-         2oGaIpBTiMfGTP/ISqdCHFVc9BXsTtq4xyiMcDclz0g8/ySieev1F0u1hR1ZPhBmNUNN
-         6bA3vKqvJTmcPEhRxbXwY45BnfahcqXalpmt4NtiYSWTetw+uQOhXczuw51xp2sZEEpH
-         KnGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNFDwC/sxaW1tteq3cbZ1z5w+zHcVJGctRzbE06dBa3H9PZ3IRxz7V5HTbVsIc7T5Il+AhfL7tNnWMH583k80JrPLBpE16
-X-Gm-Message-State: AOJu0Yzh6djiCOi0EvsqeQhBHCUsmKcAzZMgUNj1u+NgMgKEgZ5TwBbq
-	H7Opj31RCbWXG6U5y+FoI7A5+wh+zpvaAMBCF95htMQYDaCfKypN6ekYrkO7pQM=
-X-Google-Smtp-Source: AGHT+IFLSKdZW9IL/j2mwTTm0WkUtmEItk+lPnbQoNQohr+S/NbJ5LArx1U2xX5obPtCgatc4eFLeg==
-X-Received: by 2002:a05:600c:468d:b0:413:1d88:f85c with SMTP id p13-20020a05600c468d00b004131d88f85cmr2474165wmo.33.1710452842738;
-        Thu, 14 Mar 2024 14:47:22 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id bd7-20020a05600c1f0700b00413f3ca39easm2710762wmb.5.2024.03.14.14.47.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 14:47:20 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 06D47BE2EE8; Thu, 14 Mar 2024 22:47:20 +0100 (CET)
-Date: Thu, 14 Mar 2024 22:47:19 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-Message-ID: <ZfNwZ2dqQfw3Fsxe@eldamar.lan>
-References: <20240313164640.616049-1-sashal@kernel.org>
+	s=arc-20240116; t=1710453196; c=relaxed/simple;
+	bh=WPRfkxJqbJBYPqNpxCyMjPF27M2MVRXoenCnOxv8VfY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hVhF/2HB4CKPGROktURZsi2NOQDZKPgMxq4IxUiqbS19o6Zcu4ShSEkFpMi0Ukb1MzxNKWuCnCyyAuXWxW8JPA5GTXx22kmVIDIMpWDYbDsHE0TQ8VeI0Zfzq2SiCarQvbWC6tORvkwd+2VwVfpHq5u4sS5LbB/RJu8fzCDxgzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FbzfDuKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E73C433F1
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 21:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710453195;
+	bh=WPRfkxJqbJBYPqNpxCyMjPF27M2MVRXoenCnOxv8VfY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FbzfDuKG5SJAT17JTkLwXswieoLq4cCm13Ud/J+wId3WzGbuxONv4nooZrIIlWtwP
+	 TV7gRO3f7aWmNpwWKCqZZ6sFXr6aGwRKeCmWtbTjwFcnxgOvA2Vapzepd3oEI6+jbj
+	 OhcW94EokTr3Ehhm67bFJwmYttJF1ZTgq0tzqDK0Eoiu9YrdBf86edTnKSudPy0yjK
+	 XQ07crASzeC4krlBSDubvyHh7R48H12MlROz218DVDWzQTImw9PnF18484RbSvQlI0
+	 jhreYyOg+IA4d86DcMQHeEAMGKTRQTsMr29SJCG2NyNKtdqISZTP+Bbc/ZZ6dAgDHB
+	 nS75jsKOO7l1w==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d2509c66daso18846691fa.3
+        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 14:53:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwoUdQ1AxVf6nuqeDEpfOkPOuLnKJbKCCu+2Qki9zp3fhweamdj
+	EfMmLunYAgV2+FQoeGZIoafNbhvtcrKN4CzVS4KnUKbJb61i/JqMEP8bS6EMhIKg53+qFeQ5QoV
+	g4ORlLhjlbLwbE4A6e0WvWfUzoTM=
+X-Google-Smtp-Source: AGHT+IH+JKw0N+3Gs/RY5NStXciyGSAfDdP5e6wmmSFfMTkxWU4/NM5mxE0nKf/+8/S3+UVsTbzgaOYYe6jSVdBJx+U=
+X-Received: by 2002:a2e:9b99:0:b0:2d4:7756:3549 with SMTP id
+ z25-20020a2e9b99000000b002d477563549mr1887421lji.16.1710453194104; Thu, 14
+ Mar 2024 14:53:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
+References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz> <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
+In-Reply-To: <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 14 Mar 2024 22:53:02 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
+Message-ID: <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
+Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
+To: Radek Podgorny <radek@podgorny.cz>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	regressions@leemhuis.info
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Sasha,
+On Thu, 14 Mar 2024 at 20:35, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Thu, 14 Mar 2024 at 19:32, Radek Podgorny <radek@podgorny.cz> wrote:
+> >
+> > hi,
+> >
+> > i seem to be the only one in the world to have this problem. :-(
+> >
+> > on one of my machines, updating to 6.6.18 and later (including mainline
+> > branch) leads to unbootable system. all other computers are unaffected.
+> >
+> > bisecting the history leads to:
+> >
+> > commit 8117961d98fb2d335ab6de2cad7afb8b6171f5fe
+> > Author: Ard Biesheuvel <ardb@kernel.org>
+> >
+>
+> Thanks for the report.
+>
+> I'd like to get to the bottom of this if we can.
+>
+> Please share as much information as you can about the system
+> - boot logs
+> - DMI data to identify the system and firmware etc
+> - distro version
+> - versions of boot components (shim, grub, systemd-boot, etc including
+> config files)
+> - other information that might help narrow this down.
 
-On Wed, Mar 13, 2024 at 12:45:27PM -0400, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 5.10.213 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri Mar 15 04:46:39 PM UTC 2024.
-> Anything received after that time might be too late.
+Also, please check whether the below change makes a difference or not
 
-This one still has the problem with the documentation build and does
-not yet include:
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -477,6 +477,8 @@
+                efi_exit(handle, status);
+        }
 
-https://lore.kernel.org/regressions/ZeZAHnzlmZoAhkqW@eldamar.lan/
-
-Can you pick it up as well?
-
-Regards,
-Salvatore
++       memset(&boot_params, 0, sizeof(boot_params));
++
+        /* Assign the setup_header fields that the kernel actually
+cares about */
+        hdr->root_flags = 1;
+        hdr->vid_mode   = 0xffff;
 
