@@ -1,100 +1,96 @@
-Return-Path: <stable+bounces-28179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C5B87C11C
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E77787C120
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5BC81C20C72
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 16:17:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E6D28138E
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 16:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD337353F;
-	Thu, 14 Mar 2024 16:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204867351B;
+	Thu, 14 Mar 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fVgpp3TL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q2h/Tn7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F1673516;
-	Thu, 14 Mar 2024 16:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16873500;
+	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710433075; cv=none; b=n/BEJChzaa9QinJDNTABEIIIRkM3MmQlyLEowuJQ+GGYXSEASsBGxolw0gdz8wqwVkCNiJlbESlxwc5WKXYMNlUPYh3v/7f31wiu1ItgqMhiRw9BMIggk9AHKrVFWJXgl+Z0jVa6zbMuwvTiAAKIjwCZBgVnXTQ6+uiDk/RBxGg=
+	t=1710433231; cv=none; b=m7uTbVjyVeFSvwjp9tl5ozHgQTE86hiEr3HOnB2RBEOv+WgCms8Bst7DNLTfufIXqkR5SaWGBRIYkQj2o4PTJlZRno1bcgf87yokkwYTILYEiwUprNuUJhmPCL2ooN+wh89cKMpDvAXecaHOF+BzT+MGYeS9+mXsiWnLopKVWdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710433075; c=relaxed/simple;
-	bh=xl3j/E5P1ibC/2vacBUU+w48FOghGVjd8R4+cBgJD3w=;
-	h=Date:To:From:Subject:Message-Id; b=rv3ewETO2U3Qy4JTZz/hricsut6T2+3blMmAa8s1SNT8Q0GCgIm4GSu+a04DBnh4DevAP+pkIDsCsFjZjLtJJcTjpg8aJ30zc0HV+KfR0Xp3ME4rYeEyR8AYP7RLpQ8R651UDmJKB53k9jfyzV2q+THlrhTbccm3WYcG+FvfllI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fVgpp3TL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFDEC433F1;
-	Thu, 14 Mar 2024 16:17:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1710433074;
-	bh=xl3j/E5P1ibC/2vacBUU+w48FOghGVjd8R4+cBgJD3w=;
-	h=Date:To:From:Subject:From;
-	b=fVgpp3TLnkbjsJLjSOReSA57lTaOFCygqHzABPp5RPE6fzs/v5k+cIsznTQ+ibJmT
-	 Q7UMAdp/7yqT8RJhDonNgtz5F+oHG/BdLMw13LBw4m6PMlotq61bnOtfI4xv4MibnS
-	 QyWmVR+TfnFyzlwOgulldoRcZO6Evx+xfae/itNk=
-Date: Thu, 14 Mar 2024 09:17:54 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] nilfs2-prevent-kernel-bug-at-submit_bh_wbc.patch removed from -mm tree
-Message-Id: <20240314161754.8EFDEC433F1@smtp.kernel.org>
+	s=arc-20240116; t=1710433231; c=relaxed/simple;
+	bh=7+09w1oE97rDTiXYwrzXL4LqGid17J4YBQSF+zZK/30=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=G+25zk9D5cQ+e80HX9rVoPIIVsj5BNG/xXU8eLXugEX6ueifn++82wOtkciSqNjbpGxKuUiIliblvOp5nCSP/odlQU52eePbOqezcuI8t+RsssJ6Yb5uirXpJCzHVn1+qZ4XWmDHZYiLK96uDAvdZY18RQju0wMJxN9upttC7E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q2h/Tn7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 691D8C433C7;
+	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710433231;
+	bh=7+09w1oE97rDTiXYwrzXL4LqGid17J4YBQSF+zZK/30=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q2h/Tn7SJ1Z6TURl9ZfaYEeCvSR+2ZpQbTUHRgzIzNga9f8h2nfOqcGVKrI53z7iP
+	 1ZrbkD1XirVCgitqPQNlCIpPPRFc78wiqhBKw9BTu0ux/l5f6NofvdBXhkkESHVtXu
+	 c4A2nCRMxw59HtDxHNC64kbktzV4c3fvSq/upv2E8CvawZwiryVUbls0FakW/GZqLr
+	 lcv3+afq/QQun/4s7hyVjlZrk+adq0zE3T/C452+nxzHVyVe0RQpPfIDhCbmaXAeJH
+	 fY8tzQIWxMMExfNzoD07Y/peL59SgjRH3xhjaWXPLNBcXiHA78a6FmkJJjfy76kxPc
+	 BfQPOoPiwNAFQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 57438C595C3;
+	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [f2fs-dev] [PATCH 1/2] f2fs: mark inode dirty for
+ FI_ATOMIC_COMMITTED flag
+From: patchwork-bot+f2fs@kernel.org
+Message-Id: 
+ <171043323135.13516.13152557202790425298.git-patchwork-notify@kernel.org>
+Date: Thu, 14 Mar 2024 16:20:31 +0000
+References: <20240313112620.1061463-1-s_min.jeong@samsung.com>
+In-Reply-To: <20240313112620.1061463-1-s_min.jeong@samsung.com>
+To: Sunmin Jeong <s_min.jeong@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, daehojeong@google.com,
+ linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, sj1557.seo@samsung.com
 
+Hello:
 
-The quilt patch titled
-     Subject: nilfs2: prevent kernel bug at submit_bh_wbc()
-has been removed from the -mm tree.  Its filename was
-     nilfs2-prevent-kernel-bug-at-submit_bh_wbc.patch
+This series was applied to jaegeuk/f2fs.git (dev)
+by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On Wed, 13 Mar 2024 20:26:19 +0900 you wrote:
+> In f2fs_update_inode, i_size of the atomic file isn't updated until
+> FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
+> after the writeback of the inode, i_size of the raw inode will not be
+> updated. It can cause the atomicity corruption due to a mismatch between
+> old file size and new data.
+> 
+> To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+> 
+> [...]
 
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: prevent kernel bug at submit_bh_wbc()
-Date: Wed, 13 Mar 2024 19:58:27 +0900
+Here is the summary with links:
+  - [f2fs-dev,1/2] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
+    https://git.kernel.org/jaegeuk/f2fs/c/4bf78322346f
+  - [f2fs-dev,2/2] f2fs: truncate page cache before clearing flags when aborting atomic write
+    https://git.kernel.org/jaegeuk/f2fs/c/74b0ebcbdde4
 
-Fix a bug where nilfs_get_block() returns a successful status when
-searching and inserting the specified block both fail inconsistently.  If
-this inconsistent behavior is not due to a previously fixed bug, then an
-unexpected race is occurring, so return a temporary error -EAGAIN instead.
-
-This prevents callers such as __block_write_begin_int() from requesting a
-read into a buffer that is not mapped, which would cause the BUG_ON check
-for the BH_Mapped flag in submit_bh_wbc() to fail.
-
-Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/nilfs2/inode.c~nilfs2-prevent-kernel-bug-at-submit_bh_wbc
-+++ a/fs/nilfs2/inode.c
-@@ -112,7 +112,7 @@ int nilfs_get_block(struct inode *inode,
- 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
- 					   __func__, inode->i_ino,
- 					   (unsigned long long)blkoff);
--				err = 0;
-+				err = -EAGAIN;
- 			}
- 			nilfs_transaction_abort(inode->i_sb);
- 			goto out;
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
