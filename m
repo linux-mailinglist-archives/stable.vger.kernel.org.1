@@ -1,208 +1,207 @@
-Return-Path: <stable+bounces-28114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DD687B6C1
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 04:14:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270A287B747
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 06:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319F51F23756
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 03:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA192858BF
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 05:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D59A1C01;
-	Thu, 14 Mar 2024 03:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A105C8C07;
+	Thu, 14 Mar 2024 05:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0DGaO/j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TkMr5uYw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CE4BA29;
-	Thu, 14 Mar 2024 03:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710386059; cv=none; b=mc6bGKFJulSCAGwtxQVxb1NlEFncbARjzHHMI/trcUoZnMa8e/TwJ1f/LwwcmF/gKkyAtPFwUcrt4cvM3QB69EEek18LurHZ/H/tsDg8pfgmnMA9pytixVePPwvKejqzE2TInd4Vzsg7WzWarINs2PC9bb2IPIuNiSywyLErk+8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710386059; c=relaxed/simple;
-	bh=x/TLFjyCS8HDwBawdiWm57iNGQ9scNv3N74xuVyJ8q0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BWRtuv3rSTUauc1+kV1RlnpqW9GuaM1dX1FYvqq/3raPJCxezjumHQcOhsUFormr9V7lSVo94FKZq5CEHn0AWRwSct7qweEIjXs6Xcjo/Z2xd1Z611K1jEYLlYrlL/T4gtcNS2iw6gVw4SNdw6G+frJjYcFqjwNZ9IxZMJEB2SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0DGaO/j; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d109e82bd0so5370361fa.3;
-        Wed, 13 Mar 2024 20:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710386056; x=1710990856; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DFRXR6JXd171H6JhlHg8M0dfWr3UCSzsqgNW2RVeNNU=;
-        b=Y0DGaO/jKJF1Je3q3L5+9hoNXyoQscfsZMhNHcN6k+otMPJEjikFr78C0QgCZevdzm
-         c5Jri11nwHOUxHi5bfIv1kDVon9NKUCMEre0+rfhTa9+cdMVJgskJ7s9YK7PLyJqGvpI
-         +7JZTJoaxLaih98+TojsdbX8ubb/d7v9s74c7ZAcCZT6TaZmE+VwtJaksCLxpZJ1hubk
-         jgrGP/b/DySDNXOIc7riEFjdXIf2aDDn/sIUKNfyHTpf46cCjSo7aNR6d8dZmI53Mf0u
-         A3uj8ojGFUi8hOnggVnjLV+Md4mUGvUazixZk72mPL49j/CboH17WWp7ZT8Hs099oIc4
-         HyXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710386056; x=1710990856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DFRXR6JXd171H6JhlHg8M0dfWr3UCSzsqgNW2RVeNNU=;
-        b=ii5kRtAJ5paRh+Fkaz9qxJ1E4g5SLzxoQGAQh6OKWg/UmIrd3lNMJE9+S2+U/ytz2n
-         Nsi8yQ2WlDNOkXOGe1kW5qWV+pYpWK2cUYIg7XJ8Dna0MEPBRoy8kdsRZraQUSq74x2z
-         o4QWWPUg/JPfi9vELsucVDYWdbvFgmTOL/Gem/J/966GMgzrHdQ1ytMeUyXyE6nbYKBy
-         LeW7LU1oOPctyXf8zBBvU/djHZGt48DxJmbuuYwPkMpnFvpVQ6Gf6cCA+03EOyESaj0u
-         gLr4KrWqvxGEsbWB/1Xh8Zm7WERpbXhHTfbV/o4TaqDjTTLUzsdOEfBMCry12Yf+Y+7T
-         WMUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuT2PW4pSy2V7J/xKu85GhlFXIlj/aa4LnxZTy+fPZB7yZom/8S7mPfEQUKNoCIZ07qkh42s9efmPif+2R1WXEhXBpLuNa
-X-Gm-Message-State: AOJu0YxwYYAaoXmy/idaKNe97hLeMPrnE3QPbJ1v9eNKncK3dZI8yDax
-	WLH6ma4cb2vzaYyQou/JQL0blaa1PUW3/+pkDkYX1vWn60bUz6muL/Cd8QM3D+/xEoRYReeH61Q
-	4SiJjM0kp0azp+oG3w+hIAfOJxaA=
-X-Google-Smtp-Source: AGHT+IEOFT4r5h0ibIH0VSNs1+UT6l5POA1rJ60x+somqfdMt/wcSLM15FVYo8+w8b4QaERTw4ZyeW4JAeZirC7sORU=
-X-Received: by 2002:a2e:b604:0:b0:2d2:50ba:e5b6 with SMTP id
- r4-20020a2eb604000000b002d250bae5b6mr248994ljn.10.1710386055579; Wed, 13 Mar
- 2024 20:14:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E685D512
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 05:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710393729; cv=fail; b=Mpqvvnxm+8S9Nbty0w5hpRd5LycEWwiRdO2sVCLrDw+mjJjXRV1N8hLrm+HvkST40a3NEEmnuD7rrwP6G1t8XQuawrlNb28raEGFbPYYn80EJthKXyCIaRQym9ZWlO5YRZXFfVm0xXmbk08onnBgh9dBdCO/7REgukhtukpp/h8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710393729; c=relaxed/simple;
+	bh=EGBOBij6635v3EfZavJ21WegkhRlWp/HZ65PdCegHNI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FKAMBG6Xjclio7qXHzUaZ1buPoDtN/kOozDW9a21efZXGL8rOqmFT/vyI61Y7n743zsTnZdkEpGPVSI2+9I0FdCvI/Ipe+WQ/gIocprEV0yyJbHNv2h7m4ZVIZgI3vVzecn/xQPbgumTWZTYaMbnWpAmza/sEYFNX1EdpppK28g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TkMr5uYw; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710393727; x=1741929727;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=EGBOBij6635v3EfZavJ21WegkhRlWp/HZ65PdCegHNI=;
+  b=TkMr5uYwjqI20PSNL4ftsokmEpFIpyuHEGmzyJo+vNwrTROaFNO6Zd6C
+   7wvt8pNWH6fhZHhQbNtFQHkoo2ie9avprQkTXfrcWdL8CvzcBDCESSJWB
+   ztwwsI3oanLRtSsaglil3SjR6c5tZ09S50i7gCkNLjJt8uNjpkYc5H7K6
+   NlyGPuOmaQ8g2J6jtZ+kOP3u7MU13rKofQfXdufmVW/LB8nY7kYdzeu/r
+   NsXuyVy5VyGTZnEqdci6/y+9lgIM9SJs2W3XMvZHMzzPFAP22ERaz4qVd
+   mbpDNTefb40qjC0CNIy6DLJNozk9CNAIY8WTE9fQdeuERJJ7HT3psKsWS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5043036"
+X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; 
+   d="scan'208";a="5043036"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 22:22:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; 
+   d="scan'208";a="12244177"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 13 Mar 2024 22:22:06 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 13 Mar 2024 22:22:06 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 13 Mar 2024 22:22:05 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 13 Mar 2024 22:22:05 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.40) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 13 Mar 2024 22:22:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=esqz1TzU4dV0en1dRHtDvF8HXciBoSl7JvHoouslanF+RF+d4NZ4O44HXIEnt2C+0FVtga7wBWAGjN87gCBDvqU37o30DgXLiSgzKAz/84AIHDYXP7vaxEZAimJYQliIYJMvOBTmLdmMlVc8NG04wGzzs+r6hhqSA60hCQRszJ51q29akCgl/San2BxSxqnWjScf62rQTiTkwhd4SAke+7NdFP4H/KvsBAF/ti442PD3x73C0OG2raX8D0GqTXRz2okKc7FeaKAvSpkAp2d7DZj/DhQwxXNmGmTPCXxNprG5+Q4cgaVMzDODTKberUXIGtv28YLgZzi3tdua7OV60A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WScweXIxCtapeiZqPJ/C1w+RQNAUM88jTJvIO8rVQLc=;
+ b=foQoHmSrbMwlXdwNjXLGI081aA6VOU43ZQBmO7pEF3KQtR9wBit2lS6shNiR22BEQGL858/G5XpkwoXQINDrje2CGjfAVFLsCF8RK3xpsltJ42zKnq5LNYlejmyrC9Oc4CSwgx9cdzCU5sfFugb40mtFuYZ54QmW/sQBOT6CA4g51cl0nHYXkCrSRB+paK8l1eqpep23geVULz02aZZHH2gT1k47xOkh6LkjFVPsU5HYokr2P0P7FjSrdZ+8XYDndXh7OZy20thtOPALq51iVmQs1glDOS2AM9dHMx8B8aoTErWwvpUcb/aIYFpGhwAmYHAjBy2itV+/KTXt8JZzCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5275.namprd11.prod.outlook.com (2603:10b6:408:134::24)
+ by SA1PR11MB8374.namprd11.prod.outlook.com (2603:10b6:806:385::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.19; Thu, 14 Mar
+ 2024 05:21:58 +0000
+Received: from BN9PR11MB5275.namprd11.prod.outlook.com
+ ([fe80::46dd:6e91:5461:35a]) by BN9PR11MB5275.namprd11.prod.outlook.com
+ ([fe80::46dd:6e91:5461:35a%7]) with mapi id 15.20.7386.017; Thu, 14 Mar 2024
+ 05:21:58 +0000
+From: "Mrozek, Michal" <michal.mrozek@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>, intel-gfx
+	<intel-gfx@lists.freedesktop.org>, dri-devel
+	<dri-devel@lists.freedesktop.org>
+CC: Andi Shyti <andi.shyti@kernel.org>, "Hajda, Andrzej"
+	<andrzej.hajda@intel.com>, Chris Wilson <chris.p.wilson@linux.intel.com>,
+	"Landwerlin, Lionel G" <lionel.g.landwerlin@intel.com>, "Das, Nirmoy"
+	<nirmoy.das@intel.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/i915/gt: Report full vm address range
+Thread-Topic: [PATCH] drm/i915/gt: Report full vm address range
+Thread-Index: AQHadX44Sh9xWy77xE2oPkbaYDlfvLE2s/iQ
+Date: Thu, 14 Mar 2024 05:21:58 +0000
+Message-ID: <BN9PR11MB527586F3C80D29B7147AFC4EE7292@BN9PR11MB5275.namprd11.prod.outlook.com>
+References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+In-Reply-To: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5275:EE_|SA1PR11MB8374:EE_
+x-ms-office365-filtering-correlation-id: c88a670f-67c2-43c3-5672-08dc43e6abc1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: kC+lG+rUAldkhYgqJWswo/neBJPaIW/Di0gp38Fh7QQTWuSkf91eH4DM8N8VsJtdCa/RRvBLgjkkQ4zTsZR8Q3nAox4DNg1FG2DWSY6Re+/3Rcz+xvZqBnPLmXnjcKMLdz+s10k3/uTylAxI1K8NlWd3mL8K2jTeGElCDon3nVaOUoFfk2RPoD4XYPJY8VmkdxB2xlg9AJnS7R46De0clUBTWLjVBOZcS7pXRrlHLOSMcm4q9mNQwVs8tETjO+C6cd3bBXWZ1NFo09V83GIZg/pkSGMWeWtOKfG05BmGPGvE//wXPM6qZ4/s1LcKF/cOjU8NN3M4nylXw8eXMBxyxNgAbEYSSOm3OR2PXzruVsXSkZE8AMvA9QeGl+ZskDtvqqsLHPUfa7kbfOFW2qM0Zq8/q1W3FZH5twnpUF+IhmP9/aBtTPVMg9yXNqzOCXcl2hfUx3ewnViqbxIIC/wQwjsrABkxu/74q+c9nB0R6H6AmhcRbe3CkqXQovixsqUY7MF8e6nJbt9n9HJTe/TvUsIw408AMxD7AbMLI3BmQ98AjrTSUNlFLw7Tx4+Ckic8HyPdnTTM9HTufb+3YEYiXnt7ge3L/4vCnA9RSb6zQLuVX5YcdChxWqD+udc9PR7inhgs/k1zZuA6XEXxqIJkVZzGhyIriJMsZN/cM7YDG3VEJEPdl/TU4BrkBoWOsdCDNCfnGiMTamYgUkFOBMQHAmsCj/kTb0uyKGVtIGSHpeI=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5275.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?N7Xh3N0Av5TF9ERK8p0GHwqaiZPA6pgTBu/wXQbTUJ37hne8kOtPz64nakeu?=
+ =?us-ascii?Q?vBQad7ZrKpR/rNwnw8I3U00J5DuCBzff/4PWpWYMklnOsxkycVOCjUo5xddu?=
+ =?us-ascii?Q?KV3vQzkTzn7AEmpFzhRF7bYqsDF/hIwPXlnQkYpbuX196BixwKEGtFgwQ6cD?=
+ =?us-ascii?Q?m5KaxkKq67IKYgCe9CRw7BsH4CAwBS2GtHLEGaGvUkSgTkpX4HwBiPnhG2PT?=
+ =?us-ascii?Q?MivLQkRbEl2pK2Q+C/NZwrUTbmvoehoaBN/3gvOU2Sa5mwz9wC9MK9ezjyMa?=
+ =?us-ascii?Q?LNqwuuKK9ZCSSSh6MS6kMVvyiB3UVUyIyvUDuJ2DAH+r4E3xuihPeD0G+Uhc?=
+ =?us-ascii?Q?P3bpYyiAFeuvzGRMIgChqIvEVCLgWL479/0CeLfn2Q5HdXuxdE5bn9vj2K1/?=
+ =?us-ascii?Q?SROT3kv+BCYfS73+9i3dlR4xW6iLeXWU0wDS1qdEcVTgd1E7TJ1/0jS0oSiu?=
+ =?us-ascii?Q?1XiAqfOP/AmazwfGpLZLoNbCQwUwxVtj9mw4qonWkP2ZEeSW38uqLO/B3OXA?=
+ =?us-ascii?Q?kIo+pWhU4imo6rkRsjwKSB6OubL6Pyp6uoc/9dnIWKIar1vivTjEx1ejbIT5?=
+ =?us-ascii?Q?Q0UmU2kGxCNX/zzEuF7YlgczAwGInqDvc8lqOc8F0MQI1eWdjgxRXAWrrQs7?=
+ =?us-ascii?Q?Ab+2VdaIWexCpka16iZGIGQZ9QKdejnjAUIRRd++zzNQQJs3Y5bNQa9P/+/c?=
+ =?us-ascii?Q?RkzV1mJAywz0Qs1Ed8aYBKoXdBHah/NmbMP6zVgooUmOSQImcF5QGlLPF5bv?=
+ =?us-ascii?Q?B0+oFL1jXKHYoopJoTmgFqVJadHXK1x2lLJzd3g8rYZTlQuiSi7xc9PLyp06?=
+ =?us-ascii?Q?/EdIBIob5wmwN6YO++WdVpisvtcbteCA/fqrecqUZ6bdQ0Z3G12gPPPczdmN?=
+ =?us-ascii?Q?We756jH4iU7AWuKM72Oj5KV5gbPWmPziPBrb8AtPSMJTbTZ0kWEAotoD0vxt?=
+ =?us-ascii?Q?X4IHP/VFCxznpjSbNjI1z9IpU5k5kV0L6uOL5AxJcYZvkI5TNDXy4TLYQlGr?=
+ =?us-ascii?Q?YNl+QyUfTdel9BEtFbOOXVKi2mjXOgutrtUyKyvJtA8aBN/wXVnpglS4i0tS?=
+ =?us-ascii?Q?vmVrhxT5F6r2wHQ+qcz3rZR4EWrz17I0rmQHn0GhknibXHe4QDZLvPOppB82?=
+ =?us-ascii?Q?ReFdvSkC5qMq9MMzuA8B8cDtHjYdMFuSTKftBlmJ3VnYS/dhIueulyMKmIau?=
+ =?us-ascii?Q?wvKbY7T9D6QOZ/R2BqTC2g84lUbfRHD5Cydg5LuU/M1IEJ7rUqK1oLhfShjd?=
+ =?us-ascii?Q?CW3yx7INIO1ZuNDLBst9Z9vUpbjrCylo+9DNoYA3sa8bJj20+Rg9VlYJFmaY?=
+ =?us-ascii?Q?KFcEYat3krQ2a/iACIYPvo82yAIZGi3OkYeQDF4/aIpy9CELDjjseqmv21To?=
+ =?us-ascii?Q?/Unj5iNE/SiFIPKkbmmsghapDDWmO6myPm3cwAg3BaIng/crBv9UwJc1FzZc?=
+ =?us-ascii?Q?QJKnbqjJqElAUQ3zG4+7HslS7b5+4DwZjL7bNoLVBriGMQfkxD4BtiUlMcgA?=
+ =?us-ascii?Q?0mn8htVey+FsyaldAm1hYTRUFgiXnSKH4fpgFQMrjM70drOdf2o2+dayAGRs?=
+ =?us-ascii?Q?bJmCVd2U9S05uqZ1wpL1VTyzbdLMqm4gH3U5bYxj?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313104041.188204-1-sprasad@microsoft.com> <20240313104041.188204-2-sprasad@microsoft.com>
-In-Reply-To: <20240313104041.188204-2-sprasad@microsoft.com>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 13 Mar 2024 22:14:04 -0500
-Message-ID: <CAH2r5msf7=aC0evP90pS5ktZVYTPAZhdtAFVE4T_wMks6k4=eQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] cifs: make sure server interfaces are requested only
- for SMB3+
-To: nspmangalore@gmail.com
-Cc: linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com, 
-	Shyam Prasad N <sprasad@microsoft.com>, Stable <stable@vger.kernel.org>, 
-	=?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5275.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c88a670f-67c2-43c3-5672-08dc43e6abc1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2024 05:21:58.2794
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wItLMy3iUSXvIrHqBKMeuc/5V38I7N2OjMlCV+Ye1SrBV6zaigNrUveDHk1H9S2bnH23V9Qti53zfjQHbRxFHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8374
+X-OriginatorOrg: intel.com
 
-tentatively merged to cifs-2.6.git for-next pending testing and
-additional review
+Commit 9bb66c179f50 ("drm/i915: Reserve some kernel space per
+vm") has reserved an object for kernel space usage.
 
-On Wed, Mar 13, 2024 at 5:40=E2=80=AFAM <nspmangalore@gmail.com> wrote:
->
-> From: Shyam Prasad N <sprasad@microsoft.com>
->
-> Some code paths for querying server interfaces make a false
-> assumption that it will only get called for SMB3+. Since this
-> function now can get called from a generic code paths, the correct
-> thing to do is to have specific handler for this functionality
-> per SMB dialect, and call this handler.
->
-> This change adds such a handler and implements this handler only
-> for SMB 3.0 and 3.1.1.
->
-> Cc: Stable <stable@vger.kernel.org>
-> Cc: Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz>
-> Reported-by: Paulo Alcantara <pc@manguebit.com>
-> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-> ---
->  fs/smb/client/cifsglob.h | 3 +++
->  fs/smb/client/connect.c  | 6 +++++-
->  fs/smb/client/smb2ops.c  | 2 ++
->  fs/smb/client/smb2pdu.c  | 5 +++--
->  4 files changed, 13 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-> index 53c75cfb33ab..b29b57ab9807 100644
-> --- a/fs/smb/client/cifsglob.h
-> +++ b/fs/smb/client/cifsglob.h
-> @@ -346,6 +346,9 @@ struct smb_version_operations {
->         /* informational QFS call */
->         void (*qfs_tcon)(const unsigned int, struct cifs_tcon *,
->                          struct cifs_sb_info *);
-> +       /* query for server interfaces */
-> +       int (*query_server_interfaces)(const unsigned int, struct cifs_tc=
-on *,
-> +                                      bool);
->         /* check if a path is accessible or not */
->         int (*is_path_accessible)(const unsigned int, struct cifs_tcon *,
->                                   struct cifs_sb_info *, const char *);
-> diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-> index ac9595504f4b..234160460615 100644
-> --- a/fs/smb/client/connect.c
-> +++ b/fs/smb/client/connect.c
-> @@ -123,12 +123,16 @@ static void smb2_query_server_interfaces(struct wor=
-k_struct *work)
->         struct cifs_tcon *tcon =3D container_of(work,
->                                         struct cifs_tcon,
->                                         query_interfaces.work);
-> +       struct TCP_Server_Info *server =3D tcon->ses->server;
->
->         /*
->          * query server network interfaces, in case they change
->          */
-> +       if (!server->ops->query_server_interfaces)
-> +               return;
-> +
->         xid =3D get_xid();
-> -       rc =3D SMB3_request_interfaces(xid, tcon, false);
-> +       rc =3D server->ops->query_server_interfaces(xid, tcon, false);
->         free_xid(xid);
->
->         if (rc) {
-> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-> index 4695433fcf39..3b8896987197 100644
-> --- a/fs/smb/client/smb2ops.c
-> +++ b/fs/smb/client/smb2ops.c
-> @@ -5538,6 +5538,7 @@ struct smb_version_operations smb30_operations =3D =
-{
->         .tree_connect =3D SMB2_tcon,
->         .tree_disconnect =3D SMB2_tdis,
->         .qfs_tcon =3D smb3_qfs_tcon,
-> +       .query_server_interfaces =3D SMB3_request_interfaces,
->         .is_path_accessible =3D smb2_is_path_accessible,
->         .can_echo =3D smb2_can_echo,
->         .echo =3D SMB2_echo,
-> @@ -5653,6 +5654,7 @@ struct smb_version_operations smb311_operations =3D=
- {
->         .tree_connect =3D SMB2_tcon,
->         .tree_disconnect =3D SMB2_tdis,
->         .qfs_tcon =3D smb3_qfs_tcon,
-> +       .query_server_interfaces =3D SMB3_request_interfaces,
->         .is_path_accessible =3D smb2_is_path_accessible,
->         .can_echo =3D smb2_can_echo,
->         .echo =3D SMB2_echo,
-> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-> index 608ee05491e2..4fa47c59cc04 100644
-> --- a/fs/smb/client/smb2pdu.c
-> +++ b/fs/smb/client/smb2pdu.c
-> @@ -409,14 +409,15 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tco=
-n *tcon,
->         spin_unlock(&ses->ses_lock);
->
->         if (!rc &&
-> -           (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-> +           (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
-> +           server->ops->query_server_interfaces) {
->                 mutex_unlock(&ses->session_mutex);
->
->                 /*
->                  * query server network interfaces, in case they change
->                  */
->                 xid =3D get_xid();
-> -               rc =3D SMB3_request_interfaces(xid, tcon, false);
-> +               rc =3D server->ops->query_server_interfaces(xid, tcon, fa=
-lse);
->                 free_xid(xid);
->
->                 if (rc =3D=3D -EOPNOTSUPP && ses->chan_count > 1) {
-> --
-> 2.34.1
->
+Userspace, though, needs to know the full address range.
 
+Fixes: 9bb66c179f50 ("drm/i915: Reserve some kernel space per vm")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: <stable@vger.kernel.org> # v6.2+
+---
+ drivers/gpu/drm/i915/gt/gen8_ppgtt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c b/drivers/gpu/drm/i915/gt=
+/gen8_ppgtt.c
+index fa46d2308b0e..d76831f50106 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
++++ b/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
+@@ -982,8 +982,9 @@ static int gen8_init_rsvd(struct i915_address_space *vm=
+)
+=20
+ 	vm->rsvd.vma =3D i915_vma_make_unshrinkable(vma);
+ 	vm->rsvd.obj =3D obj;
+-	vm->total -=3D vma->node.size;
++
+ 	return 0;
++
+ unref:
+ 	i915_gem_object_put(obj);
+ 	return ret;
 --=20
-Thanks,
+2.43.0
 
-Steve
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
 
