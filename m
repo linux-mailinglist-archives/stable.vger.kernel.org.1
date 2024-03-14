@@ -1,123 +1,166 @@
-Return-Path: <stable+bounces-28116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC5A87B850
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:10:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052C887B8F2
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C581AB233EB
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 07:10:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D0928A782
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 07:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC18DDDA;
-	Thu, 14 Mar 2024 07:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CE55CDE7;
+	Thu, 14 Mar 2024 07:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="SPGjn6pM";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ZSt6A1RC"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AjCT7cKb"
 X-Original-To: stable@vger.kernel.org
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8137B7483;
-	Thu, 14 Mar 2024 07:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7AC5CDDA
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 07:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710400213; cv=none; b=Gdo0xQDWrN3pZHFBpDXUs30Z9mUftuo5wMoq4TBiglx7jWHi7T4fpQ/bdP/fkvOy0O1kZfouHw7aDyUsAdBE2cNOTLDkIOxwEA0x6AGDtuGA818EORNlH2enGpNffrcOAs7hyHT2KO5d+3Vr640U2VJQRebSgUcb0B3GCZrtqpo=
+	t=1710402830; cv=none; b=cltxCgF9a36S4bFoOI7XzXWD6BnKgsevRe2spxhAvcy7YS3IkErHPVEafJz5RUwa0/eJNRLnHE2bGx14RvzniqQWP1UIKxmD7tSyNCPDNfz1hhbTcNPHMbQNLA4FuEjT6vKlk+6M8zfEBkDHRx+7PViMX0JGaq4cS0PaWOgmjEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710400213; c=relaxed/simple;
-	bh=jY6yOpE8g9BQVfVV2ZkfIkx2zon2uXer6mzsjaixt0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ObOhG8Dva6ug31qHDjzMSDO/W09F1tC+msK/3SO9kSLF3CmV6U/AX/jlQ6i8GIuSpaxJkxav56jIWqsBswozu9sRh14R6iXJZjD0I928iaOPdl6S9G7ZBG3Sl3HbAZv+VUS4HTdBD/WZH0SA2meaR+YDmWo32FeVr7s4Mz8z0GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=SPGjn6pM; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ZSt6A1RC; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 208BFC01E; Thu, 14 Mar 2024 08:03:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1710399829; bh=3Vv06S8OE0qnROsAgEOpxSNvRHaMC9janhFTWckPh+Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SPGjn6pMlC0hxjnvWiFi4yuaD+Me9YRaiEjz9yKlZpGf5xIY3UFHv9HuIxHvn2lRV
-	 O2EA/W3iOn0PCeRJM1QDD84hyagGsbkMQnwKZdzr2KCYPIj7ckxn+02hxXk9cjSJuU
-	 edujCM9iKpybgSYt0vtWd/LN3j+98Wyalxr7FINaGM/eIwZchvTbiBnzFoCEkKB+MA
-	 gpbHyodFgjgK/jXcX+lPVj6xwmeJqO87MXrNLXlYrX41dRAiRWbQgwZ+yuUjnVYlq0
-	 pRjwTZ8fcgMuF+7UzkV7RJI93miUCA/my7PTjYJ9M50L8Il3060HFybfJGQMFTmqSm
-	 6mOHSuZ1obGeQ==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 60BE3C009;
-	Thu, 14 Mar 2024 08:03:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1710399828; bh=3Vv06S8OE0qnROsAgEOpxSNvRHaMC9janhFTWckPh+Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZSt6A1RCFK9P6wi6S9jOhVJeqevRv7Q17lI9WJe8YB+JRF5p8Xgt13VR0Xc9lyIjo
-	 gTmHSwNLtYDoBNDzXg6Npv2A08heBSgw8XaZsnqOjBJ/CikiBHdKFRBuN+IuY28RLD
-	 gLb7co1SKnonFEL0mI9DUNQ/7CwcMC+BKJksVhRPvaiFLAljHF6VaaihN2qd/ZDwIZ
-	 ot9ffnxkrtzPl6IaxPAP+EJ1o8sDX3DzADndMapZQrZ4BMN4tocYJnr5oPdtZWiEcS
-	 EwvE6WWWCWe8Wz8rmA6uUIUKOUPSzAmkRZx/qaCfeni/m/aVx8gNNH86abLvgjTgtg
-	 F7YY4NYonuXYg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a2e2f42c;
-	Thu, 14 Mar 2024 07:03:40 +0000 (UTC)
-Date: Thu, 14 Mar 2024 16:03:25 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-Message-ID: <ZfKhPaFngJTrTJyt@codewreck.org>
-References: <20240313164640.616049-1-sashal@kernel.org>
+	s=arc-20240116; t=1710402830; c=relaxed/simple;
+	bh=pwX6p+1yV2ReHGeDhBpSTG3PrWP4eW8DwCIEm9/DUTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ThfkJGM25YUhF1b9zu//A7CJC9gXEJPxVShAy4QjTAIaFJlk26P+2rOOo+oLo/d/XKGPie49F4hpgNe8lvsVXIW9ef6CPQoBPlfdvoEd4+xVJ07PMS8VrH1V7/+3he1h7TlyuWa0XBM8GqUeu3YbduxqPpWdOXcnud9R2I3OZds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AjCT7cKb; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-33e9623c3a8so536683f8f.0
+        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 00:53:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1710402826; x=1711007626; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HIX2Il4Aa+k8DGAFpqbttw/bKdoZBGLQp2FUwNeGJqI=;
+        b=AjCT7cKbUcjDuUZ+FiIDjBbYHTrNEDoWM6o1wnZCCLW3OQ7M0+glzuC/ntTkPpkEoc
+         LUDXQ9wUg3Fl690xxZ1z1ycPLsT0DBpRT57DTMFgAkhcwa2W4snOXE42qRFQjcaShxO6
+         MeuI3qbVZ/04JyKUn0VF4XvVXwFFjIQ5ftS9DX+y4y5q6p1J25PDTOP7YeDy5VeJhYpy
+         x02ksXhptLtd6YusKYxC4+pn3HhS3fx6iRsviYBk4xybXMMePMjAwtO1WJ7tEdTnMezM
+         3L1Z6D0EX4KYo4vVu5V+8u0H81BIRaMn/r8oXOqET8xxJUfqSPOwbFDeIfiFNjMNZLu2
+         InzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710402826; x=1711007626;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HIX2Il4Aa+k8DGAFpqbttw/bKdoZBGLQp2FUwNeGJqI=;
+        b=nuFMUEYz3k9TZYggkagvZUzWV9cIi69YEFBAJM/G/AWDVd5v88d/PsHaEuiIL4xTa4
+         vNZ+AvaMfRLtFWvWgSMZ7bjrBoswSuYaGaTm5cENfhtmNadqyKzJlAOZnv6C+6E0NuCu
+         tJxLIzwFuNggbGLh+1Qh/ZWUzd1v0kKQ0CrQ+vBZqbO/vdWT775UVL3bNFVxHW7KBYLm
+         OPvB5GKwH8zQDIjgFqbHS1vH6iN5SLtPpA++D6dzpvg4w8sLQ4O/QVAXUrBgl3VJN4Bw
+         4AdDGs32f0nVAJS+ShEle/in2zseWDkLhTTWVcAEhOlDkT0m4SC5xQP5uPkev36cyp6J
+         +cKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvFHlukzJoLq4AdnTWnAN+1szZ1HYbsfqhYGk8wadATeIsA/YyJy328An7b7Da77O+/cHh4TvJystbsjDpp61ZxnXV5A4r
+X-Gm-Message-State: AOJu0YzHcpsjBQr3zfcx6Iv3xjzqitUK1xpc79BJbR0PeO80/HfJ1bgU
+	ozlcBLXwtNXDLHnNr7efxpJmumkQx1sRQoWMEO+GScruBdmy6ByFyE+WG+2Ns7g=
+X-Google-Smtp-Source: AGHT+IF8R2Rp90nS9THsoB9F645oT3p8ZKEzu6hDCmaav/ZfN7svDd51pgTD+WfEph8Bcz3RkqzNDg==
+X-Received: by 2002:a05:6000:1965:b0:33e:76f1:3e3d with SMTP id da5-20020a056000196500b0033e76f13e3dmr684747wrb.51.1710402826202;
+        Thu, 14 Mar 2024 00:53:46 -0700 (PDT)
+Received: from ?IPV6:2001:a61:1366:6801:7ce4:a9a1:7f22:a638? ([2001:a61:1366:6801:7ce4:a9a1:7f22:a638])
+        by smtp.gmail.com with ESMTPSA id co15-20020a0560000a0f00b0033e99b7cfa8sm113210wrb.13.2024.03.14.00.53.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Mar 2024 00:53:46 -0700 (PDT)
+Message-ID: <2233fe16-ca3e-4a5e-bc69-a2447ddd2e82@suse.com>
+Date: Thu, 14 Mar 2024 08:53:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] usb: f_mass_storage: reduce chance to queue disable ep
+To: yuan linyu <yuanlinyu@hihonor.com>, Alan Stern
+ <stern@rowland.harvard.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20240314065949.2627778-1-yuanlinyu@hihonor.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20240314065949.2627778-1-yuanlinyu@hihonor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Sasha Levin wrote on Wed, Mar 13, 2024 at 12:45:27PM -0400:
-> This is the start of the stable review cycle for the 5.10.213 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi,
 
-Thanks Sasha for submitting a stable rc review!
+I am sorry, but this contains a major issue.
 
-If it's not too much trouble, would it be possible to have a different
-header in the 00 patch from the other patches for my mailbox?
-The mails Greg sends have the X-KernelTest-* headers (patch, tree,
-branch etc) only in the cover letter, while all the patches themselves
-only have 'X-stable: review' and 'X-Patchwork-Hint: ignore'
+On 14.03.24 07:59, yuan linyu wrote:
+> It is possible trigger below warning message from mass storage function,
+> 
+> ------------[ cut here ]------------
+> WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
+> CPU: 6 PID: 3839 Comm: file-storage Tainted: G S      WC O       6.1.25-android14-11-g354e2a7e7cd9 #1
+> pstate: 22400005 (nzCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
+> pc : usb_ep_queue+0x7c/0x104
+> lr : fsg_main_thread+0x494/0x1b3c
+> 
+> Root cause is mass storage function try to queue request from main thread,
+> but other thread may already disable ep when function disable.
+> 
+> As mass storage function have record of ep enable/disable state, let's
+> add the state check before queue request to UDC, it maybe avoid warning.
+> 
+> Also use common lock to protect ep state which avoid race between main
+> thread and function disable.
+> 
+> Cc: <stable@vger.kernel.org> # 6.1
+> Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Nacked-by: Oliver Neukum <oneukum@suse.com>
 
-I don't really care much what actual tags are on which as long as
-there's a way to differentiate that cover letter from the rest so I can
-redirect it to a mailbox I actually read to notice there's a new rc to
-test, without having all the patches unless I explicitly look for them.
+> ---
+>   drivers/usb/gadget/function/f_mass_storage.c | 18 +++++++++++++++++-
+>   1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
+> index c265a1f62fc1..056083cb68cb 100644
+> --- a/drivers/usb/gadget/function/f_mass_storage.c
+> +++ b/drivers/usb/gadget/function/f_mass_storage.c
+> @@ -520,12 +520,25 @@ static int fsg_setup(struct usb_function *f,
+>   static int start_transfer(struct fsg_dev *fsg, struct usb_ep *ep,
+>   			   struct usb_request *req)
+>   {
+> +	unsigned long flags;
+>   	int	rc;
+>   
+> -	if (ep == fsg->bulk_in)
+> +	spin_lock_irqsave(&fsg->common->lock, flags);
 
-If it's difficult I'll add a regex on the subject for ' 00/' or
-something, I'd prefer matching only headers for robustness but just let
-me know.
+Taking a spinlock.
+
+> +	if (ep == fsg->bulk_in) {
+> +		if (!fsg->bulk_in_enabled) {
+> +			spin_unlock_irqrestore(&fsg->common->lock, flags);
+> +			return -ESHUTDOWN;
+> +		}
+>   		dump_msg(fsg, "bulk-in", req->buf, req->length);
+> +	} else {
+> +		if (!fsg->bulk_out_enabled) {
+> +			spin_unlock_irqrestore(&fsg->common->lock, flags);
+> +			return -ESHUTDOWN;
+> +		}
+> +	}
+>   
+>   	rc = usb_ep_queue(ep, req, GFP_KERNEL);
+
+This can sleep.
+
+> +	spin_unlock_irqrestore(&fsg->common->lock, flags);
+
+Giving up the lock.
 
 
-Didn't run into any problem with the patches themselves:
+Sorry, now for the longer explanation. You'd introduce a deadlock.
+You just cannot sleep with a spinlock held. It seems to me that
+if you want to do this cleanly, you need to revisit the locking
+to use locks you can sleep under.
 
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.212
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-
-Tested 0a70dd1e1aa9 ("Linux 5.10.213-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
-
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-
--- 
-Dominique Martinet | Asmadeus
+	HTH
+		Oliver
 
