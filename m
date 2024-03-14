@@ -1,172 +1,255 @@
-Return-Path: <stable+bounces-28133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4981787BAB6
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:50:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514FC87BAF9
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE28A1F23632
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B01282B33
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E886D1BF;
-	Thu, 14 Mar 2024 09:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255F06DD1D;
+	Thu, 14 Mar 2024 10:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="uw4qfesA";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="uw4qfesA"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZwvyuBE0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682F96CDDB;
-	Thu, 14 Mar 2024 09:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581E16D1BD
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 10:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710409831; cv=none; b=atbzYkxAqm9RCjlZ8Gl3Mxt7WG3ppHlrelqXhOS5Uno+5AzMdQuckgQ1fAIrbbgIQXfCEjF9gYbWN52KRXzH4uzGp3P2wdKfYEgbgqfBqsyVpMRlJvwJO76DlvyJEx3MSVtV2hTzpHshI4HXj6XXlgGkn8Zq5jS1KiQtAyutto0=
+	t=1710410936; cv=none; b=Mrxdd+rEdo7DPab7NOEnKdVE6DaezOzZ+gI3dYw1pGa8s7wDSxF8srZ85STskIm1uRo7fLR+fDuYLSamHu0wQSXMGZnZ3dW3oAhZZykej2z7z8Sak14i1fWHK0HqWSUV9SksMSonyaxRGLxwtsWQQ3vz352YVeHu7l73ABoE6sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710409831; c=relaxed/simple;
-	bh=K/CEd3RNqXZXTQ0NLAQim//VRn3tbx1k0NNRY/ttNCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKAi4uUS/pHBTEjrsYMSK4B7njYMp8h396cHAqU/5jldvogey8zyVvxBA6BPEE0QJEbkRqmxLpLj+NfqNPrrqIuzRrS5RDAvDb34gBBMEvTAOtUvXNAIN0LvgjzmxjaY9J/ZQKUkDJmpv99OfbQ7oFUL/CVMBKUfVh5kNFWGCAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=uw4qfesA; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=uw4qfesA; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A0F141F842;
-	Thu, 14 Mar 2024 09:50:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1710409827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YeF+9f6hvwubs3gTkYMoPPUNvBAqgdX2QvrFGWljTQo=;
-	b=uw4qfesAtOkGSx0I66YEbLpxGwaOk9CmxbHSqQIJcalW1L0lSCaInesGKnv9H9eH2p6QTN
-	oEIoCRfW+If3xI1oiiPHEYDdAhEKG+Bavc5Sw+MqBnX2rvRcsUzVP37R6jA1m06Q6wHryz
-	UPlbyjjeLV/fzgKbRdxL07P0yYikRzs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1710409827; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YeF+9f6hvwubs3gTkYMoPPUNvBAqgdX2QvrFGWljTQo=;
-	b=uw4qfesAtOkGSx0I66YEbLpxGwaOk9CmxbHSqQIJcalW1L0lSCaInesGKnv9H9eH2p6QTN
-	oEIoCRfW+If3xI1oiiPHEYDdAhEKG+Bavc5Sw+MqBnX2rvRcsUzVP37R6jA1m06Q6wHryz
-	UPlbyjjeLV/fzgKbRdxL07P0yYikRzs=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 88BD1138A7;
-	Thu, 14 Mar 2024 09:50:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WN4vEmLI8mWPQQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Thu, 14 Mar 2024 09:50:26 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/7] btrfs: reduce the log level for btrfs_dev_stat_inc_and_print()
-Date: Thu, 14 Mar 2024 20:20:15 +1030
-Message-ID: <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1710409033.git.wqu@suse.com>
-References: <cover.1710409033.git.wqu@suse.com>
+	s=arc-20240116; t=1710410936; c=relaxed/simple;
+	bh=LQm2VAj90xzGsL/49c3wp2VlNhOBJsbKetnsb0YVsAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hVNnu4zp3G0aG+yp2c4KdVDEEbg0kKyEnFXVU9Sojzk5mn2NOY7XLVi/n9F+hkYV2Fv1rU7Q8unnVRV9i/RHkmJyPixq2mBdnY3NPmVRVMJg2/CcfFT0XhLzWp6njrcdPT2PLjc9TtdVt8abgtWghYerEHwouv1tAXaVprGVh+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZwvyuBE0; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4d37e76a3dfso956236e0c.1
+        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 03:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710410934; x=1711015734; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lAj/KswqypAoEBR+gwAx50mwI6kr2j+amF9iU6S/qJY=;
+        b=ZwvyuBE09r8XQbb7M9862QFjdvgvwEAsMLKdjfd2ZmhlGUl6CTMUUSdOdZe6uD2PWC
+         Wo6SMpLYDkpc2gjm6yJ7ndLCKJt2lkvvOzKOR8pwkUeDRYQkobi6jKhjcTGd9/w0MhlT
+         dQ+7IHPRyK/ykM+8ygknkAp8xqzH+MqnlRjdjkAOJ/JkOACytCtBVAIVWPmlFSWwzy3a
+         Unkv8ThpTvVbplufQSCUbDtWgmK6yll37mTNknN7csPdR1eaHlUQhU/5EHSKf0apOdw5
+         xN66HZpQQRsfEooO3NpoGbtr8lRdtPj813nsDm1PGmnKG3rgGfiR7JDvqZT7giWSHVjv
+         NU8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710410934; x=1711015734;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lAj/KswqypAoEBR+gwAx50mwI6kr2j+amF9iU6S/qJY=;
+        b=hJHrdKptibdy//Gnzcygz+EsiVENUBHO5ZyguG4w8xiWEH5RaHmP+sWcPSWqJ81iXB
+         Dg8bMf3yYNLTanRX65aIRk75jopUFduR5OX4/Mwxw0UH8V74d/6Ea0IGMSlpxcMswRzu
+         bRNYZaDBSWYJOtvG1AJp3jHnfny2g9aap5OoyI2jYYF2FffLvetmSgzKmx34CseFCe6/
+         9Ojc6JDMYfXcbDWSRPdaFiv752CigpM2xBG+f4Y8BE2H3HTZ/dx77gdaiX/cKKmljLN4
+         rP3+dkzrzCjRg8DZqDI2AJRbx+1hDi4hGyueCSB9PTb5qvOTTnm8mDg8J/h9uxd8IB8c
+         4+uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVi5WnqQ4YlnSWkHf/I891RzX+SvVTIZC8rxm6UIksJFF2Ja+tnanDxYaXbmNH5fBuev0hDrHiNTm8QWTsoDy+RDM/K8IV9
+X-Gm-Message-State: AOJu0Yz4SUBLVRroKMoDy+kEGKccZImIXYb0Z41I3Eh35nd2JBOxzYXG
+	pfRRSSOLnWoy2Pho0M83A00KZUHcIDYpkhj/U25o9e21VkK73yiRVz+wlyofQ5Yltik1ayomGYh
+	icgSPax53IXlHw3x4BsLO/j9qziJ2Uq410cosVA==
+X-Google-Smtp-Source: AGHT+IHg7rmCU4eUS55fx7jxIP9xt+HAU98sLo4njVkb4X1xnRu1fwZtHWsJy3RuPfHRrmaf/FO4U3GIVpX5h1QY+x8=
+X-Received: by 2002:a05:6122:3187:b0:4d4:17db:4f46 with SMTP id
+ ch7-20020a056122318700b004d417db4f46mr1991889vkb.4.1710410934355; Thu, 14 Mar
+ 2024 03:08:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: **
-X-Spamd-Bar: ++
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=uw4qfesA
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [2.49 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 DWL_DNSWL_LOW(-1.00)[suse.com:dkim];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 DKIM_TRACE(0.00)[suse.com:+];
-	 RCPT_COUNT_TWO(0.00)[2];
-	 MID_CONTAINS_FROM(1.00)[];
-	 MX_GOOD(-0.01)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[36.61%]
-X-Spam-Score: 2.49
-X-Rspamd-Queue-Id: A0F141F842
-X-Spam-Flag: NO
+References: <20240313163707.615000-1-sashal@kernel.org>
+In-Reply-To: <20240313163707.615000-1-sashal@kernel.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 14 Mar 2024 15:38:42 +0530
+Message-ID: <CA+G9fYsgBOc0HocgXzDN-cM-L_dDndysLvhbcf3nGpjzSBDXTQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/60] 6.6.22-rc1 review
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently when we increase the device statistics, it would always lead
-to an error message in the kernel log.
+On Wed, 13 Mar 2024 at 22:07, Sasha Levin <sashal@kernel.org> wrote:
+>
+>
+> This is the start of the stable review cycle for the 6.6.22 release.
+> There are 60 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri Mar 15 04:36:58 PM UTC 2024.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git/patch/?id=3Dlinux-6.6.y&id2=3Dv6.6.21
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
 
-I would argue this behavior is not ideal:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-- It would flood the dmesg and bury real important messages
-  One common scenario is scrub.
-  If scrub hit some errors, it would cause both scrub and
-  btrfs_dev_stat_inc_and_print() to print error messages.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-  And in that case, btrfs_dev_stat_inc_and_print() is completely
-  useless.
+## Build
+* kernel: 6.6.22-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.6.y
+* git commit: 11496a5d363eb35c9b4de8012eae7ffa557594f0
+* git describe: v6.6.21-60-g11496a5d363e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.2=
+1-60-g11496a5d363e
 
-- The results of btrfs_dev_stat_inc_and_print() is mostly for history
-  monitoring, doesn't has enough details
+## Test Regressions (compared to v6.6.21)
 
-  If we trigger the errors during regular read, such messages from
-  btrfs_dev_stat_inc_and_print() won't help us to locate the cause
-  either.
+## Metric Regressions (compared to v6.6.21)
 
-The real usage for the btrfs device statistics is for some user space
-daemon to check if there is any new errors, acting like some checks on
-SMART, thus we don't really need/want those messages in dmesg.
+## Test Fixes (compared to v6.6.21)
 
-This patch would reduce the log level to debug (disabled by default) for
-btrfs_dev_stat_inc_and_print().
-For users really want to utilize btrfs devices statistics, they should
-go check "btrfs device stats" periodically, and we should focus the
-kernel error messages to more important things.
+## Metric Fixes (compared to v6.6.21)
 
-CC: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/volumes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+## Test result summary
+total: 132425, pass: 115163, fail: 1216, skip: 15923, xfail: 123
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index e49935a54da0..126145950ed3 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -7828,7 +7828,7 @@ void btrfs_dev_stat_inc_and_print(struct btrfs_device *dev, int index)
- 
- 	if (!dev->dev_stats_valid)
- 		return;
--	btrfs_err_rl_in_rcu(dev->fs_info,
-+	btrfs_debug_rl_in_rcu(dev->fs_info,
- 		"bdev %s errs: wr %u, rd %u, flush %u, corrupt %u, gen %u",
- 			   btrfs_dev_name(dev),
- 			   btrfs_dev_stat_read(dev, BTRFS_DEV_STAT_WRITE_ERRS),
--- 
-2.44.0
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 135 total, 132 passed, 3 failed
+* arm64: 43 total, 41 passed, 2 failed
+* i386: 35 total, 30 passed, 5 failed
+* mips: 26 total, 23 passed, 3 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 28 passed, 8 failed
+* riscv: 18 total, 18 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 39 total, 34 passed, 5 failed
 
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
