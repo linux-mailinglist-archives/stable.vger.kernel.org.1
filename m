@@ -1,74 +1,49 @@
-Return-Path: <stable+bounces-28200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E13687C47C
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:55:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8229687C49D
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 22:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789C71C21487
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 20:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3D01F22170
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AD6763F9;
-	Thu, 14 Mar 2024 20:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F776414;
+	Thu, 14 Mar 2024 21:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRgui8I6"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="KyBbJo8n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96069763E4;
-	Thu, 14 Mar 2024 20:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F3F76036
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 21:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710449745; cv=none; b=sx7WhWnN2jbnNjPd8nP30KJiHntrmua8ecf+CuRw4xCMraez/OQWpUP1B7W+3kz2TsbxVijl1B5LnlUmsMjAnLxDkhiEq0VW5XOoQEboMoJNp6IiNKi4TuydJk8+fFeX8EO0gFfq/f1+6R4Vq0FFINZ5DLU08238B1IyGRvvRQc=
+	t=1710450765; cv=none; b=ni41OT4OCxataLzut0hYjcn0eBmOGPT69UcBxeL3IkkjJ9xXOnYo9TOt5IOvNzBXjJ0MzxzCe2fv2GiWTlaO6Xe/D1GC64yRPs9AOJfIiWNJQoVbT3R4QxrXsJvlqTipZOL/7/RjF/TfIDUOBrA5jD0ubakzd9LHx5cHYiQq3XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710449745; c=relaxed/simple;
-	bh=leChC4iqFlmyncIv6yWpcv6stLeDV7HVt5FAasiYsFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z1fp4ZPwszCFUmvEhPo2ZV+0VDeOKk9uIg3Y6yyp9PyOI1zZ7ddQaNDNfHoiKCHqQCCr5xONFgGqoJIF0M6JqYe5smh1GsAhsr3CQF25ID/74E3XcICisz/JXo08N9ZDLQ0wTjzRZUug1i4QpR8K+WSo6ayaHRMx2eTDh3Z4SJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRgui8I6; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7882b1e87c4so64386685a.1;
-        Thu, 14 Mar 2024 13:55:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710449742; x=1711054542; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M2hH7wI/Wv6rH6juPrsLHkKZoPg9INZ+wf6T9UE0WHA=;
-        b=ZRgui8I6dR6j2bfjgE3Shf5fT/jzg+MWvZNK6aIL8VPGoQVROP317ooU8F1bAa4jGI
-         m1gEhIzf+K+k+7Sq/pbkeZ6vu78QWHGqZqb1pa22f+BQws9fPv8z5DA1Lfvb2hbO9wcu
-         TyPA1SfGxDeMcYlP0Kqeaxl7uIB1j8tDWA+cvWpUwXeLrJHi7nvfhl4qs2KWJdjZYQz4
-         udImYoiytluAd2fyCd2z30Y7oFFzFvYqZd8jv4/sC1ayxjdo/Qsmi4Ar0rVRsV+fn0Ow
-         c745jVkDxMEifxVqQdw8b/4h0CsTgqQMALs4XVFV/9iOEDHmju+ZpFDgZgPgBRyoWE7e
-         I5CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710449742; x=1711054542;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M2hH7wI/Wv6rH6juPrsLHkKZoPg9INZ+wf6T9UE0WHA=;
-        b=fBKiu0vxhUYfCmTk/lgvdfY9cPUjYC0oiKFTSwV16BJo6wmpOjy2G2oIoJprk32z8t
-         KiCHaYskthWkwedBpv7vxsy62A42s64hhcr/fKV6PRTCYPFHPJ/26xsGQSYderJ0YQCd
-         1q2KWDtScRkA4NqzKLFWj58AB2vQhzUY4yt8m43imR5RyL7VbNgCeksrhVXKcTgeirCa
-         /LOh1ty5ewiPGfPCMH+AOIjG7f1sUdUSztCWS0r5uZ5Qdv9g0vRyVVoESoj2dDaGK6xs
-         2qHTPv2vCmlj/vlpoCLt0Qk4vIieDad2De1/ykWXffgAe2nCbAQbj9Y1+UpKGp87yReY
-         iYdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIqi9S5oEoijvrE95pko0Z+O+XS/xOClDJ/lMeAP9VD2zv6vin0pYcW3+T0xIrLd+IiIJmAJcIWYES90ZEGssXM0B5wg8bh3omV8tBgePTtL0JSzSboXjt9VC40oDsrFsFIl5c
-X-Gm-Message-State: AOJu0YwLlV5nNcctxvmxQOvSLhDlIwwc2SwoG3U5wfwfN25Sm+ItQKy7
-	3FnO5A9NJzNXZC9zaVuRqQTp3WAIkSNsnrASX05zBdCtZPazwFn7
-X-Google-Smtp-Source: AGHT+IGkuTis3za+16XYKofdYTyfSTtqNl74hEP8lV9cKMUYzSCNzFUD8Ck/0Vkgt8usBV22cx8rBg==
-X-Received: by 2002:a05:620a:3b8b:b0:788:2357:6050 with SMTP id ye11-20020a05620a3b8b00b0078823576050mr2105253qkn.73.1710449742465;
-        Thu, 14 Mar 2024 13:55:42 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id k2-20020a05620a414200b007883c9be0a9sm1247537qko.80.2024.03.14.13.55.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 13:55:41 -0700 (PDT)
-Message-ID: <b556d988-c3e2-45a2-82c4-b5ad243d474c@gmail.com>
-Date: Thu, 14 Mar 2024 13:55:39 -0700
+	s=arc-20240116; t=1710450765; c=relaxed/simple;
+	bh=cxbt0Kto7LLbG5HBcH4uBdiNWLpw971VYFKfs7//BVE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BmEW33Fjq+EK2+nBbhtvkfTMHIW6mAMqE5ryHv6pEucPrUfXBrFRH7M/K2/uCRfXEA1RoN9ttORtX0UBqbkCD6bbOqyCl51+cS7a5Ezvk1iIInAWpTWnnaNY3Yk758DpbXyj+yl4Ie3xIOJVFc7eSvJjwGTi43chiiYPVOY4hM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=KyBbJo8n; arc=none smtp.client-ip=193.222.135.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 27455 invoked from network); 14 Mar 2024 22:12:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1710450752; bh=YX1IMT/rGJouPHhbyVD7uVQM40o/Eaq44nz7BmgAm+U=;
+          h=Subject:From:To:Cc;
+          b=KyBbJo8nS7q+dODnfxHc/Cg0Luuig4CwT0+ZBXSBWahx404irZJsuYoI7AwjyJFqc
+           Y2GWICZ8M+F+OBPEubqNeZlXVYiDZD55nOLtNATnhHP57KygEemnJjJv2FADvTgg1y
+           1tvKW9U2Hr1qKtY1sEUcMMAzgUkPjlpeNGwF5Sjg=
+Received: from aaff212.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.135.212])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <sashal@kernel.org>; 14 Mar 2024 22:12:32 +0100
+Message-ID: <ba297ed4-a74a-4786-a303-ce617b2de09b@o2.pl>
+Date: Thu, 14 Mar 2024 22:12:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,43 +51,137 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/60] 6.6.22-rc1 review
-Content-Language: en-US
+Subject: Re: [PATCH 6.1 00/71] 6.1.82-rc1 review
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>
 Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
  linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de
-References: <20240313163707.615000-1-sashal@kernel.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240313163707.615000-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ lkft-triage@lists.linaro.org, pavel@denx.de,
+ Andreas Herrmann <aherrmann@suse.de>, Tejun Heo <tj@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>
+References: <20240313163957.615276-1-sashal@kernel.org>
+ <73072bdd-590a-44b4-8e6d-34bd17073bb5@o2.pl>
+ <ecb0b6a1-a8e7-4645-9a2c-56ada368f733@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <ecb0b6a1-a8e7-4645-9a2c-56ada368f733@o2.pl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 2e9b3fe422a5616a1c0cf133ade012c5
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [kTMU]                               
 
-On 3/13/24 09:36, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 6.6.22 release.
-> There are 60 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri Mar 15 04:36:58 PM UTC 2024.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.6.y&id2=v6.6.21
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
+W dniu 13.03.2024 o 22:27, Mateusz Jończyk pisze:
+> W dniu 13.03.2024 o 21:13, Mateusz Jończyk pisze:
+>> W dniu 13.03.2024 o 17:38, Sasha Levin pisze:
+>>> This is the start of the stable review cycle for the 6.1.82 release.
+>>> There are 71 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Fri Mar 15 04:39:56 PM UTC 2024.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.81
+>>> or in the git tree and branch at:
+>>>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>>> and the diffstat can be found below.
+>>>
+>>> Thanks,
+>>> Sasha
+>>>
+>> Hello,
+>>
+>> Kernel hangs during early boot. No console messages, nothing in pstore.
+>>
+>> Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU (Intel i3-7020U) and Ubuntu 20.04.
+>>
+>> This CPU is not affected by RFDS (at least according to the Kconfig message), so I have set
+>>
+>> CONFIG_MITIGATION_RFDS=n
+>>
+>> in Kconfig. I do not have any updated microcode (if any will be provided at all for this CPU).
+>>
+>> Greetings,
+>>
+>> Mateusz
+>>
+> [snip]
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Bisected down to
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+commit d3d517a95e83a7d89e1ff511da1a0a31c9234155
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Fri Feb 3 16:03:54 2023 +0100
+
+    blk-rq-qos: make rq_qos_add and rq_qos_del more useful
+    
+    [ Upstream commit ce57b558604e68277d31ca5ce49ec4579a8618c5 ]
+    
+    Switch to passing a gendisk, and make rq_qos_add initialize all required
+    fields and drop the not required q argument from rq_qos_del.
+    
+    Signed-off-by: Christoph Hellwig <hch@lst.de>
+    Reviewed-by: Andreas Herrmann <aherrmann@suse.de>
+    Acked-by: Tejun Heo <tj@kernel.org>
+    Link: https://lore.kernel.org/r/20230203150400.3199230-14-hch@lst.de
+    Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    Stable-dep-of: f814bdda774c ("blk-wbt: Fix detection of dirty-throttled tasks")
+    Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+ block/blk-iocost.c    | 13 +++----------
+ block/blk-iolatency.c | 14 ++++----------
+ block/blk-rq-qos.c    | 13 ++++++++++---
+ block/blk-rq-qos.h    |  5 +++--
+ block/blk-wbt.c       |  5 +----
+ 5 files changed, 21 insertions(+), 29 deletions(-)
+
+Greetings,
+
+Mateusz
 
 
