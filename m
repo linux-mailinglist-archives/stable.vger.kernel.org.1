@@ -1,96 +1,125 @@
-Return-Path: <stable+bounces-28182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E0787C1D1
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:06:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1ED87C1D3
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B300D28403D
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC1F0283D97
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90D9745E7;
-	Thu, 14 Mar 2024 17:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5097441E;
+	Thu, 14 Mar 2024 17:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="KKvXOOfC"
 X-Original-To: stable@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 561E874297
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 17:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDA16FE10;
+	Thu, 14 Mar 2024 17:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710435993; cv=none; b=tBuEYT/xn9P37nnBEN0gJVNmifK4XM/OuZSbTTFF7elpBLTLveJgbQ2DVtJ75tVTKBIdKtV4N8pLs0ZoHf9yxErkfTDaxf7GGwNPhs5F3ZqVZ14IV1RoYfv95o3e6W/hrM+uVpQneYha8cEQeU6Qc0Lkl4GX16e1884r94DFcQ8=
+	t=1710436098; cv=none; b=Kl8yOh7l/Puyr+lyerMrKfMwLCCYREiwOgn4tRTh2HTCOlaCqi7Q4Ad3ivA0wVT1+rX3i1UtZL4bgJlm4HhtVXiWQii6rWrphx3ZehNPCH0tivEZDkALXWsthEyyu0P5uRKabwPFpHinwG+3VqkBqYommDIkj7oX6ZwNDzTJG1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710435993; c=relaxed/simple;
-	bh=CGkln+OmSkzR1fL8B64pytuSGwIBUDXizmxgaTNMi1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SB9Dl7+XGQR/DVrYAwCh3bMAFH6gSUX62/R9JUEL1MnO2HtYx/u9ERfP/pvBUOsFo6RrZNuNNYxt2UO6k3FfdbUUPbyZ4K1IV9wgVnhBUcODAhhOUZ8r4nV75AG3ckmJyLAozHzhbxxiyk5xHsFI+rSe9A/Kg+2HzMsS4Z+6wqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 457369 invoked by uid 1000); 14 Mar 2024 13:06:29 -0400
-Date: Thu, 14 Mar 2024 13:06:29 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Roman Smirnov <r.smirnov@omp.ru>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
-  linux-kernel@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>,
-  Karina Yankevich <k.yankevich@omp.ru>, lvc-project@linuxtesting.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] usb: storage: isd200: fix error checks in
- isd200_{read,write}_config()
-Message-ID: <8819c3a3-fbf1-4df5-9e40-3509ef383b4a@rowland.harvard.edu>
-References: <20240314093136.16386-1-r.smirnov@omp.ru>
+	s=arc-20240116; t=1710436098; c=relaxed/simple;
+	bh=KC56MJSNa0tlT6Fq7JOrWXDdPZMxnawzUzvFV5t+9NI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DCbrFK5KR4YebJZoHGACjb9TXUb5dHaKzmejilu1ORmKtTFT/dtC9v1l1sPqsmR9PppsIH4ZZpcfmnZttAWejxCuGnIVdo5NHI1mXuC0O4di2eAIQxWCHD0X5G5SmWO0JiP4YwCDXqoKPnLvbeIMEC7cx+qxv2avbnmsWzbiNiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=KKvXOOfC; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4TwYjr2tj0zlgVnf;
+	Thu, 14 Mar 2024 17:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1710436093; x=1713028094; bh=wNCX0W7TCjDPfMrpCKXRDDoj
+	AVEQk7pec9rqlF/vD64=; b=KKvXOOfCG3MvTQ4/rqE8S+tViGS+L0oaAw4x4b0V
+	QmEXAtqb9LsAOCftFCotaP/ouNp3mmmbljvmxCe1ronWqIjfrC+O0SndsYa+/wLn
+	C4QN3Lua7BfRdxWy2T1kldRO9Y5WaaWAfipPFywuA6rFtDnvcVSDasMVz3utxnRR
+	zvsCreLB7FRidUcAA1S81nQDOM6RXObmWdRVYoa7gosbwyqWOPcmXhFZ/7QgDyNm
+	cf9203r05ZpT28f1VvslRyQbs6UfEop7qxN8GvkOKTJm3EBGg14UefMZeWOyvV+a
+	fhW1ijPvY0/YAg28MqbcK/RqWe3g5HlWfnOKHit86lFNbg==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 6h4US87tAIbd; Thu, 14 Mar 2024 17:08:13 +0000 (UTC)
+Received: from [100.96.154.173] (unknown [104.132.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4TwYjm5yn4zlgVnW;
+	Thu, 14 Mar 2024 17:08:12 +0000 (UTC)
+Message-ID: <cf7e6d94-63fd-4ef5-bbdb-9c3877d8560a@acm.org>
+Date: Thu, 14 Mar 2024 10:08:10 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240314093136.16386-1-r.smirnov@omp.ru>
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOetlOWkjTogW1BBVENIXSBSZXZlcnQgImJsb2NrL21xLWRlYWRs?=
+ =?UTF-8?Q?ine=3A_use_correct_way_to_throttling_write_requests=22?=
+Content-Language: en-US
+To: =?UTF-8?B?54mb5b+X5Zu9IChaaGlndW8gTml1KQ==?= <Zhiguo.Niu@unisoc.com>,
+ Jens Axboe <axboe@kernel.dk>
+Cc: "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Damien Le Moal <dlemoal@kernel.org>,
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ =?UTF-8?B?6YeR57qi5a6HIChIb25neXUgSmluKQ==?= <hongyu.jin@unisoc.com>
+References: <20240313214218.1736147-1-bvanassche@acm.org>
+ <cf8127b0fa594169a71f3257326e5bec@BJMBX02.spreadtrum.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <cf8127b0fa594169a71f3257326e5bec@BJMBX02.spreadtrum.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 14, 2024 at 12:31:36PM +0300, Roman Smirnov wrote:
-> The expression result >= 0 will be true even if usb_stor_ctrl_transfer()
-> returns an error code. It is necessary to compare result with
-> USB_STOR_XFER_GOOD.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Svace.
-> 
-> Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> ---
+On 3/13/24 18:03, =E7=89=9B=E5=BF=97=E5=9B=BD (Zhiguo Niu) wrote:
+> Just as mentioned in original patch, "dd->async_depth =3D max(1UL, 3 * =
+q->nr_requests / 4);", this limitation methods look likes won't have a li=
+mit effect, because tag allocated is based on sbitmap, not based the whol=
+e nr_requests.
+> Right?
+> Thanks!
+>=20
+> For write requests, when we assign a tags from sched_tags,
+> data->shallow_depth will be passed to sbitmap_find_bit,
+> see the following code:
+>=20
+> nr =3D sbitmap_find_bit_in_word(&sb->map[index],
+> 			min_t (unsigned int,
+> 			__map_depth(sb, index),
+> 			depth),
+> 			alloc_hint, wrap);
+>=20
+> The smaller of data->shallow_depth and __map_depth(sb, index)
+> will be used as the maximum range when allocating bits.
+>=20
+> For a mmc device (one hw queue, deadline I/O scheduler):
+> q->nr_requests =3D sched_tags =3D 128, so according to the previous
+> calculation method, dd->async_depth =3D data->shallow_depth =3D 96,
+> and the platform is 64bits with 8 cpus, sched_tags.bitmap_tags.sb.shift=
+=3D5,
+> sb.maps[]=3D32/32/32/32, 32 is smaller than 96, whether it is a read or
+> a write I/O, tags can be allocated to the maximum range each time,
+> which has not throttling effect.
+Whether or not the code in my patch effectively performs throttling,
+we need this revert to be merged. The patch that is being reverted
+("block/mq-deadline: use correct way to throttling write requests")
+ended up in Greg KH's stable branches. Hence, the first step is to
+revert that patch and tag it with "Cc: stable" such that the revert
+lands in the stable branches.
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Thanks,
 
->  drivers/usb/storage/isd200.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
-> index 300aeef160e7..2a1531793820 100644
-> --- a/drivers/usb/storage/isd200.c
-> +++ b/drivers/usb/storage/isd200.c
-> @@ -774,7 +774,7 @@ static int isd200_write_config( struct us_data *us )
->  		(void *) &info->ConfigData, 
->  		sizeof(info->ConfigData));
->  
-> -	if (result >= 0) {
-> +	if (result == USB_STOR_XFER_GOOD) {
->  		usb_stor_dbg(us, "   ISD200 Config Data was written successfully\n");
->  	} else {
->  		usb_stor_dbg(us, "   Request to write ISD200 Config Data failed!\n");
-> @@ -816,7 +816,7 @@ static int isd200_read_config( struct us_data *us )
->  		sizeof(info->ConfigData));
->  
->  
-> -	if (result >= 0) {
-> +	if (result == USB_STOR_XFER_GOOD) {
->  		usb_stor_dbg(us, "   Retrieved the following ISD200 Config Data:\n");
->  #ifdef CONFIG_USB_STORAGE_DEBUG
->  		isd200_log_config(us, info);
-> -- 
-> 2.34.1
-> 
-> 
+Bart.
 
