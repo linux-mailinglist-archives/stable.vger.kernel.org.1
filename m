@@ -1,262 +1,162 @@
-Return-Path: <stable+bounces-28149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEF687BD09
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:51:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DCC87BD16
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45B6A283F33
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2E02843FA
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D65858AD2;
-	Thu, 14 Mar 2024 12:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1CF5A4E0;
+	Thu, 14 Mar 2024 12:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tfXvYe6q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="JgvZ0+NR";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tfXvYe6q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="JgvZ0+NR"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="R/p4zuCW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC7318E20;
-	Thu, 14 Mar 2024 12:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7582A57861
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 12:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710420660; cv=none; b=PZx5uQiOvwkjPA574fiz7+aa6TZmF5ZbQ2DtraYl5398mJtYWMOkNKOVJ5b8LF0OlbAlSvQVWTq9igtjDxETCuEybZJA6m7BjcNfoeYnYqrgs2CJm3ZQ9MoAfHtwMIgmHz10unidgOqjHwszzNxQ0sphEQXjrOp7MVyomq/gi8A=
+	t=1710420995; cv=none; b=ZUnSouHiT+1KAy0SOZEzCGJOjyQyFEwfc4etZmFKfrRwb9qiBR/UTh5sHBFGMaTnklsHqh0+2ZUMFawfP+Jn9qGyAUjSKkrZ4s6JjgMvem7igAOatJZvaqGyJS00y415y61mJPqEQICm2CZtcfAuCPVb97HBkk7yOZaaryTkDms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710420660; c=relaxed/simple;
-	bh=LSRB++TWHz6SdMwzx8ZmAqfTuUlUBjxPfPFRxob96mc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkCdThIN2kARQb2SYE4HoNg3fi9siNvFm1mvEJAEqF8VpVnl8ZnNYhfVT56DmLPJcs5gBImIuWWSqMziA+q9612u7Z/a6aOl0cVw9zXWwdbzBlV75XR/9V1ZiufI00gjCUeR7/SH4c9d+ivtmCbyQx5yMA+Hb9Dl7z+nU01oFbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tfXvYe6q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=JgvZ0+NR; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tfXvYe6q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=JgvZ0+NR; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 58F7521D20;
-	Thu, 14 Mar 2024 12:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710420654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZdctWDhd2pnna23oUKV11hCUoIkdth6KOWFyYEMCnCo=;
-	b=tfXvYe6q2KG8F7ZyLFgysEOCTLisPwVSg75RbLwFXS+fNfgvUbbv8g03Nekyp/UQ7+WO8P
-	pvmq5p1zh7gS56R9jMqEFesDCx89ZrZsLe2anNbJ463JcRTXtGOhjlAGABM393DLSdfFJj
-	5ZT9NtlfYdJIbECuUATAtL83rVHrVqU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710420654;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZdctWDhd2pnna23oUKV11hCUoIkdth6KOWFyYEMCnCo=;
-	b=JgvZ0+NRRpzVY4o7498hMNGuCOoug2RvsmIi0jBsM6+fxIcKL68hl8hQe9VfNtm6fapbh9
-	Tj46h2JzBo9OJmDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710420654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZdctWDhd2pnna23oUKV11hCUoIkdth6KOWFyYEMCnCo=;
-	b=tfXvYe6q2KG8F7ZyLFgysEOCTLisPwVSg75RbLwFXS+fNfgvUbbv8g03Nekyp/UQ7+WO8P
-	pvmq5p1zh7gS56R9jMqEFesDCx89ZrZsLe2anNbJ463JcRTXtGOhjlAGABM393DLSdfFJj
-	5ZT9NtlfYdJIbECuUATAtL83rVHrVqU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710420654;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZdctWDhd2pnna23oUKV11hCUoIkdth6KOWFyYEMCnCo=;
-	b=JgvZ0+NRRpzVY4o7498hMNGuCOoug2RvsmIi0jBsM6+fxIcKL68hl8hQe9VfNtm6fapbh9
-	Tj46h2JzBo9OJmDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 464631386E;
-	Thu, 14 Mar 2024 12:50:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4yogEa7y8mXrfgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 14 Mar 2024 12:50:54 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E1A88A07D9; Thu, 14 Mar 2024 13:50:49 +0100 (CET)
-Date: Thu, 14 Mar 2024 13:50:49 +0100
-From: Jan Kara <jack@suse.cz>
-To: Baokun Li <libaokun1@huawei.com>
-Cc: Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, tytso@mit.edu,
-	adilger.kernel@dilger.ca, ritesh.list@gmail.com,
-	ojaswin@linux.ibm.com, adobriyan@gmail.com,
-	linux-kernel@vger.kernel.org, yi.zhang@huawei.com,
-	yangerkun@huawei.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/9] ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()
-Message-ID: <20240314125049.ym7u7o4cwybizuyl@quack3>
-References: <20240227091148.178435-1-libaokun1@huawei.com>
- <20240227091148.178435-5-libaokun1@huawei.com>
- <20240314103056.rykwi2hhfm7v575a@quack3>
- <50f9333b-831a-8b4b-a6f2-ae79ab46a88b@huawei.com>
- <20240314120011.xggrokdfuu6fh4uv@quack3>
- <d166d7e6-bc55-8718-19a9-6bd97f4bd032@huawei.com>
+	s=arc-20240116; t=1710420995; c=relaxed/simple;
+	bh=9Y/+hw0hgw9ADsFQLz0LPL3cLz0NNDauGYrral+Dtro=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=NpNlyqjVpvUkXbwTIq4cjOcmoi+TcSSPFYhPk3KcTI6RB2Ur1ycVREB2vYcJDmYHXCNe0DBESp2rVGAWKRAbD5W5KeCELng0lPOdrKk1WrH/MjxkQ94N8MZhCIZh8gesWXoPO86hgBut85jF+8mFa/NIGX8OciKtvz27glCUSy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=R/p4zuCW; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240314125629euoutp021f934e3c1ac6d88aa04b1526f653afad~8otPQhHwH0124901249euoutp02U
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 12:56:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240314125629euoutp021f934e3c1ac6d88aa04b1526f653afad~8otPQhHwH0124901249euoutp02U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1710420989;
+	bh=AtiIPD1nd1BTHIsx1dMEytn/tsBihsCy+dwOY7jQpBY=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=R/p4zuCWtTO6I2S2SBVnoJM4D/03rroyRNjc6VN1uUfQYoV9rcRtFkqbqNIVLKN2E
+	 yST+G/UfoOeOU8ynRiUXYXFs4KrDKfJUi1GBYlX3rrYQr7n/hhpXrgCaKU79D6rnQf
+	 s2iu5gvtOGEOh+p/VydajeBDAGzE7WKyeSuAobgI=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240314125628eucas1p2e3ad48e936d6c53ce89ca5f2e02d474c~8otOyC5e32014220142eucas1p2m;
+	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id 46.99.09814.CF3F2F56; Thu, 14
+	Mar 2024 12:56:28 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240314125628eucas1p161af377a50fd957f445397bc1404978b~8otOP51sB1264712647eucas1p1m;
+	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240314125628eusmtrp157bb9d209f9df74e3c1ff96e3a790aaf~8otOPJAlG1799517995eusmtrp1O;
+	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
+X-AuditID: cbfec7f4-727ff70000002656-24-65f2f3fc65a2
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id D2.FA.09146.BF3F2F56; Thu, 14
+	Mar 2024 12:56:27 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240314125627eusmtip12f547f04dc25f77ebf9f2ed838088094~8otNdUPBP2067620676eusmtip1f;
+	Thu, 14 Mar 2024 12:56:27 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Stephan Gerhold
+	<stephan@gerhold.net>, Catalin Marinas <catalin.marinas@arm.com>, Russell
+	King <linux@armlinux.org.uk>, Christoph Lameter <cl@gentwo.org>, Mark
+	Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Will
+	Deacon <will@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] cpufreq: dt: always allocate zeroed cpumask
+Date: Thu, 14 Mar 2024 13:54:57 +0100
+Message-Id: <20240314125457.186678-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d166d7e6-bc55-8718-19a9-6bd97f4bd032@huawei.com>
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -2.30
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_TWELVE(0.00)[12];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,huawei.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,mit.edu,dilger.ca,gmail.com,linux.ibm.com,huawei.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsWy7djP87p/Pn9KNdj8Sc7i/bIeRovlc+Yy
+	WWx6fI3V4vKuOWwW99b8Z7X43HuE0eLQ1L2MFmuP3GW3WHr9IpPF3C9TmS0WbHzEaHFjronF
+	8lM7WCw2fvWwaLlj6sDvsWbeGkaPy9cuMnvsP1zk0bbA3mPTqk42j02fJrF73Lm2h81j85J6
+	j74tqxg9Pm+SC+CK4rJJSc3JLEst0rdL4MpYvGk3S0ETV8W/43/YGhj3cHQxcnJICJhIdF34
+	wNzFyMUhJLCCUeL37TOsEM4XRolL0zawQDifGSUubz7PBNNyctMJqMRyRolVU18ywbV8uNHD
+	BlLFJmAo0fW2C8wWESiT6P17CKyIWWAZs8Sse0+BNnJwCAvYSKztCQOpYRFQlZi95iNYPa+A
+	nUTzhVWMENvkJfYfPMsMEReUODnzCQuIzQwUb946mxmi5geHxMvFQSAjJQRcJL68YYEIC0u8
+	Or6FHcKWkTg9uQfsaAmBdkaJBb/vM0E4ExglGp7fglpmLXHn3C82kEHMApoS63fpQ4QdJf7e
+	f8ACMZ9P4sZbQYgT+CQmbZvODBHmlehoE4KoVpOYdXwd3NqDFy5BlXhIHL8kDhIWEoiVODPr
+	MMsERoVZSP6aheSvWQgnLGBkXsUonlpanJueWmyUl1quV5yYW1yal66XnJ+7iRGY3k7/O/5l
+	B+PyVx/1DjEycTAeYpTgYFYS4a1T/JgqxJuSWFmVWpQfX1Sak1p8iFGag0VJnFc1RT5VSCA9
+	sSQ1OzW1ILUIJsvEwSnVwJTyUnetpBmbEKeOSbXi4jvWt6z+8ymf0Kl3q/uSOFX88rlIbxWO
+	u/mW01/LcpdLGpx5a8FU2X3ErGijUPefloaSba8/HG+afv5bmcvPP0+YTr1KzfXMienaVV3h
+	sEB2oVxEvsq9q8r509nMorJzV+hKFJ6R+Xt0t04J7x63R4u2qoeun7t6Bm+qcsxB2R/ZX2+q
+	3Fmml9l825V1zq8pK3O+lpteKtqaoSwk/onxn3XnrtnsTnnXnz9YbvnC+oWWylP+C9v552ub
+	fo8p7TBTW2o2N4FlGcPcO435H1QXaK7r6Np+5NDxymh1n/SmiWHm/O/uFP5pS/O2OfHgydZP
+	QRpdM9W101fOmNgWWHtaWomlOCPRUIu5qDgRABqRgGreAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsVy+t/xu7q/P39KNbj9ydLi/bIeRovlc+Yy
+	WWx6fI3V4vKuOWwW99b8Z7X43HuE0eLQ1L2MFmuP3GW3WHr9IpPF3C9TmS0WbHzEaHFjronF
+	8lM7WCw2fvWwaLlj6sDvsWbeGkaPy9cuMnvsP1zk0bbA3mPTqk42j02fJrF73Lm2h81j85J6
+	j74tqxg9Pm+SC+CK0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAzMrHUMzQ2j7UyMlXSt7NJSc3J
+	LEst0rdL0MtYvGk3S0ETV8W/43/YGhj3cHQxcnJICJhInNx0ggXEFhJYyijR/9MbIi4jcXJa
+	AyuELSzx51oXWxcjF1DNJ0aJAydfMoEk2AQMJbregiQ4OUQEqiT+NKxmAiliFtjALHHh3Hb2
+	LkYODmEBG4m1PWEgNSwCqhKz13wEq+cVsJNovrCKEWKBvMT+g2eZIeKCEidnPgE7iBko3rx1
+	NvMERr5ZSFKzkKQWMDKtYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIysbcd+bt7BOO/VR71D
+	jEwcjIcYJTiYlUR46xQ/pgrxpiRWVqUW5ccXleakFh9iNAW6byKzlGhyPjC280riDc0MTA1N
+	zCwNTC3NjJXEeT0LOhKFBNITS1KzU1MLUotg+pg4OKUamFw/7E4v/uWZdV5549zwmvN8lR33
+	S+52fEn7ZP1bZ4l00qZn3f9za94Xf56jcqr7/KyMsPBZFoceStyo7VjsttjnfEPK3EO9yxI1
+	zoi4nG6VCVVezMOcfPbmwRN+wv8ydx98b/Uj4NKlyMtz4j5zr4sWvP9X/aqdTOaBMn1h4W99
+	v2Mt/qdo/bz9Im7j4eZz0vEnfBM7BWXavvAcdDa873uJ929W4tbE31+3bJK5sfvA0aKX4RuN
+	H+2q3STGIxTDbe35VUw62CCi+ymHuAaDuW1ym3YuwyZjlboL250ez/PoyHP0uyX7m8l2NtvN
+	r1aN86LNV3dKpe+1jNfQe81o7juFaS4nX0tZzMUPRdtXKrEUZyQaajEXFScCAG0BSGY1AwAA
+X-CMS-MailID: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
+References: <CGME20240314125628eucas1p161af377a50fd957f445397bc1404978b@eucas1p1.samsung.com>
 
-On Thu 14-03-24 20:37:38, Baokun Li wrote:
-> On 2024/3/14 20:00, Jan Kara wrote:
-> > On Thu 14-03-24 19:24:56, Baokun Li wrote:
-> > > Hi Jan,
-> > > 
-> > > On 2024/3/14 18:30, Jan Kara wrote:
-> > > > On Tue 27-02-24 17:11:43, Baokun Li wrote:
-> > > > 
-> > > > 
-> > > > At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-> > > > but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-> > > > to be triggered by an attempt to access an element at index 29.
-> > > > 
-> > > > Add a new attr_id attr_clusters_in_group with values in the range
-> > > > [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-> > > > that type to fix the issue. In addition avoid returning an order
-> > > > from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-> > > > and reduce some useless loops.
-> > > > 
-> > > > Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-> > > > CC: stable@vger.kernel.org
-> > > > Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> > > > Looks good. Just one nit below. Otherwise feel free to add:
-> > > > 
-> > > > Reviewed-by: Jan Kara <jack@suse.cz>
-> > > > 
-> > > > > ---
-> > > > >    fs/ext4/mballoc.c |  6 ++++++
-> > > > >    fs/ext4/sysfs.c   | 13 ++++++++++++-
-> > > > >    2 files changed, 18 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> > > > > index 85a91a61b761..7ad089df2408 100644
-> > > > > --- a/fs/ext4/mballoc.c
-> > > > > +++ b/fs/ext4/mballoc.c
-> > > > > @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
-> > > > >    		return 0;
-> > > > >    	if (order == MB_NUM_ORDERS(sb))
-> > > > >    		order--;
-> > > > > +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-> > > > > +		order = MB_NUM_ORDERS(sb) - 1;
-> > > > >    	return order;
-> > > > >    }
-> > > > > @@ -1057,6 +1059,10 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
-> > > > >    			ac->ac_flags |= EXT4_MB_CR_BEST_AVAIL_LEN_OPTIMIZED;
-> > > > >    			return;
-> > > > >    		}
-> > > > > +
-> > > > > +		/* Skip some unnecessary loops. */
-> > > > > +		if (unlikely(i > MB_NUM_ORDERS(ac->ac_sb)))
-> > > > > +			i = MB_NUM_ORDERS(ac->ac_sb);
-> > > > How can this possibly trigger now? MB_NUM_ORDERS is sb->s_blocksize_bits +
-> > > > 2. 'i' is starting at fls(ac->ac_g_ex.fe_len) and ac_g_ex.fe_len shouldn't
-> > > > be larger than clusters per group, hence fls() should be less than
-> > > > sb->s_blocksize_bits? Am I missing something? And if yes, we should rather
-> > > > make sure 'order' is never absurdly big?
-> > > > 
-> > > > I suspect this code is defensive upto a point of being confusing :)
-> > > > 
-> > > > Honza
-> > > Yes, this is indeed defensive code! Only walk into this branch when
-> > > WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)) is triggered.
-> > > As previously mentioned by ojaswin in the following link:
-> > > 
-> > > "The reason for this is that otherwise when order is large eg 29,
-> > > we would unnecessarily loop from i=29 to i=13 while always
-> > > looking at the same avg_fragment_list[13]."
-> > > 
-> > > Link：https://lore.kernel.org/lkml/ZdQ7FEA7KC4eAMpg@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com/
-> > > 
-> > > Thank you so much for the review! ღ( ´･ᴗ･` )
-> > Thanks for the link. So what Ojaswin has suggested has been slightly
-> > different though. He suggested to trim the order before the for loop, not
-> > after the first iteration as you do which is what was confusing me. I'd
-> > even suggest to replace your check with:
-> > 
-> >          /*
-> >           * mb_avg_fragment_size_order() returns order in a way that makes
-> >           * retrieving back the length using (1 << order) inaccurate. Hence, use
-> >           * fls() instead since we need to know the actual length while modifying
-> >           * goal length.
-> >           */
-> > -       order = fls(ac->ac_g_ex.fe_len) - 1;
-> > +	order = min(fls(ac->ac_g_ex.fe_len), MB_NUM_ORDERS(ac->ac_sb)) - 1;
-> >          min_order = order - sbi->s_mb_best_avail_max_trim_order;
-> >          if (min_order < 0)
-> >                  min_order = 0;
-> > 
-> > 								Honza
-> Yes, I changed it that way because it only happens when an exception
-> somewhere causes fe_len to be a huge value. I think in this case we
-> should report the exception via WARN_ON_ONCE(), and trimming the
-> order before the for loop will bypass WARN_ON_ONCE and not report
-> any errors.
+Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
+supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
+what resulted in the strange issues and warnings during cpufreq-dt
+initialization on some big.LITTLE platforms.
 
-Fair enough. Then:
-         /*
-          * mb_avg_fragment_size_order() returns order in a way that makes
-          * retrieving back the length using (1 << order) inaccurate. Hence, use
-          * fls() instead since we need to know the actual length while modifying
-          * goal length.
-          */
-	order = fls(ac->ac_g_ex.fe_len) - 1;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(ac->ac_sb) - 1))
-+		order = MB_NUM_ORDERS(ac->ac_sb) - 1;
-        min_order = order - sbi->s_mb_best_avail_max_trim_order;
-        if (min_order < 0)
-                min_order = 0;
+This was caused by mixing OPPs between big and LITTLE cores, because
+OPP-sharing information between big and LITTLE cores is computed on
+cpumask, which in turn was not zeroed on allocation. Fix this by
+switching to zalloc_cpumask_var() call.
 
-Still much less confusing...
+Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
+CC: stable@vger.kernel.org # v5.10+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ drivers/cpufreq/cpufreq-dt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-								Honza
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index 8bd6e5e8f121..2d83bbc65dd0 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
+ 	cpumask_set_cpu(cpu, priv->cpus);
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.34.1
+
 
