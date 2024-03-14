@@ -1,133 +1,106 @@
-Return-Path: <stable+bounces-28143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AA687BC15
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:43:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7932587BBC4
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A544B20F19
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1AA1C21FFF
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFBA6EB6E;
-	Thu, 14 Mar 2024 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598046EB4E;
+	Thu, 14 Mar 2024 11:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e8hcjDqj"
 X-Original-To: stable@vger.kernel.org
-Received: from mo-csw-fb.securemx.jp (mo-csw-fb1802.securemx.jp [210.130.202.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95E71A38DD
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 11:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.130.202.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DB2A1D1;
+	Thu, 14 Mar 2024 11:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710416605; cv=none; b=ujetlscx75DVq7Zdt7xsMKrw/kEEMOAPD5kbua2hVFtCn2P2T88ksPSRt9yjmpiX5PrS+Q8zaO2+gJ38DiSGVSirIljFgupz8tpGVlOj2147rB56I3QsMr9hfdnBtWXNKOw6iJZxCjbraSW2cD/YOMBf4Xn9ykSQYhvZVIJQqGY=
+	t=1710414882; cv=none; b=PlU1fUegPZRLcKy1n9aKXSarnZ8cTNmHO0as3g5bRWHvsqWUBm0yuws9ZoGQdtbCixvQaFptEFp4XXvXM8F5n72qdjvXRjRr+MRwCkXt0ZUUVd7G+jNiT0j3erjKm2t5+2RZ68hkHeTeBlFyl1Rz4bHV3cbYFTMUmVoIFdG7T3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710416605; c=relaxed/simple;
-	bh=l7DwAg40MNAKHvGEJF0WaNiu7y8jVBK3YitQ2Jj4Byk=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=f3LklnP4jClLjkOblkigSxcJEUTNwZzRMmCA9dskjiku2ZyfepkKT6TjMNe1AE/Jj04yMaxorU4qoXGoNfC3dEKzjjN3P62b/GddgYFdRoAkyIQrmn3bkZCmf5Q3spsJf80pU5IJqrbp9ex3DdjXJE5sWOTb+2b+6QpLnrDllhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp; spf=pass smtp.mailfrom=toshiba.co.jp; arc=none smtp.client-ip=210.130.202.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toshiba.co.jp
-Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1802) id 42EAqwQQ3795038; Thu, 14 Mar 2024 19:53:06 +0900
-Received: by mo-csw.securemx.jp (mx-mo-csw1802) id 42EAqHLT410594; Thu, 14 Mar 2024 19:52:17 +0900
-X-Iguazu-Qid: 2yAajzvdaI1wuJo8Lj
-X-Iguazu-QSIG: v=2; s=0; t=1710413536; q=2yAajzvdaI1wuJo8Lj; m=7pYOjxe2OIceNMUWS9IFKbfZD9EJ9O2XHNbVSn3PYR4=
-Received: from imx2-a.toshiba.co.jp (imx2-a.toshiba.co.jp [106.186.93.35])
-	by relay.securemx.jp (mx-mr1801) id 42EAqFKa594432
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 14 Mar 2024 19:52:16 +0900
-From: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, carnil@debian.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 6.1.y, 6.6.y, 6.7.y] platform/x86: p2sb: On Goldmont only cache P2SB and SPI devfn BAR
-Date: Thu, 14 Mar 2024 19:51:52 +0900
-X-TSB-HOP2: ON
-Message-Id: <1710413512-7184-1-git-send-email-nobuhiro1.iwamatsu@toshiba.co.jp>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1710414882; c=relaxed/simple;
+	bh=JYThXvFfSUt8bn/u7QVtG0aC+rU3gXJs6BreV0Jsjis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=drQcQdWmvVHqXB74vVfL6Wfy7V8RuDfXmIvWyllW/sLm6WvYaUKBBp467/mApj+d+jWN0yAPS2lTAc+eCsCsGYNQTdnF2ADdy1OO+sSFZ9wbQGgJEUyPODdCpOimNZEknJu2zxWk5ESZOtn0/zLA68fMo6NuZhV+5c8YPBgD6p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e8hcjDqj; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3746240E0028;
+	Thu, 14 Mar 2024 11:14:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id cDZD0dZP4nXi; Thu, 14 Mar 2024 11:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1710414873; bh=W6YiMJ4KVuTlhdWm5TtH44BSuR5hnaHMB6oOqeEuhNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e8hcjDqjGJgU6UnJ56h1yfC0EpbT8zm/zqKVR5mgJF83np8lgdA42pCp+Rp0gg3nD
+	 psadm7lJ8SSeBBFwcrsIco+XfdjQ1J5O/LUaH8Toh4qlyqHLNOvXpZbPhLAqHHMBXu
+	 NquAaQbSzuC1TEMBgisSrSibPd2fCaJngqRnKMF8say/HsDtCDiCcET7gJ4ofo4IeG
+	 RfTPGUB4bk1btF6VLLWRDD4P//4o28rN/H3y2ZV92IkTsphUW/8FqzO0xva0qo/hPk
+	 ypmyj6oKVDAld5rSdrtlaelQAiQacGmQI+LEqTTzngD1oIwsWK3GJHxglLY0n8HkoE
+	 dsXZF76Qt3tqpohkOVZNHAz5Uhs9U10asL92OHCMRCQrordgw/A06TrS+X2l6gef5m
+	 QBhY+RguKkCiZdDrXKF9VhYKAV5XdRANak8m4b/66/VTV0K97oZF5AxWl3lblCtxYV
+	 4FjqjsVNEprPJSaUtksJ4DRxrsEy6zadNk9yVJt8lft4jNeFnmuExRZu9EfdU+NhM1
+	 hcEO2FcK571AAyeXxd0xkskdpWvrosSXWTgScISYmysZSVpPXXPLy7AKSAcorcsQm5
+	 xkEhQJzn0yKpdi+EFtfyADQW5BQmX+XQWpoNPwLqBri/eW3JdFaECGf3j02ABwfYCI
+	 8oVjq9oc5M2EB5FPPnMRdqvU=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9729940E016B;
+	Thu, 14 Mar 2024 11:14:19 +0000 (UTC)
+Date: Thu, 14 Mar 2024 12:14:18 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH v5] x86/coco: Require seeding RNG with RDRAND on CoCo
+ systems
+Message-ID: <20240314111418.GBZfLcCskn7Xjra4mu@fat_crate.local>
+References: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
+ <20240224011921.2663985-1-Jason@zx2c4.com>
+ <ZfI366mQplePkvHv@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZfI366mQplePkvHv@zx2c4.com>
 
-From: Hans de Goede <hdegoede@redhat.com>
+Hi Jason,
 
-commit aec7d25b497ce4a8d044e9496de0aa433f7f8f06 upstream.
+On Thu, Mar 14, 2024 at 12:34:03AM +0100, Jason A. Donenfeld wrote:
+> This has been sitting on the list for a while with a few positive
+> reviews and no outstanding objections, afaict. Can you merge this to
+> tip?
 
-On Goldmont p2sb_bar() only ever gets called for 2 devices, the actual P2SB
-devfn 13,0 and the SPI controller which is part of the P2SB, devfn 13,2.
+the tip tree is open for new code after the merge window is over.
 
-But the current p2sb code tries to cache BAR0 info for all of
-devfn 13,0 to 13,7 . This involves calling pci_scan_single_device()
-for device 13 functions 0-7 and the hw does not seem to like
-pci_scan_single_device() getting called for some of the other hidden
-devices. E.g. on an ASUS VivoBook D540NV-GQ065T this leads to continuous
-ACPI errors leading to high CPU usage.
-
-Fix this by only caching BAR0 info and thus only calling
-pci_scan_single_device() for the P2SB and the SPI controller.
-
-Fixes: 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe")
-Reported-by: Danil Rybakov <danilrybakov249@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218531
-Tested-by: Danil Rybakov <danilrybakov249@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240304134356.305375-2-hdegoede@redhat.com
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-
----
- drivers/platform/x86/p2sb.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index 17cc4b45e023..a64f56ddd4a4 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -20,9 +20,11 @@
- #define P2SBC_HIDE		BIT(8)
- 
- #define P2SB_DEVFN_DEFAULT	PCI_DEVFN(31, 1)
-+#define P2SB_DEVFN_GOLDMONT	PCI_DEVFN(13, 0)
-+#define SPI_DEVFN_GOLDMONT	PCI_DEVFN(13, 2)
- 
- static const struct x86_cpu_id p2sb_cpu_ids[] = {
--	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT,	PCI_DEVFN(13, 0)),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GOLDMONT, P2SB_DEVFN_GOLDMONT),
- 	{}
- };
- 
-@@ -98,21 +100,12 @@ static void p2sb_scan_and_cache_devfn(struct pci_bus *bus, unsigned int devfn)
- 
- static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- {
--	unsigned int slot, fn;
--
--	if (PCI_FUNC(devfn) == 0) {
--		/*
--		 * When function number of the P2SB device is zero, scan it and
--		 * other function numbers, and if devices are available, cache
--		 * their BAR0s.
--		 */
--		slot = PCI_SLOT(devfn);
--		for (fn = 0; fn < NR_P2SB_RES_CACHE; fn++)
--			p2sb_scan_and_cache_devfn(bus, PCI_DEVFN(slot, fn));
--	} else {
--		/* Scan the P2SB device and cache its BAR0 */
--		p2sb_scan_and_cache_devfn(bus, devfn);
--	}
-+	/* Scan the P2SB device and cache its BAR0 */
-+	p2sb_scan_and_cache_devfn(bus, devfn);
-+
-+	/* On Goldmont p2sb_bar() also gets called for the SPI controller */
-+	if (devfn == P2SB_DEVFN_GOLDMONT)
-+		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
- 
- 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
- 		return -ENOENT;
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
