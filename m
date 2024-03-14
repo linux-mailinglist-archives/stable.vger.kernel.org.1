@@ -1,124 +1,126 @@
-Return-Path: <stable+bounces-28123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6608287B926
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB34787B936
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97BAB1C20B88
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137091C2151B
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A78F5D484;
-	Thu, 14 Mar 2024 08:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2CD5D732;
+	Thu, 14 Mar 2024 08:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dal8jdo/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfrmeHMD"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9965D480
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 08:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDE1EEC4;
+	Thu, 14 Mar 2024 08:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710404074; cv=none; b=HMRjpWfQbQloZOcQ2lFt5NldpFYfrmLuh2vvuFGkmVN5a76ZnLCK0hVtlWmogLV8nyZr3jnrWVzRc82G7zPtY1bg9GQ2leB6aqIGFxSRqtHxVqlmP7/jEmkfgR+3adlOicQT/UD2M1+qDfXZhA87TfWDyEhyRv272KU+qkv/3Gk=
+	t=1710404524; cv=none; b=U/8uJA9MYtKE8widHNRybbnZBxmrrssr3T6ZMmdJT6BxaN3xJVwYrxZzJeCg8irLT5+2MeTNi5lYS/1LyKGy8PqlfDKuZ9SLOnKPREVCIokGxl1BwuZ0+pYyde3kZDQeGAXydUipTLEcl6PgAOgxK5WW0cuqqjWDrr457mglH0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710404074; c=relaxed/simple;
-	bh=QJcurDhlqhd4YFgGB61xiCI0XYfhBFKhBVehMdnfow0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fKc253wbf5ZBwVdmaMuXXzantjD8P/hvNqndO2F0iqbeE/lFcJyiE18YZxQ/3GTgDTGMcV+j/WarCuOEU5HW6TLoa6EzFWUx7UjpRqyxI2j67cBvNzXkKJZIqhrLu+AxCFTd3VkidesYNDG/y+r2PNjsCkAcHlPoeT55rBMThFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dal8jdo/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710404070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S5BKMxqgK8DcYP7YR28rxy8fp44suCGcVHuCxmOCymU=;
-	b=Dal8jdo/0zbxDQFO0Lp85D5mM1l+SwIZvp2gHI1WCMAbOC9wBOzqma1VFabnLRuUX7F+ze
-	Li+FUBbm37qaevLRa89/0Rcu7umLZzED85VSZIob2QY2qtYPtDWImc8rwblMm/sHqId+hV
-	AqKVCh4NGn7gNTSto1VldELXmWObPaw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-LuaYna7SMVud2RottWgX4Q-1; Thu, 14 Mar 2024 04:14:27 -0400
-X-MC-Unique: LuaYna7SMVud2RottWgX4Q-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-41312565bd4so3489595e9.2
-        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 01:14:27 -0700 (PDT)
+	s=arc-20240116; t=1710404524; c=relaxed/simple;
+	bh=Raz9CPzOnUaU1tPAYaMSYIkJu/vS221oqvUc15h9J8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GQpHy4AwEvHw+suwi9ofVDXlG0Io0Y+h7PhR+dq4/5DjqP0gFNYKh9KFXkOOfkHnQMBzM0VfC1H9cq4LESjnhhwSrhtNWe32hvQ6FqL3Jd3MO5V/JPXGUluvd28lZxJgV2XZwPtTee426rkpvHicP0I5RHf6DA7mkQo1LlsEWyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfrmeHMD; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5ca29c131ebso474998a12.0;
+        Thu, 14 Mar 2024 01:22:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710404522; x=1711009322; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KpbtCDZDaHBSD0f9OvaVnP4iDO/B06DJPllaymCvXj8=;
+        b=kfrmeHMDOpEHkDBlsi/eOzbshjOeNg+c/3lcrvjL/6X/d3eFZ4inkYDMYJTQE5pWbu
+         W3qFQ6yFNLDo9KVHtPLmN/7WUfPbHmrUnr949fp900896wClPyOWJ2XJwBX+Ef/3pa4e
+         hxEExJhfgWvteiNJFQIWtMdqcI9PSf/Nio+3cZm0rfbYCLR2t2Q5e1It92+qTnxLmxhu
+         wThZ1CL1bWcS/16FNLBhDpQF3+xOt3Ch+BT08vtmGDBrgb9DhADl/3zDudA1z1xj4rBZ
+         9XoND55rV/2ywVk/hx6B03yoJn1Hr+3pSY4W9ijeI5mihtJfjRJR8bGMvja+bOKy73tu
+         51zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710404066; x=1711008866;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S5BKMxqgK8DcYP7YR28rxy8fp44suCGcVHuCxmOCymU=;
-        b=OoIU2nRElliqmRO0kzds22SVioMLDBtzwfQp4Cdvo70YduyCmKoQL3YlvzPX0Jtewp
-         w84t9oNU/fn6rCLJUnZdaCGVFrVvkCKjCBrt/Z5kWnHCOdPNXABIxutE5vKhifi0WPvv
-         w6TwkrtMKYiuNpkI44/hweWeEHUJcSEhBt51qFJgaIGjHGa9BBLM/cDEd4hBUowXUwE7
-         kRGT2i/En8bqG5lmr9ko5hTFvIyLQDDHDgUqwuP1v6GJE4FORoU3+NMa/srIPMQi9f3O
-         yQ99EOWAPfYXVeLmjquz+kejMTxz+67jDBM4V64jPA63CXzUJVFISz0TDtCHCY6187E7
-         9ccg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWyw0+4TZXTtrit+ChGAYbB90P5hPv8kq6KTV0UAku84ElkMTMUDHl/bI8lxyj+Ejm5zCdIIYI/ylVgZqdkohLTtJvW26a
-X-Gm-Message-State: AOJu0Yw//8gzUZqx5KfYqCeSRTpcqXL8aDSRlgYP8vl2d0IeQWNKfLEv
-	G5S4H8FBTY5Ui2TafiAvuCz66Cfir/qE3nn0dR01ht2ypjaVxsecsBQQZg9xnHLCzclq/MZZ4k+
-	e2WQHUt1LyBR9L1ju/3Cd6k/syztztlz1q2ALukjUcSnY+WySz4owXQ==
-X-Received: by 2002:a05:600c:82c9:b0:413:e956:6893 with SMTP id eo9-20020a05600c82c900b00413e9566893mr1004021wmb.41.1710404066765;
-        Thu, 14 Mar 2024 01:14:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+8Dpw7ORtoJWMmvhFrCQjByB/znNGYlVHAzzlBWehAOxiErr8eo03IZPpfW9sVU5/VPvdjw==
-X-Received: by 2002:a05:600c:82c9:b0:413:e956:6893 with SMTP id eo9-20020a05600c82c900b00413e9566893mr1003998wmb.41.1710404066469;
-        Thu, 14 Mar 2024 01:14:26 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id r8-20020a05600c458800b00413e8df267bsm1596777wmo.48.2024.03.14.01.14.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 01:14:26 -0700 (PDT)
-Message-ID: <0e1ed380-a25a-4a57-9395-56a13bf298c8@redhat.com>
-Date: Thu, 14 Mar 2024 09:14:25 +0100
+        d=1e100.net; s=20230601; t=1710404522; x=1711009322;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KpbtCDZDaHBSD0f9OvaVnP4iDO/B06DJPllaymCvXj8=;
+        b=so/11ZdoPRmopB1Z+Qf85o2eFQYkxcCThZPL+HFnsgjWFA+2F5Rx7yB9ThhQ77Bytq
+         N+WW7ktsWGdrlqAcHgCGlYRzX7v7eMZ4bE0GlKU988JOW3Ucx7WgCjX0WeCgrsr8UEli
+         QlZLyrAsD7UaI8CV4NQXjZkLajemY2acysidBSwa75eMCkYiIBO0j7y/qJOo0xFZg9uz
+         2MbzaQQJuhqr885d6oR07ZG31KB/YLZQCCdkkM/3X+CvjgX3gKSXLUEgEty4XPeQisZm
+         Ug/GX6zKlC9R/L5JdLD8gT4fO/0Zl4BbKG7M5n84jZQhRgqDe8+EVBNiJqXCBuAQnHKm
+         Y5LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhBNb8CTMSvsZHYWCAy6gnKdejlnjeJHvpLWC18JtFucz1tdFL5lh11cGujaNY/AuOD2aVM67F7B4IpQ7Rj5uP27qLgJzRDRGtK8ptUbMC3idtq0K5YCvPTtFdG6/s1Kx4AF4q
+X-Gm-Message-State: AOJu0YwJ/r7b2APnPCbhrxZF4XgC2+4NE2dOiTTLMZHyv601TYJ/zmWK
+	EyEk0Zr1BaNLjBLVcREYnOJngBBuL/uedyCAW/VP5v9o7DVkQAgi
+X-Google-Smtp-Source: AGHT+IHj50023IHbKR96PyDV7KR7RC1vtlkS6zOf4CEjfWniHdCsmGh8rRkuSSkrm4XkOKeDbA6ReQ==
+X-Received: by 2002:a17:90a:c20b:b0:29c:7409:9248 with SMTP id e11-20020a17090ac20b00b0029c74099248mr933300pjt.32.1710404522400;
+        Thu, 14 Mar 2024 01:22:02 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id nc16-20020a17090b37d000b0029bb5a95a3csm256290pjb.55.2024.03.14.01.22.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Mar 2024 01:22:01 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 74884184798DF; Thu, 14 Mar 2024 15:21:58 +0700 (WIB)
+Date: Thu, 14 Mar 2024 15:21:58 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de
+Subject: Re: [PATCH 6.8 0/5] 6.8.1-rc1 review
+Message-ID: <ZfKzpiF4l7eRUq0d@archie.me>
+References: <20240313163019.613705-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vmwgfx: Create debugfs ttm_resource_manager entry only if
- needed
-Content-Language: en-US, fr
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, bcm-kernel-feedback-list@broadcom.com,
- tzimmermann@suse.de, airlied@redhat.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, daniel@ffwll.ch, stable@vger.kernel.org
-References: <20240312093551.196609-1-jfalempe@redhat.com>
- <CABQX2QN729DjtdOzAS9jeEP_xHXT4zNaOcP59pa-KyXnME=xaw@mail.gmail.com>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <CABQX2QN729DjtdOzAS9jeEP_xHXT4zNaOcP59pa-KyXnME=xaw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AdnvMIIDLKT63i4Q"
+Content-Disposition: inline
+In-Reply-To: <20240313163019.613705-1-sashal@kernel.org>
 
 
+--AdnvMIIDLKT63i4Q
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 13/03/2024 18:57, Zack Rusin wrote:
-> On Tue, Mar 12, 2024 at 5:36 AM Jocelyn Falempe <jfalempe@redhat.com> wrote:
-[...]
-> 
-> Thanks! That looks great. I can push it through drm-misc-fixes.
+On Wed, Mar 13, 2024 at 12:30:14PM -0400, Sasha Levin wrote:
+>=20
+> This is the start of the stable review cycle for the 6.8.1 release.
+> There are 5 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Thanks,
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-I think I only forget the "drm/" in the commit title, but yes you can 
-push it with this small correction.
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-> 
-> Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-> 
-> z
-> 
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Best regards,
+--AdnvMIIDLKT63i4Q
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
+-----BEGIN PGP SIGNATURE-----
 
-Jocelyn
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZfKzogAKCRD2uYlJVVFO
+o5qXAP9J5S50wg5KbTgalsV4gty72Z4qKciqralfAbsoDxhuYwD/cbweqbdX2BHF
+zn1FCjyAT2FBYTHK4psKPdx2ct3nSQg=
+=FHoG
+-----END PGP SIGNATURE-----
 
+--AdnvMIIDLKT63i4Q--
 
