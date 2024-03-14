@@ -1,124 +1,128 @@
-Return-Path: <stable+bounces-28156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F7887BE11
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF71787BE2B
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:57:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 290D91F2341A
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5F41F21CC9
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7DD6EB56;
-	Thu, 14 Mar 2024 13:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00986FE24;
+	Thu, 14 Mar 2024 13:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K0ga1FK5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="zNCPYhW3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3125B5DD;
-	Thu, 14 Mar 2024 13:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49265914B
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 13:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710424377; cv=none; b=TvqIoMPoiKFT3OzNFLB+bg6Y+MWXvh5afSh8DAmtcFf0Rq2PZvoeNQnMMlKYvbKRrI1A3sU74KAy4ZH7OKv0hAjgzpc0M4OWm5sqnZUZDXid4dYE7Uo+JwYuQGUE6hvHmkcgOHu7bmzrjkz3BgmAIqwiqmk+9ayIUw8JkElWMw0=
+	t=1710424654; cv=none; b=JU03+aP+ZLrZuUKUL81TQDHKFDtzn/XNpRFOQIbR5VpdAU8Xf6MiMA8uRYNOb+YlZrENzNld71MGGBNRlqa/7vCOnL6NvE7P7tUr/JmIhMwXKOp3rnXXCbZFOd3OucaFLMub1gldFmMfBSSETS17mBeDVDDxxG59jteqkNZfMSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710424377; c=relaxed/simple;
-	bh=dzagUUNASVzuZpjkvZI9csv9wyIfQ6jRNw4sLWIkiEc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T1+1pPKX0uvfyHDhkIdXKuwBz4vNoxGlZPYGdCH7AcBTEt0WSHR/REy43Yxypr+lm2JV18ZQAFR1QlqzQEVBzJSTPu7akQWHLevm1BPyBly8h191Xrd7vAdFsdePlvYHcMUaEEpYW0iyOBERFMfnsxYVb3EWnle4iXRm6Wc9yHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K0ga1FK5; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-33e9dfd343fso569477f8f.0;
-        Thu, 14 Mar 2024 06:52:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710424374; x=1711029174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xIl4vzYLu7H92myngevMJEPjqZCqCBPhgfD/SqnC3pE=;
-        b=K0ga1FK5wV5hXkvHxoqzBM0QrCO55eO4zlvCthw1aRUnOSOwY+kUIdguKXRIFzrWOn
-         zrnIPUMYR4/9877vssF/EjLpQ46yA4xwRlDovwIsyTSyb84jClNdVuuHO0B/NAxEE1CD
-         mvtu1I3FrLfWdFt8LtH1XsmE5RQMp27mjG1REOLBKYXqkYpAa283KA633ipQSxPUWvQ7
-         EsFtbdI4RDj5XLgIviVb40Er+ihF1LIYe7QmhdRebC3ZVVNiADHAMurNznGwovX5WDeo
-         Uwm1Y6EPqJ+xNSSDuPFKvTOGunGW5bF/mWy4bN9biYa7gJUvCgadwAyADMCqvubtjCZ3
-         U+AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710424374; x=1711029174;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xIl4vzYLu7H92myngevMJEPjqZCqCBPhgfD/SqnC3pE=;
-        b=K+fVqaiRhr3yvm0Xxy7Lw//NkEqV1IxVsDaJUSJBRpUQ4JKc65ccZKCO+C/HdIBxaZ
-         Av6O43tggVYi5SMiZtRWmWvXHtfq4GwAw7TstfjaggDZxscRjkA2oyhVRDSJ3/f5x+zn
-         Ofk1COsUX7NEVUHitI7zXy/ZvKsgxcDqUmc/OjntrXzVN2Css4iBAIZyhIZGKEN5UYyu
-         pxoVyHhZM35im0WBQ2hBNdtNJD/4vhIGTvYG691WaP+e7jIX9YUh5yxZ87Jgwwa7H+e+
-         Q6U6W+Zl1vNL72wKchbDosKK8EE7qB78ghr6n+33sfdJcGnurzbukuSddt+NytB/Bn3V
-         +WJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiypvQOV37qVw7XqvqGY0DrP4buHfO6Knp1Tz9HuSXct3u9lGB4U8aep0fCsv1kHVhLuvhdnusy18HgvV4nh4gvLA6bU9AmYSi+oKAhXsQYFvNEWDBswMl98LzXCSkV6YAd21SlDT0LTT1y88y2ZrR4Pp+y+LAe/jsGaVj5Ofg
-X-Gm-Message-State: AOJu0Yylig2ckHmxtjroVC7JdN+hzKnnsbXmOfwX1fPF1GvRUFR8g6IM
-	4bKT4b1TOkcFfqNRRYUrFQ3YC7sGsyaRo7QECVSwquOwAUXm/hig
-X-Google-Smtp-Source: AGHT+IFf+kJk7xGcSVahe5u1ec7CBmGtIvekV5cmZjqxXpV9hnuLTiOLG8wA4rCJG7svPg7uDZ5MIg==
-X-Received: by 2002:a5d:68cb:0:b0:33e:4590:8bd8 with SMTP id p11-20020a5d68cb000000b0033e45908bd8mr1060606wrw.60.1710424374339;
-        Thu, 14 Mar 2024 06:52:54 -0700 (PDT)
-Received: from [192.168.20.170] (57657817.catv.pool.telekom.hu. [87.101.120.23])
-        by smtp.gmail.com with ESMTPSA id az9-20020adfe189000000b0033e43756d11sm857939wrb.85.2024.03.14.06.52.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 06:52:53 -0700 (PDT)
-Message-ID: <4f18053b-9e64-4437-8bdf-18e68b4835d9@gmail.com>
-Date: Thu, 14 Mar 2024 14:52:50 +0100
+	s=arc-20240116; t=1710424654; c=relaxed/simple;
+	bh=qak9nEqjPrRmrEJGCzU/m6RNSxSsO7lFq0sySveqSRM=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=uItotnUV0xKUZS2xDe2TnNeh7b/v4dMdq8YBXdz3PMFDRndFXCH+R2LDCSQudnUOb/iitQhCwlPcQX7qpjdlVBeDBhxv4LPHJxPf9nO3/Q+YVV5jJJjaHuJSMgXPagEsbJoiN2Pq92rMnJ7mei8PrUAWoK0iCv+8gQ3sr7pwAAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=zNCPYhW3; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+	by cmsmtp with ESMTPS
+	id kl02r01wMl9dRklYorS7JQ; Thu, 14 Mar 2024 13:55:54 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id klYnrI2L8heZEklYnr9gGW; Thu, 14 Mar 2024 13:55:53 +0000
+X-Authority-Analysis: v=2.4 cv=FZkxxo+6 c=1 sm=1 tr=0 ts=65f301e9
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GuovT0Zf00DJfnP9eUQKgQ92jnL5mHj5XtG06nlFzjM=; b=zNCPYhW3IJmLhHb16XWy/wnmgM
+	KXAMHQ7vD/f7GyV8v2q7B5AFx79JBitNYvEra/xW/QWg5qYi7418xFLwUAZOE/+xFEUJ4rcemomPB
+	ICxG2p+/skkhH8+AJhzWWyv5AH2S6fVoikDnEdSm0FzK5C5xx5OJKNO4laZ12gCU210FQMdvEyNLU
+	AgbWziz0CuB0oYjOp4lOwdDAzl9rm6psTHxwIz4SGU62U16ZrdSQNSENOb2q/O6rZi3OoeW8WoKJp
+	PuqauEyK0coG+tFRnmANKl5V1WNd6pgeH9FIF+Z+9+53QlOVfjLpPugn9TbhJa+rbaJk6Amtv03nw
+	xvznP0Xg==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:51006 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rklYm-003xV5-1w;
+	Thu, 14 Mar 2024 07:55:52 -0600
+Subject: Re: [PATCH 6.8 0/5] 6.8.1-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de
+References: <20240313163019.613705-1-sashal@kernel.org>
+In-Reply-To: <20240313163019.613705-1-sashal@kernel.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <1217741e-51da-ba81-7680-30b8f7edd3b3@w6rz.net>
+Date: Thu, 14 Mar 2024 06:55:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: qcom: apss-ipq-pll: use stromer ops for IPQ5018 to
- fix boot failure
-Content-Language: hu
-To: Stephen Boyd <sboyd@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Sricharan Ramabadhran <quic_srichara@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240311-apss-ipq-pll-ipq5018-hang-v1-1-8ed42b7a904d@gmail.com>
- <219f3eeba68fd0542d4954205c35bafa.sboyd@kernel.org>
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <219f3eeba68fd0542d4954205c35bafa.sboyd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rklYm-003xV5-1w
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:51006
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 3
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFtXZ1mT5m9ocWppaPlVrmYivysDOhFK4UzKWQyHnPluzIw1a5JfBPIj4T0KWUC8ZYNgl3lm3Yt1SExqEPAwMF7/fMEfRIkamZmwh1Fd+7MaDTXAQvrb
+ RVp67Z4pyvUXqHeQgz01hiUQlDxggWqBlgs5RSz7AN//r7R6/gCG7fntiaju/22vIcOa1zj0um6Ltw==
 
-Hi Stephen,
+On 3/13/24 9:30 AM, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.8.1 release.
+> There are 5 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri Mar 15 04:28:11 PM UTC 2024.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.8.y&id2=v6.8
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
 
-2024. 03. 13. 23:57 keltezéssel, Stephen Boyd írta:
-> Quoting Gabor Juhos (2024-03-11 08:06:36)
->> diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
->> index 678b805f13d45..11f1ae59438f7 100644
->> --- a/drivers/clk/qcom/apss-ipq-pll.c
->> +++ b/drivers/clk/qcom/apss-ipq-pll.c
->> @@ -55,6 +55,24 @@ static struct clk_alpha_pll ipq_pll_huayra = {
->>         },
->>  };
->>  
->> +static struct clk_alpha_pll ipq_pll_stromer = {
->> +       .offset = 0x0,
->> +       .regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
->> +       .flags = SUPPORTS_DYNAMIC_UPDATE,
->> +       .clkr = {
->> +               .enable_reg = 0x0,
->> +               .enable_mask = BIT(0),
->> +               .hw.init = &(struct clk_init_data){
-> 
-> const?
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-You are right, I will add it in the next version.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Thanks,
-Gabor
 
