@@ -1,109 +1,208 @@
-Return-Path: <stable+bounces-28113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303A287B6AC
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 04:04:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DD687B6C1
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 04:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA1601F24EBF
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 03:04:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319F51F23756
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 03:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43578138A;
-	Thu, 14 Mar 2024 03:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D59A1C01;
+	Thu, 14 Mar 2024 03:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VFHE9Ulf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0DGaO/j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5CEC2D0
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 03:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CE4BA29;
+	Thu, 14 Mar 2024 03:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710385481; cv=none; b=aE0wo63stp7EUgs2nzi+VOgGVfbKe8AFQCXJNeb5l4CwpA5Zx5jiFMczxxuAU7aEnUv/JKsP1hrIc3hafRV7eMtL3kA4xbajxgezLJL9JNXn+DDcpJ/H8vdil4CpuOblXFSV6pd1l4b36mujZFyryDIQ/vhrafL9f/cPREE5Qh0=
+	t=1710386059; cv=none; b=mc6bGKFJulSCAGwtxQVxb1NlEFncbARjzHHMI/trcUoZnMa8e/TwJ1f/LwwcmF/gKkyAtPFwUcrt4cvM3QB69EEek18LurHZ/H/tsDg8pfgmnMA9pytixVePPwvKejqzE2TInd4Vzsg7WzWarINs2PC9bb2IPIuNiSywyLErk+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710385481; c=relaxed/simple;
-	bh=bJjBwjuhEPyH1J1zFhdFWl6hJIg2k+e5LEAbP8QrZVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHgnyBZmRTPSZBOAQfoBhfFY+9hXfWuJkTGhAFe+ICW1OhipOlALUwFiODg4FJEFoBuqwzcX74g2leOb4o5KcvY6hSRTup6qVLt+3vpIlIddtsenRQoFWl3tWSzkaBEmjSzlSEKv+C1Fjustrt165a943EvJhjVua9gnkGrThZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VFHE9Ulf; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c1e992f069so269899b6e.3
-        for <stable@vger.kernel.org>; Wed, 13 Mar 2024 20:04:39 -0700 (PDT)
+	s=arc-20240116; t=1710386059; c=relaxed/simple;
+	bh=x/TLFjyCS8HDwBawdiWm57iNGQ9scNv3N74xuVyJ8q0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BWRtuv3rSTUauc1+kV1RlnpqW9GuaM1dX1FYvqq/3raPJCxezjumHQcOhsUFormr9V7lSVo94FKZq5CEHn0AWRwSct7qweEIjXs6Xcjo/Z2xd1Z611K1jEYLlYrlL/T4gtcNS2iw6gVw4SNdw6G+frJjYcFqjwNZ9IxZMJEB2SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0DGaO/j; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d109e82bd0so5370361fa.3;
+        Wed, 13 Mar 2024 20:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710385478; x=1710990278; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7M92JDTBKJBnzq2c5WZ2iPAaVSzm7Qg8SLrpTCfSZTE=;
-        b=VFHE9UlfrI4SWRGUmDdXLzy0IUnnrDDfGnSo/2JniGXAXU1NR3G1k0IpW7O7zu5Etu
-         1nvVq7RyjH52cH7wo3wQYinrQNrJHOWhm0rs0lPayPuZgqB24m8pafzDFwha1T9etv8c
-         Gbiy0eZluBo22TJ14OVQkirt0N4k2/oM8B8rc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710385478; x=1710990278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1710386056; x=1710990856; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7M92JDTBKJBnzq2c5WZ2iPAaVSzm7Qg8SLrpTCfSZTE=;
-        b=KjgXa6awmHYDl4srMXUMdIsrx0zliOXorQDML1Yjc98BJKHAwSTgIQjzO6YwYAP5t7
-         6mhIvs/nmeMd+bTV/Q8+xWVQ1gmmhADN/NAfHuGTq9Ml3c/EKZJAU4xDkC/Zr+6J8gF0
-         gPR8UoA8aLNzml9A52R5MR4NeRSEvY6Q9QQmtKeFtODuGN5SfWqFOeFuYxdiU/IkO3xm
-         YmAFj1oyj8Ks+cppMdS30SXaJzh1L4I/gWUVceI1Ine2fOgca8J6RYx8n216PZKdJM/3
-         FZK0j6CA2I+HrUbI5HBPddjwIub7H7FEJ71EV0QEInvOlkgk0SBmLT7N4BozFkshROU7
-         H6LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6JwHPnYokdn+cV9O6x3lYW/5IqsPh4Px8Hck7wGuI0nhcAdOOnO2SNLBoQ83ipc4WlZnk4TUczSXpd77ZiobNOk75QQqr
-X-Gm-Message-State: AOJu0YxeFOuZ94qRfy9jzK+flY3fOrPhRHcqGvFUqdFddD5J41RKqmoG
-	rXqh0c3c4ebZB44HjRynF5J83IVd1z1sIrfj/2CwCaD0Cw73OeV22LuzfeYdjg==
-X-Google-Smtp-Source: AGHT+IGX78gwvPQsRfMbGbqRKOXXJL6wFsOcabHKtVC9b8pu0uClVKBZQQGqmmU0LqjpbUu+LXJxlA==
-X-Received: by 2002:a05:6808:11ca:b0:3c1:cb6c:8ae5 with SMTP id p10-20020a05680811ca00b003c1cb6c8ae5mr540662oiv.25.1710385478594;
-        Wed, 13 Mar 2024 20:04:38 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id z25-20020aa785d9000000b006e5359e621csm329271pfn.182.2024.03.13.20.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 20:04:37 -0700 (PDT)
-Date: Wed, 13 Mar 2024 20:04:36 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 5.15 64/76] proc: Use task_is_running() for wchan in
- /proc/$pid/stat
-Message-ID: <202403132003.BF9AF5CA@keescook>
-References: <20240313164223.615640-1-sashal@kernel.org>
- <20240313164223.615640-65-sashal@kernel.org>
+        bh=DFRXR6JXd171H6JhlHg8M0dfWr3UCSzsqgNW2RVeNNU=;
+        b=Y0DGaO/jKJF1Je3q3L5+9hoNXyoQscfsZMhNHcN6k+otMPJEjikFr78C0QgCZevdzm
+         c5Jri11nwHOUxHi5bfIv1kDVon9NKUCMEre0+rfhTa9+cdMVJgskJ7s9YK7PLyJqGvpI
+         +7JZTJoaxLaih98+TojsdbX8ubb/d7v9s74c7ZAcCZT6TaZmE+VwtJaksCLxpZJ1hubk
+         jgrGP/b/DySDNXOIc7riEFjdXIf2aDDn/sIUKNfyHTpf46cCjSo7aNR6d8dZmI53Mf0u
+         A3uj8ojGFUi8hOnggVnjLV+Md4mUGvUazixZk72mPL49j/CboH17WWp7ZT8Hs099oIc4
+         HyXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710386056; x=1710990856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DFRXR6JXd171H6JhlHg8M0dfWr3UCSzsqgNW2RVeNNU=;
+        b=ii5kRtAJ5paRh+Fkaz9qxJ1E4g5SLzxoQGAQh6OKWg/UmIrd3lNMJE9+S2+U/ytz2n
+         Nsi8yQ2WlDNOkXOGe1kW5qWV+pYpWK2cUYIg7XJ8Dna0MEPBRoy8kdsRZraQUSq74x2z
+         o4QWWPUg/JPfi9vELsucVDYWdbvFgmTOL/Gem/J/966GMgzrHdQ1ytMeUyXyE6nbYKBy
+         LeW7LU1oOPctyXf8zBBvU/djHZGt48DxJmbuuYwPkMpnFvpVQ6Gf6cCA+03EOyESaj0u
+         gLr4KrWqvxGEsbWB/1Xh8Zm7WERpbXhHTfbV/o4TaqDjTTLUzsdOEfBMCry12Yf+Y+7T
+         WMUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXuT2PW4pSy2V7J/xKu85GhlFXIlj/aa4LnxZTy+fPZB7yZom/8S7mPfEQUKNoCIZ07qkh42s9efmPif+2R1WXEhXBpLuNa
+X-Gm-Message-State: AOJu0YxwYYAaoXmy/idaKNe97hLeMPrnE3QPbJ1v9eNKncK3dZI8yDax
+	WLH6ma4cb2vzaYyQou/JQL0blaa1PUW3/+pkDkYX1vWn60bUz6muL/Cd8QM3D+/xEoRYReeH61Q
+	4SiJjM0kp0azp+oG3w+hIAfOJxaA=
+X-Google-Smtp-Source: AGHT+IEOFT4r5h0ibIH0VSNs1+UT6l5POA1rJ60x+somqfdMt/wcSLM15FVYo8+w8b4QaERTw4ZyeW4JAeZirC7sORU=
+X-Received: by 2002:a2e:b604:0:b0:2d2:50ba:e5b6 with SMTP id
+ r4-20020a2eb604000000b002d250bae5b6mr248994ljn.10.1710386055579; Wed, 13 Mar
+ 2024 20:14:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313164223.615640-65-sashal@kernel.org>
+References: <20240313104041.188204-1-sprasad@microsoft.com> <20240313104041.188204-2-sprasad@microsoft.com>
+In-Reply-To: <20240313104041.188204-2-sprasad@microsoft.com>
+From: Steve French <smfrench@gmail.com>
+Date: Wed, 13 Mar 2024 22:14:04 -0500
+Message-ID: <CAH2r5msf7=aC0evP90pS5ktZVYTPAZhdtAFVE4T_wMks6k4=eQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] cifs: make sure server interfaces are requested only
+ for SMB3+
+To: nspmangalore@gmail.com
+Cc: linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com, 
+	Shyam Prasad N <sprasad@microsoft.com>, Stable <stable@vger.kernel.org>, 
+	=?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 12:42:11PM -0400, Sasha Levin wrote:
-> From: Kees Cook <keescook@chromium.org>
-> 
-> [ Upstream commit 4e046156792c26bef8a4e30be711777fc8578257 ]
-> 
-> The implementations of get_wchan() can be expensive. The only information
-> imparted here is whether or not a process is currently blocked in the
-> scheduler (and even this doesn't need to be exact). Avoid doing the
-> heavy lifting of stack walking and just report that information by using
-> task_is_running().
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Link: https://lkml.kernel.org/r/20211008111626.211281780@infradead.org
-> Stable-dep-of: 60f92acb60a9 ("fs/proc: do_task_stat: move thread_group_cputime_adjusted() outside of lock_task_sighand()")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+tentatively merged to cifs-2.6.git for-next pending testing and
+additional review
 
-Looks fine to me. Can you double-check that commit
-54354c6a9f7f ("Revert "proc/wchan: use printk format instead of lookup_symbol_name()"")
-is already backported too?
+On Wed, Mar 13, 2024 at 5:40=E2=80=AFAM <nspmangalore@gmail.com> wrote:
+>
+> From: Shyam Prasad N <sprasad@microsoft.com>
+>
+> Some code paths for querying server interfaces make a false
+> assumption that it will only get called for SMB3+. Since this
+> function now can get called from a generic code paths, the correct
+> thing to do is to have specific handler for this functionality
+> per SMB dialect, and call this handler.
+>
+> This change adds such a handler and implements this handler only
+> for SMB 3.0 and 3.1.1.
+>
+> Cc: Stable <stable@vger.kernel.org>
+> Cc: Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz>
+> Reported-by: Paulo Alcantara <pc@manguebit.com>
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> ---
+>  fs/smb/client/cifsglob.h | 3 +++
+>  fs/smb/client/connect.c  | 6 +++++-
+>  fs/smb/client/smb2ops.c  | 2 ++
+>  fs/smb/client/smb2pdu.c  | 5 +++--
+>  4 files changed, 13 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+> index 53c75cfb33ab..b29b57ab9807 100644
+> --- a/fs/smb/client/cifsglob.h
+> +++ b/fs/smb/client/cifsglob.h
+> @@ -346,6 +346,9 @@ struct smb_version_operations {
+>         /* informational QFS call */
+>         void (*qfs_tcon)(const unsigned int, struct cifs_tcon *,
+>                          struct cifs_sb_info *);
+> +       /* query for server interfaces */
+> +       int (*query_server_interfaces)(const unsigned int, struct cifs_tc=
+on *,
+> +                                      bool);
+>         /* check if a path is accessible or not */
+>         int (*is_path_accessible)(const unsigned int, struct cifs_tcon *,
+>                                   struct cifs_sb_info *, const char *);
+> diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+> index ac9595504f4b..234160460615 100644
+> --- a/fs/smb/client/connect.c
+> +++ b/fs/smb/client/connect.c
+> @@ -123,12 +123,16 @@ static void smb2_query_server_interfaces(struct wor=
+k_struct *work)
+>         struct cifs_tcon *tcon =3D container_of(work,
+>                                         struct cifs_tcon,
+>                                         query_interfaces.work);
+> +       struct TCP_Server_Info *server =3D tcon->ses->server;
+>
+>         /*
+>          * query server network interfaces, in case they change
+>          */
+> +       if (!server->ops->query_server_interfaces)
+> +               return;
+> +
+>         xid =3D get_xid();
+> -       rc =3D SMB3_request_interfaces(xid, tcon, false);
+> +       rc =3D server->ops->query_server_interfaces(xid, tcon, false);
+>         free_xid(xid);
+>
+>         if (rc) {
+> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+> index 4695433fcf39..3b8896987197 100644
+> --- a/fs/smb/client/smb2ops.c
+> +++ b/fs/smb/client/smb2ops.c
+> @@ -5538,6 +5538,7 @@ struct smb_version_operations smb30_operations =3D =
+{
+>         .tree_connect =3D SMB2_tcon,
+>         .tree_disconnect =3D SMB2_tdis,
+>         .qfs_tcon =3D smb3_qfs_tcon,
+> +       .query_server_interfaces =3D SMB3_request_interfaces,
+>         .is_path_accessible =3D smb2_is_path_accessible,
+>         .can_echo =3D smb2_can_echo,
+>         .echo =3D SMB2_echo,
+> @@ -5653,6 +5654,7 @@ struct smb_version_operations smb311_operations =3D=
+ {
+>         .tree_connect =3D SMB2_tcon,
+>         .tree_disconnect =3D SMB2_tdis,
+>         .qfs_tcon =3D smb3_qfs_tcon,
+> +       .query_server_interfaces =3D SMB3_request_interfaces,
+>         .is_path_accessible =3D smb2_is_path_accessible,
+>         .can_echo =3D smb2_can_echo,
+>         .echo =3D SMB2_echo,
+> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> index 608ee05491e2..4fa47c59cc04 100644
+> --- a/fs/smb/client/smb2pdu.c
+> +++ b/fs/smb/client/smb2pdu.c
+> @@ -409,14 +409,15 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tco=
+n *tcon,
+>         spin_unlock(&ses->ses_lock);
+>
+>         if (!rc &&
+> -           (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+> +           (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
+> +           server->ops->query_server_interfaces) {
+>                 mutex_unlock(&ses->session_mutex);
+>
+>                 /*
+>                  * query server network interfaces, in case they change
+>                  */
+>                 xid =3D get_xid();
+> -               rc =3D SMB3_request_interfaces(xid, tcon, false);
+> +               rc =3D server->ops->query_server_interfaces(xid, tcon, fa=
+lse);
+>                 free_xid(xid);
+>
+>                 if (rc =3D=3D -EOPNOTSUPP && ses->chan_count > 1) {
+> --
+> 2.34.1
+>
 
--- 
-Kees Cook
+
+--=20
+Thanks,
+
+Steve
 
