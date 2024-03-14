@@ -1,53 +1,74 @@
-Return-Path: <stable+bounces-28198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D28A87C444
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:26:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C91487C464
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 21:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406641C212DC
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 20:26:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0CACB21AE8
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 20:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3609E7603C;
-	Thu, 14 Mar 2024 20:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47A0763F3;
+	Thu, 14 Mar 2024 20:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="GuccfZr/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GtShGde4"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877D775804;
-	Thu, 14 Mar 2024 20:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6124574E21;
+	Thu, 14 Mar 2024 20:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710447987; cv=none; b=KbFNrxfSUBlFHZH9G86ctHS/Fqp49DW9/QQI4jnjAWJCAzjn/DRyKj9aGpCipQIJyMwnZ58+k9Uy2yFk20vOYfdq0i6Tz2QmrZu/vR9xDxlGtBjy0ZqDPaGCACUI3iKe+CP8YCuQuAmyvmbwuYlRnx/McURihyS4xR2WDPVkeI4=
+	t=1710449140; cv=none; b=cuRRx3fxvnNHvknIZCxe06TROYagTb5VEv+JVRu82TQyzeUg1NWBhmUhmrX/iLjqmzpNfAYVXdNJoskHI7y5MVDEnkuz6xV+a5Wylpx+iQO6X1Doo/7mf9m9aqb3QUAPRZ2xgue0g2lr/voaR0JIE4VDsxuEpKi2O+6ouv6SzIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710447987; c=relaxed/simple;
-	bh=ZnBeDeSWfjCdJ7GYR4YJ2BGIWkdAPDjPmlCB+KR8pGY=;
+	s=arc-20240116; t=1710449140; c=relaxed/simple;
+	bh=/wT9frV/hX7PE8jYRX5Wx4I3/dpgvF58kgRs2lTo14o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jxv1dFZE6ZUTzlJfWXPkY3kw90nHkB5Pz59hmhPRPfNi+jsi4sDHv7VU+Y2jxFZ9UkctXpeA9XxV9wOZ3Haj6ZS0z5O/Mjz6wYetQrvZr3+ABF2X26nlNLoXR2v+eaULo36SF1haKVu/MeZYJoDoFNpHCIrRni9Rdp7wPJzMALI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=GuccfZr/; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1710447977; x=1711052777; i=quwenruo.btrfs@gmx.com;
-	bh=ArEIYza25ugOhcZyVqXmWy4/8AuxskIzLfppu6JE7CI=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=GuccfZr/sAHTqm7eEm06/5ZRVydWLt/5eg9njIC9IeOC3va1XKbtN+2Dx+eGK6uh
-	 shsKop2jOCbxsbU+tdEYegM67gM8bfXUib6eBmVSTJetMvThRBTVRWzrrnADhIucx
-	 vMY8XlI3juWqYScGBRHUU5nNvsVx8mnKmnL0afXpkY3THnei+O7Hq5w5TNWrXrXxX
-	 vPlDo+pCqD4cmWp+Vc9lGSq3tPJSvt5xCfluXHbUz6qCg5biUriIpSVv3kzyT+VsH
-	 xUqU2YGx3/nvXp9YyLLHHMvWXU0xVtCEvJSg5LKZmnJODAzKaG4fOq5DDztcfZPDY
-	 dJpPxuuCKSDnpIg+Cw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.219] ([159.196.52.54]) by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MoO6C-1r0oWO3nKq-00om1B; Thu, 14
- Mar 2024 21:26:17 +0100
-Message-ID: <0d28c03f-56f1-4c7c-b278-bf5ea6de08e7@gmx.com>
-Date: Fri, 15 Mar 2024 06:56:13 +1030
+	 In-Reply-To:Content-Type; b=BYoTFLmTbA7ftYSgmMd6/X2L6XWZ3l9P/I1aMwuVTpQGMmE+GeCbojENpGqUR3hsFLJ5TzVFSPMlBsno3WUkvmpyYaQhfArfRFDUM3jAGDRTe7AlIMe0GGnazivf6JNbs/SF7JlJbmJB/Rky/RTF11OmLPSnH8+LCQMvdRCns+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GtShGde4; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dd8dd198d0so10629355ad.3;
+        Thu, 14 Mar 2024 13:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710449138; x=1711053938; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xnMrBa1zsNDJ8SxKjGn0mlGSVNeZ/wwefGNUMZ4JI0c=;
+        b=GtShGde476bOdiXp18DjLo7oUmkqXwggsEfNunputQzVZnU32fULk93D9W/5Kcs3Xv
+         BoD2izfUpWqnBOgu3C1X8/J5zLhUHjFLnaypO6A1sSD/ir8qn8tzRBWrWEEsGgZvBsam
+         9XgZGVcfbjs2aeSW3RVRs87R4vt1mKV6lBU+F4kb20PYoqubVoDSjT+stOXJW1JyeUAR
+         hgwhI4W1BUsCJhJbdtIT9h6HLlB4y/fBVW3Ffw+i3EX0cVQ7MeOmfUj+1rki4+1WF4/P
+         m4MYpOXL2hX0mcJYOI+9BTVwVivVs953uAHUP3eEtPF8soJjas7ifwh46+Uwxl/aq3GJ
+         PdZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710449138; x=1711053938;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnMrBa1zsNDJ8SxKjGn0mlGSVNeZ/wwefGNUMZ4JI0c=;
+        b=d1hqok4UTrMTLb+Cipey9GH54U/4LM09ptnCkOIBv7KAJBGqJ2SqDXBlQF+o9gQCFB
+         ozdAkf/YivdevmhlAaZBpUtSi+9X2ixAFnSiJXx00I72kCHpZUtjqzGRD7gdnvBMqc40
+         oHBDRsA9Dy5sLFuaOPYv6QGUqAVj9tp4c3p2eOnboUYOeSHQ69FPbpIs2SPlYsaCHZgV
+         0JPdOBJZ+hxY390irDQAHsly8O/op1kOBcAkQf0i4e2W9qh/Wg0K/8F0BH7rv2n6vMky
+         BuAEHu6fnGRN095PQjXzIMgsFyYycgGaAn6YLOJSbcN6PnwS+GyxP92wldAZdQW/bFvU
+         EOxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnk2rGkZcfbj6JNbwyNOTnrFRc0xdw2WUhGTbV3Elz55xlVgI5sytYtyrq3iYR+kXj3q/zg1124Vc+DBMOrxzdkGrODSDaioMCt6Wa5xFFBD6COagCEBISokbF4yyb+Zt2oSah
+X-Gm-Message-State: AOJu0YzY8JfluEgXl75sSOLsvACOqjQfDP1ZC7qBoElMs0okXk3edF9s
+	uInUHlcidzMclYWQl+fPoy2fT7AJoBiEOF7VUNX6SFCGiOdeZzzYm66qHoDbLUE=
+X-Google-Smtp-Source: AGHT+IFdldRN4ysuGqhWosfpH5e5PWI3G6+kz2OSNsUOGetxsFlTjgUiIcLuVLcJ1USKUW+GMx7hsA==
+X-Received: by 2002:a17:902:7488:b0:1de:dd0d:69e with SMTP id h8-20020a170902748800b001dedd0d069emr1291794pll.35.1710449138563;
+        Thu, 14 Mar 2024 13:45:38 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id ki3-20020a170903068300b001dd02f4c2casm2186991plb.164.2024.03.14.13.45.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Mar 2024 13:45:37 -0700 (PDT)
+Message-ID: <571febef-186e-45f3-a894-26a6c5d7116a@gmail.com>
+Date: Thu, 14 Mar 2024 13:45:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,146 +76,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] btrfs: reduce the log level for
- btrfs_dev_stat_inc_and_print()
+Subject: Re: [PATCH 6.1 00/71] 6.1.82-rc1 review
 Content-Language: en-US
-To: Filipe Manana <fdmanana@kernel.org>, Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-References: <cover.1710409033.git.wqu@suse.com>
- <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
- <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com>
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00iVQUJDToH
- pgAKCRDCPZHzoSX+qNKACACkjDLzCvcFuDlgqCiS4ajHAo6twGra3uGgY2klo3S4JespWifr
- BLPPak74oOShqNZ8yWzB1Bkz1u93Ifx3c3H0r2vLWrImoP5eQdymVqMWmDAq+sV1Koyt8gXQ
- XPD2jQCrfR9nUuV1F3Z4Lgo+6I5LjuXBVEayFdz/VYK63+YLEAlSowCF72Lkz06TmaI0XMyj
- jgRNGM2MRgfxbprCcsgUypaDfmhY2nrhIzPUICURfp9t/65+/PLlV4nYs+DtSwPyNjkPX72+
- LdyIdY+BqS8cZbPG5spCyJIlZonADojLDYQq4QnufARU51zyVjzTXMg5gAttDZwTH+8LbNI4
- mm2YzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00ibgUJDToHvwAK
- CRDCPZHzoSX+qK6vB/9yyZlsS+ijtsvwYDjGA2WhVhN07Xa5SBBvGCAycyGGzSMkOJcOtUUf
- tD+ADyrLbLuVSfRN1ke738UojphwkSFj4t9scG5A+U8GgOZtrlYOsY2+cG3R5vjoXUgXMP37
- INfWh0KbJodf0G48xouesn08cbfUdlphSMXujCA8y5TcNyRuNv2q5Nizl8sKhUZzh4BascoK
- DChBuznBsucCTAGrwPgG4/ul6HnWE8DipMKvkV9ob1xJS2W4WJRPp6QdVrBWJ9cCdtpR6GbL
- iQi22uZXoSPv/0oUrGU+U5X4IvdnvT+8viPzszL5wXswJZfqfy8tmHM85yjObVdIG6AlnrrD
-In-Reply-To: <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de
+References: <20240313163957.615276-1-sashal@kernel.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240313163957.615276-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iNKl2Nq0qJafbMgKJq/vzSmiGUrpvY7T6aCMBR69xiF1btZbgdM
- FwkEQtK59tordXI1rKB8cS3GoclsqSsyFuKKLn7FAjFTh8n9UTLK7S1R3Oeiuw4OUVi8mDn
- +548wa+PCu9oRhLkHj/AYQeatArYMEThBtSHBsAuufQLdZnmrE1zEp3pf2Czp9557oVOFhI
- 9WA3+5ARaU9iFmcwUZaKQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LBt8tWnH1oI=;+CqIdXUX9MdaMDd1etLZ0u5+Rdx
- 2YdaJBGE4tVLeGkFNx9ZbqZPhgn/7kIUnG9Z+P12gBep/N7ZgdwvIjNSbhNTIZL/NnYgc11fG
- L0JqvhanMcLZCNrMH9FDRfx5TXGB/tZmm9WMIFKro3lSyhxF4LlHuJJCox7x8mnAKW/l1+Hiz
- nmTvhOSEhCrDQEmflzXbnsrwxFvjdExzY9cRaf+wSQfOwN8nobfEk+jXAWeOgzVzCm+7IQXVY
- y1kz9G7DA8geiVFYNJrdl+CiqkEBscjaiSCCw+Z8tfr3PxYkxposnAtC4au+tVAmxMuL7npsJ
- YthM7T9SoqYd5GoTkpeYwl2uiiGMIgR1yOTKK+Rys20sjCKRghc6+62q/1nBgL6brcKXMm7Vu
- hJKfEjIKFgWtOnYOW0NEo2hUnVkHMzoiA8Rw6Pwf7ho0QyNr4z4vXXrNOtChmQOpLO8IpSGIR
- AaErTq+WxBJqMkIsio+5UtGKRhBZLQpr1SEg3P98PoqUvjJPTi7UjsGmKHbagmmoxWwvrfVWl
- 1ZMQm9GiI2F9btJNe/dqWXMjTfhYHePvmI2oNP72zNP9QpYb2IcoOfeMAwmrSH2VZqcMfZAAH
- ZOI8oUl37PmiLCJNMncOjS3/YjRYjF9mRPqf4/Xc9UzBpYZAILojwp4Sk4l78qSybElk5131t
- VBh4GR4Y1LFMcbEhvbvv0e46eC97OPf862jhozViDmNu9uUi22/js03/M8Bktnu06Rpltyax9
- y4IvSBmra8gy8tVQeWqMFx4unvKHgwJhgo0tfgDMgS6hYiHWfQI72vBZIQ0BiK4HYlbCuiUBn
- ixD6rQJVdDxsu/OgxqW80iliUm6mfNVx3BYDAx4NfFddU=
+Content-Transfer-Encoding: 7bit
 
+On 3/13/24 09:38, Sasha Levin wrote:
+> 
+> This is the start of the stable review cycle for the 6.1.82 release.
+> There are 71 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri Mar 15 04:39:56 PM UTC 2024.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.81
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-=E5=9C=A8 2024/3/15 03:47, Filipe Manana =E5=86=99=E9=81=93:
-> On Thu, Mar 14, 2024 at 9:54=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->>
->> Currently when we increase the device statistics, it would always lead
->> to an error message in the kernel log.
->>
->> I would argue this behavior is not ideal:
->>
->> - It would flood the dmesg and bury real important messages
->>    One common scenario is scrub.
->>    If scrub hit some errors, it would cause both scrub and
->>    btrfs_dev_stat_inc_and_print() to print error messages.
->>
->>    And in that case, btrfs_dev_stat_inc_and_print() is completely
->>    useless.
->>
->> - The results of btrfs_dev_stat_inc_and_print() is mostly for history
->>    monitoring, doesn't has enough details
->>
->>    If we trigger the errors during regular read, such messages from
->>    btrfs_dev_stat_inc_and_print() won't help us to locate the cause
->>    either.
->>
->> The real usage for the btrfs device statistics is for some user space
->> daemon to check if there is any new errors, acting like some checks on
->> SMART, thus we don't really need/want those messages in dmesg.
->>
->> This patch would reduce the log level to debug (disabled by default) fo=
-r
->> btrfs_dev_stat_inc_and_print().
->> For users really want to utilize btrfs devices statistics, they should
->> go check "btrfs device stats" periodically, and we should focus the
->> kernel error messages to more important things.
->
-> Not sure if this is the right thing to do.
->
-> In the scrub context it can be annoying for sure.
-> Other cases I'm not so sure about, because having error messages in
-> dmesg/syslog may help notice issues more quickly.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-For non-scrub cases, I'd argue we already have enough output:
-
-No matter if the error is fixed or not, every time a mirror got csum
-mismatch or other errors, we already have error message output:
-
-  Data: btrfs_print_data_csum_error()
-  Meta: btrfs_validate_extent_buffer()
-
-For repaired ones, we have extra output from bio layer for both metadata
-and data:
-  btrfs_repair_io_failure()
-
-So I'd say the dev_stat ones are already duplicated.
-
-Thanks,
-Qu
->
->>
->> CC: stable@vger.kernel.org
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> ---
->>   fs/btrfs/volumes.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
->> index e49935a54da0..126145950ed3 100644
->> --- a/fs/btrfs/volumes.c
->> +++ b/fs/btrfs/volumes.c
->> @@ -7828,7 +7828,7 @@ void btrfs_dev_stat_inc_and_print(struct btrfs_de=
-vice *dev, int index)
->>
->>          if (!dev->dev_stats_valid)
->>                  return;
->> -       btrfs_err_rl_in_rcu(dev->fs_info,
->> +       btrfs_debug_rl_in_rcu(dev->fs_info,
->>                  "bdev %s errs: wr %u, rd %u, flush %u, corrupt %u, gen=
- %u",
->>                             btrfs_dev_name(dev),
->>                             btrfs_dev_stat_read(dev, BTRFS_DEV_STAT_WRI=
-TE_ERRS),
->> --
->> 2.44.0
->>
->>
->
 
