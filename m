@@ -1,96 +1,97 @@
-Return-Path: <stable+bounces-28180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E77787C120
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6ED87C1C0
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E6D28138E
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 16:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC1A283A4E
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204867351B;
-	Thu, 14 Mar 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185EC74BEE;
+	Thu, 14 Mar 2024 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q2h/Tn7S"
+	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="UjPeQDh0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC16873500;
-	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A7A74BE2
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 17:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710433231; cv=none; b=m7uTbVjyVeFSvwjp9tl5ozHgQTE86hiEr3HOnB2RBEOv+WgCms8Bst7DNLTfufIXqkR5SaWGBRIYkQj2o4PTJlZRno1bcgf87yokkwYTILYEiwUprNuUJhmPCL2ooN+wh89cKMpDvAXecaHOF+BzT+MGYeS9+mXsiWnLopKVWdc=
+	t=1710435674; cv=none; b=Yd+wAttjThc6ylvK+TazpmKQTE66cul3dVhgtAUqx+OZG7HVOH7F3BVvF80Cyc3AQom60JwSeV3C+96LkPeoywsbfBEVnmnM2u77c4GtjL7/kAj57N1Tw0wBcHT/Yv49UuTZiD3aIUqKzz0YxGvdVgeuBp/8hNnJ1ph8fil7ZDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710433231; c=relaxed/simple;
-	bh=7+09w1oE97rDTiXYwrzXL4LqGid17J4YBQSF+zZK/30=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=G+25zk9D5cQ+e80HX9rVoPIIVsj5BNG/xXU8eLXugEX6ueifn++82wOtkciSqNjbpGxKuUiIliblvOp5nCSP/odlQU52eePbOqezcuI8t+RsssJ6Yb5uirXpJCzHVn1+qZ4XWmDHZYiLK96uDAvdZY18RQju0wMJxN9upttC7E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q2h/Tn7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 691D8C433C7;
-	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710433231;
-	bh=7+09w1oE97rDTiXYwrzXL4LqGid17J4YBQSF+zZK/30=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=q2h/Tn7SJ1Z6TURl9ZfaYEeCvSR+2ZpQbTUHRgzIzNga9f8h2nfOqcGVKrI53z7iP
-	 1ZrbkD1XirVCgitqPQNlCIpPPRFc78wiqhBKw9BTu0ux/l5f6NofvdBXhkkESHVtXu
-	 c4A2nCRMxw59HtDxHNC64kbktzV4c3fvSq/upv2E8CvawZwiryVUbls0FakW/GZqLr
-	 lcv3+afq/QQun/4s7hyVjlZrk+adq0zE3T/C452+nxzHVyVe0RQpPfIDhCbmaXAeJH
-	 fY8tzQIWxMMExfNzoD07Y/peL59SgjRH3xhjaWXPLNBcXiHA78a6FmkJJjfy76kxPc
-	 BfQPOoPiwNAFQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 57438C595C3;
-	Thu, 14 Mar 2024 16:20:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1710435674; c=relaxed/simple;
+	bh=kx/65Q2aEyNOq/9aSjIYHA7KOud5g13mAoAdscg6Sa8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=qmN/YoUtkFsZC5t4RF5v93Mo8i1UGnWL/72FJ3pOsTuem4zKpw6VFG8IEscllafOlwVwZxZ5gHEh/zhmW9GSy22fdczve0pxjimleUQ1AMmwvd2emsKZ+qlVS376pXfS7+KUyHI+jlwcDlIunm6UcZ3US6SpYx8PALJZxG5FkqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=UjPeQDh0; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
+Date: Thu, 14 Mar 2024 10:01:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
+	s=key1; t=1710435669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7VZ6BU3j+IT52okbFNFdHPBh3OIM0PFIwRzd4ocYRAA=;
+	b=UjPeQDh0MqOYej8uHFOtfmcU7bWp8F5yq6dnVy5dBwyopL6cI4OB95jui2Io045Hv5SkiS
+	oE3Wts4SLO8JxUSm/YcD4AS4KzgTDtv6cpusjdH8yR11G6xgaClhWiuV+EoEwTbNaUgfuC
+	9LrZdNcK64GKzhH9gjS4i5qYfcjOYBSXea+UG8czGdcCLbl4FSYStSK3P21Q5cRIw2GXpc
+	Pk2QSk/Z5KDTlNpFw5eEAdpOm+D9u85TQCfXUO9yhgEWQrZO53aN4N3+Sm/YoJeUf3JGet
+	RkbTrjTU1oYW8j6ytut5tvGUfnBYDP9v9aMEnWd0ezTmUWsLpJOsq1WmwG4teg==
+Message-ID: <20240314100103.GC6100@craftyguy.net>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Clayton Craft <clayton@craftyguy.net>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
+ stable@vger.kernel.org, Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+In-Reply-To: <20240314084412.1127-1-johan+linaro@kernel.org>
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH 1/2] f2fs: mark inode dirty for
- FI_ATOMIC_COMMITTED flag
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <171043323135.13516.13152557202790425298.git-patchwork-notify@kernel.org>
-Date: Thu, 14 Mar 2024 16:20:31 +0000
-References: <20240313112620.1061463-1-s_min.jeong@samsung.com>
-In-Reply-To: <20240313112620.1061463-1-s_min.jeong@samsung.com>
-To: Sunmin Jeong <s_min.jeong@samsung.com>
-Cc: jaegeuk@kernel.org, chao@kernel.org, daehojeong@google.com,
- linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, sj1557.seo@samsung.com
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
-
-This series was applied to jaegeuk/f2fs.git (dev)
-by Jaegeuk Kim <jaegeuk@kernel.org>:
-
-On Wed, 13 Mar 2024 20:26:19 +0900 you wrote:
-> In f2fs_update_inode, i_size of the atomic file isn't updated until
-> FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
-> after the writeback of the inode, i_size of the raw inode will not be
-> updated. It can cause the atomicity corruption due to a mismatch between
-> old file size and new data.
+On Thu, 14 Mar 2024 09:44:12 +0100 Johan Hovold <johan+linaro@kernel.org> wrote:
+> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
 > 
-> To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+> Qualcomm Bluetooth controllers like WCN6855 do not have persistent
+> storage for the Bluetooth address and must therefore start as
+> unconfigured to allow the user to set a valid address unless one has
+> been provided by the boot firmware in the devicetree.
 > 
-> [...]
+> A recent change snuck into v6.8-rc7 and incorrectly started marking the
+> default (non-unique) address as valid. This specifically also breaks the
+> Bluetooth setup for some user of the Lenovo ThinkPad X13s.
+> 
+> Note that this is the second time Qualcomm breaks the driver this way
+> and that this was fixed last year by commit 6945795bc81a ("Bluetooth:
+> fix use-bdaddr-property quirk"), which also has some further details.
+> 
+> Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+> Cc: stable@vger.kernel.org      # 6.8
+> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-Here is the summary with links:
-  - [f2fs-dev,1/2] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
-    https://git.kernel.org/jaegeuk/f2fs/c/4bf78322346f
-  - [f2fs-dev,2/2] f2fs: truncate page cache before clearing flags when aborting atomic write
-    https://git.kernel.org/jaegeuk/f2fs/c/74b0ebcbdde4
+Thanks Johan, this revert does indeed fix Bluetooth for me on the X13s.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reported-by: Clayton Craft <clayton@craftyguy.net>
+Tested-by: Clayton Craft <clayton@craftyguy.net>
 
-
+-Clayton
 
