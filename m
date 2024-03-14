@@ -1,208 +1,137 @@
-Return-Path: <stable+bounces-28184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F6B87C202
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:17:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35B187C204
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33E01F22408
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:17:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A4E1F220B7
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB15745D5;
-	Thu, 14 Mar 2024 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6689A745C8;
+	Thu, 14 Mar 2024 17:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mdRwXXn9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GYnVVOyw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB2745C4;
-	Thu, 14 Mar 2024 17:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234A81EA6F;
+	Thu, 14 Mar 2024 17:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710436621; cv=none; b=PGKVgO+7l5eztiQKQHpmQsmkDiUjA8uARjjLwKvfFuOuyxNTkrksS6rrsiAvIamQCpoqw2z4yMNQeRf9f/zyeuY5GDKazfRu/VhG+ZWih5ziOsrTdZMPNyhpyLlGxrX0gKCuNCF8XkyvYASMn+WKxQQqffg+XA0xnfNikwgmHww=
+	t=1710436715; cv=none; b=mFSBaNMfnCwlHNLcnwdQ7mCEUWVKxr7aSTiXKecjTZC+bnSbG42ToubHqniwQFSUwWHt9mLBKfz6aThWZ9ht1f5qO0+U5QtArh2JzRCdZAem+k+3jWTIiwUABhGFlTV+BOYz7hinvRKXbNWorpJiAQDmcVHQBHq8FQHWnk8Ze9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710436621; c=relaxed/simple;
-	bh=yEAjYlZS8Vh+1fKydHwx2mrd3ZlQrmK6jZP9pcEiSao=;
+	s=arc-20240116; t=1710436715; c=relaxed/simple;
+	bh=ohDZGdMDrrJS14ToVZBClFrspQXk+4CJZdS+EJmy7Ac=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZGqOSTOXrrYjTNvqNgDFM61OQRO6Udm9I/XOm6Nojudcf0XVFXSiIuCkyvfR5Ell5y56Ez+uyA1B9EtKPtkyB8c3AIGdtnNVnNRE+E92B8DMhbT/AeyLyQhOmiAYklF41KFfQ9d5rvVYOBbd7a6gMLBVozfnR1pzmdlXWladsqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mdRwXXn9; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5101cd91017so1959503e87.2;
-        Thu, 14 Mar 2024 10:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710436618; x=1711041418; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ps1g2qP3yY2atcEULtu4ABg5GWK/bG/BRx3OnM+x7Uk=;
-        b=mdRwXXn9pEgSXjeKzudqq40ZcbZ841WqZsPn+jjqkxlCuB/VO3BXKb57oDWolWaXYU
-         NFbGTeKMm42yjYstDFh7ozRhQUlp/s91VoBotmYkvE35Ft+rbBQCoZITQc0z9Wj2h9Xt
-         0cApql2m6YTR8Iey5BR1qO2ofuMMoUVJOgtYss3sX/7TkUxMdZ/WGRQYWAX/LEo06jbR
-         1gMZtEpUMDVHYw9jcq6iBs7fAL4ShQmJmIrdiCQXfs0BxpNnTwCfhVj7CCaeEDL8+6hW
-         XpOILbCZSrD0KVWUU9aeYvu+McatPrjWTvbzS5oLQEosq1+L6N1lTUHCqIx25Q92LiVP
-         90Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710436618; x=1711041418;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ps1g2qP3yY2atcEULtu4ABg5GWK/bG/BRx3OnM+x7Uk=;
-        b=jyNrPdgHNbXMxEt3sDVCrd5SFW8hkJdX+oUBxFUesIt4OsOJ/qxvSCgoEJ6HG/BxAI
-         6HVFufgP8dS207EU/FqH8jo5JZ34voQQPdt/Q9YgRXtA9sPZIQgT79cJIp5+kLdRpEed
-         Tbmg8ZN4U6M/udn4512eTkCccl3XINiFL3JtU7uK01GaxYgN2unEMy6kY2aT7gBbs/w8
-         AWYin1DtaJUNqWnnv1AK94sKU/aPtycN6LawqlJ21HzuWzDF/3W1g8CFc6XKRoFZc+Ou
-         +5aDba2OFfm5q5ZJsc+LWxdeoplUIkgTwHlY0gnnrSDHOlYK+77j1LgSjUq8PlOAwCvC
-         r5Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLHfxyjc5a9wvMvu6d9GARBiHXZf+WWj0mN1vOao2kq50MlUX0QxoHs4h1NOeMWImgCRYv8KOE2hmyjA/u7ky1OoebWd/F
-X-Gm-Message-State: AOJu0YwV+4Aw5rBjG1x2Lt/KxsV/iigs5YiKBRyvPst+jRrxQLith6b0
-	dFgO9Uh3NwMUzk0m17v7KXyS/LqtlgH2jVh25u5hqlqxO5eDIGPGbk5ew8pODi2j6DDpnmnWJEN
-	t/l+VSoYtW+WsAqUwMA4LgnCjzmDDZY/eg74=
-X-Google-Smtp-Source: AGHT+IGnNkZfIrZK0fk9oI9S6n4rZ91KqKQ0oQkBcAnZKu/84cEtprsvR3FCp8gL91zrVZtlMb3PV5GClNq4tnWAFJY=
-X-Received: by 2002:a05:6512:3e1e:b0:513:4fb4:5388 with SMTP id
- i30-20020a0565123e1e00b005134fb45388mr2105234lfv.41.1710436617459; Thu, 14
- Mar 2024 10:16:57 -0700 (PDT)
+	 To:Cc:Content-Type; b=KU+lWtkXgj01KKzhzXj2fPJDN93nX1s27dp9J1qjwY6J7C65BjPJzBVzsK5Yl3eiCHLj7YXg+S1tsWNOCSPFiCcnBh2PpQrj+os4xVJRcdVg0M5fxbTQ9y+jp7mVR7QyxQZYjHwvnM8NoPFOOXpO3zH0tkudUBBmqnpPiCK64jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GYnVVOyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98410C433F1;
+	Thu, 14 Mar 2024 17:18:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710436714;
+	bh=ohDZGdMDrrJS14ToVZBClFrspQXk+4CJZdS+EJmy7Ac=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GYnVVOywPAYqGCj4yHOGMwMJvzwGx30unKTxXy/NRdJOrtpoRlIB86SWq7jn7qLeo
+	 8utfXyMCpwC17lKhtGf9NjGQ0cPdYEZigEeDE+yGXxOSF5lpogsZB28u2rixjs+PFf
+	 AC6R/+sEA7rvLsVk5up+eIOzRcyBjxkrx2d2V1Gub+rUTrZUaC0x6xjH/irvY8XeBI
+	 yeu+/Wa8/D9Wo6/A/M7RRhChVJQYhONImqrUk0tHqtLJqNLR9FI+pusy2u48TtfIUQ
+	 oB+EAKB0sZbOpuUS1oeU5L08ujk8SFqn8GF9VdO9/y48R/vtetWASkM3Td5Qej5IfZ
+	 CkZXFrA0fVftQ==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a46644fee93so171644266b.2;
+        Thu, 14 Mar 2024 10:18:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVzCAySnt/YRu5n9x62hLdSmYtmT5dxut6I2IFEd22RFLFNY8j4oCISAoo7IQyNqLURHcCsKfvSx193QqViO/ssmA47dOiG
+X-Gm-Message-State: AOJu0YwZA0IWZHoecuLm9L+zhbi9HpvC2cUpXsJD3a2oS4Tu7OdQbH4G
+	EdPNVzufbDPPhpywIhmXFncBIqzhJQMi7lN/5pRsJB0v+MUS82t7auxjDRSNktrcf8nzDs+M6wW
+	3MckdW8ghx5j2++sgdFGpcXPa/v8=
+X-Google-Smtp-Source: AGHT+IG/ys2gnE/GEOxAamM1inX7INBoxrWSpB2U3nqqWxpczR+UlJH3889HCYrelziAVG4u4vYWoid19GVGS8luIZU=
+X-Received: by 2002:a17:906:3c11:b0:a45:f371:c109 with SMTP id
+ h17-20020a1709063c1100b00a45f371c109mr1603163ejg.24.1710436713211; Thu, 14
+ Mar 2024 10:18:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313104041.188204-1-sprasad@microsoft.com> <CAH2r5mtDe_E9=mGx1mOjfEMfgdhV9W=TjijXOdqgTkasVE81=g@mail.gmail.com>
-In-Reply-To: <CAH2r5mtDe_E9=mGx1mOjfEMfgdhV9W=TjijXOdqgTkasVE81=g@mail.gmail.com>
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 14 Mar 2024 12:16:45 -0500
-Message-ID: <CAH2r5mu-8eyykEN4yaQ1C-yzg0_hdHDE=x2rxjuxh1sZFHirAA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] cifs: reduce warning log level for server not
- advertising interfaces
-To: nspmangalore@gmail.com
-Cc: linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com, 
-	Shyam Prasad N <sprasad@microsoft.com>, Stable <stable@vger.kernel.org>, 
-	=?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Content-Type: multipart/mixed; boundary="000000000000fec02d0613a20e79"
-
---000000000000fec02d0613a20e79
+References: <cover.1710409033.git.wqu@suse.com> <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
+In-Reply-To: <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Thu, 14 Mar 2024 17:17:56 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com>
+Message-ID: <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com>
+Subject: Re: [PATCH 2/7] btrfs: reduce the log level for btrfs_dev_stat_inc_and_print()
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-updated patch to change to warn once, and to fix a minor checkpatch
-warning (about format of stable tag)
+On Thu, Mar 14, 2024 at 9:54=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+>
+> Currently when we increase the device statistics, it would always lead
+> to an error message in the kernel log.
+>
+> I would argue this behavior is not ideal:
+>
+> - It would flood the dmesg and bury real important messages
+>   One common scenario is scrub.
+>   If scrub hit some errors, it would cause both scrub and
+>   btrfs_dev_stat_inc_and_print() to print error messages.
+>
+>   And in that case, btrfs_dev_stat_inc_and_print() is completely
+>   useless.
+>
+> - The results of btrfs_dev_stat_inc_and_print() is mostly for history
+>   monitoring, doesn't has enough details
+>
+>   If we trigger the errors during regular read, such messages from
+>   btrfs_dev_stat_inc_and_print() won't help us to locate the cause
+>   either.
+>
+> The real usage for the btrfs device statistics is for some user space
+> daemon to check if there is any new errors, acting like some checks on
+> SMART, thus we don't really need/want those messages in dmesg.
+>
+> This patch would reduce the log level to debug (disabled by default) for
+> btrfs_dev_stat_inc_and_print().
+> For users really want to utilize btrfs devices statistics, they should
+> go check "btrfs device stats" periodically, and we should focus the
+> kernel error messages to more important things.
 
+Not sure if this is the right thing to do.
 
-On Wed, Mar 13, 2024 at 11:45=E2=80=AFAM Steve French <smfrench@gmail.com> =
-wrote:
+In the scrub context it can be annoying for sure.
+Other cases I'm not so sure about, because having error messages in
+dmesg/syslog may help notice issues more quickly.
+
 >
-> what about simply a "warn_once" since it is useful for the user to
-> know that their server does not advertise interfaces so can affect
-> performance (multichannel) and perhaps some reconnect scenarios.
+> CC: stable@vger.kernel.org
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/volumes.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> On Wed, Mar 13, 2024 at 5:40=E2=80=AFAM <nspmangalore@gmail.com> wrote:
-> >
-> > From: Shyam Prasad N <sprasad@microsoft.com>
-> >
-> > Several users have reported this log getting dumped too regularly to
-> > kernel log. The likely root cause has been identified, and it suggests
-> > that this situation is expected for some configurations
-> > (for example SMB2.1).
-> >
-> > Since the function returns appropriately even for such cases, it is
-> > fairly harmless to make this a debug log. When needed, the verbosity
-> > can be increased to capture this log.
-> >
-> > Cc: Stable <stable@vger.kernel.org>
-> > Reported-by: Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz>
-> > Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-> > ---
-> >  fs/smb/client/sess.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-> > index 8f37373fd333..37cdf5b55108 100644
-> > --- a/fs/smb/client/sess.c
-> > +++ b/fs/smb/client/sess.c
-> > @@ -230,7 +230,7 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
-> >                 spin_lock(&ses->iface_lock);
-> >                 if (!ses->iface_count) {
-> >                         spin_unlock(&ses->iface_lock);
-> > -                       cifs_dbg(VFS, "server %s does not advertise int=
-erfaces\n",
-> > +                       cifs_dbg(FYI, "server %s does not advertise int=
-erfaces\n",
-> >                                       ses->server->hostname);
-> >                         break;
-> >                 }
-> > @@ -396,7 +396,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct=
- TCP_Server_Info *server)
-> >         spin_lock(&ses->iface_lock);
-> >         if (!ses->iface_count) {
-> >                 spin_unlock(&ses->iface_lock);
-> > -               cifs_dbg(VFS, "server %s does not advertise interfaces\=
-n", ses->server->hostname);
-> > +               cifs_dbg(FYI, "server %s does not advertise interfaces\=
-n", ses->server->hostname);
-> >                 return;
-> >         }
-> >
-> > --
-> > 2.34.1
-> >
+> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+> index e49935a54da0..126145950ed3 100644
+> --- a/fs/btrfs/volumes.c
+> +++ b/fs/btrfs/volumes.c
+> @@ -7828,7 +7828,7 @@ void btrfs_dev_stat_inc_and_print(struct btrfs_devi=
+ce *dev, int index)
 >
->
+>         if (!dev->dev_stats_valid)
+>                 return;
+> -       btrfs_err_rl_in_rcu(dev->fs_info,
+> +       btrfs_debug_rl_in_rcu(dev->fs_info,
+>                 "bdev %s errs: wr %u, rd %u, flush %u, corrupt %u, gen %u=
+",
+>                            btrfs_dev_name(dev),
+>                            btrfs_dev_stat_read(dev, BTRFS_DEV_STAT_WRITE_=
+ERRS),
 > --
-> Thanks,
+> 2.44.0
 >
-> Steve
-
-
-
---=20
-Thanks,
-
-Steve
-
---000000000000fec02d0613a20e79
-Content-Type: text/x-patch; charset="UTF-8"; 
-	name="0002-cifs-reduce-warning-log-level-for-server-not-adverti.patch"
-Content-Disposition: attachment; 
-	filename="0002-cifs-reduce-warning-log-level-for-server-not-adverti.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_ltrhshwa0>
-X-Attachment-Id: f_ltrhshwa0
-
-RnJvbSAyMWRkOGRmNjVhN2Y4N2VjYzkyOGFkMzI1YWIxNjNhYjA4YTU1NmJlIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBTaHlhbSBQcmFzYWQgTiA8c3ByYXNhZEBtaWNyb3NvZnQuY29t
-PgpEYXRlOiBXZWQsIDEzIE1hciAyMDI0IDEwOjQwOjQwICswMDAwClN1YmplY3Q6IFtQQVRDSCAy
-LzRdIGNpZnM6IHJlZHVjZSB3YXJuaW5nIGxvZyBsZXZlbCBmb3Igc2VydmVyIG5vdCBhZHZlcnRp
-c2luZwogaW50ZXJmYWNlcwpNSU1FLVZlcnNpb246IDEuMApDb250ZW50LVR5cGU6IHRleHQvcGxh
-aW47IGNoYXJzZXQ9VVRGLTgKQ29udGVudC1UcmFuc2Zlci1FbmNvZGluZzogOGJpdAoKU2V2ZXJh
-bCB1c2VycyBoYXZlIHJlcG9ydGVkIHRoaXMgbG9nIGdldHRpbmcgZHVtcGVkIHRvbyByZWd1bGFy
-bHkgdG8Ka2VybmVsIGxvZy4gVGhlIGxpa2VseSByb290IGNhdXNlIGhhcyBiZWVuIGlkZW50aWZp
-ZWQsIGFuZCBpdCBzdWdnZXN0cwp0aGF0IHRoaXMgc2l0dWF0aW9uIGlzIGV4cGVjdGVkIGZvciBz
-b21lIGNvbmZpZ3VyYXRpb25zCihmb3IgZXhhbXBsZSBTTUIyLjEpLgoKU2luY2UgdGhlIGZ1bmN0
-aW9uIHJldHVybnMgYXBwcm9wcmlhdGVseSBldmVuIGZvciBzdWNoIGNhc2VzLCBpdCBpcwpmYWly
-bHkgaGFybWxlc3MgdG8gbWFrZSB0aGlzIGEgZGVidWcgbG9nLiBXaGVuIG5lZWRlZCwgdGhlIHZl
-cmJvc2l0eQpjYW4gYmUgaW5jcmVhc2VkIHRvIGNhcHR1cmUgdGhpcyBsb2cuCgpDYzogc3RhYmxl
-QHZnZXIua2VybmVsLm9yZwpSZXBvcnRlZC1ieTogSmFuIMSMZXJtw6FrIDxzYWlyb25Ac2Fpcm9u
-LmN6PgpTaWduZWQtb2ZmLWJ5OiBTaHlhbSBQcmFzYWQgTiA8c3ByYXNhZEBtaWNyb3NvZnQuY29t
-PgpTaWduZWQtb2ZmLWJ5OiBTdGV2ZSBGcmVuY2ggPHN0ZnJlbmNoQG1pY3Jvc29mdC5jb20+Ci0t
-LQogZnMvc21iL2NsaWVudC9zZXNzLmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2Vy
-dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvc21iL2NsaWVudC9zZXNz
-LmMgYi9mcy9zbWIvY2xpZW50L3Nlc3MuYwppbmRleCA4ZjM3MzczZmQzMzMuLjMyMTZmNzg2OTA4
-ZiAxMDA2NDQKLS0tIGEvZnMvc21iL2NsaWVudC9zZXNzLmMKKysrIGIvZnMvc21iL2NsaWVudC9z
-ZXNzLmMKQEAgLTIzMCw3ICsyMzAsNyBAQCBpbnQgY2lmc190cnlfYWRkaW5nX2NoYW5uZWxzKHN0
-cnVjdCBjaWZzX3NlcyAqc2VzKQogCQlzcGluX2xvY2soJnNlcy0+aWZhY2VfbG9jayk7CiAJCWlm
-ICghc2VzLT5pZmFjZV9jb3VudCkgewogCQkJc3Bpbl91bmxvY2soJnNlcy0+aWZhY2VfbG9jayk7
-Ci0JCQljaWZzX2RiZyhWRlMsICJzZXJ2ZXIgJXMgZG9lcyBub3QgYWR2ZXJ0aXNlIGludGVyZmFj
-ZXNcbiIsCisJCQljaWZzX2RiZyhPTkNFLCAic2VydmVyICVzIGRvZXMgbm90IGFkdmVydGlzZSBp
-bnRlcmZhY2VzXG4iLAogCQkJCSAgICAgIHNlcy0+c2VydmVyLT5ob3N0bmFtZSk7CiAJCQlicmVh
-azsKIAkJfQpAQCAtMzk2LDcgKzM5Niw3IEBAIGNpZnNfY2hhbl91cGRhdGVfaWZhY2Uoc3RydWN0
-IGNpZnNfc2VzICpzZXMsIHN0cnVjdCBUQ1BfU2VydmVyX0luZm8gKnNlcnZlcikKIAlzcGluX2xv
-Y2soJnNlcy0+aWZhY2VfbG9jayk7CiAJaWYgKCFzZXMtPmlmYWNlX2NvdW50KSB7CiAJCXNwaW5f
-dW5sb2NrKCZzZXMtPmlmYWNlX2xvY2spOwotCQljaWZzX2RiZyhWRlMsICJzZXJ2ZXIgJXMgZG9l
-cyBub3QgYWR2ZXJ0aXNlIGludGVyZmFjZXNcbiIsIHNlcy0+c2VydmVyLT5ob3N0bmFtZSk7CisJ
-CWNpZnNfZGJnKE9OQ0UsICJzZXJ2ZXIgJXMgZG9lcyBub3QgYWR2ZXJ0aXNlIGludGVyZmFjZXNc
-biIsIHNlcy0+c2VydmVyLT5ob3N0bmFtZSk7CiAJCXJldHVybjsKIAl9CiAKLS0gCjIuNDAuMQoK
---000000000000fec02d0613a20e79--
+>
 
