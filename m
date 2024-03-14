@@ -1,97 +1,96 @@
-Return-Path: <stable+bounces-28181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6ED87C1C0
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E0787C1D1
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC1A283A4E
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B300D28403D
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 17:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185EC74BEE;
-	Thu, 14 Mar 2024 17:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="UjPeQDh0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90D9745E7;
+	Thu, 14 Mar 2024 17:06:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A7A74BE2
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 17:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 561E874297
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 17:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710435674; cv=none; b=Yd+wAttjThc6ylvK+TazpmKQTE66cul3dVhgtAUqx+OZG7HVOH7F3BVvF80Cyc3AQom60JwSeV3C+96LkPeoywsbfBEVnmnM2u77c4GtjL7/kAj57N1Tw0wBcHT/Yv49UuTZiD3aIUqKzz0YxGvdVgeuBp/8hNnJ1ph8fil7ZDs=
+	t=1710435993; cv=none; b=tBuEYT/xn9P37nnBEN0gJVNmifK4XM/OuZSbTTFF7elpBLTLveJgbQ2DVtJ75tVTKBIdKtV4N8pLs0ZoHf9yxErkfTDaxf7GGwNPhs5F3ZqVZ14IV1RoYfv95o3e6W/hrM+uVpQneYha8cEQeU6Qc0Lkl4GX16e1884r94DFcQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710435674; c=relaxed/simple;
-	bh=kx/65Q2aEyNOq/9aSjIYHA7KOud5g13mAoAdscg6Sa8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=qmN/YoUtkFsZC5t4RF5v93Mo8i1UGnWL/72FJ3pOsTuem4zKpw6VFG8IEscllafOlwVwZxZ5gHEh/zhmW9GSy22fdczve0pxjimleUQ1AMmwvd2emsKZ+qlVS376pXfS7+KUyHI+jlwcDlIunm6UcZ3US6SpYx8PALJZxG5FkqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=UjPeQDh0; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=craftyguy.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
-Date: Thu, 14 Mar 2024 10:01:03 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
-	s=key1; t=1710435669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7VZ6BU3j+IT52okbFNFdHPBh3OIM0PFIwRzd4ocYRAA=;
-	b=UjPeQDh0MqOYej8uHFOtfmcU7bWp8F5yq6dnVy5dBwyopL6cI4OB95jui2Io045Hv5SkiS
-	oE3Wts4SLO8JxUSm/YcD4AS4KzgTDtv6cpusjdH8yR11G6xgaClhWiuV+EoEwTbNaUgfuC
-	9LrZdNcK64GKzhH9gjS4i5qYfcjOYBSXea+UG8czGdcCLbl4FSYStSK3P21Q5cRIw2GXpc
-	Pk2QSk/Z5KDTlNpFw5eEAdpOm+D9u85TQCfXUO9yhgEWQrZO53aN4N3+Sm/YoJeUf3JGet
-	RkbTrjTU1oYW8j6ytut5tvGUfnBYDP9v9aMEnWd0ezTmUWsLpJOsq1WmwG4teg==
-Message-ID: <20240314100103.GC6100@craftyguy.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Clayton Craft <clayton@craftyguy.net>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
- stable@vger.kernel.org, Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-In-Reply-To: <20240314084412.1127-1-johan+linaro@kernel.org>
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1710435993; c=relaxed/simple;
+	bh=CGkln+OmSkzR1fL8B64pytuSGwIBUDXizmxgaTNMi1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SB9Dl7+XGQR/DVrYAwCh3bMAFH6gSUX62/R9JUEL1MnO2HtYx/u9ERfP/pvBUOsFo6RrZNuNNYxt2UO6k3FfdbUUPbyZ4K1IV9wgVnhBUcODAhhOUZ8r4nV75AG3ckmJyLAozHzhbxxiyk5xHsFI+rSe9A/Kg+2HzMsS4Z+6wqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 457369 invoked by uid 1000); 14 Mar 2024 13:06:29 -0400
+Date: Thu, 14 Mar 2024 13:06:29 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Roman Smirnov <r.smirnov@omp.ru>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+  linux-kernel@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>,
+  Karina Yankevich <k.yankevich@omp.ru>, lvc-project@linuxtesting.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] usb: storage: isd200: fix error checks in
+ isd200_{read,write}_config()
+Message-ID: <8819c3a3-fbf1-4df5-9e40-3509ef383b4a@rowland.harvard.edu>
+References: <20240314093136.16386-1-r.smirnov@omp.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240314093136.16386-1-r.smirnov@omp.ru>
 
-On Thu, 14 Mar 2024 09:44:12 +0100 Johan Hovold <johan+linaro@kernel.org> wrote:
-> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
+On Thu, Mar 14, 2024 at 12:31:36PM +0300, Roman Smirnov wrote:
+> The expression result >= 0 will be true even if usb_stor_ctrl_transfer()
+> returns an error code. It is necessary to compare result with
+> USB_STOR_XFER_GOOD.
 > 
-> Qualcomm Bluetooth controllers like WCN6855 do not have persistent
-> storage for the Bluetooth address and must therefore start as
-> unconfigured to allow the user to set a valid address unless one has
-> been provided by the boot firmware in the devicetree.
+> Found by Linux Verification Center (linuxtesting.org) with Svace.
 > 
-> A recent change snuck into v6.8-rc7 and incorrectly started marking the
-> default (non-unique) address as valid. This specifically also breaks the
-> Bluetooth setup for some user of the Lenovo ThinkPad X13s.
-> 
-> Note that this is the second time Qualcomm breaks the driver this way
-> and that this was fixed last year by commit 6945795bc81a ("Bluetooth:
-> fix use-bdaddr-property quirk"), which also has some further details.
-> 
-> Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
-> Cc: stable@vger.kernel.org      # 6.8
-> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> ---
 
-Thanks Johan, this revert does indeed fix Bluetooth for me on the X13s.
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
-Reported-by: Clayton Craft <clayton@craftyguy.net>
-Tested-by: Clayton Craft <clayton@craftyguy.net>
-
--Clayton
+>  drivers/usb/storage/isd200.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
+> index 300aeef160e7..2a1531793820 100644
+> --- a/drivers/usb/storage/isd200.c
+> +++ b/drivers/usb/storage/isd200.c
+> @@ -774,7 +774,7 @@ static int isd200_write_config( struct us_data *us )
+>  		(void *) &info->ConfigData, 
+>  		sizeof(info->ConfigData));
+>  
+> -	if (result >= 0) {
+> +	if (result == USB_STOR_XFER_GOOD) {
+>  		usb_stor_dbg(us, "   ISD200 Config Data was written successfully\n");
+>  	} else {
+>  		usb_stor_dbg(us, "   Request to write ISD200 Config Data failed!\n");
+> @@ -816,7 +816,7 @@ static int isd200_read_config( struct us_data *us )
+>  		sizeof(info->ConfigData));
+>  
+>  
+> -	if (result >= 0) {
+> +	if (result == USB_STOR_XFER_GOOD) {
+>  		usb_stor_dbg(us, "   Retrieved the following ISD200 Config Data:\n");
+>  #ifdef CONFIG_USB_STORAGE_DEBUG
+>  		isd200_log_config(us, info);
+> -- 
+> 2.34.1
+> 
+> 
 
