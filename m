@@ -1,143 +1,126 @@
-Return-Path: <stable+bounces-28121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A8E87B91D
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:11:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7BF87B921
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4F6F28499F
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2BE1F22B24
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6465D734;
-	Thu, 14 Mar 2024 08:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E775D480;
+	Thu, 14 Mar 2024 08:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/zIVMLR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MyMQnHws"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796EC433A0;
-	Thu, 14 Mar 2024 08:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF75779C5;
+	Thu, 14 Mar 2024 08:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710403859; cv=none; b=VwAeYIn+CgSs99bLXNy+hHULeUqLAzuw6gqguRByWB24Oew8B99hLfR1Ifz+BaOxkZ2TXlYcbYPURCRSI+6FjcR5ipwrsmUbazrGh+VQTqBDSsqbmIWa8C8HTPKdugKH5cz3njFZIdv7s299pm2r3ElR+j8iXk3BFMT5YH/u838=
+	t=1710403887; cv=none; b=spK1sVJwGAL32gY/JStZRftIt0a40kyoyyRsmBw9TQ17iteuSSHzERy2rdCmf1Nnh17qUnpIeRxDaD4mrahJsOqHIP7D2kGrI/T37izjuIr9aZmliV9rwBYotuhDJrRDza3revOmQ0nvR/6npwTAoP1H2KMKUVrAOlz3iL0vqKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710403859; c=relaxed/simple;
-	bh=kAqwbF4WS8v4P/C04yeKspsY1g9wvYlu2ehoJVyB4H8=;
+	s=arc-20240116; t=1710403887; c=relaxed/simple;
+	bh=NO+ZW60yLD2wc8AABrXiS+RwiBeV7cq6+PvpAuXogEA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aa1mPwHL0OzeyhfBS2eU2+d3FibwAxCT9LGNBa9+snrvrHFMSQGRhvFQKGNqTy6zDaUefIRu1te0Iey/nc2l7jfxuX7vCipw20b+l/pvrn49uJ5w1ORSq1petnovxowjXZMAVnVM8IjGnyfEQNlqnTuV1MgXx7gMJZZicdPl2Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/zIVMLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008A3C433C7;
-	Thu, 14 Mar 2024 08:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710403859;
-	bh=kAqwbF4WS8v4P/C04yeKspsY1g9wvYlu2ehoJVyB4H8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J/zIVMLRtjKGNVB2uvBiQY6TnXoWk+MFP5otAZVS9UtqVKRDk9v1nRbJXBfx9pb/S
-	 cfi7Z+dSDR6foZz19Ot8lQajPjojpG7DnbLnB5Yi3Aoma7ohNzjsPs1fn8gbFUJuTB
-	 L4qW2ybzz8w7L3ilc3dw+Bpohvyj+3atxniFHbcHFRPyfz26wmyulBplkco/L3wMCj
-	 r3XqaYemR9kexKmQlqka7H/xi116cYxNLLTdHPM+Wr1a7k/qmSGqTM+zM2agcn0a9a
-	 uOdUR/5SejXYk3xlnsag66Q1fBqZbEIQJPu0cqUxSDOyqVyb01Uqr645IEHxZtaA3x
-	 MaGC+D3ETDWfQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rkgB7-000000008Eb-3quY;
-	Thu, 14 Mar 2024 09:11:06 +0100
-Date: Thu, 14 Mar 2024 09:11:05 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Yongqin Liu <yongqin.liu@linaro.org>, Sasha Levin <sashal@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
-	amit.pundir@linaro.org, sumit.semwal@linaro.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 5.4 015/267] arm64: dts: qcom: sdm845: fix USB wakeup
- interrupt types
-Message-ID: <ZfKxGUmi_IXjA4wA@hovoldconsulting.com>
-References: <20240221125940.058369148@linuxfoundation.org>
- <20240221125940.531673812@linuxfoundation.org>
- <77f1c6a6-7756-4168-a69d-583a35abd8ab@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ponPqu7xr8049zhLutENa7fzoHf+Z0acVbadb7MibmQNOSrgJUh10U2y72h4YJslSNlXFTY7Y5LYHCoQ88XXNR46RisOrNnSGzilgkMQwy5Wp7wUqcpT4BOFd8td+l3criKssX80SWBl/hQipztAkEKfJMeCQB7gUoRyrGXi4sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MyMQnHws; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e6b6e000a4so601625b3a.0;
+        Thu, 14 Mar 2024 01:11:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710403885; x=1711008685; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ed0A7yGqIqW7nqq4bbIHiKgiRHb6GXeWpYIhTrEZnuQ=;
+        b=MyMQnHwsvjss/1a/Xd3w5y5X2004KLuQ22gsIzWuIvzEz5/Ie+SZxg6fm3+8TG7VIj
+         oJu4obe+Pq+hQTZDcj/pHzPriNHoHYVBS1FevfhO6z/rSnIY9PGBe6sxeqWly3IPHknJ
+         UptEns3NEOGogzJXXfiwl/kuQ2ejht/PUy494eGQh59YOkPyOYpbne6DaEfmlwsVpc/u
+         21YmqhBnFn83nITt8aiulmY4YAbVA31aDyiVpNY6WEJf3Ey8I0vgDaEA3ZhtM/Y3wWgk
+         jM2vMw7CAJhajzWCGhEXo8SxVkqID0bNitF9dm/Is7CM8gJl2DGCAyAtSvDWE32lbZnw
+         Skpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710403885; x=1711008685;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ed0A7yGqIqW7nqq4bbIHiKgiRHb6GXeWpYIhTrEZnuQ=;
+        b=IqnUL69f/aW7aS4bPovyXeTGXvf3zDGJh49GTxHkyZHuPbqDv5Lg2XZHPvJFI9DjUi
+         7C1CDdFZ6msf6X0PcO7rKp5DPZOsKcNH5BrLzowmZoHv70DqxVVn4Tl41rfBJv8vQ9eV
+         NS3GsASZkV2u7HGBCAHNqEhnYHOSinrIeqPhM6uZuc4o/qpnkZZSid5sk1AoxpaYS4XO
+         an8s4zIalKZWRnM/YSR659iSy0B8cRdLfn/59fkYjz31x0BMIRwk23x8MiTv2gPv8Yn/
+         RiQoys8rQ4/PsP8EeYbPZUVFONZc6ULNz8xyh71KqkqzFwVQtQrndgXaK+MpVvKKo+L2
+         e2Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCUF7PPmjvvdC+J6rNnluaVr+dPI4S/DHJNx5QkSOggHVr2yVoVmzpydNh2b7HiN7jH4wP6qb04kQQU6ZAmJRqM+GvlqqjPKn1VXsb6DY4mmEC+BkmT3bkPCuYEk9wTwf5N0DE8O
+X-Gm-Message-State: AOJu0Yz+3pTDBHOi81HH/5EaCHKQpCqUEtAyvVU/CewoHpoMH1vHtcHC
+	u1hUJfpqxMChFZ9OyHG739US4oD309PZxBv2qV1f0UFxPmRArVwH
+X-Google-Smtp-Source: AGHT+IGCfGhd7Co+tzE7kQNOWIKve63oD0Q0B55yf8nAOYslaGaOI6ZA+HiVaX26sCHBwOdjB/MoWA==
+X-Received: by 2002:a05:6a21:328b:b0:1a1:75a0:db4a with SMTP id yt11-20020a056a21328b00b001a175a0db4amr1473705pzb.23.1710403884866;
+        Thu, 14 Mar 2024 01:11:24 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id s40-20020a056a0017a800b006e6859b647asm905816pfg.16.2024.03.14.01.11.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Mar 2024 01:11:24 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id C85AF184797C6; Thu, 14 Mar 2024 15:11:20 +0700 (WIB)
+Date: Thu, 14 Mar 2024 15:11:20 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de
+Subject: Re: [PATCH 6.7 00/61] 6.7.10-rc1 review
+Message-ID: <ZfKxKNNJycoCzTkO@archie.me>
+References: <20240313163236.613880-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="C4B/hgc1ZARScNut"
+Content-Disposition: inline
+In-Reply-To: <20240313163236.613880-1-sashal@kernel.org>
+
+
+--C4B/hgc1ZARScNut
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <77f1c6a6-7756-4168-a69d-583a35abd8ab@linaro.org>
+Content-Transfer-Encoding: quoted-printable
 
-[ +TO: Sasha ]
+On Wed, Mar 13, 2024 at 12:31:35PM -0400, Sasha Levin wrote:
+>=20
+> This is the start of the stable review cycle for the 6.7.10 release.
+> There are 61 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-On Thu, Mar 14, 2024 at 01:48:36AM +0800, Yongqin Liu wrote:
-> On 2024/2/21 21:05, Greg Kroah-Hartman wrote:
-> > 5.4-stable review patch.  If anyone has any objections, please let me know.
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-> > From: Johan Hovold <johan+linaro@kernel.org>
-> >
-> > commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
-> >
-> > The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-> > on depends on use-case and whether a Low speed or Full/High speed device
-> > is connected.
-> >
-> > Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-> > Cc: stable@vger.kernel.org      # 4.20
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
-> > Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-> > --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > @@ -2503,8 +2503,8 @@
-> >   
-> >   			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
-> >   				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-> > -				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
-> > -				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
-> > +				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
-> > +				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
-> >   			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-> >   					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+--=20
+An old man doll... just what I always wanted! - Clara
 
-> This patch only causes the db845c Android builds to fail to have the adb 
-> connection setup after boot.
+--C4B/hgc1ZARScNut
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Indeed.
+-----BEGIN PGP SIGNATURE-----
 
-> In the serial console, the following lines are printed:
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZfKxJAAKCRD2uYlJVVFO
+o52zAP9ILH+cmHH3mCZJSxV3BMh/XyFxwHhVtC/MAMmNyBMGuwD/bAeJyp2/i/12
+mlC1r83WI3TdgtbHWd71OaKVnIij1AE=
+=7uJa
+-----END PGP SIGNATURE-----
 
->    [    0.779411][   T79] dwc3-qcom a6f8800.usb: dp_hs_phy_irq failed: -22
->    [    0.779418][   T79] dwc3-qcom a6f8800.usb: failed to setup IRQs, 
-> err=-22
-
-> After some investigation, it's found it will work again if the following 
-> two patches are applied:
->    72b67ebf9d24 ("arm64: dts: qcom: add PDC interrupt controller for 
-> SDM845")
->    204f9ed4bad6 ("arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY 
-> interrupts")
-
-Correct, apparently the PDC controller was not added until 5.10, which I
-should have noticed and indicated in the commit message of the follow up
-fix. Sorry about that.
-
-> Could you please help to have a check and give some suggestions on what 
-> patches should be back ported to the 5.4 kernel, or are the above two
-> patches only good enough?
-
-Based on a quick look at the sdm845 dtsi, the PDC driver and their
-history, I think the two commits above should be enough.
-
-Sasha, could you pick the following two commits for 5.4:
-
-	72b67ebf9d24 ("arm64: dts: qcom: add PDC interrupt controller for SDM845")
-	204f9ed4bad6 ("arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts")
-
-to fix the regression?
-
-Johan
+--C4B/hgc1ZARScNut--
 
