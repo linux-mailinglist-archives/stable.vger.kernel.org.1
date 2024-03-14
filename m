@@ -1,249 +1,158 @@
-Return-Path: <stable+bounces-28189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E7087C2A9
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 19:30:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D7B87C2CF
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 19:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 054F61F2201F
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:30:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 742461C2152B
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 18:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AD574E26;
-	Thu, 14 Mar 2024 18:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4329B70CCB;
+	Thu, 14 Mar 2024 18:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p85zQ2tO"
+	dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b="a8SUxO64"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxb.seznam.cz (mxb.seznam.cz [77.75.78.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B50674BEE
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 18:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2B81A38FB
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 18:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710441004; cv=none; b=rBUih8aSn+MzN7+UaaBcp96QQoinPoLgfa/pmoRfjwIdSG5pfFOj0Co7/hpWzirjvXEvLksyOMbTPASokbsDgU8RGZk6Ly1yTAAoNonzScWMoIjiNY4noi4SLq/M6Cn64DMWRYtUSlQcXcVTxLrsAuWuGhzFkTps7Ws0PTzWVq4=
+	t=1710441152; cv=none; b=MCXYkbWD7gvLVkEkXg8AEma6ItY0k2cFnOSFUQ0MYDOcjyL63TuhYcyF4AKRg+2uusJ+8Kween/GGWguVFbWusnj/dGb/rgUKwPv3FKYixF6SzaM1kwwjnrg9i3wIB6LPTYEyKFsOaU4YfMsWDmeQKyOJ137O1wQ611Ym0v2iUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710441004; c=relaxed/simple;
-	bh=Qg3lZr57XOc9PYkGmtrFR+udr3x8N2PgaMiFJbTRC1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lEWiAbaHMPM7VMfC7lEF8Oj8qEBGQVNACHxHLQwiCZDxXzh9FbZPWhFHTwlm5t9dYoCj4uE+fa3kUlZRnFE6KhiWekTMTEqwntbqt0FMIIDtPW6nSfB7pX4rn0FCusTGG1RRcMAJoJwya6ruHfK13GOgmXnfxlI4aNSmSthafx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p85zQ2tO; arc=none smtp.client-ip=209.85.222.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-7de1b361f65so351962241.1
-        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 11:30:02 -0700 (PDT)
+	s=arc-20240116; t=1710441152; c=relaxed/simple;
+	bh=ceLo9Rj8yu4e9lUaL42kim2b3g/U7nf+tkiHDnZBTvY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=G2gf+QaZ+zkkk+lh1bDJX2KDOVK4TKUfwXqAsUPiJ8Wd3ANlzOxDCnEJpF7lWqqNhgjBsNgSR1Y0Q/YcOkipT7Rhz4ymV2x3XsvYzo3jE0QOaxqNw9/2IgpSPutRO6OfHfSU3q9cXKcXFyt4sIkzfUJTJ/PjoDHDQnXo97j6xcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz; spf=pass smtp.mailfrom=podgorny.cz; dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b=a8SUxO64; arc=none smtp.client-ip=77.75.78.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=podgorny.cz
+Received: from email.seznam.cz
+	by smtpc-mxb-78985f9c95-xx5ls
+	(smtpc-mxb-78985f9c95-xx5ls [2a02:598:128:8a00::1000:966])
+	id 4994c6f2ffae6beb4c1bdcba;
+	Thu, 14 Mar 2024 19:31:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710441001; x=1711045801; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3OBrI9E8HmCM4btqjmW2AbQrUzPGhoC1ZSw62p7ejE=;
-        b=p85zQ2tOMcfYmnCoJkyZwCVHvZvZoSgX0XFr25VV/BOE3MMS1shVsqA2t5W+N9iOEt
-         XrRg7XttYWCvXLVy+QfzRrrucjtuYh0C3ejui0JBE0XrCy8muvuZm3D6BBA5E5Yb2Yhq
-         DGZkrhsVFHQTo0jp+AIliEhh3dPm6hU9dYZXfAnyrwKw6eH3G+7HeRtqIZnzhZ0ZqNZ8
-         eWPn3lNXLIa559iMIO3r//7nDAYajWx83ZyD7qewhff3HOGZlI/9a/rPnMBcRz8uctII
-         GV2gLs3vEW4xWbv+YviS4KjCuevFjav0dJQ2oGKVycqjgSLTrf7iGiV3bIN64B5CEL4Q
-         5/9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710441001; x=1711045801;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P3OBrI9E8HmCM4btqjmW2AbQrUzPGhoC1ZSw62p7ejE=;
-        b=FGhuOF0M3cTkbs/2qgBS7/egm1qY8xNP9Bi4FztrJZC2HRfjw92Gq1h0g80gp3Pz6e
-         r1/7HH/vZbsn79BK1xi/bGtVv73e+sVvZChDboU0JhlTuKD68adlsr9FK5lMtdyb3L1k
-         vAOjQ4DgGr6FANJzDe87+tx0UWD/Cvdf0T/mQIL7D9adX4xC/QZyjjs4nLUVuqmbS9MI
-         YglQtqeML83WNQruY5fVnxcXpZe9RormVS49A1ANkLWJPxJObCdj64UjeqFqrexnojHF
-         e/5BuUFrqeFjhfZqwnZT1K+CD+7V+BfwKCYMZH09qxVQ5DzcpI1vikhwZNrHf4ybYAvP
-         8qrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHLlAzL9MFrhqw6GAOHVkXgomMeV/0xfGFJi3r7dEVR4qhFDz470ZkXJlJ5Y1Br++nfWNF7DGs2cm0rIBukHxCLd9lDTZm
-X-Gm-Message-State: AOJu0YxpxFVr0zCmG2KMYOUfanb7w/3T9SA446sy5pv3fxgdZ/Vnj8yq
-	kpjj9Q7hhRIp5tse3qa4LZpCYsMfDAHBdVw3dIaLvzPYrwqdSld90VOBEl9f8o9NEvN2+n8Zldt
-	ZB0/617hVEjnExZxSMwEGu/J6UY/eI50JJzAtCQ==
-X-Google-Smtp-Source: AGHT+IEF02amHlSPmHG8afhK+fHkEabTfEDNfkdO0mSBJm8uDjunPEmV09ZXEXZqZutL4KN/magMZv+NLERJ/KgmOLQ=
-X-Received: by 2002:a05:6102:818:b0:473:885:bd97 with SMTP id
- g24-20020a056102081800b004730885bd97mr2423021vsb.12.1710441001289; Thu, 14
- Mar 2024 11:30:01 -0700 (PDT)
+	d=emailprofi.seznam.cz; s=szn20221014; t=1710441110;
+	bh=ceLo9Rj8yu4e9lUaL42kim2b3g/U7nf+tkiHDnZBTvY=;
+	h=Received:Message-ID:Date:MIME-Version:User-Agent:Content-Language:
+	 From:Subject:To:Cc:Content-Type;
+	b=a8SUxO64aB3lhAkbD46pfYHidCLA8aFFm3TPK+1RxP6iYWeuXWLnqvexCochtDtjP
+	 3mFMIh0DH7N6zFULfjZu7fgWKc/4Ky0Ev6zGTDelr6FPlFYQyXKW5PMrg+MfKvaqry
+	 AjEgdmPKNEgGJeoLLSGG43rI+ZN7kMgYYFYWqRJklJORFt4T6kbId9XrtNuWO/nB9S
+	 HuE9zAsrcmB0osj0FOIKM/anfjmXCMdIRl+8h05B2AVXILanxoMil454L1p0YKH4SO
+	 JEQo69fxTVhVJ5Hl5RokEEEBwubwHgjh7VLP3TLFrx+rfrQnVAn424Cqysncj694l/
+	 zQQLxsHe2pHrQ==
+Received: from [IPV6:2a01:9422:904:1ee:e65e:37ff:feee:e29c]
+	([2a01:9422:904:1ee:e65e:37ff:feee:e29c])
+	by smtpd-relay-594d8f6859-m6hpf (szn-email-smtpd/2.0.18) with ESMTPA
+	id c51e4f74-8c4d-4a36-8f2a-6e42de0460e8;
+	Thu, 14 Mar 2024 19:31:48 +0100
+Message-ID: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
+Date: Thu, 14 Mar 2024 19:31:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313170212.616443-1-sashal@kernel.org>
-In-Reply-To: <20240313170212.616443-1-sashal@kernel.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 14 Mar 2024 23:59:49 +0530
-Message-ID: <CA+G9fYvA1dyE8jWc30=0YS1sC5kRZ0=ufT7FKgdbDGtFgk-ZzA@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/51] 5.4.272-rc1 review
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US-large
+From: Radek Podgorny <radek@podgorny.cz>
+Subject: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
+To: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+ regressions@lists.linux.dev
+Cc: regressions@leemhuis.info
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------pdMdvZsGczNI50M8e09AvFdI"
 
-On Wed, 13 Mar 2024 at 22:32, Sasha Levin <sashal@kernel.org> wrote:
->
->
-> This is the start of the stable review cycle for the 5.4.272 release.
-> There are 51 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri Mar 15 05:02:10 PM UTC 2024.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git/patch/?id=3Dlinux-5.4.y&id2=3Dv5.4.271
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------pdMdvZsGczNI50M8e09AvFdI
+Content-Type: multipart/mixed; boundary="------------aRgCRvGyZw0PvoZ2H1rHjGSj";
+ protected-headers="v1"
+From: Radek Podgorny <radek@podgorny.cz>
+To: Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
+ regressions@lists.linux.dev
+Cc: regressions@leemhuis.info
+Message-ID: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
+Subject: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+--------------aRgCRvGyZw0PvoZ2H1rHjGSj
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+aGksDQoNCmkgc2VlbSB0byBiZSB0aGUgb25seSBvbmUgaW4gdGhlIHdvcmxkIHRvIGhhdmUg
+dGhpcyBwcm9ibGVtLiA6LSgNCg0Kb24gb25lIG9mIG15IG1hY2hpbmVzLCB1cGRhdGluZyB0
+byA2LjYuMTggYW5kIGxhdGVyIChpbmNsdWRpbmcgbWFpbmxpbmUgDQpicmFuY2gpIGxlYWRz
+IHRvIHVuYm9vdGFibGUgc3lzdGVtLiBhbGwgb3RoZXIgY29tcHV0ZXJzIGFyZSB1bmFmZmVj
+dGVkLg0KDQpiaXNlY3RpbmcgdGhlIGhpc3RvcnkgbGVhZHMgdG86DQoNCmNvbW1pdCA4MTE3
+OTYxZDk4ZmIyZDMzNWFiNmRlMmNhZDdhZmI4YjYxNzFmNWZlDQpBdXRob3I6IEFyZCBCaWVz
+aGV1dmVsIDxhcmRiQGtlcm5lbC5vcmc+IA0KIA0KDQpEYXRlOiAgIFR1ZSBTZXAgMTIgMDk6
+MDA6NTMgMjAyMyArMDAwMCANCiANCg0KIA0KIA0KDQogICAgIHg4Ni9lZmk6IERpc3JlZ2Fy
+ZCBzZXR1cCBoZWFkZXIgb2YgbG9hZGVkIGltYWdlIA0KIA0KDQogDQogDQoNCiAgICAgY29t
+bWl0IDdlNTAyNjIyMjlmYWFkMGM3YjhjNTQ0NzdjZDFjODgzZjMxY2M0YTcgdXBzdHJlYW0u
+IA0KIA0KDQoNCiAgICAgVGhlIG5hdGl2ZSBFRkkgZW50cnlwb2ludCBkb2VzIG5vdCB0YWtl
+IGEgc3RydWN0IGJvb3RfcGFyYW1zIGZyb20gdGhlDQogICAgIGxvYWRlciwgYnV0IGluc3Rl
+YWQsIGl0IGNvbnN0cnVjdHMgb25lIGZyb20gc2NyYXRjaCwgdXNpbmcgdGhlIHNldHVwDQog
+ICAgIGhlYWRlciBkYXRhIHBsYWNlZCBhdCB0aGUgc3RhcnQgb2YgdGhlIGltYWdlLg0KDQog
+ICAgIFRoaXMgc2V0dXAgaGVhZGVyIGlzIHBsYWNlZCBpbiBhIHdheSB0aGF0IHBlcm1pdHMg
+bGVnYWN5IGxvYWRlcnMgdG8NCiAgICAgbWFuaXB1bGF0ZSB0aGUgY29udGVudHMgKGkuZS4s
+IHRvIHBhc3MgdGhlIGtlcm5lbCBjb21tYW5kIGxpbmUgb3IgdGhlDQogICAgIGFkZHJlc3Mg
+YW5kIHNpemUgb2YgYW4gaW5pdGlhbCByYW1kaXNrKSwgYnV0IEVGSSBib290IGRvZXMgbm90
+IHVzZSANCml0IGluDQogICAgIHRoYXQgd2F5IC0gaXQgb25seSBjb3BpZXMgdGhlIGNvbnRl
+bnRzIHRoYXQgd2VyZSBwbGFjZWQgdGhlcmUgYXQgYnVpbGQNCiAgICAgdGltZSwgYnV0IEVG
+SSBsb2FkZXJzIHdpbGwgbm90IChhbmQgc2hvdWxkIG5vdCkgbWFuaXB1bGF0ZSB0aGUgc2V0
+dXANCiAgICAgaGVhZGVyIHRvIGNvbmZpZ3VyZSB0aGUgYm9vdC4gKENvbW1pdCA2M2JmMjhj
+ZWIzZWJiZTc2ICJlZmk6IHg4NjogV2lwZQ0KICAgICBzZXR1cF9kYXRhIG9uIHB1cmUgRUZJ
+IGJvb3QiIGRlYWxzIHdpdGggc29tZSBvZiB0aGUgZmFsbG91dCBvZiB1c2luZw0KICAgICBz
+ZXR1cF9kYXRhIGluIGEgd2F5IHRoYXQgYnJlYWtzIEVGSSBib290LikNCg0KICAgICBHaXZl
+biB0aGF0IG5vbmUgb2YgdGhlIG5vbi16ZXJvIHZhbHVlcyB0aGF0IGFyZSBjb3BpZWQgZnJv
+bSB0aGUgc2V0dXANCiAgICAgaGVhZGVyIGludG8gdGhlIEVGSSBzdHViJ3Mgc3RydWN0IGJv
+b3RfcGFyYW1zIGFyZSByZWxldmFudCB0byB0aGUgYm9vdA0KICAgICBub3cgdGhhdCB0aGUg
+RUZJIHN0dWIgbm8gbG9uZ2VyIGVudGVycyB2aWEgdGhlIGxlZ2FjeSBkZWNvbXByZXNzb3Is
+IHRoZQ0KICAgICBjb3B5IGNhbiBiZSBvbWl0dGVkIGFsdG9nZXRoZXIuDQoNCiAgICAgU2ln
+bmVkLW9mZi1ieTogQXJkIEJpZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZz4NCiAgICAgU2ln
+bmVkLW9mZi1ieTogSW5nbyBNb2xuYXIgPG1pbmdvQGtlcm5lbC5vcmc+DQogICAgIExpbms6
+IA0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDIzMDkxMjA5MDA1MS40MDE0MTE0LTE5
+LWFyZGJAZ29vZ2xlLmNvbQ0KICAgICBTaWduZWQtb2ZmLWJ5OiBHcmVnIEtyb2FoLUhhcnRt
+YW4gPGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPg0KDQp0aGlzIHNlZW1zIHRvIGJlIHRo
+ZSBjb21taXQgdG8gaW50cm9kdWNlIHRoZSByZWdyZXNzaW9uLg0KDQppIGhhdmUgbm8gaWRl
+YSB3aGVyZSB0byBsb29rIGFuZCB3aGF0IGluZm9ybWF0aW9uIHRvIHByb3ZpZGUgdG8gZXhw
+bGFpbiANCndoYXQgdGhlIHByb2JsZW0gbWlnaHQgYmUgb3Igd2h5IHRoaXMgc2luZ2xlIG1h
+Y2hpbmUgaXMgZGlmZmVyZW50LiA6LSgNCg0KcGxlYXNlIGRvbid0IGhlc2l0YXRlIHRvIGFz
+ayBtZSBmdXJ0aGVyIHF1ZXN0aW9ucyAtIGkgY2FuIGRvIGFueSANCmRlYnVnZ2luZyB5b3Ug
+bWF5IG5lZWQgb24geW91ciBiZWhhbGYuDQoNCnNpbmNlcmVseSwNClIuDQoNCiNyZWd6Ym90
+IGludHJvZHVjZWQ6IDgxMTc5NjFkOThmYjJkMzM1YWI2ZGUyY2FkN2FmYjhiNjE3MWY1ZmUN
+Cg==
 
-## Build
-* kernel: 5.4.272-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.4.y
-* git commit: 55bc6060a8ad866b104285704e98264d921095b4
-* git describe: v5.4.271-51-g55bc6060a8ad
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-71-51-g55bc6060a8ad
+--------------aRgCRvGyZw0PvoZ2H1rHjGSj--
 
-## Test Regressions (compared to v5.4.271)
+--------------pdMdvZsGczNI50M8e09AvFdI
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-## Metric Regressions (compared to v5.4.271)
+-----BEGIN PGP SIGNATURE-----
 
-## Test Fixes (compared to v5.4.271)
+wsF5BAABCAAjFiEEydMGi3nQKasCS8bLahNm1VQL0ZwFAmXzQpAFAwAAAAAACgkQahNm1VQL0ZwK
+tA/9FGzilbYIPP4AwHtENWOQB5oeQXo8fqK0YienUbVpR9ozHwtyKwk2dseunv9R7T+4hRgEnn+S
+Sx7L6y4C8t8tSgW+PZvJ462Rv2n7CREY+LtxAvdrw5LTcmZwElLVzuv1eGvnhIjYE0wlwfp6ndad
+U0bm3KsE/p5A5kD0GbwE8OT1PRThYRA6xaBHe8YOWa3dilPPQONmZ5QABnn5ffTzzV7Msp+IX3RB
+OubHJdCKM0VnX59uLB9PcFvqwJIpT1vP5Gu5bw74RMTfLe5qRCGH4gildU3UpTn26VqhsQ5n2wCi
+NTKV+/U2/eckRMsFbvsyJHMQtNSq3BwP1VsoTdlpSCj97fPNPg3MAywxXtD+TmDczwQ/SJ8uLr2F
+IjQDsZzAbND8jG9v4Sbwb+Y7fcaz5qEYr9RKVdp3warGveZ4LUWx8KL6YDwypc70vPl5O+EWhis2
+DBdFXRAodumzVQqf5NyDt04/65EnvLhNx7pxrMAu8Y34QMMbxUjZOQCCUUSmiVSjuq+nWddaMr6j
+GZsH9C5L4ISqSvpqLCvoyGX0a2zdosP8Uy0D8trz+l8auA0wFPJfYgcDl8g35ZyCa26v2Wg0PP1l
+R6K8hDrCklOyU6pG0eEi5b2O7Juncjce6OWzjUZAMWBj4IHMjAak7GUAjI9D7AKqQPNLLUIPjKeX
+ahw=
+=fRg6
+-----END PGP SIGNATURE-----
 
-## Metric Fixes (compared to v5.4.271)
-
-## Test result summary
-total: 81697, pass: 66254, fail: 1491, skip: 13902, xfail: 50
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 137 total, 137 passed, 0 failed
-* arm64: 37 total, 35 passed, 2 failed
-* i386: 25 total, 19 passed, 6 failed
-* mips: 27 total, 27 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 12 total, 12 passed, 0 failed
-* s390: 8 total, 8 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kselftest-zram
-* kunit
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--------------pdMdvZsGczNI50M8e09AvFdI--
 
