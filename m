@@ -1,84 +1,124 @@
-Return-Path: <stable+bounces-28217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D7787C5B7
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 00:02:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7362887C5C0
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 00:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75C41F21BB6
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 23:02:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B9991C20ED6
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 23:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A9DDDA;
-	Thu, 14 Mar 2024 23:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B0DFC02;
+	Thu, 14 Mar 2024 23:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PaXIdn3k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jaRspTRv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8711210A03
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 23:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BD6DDDA;
+	Thu, 14 Mar 2024 23:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710457373; cv=none; b=KMPfXitAsLrwY/41MIup/0+R4CgXbfytiAJmoLcnhOuq3IiEm06A+n4vtklNAx0ypOZ/a7JLh5o7LRCrK1+jD9x65cvZ3ICBjjBv6PFawQocyZQmTY4mQWY9rJLJZkIpdn9/oAoC8IayXSAbcRxR3RLRSyE8BLyFGrLA5nHYHbs=
+	t=1710457743; cv=none; b=lHYbg8Wx9gpTSALcSdb4CI79HlE1O8XTBIESS3xXYI1lbSeiSkZ3E/1+JqXaB7UNkEpxyUFHDlhczeTbbd6jEUajkBaqns0II2wkcUhrWHOcEhKxFJOUTX2+QJzSapxLCzorsgDdoZCgBztCOlyKJOnS5yegMM53GWZ7dZjFPcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710457373; c=relaxed/simple;
-	bh=Y+hwKt+p7wrdQVUooqaorwbmSycTNttYNZ3UpgVA3d4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U/sf4IbCj7b9h79C3cxEqjgsbOecglde/0S691+UouJUd2oFzR4Frza33+UHh+K0ah304vVfkgfsa7E3xrbFqdLbpWd9J5caHggogwDKZr5PwJOYuYALdsYpw5+OaUnssVAmNYn7nnhZ9We6pKiB3LU6ivRDb/2rwtpxzV+AarI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PaXIdn3k; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 14 Mar 2024 19:02:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710457369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=htdAeQJNVioT8HXOw5XCTGAiruSICMwXMVbkV89aJE8=;
-	b=PaXIdn3kZQGJhbGgDOJ+nppDkeHzRqC/dV7E6eyrPlp1lhCshUUEbhqYjmMY8tsEuBosqS
-	ftPB/Aq89IOOdn6ZG3Qgg0hALszia78o+0UyQPk9Qd3uwdTNMXYcJ1MbXrVpBP5LV4+JuK
-	BNQfhgIwMYkMNZh7HRh7OdI3QhA8S44=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
+	s=arc-20240116; t=1710457743; c=relaxed/simple;
+	bh=OiOpNntc5X/cQdzuDesZAYEIgjBaLAD0lYBR53h3sss=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=mRBo5P7+67gIoYGXunrsz9LcY2QzYkHpaYTU2h99TJfzrSzN0P4ijwdR83/dLU0kq7nOC42v/NYQ0KqkqfOd16UeVAhM+lEjZWgnG3y1PkrYOVjIIRYnywLQu8LfZz/AqlxhpikJ4+6WiRvqgxBQhsEZYn9xeMJ9nFZF1D7cfpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jaRspTRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825F7C433C7;
+	Thu, 14 Mar 2024 23:09:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710457742;
+	bh=OiOpNntc5X/cQdzuDesZAYEIgjBaLAD0lYBR53h3sss=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jaRspTRvUDCYPL2NGspwivOqEe6EDE3yySo5QULOT8pKSq/TKaYojTiO4xE4SkrbN
+	 tjUty0TdQp0oceogjpZTo5/EpTAMeRyRdYKFUGRCsgLYO3KtObPlJc6EhUyPIKSjyD
+	 +UWHtpcknPAAawo24OkjP4ibYpd1puWx3cwojYtpXGtsfqYpn9swrf4QqubeoTENL8
+	 yzmUZFJUzmor5/YfNDCD9D3W7uRmFcr+ghblqpA1upqRA9I0/t9j4QL+u1WcPtsm1z
+	 jwL/TBEYu40rOU458bokyf3bKIrOYsU2uaMCUU1xu698PkH6UkmAoo8m6+SVZn6S6A
+	 kDeVRbaB81FaA==
+From: SeongJae Park <sj@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
-Cc: Helge Deller <deller@kernel.org>, stable@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: dddd
-Message-ID: <7g5wb7rf3xxn5gz4dnqevbee7ba6zd4kllzb5lbj2i6capxppv@blm5renpmaiz>
-References: <ZfLGOK954IRvQIHE@carbonx1>
- <vubxxvlsgyzzn64ffdvhhdv75d5fal5jh5xew7mf7354cddykz@45w6b2wvdlie>
- <ZfN8WxMrgQBUfjGo@sashalap>
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 5.15 00/76] 5.15.152-rc1 review
+Date: Thu, 14 Mar 2024 16:08:59 -0700
+Message-Id: <20240314230859.76304-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240313164223.615640-1-sashal@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZfN8WxMrgQBUfjGo@sashalap>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 14, 2024 at 06:38:19PM -0400, Sasha Levin wrote:
-> On Thu, Mar 14, 2024 at 05:46:35AM -0400, Kent Overstreet wrote:
-> > On Thu, Mar 14, 2024 at 10:41:12AM +0100, Helge Deller wrote:
-> > > Dear Greg & stable team,
-> > > 
-> > > could you please queue up the patch below for the stable-6.7 kernel?
-> > > This is upstream commit:
-> > > 	eba38cc7578bef94865341c73608bdf49193a51d
-> > > 
-> > > Thanks,
-> > > Helge
-> > 
-> > I've already sent Greg a pull request with this patch - _twice_.
+Hello,
+
+On Wed, 13 Mar 2024 12:41:07 -0400 Sasha Levin <sashal@kernel.org> wrote:
+
 > 
-> I'll point out, again, that if you read the docs it clearly points out
-> that pull requests aren't a way to submit patches into stable.
+> This is the start of the stable review cycle for the 5.15.152 release.
+> There are 76 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri Mar 15 04:42:22 PM UTC 2024.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.151
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-Sasha, Greg and I already discussed and agreed that this would be the
-plan for fs/bcachefs/.
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 3e68d7dfa7d6 ("Linux 5.15.152-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
