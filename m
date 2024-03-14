@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-28144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04D487BC2D
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:46:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B2A87BC49
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872871F244A0
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC8D1F2217A
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D606EB73;
-	Thu, 14 Mar 2024 11:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4D16F067;
+	Thu, 14 Mar 2024 11:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oyy3UeWM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/Tq8uQx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B546CDB5;
-	Thu, 14 Mar 2024 11:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E2160ED0;
+	Thu, 14 Mar 2024 11:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710416794; cv=none; b=iIN24LQye2RSA343vlmRsFFNoK0ExmUXG63nLrqwyKgPwNuVqyRlsiTOYrsG1KCNuLfLkylV7hmrKYITg7Q3yMdtvqYmXVrvZgC/dENjXzFuTOlYrtlJeMp3cd8XqXD4GWWk/OAdOR3ryv7IzKmYIjN/qhYkcUZRupkbBseHzZ0=
+	t=1710417280; cv=none; b=qSFGJHrPtMWnscd4GQpWiZMwB/m1lIX9tBCEmK2u1ADSO/4YmzLvGhOPvfO5AmwcVKZ2YUT7VCCdDuN8N9QHDoUnYbgu/UGgxNZkhhqISddYQ172yqfwAJO0MAarbWNejN2q0jQlC3zGMksHpFJx4aBwo+Gz0b0r4MZWZKDGTXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710416794; c=relaxed/simple;
-	bh=rVTxIlZr2M2YjqUYASLlemClSium3xGafvHFP+A9HQs=;
+	s=arc-20240116; t=1710417280; c=relaxed/simple;
+	bh=SjNRwbQ+Iyf7488rdWolOrVmSPqHnGM1gAhbRNL01us=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sfvdjlSPBMf7FfSLPJr2Ut2vwMm9i/HD1Wsg5L0Np7LwWJf3dYIEjQjtvtPyFnKTlqITWNg7agVLot5vkP1I3gyMZqFrdOfGFCzmnspDNfraOEy1DWlAHiWXD9odggea0TAUKz96JLMH77bcGOfZJXim+EkJqvVxHBoVoIgrCpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oyy3UeWM; arc=none smtp.client-ip=209.85.214.181
+	 To:Cc:Content-Type; b=W+m102zxW92Ieh3UK8dy/x8xwZYLTTywq8TlCN128z2QkeRIxuDrkYCMZzB2WTIlFhYIdHerIk+HnHEycx1LY5I4n723fzotnh+7n2r95IfTYjF407zQkJgmp905RNwRoOHkoyRTPHD6NejCzRxuC6esgvKrTVx/34bLmd+/l/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/Tq8uQx; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dca3951ad9so6232095ad.3;
-        Thu, 14 Mar 2024 04:46:32 -0700 (PDT)
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-29c3438d481so799768a91.2;
+        Thu, 14 Mar 2024 04:54:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710416792; x=1711021592; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710417278; x=1711022078; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+tI7UckBN1Yi/o12xXlz3XnxJFT8If6wGyJEhsz06Y=;
-        b=Oyy3UeWMoSMyhvFmzP0uPLWjWaaFkJsU14jhqz7SXGQYLxUasncHDzn4Dr+xyM76aG
-         843wf+VXPuxDhRpDNkVa+8Blbq01mFcrqY79l1ifseBn9S2eRy/uGxF9b/MpLZzAe1mq
-         +2iMv7Ga8rlJQ3HepcmLOA6e206DuRyvCDFXkZxZsur75386BhSSYVanPsX+jXKS4Pgf
-         vSlmc6ju7llYhREInX3H+wBGx7Oyy0N0c+OmZpJrmjzFAQ1BNuRZOwotEk35oEA3I5V0
-         N9IIiNjlUGKJtq4YPaHMqZXazyLxpMB/xDpjWXcYaAb4jQGaU0MD3kING6ZW4Yngg3fT
-         IeGQ==
+        bh=tjIhLuiu+iAZJO852Cp0BZxqmUJs/Cl3MLSxQiQDbto=;
+        b=E/Tq8uQxy9tZQ3mj+ucmb+odTNV0Y7oqcmqsYYZWvrYEqoECSlFija9zYapQzHq5n3
+         nSI4WQuEXM5lWEdUX5WdrfNrW+mfS7Nf+MIDgGI7UrMh9np/5kt9Z8VMnpL1UpGxFncc
+         rGl32iqr3vqXIKHsU/Q+Fh9QENUXfg0WdQd674QDG+gA50kWwxvXKb9VbxLfKOGZwVht
+         S85sH/pmQph7oFndlll5BM0CghVzoyqP/REsEGPdDsp731tfm57+KkPrt+QyLOTrm559
+         lve2XmSMvSQwZFGAFh9osDZn0+nBwuTftVr9vjOKNhIlZM4G24aGrCk4FsfINOhxQtY4
+         myRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710416792; x=1711021592;
+        d=1e100.net; s=20230601; t=1710417278; x=1711022078;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=y+tI7UckBN1Yi/o12xXlz3XnxJFT8If6wGyJEhsz06Y=;
-        b=AjbqmyfmAuZu/9sGPP9veNWs/30KHbHQjS1Tv+WDlxOj17N5Zpah8ko67X2W3am7dO
-         LJcIcl/lLuKuamHi5hK0Nt9HzhOVYJWnQmBbg+jedUPbvEdjT1R2FjNZfR58+yFOJsZd
-         gxMNWlVBdsjoNtqaQG4ADvYimCM+AxLViJyRClndU2BZ7D8d3ppnwQB4wPy86oXqO/80
-         Pep4USZUyrnbsFXU+We4IfIm1LI3733xtcBTWxZGunw2DPaNoYEAhzto1VmaQQUUFETE
-         eGGUcNw8D6qcTXbmi6QooINieUFfuo2np6sjv83yangix5inuhGb7cWfEwxKti+dB9uZ
-         fGaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0lb0X4P8hHIOfYbXMhBalkAJg/Fos+l4n8DUghAc/GnnD7mdo6D09wLjTTcKhUbn448eaNYLM6WK7KRjyL+6rTw7EWncx
-X-Gm-Message-State: AOJu0Yzmj7dijE97bCFEYA3TUIP5U1EGHxVXkp3t6bWv6HDnB7SCKwwF
-	b4QI8jBlcPZfb21bjDWON+Q+CqVHeG1nxGrJyg/NGeJBuy0BfcA+JSKPbPUTl22zafqDy982al/
-	Tf7BymB9mB8/lZhZR/mGA3kI9UkOKfFhgbqI=
-X-Google-Smtp-Source: AGHT+IGHyawOdgJYjSHQOhXi4DF5Jy4M2SYs2DZzAYrxbM0K5I68X/OYe4bEOjL17S8s3G8n47I6kAJ9iCGKl3ebcLY=
-X-Received: by 2002:a17:90b:790:b0:29d:e6a2:9b3 with SMTP id
- l16-20020a17090b079000b0029de6a209b3mr75881pjz.23.1710416792500; Thu, 14 Mar
- 2024 04:46:32 -0700 (PDT)
+        bh=tjIhLuiu+iAZJO852Cp0BZxqmUJs/Cl3MLSxQiQDbto=;
+        b=Ypr0PcSk4SQ8hXJ5MMu6pxhOXDn4EcIwgXJRInYc5mk7KUSYsQ3u0w9dOLSi/xRc3P
+         dVF8RXgDkCITRr2I7EaVV2KPnYcHg9WXP5bnw+JyaMPYH/HXnpRfrYwj1+9pcsHo+j75
+         ftEFUdrYETmOcSUaR8zgB28Kea/aNnLR0C3oPIg5wGv2sJbUOGfN7ABZ6nemXwHO4WaW
+         rUgrHMQ78N3q/7cWlDl994yxnm3NQ5anaf8SK5TT6/74vV7tvtK7ISTkd71Wfq/21lbP
+         urpHnWeqekX4F0n8APLkOXNYAQZaPlOawJ4tQ7jQqCyf+sPETEhZ/CWHtlg7GVfvlpHU
+         5rJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzA/WZdupJ9BRNLnrfQaDAmJaQwvCdjDz4O+QVIWAvGeMi+iM35I7OsiD3tKahx6r3ESLqL2eO/KBigx7GWbvII7JoCWHm
+X-Gm-Message-State: AOJu0YwVGV+Q5JINKdynUKppJB8LINyd7AXtr1Z3/p/GK1T+jkeqdb1D
+	Boju6pY+ZBUZs0c5PyaOyD/Jw6Haqv4MHfiNWVvGHKGfyEwp1GoURAgYTHSwg8FANZfS7X9n4pc
+	BpNHu+qkp6GVlkWuyn8jW6IzAmAalRv7Q+cE=
+X-Google-Smtp-Source: AGHT+IHK+5/pVvbGantSGm7uoMnpKfebplUYUCv0i6kEvSY3T2vcBolrlboxkzMZsINsD1PsyJGUia4K0P7zteVMNMs=
+X-Received: by 2002:a17:90b:f93:b0:29b:ae33:6ffe with SMTP id
+ ft19-20020a17090b0f9300b0029bae336ffemr1436256pjb.2.1710417278599; Thu, 14
+ Mar 2024 04:54:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,45 +71,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240313163019.613705-1-sashal@kernel.org> <20240313163019.613705-6-sashal@kernel.org>
-In-Reply-To: <20240313163019.613705-6-sashal@kernel.org>
+ <CADo9pHis6n7FAtyTUhC0nO8wDaQGT1NzkJk11VcrEzQmG29wvw@mail.gmail.com>
+In-Reply-To: <CADo9pHis6n7FAtyTUhC0nO8wDaQGT1NzkJk11VcrEzQmG29wvw@mail.gmail.com>
 From: Luna Jernberg <droidbittin@gmail.com>
-Date: Thu, 14 Mar 2024 12:46:20 +0100
-Message-ID: <CADo9pHis6n7FAtyTUhC0nO8wDaQGT1NzkJk11VcrEzQmG29wvw@mail.gmail.com>
+Date: Thu, 14 Mar 2024 12:54:27 +0100
+Message-ID: <CADo9pHie+YAc7jju3sd1S4b=yYLrD+ehro8Sq8UwPf4-GxqMXg@mail.gmail.com>
 Subject: Re: [PATCH 6.8 5/5] Linux 6.8.1-rc1
 To: Sasha Levin <sashal@kernel.org>, Luna Jernberg <droidbittin@gmail.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hey!
+someone in #linux on OFTC helped me find it now:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.8.y&id=aad69864e4400284b2792c16361be9d38237348b
 
-Wondering where you have uploaded this? can't find it at
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/
-but maybe i am looking in the wrong place and or are blind ?
-
-Den ons 13 mars 2024 kl 17:31 skrev Sasha Levin <sashal@kernel.org>:
+Den tors 14 mars 2024 kl 12:46 skrev Luna Jernberg <droidbittin@gmail.com>:
 >
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Hey!
 >
-> diff --git a/Makefile b/Makefile
-> index c7ee53f4bf044..dd0b283998d00 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1,8 +1,8 @@
->  # SPDX-License-Identifier: GPL-2.0
->  VERSION = 6
->  PATCHLEVEL = 8
-> -SUBLEVEL = 0
-> -EXTRAVERSION =
-> +SUBLEVEL = 1
-> +EXTRAVERSION = -rc1
->  NAME = Hurr durr I'ma ninja sloth
+> Wondering where you have uploaded this? can't find it at
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/
+> but maybe i am looking in the wrong place and or are blind ?
 >
->  # *DOCUMENTATION*
-> --
-> 2.43.0
->
->
+> Den ons 13 mars 2024 kl 17:31 skrev Sasha Levin <sashal@kernel.org>:
+> >
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  Makefile | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index c7ee53f4bf044..dd0b283998d00 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -1,8 +1,8 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >  VERSION = 6
+> >  PATCHLEVEL = 8
+> > -SUBLEVEL = 0
+> > -EXTRAVERSION =
+> > +SUBLEVEL = 1
+> > +EXTRAVERSION = -rc1
+> >  NAME = Hurr durr I'ma ninja sloth
+> >
+> >  # *DOCUMENTATION*
+> > --
+> > 2.43.0
+> >
+> >
 
