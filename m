@@ -1,106 +1,145 @@
-Return-Path: <stable+bounces-28141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7932587BBC4
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:14:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3284487BBDE
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1AA1C21FFF
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 643A31C21E8C
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598046EB4E;
-	Thu, 14 Mar 2024 11:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e8hcjDqj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B406EB62;
+	Thu, 14 Mar 2024 11:25:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DB2A1D1;
-	Thu, 14 Mar 2024 11:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D916EB5C;
+	Thu, 14 Mar 2024 11:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710414882; cv=none; b=PlU1fUegPZRLcKy1n9aKXSarnZ8cTNmHO0as3g5bRWHvsqWUBm0yuws9ZoGQdtbCixvQaFptEFp4XXvXM8F5n72qdjvXRjRr+MRwCkXt0ZUUVd7G+jNiT0j3erjKm2t5+2RZ68hkHeTeBlFyl1Rz4bHV3cbYFTMUmVoIFdG7T3g=
+	t=1710415502; cv=none; b=GdI0bNDXks6SdbSHnKodZBBUHSDQNYN7c7E3HFmEfFbtLsi6OJHbOVGK486rO7fA9RYsLKdVFdO4+zJg63XseEfrA6vimPh6gDUO8I9pVbLB9hvUs6SQKiiA8QjRZXoYq54Ijg5F2o30MDUPMRfs3ZhkvQJsdmyHdXQy8U/QvQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710414882; c=relaxed/simple;
-	bh=JYThXvFfSUt8bn/u7QVtG0aC+rU3gXJs6BreV0Jsjis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=drQcQdWmvVHqXB74vVfL6Wfy7V8RuDfXmIvWyllW/sLm6WvYaUKBBp467/mApj+d+jWN0yAPS2lTAc+eCsCsGYNQTdnF2ADdy1OO+sSFZ9wbQGgJEUyPODdCpOimNZEknJu2zxWk5ESZOtn0/zLA68fMo6NuZhV+5c8YPBgD6p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e8hcjDqj; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3746240E0028;
-	Thu, 14 Mar 2024 11:14:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id cDZD0dZP4nXi; Thu, 14 Mar 2024 11:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1710414873; bh=W6YiMJ4KVuTlhdWm5TtH44BSuR5hnaHMB6oOqeEuhNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e8hcjDqjGJgU6UnJ56h1yfC0EpbT8zm/zqKVR5mgJF83np8lgdA42pCp+Rp0gg3nD
-	 psadm7lJ8SSeBBFwcrsIco+XfdjQ1J5O/LUaH8Toh4qlyqHLNOvXpZbPhLAqHHMBXu
-	 NquAaQbSzuC1TEMBgisSrSibPd2fCaJngqRnKMF8say/HsDtCDiCcET7gJ4ofo4IeG
-	 RfTPGUB4bk1btF6VLLWRDD4P//4o28rN/H3y2ZV92IkTsphUW/8FqzO0xva0qo/hPk
-	 ypmyj6oKVDAld5rSdrtlaelQAiQacGmQI+LEqTTzngD1oIwsWK3GJHxglLY0n8HkoE
-	 dsXZF76Qt3tqpohkOVZNHAz5Uhs9U10asL92OHCMRCQrordgw/A06TrS+X2l6gef5m
-	 QBhY+RguKkCiZdDrXKF9VhYKAV5XdRANak8m4b/66/VTV0K97oZF5AxWl3lblCtxYV
-	 4FjqjsVNEprPJSaUtksJ4DRxrsEy6zadNk9yVJt8lft4jNeFnmuExRZu9EfdU+NhM1
-	 hcEO2FcK571AAyeXxd0xkskdpWvrosSXWTgScISYmysZSVpPXXPLy7AKSAcorcsQm5
-	 xkEhQJzn0yKpdi+EFtfyADQW5BQmX+XQWpoNPwLqBri/eW3JdFaECGf3j02ABwfYCI
-	 8oVjq9oc5M2EB5FPPnMRdqvU=
-Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9729940E016B;
-	Thu, 14 Mar 2024 11:14:19 +0000 (UTC)
-Date: Thu, 14 Mar 2024 12:14:18 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH v5] x86/coco: Require seeding RNG with RDRAND on CoCo
- systems
-Message-ID: <20240314111418.GBZfLcCskn7Xjra4mu@fat_crate.local>
-References: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
- <20240224011921.2663985-1-Jason@zx2c4.com>
- <ZfI366mQplePkvHv@zx2c4.com>
+	s=arc-20240116; t=1710415502; c=relaxed/simple;
+	bh=dRotbT0kJtqO9wQLyoxla3srawYljMDh+1EQIZUfVDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HUue4l/ayEv6OYflYejoI8tlywYs/7Zi1r6RNtR/OPCzvr/y50Zezw8CoSHKMcxELY6klQcp4pnAornjAMbLj+nzeXJhXoEJoqB6h2sV1DrGFafE8Br868uXaY7omV/AuZLOx/V9A4P5HnLBoukvgp8OnmWmE9Op/k8NCZmAfPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TwQ3f6tqGz1xqxw;
+	Thu, 14 Mar 2024 19:23:10 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5DAC41A0187;
+	Thu, 14 Mar 2024 19:24:57 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 14 Mar 2024 19:24:56 +0800
+Message-ID: <50f9333b-831a-8b4b-a6f2-ae79ab46a88b@huawei.com>
+Date: Thu, 14 Mar 2024 19:24:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZfI366mQplePkvHv@zx2c4.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH v2 4/9] ext4: fix slab-out-of-bounds in
+ ext4_mb_find_good_group_avg_frag_lists()
+Content-Language: en-US
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<ritesh.list@gmail.com>, <ojaswin@linux.ibm.com>, <adobriyan@gmail.com>,
+	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
+	<yangerkun@huawei.com>, <stable@vger.kernel.org>, Baokun Li
+	<libaokun1@huawei.com>
+References: <20240227091148.178435-1-libaokun1@huawei.com>
+ <20240227091148.178435-5-libaokun1@huawei.com>
+ <20240314103056.rykwi2hhfm7v575a@quack3>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20240314103056.rykwi2hhfm7v575a@quack3>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-Hi Jason,
+Hi Jan,
 
-On Thu, Mar 14, 2024 at 12:34:03AM +0100, Jason A. Donenfeld wrote:
-> This has been sitting on the list for a while with a few positive
-> reviews and no outstanding objections, afaict. Can you merge this to
-> tip?
+On 2024/3/14 18:30, Jan Kara wrote:
+> On Tue 27-02-24 17:11:43, Baokun Li wrote:
+>
+>
+> At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+> but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+> to be triggered by an attempt to access an element at index 29.
+>
+> Add a new attr_id attr_clusters_in_group with values in the range
+> [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+> that type to fix the issue. In addition avoid returning an order
+> from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+> and reduce some useless loops.
+>
+> Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Looks good. Just one nit below. Otherwise feel free to add:
+>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+>
+>> ---
+>>   fs/ext4/mballoc.c |  6 ++++++
+>>   fs/ext4/sysfs.c   | 13 ++++++++++++-
+>>   2 files changed, 18 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+>> index 85a91a61b761..7ad089df2408 100644
+>> --- a/fs/ext4/mballoc.c
+>> +++ b/fs/ext4/mballoc.c
+>> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+>>   		return 0;
+>>   	if (order == MB_NUM_ORDERS(sb))
+>>   		order--;
+>> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
+>> +		order = MB_NUM_ORDERS(sb) - 1;
+>>   	return order;
+>>   }
+>>   
+>> @@ -1057,6 +1059,10 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
+>>   			ac->ac_flags |= EXT4_MB_CR_BEST_AVAIL_LEN_OPTIMIZED;
+>>   			return;
+>>   		}
+>> +
+>> +		/* Skip some unnecessary loops. */
+>> +		if (unlikely(i > MB_NUM_ORDERS(ac->ac_sb)))
+>> +			i = MB_NUM_ORDERS(ac->ac_sb);
+> How can this possibly trigger now? MB_NUM_ORDERS is sb->s_blocksize_bits +
+> 2. 'i' is starting at fls(ac->ac_g_ex.fe_len) and ac_g_ex.fe_len shouldn't
+> be larger than clusters per group, hence fls() should be less than
+> sb->s_blocksize_bits? Am I missing something? And if yes, we should rather
+> make sure 'order' is never absurdly big?
+>
+> I suspect this code is defensive upto a point of being confusing :)
+>
+> Honza 
 
-the tip tree is open for new code after the merge window is over.
+Yes, this is indeed defensive code! Only walk into this branch when
+WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)) is triggered.
+As previously mentioned by ojaswin in the following link:
 
+"The reason for this is that otherwise when order is large eg 29,
+we would unnecessarily loop from i=29 to i=13 while always
+looking at the same avg_fragment_list[13]."
+
+Link：https://lore.kernel.org/lkml/ZdQ7FEA7KC4eAMpg@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com/
+
+Thank you so much for the review! ღ( ´･ᴗ･` )
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+With Best Regards,
+Baokun Li
+.
 
