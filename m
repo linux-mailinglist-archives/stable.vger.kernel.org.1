@@ -1,160 +1,128 @@
-Return-Path: <stable+bounces-28168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4A987BF89
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 16:05:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A582487BF95
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 16:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89E911C20C96
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9C21F22BD7
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DED7173B;
-	Thu, 14 Mar 2024 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB807173B;
+	Thu, 14 Mar 2024 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m54Z+OUk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R4+AFf5j"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8DA6FE08;
-	Thu, 14 Mar 2024 15:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2025571759
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 15:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710428740; cv=none; b=K6w+cYit3HXgPfxTLP0JAtTo1qlmfQtrKvjek2B80yg7+fKtq7ftPYPvLONZFWIkh6T16Fc5Di9KBwBoq80Ml6ie1uhrNOtK5UAeezPzL14K791L7HxymwFyyIYwxPt26ZuQm3hslxe00J7MKtZcuOmk6wN7cZIiDfEu+6M75Kg=
+	t=1710428865; cv=none; b=cQpMBZxCv34WRK2+Ehc6n8MTcV0cZR/i+t7gzAFbs2y0hh1DxGkMLL78ZAGSnzEG2x5zejhCByPwe61960/hF2WBvTKu5fErJFJvHbZK19FcGFIYziKweOKbUbEbep/5On0LIt1JJM7+OtOhWBMTQJWzI6PCzvr+mB3grSlqAEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710428740; c=relaxed/simple;
-	bh=NppUhHd3UgH8/N6Ittb4n65yRyxO8UlaIeClkqFgfuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bw8szJEp/XmvTpGgFE+mhC/T8AVqhsdiDHG1uBst7e2hSebFUzjBFrjA4ZlQb2g4ofeamrc9BZLCZyj5lREtJfjUjHRxT4HT+gwopu42OFMiVPjGKE4Lh5DvrqREGjcNOEuzzuA3GNZK8MIqIibgGSv4DmT9WomVZI8YOi+BhoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m54Z+OUk; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710428739; x=1741964739;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NppUhHd3UgH8/N6Ittb4n65yRyxO8UlaIeClkqFgfuI=;
-  b=m54Z+OUkXcZs/Ss4Q2JktgT3mjlVpAUVZ5WPdU8V6iJVdAi3i51YCeIG
-   AaTKDC3qriSGSz66UdipmPf1Ncjx8gVn0kit+gimez7z6H2CTDfHHqptf
-   RpZ9eJEwuyG7IM1VvY4/oZ4UwnjxUgAkHuYir74JaY9BNIp/OOv2GZAXs
-   OI+7OJO61qVQdHdrJMDGTx0DlQplqrojG669Pb1Q2oXf9eZD9FPJdBrDT
-   ZVroVDLN7TzwymUkONcaplhlD3DoemMeLkfxrhnFUyvUudg/R2sAWY2XA
-   Kfxhgz24d2OeC1vLlUnZDz6PySfNK7x9ZuPQUuqNMeoGTSBnQagWdX61p
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="9065364"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="9065364"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 08:05:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="12249529"
-Received: from laallen-mobl.amr.corp.intel.com (HELO [10.209.21.198]) ([10.209.21.198])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 08:05:34 -0700
-Message-ID: <70261e2a-b87e-462e-964e-95a51ecde978@intel.com>
-Date: Thu, 14 Mar 2024 08:05:35 -0700
+	s=arc-20240116; t=1710428865; c=relaxed/simple;
+	bh=WEbP5Ymsm7CA0K1XA6T79HjuqaRrt4H8r8f4yaqRpoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bPdZ0KTk6vkc1cyQJ5fVOzcaX8l2YV58n0eVBynBAsTEC7LUnWeRhkI/aEldd7kqNWQKjhF1SoJWcnxBdnsIr0UodFFIHI/I3pmt8kHc9cnqxciPEab/PWJFNO+tgVivkQdWTsQsuJ1pwuySfq4W0VPLyRaeaIC7zL8cLrYT6eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R4+AFf5j; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so885198a12.1
+        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 08:07:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710428863; x=1711033663; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZjRCEDVOogXes/wPEF8GeSg53i9dySi15L5A1nUD1OU=;
+        b=R4+AFf5jEkmFwdD8bhrVomZt2cQtvJl/r8QWm1ww5Hb2AdKu7ze2Rep4xTOXMe8Rjr
+         wjBa5qnc0EKioSXgXI0gmR47TbaAPSOjChgTLgzDMFIyvUbRlXUybb3ivGWw4iiVBzL4
+         nPB+Kr/NXMQr2Vj7vBk+p2CS73SVbtTp5dHcf1uqWWhJYMCMmG2xgtVf/bkfFBiSkeDE
+         5iyV9YuMUgaBZv+dR28g7fxob3ZlW7cOXxdblRhtKL3sI2lGbQzVP+A8RPXYL+YeMO/8
+         rMc8FP3TyV/VU4yif8YnZohhKXc8AAlhT4yf7MgTDd4TA9LpS6KrzUU+u2x9TXQz0N5F
+         /e7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710428863; x=1711033663;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZjRCEDVOogXes/wPEF8GeSg53i9dySi15L5A1nUD1OU=;
+        b=PGV8DSIJ0OkS5ztg46XRcYOQqCDL7a8WwoBF/+EAmhqsZvGWiS38Bw3BhxvOUpFmj3
+         nbHIa/kilvuFpMzjEKy8OgmOD5BPG8dlkRQnG4BgS3CngaJ9vbZNA+kXB4OfYbEcHZeQ
+         xSiC6zo8dKS+KcpXNSarOrqkq9xvc3yRUC46mFBZ52QQ1WJmgOMTETEp//8cI3jsLLF7
+         nsN1q9evy8IbYHPYymQ2tvvtb/7LaWsFzXk3ipupsbRVlKkjSgC5H8lWGCtpeDcZOwM6
+         5/dBpE3bRc1z6KlMaOE7uQGxhj6eEa/QZENp1xyTEFeAhYeEMVrj4PVEHGSRAMbGgxta
+         HBNw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5tdO+d2AoxhNJgSHCHBFZYEYXsTFJ3XAU9aMB6rVSWoAUouJhxdA8HNnTYDZAlWs4gUf39B7w8jzenIbb/9RitbE133jD
+X-Gm-Message-State: AOJu0YzfoGnX4QkNxWk9XseShkAVhR9j8ajqaPPNM2pzyZz5b1OSUK7s
+	FQ8izB9UfGDcfuLB1UHXx/GOIbvCqnBm77njXZsa36ZMXiZ6Q3LkxB9BTbEIpw7JXwP/ixYCpqu
+	cHepNDVa/0A1XBsO+tpJAIYucPWxVbJ/Yl/iFVw==
+X-Google-Smtp-Source: AGHT+IFfiCFmv5DO0fVAcW+XIGXqdd9BcRmLG42EBJ+JcxMqvWXG3eAjxhCOv86M02IS4N2NO9e5fGuQIW9FlHgnXTg=
+X-Received: by 2002:a17:90a:6446:b0:29b:b28d:ac66 with SMTP id
+ y6-20020a17090a644600b0029bb28dac66mr273173pjm.5.1710428863429; Thu, 14 Mar
+ 2024 08:07:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/pm: Fix false positive kmemleak report in
- msr_build_context().
-Content-Language: en-US
-To: Anton Altaparmakov <anton@tuxera.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Chen Yu <yu.c.chen@intel.com>
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org,
- Matthieu Baerts <matthieu.baerts@tessares.net>,
- Mat Martineau <mathew.j.martineau@linux.intel.com>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Ingo Molnar <mingo@kernel.org>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240314142656.17699-1-anton@tuxera.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240314142656.17699-1-anton@tuxera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240313164640.616049-1-sashal@kernel.org> <ZfKhPaFngJTrTJyt@codewreck.org>
+In-Reply-To: <ZfKhPaFngJTrTJyt@codewreck.org>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Thu, 14 Mar 2024 09:07:32 -0600
+Message-ID: <CAEUSe78qxBXpkKBv73w94g=ShBO8TteNvHds1NwMnfG98zZPUg@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/14/24 07:26, Anton Altaparmakov wrote:
->  /* image of the saved processor state */
->  struct saved_context {
-> -	/*
-> -	 * On x86_32, all segment registers except gs are saved at kernel
-> -	 * entry in pt_regs.
-> -	 */
-> -	u16 gs;
->  	unsigned long cr0, cr2, cr3, cr4;
->  	u64 misc_enable;
->  	struct saved_msrs saved_msrs;
-> @@ -27,6 +22,11 @@ struct saved_context {
->  	unsigned long tr;
->  	unsigned long safety;
->  	unsigned long return_address;
-> +	/*
-> +	 * On x86_32, all segment registers except gs are saved at kernel
-> +	 * entry in pt_regs.
-> +	 */
-> +	u16 gs;
->  	bool misc_enable_saved;
->  } __attribute__((packed));
+Hello!
 
-Isn't this just kinda poking at the symptoms?  This seems to be
-basically the exact same bug as b0b592cf08, just with a different source
-of unaligned structure members.
+On Thu, 14 Mar 2024 at 01:03, Dominique Martinet <asmadeus@codewreck.org> w=
+rote:
+> Sasha Levin wrote on Wed, Mar 13, 2024 at 12:45:27PM -0400:
+> > This is the start of the stable review cycle for the 5.10.213 release.
+> > There are 73 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+>
+> Thanks Sasha for submitting a stable rc review!
+>
+> If it's not too much trouble, would it be possible to have a different
+> header in the 00 patch from the other patches for my mailbox?
+> The mails Greg sends have the X-KernelTest-* headers (patch, tree,
+> branch etc) only in the cover letter, while all the patches themselves
+> only have 'X-stable: review' and 'X-Patchwork-Hint: ignore'
+>
+> I don't really care much what actual tags are on which as long as
+> there's a way to differentiate that cover letter from the rest so I can
+> redirect it to a mailbox I actually read to notice there's a new rc to
+> test, without having all the patches unless I explicitly look for them.
 
-There's nothing to keep folks from reintroducing these kinds of issues
-and evidently no way to detect when they happen without lengthy reproducers.
+I subscribe to this request. We ran into unexpected issues because all
+the emails in the series included the same headers as the cover.
+
+> If it's difficult I'll add a regex on the subject for ' 00/' or
+> something, I'd prefer matching only headers for robustness but just let
+> me know.
+
+That's what I ended up doing, and you know the saying: I had this
+problem and solved it via regexes, now I have two problems. :) FWIW,
+here's my "problem":
+  '^Subject: \[PATCH\ [456]\.[0-9]+\ 0[0]*\/'
+
+Greetings!
+
+
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
 
