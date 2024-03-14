@@ -1,146 +1,84 @@
-Return-Path: <stable+bounces-28216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E203987C554
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 23:46:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D7787C5B7
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 00:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9DB1C20964
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 22:46:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75C41F21BB6
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 23:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758B017F3;
-	Thu, 14 Mar 2024 22:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A9DDDA;
+	Thu, 14 Mar 2024 23:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1M066pm"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PaXIdn3k"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3355410788;
-	Thu, 14 Mar 2024 22:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8711210A03
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 23:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710456392; cv=none; b=LpY5Asl6kLLKYgZS2ci2hpdSkSc1Jwk836Q8wNHjEgDAyVegMYqgYxSfuEGO6kbOvN2yhTuwADO5QNG6ureiGrbstkxw4HoUQOjtwWiM6Jjiq4UDrh2j5K0Lz2KVMBh8B0vjaNweI+UiyJIvCU0Y+s1y4smm1d8HYwlsOZ3ZEDE=
+	t=1710457373; cv=none; b=KMPfXitAsLrwY/41MIup/0+R4CgXbfytiAJmoLcnhOuq3IiEm06A+n4vtklNAx0ypOZ/a7JLh5o7LRCrK1+jD9x65cvZ3ICBjjBv6PFawQocyZQmTY4mQWY9rJLJZkIpdn9/oAoC8IayXSAbcRxR3RLRSyE8BLyFGrLA5nHYHbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710456392; c=relaxed/simple;
-	bh=7/aeb6My+Chr6s3GLseBkS9GYEPKlZ4FVcrhCXbQHso=;
+	s=arc-20240116; t=1710457373; c=relaxed/simple;
+	bh=Y+hwKt+p7wrdQVUooqaorwbmSycTNttYNZ3UpgVA3d4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iRcaSiHjxAalxArTwe/tmyd3V2Dn4EVFbigzfCodNGRyErwIk/ydWOk32etHYOo/RquO8/+ZRiIpyCzTNGWshKYYPlU+yTb6QNf94qEaN2k41DUzGq81qAjPblEE2MNewLwMCzYph5Htej7+vXgcBpbXiIhF0y1ikkC8swWtLeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1M066pm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739B0C433C7;
-	Thu, 14 Mar 2024 22:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710456391;
-	bh=7/aeb6My+Chr6s3GLseBkS9GYEPKlZ4FVcrhCXbQHso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m1M066pmsUAPPHOYImvNoL1WcBw4u8Vtwq/o6NcG/yIVjiP6TEAjEqiFrjqKNqiQs
-	 ZX+heEEa7cc7fTr4BShOuTJ+0wQ7fHivotmVGR4zPcHx4l3eqktN56Pllsx078NFxC
-	 VyvzqTjz0BurbsoDZtGww+AHxxXM5EpkjvW3Em6EUm2wgYA8qe1Eq5WWc7LT4LeUP3
-	 EZ1tYGKwOhf7gu/g0XpZhC+nptKfYF9By1xyta4CMb22pA3R5VjzR6kmkUUDH/fM1b
-	 dyGQOYPnmEz8ylK00VGmC5SNmV8CUf39/VHIB505QW+tbFZUbLt4yHB/H6KabfOZ1e
-	 0KpCaEZGS7S7A==
-Date: Thu, 14 Mar 2024 18:46:29 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Yongqin Liu <yongqin.liu@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
-	amit.pundir@linaro.org, sumit.semwal@linaro.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/sf4IbCj7b9h79C3cxEqjgsbOecglde/0S691+UouJUd2oFzR4Frza33+UHh+K0ah304vVfkgfsa7E3xrbFqdLbpWd9J5caHggogwDKZr5PwJOYuYALdsYpw5+OaUnssVAmNYn7nnhZ9We6pKiB3LU6ivRDb/2rwtpxzV+AarI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PaXIdn3k; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 14 Mar 2024 19:02:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710457369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=htdAeQJNVioT8HXOw5XCTGAiruSICMwXMVbkV89aJE8=;
+	b=PaXIdn3kZQGJhbGgDOJ+nppDkeHzRqC/dV7E6eyrPlp1lhCshUUEbhqYjmMY8tsEuBosqS
+	ftPB/Aq89IOOdn6ZG3Qgg0hALszia78o+0UyQPk9Qd3uwdTNMXYcJ1MbXrVpBP5LV4+JuK
+	BNQfhgIwMYkMNZh7HRh7OdI3QhA8S44=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Helge Deller <deller@kernel.org>, stable@vger.kernel.org, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 5.4 015/267] arm64: dts: qcom: sdm845: fix USB wakeup
- interrupt types
-Message-ID: <ZfN-RQLgC9i64VyK@sashalap>
-References: <20240221125940.058369148@linuxfoundation.org>
- <20240221125940.531673812@linuxfoundation.org>
- <77f1c6a6-7756-4168-a69d-583a35abd8ab@linaro.org>
- <ZfKxGUmi_IXjA4wA@hovoldconsulting.com>
+Subject: Re: dddd
+Message-ID: <7g5wb7rf3xxn5gz4dnqevbee7ba6zd4kllzb5lbj2i6capxppv@blm5renpmaiz>
+References: <ZfLGOK954IRvQIHE@carbonx1>
+ <vubxxvlsgyzzn64ffdvhhdv75d5fal5jh5xew7mf7354cddykz@45w6b2wvdlie>
+ <ZfN8WxMrgQBUfjGo@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZfKxGUmi_IXjA4wA@hovoldconsulting.com>
+In-Reply-To: <ZfN8WxMrgQBUfjGo@sashalap>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Mar 14, 2024 at 09:11:05AM +0100, Johan Hovold wrote:
->[ +TO: Sasha ]
->
->On Thu, Mar 14, 2024 at 01:48:36AM +0800, Yongqin Liu wrote:
->> On 2024/2/21 21:05, Greg Kroah-Hartman wrote:
->> > 5.4-stable review patch.  If anyone has any objections, please let me know.
->
->> > From: Johan Hovold <johan+linaro@kernel.org>
->> >
->> > commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
->> >
->> > The DP/DM wakeup interrupts are edge triggered and which edge to trigger
->> > on depends on use-case and whether a Low speed or Full/High speed device
->> > is connected.
->> >
->> > Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
->> > Cc: stable@vger.kernel.org      # 4.20
->> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->> > Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
->> > Signed-off-by: Bjorn Andersson <andersson@kernel.org>
->> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
->> > --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
->> > +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
->> > @@ -2503,8 +2503,8 @@
->> >
->> >   			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
->> >   				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
->> > -				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
->> > -				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
->> > +				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
->> > +				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
->> >   			interrupt-names = "hs_phy_irq", "ss_phy_irq",
->> >   					  "dm_hs_phy_irq", "dp_hs_phy_irq";
->
->> This patch only causes the db845c Android builds to fail to have the adb
->> connection setup after boot.
->
->Indeed.
->
->> In the serial console, the following lines are printed:
->
->>    [    0.779411][   T79] dwc3-qcom a6f8800.usb: dp_hs_phy_irq failed: -22
->>    [    0.779418][   T79] dwc3-qcom a6f8800.usb: failed to setup IRQs,
->> err=-22
->
->> After some investigation, it's found it will work again if the following
->> two patches are applied:
->>    72b67ebf9d24 ("arm64: dts: qcom: add PDC interrupt controller for
->> SDM845")
->>    204f9ed4bad6 ("arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY
->> interrupts")
->
->Correct, apparently the PDC controller was not added until 5.10, which I
->should have noticed and indicated in the commit message of the follow up
->fix. Sorry about that.
->
->> Could you please help to have a check and give some suggestions on what
->> patches should be back ported to the 5.4 kernel, or are the above two
->> patches only good enough?
->
->Based on a quick look at the sdm845 dtsi, the PDC driver and their
->history, I think the two commits above should be enough.
->
->Sasha, could you pick the following two commits for 5.4:
->
->	72b67ebf9d24 ("arm64: dts: qcom: add PDC interrupt controller for SDM845")
->	204f9ed4bad6 ("arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts")
->
->to fix the regression?
+On Thu, Mar 14, 2024 at 06:38:19PM -0400, Sasha Levin wrote:
+> On Thu, Mar 14, 2024 at 05:46:35AM -0400, Kent Overstreet wrote:
+> > On Thu, Mar 14, 2024 at 10:41:12AM +0100, Helge Deller wrote:
+> > > Dear Greg & stable team,
+> > > 
+> > > could you please queue up the patch below for the stable-6.7 kernel?
+> > > This is upstream commit:
+> > > 	eba38cc7578bef94865341c73608bdf49193a51d
+> > > 
+> > > Thanks,
+> > > Helge
+> > 
+> > I've already sent Greg a pull request with this patch - _twice_.
+> 
+> I'll point out, again, that if you read the docs it clearly points out
+> that pull requests aren't a way to submit patches into stable.
 
-Will do!
-
--- 
-Thanks,
-Sasha
+Sasha, Greg and I already discussed and agreed that this would be the
+plan for fs/bcachefs/.
 
