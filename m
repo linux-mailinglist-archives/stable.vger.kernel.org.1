@@ -1,225 +1,199 @@
-Return-Path: <stable+bounces-28159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD21A87BE51
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:04:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F7387BE7A
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C3261C2142B
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:04:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48E01B21860
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B448A6F506;
-	Thu, 14 Mar 2024 14:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YNNHtETW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E3D71746;
+	Thu, 14 Mar 2024 14:07:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8526F06D
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 14:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710425047; cv=fail; b=SYp0S75guZIYoH3lNI1yK9BQVORfSKmJA5vg+KskeKuLV7gHCnmFTfME0XXdEbDwHICWKEY9XwGGxI3jwo3N/1UzDpS+mH1FY64F265rrjjj/JIGDA0btbA+XwCY/pyuRqg2lAg8/4hX290oOy8YjmOF2N8WeANLIQHAKYuhjMo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710425047; c=relaxed/simple;
-	bh=QwxItgZ3DVyRMjii4+hCa17jeID9DHbsTcrPwg+OgmM=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eahUFFYGEPqVZW2MXHD0gAnmjt/o3+QTzJ9iu57anhlX8A2HW2pwu3KU7AGmpyMLDzqv1jvAAB4yM2C6GpWG/ymstMrAvidcIwaKKc2J2wFkziaA5AybprkzG6LEbdnBrrW5A2fSr0wFFTvCUjCk67ZEmPybLWC7ObeTjshD08E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YNNHtETW; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710425045; x=1741961045;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=QwxItgZ3DVyRMjii4+hCa17jeID9DHbsTcrPwg+OgmM=;
-  b=YNNHtETWJXEYANYG4shFgLkznKdmvs6Kue0UlNnDzvuWtK+biFWAsYtW
-   rDStlEZv7Lt2UGlLqzAI2Nh+wruipe7vCTmdZMsHHQwwKGXS9BFSGLeSd
-   ZmYiKYXQ5t13SbISEMO9z1xVKgrBUNRxKPG9GOVIQQlJgAHPF9daFJOD3
-   h+e7MaztXfUrRovK88+5ZQAesLGP0pKOSQM7MSdHNnyVFclnz6Kit3wRd
-   zWdnZehWFxLaswro0DLAuGs6Qp+DGwqyTTOxAtLI21eP9heQhL+/NcNGU
-   Zgif6BzlnC2HUlNOFRM1NtfQF5vDKugcjg59SuxiGuZCpgE6/JLrTc3Rm
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5108261"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="5108261"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 07:04:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
-   d="scan'208";a="12365769"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Mar 2024 07:04:05 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 14 Mar 2024 07:04:04 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 14 Mar 2024 07:04:03 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 14 Mar 2024 07:04:03 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 14 Mar 2024 07:04:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k+DVdhIITvrx8AWji60pVdfRny9ZfgVbDwhjtAS6NpnmlnsinL597x5tP1nLsgRc2qU8nYghESFO24zqah994RH2jx3w/PPDkk7mhlR2V0Sdh+Zhuz7zK6+1Twx/u5EzL76HXclvNSOVnQFrLOduJdpSxYcEI+sgsTLqHOTa9kjns4RSavaFknqy3kiTWVzo1Xv0bsjoJdqqRyC27uBxbJ5kvEoxN8qfdW+xoakN/3i+P2cTqcOgHbWArHC8yGTYQ1IJXbGTmkped+fzZjaF3TQElJ+1S/otIGSoyPxWpL5JsCQLaTId4i8snl3CWwdJxVQT5bHKaoVOAzKTFald0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I/eUdVg35eRmopJF81N8sxDeTlZB9bfPrQLRYYAImEA=;
- b=TpH2DVtg3dn9XbLn2eORwzyFZKyHXdM81ZGYwFFf9n33AfI46GJxmcbCjDBVPnw2bMuEh4tqZlKrgnGzNSqkZWqAQ4+iIMoF1RaS4lbK40mQdEydfkL01RY4SGKhHRFkxnAfzsykxs5zycusYE2E/jI/GeBXExMWqf/BB16zi86DOV8bbcRjqDmrQBBKxG0Wehta0szfoybCrxNXF9ZN6kj9gOPC0izXwZ4IrL4dCmW/UM0zdH2QY0X4sY2bYTksJxxWLTj7hz7rQ7JViOxv+KwRi4n4A+heTSc+b09NImmiHDngVVndNJ3x/4RWVMP0z3LegANvtp15Eew9S71/9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8146.namprd11.prod.outlook.com (2603:10b6:208:470::9)
- by CO1PR11MB4881.namprd11.prod.outlook.com (2603:10b6:303:91::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.18; Thu, 14 Mar
- 2024 14:04:00 +0000
-Received: from MN6PR11MB8146.namprd11.prod.outlook.com
- ([fe80::64b:598c:d4e0:3f26]) by MN6PR11MB8146.namprd11.prod.outlook.com
- ([fe80::64b:598c:d4e0:3f26%7]) with mapi id 15.20.7386.016; Thu, 14 Mar 2024
- 14:04:00 +0000
-Message-ID: <46ab1d25-5d16-4610-8b8f-2ee07064ec2e@intel.com>
-Date: Thu, 14 Mar 2024 16:04:33 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915/gt: Report full vm address range
-To: Andi Shyti <andi.shyti@linux.intel.com>, intel-gfx
-	<intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>
-CC: Andi Shyti <andi.shyti@kernel.org>, Andrzej Hajda
-	<andrzej.hajda@intel.com>, Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>, Nirmoy Das <nirmoy.das@intel.com>,
-	<stable@vger.kernel.org>
-References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
-Content-Language: en-US
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20240313193907.95205-1-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0265.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::14) To MN6PR11MB8146.namprd11.prod.outlook.com
- (2603:10b6:208:470::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D0A6FE02;
+	Thu, 14 Mar 2024 14:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710425276; cv=none; b=J9Vz/7pGS/tFrbXBTzqiGoS2uxKivsYsGSf5hg0fW5YWYAOd6jFEtqEYudn0jpbkfExgZ940yp3SjxOQqud8U8C/9QEGzyx9ohi5kP0h1acPFHNb7z/Jt4LCEEocC3S8hpl0BhtKSVgnVZkRJgMA0sg9SCQQMgbhY5+zlONMgbU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710425276; c=relaxed/simple;
+	bh=O0O3LXs8h1g6myDGlC1LeMEFa1dp5L9hgjVJBW1rijk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aZQLFhkKr8hn0S7VqrdhtzKcCl3TybivkI1VDznoBp54+x1u+w44O5hCEN6Jd/9vy8DlHqQawdkRwim59XEQwp60UXjNvOQyRM99Ek2ISl6r11TMZCPQEWvdTnxrD8AsSJ67sGb9AuDy/CRQfs17UzGzKGINNvrSrLIXMpBpyok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TwTfj0Kgbz1QBL3;
+	Thu, 14 Mar 2024 22:05:17 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id A2C1F14011F;
+	Thu, 14 Mar 2024 22:07:45 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 14 Mar
+ 2024 22:07:45 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <linux-ext4@vger.kernel.org>
+CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
+	<ritesh.list@gmail.com>, <ojaswin@linux.ibm.com>, <adobriyan@gmail.com>,
+	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
+	<yangerkun@huawei.com>, <libaokun1@huawei.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3 4/9] ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
+Date: Thu, 14 Mar 2024 22:09:01 +0800
+Message-ID: <20240314140906.3064072-5-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20240314140906.3064072-1-libaokun1@huawei.com>
+References: <20240314140906.3064072-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8146:EE_|CO1PR11MB4881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59d85dba-e83e-4ff4-5185-08dc442f98d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nJmBPNUD+jzI8htsTmutkzqwMV0gE2KbMcdNbpk4hax7tsK0LrZEFXzUN/wmLHN9yBSo3V4AXhVbu1WawnybETKLQ6mLZrLHRMbenYxPfKR/DuO6l+SywgpqP0mYtdI/ufufXyAX3U5WH3C5rb6ZUa1euvsBwWF6FGs/EX6h7Ccio64ff6b+t6axftLebZLAzupZt3S1LUN1G0a5V9wsdtaXwpSGt8PJbXAWYKOn/gxonWbMQU8Zm/dl+d65CTswQY5+SUkdJCy1uGrY5ScFJ4ln+ZmaOoguyckS9p84zrM4l9N3H1Cd9Aj5BQZ8NvWJ9ytnMU4OAX2XnCkqwCoYnPwns/i2ScPJsRR0DPqnF8w3e/ytyiimxllB0R3ZI3n+AOtx1dmKuZR3rMn4lNJ7SZ+Whh9r5xtNEbZiYhkO5+uApgXnIeZv762g5XaJ2A/PugWhu/V+KkTLgKSsDAQxu+mYpdWc+lYB+xHRTDuC9QQM33IW8G5FPSO3BU8LVsmLPCN303ftNUYJ+9qd2Z/33mIsifsPiVlVIVmQhz3zHNuW/DXrzdM8GeBCZT3gCXS/RSBxLEbJ/Br7MllA7oqAWi2KP96Kz/+ByXOfnw/radaKp2zrhD8qc+c4Hp6nkSkejsET3LLUpWUQGMMpCfx0SWE3jG5CiXdeohGdReL0X2w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8146.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDBPc0dzRHhaVGZ4OEJ2dHB1SGtYZFhPdW92TkhnZWtzN01GUmF1SUNiUlBD?=
- =?utf-8?B?ck14T2dSL2RzSHRuOU80Vk1ubUVoajFyYnJoS09RcXdwVmpsdy9YeG9iTk11?=
- =?utf-8?B?NDhuT0dBQUFhZUhwZk5lOGkzR2NSdjE2ZVI3VXU2ejRjRjhrUExvSzkyNVJK?=
- =?utf-8?B?Tnp5RFhpVE1OZnFQL0Q5VUo3L2tLZ2lQY0M2UXFFWW9POStsUWpvbURJb0Va?=
- =?utf-8?B?Q2JFcW5ZdVhVbk1ObVk0NGFMS0xOUVdwNHBlY0ZQanNOSUJYZkI5N25BUWRW?=
- =?utf-8?B?c0pLbUUrN3QwYWhxbnR0NHFLdGNybmx5N3plWDlhSXRMeVcyd1RKRUlodFpt?=
- =?utf-8?B?cCtlZjgwUEI5Y0hBTUJqdlRURUhxaUJLVFpFL2NISm9UVlR3WUlqRHB2N0hV?=
- =?utf-8?B?OG43eE9uUlJQeEZVS2RRaXg0VGg1Y0s4OW13TzNuVytYTUVCMXNYQyt0NGJC?=
- =?utf-8?B?b1dRcWdkYVQySVlWZWlsS1drWkhYcHJQcG5GeG5XWGxmZmFzTXB4Y1pmZXJi?=
- =?utf-8?B?MUtVbWk5ZzNKRFpHWW94NXNpenUybk5NOU96dzJxZmU4TkVOdm1Vb1J3alFw?=
- =?utf-8?B?QnErTTBXc1pmVnZEZTk3T0FqaGg0akd4L29iQjI1cEx1cWxsUjRyeGR1eENE?=
- =?utf-8?B?cFN1QTVDK1UreDZzQmROK0s1a1ZVM2lWVTZDZnBPajROL1IzTzgvcllGblRH?=
- =?utf-8?B?V2wvZGdRditKVjd2M1NHendVT25zb2pFMHBSL2FiYkNwZlFaZms1ZENTbXlS?=
- =?utf-8?B?Rmg1ZHVBMXY4VFcvQlNGMzd2YVpwdU92SWw3S1Rnd0hsaWlLbXVMMU9wYkNj?=
- =?utf-8?B?NlFsRDhsRlVEekJqVG9nYis1WmJ5V0NxaEZVR1VDbjBLS3UwR2M2QU1welJI?=
- =?utf-8?B?RlVLNHJWeWJCblRBWkd6R2ZYanF5YTR1RWlSYW0wTmRrMVlHVUtadDl0Mlkx?=
- =?utf-8?B?WlBWNkM3b3ZucnVLcCtRM2J6aHdKRTdKWFBrOWhwdVlGWFhwd3IzZmY5VEdp?=
- =?utf-8?B?YWNtRVBzS252QTYvTWVMWGtwTnNzTnUrYmhlMHQxZjNiTXRXZmJXT2lMY2hC?=
- =?utf-8?B?NUdkcEpMRWlxMTQrbDI4WWdqb2p2UEVQNkJtS3J4a3VtQmFCYzlNUXBDTllU?=
- =?utf-8?B?YXZSQ2NVV3k0c3huaGpyRCs3Mk1jaVhLbEdRR0VNdGExYVRNTGExcDcvUzhR?=
- =?utf-8?B?a1VlNlRMVEg1aklWU0pSaktpUlEzNVE5R0NMZElyanpGYVFTU0dBMDI2UFRz?=
- =?utf-8?B?VFYxa0FxTVZ3MGo4R0FjNndDT01wZ0Z1akZjbm8ybE1KTDE5dlpYU0VmbXZm?=
- =?utf-8?B?YmFhN1Y5R0tKL1dVMGx4aWYzUDFRb0JIbml5UHBMVU1aNURma1k1TjhXTHJa?=
- =?utf-8?B?UWw5U1BMcjVwdzBrSHNlNXNscG9DMmUwMHNhL25WK3ExRnRLU1I2UnBIUllo?=
- =?utf-8?B?V05va1Jvd1RJb1orMWpiUml6UVBKdWNzS3dyaXdKSEtSNkMwQms1SitaV0FI?=
- =?utf-8?B?Y3NKeGIxRG1CZE1YQ3lJcGxxc3J6UFJLaGxyc0l4bFk5VkZxL2NhNzlwU1JW?=
- =?utf-8?B?UHliVTdacmxxUytBNkowMW5kdFI3dURGUUc5NG1xYmhIV3hSVDZNU3QzeWtT?=
- =?utf-8?B?UDBKSExXdzVUaDVRdGhVYTBqZ2pKRUpYS2ZYNnlvYldkR1R0V09vOEpTcFZB?=
- =?utf-8?B?cFZKbitYTVpYcURSVXN0RndkS2R1VkRMZTVMdkdWSFNab09Lb2xPOVhPUi9L?=
- =?utf-8?B?ckhwcEl4UmlsNkxLL2tNaERtSkRjTVlXUCsvSXljOGZHaDFGSVRmMHZHTlNN?=
- =?utf-8?B?U2NWanN5QzJMN3RxY0hseklPeERxOGhmVFo4L2NJdXFRSCtlUHhMZktvQnlr?=
- =?utf-8?B?dzdaY25rU3hYZitGWjQyM3BTUkdpRS8xMVo2TmlSNHhialAzWWM0YUozWnFC?=
- =?utf-8?B?bkRBR3FEcGxHWmsrODgyT2QwZGs2Z2xNL1Z2YWtjek1VWEUxcW50cVJneUFv?=
- =?utf-8?B?ODlaNVA1NTlkSVp3OXdQTnpzS0JEem9HaUhJWk1va3A4TWJjeHpFWG1jYUIy?=
- =?utf-8?B?cmxzd0lsUmhZU1U2YXJPdXpHVmttZDcrdGRlaGJrU0QrR2VDMVpxK3dZNC9H?=
- =?utf-8?B?ZmlKV3dTUkhzY1JTRkcxNk9WRFZLTVN1T2ZyR2tUb1Y4MldTWmdCSnVVM0dR?=
- =?utf-8?B?Nmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59d85dba-e83e-4ff4-5185-08dc442f98d4
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8146.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2024 14:04:00.0520
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hv8fYJDQKmJPEh65y0wLcNUToNzGq/KkG2aRF9PhzbBKlnUeo1MWZvz7MoWnktLGkKhXY6MYevz3+zxVtjiGrLPtwlAjgnZHeyIQAwOmsqw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4881
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-Hi Andi,
+We can trigger a slab-out-of-bounds with the following commands:
 
-In Mesa we've been relying on I915_CONTEXT_PARAM_GTT_SIZE so as long as 
-that is adjusted by the kernel, we should be able to continue working 
-without issues.
+    mkfs.ext4 -F /dev/$disk 10G
+    mount /dev/$disk /tmp/test
+    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
+    echo test > /tmp/test/file && sync
 
-Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+==================================================================
+BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
+CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
+Call Trace:
+ dump_stack_lvl+0x2c/0x50
+ kasan_report+0xb6/0xf0
+ ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+ ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
+ ext4_mb_new_blocks+0x88a/0x1370 [ext4]
+ ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
+ ext4_map_blocks+0x569/0xea0 [ext4]
+ ext4_do_writepages+0x10f6/0x1bc0 [ext4]
+[...]
+==================================================================
 
-Thanks,
+The flow of issue triggering is as follows:
 
--Lionel
+// Set s_mb_group_prealloc to 2147483647 via sysfs
+ext4_mb_new_blocks
+  ext4_mb_normalize_request
+    ext4_mb_normalize_group_request
+      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
+  ext4_mb_regular_allocator
+    ext4_mb_choose_next_group
+      ext4_mb_choose_next_group_best_avail
+        mb_avg_fragment_size_order
+          order = fls(len) - 2 = 29
+        ext4_mb_find_good_group_avg_frag_lists
+          frag_list = &sbi->s_mb_avg_fragment_size[order]
+          if (list_empty(frag_list)) // Trigger SOOB!
 
-On 13/03/2024 21:39, Andi Shyti wrote:
-> Commit 9bb66c179f50 ("drm/i915: Reserve some kernel space per
-> vm") has reserved an object for kernel space usage.
->
-> Userspace, though, needs to know the full address range.
->
-> Fixes: 9bb66c179f50 ("drm/i915: Reserve some kernel space per vm")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Cc: Michal Mrozek <michal.mrozek@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-> ---
->   drivers/gpu/drm/i915/gt/gen8_ppgtt.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c b/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
-> index fa46d2308b0e..d76831f50106 100644
-> --- a/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
-> +++ b/drivers/gpu/drm/i915/gt/gen8_ppgtt.c
-> @@ -982,8 +982,9 @@ static int gen8_init_rsvd(struct i915_address_space *vm)
->   
->   	vm->rsvd.vma = i915_vma_make_unshrinkable(vma);
->   	vm->rsvd.obj = obj;
-> -	vm->total -= vma->node.size;
-> +
->   	return 0;
-> +
->   unref:
->   	i915_gem_object_put(obj);
->   	return ret;
+At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+to be triggered by an attempt to access an element at index 29.
 
+Add a new attr_id attr_clusters_in_group with values in the range
+[0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+that type to fix the issue. In addition avoid returning an order
+from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+and reduce some useless loops.
+
+Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+---
+ fs/ext4/mballoc.c |  4 ++++
+ fs/ext4/sysfs.c   | 13 ++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 12b3f196010b..48afe5aa228c 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+ 		return 0;
+ 	if (order == MB_NUM_ORDERS(sb))
+ 		order--;
++	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
++		order = MB_NUM_ORDERS(sb) - 1;
+ 	return order;
+ }
+ 
+@@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
+ 	 * goal length.
+ 	 */
+ 	order = fls(ac->ac_g_ex.fe_len) - 1;
++	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(ac->ac_sb) - 1))
++		order = MB_NUM_ORDERS(ac->ac_sb) - 1;
+ 	min_order = order - sbi->s_mb_best_avail_max_trim_order;
+ 	if (min_order < 0)
+ 		min_order = 0;
+diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+index 7f455b5f22c0..ddd71673176c 100644
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -29,6 +29,7 @@ typedef enum {
+ 	attr_trigger_test_error,
+ 	attr_first_error_time,
+ 	attr_last_error_time,
++	attr_clusters_in_group,
+ 	attr_feature,
+ 	attr_pointer_ui,
+ 	attr_pointer_ul,
+@@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+ 
+ EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
+ 		 ext4_sb_info, s_inode_readahead_blks);
++EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
++		 ext4_sb_info, s_mb_group_prealloc);
+ EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
+ EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
+ EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+ EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+ EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+ EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+-EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+ EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+ EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+ EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+@@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
+ 
+ 	switch (a->attr_id) {
+ 	case attr_inode_readahead:
++	case attr_clusters_in_group:
+ 	case attr_pointer_ui:
+ 		if (a->attr_ptr == ptr_ext4_super_block_offset)
+ 			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
+@@ -455,6 +458,14 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
+ 		else
+ 			*((unsigned int *) ptr) = t;
+ 		return len;
++	case attr_clusters_in_group:
++		ret = kstrtouint(skip_spaces(buf), 0, &t);
++		if (ret)
++			return ret;
++		if (t > sbi->s_clusters_per_group)
++			return -EINVAL;
++		*((unsigned int *) ptr) = t;
++		return len;
+ 	case attr_pointer_ul:
+ 		ret = kstrtoul(skip_spaces(buf), 0, &lt);
+ 		if (ret)
+-- 
+2.31.1
 
 
