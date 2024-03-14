@@ -1,162 +1,160 @@
-Return-Path: <stable+bounces-28150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DCC87BD16
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9A087BD1A
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 13:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2E02843FA
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F302845A9
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 12:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1CF5A4E0;
-	Thu, 14 Mar 2024 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53D45914E;
+	Thu, 14 Mar 2024 12:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="R/p4zuCW"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="FMesrgHe"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7582A57861
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 12:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445F4266A7
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 12:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710420995; cv=none; b=ZUnSouHiT+1KAy0SOZEzCGJOjyQyFEwfc4etZmFKfrRwb9qiBR/UTh5sHBFGMaTnklsHqh0+2ZUMFawfP+Jn9qGyAUjSKkrZ4s6JjgMvem7igAOatJZvaqGyJS00y415y61mJPqEQICm2CZtcfAuCPVb97HBkk7yOZaaryTkDms=
+	t=1710421082; cv=none; b=UuOqPorTLpIBnWE3qTVf8WJJoH46lvzba8L7c38M/9y4KE+lXJzfCRgWct4udVQUcR9mbe34A7J8nziAV9Cnk7J+BoTGe9JYXAAywfuNs3QrQpD3yj8dLbyw5tv3HP3Yc8GdEMEwDNWYjrxYt8+CdlOLYR3JrMR6pi7tbDmhQWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710420995; c=relaxed/simple;
-	bh=9Y/+hw0hgw9ADsFQLz0LPL3cLz0NNDauGYrral+Dtro=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=NpNlyqjVpvUkXbwTIq4cjOcmoi+TcSSPFYhPk3KcTI6RB2Ur1ycVREB2vYcJDmYHXCNe0DBESp2rVGAWKRAbD5W5KeCELng0lPOdrKk1WrH/MjxkQ94N8MZhCIZh8gesWXoPO86hgBut85jF+8mFa/NIGX8OciKtvz27glCUSy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=R/p4zuCW; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240314125629euoutp021f934e3c1ac6d88aa04b1526f653afad~8otPQhHwH0124901249euoutp02U
-	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 12:56:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240314125629euoutp021f934e3c1ac6d88aa04b1526f653afad~8otPQhHwH0124901249euoutp02U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1710420989;
-	bh=AtiIPD1nd1BTHIsx1dMEytn/tsBihsCy+dwOY7jQpBY=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=R/p4zuCWtTO6I2S2SBVnoJM4D/03rroyRNjc6VN1uUfQYoV9rcRtFkqbqNIVLKN2E
-	 yST+G/UfoOeOU8ynRiUXYXFs4KrDKfJUi1GBYlX3rrYQr7n/hhpXrgCaKU79D6rnQf
-	 s2iu5gvtOGEOh+p/VydajeBDAGzE7WKyeSuAobgI=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240314125628eucas1p2e3ad48e936d6c53ce89ca5f2e02d474c~8otOyC5e32014220142eucas1p2m;
-	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 46.99.09814.CF3F2F56; Thu, 14
-	Mar 2024 12:56:28 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240314125628eucas1p161af377a50fd957f445397bc1404978b~8otOP51sB1264712647eucas1p1m;
-	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240314125628eusmtrp157bb9d209f9df74e3c1ff96e3a790aaf~8otOPJAlG1799517995eusmtrp1O;
-	Thu, 14 Mar 2024 12:56:28 +0000 (GMT)
-X-AuditID: cbfec7f4-727ff70000002656-24-65f2f3fc65a2
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id D2.FA.09146.BF3F2F56; Thu, 14
-	Mar 2024 12:56:27 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240314125627eusmtip12f547f04dc25f77ebf9f2ed838088094~8otNdUPBP2067620676eusmtip1f;
-	Thu, 14 Mar 2024 12:56:27 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Stephan Gerhold
-	<stephan@gerhold.net>, Catalin Marinas <catalin.marinas@arm.com>, Russell
-	King <linux@armlinux.org.uk>, Christoph Lameter <cl@gentwo.org>, Mark
-	Rutland <mark.rutland@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Will
-	Deacon <will@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH] cpufreq: dt: always allocate zeroed cpumask
-Date: Thu, 14 Mar 2024 13:54:57 +0100
-Message-Id: <20240314125457.186678-1-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1710421082; c=relaxed/simple;
+	bh=FZ1cNFBFlSPPoYIArzXQLyxrZdGncIEVSbuyezNCAXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PUSW/Mw01AgYhupi+Ecd9B19rX3tY6GFnEFw0BIeR3Pb6iftNMIsohDN88RKhQ1XpaYfEUAStcBIjsKzg5U7ogUsJMgB3xuuzGFDTJKx+Ej8Wvjgf2MJseem4ibKvsgQ0eo0axNb5Jaqh7Dy1g9O0F/8zdQjEnjVtmvScUbjRPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=FMesrgHe; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1710421072; x=1711025872; i=deller@gmx.de;
+	bh=odpt+UeAoQp3H+46vofAUF42dmajnUDfArduK5gjvLI=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=FMesrgHeOMwe4IOj/OAF3o/te/rO1DTqn2lpsTWdcov+F9p6+8S8ePtA4wXs5Imt
+	 4JicPkyhvHiOEHQBb15jZTy62qK1zT9cbwpnn5+KDh7g06e+OS/ifI1Ah6sbdirx+
+	 XhTb0ovBjJwAfRXlkaf+vcW2JTzKU0vSr3E+nAbXSQg1m9J+br0me0lNMGnVFgCUM
+	 2qkfySFFVU2pZ5/UYpPNZAzWTuWMpfVuKd4wNAaDshS6oCVa17MG8Asa0Ely5TPTV
+	 3YSj1WiXAguvLfqv1d7wrYyxYcVDvbI99MmVxdnxU+U+wtU9qz/RJ/VWi2eRBdShW
+	 HackVaLPKhbhv6fPdw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.0.6] ([78.94.87.245]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MA7Ka-1rdZve1nEA-00BaXf; Thu, 14
+ Mar 2024 13:57:52 +0100
+Message-ID: <ed1eda66-8d67-4661-b50f-f2b152928bf3@gmx.de>
+Date: Thu, 14 Mar 2024 13:57:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsWy7djP87p/Pn9KNdj8Sc7i/bIeRovlc+Yy
-	WWx6fI3V4vKuOWwW99b8Z7X43HuE0eLQ1L2MFmuP3GW3WHr9IpPF3C9TmS0WbHzEaHFjronF
-	8lM7WCw2fvWwaLlj6sDvsWbeGkaPy9cuMnvsP1zk0bbA3mPTqk42j02fJrF73Lm2h81j85J6
-	j74tqxg9Pm+SC+CK4rJJSc3JLEst0rdL4MpYvGk3S0ETV8W/43/YGhj3cHQxcnJICJhIdF34
-	wNzFyMUhJLCCUeL37TOsEM4XRolL0zawQDifGSUubz7PBNNyctMJqMRyRolVU18ywbV8uNHD
-	BlLFJmAo0fW2C8wWESiT6P17CKyIWWAZs8Sse0+BNnJwCAvYSKztCQOpYRFQlZi95iNYPa+A
-	nUTzhVWMENvkJfYfPMsMEReUODnzCQuIzQwUb946mxmi5geHxMvFQSAjJQRcJL68YYEIC0u8
-	Or6FHcKWkTg9uQfsaAmBdkaJBb/vM0E4ExglGp7fglpmLXHn3C82kEHMApoS63fpQ4QdJf7e
-	f8ACMZ9P4sZbQYgT+CQmbZvODBHmlehoE4KoVpOYdXwd3NqDFy5BlXhIHL8kDhIWEoiVODPr
-	MMsERoVZSP6aheSvWQgnLGBkXsUonlpanJueWmyUl1quV5yYW1yal66XnJ+7iRGY3k7/O/5l
-	B+PyVx/1DjEycTAeYpTgYFYS4a1T/JgqxJuSWFmVWpQfX1Sak1p8iFGag0VJnFc1RT5VSCA9
-	sSQ1OzW1ILUIJsvEwSnVwJTyUnetpBmbEKeOSbXi4jvWt6z+8ymf0Kl3q/uSOFX88rlIbxWO
-	u/mW01/LcpdLGpx5a8FU2X3ErGijUPefloaSba8/HG+afv5bmcvPP0+YTr1KzfXMienaVV3h
-	sEB2oVxEvsq9q8r509nMorJzV+hKFJ6R+Xt0t04J7x63R4u2qoeun7t6Bm+qcsxB2R/ZX2+q
-	3Fmml9l825V1zq8pK3O+lpteKtqaoSwk/onxn3XnrtnsTnnXnz9YbvnC+oWWylP+C9v552ub
-	fo8p7TBTW2o2N4FlGcPcO435H1QXaK7r6Np+5NDxymh1n/SmiWHm/O/uFP5pS/O2OfHgydZP
-	QRpdM9W101fOmNgWWHtaWomlOCPRUIu5qDgRABqRgGreAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsVy+t/xu7q/P39KNbj9ydLi/bIeRovlc+Yy
-	WWx6fI3V4vKuOWwW99b8Z7X43HuE0eLQ1L2MFmuP3GW3WHr9IpPF3C9TmS0WbHzEaHFjronF
-	8lM7WCw2fvWwaLlj6sDvsWbeGkaPy9cuMnvsP1zk0bbA3mPTqk42j02fJrF73Lm2h81j85J6
-	j74tqxg9Pm+SC+CK0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAzMrHUMzQ2j7UyMlXSt7NJSc3J
-	LEst0rdL0MtYvGk3S0ETV8W/43/YGhj3cHQxcnJICJhInNx0ggXEFhJYyijR/9MbIi4jcXJa
-	AyuELSzx51oXWxcjF1DNJ0aJAydfMoEk2AQMJbregiQ4OUQEqiT+NKxmAiliFtjALHHh3Hb2
-	LkYODmEBG4m1PWEgNSwCqhKz13wEq+cVsJNovrCKEWKBvMT+g2eZIeKCEidnPgE7iBko3rx1
-	NvMERr5ZSFKzkKQWMDKtYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIysbcd+bt7BOO/VR71D
-	jEwcjIcYJTiYlUR46xQ/pgrxpiRWVqUW5ccXleakFh9iNAW6byKzlGhyPjC280riDc0MTA1N
-	zCwNTC3NjJXEeT0LOhKFBNITS1KzU1MLUotg+pg4OKUamFw/7E4v/uWZdV5549zwmvN8lR33
-	S+52fEn7ZP1bZ4l00qZn3f9za94Xf56jcqr7/KyMsPBZFoceStyo7VjsttjnfEPK3EO9yxI1
-	zoi4nG6VCVVezMOcfPbmwRN+wv8ydx98b/Uj4NKlyMtz4j5zr4sWvP9X/aqdTOaBMn1h4W99
-	v2Mt/qdo/bz9Im7j4eZz0vEnfBM7BWXavvAcdDa873uJ929W4tbE31+3bJK5sfvA0aKX4RuN
-	H+2q3STGIxTDbe35VUw62CCi+ymHuAaDuW1ym3YuwyZjlboL250ez/PoyHP0uyX7m8l2NtvN
-	r1aN86LNV3dKpe+1jNfQe81o7juFaS4nX0tZzMUPRdtXKrEUZyQaajEXFScCAG0BSGY1AwAA
-X-CMS-MailID: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240314125628eucas1p161af377a50fd957f445397bc1404978b
-References: <CGME20240314125628eucas1p161af377a50fd957f445397bc1404978b@eucas1p1.samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: bachefs stable patches [was dddd]
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: Helge Deller <deller@kernel.org>
+References: <ZfLGOK954IRvQIHE@carbonx1>
+ <vubxxvlsgyzzn64ffdvhhdv75d5fal5jh5xew7mf7354cddykz@45w6b2wvdlie>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <vubxxvlsgyzzn64ffdvhhdv75d5fal5jh5xew7mf7354cddykz@45w6b2wvdlie>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pHg2QXjuoUlpCdrUZQ+5YLre+8SC49itdaFZBu7CWq3XwuRGsQv
+ ZCBdJtD5R7WzzCrwZy/jGTNXz0IkRyufpEgTEpKjrSRRi5qjZBBBocY+6Nlmr/jYSts6eLB
+ 68zybUVSQxySXi7bDEwaNrY9UU6Nc+XP/sUI4Qbg8vwEj1aIaLEktWe3P0gTROWwBXHnDrp
+ YBoNGqtgsscVJbGRTNz0w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:t3RAqJSMjFQ=;4PfwVV9uKW8OjxHFxIvwpItM3/o
+ +w3mwaUjRitJ8gEV9TrMv0lBwKAZw/N0xboh5l0EcpT0IRElrcRwMxIOCXf/mk1W1OZEIIOFL
+ u8zVyYoi05VOp0clEpgTNdz5kc3NKbwT7vb5X/klGRPpntSrx0bm0VQRSed/QV0WCTlQSvshn
+ RnyOn94IoDYfC6fPU/fftPm1jCBvWFKxxnmRX/lTunpDk5akKUtbksXyf4etLh2UKVKsrTJTA
+ w9yjBc20cVYZv6Cz71t7PpFhlzCK3zjl/4fQYVhUFW/X+6vBMSDqQk/HSCLqNbIEmzXaVERo+
+ S3dmugMGlTx9VsG+MyzXd0lUC2mECb/+lBvMsGVwNUoKsDa1niH9sY9e6RiGxhPUa/1OL/u/k
+ +6KN/SbB4xf/mu86Ou8Dg4WhssAOtQxaWuy8vzKtcAVR5Wwk5amyChsVrSkyL1EIZvGrdrieT
+ v0qLMqlY4IMHGjtN8NFhfM+Y6bjagQV0tE8c6jL+OX9GMwsb/1GMNqK5sZydFE4EcNYr5O/Be
+ C9fMQ9gPcG7vgaCr8dZFk8HtGW+aZNAC4ANOydzMqsjGQPm26mPZDUdwaFxnphzm9tipOKR2V
+ 2HWUAdob1p15kAFLY9urLHBCesfnZZSd3piaHt2VpeFpANlSXIj9L4RwisRxs6zP8c/ucsy2t
+ GYfFcNXhYIdy8Phr7UsrwOVGeOO6Y6OFB7XrO4RtthMawNNbYkxL0qPH2w48blUgFcP4CG9lt
+ GJSlN9iFiqvihownob2mzW+GbeZS7mkN9NxZl4wCTdey4Mc9EoQpHaGp3bX16bot7d3WwRvIX
+ KhvcALFdT1Lr3vesDSQsdv6yBaMZNQ4UkzixNLyq1/HP4=
 
-Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
-supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
-what resulted in the strange issues and warnings during cpufreq-dt
-initialization on some big.LITTLE platforms.
+(fixed email subject)
+On 3/14/24 10:46, Kent Overstreet wrote:
+> On Thu, Mar 14, 2024 at 10:41:12AM +0100, Helge Deller wrote:
+>> Dear Greg & stable team,
+>>
+>> could you please queue up the patch below for the stable-6.7 kernel?
+>> This is upstream commit:
+>> 	eba38cc7578bef94865341c73608bdf49193a51d
+>>
+>> Thanks,
+>> Helge
+>
+> I've already sent Greg a pull request with this patch - _twice_.
 
-This was caused by mixing OPPs between big and LITTLE cores, because
-OPP-sharing information between big and LITTLE cores is computed on
-cpumask, which in turn was not zeroed on allocation. Fix this by
-switching to zalloc_cpumask_var() call.
+OIC.
+You and Greg had some email exchange :-)
 
-Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
-CC: stable@vger.kernel.org # v5.10+
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/cpufreq/cpufreq-dt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Greg, I'm seeing kernel build failures in debian with kernel 6.7.9
+and the patch mentioned above isn't sufficient.
 
-diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
-index 8bd6e5e8f121..2d83bbc65dd0 100644
---- a/drivers/cpufreq/cpufreq-dt.c
-+++ b/drivers/cpufreq/cpufreq-dt.c
-@@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
- 	if (!priv)
- 		return -ENOMEM;
- 
--	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	cpumask_set_cpu(cpu, priv->cpus);
--- 
-2.34.1
+Would you please instead pull in those two upstream commits (in this order=
+) to fix it:
+44fd13a4c68e87953ccd827e764fa566ddcbbcf5  ("bcachefs: Fixes for rust bindg=
+en")
+eba38cc7578bef94865341c73608bdf49193a51d  ("bcachefs: Fix build on parisc =
+by avoiding __multi3()")
 
+Thanks,
+Helge
 
