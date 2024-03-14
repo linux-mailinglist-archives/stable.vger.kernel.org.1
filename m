@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-28160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F7387BE7A
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:09:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1F587BEDD
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 15:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48E01B21860
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:08:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C9F01C20B52
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 14:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E3D71746;
-	Thu, 14 Mar 2024 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3723B6FE1E;
+	Thu, 14 Mar 2024 14:27:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D0A6FE02;
-	Thu, 14 Mar 2024 14:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BFE6FE0E;
+	Thu, 14 Mar 2024 14:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710425276; cv=none; b=J9Vz/7pGS/tFrbXBTzqiGoS2uxKivsYsGSf5hg0fW5YWYAOd6jFEtqEYudn0jpbkfExgZ940yp3SjxOQqud8U8C/9QEGzyx9ohi5kP0h1acPFHNb7z/Jt4LCEEocC3S8hpl0BhtKSVgnVZkRJgMA0sg9SCQQMgbhY5+zlONMgbU=
+	t=1710426466; cv=none; b=eS5pB4ImN9QaNrXiElX7iGLyE0Vpkxve6VbyyQ7P9d9LT9qvkJA6yGd/VHW+V+rvqi5+j86/qqC0pYkYByhx4EiBpFcu5r3D17WCZG7N7bgG65dpxPNbrXzPKe3y13Hw0oVc1ktTx+AGdNk6LK6WypNcnzhACMP+YiEOZbWreH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710425276; c=relaxed/simple;
-	bh=O0O3LXs8h1g6myDGlC1LeMEFa1dp5L9hgjVJBW1rijk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZQLFhkKr8hn0S7VqrdhtzKcCl3TybivkI1VDznoBp54+x1u+w44O5hCEN6Jd/9vy8DlHqQawdkRwim59XEQwp60UXjNvOQyRM99Ek2ISl6r11TMZCPQEWvdTnxrD8AsSJ67sGb9AuDy/CRQfs17UzGzKGINNvrSrLIXMpBpyok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TwTfj0Kgbz1QBL3;
-	Thu, 14 Mar 2024 22:05:17 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id A2C1F14011F;
-	Thu, 14 Mar 2024 22:07:45 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 14 Mar
- 2024 22:07:45 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <linux-ext4@vger.kernel.org>
-CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-	<ritesh.list@gmail.com>, <ojaswin@linux.ibm.com>, <adobriyan@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
-	<yangerkun@huawei.com>, <libaokun1@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 4/9] ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
-Date: Thu, 14 Mar 2024 22:09:01 +0800
-Message-ID: <20240314140906.3064072-5-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240314140906.3064072-1-libaokun1@huawei.com>
-References: <20240314140906.3064072-1-libaokun1@huawei.com>
+	s=arc-20240116; t=1710426466; c=relaxed/simple;
+	bh=QQT9AA2zZonsQUQxARfHUwH+9Hy/0C//Drq/MOzR3pg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sU28tDgfFBjuNU9zNyvV+bWkq1KVUnWknDz4HMUkXmDyUZNNqySaMCv9gBooEth3afk08BVwd7J5E99chAj8uWUqYF+ozhpxtN9MeU+GqvhHbM1zP2+Uh8CEx/dU+xOTwIg2exCL9yUkOWNVD1/3ZywK92Y/tuO7Z9NEAz9iucg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0086C433C7;
+	Thu, 14 Mar 2024 14:27:41 +0000 (UTC)
+From: Anton Altaparmakov <anton@tuxera.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@ucw.cz>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Chen Yu <yu.c.chen@intel.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-mm@kvack.org,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Mat Martineau <mathew.j.martineau@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anton Altaparmakov <anton@tuxera.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/pm: Fix false positive kmemleak report in msr_build_context().
+Date: Thu, 14 Mar 2024 14:26:56 +0000
+Message-Id: <20240314142656.17699-1-anton@tuxera.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,142 +60,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500021.china.huawei.com (7.185.36.21)
 
-We can trigger a slab-out-of-bounds with the following commands:
+Since
 
-    mkfs.ext4 -F /dev/$disk 10G
-    mount /dev/$disk /tmp/test
-    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
-    echo test > /tmp/test/file && sync
+  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-Call Trace:
- dump_stack_lvl+0x2c/0x50
- kasan_report+0xb6/0xf0
- ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
- ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
- ext4_mb_new_blocks+0x88a/0x1370 [ext4]
- ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
- ext4_map_blocks+0x569/0xea0 [ext4]
- ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-[...]
-==================================================================
+kmemleak reports this issue:
 
-The flow of issue triggering is as follows:
+unreferenced object 0xf68241e0 (size 32):
+  comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
+  hex dump (first 32 bytes):
+    00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
+    00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
+  backtrace:
+    [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
+    [<ea65e13b>] __kmalloc+0x54/0x160
+    [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
+    [<46635aff>] pm_check_save_msr+0x63/0x80
+    [<6b6bb938>] do_one_initcall+0x41/0x1f0
+    [<3f3add60>] kernel_init_freeable+0x199/0x1e8
+    [<3b538fde>] kernel_init+0x1a/0x110
+    [<938ae2b2>] ret_from_fork+0x1c/0x28
 
-// Set s_mb_group_prealloc to 2147483647 via sysfs
-ext4_mb_new_blocks
-  ext4_mb_normalize_request
-    ext4_mb_normalize_group_request
-      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
-  ext4_mb_regular_allocator
-    ext4_mb_choose_next_group
-      ext4_mb_choose_next_group_best_avail
-        mb_avg_fragment_size_order
-          order = fls(len) - 2 = 29
-        ext4_mb_find_good_group_avg_frag_lists
-          frag_list = &sbi->s_mb_avg_fragment_size[order]
-          if (list_empty(frag_list)) // Trigger SOOB!
+Reproducer:
 
-At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-to be triggered by an attempt to access an element at index 29.
+- Run rsync of whole kernel tree (multiple times if needed).
+- start a kmemleak scan
+- Note this is just an example: a lot of our internal tests hit these.
 
-Add a new attr_id attr_clusters_in_group with values in the range
-[0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-that type to fix the issue. In addition avoid returning an order
-from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-and reduce some useless loops.
+The root cause is we expect the same as the equivalent fix in commit
+b0b592cf0836, i.e. the alignment within the packed struct saved_context
+which has everything unaligned as there is only "u16 gs;" at start of
+struct where in the past there were four u16 there thus aligning
+everything afterwards.  The issue is with the fact that Kmemleak only
+searches for pointers that are aligned (see how pointers are scanned in
+kmemleak.c) so when the struct members are not aligned it doesn't see
+them.
 
-Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
+Note we have picked this up on 5.4, 6.1 and 6.6 kernels but we expect it
+is the same on all kernels >= 4.15 as the commit 7ee18d677989 which
+changed from having four u16 to a single u16 at the start of the struct
+was introduced in 4.15.
+
+Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
+Cc: stable@vger.kernel.org
 ---
- fs/ext4/mballoc.c |  4 ++++
- fs/ext4/sysfs.c   | 13 ++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/suspend_32.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 12b3f196010b..48afe5aa228c 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
- 		return 0;
- 	if (order == MB_NUM_ORDERS(sb))
- 		order--;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-+		order = MB_NUM_ORDERS(sb) - 1;
- 	return order;
- }
+diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
+index a800abb1a992..d8416b3bf832 100644
+--- a/arch/x86/include/asm/suspend_32.h
++++ b/arch/x86/include/asm/suspend_32.h
+@@ -12,11 +12,6 @@
  
-@@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
- 	 * goal length.
- 	 */
- 	order = fls(ac->ac_g_ex.fe_len) - 1;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(ac->ac_sb) - 1))
-+		order = MB_NUM_ORDERS(ac->ac_sb) - 1;
- 	min_order = order - sbi->s_mb_best_avail_max_trim_order;
- 	if (min_order < 0)
- 		min_order = 0;
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index 7f455b5f22c0..ddd71673176c 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -29,6 +29,7 @@ typedef enum {
- 	attr_trigger_test_error,
- 	attr_first_error_time,
- 	attr_last_error_time,
-+	attr_clusters_in_group,
- 	attr_feature,
- 	attr_pointer_ui,
- 	attr_pointer_ul,
-@@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+ /* image of the saved processor state */
+ struct saved_context {
+-	/*
+-	 * On x86_32, all segment registers except gs are saved at kernel
+-	 * entry in pt_regs.
+-	 */
+-	u16 gs;
+ 	unsigned long cr0, cr2, cr3, cr4;
+ 	u64 misc_enable;
+ 	struct saved_msrs saved_msrs;
+@@ -27,6 +22,11 @@ struct saved_context {
+ 	unsigned long tr;
+ 	unsigned long safety;
+ 	unsigned long return_address;
++	/*
++	 * On x86_32, all segment registers except gs are saved at kernel
++	 * entry in pt_regs.
++	 */
++	u16 gs;
+ 	bool misc_enable_saved;
+ } __attribute__((packed));
  
- EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
- 		 ext4_sb_info, s_inode_readahead_blks);
-+EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
-+		 ext4_sb_info, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
- EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
- EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
- EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
--EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
- EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
- EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-@@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
- 
- 	switch (a->attr_id) {
- 	case attr_inode_readahead:
-+	case attr_clusters_in_group:
- 	case attr_pointer_ui:
- 		if (a->attr_ptr == ptr_ext4_super_block_offset)
- 			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
-@@ -455,6 +458,14 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
- 		else
- 			*((unsigned int *) ptr) = t;
- 		return len;
-+	case attr_clusters_in_group:
-+		ret = kstrtouint(skip_spaces(buf), 0, &t);
-+		if (ret)
-+			return ret;
-+		if (t > sbi->s_clusters_per_group)
-+			return -EINVAL;
-+		*((unsigned int *) ptr) = t;
-+		return len;
- 	case attr_pointer_ul:
- 		ret = kstrtoul(skip_spaces(buf), 0, &lt);
- 		if (ret)
 -- 
-2.31.1
+2.39.3 (Apple Git-146)
 
 
