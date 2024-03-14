@@ -1,239 +1,239 @@
-Return-Path: <stable+bounces-28137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9210087BB42
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:31:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D0D87BB4D
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B60361C216F1
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF94A280D19
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63EF2CA4;
-	Thu, 14 Mar 2024 10:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9594559B6C;
+	Thu, 14 Mar 2024 10:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Rdfaxi+g";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7hkWv6Zc";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Rdfaxi+g";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7hkWv6Zc"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="RWa7osaS";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="GpghkVvn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A71E87C;
-	Thu, 14 Mar 2024 10:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710412260; cv=none; b=n1cyP57i2ZRZTzBvWbRENIYpLbSIlp1uKNtpL5UjEZteA/0uZ8+PKuMmvdL0s/0LLyb2Fw0VH9rgHB2SKc3ROaVrtSgV23IpX238dIXKcic69aBmcGaSlISsQdVXBndvJT7o4cA1lwdwxKA2J3YjiGqeMYzJF5275FEbxmprZHU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710412260; c=relaxed/simple;
-	bh=ECFErk5tKpd8PWA3UDDf7K2uDuRAUVTnmPaFdvr57IM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=reW1yolj3nE5S8UJf6+9SXQoHR9A/w9pU4Biy6mI7nzv0QPzdJ5ZVZPRtAa2uFrGFhQxDXBVyga05mrHrrSkZA5FG2kD+O+MYQNVO5X8FFvsnDZGhOnqJkZQMdW47CWVA2IZp5KvZoD3ONcWVp6ScXGmbv8tN0BiAVLhOqIbdAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Rdfaxi+g; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=7hkWv6Zc; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Rdfaxi+g; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=7hkWv6Zc; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 92AEE21D11;
-	Thu, 14 Mar 2024 10:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710412256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fgcPoJWuADTATxVqCMlhkWZkFj6QJEwydD1gS0O8CQ=;
-	b=Rdfaxi+gp6HPzAakyNp3fB72w/Z44k0uyMDdByL/in7C1LmV8qXuRNGBoqxXifPWJJMOp6
-	lKORGzVlosnJIkJxp3pSsPPJiLGWgr2aHta/GVlegaH1BOuv7CoHsyIKk/ccoQnQAWEKBY
-	mj4Va5eamkHPUDvfvBw1HCTU0fyUukE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710412256;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fgcPoJWuADTATxVqCMlhkWZkFj6QJEwydD1gS0O8CQ=;
-	b=7hkWv6ZcgnVnd0qH4FQjpiGyMp/JD7l5nIEw9IG63rx2WU71ODxIwyoFVp4SX+jifscFdN
-	fP4wzm1+kCuxBjCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1710412256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fgcPoJWuADTATxVqCMlhkWZkFj6QJEwydD1gS0O8CQ=;
-	b=Rdfaxi+gp6HPzAakyNp3fB72w/Z44k0uyMDdByL/in7C1LmV8qXuRNGBoqxXifPWJJMOp6
-	lKORGzVlosnJIkJxp3pSsPPJiLGWgr2aHta/GVlegaH1BOuv7CoHsyIKk/ccoQnQAWEKBY
-	mj4Va5eamkHPUDvfvBw1HCTU0fyUukE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1710412256;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fgcPoJWuADTATxVqCMlhkWZkFj6QJEwydD1gS0O8CQ=;
-	b=7hkWv6ZcgnVnd0qH4FQjpiGyMp/JD7l5nIEw9IG63rx2WU71ODxIwyoFVp4SX+jifscFdN
-	fP4wzm1+kCuxBjCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8258E139E7;
-	Thu, 14 Mar 2024 10:30:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sjfOH+DR8mXDTwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 14 Mar 2024 10:30:56 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2B7C4A07D9; Thu, 14 Mar 2024 11:30:56 +0100 (CET)
-Date: Thu, 14 Mar 2024 11:30:56 +0100
-From: Jan Kara <jack@suse.cz>
-To: Baokun Li <libaokun1@huawei.com>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	jack@suse.cz, ritesh.list@gmail.com, ojaswin@linux.ibm.com,
-	adobriyan@gmail.com, linux-kernel@vger.kernel.org,
-	yi.zhang@huawei.com, yangerkun@huawei.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/9] ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()
-Message-ID: <20240314103056.rykwi2hhfm7v575a@quack3>
-References: <20240227091148.178435-1-libaokun1@huawei.com>
- <20240227091148.178435-5-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B11D6EB41;
+	Thu, 14 Mar 2024 10:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710412333; cv=fail; b=OGjR6onSJnQLFD+xCtpFh8a0jVzAE2Uha8VnWFo1uBCrt1ThfCr0Ds9sr9h73gE4Q76hroG1sxU0rNS1uEEQd2/rcTnU94OjUJElZgcms7sbKjGODdlUnZez3dFm1c8MgPvwtYhtyRjA96LWI22mwP7nrrA+GJTfe9sFIXsDPJg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710412333; c=relaxed/simple;
+	bh=c2R/j2S9WZMQ9X2AXdrBcSNpvbwkNe9RmVF12FWRsHs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lEn/sevK+MgKcJFQgGDF0gZR9+UCImv11Ax/BB0WXXGQHfliOdhknHAp/sEzHYSEi3pbKNnouZ0FUkuiS6s1u4DstkjXS71aC1+WIX6dnN5pEH3ecjeLOAoSUoUTcT6KABHvJbMcYudL2dBuntKS2C9urrZYlQ09FDiG2JVMusY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=RWa7osaS; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=GpghkVvn; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42E7mq6l012793;
+	Thu, 14 Mar 2024 10:31:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=8SklKodICpd4h0Jk+ExA0vx+MtGONnbuqcTLGPFKf+g=;
+ b=RWa7osaSAAjx8GlgZs8DHS0fUSsxtjUgf6t/ygKo0ybLrxmWy1LxwOuioVMqVslpiALb
+ YzAaKyb0DcKRFhldB6Neg4UBL0nbnuW2hl1JePYLKI0oiays9pVHvyMLG+LrVNRh2ekb
+ R4v4RUYM796hfVZko51LzAvky/KGdTeFqmv4+pSteV1dhZ+2N4RXkrqrFqseP3PmOC2K
+ XJRj6q3LPa0uy9iqxTrUP5tQ181Xw6sJ9RcBLIpHTStBd5TKN50m5XiFObFna9oOiZi3
+ bMEIv31kYvEXpUwu3Y+y9xIPkV5R270On6ATpb6iBpszZJgib96lJECPKCL7cPDoFMxb UQ== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wre6ek3fe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 14 Mar 2024 10:31:49 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 42E8vUdM028610;
+	Thu, 14 Mar 2024 10:31:49 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3wre7a76bn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 14 Mar 2024 10:31:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DzzdV+fgd6zaWmVHU6zeTX/P39FncyU/lrJrJWGMuMV5eodC2u3Zw3MvO1iGG8v2es1KRMmt7npktu10EWXZ8Xu2cJKva4JIk7WwqbpZFQBUDlNUpU5wUVQYJnBE5/UlXPbifCP9L50iSfNr7BwSR5JS/zAw60IgToMwTg/L9DVmZe3/IcfepS3/kyDiOR/DvojhoYA6XtUXCVTOq2kwl2dloUfglgJK7E8BuFPnuN9JUP53uayFRGRVOAORvrL5iEj3ivXul6EYo8U/uo5KKHVZGjg9fIfHoENn2UKeCEoR17N0N2Chd4A6xL07+Uye9m9kkTal9HiVUa/yC5iCZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8SklKodICpd4h0Jk+ExA0vx+MtGONnbuqcTLGPFKf+g=;
+ b=WbmwAd2oja0jeJ/ZatS4D7Rvq4zLaQ6ZcBHMvBvnplSSKTvQxcMns2Gl6I99lLT9v1XHMvmAGbAYXjoBUWGhoTEnoH26CdVPnFh+04aiwz6cahg9RBOfctKZjkTWvsVYRmI/UbSGicKp6fSL3seOyOp0U21F5jKIXgaNqG4LxgI0veh95FfPTm7PjrTo7xQV5A5lWd4+GsqI6R7foY1QrVuAYUb+dUrwDjZCMTeuL8a9Wc5glveXvE10kSLq2/rsiLNuY3NyZiw3EqBz1G3qq7yoIlkCFaNxaLSfontsmtRHRWk5ovUHkRqh2XSkKSQYvl9rqYEQX13r25B8M3I7Qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8SklKodICpd4h0Jk+ExA0vx+MtGONnbuqcTLGPFKf+g=;
+ b=GpghkVvnLgjvVdQLYL50+vT+MGLGK+YECfh2RbPYzwBbNOgL6fucbeXEwnTYMvz0U6GbIGBIgwC9HCG/uT3PTo1LOSA2+0IwRxP0QZv7+7GnfRJ/IR0f/hvQNkp8SXRc5pH3NgmQf+l9ux0qXFF0pphozG0wSF+X0LsI49gocNI=
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com (2603:10b6:5:212::20)
+ by CH0PR10MB5019.namprd10.prod.outlook.com (2603:10b6:610:c8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Thu, 14 Mar
+ 2024 10:31:46 +0000
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::ae68:7d51:133f:324]) by DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::ae68:7d51:133f:324%4]) with mapi id 15.20.7386.020; Thu, 14 Mar 2024
+ 10:31:45 +0000
+Message-ID: <36cf2d98-931f-4b33-8701-a737d6b0498b@oracle.com>
+Date: Thu, 14 Mar 2024 10:31:41 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] scsi: scsi_debug: Do not sleep in atomic sections
+To: Bart Van Assche <bvanassche@acm.org>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, Douglas Gilbert <dgilbert@interlog.com>,
+        stable@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>
+References: <20240307203015.870254-1-bvanassche@acm.org>
+ <20240307203015.870254-3-bvanassche@acm.org>
+Content-Language: en-US
+From: John Garry <john.g.garry@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <20240307203015.870254-3-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR04CA0001.eurprd04.prod.outlook.com
+ (2603:10a6:208:122::14) To DM6PR10MB4313.namprd10.prod.outlook.com
+ (2603:10b6:5:212::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227091148.178435-5-libaokun1@huawei.com>
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Rdfaxi+g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7hkWv6Zc
-X-Spamd-Result: default: False [-1.31 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 BAYES_HAM(-3.00)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_TWELVE(0.00)[12];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.com:email,huawei.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,dilger.ca,suse.cz,gmail.com,linux.ibm.com,huawei.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Score: -1.31
-X-Rspamd-Queue-Id: 92AEE21D11
-X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR10MB4313:EE_|CH0PR10MB5019:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8cfae44-9532-4e06-f94d-08dc4411f2af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	uRN5sHgAYoh7jG+7S6xyBEoHY2dQ+O8t8vdgsRX+XkmniZCQka0C0DzuPkvlQ1oT3itacp4/UlR/ncqf6NC3mnls3gHJJRdAYZoR09j8LbkgjFFRGdQ3YHDzPiSs2/NVmL2YAkWj5Z6Ow3b/YUtRh4QcxGb3K6/91LCzoRJxBdLBFqsHgvYPDxn77GeAQ5hkG5ncaA/XHoNyfflfW39Dw5kT7PXw3ZppD1zidkDLtOLXaqbNVZDbPFruPkRFu7tLE+Raoso0zjL5DTc8VnME9yssJGKk0n+Urs6yero/8taMPoUWQqJA8oieXzXJfz9RhtkSnav88dI6Lt1CaVb40w1Y0ITlNTkFbN0I8CaBKAgy6v19Z9GneHdrEufbcIig4MSQL4JznE4l+tmIr/lUXEkDeZ84BZrrNslNUcmfwobc8HSStRYSKnbuF05dV1TfM08KFyGWi7QkgTzzrJzRM1eBV3yPdiGUzNHLcEhEn2T07EtPHJFELo8S3SxTBle+1pPdEFRND4BUWD1Z2pvTQ6jqOPk8Ofh0cAvw/YG6x8l/mpmPYwN4er1aoJg31tWN23+e9WN5Sf3Wkdl0lW02MjrNH9zJ7zcjt5xhZ9CBQshrUMUzDdH9BqAi4KdLbicgYzU6EOBafatR1V8pjT2Sfnh0xrlpjwE9irbEXqjkI2E=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4313.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?V0p4bXgwejdsY3dqZCtkNDYrSUtEZDgrQ3NHOVdGdEpXRDhDK1pHQ011Ri8z?=
+ =?utf-8?B?RklEbjFMRytKeitNeW9abFhSRktkWkJlaDlpRU1Iei92UzBaZzJTWVV3cWFQ?=
+ =?utf-8?B?bG1lL1NFM2RQVTU5ck9tVEpnbUdkQ0hyay9KditzaExiZm8rQVNOdDY1RTVl?=
+ =?utf-8?B?U1lPcW5HamdnRkpic0RNNHFWVFFiclEyZlBKMXhSZDFrcUpBQ1lnL0VKL2dL?=
+ =?utf-8?B?VW5LbllpT3FzeHFPZDhhMktRd2FCck1LR3MyTHpnTlFuZVlyNG9oZ2E0aG1i?=
+ =?utf-8?B?Q1V5aHpVSnEzUFJZekFBNWFuZjFwdUVEaGtHNkFDSDZlN1FMQVJSZm1oT3E5?=
+ =?utf-8?B?ZndhbmlhN2dVVDJCbWVYMTF2ak5CZ3BnYTdNMHQzUTZlWmlPUzM5aFJiTVFX?=
+ =?utf-8?B?VUJMdE55NWttQXpLSFlpTEo4aTEyRHhnSUxHdStpVVU5b1lzWnNLRUZ0NVhY?=
+ =?utf-8?B?R0FmeW44Uk8vM1hvTy9UeXNEcjhrZ0tTWkhHV2hBcGRMTVNCVHJuMEl1QW9n?=
+ =?utf-8?B?Vmt5RHRFU3lrajArNjU1dzJtMTlGU1FkZHdrbUx3T09TRE5PTjNkMkZaMUNn?=
+ =?utf-8?B?M25zcUJFdnB0SW00Si9EbzJpTWJPWGFtcGJ2TmtVUEtnYjk4UmNlQjNKbFpE?=
+ =?utf-8?B?MzdwSXMvTm5Mam94djFjQktoUW85YTE2bSttdnJRMUp2UkF0UktPT1NmUDBt?=
+ =?utf-8?B?L3NzNGpNQVAwNHNicyt0d1V0YUcwU29XQzdYVFd0T2srU0RiNDdFZjM2VU15?=
+ =?utf-8?B?YkpJZTJxSVgzaFI5MWdZZy9TL1BrZXNzTTh0Smt5NVJTc0p6dDNBY1ZNUUgy?=
+ =?utf-8?B?RFFTSG1qYW1GUjVsVTcvSEhtazVKUWtjdGF3Q3Nyb1BkbUR4SVZqWjhjbXNy?=
+ =?utf-8?B?QkRRSlBGbFo1SEo2QW1GRGdPWkRGUnM0b3ljSjNaNm5zdUNGQ0FJcnlNMHVZ?=
+ =?utf-8?B?dm9ySmNIL3ZsNjE0SVF3WkdwTVpwZnlnNkwxeWI4OVNrNVVxejk2ajkrdHVX?=
+ =?utf-8?B?d1lrZEVrNjlSUVI2ZmxSNW0zK2I1OUpZVW04NngrNnRuWTc0N1pvQ3BNNTd6?=
+ =?utf-8?B?OUtOZDdrNCs1dEJJTEJUSUtvZTR6c093UERaSFdIQzhkOEFBeXhlWjRzczQ4?=
+ =?utf-8?B?SEJralBacXlteTl6MmVDWStNTjcyR2xTeWVNc29GcTVYSDI2aHVmSHJ3VDgw?=
+ =?utf-8?B?R1NEUmt2WGZiNXZjVkIwUU5TbUJkeUlrRTJ6RFNnOFM4MWVYQTBBdUk5UUIr?=
+ =?utf-8?B?bno1REU5RllpMWgzdWo3U0FjdTl2c1hhSS9ab25WL3lnSXo3SzZ2K3VGM3I0?=
+ =?utf-8?B?dWpWNUdPanJuYW00bE5nSkJ4ZElkMGozUVhHanRmcVlxYWEyN2NHcjNnVU9V?=
+ =?utf-8?B?VmZpR3JnUEpYTGxvTGM5VmtYV1A5MUdVNzAxL3hFa3ExTmJZVGtJT2FqajRk?=
+ =?utf-8?B?T3RKaE9zTlIxVXpCR245Wk5OdTYvdTVscEtPR1FXNjN3WXZCWjNxNXNRNzJy?=
+ =?utf-8?B?T0ZteGM1Yll2MEJGc3I0eGNHbzY0Y3JSMllVZit3QzRsTnBGeEtUK2xEL2hL?=
+ =?utf-8?B?MkNtK3RMM2J4RFF3R0JHRjBWdlFRYnFXSlpXQUhONXZLKzZjNktXeFc1Yzc1?=
+ =?utf-8?B?NGVZTVh0dU9SeE1DWkZBc2c3WGhKcWdrZ3hVcWJvRTF2ZHFNcEZCbHRUNnJT?=
+ =?utf-8?B?dGt4Y2xIbzUyMVlyK09KT3BZTTNWMStOb0xpUDZPRG1rUUNtT1c5UEJJMkNx?=
+ =?utf-8?B?QVBEdndQYnpsNkpNMCtUN3lYaGpzRVBWL01MOFVkQ2l6dnBzOVNuNTlkUW5V?=
+ =?utf-8?B?dWRIVkRESlhIUkJvazBLU1hCODJQcE83VEhSU1ZzcXF2aVFaeFFjQlBTdVQ0?=
+ =?utf-8?B?MzZVcnZlNHNaUDNXRTZoQlBqVk1DOGxqdXlzc3oxWEYxc2p1czI1SXVwbjJP?=
+ =?utf-8?B?bjR6NHhGV1FJZ0ZDUEt4SzQyWmdIbUIvWlRoYVIyV2tuYytQUjkxMlpaaTlV?=
+ =?utf-8?B?Mkc0THJ3aTQ4RG5KTlBrRWVDdnlQb1ArRW9pOEhURWQrTTlYMXgyU1U4U2ZD?=
+ =?utf-8?B?K1NxRE50bGwxUTZpVS9LQXhWTXRuNTd5VTNKRVN0cWhOOGZoTSsvVDhXRlh2?=
+ =?utf-8?Q?5s/znVBYbffCtPHelxNUFSJ2Y?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	ht8p7JwyPAmF5jqbmFKLvWlYlBQJsNrqTi0jojaoTfzdBgHgRHtLUF2dBb2abchvHj/qVnwPKxvCxGqtkmxGBk1ubXhrIoq3k/aVYX2mnenz+0eOzFxs0pQlRw/HRaCqSWTirK0ciI5DS6Z1iCTmDZcgM2Qtgz6SKbhIAuAjr6EM63SYg/MmJA+VWbgWRxW98rJAWmtwmR2RlwDhzp/101O6drMUaN2h7Y25Giichyla1aV90OfcOpR0VlNq1uQ1Fwf21sW31PDAnyMvPYuJ/FEGuYfZqu98fjhD+rcKzAsK05zqi+nG9vM7QIN82Bmvh1kHmIRt61ZDS6JEBu4PfHIsDGsn3KFYrzlcqMGjpyBPjJ6fOHS5TdIvls2bmfi5lRxm7u2D7xfF6E7GtLLQX24RLBQtgoYrcrLR1tIbRgXXHznk9Q/2I6lZKXFH1NDA8Zj8frF1hbaVlHRN/Bp6+EyuykiarQG4iWKN91CWdRtk0QjjROnwb1NwVQLIMfbRR+bDwW1qrhyeu+cMeA/Z/bCUVEYg4N5Exk13FO4w6GXMhNdGAiv8OWCXtQ5hJse8+DVMS6Rm1ntud0jF6RifUkg22TRO3c5ey5unqcx6fMU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8cfae44-9532-4e06-f94d-08dc4411f2af
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4313.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2024 10:31:45.9024
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ysj5GjatAa7l+heCMNtQIg0/y5Jtm2q34aTfW+HJQic9zU2AlHIy4KVxucZeTCuQrRVPzePnxRi16H5R279lbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5019
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-14_08,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 adultscore=0
+ mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403140074
+X-Proofpoint-GUID: KVekYsBLf8-kzhSwu-zyovbAGD9VF4WH
+X-Proofpoint-ORIG-GUID: KVekYsBLf8-kzhSwu-zyovbAGD9VF4WH
 
-On Tue 27-02-24 17:11:43, Baokun Li wrote:
-> We can trigger a slab-out-of-bounds with the following commands:
+On 07/03/2024 20:30, Bart Van Assche wrote:
+> stop_qc_helper() is called while a spinlock is held. cancel_work_sync()
+> may sleep. Sleeping in atomic sections is not allowed. Hence change the
+> cancel_work_sync() call into a cancel_work() call.
 > 
->     mkfs.ext4 -F /dev/$disk 10G
->     mount /dev/$disk /tmp/test
->     echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
->     echo test > /tmp/test/file && sync
-> 
-> ==================================================================
-> BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-> Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-> CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-> Call Trace:
->  dump_stack_lvl+0x2c/0x50
->  kasan_report+0xb6/0xf0
->  ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
->  ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
->  ext4_mb_new_blocks+0x88a/0x1370 [ext4]
->  ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
->  ext4_map_blocks+0x569/0xea0 [ext4]
->  ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-> [...]
-> ==================================================================
-> 
-> The flow of issue triggering is as follows:
-> 
-> // Set s_mb_group_prealloc to 2147483647 via sysfs
-> ext4_mb_new_blocks
->   ext4_mb_normalize_request
->     ext4_mb_normalize_group_request
->       ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
->   ext4_mb_regular_allocator
->     ext4_mb_choose_next_group
->       ext4_mb_choose_next_group_best_avail
->         mb_avg_fragment_size_order
->           order = fls(len) - 2 = 29
->         ext4_mb_find_good_group_avg_frag_lists
->           frag_list = &sbi->s_mb_avg_fragment_size[order]
->           if (list_empty(frag_list)) // Trigger SOOB!
-> 
-> At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-> but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-> to be triggered by an attempt to access an element at index 29.
-> 
-> Add a new attr_id attr_clusters_in_group with values in the range
-> [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-> that type to fix the issue. In addition avoid returning an order
-> from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-> and reduce some useless loops.
-> 
-> Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-
-Looks good. Just one nit below. Otherwise feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
+> Cc: Douglas Gilbert <dgilbert@interlog.com>
+> Cc: John Garry <john.g.garry@oracle.com>
+> Fixes: 1107c7b24ee3 ("scsi: scsi_debug: Dynamically allocate sdebug_queued_cmd")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 > ---
->  fs/ext4/mballoc.c |  6 ++++++
->  fs/ext4/sysfs.c   | 13 ++++++++++++-
->  2 files changed, 18 insertions(+), 1 deletion(-)
+>   drivers/scsi/scsi_debug.c | 9 +++------
+>   1 file changed, 3 insertions(+), 6 deletions(-)
 > 
-> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> index 85a91a61b761..7ad089df2408 100644
-> --- a/fs/ext4/mballoc.c
-> +++ b/fs/ext4/mballoc.c
-> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
->  		return 0;
->  	if (order == MB_NUM_ORDERS(sb))
->  		order--;
-> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-> +		order = MB_NUM_ORDERS(sb) - 1;
->  	return order;
->  }
->  
-> @@ -1057,6 +1059,10 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
->  			ac->ac_flags |= EXT4_MB_CR_BEST_AVAIL_LEN_OPTIMIZED;
->  			return;
->  		}
-> +
-> +		/* Skip some unnecessary loops. */
-> +		if (unlikely(i > MB_NUM_ORDERS(ac->ac_sb)))
-> +			i = MB_NUM_ORDERS(ac->ac_sb);
+> diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
+> index 36368c71221b..7a0b7402b715 100644
+> --- a/drivers/scsi/scsi_debug.c
+> +++ b/drivers/scsi/scsi_debug.c
+> @@ -5648,7 +5648,7 @@ static void scsi_debug_slave_destroy(struct scsi_device *sdp)
+>   	sdp->hostdata = NULL;
+>   }
+>   
+> -/* Returns true if we require the queued memory to be freed by the caller. */
+> +/* Returns true if the queued command memory should be freed by the caller. */
+>   static bool stop_qc_helper(struct sdebug_defer *sd_dp,
+>   			   enum sdeb_defer_type defer_t)
+>   {
+> @@ -5664,11 +5664,8 @@ static bool stop_qc_helper(struct sdebug_defer *sd_dp,
+>   			return true;
+>   		}
+>   	} else if (defer_t == SDEB_DEFER_WQ) {
+> -		/* Cancel if pending */
+> -		if (cancel_work_sync(&sd_dp->ew.work))
+> -			return true;
+> -		/* Was not pending, so it must have run */
+> -		return false;
+> +		/* The caller must free qcmd if cancellation succeeds. */
 
-How can this possibly trigger now? MB_NUM_ORDERS is sb->s_blocksize_bits +
-2. 'i' is starting at fls(ac->ac_g_ex.fe_len) and ac_g_ex.fe_len shouldn't
-be larger than clusters per group, hence fls() should be less than
-sb->s_blocksize_bits? Am I missing something? And if yes, we should rather
-make sure 'order' is never absurdly big?
 
-I suspect this code is defensive upto a point of being confusing :)
+We were relying on the work CB not running or runnable when we return 
+from this function, and that is why there is cancel_work_sync() [which 
+is obviously bad under a spinlock]
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Otherwise, sdebug_q_cmd_wq_complete() -> sdebug_q_cmd_wq_complete() may 
+be running and reference the scsi_cmnd - that should not be done, because...
+
+Checking the comment on scsi_try_to_abort_cmd(), it reads:
+" SUCCESS ... indicates that the LLDDs has cleared all references to 
+that command"
+
+So, if we change to cancel_work(), we really should ensure 
+scsi_debug_abort() -> scsi_debug_abort_cmnd() returns FALSE/FAILED to 
+upper layer for when cancel_work() returns false. Effectively the 
+(!sqcp) check in scsi_debug_stop_cmnd() checks for already run or not 
+even queued. However, we still need to consider when the WQ callback is 
+running.
+
+Cheers,
+John
+
 
