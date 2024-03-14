@@ -1,139 +1,123 @@
-Return-Path: <stable+bounces-28117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110BB87B85F
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:17:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC5A87B850
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:10:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C16EB2320E
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 07:17:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C581AB233EB
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 07:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11905C613;
-	Thu, 14 Mar 2024 07:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC18DDDA;
+	Thu, 14 Mar 2024 07:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="SPGjn6pM";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ZSt6A1RC"
 X-Original-To: stable@vger.kernel.org
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05EE5A119;
-	Thu, 14 Mar 2024 07:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.192.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8137B7483;
+	Thu, 14 Mar 2024 07:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710400616; cv=none; b=fE1Nuj6E5Rf0YmvdbOiHeyxwMmZauBAfVpzZdFxc+KlJpuMA4TK358/NwC0DWEkePxYfi1//Gd0XQ8ZrK1UuITIKS12EoCxa+nRjpDq6pfR9KmzBQzjWFSEpPGw+cqKYQN4NIUgNqaPjN2KtM/IlD+9yIqz7HrDkuWe8OXnJTAY=
+	t=1710400213; cv=none; b=Gdo0xQDWrN3pZHFBpDXUs30Z9mUftuo5wMoq4TBiglx7jWHi7T4fpQ/bdP/fkvOy0O1kZfouHw7aDyUsAdBE2cNOTLDkIOxwEA0x6AGDtuGA818EORNlH2enGpNffrcOAs7hyHT2KO5d+3Vr640U2VJQRebSgUcb0B3GCZrtqpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710400616; c=relaxed/simple;
-	bh=rWIeLb4RUhYpHhwwe81U3ahk3XwZPUa8yLrRX7/PgVc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sso9pWMF8Tm+m5KMNLoa1G08csdmjiYsTRaBu5WYkQbva3ZPPhzPnvtXY0XOQ4oczq8bS8puKmWGTjvtB4mHnZT235Qt9qk505iJ+3yWIBlGwul/ZkB3j+8cbxxLIBbDWkYcMBv2N2XaGfozA04dwG5+hhYW6gYc2TvIn82rw8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hihonor.com; spf=pass smtp.mailfrom=hihonor.com; arc=none smtp.client-ip=81.70.192.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hihonor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hihonor.com
-Received: from w003.hihonor.com (unknown [10.68.17.88])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4TwJBW109YzYsCZm;
-	Thu, 14 Mar 2024 14:58:43 +0800 (CST)
-Received: from w025.hihonor.com (10.68.28.69) by w003.hihonor.com
- (10.68.17.88) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.25; Thu, 14 Mar
- 2024 15:00:14 +0800
-Received: from localhost.localdomain (10.144.17.252) by w025.hihonor.com
- (10.68.28.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.25; Thu, 14 Mar
- 2024 15:00:13 +0800
-From: yuan linyu <yuanlinyu@hihonor.com>
-To: Alan Stern <stern@rowland.harvard.edu>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: <linux-usb@vger.kernel.org>, yuan linyu <yuanlinyu@hihonor.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v1] usb: f_mass_storage: reduce chance to queue disable ep
-Date: Thu, 14 Mar 2024 14:59:49 +0800
-Message-ID: <20240314065949.2627778-1-yuanlinyu@hihonor.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1710400213; c=relaxed/simple;
+	bh=jY6yOpE8g9BQVfVV2ZkfIkx2zon2uXer6mzsjaixt0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ObOhG8Dva6ug31qHDjzMSDO/W09F1tC+msK/3SO9kSLF3CmV6U/AX/jlQ6i8GIuSpaxJkxav56jIWqsBswozu9sRh14R6iXJZjD0I928iaOPdl6S9G7ZBG3Sl3HbAZv+VUS4HTdBD/WZH0SA2meaR+YDmWo32FeVr7s4Mz8z0GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=SPGjn6pM; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ZSt6A1RC; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 208BFC01E; Thu, 14 Mar 2024 08:03:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1710399829; bh=3Vv06S8OE0qnROsAgEOpxSNvRHaMC9janhFTWckPh+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SPGjn6pMlC0hxjnvWiFi4yuaD+Me9YRaiEjz9yKlZpGf5xIY3UFHv9HuIxHvn2lRV
+	 O2EA/W3iOn0PCeRJM1QDD84hyagGsbkMQnwKZdzr2KCYPIj7ckxn+02hxXk9cjSJuU
+	 edujCM9iKpybgSYt0vtWd/LN3j+98Wyalxr7FINaGM/eIwZchvTbiBnzFoCEkKB+MA
+	 gpbHyodFgjgK/jXcX+lPVj6xwmeJqO87MXrNLXlYrX41dRAiRWbQgwZ+yuUjnVYlq0
+	 pRjwTZ8fcgMuF+7UzkV7RJI93miUCA/my7PTjYJ9M50L8Il3060HFybfJGQMFTmqSm
+	 6mOHSuZ1obGeQ==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 60BE3C009;
+	Thu, 14 Mar 2024 08:03:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1710399828; bh=3Vv06S8OE0qnROsAgEOpxSNvRHaMC9janhFTWckPh+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZSt6A1RCFK9P6wi6S9jOhVJeqevRv7Q17lI9WJe8YB+JRF5p8Xgt13VR0Xc9lyIjo
+	 gTmHSwNLtYDoBNDzXg6Npv2A08heBSgw8XaZsnqOjBJ/CikiBHdKFRBuN+IuY28RLD
+	 gLb7co1SKnonFEL0mI9DUNQ/7CwcMC+BKJksVhRPvaiFLAljHF6VaaihN2qd/ZDwIZ
+	 ot9ffnxkrtzPl6IaxPAP+EJ1o8sDX3DzADndMapZQrZ4BMN4tocYJnr5oPdtZWiEcS
+	 EwvE6WWWCWe8Wz8rmA6uUIUKOUPSzAmkRZx/qaCfeni/m/aVx8gNNH86abLvgjTgtg
+	 F7YY4NYonuXYg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a2e2f42c;
+	Thu, 14 Mar 2024 07:03:40 +0000 (UTC)
+Date: Thu, 14 Mar 2024 16:03:25 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de
+Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
+Message-ID: <ZfKhPaFngJTrTJyt@codewreck.org>
+References: <20240313164640.616049-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To w025.hihonor.com
- (10.68.28.69)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
 
-It is possible trigger below warning message from mass storage function,
+Sasha Levin wrote on Wed, Mar 13, 2024 at 12:45:27PM -0400:
+> This is the start of the stable review cycle for the 5.10.213 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-------------[ cut here ]------------
-WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-CPU: 6 PID: 3839 Comm: file-storage Tainted: G S      WC O       6.1.25-android14-11-g354e2a7e7cd9 #1
-pstate: 22400005 (nzCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
-pc : usb_ep_queue+0x7c/0x104
-lr : fsg_main_thread+0x494/0x1b3c
+Thanks Sasha for submitting a stable rc review!
 
-Root cause is mass storage function try to queue request from main thread,
-but other thread may already disable ep when function disable.
+If it's not too much trouble, would it be possible to have a different
+header in the 00 patch from the other patches for my mailbox?
+The mails Greg sends have the X-KernelTest-* headers (patch, tree,
+branch etc) only in the cover letter, while all the patches themselves
+only have 'X-stable: review' and 'X-Patchwork-Hint: ignore'
 
-As mass storage function have record of ep enable/disable state, let's
-add the state check before queue request to UDC, it maybe avoid warning.
+I don't really care much what actual tags are on which as long as
+there's a way to differentiate that cover letter from the rest so I can
+redirect it to a mailbox I actually read to notice there's a new rc to
+test, without having all the patches unless I explicitly look for them.
 
-Also use common lock to protect ep state which avoid race between main
-thread and function disable.
+If it's difficult I'll add a regex on the subject for ' 00/' or
+something, I'd prefer matching only headers for robustness but just let
+me know.
 
-Cc: <stable@vger.kernel.org> # 6.1
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
----
- drivers/usb/gadget/function/f_mass_storage.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
-index c265a1f62fc1..056083cb68cb 100644
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -520,12 +520,25 @@ static int fsg_setup(struct usb_function *f,
- static int start_transfer(struct fsg_dev *fsg, struct usb_ep *ep,
- 			   struct usb_request *req)
- {
-+	unsigned long flags;
- 	int	rc;
- 
--	if (ep == fsg->bulk_in)
-+	spin_lock_irqsave(&fsg->common->lock, flags);
-+	if (ep == fsg->bulk_in) {
-+		if (!fsg->bulk_in_enabled) {
-+			spin_unlock_irqrestore(&fsg->common->lock, flags);
-+			return -ESHUTDOWN;
-+		}
- 		dump_msg(fsg, "bulk-in", req->buf, req->length);
-+	} else {
-+		if (!fsg->bulk_out_enabled) {
-+			spin_unlock_irqrestore(&fsg->common->lock, flags);
-+			return -ESHUTDOWN;
-+		}
-+	}
- 
- 	rc = usb_ep_queue(ep, req, GFP_KERNEL);
-+	spin_unlock_irqrestore(&fsg->common->lock, flags);
- 	if (rc) {
- 
- 		/* We can't do much more than wait for a reset */
-@@ -2406,8 +2419,10 @@ static int fsg_set_alt(struct usb_function *f, unsigned intf, unsigned alt)
- static void fsg_disable(struct usb_function *f)
- {
- 	struct fsg_dev *fsg = fsg_from_func(f);
-+	unsigned long flags;
- 
- 	/* Disable the endpoints */
-+	spin_lock_irqsave(&fsg->common->lock, flags);
- 	if (fsg->bulk_in_enabled) {
- 		usb_ep_disable(fsg->bulk_in);
- 		fsg->bulk_in_enabled = 0;
-@@ -2416,6 +2431,7 @@ static void fsg_disable(struct usb_function *f)
- 		usb_ep_disable(fsg->bulk_out);
- 		fsg->bulk_out_enabled = 0;
- 	}
-+	spin_unlock_irqrestore(&fsg->common->lock, flags);
- 
- 	__raise_exception(fsg->common, FSG_STATE_CONFIG_CHANGE, NULL);
- }
+Didn't run into any problem with the patches themselves:
+
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.212
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+
+Tested 0a70dd1e1aa9 ("Linux 5.10.213-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
+
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+
 -- 
-2.25.1
-
+Dominique Martinet | Asmadeus
 
