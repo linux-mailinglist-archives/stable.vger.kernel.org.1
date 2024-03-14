@@ -1,124 +1,108 @@
-Return-Path: <stable+bounces-28126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D232787B975
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:44:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEAC87BA2C
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 118FCB20923
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 08:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71D151C21DC6
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 09:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875146BFBB;
-	Thu, 14 Mar 2024 08:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFA46CDC1;
+	Thu, 14 Mar 2024 09:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sWa0d2B6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ubFCNPhe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404746BFB0;
-	Thu, 14 Mar 2024 08:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1536BFDD
+	for <stable@vger.kernel.org>; Thu, 14 Mar 2024 09:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710405864; cv=none; b=Bgk3VgxBcF5GxJthJBHkNwHQqUas3yuP4p82UPkb9d556EEcDSuPZTkaY+v3dFKn39oDoywsakj9EylYYnyQShqDOl21V4LMexdXB93W+tHirCWTdZU4rPm8DZRDquG/RaPF5OczFYyHtAOAuH3okcwoaOdkSPPdflPCQAqL/os=
+	t=1710407711; cv=none; b=RqVE/ozkICjgScIMbPGDLC5IaKq5tQHVHu0j+3zFrck81s07G38KKcLCjwbKsptzSXRTXYcslH6KhZ8WwxBWgrFRuTLgvxrJ27tq2EYMw9VZPQii1lfKXVO4loa0ReJqvtI+nq1imw9f3hpp98vbKSvt9Ts8u7YCdi9FbH7zT2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710405864; c=relaxed/simple;
-	bh=uSNcHIIId1vff+Z6jkp9+Or1QRrkRqNJmq6CkIrqNz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uLFePV1wS9ItQlscZ/eieEvVR81ACMBJueBr48vk4LTKz6kVul+T3TaSO/Z3Mc5VBAD3vjEPwa7a28vDsK665W02dSu5NlxtK8Dirm+FncwPV1YIAhE1IgzpVT9X6pv+7KHVEAyN9wvFRs9YtZTJmgn71Fo2GiJO/Lpubo+pdXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sWa0d2B6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B976BC43390;
-	Thu, 14 Mar 2024 08:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710405863;
-	bh=uSNcHIIId1vff+Z6jkp9+Or1QRrkRqNJmq6CkIrqNz4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sWa0d2B69HU838DVFqYwiWMd43Me6oefKCpIoV/aTpO4qcsoV9Z2vfTSFcKZT5lEc
-	 5T16m3neAHoSoLGboTlcDnQFmDRNu8bQJceTaRStg+7doYye0FiPxW+/dDZw3HfhUA
-	 tpYs6vrxV2d6gDrhMnX7asEoxfrK2+MdpHiZCEV2krv2USgeiP8m+LRXPSYUgFGovL
-	 RNI1851G9Dp8MRnjdKLX05qDDXaEWAelTxMYd3X3n89TF6xxbvSr/nQJqqEiHpTvqm
-	 0pRUSiFWW12KC9kfLR95TKaRYJ9Wp8TX+yU96p088dxsBirzO/DMirGI63gZuW5EFl
-	 O76o4uRodvnUw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rkghT-000000000IM-2Vrj;
-	Thu, 14 Mar 2024 09:44:31 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Subject: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
-Date: Thu, 14 Mar 2024 09:44:12 +0100
-Message-ID: <20240314084412.1127-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1710407711; c=relaxed/simple;
+	bh=lE/ZP5Tkvx9YY0FpPfk+sLpzNiYxoj91aWi14jou22k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PXG7TAEafAfBd6F8DR9XhdMKAUtEkhGdgBOjmyRhVkmi4RW0EyEtDXfxictuHLIHgXglNoweKqxa/AX1Kh4R2i6fV6upY4AdMUQzWFm9pnpVlSGwSgqzIYf8KfgWUZN0zBAtn7E6qk2XjjJLrcR8IEKQv6AsPC9GnL/SJYv/i8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ubFCNPhe; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6904a5d71abso4291736d6.1
+        for <stable@vger.kernel.org>; Thu, 14 Mar 2024 02:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1710407708; x=1711012508; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lE/ZP5Tkvx9YY0FpPfk+sLpzNiYxoj91aWi14jou22k=;
+        b=ubFCNPheSIZ9cs6MaZxKWElEVqfL+s3kamjXeBCi5TL+nFgDVocsEf/N34w/gQXVeR
+         0LqK5N5L9cob0jrM+f06EPxadjMNgbXM10e4we3+v20YN4+oZzGSq809ILziIuLklVf3
+         MBm43VXX5DXR9vpuXWhLQJkZrcstImmNuzovBiJ6kUS7KGdNafB6ePLmas1Yg90DDG03
+         whRbVMEzHbrjEoARIstnlcsrPPjeL90l7fJUSi7+N1nlhc63QTNiYR/XCWHbWFoB4enw
+         T02PnMckcF/xjSPGoeMaeSN/Mx2E151p/NulWThbpZmFZgW6TqG22w6hjIaIO52cbznP
+         R02Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710407708; x=1711012508;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lE/ZP5Tkvx9YY0FpPfk+sLpzNiYxoj91aWi14jou22k=;
+        b=rpeQKZzFtwm5CkcS/miqlfYhR8+hvVxV9cRjvNZGcm+XJQv18J0X5GyJvK84vYfUUA
+         xIzsiwtxX7s4w5tF142F5yDFdmzLh2CqQpopo1qfuXeFA6ht3Y5HVtJIP3Ckc+rDZkPp
+         bolhGgoOeDhPSIqTGTEQ7DQYipj0g5oONXVpq73AstBiLoHUph6U1GLxmal375jcWMz/
+         WVdSvU92uRAwb5tx89E89/ubsVIuMOoXS042O9ImmnOuXIJ08nWYMCK+oUFMk/Dq6Qr6
+         HoNWUgYVPF53S3xYXaLqV0CWjif2oSOK+j9ys3NHG0Wt1o4VaQflpsRjbvuS8X4GbS/G
+         t2/A==
+X-Forwarded-Encrypted: i=1; AJvYcCV4co/WWfQLjC1fkDQQ7rfOz2kVio+9uprUfXAV4cHGfpe+7iMVJ5rAVej0wJkDcCuL6oxeOUH4nDVDgQxf3//DSU2H6KNR
+X-Gm-Message-State: AOJu0YxZII/KQybDS6p6zp1I/MIRVXU1xyYm6DdD7EPAlB0hCKvkJMy8
+	H9XbKMIy5+mP1cynQkNXP7M+s9JUBpWRZVt3GbzPW0WrgN+7r1izHuDQdTWl9w+3dgpDIk8yHcM
+	aeo/CBlgR64XPDLA2TV6WZN1REcWEiNqib5IP
+X-Google-Smtp-Source: AGHT+IGfMznYIETWqpb1PprXePzqaigF18dojgQnMhgp1CmXhdyU8MIRSF4qLWE020QEL3knnSBFKCRcRErOBRLrkgE=
+X-Received: by 2002:ad4:53a6:0:b0:690:d719:d575 with SMTP id
+ j6-20020ad453a6000000b00690d719d575mr1324895qvv.43.1710407708463; Thu, 14 Mar
+ 2024 02:15:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240313230713.987124-1-benno.lossin@proton.me>
+In-Reply-To: <20240313230713.987124-1-benno.lossin@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 14 Mar 2024 10:14:57 +0100
+Message-ID: <CAH5fLgjMkWxqTxZKt_w+V6X1qfUzosTbwMxDVXUmw_qTdzYP_A@mail.gmail.com>
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+To: Benno Lossin <benno.lossin@proton.me>, Laine Taffin Altman <alexanderaltman@me.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
+On Thu, Mar 14, 2024 at 12:09=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>
+> From: Laine Taffin Altman <alexanderaltman@me.com>
+>
+> It is not enough for a type to be a ZST to guarantee that zeroed memory
+> is a valid value for it; it must also be inhabited. Creating a value of
+> an uninhabited type, ZST or no, is immediate UB.
+> Thus remove the implementation of `Zeroable` for `Infallible`, since
+> that type is not inhabited.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed`=
+ function")
+> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Qualcomm Bluetooth controllers like WCN6855 do not have persistent
-storage for the Bluetooth address and must therefore start as
-unconfigured to allow the user to set a valid address unless one has
-been provided by the boot firmware in the devicetree.
-
-A recent change snuck into v6.8-rc7 and incorrectly started marking the
-default (non-unique) address as valid. This specifically also breaks the
-Bluetooth setup for some user of the Lenovo ThinkPad X13s.
-
-Note that this is the second time Qualcomm breaks the driver this way
-and that this was fixed last year by commit 6945795bc81a ("Bluetooth:
-fix use-bdaddr-property quirk"), which also has some further details.
-
-Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
-Cc: stable@vger.kernel.org      # 6.8
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/bluetooth/hci_qca.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index edd2a81b4d5e..f989c05f8177 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -7,7 +7,6 @@
-  *
-  *  Copyright (C) 2007 Texas Instruments, Inc.
-  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
-- *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  *
-  *  Acknowledgements:
-  *  This file is based on hci_ll.c, which was...
-@@ -1904,17 +1903,7 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
- 	case QCA_WCN7850:
--
--		/* Set BDA quirk bit for reading BDA value from fwnode property
--		 * only if that property exist in DT.
--		 */
--		if (fwnode_property_present(dev_fwnode(hdev->dev.parent), "local-bd-address")) {
--			set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
--			bt_dev_info(hdev, "setting quirk bit to read BDA from fwnode later");
--		} else {
--			bt_dev_dbg(hdev, "local-bd-address` is not present in the devicetree so not setting quirk bit for BDA");
--		}
--
-+		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
- 		hci_set_aosp_capable(hdev);
- 
- 		ret = qca_read_soc_version(hdev, &ver, soc_type);
--- 
-2.43.2
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
