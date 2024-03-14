@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-28139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C9D87BB57
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:35:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C8087BB77
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 11:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A34282849
-	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:35:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1622D284E44
+	for <lists+stable@lfdr.de>; Thu, 14 Mar 2024 10:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D3B433C0;
-	Thu, 14 Mar 2024 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8D45B1E8;
+	Thu, 14 Mar 2024 10:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHqFn20q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H648jIk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E06347C1;
-	Thu, 14 Mar 2024 10:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772746EB7A;
+	Thu, 14 Mar 2024 10:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710412505; cv=none; b=YpjmaS76p3KYQ3noYPJF64G+zxaTohHlNz4QDpappZaaX+xPOUDl6QRp0XKotrhXBrBEArPbpDuuxaHBoiiiO0fhFD/kZ8fdWsrJB+XVfymBqTFWvuy5Cc1jMU3BRH8eMmyxaoQxBQHEWzTMxdz3yNy1oGWLEtHTmrwfv79zFtA=
+	t=1710412810; cv=none; b=dYI72CfWdnJVQdrmZ88eEw/Q0jMDSN2ZuX6wDm2fpO5K8YMXyXHRNoD1V+oLuidt4lWYwvW+iNLd7ine6+vfx6AsCkiCmgesfAV+Pnx7Wn18eHvAlgddtIkKEVh8vtNtuJPx3ibZukYi+KDl1lKd32Fot+56vYPev9eJX/EHRVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710412505; c=relaxed/simple;
-	bh=Hgh3vqIzWxqRwj99BTgkEyg/C7Qp+Y8i8zd0DBoV0s4=;
+	s=arc-20240116; t=1710412810; c=relaxed/simple;
+	bh=c4J7TAHcx++DxMeKEfMzpwWlcM8HgZRjo1aIWTMX0T8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSoXmPAe4/2nHRYRneACFn+E9kWhBK4VtfW09DxG9H7xwVPkOnEXCPADJIP3lw5IBbFlLxohOZdyiLpaZGdypHksSUPnWpYOpAG8ygIn/VwcuS5KYrNfS0ZQk219ra9ZohsWAkh6f6w00T2qUbzdI/kznjhi1/GI2i9/9USGeq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHqFn20q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267A9C433C7;
-	Thu, 14 Mar 2024 10:35:01 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=CmahT6/lP57PIg/q4x2GM6vDilPbdMDmpWrXqVCGmiSmSM5rLXXi9iy0K0T4djV2LlVs2Spzc/FqP889di9zeyNg6C6CxeXGr9LAhODQYckFBMQ4R7/bWoLPqi8MSqrgT+jxWJuwykV6mjv8PcA28DzHJttBhx3IW3EqIIwPpxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H648jIk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D7CC43399;
+	Thu, 14 Mar 2024 10:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710412504;
-	bh=Hgh3vqIzWxqRwj99BTgkEyg/C7Qp+Y8i8zd0DBoV0s4=;
+	s=k20201202; t=1710412809;
+	bh=c4J7TAHcx++DxMeKEfMzpwWlcM8HgZRjo1aIWTMX0T8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QHqFn20qzFzCc3m9XfQtjPCP8ChhpEfXDlzVqGaAq47X45+NtjjXk/uAzTEYBhAXx
-	 DvWcywyLjDORNUYnc90svStElyasG9rDj8NFgIBcmApxxoIkUxhQpORosFnqVAWmMj
-	 whzkLD6oN71LZMFvA6Q38imkZoQIRO/rtyduiUUTsduulq1UnJdeiNtcrxaYfjCOnp
-	 JvJcsCQ6jDE8Mj0A+FIfshIXXEjiIAWxD+JFpq6uGbbxfsLsK7RJyhgVfsEMqGdRlY
-	 MEAUFK2AxCgTpmFLRuOVL9rcE6xzFwMPukiGGvsw3G1d1NZFWNu+NPEkJYEo1hg08Q
-	 +xmlAYrfH0woA==
-Message-ID: <9049ab55-7be4-4cc8-b2f2-2cc355f0bc8e@kernel.org>
-Date: Thu, 14 Mar 2024 18:34:59 +0800
+	b=H648jIk3Ql7cXi/pjB0JMa/jLn7TkBiUqTvdQ623gjNtaz9sC7anE41WVWe6Jx+bB
+	 r+Y2MdID87ILDP91BvGCUnnGDvU7oPrfIy0w8HMNsmSXkBZ2MKBoKbCapAXbUX0Ke5
+	 eT1WUMZDPPrRa/Mvn9XA1B6Zf2paPSmHoX3zpXx/pKQSDnD27SZyU0yiRguncpCjUT
+	 TwxrkbL3gns50MSsjPDOxQurs+gpGctcw8Gy0YGnWqxiCaQ33S2lA/BUcaUqB6aseQ
+	 UJFcdvTBTJPWW6lJcgpxSTHU9NWKjBBW+9QvYXSDmKT74cUdGFP4sZ0jZQ+lgMEusi
+	 pkphCrAn8MdAQ==
+Message-ID: <cd8ffd86-841d-4b1e-9067-c5f0bc3d9244@kernel.org>
+Date: Thu, 14 Mar 2024 18:39:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,40 +50,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag
+Subject: Re: [PATCH 2/2] f2fs: truncate page cache before clearing flags when
+ aborting atomic write
 Content-Language: en-US
 To: Sunmin Jeong <s_min.jeong@samsung.com>, jaegeuk@kernel.org,
  daehojeong@google.com
 Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, Sungjong Seo <sj1557.seo@samsung.com>,
  Yeongjin Gil <youngjin.gil@samsung.com>
-References: <CGME20240313112650epcas1p3e65fdc5f6df18a4f700fa62bb5480b28@epcas1p3.samsung.com>
- <20240313112620.1061463-1-s_min.jeong@samsung.com>
+References: <20240313112620.1061463-1-s_min.jeong@samsung.com>
+ <CGME20240313112706epcas1p2ee50d07f603422b0193f0b71bf1a75e6@epcas1p2.samsung.com>
+ <20240313112620.1061463-2-s_min.jeong@samsung.com>
 From: Chao Yu <chao@kernel.org>
-In-Reply-To: <20240313112620.1061463-1-s_min.jeong@samsung.com>
+In-Reply-To: <20240313112620.1061463-2-s_min.jeong@samsung.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2024/3/13 19:26, Sunmin Jeong wrote:
-> In f2fs_update_inode, i_size of the atomic file isn't updated until
-> FI_ATOMIC_COMMITTED flag is set. When committing atomic write right
-> after the writeback of the inode, i_size of the raw inode will not be
-> updated. It can cause the atomicity corruption due to a mismatch between
-> old file size and new data.
+> In f2fs_do_write_data_page, FI_ATOMIC_FILE flag selects the target inode
+> between the original inode and COW inode. When aborting atomic write and
+> writeback occur simultaneously, invalid data can be written to original
+> inode if the FI_ATOMIC_FILE flag is cleared meanwhile.
 > 
-> To prevent the problem, let's mark inode dirty for FI_ATOMIC_COMMITTED
+> To prevent the problem, let's truncate all pages before clearing the flag
 > 
-> Atomic write thread                   Writeback thread
->                                          __writeback_single_inode
->                                            write_inode
->                                              f2fs_update_inode
->                                                - skip i_size update
->    f2fs_ioc_commit_atomic_write
->      f2fs_commit_atomic_write
->        set_inode_flag(inode, FI_ATOMIC_COMMITTED)
->      f2fs_do_sync_file
->        f2fs_fsync_node_pages
->          - skip f2fs_update_inode since the inode is clean
+> Atomic write thread              Writeback thread
+>    f2fs_abort_atomic_write
+>      clear_inode_flag(inode, FI_ATOMIC_FILE)
+>                                    __writeback_single_inode
+>                                      do_writepages
+>                                        f2fs_do_write_data_page
+>                                          - use dn of original inode
+>      truncate_inode_pages_final
 > 
 > Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
 > Cc: stable@vger.kernel.org #v5.19+
