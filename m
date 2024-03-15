@@ -1,144 +1,81 @@
-Return-Path: <stable+bounces-28239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F1187CD17
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 13:15:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C00D87CDAF
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 14:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068731F24231
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 12:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F8A1F2232E
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 13:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12651C280;
-	Fri, 15 Mar 2024 12:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1BB25543;
+	Fri, 15 Mar 2024 13:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOKxmpN1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIeK3IEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0441B7F6;
-	Fri, 15 Mar 2024 12:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090A124B26;
+	Fri, 15 Mar 2024 13:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710504899; cv=none; b=AY37xfxksB7R1rl/+H9OPTL7mSOsea0BgNsy3+9zbgd4RdBJZeGF93oP6oZeHVMBgJxDjHZHUHgfFKchiihvQLeHySTtKt4aQzk5gifbBLcGTJFFOhitzPdEaZv23In50uZAMTDw2ZKauo+fGRjprSaXddW7dg2BXkaxcvJfxRo=
+	t=1710507897; cv=none; b=dLvfY4/g/0eA1kokDCOTa5JA6lDLaopr7GxinQNdJpXspSM3rpFYHlAWvFko06A2chhpaj2shQeg8dyyuM8iAnRszNgsJ1P9f/4vWGRimRoQ7u+sj0vl4dyNywITIn3UjzfD3aPOHr6yKgCYXGXr3GX8nDRYAT7DEIlKRskKPHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710504899; c=relaxed/simple;
-	bh=se/JZNB55A3lH9+VBE3tPOQsYGGid9H7CPkEHSUWIZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WdR1t1dCED5VBsgGvZsTkooIzFOgmJn7o6TafhV/0FHJfrafGt4QjZoTqbYHS8H22b4ZiX4iRL784GKZfGj+8Brg9i5PMMYlQp/PMJoOZIJZq4HQwTh99l3tP6x+OVJD3Osrku0UfdMu8hXUcaHcMRciMw4e5SUCa5wQnnRll9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOKxmpN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E3AC433F1;
-	Fri, 15 Mar 2024 12:14:58 +0000 (UTC)
+	s=arc-20240116; t=1710507897; c=relaxed/simple;
+	bh=DvGI8Ea9CrQMc930SjFSluQ/GjUlhlbAS/EJEnqtjTo=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=jHI8wty+lNsFDujkof44fTuAXLZ6lG0JsYAjDb6a+m9FfSY+zJs6WAS5fHOALrh/pPBJJHPDlncvHcs88Fy4D5U5o93aBW3Jm6kc4DpM3cWnei88mfzC0LMMfdeLc3qA4E3Bd8ydVCV/LmatETgWBHV87O7+B//954ohH1ylxpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIeK3IEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36CBC433C7;
+	Fri, 15 Mar 2024 13:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710504899;
-	bh=se/JZNB55A3lH9+VBE3tPOQsYGGid9H7CPkEHSUWIZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bOKxmpN1yT+3BhHrIdZiJmXOJI5aBfA3XipPXNZ7JqTexQl1ngvGcG8u7ztACmaOT
-	 nDnz1BHlz1WEEhLdiJZGsYejTBDg/4dwoigypUDU6B21/tlrxU3GUB2gKPALIxyfiz
-	 fM6EbqZYw+JDhSJxeDuG/mF3WZYYinIERxqimS1KkJs/erc2nIUq++YSvQ6mnfC4sg
-	 iYjMit0ygSuutqyPrYWUHIf+iUuOWZfoSmLZU7go6v85hQ6z/HdyVU6SlEs+t4+DYx
-	 79q+LEDryvZsDNGGVIfxPBHTOGlxjuZ3auuPbRFGYGMOFF37L5dYu8l44fXOxFpv6m
-	 jhFRSZ2P4SCPQ==
-Date: Fri, 15 Mar 2024 08:14:57 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	Andreas Herrmann <aherrmann@suse.de>, Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH 6.1 00/71] 6.1.82-rc1 review
-Message-ID: <ZfQ7wRX06R-d3X7F@sashalap>
-References: <20240313163957.615276-1-sashal@kernel.org>
- <73072bdd-590a-44b4-8e6d-34bd17073bb5@o2.pl>
- <ecb0b6a1-a8e7-4645-9a2c-56ada368f733@o2.pl>
- <ba297ed4-a74a-4786-a303-ce617b2de09b@o2.pl>
- <38563683-300a-487b-81c6-b2ea4dbb925c@kernel.dk>
- <ZfN7wtnVeb9vOL1H@sashalap>
- <267b0000-fba0-4dcf-945d-72b8ca4704c8@kernel.dk>
+	s=k20201202; t=1710507896;
+	bh=DvGI8Ea9CrQMc930SjFSluQ/GjUlhlbAS/EJEnqtjTo=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=hIeK3IEBIb6JAM9AZ/wvuH6aNzZGxylrAJRiLiGcHiZgEKx/uWiC6SEEmPlwCYvAD
+	 AZ4C87I2Tz0Mt6ogAzjumauuMWCfhHbASjxypGuMU0JASw/XmAWsL40XfnF6EEgYFB
+	 YEBwL5TE0M5q84QeAWr7NWx4Phe5gaLIjHcVab5MG4PdAGwf+DtQj9ePiKDlE1SAtr
+	 WTCn286Jg1O5nmqXSf/V0bNXrLw0wtE22iPRU+buqFbD11TdhNmeFmyM2uaBMIAiNu
+	 vK4okWTZPWdolle9rIQF8GEzzmSA/YLGZohUJPn9WJ86Kqc92s1oEEIsNnd1FfA3oQ
+	 BfPpmKmlQVz4w==
+Message-ID: <c3dbb1f483849c7ee6f61223514e5d16@kernel.org>
+Date: Fri, 15 Mar 2024 13:04:53 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Frank Oltmanns" <frank@oltmanns.dev>
+Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and
+ maximum rate
+In-Reply-To: <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+References: <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev, stable@vger.kernel.org, "Chen-Yu
+ Tsai" <wens@csie.org>, "Conor Dooley" <conor+dt@kernel.org>, "Daniel Vetter" <daniel@ffwll.ch>, "David
+ Airlie" <airlied@gmail.com>, =?utf-8?b?R3VpZG8gR8O8bnRoZXI=?= <agx@sigxcpu.org>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jessica Zhang" <quic_jesszhan@quicinc.com>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime
+ Ripard" <mripard@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>, "Neil
+ Armstrong" <neil.armstrong@linaro.org>, "Ondrej Jirman" <megi@xff.cz>, "Purism
+ Kernel Team" <kernel@puri.sm>, "Rob Herring" <robh+dt@kernel.org>, "Sam
+ Ravnborg" <sam@ravnborg.org>, "Samuel Holland" <samuel@sholland.org>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <267b0000-fba0-4dcf-945d-72b8ca4704c8@kernel.dk>
 
-On Thu, Mar 14, 2024 at 04:40:53PM -0600, Jens Axboe wrote:
->On 3/14/24 4:35 PM, Sasha Levin wrote:
->> On Thu, Mar 14, 2024 at 04:04:59PM -0600, Jens Axboe wrote:
->>> On 3/14/24 3:12 PM, Mateusz Jo?czyk wrote:
->>>> W dniu 13.03.2024 o 22:27, Mateusz Jo?czyk pisze:
->>>>> W dniu 13.03.2024 o 21:13, Mateusz Jo?czyk pisze:
->>>>>> W dniu 13.03.2024 o 17:38, Sasha Levin pisze:
->>>>>>> This is the start of the stable review cycle for the 6.1.82 release.
->>>>>>> There are 71 patches in this series, all will be posted as a response
->>>>>>> to this one.  If anyone has any issues with these being applied, please
->>>>>>> let me know.
->>>>>>>
->>>>>>> Responses should be made by Fri Mar 15 04:39:56 PM UTC 2024.
->>>>>>> Anything received after that time might be too late.
->>>>>>>
->>>>>>> The whole patch series can be found in one patch at:
->>>>>>>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.81
->>>>>>> or in the git tree and branch at:
->>>>>>>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
->>>>>>> and the diffstat can be found below.
->>>>>>>
->>>>>>> Thanks,
->>>>>>> Sasha
->>>>>>>
->>>>>> Hello,
->>>>>>
->>>>>> Kernel hangs during early boot. No console messages, nothing in pstore.
->>>>>>
->>>>>> Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU (Intel i3-7020U) and Ubuntu 20.04.
->>>>>>
->>>>>> This CPU is not affected by RFDS (at least according to the Kconfig message), so I have set
->>>>>>
->>>>>> CONFIG_MITIGATION_RFDS=n
->>>>>>
->>>>>> in Kconfig. I do not have any updated microcode (if any will be provided at all for this CPU).
->>>>>>
->>>>>> Greetings,
->>>>>>
->>>>>> Mateusz
->>>>>>
->>>>> [snip]
->>>>
->>>> Bisected down to
->>>>
->>>> commit d3d517a95e83a7d89e1ff511da1a0a31c9234155
->>>> Author: Christoph Hellwig <hch@lst.de>
->>>> Date:   Fri Feb 3 16:03:54 2023 +0100
->>>>
->>>>     blk-rq-qos: make rq_qos_add and rq_qos_del more useful
->>>
->>> Do you have:
->>>
->>> commit e33b93650fc5364f773985a3e961e24349330d97
->>> Author: Breno Leitao <leitao@debian.org>
->>> Date:   Tue Feb 28 03:16:54 2023 -0800
->>>
->>>    blk-iocost: Pass gendisk to ioc_refresh_params
->>>
->>> in there?
->>
->> It's not in the 6.1 tree, do we need it?
->
->If the bisected commit is in there, then yes we need it. It's marked as
->fixes that, so puzzled why it isn't in there?
+On Sun, 10 Mar 2024 14:21:11 +0100, Frank Oltmanns wrote:
+> The Allwinner SoC's typically have an upper and lower limit for their
+> clocks' rates. Up until now, support for that has been implemented
+> separately for each clock type.
+> 
+> Implement that functionality in the sunxi-ng's common part making use of
+> 
+> [ ... ]
 
-Sorry, I take it back - both e33b93650fc5 ("blk-iocost: Pass gendisk to
-ioc_refresh_params") and d3d517a95e83 ("blk-rq-qos: make rq_qos_add and
-rq_qos_del more useful") are currently in the 6.1 tree.
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
--- 
-Thanks,
-Sasha
+Thanks!
+Maxime
 
