@@ -1,106 +1,108 @@
-Return-Path: <stable+bounces-28227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948F387C75C
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 03:01:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109F487C7AA
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 03:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7BE3B2170E
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 02:01:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBD8D2823E3
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 02:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A792613A;
-	Fri, 15 Mar 2024 02:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5AE8C05;
+	Fri, 15 Mar 2024 02:45:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EC26FA9;
-	Fri, 15 Mar 2024 02:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.192.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A631379DE;
+	Fri, 15 Mar 2024 02:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710468110; cv=none; b=qs5FsDkYDdbv8M5AZGBEbSTCYlHa6jWN5p8lUY7PJw0E+QT50U0ZLXT/qP2a6bQoetnlKOB7+Jfr+6Fx/j39lcTiHzRUP0/NdqA9AQ3HfhYIsGnQogLab3itmlPPTePMW0oDl1JnhKfNj4McS0AHsoCiJuCow4S5DRjHIkTtng8=
+	t=1710470742; cv=none; b=TwocCCXU3tE0ZJHc/WS7cBy1BXJQNDNT3WeFtVdpGDuP0vNg6ogL2xO+IGJpxqPYq/WKmZ4XQGjyqhUejX4Zu2RnwNyC7Qvp121aMX/lXUkO5JOpwlFTg+M6W/WdOtHMCCjDP1UQecqKu+Kcga7UK3mtd44X63Tj12p5NDH3s0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710468110; c=relaxed/simple;
-	bh=zDthaqAccwk4YCq2Cipq4xBBGzNTxio0/jLGedsZLG8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CJY+iepl42ScE8yDjZ03+ZXGzhsB4JbHs0v5BERmvGXGkEQFVjWZ1BOrhJxDC2BRfGD+SMn86Gqf/4xd+r869wlmm+CfsB31AcGgTBV24hqVwbNrLbJRwC4BU4shHHhs3/K0DUi6XTJ4+KcO1y65gIR1AfM5N7QFRweGXlJKJ00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hihonor.com; spf=pass smtp.mailfrom=hihonor.com; arc=none smtp.client-ip=81.70.192.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hihonor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hihonor.com
-Received: from w011.hihonor.com (unknown [10.68.20.122])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4TwnWf163mzYvRnB;
-	Fri, 15 Mar 2024 10:00:14 +0800 (CST)
-Received: from w025.hihonor.com (10.68.28.69) by w011.hihonor.com
- (10.68.20.122) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.25; Fri, 15 Mar
- 2024 10:01:46 +0800
-Received: from localhost.localdomain (10.144.17.252) by w025.hihonor.com
- (10.68.28.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.25; Fri, 15 Mar
- 2024 10:01:46 +0800
-From: yuan linyu <yuanlinyu@hihonor.com>
-To: Alan Stern <stern@rowland.harvard.edu>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: <linux-usb@vger.kernel.org>, yuan linyu <yuanlinyu@hihonor.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v4] usb: udc: remove warning when queue disabled ep
-Date: Fri, 15 Mar 2024 10:01:44 +0800
-Message-ID: <20240315020144.2715575-1-yuanlinyu@hihonor.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1710470742; c=relaxed/simple;
+	bh=E33cKRU/0bnIopCBLTQiUg1CEGllwAlLq2Nw4I1WmE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hiLmKSE1CE5Ja0t1fpKDhrevtLdpVbgfnXN6vDgILsyjN07rRdWnoyzjeUxK8z47oe42DANW2ogRecGvOmvAM/JrQPOiEEcj+Kg+zmivdsV6/EThdmCblYMyuJoaorxmHmRpu0WLo+uZBulCFzLsb2JF6LDEgQQBz4KzLUZG1GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638C9C433C7;
+	Fri, 15 Mar 2024 02:45:38 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	linux-arch@vger.kernel.org,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Xiaotian Wu <wuxiaotian@loongson.cn>,
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Xing Li <lixing@loongson.cn>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Rui Wang <wangrui@loongson.cn>
+Subject: [PATCH] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
+Date: Fri, 15 Mar 2024 10:45:26 +0800
+Message-ID: <20240315024526.394772-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: w003.hihonor.com (10.68.17.88) To w025.hihonor.com
- (10.68.28.69)
+Content-Transfer-Encoding: 8bit
 
-It is possible trigger below warning message from mass storage function,
+From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
+global regs in asms"), global registers will no longer be forced to add
+to the def-use chain. Then current_thread_info(), current_stack_pointer
+and __my_cpu_offset may be lifted out of the loop because they are no
+longer treated as "volatile variables".
 
-WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-pc : usb_ep_queue+0x7c/0x104
-lr : fsg_main_thread+0x494/0x1b3c
+This optimization is still correct for the current_thread_info() and
+current_stack_pointer usages because they are associated to a thread.
+However it is wrong for __my_cpu_offset because it is associated to a
+CPU rather than a thread: if the thread migrates to a different CPU in
+the loop, __my_cpu_offset should be changed.
 
-Root cause is mass storage function try to queue request from main thread,
-but other thread may already disable ep when function disable.
+Change __my_cpu_offset definition to treat it as a "volatile variable",
+in order to avoid such a mis-optimization.
 
-As there is no function failure in the driver, in order to avoid effort
-to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
-
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Cc: stable@vger.kernel.org
+Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Xing Li <lixing@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Rui Wang <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
-v4: add version info in subject
-v3: add more debug info, remove two line commit description
-    https://lore.kernel.org/linux-usb/20240315015854.2715357-1-yuanlinyu@hihonor.com/
-v2: change WARN_ON_ONCE() in usb_ep_queue() to pr_debug()
-    https://lore.kernel.org/linux-usb/20240315013019.2711135-1-yuanlinyu@hihonor.com/
-v1: https://lore.kernel.org/linux-usb/20240314065949.2627778-1-yuanlinyu@hihonor.com/
+ arch/loongarch/include/asm/percpu.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
- drivers/usb/gadget/udc/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 9d4150124fdb..b3a9d18a8dcd 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -292,7 +292,9 @@ int usb_ep_queue(struct usb_ep *ep,
- {
- 	int ret = 0;
+diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
+index 9b36ac003f89..03b98491d301 100644
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
+ 	__my_cpu_offset = off;
+ 	csr_write64(off, PERCPU_BASE_KS);
+ }
+-#define __my_cpu_offset __my_cpu_offset
++
++#define __my_cpu_offset					\
++({							\
++	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
++	__my_cpu_offset;				\
++})
  
--	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
-+	if (!ep->enabled && ep->address) {
-+		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
-+				 ep->address, ep->name);
- 		ret = -ESHUTDOWN;
- 		goto out;
- 	}
+ #define PERCPU_OP(op, asm_op, c_op)					\
+ static __always_inline unsigned long __percpu_##op(void *ptr,		\
 -- 
-2.25.1
+2.43.0
 
 
