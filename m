@@ -1,99 +1,118 @@
-Return-Path: <stable+bounces-28243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FA787CEC9
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:27:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D510887CEEC
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:31:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428BE1C21D1D
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 14:27:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95A7328434B
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 14:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA99381BB;
-	Fri, 15 Mar 2024 14:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127A845027;
+	Fri, 15 Mar 2024 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npfOG5uG"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="HwCNqalG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD1F38380
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AED3FB1B
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710512755; cv=none; b=ephAqFVQ7t2rJn5UKpf+KGrmO5pXH5zvjqXw8Fme06Hg6WzIpSdFEgYohKgNSmnLuG/Q6zZfQzXifw+uxMiTYR6kp2oD74lwYK3sH/zDY7Qqt3/l3BR3JUceN3ADd38Ahknd3NTfISOHRgtFH/KTaF9PrRuCTQ9v+HD7IhvgRgc=
+	t=1710513002; cv=none; b=qJPifu0VnF7wGQiknCxdzE6enxZ/dPbSHCUkpPqu33xyGnfK0GnctCXbtvp71VwpJebRd5CKnW+9Hj6yfdn3334NfLyxI4Wv92B056LagfhcXPtM7Dj59OUxdej5K1vtb3UP1jZprsgApcxE9zd/NBPJwhjXOgcjLwcfxpmdPsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710512755; c=relaxed/simple;
-	bh=yCAii4u6k7UDf2mCfYs3azGv5SdtykhLrhBD1xm5jHI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wvu2ZPkQY0253k69NSjB8RHYXi2gA+JBqZsPHNBfwcnCARDuNcQlG5/M9Fr0Hp0HvALIz2wqy8bTLlZiWV1hVANoJTMeVHQbZ9PPpwYuP4Ih+Awf/TH0jfr5iRv4rltQikRXr6WAcM6139uTJHFjXy27bJFYIF13CeRaMEPd7oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npfOG5uG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBEAC433C7
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710512754;
-	bh=yCAii4u6k7UDf2mCfYs3azGv5SdtykhLrhBD1xm5jHI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=npfOG5uGsT42CXiqG5ONDEM9vZ68ZeBWf16auY8HA8VRWrgFWzudGniSnBGA9yrTM
-	 3m1FPI6SswVyFknVGjhPbosK93bBlfuW+1TWCOpqD8IDACvUbc3kpniHU77YxCYhWy
-	 A36mUKCMMeWJtoAvDGVi97Hwd4n3ZRLjIxgafRhzhnfBSGb3N7GCjj28jr1eTFi2ZG
-	 PPu46Qn+HieDrf/V/40kOS9XYivDzci+1XG0ZhCnRDViHPjp3mehh1BvwjgA4sOR79
-	 8rUPX2uJ/HHR/dp9KkD6n7Mrjp+3utzt/g1z0t0uybtqWXWkqhKzKLwXKUcU5JYeDD
-	 3wvrpiV+nM/SA==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d23114b19dso25246161fa.3
-        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 07:25:54 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxUsT6cdo7QlHOeXoSKHi7AqC8JFuDu1bTa0OatNkJjaax8EeSl
-	c3H6lNnU63/IJVpcvX0P45cHe4GQuU+jBhNF+sOnTy4xgnPWZFN1y8NDO568sFZVCxNhuBX0l84
-	JL7aN+CWsPWSQ/PCcTD204n1R4cc=
-X-Google-Smtp-Source: AGHT+IFOEzPhwI7bPX7c3aIyx5R9PN+Qx+tidIc3rtmHrgcwyOqKxM31J5bCrIAM16kOU+IuZMMYJQ7o8J9GCNZwefk=
-X-Received: by 2002:a2e:b5c8:0:b0:2d4:76c9:2573 with SMTP id
- g8-20020a2eb5c8000000b002d476c92573mr3355048ljn.18.1710512753337; Fri, 15 Mar
- 2024 07:25:53 -0700 (PDT)
+	s=arc-20240116; t=1710513002; c=relaxed/simple;
+	bh=KfYUBD7UBkzcBcghQDhrh4UXWg6wcsJSwijPDwGd+xc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XDRBG8qoB2ud2Oph8jOcOCXOBKCKRl8K4p51Nxc6lwnQqZSy3k1Ydzdm5htJ1l3lmp/UdjrooCLLpRO9wOTiWDgwP6vFfDtw+cZqkK2zqcEI/w+QY5I60IsFJfNO8r7Ek+kgZnvxs+GdeMyWsaKyjc68UjNC/rqJxFgRSwBzFOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=HwCNqalG; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a466a1f9ea0so204045066b.1
+        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 07:29:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1710512998; x=1711117798; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=26x5Ax6QaYFW/lMxTgpz/jUxgNJVrtQaQeSP0hgClqs=;
+        b=HwCNqalG9e38Unx0blfPCy7hKTXJXIfw/xLgPb5GLE6RNWVa2gUMjnOxs+QF0KNJyY
+         oKuOFm1zxJh/INpx6YWniq6GkotQkReSO35ln5oL7QsJMyoYwBtHebuczvkAtw6I/+gd
+         fwfSweriXw0W27J3ZoQgRIlue6cUQPToraG+DRgt7xe18Yy29TLFrgghGlOVMlPdiVD6
+         zipng7eC/es7xo1wBg+NVaeUPqqF8PoYStIsqxN+qdzeJrcyiE8d5lvNAHTff+/Vk/mz
+         n3hJ9nDDPPp6dFcSEtf+ucaHVFFd6rz2ksIcJJRzkmovzdMNhIMqTEJ/g0l51aj0Q0pe
+         8o/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710512998; x=1711117798;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=26x5Ax6QaYFW/lMxTgpz/jUxgNJVrtQaQeSP0hgClqs=;
+        b=o/XNSJyvbACHS5ex9bvA171mqSXcvsEnhQPoR7kI0QOnMFTAKRfcYV0mECIB7uiQt9
+         +RcsZWdEdBJ5PSL2uPjaawKO/8Uvdc7mDltdKu6NCVKH/kSYW0ClYFBjltyRuU/FbnjJ
+         a4/PZUhac+hxhDgdUoMoUxL2LkUSEWTVnmT47Yobky5HI1KlHTdO8q57ed88VfcrJuTZ
+         RjN8Vzku+oAl8r6u6o0tYMQQ+WL6LoK3tb43vO4yNSzK9MFXbkHnnqkeFU4DBCPDds2+
+         xcBstOBSS3Z6bel5KgghxpcmS2gAJnVdKttJwSl03OpZiSN9WkCN4Y66EA7rtY7HcA9B
+         Zl5A==
+X-Gm-Message-State: AOJu0Yz+oNZrXzkWlZdaPxg67XX78TW6s359b/ZdnAVai7fGKZk+CW3B
+	u2Dx2BYbWali1Qjj1oyE95BJT9X0UFKKSvc+deyRF7jjPC/EU/rZgQTs3WDcDBA=
+X-Google-Smtp-Source: AGHT+IEZqEc+qFGuULCGQaqf2Z6e4zQ1Np1mSGjmmzxskLbaDmx1sdHG1RUdJKKtsyZZdnlj6/7Lbw==
+X-Received: by 2002:a05:6402:1f04:b0:568:a30c:2dae with SMTP id b4-20020a0564021f0400b00568a30c2daemr3938824edb.0.1710512998347;
+        Fri, 15 Mar 2024 07:29:58 -0700 (PDT)
+Received: from raven.blarg.de (p200300dc6f010900023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f01:900:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id y14-20020aa7ccce000000b005653c441a20sm1726147edt.34.2024.03.15.07.29.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Mar 2024 07:29:58 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: tytso@mit.edu,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	brauner@kernel.org,
+	mforney@mforney.org
+Cc: stable@vger.kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH] Revert "ext4: apply umask if ACL support is disabled"
+Date: Fri, 15 Mar 2024 15:29:56 +0100
+Message-Id: <20240315142956.2420360-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
- <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
- <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
- <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com> <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
-In-Reply-To: <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 15 Mar 2024 15:25:41 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGWMOOJwezcOyS1qfAimLHmptUuL=hiqrinLL_FWHpm2A@mail.gmail.com>
-Message-ID: <CAMj1kXGWMOOJwezcOyS1qfAimLHmptUuL=hiqrinLL_FWHpm2A@mail.gmail.com>
-Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
- unpacking failed: invalid magic at start of compressed archive"
-To: Radek Podgorny <radek@podgorny.cz>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	regressions@leemhuis.info
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 15 Mar 2024 at 15:12, Radek Podgorny <radek@podgorny.cz> wrote:
->
-> hi ard, thanks for the effort!
->
-> so, your first recommended patch (the memset thing), applied to current
-> mainline (6.8) DOES NOT resolve the issue.
->
-> the second recommendation, a revert patch, applied to the same mainline
-> tree, indeed DOES resolve the problem.
->
-> just to be sure, i'm attaching the revert patch.
->
+This reverts commit 484fd6c1de13b336806a967908a927cc0356e312.  The
+commit caused a regression because now the umask was applied to
+symlinks and the fix is unnecessary because the umask/O_TMPFILE bug
+has been fixed somewhere else already.
 
-Thanks.
+Fixes: https://lore.kernel.org/lkml/28DSITL9912E1.2LSZUVTGTO52Q@mforney.org/
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/ext4/acl.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-If the revert works for you, I think we can stop looking.
+diff --git a/fs/ext4/acl.h b/fs/ext4/acl.h
+index ef4c19e5f570..0c5a79c3b5d4 100644
+--- a/fs/ext4/acl.h
++++ b/fs/ext4/acl.h
+@@ -68,11 +68,6 @@ extern int ext4_init_acl(handle_t *, struct inode *, struct inode *);
+ static inline int
+ ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+ {
+-	/* usually, the umask is applied by posix_acl_create(), but if
+-	   ext4 ACL support is disabled at compile time, we need to do
+-	   it here, because posix_acl_create() will never be called */
+-	inode->i_mode &= ~current_umask();
+-
+ 	return 0;
+ }
+ #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
+-- 
+2.39.2
 
-This points to an issue in the firmware's image loader, which does not
-clear all the memory it should be clearing.
-
-I will queue up the revert with your tested-by.
-
-Thanks,
-Ard.
 
