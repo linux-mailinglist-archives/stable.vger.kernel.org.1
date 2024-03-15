@@ -1,95 +1,119 @@
-Return-Path: <stable+bounces-28259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A13187D179
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:52:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB61187D277
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 18:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE5D1C21989
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC6531C22310
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3845008;
-	Fri, 15 Mar 2024 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDFB4AED8;
+	Fri, 15 Mar 2024 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrACjc1h"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ew+XUH5y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2D2BD19;
-	Fri, 15 Mar 2024 16:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761DF39AF0
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 17:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710521567; cv=none; b=C3U2QAI1fUsGg6isiOzf6a6rZmByJ4q/bxnYYmufmlrM9fGAo2EGuVoFL4GMQnmfQLOGgjhJ+honWgH7oRDGUd1z3sUvjOOOTbeDuzj6Bax3t6/ld6N7XL0mONDArXwtf6kWAJOV2njy0InQZqgP9rVp+zb9n9FwSBMoiPK0/sI=
+	t=1710522545; cv=none; b=SbCMm30lqHJQyLnpDmd2+wmrmYrOkl66aM6FmlO92oB81lHbR983BeYOCrF7/j+aqzgTL/xiplBAbLF0RR65RkuoX3x6nfKpP1dKor9KBM9vZXBBu3eOB6zMxdyFDA992TKXW1whHPiRYCdL/PdzZWMHLmMgxtODrsHftxCVfZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710521567; c=relaxed/simple;
-	bh=IzJk7AOCoYLXieCArB4efm0NZS82K8nZGO0e760LYXU=;
+	s=arc-20240116; t=1710522545; c=relaxed/simple;
+	bh=rDKBtEaBZintqNzBGvOPMViXG4XBLyFGvbuLLtaRa7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d82QNV/DXCV3Sz48FhpB275lHHuUytRHwLNkyWy8pAQtUmLZ2p08Huhl8oARy8THXUKO6rrFBkW7EH7YuOpgGV3NPDeQtyvEvPtbi5YZqyx18CSwFYcz+hNWu9JJZJAWQgvRUw0RpgEexOZEuevabZc7DQxG2LaDFwxP9cjua70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrACjc1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E8CC433F1;
-	Fri, 15 Mar 2024 16:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710521567;
-	bh=IzJk7AOCoYLXieCArB4efm0NZS82K8nZGO0e760LYXU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NrACjc1h3HwK8Qluv4p2ISBwy96gV9h2aMopUYzMFDPOtTHNFOBHgJl3U93bxj8F/
-	 SeHkhu0yHmntgkmMi/dOMqYhqKW8oAaJ9zJj2FKIWVAmwZ9fi/Yr8tMAmyja1DBc9M
-	 TF+sKHQLzOqFBuWJDE2zn4Ze3f1uOpIrfTrvJZ1ORGUjPPijekMqKya4S3xDNjIgfF
-	 OLQzcoEqS6HsJk/By+xUKQj4oVavuEyLRhbvI5UTZm2mQpyqpqiUADESx/q1spevsH
-	 hN8lLBJjyvBz7qyX9thzmdimKIt0gaYJGDyQSTdPYIG0Gdoi/aXkv9QgAdspbOSiOy
-	 vGgKJ1k5lek3w==
-Date: Fri, 15 Mar 2024 12:52:45 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-Message-ID: <ZfR83VSHE2RZKs5Q@sashalap>
-References: <20240313164640.616049-1-sashal@kernel.org>
- <ZfKhPaFngJTrTJyt@codewreck.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTEpf4aLnx4IjwLpYsO64NtHg8Vyfr7nFhUNifxrxsy6o5WVg4FAP0p3G6JJ/Qbo61+VBGffYC1VeX0JaMKqqokp+QxGj3Q/CWSb+PxwOKS1Kp9LTsX3PlGwhReBE8lPmJMPgyCfNQE7uEWJLCobQi36QYsouVS/YMQ4ZrL0nkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ew+XUH5y; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710522543; x=1742058543;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rDKBtEaBZintqNzBGvOPMViXG4XBLyFGvbuLLtaRa7E=;
+  b=Ew+XUH5yRJad82cwL9RNgPSto32JRJOSTU4uExo0tKg4SauTP/dTRk6N
+   fKlRIqZ6oANBKlwB0xmKH0UGxgJJsWROMF2hTPgBN0NRLrwwfsLXho3ZR
+   54E/brTfogArzoJgVc1eN2HoHna8qhtiVt3Etnvc/7jY+AkKvC/dQt720
+   Tf0/UmsfDfn7/KnzGXd2YpR7zSVV0dqtJOxnksdXVSY3GOwcB57zuaKkT
+   SVB9HRaupTCUp2+TwH7Lcmepekj+09KN/CJCPQ41zZV1dcV1OzUBU9x/r
+   t1QvX+4QkBiBucLq/pUg91OLo2dNOnPv0bxrLxMNeY7EFpwTdhpBiSP0D
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11014"; a="5590128"
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; 
+   d="scan'208";a="5590128"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 10:09:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,128,1708416000"; 
+   d="scan'208";a="12659293"
+Received: from unknown (HELO intel.com) ([10.247.118.169])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Mar 2024 10:08:57 -0700
+Date: Fri, 15 Mar 2024 18:08:51 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Nirmoy Das <nirmoy.das@linux.intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/gt: Report full vm address range
+Message-ID: <ZfSAo791UDRnBSwc@ashyti-mobl2.lan>
+References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+ <46ab1d25-5d16-4610-8b8f-2ee07064ec2e@intel.com>
+ <35df0767-384f-49f2-806a-f83765ca7c4c@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfKhPaFngJTrTJyt@codewreck.org>
+In-Reply-To: <35df0767-384f-49f2-806a-f83765ca7c4c@linux.intel.com>
 
-On Thu, Mar 14, 2024 at 04:03:25PM +0900, Dominique Martinet wrote:
->Sasha Levin wrote on Wed, Mar 13, 2024 at 12:45:27PM -0400:
->> This is the start of the stable review cycle for the 5.10.213 release.
->> There are 73 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->
->Thanks Sasha for submitting a stable rc review!
->
->If it's not too much trouble, would it be possible to have a different
->header in the 00 patch from the other patches for my mailbox?
->The mails Greg sends have the X-KernelTest-* headers (patch, tree,
->branch etc) only in the cover letter, while all the patches themselves
->only have 'X-stable: review' and 'X-Patchwork-Hint: ignore'
->
->I don't really care much what actual tags are on which as long as
->there's a way to differentiate that cover letter from the rest so I can
->redirect it to a mailbox I actually read to notice there's a new rc to
->test, without having all the patches unless I explicitly look for them.
->
->If it's difficult I'll add a regex on the subject for ' 00/' or
->something, I'd prefer matching only headers for robustness but just let
->me know.
+Hi Nirmoy,
 
-I should be able to adjust my scripts to match what Greg does. Thanks
-for pointing it out!
+> > In Mesa we've been relying on I915_CONTEXT_PARAM_GTT_SIZE so as long as
+> > that is adjusted by the kernel
+> 
+> What do you mean by adjusted by, should it be a aligned size?
+> 
+> I915_CONTEXT_PARAM_GTT_SIZE ioctl is returning vm->total which is
+> adjusted(reduced by a page).
+> 
+> This patch might cause silent error as it is not removing WABB which is
+> using the reserved page to add dummy blt and if userspace is using that
+> 
+> page then it will be overwritten.
 
--- 
-Thanks,
-Sasha
+yes, I think this could happen, but there is no solution,
+unfortunately. We need to fail at some point.
+
+On the other hand, I think mesa is miscalculating the vm size. In
+userspace the total size is derived by the bit size
+(maxNBitValue()).
+
+By doing so, I guess there will always be cases of
+miscalculation.
+
+There are two solutions here:
+
+ 1. we track two sizes, one the true available size and one the
+    total size. But this looks like a dirty hack to me.
+ 2. UMD fixes the size calculation by taking for granted what the
+    driver provides and we don't have anything to do in KMD.
+
+Lionel, Michal, thoughts?
+
+Andi
 
