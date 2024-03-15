@@ -1,85 +1,96 @@
-Return-Path: <stable+bounces-28234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852EB87CA6A
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 10:08:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F3D87CB8B
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 11:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 435CB28184F
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 09:08:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95095B229B1
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 10:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997AC175A5;
-	Fri, 15 Mar 2024 09:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AD918EAF;
+	Fri, 15 Mar 2024 10:37:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.lichtvoll.de (luna.lichtvoll.de [194.150.191.11])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E6617592;
-	Fri, 15 Mar 2024 09:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.150.191.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4145C182D4;
+	Fri, 15 Mar 2024 10:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710493696; cv=none; b=KR70I7IZAAuXd0k0OfBNKspD58A7MIykmPCbBEmWLYsFbAmt+gj5K2ghwFzxyRTGoOkwc+7GBzVtH6hQI7/TYM+GEQOaqXoHuVkc7JkSeNF6bs+qH3JnbFFy7qXC8Rl1O8sbWvIKW28Ja47vhi/NZeXSnPFtjTmyjQzYzpyqcN0=
+	t=1710499051; cv=none; b=JCEo/2F03sc8vsJhsuj0XjjxvH2ecCM1H5YqveCAZ8QsmGXVDTy34mmaMFBOQaFWC1p7lWvZ9q6e23ISZBPNUwP0xJZuqXfSF1AOi/NB+MMHB2YVEP09LBsbvn7861c/rrwYULoNQ2E3LAptFNC7elfY8XDVqYiGjVLWcfIzr2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710493696; c=relaxed/simple;
-	bh=2ZA3lXw/Y5WlDbXJ1oa4fCewvxABns3BN9JEMbyDDEU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dsqsYoC7P0wFZ9ytNO3Bk8H0xL2MN5UzRCn83WZrrPuOJzuRSf0k+WVRxrrHYga0PbeCSBq7aarF0NzQ7/EyjZ5HCYuAdX1a8Iz7P4TWQNh5Opv1R7gn+clSuENf8+xu5/dmCZGmdNE0XUTpKQKRz/3g0uKE46DVrVXv8EOD0+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de; spf=pass smtp.mailfrom=lichtvoll.de; arc=none smtp.client-ip=194.150.191.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lichtvoll.de
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by mail.lichtvoll.de (Postfix) with ESMTPSA id E8A1B8C0883;
-	Fri, 15 Mar 2024 10:08:10 +0100 (CET)
-Authentication-Results: mail.lichtvoll.de;
-	auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
-From: Martin Steigerwald <martin@lichtvoll.de>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- linux-usb@vger.kernel.org,
- Holger =?ISO-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
- linux-bcachefs@vger.kernel.org
-Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
-Date: Fri, 15 Mar 2024 10:08:10 +0100
-Message-ID: <4894644.GXAFRqVoOG@lichtvoll.de>
-In-Reply-To: <mqlu3q3npll5wxq5cfuxejcxtdituyydkjdz3pxnpqqmpbs2cl@tox3ulilhaq2>
-References:
- <1854085.atdPhlSkOF@lichtvoll.de> <5444405.Sb9uPGUboI@lichtvoll.de>
- <mqlu3q3npll5wxq5cfuxejcxtdituyydkjdz3pxnpqqmpbs2cl@tox3ulilhaq2>
+	s=arc-20240116; t=1710499051; c=relaxed/simple;
+	bh=XCPtROjE6EhU6Z6Ijpv7cnYZh8YYJn/GURY7rM3Sjcw=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=BOLkp3F2+RmKoBP+RDaDzKkyY6NUnd3IHzFWuBoL+o7vq0edaT/xzGNh9Zl4kqAjgl+JQgAseOYkWtb9q2OP8B2ysvI48hy/yT6gx82pZ3AKNvpIf+pQ5L/Q1N7PIIHiC16KoRC5DSMD6OZSQJRIH8JZoKJ/LvzRC780R9Qfm5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id AF9743782083;
+	Fri, 15 Mar 2024 10:37:27 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <20240313163957.615276-1-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240313163957.615276-1-sashal@kernel.org>
+Date: Fri, 15 Mar 2024 10:37:27 +0000
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
+To: "Sasha Levin" <sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Message-ID: <1fb18d-65f42500-67-4a825480@259289959>
+Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E1?= 00/71] 
+ =?utf-8?q?6=2E1=2E82-rc1?= review
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Wednesday, March 13, 2024 22:08 IST, Sasha Levin <sashal@kernel.org>=
+ wrote:
 
-Kent Overstreet - 11.02.24, 19:51:32 CET:
-> He only got errors after an hour or so, or 10 minutes with UAS disabled;
-> we send flushes once a second. Sounds like a screwy device.
+>=20
+> This is the start of the stable review cycle for the 6.1.82 release.
+> There are 71 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, plea=
+se
+> let me know.
+>=20
+> Responses should be made by Fri Mar 15 04:39:56 PM UTC 2024.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
+stable-rc.git/patch/?id=3Dlinux-6.1.y&id2=3Dv6.1.81
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>=20
 
-Kingston support intends to RMA the XS-2000 4 TB SSD with a variant with a 
-newer firmware version, in case they have it available, while they work on 
-a newer firmware version for the device variant the error happened on.
+KernelCI report for stable-rc/linux-6.1.y report for this week :-
 
-So it appears the device has a bug. I will keep you posted, once I either 
-receive that other variant or a firmware upgrade for the existing one.
+## stable-rc HEAD for linux-6.1.y:
+Date: 2024-03-13
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/log/?h=3D27d7d4053a11de9e6fbdbc6b6cc3f8f5937e4f2b
 
-I am happy with Kingston support so far. It takes quite a while, but they 
-are taking the issue for real instead of writing use Windows instead of 
-Linux or something like that :) - like I read before in other occasions 
-with hardware from other suppliers. Thanks!
+## Build failures:
+No build failures seen for the stable-rc/linux-6.1.y commit head \o/
 
-Best,
--- 
-Martin
+## Boot failures:
+No **new** boot failures seen for the stable-rc/linux-6.1.y commit head=
+ \o/
 
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+Shreeya Patel
 
 
