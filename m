@@ -1,128 +1,184 @@
-Return-Path: <stable+bounces-28221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5759987C6EF
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 02:06:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B0887C70C
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 02:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C738B21F1D
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 01:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB091F225F4
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 01:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF0310F7;
-	Fri, 15 Mar 2024 01:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="npWq4onb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA811C02;
+	Fri, 15 Mar 2024 01:18:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEC96FB1
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 01:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EDED517;
+	Fri, 15 Mar 2024 01:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710464762; cv=none; b=sBF+e3kjcFN7PbsYrhy+1+BICn5WwTTWTVSr9sAgf/udTQE+CArIDl96gaUmHFA5zEZjgrLomHpfkMMbiEnwHVkBYIwdXbkMzTn0pUQTpPYSgdR/Fs+xKJc2d0KcpWEouriX7qNRgp8J5ohU8yd23liaXYrlyMHmw/zHWSSORI4=
+	t=1710465489; cv=none; b=qc6HwM878QajoCSTBlAZjc6Qv9+MfYoOLvSwiNjHWCaYFOCvLQxMncjpMH26e72Cyd486XVeFzZryo+jLQivSb/1NTyGm0W95NnlDiLBwadTHpWbX17xDoaJz4Fu1UHbCPBN6pR0TAQY3J1/AwayTsHC9jDlEJlXeefB6QwGJ+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710464762; c=relaxed/simple;
-	bh=X/ZyG0aTHgaF46xsq3TWe49VpLqiKQo0/7ojJDuiYbQ=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=jZSPmbOpbNj6MwYBhR9+hg9zmUU2vcld4DZDYkDeMY1bDshcrxPlQ9qExKGI1vorVRMce32ukqjD0YWCo7pBYI3SmoOxhnvdb3ObVL1Do6bwOu+yM8T5i/P9hdRyxG47UsisvEUlDEbLzBEkpO/1I9tyI6NUVP6IstFiAGqnlYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=npWq4onb; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
-	by cmsmtp with ESMTPS
-	id kvgorpebvQr4SkvzirWs2s; Fri, 15 Mar 2024 01:04:22 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id kvzhrkFQM585gkvzirvm6m; Fri, 15 Mar 2024 01:04:22 +0000
-X-Authority-Analysis: v=2.4 cv=d6bzywjE c=1 sm=1 tr=0 ts=65f39e96
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Fgzz3YHIOOb4mvquEeWZhyzOq+Bfy/+Qp273CxCSJKo=; b=npWq4onb17h3/jlXmSSSbF126P
-	gQRNXao1si/AoQUZUmrjs9iWVT1fzKIAAuICKxWMtH6qLARS63v6dXCszE9ZsTrqCHufG0YooAu0i
-	luM9Whmk3PAZQNcRfl1r/lh9GpKA5VPd5x8CSsyO+W5wYIQioc95PjhfoczYJtWh0zGYLnwAsivlc
-	VZFZs1HeEdkiGbyzXQ9lnBphvu4J2hMoHLTF7huhTHP4blULpJopD3YQYP1l5CIh/uftngfod313Q
-	4/1yGPHII7opsLnlG5gH/sd1a2FaTV0G9sZTNfFQ1Qy+hbMEp/66UWDbMTwZRTGOyXGW3akSJlCK+
-	cQmECvPQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:51114 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rkvzh-003VVH-0O;
-	Thu, 14 Mar 2024 19:04:21 -0600
-Subject: Re: [PATCH 6.7 00/61] 6.7.10-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de
-References: <20240313163236.613880-1-sashal@kernel.org>
-In-Reply-To: <20240313163236.613880-1-sashal@kernel.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <db6e3a90-a4e8-5332-c1a2-7dbd869a8c79@w6rz.net>
-Date: Thu, 14 Mar 2024 18:04:19 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1710465489; c=relaxed/simple;
+	bh=d+rxEvkYZwbRHUDS3ovS2A/fo34HTT7331zC7Dqzl2k=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SyRaX+R6GTKwrhFFvzfpA9+ExFyWnKEL68PICMO5Ds/AJnBG0gYWhY8E002UOdo4ORbPN0VQA0QE8q5lSQaS7nPaWMf8194mq3nZKPfWkk4T0oPvurThJge3wFLtrNddUCdrQfpd6w/0s8T0bAYgIL3QEz3bKC6UBhbGh40EOio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4TwmZm2Pgwz4f3kFj;
+	Fri, 15 Mar 2024 09:17:52 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 1E5C51A017A;
+	Fri, 15 Mar 2024 09:17:58 +0800 (CST)
+Received: from [10.174.176.73] (unknown [10.174.176.73])
+	by APP1 (Coremail) with SMTP id cCh0CgAX5g7EofNluLLsGw--.32050S3;
+	Fri, 15 Mar 2024 09:17:57 +0800 (CST)
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: Dan Moulding <dan@danm.net>, yukuai1@huaweicloud.com
+Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com,
+ linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
+ regressions@lists.linux.dev, song@kernel.org, stable@vger.kernel.org,
+ "yukuai (C)" <yukuai3@huawei.com>
+References: <ecfce4d7-bcf7-c09a-7f01-5c7de88df107@huaweicloud.com>
+ <20240314161211.14002-1-dan@danm.net>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <db4f5f1b-5eba-2cdb-fad0-7aa725cea508@huaweicloud.com>
+Date: Fri, 15 Mar 2024 09:17:56 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rkvzh-003VVH-0O
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:51114
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 3
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHBDHZJS3d4SgXbldsW/li3I4EyOODD6mECn09myyGp9ixVG+V4KD3wfDUFWBuF60aWMM2dvGrj6kzL5UXQAM5Ts838DI+vEUo1QIZPwum/YJxGRv7eG
- r2h3zb0DQJWmFxztvrE7YasUIyXk0A6mlOYcfx5OP5xhY1CJVbvF8KfhHdmsh8JlAzvSAx36jBwubQ==
+In-Reply-To: <20240314161211.14002-1-dan@danm.net>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgAX5g7EofNluLLsGw--.32050S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxZF43Gry8KF17KFyrZF4rGrg_yoW5WFyrpr
+	Wqva1Y9F4UWr98XasrA3yjg34Fvw1IgFW2yFyrC3Z7ZasYgrW3t3yrJryUGrs8Jan3KF4S
+	vFyYy3sxWr48KrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E
+	3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCT
+	nIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-On 3/13/24 9:31 AM, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 6.7.10 release.
-> There are 61 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri Mar 15 04:32:27 PM UTC 2024.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.7.y&id2=v6.7.9
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
+Hi,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+ÔÚ 2024/03/15 0:12, Dan Moulding Ð´µÀ:
+>> How about the following patch?
+>>
+>> Thanks,
+>> Kuai
+>>
+>> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+>> index 3ad5f3c7f91e..0b2e6060f2c9 100644
+>> --- a/drivers/md/raid5.c
+>> +++ b/drivers/md/raid5.c
+>> @@ -6720,7 +6720,6 @@ static void raid5d(struct md_thread *thread)
+>>
+>>           md_check_recovery(mddev);
+>>
+>> -       blk_start_plug(&plug);
+>>           handled = 0;
+>>           spin_lock_irq(&conf->device_lock);
+>>           while (1) {
+>> @@ -6728,6 +6727,14 @@ static void raid5d(struct md_thread *thread)
+>>                   int batch_size, released;
+>>                   unsigned int offset;
+>>
+>> +               /*
+>> +                * md_check_recovery() can't clear sb_flags, usually
+>> because of
+>> +                * 'reconfig_mutex' can't be grabbed, wait for
+>> mddev_unlock() to
+>> +                * wake up raid5d().
+>> +                */
+>> +               if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
+>> +                       goto skip;
+>> +
+>>                   released = release_stripe_list(conf,
+>> conf->temp_inactive_list);
+>>                   if (released)
+>>                           clear_bit(R5_DID_ALLOC, &conf->cache_state);
+>> @@ -6766,8 +6773,8 @@ static void raid5d(struct md_thread *thread)
+>>                           spin_lock_irq(&conf->device_lock);
+>>                   }
+>>           }
+>> +skip:
+>>           pr_debug("%d stripes handled\n", handled);
+>> -
+>>           spin_unlock_irq(&conf->device_lock);
+>>           if (test_and_clear_bit(R5_ALLOC_MORE, &conf->cache_state) &&
+>>               mutex_trylock(&conf->cache_size_mutex)) {
+>> @@ -6779,6 +6786,7 @@ static void raid5d(struct md_thread *thread)
+>>                   mutex_unlock(&conf->cache_size_mutex);
+>>           }
+>>
+>> +       blk_start_plug(&plug);
+>>           flush_deferred_bios(conf);
+>>
+>>           r5l_flush_stripe_to_raid(conf->log);
+> 
+> I can confirm that this patch also works. I'm unable to reproduce the
+> hang after applying this instead of the first patch provided by
+> Junxiao. So looks like both ways are succesful in avoiding the hang.
+> 
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thanks a lot for the testing! Can you also give following patch a try?
+It removes the change to blk_plug, because Dan and Song are worried
+about performance degradation, so we need to verify the performance
+before consider that patch.
+
+Anyway, I think following patch can fix this problem as well.
+
+Thanks,
+Kuai
+
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 3ad5f3c7f91e..ae8665be9940 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -6728,6 +6728,9 @@ static void raid5d(struct md_thread *thread)
+                 int batch_size, released;
+                 unsigned int offset;
+
++               if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++                       goto skip;
++
+                 released = release_stripe_list(conf, 
+conf->temp_inactive_list);
+                 if (released)
+                         clear_bit(R5_DID_ALLOC, &conf->cache_state);
+@@ -6766,6 +6769,7 @@ static void raid5d(struct md_thread *thread)
+                         spin_lock_irq(&conf->device_lock);
+                 }
+         }
++skip:
+         pr_debug("%d stripes handled\n", handled);
+
+         spin_unlock_irq(&conf->device_lock);
+
+
+> -- Dan
+> .
+> 
 
 
