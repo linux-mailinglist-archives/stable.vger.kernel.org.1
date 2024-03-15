@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-28249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0636787D069
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:35:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CE287D073
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923D01F23D37
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:35:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82BF6B21BBA
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F90D3C6AC;
-	Fri, 15 Mar 2024 15:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0321A3E462;
+	Fri, 15 Mar 2024 15:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGxd6Yh9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYTGh0QP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20263F9F4;
-	Fri, 15 Mar 2024 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33ED3D96E;
+	Fri, 15 Mar 2024 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710516903; cv=none; b=mk1lcQ+qi6uBRXIDkYWsNbpM9DJuBuFkFGrknbAQNg7FOn+gOCMcvtqE5J8gVO0g/v6TKf/hUntO7/g0Cqck3RNIPkZHDen16Eu05JGOorhym3wMkYkSq+hVYyy2RptUN0Zd/ZyFgG2VB/+mDYH2EfXhlyGTR79H/aMUY43FkBc=
+	t=1710517253; cv=none; b=Dqy6es4I7rQSUvNGV25FsHq7fHx6m/xzL/usXUCW7vTQVqGkiBSXs49mIF4DgQReMFuT6Fn/xxXT4bFg/0B3lBD2aKe7NPi5TVdRaL5ClH6jUI+XLoa344R1wBF9RVTq9LvXjwLORLt3Mp3dkJnwD7hl4OYjFv2F3uop6GN/ZGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710516903; c=relaxed/simple;
-	bh=kMvE945U6tZvf5khr6Zgk0+4AmsFWiLJKJFA3XanMDY=;
+	s=arc-20240116; t=1710517253; c=relaxed/simple;
+	bh=MJf2y2Zflcqhg26B6IegM18VqfaNaUfxtegMhDQiyhI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hiXaRY94wbn1AxpBZnGF+sgK9+iGL/1IDkWyJMtAWt3liJlSkrUKt3GdZ3rXZ9LYS8gPXfpMil5KZzKJGvQx3BTbCbrHIRghk5dG9JuKFZHWjofVed1roVy+Rd6noILn96m48eRFNcYcdL4XZAXIIwRzB3Zs1wQkDn8HyV9ceNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGxd6Yh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A00C43390;
-	Fri, 15 Mar 2024 15:35:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=h45azVX2/XCS7sVmUaUIcdEomIMMxANtvGiQsgcJfil3l305cZy5WaOkGUGolnVRfQVCHWstOpbqvwRqtArTNxR4m2bunhaS+RIoeKiy74oXjs+VgJ/Xx2yxNWWs/IIYJenQXC0GMg59Bje5HYd+P4OSsJ9FY+OM7y/pkDRleK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYTGh0QP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7D5C433C7;
+	Fri, 15 Mar 2024 15:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710516903;
-	bh=kMvE945U6tZvf5khr6Zgk0+4AmsFWiLJKJFA3XanMDY=;
+	s=k20201202; t=1710517253;
+	bh=MJf2y2Zflcqhg26B6IegM18VqfaNaUfxtegMhDQiyhI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oGxd6Yh93OoOgar07GpQnyRiGlV5FsLGb53T7JYs5zqkg1kaksZWhP+O2Sgwi5jSo
-	 viqqkeL74blcV69t45uvIXnZiSBpvLwF9CLvAZws7OWmalWkaKTuHedBe7ewBFd4S2
-	 qPSSy/lgwbV81B+8WMbUalgzaidP7BinvrrckJN/kUMj8dDsEULwEzeOrINg7xdvP+
-	 mmma5ll5yib10JW9sLJXT9IT+tXSSU/48pY3CS8ig5ZlxASs5kE4XDiFg6IBvHqe8l
-	 DYLQYWNx4UcAHS086S6bmTzXrT69i86zaF/JT++NfTma/HkZMqQb57Igz3jD2MnFYX
-	 qdU/oDVF4ZmCg==
-Date: Fri, 15 Mar 2024 15:34:58 +0000
+	b=UYTGh0QPfCsOWoz6oSpcjVtDYmsHpsLV/sge952M6zG4BJdWah+Lhkp0nEPN4q18o
+	 Tjl7kAu1o9R1ZXDmz1cSh5kcxFZCveIeQRWt/OgP6TMNgmuLLCqOC6SwogucaN4WZV
+	 pg9kZUl4YOVT0TpR5RfgblBR8Lp7qmL9E/iktw0aqXhrJNliKxYQYBsUz5QDkRYhQt
+	 jEyG75X9YqGQAYimcISHtL8Xe17Yar8No2H4ZCTy0O/Cb3FW9NtpC1Nx3RnhihUDXV
+	 LrjQHO5HiUiiPFltz/R8k+ejdsMz52oUWramKhHrYOX1g5LFbG9YUYL6JXvN++b7ep
+	 hjTJU8y9piIwg==
+Date: Fri, 15 Mar 2024 15:40:46 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	torvalds@linux-foundation.org, akpm@linux-foundation.org,
 	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
 	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 6.1 00/71] 6.1.82-rc1 review
-Message-ID: <fdcb4083-d18b-41ef-a29b-ab1f9fb8bae2@sirena.org.uk>
-References: <20240313163957.615276-1-sashal@kernel.org>
+Subject: Re: [PATCH 6.7 00/61] 6.7.10-rc1 review
+Message-ID: <a4c3ee1e-6941-4426-87b9-c5bf3a58d8de@sirena.org.uk>
+References: <20240313163236.613880-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,40 +58,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gY9Vlt8Iv6TUAL0x"
+	protocol="application/pgp-signature"; boundary="bdjzHhYfbtfWjhuh"
 Content-Disposition: inline
-In-Reply-To: <20240313163957.615276-1-sashal@kernel.org>
-X-Cookie: Best if used before date on carton.
+In-Reply-To: <20240313163236.613880-1-sashal@kernel.org>
+X-Cookie: news: gotcha
 
 
---gY9Vlt8Iv6TUAL0x
+--bdjzHhYfbtfWjhuh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 12:38:46PM -0400, Sasha Levin wrote:
+On Wed, Mar 13, 2024 at 12:31:35PM -0400, Sasha Levin wrote:
 >=20
-> This is the start of the stable review cycle for the 6.1.82 release.
-> There are 71 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.7.10 release.
+> There are 61 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---gY9Vlt8Iv6TUAL0x
+--bdjzHhYfbtfWjhuh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0aqEACgkQJNaLcl1U
-h9AwnQf9Hc6tXCghN0tarwwvf7pVi9DpywhHHyde9n2pzebQ+JHnOyG+d0JUJeOD
-/Az0uk7WwQQxzVCCBnTAOCC0CN7uNvHHTs+Ox0N6USUsyTK1GudedYI6Qxs6e5ds
-VDc46bXBcAptk9EX+fUEeWA3HHEe+orileF1nRT44ve+d68J/oGO9tdDCa0yGVoL
-AXH0l60MweRSoYnjAJidhIJ0jaWzKs4TSkMld6ZkUl9a6rzssIHaOBShr694tpxM
-kOwWrKJQ5NB4IhPg03DV1OT34kQ0Pn7VWpUuDN6iRvevIgIS5tRMPUac5Dsa4xKn
-BQTwIlyHLd0SAb+22dXkokCa5J+HzQ==
-=LXLx
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0a/0ACgkQJNaLcl1U
+h9BJSQf9GVyzjI/ct6OiwzPHRdu2znNkxKV2Xz6+XvWxd2E945c52mMrEM9rLr5p
+vLQS32l92PC86THfAaYfPRMhTrImLig7ptjTlx4vUr98w21MBzjOQfNHAA72WlXn
+MVrNHam491F+nTZ37CeiywiBa8kpPVRTaXwaLw1zW6PfFHtnB5mq7v1gWbh5aMzv
+zaajz58u2VruXvthEyQ9zGadh5F4Ecq2SasKgLmRsVn8skBj3A6kjU/A3OHJRMMj
+KcqM0tyT/hD2j1HtoXN8wNVmTejZNjL8Z3JjBEh5QSB4LmIH9AMisUSAPFANv2Fr
+Q2AYV8zpvKsG1nFD3WyHCqgBbHHViQ==
+=4mH/
 -----END PGP SIGNATURE-----
 
---gY9Vlt8Iv6TUAL0x--
+--bdjzHhYfbtfWjhuh--
 
