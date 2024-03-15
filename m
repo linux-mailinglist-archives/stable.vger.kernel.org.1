@@ -1,97 +1,99 @@
-Return-Path: <stable+bounces-28242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801CF87CE9C
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:22:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FA787CEC9
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 360AE1F21AF5
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 14:22:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428BE1C21D1D
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 14:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3407937167;
-	Fri, 15 Mar 2024 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA99381BB;
+	Fri, 15 Mar 2024 14:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npfOG5uG"
 X-Original-To: stable@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id B3B1B374E0
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD1F38380
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710512531; cv=none; b=UzsFKkxsAJZlUewd6M9GLTVdwEnvkIMR9R4d5zUCQnjiwsHGiAWNILO3lx3043bx3hsPn7m1oFqIiy8YFzIfZa3ZYGTZqHfw6JZTA3ny666gTJuB4BYMgejk960uPQF/b/oclonQTOccrToV2E94ZfQjc8USycOYw7JumoJIQhg=
+	t=1710512755; cv=none; b=ephAqFVQ7t2rJn5UKpf+KGrmO5pXH5zvjqXw8Fme06Hg6WzIpSdFEgYohKgNSmnLuG/Q6zZfQzXifw+uxMiTYR6kp2oD74lwYK3sH/zDY7Qqt3/l3BR3JUceN3ADd38Ahknd3NTfISOHRgtFH/KTaF9PrRuCTQ9v+HD7IhvgRgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710512531; c=relaxed/simple;
-	bh=935tHhPFb8easobao5KURj8zNIGm8JAYqqWC6Vw2Ocw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u9JBOgFsm5C1ouNHozCF9LZRE8uVfJwciGztTvXfBvuvgeV1ORBM1WR8bAghQZbxpOxKHmq85xDjnYlWSitzXbdf/9h39TrwE+efwz5f8J8nWS1JHgE0m0W+agQo4S0s8zUAWB7vqoAgFZ0i8gIkZ2mPi95JvaJm4TPThziLntY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 487065 invoked by uid 1000); 15 Mar 2024 10:22:04 -0400
-Date: Fri, 15 Mar 2024 10:22:04 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: yuan linyu <yuanlinyu@hihonor.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] usb: udc: remove warning when queue disabled ep
-Message-ID: <17a9f299-7550-4498-b209-8f9433c493b6@rowland.harvard.edu>
-References: <20240315020144.2715575-1-yuanlinyu@hihonor.com>
+	s=arc-20240116; t=1710512755; c=relaxed/simple;
+	bh=yCAii4u6k7UDf2mCfYs3azGv5SdtykhLrhBD1xm5jHI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wvu2ZPkQY0253k69NSjB8RHYXi2gA+JBqZsPHNBfwcnCARDuNcQlG5/M9Fr0Hp0HvALIz2wqy8bTLlZiWV1hVANoJTMeVHQbZ9PPpwYuP4Ih+Awf/TH0jfr5iRv4rltQikRXr6WAcM6139uTJHFjXy27bJFYIF13CeRaMEPd7oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npfOG5uG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBEAC433C7
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 14:25:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710512754;
+	bh=yCAii4u6k7UDf2mCfYs3azGv5SdtykhLrhBD1xm5jHI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=npfOG5uGsT42CXiqG5ONDEM9vZ68ZeBWf16auY8HA8VRWrgFWzudGniSnBGA9yrTM
+	 3m1FPI6SswVyFknVGjhPbosK93bBlfuW+1TWCOpqD8IDACvUbc3kpniHU77YxCYhWy
+	 A36mUKCMMeWJtoAvDGVi97Hwd4n3ZRLjIxgafRhzhnfBSGb3N7GCjj28jr1eTFi2ZG
+	 PPu46Qn+HieDrf/V/40kOS9XYivDzci+1XG0ZhCnRDViHPjp3mehh1BvwjgA4sOR79
+	 8rUPX2uJ/HHR/dp9KkD6n7Mrjp+3utzt/g1z0t0uybtqWXWkqhKzKLwXKUcU5JYeDD
+	 3wvrpiV+nM/SA==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d23114b19dso25246161fa.3
+        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 07:25:54 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxUsT6cdo7QlHOeXoSKHi7AqC8JFuDu1bTa0OatNkJjaax8EeSl
+	c3H6lNnU63/IJVpcvX0P45cHe4GQuU+jBhNF+sOnTy4xgnPWZFN1y8NDO568sFZVCxNhuBX0l84
+	JL7aN+CWsPWSQ/PCcTD204n1R4cc=
+X-Google-Smtp-Source: AGHT+IFOEzPhwI7bPX7c3aIyx5R9PN+Qx+tidIc3rtmHrgcwyOqKxM31J5bCrIAM16kOU+IuZMMYJQ7o8J9GCNZwefk=
+X-Received: by 2002:a2e:b5c8:0:b0:2d4:76c9:2573 with SMTP id
+ g8-20020a2eb5c8000000b002d476c92573mr3355048ljn.18.1710512753337; Fri, 15 Mar
+ 2024 07:25:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240315020144.2715575-1-yuanlinyu@hihonor.com>
+References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
+ <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
+ <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
+ <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com> <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
+In-Reply-To: <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 15 Mar 2024 15:25:41 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGWMOOJwezcOyS1qfAimLHmptUuL=hiqrinLL_FWHpm2A@mail.gmail.com>
+Message-ID: <CAMj1kXGWMOOJwezcOyS1qfAimLHmptUuL=hiqrinLL_FWHpm2A@mail.gmail.com>
+Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
+To: Radek Podgorny <radek@podgorny.cz>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	regressions@leemhuis.info
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 15, 2024 at 10:01:44AM +0800, yuan linyu wrote:
-> It is possible trigger below warning message from mass storage function,
-> 
-> WARNING: CPU: 6 PID: 3839 at drivers/usb/gadget/udc/core.c:294 usb_ep_queue+0x7c/0x104
-> pc : usb_ep_queue+0x7c/0x104
-> lr : fsg_main_thread+0x494/0x1b3c
-> 
-> Root cause is mass storage function try to queue request from main thread,
-> but other thread may already disable ep when function disable.
-> 
-> As there is no function failure in the driver, in order to avoid effort
-> to fix warning, change WARN_ON_ONCE() in usb_ep_queue() to pr_debug().
-> 
-> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-> ---
+On Fri, 15 Mar 2024 at 15:12, Radek Podgorny <radek@podgorny.cz> wrote:
+>
+> hi ard, thanks for the effort!
+>
+> so, your first recommended patch (the memset thing), applied to current
+> mainline (6.8) DOES NOT resolve the issue.
+>
+> the second recommendation, a revert patch, applied to the same mainline
+> tree, indeed DOES resolve the problem.
+>
+> just to be sure, i'm attaching the revert patch.
+>
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Thanks.
 
-> v4: add version info in subject
-> v3: add more debug info, remove two line commit description
->     https://lore.kernel.org/linux-usb/20240315015854.2715357-1-yuanlinyu@hihonor.com/
-> v2: change WARN_ON_ONCE() in usb_ep_queue() to pr_debug()
->     https://lore.kernel.org/linux-usb/20240315013019.2711135-1-yuanlinyu@hihonor.com/
-> v1: https://lore.kernel.org/linux-usb/20240314065949.2627778-1-yuanlinyu@hihonor.com/
-> 
->  drivers/usb/gadget/udc/core.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-> index 9d4150124fdb..b3a9d18a8dcd 100644
-> --- a/drivers/usb/gadget/udc/core.c
-> +++ b/drivers/usb/gadget/udc/core.c
-> @@ -292,7 +292,9 @@ int usb_ep_queue(struct usb_ep *ep,
->  {
->  	int ret = 0;
->  
-> -	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
-> +	if (!ep->enabled && ep->address) {
-> +		pr_debug("USB gadget: queue request to disabled ep 0x%x (%s)\n",
-> +				 ep->address, ep->name);
->  		ret = -ESHUTDOWN;
->  		goto out;
->  	}
-> -- 
-> 2.25.1
-> 
+If the revert works for you, I think we can stop looking.
+
+This points to an issue in the firmware's image loader, which does not
+clear all the memory it should be clearing.
+
+I will queue up the revert with your tested-by.
+
+Thanks,
+Ard.
 
