@@ -1,59 +1,82 @@
-Return-Path: <stable+bounces-28256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B8587D128
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:24:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2871887D145
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FB61C228E8
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:24:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C4AAB22055
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5820645945;
-	Fri, 15 Mar 2024 16:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EEF45BE2;
+	Fri, 15 Mar 2024 16:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b="pgUzrG1I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1Qrw7EN"
 X-Original-To: stable@vger.kernel.org
-Received: from mxb.seznam.cz (mxb.seznam.cz [77.75.78.89])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B566FD9
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 16:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC82208A
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 16:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710519887; cv=none; b=tTB3wPxOYiB5jJXgPIxQEfjH2lI1ETIJjSOn1Q9r3GLuikz2MawVdewCoHU0Zp6DYVT4GAeEqW3Cxr0OJYSfb1Tm5ToifdfDR8Gw9zSSqZsiiVgku5jYWQdT1JMO2jrgpbt2YQVzlAMTho+k+oEccvCgpklUkAbgGSDSsEBjeUE=
+	t=1710520615; cv=none; b=vBH+mvFaQUS1uXbhFbNB01k/rMciv4gXZDX2CPieYBVseGiaKazbUw4kQQf4o7qAXBjvL4pAPG6AYPNiBPXf8cn2SJYi6DU+BHsIKzV1c0Qjo5ZgVzLgGDMFcsJzmAoKqUxdHbkBSds47omlXdlNuAp0B7MTKAmbcOJWm5IlTNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710519887; c=relaxed/simple;
-	bh=gc7gzKqYttkOzF3iRrIXTejoC7VKWKXqI9UO1389Eqs=;
+	s=arc-20240116; t=1710520615; c=relaxed/simple;
+	bh=iwGxO6cxEtXAQo1Lngzsu+O09CGlaIMRBvKyYlye9sA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N1y3Wme7qLKwC/U9a02xuk3Kbc5+wHI/diGZpeMvwOu0S9GMX1O9UE0K7WZgf3lM4sqKAtrqbLbmloV+T23R9eXiRrNHGUWRSMtMoDw/zQ+ytCsl4eqr7U/wm+YmZtyIHm2BG63axIqouSafzMa+NaGiDtkMWi/ldEc+lGJHWBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz; spf=pass smtp.mailfrom=podgorny.cz; dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b=pgUzrG1I; arc=none smtp.client-ip=77.75.78.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=podgorny.cz
-Received: from email.seznam.cz
-	by smtpc-mxb-79548bf4db-6g5l8
-	(smtpc-mxb-79548bf4db-6g5l8 [2a02:598:64:8a00::1000:970])
-	id 6e25e59bd81f48826baaffd3;
-	Fri, 15 Mar 2024 17:24:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=emailprofi.seznam.cz; s=szn20221014; t=1710519861;
-	bh=gc7gzKqYttkOzF3iRrIXTejoC7VKWKXqI9UO1389Eqs=;
-	h=Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type;
-	b=pgUzrG1I79OkAcwKKqmZsGhjfieUsn1p8LrzyjN6VUNYj/i4VC+IbguF6Ssowtdpq
-	 azpuFmWceX+W3b89SjuG9iQpfcpo5RvHblRm/ngJfQZPuT6boV9YIPR853r+tc4BQs
-	 wKWaj3zPthIbu7TdPT8iasS+RJsKTpSY3pWrN4sAaVRsYj1CHGg1qB+CGmrUAWLZMa
-	 9/Q+BxSpEVUD544ucH5N607hR/Pb7Xhc8Tw+VFEA0jM1Em2vFktBbJpHCSdiphQuHn
-	 CfTKNdOqQfHbja4Jh1ydN37mMGnJvWTVJXyiboWtVl8Hpuhiy/I4xOKitDj9WU4Q0y
-	 RfF12seAtY/dQ==
-Received: from [IPV6:2a01:9422:904:1ee:e65e:37ff:feee:e29c]
-	([2a01:9422:904:1ee:e65e:37ff:feee:e29c])
-	by smtpd-relay-594d8f6859-4vkd8 (szn-email-smtpd/2.0.18) with ESMTPA
-	id 824f5021-ac6f-440b-ac02-48e82f59aa00;
-	Fri, 15 Mar 2024 17:24:18 +0100
-Message-ID: <61148405-2036-4994-9eef-45cbe6aa9adb@podgorny.cz>
-Date: Fri, 15 Mar 2024 17:24:16 +0100
+	 In-Reply-To:Content-Type; b=OcbNKqIzb141l6d1mw2sQVs0DOkA6m/cFibGmVItLr1Qz0aNTfU6AMEkv3fWeTny4fapvGw2IFERd6aFA31MAvaUdlA8J47NlDhG59/lV8Txpc5uyCTteoZgXFRN5ELKHgxJupxZuf7O5ATog2HzR9t/Q1Wi0y7Wf6TaYx019wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1Qrw7EN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710520611;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LoEZpnSdB/ZldqxVxDwhD5has2xOLA/LrYBq0K/q2lU=;
+	b=L1Qrw7ENyTDhsnuLd2j0FIxQJq05j71494mNgzhdSveMnc63JV+7cblCkf4qYydT827Eqi
+	5u+bV46iFz4P6t7s6Xu9P1SKlCLXJosw6sshwbSSxqxG3ESWEsYt4hl29Pa1J/4CfiawZn
+	jAIcM8VACknd16pF0GoP9NuIWDgTFDQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-604--hBxNHvaPM6Cm-InS_CZuw-1; Fri, 15 Mar 2024 12:36:50 -0400
+X-MC-Unique: -hBxNHvaPM6Cm-InS_CZuw-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-78823bb1fcbso361199685a.1
+        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 09:36:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710520609; x=1711125409;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LoEZpnSdB/ZldqxVxDwhD5has2xOLA/LrYBq0K/q2lU=;
+        b=hHcOPCQtTmwZ8a/WJG27Rdvwcp4vwHntT2uzSIqH9n7cwF+qagRj2ft045MwrGA6bE
+         9ZFhutNillxAM4jou+wid8MawPhNTXLYMYol140DZS2NMInlW67ZSErgNQA16aFIqKaw
+         GDwQ2x87K0jo/85VicZqph5iCRPntnnGJW8/nzY9pe+ihm0JL70iaEAqlHUJoie7l01k
+         bnn42VN3+D6i8o/m5pTf3EXmClDfOBO653r0FCZO30aU9X5G4Q3VesMjo+YAITKn/Z6G
+         rm0hwKD+BmgShvq6Bp7KJRXfP7ehM2p89gfnacMN5gcFAWhYxFIYKOGPsB/Ddd2YJI/x
+         ENIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEXcVTSSaEfK5ISIJSCkMXd9ljGX1cvQ0p7shPApRP9q2lB9Ctu1qBFINs5S5g5HlCKoaBbML5CQ1/a+of/IuS0xukILY/
+X-Gm-Message-State: AOJu0YxgJMscyoGUwhYfaUMxnF1ppIvIj0Hgo3Pa3qQHxNyphh8WxZgJ
+	BcCaUZiIL2YgfqUZQzsydakLCGd/tsqFI9tlkCBYyMFwWyFhdgeqK8i+kap9B4KUFY+vUTJ4AOj
+	o3KCze3+FLYjvZV5Xxs7E9v6+98A9cWD3BOrV1fHoH7o4bW3q4jIGIC4NgWv/LA==
+X-Received: by 2002:a05:620a:55ba:b0:789:e71c:207d with SMTP id vr26-20020a05620a55ba00b00789e71c207dmr2147699qkn.27.1710520609193;
+        Fri, 15 Mar 2024 09:36:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZdJtnjhNiBM7Iq0IRojnfEffkjOnRqTKDWzfrFq0IHzyJPKGsV4no+KlsFMtZsDFEv6UoCA==
+X-Received: by 2002:a05:620a:55ba:b0:789:e71c:207d with SMTP id vr26-20020a05620a55ba00b00789e71c207dmr2147675qkn.27.1710520608765;
+        Fri, 15 Mar 2024 09:36:48 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id c27-20020a05620a11bb00b007882fe32acasm2185902qkk.3.2024.03.15.09.36.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Mar 2024 09:36:48 -0700 (PDT)
+Message-ID: <d141c24d-4d88-45ec-b8cf-5697c91cc6a5@redhat.com>
+Date: Fri, 15 Mar 2024 17:36:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,177 +84,265 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
- unpacking failed: invalid magic at start of compressed archive"
-Content-Language: en-US-large
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- regressions@leemhuis.info
-References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
- <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
- <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
- <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com>
- <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
- <CAMj1kXG1Vgpp+ckwDww_4q2SF+kajUaoE3+qe5FzMkGyq-Lbag@mail.gmail.com>
- <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
-From: Radek Podgorny <radek@podgorny.cz>
-In-Reply-To: <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------bX9AywMx93iSsEEK0m8RdY80"
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v2 6/7] vfio/platform: Create persistent IRQ handlers
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: kvm@vger.kernel.org, clg@redhat.com, reinette.chatre@intel.com,
+ linux-kernel@vger.kernel.org, kevin.tian@intel.com, stable@vger.kernel.org
+References: <20240308230557.805580-1-alex.williamson@redhat.com>
+ <20240308230557.805580-7-alex.williamson@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240308230557.805580-7-alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------bX9AywMx93iSsEEK0m8RdY80
-Content-Type: multipart/mixed; boundary="------------k9CzYCAAMy8oH6cVvt5HvEx2";
- protected-headers="v1"
-From: Radek Podgorny <radek@podgorny.cz>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- regressions@leemhuis.info
-Message-ID: <61148405-2036-4994-9eef-45cbe6aa9adb@podgorny.cz>
-Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
- unpacking failed: invalid magic at start of compressed archive"
-References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
- <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
- <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
- <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com>
- <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
- <CAMj1kXG1Vgpp+ckwDww_4q2SF+kajUaoE3+qe5FzMkGyq-Lbag@mail.gmail.com>
- <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
-In-Reply-To: <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
+Hi Alex,
 
---------------k9CzYCAAMy8oH6cVvt5HvEx2
-Content-Type: multipart/mixed; boundary="------------qJKvIhf7JdyPFi8winmmFzkq"
+On 3/9/24 00:05, Alex Williamson wrote:
+> The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
+> an interrupt before a signaling eventfd has been configured by the user,
+> which thereby allows a NULL pointer dereference.
+>
+> Rather than register the IRQ relative to a valid trigger, register all
+> IRQs in a disabled state in the device open path.  This allows mask
+> operations on the IRQ to nest within the overall enable state governed
+> by a valid eventfd signal.  This decouples @masked, protected by the
+> @locked spinlock from @trigger, protected via the @igate mutex.
+>
+> In doing so, it's guaranteed that changes to @trigger cannot race the
+> IRQ handlers because the IRQ handler is synchronously disabled before
+> modifying the trigger, and loopback triggering of the IRQ via ioctl is
+> safe due to serialization with trigger changes via igate.
+>
+> For compatibility, request_irq() failures are maintained to be local to
+> the SET_IRQS ioctl rather than a fatal error in the open device path.
+> This allows, for example, a userspace driver with polling mode support
+> to continue to work regardless of moving the request_irq() call site.
+> This necessarily blocks all SET_IRQS access to the failed index.
+>
+> Cc: Eric Auger <eric.auger@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
 
---------------qJKvIhf7JdyPFi8winmmFzkq
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Thanks
 
-aXQncyBzeXN0ZW1kLWJvb3QuIGF0dGFjaGluZyBib290Y3RsIG91dHB1dC4gbm93IGxvb2tp
-bmcgYXQgaXQsIGl0IHNlZW1zIA0KdGhhdCB3aGlsZSBzeXN0ZW1kIChhbmQgc3lzdGVtZC1i
-b290KSBnZXRzIHRpbWVseSB1cGRhdGVzIG9uIG15IHN5c3RlbSANCihjdXJyZW50bHkgYXQg
-MjU1LjQpLCB0aGUgc3R1YiAoaXMgdGhpcyBob3cgaXQncyBjYWxsZWQ/KSBkb2VzIG5vdCBn
-ZXQgDQp1cGRhdGVkIGF1dG9tYXRpY2FsbHkgaW4gdGhlIGVmaSBwYXJ0aXRpb24gKHN0aWxs
-IGF0IHZlcnNpb24gMjQ0PykuDQoNCmkgY2FuIHRyeSB0byB1cGRhdGUgaXQuIGJ1dCBpJ2xs
-IHdhaXQgZm9yIHlvdXIgaW5zdHJ1Y3Rpb25zIHNpbmNlIHRoaXMgDQptYXkgYmUgc29tZSBy
-YXJlIHNpdHVhdGlvbiBhbmQgd2UgbWF5IHVzZSBpdCBmb3IgdGVzdGluZy4NCg0KYW55d2F5
-LCBpJ20gY29tcGlsaW5nIG5ldyBrZXJuZWwgd2l0aCB5b3VyIHN1Z2dlc3RlZCBjaGFuZ2Vz
-IHJpZ2h0IG5vdyANCnNvIGknbGwgbGV0IHlvdSBrbm93IGhvdyBpdCB0dXJuZWQgb3V0LCBz
-b29uLg0KDQpyLg0KDQpwLnMuOiBoYSEgbmV2ZXJtaW5kLCBpIGp1c3QgY2hlY2tlZCB0aGUg
-b3RoZXIgc3lzdGVtcyB3aGljaCBib290IGZpbmUgDQphbmQgdGhleSBhbHNvIGFyZSBvbiBz
-dHViICg/KSAyNDQgc28gaXQncyBwcm9iYWJseSBub3QgdGhlIGNhdXNlLg0KDQoNCk9uIDMv
-MTUvMjQgMTc6MDgsIEFyZCBCaWVzaGV1dmVsIHdyb3RlOg0KPiBPbiBGcmksIDE1IE1hciAy
-MDI0IGF0IDE2OjMzLCBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3JnPiB3cm90ZToN
-Cj4+DQo+PiBPbiBGcmksIDE1IE1hciAyMDI0IGF0IDE1OjEyLCBSYWRlayBQb2Rnb3JueSA8
-cmFkZWtAcG9kZ29ybnkuY3o+IHdyb3RlOg0KPj4+DQo+Pj4gaGkgYXJkLCB0aGFua3MgZm9y
-IHRoZSBlZmZvcnQhDQo+Pj4NCj4+PiBzbywgeW91ciBmaXJzdCByZWNvbW1lbmRlZCBwYXRj
-aCAodGhlIG1lbXNldCB0aGluZyksIGFwcGxpZWQgdG8gY3VycmVudA0KPj4+IG1haW5saW5l
-ICg2LjgpIERPRVMgTk9UIHJlc29sdmUgdGhlIGlzc3VlLg0KPj4+DQo+Pj4gdGhlIHNlY29u
-ZCByZWNvbW1lbmRhdGlvbiwgYSByZXZlcnQgcGF0Y2gsIGFwcGxpZWQgdG8gdGhlIHNhbWUg
-bWFpbmxpbmUNCj4+PiB0cmVlLCBpbmRlZWQgRE9FUyByZXNvbHZlIHRoZSBwcm9ibGVtLg0K
-Pj4+DQo+Pj4ganVzdCB0byBiZSBzdXJlLCBpJ20gYXR0YWNoaW5nIHRoZSByZXZlcnQgcGF0
-Y2guDQo+Pj4NCj4+DQo+PiBBY3R1YWxseSwgdGhhdCBpcyBub3QgdGhlIHBhdGNoIEkgaGFk
-IGluIG1pbmQuDQo+Pg0KPj4gUGxlYXNlIHJldmVydA0KPj4NCj4+IHg4Ni9lZmk6IERyb3Ag
-RUZJIHN0dWIgLmJzcyBmcm9tIC5kYXRhIHNlY3Rpb24NCj4+DQo+IA0KPiBCVFcgd2hpY2gg
-Ym9vdGxvYWRlciBhcmUgeW91IHVzaW5nPw0K
---------------qJKvIhf7JdyPFi8winmmFzkq
-Content-Type: text/plain; charset=UTF-8; name="bootctl.txt"
-Content-Disposition: attachment; filename="bootctl.txt"
-Content-Transfer-Encoding: base64
+Eric
 
-G1swbVN5c3RlbToKICAgICAgRmlybXdhcmU6IFVFRkkgMi4zMSAoQW1lcmljYW4gTWVnYXRy
-ZW5kcyA0LjY1MSkKIEZpcm13YXJlIEFyY2g6IHg2NAogICBTZWN1cmUgQm9vdDogZGlzYWJs
-ZWQgKHVuc3VwcG9ydGVkKQogIFRQTTIgU3VwcG9ydDogbm8KICBNZWFzdXJlZCBVS0k6IG5v
-CiAgQm9vdCBpbnRvIEZXOiBub3Qgc3VwcG9ydGVkCgobWzBtQ3VycmVudCBCb290IExvYWRl
-cjoKICAgICAgUHJvZHVjdDogc3lzdGVtZC1ib290IDI0NC0xLWFyY2gKICAgICBGZWF0dXJl
-czog4pyTIEJvb3QgY291bnRpbmcKICAgICAgICAgICAgICAg4pyTIE1lbnUgdGltZW91dCBj
-b250cm9sCiAgICAgICAgICAgICAgIOKckyBPbmUtc2hvdCBtZW51IHRpbWVvdXQgY29udHJv
-bAogICAgICAgICAgICAgICDinJMgRGVmYXVsdCBlbnRyeSBjb250cm9sCiAgICAgICAgICAg
-ICAgIOKckyBPbmUtc2hvdCBlbnRyeSBjb250cm9sCiAgICAgICAgICAgICAgIOKckyBTdXBw
-b3J0IGZvciBYQk9PVExEUiBwYXJ0aXRpb24KICAgICAgICAgICAgICAg4pyTIFN1cHBvcnQg
-Zm9yIHBhc3NpbmcgcmFuZG9tIHNlZWQgdG8gT1MKICAgICAgICAgICAgICAg4pyXIExvYWQg
-ZHJvcC1pbiBkcml2ZXJzCiAgICAgICAgICAgICAgIOKclyBTdXBwb3J0IFR5cGUgIzEgc29y
-dC1rZXkgZmllbGQKICAgICAgICAgICAgICAg4pyXIFN1cHBvcnQgQHNhdmVkIHBzZXVkby1l
-bnRyeQogICAgICAgICAgICAgICDinJcgU3VwcG9ydCBUeXBlICMxIGRldmljZXRyZWUgZmll
-bGQKICAgICAgICAgICAgICAg4pyXIEVucm9sbCBTZWN1cmVCb290IGtleXMKICAgICAgICAg
-ICAgICAg4pyXIFJldGFpbiBTSElNIHByb3RvY29scwogICAgICAgICAgICAgICDinJcgTWVu
-dSBjYW4gYmUgZGlzYWJsZWQKICAgICAgICAgICAgICAg4pyTIEJvb3QgbG9hZGVyIHNldHMg
-RVNQIGluZm9ybWF0aW9uCiAgICAgICAgICBFU1A6IC9kZXYvZGlzay9ieS1wYXJ0dXVpZC8y
-YWRlZmM3NS0zZGEwLTRjM2QtOTQ0OS1lYTAxMTRhNGIyODEKICAgICAgICAgRmlsZTog4pSU
-4pSAL0VGSS9zeXN0ZW1kL3N5c3RlbWQtYm9vdHg2NC5lZmkKChtbMG1SYW5kb20gU2VlZDoK
-IFN5c3RlbSBUb2tlbjogc2V0CiAgICAgICBFeGlzdHM6IHllcwoKG1swbUF2YWlsYWJsZSBC
-b290IExvYWRlcnMgb24gRVNQOgogICAgICAgICAgRVNQOiAvYm9vdCAoL2Rldi9kaXNrL2J5
-LXBhcnR1dWlkLzJhZGVmYzc1LTNkYTAtNGMzZC05NDQ5LWVhMDExNGE0YjI4MSkKICAgICAg
-ICAgRmlsZTog4pSc4pSAL0VGSS9zeXN0ZW1kL3N5c3RlbWQtYm9vdHg2NC5lZmkgKHN5c3Rl
-bWQtYm9vdCAyNDQtMS1hcmNoKQogICAgICAgICAgICAgICDilJTilIAvRUZJL0JPT1QvQk9P
-VFg2NC5FRkkgKHN5c3RlbWQtYm9vdCAyNDQtMS1hcmNoKQoKG1swbUJvb3QgTG9hZGVycyBM
-aXN0ZWQgaW4gRUZJIFZhcmlhYmxlczoKICAgICAgICBUaXRsZTogTGludXggQm9vdCBNYW5h
-Z2VyCiAgICAgICAgICAgSUQ6IDB4MDAwOQogICAgICAgU3RhdHVzOiBhY3RpdmUsIGJvb3Qt
-b3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkLzJhZGVmYzc1LTNk
-YTAtNGMzZC05NDQ5LWVhMDExNGE0YjI4MQogICAgICAgICBGaWxlOiDilJTilIAvRUZJL3N5
-c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXggQm9vdCBN
-YW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwOAogICAgICAgU3RhdHVzOiBhY3RpdmUsIGJv
-b3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2RhY2RlODMx
-LTYwYWYtNGY4Yy1iYmIyLWM0YjAzYTMyNjVlNAogICAgICAgICBGaWxlOiDilJTilIAvRUZJ
-L3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXggQm9v
-dCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMQogICAgICAgU3RhdHVzOiBhY3RpdmUs
-IGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2Y5MTY5
-Nzg0LWQxNjMtNGM1OC1hOTVkLTI2ZGViNDE0NTcxNAogICAgICAgICBGaWxlOiDilJTilIAv
-RUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXgg
-Qm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwNAogICAgICAgU3RhdHVzOiBhY3Rp
-dmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2Vk
-NzdjZjkyLTJhY2QtNGUyYi1iZTA3LWI2ZjFlNGNkZWQyOQogICAgICAgICBGaWxlOiDilJTi
-lIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGlu
-dXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMAogICAgICAgU3RhdHVzOiBh
-Y3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlk
-L2NhMThkNzM0LWQ4YjMtNDhmOC1iNjhlLTNlNGFlOTE5ZTBjNgogICAgICAgICBGaWxlOiDi
-lJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTog
-TGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMgogICAgICAgU3RhdHVz
-OiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1
-dWlkLzg5NmIxZDMxLTczM2UtNDE3YS1hNzQwLWE3ODdhY2ZmM2YxNQogICAgICAgICBGaWxl
-OiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRs
-ZTogTGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMwogICAgICAgU3Rh
-dHVzOiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBh
-cnR1dWlkL2U3YmY2ZmM1LTBiZjYtNGRjMi04MTE2LWMyZGJjODk5OWE1NAogICAgICAgICBG
-aWxlOiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBU
-aXRsZTogTGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwNgogICAgICAg
-U3RhdHVzOiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5
-LXBhcnR1dWlkLzZkOWZhNzY1LWE0YzktNDcyMy1iZWNmLTYxMTA1YTlkMWYzMAogICAgICAg
-ICBGaWxlOiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKG1swbUJv
-b3QgTG9hZGVyIEVudHJpZXM6CiAgICAgICAgJEJPT1Q6IC9ib290ICgvZGV2L2Rpc2svYnkt
-cGFydHV1aWQvMmFkZWZjNzUtM2RhMC00YzNkLTk0NDktZWEwMTE0YTRiMjgxKQogICAgICAg
-IHRva2VuOiBhcmNoCgobWzBtRGVmYXVsdCBCb290IExvYWRlciBFbnRyeToKICAgICAgICAg
-dHlwZTogQm9vdCBMb2FkZXIgU3BlY2lmaWNhdGlvbiBUeXBlICMxICguY29uZikKICAgICAg
-ICB0aXRsZTogQXJjaCBMaW51eAogICAgICAgICAgIGlkOiBhcmNoLmNvbmYKICAgICAgIHNv
-dXJjZTogL2Jvb3QvL2xvYWRlci9lbnRyaWVzL2FyY2guY29uZgogICAgICAgIGxpbnV4OiAv
-Ym9vdC8vdm1saW51ei1saW51eAogICAgICAgaW5pdHJkOiAvYm9vdC8vaW50ZWwtdWNvZGUu
-aW1nCiAgICAgICAgICAgICAgIC9ib290Ly9pbml0cmFtZnMtbGludXguaW1nCiAgICAgIG9w
-dGlvbnM6IHJvb3Q9L2Rldi9kaXNrL2J5LWxhYmVsL01BVExBX1JPT1QgcncK
+> ---
+>  drivers/vfio/platform/vfio_platform_irq.c | 100 +++++++++++++++-------
+>  1 file changed, 68 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
+> index e5dcada9e86c..ef41ecef83af 100644
+> --- a/drivers/vfio/platform/vfio_platform_irq.c
+> +++ b/drivers/vfio/platform/vfio_platform_irq.c
+> @@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(struct vfio_platform_device *vdev,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * The trigger eventfd is guaranteed valid in the interrupt path
+> + * and protected by the igate mutex when triggered via ioctl.
+> + */
+> +static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
+> +{
+> +	if (likely(irq_ctx->trigger))
+> +		eventfd_signal(irq_ctx->trigger);
+> +}
+> +
+>  static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
+>  {
+>  	struct vfio_platform_irq *irq_ctx = dev_id;
+> @@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
+>  	spin_unlock_irqrestore(&irq_ctx->lock, flags);
+>  
+>  	if (ret == IRQ_HANDLED)
+> -		eventfd_signal(irq_ctx->trigger);
+> +		vfio_send_eventfd(irq_ctx);
+>  
+>  	return ret;
+>  }
+> @@ -164,52 +174,40 @@ static irqreturn_t vfio_irq_handler(int irq, void *dev_id)
+>  {
+>  	struct vfio_platform_irq *irq_ctx = dev_id;
+>  
+> -	eventfd_signal(irq_ctx->trigger);
+> +	vfio_send_eventfd(irq_ctx);
+>  
+>  	return IRQ_HANDLED;
+>  }
+>  
+>  static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
+> -			    int fd, irq_handler_t handler)
+> +			    int fd)
+>  {
+>  	struct vfio_platform_irq *irq = &vdev->irqs[index];
+>  	struct eventfd_ctx *trigger;
+> -	int ret;
+>  
+>  	if (irq->trigger) {
+> -		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+> -		free_irq(irq->hwirq, irq);
+> -		kfree(irq->name);
+> +		disable_irq(irq->hwirq);
+>  		eventfd_ctx_put(irq->trigger);
+>  		irq->trigger = NULL;
+>  	}
+>  
+>  	if (fd < 0) /* Disable only */
+>  		return 0;
+> -	irq->name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-irq[%d](%s)",
+> -			      irq->hwirq, vdev->name);
+> -	if (!irq->name)
+> -		return -ENOMEM;
+>  
+>  	trigger = eventfd_ctx_fdget(fd);
+> -	if (IS_ERR(trigger)) {
+> -		kfree(irq->name);
+> +	if (IS_ERR(trigger))
+>  		return PTR_ERR(trigger);
+> -	}
+>  
+>  	irq->trigger = trigger;
+>  
+> -	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
+> -	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
+> -	if (ret) {
+> -		kfree(irq->name);
+> -		eventfd_ctx_put(trigger);
+> -		irq->trigger = NULL;
+> -		return ret;
+> -	}
+> -
+> -	if (!irq->masked)
+> -		enable_irq(irq->hwirq);
+> +	/*
+> +	 * irq->masked effectively provides nested disables within the overall
+> +	 * enable relative to trigger.  Specifically request_irq() is called
+> +	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
+> +	 * may only further disable the IRQ with a MASK operations because
+> +	 * irq->masked is initially false.
+> +	 */
+> +	enable_irq(irq->hwirq);
+>  
+>  	return 0;
+>  }
+> @@ -228,7 +226,7 @@ static int vfio_platform_set_irq_trigger(struct vfio_platform_device *vdev,
+>  		handler = vfio_irq_handler;
+>  
+>  	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
+> -		return vfio_set_trigger(vdev, index, -1, handler);
+> +		return vfio_set_trigger(vdev, index, -1);
+>  
+>  	if (start != 0 || count != 1)
+>  		return -EINVAL;
+> @@ -236,7 +234,7 @@ static int vfio_platform_set_irq_trigger(struct vfio_platform_device *vdev,
+>  	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
+>  		int32_t fd = *(int32_t *)data;
+>  
+> -		return vfio_set_trigger(vdev, index, fd, handler);
+> +		return vfio_set_trigger(vdev, index, fd);
+>  	}
+>  
+>  	if (flags & VFIO_IRQ_SET_DATA_NONE) {
+> @@ -260,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct vfio_platform_device *vdev,
+>  		    unsigned start, unsigned count, uint32_t flags,
+>  		    void *data) = NULL;
+>  
+> +	/*
+> +	 * For compatibility, errors from request_irq() are local to the
+> +	 * SET_IRQS path and reflected in the name pointer.  This allows,
+> +	 * for example, polling mode fallback for an exclusive IRQ failure.
+> +	 */
+> +	if (IS_ERR(vdev->irqs[index].name))
+> +		return PTR_ERR(vdev->irqs[index].name);
+> +
+>  	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
+>  	case VFIO_IRQ_SET_ACTION_MASK:
+>  		func = vfio_platform_set_irq_mask;
+> @@ -280,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct vfio_platform_device *vdev,
+>  
+>  int vfio_platform_irq_init(struct vfio_platform_device *vdev)
+>  {
+> -	int cnt = 0, i;
+> +	int cnt = 0, i, ret = 0;
+>  
+>  	while (vdev->get_irq(vdev, cnt) >= 0)
+>  		cnt++;
+> @@ -292,29 +298,54 @@ int vfio_platform_irq_init(struct vfio_platform_device *vdev)
+>  
+>  	for (i = 0; i < cnt; i++) {
+>  		int hwirq = vdev->get_irq(vdev, i);
+> +		irq_handler_t handler = vfio_irq_handler;
+>  
+> -		if (hwirq < 0)
+> +		if (hwirq < 0) {
+> +			ret = -EINVAL;
+>  			goto err;
+> +		}
+>  
+>  		spin_lock_init(&vdev->irqs[i].lock);
+>  
+>  		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
+>  
+> -		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
+> +		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
+>  			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
+>  						| VFIO_IRQ_INFO_AUTOMASKED;
+> +			handler = vfio_automasked_irq_handler;
+> +		}
+>  
+>  		vdev->irqs[i].count = 1;
+>  		vdev->irqs[i].hwirq = hwirq;
+>  		vdev->irqs[i].masked = false;
+> +		vdev->irqs[i].name = kasprintf(GFP_KERNEL_ACCOUNT,
+> +					       "vfio-irq[%d](%s)", hwirq,
+> +					       vdev->name);
+> +		if (!vdev->irqs[i].name) {
+> +			ret = -ENOMEM;
+> +			goto err;
+> +		}
+> +
+> +		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
+> +				  vdev->irqs[i].name, &vdev->irqs[i]);
+> +		if (ret) {
+> +			kfree(vdev->irqs[i].name);
+> +			vdev->irqs[i].name = ERR_PTR(ret);
+> +		}
+>  	}
+>  
+>  	vdev->num_irqs = cnt;
+>  
+>  	return 0;
+>  err:
+> +	for (--i; i >= 0; i--) {
+> +		if (!IS_ERR(vdev->irqs[i].name)) {
+> +			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
+> +			kfree(vdev->irqs[i].name);
+> +		}
+> +	}
+>  	kfree(vdev->irqs);
+> -	return -EINVAL;
+> +	return ret;
+>  }
+>  
+>  void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+> @@ -324,7 +355,12 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
+>  	for (i = 0; i < vdev->num_irqs; i++) {
+>  		vfio_virqfd_disable(&vdev->irqs[i].mask);
+>  		vfio_virqfd_disable(&vdev->irqs[i].unmask);
+> -		vfio_set_trigger(vdev, i, -1, NULL);
+> +		if (!IS_ERR(vdev->irqs[i].name)) {
+> +			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
+> +			if (vdev->irqs[i].trigger)
+> +				eventfd_ctx_put(vdev->irqs[i].trigger);
+> +			kfree(vdev->irqs[i].name);
+> +		}
+>  	}
+>  
+>  	vdev->num_irqs = 0;
 
---------------qJKvIhf7JdyPFi8winmmFzkq--
-
---------------k9CzYCAAMy8oH6cVvt5HvEx2--
-
---------------bX9AywMx93iSsEEK0m8RdY80
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEEydMGi3nQKasCS8bLahNm1VQL0ZwFAmX0djEFAwAAAAAACgkQahNm1VQL0Zz7
-XxAA0KbtlwOIJx8l3rKOWuCZYsbO2FmDQOZKLLPoHbmQt708YThTn+e3f65HFv1p+AFRaNzkIVL0
-6zby/242SoATXak9waXLvZ0bwsiP/E3XKrw7vgSK7NE0xGO/dqIc1G2B6asT5Jz3R21pir/G9eQn
-nByt8c4YkszX4M+VNY+6SR2esPDyEOvS8iaGw+nc7z9ltHir8VZTJ9z2+yviuOtZeVXGUJCbIm4u
-C/enpde/T+kpFKLpTNSqZTJ5jip8L6S2IWKEnB3VJYUElSMkKYuyw/vbBHiRj008V5D/AbOKCKr7
-MyqzC/t3lh484Rb8SddoudaCvcFw+MD/8k76xR3lg+njNiwpdBLI+9u+/4KmDrAuc0Kr+gBpDhgt
-HPNlnGao8KCJQ12aMKnb9oZ7xyKyDbWm521rm4x8Ev/SehVlXCu/JjWi4tzlewPCfDg+VaLCBHDD
-vWrNNMptgJbrntGycPA5z5ZB6QYUMFFl75/fkcHI5BySNhoI8s4tBpjbU5GzpVB1w20v4m1h7PVJ
-o5JSdKuJFi0Y7Y5hm80zQRPmBG/hUNZxzgthIPIfDGTRnwXSwAkHkDQrVCUMesXMs3P2N2p7Z/eO
-lnFAahvenKHOojjCOeCmI0LFFokRlLUoZA8EBPGTNMpTAk9bNP2SKARRAkVtP5aCEho5fffK4MbE
-TVw=
-=HARZ
------END PGP SIGNATURE-----
-
---------------bX9AywMx93iSsEEK0m8RdY80--
 
