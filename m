@@ -1,124 +1,170 @@
-Return-Path: <stable+bounces-28288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F84887D670
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 23:05:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831E187D725
+	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 00:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4DC1F2367C
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 22:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A77001C20FD7
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 23:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7874E54907;
-	Fri, 15 Mar 2024 22:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0A4524C3;
+	Fri, 15 Mar 2024 23:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nlZDZbxU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nx2xfPQs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F8954F84
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 22:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4B654747
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 23:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710540306; cv=none; b=GUIfwQxh8uqSmubU4Hzx5rU4MDoi4GhO8vZzkkKqzlY+MeeBBnUnn7dmzmPFvtBz8hyujNE0iRsAKl4ta71giZMTYDeI04QFpLkJCej4OTYCormxTldvH/oE/4d9CYPO38vSlV/V3ZGZxWiClLDdi6l0kVm8FQpSjZPnnMcL/XM=
+	t=1710543952; cv=none; b=cybrWPbNp/3FTZyB/WhCt2csi7vIls0oKFGZLkIFsdQas7xdw+jvhP100kUJVNwR/6PUJQulnYgywwnln/WgoIaz0Y5vaopNmOHpRwOw1ZOboPBsHJYVFJ0DhfT4gPrw8v4LbtOllpvFSYPspplXy1hfLbNvZDdFMYpuRmEVuUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710540306; c=relaxed/simple;
-	bh=9jUMzJ3nVVPbJqvFuatnf0lydOAmoeWh2WICjhZWHII=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BfpvSbBM3gH0q6qvFZHaHTY5lMjr5xVVo3LMYQ+PP904hNFtvt84wUvkQU4WlnEBYc4eS8ZzIynAjtvUHBO17XK9Cw3smIFvHoVrPcY9JARVcczB/HaiwG5Jnd2NuiUx3jefAIGvenpS+ZOGu67doFB25r6TQ1afW+mjLiFxhns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nlZDZbxU; arc=none smtp.client-ip=209.85.210.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-6e6b54a28d0so2169601b3a.2
-        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 15:05:04 -0700 (PDT)
+	s=arc-20240116; t=1710543952; c=relaxed/simple;
+	bh=Cov+K61W3yOa0ObcP5pESyRYZi1gcNyUFK/aJ3wNmNA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PVU6VGvrXhBsqd7WZBKOTOcse36LtW2pdCnGlhydGqgLrrwePBAg/QPgw0Z6o18R7rXrIrPd5w7HoCE27+Za8Ialti0xaACjAyFYrKXBHs+pMauxEvvMwFB0LtVon+VRtwdp8qeRxc3ou+l3QtdhQHJoY0G22w7NaBCbRJ6bocY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nx2xfPQs; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dd169dd4183so3253610276.3
+        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 16:05:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710540303; x=1711145103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6qpkZmm6FLsHzBHeHcS2L4zYHetQVYtlWgdLUtLPlgU=;
-        b=nlZDZbxUdkLdfOq+9Kw/4ZY4yQazJKNhIuG4QDbMKRD8pa3WNWvhcA73UO6OUYGvTh
-         l5TZwdDleyZ/O10ICGMefvxG/sLMN9YM1Se/oHuhrY5FflkkkJxpjP8Etd/5sJs9Ej5N
-         urB89lj8igXOUoH8KH9gEFiamRGyhg+T7j7CV2QOvywAGpSiFVdZS3Zzxkk5O6t7bs6j
-         le/OljuOlcSGgEAmjwvUwXj5247ADlimDj9mYRwFgkGSREouY9qhxD000jcniy+xFB+K
-         V5umQ5FNWwtzgP+sjKqHSQoc037VAqcSOx4/gUtAq59h8cdF6fb3rz1CLc9e7epumyEz
-         jekQ==
+        d=google.com; s=20230601; t=1710543947; x=1711148747; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jq6dTiQO4a7GzTIlCZ/7Sr+NoQ1v4+WQzk26lh1YhWg=;
+        b=nx2xfPQsmrlIMvymOTajI1vWZCq3JXkc3DqiDKzlAVi1Boe7XR5uZRuO8NyXiFMz0a
+         KUBiattLFvFkbUF8Q53ZVNTJ1x2Gbk8EdFPh072SlxwvUd+hcgOHhfpjXKdkbqckEhu/
+         Uo6yqc3hMx6i6ed6+08daFtEobEdnkoXExMwExvjzIh1lbuvr7MWyLJRXKIkR3/RN1a4
+         0fQxGqxx1gyPego0cypJil5xXHC22AFRnTaX+scyc0z8FtZ1lRa68wV2Zf8spscYqP8c
+         UhAksR1hFFzrfFUyZd9dYIPwENlWDSeamzOZlWvqcLkE4sNCn7xtA63Ry4Yw1IA6JGj3
+         ARzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710540303; x=1711145103;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6qpkZmm6FLsHzBHeHcS2L4zYHetQVYtlWgdLUtLPlgU=;
-        b=YH6iQIZC7+hrO8prLW0NOmCHG4razIAh6/y+owNmkvoY6Evez8Dh4dkHU918jH7qfJ
-         TiKtNVe5/h3cFklt4lVgfNTIXoXW5jFMY3mzygPjRowRt5QSyGHaDByap+paNyoOTpEU
-         XxNol7juoC28r9IjPeCZuxpvVFE0NJNneBfz7ubEItiWbr1ASYDHVcAGxbKYYWoR6Ao8
-         WxFrlM7En8/yWT1b23TICemM/Dal16cSG1s3m7Bt1qP5Od1bE1w95n0wRydhwYT76bmV
-         ghHCTX36NPAsJojxZFAtLc5LEz3htMAmbnxr6yAqjvukkP3NwiRIKAxFs5L03dS3RIvw
-         7MpQ==
-X-Gm-Message-State: AOJu0YyxeU49XDwqhp3J97gyZCjPQR7iiaPTC/AENPNiblgW2JTvYnjS
-	povHVgnzJPUDDSQsu333Oyegz7ArSI2lAdktTD+R9PhUAmjsQROnScR9DynVMMc=
-X-Google-Smtp-Source: AGHT+IEY95XsMYRveN/qLNtTNLY9hjrCcadGZfXG7B1Aa3SSqBNra7kRlrtR6Jba6i5W7duXSmZTIw==
-X-Received: by 2002:a05:6a00:21cf:b0:6e6:42ef:ed1b with SMTP id t15-20020a056a0021cf00b006e642efed1bmr5408693pfj.31.1710540301780;
-        Fri, 15 Mar 2024 15:05:01 -0700 (PDT)
-Received: from google.com ([136.226.64.177])
-        by smtp.gmail.com with ESMTPSA id t27-20020a62d15b000000b006e6c0895b95sm4024326pfl.7.2024.03.15.15.05.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 15:05:01 -0700 (PDT)
-From: Max Nguyen <hphyperxdev@gmail.com>
-To: stable@vger.kernel.org
-Cc: Max Nguyen <hphyperxdev@gmail.com>,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>
-Subject: [PATCH 2/2] Add additional HyperX IDs to xpad.c on LTS v6.6
-Date: Fri, 15 Mar 2024 15:03:15 -0700
-Message-Id: <20240315220314.38850-1-hphyperxdev@gmail.com>
-X-Mailer: git-send-email 2.39.3
+        d=1e100.net; s=20230601; t=1710543947; x=1711148747;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jq6dTiQO4a7GzTIlCZ/7Sr+NoQ1v4+WQzk26lh1YhWg=;
+        b=ifuh+Qi/xlXyIMYXKuDSo8oXQ4stJX+Qpr9HjOzpCKN28DkK9R5xBqcuq77r6SZ35A
+         /ovEyaUUBxbWaSNiNfO9RMs3/+Z6K1Rex/7CxBDaC8XmFuvvWS9NqHYQDOEhzGxJpWHF
+         ZhP5MgiTPSy5xUMNCt2Kvfo6pRhGXrZ9YO4BsgxUbB01yLnH7EHRH5NZJMOxjCFysuFv
+         vA0C1brOnYN8h5r7/XB4KzQT+VjEL/AziJycrL97o86B3DaGIwtVSK6I6aS5xSW8hS35
+         xpRtcJffcym1VZN436pogcs4KWeqpjnmALxNeNywqO2TV1x+xno/9gOJqJ+HAkzAurm/
+         Zfaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDKC+a60B8dKpT5+OQ6SpBjpnNmV8YBvErkG6+IPy748HVFTk/qmR37TNSkOFUn7VttJa+b3Gnz18BkbmnyDkJouKaYMFI
+X-Gm-Message-State: AOJu0YyXczOPSyWzNOBQhnwXQno7mP/vWzr9s24AqeikBHF9wrVdm0KU
+	3FQ3T29twUdt73NSsW3lJIRAMVDaT1igTG6ujlsQURHW/Hw86gDwfk5DVVH6YTb9Rr4a139BcEo
+	plq3QozLqNw==
+X-Google-Smtp-Source: AGHT+IFwIWtAdHF9qqf2R5hkb2fp5Hri3uJzjkEaEVE9KnILaqL8bJMQ8Iv75zE4rNjwop2zjTqbg6D2eL2TPg==
+X-Received: from dmatlack-n2d-128.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1309])
+ (user=dmatlack job=sendgmr) by 2002:a05:6902:2301:b0:dc7:865b:22c6 with SMTP
+ id do1-20020a056902230100b00dc7865b22c6mr338437ybb.8.1710543947439; Fri, 15
+ Mar 2024 16:05:47 -0700 (PDT)
+Date: Fri, 15 Mar 2024 16:05:38 -0700
+In-Reply-To: <20240315230541.1635322-1-dmatlack@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20240315230541.1635322-1-dmatlack@google.com>
+X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
+Message-ID: <20240315230541.1635322-2-dmatlack@google.com>
+Subject: [PATCH 1/4] KVM: x86/mmu: Check kvm_mmu_page_ad_need_write_protect()
+ when clearing TDP MMU dirty bits
+From: David Matlack <dmatlack@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add additional HyperX IDs to xpad_device and xpad_table
+Check kvm_mmu_page_ad_need_write_protect() when deciding whether to
+write-protect or clear D-bits on TDP MMU SPTEs.
 
-Add to LTS version 6.6
+TDP MMU SPTEs must be write-protected when the TDP MMU is being used to
+run an L2 (i.e. L1 has disabled EPT) and PML is enabled. KVM always
+disables the PML hardware when running L2, so failing to write-protect
+TDP MMU SPTEs will cause writes made by L2 to not be reflected in the
+dirty log.
 
-Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
+Reported-by: syzbot+900d58a45dcaab9e4821@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=900d58a45dcaab9e4821
+Fixes: 5982a5392663 ("KVM: x86/mmu: Use kvm_ad_enabled() to determine if TDP MMU SPTEs need wrprot")
+Cc: stable@vger.kernel.org
+Cc: Vipin Sharma <vipinsh@google.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/input/joystick/xpad.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kvm/mmu/tdp_mmu.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index d0bb3edfd0a0..c11af4441cf2 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -130,7 +130,12 @@ static const struct xpad_device {
- 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x038D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wired */
-+	{ 0x03f0, 0x048D, "HyperX Clutch", 0, XTYPE_XBOX360 },			/* wireless */
- 	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x07A0, "HyperX Clutch Gladiate RGB", 0, XTYPE_XBOXONE },
-+	{ 0x03f0, 0x08B6, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },		/* v2 */
-+	{ 0x03f0, 0x09B4, "HyperX Clutch Tanto", 0, XTYPE_XBOXONE },
- 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f03, "Thrustmaster Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
-@@ -463,6 +468,7 @@ static const struct usb_device_id xpad_table[] = {
- 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* Xbox USB-IF not-approved class */
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
-+	XPAD_XBOX360_VENDOR(0x03f0),		/* HP HyperX Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One controllers */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster Xbox 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 6ae19b4ee5b1..c3c1a8f430ef 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1498,6 +1498,16 @@ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
+ 	}
+ }
+ 
++static bool tdp_mmu_need_write_protect(struct kvm_mmu_page *sp)
++{
++	/*
++	 * All TDP MMU shadow pages share the same role as their root, aside
++	 * from level, so it is valid to key off any shadow page to determine if
++	 * write protection is needed for an entire tree.
++	 */
++	return kvm_mmu_page_ad_need_write_protect(sp) || !kvm_ad_enabled();
++}
++
+ /*
+  * Clear the dirty status of all the SPTEs mapping GFNs in the memslot. If
+  * AD bits are enabled, this will involve clearing the dirty bit on each SPTE.
+@@ -1508,7 +1518,8 @@ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
+ static bool clear_dirty_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
+ 			   gfn_t start, gfn_t end)
+ {
+-	u64 dbit = kvm_ad_enabled() ? shadow_dirty_mask : PT_WRITABLE_MASK;
++	const u64 dbit = tdp_mmu_need_write_protect(root)
++		? PT_WRITABLE_MASK : shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 	bool spte_set = false;
+ 
+@@ -1523,7 +1534,7 @@ static bool clear_dirty_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
+ 		if (tdp_mmu_iter_cond_resched(kvm, &iter, false, true))
+ 			continue;
+ 
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (!(iter.old_spte & dbit))
+@@ -1570,8 +1581,8 @@ bool kvm_tdp_mmu_clear_dirty_slot(struct kvm *kvm,
+ static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
+ 				  gfn_t gfn, unsigned long mask, bool wrprot)
+ {
+-	u64 dbit = (wrprot || !kvm_ad_enabled()) ? PT_WRITABLE_MASK :
+-						   shadow_dirty_mask;
++	const u64 dbit = (wrprot || tdp_mmu_need_write_protect(root))
++		? PT_WRITABLE_MASK : shadow_dirty_mask;
+ 	struct tdp_iter iter;
+ 
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+@@ -1583,7 +1594,7 @@ static void clear_dirty_pt_masked(struct kvm *kvm, struct kvm_mmu_page *root,
+ 		if (!mask)
+ 			break;
+ 
+-		KVM_MMU_WARN_ON(kvm_ad_enabled() &&
++		KVM_MMU_WARN_ON(dbit == shadow_dirty_mask &&
+ 				spte_ad_need_write_protect(iter.old_spte));
+ 
+ 		if (iter.level > PG_LEVEL_4K ||
 -- 
-2.39.3
+2.44.0.291.gc1ea87d7ee-goog
 
 
