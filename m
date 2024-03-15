@@ -1,198 +1,237 @@
-Return-Path: <stable+bounces-28255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A287D107
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:17:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B8587D128
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83E3281F12
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FB61C228E8
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF6045030;
-	Fri, 15 Mar 2024 16:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5820645945;
+	Fri, 15 Mar 2024 16:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrvBXckd"
+	dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b="pgUzrG1I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxb.seznam.cz (mxb.seznam.cz [77.75.78.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834144C64;
-	Fri, 15 Mar 2024 16:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B566FD9
+	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 16:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710519420; cv=none; b=TawXyb6lsdB2W/IhMJRU5a4q1Rn9vyaP0M1yUpTPkrCDmEqElEuQ2LvYAn/nPO2iG2emBXrOb8U+/3gFABJzFwD/+nfPrHxq7OpO9iPqfVZiMFfd4ulo2h6l39S2OnIQUbdUKacLXmwksGQ7/Sb7z2vAcnI/pN4jpEhHZx3tTxQ=
+	t=1710519887; cv=none; b=tTB3wPxOYiB5jJXgPIxQEfjH2lI1ETIJjSOn1Q9r3GLuikz2MawVdewCoHU0Zp6DYVT4GAeEqW3Cxr0OJYSfb1Tm5ToifdfDR8Gw9zSSqZsiiVgku5jYWQdT1JMO2jrgpbt2YQVzlAMTho+k+oEccvCgpklUkAbgGSDSsEBjeUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710519420; c=relaxed/simple;
-	bh=IyytQBo2KIJF54NrANAyUTvbiB6Rzt4f4opggr/aZgE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BMT1MXcktiF3QztGfIYZtEdw+WFHBdwmV9+EWSQqwqUhXnhEAmS7CkbalnVveC4CMkyq4sC+2gnTJWZuzkP6/EgbuUonTa6ZPcLoxBM1du1l/i2T58Nqo9h+xa3mMD2JsJXFpz6gM9bfys6S7Quua7FJaEe3GXnTy8uOginRTOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrvBXckd; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-565c6cf4819so5676788a12.1;
-        Fri, 15 Mar 2024 09:16:56 -0700 (PDT)
+	s=arc-20240116; t=1710519887; c=relaxed/simple;
+	bh=gc7gzKqYttkOzF3iRrIXTejoC7VKWKXqI9UO1389Eqs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N1y3Wme7qLKwC/U9a02xuk3Kbc5+wHI/diGZpeMvwOu0S9GMX1O9UE0K7WZgf3lM4sqKAtrqbLbmloV+T23R9eXiRrNHGUWRSMtMoDw/zQ+ytCsl4eqr7U/wm+YmZtyIHm2BG63axIqouSafzMa+NaGiDtkMWi/ldEc+lGJHWBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz; spf=pass smtp.mailfrom=podgorny.cz; dkim=pass (2048-bit key) header.d=emailprofi.seznam.cz header.i=@emailprofi.seznam.cz header.b=pgUzrG1I; arc=none smtp.client-ip=77.75.78.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=podgorny.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=podgorny.cz
+Received: from email.seznam.cz
+	by smtpc-mxb-79548bf4db-6g5l8
+	(smtpc-mxb-79548bf4db-6g5l8 [2a02:598:64:8a00::1000:970])
+	id 6e25e59bd81f48826baaffd3;
+	Fri, 15 Mar 2024 17:24:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710519415; x=1711124215; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hq26cNsD7jowb3hRFtXkhmvH+pk4/HkmfGFyk+22HD0=;
-        b=IrvBXckdY6A/y/wKd+r8x33eovdCcnR2Uu31fUAFthMt1oxhncLc86ykoEje2Q6U9R
-         j8Fnh6ro9+L0NyNRS2xOeTpaedeyYsFm9pzOzkR1GeeCbcFCo8kRDCk33wwDJc27Cu5e
-         jfd5Xs8fSxDzgww3rHaaQW7HSlZgDfjXlsaniG3JrVtp2+RPPIF17jFW9GFQ6FVR9WTW
-         cA2DqyqLhkNvAMC+cp/M0aL6JQRVZAfvkdU5SEgys/JVo8pvhHcLn/Nakpf8y7hz3zpC
-         HHuulgXFngj+dAA7qJ1PRx+7ZV676/Gzvm44BGJDtVXZ9sc7a8b3CdB680/+UcGC6ots
-         Yf/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710519415; x=1711124215;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hq26cNsD7jowb3hRFtXkhmvH+pk4/HkmfGFyk+22HD0=;
-        b=Z6dDCr7zZ1t1eMUX8OMr6cIZVQ+TLb7fbVyhL1SKv0KfpBQW8hjBrydWLToc9P4Nnd
-         NIkU3lUEUQSlsJtSRQLTlU3m+pChS/oA9ognpcMAiD3Iwlt7gaYLSF/FITkY7RYoygtP
-         Wkcpm9ewB+XwZEO+DHM9jLrvSRG/Nx7AMr8zsJYB1Ywq0n1wdJlgtlITjfOtXJAkNJUF
-         XDqphcdIm9TcVE3SPdAIKDv9jAH9lVp6HnXwsCXPcaEn9xm/dGjISTZiQWKDxPQnqq6T
-         1XG0T+PRC12zIZga7Y4k6aU5u5T9oSBUWnt/N7zmnC1vfAjOxYLCzloRNBPySF0aEZ8m
-         QRXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUET8097kafvap4O3cu7+QNTGbJMbq8Hc8x05kozcPxB43sWSptiuUmn5Tfn/mM11Hn6Lk4fAdl9Gp/cP93oEouBDZ3WwZrP+iQezqGLhrjrDC//0C9yMwAFZxdYJpeviGTyOLEcqGoeDc+0dYGX+pu+/D3r2qtP7ckzCYDy8LF
-X-Gm-Message-State: AOJu0YxtDxHIKHg98vvrxj7IemRixNWW3AQjg23ywdL8v+9BzyhRRHSO
-	eYGdAMHmJQpd9GfVVZ6cMU8x+mdSw17jQEC970Wvsv7byVm33khg
-X-Google-Smtp-Source: AGHT+IFv/E9MBLkyKgj7qZIVTGEgGlu0AGvsb77hVYdllp23GXPaquSMaDb/YqvQ3JdCNN4cWhrsMw==
-X-Received: by 2002:a17:906:5a95:b0:a46:74fe:9177 with SMTP id l21-20020a1709065a9500b00a4674fe9177mr4056795ejq.21.1710519414942;
-        Fri, 15 Mar 2024 09:16:54 -0700 (PDT)
-Received: from [192.168.20.102] (57657817.catv.pool.telekom.hu. [87.101.120.23])
-        by smtp.googlemail.com with ESMTPSA id me17-20020a170906aed100b00a4679ce191csm1330205ejb.121.2024.03.15.09.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 09:16:54 -0700 (PDT)
-From: Gabor Juhos <j4g8y7@gmail.com>
-Date: Fri, 15 Mar 2024 17:16:41 +0100
-Subject: [PATCH v2] clk: qcom: apss-ipq-pll: use stromer ops for IPQ5018 to
- fix boot failure
+	d=emailprofi.seznam.cz; s=szn20221014; t=1710519861;
+	bh=gc7gzKqYttkOzF3iRrIXTejoC7VKWKXqI9UO1389Eqs=;
+	h=Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type;
+	b=pgUzrG1I79OkAcwKKqmZsGhjfieUsn1p8LrzyjN6VUNYj/i4VC+IbguF6Ssowtdpq
+	 azpuFmWceX+W3b89SjuG9iQpfcpo5RvHblRm/ngJfQZPuT6boV9YIPR853r+tc4BQs
+	 wKWaj3zPthIbu7TdPT8iasS+RJsKTpSY3pWrN4sAaVRsYj1CHGg1qB+CGmrUAWLZMa
+	 9/Q+BxSpEVUD544ucH5N607hR/Pb7Xhc8Tw+VFEA0jM1Em2vFktBbJpHCSdiphQuHn
+	 CfTKNdOqQfHbja4Jh1ydN37mMGnJvWTVJXyiboWtVl8Hpuhiy/I4xOKitDj9WU4Q0y
+	 RfF12seAtY/dQ==
+Received: from [IPV6:2a01:9422:904:1ee:e65e:37ff:feee:e29c]
+	([2a01:9422:904:1ee:e65e:37ff:feee:e29c])
+	by smtpd-relay-594d8f6859-4vkd8 (szn-email-smtpd/2.0.18) with ESMTPA
+	id 824f5021-ac6f-440b-ac02-48e82f59aa00;
+	Fri, 15 Mar 2024 17:24:18 +0100
+Message-ID: <61148405-2036-4994-9eef-45cbe6aa9adb@podgorny.cz>
+Date: Fri, 15 Mar 2024 17:24:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAGh09GUC/42NTQ6CMBCFr0Jm7ZhOqRZceQ/DotICk/BTW0M0h
- LvbcgJXL9/L+9kgusAuwq3YILiVIy9zAnkqoB3M3DtkmxikkEqURGh8jMj+hX4cs14EVZiTqJW
- tTdUpTeUVUt8H1/Hn2H40iQeO7yV8j6uVsvvP6kpIWDmr5FObWih77yfD47ldJmj2ff8Boz155
- 8IAAAA=
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Gabor Juhos <j4g8y7@gmail.com>
-X-Mailer: b4 0.12.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
+Content-Language: en-US-large
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ regressions@leemhuis.info
+References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
+ <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
+ <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
+ <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com>
+ <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
+ <CAMj1kXG1Vgpp+ckwDww_4q2SF+kajUaoE3+qe5FzMkGyq-Lbag@mail.gmail.com>
+ <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
+From: Radek Podgorny <radek@podgorny.cz>
+In-Reply-To: <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------bX9AywMx93iSsEEK0m8RdY80"
 
-Booting v6.8 results in a hang on various IPQ5018 based boards.
-Investigating the problem showed that the hang happens when the
-clk_alpha_pll_stromer_plus_set_rate() function tries to write
-into the PLL_MODE register of the APSS PLL.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------bX9AywMx93iSsEEK0m8RdY80
+Content-Type: multipart/mixed; boundary="------------k9CzYCAAMy8oH6cVvt5HvEx2";
+ protected-headers="v1"
+From: Radek Podgorny <radek@podgorny.cz>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ regressions@leemhuis.info
+Message-ID: <61148405-2036-4994-9eef-45cbe6aa9adb@podgorny.cz>
+Subject: Re: [REGRESSION] linux 6.6.18 and later fails to boot with "initramfs
+ unpacking failed: invalid magic at start of compressed archive"
+References: <a99a831a-8ad5-4cb0-bff9-be637311f771@podgorny.cz>
+ <CAMj1kXF7gaaARdyN=bVuXtJb_S=-_ewAavXHgN4DS36jxK8r6A@mail.gmail.com>
+ <CAMj1kXEo-y1DfY_kBhwGU0xMkGp1PhdqGFmw6ToLePiZy4YgZQ@mail.gmail.com>
+ <CAMj1kXFmgba8HyZ-yO7MsQBgOGjM10hZKWESBbfrUcjdhq0XsQ@mail.gmail.com>
+ <225e9c2a-9889-4c9e-865c-9ef96bb266f3@podgorny.cz>
+ <CAMj1kXG1Vgpp+ckwDww_4q2SF+kajUaoE3+qe5FzMkGyq-Lbag@mail.gmail.com>
+ <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
+In-Reply-To: <CAMj1kXGZLs3MdFiK9jrkmWR+YPt50L5tuCJ+rLLTjVa3Grm6tw@mail.gmail.com>
 
-Checking the downstream code revealed that it uses [1] stromer
-specific operations for IPQ5018, whereas in the current code
-the stromer plus specific operations are used.
+--------------k9CzYCAAMy8oH6cVvt5HvEx2
+Content-Type: multipart/mixed; boundary="------------qJKvIhf7JdyPFi8winmmFzkq"
 
-The ops in the 'ipq_pll_stromer_plus' clock definition can't be
-changed since that is needed for IPQ5332, so add a new alpha pll
-clock declaration which uses the correct stromer ops and use this
-new clock for IPQ5018 to avoid the boot failure.
+--------------qJKvIhf7JdyPFi8winmmFzkq
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Also, change pll_type in 'ipq5018_pll_data' to
-CLK_ALPHA_PLL_TYPE_STROMER to better reflect that it is a Stromer
-PLL and change the apss_ipq_pll_probe() function accordingly.
+aXQncyBzeXN0ZW1kLWJvb3QuIGF0dGFjaGluZyBib290Y3RsIG91dHB1dC4gbm93IGxvb2tp
+bmcgYXQgaXQsIGl0IHNlZW1zIA0KdGhhdCB3aGlsZSBzeXN0ZW1kIChhbmQgc3lzdGVtZC1i
+b290KSBnZXRzIHRpbWVseSB1cGRhdGVzIG9uIG15IHN5c3RlbSANCihjdXJyZW50bHkgYXQg
+MjU1LjQpLCB0aGUgc3R1YiAoaXMgdGhpcyBob3cgaXQncyBjYWxsZWQ/KSBkb2VzIG5vdCBn
+ZXQgDQp1cGRhdGVkIGF1dG9tYXRpY2FsbHkgaW4gdGhlIGVmaSBwYXJ0aXRpb24gKHN0aWxs
+IGF0IHZlcnNpb24gMjQ0PykuDQoNCmkgY2FuIHRyeSB0byB1cGRhdGUgaXQuIGJ1dCBpJ2xs
+IHdhaXQgZm9yIHlvdXIgaW5zdHJ1Y3Rpb25zIHNpbmNlIHRoaXMgDQptYXkgYmUgc29tZSBy
+YXJlIHNpdHVhdGlvbiBhbmQgd2UgbWF5IHVzZSBpdCBmb3IgdGVzdGluZy4NCg0KYW55d2F5
+LCBpJ20gY29tcGlsaW5nIG5ldyBrZXJuZWwgd2l0aCB5b3VyIHN1Z2dlc3RlZCBjaGFuZ2Vz
+IHJpZ2h0IG5vdyANCnNvIGknbGwgbGV0IHlvdSBrbm93IGhvdyBpdCB0dXJuZWQgb3V0LCBz
+b29uLg0KDQpyLg0KDQpwLnMuOiBoYSEgbmV2ZXJtaW5kLCBpIGp1c3QgY2hlY2tlZCB0aGUg
+b3RoZXIgc3lzdGVtcyB3aGljaCBib290IGZpbmUgDQphbmQgdGhleSBhbHNvIGFyZSBvbiBz
+dHViICg/KSAyNDQgc28gaXQncyBwcm9iYWJseSBub3QgdGhlIGNhdXNlLg0KDQoNCk9uIDMv
+MTUvMjQgMTc6MDgsIEFyZCBCaWVzaGV1dmVsIHdyb3RlOg0KPiBPbiBGcmksIDE1IE1hciAy
+MDI0IGF0IDE2OjMzLCBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3JnPiB3cm90ZToN
+Cj4+DQo+PiBPbiBGcmksIDE1IE1hciAyMDI0IGF0IDE1OjEyLCBSYWRlayBQb2Rnb3JueSA8
+cmFkZWtAcG9kZ29ybnkuY3o+IHdyb3RlOg0KPj4+DQo+Pj4gaGkgYXJkLCB0aGFua3MgZm9y
+IHRoZSBlZmZvcnQhDQo+Pj4NCj4+PiBzbywgeW91ciBmaXJzdCByZWNvbW1lbmRlZCBwYXRj
+aCAodGhlIG1lbXNldCB0aGluZyksIGFwcGxpZWQgdG8gY3VycmVudA0KPj4+IG1haW5saW5l
+ICg2LjgpIERPRVMgTk9UIHJlc29sdmUgdGhlIGlzc3VlLg0KPj4+DQo+Pj4gdGhlIHNlY29u
+ZCByZWNvbW1lbmRhdGlvbiwgYSByZXZlcnQgcGF0Y2gsIGFwcGxpZWQgdG8gdGhlIHNhbWUg
+bWFpbmxpbmUNCj4+PiB0cmVlLCBpbmRlZWQgRE9FUyByZXNvbHZlIHRoZSBwcm9ibGVtLg0K
+Pj4+DQo+Pj4ganVzdCB0byBiZSBzdXJlLCBpJ20gYXR0YWNoaW5nIHRoZSByZXZlcnQgcGF0
+Y2guDQo+Pj4NCj4+DQo+PiBBY3R1YWxseSwgdGhhdCBpcyBub3QgdGhlIHBhdGNoIEkgaGFk
+IGluIG1pbmQuDQo+Pg0KPj4gUGxlYXNlIHJldmVydA0KPj4NCj4+IHg4Ni9lZmk6IERyb3Ag
+RUZJIHN0dWIgLmJzcyBmcm9tIC5kYXRhIHNlY3Rpb24NCj4+DQo+IA0KPiBCVFcgd2hpY2gg
+Ym9vdGxvYWRlciBhcmUgeW91IHVzaW5nPw0K
+--------------qJKvIhf7JdyPFi8winmmFzkq
+Content-Type: text/plain; charset=UTF-8; name="bootctl.txt"
+Content-Disposition: attachment; filename="bootctl.txt"
+Content-Transfer-Encoding: base64
 
-1. https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/blob/NHSS.QSDK.12.4/drivers/clk/qcom/apss-ipq5018.c#L67
+G1swbVN5c3RlbToKICAgICAgRmlybXdhcmU6IFVFRkkgMi4zMSAoQW1lcmljYW4gTWVnYXRy
+ZW5kcyA0LjY1MSkKIEZpcm13YXJlIEFyY2g6IHg2NAogICBTZWN1cmUgQm9vdDogZGlzYWJs
+ZWQgKHVuc3VwcG9ydGVkKQogIFRQTTIgU3VwcG9ydDogbm8KICBNZWFzdXJlZCBVS0k6IG5v
+CiAgQm9vdCBpbnRvIEZXOiBub3Qgc3VwcG9ydGVkCgobWzBtQ3VycmVudCBCb290IExvYWRl
+cjoKICAgICAgUHJvZHVjdDogc3lzdGVtZC1ib290IDI0NC0xLWFyY2gKICAgICBGZWF0dXJl
+czog4pyTIEJvb3QgY291bnRpbmcKICAgICAgICAgICAgICAg4pyTIE1lbnUgdGltZW91dCBj
+b250cm9sCiAgICAgICAgICAgICAgIOKckyBPbmUtc2hvdCBtZW51IHRpbWVvdXQgY29udHJv
+bAogICAgICAgICAgICAgICDinJMgRGVmYXVsdCBlbnRyeSBjb250cm9sCiAgICAgICAgICAg
+ICAgIOKckyBPbmUtc2hvdCBlbnRyeSBjb250cm9sCiAgICAgICAgICAgICAgIOKckyBTdXBw
+b3J0IGZvciBYQk9PVExEUiBwYXJ0aXRpb24KICAgICAgICAgICAgICAg4pyTIFN1cHBvcnQg
+Zm9yIHBhc3NpbmcgcmFuZG9tIHNlZWQgdG8gT1MKICAgICAgICAgICAgICAg4pyXIExvYWQg
+ZHJvcC1pbiBkcml2ZXJzCiAgICAgICAgICAgICAgIOKclyBTdXBwb3J0IFR5cGUgIzEgc29y
+dC1rZXkgZmllbGQKICAgICAgICAgICAgICAg4pyXIFN1cHBvcnQgQHNhdmVkIHBzZXVkby1l
+bnRyeQogICAgICAgICAgICAgICDinJcgU3VwcG9ydCBUeXBlICMxIGRldmljZXRyZWUgZmll
+bGQKICAgICAgICAgICAgICAg4pyXIEVucm9sbCBTZWN1cmVCb290IGtleXMKICAgICAgICAg
+ICAgICAg4pyXIFJldGFpbiBTSElNIHByb3RvY29scwogICAgICAgICAgICAgICDinJcgTWVu
+dSBjYW4gYmUgZGlzYWJsZWQKICAgICAgICAgICAgICAg4pyTIEJvb3QgbG9hZGVyIHNldHMg
+RVNQIGluZm9ybWF0aW9uCiAgICAgICAgICBFU1A6IC9kZXYvZGlzay9ieS1wYXJ0dXVpZC8y
+YWRlZmM3NS0zZGEwLTRjM2QtOTQ0OS1lYTAxMTRhNGIyODEKICAgICAgICAgRmlsZTog4pSU
+4pSAL0VGSS9zeXN0ZW1kL3N5c3RlbWQtYm9vdHg2NC5lZmkKChtbMG1SYW5kb20gU2VlZDoK
+IFN5c3RlbSBUb2tlbjogc2V0CiAgICAgICBFeGlzdHM6IHllcwoKG1swbUF2YWlsYWJsZSBC
+b290IExvYWRlcnMgb24gRVNQOgogICAgICAgICAgRVNQOiAvYm9vdCAoL2Rldi9kaXNrL2J5
+LXBhcnR1dWlkLzJhZGVmYzc1LTNkYTAtNGMzZC05NDQ5LWVhMDExNGE0YjI4MSkKICAgICAg
+ICAgRmlsZTog4pSc4pSAL0VGSS9zeXN0ZW1kL3N5c3RlbWQtYm9vdHg2NC5lZmkgKHN5c3Rl
+bWQtYm9vdCAyNDQtMS1hcmNoKQogICAgICAgICAgICAgICDilJTilIAvRUZJL0JPT1QvQk9P
+VFg2NC5FRkkgKHN5c3RlbWQtYm9vdCAyNDQtMS1hcmNoKQoKG1swbUJvb3QgTG9hZGVycyBM
+aXN0ZWQgaW4gRUZJIFZhcmlhYmxlczoKICAgICAgICBUaXRsZTogTGludXggQm9vdCBNYW5h
+Z2VyCiAgICAgICAgICAgSUQ6IDB4MDAwOQogICAgICAgU3RhdHVzOiBhY3RpdmUsIGJvb3Qt
+b3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkLzJhZGVmYzc1LTNk
+YTAtNGMzZC05NDQ5LWVhMDExNGE0YjI4MQogICAgICAgICBGaWxlOiDilJTilIAvRUZJL3N5
+c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXggQm9vdCBN
+YW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwOAogICAgICAgU3RhdHVzOiBhY3RpdmUsIGJv
+b3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2RhY2RlODMx
+LTYwYWYtNGY4Yy1iYmIyLWM0YjAzYTMyNjVlNAogICAgICAgICBGaWxlOiDilJTilIAvRUZJ
+L3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXggQm9v
+dCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMQogICAgICAgU3RhdHVzOiBhY3RpdmUs
+IGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2Y5MTY5
+Nzg0LWQxNjMtNGM1OC1hOTVkLTI2ZGViNDE0NTcxNAogICAgICAgICBGaWxlOiDilJTilIAv
+RUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGludXgg
+Qm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwNAogICAgICAgU3RhdHVzOiBhY3Rp
+dmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlkL2Vk
+NzdjZjkyLTJhY2QtNGUyYi1iZTA3LWI2ZjFlNGNkZWQyOQogICAgICAgICBGaWxlOiDilJTi
+lIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTogTGlu
+dXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMAogICAgICAgU3RhdHVzOiBh
+Y3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1dWlk
+L2NhMThkNzM0LWQ4YjMtNDhmOC1iNjhlLTNlNGFlOTE5ZTBjNgogICAgICAgICBGaWxlOiDi
+lJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRsZTog
+TGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMgogICAgICAgU3RhdHVz
+OiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBhcnR1
+dWlkLzg5NmIxZDMxLTczM2UtNDE3YS1hNzQwLWE3ODdhY2ZmM2YxNQogICAgICAgICBGaWxl
+OiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBUaXRs
+ZTogTGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwMwogICAgICAgU3Rh
+dHVzOiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5LXBh
+cnR1dWlkL2U3YmY2ZmM1LTBiZjYtNGRjMi04MTE2LWMyZGJjODk5OWE1NAogICAgICAgICBG
+aWxlOiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKICAgICAgICBU
+aXRsZTogTGludXggQm9vdCBNYW5hZ2VyCiAgICAgICAgICAgSUQ6IDB4MDAwNgogICAgICAg
+U3RhdHVzOiBhY3RpdmUsIGJvb3Qtb3JkZXIKICAgIFBhcnRpdGlvbjogL2Rldi9kaXNrL2J5
+LXBhcnR1dWlkLzZkOWZhNzY1LWE0YzktNDcyMy1iZWNmLTYxMTA1YTlkMWYzMAogICAgICAg
+ICBGaWxlOiDilJTilIAvRUZJL3N5c3RlbWQvc3lzdGVtZC1ib290eDY0LmVmaQoKG1swbUJv
+b3QgTG9hZGVyIEVudHJpZXM6CiAgICAgICAgJEJPT1Q6IC9ib290ICgvZGV2L2Rpc2svYnkt
+cGFydHV1aWQvMmFkZWZjNzUtM2RhMC00YzNkLTk0NDktZWEwMTE0YTRiMjgxKQogICAgICAg
+IHRva2VuOiBhcmNoCgobWzBtRGVmYXVsdCBCb290IExvYWRlciBFbnRyeToKICAgICAgICAg
+dHlwZTogQm9vdCBMb2FkZXIgU3BlY2lmaWNhdGlvbiBUeXBlICMxICguY29uZikKICAgICAg
+ICB0aXRsZTogQXJjaCBMaW51eAogICAgICAgICAgIGlkOiBhcmNoLmNvbmYKICAgICAgIHNv
+dXJjZTogL2Jvb3QvL2xvYWRlci9lbnRyaWVzL2FyY2guY29uZgogICAgICAgIGxpbnV4OiAv
+Ym9vdC8vdm1saW51ei1saW51eAogICAgICAgaW5pdHJkOiAvYm9vdC8vaW50ZWwtdWNvZGUu
+aW1nCiAgICAgICAgICAgICAgIC9ib290Ly9pbml0cmFtZnMtbGludXguaW1nCiAgICAgIG9w
+dGlvbnM6IHJvb3Q9L2Rldi9kaXNrL2J5LWxhYmVsL01BVExBX1JPT1QgcncK
 
-Cc: stable@vger.kernel.org
-Fixes: 50492f929486 ("clk: qcom: apss-ipq-pll: add support for IPQ5018")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
----
-Changes in v2:
-  - extend commit description due to the changes
-  - add a comment about why CLK_ALPHA_PLL_TYPE_STROMER_PLUS register offsets
-    are used
-  - constify hw clock init data (Stephen)
-  - change pll_type in ipq5018_pll_data to CLK_ALPHA_PLL_TYPE_STROMER (Konrad)
-  - Link to v1: https://lore.kernel.org/r/20240311-apss-ipq-pll-ipq5018-hang-v1-1-8ed42b7a904d@gmail.com
----
-Based on v6.8.
----
- drivers/clk/qcom/apss-ipq-pll.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+--------------qJKvIhf7JdyPFi8winmmFzkq--
 
-diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
-index 678b805f13d45..dfffec2f06ae7 100644
---- a/drivers/clk/qcom/apss-ipq-pll.c
-+++ b/drivers/clk/qcom/apss-ipq-pll.c
-@@ -55,6 +55,29 @@ static struct clk_alpha_pll ipq_pll_huayra = {
- 	},
- };
- 
-+static struct clk_alpha_pll ipq_pll_stromer = {
-+	.offset = 0x0,
-+	/*
-+	 * Reuse CLK_ALPHA_PLL_TYPE_STROMER_PLUS register offsets.
-+	 * Although this is a bit confusing, but the offset values
-+	 * are correct nevertheless.
-+	 */
-+	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
-+	.flags = SUPPORTS_DYNAMIC_UPDATE,
-+	.clkr = {
-+		.enable_reg = 0x0,
-+		.enable_mask = BIT(0),
-+		.hw.init = &(const struct clk_init_data) {
-+			.name = "a53pll",
-+			.parent_data = &(const struct clk_parent_data) {
-+				.fw_name = "xo",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_alpha_pll_stromer_ops,
-+		},
-+	},
-+};
-+
- static struct clk_alpha_pll ipq_pll_stromer_plus = {
- 	.offset = 0x0,
- 	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
-@@ -144,8 +167,8 @@ struct apss_pll_data {
- };
- 
- static const struct apss_pll_data ipq5018_pll_data = {
--	.pll_type = CLK_ALPHA_PLL_TYPE_STROMER_PLUS,
--	.pll = &ipq_pll_stromer_plus,
-+	.pll_type = CLK_ALPHA_PLL_TYPE_STROMER,
-+	.pll = &ipq_pll_stromer,
- 	.pll_config = &ipq5018_pll_config,
- };
- 
-@@ -203,7 +226,8 @@ static int apss_ipq_pll_probe(struct platform_device *pdev)
- 
- 	if (data->pll_type == CLK_ALPHA_PLL_TYPE_HUAYRA)
- 		clk_alpha_pll_configure(data->pll, regmap, data->pll_config);
--	else if (data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER_PLUS)
-+	else if (data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER ||
-+		 data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER_PLUS)
- 		clk_stromer_pll_configure(data->pll, regmap, data->pll_config);
- 
- 	ret = devm_clk_register_regmap(dev, &data->pll->clkr);
+--------------k9CzYCAAMy8oH6cVvt5HvEx2--
 
----
-base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
-change-id: 20240311-apss-ipq-pll-ipq5018-hang-74d9a8f47136
+--------------bX9AywMx93iSsEEK0m8RdY80
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-Best regards,
--- 
-Gabor Juhos <j4g8y7@gmail.com>
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEEydMGi3nQKasCS8bLahNm1VQL0ZwFAmX0djEFAwAAAAAACgkQahNm1VQL0Zz7
+XxAA0KbtlwOIJx8l3rKOWuCZYsbO2FmDQOZKLLPoHbmQt708YThTn+e3f65HFv1p+AFRaNzkIVL0
+6zby/242SoATXak9waXLvZ0bwsiP/E3XKrw7vgSK7NE0xGO/dqIc1G2B6asT5Jz3R21pir/G9eQn
+nByt8c4YkszX4M+VNY+6SR2esPDyEOvS8iaGw+nc7z9ltHir8VZTJ9z2+yviuOtZeVXGUJCbIm4u
+C/enpde/T+kpFKLpTNSqZTJ5jip8L6S2IWKEnB3VJYUElSMkKYuyw/vbBHiRj008V5D/AbOKCKr7
+MyqzC/t3lh484Rb8SddoudaCvcFw+MD/8k76xR3lg+njNiwpdBLI+9u+/4KmDrAuc0Kr+gBpDhgt
+HPNlnGao8KCJQ12aMKnb9oZ7xyKyDbWm521rm4x8Ev/SehVlXCu/JjWi4tzlewPCfDg+VaLCBHDD
+vWrNNMptgJbrntGycPA5z5ZB6QYUMFFl75/fkcHI5BySNhoI8s4tBpjbU5GzpVB1w20v4m1h7PVJ
+o5JSdKuJFi0Y7Y5hm80zQRPmBG/hUNZxzgthIPIfDGTRnwXSwAkHkDQrVCUMesXMs3P2N2p7Z/eO
+lnFAahvenKHOojjCOeCmI0LFFokRlLUoZA8EBPGTNMpTAk9bNP2SKARRAkVtP5aCEho5fffK4MbE
+TVw=
+=HARZ
+-----END PGP SIGNATURE-----
+
+--------------bX9AywMx93iSsEEK0m8RdY80--
 
