@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-28250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CE287D073
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:41:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52DF87D07F
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82BF6B21BBA
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:40:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981BE284901
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0321A3E462;
-	Fri, 15 Mar 2024 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481593CF63;
+	Fri, 15 Mar 2024 15:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UYTGh0QP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZLA39rm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33ED3D96E;
-	Fri, 15 Mar 2024 15:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EA73FE47;
+	Fri, 15 Mar 2024 15:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710517253; cv=none; b=Dqy6es4I7rQSUvNGV25FsHq7fHx6m/xzL/usXUCW7vTQVqGkiBSXs49mIF4DgQReMFuT6Fn/xxXT4bFg/0B3lBD2aKe7NPi5TVdRaL5ClH6jUI+XLoa344R1wBF9RVTq9LvXjwLORLt3Mp3dkJnwD7hl4OYjFv2F3uop6GN/ZGQ=
+	t=1710517355; cv=none; b=nXK7wHBg0LFzfRyLOH8sEVLm8Zjn17tKL9RKnqEgkN1j4gumS3byRd+47O7T0lTtvKz6EtUbufpzTWm8Kn8ZvHZ+UPkx1UJZSA2VJCypxa79SkDZKueZbRTvCW8UgQhbHkR2as5MrSoiH6yOgAbjE0ZpXp8l6Ou5u6vLyOrXfjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710517253; c=relaxed/simple;
-	bh=MJf2y2Zflcqhg26B6IegM18VqfaNaUfxtegMhDQiyhI=;
+	s=arc-20240116; t=1710517355; c=relaxed/simple;
+	bh=0N1BsCYtvWEqRVe1X5dNThaXqxh8Rg1WOw3CVPti4YA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h45azVX2/XCS7sVmUaUIcdEomIMMxANtvGiQsgcJfil3l305cZy5WaOkGUGolnVRfQVCHWstOpbqvwRqtArTNxR4m2bunhaS+RIoeKiy74oXjs+VgJ/Xx2yxNWWs/IIYJenQXC0GMg59Bje5HYd+P4OSsJ9FY+OM7y/pkDRleK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UYTGh0QP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7D5C433C7;
-	Fri, 15 Mar 2024 15:40:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=plOzmvz51sXOcLu2tTOD6WLN6F/gcK7q4y70moWXttef+WvbysPE5kOthbMrzK/KqWH4gsUi06WQxFGpAPSSTDoKR+Di+weqgToFHLq7eZkPYbBRJ+o5u8vLDeF/yve0Mx6G21RMoR4h/SU+ySpVEG9Q/0nw97NDgXMrnAMX5Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZLA39rm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE1CC433C7;
+	Fri, 15 Mar 2024 15:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710517253;
-	bh=MJf2y2Zflcqhg26B6IegM18VqfaNaUfxtegMhDQiyhI=;
+	s=k20201202; t=1710517354;
+	bh=0N1BsCYtvWEqRVe1X5dNThaXqxh8Rg1WOw3CVPti4YA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UYTGh0QPfCsOWoz6oSpcjVtDYmsHpsLV/sge952M6zG4BJdWah+Lhkp0nEPN4q18o
-	 Tjl7kAu1o9R1ZXDmz1cSh5kcxFZCveIeQRWt/OgP6TMNgmuLLCqOC6SwogucaN4WZV
-	 pg9kZUl4YOVT0TpR5RfgblBR8Lp7qmL9E/iktw0aqXhrJNliKxYQYBsUz5QDkRYhQt
-	 jEyG75X9YqGQAYimcISHtL8Xe17Yar8No2H4ZCTy0O/Cb3FW9NtpC1Nx3RnhihUDXV
-	 LrjQHO5HiUiiPFltz/R8k+ejdsMz52oUWramKhHrYOX1g5LFbG9YUYL6JXvN++b7ep
-	 hjTJU8y9piIwg==
-Date: Fri, 15 Mar 2024 15:40:46 +0000
+	b=dZLA39rmdpqksNLeLxk1h9LiX1nd9yk1wcsdXxauMLzm6ArILaJrTmV+Bq6zea7NR
+	 3Xs2WTGetncR0cKFVXMvZEfHFA9lngGZy9pPmqgrPvdSOPnmG053CoRhKXZyTcjeDX
+	 dg6jy55i7Pyfe/RSnZgaZzHpUG9HH1TCGKm4hWJlp6jQJXbuQYCOyF0qysNNZiKyML
+	 NWjo/7bdc5/l+juxxp3iEIZbRpYINYj6aAlinjCFImU5xFc/6Hq6twl7iCKLEXNBYo
+	 vOqY+8OnzZYY2yIzVq2z28r0mfCDLvktLEd1E8haTcfyHOy8U9+LIksYiugaUv3Cdu
+	 WR6CDfa0vzsxA==
+Date: Fri, 15 Mar 2024 15:42:29 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	torvalds@linux-foundation.org, akpm@linux-foundation.org,
 	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
 	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 6.7 00/61] 6.7.10-rc1 review
-Message-ID: <a4c3ee1e-6941-4426-87b9-c5bf3a58d8de@sirena.org.uk>
-References: <20240313163236.613880-1-sashal@kernel.org>
+Subject: Re: [PATCH 6.8 0/5] 6.8.1-rc1 review
+Message-ID: <9ea47bd0-cf00-4bba-a305-6fea6278ac55@sirena.org.uk>
+References: <20240313163019.613705-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,40 +58,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bdjzHhYfbtfWjhuh"
+	protocol="application/pgp-signature"; boundary="V6lwsxOq/FDcH2+U"
 Content-Disposition: inline
-In-Reply-To: <20240313163236.613880-1-sashal@kernel.org>
-X-Cookie: news: gotcha
+In-Reply-To: <20240313163019.613705-1-sashal@kernel.org>
+X-Cookie: VMS must die!
 
 
---bdjzHhYfbtfWjhuh
+--V6lwsxOq/FDcH2+U
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 12:31:35PM -0400, Sasha Levin wrote:
+On Wed, Mar 13, 2024 at 12:30:14PM -0400, Sasha Levin wrote:
 >=20
-> This is the start of the stable review cycle for the 6.7.10 release.
-> There are 61 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.8.1 release.
+> There are 5 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---bdjzHhYfbtfWjhuh
+--V6lwsxOq/FDcH2+U
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0a/0ACgkQJNaLcl1U
-h9BJSQf9GVyzjI/ct6OiwzPHRdu2znNkxKV2Xz6+XvWxd2E945c52mMrEM9rLr5p
-vLQS32l92PC86THfAaYfPRMhTrImLig7ptjTlx4vUr98w21MBzjOQfNHAA72WlXn
-MVrNHam491F+nTZ37CeiywiBa8kpPVRTaXwaLw1zW6PfFHtnB5mq7v1gWbh5aMzv
-zaajz58u2VruXvthEyQ9zGadh5F4Ecq2SasKgLmRsVn8skBj3A6kjU/A3OHJRMMj
-KcqM0tyT/hD2j1HtoXN8wNVmTejZNjL8Z3JjBEh5QSB4LmIH9AMisUSAPFANv2Fr
-Q2AYV8zpvKsG1nFD3WyHCqgBbHHViQ==
-=4mH/
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0bGUACgkQJNaLcl1U
+h9CcAQf9GPuJDU2HzhciC+YJFxOm6T1oG1WSQLNYgk7R+WQi6ChAn7Wi1PDsXjYa
+PnC1F8kpW+FsoZBW2LMvRACqE858ZbcTcy8EQ7L0FGOrtQAer3eDFRM909bUp1n4
+R7eAHgIxd997N0qrBV70pCT+XUxTZt11Dn2xme8WSBcBcpRYv8Hf3CrmOu0VTNmm
+HRbgfOzGrSvSi5XEvkGJtZM5hn/0+yzCO7kJ4wg9R0ND8QPry/C9pril0EQaBn7W
+SVJgFPtFkIDzPCP+3LTtpqvrhqEwdBMIxFl1RN2khcowFPg7rGdwnQHSWQHbUSDE
+wZjb/kwqKGJEQK1eQB3OutV6XhV79Q==
+=LvFm
 -----END PGP SIGNATURE-----
 
---bdjzHhYfbtfWjhuh--
+--V6lwsxOq/FDcH2+U--
 
