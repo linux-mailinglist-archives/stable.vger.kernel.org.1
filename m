@@ -1,108 +1,130 @@
-Return-Path: <stable+bounces-28228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F487C7AA
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 03:45:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E7987C886
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 06:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBD8D2823E3
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 02:45:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E6E1F22351
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 05:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5AE8C05;
-	Fri, 15 Mar 2024 02:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1236FC02;
+	Fri, 15 Mar 2024 05:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fQb/pU1N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A631379DE;
-	Fri, 15 Mar 2024 02:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1353DF51;
+	Fri, 15 Mar 2024 05:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710470742; cv=none; b=TwocCCXU3tE0ZJHc/WS7cBy1BXJQNDNT3WeFtVdpGDuP0vNg6ogL2xO+IGJpxqPYq/WKmZ4XQGjyqhUejX4Zu2RnwNyC7Qvp121aMX/lXUkO5JOpwlFTg+M6W/WdOtHMCCjDP1UQecqKu+Kcga7UK3mtd44X63Tj12p5NDH3s0A=
+	t=1710480534; cv=none; b=sERd+RqRE/PlxOUYD4YjlIelBGoAYs9uYs0PBLhQaCmZ/jKBLpzeOg1K0NSS2YQsmzi+gImDB/oCfLQstva0D9PlDpSYJCw2kgds8tN3RcSK0DevekAK9atXjzFpmGOtENajNkn2nytsg6JKRi5QVgetHZCYJPPFLeSHUejPsH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710470742; c=relaxed/simple;
-	bh=E33cKRU/0bnIopCBLTQiUg1CEGllwAlLq2Nw4I1WmE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hiLmKSE1CE5Ja0t1fpKDhrevtLdpVbgfnXN6vDgILsyjN07rRdWnoyzjeUxK8z47oe42DANW2ogRecGvOmvAM/JrQPOiEEcj+Kg+zmivdsV6/EThdmCblYMyuJoaorxmHmRpu0WLo+uZBulCFzLsb2JF6LDEgQQBz4KzLUZG1GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638C9C433C7;
-	Fri, 15 Mar 2024 02:45:38 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org,
-	Xiaotian Wu <wuxiaotian@loongson.cn>,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	Xing Li <lixing@loongson.cn>,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Rui Wang <wangrui@loongson.cn>
-Subject: [PATCH] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
-Date: Fri, 15 Mar 2024 10:45:26 +0800
-Message-ID: <20240315024526.394772-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1710480534; c=relaxed/simple;
+	bh=/xPxAzCyhJN43wEXC0maiJE/UWoPU0LwRgLXzSrXbZA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/i/J7v91wjHeseCwSJ/84NKg6t4e+kF5NZqXPNcW2Jd0eH36Sjz73zZ6h7u1ei6PJVFFiMPE6z0Wgv5oMZ16OInkTjgRqwB9fm4YbzwbhWqbGeQT7TkttFN1W8jI/f7ksn7QJxcCfsJa3ehTKAa0okEJ0/L9or0FchRrXl0mXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fQb/pU1N; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 42F5Rwhl009845;
+	Fri, 15 Mar 2024 00:27:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1710480478;
+	bh=/6G2n4e8p7C1eVE+gmMKGmm9QowQsFFL9iknvi5QMHI=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=fQb/pU1NAsoTLsgzpPTYk2XWYXulJ99R6WCw3e34GECDrhUBQ6BO49OWv5qEJGnjA
+	 SpQtQ5nSGo3YFBtNzRyvsu7DhL90Kc2PkXerMTJ9y0PLuKclkcg/wkWxdvSc/jYCjC
+	 et51MitlsDTSiRv1gYorkmu0FUDm0MjMG9kM8MCo=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 42F5Rw58005758
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 15 Mar 2024 00:27:58 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 15
+ Mar 2024 00:27:57 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 15 Mar 2024 00:27:58 -0500
+Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 42F5RvAV037118;
+	Fri, 15 Mar 2024 00:27:57 -0500
+Date: Fri, 15 Mar 2024 10:57:56 +0530
+From: Dhruva Gole <d-gole@ti.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+        "Rafael J.
+ Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Stephan
+ Gerhold <stephan@gerhold.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Christoph Lameter <cl@gentwo.org>,
+        Mark
+ Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>, Will
+ Deacon <will@kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] cpufreq: dt: always allocate zeroed cpumask
+Message-ID: <20240315052756.5w4zizrod3w7kzzn@dhruva>
+References: <CGME20240314125628eucas1p161af377a50fd957f445397bc1404978b@eucas1p1.samsung.com>
+ <20240314125457.186678-1-m.szyprowski@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240314125457.186678-1-m.szyprowski@samsung.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
-global regs in asms"), global registers will no longer be forced to add
-to the def-use chain. Then current_thread_info(), current_stack_pointer
-and __my_cpu_offset may be lifted out of the loop because they are no
-longer treated as "volatile variables".
+On Mar 14, 2024 at 13:54:57 +0100, Marek Szyprowski wrote:
+> Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
+> supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
+> what resulted in the strange issues and warnings during cpufreq-dt
+> initialization on some big.LITTLE platforms.
+> 
+> This was caused by mixing OPPs between big and LITTLE cores, because
+> OPP-sharing information between big and LITTLE cores is computed on
+> cpumask, which in turn was not zeroed on allocation. Fix this by
+> switching to zalloc_cpumask_var() call.
+> 
+> Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
+> CC: stable@vger.kernel.org # v5.10+
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  drivers/cpufreq/cpufreq-dt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+> index 8bd6e5e8f121..2d83bbc65dd0 100644
+> --- a/drivers/cpufreq/cpufreq-dt.c
+> +++ b/drivers/cpufreq/cpufreq-dt.c
+> @@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
+>  	if (!priv)
+>  		return -ENOMEM;
+>  
+> -	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+> +	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+>  		return -ENOMEM;
 
-This optimization is still correct for the current_thread_info() and
-current_stack_pointer usages because they are associated to a thread.
-However it is wrong for __my_cpu_offset because it is associated to a
-CPU rather than a thread: if the thread migrates to a different CPU in
-the loop, __my_cpu_offset should be changed.
+Good catch!
 
-Change __my_cpu_offset definition to treat it as a "volatile variable",
-in order to avoid such a mis-optimization.
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
 
-Cc: stable@vger.kernel.org
-Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
-Reported-by: Miao Wang <shankerwangmiao@gmail.com>
-Signed-off-by: Xing Li <lixing@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Rui Wang <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/include/asm/percpu.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
-index 9b36ac003f89..03b98491d301 100644
---- a/arch/loongarch/include/asm/percpu.h
-+++ b/arch/loongarch/include/asm/percpu.h
-@@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off)
- 	__my_cpu_offset = off;
- 	csr_write64(off, PERCPU_BASE_KS);
- }
--#define __my_cpu_offset __my_cpu_offset
-+
-+#define __my_cpu_offset					\
-+({							\
-+	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
-+	__my_cpu_offset;				\
-+})
- 
- #define PERCPU_OP(op, asm_op, c_op)					\
- static __always_inline unsigned long __percpu_##op(void *ptr,		\
 -- 
-2.43.0
-
+Best regards,
+Dhruva
 
