@@ -1,348 +1,183 @@
-Return-Path: <stable+bounces-28257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2871887D145
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:37:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFE087D178
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 17:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C4AAB22055
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:37:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03F91C2194E
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EEF45BE2;
-	Fri, 15 Mar 2024 16:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA03A3F9EA;
+	Fri, 15 Mar 2024 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1Qrw7EN"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DlGp9POM";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kNht7jG6";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0lQmEzl3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6Nu+rPHy"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC82208A
-	for <stable@vger.kernel.org>; Fri, 15 Mar 2024 16:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C350C2BD19;
+	Fri, 15 Mar 2024 16:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710520615; cv=none; b=vBH+mvFaQUS1uXbhFbNB01k/rMciv4gXZDX2CPieYBVseGiaKazbUw4kQQf4o7qAXBjvL4pAPG6AYPNiBPXf8cn2SJYi6DU+BHsIKzV1c0Qjo5ZgVzLgGDMFcsJzmAoKqUxdHbkBSds47omlXdlNuAp0B7MTKAmbcOJWm5IlTNo=
+	t=1710521566; cv=none; b=jbmnzHj3hM1/NncoosqBo1Ytyvd+jjOSi4VimSsj/FHZqwwfUFSBb2piCyuxGtyJanZ7NRGEa/ExbH8v7v1gPeZnFgPS+Gvmadc9fGQDmBTVEEzjn73PHRT/yBgntuBj4L8P0wIQZ/BI52Bh2cDVY3/FqefjnxAngm7sGSOr+9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710520615; c=relaxed/simple;
-	bh=iwGxO6cxEtXAQo1Lngzsu+O09CGlaIMRBvKyYlye9sA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OcbNKqIzb141l6d1mw2sQVs0DOkA6m/cFibGmVItLr1Qz0aNTfU6AMEkv3fWeTny4fapvGw2IFERd6aFA31MAvaUdlA8J47NlDhG59/lV8Txpc5uyCTteoZgXFRN5ELKHgxJupxZuf7O5ATog2HzR9t/Q1Wi0y7Wf6TaYx019wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1Qrw7EN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710520611;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20240116; t=1710521566; c=relaxed/simple;
+	bh=CciIwSuA7UZI/OKXgIghlzmwU2GKoq5+v7Qa7KRWjBc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=H/cBfnzyKK52Pj6iZFBHs0ZX7VhyUh6BXCfq5PGRYddyp7G+A9P1kLwhA9wex3YA0iYyO1BTbWM99cxafl2Iqv/B2dIpXn1UIpvL4Pcb1ChjQLT3ERnkKBOdvRDw31IpgSpTU7cAMVdMxypVDh57CZt/+Ti8nVcGqzGVvenxG4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DlGp9POM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kNht7jG6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0lQmEzl3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6Nu+rPHy; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DA45A1FB6E;
+	Fri, 15 Mar 2024 16:52:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710521563; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LoEZpnSdB/ZldqxVxDwhD5has2xOLA/LrYBq0K/q2lU=;
-	b=L1Qrw7ENyTDhsnuLd2j0FIxQJq05j71494mNgzhdSveMnc63JV+7cblCkf4qYydT827Eqi
-	5u+bV46iFz4P6t7s6Xu9P1SKlCLXJosw6sshwbSSxqxG3ESWEsYt4hl29Pa1J/4CfiawZn
-	jAIcM8VACknd16pF0GoP9NuIWDgTFDQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604--hBxNHvaPM6Cm-InS_CZuw-1; Fri, 15 Mar 2024 12:36:50 -0400
-X-MC-Unique: -hBxNHvaPM6Cm-InS_CZuw-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-78823bb1fcbso361199685a.1
-        for <stable@vger.kernel.org>; Fri, 15 Mar 2024 09:36:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710520609; x=1711125409;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LoEZpnSdB/ZldqxVxDwhD5has2xOLA/LrYBq0K/q2lU=;
-        b=hHcOPCQtTmwZ8a/WJG27Rdvwcp4vwHntT2uzSIqH9n7cwF+qagRj2ft045MwrGA6bE
-         9ZFhutNillxAM4jou+wid8MawPhNTXLYMYol140DZS2NMInlW67ZSErgNQA16aFIqKaw
-         GDwQ2x87K0jo/85VicZqph5iCRPntnnGJW8/nzY9pe+ihm0JL70iaEAqlHUJoie7l01k
-         bnn42VN3+D6i8o/m5pTf3EXmClDfOBO653r0FCZO30aU9X5G4Q3VesMjo+YAITKn/Z6G
-         rm0hwKD+BmgShvq6Bp7KJRXfP7ehM2p89gfnacMN5gcFAWhYxFIYKOGPsB/Ddd2YJI/x
-         ENIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUEXcVTSSaEfK5ISIJSCkMXd9ljGX1cvQ0p7shPApRP9q2lB9Ctu1qBFINs5S5g5HlCKoaBbML5CQ1/a+of/IuS0xukILY/
-X-Gm-Message-State: AOJu0YxgJMscyoGUwhYfaUMxnF1ppIvIj0Hgo3Pa3qQHxNyphh8WxZgJ
-	BcCaUZiIL2YgfqUZQzsydakLCGd/tsqFI9tlkCBYyMFwWyFhdgeqK8i+kap9B4KUFY+vUTJ4AOj
-	o3KCze3+FLYjvZV5Xxs7E9v6+98A9cWD3BOrV1fHoH7o4bW3q4jIGIC4NgWv/LA==
-X-Received: by 2002:a05:620a:55ba:b0:789:e71c:207d with SMTP id vr26-20020a05620a55ba00b00789e71c207dmr2147699qkn.27.1710520609193;
-        Fri, 15 Mar 2024 09:36:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZdJtnjhNiBM7Iq0IRojnfEffkjOnRqTKDWzfrFq0IHzyJPKGsV4no+KlsFMtZsDFEv6UoCA==
-X-Received: by 2002:a05:620a:55ba:b0:789:e71c:207d with SMTP id vr26-20020a05620a55ba00b00789e71c207dmr2147675qkn.27.1710520608765;
-        Fri, 15 Mar 2024 09:36:48 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id c27-20020a05620a11bb00b007882fe32acasm2185902qkk.3.2024.03.15.09.36.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Mar 2024 09:36:48 -0700 (PDT)
-Message-ID: <d141c24d-4d88-45ec-b8cf-5697c91cc6a5@redhat.com>
-Date: Fri, 15 Mar 2024 17:36:44 +0100
+	bh=g3Rt5slZFDeq/B9WwKIzVVK+DOp1uUc4qBMUnC+v+KI=;
+	b=DlGp9POMpftuWD9KdA2Yv63Rnh3/+/42iwHtAzJ/0mttptnJF0EDBWWjtqKCYwAEUZQs1z
+	QeNCXzPhgiCxWCbXmIWYESfW+t+fTxcNrxNYzW3r3oXg+oxWZFRmkpn5mDzdc2loOZbfYc
+	+RRkRHOcCh7P94GE3BPc8X/fwwYWSlc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710521563;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g3Rt5slZFDeq/B9WwKIzVVK+DOp1uUc4qBMUnC+v+KI=;
+	b=kNht7jG6YXK+KWgpxpogOfGN7ePW276zgAl5jt4KPJIQcPzMA8e6p5KxqiXz/pyP5zQLdi
+	1+mFAI/Yz/qebCAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710521562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g3Rt5slZFDeq/B9WwKIzVVK+DOp1uUc4qBMUnC+v+KI=;
+	b=0lQmEzl3oxDmtJxDbSJo5sKtYHL/BXNWU428lOoeZEfGq2HikXFtk08n9mqj61yExqsghp
+	W00BpZxbMaI0Q/NGi65jEBjpRfcCJyXJ/BFWgTwKV9hqE6ttGKXWbZ47ycbkHEOwTxOOQi
+	3o7ypfokMQbRO1Yf/d9AowC2ZySDVZ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710521562;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g3Rt5slZFDeq/B9WwKIzVVK+DOp1uUc4qBMUnC+v+KI=;
+	b=6Nu+rPHyn/u9urV6wUTbwMgjoyusYGJ2Z4BfDWm5POJBl8YAN4QpVyjIzwJQOLRPiQXVV4
+	9Nrezs/beCw0zMBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 818CC1368C;
+	Fri, 15 Mar 2024 16:52:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iAT/Cdh89GU9bwAAD6G6ig
+	(envelope-from <colyli@suse.de>); Fri, 15 Mar 2024 16:52:40 +0000
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH v2 6/7] vfio/platform: Create persistent IRQ handlers
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: kvm@vger.kernel.org, clg@redhat.com, reinette.chatre@intel.com,
- linux-kernel@vger.kernel.org, kevin.tian@intel.com, stable@vger.kernel.org
-References: <20240308230557.805580-1-alex.williamson@redhat.com>
- <20240308230557.805580-7-alex.williamson@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240308230557.805580-7-alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH] bcache: fix variable length array abuse in btree_iter
+From: Coly Li <colyli@suse.de>
+In-Reply-To: <20240315002129.18827-1-matthew@mm12.xyz>
+Date: Sat, 16 Mar 2024 00:52:26 +0800
+Cc: Bcache Linux <linux-bcache@vger.kernel.org>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <ABEE9BD9-9807-4D6F-AD4C-549A123109DE@suse.de>
+References: <20240315002129.18827-1-matthew@mm12.xyz>
+To: Matthew Mirvish <matthew@mm12.xyz>
+X-Mailer: Apple Mail (2.3774.400.31)
+X-Spam-Score: -1.85
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-1.85 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 BAYES_HAM(-0.84)[85.32%];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[3];
+	 MV_CASE(0.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 NEURAL_HAM_SHORT(-0.20)[-0.976];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0lQmEzl3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6Nu+rPHy
+X-Rspamd-Queue-Id: DA45A1FB6E
 
-Hi Alex,
 
-On 3/9/24 00:05, Alex Williamson wrote:
-> The vfio-platform SET_IRQS ioctl currently allows loopback triggering of
-> an interrupt before a signaling eventfd has been configured by the user,
-> which thereby allows a NULL pointer dereference.
->
-> Rather than register the IRQ relative to a valid trigger, register all
-> IRQs in a disabled state in the device open path.  This allows mask
-> operations on the IRQ to nest within the overall enable state governed
-> by a valid eventfd signal.  This decouples @masked, protected by the
-> @locked spinlock from @trigger, protected via the @igate mutex.
->
-> In doing so, it's guaranteed that changes to @trigger cannot race the
-> IRQ handlers because the IRQ handler is synchronously disabled before
-> modifying the trigger, and loopback triggering of the IRQ via ioctl is
-> safe due to serialization with trigger changes via igate.
->
-> For compatibility, request_irq() failures are maintained to be local to
-> the SET_IRQS ioctl rather than a fatal error in the open device path.
-> This allows, for example, a userspace driver with polling mode support
-> to continue to work regardless of moving the request_irq() call site.
-> This necessarily blocks all SET_IRQS access to the failed index.
->
-> Cc: Eric Auger <eric.auger@redhat.com>
+
+> 2024=E5=B9=B43=E6=9C=8815=E6=97=A5 08:21=EF=BC=8CMatthew Mirvish =
+<matthew@mm12.xyz> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> btree_iter is used in two ways: either allocated on the stack with a
+> fixed size MAX_BSETS, or from a mempool with a dynamic size based on =
+the
+> specific cache set. Previously, the struct had a fixed-length array of
+> size MAX_BSETS which was indexed out-of-bounds for the =
+dynamically-sized
+> iterators, which causes UBSAN to complain.
+>=20
+> This patch uses the same approach as in bcachefs's sort_iter and =
+splits
+> the iterator into a btree_iter with a flexible array member and a
+> btree_iter_stack which embeds a btree_iter as well as a fixed-length
+> data array.
+>=20
 > Cc: stable@vger.kernel.org
-> Fixes: 57f972e2b341 ("vfio/platform: trigger an interrupt via eventfd")
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
+> Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2039368
+> Signed-off-by: Matthew Mirvish <matthew@mm12.xyz>
 
-Thanks
+This patch is overall good to me.
+Let me take it and test for a while, and submit it to next merge window =
+if the testing goes well.
 
-Eric
+Thanks.
+
+Coly Li
 
 > ---
->  drivers/vfio/platform/vfio_platform_irq.c | 100 +++++++++++++++-------
->  1 file changed, 68 insertions(+), 32 deletions(-)
->
-> diff --git a/drivers/vfio/platform/vfio_platform_irq.c b/drivers/vfio/platform/vfio_platform_irq.c
-> index e5dcada9e86c..ef41ecef83af 100644
-> --- a/drivers/vfio/platform/vfio_platform_irq.c
-> +++ b/drivers/vfio/platform/vfio_platform_irq.c
-> @@ -136,6 +136,16 @@ static int vfio_platform_set_irq_unmask(struct vfio_platform_device *vdev,
->  	return 0;
->  }
->  
-> +/*
-> + * The trigger eventfd is guaranteed valid in the interrupt path
-> + * and protected by the igate mutex when triggered via ioctl.
-> + */
-> +static void vfio_send_eventfd(struct vfio_platform_irq *irq_ctx)
-> +{
-> +	if (likely(irq_ctx->trigger))
-> +		eventfd_signal(irq_ctx->trigger);
-> +}
-> +
->  static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
->  {
->  	struct vfio_platform_irq *irq_ctx = dev_id;
-> @@ -155,7 +165,7 @@ static irqreturn_t vfio_automasked_irq_handler(int irq, void *dev_id)
->  	spin_unlock_irqrestore(&irq_ctx->lock, flags);
->  
->  	if (ret == IRQ_HANDLED)
-> -		eventfd_signal(irq_ctx->trigger);
-> +		vfio_send_eventfd(irq_ctx);
->  
->  	return ret;
->  }
-> @@ -164,52 +174,40 @@ static irqreturn_t vfio_irq_handler(int irq, void *dev_id)
->  {
->  	struct vfio_platform_irq *irq_ctx = dev_id;
->  
-> -	eventfd_signal(irq_ctx->trigger);
-> +	vfio_send_eventfd(irq_ctx);
->  
->  	return IRQ_HANDLED;
->  }
->  
->  static int vfio_set_trigger(struct vfio_platform_device *vdev, int index,
-> -			    int fd, irq_handler_t handler)
-> +			    int fd)
->  {
->  	struct vfio_platform_irq *irq = &vdev->irqs[index];
->  	struct eventfd_ctx *trigger;
-> -	int ret;
->  
->  	if (irq->trigger) {
-> -		irq_clear_status_flags(irq->hwirq, IRQ_NOAUTOEN);
-> -		free_irq(irq->hwirq, irq);
-> -		kfree(irq->name);
-> +		disable_irq(irq->hwirq);
->  		eventfd_ctx_put(irq->trigger);
->  		irq->trigger = NULL;
->  	}
->  
->  	if (fd < 0) /* Disable only */
->  		return 0;
-> -	irq->name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-irq[%d](%s)",
-> -			      irq->hwirq, vdev->name);
-> -	if (!irq->name)
-> -		return -ENOMEM;
->  
->  	trigger = eventfd_ctx_fdget(fd);
-> -	if (IS_ERR(trigger)) {
-> -		kfree(irq->name);
-> +	if (IS_ERR(trigger))
->  		return PTR_ERR(trigger);
-> -	}
->  
->  	irq->trigger = trigger;
->  
-> -	irq_set_status_flags(irq->hwirq, IRQ_NOAUTOEN);
-> -	ret = request_irq(irq->hwirq, handler, 0, irq->name, irq);
-> -	if (ret) {
-> -		kfree(irq->name);
-> -		eventfd_ctx_put(trigger);
-> -		irq->trigger = NULL;
-> -		return ret;
-> -	}
-> -
-> -	if (!irq->masked)
-> -		enable_irq(irq->hwirq);
-> +	/*
-> +	 * irq->masked effectively provides nested disables within the overall
-> +	 * enable relative to trigger.  Specifically request_irq() is called
-> +	 * with NO_AUTOEN, therefore the IRQ is initially disabled.  The user
-> +	 * may only further disable the IRQ with a MASK operations because
-> +	 * irq->masked is initially false.
-> +	 */
-> +	enable_irq(irq->hwirq);
->  
->  	return 0;
->  }
-> @@ -228,7 +226,7 @@ static int vfio_platform_set_irq_trigger(struct vfio_platform_device *vdev,
->  		handler = vfio_irq_handler;
->  
->  	if (!count && (flags & VFIO_IRQ_SET_DATA_NONE))
-> -		return vfio_set_trigger(vdev, index, -1, handler);
-> +		return vfio_set_trigger(vdev, index, -1);
->  
->  	if (start != 0 || count != 1)
->  		return -EINVAL;
-> @@ -236,7 +234,7 @@ static int vfio_platform_set_irq_trigger(struct vfio_platform_device *vdev,
->  	if (flags & VFIO_IRQ_SET_DATA_EVENTFD) {
->  		int32_t fd = *(int32_t *)data;
->  
-> -		return vfio_set_trigger(vdev, index, fd, handler);
-> +		return vfio_set_trigger(vdev, index, fd);
->  	}
->  
->  	if (flags & VFIO_IRQ_SET_DATA_NONE) {
-> @@ -260,6 +258,14 @@ int vfio_platform_set_irqs_ioctl(struct vfio_platform_device *vdev,
->  		    unsigned start, unsigned count, uint32_t flags,
->  		    void *data) = NULL;
->  
-> +	/*
-> +	 * For compatibility, errors from request_irq() are local to the
-> +	 * SET_IRQS path and reflected in the name pointer.  This allows,
-> +	 * for example, polling mode fallback for an exclusive IRQ failure.
-> +	 */
-> +	if (IS_ERR(vdev->irqs[index].name))
-> +		return PTR_ERR(vdev->irqs[index].name);
-> +
->  	switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
->  	case VFIO_IRQ_SET_ACTION_MASK:
->  		func = vfio_platform_set_irq_mask;
-> @@ -280,7 +286,7 @@ int vfio_platform_set_irqs_ioctl(struct vfio_platform_device *vdev,
->  
->  int vfio_platform_irq_init(struct vfio_platform_device *vdev)
->  {
-> -	int cnt = 0, i;
-> +	int cnt = 0, i, ret = 0;
->  
->  	while (vdev->get_irq(vdev, cnt) >= 0)
->  		cnt++;
-> @@ -292,29 +298,54 @@ int vfio_platform_irq_init(struct vfio_platform_device *vdev)
->  
->  	for (i = 0; i < cnt; i++) {
->  		int hwirq = vdev->get_irq(vdev, i);
-> +		irq_handler_t handler = vfio_irq_handler;
->  
-> -		if (hwirq < 0)
-> +		if (hwirq < 0) {
-> +			ret = -EINVAL;
->  			goto err;
-> +		}
->  
->  		spin_lock_init(&vdev->irqs[i].lock);
->  
->  		vdev->irqs[i].flags = VFIO_IRQ_INFO_EVENTFD;
->  
-> -		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK)
-> +		if (irq_get_trigger_type(hwirq) & IRQ_TYPE_LEVEL_MASK) {
->  			vdev->irqs[i].flags |= VFIO_IRQ_INFO_MASKABLE
->  						| VFIO_IRQ_INFO_AUTOMASKED;
-> +			handler = vfio_automasked_irq_handler;
-> +		}
->  
->  		vdev->irqs[i].count = 1;
->  		vdev->irqs[i].hwirq = hwirq;
->  		vdev->irqs[i].masked = false;
-> +		vdev->irqs[i].name = kasprintf(GFP_KERNEL_ACCOUNT,
-> +					       "vfio-irq[%d](%s)", hwirq,
-> +					       vdev->name);
-> +		if (!vdev->irqs[i].name) {
-> +			ret = -ENOMEM;
-> +			goto err;
-> +		}
-> +
-> +		ret = request_irq(hwirq, handler, IRQF_NO_AUTOEN,
-> +				  vdev->irqs[i].name, &vdev->irqs[i]);
-> +		if (ret) {
-> +			kfree(vdev->irqs[i].name);
-> +			vdev->irqs[i].name = ERR_PTR(ret);
-> +		}
->  	}
->  
->  	vdev->num_irqs = cnt;
->  
->  	return 0;
->  err:
-> +	for (--i; i >= 0; i--) {
-> +		if (!IS_ERR(vdev->irqs[i].name)) {
-> +			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-> +			kfree(vdev->irqs[i].name);
-> +		}
-> +	}
->  	kfree(vdev->irqs);
-> -	return -EINVAL;
-> +	return ret;
->  }
->  
->  void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
-> @@ -324,7 +355,12 @@ void vfio_platform_irq_cleanup(struct vfio_platform_device *vdev)
->  	for (i = 0; i < vdev->num_irqs; i++) {
->  		vfio_virqfd_disable(&vdev->irqs[i].mask);
->  		vfio_virqfd_disable(&vdev->irqs[i].unmask);
-> -		vfio_set_trigger(vdev, i, -1, NULL);
-> +		if (!IS_ERR(vdev->irqs[i].name)) {
-> +			free_irq(vdev->irqs[i].hwirq, &vdev->irqs[i]);
-> +			if (vdev->irqs[i].trigger)
-> +				eventfd_ctx_put(vdev->irqs[i].trigger);
-> +			kfree(vdev->irqs[i].name);
-> +		}
->  	}
->  
->  	vdev->num_irqs = 0;
+> drivers/md/bcache/bset.c      | 44 +++++++++++++++++------------------
+> drivers/md/bcache/bset.h      | 28 ++++++++++++++--------
+> drivers/md/bcache/btree.c     | 40 ++++++++++++++++---------------
+> drivers/md/bcache/super.c     |  5 ++--
+> drivers/md/bcache/sysfs.c     |  2 +-
+> drivers/md/bcache/writeback.c | 10 ++++----
+> 6 files changed, 70 insertions(+), 59 deletions(-)
+>=20
+
+[snipped]
 
 
