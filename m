@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-28251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52DF87D07F
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:42:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D438287D08B
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 16:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981BE284901
-	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:42:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD634B221FD
+	for <lists+stable@lfdr.de>; Fri, 15 Mar 2024 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481593CF63;
-	Fri, 15 Mar 2024 15:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAED4085A;
+	Fri, 15 Mar 2024 15:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZLA39rm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmOcLE8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EA73FE47;
-	Fri, 15 Mar 2024 15:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF01405F8;
+	Fri, 15 Mar 2024 15:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710517355; cv=none; b=nXK7wHBg0LFzfRyLOH8sEVLm8Zjn17tKL9RKnqEgkN1j4gumS3byRd+47O7T0lTtvKz6EtUbufpzTWm8Kn8ZvHZ+UPkx1UJZSA2VJCypxa79SkDZKueZbRTvCW8UgQhbHkR2as5MrSoiH6yOgAbjE0ZpXp8l6Ou5u6vLyOrXfjY=
+	t=1710517453; cv=none; b=o9MUsnPZR4r8Vl6k/4/592di4UCB3Zp87h+o7Hvw1j1S3Ec4gJUXSOl0/eqdp6u8BiaGUd+J+IpG6nH+GkldwYHN5CnlZtAIoMg2HZj4ClySSKRFpu0HS8OGq//fKPKGmHMmt5d48DrhiJXJ7F/ZD9GsIqZpEfUgL0+3O87VtIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710517355; c=relaxed/simple;
-	bh=0N1BsCYtvWEqRVe1X5dNThaXqxh8Rg1WOw3CVPti4YA=;
+	s=arc-20240116; t=1710517453; c=relaxed/simple;
+	bh=pSCHLCkTou2V/Ar4fp2rSjOt/S5Yq3PodT2wCnZIeBc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plOzmvz51sXOcLu2tTOD6WLN6F/gcK7q4y70moWXttef+WvbysPE5kOthbMrzK/KqWH4gsUi06WQxFGpAPSSTDoKR+Di+weqgToFHLq7eZkPYbBRJ+o5u8vLDeF/yve0Mx6G21RMoR4h/SU+ySpVEG9Q/0nw97NDgXMrnAMX5Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZLA39rm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE1CC433C7;
-	Fri, 15 Mar 2024 15:42:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WqwM5WJdqIrTftqRBtAHmiviS0cRfrUI0i4AaXI658QBWPTrr/nbdMB7M+Pc8gv3pvKeJBVIsdJ4eG8PF5tn2dj8Sp8nUHQlFIfP+zsTgy29K3eZ+YQZuJ3RaEKUZuVdTnI29JoHR0phwJKouqbGj5woTpyKhv4JeZufjMpn5rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmOcLE8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B30EC433F1;
+	Fri, 15 Mar 2024 15:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710517354;
-	bh=0N1BsCYtvWEqRVe1X5dNThaXqxh8Rg1WOw3CVPti4YA=;
+	s=k20201202; t=1710517452;
+	bh=pSCHLCkTou2V/Ar4fp2rSjOt/S5Yq3PodT2wCnZIeBc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dZLA39rmdpqksNLeLxk1h9LiX1nd9yk1wcsdXxauMLzm6ArILaJrTmV+Bq6zea7NR
-	 3Xs2WTGetncR0cKFVXMvZEfHFA9lngGZy9pPmqgrPvdSOPnmG053CoRhKXZyTcjeDX
-	 dg6jy55i7Pyfe/RSnZgaZzHpUG9HH1TCGKm4hWJlp6jQJXbuQYCOyF0qysNNZiKyML
-	 NWjo/7bdc5/l+juxxp3iEIZbRpYINYj6aAlinjCFImU5xFc/6Hq6twl7iCKLEXNBYo
-	 vOqY+8OnzZYY2yIzVq2z28r0mfCDLvktLEd1E8haTcfyHOy8U9+LIksYiugaUv3Cdu
-	 WR6CDfa0vzsxA==
-Date: Fri, 15 Mar 2024 15:42:29 +0000
+	b=SmOcLE8VnVn6P/PkXwekjKEA4imIacESDQjcxJLuOKJQdubDFr/LkRW9c495hki9f
+	 417Lzkg1pbPwyPEJTQWyTpw8Geu/DUIZrHeSRC/zj009AWvyO54GzRwDid+4bf1LsA
+	 Q/w1LXhnFw/bJH2MjAEy9Kwu0fNj3Nr9k0PotiKT5oSPBswci44odMkf7ogRry1D4Z
+	 WT3TpWpZKy0jqUSgad7HA1aBpiTQpJRnFshWh6S3sMLRJKcaLoTd4nI0xWWBWHXL+d
+	 Iob/7NTINc2oHegUXhxPlxcBBRTeqH47lIRmJYmaZy0SvI0TKrIZv//U925ki2w06B
+	 Swm5ZfbV973Bg==
+Date: Fri, 15 Mar 2024 15:44:07 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	torvalds@linux-foundation.org, akpm@linux-foundation.org,
 	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
 	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: Re: [PATCH 6.8 0/5] 6.8.1-rc1 review
-Message-ID: <9ea47bd0-cf00-4bba-a305-6fea6278ac55@sirena.org.uk>
-References: <20240313163019.613705-1-sashal@kernel.org>
+Subject: Re: [PATCH 6.6 00/60] 6.6.22-rc1 review
+Message-ID: <59f3c45d-f875-4ab8-bb2b-e1125d566938@sirena.org.uk>
+References: <20240313163707.615000-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,40 +58,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="V6lwsxOq/FDcH2+U"
+	protocol="application/pgp-signature"; boundary="B7opea/pCWfKDE4h"
 Content-Disposition: inline
-In-Reply-To: <20240313163019.613705-1-sashal@kernel.org>
-X-Cookie: VMS must die!
+In-Reply-To: <20240313163707.615000-1-sashal@kernel.org>
+X-Cookie: Yow!  Am I in Milwaukee?
 
 
---V6lwsxOq/FDcH2+U
+--B7opea/pCWfKDE4h
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2024 at 12:30:14PM -0400, Sasha Levin wrote:
+On Wed, Mar 13, 2024 at 12:36:07PM -0400, Sasha Levin wrote:
 >=20
-> This is the start of the stable review cycle for the 6.8.1 release.
-> There are 5 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.6.22 release.
+> There are 60 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---V6lwsxOq/FDcH2+U
+--B7opea/pCWfKDE4h
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0bGUACgkQJNaLcl1U
-h9CcAQf9GPuJDU2HzhciC+YJFxOm6T1oG1WSQLNYgk7R+WQi6ChAn7Wi1PDsXjYa
-PnC1F8kpW+FsoZBW2LMvRACqE858ZbcTcy8EQ7L0FGOrtQAer3eDFRM909bUp1n4
-R7eAHgIxd997N0qrBV70pCT+XUxTZt11Dn2xme8WSBcBcpRYv8Hf3CrmOu0VTNmm
-HRbgfOzGrSvSi5XEvkGJtZM5hn/0+yzCO7kJ4wg9R0ND8QPry/C9pril0EQaBn7W
-SVJgFPtFkIDzPCP+3LTtpqvrhqEwdBMIxFl1RN2khcowFPg7rGdwnQHSWQHbUSDE
-wZjb/kwqKGJEQK1eQB3OutV6XhV79Q==
-=LvFm
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmX0bMcACgkQJNaLcl1U
+h9Dhzwf/YYEcbM1vO9lkFBbIbVobPBfoOXwuRUxTtlKQxJ0KSSfwC+JOR2hPKqXj
+1qMq1m3nCWYeeQlDloJSfRMVuEJ9cKBk35O59eLSXjRhtALkL25B27mutfFLzh9L
+cWDgMo2mqyjHHwx7U6YpISXXaD0BLkXhqfoAWCWaN39+lUBxw1ChpBXXHVXXFgBF
+PmZMpQMp8GlqxLMuphLP8WAHhwik1qm7CIVtqBq28meYkukruT8MrfTMVjIT3tWy
+XAatYw1DGAV4IwWH5faNXcAjTx5WHx/np6Tn2IFSdeOcX3K0bEp2KAJ/fbseMcvE
+DXBPi3LmvKNevrpXaXR5Ms0oFGzVCg==
+=Yat5
 -----END PGP SIGNATURE-----
 
---V6lwsxOq/FDcH2+U--
+--B7opea/pCWfKDE4h--
 
