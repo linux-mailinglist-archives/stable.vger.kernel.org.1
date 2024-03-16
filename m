@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-28303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6F187DAFB
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 18:17:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5720E87DB2A
+	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 18:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9802C1C20C91
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 17:17:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E6C281F1E
+	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 17:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CEA1BDCF;
-	Sat, 16 Mar 2024 17:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E6B1BDEB;
+	Sat, 16 Mar 2024 17:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O82n/udP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXcYuBuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEAE1BDCD;
-	Sat, 16 Mar 2024 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD401C680;
+	Sat, 16 Mar 2024 17:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710609443; cv=none; b=tuSwe7+ywvco/LknIE1RVl/s0Bw8fv2Mhf174JtHcqunCd5KFuIIXJzdSmqCIdnQq8GhjJ+okh/17VVmKggJ8RJmgKbLO990oJTYO9fI+pL+AbbS4qIQeODE53jy3QXXncHzjii8yjPkwTZplSYDtGMVvmR7WNaWv0LaZ1Z2Wdo=
+	t=1710611883; cv=none; b=apcB+4MciRKmDjgHt5mDdO07XwxH5ytnoiAl+IGNa0JaKA+NXBz0WJVp3uVllGI5srU6ihnn3dhNVXbsrRiWgP2A8sp7E20A4+5BwtgZ45C8RRcF6owuvnDOo1lFm9kxKIKC5225BlO5qKst/xjAIN9zYH9N2Bz8xlMMftgaBEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710609443; c=relaxed/simple;
-	bh=Y7MMok4/WVkHSrSRtc7DvUedfEzlbaDNki4+7DUNy14=;
+	s=arc-20240116; t=1710611883; c=relaxed/simple;
+	bh=LLxDN7DJwsrWN3R0UF5L0gaj2YrCdYe/2m3/JYHm58I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EMMAzunRJ/D458aaDbIcfK8dr59bqgXx5ydGfK2oW80oiDKVGQ42jp9ofJgQSbsxOv+Ds+vQDbY8VTPVFK2iYzyu1jP2H+0sKrPtZulEGoIRfFQ6eZgmdkkGmGKKCSDeDoMfRdVEm9WaCMviLuD99tQv76C/s+nDBq+SxIZZ/qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O82n/udP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F13C433F1;
-	Sat, 16 Mar 2024 17:17:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=O+YG4u9VUpjF6a81tPcnkgOwkqGhjisgDslheIodOGjfv/7hl8tAE24OADdUkW02Y3RlEI5YA+wc+eiyP1dP/X7hTjcFqFTyaLeRISnt7Z9i/3t+sQ6bOx+gUDFSgkkHh8wRAA4cePLtGxhyHVOl8Qcz2kHR1rCsaAmnBDkHTKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXcYuBuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F88C433C7;
+	Sat, 16 Mar 2024 17:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710609442;
-	bh=Y7MMok4/WVkHSrSRtc7DvUedfEzlbaDNki4+7DUNy14=;
+	s=k20201202; t=1710611883;
+	bh=LLxDN7DJwsrWN3R0UF5L0gaj2YrCdYe/2m3/JYHm58I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O82n/udPHZsXGhrOdHp3YwXVBKYHxRyitzXa2IawL4hHCDHHLB8igqPY+jmI9AAO4
-	 aBbU+ZhdDufIrPkF/YTLhMIp6wusPe+zgWhdR1wFQBuF30AeB7rBMuTFtj3FuwQHpc
-	 tmRSXD4SCG06wfbGaLSvcW+n6vw76xFNI4JLRCxGu0ZpJxXe2z75rsxD+7e+wa7lNP
-	 X3gP33ZefdASj55rnVFR5fEdm3eRbqrpveeGksGmRZXWL0Mlugn8pF15eMGrUyfPG3
-	 PYc9glpMLnvSG0hP3f1wzdQMg4XTJQHIp6CFK42Xgz3PTGtiTLe1PWA0IjMl7Zy0ku
-	 l+SRWl3cfj7Gw==
-Date: Sat, 16 Mar 2024 12:17:20 -0500
+	b=RXcYuBuhrvYt6pjLrkaJsyFmEHzw+gWtEIb3d04M/HZbByHSkhaQf0DGYR1DUsZDG
+	 L2/wbW4XsS3AdvhNSWsM/02xOcEjNW9hbl5NibcyQt3oEbqQNFiUp4L0m5xGSEOYDu
+	 687QwOmu+X2EJntLsZd0nNbHhlWN1y0/k15GkB2GFc2JS+LFt9rfdqZ85ywPXm59wt
+	 aWuEbe+Gcxm4k+n2wjvcJ7E1AaLiJvKN5AP7+S9f4BV6RmEEwz6e+JkbkKNGsFvFnr
+	 CWOvlQPWNPD0E0WndHRJYZsxL3XrOPTvHObyu2X36ws5yAN/0QZ0K0j11gAOQ7sdSt
+	 Dk8gpLYDWZUrw==
+Date: Sat, 16 Mar 2024 12:58:01 -0500
 From: Bjorn Andersson <andersson@kernel.org>
-To: Auditya Bhattaram <quic_audityab@quicinc.com>
-Cc: konrad.dybcio@linaro.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] soc: qcom: mdt_loader: Add Upperbounds check for
- program header access
-Message-ID: <2m2sbrg2d667ciiiog3nekfjt3gfn4na64avtp6yctxasejtal@6pipid473s7h>
-References: <20240213080010.16924-1-quic_audityab@quicinc.com>
- <y6em73mzbh47fzpgfvfsrypw5ktgt6zaqfujscaxkjuqivlxcr@vcke7w4omq7b>
- <38e6cf32-78fc-4a5a-a98c-18b126bdf50f@quicinc.com>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Gabor Juhos <j4g8y7@gmail.com>, Sibi Sankar <quic_sibis@quicinc.com>, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] firmware: qcom_scm: disable clocks if
+ qcom_scm_bw_enable() fails
+Message-ID: <c2iyfoy4io73hzjdxbvropofxdpyzkulskq5szazbuwmlrjetg@6dhzjcmcswpc>
+References: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
+ <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
+ <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
+ <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,78 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <38e6cf32-78fc-4a5a-a98c-18b126bdf50f@quicinc.com>
+In-Reply-To: <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
 
-On Wed, Feb 14, 2024 at 11:27:01AM +0530, Auditya Bhattaram wrote:
+On Wed, Mar 06, 2024 at 05:02:37PM +0100, Konrad Dybcio wrote:
 > 
 > 
-> On 2/14/2024 11:12 AM, Bjorn Andersson wrote:
-> > On Tue, Feb 13, 2024 at 01:30:10PM +0530, Auditya Bhattaram wrote:
-> > > hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
-> > > is found. Add an upperbound check to phdrs to access within elf size.
+> On 3/6/24 05:10, Elliot Berman wrote:
+> > On Tue, Mar 05, 2024 at 10:15:19PM +0100, Konrad Dybcio wrote:
 > > > 
+> > > 
+> > > On 3/4/24 14:14, Gabor Juhos wrote:
+> > > > There are several functions which are calling qcom_scm_bw_enable()
+> > > > then returns immediately if the call fails and leaves the clocks
+> > > > enabled.
+> > > > 
+> > > > Change the code of these functions to disable clocks when the
+> > > > qcom_scm_bw_enable() call fails. This also fixes a possible dma
+> > > > buffer leak in the qcom_scm_pas_init_image() function.
+> > > > 
+> > > > Compile tested only due to lack of hardware with interconnect
+> > > > support.
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
+> > > > Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+> > > > ---
+> > > 
+> > > Taking a closer look, is there any argument against simply
+> > > putting the clk/bw en/dis calls in qcom_scm_call()?
 > > 
-> > How is this compatible with what is being observed on SM8450 and
-> > implemented in commit 8bd42e2341a7 ("soc: qcom: mdt_loader: Allow hash
-> > segment to be split out"?
-> > 
-> > Regards,
-> > Bjorn
-> > 
+> > We shouldn't do this because the clk/bw en/dis calls are only needed in
+> > few SCM calls.
 > 
-> Calculating hash_index is introduced with this commit 8bd42e2341a7 ("soc:
-> qcom: mdt_loader: Allow hash segment to be split out"
-> 
->     for (i = 1; i < ehdr->e_phnum; i++) {
->  	if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) ...
-> 
-> I'm trying to add an upper bound for this access "phdrs[i]"
+> Then the argument list could be expanded with `bool require_resources`,
+> or so still saving us a lot of boilerplate
 > 
 
-Ahh, sorry, you're of course correct. I think I would have preferred a
-more obvious check of offset >= fw->size though...
+I don't think there's reason for making this more general, because I
+think this is a problem specific to PAS - much related to Bartosz
+special handling of shmbridge for these calls.
 
-That said, this code used to sit behind rproc_elf_sanity_check(), but
-that seem to have been lost in the refactorings. As such, your patch is
-incomplete and we should reintroduce a whole bunch of these sanity
-checks!
+It would be very nice if someone could help document why this is.
 
 Regards,
 Bjorn
-
-> > > Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
-> > > Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
-> > > ---
-> > > Changes in v4:
-> > >   - Added additional prints incase of Invalid access.
-> > > Link to v3 https://lore.kernel.org/stable/1c91c653-cebe-4407-bdd6-cfc73b64c0fb@quicinc.com
-> > > Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
-> > > Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
-> > > ---
-> > >   drivers/soc/qcom/mdt_loader.c | 7 +++++++
-> > >   1 file changed, 7 insertions(+)
-> > > 
-> > > diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-> > > index 6f177e46fa0f..1a79a7bba468 100644
-> > > --- a/drivers/soc/qcom/mdt_loader.c
-> > > +++ b/drivers/soc/qcom/mdt_loader.c
-> > > @@ -145,6 +143,13 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
-> > >   	if (phdrs[0].p_type == PT_LOAD)
-> > >   		return ERR_PTR(-EINVAL);
-> > > 
-> > > +	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
-> > > +		dev_err(dev,
-> > > +			"Invalid phdrs access for fw: %s, e_phnum: %u, fw->size: %zu\n",
-> > > +			fw_name, ehdr->e_phnum, fw->size);
-> > > +		return ERR_PTR(-EINVAL);
-> > > +	}
-> > > +
-> > >   	for (i = 1; i < ehdr->e_phnum; i++) {
-> > >   		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
-> > >   			hash_segment = i;
-> > > --
-> > > 2.17.1
-> > > 
 
