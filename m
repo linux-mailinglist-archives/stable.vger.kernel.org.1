@@ -1,108 +1,173 @@
-Return-Path: <stable+bounces-28304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5720E87DB2A
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 18:58:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD5687DB74
+	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 21:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E6C281F1E
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 17:58:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36529B212B7
+	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 20:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E6B1BDEB;
-	Sat, 16 Mar 2024 17:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D591182B5;
+	Sat, 16 Mar 2024 20:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXcYuBuh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BhLqncif"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD401C680;
-	Sat, 16 Mar 2024 17:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D24800;
+	Sat, 16 Mar 2024 20:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710611883; cv=none; b=apcB+4MciRKmDjgHt5mDdO07XwxH5ytnoiAl+IGNa0JaKA+NXBz0WJVp3uVllGI5srU6ihnn3dhNVXbsrRiWgP2A8sp7E20A4+5BwtgZ45C8RRcF6owuvnDOo1lFm9kxKIKC5225BlO5qKst/xjAIN9zYH9N2Bz8xlMMftgaBEI=
+	t=1710622627; cv=none; b=dSUKEMEgtNISIkXue5MuqNYR3h3wdIbQLHqB841BopmXeqFNzdj/WJgnVtjw11Ox7kzPmyvjGSWXq6TfxeYVM+t1kQ8IK/wCAyIy1xF5SjJLZ9PUhhbEXyQqVf7JI+csYsIvVbq13ClwZgBBY0N6C+o1EvjfiLaL9e/y3Y8nMJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710611883; c=relaxed/simple;
-	bh=LLxDN7DJwsrWN3R0UF5L0gaj2YrCdYe/2m3/JYHm58I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O+YG4u9VUpjF6a81tPcnkgOwkqGhjisgDslheIodOGjfv/7hl8tAE24OADdUkW02Y3RlEI5YA+wc+eiyP1dP/X7hTjcFqFTyaLeRISnt7Z9i/3t+sQ6bOx+gUDFSgkkHh8wRAA4cePLtGxhyHVOl8Qcz2kHR1rCsaAmnBDkHTKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXcYuBuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F88C433C7;
-	Sat, 16 Mar 2024 17:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710611883;
-	bh=LLxDN7DJwsrWN3R0UF5L0gaj2YrCdYe/2m3/JYHm58I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RXcYuBuhrvYt6pjLrkaJsyFmEHzw+gWtEIb3d04M/HZbByHSkhaQf0DGYR1DUsZDG
-	 L2/wbW4XsS3AdvhNSWsM/02xOcEjNW9hbl5NibcyQt3oEbqQNFiUp4L0m5xGSEOYDu
-	 687QwOmu+X2EJntLsZd0nNbHhlWN1y0/k15GkB2GFc2JS+LFt9rfdqZ85ywPXm59wt
-	 aWuEbe+Gcxm4k+n2wjvcJ7E1AaLiJvKN5AP7+S9f4BV6RmEEwz6e+JkbkKNGsFvFnr
-	 CWOvlQPWNPD0E0WndHRJYZsxL3XrOPTvHObyu2X36ws5yAN/0QZ0K0j11gAOQ7sdSt
-	 Dk8gpLYDWZUrw==
-Date: Sat, 16 Mar 2024 12:58:01 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Gabor Juhos <j4g8y7@gmail.com>, Sibi Sankar <quic_sibis@quicinc.com>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] firmware: qcom_scm: disable clocks if
- qcom_scm_bw_enable() fails
-Message-ID: <c2iyfoy4io73hzjdxbvropofxdpyzkulskq5szazbuwmlrjetg@6dhzjcmcswpc>
-References: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
- <d655a4db-89a8-4b03-86b1-55258d37aa19@linaro.org>
- <20240305200306921-0800.eberman@hu-eberman-lv.qualcomm.com>
- <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
+	s=arc-20240116; t=1710622627; c=relaxed/simple;
+	bh=zman/8ny0dfuBMpt4Zi7JuEeiYEW7uCjxC3Sh6l53LE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nfm7rJl5Fao87gSGf1aK8y2STBe28b/KqTar+wFo3kLusnKyXinxTuvLYANSSx0UZwKAM+K90YSAigEWISUrzwEEJKHBnmKR60J9dR4B31JbT6HXdpCPxyvqXXkjQ6D/kT+vO4GcpjRguc0HEv+qxYxFiOG6gCxOdczkPkTmvq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BhLqncif; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5cedfc32250so2285926a12.0;
+        Sat, 16 Mar 2024 13:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710622625; x=1711227425; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vl3ZPW0uTATliCSisPYEu19vxQEaF61ZgA2lT0IqKcA=;
+        b=BhLqncifCq00hRNFL8QTZQTF6FKbhr+c/OBmmT2yhuEV/kLnPsEVmMdG4hhze1y5kR
+         FBMHCcrtvfOhIys/XV5bFlFQ82ABku5uY/aVMOxZAdEuSzVmBoVv5InSRyRuGoYEVRpn
+         N8XlS4NTZvBT/d/FkB6zdlj3vYd+ml8Ow7hVnEZhh/ZU/tByr1RYrH9liUpOwJ5nX372
+         xvSwV72Tm7ToPSK+/OE7iTjXrV18Z4e/uzt3YQjlKyxLnV1x/KStwPBEErgygkhix6tB
+         9UBqjQZLVu6wYQHn6JsyQ8NmvJF39kfiChVQMvzdIaoRoGSv7Za0zF64D0g1sP4lYXrU
+         t3Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710622625; x=1711227425;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vl3ZPW0uTATliCSisPYEu19vxQEaF61ZgA2lT0IqKcA=;
+        b=J6EfPmh5arbxbuxMmFbu05KtElRGpM2AGCWw7swG4GBNBwAwRP4HJlq1MyDeTSoAlV
+         p4Hm8TysPZQPPBBDqT9ssu9GisNLJwNUku4Eh3IPRdJnYsit7W3cyOqRblrGKFlV6exu
+         afoS2hFZ6XIj/KDJFBKGpjrtPfswGrQE/1kHlZYakec+VJolYjwjwq7cPeXBo3h1GddV
+         tIZ2od4rGfXlcFYFpeva+EzBSCtvPtQ2Q3WxjeZbvww7x2mFZ4H7JuFAM/naN7jb3DUc
+         m4ngwdvx0bGBP+NRsVWI3kxE3ByNpgt08zEBwJMEZdI4cqouzxlWk0/M8lZMxlsI1Ugf
+         uKqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUq4ygHcFXR2Tqh+gAtwoimklm+ERlrnK8Yx55HJ05QPJGYw5zWAul8qOUrQegNiF89/ZNZTNicATu2Y6OTfWgPJG8eaT4JgIqh6V/+AZDicO8GXhDDgTfn1eknxryUW81zuhZ0
+X-Gm-Message-State: AOJu0YxaEB9gPL1RdM41PuuSIe3F8+OnjMjhIYbDj5MFHmssheTAMFq3
+	hcKU1QRCoplwoG+FDKpQLzmtUJdRswksj+nZA3rGD8oTxm7bIb/9dBSVvGg9
+X-Google-Smtp-Source: AGHT+IEeR2QN02FwalGHMlNU4LsKGtoGOdswflSBY6KBVpBlMgSDVoa1Ovu+fVtz14YCfrBBHrCfEA==
+X-Received: by 2002:a17:902:efce:b0:1dd:693c:4178 with SMTP id ja14-20020a170902efce00b001dd693c4178mr5586510plb.25.1710622624976;
+        Sat, 16 Mar 2024 13:57:04 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h2-20020a170902f54200b001dd6f305a81sm6198448plf.293.2024.03.16.13.57.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 Mar 2024 13:57:04 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <305ed269-b7f0-4ba2-9f63-ea15480fefc0@roeck-us.net>
+Date: Sat, 16 Mar 2024 13:57:02 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2fdb87f5-3702-44d9-9ebe-974c4a53a77d@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4.19 00/41] 4.19.310-rc1 review
+Content-Language: en-US
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org,
+ pavel@denx.de
+References: <20240313170435.616724-1-sashal@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240313170435.616724-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 06, 2024 at 05:02:37PM +0100, Konrad Dybcio wrote:
+On 3/13/24 10:03, Sasha Levin wrote:
 > 
+> This is the start of the stable review cycle for the 4.19.310 release.
+> There are 41 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On 3/6/24 05:10, Elliot Berman wrote:
-> > On Tue, Mar 05, 2024 at 10:15:19PM +0100, Konrad Dybcio wrote:
-> > > 
-> > > 
-> > > On 3/4/24 14:14, Gabor Juhos wrote:
-> > > > There are several functions which are calling qcom_scm_bw_enable()
-> > > > then returns immediately if the call fails and leaves the clocks
-> > > > enabled.
-> > > > 
-> > > > Change the code of these functions to disable clocks when the
-> > > > qcom_scm_bw_enable() call fails. This also fixes a possible dma
-> > > > buffer leak in the qcom_scm_pas_init_image() function.
-> > > > 
-> > > > Compile tested only due to lack of hardware with interconnect
-> > > > support.
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
-> > > > Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-> > > > ---
-> > > 
-> > > Taking a closer look, is there any argument against simply
-> > > putting the clk/bw en/dis calls in qcom_scm_call()?
-> > 
-> > We shouldn't do this because the clk/bw en/dis calls are only needed in
-> > few SCM calls.
+> Responses should be made by Fri Mar 15 05:04:34 PM UTC 2024.
+> Anything received after that time might be too late.
 > 
-> Then the argument list could be expanded with `bool require_resources`,
-> or so still saving us a lot of boilerplate
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-4.19.y&id2=v4.19.309
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
+> 
+> -------------
+> Pseudo-Shortlog of commits:
+> 
+> Arnd Bergmann (1):
+>    y2038: rusage: use __kernel_old_timeval
 > 
 
-I don't think there's reason for making this more general, because I
-think this is a problem specific to PAS - much related to Bartosz
-special handling of shmbridge for these calls.
+Guess this wasn't build tested on alpha, making it unbuildable on v4.19.y.
 
-It would be very nice if someone could help document why this is.
+Building alpha:defconfig ... failed
+--------------
+Error log:
+arch/alpha/kernel/osf_sys.c: In function '__do_sys_old_adjtimex':
+arch/alpha/kernel/osf_sys.c:1274:43: error: passing argument 2 of 'put_tv_to_tv32' from incompatible pointer type
 
-Regards,
-Bjorn
+Guenter
+
 
