@@ -1,173 +1,103 @@
-Return-Path: <stable+bounces-28305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD5687DB74
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 21:57:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D9087DC22
+	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 01:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36529B212B7
-	for <lists+stable@lfdr.de>; Sat, 16 Mar 2024 20:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EDDD1C21294
+	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 00:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D591182B5;
-	Sat, 16 Mar 2024 20:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFAE139B;
+	Sun, 17 Mar 2024 00:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BhLqncif"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gel74v6j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D24800;
-	Sat, 16 Mar 2024 20:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4FA37E
+	for <stable@vger.kernel.org>; Sun, 17 Mar 2024 00:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710622627; cv=none; b=dSUKEMEgtNISIkXue5MuqNYR3h3wdIbQLHqB841BopmXeqFNzdj/WJgnVtjw11Ox7kzPmyvjGSWXq6TfxeYVM+t1kQ8IK/wCAyIy1xF5SjJLZ9PUhhbEXyQqVf7JI+csYsIvVbq13ClwZgBBY0N6C+o1EvjfiLaL9e/y3Y8nMJ0=
+	t=1710636846; cv=none; b=ef0CWKMKyOr00YimVsLZktm9ikdVRoL4yryOaGYLe4BgwKf4xq7q6oJnaia5dTQ8bXBtG7wJ+oIhHOIXxRpBLidCa8whzC/CwneKEZ0dfDa1pZkgf5Ydr8U2g0MRI07tTPusAzOgroZ9VnTI0idNXKzzhQ4/ZMY6Bb2HsHdtPgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710622627; c=relaxed/simple;
-	bh=zman/8ny0dfuBMpt4Zi7JuEeiYEW7uCjxC3Sh6l53LE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nfm7rJl5Fao87gSGf1aK8y2STBe28b/KqTar+wFo3kLusnKyXinxTuvLYANSSx0UZwKAM+K90YSAigEWISUrzwEEJKHBnmKR60J9dR4B31JbT6HXdpCPxyvqXXkjQ6D/kT+vO4GcpjRguc0HEv+qxYxFiOG6gCxOdczkPkTmvq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BhLqncif; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1710636846; c=relaxed/simple;
+	bh=vIs/A+XazvL1ohtZjvGcTwr36WOEGOWrwdzjw74m6uA=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=WV6yYczrA6VO4KatOd0bN6eIyM1kPBdgil68mH/DvygPwaRu4+pIhyShz9DK/zfIJ8cP1teoA6X/a6b3g9hHhmS+tgXwCXzv2+iA2jx5T0HBHyjiSszf25QcIut+MDZ83xa3L5yyg1ED1tAtdt5zVmbP8dMBDblnwmeZkYh/nRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gel74v6j; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5cedfc32250so2285926a12.0;
-        Sat, 16 Mar 2024 13:57:05 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-413f1853bf3so20983955e9.0
+        for <stable@vger.kernel.org>; Sat, 16 Mar 2024 17:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710622625; x=1711227425; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=vl3ZPW0uTATliCSisPYEu19vxQEaF61ZgA2lT0IqKcA=;
-        b=BhLqncifCq00hRNFL8QTZQTF6FKbhr+c/OBmmT2yhuEV/kLnPsEVmMdG4hhze1y5kR
-         FBMHCcrtvfOhIys/XV5bFlFQ82ABku5uY/aVMOxZAdEuSzVmBoVv5InSRyRuGoYEVRpn
-         N8XlS4NTZvBT/d/FkB6zdlj3vYd+ml8Ow7hVnEZhh/ZU/tByr1RYrH9liUpOwJ5nX372
-         xvSwV72Tm7ToPSK+/OE7iTjXrV18Z4e/uzt3YQjlKyxLnV1x/KStwPBEErgygkhix6tB
-         9UBqjQZLVu6wYQHn6JsyQ8NmvJF39kfiChVQMvzdIaoRoGSv7Za0zF64D0g1sP4lYXrU
-         t3Vg==
+        d=gmail.com; s=20230601; t=1710636842; x=1711241642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qv4qu4ytAzGsKNHM/brlmeQs6UYJHl86QRb9EmrRdaM=;
+        b=gel74v6jyozEjd6u3cDOqzZp6SX+f/ttKCeTEOZ+RTa2GdaT9VuY9FlY+cUpH63Xzx
+         UCqZM9jSj7BtQ8GBAfj0FmZOUXSN2774/LqzMd3p7IVfEtGzoFngQXuDP738LsXLMgcK
+         XiqBIyUMHvDKsF8ok0CarVSdh/Twq5DBtStTKZeVMFLd+RaJy0J/YjC7xj720D/nw4bA
+         Hypj3+FJW5PMt+SIemUpdWPlsw7iSksIPEpFb+a4as3hnXHobJffcaY10iY9PBdf8h/4
+         5Z3BtAsSD6HfhcXJkcuYRCQFnhJLJ1CTdwdWs5sEjvM6eNFZrQI1zzeA/2ZRoLEr1bic
+         r2Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710622625; x=1711227425;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vl3ZPW0uTATliCSisPYEu19vxQEaF61ZgA2lT0IqKcA=;
-        b=J6EfPmh5arbxbuxMmFbu05KtElRGpM2AGCWw7swG4GBNBwAwRP4HJlq1MyDeTSoAlV
-         p4Hm8TysPZQPPBBDqT9ssu9GisNLJwNUku4Eh3IPRdJnYsit7W3cyOqRblrGKFlV6exu
-         afoS2hFZ6XIj/KDJFBKGpjrtPfswGrQE/1kHlZYakec+VJolYjwjwq7cPeXBo3h1GddV
-         tIZ2od4rGfXlcFYFpeva+EzBSCtvPtQ2Q3WxjeZbvww7x2mFZ4H7JuFAM/naN7jb3DUc
-         m4ngwdvx0bGBP+NRsVWI3kxE3ByNpgt08zEBwJMEZdI4cqouzxlWk0/M8lZMxlsI1Ugf
-         uKqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUq4ygHcFXR2Tqh+gAtwoimklm+ERlrnK8Yx55HJ05QPJGYw5zWAul8qOUrQegNiF89/ZNZTNicATu2Y6OTfWgPJG8eaT4JgIqh6V/+AZDicO8GXhDDgTfn1eknxryUW81zuhZ0
-X-Gm-Message-State: AOJu0YxaEB9gPL1RdM41PuuSIe3F8+OnjMjhIYbDj5MFHmssheTAMFq3
-	hcKU1QRCoplwoG+FDKpQLzmtUJdRswksj+nZA3rGD8oTxm7bIb/9dBSVvGg9
-X-Google-Smtp-Source: AGHT+IEeR2QN02FwalGHMlNU4LsKGtoGOdswflSBY6KBVpBlMgSDVoa1Ovu+fVtz14YCfrBBHrCfEA==
-X-Received: by 2002:a17:902:efce:b0:1dd:693c:4178 with SMTP id ja14-20020a170902efce00b001dd693c4178mr5586510plb.25.1710622624976;
-        Sat, 16 Mar 2024 13:57:04 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h2-20020a170902f54200b001dd6f305a81sm6198448plf.293.2024.03.16.13.57.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Mar 2024 13:57:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <305ed269-b7f0-4ba2-9f63-ea15480fefc0@roeck-us.net>
-Date: Sat, 16 Mar 2024 13:57:02 -0700
+        d=1e100.net; s=20230601; t=1710636842; x=1711241642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qv4qu4ytAzGsKNHM/brlmeQs6UYJHl86QRb9EmrRdaM=;
+        b=OhGDdrt2ovBi3mECREDfyWwQvEfcPt+8RTyrUq78uNUxbNiPFxBM+7ZZbqBMrPCbfo
+         Yy1fBY/jbWvxhK+yjkbb73zlsvenyoiSQbMrvL7IHUkEHrlCepr98LMGJQdExibZMWH0
+         qvr+V25rmiSiLwXSYbdgGtmjHYGysEScKT7VLF2f/SzOu6BH+P/Pa1Lb5bUE0s7xKsS8
+         l8Gbu40Rh+aEb/lmkMYLreAUD5l3VOrRtjf6V1ef/ONQ4BUfAVlAvnWTG4QKBnx2cI5s
+         5lzjDCG5VcqdfMW0PdXYrFsh0OJ4DS+rWU3MeSSmqsjWEBtSCmUQ+/7jn9+/qqBX6rGl
+         /ibw==
+X-Gm-Message-State: AOJu0YyYl0Hhpm1osNjpEGvwYA3jktlWI7YCL2MPwScTpA+JxDdwVq4m
+	Pi+7KlWnzqkKWvBiZ5hBW5DvRiW7DRogzXFXGnWjpjzoTrYZA+R9YH23nj9UZQ==
+X-Google-Smtp-Source: AGHT+IEbyYfCekIufaD625t5m/6wEWhBH0I2Uo04OXCQxFWSqpXQK2CMel+7DAuubVyyVAHSI/A06g==
+X-Received: by 2002:a05:600c:19c6:b0:413:e531:5ae2 with SMTP id u6-20020a05600c19c600b00413e5315ae2mr6609518wmq.23.1710636841905;
+        Sat, 16 Mar 2024 17:54:01 -0700 (PDT)
+Received: from localhost.localdomain (77-59-144-113.dclient.hispeed.ch. [77.59.144.113])
+        by smtp.gmail.com with ESMTPSA id l12-20020a05600c4f0c00b0041409d4841dsm2049349wmq.33.2024.03.16.17.54.01
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Mar 2024 17:54:01 -0700 (PDT)
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+To: stable@vger.kernel.org
+Subject: [PATCH v0 0/2] Fix LPSS clock divider for XPS 9530, 6.8.y backport
+Date: Sun, 17 Mar 2024 01:53:58 +0100
+Message-Id: <20240317005400.974432-1-alex.vinarskis@gmail.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 00/41] 4.19.310-rc1 review
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org,
- pavel@denx.de
-References: <20240313170435.616724-1-sashal@kernel.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240313170435.616724-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3/13/24 10:03, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 4.19.310 release.
-> There are 41 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri Mar 15 05:04:34 PM UTC 2024.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-4.19.y&id2=v4.19.309
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> Thanks,
-> Sasha
-> 
-> -------------
-> Pseudo-Shortlog of commits:
-> 
-> Arnd Bergmann (1):
->    y2038: rusage: use __kernel_old_timeval
-> 
+This is a backport of recently upstreamed fix for XPS 9530 sound issue.
+Both apply cleanly to 6.8.y, and could also be cherry-picked from upstream.
 
-Guess this wasn't build tested on alpha, making it unbuildable on v4.19.y.
+Ideally should be applied to all branches where upstream commit
+d110858a6925827609d11db8513d76750483ec06 exists (6.8.y) or was backported
+(6.7.y) as it adds initial yet incomplete support for this laptop. Patches
+for 6.7.y require modification, will be submitted separately.
 
-Building alpha:defconfig ... failed
---------------
-Error log:
-arch/alpha/kernel/osf_sys.c: In function '__do_sys_old_adjtimex':
-arch/alpha/kernel/osf_sys.c:1274:43: error: passing argument 2 of 'put_tv_to_tv32' from incompatible pointer type
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-Guenter
+Aleksandrs Vinarskis (2):
+  mfd: intel-lpss: Switch to generalized quirk table
+  mfd: intel-lpss: Introduce QUIRK_CLOCK_DIVIDER_UNITY for XPS 9530
+
+ drivers/mfd/intel-lpss-pci.c | 28 ++++++++++++++++++++--------
+ drivers/mfd/intel-lpss.c     |  9 ++++++++-
+ drivers/mfd/intel-lpss.h     | 14 +++++++++++++-
+ 3 files changed, 41 insertions(+), 10 deletions(-)
+
+-- 
+2.40.1
 
 
