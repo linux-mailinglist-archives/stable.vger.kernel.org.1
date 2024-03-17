@@ -1,176 +1,157 @@
-Return-Path: <stable+bounces-28312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8917087DC43
-	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 03:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A4887DD33
+	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 13:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10356B21AFB
-	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 02:34:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D24A4B20D4A
+	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 12:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78E74400;
-	Sun, 17 Mar 2024 02:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777CD1AAD7;
+	Sun, 17 Mar 2024 12:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b="jbP8vORH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YeSKGQjq"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1913FD4;
-	Sun, 17 Mar 2024 02:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DE7179AE
+	for <stable@vger.kernel.org>; Sun, 17 Mar 2024 12:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710642878; cv=none; b=aECV4B3O+JpXiIzvuYGMgLX/f9z9MNSSmU2yCWsW0sP8nOVDZ+iBux9vIsWBMbalijDfiOs8NUNw44KiDJTA4mGfKxKWUeNC6ia4bC/B35LEe6gnGmD5vWh1Wq8qyjE1NJSPK78KyBom+4dMMt3zOSyksdCnRW1YUKyEsEu+frc=
+	t=1710679438; cv=none; b=dkqk5Dva9T2Bps1O6eVPjTiSwmaBEYNSUJr2V44JouExPHH0iAmg5HB+KQ1MMhjS9xqUkla+WoHRBHsbDI3Q2v8i7iKLnKUN31Uu/WasYl6U2NZyehlR8OEuNC/uDLGuongQsk+v3BWizkD2PX1b2gC8zib/+YkPIPr9XvpOFNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710642878; c=relaxed/simple;
-	bh=tJaJJred577vOPsMHOBTK5Cf+xg/GJMJBBCtaPnAhe0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BN4ei6EZcqLhSbO8c7vCbsdL7oBTjsZ6JHXu1EYa8eSaBrL+3qNAFoWFPjzKHb7mesUOm6gIux+mQo6KHR3hyEkRK8Na+eXcWDXVUgi0elcQT8tTd/Aq+DXODrheI7JqXlBryw+p7g7x4kZL2ibQFGzjynhddBuPdxrSLJ5V8cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=timschumi@gmx.de header.b=jbP8vORH; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1710642862; x=1711247662; i=timschumi@gmx.de;
-	bh=Iu6Ea+P0wgKVpCTinPs8NLQRA5oz6QwOGeGWv+5ybOc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=jbP8vORHe/rye1XpqHn3c1RT/FVw9OQT0IbQYIyUW1ybS9GRI6qkFH73NzbpJvo/
-	 C6LhgK6BKc+oDIKpgUyR8yMi9eAd0KJwt1PZxImIWV7E4wIJeXvukGeU+/bfrDa0y
-	 xKauwRhRatXkT0vbHt+CE6Q3y5UzTdjqQsTP9zFPt2k38cIMHEjaFwnCQwPCe/fAz
-	 MBgWcVfOAYb38GkbYcR7SBke+TRs9vRzJlqV13CCdIWt8szic+6QY1iyU56636Rd6
-	 TOPykGkVBH3TLTLUMn2fdF5NidBBy0K5y083NoNN2e2od+ul/yKHMKdqXJb9By4lC
-	 6HLJeF5Kns1UQsgHbw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([93.218.98.241]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MQe5u-1rNwRE1Rzi-00Nh92; Sun, 17 Mar 2024 03:34:22 +0100
-From: Tim Schumacher <timschumi@gmx.de>
-To: stable@vger.kernel.org
-Cc: Tim Schumacher <timschumi@gmx.de>,
-	Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org
-Subject: [PATCH 5.15-] efivars: Request at most 512 bytes for variable names
-Date: Sun, 17 Mar 2024 03:33:21 +0100
-Message-ID: <20240317023326.285140-1-timschumi@gmx.de>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1710679438; c=relaxed/simple;
+	bh=WKiTALtlDL7QY+Y8Ji4R5ehoxoGydHZf4GaXq6b4fI8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NCcGdHPLDrByX5p6mEgnUKGf32M9vXK43s06zEMCxA263MqMr8iw5g3Yaiq+K/gfLgTCfmr3Cpg38siOTnr6EavhLPwxNo4znWC3iO4/v7kFSOiLH8TFGsLE5sQV5M30Luy8Rnyx/wLxO2Ciqn0RoeysN3TPoOdurGazHB3fpu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YeSKGQjq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710679435;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g97Ft8nUAWlVJEyr5loNfYtK+BYJCYuBkpmr21j3gu4=;
+	b=YeSKGQjqWJbPRB1kQJbo+hbsYv+Xvg9m/HJ2qYiTUoxrAttEGMhAdsdCKKSKIDS3mEji0D
+	vXmSIZxxa2O9JI8/SftM5Ys3AIBQgkhaBAuaJsQhfo77KtSYzuheTiLZUU1P8jMIG2YyJt
+	aMsfcb2tl4/xByr28FMKgIEzq1NhYtk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-45-XiiN3X5wP4CPOxuqbLDNCg-1; Sun, 17 Mar 2024 08:43:53 -0400
+X-MC-Unique: XiiN3X5wP4CPOxuqbLDNCg-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33ec604d3b3so2367273f8f.1
+        for <stable@vger.kernel.org>; Sun, 17 Mar 2024 05:43:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710679432; x=1711284232;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g97Ft8nUAWlVJEyr5loNfYtK+BYJCYuBkpmr21j3gu4=;
+        b=h4ED4F0IPX4WVkwYbq+4u65mhpKr6yYEQSY3rqPLpIzlyxUYa5dG9JyRoucFF5LdBH
+         O8GKd0ThKsbc4VofroXtv9Cb9CtU/1IUFDRC9Te/4Bt4jxO6OlhAhBLUc9GORSSsLe6P
+         vucjqfnb7NMDcel3FO5Rhox7a2PhKfn/2WDDywzuutUcnBMkYMm5KsM8YCyvV3C0UE8D
+         sqpBXAQl14AQSXAK8XKyPF2RQxOxdOrMyRAguv9UmeukzvfiT6ncYAeisNQyW5eweor5
+         flMvyPH+LjvzJOqYaiF5kyvPYGbxAbABCDqthiSyv6GF7M/PFkc18nT8V4xIxw0pcv8X
+         08rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVKZYOFKzg/UyUFnaXx7OcXQRUnWlCQHK0OGQcSuM0Rt/eIxOd/F1vFtpOdPXD5mLRj2XYGCXeEKe+xUvtJjnq9OODGGUtm
+X-Gm-Message-State: AOJu0YxNep6QV718R++CJxdyXS73I5KmN1AMfVP7uZ4rx2temTa4FjQt
+	8XJcBBCYlLNYsRJf+F35UJ+Hc7lEJYDF69o3JXEZK6FiV/+eDLG2UVUWZqX4RC6QD99jemOQd/o
+	7o9XEIz0mFMlzCI9rYPpNdjd75yoO2vsDTZq38tx50e7zI+KR9kgDzw==
+X-Received: by 2002:adf:ec11:0:b0:33e:bdea:629e with SMTP id x17-20020adfec11000000b0033ebdea629emr6419949wrn.37.1710679432554;
+        Sun, 17 Mar 2024 05:43:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEb8z95q6yjzbWmLdjxBFXe9pJhFiak8PYhL/obq1KoS1/orvJFLwJ2wJ3LLVi5KBSwFjnBaA==
+X-Received: by 2002:adf:ec11:0:b0:33e:bdea:629e with SMTP id x17-20020adfec11000000b0033ebdea629emr6419935wrn.37.1710679432123;
+        Sun, 17 Mar 2024 05:43:52 -0700 (PDT)
+Received: from localhost (231.red-83-48-46.staticip.rima-tde.net. [83.48.46.231])
+        by smtp.gmail.com with ESMTPSA id bk28-20020a0560001d9c00b0033e22a7b3f8sm2503074wrb.75.2024.03.17.05.43.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Mar 2024 05:43:51 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
+ airlied@gmail.com, deller@gmx.de
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas
+ Zimmermann <tzimmermann@suse.de>, Zack Rusin <zackr@vmware.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/43] drm/fbdev-generic: Do not set physical
+ framebuffer address
+In-Reply-To: <20240312154834.26178-2-tzimmermann@suse.de>
+References: <20240312154834.26178-1-tzimmermann@suse.de>
+ <20240312154834.26178-2-tzimmermann@suse.de>
+Date: Sun, 17 Mar 2024 13:43:51 +0100
+Message-ID: <87a5mxgha0.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Z9uILynzNQSbtsP0jTPtpxumGN+ynNPSCCW9fpqKdTfYljrJD9e
- e0UJhDXfwPj3YfsFKJllz9Do1SXmfOIYBaA6Q3jXOuVNm7drbe6MaSXgY4jydxnvdL+4hu5
- ZHiwIpNjFUiI56eS7HliYVmo6A7vSZHkzjqPw3sSG9fM2Q6AzAwcY3kNl5gV6CDGaPjFykq
- bSgi6AyRk49y6nw2W/2ow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sPxOwSC3jcM=;M1io3FQv+xJwGp0tmiXmQ/s6zBL
- 39UxB/QcxHbg0gG+eUaiLet51m0SjD45q7/5jKpKYM6bIeGtNu8q7FtxoKGpuLlu25b2L5CbY
- rUt54uBaRM5sfpBfKtL9zMYynHO4Mpb8gPWm9mg5T48VaxTWtCSZ/1km3fpejkkwJafxfnqNF
- UWXtdCalOl/DMrzYhECauyPxPCKOL3sVVtTrPGZ+VsnRWLYwqJfMvBGk5WH0V+aLoLbm4NHQ7
- C28H+0Sg2Hh6/ce1FUp/3hB8oITrA7S1dmlRA2CyWBdjOmDGtCV2t6I+vh3mAKUKEmYFdfFFq
- IgRUIIXAJTXDbw4VwibuGo1J+Lp1k+l7na1kLcIILtoov28ehzjxpoQIbDYiO5AjKAo+KA1ey
- CdzyIvJL26tuAw63swIw90s0VNhX4UhjyKrWaKgEh3ETfB3i5UDnxoSz2Iayv5kWYjhd41fXl
- +Ha/CjbNl+0AQS3HFS5ugAmutxEnLZ8okpv1dx4NkWqNhDSGCXgcyWKXJPCLxT5RMiUIlQzPm
- +JydaPZb2PSAF/hokNiJtoysgfR9RvtnmygtyMAE0sFEPfXTUEwWONmzHJSkxEEi+qtfythgg
- WHeiOohrGBesnsShHeJrGgYnoT37McuDFuf5aQTaizEsS7nweFZDvT6vG1FoBsrzcg1VnqUxl
- itFViq+lhj424KSICvuKAHhDM4KW/Pyl3zvguj2gk4eC0PPIfZcSMMCigGsz7h/D9iTP1llKM
- Mw6bU1EbkL01wbmzTUKMKvK6W3SwmFMqwi81vHOwwyjbn8duLZaHjhe97URnE7mugl5qjBRGh
- ad2tiORM8S/MWbi/b2ZitCwoKLMawMX6/GS3wDWzrCTdY=
+Content-Type: text/plain
 
-commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-Work around a quirk in a few old (2011-ish) UEFI implementations, where
-a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-will always return EFI_INVALID_PARAMETER.
+Hello Thomas,
 
-There is some lore around EFI variable names being up to 1024 bytes in
-size, but this has no basis in the UEFI specification, and the upper
-bounds are typically platform specific, and apply to the entire variable
-(name plus payload).
+> Framebuffer memory is allocated via vmalloc() from non-contiguous
 
-Given that Linux does not permit creating files with names longer than
-NAME_MAX (255) bytes, 512 bytes (=3D=3D 256 UTF-16 characters) is a
-reasonable limit.
+It's vmalloc() true, but through vzmalloc() so I would mention that
+function instead in the commit message.
 
-Cc: <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-[timschumi@gmx.de: adjusted diff for changed context and code move]
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-=2D--
-Please apply this patch to stable kernel 5.15, 5.10, 5.4, and 4.19
-respectively. Kernel 6.1 and upwards were already handled via CC,
-5.15 and below required a separate patch due to a slight refactor of
-surrounding code in bbc6d2c6ef22 ("efi: vars: Switch to new wrapper
-layer") and a subsequent code move in 2d82e6227ea1 ("efi: vars: Move
-efivar caching layer into efivarfs").
+> physical pages. The physical framebuffer start address is therefore
+> meaningless. Do not set it.
+>
+> The value is not used within the kernel and only exported to userspace
+> on dedicated ARM configs. No functional change is expected.
+>
 
-Please note that the upper Signed-off-by tags are remnants from the
-original patch, I documented my modifications below them and added
-another sign-off. As far as I was able to gather, this is the expected
-format for diverged stable patches.
+How's that info used? Does user-space assumes that the whole memory range
+is contiguous in physical memory or just cares about the phyisical start
+address ?
 
-I'm not sure on the specifics of manual stable backports, so let me
-know in case anything doesn't follow the process. The linux-efi team
-and list are on CC both for documentation/review purposes and in case
-a new sign-off/ack of theirs is required.
-=2D--
- drivers/firmware/efi/vars.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Zack Rusin <zackr@vmware.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: <stable@vger.kernel.org> # v6.4+
+> ---
+>  drivers/gpu/drm/drm_fbdev_generic.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
+> index d647d89764cb9..b4659cd6285ab 100644
+> --- a/drivers/gpu/drm/drm_fbdev_generic.c
+> +++ b/drivers/gpu/drm/drm_fbdev_generic.c
+> @@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
+>  	/* screen */
+>  	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
+>  	info->screen_buffer = screen_buffer;
+> -	info->fix.smem_start = page_to_phys(vmalloc_to_page(info->screen_buffer));
+>  	info->fix.smem_len = screen_size;
+>  
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index cae590bd08f2..eaed1ddcc803 100644
-=2D-- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -415,7 +415,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t=
-, unsigned long, void *),
- 		void *data, bool duplicates, struct list_head *head)
- {
- 	const struct efivar_operations *ops;
--	unsigned long variable_name_size =3D 1024;
-+	unsigned long variable_name_size =3D 512;
- 	efi_char16_t *variable_name;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
-@@ -438,12 +438,13 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid=
-_t, unsigned long, void *),
- 	}
+Makes sense:
 
- 	/*
--	 * Per EFI spec, the maximum storage allocated for both
--	 * the variable name and variable data is 1024 bytes.
-+	 * A small set of old UEFI implementations reject sizes
-+	 * above a certain threshold, the lowest seen in the wild
-+	 * is 512.
- 	 */
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
- 	do {
--		variable_name_size =3D 1024;
-+		variable_name_size =3D 512;
+What about drivers/gpu/drm/drm_fb_helper.c btw? Since the memory range
+allocated may not be physically contiguous if a platform uses an IOMMU ?
 
- 		status =3D ops->get_next_variable(&variable_name_size,
- 						variable_name,
-@@ -491,9 +492,13 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_=
-t, unsigned long, void *),
- 			break;
- 		case EFI_NOT_FOUND:
- 			break;
-+		case EFI_BUFFER_TOO_SMALL:
-+			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
-+				variable_name_size);
-+			status =3D EFI_NOT_FOUND;
-+			break;
- 		default:
--			printk(KERN_WARNING "efivars: get_next_variable: status=3D%lx\n",
--				status);
-+			pr_warn("efivars: get_next_variable: status=3D%lx\n", status);
- 			status =3D EFI_NOT_FOUND;
- 			break;
- 		}
-=2D-
-2.44.0
+Asking because I don't really know how these exported values are used...
+I just know that is when the CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is enabled.
+
+--
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
