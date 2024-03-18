@@ -1,93 +1,60 @@
-Return-Path: <stable+bounces-28340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E47787E4E0
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:19:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADB987E4F2
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78FFFB2147D
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:19:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CD12820AD
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9473325761;
-	Mon, 18 Mar 2024 08:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SxrBRM8i";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Vo/fvZMC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1tE7OnNA";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SK8WSd8g"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29F2577B;
+	Mon, 18 Mar 2024 08:26:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D3E3214;
-	Mon, 18 Mar 2024 08:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8B25761;
+	Mon, 18 Mar 2024 08:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710749956; cv=none; b=TUuxBPFrr5FmO+rzcPZux0WycCehbAPF5H3DWSS1WUm3mkLUKnK6ZnY9bMnnEuH7iUi/fr8BfDjbglXSMNFnt06JVI1Hl8MQTqd9jZQFjYHU3n8QHhgGJ4uomQi3/cRqIrOpPLKV8wIaVg5FDtNkWttDdxfvXwn0mCFf+S7h1xc=
+	t=1710750375; cv=none; b=KJ5/rihAIfhXwcyAjcZAcjr/KFUEsCyH5H15MMSpkiu9lLmApCW8jdliwKotzMBOLpRLVe1BbcBs4Pk3J+FwqnczIQaUbdgO5hk/P/TcGlJMTXfFxdjeL+sWOV7N4f5jtT4tKjxZkompDSeGXLMSyCcMqxw7nFiR3LeFKDNO5v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710749956; c=relaxed/simple;
-	bh=jCyNpBojEYM8skiM2VdPyo119Aon3YsDIQxcgK2cLNA=;
+	s=arc-20240116; t=1710750375; c=relaxed/simple;
+	bh=n/+BUC7RfmYBK8x7pBrx9xX40ouKwNH/toP128a3gAM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RuzSur4jr2/rTn4Dh8fOU1vXhYMUmOUfGrXFlvT333+EiFwfrQjHmL9lDoGFyY4CCO0DC9LZyj7PQ13v0iAshuNPb38S2v02rSbIbgtiAN0uoXKbUSD6ZRrYsJNZKrtu/cZUGxMwWQ19iaOHaIwkfKW8gnjMJte0WvA37XAv1/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SxrBRM8i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Vo/fvZMC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1tE7OnNA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SK8WSd8g; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 553A3347CA;
-	Mon, 18 Mar 2024 08:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710749952; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
-	b=SxrBRM8iPDRhEkiH2DDaF6XaefKRwTfenYvQvv5hAuC57QtyfmJAsQTY7VdojLu9caXf0j
-	PeD1YhHZWAlDAqHNTOxHBAMPO3L47b5bWUWJ0ADLXsRWpbH+L+1ORcjLc0ULHoDrFoWB0+
-	BCLx/IoaLRiGyOCVMg7pnN4f2dKQOY4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710749952;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
-	b=Vo/fvZMCRgavd4IzcTjFfm+WlXzmgsuEmyemwoEzQOSGIAJiy/I6VcCGLc1K40Ov/p5T5J
-	6Nxv8m0RuSxPYBCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1710749950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
-	b=1tE7OnNAtCg5PPxBFhHRM1QNs/V2PiBnvAFFzjWqwwBnujq2e8L4f78Hcp5uwN6t2NsckK
-	IvD7jVRe87pszgzo+cGPn5YOUw+KLl31OZohVR1+A64LbeE+sKNlf6lR8CXBATjyPeqFjT
-	xdmj7kJ4+NgxQ+6Z0GVk4HcFsp1Su80=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1710749950;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
-	b=SK8WSd8gro2eT8/E5DCcpxNiAjy5YFWRDlwRIQ1oyugjPRrfDRXvxqb39uTHJ8RYZYjatw
-	y9RVsif2wHKNYkDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 069781389C;
-	Mon, 18 Mar 2024 08:19:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id l05SAP7492XkMwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 18 Mar 2024 08:19:10 +0000
-Message-ID: <4eea339c-48b0-416e-90a5-87f90ea5bf1d@suse.de>
-Date: Mon, 18 Mar 2024 09:19:09 +0100
+	 In-Reply-To:Content-Type; b=NmH0adGXYh9LTouv48c4VrQNITt9U8nP8kx652le3gV4pOLbxpKmgQN5K0Qzd0EHozjlvsiV3wd1dGVr4AYo+QEa9f2bLkKc+hal5ehMQS71T7nTFkotZNA+C7r9MQMC7fORyaenFQ0YlTdk6ZzoOu09UqoWVSrgl6ceHEg2uLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-34175878e3cso332100f8f.0;
+        Mon, 18 Mar 2024 01:26:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710750369; x=1711355169;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a9kyHu1UWlkDyox3goz2HfEhPT5QiJkRChK6QBLxt3w=;
+        b=AINyOZrWcz0UuTgZuzYZ8a1y1lEKANBQjz1QFetq7VihZHbXDDha9JJ6Wxu9NdFgbs
+         TedidoqcgDB/l8x61aLLVbCXvKXjlQgYbYJLr9MTI8LZ/KJRyCwag8FdfHhzwzTr8GNN
+         O+ptu0tSRsMCqNwhj1C2otjwz4lII5QTIhLgDLiREu5Drc7ZP+DDzj/H4477IqF5dvuw
+         8k7ewIJ5cbrbxLu4GtYgHwcjQ5t39khEQQbl5stI4GF222GLuQd1YkN3CHfy4HNc/hVQ
+         MC5fKs7BkTLdHW7/P9cUtB4ZKSL8nxQOeA/zyHB2llQpIjkAIkUWetx7Ac49a0ai2XtH
+         dn+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVA+qOVFH+8X7yJmpqiBeBrkf5aujyhdgx7juK2Ej2eUs/Hr5oqR8+HMgqilGsUJm4JTOQt/inL6oNk/JF0O+v3VVvmQ7MAgLdjfyNvdulluJTtyXk0zDV+lVbma9nHgX9Dw4pUvf9f7a/RQK6jabePUsmYiWMN3bYuEWBD4foKhPM=
+X-Gm-Message-State: AOJu0Yz/eu0EChZfI1jnIYrzwp/ILxqr3+y6T+Yzj+6o2o85ttCO9w2T
+	HWPL6sMQCIdbhGqid69jmk0jsSxfThKaQfVzucqpy0Zql9IihDybeY8oTx/p
+X-Google-Smtp-Source: AGHT+IHDewQohYECkFvf872qtt3onRjjtDOZf4w7eiCEgZ9ol4tMs/dOGH40E5nWYdXZI0jREKc84w==
+X-Received: by 2002:a05:6000:22d:b0:33d:d4c2:8ba5 with SMTP id l13-20020a056000022d00b0033dd4c28ba5mr6717194wrz.5.1710750368888;
+        Mon, 18 Mar 2024 01:26:08 -0700 (PDT)
+Received: from [10.16.0.238] ([5.32.53.74])
+        by smtp.gmail.com with ESMTPSA id f1-20020a5d4dc1000000b0033e99b7cfa8sm4062318wru.13.2024.03.18.01.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Mar 2024 01:26:08 -0700 (PDT)
+Message-ID: <f1be501c-51fa-4a0b-a11f-893b185571c5@linux.com>
+Date: Mon, 18 Mar 2024 12:26:05 +0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,171 +62,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/43] drm/fbdev-generic: Do not set physical framebuffer
- address
+Subject: Re: [PATCH] floppy: remove duplicated code, unlock_fdc() function has
+ the same code "do_floppy = NULL" inside.
 Content-Language: en-US
-To: Javier Martinez Canillas <javierm@redhat.com>, daniel@ffwll.ch,
- airlied@gmail.com, deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Zack Rusin <zackr@vmware.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, stable@vger.kernel.org
-References: <20240312154834.26178-1-tzimmermann@suse.de>
- <20240312154834.26178-2-tzimmermann@suse.de>
- <87a5mxgha0.fsf@minerva.mail-host-address-is-not-set>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <87a5mxgha0.fsf@minerva.mail-host-address-is-not-set>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Yufeng Wang <wangyufeng@kylinos.cn>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: inux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240318060453.18538-1-wangyufeng@kylinos.cn>
+From: Denis Efremov <efremov@linux.com>
+In-Reply-To: <20240318060453.18538-1-wangyufeng@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[10];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,vmware.com:email,intel.com:email,bootlin.com:url];
-	 FREEMAIL_TO(0.00)[redhat.com,ffwll.ch,gmail.com,gmx.de];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
 
-Hi
+Hello,
 
-Am 17.03.24 um 13:43 schrieb Javier Martinez Canillas:
-> Thomas Zimmermann <tzimmermann@suse.de> writes:
->
-> Hello Thomas,
->
->> Framebuffer memory is allocated via vmalloc() from non-contiguous
-> It's vmalloc() true, but through vzmalloc() so I would mention that
-> function instead in the commit message.
+On 3/18/24 10:04, Yufeng Wang wrote:
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
+> ---
+>  drivers/block/floppy.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
+> index 1b399ec8c07d..25c9d85667f1 100644
+> --- a/drivers/block/floppy.c
+> +++ b/drivers/block/floppy.c
+> @@ -2787,7 +2787,6 @@ static void redo_fd_request(void)
+>  		pending = set_next_request();
+>  		spin_unlock_irq(&floppy_lock);
+>  		if (!pending) {
+> -			do_floppy = NULL;
+>  			unlock_fdc();
+>  			return;
+>  		}
 
-Ok.
+I'll answer to the 2nd email.
 
->
->> physical pages. The physical framebuffer start address is therefore
->> meaningless. Do not set it.
->>
->> The value is not used within the kernel and only exported to userspace
->> on dedicated ARM configs. No functional change is expected.
->>
-> How's that info used? Does user-space assumes that the whole memory range
-> is contiguous in physical memory or just cares about the phyisical start
-> address ?
-
-I assume that it is supposed to refer to contiguous memory. There's the 
-corresponding field smem_len, which refers to the full memory.
-
->
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Javier Martinez Canillas <javierm@redhat.com>
->> Cc: Zack Rusin <zackr@vmware.com>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Maxime Ripard <mripard@kernel.org>
->> Cc: <stable@vger.kernel.org> # v6.4+
->> ---
->>   drivers/gpu/drm/drm_fbdev_generic.c | 1 -
->>   1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
->> index d647d89764cb9..b4659cd6285ab 100644
->> --- a/drivers/gpu/drm/drm_fbdev_generic.c
->> +++ b/drivers/gpu/drm/drm_fbdev_generic.c
->> @@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
->>   	/* screen */
->>   	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
->>   	info->screen_buffer = screen_buffer;
->> -	info->fix.smem_start = page_to_phys(vmalloc_to_page(info->screen_buffer));
->>   	info->fix.smem_len = screen_size;
->>   
-> Makes sense:
->
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
->
-> What about drivers/gpu/drm/drm_fb_helper.c btw? Since the memory range
-> allocated may not be physically contiguous if a platform uses an IOMMU ?
->
-> Asking because I don't really know how these exported values are used...
-> I just know that is when the CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is enabled.
-
-The value of smem_start is used in the fbdev code in only two places : 
-deferred I/O [1] and devfile I/O [2]. For the former, patch 5 of this 
-series adds an additional test. The latter case is only relevant for 
-framebuffers in I/O memory space. But that does not affect 
-fbdev-generic, which has the shadow buffer in main memory. Some 
-driver-internal fbdev code sets smem_length, such as in gma500, but 
-these drivers are special anyway.
-
-For what userspace does with this value IDK. But it can't be much, as 
-we've had smem_start cleared for years.
-
-Best regards
-Thomas
-
-[1] 
-https://elixir.bootlin.com/linux/v6.8/source/drivers/video/fbdev/core/fb_defio.c#L34
-[2] 
-https://elixir.bootlin.com/linux/v6.8/source/drivers/video/fbdev/core/fb_io_fops.c#L143
-
->
-> --
-> Best regards,
->
-> Javier Martinez Canillas
-> Core Platforms
-> Red Hat
->
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Thanks,
+Denis
 
