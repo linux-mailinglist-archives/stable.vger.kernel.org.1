@@ -1,86 +1,95 @@
-Return-Path: <stable+bounces-28322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D86387E1A3
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 02:28:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 157CB87E1D6
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 02:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD0C51C21394
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 01:28:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA842B22C37
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 01:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E5418C36;
-	Mon, 18 Mar 2024 01:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B7118EAB;
+	Mon, 18 Mar 2024 01:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mAZqwJus"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnwkgakV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753CD1CD07;
-	Mon, 18 Mar 2024 01:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71EF1E871;
+	Mon, 18 Mar 2024 01:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710725276; cv=none; b=QIaFhdtuecS7skmpojejXTusE7xV6+H7voZvfc7IcBxvO6OdKefiRYExbEWeiUiASeROXwIFsbPGbuCJo58wQ27641ZfcPuqx4zR9M3f61cnFvbrvjFvN6aWizU/csHGgywIeYcsJua9CwzwPU9aTEaoW3Bjgp9tf9SsKnB7dSM=
+	t=1710725887; cv=none; b=u9EiBXka2q2hXXWbC1fjO7oagRnnDRsCBZclbhlrUhZR87A1xFwyUqq35OTxIF6jyKKqaah8ikmIhDDZnWSeAMSE4SZsbnemyd9486bCU5uQq/NnJdZBBLpNg6HD+92mXACzTNBgCC2yzDTW1GH5WYBA/h1ojpdqw3EFgMcqHts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710725276; c=relaxed/simple;
-	bh=RhB/nWWwoCQMMHLsN2PtqvPB+ZkEomggWeNkRLQBVUc=;
+	s=arc-20240116; t=1710725887; c=relaxed/simple;
+	bh=abbct26wTrMUyltc8w8vDKXfu7lI92WSLNvjqZxdqwc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bLsmpKNpUAH6nxdY1qlO3iGcoFHYK5flGqF4I9iAn3jdagxuraBYcExPO1dbB0P3X9baCBzfiXYXLYCwE4KPR5IfG2MEH5gQNxFtLLlat0tio3X6inTqitzNmxWLwAzo+S4m+afjo7mYF6ylwF6i5By0HyGEcmDY5zqxlrNPjx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mAZqwJus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0F4C433C7;
-	Mon, 18 Mar 2024 01:27:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ujis0zaBnVB2nsVkyErqAOd/rRl02NJC/TF1S/IfuRasAj8/RaPmuPzXYGh2rkQBnhn52wdekkmpJmE5svlN9RibZI3AOujTemm+SNJtnpJEKcYXJMi4hGRC2Wg36kn4YNO9Pn/DXPGiVpcnfCsLEL9+gTA5xvZwI1Rz31RcegM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnwkgakV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5ACC43390;
+	Mon, 18 Mar 2024 01:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710725276;
-	bh=RhB/nWWwoCQMMHLsN2PtqvPB+ZkEomggWeNkRLQBVUc=;
+	s=k20201202; t=1710725886;
+	bh=abbct26wTrMUyltc8w8vDKXfu7lI92WSLNvjqZxdqwc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mAZqwJusQJZXb2OJMfT+mDfrdyC8ILUSY2QKpsvTPvP5oVcLiZ9GyhibASy3ausGx
-	 5JHmg3fBSOTc4NkezKfvT82kSECEFp049Z5SpFxh6nbg/natLPSx+uRbgvLJn9T3Rm
-	 AJIctURuGRrhcyszXa/oo5r/qhwp+e49EzTkjq0aPo+IlbR7ATcaKCiENjaAplVGaB
-	 BKZi9HQVhh9mamrTZoWwMWSjwngbgodqh5rXnjSb4scBrNsZr17vogzbxn2/2W5Aow
-	 08qpNcTQeweb+KERctFkLLKDCgS9DTFwqBBIE6OSqZDrsQrgz3QSrS+y/tYxRb0HuA
-	 obxAj+9QY/NNg==
-Date: Sun, 17 Mar 2024 20:27:52 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thara Gopinath <thara.gopinath@gmail.com>, Amit Kucheria <amitk@kernel.org>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] thermal: qcom: lmh: Check for SCM availability at
- probe
-Message-ID: <yes2jztatfs7abss6rt3dlnnifse7xh2klyd44zg2lkngp7mjf@dsmh23oqgbf6>
-References: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
- <20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org>
+	b=KnwkgakV55W6VZ7b1kTW6Yxd2aSZyPC16MJntBf/ACuyI00RQNiEdu4ZgL6MWw6sg
+	 w7YU4u16BfmEcGoGaMUl64UsvqKCLXeY4xVpypfi1q8P707qchFO95nxRA4uL37vOg
+	 Id++s1iGYliVG/1kfmn5l7wWKkG6WoOCHMCt9b5SypNqOeuY8kfUHJhNrrV5ALbLHW
+	 WRLpK0EmhkwYoGN+z3OGWSGQQuBNkPs4aha9brBvOS4dP3OBzkdzOIXyK8ubKWAw5N
+	 4HOlh1uEkr6CCdNgtasSd4Vi5l+JFJ7jDdNP0GpT4iUIuIhc0QKdW83SZBAvgznnjO
+	 ISgBpvNtVqxZw==
+Date: Sun, 17 Mar 2024 21:38:04 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>, andy.gross@linaro.org,
+	david.brown@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+	linux-arm-msm@vger.kernel.org, linux-soc@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.7 05/14] arm64: dts: qcom: sc8280xp-crd: limit
+ pcie4 link speed
+Message-ID: <Zfea_Ksyo1kDbcqx@sashalap>
+References: <20240311183618.327694-1-sashal@kernel.org>
+ <20240311183618.327694-5-sashal@kernel.org>
+ <ZfAJKTvQFtoZ8SSN@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org>
+In-Reply-To: <ZfAJKTvQFtoZ8SSN@hovoldconsulting.com>
 
-On Sat, Mar 09, 2024 at 02:15:03PM +0100, Konrad Dybcio wrote:
-> Up until now, the necessary scm availability check has not been
-> performed, leading to possible null pointer dereferences (which did
-> happen for me on RB1).
-> 
-> Fix that.
-> 
-> Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
-> Cc: <stable@vger.kernel.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+On Tue, Mar 12, 2024 at 08:50:01AM +0100, Johan Hovold wrote:
+>On Mon, Mar 11, 2024 at 02:36:08PM -0400, Sasha Levin wrote:
+>> From: Johan Hovold <johan+linaro@kernel.org>
+>>
+>> [ Upstream commit db8138845cebcdd0c709570b8217bd052757b8df ]
+>>
+>> Limit the WiFi PCIe link speed to Gen2 speed (500 MB/s), which is the
+>> speed that Windows uses.
+>>
+>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> Link: https://lore.kernel.org/r/20240223152124.20042-7-johan+linaro@kernel.org
+>> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This one was not marked for stable and does not need to be backported.
+>Please drop from all queues.
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Ack.
 
-Regards,
-Bjorn
+-- 
+Thanks,
+Sasha
 
