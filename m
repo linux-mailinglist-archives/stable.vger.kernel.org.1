@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-28341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADB987E4F2
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:26:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFF787E503
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CD12820AD
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:26:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1456281F9D
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29F2577B;
-	Mon, 18 Mar 2024 08:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E354422086;
+	Mon, 18 Mar 2024 08:34:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8B25761;
-	Mon, 18 Mar 2024 08:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3760E28DA5;
+	Mon, 18 Mar 2024 08:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710750375; cv=none; b=KJ5/rihAIfhXwcyAjcZAcjr/KFUEsCyH5H15MMSpkiu9lLmApCW8jdliwKotzMBOLpRLVe1BbcBs4Pk3J+FwqnczIQaUbdgO5hk/P/TcGlJMTXfFxdjeL+sWOV7N4f5jtT4tKjxZkompDSeGXLMSyCcMqxw7nFiR3LeFKDNO5v8=
+	t=1710750875; cv=none; b=ocoZ7OTOv9p3sBI1jLf2K2FA2g8JydPsw9n3iYK7dPvD9lO+tMl7yEX6yAthlqpol5usQgTvydZ+zbu4WABPQ1kTfB0dQOhQE6lT4vnMO2gxGjQYpbHPf7eYGdygEVKVMY3Vf+nihGM7Eulm3n5rH7I/K7g3uJZtkM7cGH8ifBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710750375; c=relaxed/simple;
-	bh=n/+BUC7RfmYBK8x7pBrx9xX40ouKwNH/toP128a3gAM=;
+	s=arc-20240116; t=1710750875; c=relaxed/simple;
+	bh=GsSIX3/CTa3M1g8uCjDs57wTL5NgRRrzEvE8JpLC1fo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NmH0adGXYh9LTouv48c4VrQNITt9U8nP8kx652le3gV4pOLbxpKmgQN5K0Qzd0EHozjlvsiV3wd1dGVr4AYo+QEa9f2bLkKc+hal5ehMQS71T7nTFkotZNA+C7r9MQMC7fORyaenFQ0YlTdk6ZzoOu09UqoWVSrgl6ceHEg2uLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.43
+	 In-Reply-To:Content-Type; b=o/B4OuhmY99QKRUb9No/k89+hTGBKMn/Ro+K2OmEaxFNDkoDitg+YJMcqO8JK10pDvAjOAoyYckVZ7gItjWEXoYbIBtUIzPyndKe39EhLBzthRc1G8H3r+9QujMfrq6GwNePhro4fKNfQCA9kDTW1Uy1Pl9OurvCmcD8WjwkP0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-34175878e3cso332100f8f.0;
-        Mon, 18 Mar 2024 01:26:10 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c213690558so2066500b6e.0;
+        Mon, 18 Mar 2024 01:34:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710750369; x=1711355169;
+        d=1e100.net; s=20230601; t=1710750873; x=1711355673;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a9kyHu1UWlkDyox3goz2HfEhPT5QiJkRChK6QBLxt3w=;
-        b=AINyOZrWcz0UuTgZuzYZ8a1y1lEKANBQjz1QFetq7VihZHbXDDha9JJ6Wxu9NdFgbs
-         TedidoqcgDB/l8x61aLLVbCXvKXjlQgYbYJLr9MTI8LZ/KJRyCwag8FdfHhzwzTr8GNN
-         O+ptu0tSRsMCqNwhj1C2otjwz4lII5QTIhLgDLiREu5Drc7ZP+DDzj/H4477IqF5dvuw
-         8k7ewIJ5cbrbxLu4GtYgHwcjQ5t39khEQQbl5stI4GF222GLuQd1YkN3CHfy4HNc/hVQ
-         MC5fKs7BkTLdHW7/P9cUtB4ZKSL8nxQOeA/zyHB2llQpIjkAIkUWetx7Ac49a0ai2XtH
-         dn+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVA+qOVFH+8X7yJmpqiBeBrkf5aujyhdgx7juK2Ej2eUs/Hr5oqR8+HMgqilGsUJm4JTOQt/inL6oNk/JF0O+v3VVvmQ7MAgLdjfyNvdulluJTtyXk0zDV+lVbma9nHgX9Dw4pUvf9f7a/RQK6jabePUsmYiWMN3bYuEWBD4foKhPM=
-X-Gm-Message-State: AOJu0Yz/eu0EChZfI1jnIYrzwp/ILxqr3+y6T+Yzj+6o2o85ttCO9w2T
-	HWPL6sMQCIdbhGqid69jmk0jsSxfThKaQfVzucqpy0Zql9IihDybeY8oTx/p
-X-Google-Smtp-Source: AGHT+IHDewQohYECkFvf872qtt3onRjjtDOZf4w7eiCEgZ9ol4tMs/dOGH40E5nWYdXZI0jREKc84w==
-X-Received: by 2002:a05:6000:22d:b0:33d:d4c2:8ba5 with SMTP id l13-20020a056000022d00b0033dd4c28ba5mr6717194wrz.5.1710750368888;
-        Mon, 18 Mar 2024 01:26:08 -0700 (PDT)
-Received: from [10.16.0.238] ([5.32.53.74])
-        by smtp.gmail.com with ESMTPSA id f1-20020a5d4dc1000000b0033e99b7cfa8sm4062318wru.13.2024.03.18.01.26.07
+        bh=CvZQxWeSLOGmfnR+hu9jNLf/b2B+AxMGzTGTFwxzF5I=;
+        b=r9JOi+YXdcP+O4/DEU3jCw3elX3i1qg5WGBVAyzRB3A1jMgGjWQLanWF6XXExWmGPy
+         UuSQVo1QCalrRryabrBscjq328twg4rKSBbuof6tLdrfmvrF2c1GHC6rZryawQMffBrB
+         wZl5UFb5w7ttgQeoaqw7o8MutRk+T/b9oYIms0nkIY5faQQ89pvQXB6ZYVirDDrftvKK
+         MfoOUUhYI5Ry0Y/3KLTFuRard96R5h12pPj64S+UUl+iISipsb1+aEgIY2Zo8NEUrX9a
+         P00pPdnxQetdP/zmNXuVwTLnKy9CA3kn8u1kOsCCcuE0G+Giahf6vfI/YqRaJ54DJror
+         kTDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGB0KDrzSZ/yfzm3U0VytxH+Wekg5QRpqOni8Zbb7JoJIQUUiZBepP/a2VEtMF+meLKA0rbgRyjfBRxbSxHI47tWuwknRwM/1Stq0kuvD0jNQyplHcBfWcRVdNoChRU94wGDtnn/uAvgM=
+X-Gm-Message-State: AOJu0Yz2Y3QuIMPwiOOGQyHshTXGB/c1zWPbDqtOV0tYOKc6qI5Oztx8
+	QqOYMYpuySf1ywZYjOmy4wYgtJtMol9sNE0jEAUvgztPkfW9BEr2cXY2ej45
+X-Google-Smtp-Source: AGHT+IGCTIYygH5ykNVKGapiN9rp8xjMRzpLhbU6cnFH/ODSTdenylh9aj9/DXgQizVHZfFwtpUnFQ==
+X-Received: by 2002:a05:6808:20a9:b0:3c3:7434:78be with SMTP id s41-20020a05680820a900b003c3743478bemr11360013oiw.27.1710750873353;
+        Mon, 18 Mar 2024 01:34:33 -0700 (PDT)
+Received: from [10.16.0.238] ([5.32.53.86])
+        by smtp.gmail.com with ESMTPSA id v2-20020aa78082000000b006e6b39e040esm7385003pff.165.2024.03.18.01.34.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Mar 2024 01:26:08 -0700 (PDT)
-Message-ID: <f1be501c-51fa-4a0b-a11f-893b185571c5@linux.com>
-Date: Mon, 18 Mar 2024 12:26:05 +0400
+        Mon, 18 Mar 2024 01:34:32 -0700 (PDT)
+Message-ID: <7ce0d4b7-2e4d-44a7-b268-3e2505e01abe@linux.com>
+Date: Mon, 18 Mar 2024 12:34:24 +0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,17 +67,27 @@ Subject: Re: [PATCH] floppy: remove duplicated code, unlock_fdc() function has
 Content-Language: en-US
 To: Yufeng Wang <wangyufeng@kylinos.cn>, Jens Axboe <axboe@kernel.dk>,
  linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: inux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240318060453.18538-1-wangyufeng@kylinos.cn>
+Cc: stable@vger.kernel.org
+References: <20240318060756.18649-1-wangyufeng@kylinos.cn>
 From: Denis Efremov <efremov@linux.com>
-In-Reply-To: <20240318060453.18538-1-wangyufeng@kylinos.cn>
+In-Reply-To: <20240318060756.18649-1-wangyufeng@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hello,
 
-On 3/18/24 10:04, Yufeng Wang wrote:
+Please, add a small commit message to the patch. The commit title
+is too long and can be reduced to something like "floppy: remove duplicated
+code in redo_fd_request()". Rest can be added to the commit message.
+
+On 3/18/24 10:07, Yufeng Wang wrote:
 > Cc: stable@vger.kernel.org
+
+We don't need to send this patch to stable. It's not a bugfix.
+
+Please, send v2 with commit message and new title.
+The change looks good to me.
+
 > Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
 > ---
 >  drivers/block/floppy.c | 1 -
@@ -95,8 +105,6 @@ On 3/18/24 10:04, Yufeng Wang wrote:
 >  			unlock_fdc();
 >  			return;
 >  		}
-
-I'll answer to the 2nd email.
 
 Thanks,
 Denis
