@@ -1,94 +1,108 @@
-Return-Path: <stable+bounces-28371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6AC87EAB9
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 15:18:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A680D87EAC3
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 15:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAB01F2125E
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 14:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35683B21878
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9A44AEF5;
-	Mon, 18 Mar 2024 14:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28A02C69E;
+	Mon, 18 Mar 2024 14:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7OQ4Lk+"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="En8dYKb7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71D14AECA;
-	Mon, 18 Mar 2024 14:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042252C877
+	for <stable@vger.kernel.org>; Mon, 18 Mar 2024 14:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710771519; cv=none; b=FD/RRFw+MRuolCmUlqTQo3ubetvXvIupbMznx3hyv7pr5puU1ShK1cYOfzSPjEJ6TF2xFNV5uqlHymiA9g6TLvRTHTovz/1GCD2jjT7MARMevGcU63Vofi9kz45GE0h2RGb9LY00cfwWyeUMFG3go0HWWUWItj0SkTNrx8rTQtM=
+	t=1710771643; cv=none; b=MbW8tsZwllXQ/fgyv5jTYRJWn80Ti7arI9BZRpaiU18DSAVp3siH8D0WtV5oS5V7OUcn1WeIWG1opNNgsjd+V8wYDrKlJAQEJlDu01issuP3VZB2tugHbxnAK2ZfWxWo33DcSYH7Cs2drvu+9RG9UPrqk1w+WuUVBGsW2LpnXGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710771519; c=relaxed/simple;
-	bh=c+EJsJ4lo9mv4RH4IasCH1QvoE0TFkuE2iylhHttUZA=;
+	s=arc-20240116; t=1710771643; c=relaxed/simple;
+	bh=EVOz7HpKxshJQzoKffuIeq0NqaAk2uilDLBhZBSSX88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FOqsvcox9MJoniFg2JJ4U9QgN8zqBC+EDae5IFEXYXf0hOv9YwPUz7whlo/XIUFe1g20mgnj6vy+AIZyt/TVC6e0XkSpHlLolGFYmdAtgmOf9BleYn0LCiFs7+vC9CZrkCaujt0DT35XdTie74nEADU5WjAm1riSIE8HkWl740k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7OQ4Lk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE40C433F1;
-	Mon, 18 Mar 2024 14:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710771518;
-	bh=c+EJsJ4lo9mv4RH4IasCH1QvoE0TFkuE2iylhHttUZA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=AW4+n7lUweVHyMWv0y//UUZHmaKHJKsZWrFlP2AvTPgfr4i9/h4S+K5wQzM029G7xS3GM9pMPjJkns+u7FYPqAuI8MoGGXkAQSiRklbGxonvz+3MxXLQh9Vv/bc0fSYyzMsDj6ltoA9Ba/irjFnRZqVk4P7ZQigIhG/ml+7Wc/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=En8dYKb7; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4752240E01A0;
+	Mon, 18 Mar 2024 14:20:32 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id OvM1e62OCdz8; Mon, 18 Mar 2024 14:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1710771628; bh=xbujwM1+KktwbMpDTc9ki7t3eXg24aeWGNwP7mqwkjU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t7OQ4Lk+bJkSLp5R/ojNbZn14jfMuoX8zuAj6dvYFyAZ1mi+tEeJLW3T/tSKXkZ04
-	 rmTsG5Qhm9ixx6m37FOOL0VFvr9MxxxkSC7OIINYTZScHnyOQyEWrBw2BHLARYnpVo
-	 eT8iWo2vROO3h/rWw74cB9t4pYhb8CGW56nkubOKNk2ytaCGiByl17oUSA0E4VS4/f
-	 0bBFsSQdMo3XEz+zWyxQk0w/iX9iekRK7fnRnnvnjhMl1aOyOGzdQgtqbTLjJbNOBR
-	 6/fn4AzoqeQfeni3IBlZvMLPxVAjDCo01Xsjjaqk1SgIlyNQKVljIjpw0zEQlerT25
-	 oQH6pCbfCanYQ==
-Date: Mon, 18 Mar 2024 10:18:36 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: Pavel Machek <pavel@ucw.cz>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>, Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>, clm@fb.com,
-	linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 1/7] btrfs: add and use helper to check if
- block group is used
-Message-ID: <ZfhNPInQFHipsW3c@sashalap>
-References: <20240229155112.2851155-1-sashal@kernel.org>
- <Ze9w+3cUTI0mSDlL@duo.ucw.cz>
- <20240311210540.GU2604@suse.cz>
+	b=En8dYKb79vzkZ87N0uILJZMTqEvjFlX3u7IID6Tpgp48PaEFhIZDIl73QpT/r13SV
+	 sVe4RkY33QWPVvxEod0kKB1b2rXXeIu1vaB1/kiNVJ4T4GjDtdw7whAhooR5kS3v2P
+	 uPJIBryDl38dl0Nu6Kut/qP+OhxtJ2Oatgh5FOzjc//B2Y0GBiX5JuiRacnpeTWxK3
+	 TTKgjTMeCeh0n6N0bhEx7h4x/TNwFzFrHV3Iq1I57IXE4h0uAtpH8lRwZyUkU/6HO1
+	 YcDDglzazbkFRoxit2GMql3yWeB5xb6vOegD1Fs4eJsmWv69SB2C9KbZ3jzoikY7Q9
+	 fL6zocuyGvf9K+RVigpbw7/9rkUqyRhcxsbrT125JP/v/t0Q2prC6efsJ8K0m3PGBe
+	 U3lP2HuKmqRJ/At/mw2i+qtDoyIAHEVBM+ANTAf4owRUJ2Ma6GLJ9ZOM9/9/c27B7J
+	 tc1ZGqfx5QtQwxTvg/cOG23jdf5rGBZ2mLjzVuuwStXRZhO1R/6ZjB6njMyCORTsyp
+	 XUOUPZyT+8T7pCzdM+UNDECUHvvpDMYZ5gmbTG5Injdnfpen5p8YkN0iiI/d/aYgqp
+	 ePBCVqIhG+m7CT1G/KTX0CocAqbcZVBRhMjIeLmt4xmcAiuJxEKl6Sfw4y4Op9z0mg
+	 T2yxdh//Tuv7auaLEdKUlewQ=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5B1D940E00B2;
+	Mon, 18 Mar 2024 14:20:20 +0000 (UTC)
+Date: Mon, 18 Mar 2024 15:20:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Emeric Brun <ebrun@haproxy.com>, Omar Sandoval <osandov@osandov.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH 5.10 085/122] x86/ibt,paravirt: Use text_gen_insn() for
+ paravirt_patch()
+Message-ID: <20240318142014.GBZfhNnupMQ4XoDLUm@fat_crate.local>
+References: <20240227131558.694096204@linuxfoundation.org>
+ <20240227131601.488092151@linuxfoundation.org>
+ <ZeYXvd1-rVkPGvvW@telecaster>
+ <4d33ef17-72a0-47e0-8591-20b0bf9bddb9@haproxy.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240311210540.GU2604@suse.cz>
+In-Reply-To: <4d33ef17-72a0-47e0-8591-20b0bf9bddb9@haproxy.com>
 
-On Mon, Mar 11, 2024 at 10:05:40PM +0100, David Sterba wrote:
->On Mon, Mar 11, 2024 at 10:00:43PM +0100, Pavel Machek wrote:
->> Hi!
->>
->> > From: Filipe Manana <fdmanana@suse.com>
->> >
->> > [ Upstream commit 1693d5442c458ae8d5b0d58463b873cd879569ed ]
->> >
->> > Add a helper function to determine if a block group is being used and make
->> > use of it at btrfs_delete_unused_bgs(). This helper will also be used in
->> > future code changes.
->>
->> Does not fix a bug and does not seem to be preparation for anything,
->> so probably should not be here.
->
->Agreed, this patch does not belong to stable and I objected in
->https://lore.kernel.org/all/20240229155207.GA2604@suse.cz/
->
->for version 6.7 and all other stable versions.
+On Mon, Mar 18, 2024 at 11:17:10AM +0100, Emeric Brun wrote:
+> Exact same issue here, also since 5.10.211 and still present in 5.10.213.
 
-Dropped, thanks!
+Sasha,
+
+can you pls pick up this one:
+
+https://lore.kernel.org/r/20240305112711.GAZecBj5TMaQDSz6Ym@fat_crate.local
+
+?
+
+See upthread for what it fixes.
+
+Thx.
 
 -- 
-Thanks,
-Sasha
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
