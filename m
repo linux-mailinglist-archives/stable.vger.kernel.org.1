@@ -1,153 +1,94 @@
-Return-Path: <stable+bounces-28320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8F787E071
-	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 22:42:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B9487E19A
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 02:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23724B218EE
-	for <lists+stable@lfdr.de>; Sun, 17 Mar 2024 21:42:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 485981F214BD
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 01:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360F208B8;
-	Sun, 17 Mar 2024 21:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83B8182B5;
+	Mon, 18 Mar 2024 01:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UoFVENiJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQozQc8g"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F3C208B0
-	for <stable@vger.kernel.org>; Sun, 17 Mar 2024 21:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BC3179AE;
+	Mon, 18 Mar 2024 01:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710711718; cv=none; b=YCEJ4SrzyrMSmfCsaxPQFN55l9ZN3HfnnFKuH4Va+zRWplCB92CKgc4zibhVHYB7dNUmjzxDNZnJpezRrsOP6+H0gBXZR6RaUBA9L/Vl27+ibEeMlq/S6B0q7gGLWn2GqWdxhx8g9sbTvDPcK9VYoHDzy1DHF16a/Yn06maSvog=
+	t=1710725049; cv=none; b=nVePsXl3wu8lwJlTIk4royGm+CAma/7eha2UL9eqAvHKHTIhwMiaHh9JCSSbk7jUPqEVv628yOzN/LsnxQigIdvmmUcbZj4rflyHAvQBzs1dWDrl5WmCZLzGTGm/rQ0gkRGsSNRCmA7KM8AWDdP16NmC8wS9ygTGxdz+NAtHNpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710711718; c=relaxed/simple;
-	bh=AQOuIZCrB9FidQg/kAZKaa1dIJbFfCNIrJ6x/+ojQx0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UEmQmyFQKzWez0+2pU5W1Az7kfO57RxjzGQl5C3+RMXYPJInk5LIjtBb3w7XN9r+K5EiGVXxnkGiyxYCFwZNa07Hwj6RVHdPJrtHyeq1brFB/cY13/zPMskyxYWJuJMkkQIThmgCljSwieIJAw6VUzGeVROf6yW+j6T2BKf9JXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UoFVENiJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710711715;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2UD1uhUWB3+uEEu+3aOovx1iyyjT3/jslhdCSc8fWe4=;
-	b=UoFVENiJav7tz8dbLLT/lFeX0uyQTjcNP+kI13/TAAX8gvGnKqiSZZtJFp8BKfCAJH2kmt
-	TXYV37QeprXianqlpRgyWZPjCRia/EdDbYrUpOkBOd12ve7bahrYk5SxEPC3WfA0nUdmZv
-	cr2tzBEQILFJWrm/cUJ6kE4+xC51Pe4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-6U4vIbqgOXWdvg-o3vllVg-1; Sun, 17 Mar 2024 17:41:50 -0400
-X-MC-Unique: 6U4vIbqgOXWdvg-o3vllVg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BFAD101A526;
-	Sun, 17 Mar 2024 21:41:50 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.64])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DCE6740C6DAE;
-	Sun, 17 Mar 2024 21:41:48 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
-	stable@vger.kernel.org,
-	Peter Collingbourne <pcc@google.com>
-Subject: [PATCH] serial: 8250_dw: Revert: Do not reclock if already at correct rate
-Date: Sun, 17 Mar 2024 22:41:23 +0100
-Message-ID: <20240317214123.34482-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1710725049; c=relaxed/simple;
+	bh=+wfvHnwJWpfZDGn/7Sn97aBeOjz4tC3+nHOqRiSkpxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gW8cASwbPvCcWcit1LAXje6u3XfC1+EQapy8cLN6qJGUtVanhEfZZ87YxMmXLrbp10t3LNiQ/cZ9KimJTcK5qv0Br6hTJZlH8vb9AFHi1lzBh+CBUPhRiAIWgeejvjX8gqix5ubb1c8G2ugoN6slbEQmuFTMSE7YG52FNLUbf/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQozQc8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D1C433C7;
+	Mon, 18 Mar 2024 01:24:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710725048;
+	bh=+wfvHnwJWpfZDGn/7Sn97aBeOjz4tC3+nHOqRiSkpxk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uQozQc8gbodC6KvNGzCsF9tEaq1ZXPHr/ZCwmtz+4zNnZaaAeaolAH4IiW7BtsiXD
+	 A++0Do+rE427NeibdWKRcW2D+CoctBncoYacjXixE7QZ1J5U+LQo2ZJKd7yABOq1Fd
+	 KkP1sN39X2oA6G64NSbbWwYQk8Ds8HEbBzsF3CU9ls2nVmMYqWxU9nUINN4as1bE8Z
+	 PB/BvjjGbY2tgBT2S1lbaKPpB05s+Bpq/oytolz89AMYApRqnzs/KjaoDKjdR9Uh5B
+	 aUecHpRB2dQOOSZ4FYufrOgujp34GQ1c0j83eoX0TSXFKo9ebmyoF7jEespYlPz77G
+	 vB1tKj8wH3X5A==
+Date: Sun, 17 Mar 2024 20:24:06 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] PCI: qcom: Disable ASPM L0s for sc8280xp, sa8540p
+ and sa8295p
+Message-ID: <5o5vbnxfsiokjf2ahrppr26oyuqhwhdos3374r3zpexunhc5j7@yquaupvfywbz>
+References: <20240306095651.4551-1-johan+linaro@kernel.org>
+ <20240306095651.4551-4-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240306095651.4551-4-johan+linaro@kernel.org>
 
-Commit e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at
-correct rate") breaks the dw UARTs on Intel Bay Trail (BYT) and
-Cherry Trail (CHT) SoCs.
+On Wed, Mar 06, 2024 at 10:56:49AM +0100, Johan Hovold wrote:
+> Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting
+> 1.9.0 ops") started enabling ASPM unconditionally when the hardware
+> claims to support it. This triggers Correctable Errors for some PCIe
+> devices on machines like the Lenovo ThinkPad X13s when L0s is enabled,
+> which could indicate an incomplete driver ASPM implementation or that
+> the hardware does in fact not support L0s.
+> 
+> This has now been confirmed by Qualcomm to be the case for sc8280xp and
+> its derivate platforms (e.g. sa8540p and sa8295p). Specifically, the PHY
+> configuration used on these platforms is not correctly tuned for L0s and
+> there is currently no updated configuration available.
+> 
+> Add a new flag to the driver configuration data and use it to disable
+> ASPM L0s on sc8280xp, sa8540p and sa8295p for now.
+> 
+> Note that only the 1.9.0 ops enable ASPM currently.
+> 
+> Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+> Cc: stable@vger.kernel.org      # 6.7
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-Before this change the RTL8732BS Bluetooth HCI which is found
-connected over the dw UART on both BYT and CHT boards works properly:
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
-Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
-Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
-Bluetooth: hci0: RTL: fw version 0x365d462e
-
-where as after this change probing it fails:
-
-Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
-Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
-Bluetooth: hci0: command 0xfc20 tx timeout
-Bluetooth: hci0: RTL: download fw command failed (-110)
-
-Revert the changes to fix this regression.
-
-Fixes: e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at correct rate")
-Cc: stable@vger.kernel.org
-Cc: Peter Collingbourne <pcc@google.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Note it is not entirely clear to me why this commit is causing
-this issue. Maybe probe() needs to explicitly set the clk rate
-which it just got (that feels like a clk driver issue) or maybe
-the issue is that unless setup before hand by firmware /
-the bootloader serial8250_update_uartclk() needs to be called
-at least once to setup things ?  Note that probe() does not call
-serial8250_update_uartclk(), this is only called from the
-dw8250_clk_notifier_cb()
-
-This requires more debugging which is why I'm proposing
-a straight revert to fix the regression ASAP and then this
-can be investigated further.
----
- drivers/tty/serial/8250/8250_dw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index c1d43f040c43..2d1f350a4bea 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
- 	long rate;
- 	int ret;
- 
-+	clk_disable_unprepare(d->clk);
- 	rate = clk_round_rate(d->clk, newrate);
--	if (rate > 0 && p->uartclk != rate) {
--		clk_disable_unprepare(d->clk);
-+	if (rate > 0) {
- 		/*
- 		 * Note that any clock-notifer worker will block in
- 		 * serial8250_update_uartclk() until we are done.
-@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
- 		ret = clk_set_rate(d->clk, newrate);
- 		if (!ret)
- 			p->uartclk = rate;
--		clk_prepare_enable(d->clk);
- 	}
-+	clk_prepare_enable(d->clk);
- 
- 	dw8250_do_set_termios(p, termios, old);
- }
--- 
-2.44.0
-
+Regards,
+Bjorn
 
