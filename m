@@ -1,74 +1,93 @@
-Return-Path: <stable+bounces-28339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0FE87E4AB
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:04:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E47787E4E0
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D732A282858
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:04:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78FFFB2147D
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5482249FA;
-	Mon, 18 Mar 2024 08:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9473325761;
+	Mon, 18 Mar 2024 08:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9BgWtpT"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SxrBRM8i";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Vo/fvZMC";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1tE7OnNA";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SK8WSd8g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0200422EF0;
-	Mon, 18 Mar 2024 08:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D3E3214;
+	Mon, 18 Mar 2024 08:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710749044; cv=none; b=Ty/eCzhWd3ZQmd8n+JY9iqlq22K/TErFi1Jjbgs5KI2ZBLsR1eE6Lf82WOkCsEV3y2CRblmS3Q0Z6EoMB76Qhyw++t+n/gMqCU4U2ri9IizygZ2be7nmsPYeTgP0UpFSPW052eqFQPqG7LoVplAjZ/PrcXF0MJXvihA1q1LZb7U=
+	t=1710749956; cv=none; b=TUuxBPFrr5FmO+rzcPZux0WycCehbAPF5H3DWSS1WUm3mkLUKnK6ZnY9bMnnEuH7iUi/fr8BfDjbglXSMNFnt06JVI1Hl8MQTqd9jZQFjYHU3n8QHhgGJ4uomQi3/cRqIrOpPLKV8wIaVg5FDtNkWttDdxfvXwn0mCFf+S7h1xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710749044; c=relaxed/simple;
-	bh=3vCmEnziX5UWEvuq2/xW38kFQuJcvuKMTOZmCAWUM28=;
+	s=arc-20240116; t=1710749956; c=relaxed/simple;
+	bh=jCyNpBojEYM8skiM2VdPyo119Aon3YsDIQxcgK2cLNA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jepCy1DoRJC9xYYl6Rq71v6bRxovKc3oheaGaZBWe7BpfXZ4rZ2l9eodrhpIhKYLyk6ia3I+xT0GcPO8AmJEWBYDuWe501kcGYKCqB9Dm+2oQxjQY0+3bVXJDwckDdSxgHwfkNp5CuhcgNodnU//K9+oc3Q2i95T2JFSlbn6T1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9BgWtpT; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4140efa16caso5748325e9.0;
-        Mon, 18 Mar 2024 01:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710749041; x=1711353841; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8HsTPymUGbTk8Dhu5GzvAiOTv3BjGohUx/HMVJVNg0Y=;
-        b=S9BgWtpTI/Bkrwvb3w0/kWZAOXfVuerqxGORgcB5YSjxOLVU9WwbnimAC1TzaMXLGT
-         bWBu7u8v5OXrr3V/xaqX5iWi8mea4T/vW3FE9hT3OtQ/jv05vxwUCsn1JwWDWDtJek4P
-         fSC4IlB+KaCEi9OFgHvQjjdppp6/SfnGOeRnCwU90K39a6rhz3SYQjiCUgKpQJvhfanv
-         GCIeAut25Dyp0v9jP8bS8tCs3rbGI2z3U3v+j4Pji/S6/n79BQnRZGT7Tvt8lGtMX4I2
-         vIztyBUr5BoSzep5OhSQHKPXsSmyZgOGSAbu++cFherSwta+wKjazQZW/igSED8ImigW
-         qmng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710749041; x=1711353841;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8HsTPymUGbTk8Dhu5GzvAiOTv3BjGohUx/HMVJVNg0Y=;
-        b=PSgCJNsIbMjMEAYLQnznVMpNSMrKgYmcTGQCg+nkQo8L9ny5jQYIvwgdRfIW8R/lcy
-         qug6+DtSezg1F0PMrcBeh56YAb/1ErIMiR+zd3n5tF/uE0ijZ1Nb/Gk0CZ9RDYy7SCW3
-         admN2aXEKvAohaN+Zdc7fyfRYoTnqcjKyMg6pOovoo1uQl6rlbRIgylnJsGhRZDZPGDf
-         ozSB1LjDE3nLiu1ltqRA0PsECbreDUlZ42R6MWVcl6Szw3YekO07rIScfZuqiu7oCmj3
-         HdmB3A+5I+Ymx9fWK5s+iKsyBIrV6RG5NLPeYgjo/m4p1YPGJeAUUvwPvVQ+/Yv9jaZ8
-         gyYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvUfKlhZvwQRAmw0RH1ADJ3pZN6m7jm1g85GSpeT7fJewsD9AtYEj4ijgvgYF7UDzTMH9v2xeMiyyVCJVySy7+6EKvefg/J+p6hllik8IDmbxwVVX5HAWLkCq47Wa8GgE5BAX9FBJM7Gcv+w5lAoJOPjC50T4UJ2yrYuqOJtEv
-X-Gm-Message-State: AOJu0YwB4iaBLw7Azat5tXd7b1QJzvDl9tevDGiyJ3tLMQhvYI8z4EGn
-	c6pXm+kvygwtLwHaM/adjzJH6XqvlJOU1uf5M/pNX5ychvG3KJJO
-X-Google-Smtp-Source: AGHT+IHiIcwaCjaAYDBE/L1WHBdH7fRwmwDNjKgiKAAV6Ck86e4BFePlref4DCZaMSV55hpgKkJz7Q==
-X-Received: by 2002:a05:600c:4fce:b0:413:2e2b:bad2 with SMTP id o14-20020a05600c4fce00b004132e2bbad2mr8908160wmq.5.1710749041214;
-        Mon, 18 Mar 2024 01:04:01 -0700 (PDT)
-Received: from [192.168.20.170] (57657817.catv.pool.telekom.hu. [87.101.120.23])
-        by smtp.gmail.com with ESMTPSA id f13-20020a05600c154d00b00413f25d9104sm13634639wmg.40.2024.03.18.01.03.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Mar 2024 01:04:00 -0700 (PDT)
-Message-ID: <781ea033-6749-4a3b-bc2c-14bb753dcdb6@gmail.com>
-Date: Mon, 18 Mar 2024 09:03:58 +0100
+	 In-Reply-To:Content-Type; b=RuzSur4jr2/rTn4Dh8fOU1vXhYMUmOUfGrXFlvT333+EiFwfrQjHmL9lDoGFyY4CCO0DC9LZyj7PQ13v0iAshuNPb38S2v02rSbIbgtiAN0uoXKbUSD6ZRrYsJNZKrtu/cZUGxMwWQ19iaOHaIwkfKW8gnjMJte0WvA37XAv1/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SxrBRM8i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Vo/fvZMC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1tE7OnNA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SK8WSd8g; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 553A3347CA;
+	Mon, 18 Mar 2024 08:19:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710749952; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
+	b=SxrBRM8iPDRhEkiH2DDaF6XaefKRwTfenYvQvv5hAuC57QtyfmJAsQTY7VdojLu9caXf0j
+	PeD1YhHZWAlDAqHNTOxHBAMPO3L47b5bWUWJ0ADLXsRWpbH+L+1ORcjLc0ULHoDrFoWB0+
+	BCLx/IoaLRiGyOCVMg7pnN4f2dKQOY4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710749952;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
+	b=Vo/fvZMCRgavd4IzcTjFfm+WlXzmgsuEmyemwoEzQOSGIAJiy/I6VcCGLc1K40Ov/p5T5J
+	6Nxv8m0RuSxPYBCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710749950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
+	b=1tE7OnNAtCg5PPxBFhHRM1QNs/V2PiBnvAFFzjWqwwBnujq2e8L4f78Hcp5uwN6t2NsckK
+	IvD7jVRe87pszgzo+cGPn5YOUw+KLl31OZohVR1+A64LbeE+sKNlf6lR8CXBATjyPeqFjT
+	xdmj7kJ4+NgxQ+6Z0GVk4HcFsp1Su80=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710749950;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PmD/vXhhbIB4W6fQy3iZFyuOYVUSG8TcxCK0mIwJpzY=;
+	b=SK8WSd8gro2eT8/E5DCcpxNiAjy5YFWRDlwRIQ1oyugjPRrfDRXvxqb39uTHJ8RYZYjatw
+	y9RVsif2wHKNYkDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 069781389C;
+	Mon, 18 Mar 2024 08:19:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id l05SAP7492XkMwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 18 Mar 2024 08:19:10 +0000
+Message-ID: <4eea339c-48b0-416e-90a5-87f90ea5bf1d@suse.de>
+Date: Mon, 18 Mar 2024 09:19:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,49 +95,171 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] clk: qcom: apss-ipq-pll: use stromer ops for IPQ5018
- to fix boot failure
-Content-Language: hu
-To: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Sricharan Ramabadhran <quic_srichara@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com>
- <7d0e81fd-8cc2-46f2-bc12-759a0d48e3ae@quicinc.com>
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <7d0e81fd-8cc2-46f2-bc12-759a0d48e3ae@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 01/43] drm/fbdev-generic: Do not set physical framebuffer
+ address
+Content-Language: en-US
+To: Javier Martinez Canillas <javierm@redhat.com>, daniel@ffwll.ch,
+ airlied@gmail.com, deller@gmx.de
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Zack Rusin <zackr@vmware.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, stable@vger.kernel.org
+References: <20240312154834.26178-1-tzimmermann@suse.de>
+ <20240312154834.26178-2-tzimmermann@suse.de>
+ <87a5mxgha0.fsf@minerva.mail-host-address-is-not-set>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <87a5mxgha0.fsf@minerva.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -4.29
+X-Spamd-Result: default: False [-4.29 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 BAYES_HAM(-3.00)[100.00%];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[10];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,vmware.com:email,intel.com:email,bootlin.com:url];
+	 FREEMAIL_TO(0.00)[redhat.com,ffwll.ch,gmail.com,gmx.de];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Flag: NO
 
-2024. 03. 18. 6:39 keltezéssel, Kathiravan Thirumoorthy írta:
+Hi
 
-...
+Am 17.03.24 um 13:43 schrieb Javier Martinez Canillas:
+> Thomas Zimmermann <tzimmermann@suse.de> writes:
+>
+> Hello Thomas,
+>
+>> Framebuffer memory is allocated via vmalloc() from non-contiguous
+> It's vmalloc() true, but through vzmalloc() so I would mention that
+> function instead in the commit message.
 
->> Changes in v2:
->>    - extend commit description due to the changes
->>    - add a comment about why CLK_ALPHA_PLL_TYPE_STROMER_PLUS register offsets
->>      are used
->>    - constify hw clock init data (Stephen)
->>    - change pll_type in ipq5018_pll_data to CLK_ALPHA_PLL_TYPE_STROMER (Konrad)
->>    - Link to v1:
->> https://lore.kernel.org/r/20240311-apss-ipq-pll-ipq5018-hang-v1-1-8ed42b7a904d@gmail.com
-> 
-> 
-> I don't see a reason why my tags are dropped, nevertheless
+Ok.
 
-Sorry, that is my fault. Since I have modified the patch, I was not sure that
-the tags are applicable to the new version or not.
+>
+>> physical pages. The physical framebuffer start address is therefore
+>> meaningless. Do not set it.
+>>
+>> The value is not used within the kernel and only exported to userspace
+>> on dedicated ARM configs. No functional change is expected.
+>>
+> How's that info used? Does user-space assumes that the whole memory range
+> is contiguous in physical memory or just cares about the phyisical start
+> address ?
 
-> Tested-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-> Reviewed-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+I assume that it is supposed to refer to contiguous memory. There's the 
+corresponding field smem_len, which refers to the full memory.
 
-Thanks!
+>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: Javier Martinez Canillas <javierm@redhat.com>
+>> Cc: Zack Rusin <zackr@vmware.com>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: <stable@vger.kernel.org> # v6.4+
+>> ---
+>>   drivers/gpu/drm/drm_fbdev_generic.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
+>> index d647d89764cb9..b4659cd6285ab 100644
+>> --- a/drivers/gpu/drm/drm_fbdev_generic.c
+>> +++ b/drivers/gpu/drm/drm_fbdev_generic.c
+>> @@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
+>>   	/* screen */
+>>   	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
+>>   	info->screen_buffer = screen_buffer;
+>> -	info->fix.smem_start = page_to_phys(vmalloc_to_page(info->screen_buffer));
+>>   	info->fix.smem_len = screen_size;
+>>   
+> Makes sense:
+>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+>
+> What about drivers/gpu/drm/drm_fb_helper.c btw? Since the memory range
+> allocated may not be physically contiguous if a platform uses an IOMMU ?
+>
+> Asking because I don't really know how these exported values are used...
+> I just know that is when the CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is enabled.
 
--Gabor
+The value of smem_start is used in the fbdev code in only two places : 
+deferred I/O [1] and devfile I/O [2]. For the former, patch 5 of this 
+series adds an additional test. The latter case is only relevant for 
+framebuffers in I/O memory space. But that does not affect 
+fbdev-generic, which has the shadow buffer in main memory. Some 
+driver-internal fbdev code sets smem_length, such as in gma500, but 
+these drivers are special anyway.
+
+For what userspace does with this value IDK. But it can't be much, as 
+we've had smem_start cleared for years.
+
+Best regards
+Thomas
+
+[1] 
+https://elixir.bootlin.com/linux/v6.8/source/drivers/video/fbdev/core/fb_defio.c#L34
+[2] 
+https://elixir.bootlin.com/linux/v6.8/source/drivers/video/fbdev/core/fb_io_fops.c#L143
+
+>
+> --
+> Best regards,
+>
+> Javier Martinez Canillas
+> Core Platforms
+> Red Hat
+>
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
