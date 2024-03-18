@@ -1,152 +1,170 @@
-Return-Path: <stable+bounces-28384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F3F87F065
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 20:25:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB3387F09C
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 20:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4953C1F22824
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 19:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9469D1C21417
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 19:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00B156B60;
-	Mon, 18 Mar 2024 19:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4D75733F;
+	Mon, 18 Mar 2024 19:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uS5ZK69Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eo0nF5R6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC9555C16;
-	Mon, 18 Mar 2024 19:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED61D56B65;
+	Mon, 18 Mar 2024 19:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710789915; cv=none; b=Qtm+Ax/X9dd3vbyHQuFde/0mqgHtMIfyQnB8jE7T/d2Hf89gOSUnS2eRscKMPSIHzwi/qosKS/ECr1CGihqYHORNhp1/ntBFkYOX3OFs5cHeet9LrEPy9OMtqA7Aiyr6C6Gq9k2kpTqaRP3DXAeQ70KGHulk+V7eCFa1x5FEvAw=
+	t=1710791687; cv=none; b=ujea2S4uFqRfXQgYO4KrAkueMwX3PVTM7m8hfV9xlKrKi9RL41bRqgHfp0YR6Ujx+j1ecuK7X5Xas7y0ZOqCV6WP4lyMF0/Zz+kW+GJwlT/cZXEp/MFmWDKhTcKKCrtowp2GwGcmRFufsDIHJU6eMDNruDU1VXVik6o+/GHa5nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710789915; c=relaxed/simple;
-	bh=Av/ON1HOSRbDOn3Trqb+akXjfyDeOtmnnvfxi2FEdyM=;
-	h=Date:To:From:Subject:Message-Id; b=lwDya6uiPW4jj9OcYimglwzLvbekOXvGoKtXbkcla+11O2LZGNiTR5zyAcyj6SupNf25XGluad6tG2kB934toV753D9b9G/uz/rquZijCiIXpBCo9WFVUn+tx20C5wKezqukUR3Vk/K80FxLHoJf18ynjFi0M3E1R56ctSVQynw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uS5ZK69Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D76AC433F1;
-	Mon, 18 Mar 2024 19:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1710789915;
-	bh=Av/ON1HOSRbDOn3Trqb+akXjfyDeOtmnnvfxi2FEdyM=;
-	h=Date:To:From:Subject:From;
-	b=uS5ZK69Q2Fb5DtXKHnkIy81U72tUWbkB2djyFJOvCUvDjzUkORPcEOlkYpLF6teDY
-	 rR6g3GgS1k+Gr4+eOd0fD6ko1H/Euikc6W2adkrfYpyMaxzVh27o1WBAWydSJe0Ast
-	 nMwd4NFFxTKPsreArX3KLfrovXbPZGGHl8QhHysE=
-Date: Mon, 18 Mar 2024 12:25:14 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nphamcs@gmail.com,jannh@google.com,chengming.zhou@linux.dev,hannes@cmpxchg.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-cachestat-fix-two-shmem-bugs.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240318192515.4D76AC433F1@smtp.kernel.org>
+	s=arc-20240116; t=1710791687; c=relaxed/simple;
+	bh=s/GlI77nhpoyF7nqB57RZS8CBs9kgoviJP8LQwcdaAc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FbZvES+J1nCWSSfOcW/bNuKihgTMjUIG99QIPGl66VJ2TMxjCE+Fo8w50n97QTSLffzpaQkCAYKaRIFG0QXQQUqMDdNBijGxdUhxgDmTFbJArFB5zcKOd5LXruxBXhZWSaqhJaQrpKnQqN1vh0+gqI4jIVw00Ivrj2O//KmsZto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eo0nF5R6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C052C433F1;
+	Mon, 18 Mar 2024 19:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710791686;
+	bh=s/GlI77nhpoyF7nqB57RZS8CBs9kgoviJP8LQwcdaAc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Eo0nF5R6r9txrHFwPWE5OTKXgMViY/YI6pJWiihFa/b1kVkuHiHfO9xATgklQZbgN
+	 S6Q5IJV4ADBIV5GvhJ66VeGJProypYVi0eNsvbVPVjA4YLpb6xn191t/qIe8mNCZ+q
+	 GzyvbFMg5KKp6c71RpMERyYCBzhCgma6E1OZt+twLD8d7pEwsN1l7NztYeeo+VBF+/
+	 n7Hci9VCaI78l4aAxuINA9kYorLjyCZFn09zfGn9JK2rF2us4n5W5VH3UgVueVkX8y
+	 ac5oaHhKqJpUAt+5bRW5IThFLUnio6U3DO/uHa7rimVBrYH0ncDXUrDqmgxbcFbOez
+	 rgW6qjQFDGCrA==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a468004667aso496311366b.2;
+        Mon, 18 Mar 2024 12:54:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVXHtB2pTyng8vr6CwVFrykP1/yPBSLSU6O+GjTcCVGRuDIlAI4Mx5Hg4ZnXNeosIdEWPncsbjVOg9ryziO2NbDXKvQio7IA08J0ypLqsBhwmEAfFlGLkubYuS9s9qWNWj7aqY=
+X-Gm-Message-State: AOJu0YxHyvAIuI1ijBIZNAujFkMvZ/r0Z+FYnPIOUkOiJbGYsJmbccf3
+	d9NavdV90xIJwgY3ZgyOzt54DF5JtpRlreFDBfOgjbMDMDpyIDhsXQhC21LcfFwUvPAU6CJ+tt1
+	PqSQwASKuqHb8qg5VtxsByrKzQgQ=
+X-Google-Smtp-Source: AGHT+IFcvmpMRMxhrxS0jPVzAOQddA1tbYien6oVUFIPuNadw5dSlNWCK60hq0TBhfPIBVFlcSsxup1vREoeUoq7p2s=
+X-Received: by 2002:a17:906:33c8:b0:a46:8daa:436f with SMTP id
+ w8-20020a17090633c800b00a468daa436fmr5825491eja.69.1710791685020; Mon, 18 Mar
+ 2024 12:54:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <cover.1710409033.git.wqu@suse.com> <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
+ <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com> <0d28c03f-56f1-4c7c-b278-bf5ea6de08e7@gmx.com>
+In-Reply-To: <0d28c03f-56f1-4c7c-b278-bf5ea6de08e7@gmx.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Mon, 18 Mar 2024 19:54:08 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H6Q=VjLemvU15D7tnUJNPi3spctDbnk06SPxdDKcqSJrg@mail.gmail.com>
+Message-ID: <CAL3q7H6Q=VjLemvU15D7tnUJNPi3spctDbnk06SPxdDKcqSJrg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] btrfs: reduce the log level for btrfs_dev_stat_inc_and_print()
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Mar 14, 2024 at 8:26=E2=80=AFPM Qu Wenruo <quwenruo.btrfs@gmx.com> =
+wrote:
+>
+>
+>
+> =E5=9C=A8 2024/3/15 03:47, Filipe Manana =E5=86=99=E9=81=93:
+> > On Thu, Mar 14, 2024 at 9:54=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+> >>
+> >> Currently when we increase the device statistics, it would always lead
+> >> to an error message in the kernel log.
+> >>
+> >> I would argue this behavior is not ideal:
+> >>
+> >> - It would flood the dmesg and bury real important messages
+> >>    One common scenario is scrub.
+> >>    If scrub hit some errors, it would cause both scrub and
+> >>    btrfs_dev_stat_inc_and_print() to print error messages.
+> >>
+> >>    And in that case, btrfs_dev_stat_inc_and_print() is completely
+> >>    useless.
+> >>
+> >> - The results of btrfs_dev_stat_inc_and_print() is mostly for history
+> >>    monitoring, doesn't has enough details
+> >>
+> >>    If we trigger the errors during regular read, such messages from
+> >>    btrfs_dev_stat_inc_and_print() won't help us to locate the cause
+> >>    either.
+> >>
+> >> The real usage for the btrfs device statistics is for some user space
+> >> daemon to check if there is any new errors, acting like some checks on
+> >> SMART, thus we don't really need/want those messages in dmesg.
+> >>
+> >> This patch would reduce the log level to debug (disabled by default) f=
+or
+> >> btrfs_dev_stat_inc_and_print().
+> >> For users really want to utilize btrfs devices statistics, they should
+> >> go check "btrfs device stats" periodically, and we should focus the
+> >> kernel error messages to more important things.
+> >
+> > Not sure if this is the right thing to do.
+> >
+> > In the scrub context it can be annoying for sure.
+> > Other cases I'm not so sure about, because having error messages in
+> > dmesg/syslog may help notice issues more quickly.
+>
+> For non-scrub cases, I'd argue we already have enough output:
+>
+> No matter if the error is fixed or not, every time a mirror got csum
+> mismatch or other errors, we already have error message output:
+>
+>   Data: btrfs_print_data_csum_error()
+>   Meta: btrfs_validate_extent_buffer()
+>
+> For repaired ones, we have extra output from bio layer for both metadata
+> and data:
+>   btrfs_repair_io_failure()
+>
+> So I'd say the dev_stat ones are already duplicated.
 
-The patch titled
-     Subject: mm: cachestat: fix two shmem bugs
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-cachestat-fix-two-shmem-bugs.patch
+Ok, I suppose it's fine then.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-cachestat-fix-two-shmem-bugs.patch
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Johannes Weiner <hannes@cmpxchg.org>
-Subject: mm: cachestat: fix two shmem bugs
-Date: Fri, 15 Mar 2024 05:55:56 -0400
-
-When cachestat on shmem races with swapping and invalidation, there
-are two possible bugs:
-
-1) A swapin error can have resulted in a poisoned swap entry in the
-   shmem inode's xarray. Calling get_shadow_from_swap_cache() on it
-   will result in an out-of-bounds access to swapper_spaces[].
-
-   Validate the entry with non_swap_entry() before going further.
-
-2) When we find a valid swap entry in the shmem's inode, the shadow
-   entry in the swapcache might not exist yet: swap IO is still in
-   progress and we're before __remove_mapping; swapin, invalidation,
-   or swapoff have removed the shadow from swapcache after we saw the
-   shmem swap entry.
-
-   This will send a NULL to workingset_test_recent(). The latter
-   purely operates on pointer bits, so it won't crash - node 0, memcg
-   ID 0, eviction timestamp 0, etc. are all valid inputs - but it's a
-   bogus test. In theory that could result in a false "recently
-   evicted" count.
-
-   Such a false positive wouldn't be the end of the world. But for
-   code clarity and (future) robustness, be explicit about this case.
-
-   Bail on get_shadow_from_swap_cache() returning NULL.
-
-Link: https://lkml.kernel.org/r/20240315095556.GC581298@cmpxchg.org
-Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reported-by: Chengming Zhou <chengming.zhou@linux.dev>	[Bug #1]
-Reported-by: Jann Horn <jannh@google.com>		[Bug #2]
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>				[v6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/filemap.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
---- a/mm/filemap.c~mm-cachestat-fix-two-shmem-bugs
-+++ a/mm/filemap.c
-@@ -4197,7 +4197,23 @@ static void filemap_cachestat(struct add
- 				/* shmem file - in swap cache */
- 				swp_entry_t swp = radix_to_swp_entry(folio);
- 
-+				/* swapin error results in poisoned entry */
-+				if (non_swap_entry(swp))
-+					goto resched;
-+
-+				/*
-+				 * Getting a swap entry from the shmem
-+				 * inode means we beat
-+				 * shmem_unuse(). rcu_read_lock()
-+				 * ensures swapoff waits for us before
-+				 * freeing the swapper space. However,
-+				 * we can race with swapping and
-+				 * invalidation, so there might not be
-+				 * a shadow in the swapcache (yet).
-+				 */
- 				shadow = get_shadow_from_swap_cache(swp);
-+				if (!shadow)
-+					goto resched;
- 			}
- #endif
- 			if (workingset_test_recent(shadow, true, &workingset))
-_
-
-Patches currently in -mm which might be from hannes@cmpxchg.org are
-
-mm-cachestat-fix-two-shmem-bugs.patch
-
+>
+> Thanks,
+> Qu
+> >
+> >>
+> >> CC: stable@vger.kernel.org
+> >> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> >> ---
+> >>   fs/btrfs/volumes.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+> >> index e49935a54da0..126145950ed3 100644
+> >> --- a/fs/btrfs/volumes.c
+> >> +++ b/fs/btrfs/volumes.c
+> >> @@ -7828,7 +7828,7 @@ void btrfs_dev_stat_inc_and_print(struct btrfs_d=
+evice *dev, int index)
+> >>
+> >>          if (!dev->dev_stats_valid)
+> >>                  return;
+> >> -       btrfs_err_rl_in_rcu(dev->fs_info,
+> >> +       btrfs_debug_rl_in_rcu(dev->fs_info,
+> >>                  "bdev %s errs: wr %u, rd %u, flush %u, corrupt %u, ge=
+n %u",
+> >>                             btrfs_dev_name(dev),
+> >>                             btrfs_dev_stat_read(dev, BTRFS_DEV_STAT_WR=
+ITE_ERRS),
+> >> --
+> >> 2.44.0
+> >>
+> >>
+> >
 
