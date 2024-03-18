@@ -1,135 +1,160 @@
-Return-Path: <stable+bounces-28325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8442587E22D
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 03:36:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99F687E291
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 04:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1460EB22BCA
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 02:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DE2F1F23196
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 03:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B4FEEB9;
-	Mon, 18 Mar 2024 02:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="B8M+Ppsf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629E61E89A;
+	Mon, 18 Mar 2024 03:30:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116C21E865
-	for <stable@vger.kernel.org>; Mon, 18 Mar 2024 02:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689D9208A4;
+	Mon, 18 Mar 2024 03:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710729370; cv=none; b=nW5kgE4AEYZBfu4jr3nQkOuNSgK62n+e0BmDYEaKbO23UAnPpam6zH2IeEmEdKsgMmMNk828ib1XaDj9RjFnnmUGrwBQX5eQdAmHDoN+ue3sf4/7wIBZjEl/KI4jt1frhQaqzSR4hNET3ekehtbOnFxdNIbjdcYbA+H4zD+Ex2Q=
+	t=1710732630; cv=none; b=rdwgFdKavxg1/9+VglQ3dwaBCMX/HYy5tJ0xh3ftNpicIHtYeRMzuT9TE8vNAr4/ttPhdNcpzU6L67oRSmzFLcm52YcRlDmofn1SvR42OtpSvmcwM77uegNOKuVmUP6dZUyXCMDhhp/COpjP3s8mlovEYE147yr8uNIhpKgh7Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710729370; c=relaxed/simple;
-	bh=aE7cMjzEli5RA10NMhV+qAuRtVdMkyVO37/DBmmyLVQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XvcD1i0XU3b9T7KfPYoUG4lXHBNbYJc9xC3vEg2+WBFrySWuHRDcg5jlo7oZ/4b5jqAjMMKDD3LG/eDeB5CmOI5ELyuw13T7kNVOjXoHmoZRca7jABgSKfG5RzBGKO/GIKnz8RErOFQDO/5fFqMRqScXXdEpqw8/om5Hr0qu8QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=B8M+Ppsf; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-60a0579a968so41562997b3.3
-        for <stable@vger.kernel.org>; Sun, 17 Mar 2024 19:36:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1710729368; x=1711334168; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=onywNPKbW4SZgpTt9qm8DWaaYeZm4QLeQe7ttJakLWY=;
-        b=B8M+Ppsf45gDfdzdV23G14eHOdWpL+2UyeKvMxcaPBWi9F0Edki3qZ2UvKP4+UDwoT
-         L7unpb2Zje552Av+F2fRuFHFSSi3FzPnOlPp0/8p+QnbyD1/CudGxfYc668mQNfZkKdP
-         T9m90anWMgfRlkRdQLhrzq1WmVHVPp0iFdCPU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710729368; x=1711334168;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=onywNPKbW4SZgpTt9qm8DWaaYeZm4QLeQe7ttJakLWY=;
-        b=RRRy5nsx89GMScOW6YhcTt/3ltHxpxTxAjLU695tJ1OtUeiNSSmGBGX9DbX6W2tOUy
-         dOU0ddTAGmfSXrEWnYMEzbGThbVUcVMWer99tBO/Jnosz8JxZoP0ChM7ekDdJ41YZdBD
-         JU2jNdN+dbuwRNbPsIeh69C+w+pIowUgdahESO3n6c51V3ytsyzbZpC3bSKz1cmfgh1e
-         rYwahe3n9uQexsBKzlaHDrVpHpdfkDw10MksyramVEgmAQYv+DpBrC1N9XNwkNMz+Xu8
-         qIcnAYGgFaq5mOhXT2Sxb8lYiBSRvcLcye7MkT5//3vamsNovH2i1Z27dXCbCBB9Pj6M
-         5hBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnm2kJ/T1GIk70P0sYDs0JHeI+VOYd0iXdjneDagOMtbS0ZNETKaBOXWAxpFowpcxOP+cBdkf0nRSRUF2S7c4naFmI2cQF
-X-Gm-Message-State: AOJu0YwOjlIw50nER8cSNTsxrXLe0gGcNVtm0WTDTB7IC6lL7MTYkK3M
-	Ot9ZzrfpaVwEsrvTxApGN6Js5tkc6hse8NER9YSsfLbwXOvjAXTQ9SstuC2UVqkBhsfS+qPlmiC
-	CV7U5AmYjJh9/2FjLbmbGoyoAU6PsSlwkqiw7
-X-Google-Smtp-Source: AGHT+IF8Ma8x3gNXeQfamz040zfqaKcyTg7HlRt8R3vClPLYzuMu0ectkxpFm+mVy3jO+dqSXQ9+jI2cike4if/mGQo=
-X-Received: by 2002:a81:8410:0:b0:60a:7cc:24ab with SMTP id
- u16-20020a818410000000b0060a07cc24abmr9714623ywf.37.1710729368080; Sun, 17
- Mar 2024 19:36:08 -0700 (PDT)
+	s=arc-20240116; t=1710732630; c=relaxed/simple;
+	bh=EMgNM80bPZ4CDOuBL+T0inL+ZN+YgA6L9AcGFFdTTR4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=pX6t/s/v0G9ygE+wq9U28zjVlHb1GMYhmFstdL4JBYjmx9bAAaKfJZkPrzVBvk0LDJPtIFgr6+4w20R5NNOqWK2dZZp+lhR/xCnIAwMCH4yEe268WqjGDiMzJ+G6dIQFRoI8zSjve6fX/yJ39NfYQ+RjZSE9rFm4OKzXZA+wq1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Tyg1H2ZSjz1FMlh;
+	Mon, 18 Mar 2024 11:13:55 +0800 (CST)
+Received: from dggpemd100002.china.huawei.com (unknown [7.185.36.164])
+	by mail.maildlp.com (Postfix) with ESMTPS id 23FF1140381;
+	Mon, 18 Mar 2024 11:14:16 +0800 (CST)
+Received: from [10.67.110.48] (10.67.110.48) by dggpemd100002.china.huawei.com
+ (7.185.36.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Mon, 18 Mar
+ 2024 11:14:15 +0800
+Message-ID: <07a3c30d-5a81-4b99-8090-38753b650432@huawei.com>
+Date: Mon, 18 Mar 2024 11:14:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240312154834.26178-1-tzimmermann@suse.de> <20240312154834.26178-2-tzimmermann@suse.de>
-In-Reply-To: <20240312154834.26178-2-tzimmermann@suse.de>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Sun, 17 Mar 2024 22:35:57 -0400
-Message-ID: <CABQX2QPJJFrARdteFFZ8f33hvDx-HSyOQJQ7AMFK4C8C=BquTQ@mail.gmail.com>
-Subject: Re: [PATCH 01/43] drm/fbdev-generic: Do not set physical framebuffer address
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: daniel@ffwll.ch, airlied@gmail.com, deller@gmx.de, javierm@redhat.com, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Zack Rusin <zackr@vmware.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 5.10] serial: sc16is7xx: convert from _raw_ to
+ _noinc_ regmap functions for FIFO
+Content-Language: en-US
+From: Gong Ruiqi <gongruiqi1@huawei.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+	<jirislaby@kernel.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>
+CC: Jon Ringle <jringle@gridpoint.com>, <linux-serial@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Wang Weiyang <wangweiyang2@huawei.com>,
+	<stable@vger.kernel.org>
+References: <20240318025259.1412353-1-gongruiqi1@huawei.com>
+In-Reply-To: <20240318025259.1412353-1-gongruiqi1@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemd100002.china.huawei.com (7.185.36.164)
 
-On Tue, Mar 12, 2024 at 11:48=E2=80=AFAM Thomas Zimmermann <tzimmermann@sus=
-e.de> wrote:
->
-> Framebuffer memory is allocated via vmalloc() from non-contiguous
-> physical pages. The physical framebuffer start address is therefore
-> meaningless. Do not set it.
->
-> The value is not used within the kernel and only exported to userspace
-> on dedicated ARM configs. No functional change is expected.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Zack Rusin <zackr@vmware.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: <stable@vger.kernel.org> # v6.4+
+Oops. + Cc stable@vger.kernel.org
+
+On 2024/03/18 10:52, GONG, Ruiqi wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
+> 
+> The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+> initial register address is sent ($00), followed by all the FIFO data
+> without having to resend the register address each time. In this mode, the
+> IC doesn't increment the register address for each R/W byte.
+> 
+> The regmap_raw_read() and regmap_raw_write() are functions which can
+> perform IO over multiple registers. They are currently used to read/write
+> from/to the FIFO, and although they operate correctly in this burst mode on
+> the SPI bus, they would corrupt the regmap cache if it was not disabled
+> manually. The reason is that when the R/W size is more than 1 byte, these
+> functions assume that the register address is incremented and handle the
+> cache accordingly.
+> 
+> Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+> remove the manual cache control which was a workaround when using the
+> _raw_ versions. FIFO registers are properly declared as volatile so
+> cache will not be used/updated for FIFO accesses.
+> 
+> Fixes: dfeae619d781 ("serial: sc16is7xx")
+> Cc:  <stable@vger.kernel.org>
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
 > ---
->  drivers/gpu/drm/drm_fbdev_generic.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fb=
-dev_generic.c
-> index d647d89764cb9..b4659cd6285ab 100644
-> --- a/drivers/gpu/drm/drm_fbdev_generic.c
-> +++ b/drivers/gpu/drm/drm_fbdev_generic.c
-> @@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct d=
-rm_fb_helper *fb_helper,
->         /* screen */
->         info->flags |=3D FBINFO_VIRTFB | FBINFO_READS_FAST;
->         info->screen_buffer =3D screen_buffer;
-> -       info->fix.smem_start =3D page_to_phys(vmalloc_to_page(info->scree=
-n_buffer));
->         info->fix.smem_len =3D screen_size;
->
->         /* deferred I/O */
-> --
-> 2.44.0
->
-
-Good idea. I think given that drm_leak_fbdev_smem is off by default we
-could remove the setting of smem_start by all of the in-tree drm
-drivers (they all have open source userspace that won't mess around
-with fbdev fb) - it will be reset to 0 anyway. Actually, I wonder if
-we still need drm_leak_fbdev_smem at all...
-
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-
-z
+> 
+> The mainline commit dbf4ab821804 ("serial: sc16is7xx: convert from _raw_
+> to _noinc_ regmap functions for FIFO") by Hugo has been assigned to be
+> CVE-2023-52488, but for stable branches lower than 6.1 there's no
+> official backport.
+> 
+> I made up this backport patch for 5.10, and its correctness has been
+> confirmed in previous communication with Hugo. Let's publicize it and
+> merge it into upstream.
+> 
+>  drivers/tty/serial/sc16is7xx.c | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index 31e0c5c3ddea..29f05db0d49b 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -376,9 +376,7 @@ static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
+>  	const u8 line = sc16is7xx_line(port);
+>  	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
+>  
+> -	regcache_cache_bypass(s->regmap, true);
+> -	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
+> -	regcache_cache_bypass(s->regmap, false);
+> +	regmap_noinc_read(s->regmap, addr, s->buf, rxlen);
+>  }
+>  
+>  static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+> @@ -394,9 +392,7 @@ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+>  	if (unlikely(!to_send))
+>  		return;
+>  
+> -	regcache_cache_bypass(s->regmap, true);
+> -	regmap_raw_write(s->regmap, addr, s->buf, to_send);
+> -	regcache_cache_bypass(s->regmap, false);
+> +	regmap_noinc_write(s->regmap, addr, s->buf, to_send);
+>  }
+>  
+>  static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+> @@ -489,6 +485,11 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+>  	return false;
+>  }
+>  
+> +static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+> +{
+> +	return reg == SC16IS7XX_RHR_REG;
+> +}
+> +
+>  static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+>  {
+>  	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+> @@ -1439,6 +1440,8 @@ static struct regmap_config regcfg = {
+>  	.cache_type = REGCACHE_RBTREE,
+>  	.volatile_reg = sc16is7xx_regmap_volatile,
+>  	.precious_reg = sc16is7xx_regmap_precious,
+> +	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
+> +	.readable_noinc_reg = sc16is7xx_regmap_noinc,
+>  };
+>  
+>  #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
 
