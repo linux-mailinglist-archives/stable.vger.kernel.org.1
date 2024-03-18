@@ -1,111 +1,148 @@
-Return-Path: <stable+bounces-28342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFF787E503
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:34:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F0287E520
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 09:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1456281F9D
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:34:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A031F22290
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 08:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E354422086;
-	Mon, 18 Mar 2024 08:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC390286BF;
+	Mon, 18 Mar 2024 08:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSEd7k75"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3760E28DA5;
-	Mon, 18 Mar 2024 08:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA426AD8;
+	Mon, 18 Mar 2024 08:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710750875; cv=none; b=ocoZ7OTOv9p3sBI1jLf2K2FA2g8JydPsw9n3iYK7dPvD9lO+tMl7yEX6yAthlqpol5usQgTvydZ+zbu4WABPQ1kTfB0dQOhQE6lT4vnMO2gxGjQYpbHPf7eYGdygEVKVMY3Vf+nihGM7Eulm3n5rH7I/K7g3uJZtkM7cGH8ifBY=
+	t=1710751457; cv=none; b=lAq4ipeAop024IhpIJd4O1H1JmBXSUiIO9NSuNzC81lc48tYqa0TYuj57beIRHeD9CPqDyxeEUlO8Dt4atIhH1sRBwV3dURJftXtAstYe23XFwU0xwls+dv/Lg+SbP2qLAfORwITI14ZlNTc+nbRM8PCqc1PfXRZFkAabE4tyxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710750875; c=relaxed/simple;
-	bh=GsSIX3/CTa3M1g8uCjDs57wTL5NgRRrzEvE8JpLC1fo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/B4OuhmY99QKRUb9No/k89+hTGBKMn/Ro+K2OmEaxFNDkoDitg+YJMcqO8JK10pDvAjOAoyYckVZ7gItjWEXoYbIBtUIzPyndKe39EhLBzthRc1G8H3r+9QujMfrq6GwNePhro4fKNfQCA9kDTW1Uy1Pl9OurvCmcD8WjwkP0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c213690558so2066500b6e.0;
-        Mon, 18 Mar 2024 01:34:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710750873; x=1711355673;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CvZQxWeSLOGmfnR+hu9jNLf/b2B+AxMGzTGTFwxzF5I=;
-        b=r9JOi+YXdcP+O4/DEU3jCw3elX3i1qg5WGBVAyzRB3A1jMgGjWQLanWF6XXExWmGPy
-         UuSQVo1QCalrRryabrBscjq328twg4rKSBbuof6tLdrfmvrF2c1GHC6rZryawQMffBrB
-         wZl5UFb5w7ttgQeoaqw7o8MutRk+T/b9oYIms0nkIY5faQQ89pvQXB6ZYVirDDrftvKK
-         MfoOUUhYI5Ry0Y/3KLTFuRard96R5h12pPj64S+UUl+iISipsb1+aEgIY2Zo8NEUrX9a
-         P00pPdnxQetdP/zmNXuVwTLnKy9CA3kn8u1kOsCCcuE0G+Giahf6vfI/YqRaJ54DJror
-         kTDw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGB0KDrzSZ/yfzm3U0VytxH+Wekg5QRpqOni8Zbb7JoJIQUUiZBepP/a2VEtMF+meLKA0rbgRyjfBRxbSxHI47tWuwknRwM/1Stq0kuvD0jNQyplHcBfWcRVdNoChRU94wGDtnn/uAvgM=
-X-Gm-Message-State: AOJu0Yz2Y3QuIMPwiOOGQyHshTXGB/c1zWPbDqtOV0tYOKc6qI5Oztx8
-	QqOYMYpuySf1ywZYjOmy4wYgtJtMol9sNE0jEAUvgztPkfW9BEr2cXY2ej45
-X-Google-Smtp-Source: AGHT+IGCTIYygH5ykNVKGapiN9rp8xjMRzpLhbU6cnFH/ODSTdenylh9aj9/DXgQizVHZfFwtpUnFQ==
-X-Received: by 2002:a05:6808:20a9:b0:3c3:7434:78be with SMTP id s41-20020a05680820a900b003c3743478bemr11360013oiw.27.1710750873353;
-        Mon, 18 Mar 2024 01:34:33 -0700 (PDT)
-Received: from [10.16.0.238] ([5.32.53.86])
-        by smtp.gmail.com with ESMTPSA id v2-20020aa78082000000b006e6b39e040esm7385003pff.165.2024.03.18.01.34.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Mar 2024 01:34:32 -0700 (PDT)
-Message-ID: <7ce0d4b7-2e4d-44a7-b268-3e2505e01abe@linux.com>
-Date: Mon, 18 Mar 2024 12:34:24 +0400
+	s=arc-20240116; t=1710751457; c=relaxed/simple;
+	bh=tgAPjvF3ioJGuh/k4VH4nzhLxQlR7APgozh3yQXWWXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cEb5VYDU95Zcc+B0UC5ZUZ7yYqHZMmkROXCVTzwI19Ve0kbnvmwbI//SVaVRSQeefbW5By5U4Cw2oRgduii4wK5HlYOuyNMN9pwC10lSq02mz7raG5CAEIEyllSKTn7vAzbjuRcUMuNQLIX3SVRsqQrZ/UQqXwXP4apbUAihOGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSEd7k75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD604C43390;
+	Mon, 18 Mar 2024 08:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710751457;
+	bh=tgAPjvF3ioJGuh/k4VH4nzhLxQlR7APgozh3yQXWWXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CSEd7k75BiPJDsR6nMMSvz1HnRuZFCyR006gvaJMOqeHmtY535njdAhdxnB7s3Vly
+	 1t5Eh7L+cvgzBzAsS/8h9KIANO/PCFX+p5hgwWwNiIkvdd8xhckgNeP4yFGBrVO6z6
+	 5pklNU/U49/G2SYbSqPcXgOcu9ggw4nTfucaoZbquimYqPT3QqAJc4xVLdr2tr4+cH
+	 wQlwW1zFgtq1ZLXfW07XG2O+ojyenkAV0dswz/S7W3JU+n/daTDSPpin4fj72UqtNv
+	 xnrcqXWBFQkEhhqeI7jzV1g0UWGqtl3hLvYIbyKb5Eaj9Mynh+NsT0ahZ0+kXDvwAw
+	 t1HhanHBmNYrw==
+Date: Mon, 18 Mar 2024 09:44:14 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Zack Rusin <zack.rusin@broadcom.com>, daniel@ffwll.ch, 
+	airlied@gmail.com, deller@gmx.de, javierm@redhat.com, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Zack Rusin <zackr@vmware.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/43] drm/fbdev-generic: Do not set physical framebuffer
+ address
+Message-ID: <20240318-dark-mongoose-of-camouflage-7ac6ed@houat>
+References: <20240312154834.26178-1-tzimmermann@suse.de>
+ <20240312154834.26178-2-tzimmermann@suse.de>
+ <CABQX2QPJJFrARdteFFZ8f33hvDx-HSyOQJQ7AMFK4C8C=BquTQ@mail.gmail.com>
+ <e684558e-8308-4d73-b920-547f9012a2cb@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] floppy: remove duplicated code, unlock_fdc() function has
- the same code "do_floppy = NULL" inside.
-Content-Language: en-US
-To: Yufeng Wang <wangyufeng@kylinos.cn>, Jens Axboe <axboe@kernel.dk>,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20240318060756.18649-1-wangyufeng@kylinos.cn>
-From: Denis Efremov <efremov@linux.com>
-In-Reply-To: <20240318060756.18649-1-wangyufeng@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="a7vnwfog3n7f6fea"
+Content-Disposition: inline
+In-Reply-To: <e684558e-8308-4d73-b920-547f9012a2cb@suse.de>
 
-Hello,
 
-Please, add a small commit message to the patch. The commit title
-is too long and can be reduced to something like "floppy: remove duplicated
-code in redo_fd_request()". Rest can be added to the commit message.
+--a7vnwfog3n7f6fea
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 3/18/24 10:07, Yufeng Wang wrote:
-> Cc: stable@vger.kernel.org
+On Mon, Mar 18, 2024 at 08:59:01AM +0100, Thomas Zimmermann wrote:
+> Hi
+>=20
+> Am 18.03.24 um 03:35 schrieb Zack Rusin:
+> > On Tue, Mar 12, 2024 at 11:48=E2=80=AFAM Thomas Zimmermann <tzimmermann=
+@suse.de> wrote:
+> > > Framebuffer memory is allocated via vmalloc() from non-contiguous
+> > > physical pages. The physical framebuffer start address is therefore
+> > > meaningless. Do not set it.
+> > >=20
+> > > The value is not used within the kernel and only exported to userspace
+> > > on dedicated ARM configs. No functional change is expected.
+> > >=20
+> > > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Fixes: a5b44c4adb16 ("drm/fbdev-generic: Always use shadow buffering")
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: Javier Martinez Canillas <javierm@redhat.com>
+> > > Cc: Zack Rusin <zackr@vmware.com>
+> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: <stable@vger.kernel.org> # v6.4+
+> > > ---
+> > >   drivers/gpu/drm/drm_fbdev_generic.c | 1 -
+> > >   1 file changed, 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/dr=
+m_fbdev_generic.c
+> > > index d647d89764cb9..b4659cd6285ab 100644
+> > > --- a/drivers/gpu/drm/drm_fbdev_generic.c
+> > > +++ b/drivers/gpu/drm/drm_fbdev_generic.c
+> > > @@ -113,7 +113,6 @@ static int drm_fbdev_generic_helper_fb_probe(stru=
+ct drm_fb_helper *fb_helper,
+> > >          /* screen */
+> > >          info->flags |=3D FBINFO_VIRTFB | FBINFO_READS_FAST;
+> > >          info->screen_buffer =3D screen_buffer;
+> > > -       info->fix.smem_start =3D page_to_phys(vmalloc_to_page(info->s=
+creen_buffer));
+> > >          info->fix.smem_len =3D screen_size;
+> > >=20
+> > >          /* deferred I/O */
+> > > --
+> > > 2.44.0
+> > >=20
+> > Good idea. I think given that drm_leak_fbdev_smem is off by default we
+> > could remove the setting of smem_start by all of the in-tree drm
+> > drivers (they all have open source userspace that won't mess around
+> > with fbdev fb) - it will be reset to 0 anyway. Actually, I wonder if
+> > we still need drm_leak_fbdev_smem at all...
+>=20
+> All I know is that there's an embedded userspace driver that requires that
+> setting. I don't even know which hardware.
 
-We don't need to send this patch to stable. It's not a bugfix.
+The original Mali driver (ie, lima) used to require it, that's why we
+introduced it in the past.
 
-Please, send v2 with commit message and new title.
-The change looks good to me.
+I'm not sure if the newer versions of that driver, or if newer Mali
+generations (ie, panfrost and panthor) closed source driver would
+require it, so it might be worth removing if it's easy enough to revert.
 
-> Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
-> ---
->  drivers/block/floppy.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-> index 1b399ec8c07d..25c9d85667f1 100644
-> --- a/drivers/block/floppy.c
-> +++ b/drivers/block/floppy.c
-> @@ -2787,7 +2787,6 @@ static void redo_fd_request(void)
->  		pending = set_next_request();
->  		spin_unlock_irq(&floppy_lock);
->  		if (!pending) {
-> -			do_floppy = NULL;
->  			unlock_fdc();
->  			return;
->  		}
+Maxime
 
-Thanks,
-Denis
+--a7vnwfog3n7f6fea
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZff+0QAKCRDj7w1vZxhR
+xbbfAP9Pld0vccS27vREZ3xsYkeM/kiU0yHFImyTFQZWfZWwiAD/aouRJnuZ7N1x
+BfTpDauyPANFnaIznKrfRtKrI2D+4QU=
+=utup
+-----END PGP SIGNATURE-----
+
+--a7vnwfog3n7f6fea--
 
