@@ -1,171 +1,213 @@
-Return-Path: <stable+bounces-28329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E36F87E2F7
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 06:22:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DAD87E349
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 06:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6E27B2162C
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 05:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB1FC2824C3
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 05:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B234620B22;
-	Mon, 18 Mar 2024 05:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0173219F6;
+	Mon, 18 Mar 2024 05:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c8uiPa9g"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LxgE5pX+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E0C1B94D
-	for <stable@vger.kernel.org>; Mon, 18 Mar 2024 05:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710739320; cv=fail; b=j1D55GLlrjKw2/3E/2sVp/AgUqJUwsZZIB5+2TvF2IWcdUqgBQ34YsQbMYEDcjowidoFphf0ExsKe87OlVUY0Q78G5ylQg3RiIRHIRGYr2qQgKkQahuZx1/JF2nESbSK8+vIM4P6zdw8EIOCj3KcR0nDQgpJWM6i3YiaB6/vctI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710739320; c=relaxed/simple;
-	bh=LTwOBly6mUjpJkyaAA1jZ6OcLEx7nDwsjaFXsDrEWhk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AxLijkUmLw+d73khdezm+EQKTXESLiQ/RtLNBSdq/AYSzBaSo57OkYHSyZr8+vrYQwx93vIeLxanWyxMK3edulRaSki++xu/JGruiBudwHjDuPaLvtQmIi6modGitCFwgcPkZWecA7UZEtZhH6taeYIXa4A4b+0YJpQ/NpDCYj8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c8uiPa9g; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710739318; x=1742275318;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=LTwOBly6mUjpJkyaAA1jZ6OcLEx7nDwsjaFXsDrEWhk=;
-  b=c8uiPa9g/wLWodGZR7T+3AJ9d2Y9brbFvnBf9TtCgMXST0nr/MQASX8b
-   FI1kXIYzIph/41YF1W9Hgh4rYbnVVKlqUmkgDGlFr4RqlZn2sm2aIrjHD
-   ckhqKtK9tp87vziu72IP0JrDNi+LIGz7XMLzpyDrJ6KQVs2cnkHn8aL8x
-   BdsoasHsZUnK9fz84Qv2sN6zjjrApJbsgU68mFbiQipr3s62G5cVuPMTU
-   2LQ9WW4WjnrBeMKHo4tL3InYYIpJTxt1AzLM8BMey5lUZRhS3mkWwNjKs
-   PpD91m0JhA0+Zvt6C4hczlr4YN8GhX97PZiMWahKf5zdHWPOVRPfrBRIG
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5743229"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5743229"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2024 22:21:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="44287807"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 17 Mar 2024 22:21:57 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 17 Mar 2024 22:21:56 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Sun, 17 Mar 2024 22:21:56 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sun, 17 Mar 2024 22:21:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A2z7z3pPd9R4MBaNp6gERjqc3uV2q0OfuoJDol0nM4i6tPXoNvXQR4cxujU2QNvcr7BWJcsYAUTGGwx98T0ofvsk4Lo6t7eGmBt4Ky/c0aX1nsvZNmW0LAkiFznvuSKIq89QbHpWjJO7vfjuTd7kRMzHNbQ9+qNTJNd8HN6oruKu92MUZ9LzNVdgifMRxgHK+2YmaE2X+52WxyWb8hJNQrzz43y0zICXnU3CsP+YZI30sXvQVu5LPgiaV4hCZSQu6cM8XIPBJ1A9AKGCCOUkoPrIZXjf9ilnKlHF1cQr2gIySz/9cofOtjKJNALZ8vkdwRQG55ZKNOaOIKESc2IzXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LTwOBly6mUjpJkyaAA1jZ6OcLEx7nDwsjaFXsDrEWhk=;
- b=Ypfq2hNGBXIaTrvSNx7pphw41VSPs1K8OlYubu8p/rBQlUCKcgkF9+oZJE6cvqQyEdqXawCEGzBXksRn7wLrnwk9JmKmXpMGf89AOh8ofoA3PvqO1pqNSDrtn4oaB70XlZKr7pASbc62O/14wUXXVMe22puO8Mh4Kifd320Sbyh7kzcj93epRGc6OAZvt4oovLTtMOQgC8y8B6RIElMbdi9qRq0fq33lBO0RFJhcrMvFsXLkkCaCeTDhScRQmwtz/b9iIIgpbMSsMHzGImJ8oXj/ft/jX5uveb2ldfd6Zvpb+rBkUtGAvYnYw3fUF2OG93bULO5ULicWiPgUlhihJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN9PR11MB5275.namprd11.prod.outlook.com (2603:10b6:408:134::24)
- by BL3PR11MB6339.namprd11.prod.outlook.com (2603:10b6:208:3b3::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.10; Mon, 18 Mar
- 2024 05:21:54 +0000
-Received: from BN9PR11MB5275.namprd11.prod.outlook.com
- ([fe80::46dd:6e91:5461:35a]) by BN9PR11MB5275.namprd11.prod.outlook.com
- ([fe80::46dd:6e91:5461:35a%7]) with mapi id 15.20.7409.008; Mon, 18 Mar 2024
- 05:21:54 +0000
-From: "Mrozek, Michal" <michal.mrozek@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>, Nirmoy Das
-	<nirmoy.das@linux.intel.com>
-CC: "Landwerlin, Lionel G" <lionel.g.landwerlin@intel.com>, intel-gfx
-	<intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, Andi Shyti <andi.shyti@kernel.org>,
-	"Hajda, Andrzej" <andrzej.hajda@intel.com>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, "Das, Nirmoy" <nirmoy.das@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] drm/i915/gt: Report full vm address range
-Thread-Topic: [PATCH] drm/i915/gt: Report full vm address range
-Thread-Index: AQHadX44Sh9xWy77xE2oPkbaYDlfvLE3RheAgAAhsQCAAaQigIAD8QaQ
-Date: Mon, 18 Mar 2024 05:21:54 +0000
-Message-ID: <BN9PR11MB527575D97CB63C5E4B1B0E7AE72D2@BN9PR11MB5275.namprd11.prod.outlook.com>
-References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
- <46ab1d25-5d16-4610-8b8f-2ee07064ec2e@intel.com>
- <35df0767-384f-49f2-806a-f83765ca7c4c@linux.intel.com>
- <ZfSAo791UDRnBSwc@ashyti-mobl2.lan>
-In-Reply-To: <ZfSAo791UDRnBSwc@ashyti-mobl2.lan>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR11MB5275:EE_|BL3PR11MB6339:EE_
-x-ms-office365-filtering-correlation-id: 76ff007d-ff1c-438e-6cd8-08dc470b52fa
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: dmY+4GltPvo3tMNjPbIhyn/JqRZJIJFfjZASaYgIaF75cDtN5RweRJcR25Kq0fotEB5PJ+DzPHiB5tTks1aE982YNzuCCWaxefTrS2zGZa5k8nN4Mai07ubI0PK4VWhmLUqY2ocOF6jkaQ5YTxZc002ribpqDWVORqkyUkzcjvGOREvbJyrvcog310mU/HLY/uayntG+31xk0FeZ0IsXXxQUixBytlgvnD6oMmPpXfHSmF1OmWd1+jH4Byvu9GWIPE6PkBpdI6fx7SO4XQoTQf0wW016J4lpRQ0wPTBCY5Zfi+SD5RohfRXlo15YJSzYvNdgQ+x2/ki0UYldE06re+sSu4iIvuV6W3utQsQyHSwwKBkgz/lcQgnTz/oM/fOxayp+WcQG30jRLWsqa+jnrYQ4GuJOtlyHC4wK3dYqzN5JMKqUBQoKVpU/HgM8L3yUdyp9i6k/1z5pKUHBOSF34iBRJ3r0trIXZ/wgq7s5LaAbSpBhuaIQg2tuJkqDPUMU8SNbLI/QGXYIUbYf+86qSjfFfOvhlb1BGTZbGVLqDq2DVcwlgXlVDO9DbOt5F5MHFSSC94foRnrgEFa8LKgWbe61pEL0p22/vV27eoX6kJiU9wLFfDz/g10n5xRM+HNV1W2YZce+qr4ysVENj3XgZZKuIFL6LbnkNhNBiZYHl6O1bfdwSEvG34czdqHAGn+IiiVbnoFnkqcYxBjp4BTM8rKsnzfwCbFvntGY9TDsyRs=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5275.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Zu83X3R6GUCfn8GvgD17SG3bhVn71P5ecUnid+ShV4UcOJVOlNKrr9cMpC3k?=
- =?us-ascii?Q?eGB1P+s2OsEEF6kO8paItZCsk74qpXOzTQ+56mUvI945SAjA0KOBPETw1/Rf?=
- =?us-ascii?Q?xvPVxCAiSlMEcE2r7xIyc4WQji1uxENfoUOM19+XP2rUWs6JcPA8G1YlkyW3?=
- =?us-ascii?Q?h95WZcZ8rpZSXVuXEqSjO36s6YL5S02ICDKsf1A5OaoTlf47Uvzy56SqH8eI?=
- =?us-ascii?Q?3bX7TI+VtpnhzrVllc9/ogI7kyarzQhhs2dpDl3GBvqHJa68MHPr6w/zBMx9?=
- =?us-ascii?Q?PUFRZHKcPVj/0J2BKi+g6USWrDUe+PB+h1xeYQAwBMBHCIRJKnnrHpXndGU+?=
- =?us-ascii?Q?6uqP5pkVDabJ1nsKUEYld3k3VsBp1xGMCsg6xXIB5gTGn09hCcFweyuxnGgV?=
- =?us-ascii?Q?1x5WVbKpEx+W54t3qvnxJQK0usSBVJzKanL4xSJUva/3yZ3dZesfhgK3X7Wy?=
- =?us-ascii?Q?X7vHclIY/azKbzuIbB89DSMamhbYaW048WwPSS7Wvk08BwF15ER7akcbcYJV?=
- =?us-ascii?Q?kZN6qYGj98rGt+8pz37xv8S42TIB795Ht7TVuL6ZB1i5/gp2vmkW7A4htFHr?=
- =?us-ascii?Q?pmHXiN159UwFrE5wz/JYo6qG2AamwrH7OQl4ZJCT9j4nSZJ8UTSMM4BHiEDN?=
- =?us-ascii?Q?a/SUzk+ZUhxshH4R8uyWqMLwPyHSge/RwHlSEm5dpj1ksk2qBXL2HAWFXtgK?=
- =?us-ascii?Q?OQW1t89FATkRXcKYV3Gjj9M6n3s/sxcnEfJe7xMo5DaUhxgco1XOmjZ6MciY?=
- =?us-ascii?Q?elFHpa9GjKP23/tShzXwduCkuZiTrPLmjjLE/hwekcqpZY2hNddEm8CRyouB?=
- =?us-ascii?Q?CtFKTPTH+O6HG3QlRAU+wNxWsB9PND+T2gKtZ6DEKefelnDMuZLT+Cj06nnM?=
- =?us-ascii?Q?7aAaQ2SpjFpoVmTgj/EkFmXiloYQ6gORxpZGBlZpgCR5lCy6R3DKlthe5r5O?=
- =?us-ascii?Q?QOFcASkGPhIrFuRr1WjjQKAoo3mP5Q3BNn+qQwcaMBcD6Zk/BbMIxKcQDE9t?=
- =?us-ascii?Q?C1cmYBBKt2NpDcJhPc6qzGVaosPfro0syMTzoA/cQSqhoJhhYTf0EQaGrobQ?=
- =?us-ascii?Q?uEyeeyxDNzcQQfhkeGYbMDoTUmE7oxNBXK3PaPTEpp8uFIiJZrvqPVkfVz9/?=
- =?us-ascii?Q?6gmeqVh/fAGgJyGWOBGJ9d88fjGOvSexC+9KXdliwlLypfgB3WByBHgMmzqk?=
- =?us-ascii?Q?h+/OzMkQpL5IzSlR5iVxmKZN6n5fuZDKkxv0C/ghCRHu2WvkxZBDio740ezy?=
- =?us-ascii?Q?a5j3Zdx0ehH85SLHEtMe0VvZfMeu+X9BuKdHAkIRcFebLwozlSm3UWuPZAjj?=
- =?us-ascii?Q?2vWUZZLAnnDF4evNNTRYkwCrWdjqT/1J+4reJBN2Vl2LrxJYelA7S+OueRha?=
- =?us-ascii?Q?HGAdTOCLP3JiW9UjRQTFD0jQzyV9MA56IzUwlq70Xc2vpXvnD74rAz6jXetv?=
- =?us-ascii?Q?6NnWsMS0kEXIvgtAjwl+IRRbPVnOlyisYgcCqJ1RLjDlZ2twnstzDYeA2gBR?=
- =?us-ascii?Q?WhuX2k/T0BeQ7AhQL4hPFt/mC4LAz7PX6AgKplZBtGb4U9+0v3/+wSy3nIJ8?=
- =?us-ascii?Q?Z38nV2NUWSMbEi3rDBpTRzXs88LqVA6vXo4lsYfO?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20161E89E;
+	Mon, 18 Mar 2024 05:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710740443; cv=none; b=KGy1O2rMeREqrUHx/R2dUW3HpUYmf0Rgd7h6vGOKn8DykYXlIEMIVAoe5AMHwNzsv66X1oP8QuLoLLT47GFnuuai+II6a6ECWKuPu7X2x6OBiiHF8r5xw9lxPz0X9egRUvoYxwPclxnWL7sAkaOdk6l5wnxx3/fF3Yhb6qeB76s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710740443; c=relaxed/simple;
+	bh=h/Ln9yPHtqlby+Fp6MUf3PS6y0nv61hhQvGCsQv9BhA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kOBvvSXQMJMKTJq3z8aoDoTEO7RCA7pv5lwbiwIMGZKh3MPL81RgV43I7VWjSny6yEEjv2ythUelV3pSafjeltMmnAIzzMy3vpd8HbnhGxbp7JW1dLj/wuNNc/TNfEk2tE6GNvEy5Gj3qeL6j/hb63c1BFIjG8iwy1oQfmikR28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LxgE5pX+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42I5dWbk022455;
+	Mon, 18 Mar 2024 05:40:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=SPiZIQTn+g32WTjYdojmq9ZTZLv8aPvVwv57pq3k6Xg=; b=Lx
+	gE5pX+0vB4K643dXvGWDy4A6xruBaRzDJN5kQ9ie1OG5+R+a0PqpJSciYMhvUpSU
+	plvjikMgISvjw50epftMGm2OFMQdKKr2fPkvAC3fVX4godl8XE3wYq88oLzD4iJF
+	1H/NlqDSiZVyd0Jo6YvPNB6fpFeWDtBMxKM2YPNk6bYj9qggXjEv9zwEe5RsoHNT
+	fhefp4F48ZttLXAR95R5MNOuvm69le0brl0WAg9iQVBpKg5/0az4JPyFT4QXaLcV
+	2pv9+YLAYAoC/dzLbZnBhYChCDI7XO5YFfSDx+izsZlNUMegN/0f1CiK6Ze0R7BI
+	5Zm0HXrvYJKMhpESYqDw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wwxtds4tb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 05:40:37 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42I5ea7q019434
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 05:40:36 GMT
+Received: from [10.216.55.168] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sun, 17 Mar
+ 2024 22:40:30 -0700
+Message-ID: <7d0e81fd-8cc2-46f2-bc12-759a0d48e3ae@quicinc.com>
+Date: Mon, 18 Mar 2024 11:09:52 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5275.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76ff007d-ff1c-438e-6cd8-08dc470b52fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2024 05:21:54.2028
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: a0/9BTj6z+WCsTPpS1i7lvjOh5iS+ofytcafOnIrGTCF4g/cMQ4pKwphoJGhuYyMCkjCN9yxHfnmX16DPKKLwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6339
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] clk: qcom: apss-ipq-pll: use stromer ops for IPQ5018
+ to fix boot failure
+To: Gabor Juhos <j4g8y7@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Sricharan
+ Ramabadhran" <quic_srichara@quicinc.com>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>,
+        Gokul Sriram Palanisamy
+	<quic_gokulsri@quicinc.com>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com>
+Content-Language: en-US
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+In-Reply-To: <20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: VOi_2MVMftvGOeRjEnYMyJVyBiACw76m
+X-Proofpoint-ORIG-GUID: VOi_2MVMftvGOeRjEnYMyJVyBiACw76m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-17_12,2024-03-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
+ impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403140001 definitions=main-2403180041
 
-> > Lionel, Michal, thoughts?
-Compute UMD needs to know exact GTT total size.
+
+
+On 3/15/2024 9:46 PM, Gabor Juhos wrote:
+> Booting v6.8 results in a hang on various IPQ5018 based boards.
+> Investigating the problem showed that the hang happens when the
+> clk_alpha_pll_stromer_plus_set_rate() function tries to write
+> into the PLL_MODE register of the APSS PLL.
+> 
+> Checking the downstream code revealed that it uses [1] stromer
+> specific operations for IPQ5018, whereas in the current code
+> the stromer plus specific operations are used.
+> 
+> The ops in the 'ipq_pll_stromer_plus' clock definition can't be
+> changed since that is needed for IPQ5332, so add a new alpha pll
+> clock declaration which uses the correct stromer ops and use this
+> new clock for IPQ5018 to avoid the boot failure.
+> 
+> Also, change pll_type in 'ipq5018_pll_data' to
+> CLK_ALPHA_PLL_TYPE_STROMER to better reflect that it is a Stromer
+> PLL and change the apss_ipq_pll_probe() function accordingly.
+> 
+> 1. https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/blob/NHSS.QSDK.12.4/drivers/clk/qcom/apss-ipq5018.c#L67
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 50492f929486 ("clk: qcom: apss-ipq-pll: add support for IPQ5018")
+> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+> ---
+> Changes in v2:
+>    - extend commit description due to the changes
+>    - add a comment about why CLK_ALPHA_PLL_TYPE_STROMER_PLUS register offsets
+>      are used
+>    - constify hw clock init data (Stephen)
+>    - change pll_type in ipq5018_pll_data to CLK_ALPHA_PLL_TYPE_STROMER (Konrad)
+>    - Link to v1: https://lore.kernel.org/r/20240311-apss-ipq-pll-ipq5018-hang-v1-1-8ed42b7a904d@gmail.com
+
+
+I don't see a reason why my tags are dropped, nevertheless
+
+Tested-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Reviewed-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+
+
+> ---
+> Based on v6.8.
+> ---
+>   drivers/clk/qcom/apss-ipq-pll.c | 30 +++++++++++++++++++++++++++---
+>   1 file changed, 27 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+> index 678b805f13d45..dfffec2f06ae7 100644
+> --- a/drivers/clk/qcom/apss-ipq-pll.c
+> +++ b/drivers/clk/qcom/apss-ipq-pll.c
+> @@ -55,6 +55,29 @@ static struct clk_alpha_pll ipq_pll_huayra = {
+>   	},
+>   };
+>   
+> +static struct clk_alpha_pll ipq_pll_stromer = {
+> +	.offset = 0x0,
+> +	/*
+> +	 * Reuse CLK_ALPHA_PLL_TYPE_STROMER_PLUS register offsets.
+> +	 * Although this is a bit confusing, but the offset values
+> +	 * are correct nevertheless.
+> +	 */
+> +	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
+> +	.flags = SUPPORTS_DYNAMIC_UPDATE,
+> +	.clkr = {
+> +		.enable_reg = 0x0,
+> +		.enable_mask = BIT(0),
+> +		.hw.init = &(const struct clk_init_data) {
+> +			.name = "a53pll",
+> +			.parent_data = &(const struct clk_parent_data) {
+> +				.fw_name = "xo",
+> +			},
+> +			.num_parents = 1,
+> +			.ops = &clk_alpha_pll_stromer_ops,
+> +		},
+> +	},
+> +};
+> +
+>   static struct clk_alpha_pll ipq_pll_stromer_plus = {
+>   	.offset = 0x0,
+>   	.regs = ipq_pll_offsets[CLK_ALPHA_PLL_TYPE_STROMER_PLUS],
+> @@ -144,8 +167,8 @@ struct apss_pll_data {
+>   };
+>   
+>   static const struct apss_pll_data ipq5018_pll_data = {
+> -	.pll_type = CLK_ALPHA_PLL_TYPE_STROMER_PLUS,
+> -	.pll = &ipq_pll_stromer_plus,
+> +	.pll_type = CLK_ALPHA_PLL_TYPE_STROMER,
+> +	.pll = &ipq_pll_stromer,
+>   	.pll_config = &ipq5018_pll_config,
+>   };
+>   
+> @@ -203,7 +226,8 @@ static int apss_ipq_pll_probe(struct platform_device *pdev)
+>   
+>   	if (data->pll_type == CLK_ALPHA_PLL_TYPE_HUAYRA)
+>   		clk_alpha_pll_configure(data->pll, regmap, data->pll_config);
+> -	else if (data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER_PLUS)
+> +	else if (data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER ||
+> +		 data->pll_type == CLK_ALPHA_PLL_TYPE_STROMER_PLUS)
+>   		clk_stromer_pll_configure(data->pll, regmap, data->pll_config);
+>   
+>   	ret = devm_clk_register_regmap(dev, &data->pll->clkr);
+> 
+> ---
+> base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+> change-id: 20240311-apss-ipq-pll-ipq5018-hang-74d9a8f47136
+> 
+> Best regards,
 
