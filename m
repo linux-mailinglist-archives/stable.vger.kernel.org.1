@@ -1,170 +1,142 @@
-Return-Path: <stable+bounces-28385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB3387F09C
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 20:54:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A752D87F1F3
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 22:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9469D1C21417
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 19:54:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61821282845
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 21:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4D75733F;
-	Mon, 18 Mar 2024 19:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837F15821B;
+	Mon, 18 Mar 2024 21:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eo0nF5R6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K4zdPqG9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED61D56B65;
-	Mon, 18 Mar 2024 19:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD52E57326;
+	Mon, 18 Mar 2024 21:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710791687; cv=none; b=ujea2S4uFqRfXQgYO4KrAkueMwX3PVTM7m8hfV9xlKrKi9RL41bRqgHfp0YR6Ujx+j1ecuK7X5Xas7y0ZOqCV6WP4lyMF0/Zz+kW+GJwlT/cZXEp/MFmWDKhTcKKCrtowp2GwGcmRFufsDIHJU6eMDNruDU1VXVik6o+/GHa5nI=
+	t=1710796942; cv=none; b=uObXgS7oujN5PN7tMBh8g3Qq6mt7xmZLKzN3KdKRM1RcTF6w8jXZa1rHWJDGboeuLdm7FtV5Wfho7HY3W/mEzH/qJWHI4gkJv+9aMIjo4llq5spEG5ghIEnZL+0UKmAeReAUPPEr9rI2clmDiYYuhCjrX6aB0vr40ok1E+6vPbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710791687; c=relaxed/simple;
-	bh=s/GlI77nhpoyF7nqB57RZS8CBs9kgoviJP8LQwcdaAc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FbZvES+J1nCWSSfOcW/bNuKihgTMjUIG99QIPGl66VJ2TMxjCE+Fo8w50n97QTSLffzpaQkCAYKaRIFG0QXQQUqMDdNBijGxdUhxgDmTFbJArFB5zcKOd5LXruxBXhZWSaqhJaQrpKnQqN1vh0+gqI4jIVw00Ivrj2O//KmsZto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eo0nF5R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C052C433F1;
-	Mon, 18 Mar 2024 19:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710791686;
-	bh=s/GlI77nhpoyF7nqB57RZS8CBs9kgoviJP8LQwcdaAc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Eo0nF5R6r9txrHFwPWE5OTKXgMViY/YI6pJWiihFa/b1kVkuHiHfO9xATgklQZbgN
-	 S6Q5IJV4ADBIV5GvhJ66VeGJProypYVi0eNsvbVPVjA4YLpb6xn191t/qIe8mNCZ+q
-	 GzyvbFMg5KKp6c71RpMERyYCBzhCgma6E1OZt+twLD8d7pEwsN1l7NztYeeo+VBF+/
-	 n7Hci9VCaI78l4aAxuINA9kYorLjyCZFn09zfGn9JK2rF2us4n5W5VH3UgVueVkX8y
-	 ac5oaHhKqJpUAt+5bRW5IThFLUnio6U3DO/uHa7rimVBrYH0ncDXUrDqmgxbcFbOez
-	 rgW6qjQFDGCrA==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a468004667aso496311366b.2;
-        Mon, 18 Mar 2024 12:54:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVXHtB2pTyng8vr6CwVFrykP1/yPBSLSU6O+GjTcCVGRuDIlAI4Mx5Hg4ZnXNeosIdEWPncsbjVOg9ryziO2NbDXKvQio7IA08J0ypLqsBhwmEAfFlGLkubYuS9s9qWNWj7aqY=
-X-Gm-Message-State: AOJu0YxHyvAIuI1ijBIZNAujFkMvZ/r0Z+FYnPIOUkOiJbGYsJmbccf3
-	d9NavdV90xIJwgY3ZgyOzt54DF5JtpRlreFDBfOgjbMDMDpyIDhsXQhC21LcfFwUvPAU6CJ+tt1
-	PqSQwASKuqHb8qg5VtxsByrKzQgQ=
-X-Google-Smtp-Source: AGHT+IFcvmpMRMxhrxS0jPVzAOQddA1tbYien6oVUFIPuNadw5dSlNWCK60hq0TBhfPIBVFlcSsxup1vREoeUoq7p2s=
-X-Received: by 2002:a17:906:33c8:b0:a46:8daa:436f with SMTP id
- w8-20020a17090633c800b00a468daa436fmr5825491eja.69.1710791685020; Mon, 18 Mar
- 2024 12:54:45 -0700 (PDT)
+	s=arc-20240116; t=1710796942; c=relaxed/simple;
+	bh=LlDKgfiSyuf8Fh/e1FReYnD1l9CJgtzSn9FFuDQqTtc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V2q20PpvyS3ojxfaxXeg0lFIDU1Qq3z7b8Xq4dK/gmO1kVHIRRmiXaYESauU149wtOlHYRufuVL2mYtksfC/dL/unnN6M9opitXQB0phfeYqf/kchHWOD1qn/eIIoYBoVkKkuLzRPD5XC2x7xXB5yXnYijHNbJ/XoIWcVwL8dsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K4zdPqG9; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42IKK9Dx004252;
+	Mon, 18 Mar 2024 21:22:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	date:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=qcppdkim1; bh=ygBOQxXhpxWuogwPLKyey
+	VNcq57ouue1TPByBN7mZC4=; b=K4zdPqG9u0r7TPfwQ/CAjIdz36ktPosJpYD20
+	lkqVPVKY+9A8Q7fq+igH+41KLw3mY9VaIKlrC1hbLRu+EmHm4VknDmOSqZjHlaUD
+	dr4iLSVJMkAI5/S61O/6tOuZkTxsiDVx7vGamExUn9Xn7TncCsBq19CIjg9Q68B/
+	iDJP//BDjPrYZphviqTl3xY0DEp7nZrWobjaX564Q5nhjj6nsQhEtldcCgNSKvxa
+	e2nrp2YR09bo5mmgRA8fl7aNU7jpeThrluclLSLX4PowDJlLVyxpLriFkbhIWLu0
+	CuLisGBtUhyMmcBJfiyrhQwG76j+VbLcm5h6MBGQq4qeEYUPA==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wxndk96wu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 21:22:16 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42ILMFab025405
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Mar 2024 21:22:15 GMT
+Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 18 Mar 2024 14:22:15 -0700
+Date: Mon, 18 Mar 2024 14:22:14 -0700
+From: Elliot Berman <quic_eberman@quicinc.com>
+To: Bjorn Andersson <andersson@kernel.org>
+CC: Maulik Shah <quic_mkshah@quicinc.com>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_collinsd@quicinc.com>, <quic_lsrao@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: Re: Re: [PATCH v4] soc: qcom: rpmh-rsc: Enhance check for VRM
+ in-flight request
+Message-ID: <20240318142037265-0700.eberman@hu-eberman-lv.qualcomm.com>
+Mail-Followup-To: Bjorn Andersson <andersson@kernel.org>, 
+	Maulik Shah <quic_mkshah@quicinc.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, quic_collinsd@quicinc.com, 
+	quic_lsrao@quicinc.com, stable@vger.kernel.org
+References: <20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com>
+ <vuyzqntyhzz5at5q7rxkix6ogavow4kltge26q62ihzhsblsuv@o43un23zaf4w>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1710409033.git.wqu@suse.com> <c54030e9a9e202f36e6002fb533810bc5e8a6b9b.1710409033.git.wqu@suse.com>
- <CAL3q7H7hMVH+YcTY1LufgjTHjKKc6AQyOb-RmppHBskf4h0wDQ@mail.gmail.com> <0d28c03f-56f1-4c7c-b278-bf5ea6de08e7@gmx.com>
-In-Reply-To: <0d28c03f-56f1-4c7c-b278-bf5ea6de08e7@gmx.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Mon, 18 Mar 2024 19:54:08 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H6Q=VjLemvU15D7tnUJNPi3spctDbnk06SPxdDKcqSJrg@mail.gmail.com>
-Message-ID: <CAL3q7H6Q=VjLemvU15D7tnUJNPi3spctDbnk06SPxdDKcqSJrg@mail.gmail.com>
-Subject: Re: [PATCH 2/7] btrfs: reduce the log level for btrfs_dev_stat_inc_and_print()
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <vuyzqntyhzz5at5q7rxkix6ogavow4kltge26q62ihzhsblsuv@o43un23zaf4w>
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XoF1lNbt33ALAIclzKzG7h4kx1YBEAjM
+X-Proofpoint-ORIG-GUID: XoF1lNbt33ALAIclzKzG7h4kx1YBEAjM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403140001 definitions=main-2403180161
 
-On Thu, Mar 14, 2024 at 8:26=E2=80=AFPM Qu Wenruo <quwenruo.btrfs@gmx.com> =
-wrote:
->
->
->
-> =E5=9C=A8 2024/3/15 03:47, Filipe Manana =E5=86=99=E9=81=93:
-> > On Thu, Mar 14, 2024 at 9:54=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
-> >>
-> >> Currently when we increase the device statistics, it would always lead
-> >> to an error message in the kernel log.
-> >>
-> >> I would argue this behavior is not ideal:
-> >>
-> >> - It would flood the dmesg and bury real important messages
-> >>    One common scenario is scrub.
-> >>    If scrub hit some errors, it would cause both scrub and
-> >>    btrfs_dev_stat_inc_and_print() to print error messages.
-> >>
-> >>    And in that case, btrfs_dev_stat_inc_and_print() is completely
-> >>    useless.
-> >>
-> >> - The results of btrfs_dev_stat_inc_and_print() is mostly for history
-> >>    monitoring, doesn't has enough details
-> >>
-> >>    If we trigger the errors during regular read, such messages from
-> >>    btrfs_dev_stat_inc_and_print() won't help us to locate the cause
-> >>    either.
-> >>
-> >> The real usage for the btrfs device statistics is for some user space
-> >> daemon to check if there is any new errors, acting like some checks on
-> >> SMART, thus we don't really need/want those messages in dmesg.
-> >>
-> >> This patch would reduce the log level to debug (disabled by default) f=
-or
-> >> btrfs_dev_stat_inc_and_print().
-> >> For users really want to utilize btrfs devices statistics, they should
-> >> go check "btrfs device stats" periodically, and we should focus the
-> >> kernel error messages to more important things.
-> >
-> > Not sure if this is the right thing to do.
-> >
-> > In the scrub context it can be annoying for sure.
-> > Other cases I'm not so sure about, because having error messages in
-> > dmesg/syslog may help notice issues more quickly.
->
-> For non-scrub cases, I'd argue we already have enough output:
->
-> No matter if the error is fixed or not, every time a mirror got csum
-> mismatch or other errors, we already have error message output:
->
->   Data: btrfs_print_data_csum_error()
->   Meta: btrfs_validate_extent_buffer()
->
-> For repaired ones, we have extra output from bio layer for both metadata
-> and data:
->   btrfs_repair_io_failure()
->
-> So I'd say the dev_stat ones are already duplicated.
+On Sun, Mar 17, 2024 at 10:18:25PM -0500, Bjorn Andersson wrote:
+> On Thu, Feb 15, 2024 at 10:55:44AM +0530, Maulik Shah wrote:
+> > Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
+> > addresses associated with it. These control voltage, enable state, mode,
+> > and in legacy targets, voltage headroom. The current in-flight request
+> > checking logic looks for exact address matches. Requests for different
+> > addresses of the same RPMh resource as thus not detected as in-flight.
+> > 
+> > Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
+> > request check for VRM requests by ignoring the address offset.
+> > 
+> > This ensures that only one request is allowed to be in-flight for a given
+> > VRM resource. This is needed to avoid scenarios where request commands are
+> > carried out by RPMh hardware out-of-order leading to LDO regulator
+> > over-current protection triggering.
+> > 
+> > Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
+> > cc: stable@vger.kernel.org
+> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> > Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
+> > Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+> > ---
+> > Changes in v4:
+> > - Simplify cmd_db_match_resource_addr()
+> > - Remove unrelated changes to newly added logic
+> > - Update function description comments
+> 
+> You changed things, but retained Konrad's Reviewed-by...
+> 
+> > - Replace Signed-off-by: with Tested-by: from Elliot
+> 
+> Did Elliot test v4, or did you just translate his incorrect(?) s-o-b
+> from v1 into a tested-by?
+> 
+> We're about to write into the git history that Elliot says this version
+> is tested to the best of his abilities...
+> 
 
-Ok, I suppose it's fine then.
+No, I asked for it:
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+https://lore.kernel.org/all/20240214105605460-0800.eberman@hu-eberman-lv.qualcomm.com/
 
-Thanks.
-
->
-> Thanks,
-> Qu
-> >
-> >>
-> >> CC: stable@vger.kernel.org
-> >> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> >> ---
-> >>   fs/btrfs/volumes.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> >> index e49935a54da0..126145950ed3 100644
-> >> --- a/fs/btrfs/volumes.c
-> >> +++ b/fs/btrfs/volumes.c
-> >> @@ -7828,7 +7828,7 @@ void btrfs_dev_stat_inc_and_print(struct btrfs_d=
-evice *dev, int index)
-> >>
-> >>          if (!dev->dev_stats_valid)
-> >>                  return;
-> >> -       btrfs_err_rl_in_rcu(dev->fs_info,
-> >> +       btrfs_debug_rl_in_rcu(dev->fs_info,
-> >>                  "bdev %s errs: wr %u, rd %u, flush %u, corrupt %u, ge=
-n %u",
-> >>                             btrfs_dev_name(dev),
-> >>                             btrfs_dev_stat_read(dev, BTRFS_DEV_STAT_WR=
-ITE_ERRS),
-> >> --
-> >> 2.44.0
-> >>
-> >>
-> >
 
