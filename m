@@ -1,142 +1,175 @@
-Return-Path: <stable+bounces-28386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A752D87F1F3
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 22:22:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CA787F2F6
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 23:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61821282845
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 21:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E0D61F22821
+	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 22:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837F15821B;
-	Mon, 18 Mar 2024 21:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33C5A0E9;
+	Mon, 18 Mar 2024 22:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K4zdPqG9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DgLUcDua"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD52E57326;
-	Mon, 18 Mar 2024 21:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F245A4D4
+	for <stable@vger.kernel.org>; Mon, 18 Mar 2024 22:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710796942; cv=none; b=uObXgS7oujN5PN7tMBh8g3Qq6mt7xmZLKzN3KdKRM1RcTF6w8jXZa1rHWJDGboeuLdm7FtV5Wfho7HY3W/mEzH/qJWHI4gkJv+9aMIjo4llq5spEG5ghIEnZL+0UKmAeReAUPPEr9rI2clmDiYYuhCjrX6aB0vr40ok1E+6vPbE=
+	t=1710799811; cv=none; b=fTLuIWNsUxAQKTIGfShCFHMWmlDRggvgqaSKqiE4Sd6dXH+KDSOCPSIlMVUm9WIhkSAQ7JAgVCXxHVq3yY1SXfv9+H4jkIIFQJKMcqOyPzLiu0N5699edjm4gCcb1UowEAM7cqf4il3VF5JOzwYyyx9igszqJHFNl8Nvj3FIO9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710796942; c=relaxed/simple;
-	bh=LlDKgfiSyuf8Fh/e1FReYnD1l9CJgtzSn9FFuDQqTtc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V2q20PpvyS3ojxfaxXeg0lFIDU1Qq3z7b8Xq4dK/gmO1kVHIRRmiXaYESauU149wtOlHYRufuVL2mYtksfC/dL/unnN6M9opitXQB0phfeYqf/kchHWOD1qn/eIIoYBoVkKkuLzRPD5XC2x7xXB5yXnYijHNbJ/XoIWcVwL8dsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K4zdPqG9; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42IKK9Dx004252;
-	Mon, 18 Mar 2024 21:22:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=qcppdkim1; bh=ygBOQxXhpxWuogwPLKyey
-	VNcq57ouue1TPByBN7mZC4=; b=K4zdPqG9u0r7TPfwQ/CAjIdz36ktPosJpYD20
-	lkqVPVKY+9A8Q7fq+igH+41KLw3mY9VaIKlrC1hbLRu+EmHm4VknDmOSqZjHlaUD
-	dr4iLSVJMkAI5/S61O/6tOuZkTxsiDVx7vGamExUn9Xn7TncCsBq19CIjg9Q68B/
-	iDJP//BDjPrYZphviqTl3xY0DEp7nZrWobjaX564Q5nhjj6nsQhEtldcCgNSKvxa
-	e2nrp2YR09bo5mmgRA8fl7aNU7jpeThrluclLSLX4PowDJlLVyxpLriFkbhIWLu0
-	CuLisGBtUhyMmcBJfiyrhQwG76j+VbLcm5h6MBGQq4qeEYUPA==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wxndk96wu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Mar 2024 21:22:16 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42ILMFab025405
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Mar 2024 21:22:15 GMT
-Received: from hu-eberman-lv.qualcomm.com (10.49.16.6) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 18 Mar 2024 14:22:15 -0700
-Date: Mon, 18 Mar 2024 14:22:14 -0700
-From: Elliot Berman <quic_eberman@quicinc.com>
-To: Bjorn Andersson <andersson@kernel.org>
-CC: Maulik Shah <quic_mkshah@quicinc.com>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_collinsd@quicinc.com>, <quic_lsrao@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: Re: Re: [PATCH v4] soc: qcom: rpmh-rsc: Enhance check for VRM
- in-flight request
-Message-ID: <20240318142037265-0700.eberman@hu-eberman-lv.qualcomm.com>
-Mail-Followup-To: Bjorn Andersson <andersson@kernel.org>, 
-	Maulik Shah <quic_mkshah@quicinc.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, quic_collinsd@quicinc.com, 
-	quic_lsrao@quicinc.com, stable@vger.kernel.org
-References: <20240215-rpmh-rsc-fixes-v4-1-9cbddfcba05b@quicinc.com>
- <vuyzqntyhzz5at5q7rxkix6ogavow4kltge26q62ihzhsblsuv@o43un23zaf4w>
+	s=arc-20240116; t=1710799811; c=relaxed/simple;
+	bh=jBqGxeE+IhKyoXM9zVHSpir3KZfZHpFMsiIw7rgHpZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AJ3zdnZJewWYp2IvQIEOrH4Wv4C0Dhj8ukvzxEyrhQZK0AtUgJtANqmwVyDslhE/pnBYVXi4wLHh/OuT7SBEWvfo1uYBzd6RUrrh3h2O8Rb3T/2DXTthxCr6PboD0YRsfRB2YznyDDfO0JksDRJw9O0O0zrNFJbM/efkuwx+56c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DgLUcDua; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710799808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OyCsbi8n3w9nlxB/vU9IG/7BiogA4ynph3bT+cZ/wPg=;
+	b=DgLUcDuarakIMmsnqAQWRDgq1XFBHxt56eLU925HNoLmF5M/Muesd5TfdRWEV2QPFZ5tUi
+	3OSrvfnvtHsko4AM9z9mXk4IsdnfISbRt2WpLstlQXdiBtlv/XduEXd8zlNwqLngHrXDrG
+	SiDFBFx6df7s6SmXZEPj2rAY/DPvfGk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-262-nIs2tlAGOB-euepDbDHAPQ-1; Mon,
+ 18 Mar 2024 18:10:04 -0400
+X-MC-Unique: nIs2tlAGOB-euepDbDHAPQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F78A2800E8B;
+	Mon, 18 Mar 2024 22:10:04 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 03EC9492BC8;
+	Mon, 18 Mar 2024 22:10:03 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	stable@vger.kernel.org,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 3/7] KVM: SVM: Add support for allowing zero SEV ASIDs
+Date: Mon, 18 Mar 2024 18:09:58 -0400
+Message-ID: <20240318221002.2712738-4-pbonzini@redhat.com>
+In-Reply-To: <20240318221002.2712738-1-pbonzini@redhat.com>
+References: <20240318221002.2712738-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <vuyzqntyhzz5at5q7rxkix6ogavow4kltge26q62ihzhsblsuv@o43un23zaf4w>
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: XoF1lNbt33ALAIclzKzG7h4kx1YBEAjM
-X-Proofpoint-ORIG-GUID: XoF1lNbt33ALAIclzKzG7h4kx1YBEAjM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxscore=0 spamscore=0
- bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403140001 definitions=main-2403180161
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On Sun, Mar 17, 2024 at 10:18:25PM -0500, Bjorn Andersson wrote:
-> On Thu, Feb 15, 2024 at 10:55:44AM +0530, Maulik Shah wrote:
-> > Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
-> > addresses associated with it. These control voltage, enable state, mode,
-> > and in legacy targets, voltage headroom. The current in-flight request
-> > checking logic looks for exact address matches. Requests for different
-> > addresses of the same RPMh resource as thus not detected as in-flight.
-> > 
-> > Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
-> > request check for VRM requests by ignoring the address offset.
-> > 
-> > This ensures that only one request is allowed to be in-flight for a given
-> > VRM resource. This is needed to avoid scenarios where request commands are
-> > carried out by RPMh hardware out-of-order leading to LDO regulator
-> > over-current protection triggering.
-> > 
-> > Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
-> > cc: stable@vger.kernel.org
-> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> > Tested-by: Elliot Berman <quic_eberman@quicinc.com> # sm8650-qrd
-> > Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-> > ---
-> > Changes in v4:
-> > - Simplify cmd_db_match_resource_addr()
-> > - Remove unrelated changes to newly added logic
-> > - Update function description comments
-> 
-> You changed things, but retained Konrad's Reviewed-by...
-> 
-> > - Replace Signed-off-by: with Tested-by: from Elliot
-> 
-> Did Elliot test v4, or did you just translate his incorrect(?) s-o-b
-> from v1 into a tested-by?
-> 
-> We're about to write into the git history that Elliot says this version
-> is tested to the best of his abilities...
-> 
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-No, I asked for it:
+Some BIOSes allow the end user to set the minimum SEV ASID value
+(CPUID 0x8000001F_EDX) to be greater than the maximum number of
+encrypted guests, or maximum SEV ASID value (CPUID 0x8000001F_ECX)
+in order to dedicate all the SEV ASIDs to SEV-ES or SEV-SNP.
 
-https://lore.kernel.org/all/20240214105605460-0800.eberman@hu-eberman-lv.qualcomm.com/
+The SEV support, as coded, does not handle the case where the minimum
+SEV ASID value can be greater than the maximum SEV ASID value.
+As a result, the following confusing message is issued:
+
+[   30.715724] kvm_amd: SEV enabled (ASIDs 1007 - 1006)
+
+Fix the support to properly handle this case.
+
+Fixes: 916391a2d1dc ("KVM: SVM: Add support for SEV-ES capability in KVM")
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20240104190520.62510-1-Ashish.Kalra@amd.com
+Link: https://lore.kernel.org/r/20240131235609.4161407-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index eeef43c795d8..5f8312edee36 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -144,10 +144,21 @@ static void sev_misc_cg_uncharge(struct kvm_sev_info *sev)
+ 
+ static int sev_asid_new(struct kvm_sev_info *sev)
+ {
+-	unsigned int asid, min_asid, max_asid;
++	/*
++	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
++	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
++	 * Note: min ASID can end up larger than the max if basic SEV support is
++	 * effectively disabled by disallowing use of ASIDs for SEV guests.
++	 */
++	unsigned int min_asid = sev->es_active ? 1 : min_sev_asid;
++	unsigned int max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
++	unsigned int asid;
+ 	bool retry = true;
+ 	int ret;
+ 
++	if (min_asid > max_asid)
++		return -ENOTTY;
++
+ 	WARN_ON(sev->misc_cg);
+ 	sev->misc_cg = get_current_misc_cg();
+ 	ret = sev_misc_cg_try_charge(sev);
+@@ -159,12 +170,6 @@ static int sev_asid_new(struct kvm_sev_info *sev)
+ 
+ 	mutex_lock(&sev_bitmap_lock);
+ 
+-	/*
+-	 * SEV-enabled guests must use asid from min_sev_asid to max_sev_asid.
+-	 * SEV-ES-enabled guest can use from 1 to min_sev_asid - 1.
+-	 */
+-	min_asid = sev->es_active ? 1 : min_sev_asid;
+-	max_asid = sev->es_active ? min_sev_asid - 1 : max_sev_asid;
+ again:
+ 	asid = find_next_zero_bit(sev_asid_bitmap, max_asid + 1, min_asid);
+ 	if (asid > max_asid) {
+@@ -2234,8 +2239,10 @@ void __init sev_hardware_setup(void)
+ 		goto out;
+ 	}
+ 
+-	sev_asid_count = max_sev_asid - min_sev_asid + 1;
+-	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
++	if (min_sev_asid <= max_sev_asid) {
++		sev_asid_count = max_sev_asid - min_sev_asid + 1;
++		WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV, sev_asid_count));
++	}
+ 	sev_supported = true;
+ 
+ 	/* SEV-ES support requested? */
+@@ -2266,7 +2273,9 @@ void __init sev_hardware_setup(void)
+ out:
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+ 		pr_info("SEV %s (ASIDs %u - %u)\n",
+-			sev_supported ? "enabled" : "disabled",
++			sev_supported ? min_sev_asid <= max_sev_asid ? "enabled" :
++								       "unusable" :
++								       "disabled",
+ 			min_sev_asid, max_sev_asid);
+ 	if (boot_cpu_has(X86_FEATURE_SEV_ES))
+ 		pr_info("SEV-ES %s (ASIDs %u - %u)\n",
+-- 
+2.43.0
+
 
 
