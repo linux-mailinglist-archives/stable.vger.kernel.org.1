@@ -1,134 +1,128 @@
-Return-Path: <stable+bounces-28443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBDF880452
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 19:04:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F30880471
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 19:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A2311F21EC7
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C197284174
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF362C690;
-	Tue, 19 Mar 2024 18:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9012BAE9;
+	Tue, 19 Mar 2024 18:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="NPRXUTTh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mSlw9nc0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E8D2C19F
-	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 18:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9483838F
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 18:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710871383; cv=none; b=C0ZLZF+iFBr5MLmRjAXm9nb+8sDiFL8PbnuU/LrY7yPQX1lHb2Dk8QvAnzoJby+mzyRjrC3wDKq8GDZipmZbv0M9/qQjm5p/LAL7aeiiKDsKNA1JHeeiE8kEvER/HLEn6RvCyQikfF2PS56HssYmPW0/x3WP8jPnTG/ePnyERWU=
+	t=1710871898; cv=none; b=KELCsog6Pog3w+L89ld4wZyxrMwMugOldLKfb3xaYZWZiD22qUwHqi6hlE1Ebjt86NdipeLtLdhuAdtr+eUazMeSOXv1WeafxCqmyq+QJ9MSzeZI5s71ssfzx3q7xzkZsyMZ2VZK6YcMan5ejE4c65JZAt7ARhUHnr7xEAYjH3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710871383; c=relaxed/simple;
-	bh=/bOYxA0veCdTw7dWZj2qwekiYpyvVOARZ2+vTVGh08w=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=WfOP4U/HlDDutEsZQXTAOcf5n0Y8i1XAqZ2Eofrwyio1Ub7B50YhGoaOofTphI7W0/f+jmaDcTF4wTLv6tqIrXmNgyEEgpZFV4eXrwyomoQAwU35nR8OP2X8o3EC+vYlOA0xRoheTqFytFNBY/VO2upGkR4HnnMNleYkY30mtOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=NPRXUTTh; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1710871373; x=1711130573;
-	bh=AA4YbM0umuAl4kGtml9n7UI9KGtZnTLfV5Axe2bZA3o=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NPRXUTThmrkX0+ybosBhdcwELKM7EDYZ1SURCv6t1gUFPUdp4yRh0BKPtZkelos1h
-	 VJyfQboos07nSBKJAQi2CC77UPYPMQ7KHYpWLtpcRA5aVi50yxNkLI1yKvRAKteEng
-	 pLa9qvEa9eTfp1+PdhAhY68QH4eHkZ2ndrWVHWXxDIpvUOwZ+thr6oRP0NDGCtUygz
-	 meIjrX2AnRfNsa6aizGo4Gh7vdjB/JDx7J8Qa9H5baaJmW8KhXtzIHKNIjk63ovKpf
-	 K2MBEFY5CoFFTZqUTUylA8O0ovgUUwwc7R1/ZSyjrhUWpg3ez8f2tKm/Kplu4vmy2U
-	 WJXva94zvDztA==
-Date: Tue, 19 Mar 2024 18:02:47 +0000
-To: jirislaby@kernel.org, gregkh@linuxfoundation.org
-From: Emil Kronborg <emil.kronborg@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Emil Kronborg <emil.kronborg@protonmail.com>, stable@vger.kernel.org
-Subject: [PATCH v2] serial: mxs-auart: add spinlock around changing cts state
-Message-ID: <20240319180239.69765-1-emil.kronborg@protonmail.com>
-Feedback-ID: 20949900:user:proton
+	s=arc-20240116; t=1710871898; c=relaxed/simple;
+	bh=X0crnYytFbsd8Clx7dU+qTJ/narfbG0arFZKRd0Lkr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mXRIsoARKhnG5pHg3gGxZg3fVs7DJQk3TClF5/+E/zr/ul7qrLCLmfzeNJ4HEipH4EYY+okf6yJZRI+bSYLryoq6i2RHxEM2snmLLcw8w9p+4uLepx6l5b7cOu/iW02k6HTxdvhQadBO9V9uCNsblWXPl7AzoAoah0nRa871Ufc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mSlw9nc0; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710871896; x=1742407896;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=X0crnYytFbsd8Clx7dU+qTJ/narfbG0arFZKRd0Lkr8=;
+  b=mSlw9nc0B94B8x+BwoYGS2JdLOsFdUQjurcUD1ouUxBFdsL5uhbVarOC
+   cUiN8zHU3ONMnlH8vBGSrL2HghjDl7JXvav0qT305lJBZBMfoPmN0zKgx
+   cwN0j1jx1FmB1DHMzOAst2vMp2YE6EJbxcnzDV249OZSZBMDgNj9QgJHG
+   TtEB6zHpPnHCsUwV3UpzDhOY7ZR/RVT/ciKZei32gvJiVh1NiIwgrKHcK
+   nC88gskN5OBoSZDuT1wK4MFXISH7cIEYdKWwvBFxnd8Apwl9FV8nM1u0D
+   UF3vNbxSLPONijkxir0J04tTZEv1DkYdSrA6FPnhNxLRBZHQS93eLGxPp
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="5699203"
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
+   d="scan'208";a="5699203"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 11:11:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="827782237"
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
+   d="scan'208";a="827782237"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 19 Mar 2024 11:11:30 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 19 Mar 2024 20:11:29 +0200
+Date: Tue, 19 Mar 2024 20:11:29 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/i915/bios: Tolerate devdata==NULL in
+ intel_bios_encoder_supports_dp_dual_mode()
+Message-ID: <ZfnVUbHNL4lEeinV@intel.com>
+References: <20240319092443.15769-1-ville.syrjala@linux.intel.com>
+ <87sf0mo9hx.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87sf0mo9hx.fsf@intel.com>
+X-Patchwork-Hint: comment
 
-The uart_handle_cts_change() function in serial_core expects the caller
-to hold uport->lock. For example, I have seen the below kernel splat,
-when the Bluetooth driver is loaded on an i.MX28 board.
+On Tue, Mar 19, 2024 at 11:29:14AM +0200, Jani Nikula wrote:
+> On Tue, 19 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> >
+> > If we have no VBT, or the VBT didn't declare the encoder
+> > in question, we won't have the 'devdata' for the encoder.
+> > Instead of oopsing just bail early.
+> >
+> > We won't be able to tell whether the port is DP++ or not,
+> > but so be it.
+> >
+> > Cc: stable@vger.kernel.org
+> > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > ---
+> >  drivers/gpu/drm/i915/display/intel_bios.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
+> > index c7841b3eede8..c13a98431a7b 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_bios.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_bios.c
+> > @@ -3458,6 +3458,9 @@ bool intel_bios_encoder_supports_dp_dual_mode(const struct intel_bios_encoder_da
+> >  {
+> >  	const struct child_device_config *child = &devdata->child;
+> 
+> The above oopses already.
 
-    [   85.119255] ------------[ cut here ]------------
-    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_co=
-re.c:3453 uart_handle_cts_change+0xb4/0xec
-    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc w=
-lcore_sdio configfs
-    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-0002=
-1-gd62a2f068f92 #1
-    [   85.151396] Hardware name: Freescale MXS (Device Tree)
-    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
-    (...)
-    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/=
-0x3f4
-    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x8=
-8/0x210
-    (...)
+Nope. It's just taking the address of the thing.
 
-Cc: stable@vger.kernel.org # v6.1+
-Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements f=
-or irq helpers")
-Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
----
-Changes in v2:
-- Add more of the stack trace to show why the lock is necessary. Note
-  that i removed some unrelated noise for unwinding, showing and dumping
-  the stack trace.
-- Add Fixes tag. Note that this commit do not fix 4d90bb147ef6 ("serial:
-  core: Document and assert lock requirements for irq helpers") as such,
-  but it was the closest commit I could find that makes sense.
-- Cc stable. Commit b0af4bcb4946 ("serial: core: Provide port lock
-  wrappers") is a prerequisite. Therefore, v6.1+.
+> 
+> BR,
+> Jani.
+> 
+> >  
+> > +	if (!devdata)
+> > +		return false;
+> > +
+> >  	if (!intel_bios_encoder_supports_dp(devdata) ||
+> >  	    !intel_bios_encoder_supports_hdmi(devdata))
+> >  		return false;
+> 
+> -- 
+> Jani Nikula, Intel
 
- drivers/tty/serial/mxs-auart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.=
-c
-index 4749331fe618..1e8853eae504 100644
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *p=
-ort,
-=20
- static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
- {
--=09u32 istat;
-+=09u32 istat, stat;
- =09struct mxs_auart_port *s =3D context;
- =09u32 mctrl_temp =3D s->mctrl_prev;
--=09u32 stat =3D mxs_read(s, REG_STAT);
-=20
-+=09uart_port_lock(&s->port);
-+
-+=09stat =3D mxs_read(s, REG_STAT);
- =09istat =3D mxs_read(s, REG_INTR);
-=20
- =09/* ack irq */
-@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void=
- *context)
- =09=09istat &=3D ~AUART_INTR_TXIS;
- =09}
-=20
-+=09uart_port_unlock(&s->port);
-+
- =09return IRQ_HANDLED;
- }
-=20
---=20
-2.44.0
-
-
+-- 
+Ville Syrjälä
+Intel
 
