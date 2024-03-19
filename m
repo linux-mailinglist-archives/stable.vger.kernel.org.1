@@ -1,137 +1,108 @@
-Return-Path: <stable+bounces-28418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4A987FFFC
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:56:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA09880108
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 397C0B21B4A
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 14:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2402428299A
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609676166B;
-	Tue, 19 Mar 2024 14:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F99B657CF;
+	Tue, 19 Mar 2024 15:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nyJamMJW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwmreV05"
 X-Original-To: stable@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4CD56776;
-	Tue, 19 Mar 2024 14:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03C01EEE8;
+	Tue, 19 Mar 2024 15:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710860167; cv=none; b=ia+drBUHwkAk6s4ynqnZt4PoDW+81suzoli7PGRlMsQaiRN/zs4VcoHkP5ZngvbxbWTr46vNIWVzn6Lwmwd2SgCzkp+2Ir7WJhd6lHCDrpxL4azI29vPTmpjnk7dAvlGdVJODOmFoncHgPMPAELHUfZCRYpDHXwI+F9Ogsz+u+E=
+	t=1710863273; cv=none; b=qwZrc0q9EGNglsI4j70VsMm81X5MsMomxWFxC8jyUK+VjNG85Nx7ie7TCbYW8Unz/90hwuAP6TeGc8anYosHmpaWkQgsVvh4w9od2cRe1AdPX/RRrAte12ulgyvMjbpglv5JfHerkq+YS59qJ/jYRF5UR3BKAjrQPxZrhUCV++A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710860167; c=relaxed/simple;
-	bh=MiwAs8rYwP47L2Dl9/eQYeyGQlYMgElvD/3OJmd+Bbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tJQnWLtJEZuo3BfrMpqHWL8/wjDZL+AQbAWdp576FBEA1HYWbMkYnG4gDxG1rLiMZeCciHTBny9ABh42asVrB/y1NYzORlY0T+b5SO8WzA6ON729RPW30XkDtGnSmwl2Z+TGVoH3q0wDwUYZESDUqLGhOrh3bNgNpVA8Fd8Of6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nyJamMJW; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 46AD4E000C;
-	Tue, 19 Mar 2024 14:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710860159;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sMCPTFu5zeWM0duV1ZpFr1rfdopav67r3tSZ4qxLDE8=;
-	b=nyJamMJWhCZ/c6iAgV8MwsO/5Tdw7PcSEFJJR6iplaI+OR59+2vzYIqKeOFhBFGnQbqx3Z
-	4h1Av5Mm19F2wnHjBN7dxcwsd5HHSsDfew7AVjUmS/TwyNfjchaSqX4M3h9VOfqdEQzHaJ
-	OL7xxrT74eyhM8bCCNxIKCepE/IbSjhjDSHHSnHr8Mnuf0cmuBKOB/YBK5lxnv89xT49Bu
-	sPa9IUR4WZl+ID78T+3+0f65liqqoeKsnIIt/cyMmwkKx4Ea6/vx6f6z8LSOlF0m+XFuZC
-	9U1z37LA0TS+JlS+HiRAPCQlmISGlyyXcv0Oc8OxDuzWE8CrXGkM7echvB8gCA==
-Date: Tue, 19 Mar 2024 15:55:58 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, linux-kernel@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] driver core: Keep the supplier fwnode consistent
- with the device
-Message-ID: <20240319155558.056e22f1@bootlin.com>
-In-Reply-To: <20240108142302.7ecd2705@bootlin.com>
-References: <20231114074632.192858-1-herve.codina@bootlin.com>
-	<2024010436-bulb-direness-5582@gregkh>
-	<20240108142302.7ecd2705@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1710863273; c=relaxed/simple;
+	bh=TfGzIDZGL6CbyNtqYWXl6DXZQ/mdt3vXIBDajqSOyAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eE0IUUH/qT6TLmLwmS101coLOA3oiH32DyBxI5cfhW7z2QPAjjL7I7Q+1CcHHmHSYIRdzuFD96Imutu7tHvWK9YdvL+MpdaSbX3WYsIOZ8weCdfTC7kSzbIqbdJisjmjk0Ls3PC/ly70GCqFOf91Wq1mALXQ+rbNlqJLl9UclxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwmreV05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C9DC433F1;
+	Tue, 19 Mar 2024 15:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710863273;
+	bh=TfGzIDZGL6CbyNtqYWXl6DXZQ/mdt3vXIBDajqSOyAY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DwmreV05a/zGbKgGjuCNBRVWNlGrph2FF4mblhal9b6SIUnElGHUdK/U9TPup/tWh
+	 yj5KZU5KA5OiAtOo+TVMdzpXtXmP4s1yNaFvcEox32vL/Ec2qdit8ylgpyxNWxP/yB
+	 BnrkJdOwI+SZaR5bEYI9cSw5y1X1+mYyUVTeRFjDoxo/8dejfEv9E7ccfawu6qkSrN
+	 mnvnOJ9KyRNlqooHl89dYvUtWg87cl7C8reAWToIHn4AC/bIpfucrkL+ocBW0Ol73F
+	 1zOjusg0FXFgnO5rW53Kydt9wegLcnlUxvYveNVXMH4OXno1JYHh2Mone+iWO0tSty
+	 vOyoI7E+ZdZuA==
+Date: Tue, 19 Mar 2024 11:25:36 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	pabeni@redhat.com, stable-commits@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: Patch "selftests: mptcp: explicitly trigger the listener diag
+ code-path" has been added to the 6.7-stable tree
+Message-ID: <ZfmucN89q-5SL9H8@sashalap>
+References: <20240318230045.2162042-1-sashal@kernel.org>
+ <07543c96-f3f4-4df8-b77c-3824d6f53f29@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <07543c96-f3f4-4df8-b77c-3824d6f53f29@kernel.org>
 
-Hi Saravana,
+On Tue, Mar 19, 2024 at 03:49:52PM +0100, Matthieu Baerts wrote:
+>Hi Sasha,
+>
+>On 19/03/2024 00:00, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     selftests: mptcp: explicitly trigger the listener diag code-path
+>>
+>> to the 6.7-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      selftests-mptcp-explicitly-trigger-the-listener-diag.patch
+>> and it can be found in the queue-6.7 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>
+>I do :)
+>
+>> commit 02dc7e7327bc1a3551665745a40029cf96d6a8e6
+>> Author: Paolo Abeni <pabeni@redhat.com>
+>> Date:   Fri Feb 23 17:14:20 2024 +0100
+>>
+>>     selftests: mptcp: explicitly trigger the listener diag code-path
+>>
+>>     [ Upstream commit b4b51d36bbaa3ddb93b3e1ca3a1ef0aa629d6521 ]
+>
+>I think something went wrong: this patch was not supposed to be added to
+>both 6.6 and 6.7 queues:
+>
+>  https://lore.kernel.org/stable/Zfg36tcGXUsZnJCh@sashalap/
+>
+>Do you mind dropping them from both queues, please?
 
-On Mon, 8 Jan 2024 14:23:02 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
+Gah, sorry, I messed up. Now dropped.
 
-> Hi Greg,
-> 
-> On Thu, 4 Jan 2024 16:39:49 +0100
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Tue, Nov 14, 2023 at 08:46:32AM +0100, Herve Codina wrote:  
-> > > The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-> > > fwnode's consumer links") introduces the possibility to use the
-> > > supplier's parent device instead of the supplier itself.
-> > > In that case the supplier fwnode used is not updated and is no more
-> > > consistent with the supplier device used.
-> > > 
-> > > Use the fwnode consistent with the supplier device when checking flags.
-> > > 
-> > > Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > ---
-> > > Changes v2 -> v3:
-> > >   Do not update the supplier handle in order to keep the original handle
-> > >   for debug traces.
-> > > 
-> > > Changes v1 -> v2:
-> > >   Remove sup_handle check and related pr_debug() call as sup_handle cannot be
-> > >   invalid if sup_dev is valid.
-> > > 
-> > >  drivers/base/core.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > index 4d8b315c48a1..440b52ec027f 100644
-> > > --- a/drivers/base/core.c
-> > > +++ b/drivers/base/core.c
-> > > @@ -2082,7 +2082,7 @@ static int fw_devlink_create_devlink(struct device *con,
-> > >  		 * supplier device indefinitely.
-> > >  		 */
-> > >  		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
-> > > -		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-> > > +		    sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
-> > >  			dev_dbg(con,
-> > >  				"Not linking %pfwf - dev might never probe\n",
-> > >  				sup_handle);
-> > > -- 
-> > > 2.41.0
-> > >     
-> > 
-> > Is this still needed?  If so, how come no one is noticing it?
-> >   
-> 
-> I think it is. At least, I don't see anything that make this patch obsolete.
-> 
-
-Any opinion about this patch ?
-
-Best regards,
-Hervé
+-- 
+Thanks,
+Sasha
 
