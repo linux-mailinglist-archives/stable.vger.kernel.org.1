@@ -1,166 +1,128 @@
-Return-Path: <stable+bounces-28405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31A187FB6C
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 11:06:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FA887FBDB
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 11:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D57A1C21CE0
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 10:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681841C21FEF
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 10:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782CC7D3E4;
-	Tue, 19 Mar 2024 10:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630DC39FEC;
+	Tue, 19 Mar 2024 10:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HCIfy9Nv"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D53C53379;
-	Tue, 19 Mar 2024 10:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7D97E101
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 10:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710842765; cv=none; b=HskZrMZjnJUeE+6UObeYIpgODdW6KBmWD3Rx1akXQHJKplgQxOf6v7r+B5qg9/LyprzlTqJ1mWW1mJBQmIW0mdCctqSBROYad76HBvCTSQDYH41Ezwq1XStsVewdrvdsRn59ZJTxaM7lJWT5wCglF7pbwdz3fJJ4G8Frcqj6Rao=
+	t=1710844468; cv=none; b=KrTN8gaahlL6Hi78ZfOl5Hma8cIITFcmT13awDQBQD+fc41W/Sev1ZHvOzeLDHGc2PewQ9twFwCYlvItFBp1D/qRkbYBtu/L4NcwTGj7Hc5/nwd5K8aMZj2jf4tc2P/dS1qcVCmXsfHMQs/OOxUzrp/mp9qIQDCqbb2uhjf+li4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710842765; c=relaxed/simple;
-	bh=EEy2lMXJzmH6TjIwVmbz71izRsffH2IfZXtYInV7Uh0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J35QYFR+xD079B1exam+++oPetOnr8XWlZ1NjPcIKkDf2aIl6bGqdi7O3Tv/9wDReycNko6cI80xUs3gCo+6Vuu03SvNPRYevp2BH3puy9IsPHMqe7WFEJ8+oOTVNdFp1OapUZEJUTUtPN5iOiIUi35ql3rCrfNjfsFRrH88iWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TzS5m1vYFz1HBhJ;
-	Tue, 19 Mar 2024 18:05:32 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6E79B1A0187;
-	Tue, 19 Mar 2024 18:05:54 +0800 (CST)
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 19 Mar 2024 18:05:53 +0800
-Message-ID: <469c58c5-1095-cb9d-bd1d-514476e262e0@huawei.com>
-Date: Tue, 19 Mar 2024 18:05:53 +0800
+	s=arc-20240116; t=1710844468; c=relaxed/simple;
+	bh=KLogwV2OS1MNnUFlL5AcMmAn08FTAGvABUZ8HooE6Y0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QSCQcTnVfURMAL48XxQ5jIggQ4Hr6txX5EJtuiAe4eLGvyCRGanhjEej67FiG+mIlbY4W8Z/tLwtntwBBn7cMbbGD2yoOyTcj6gbKl0yoeg9BJ6uXHw+PEXmASdrSUcV6qhN1za1iBDH7EJTa+aCEvTdXTnhgYeRULgfPcdaoBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HCIfy9Nv; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1710844457; x=1711103657;
+	bh=pnd8r6xQikPsi4m0u6vjrij5QyJs+H6K9/tYGMWmGiM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=HCIfy9NvbRmbm17kGo5n0tigQVz37JL7zfGqklTYumIlbsPvY7XExh5dtIdcTczIT
+	 I1AV5Wk88OaoYqDoYKzvtDVdoLV3wEQMKK1+MqHFJzwbFT8CMJZ9hklIiUbEGikjdN
+	 AJdJRkINSrjbHRcUJIndu/yR+Zcd/8INFK15njwznxXG5Id74unXcBxC/788C5mmzi
+	 EdwNq5FPti953gzA37/8Dib4fDuyVS4QaVyaFV5xhiNtaJeCbN4znhrFvPkJoOhf28
+	 EibK+rjMAyfhZSxlaH9erGsoGcIdeKG4Z2JjDkdcTlBTV86VdPWW/QX7wldluQQhKw
+	 8qFHyq7fzEhqg==
+Date: Tue, 19 Mar 2024 10:34:01 +0000
+To: Laine Taffin Altman <alexanderaltman@me.com>, Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+Message-ID: <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
+In-Reply-To: <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me> <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com> <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH v3 4/9] ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()
-Content-Language: en-US
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>, Jan Kara <jack@suse.cz>
-CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<ritesh.list@gmail.com>, <adobriyan@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
-	<yangerkun@huawei.com>, <stable@vger.kernel.org>, Baokun Li
-	<libaokun1@huawei.com>
-References: <20240314140906.3064072-1-libaokun1@huawei.com>
- <20240314140906.3064072-5-libaokun1@huawei.com>
- <Zfg19s2+fn9QYnUQ@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <Zfg19s2+fn9QYnUQ@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2024/3/18 20:39, Ojaswin Mujoo wrote:
-> On Thu, Mar 14, 2024 at 10:09:01PM +0800, Baokun Li wrote:
->> --- a/fs/ext4/mballoc.c
->> +++ b/fs/ext4/mballoc.c
->> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
->>      return 0;
->>    if (order == MB_NUM_ORDERS(sb))
->>      order--;
->> + if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
->> +   order = MB_NUM_ORDERS(sb) - 1;
-> Hey Baokun,
-Hi Ojaswin,
->
-> Thanks for fixing this. This patch looks good to me, feel free to add:
->
-> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Thanks for the review!
-> my comments after this are less about the patch and more about some
-> thoughts on the working of average fragment lists.
->
-> So going through the v2 and this patch got me thinking about what really
-> is going to happen when a user tries to allocate 32768 blocks which is also
-> the maximum value we could have in say ac->ac_g_ex.fe_len.
->
-> When this happens, ext4_mb_regular_allocator() will directly set the
-> criteria as CR_GOAL_LEN_FAST. Now, we'll follow:
->
-> ext4_mb_choose_next_group_goal_fast()
->    for (i=mb_avg_fragment_size_order(); i < MB_NUM_ORDERS; i++) { .. }
->
-> Here, mb_avg_fragment_siz_order() will do something like:
->
->    order = fls(32768) - 2 = 14
->    ...
->    if (order == MB_NUM_ORDERS(sb))
->      order--;
->
->    return order;
->
-> And we'll look in the fragment list[13] and since none of the groups
-> there would have 32768 blocks free (since we dont track it here) we'll
-> unnecessarily traverse the full list before falling to CR_BEST_AVAIL_LEN
-> (this will become a noop due to the way order and min_order
-> are calculated) and eventually to CR_GOAL_LEN_SLOW where we might get
-> something or end up splitting.
-That's not quite right, in ext4_mb_choose_next_group_goal_fast() even
-though we're looking for the group with order 13, the group with 32768
-free blocks is also in there. So after passing ext4_mb_good_group() in
-ext4_mb_find_good_group_avg_frag_lists(), we get a group with 32768
-free blocks. And in ext4_mb_choose_next_group_best_avail() we were
-supposed to allocate blocks quickly by trim order, so it's necessary
-here too. So there are no unnecessary loops here.
+On 3/19/24 06:28, Laine Taffin Altman wrote:
+> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
+>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
+>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.com>=
+ wrote:
+>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>
+>>>>> It is not enough for a type to be a ZST to guarantee that zeroed memo=
+ry
+>>>>> is a valid value for it; it must also be inhabited. Creating a value =
+of
+>>>>> an uninhabited type, ZST or no, is immediate UB.
+>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, since
+>>>>> that type is not inhabited.
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zer=
+oed` function")
+>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>>
+>>>> I think either in the commit log or in the code comment, there better =
+be
+>>>> a link or explanation on "(un)inhabited type". The rest looks good to
+>>>> me.
+>>>
+>>> Would the following be okay for that purpose?
+>>>
+>>> A type is inhabited if at least one valid value of that type exists; a
+>>> type is uninhabited if no valid values of that type exist.  The terms
+>>> "inhabited" and "uninhabited" in this sense originate in type theory,
+>>> a branch of mathematics.
+>>>
+>>> In Rust, producing an invalid value of any type is immediate undefined
+>>> behavior (UB); this includes via zeroing memory.  Therefore, since an
+>>> uninhabited type has no valid values, producing any values at all for
+>>> it is UB.
+>>>
+>>> The Rust standard library type `core::convert::Infallible` is
+>>> uninhabited, by virtue of having been declared as an enum with no
+>>> cases, which always produces uninhabited types in Rust.  Thus, remove
+>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
+>>> the UB.
+>>>
+>>
+>> Yeah, this works for me. Thanks!
+>=20
+> Great!  Should it be re-sent or can the new wording be incorporated upon =
+merge?
 
-But this will trigger the freshly added WARN_ON_ONCE, so in the
-new iteration I need to change it to:
+I can re-send it for you again, or do you want to send it yourself?
+I think it is also a good idea to add a link to [1] in the code, since
+the above explanation is rather long and fits better in the commit
+message.
 
-if (WARN_ON_ONCE(order > MB_NUM_ORDERS(ac->ac_sb) + 1))
-         order = MB_NUM_ORDERS(ac->ac_sb) - 1;
+--=20
+Cheers,
+Benno
 
-In addition, when the block size is 4k, there are these limitations:
+[1]: https://doc.rust-lang.org/nomicon/exotic-sizes.html#empty-types
 
-1) Limit the maximum size of the data allocation estimate to 8M in
-     ext4_mb_normalize_request().
-2) #define MAX_WRITEPAGES_EXTENT_LEN 2048
-3) #define DIO_MAX_BLOCKS 4096
-4) Metadata is generally not allocated in many blocks at a time
-
-So it seems that only group_prealloc will allocate more than 2048
-blocks at a time.
-
-And I've tried removing those 8M/2048/4096 limits before, but the
-performance of DIO write barely changed, and it doesn't look like
-the performance bottleneck is here in the number of blocks allocated
-at a time at the moment.
-
-Thanks,
-Baokun
-> I think something more optimal would be to:
->
-> 1. Add another entry to average fragment lists for completely empty
-> groups. (As a sidenote i think we should use something like MB_NUM_FRAG_ORDER
-> instead of MB_NUM_ORDERS in calculating limits related to average
-> fragment lists since the NUM_ORDERS seems to be the buddy max order ie
-> 8192 blocks only valid for CR_POWER2 and shouldn't really limit the
-> fragment size lists)
->
-> 2. If we don't want to go with 1 (maybe there's some history for that),
-> then probably should exit early from CR_GOAL_LEN_FAST so that we don't
-> iterate there.
->
-> Would like to hear your thoughts on it Baokun, Jan.
->
-> Regards,
-> ojaswin
->
 
