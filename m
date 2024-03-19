@@ -1,146 +1,98 @@
-Return-Path: <stable+bounces-28436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2ED8802FF
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:04:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E31880303
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B32DBB2103A
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:04:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32E161C221FB
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCCD208A1;
-	Tue, 19 Mar 2024 17:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212B3134CB;
+	Tue, 19 Mar 2024 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkvGCOay"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O/SdhBvv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9031F19479;
-	Tue, 19 Mar 2024 17:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AFC2575F
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 17:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710867876; cv=none; b=u1SQiKe1pkg6b2HlbYKVpkpqHa+SUUMdKJdjLgkHINvNGhbsyIc0UAjvse5HihZS0vz4cGUPCXBGRwvIrnMOkhj5FhQ2PSx7Cd5tUNd/zPlHlIcHfU+MFe3jyvBJddDa64dNPhbbbzZvr4qshCpnCjmwM8c8UtR6RA4JuLZlEHA=
+	t=1710867887; cv=none; b=MzAMhV2uZCYk2Gq4pVKVBIM0bjCl4Tr+mrqzG5YFTQm1WliK5+2l+NFTZ9ztvF9NT0s9ejIUOdQXv75BbeYKMSdfs14HZHqE7A9htPRkhZ7ChWvsPuIVOvN5h4UAlHOcViLakc8jf8/sMrlCa9C47ydY9ne2Xw/NbdjGROwaW1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710867876; c=relaxed/simple;
-	bh=usIsYgIB0u62bf/li3eb1mq6pfYpxdSdelwSwtp6FQw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZmIHfdSF9lxFBIe/pp2lKJ4LHccTJys2ILMWax4ouj9VHWS5yGNHBOE/hqtK32dpV5SXbIPOjmWzErMf7iG7fX8tnSwb3L6JXrAAqe179qCdnST/4YeBmhQ96ZISpeVC85zj1yZgsTEx8dWz94TtsD+NL3tIT3LGGpwAEyQyJxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkvGCOay; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d68651e253so10844581fa.0;
-        Tue, 19 Mar 2024 10:04:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710867873; x=1711472673; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YVU1n+8/34SlYxPAq6Hsxd0vjvErqKHwoC6NDWWzfsI=;
-        b=IkvGCOay6PMdFUfYjHpDFrRDp6ByHCl81crAB5xMke95UIpx1B3GAICj6kZy9FYU9Y
-         q4bSIZyoyPNOHC2xi/ozuwHclDtlazwuZesdzT2h3wKNmJd7QoPZXJ9urBk0mSysd2sM
-         WGKPxvjCaL/DQAbpDwPeKZz797s4oP5dpaTnl01U1IuXsu3cvffsWDvgTtCWTD3vetcJ
-         egSi4HDJ2VZ0guTq1T5ssxjkIsmqpTud/80cuiEgMjTpk+faAbPruFcgsKsYkl9iCuTO
-         4uzBh6iTUeZAwyokTqF3bKz9A4AhO33zlBWo73aisFqfrFIJ4dpqlL2TJ2ZtazxWRKZ2
-         7Uqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710867873; x=1711472673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YVU1n+8/34SlYxPAq6Hsxd0vjvErqKHwoC6NDWWzfsI=;
-        b=satYSuhRftuTcUXLj+FJR0whVg8s6z3CuWQfpJJfZ6gXsbAxJHzxaqFkBa4Nvm9h56
-         1PasHGbvoKSugp9AmxInT7I7orBcIB3Z567/zO9VoPW0tDEeBCMknFh6DCcaKrFPXFU3
-         GAll0H5q8H9KvAzhq4D199S/6uxgPwMpSio//HWO/hm7Lo+nedJPjDwnQQTxvgtULqUT
-         bpa6TGJ9wu8UULGonZgS4RJRTYm5el9edJk5H718AuOyjmSP63jsvp9IKF1xXdEFXID4
-         sAaaW/q55BxF77c1+1oy4dByNYlDJeGO1M3F10ntXpbw8beJ4u4vPPP/Ge1yucWSc3pi
-         aX5A==
-X-Forwarded-Encrypted: i=1; AJvYcCV1p30mF7wmHcspCF+u/W0IwOEHeCM0E14vXUMph3HbJyCTPCR2PybNP6A6bSaLQBdb4I/jNuloILyaG2FC+dQn0TNBA7e69Te7mh33SR2k6iobwdi2gQXLSoVt17za8emrf1bwk3F1u5QkW/pNheGRHdKxoXJ4uphtl21N2nIIa2eUAjVMRXIz9zHwabn/gSF/6oZTUafN2Ke1GkD/rhE54c1z3Mu5tN6VR13whsg0k/PApBzFV6Q2mlWOX73BBzfPW2ucLTQ4Ny2mkW7yC1WOdVecXKrkO2Q=
-X-Gm-Message-State: AOJu0Yx7+MyyjGNJIiMRgvswqquULSVIvxIQ9xgqbagamngu9L3AQlD3
-	wW3/Hi0A9tU5EIyIXliRiEloPW3ww1/YNFNwn9OY9vifN6tkBsnyd/rCBrut8AEGVUFuB6lu8Rs
-	1dFM/DCC6gmVSkB6w7cvV659uQepsKcb71Df8tLRD
-X-Google-Smtp-Source: AGHT+IFcvqkGzHZJKFO78b1jwlV6Dv9MozcKlvuAEmYaP3sEG2nkhFwwxiY2HUqD2MPIyKWZvIasLf0i26cOkdvZaWA=
-X-Received: by 2002:a2e:7a02:0:b0:2d4:7218:4cf1 with SMTP id
- v2-20020a2e7a02000000b002d472184cf1mr8168352ljc.7.1710867872545; Tue, 19 Mar
- 2024 10:04:32 -0700 (PDT)
+	s=arc-20240116; t=1710867887; c=relaxed/simple;
+	bh=MIVV16Mpf5PZ3yXzekFqltSKB173xKKfq3kPCXlwxlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rC47W8zDmMd3D4X2TSqRVshJpVus433fS/lUym4BQBlPlE/zADF+8UIBa9tXOgfHNUGogsvtM8VcFSXC/mgV62CWw18Ts9rSJrJefruqX8vhd8Nkqul3VoLA2+4C3KkyhqkAIhNO6L8QXp8kI9WpZwprHCsGlya8+v2wZUYz1ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O/SdhBvv; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710867886; x=1742403886;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=MIVV16Mpf5PZ3yXzekFqltSKB173xKKfq3kPCXlwxlI=;
+  b=O/SdhBvvQElH41PiJ7l9/a3Ld636WCDP2kE5WCX+F9Wlp2zkoIdDAG1B
+   qbijVL1mdyBFx+VbisJJj5paW3YpUgqEuHjeBqudJk6D5xy0h2Dpjahm1
+   NobrKHQiIUgb8pFaZ/QcjjTjy/F3lhsKdu3wVrW7ED37F21GXIgowl5me
+   uQS0LeOSnYzWmqLPmJIxSTB9apu5nNcwGea4uAMHDdsaCHc5JKp8yq97q
+   u87EgzsbaY3T94te2CzRPKCnhk0UlvTuknXl4Fdcx8stSjYc97aGG/Psa
+   zfaF54yZf+GverI1SehWoCHrE4yk2qE9zfCYz39uvzWxM7y97LmJB0X4H
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="9574239"
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
+   d="scan'208";a="9574239"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 10:04:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,137,1708416000"; 
+   d="scan'208";a="13903055"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 19 Mar 2024 10:04:45 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rmctG-000Hy3-0n;
+	Tue, 19 Mar 2024 17:04:42 +0000
+Date: Wed, 20 Mar 2024 01:04:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Maximilian Heyne <mheyne@amazon.de>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 4.19 5.4 5.15] btrfs: defrag: fix memory leak in
+ btrfs_ioctl_defrag
+Message-ID: <ZfnFojtwvgWFjPOm@28e5c5ca316a>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319152926.1288-1-johan+linaro@kernel.org>
- <20240319152926.1288-3-johan+linaro@kernel.org> <CAD=FV=VUFodCAXEJgfpSqZZdtQaw5-8n_-sX_2p6LuQ2ixLRpQ@mail.gmail.com>
- <Zfm8nifvqb3xO5HG@hovoldconsulting.com> <CABBYNZLCm2w=oBZUFON+AW2rHo8zPMVGosZr3SAVXbs77XPgUQ@mail.gmail.com>
-In-Reply-To: <CABBYNZLCm2w=oBZUFON+AW2rHo8zPMVGosZr3SAVXbs77XPgUQ@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Tue, 19 Mar 2024 17:04:19 +0000
-Message-ID: <CABBYNZLUwCisMyHWEJpRJxp6LUeTPOFM_VPsAyb6UJ2r5iT6kg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] Bluetooth: add quirk for broken address properties
-To: Johan Hovold <johan@kernel.org>
-Cc: Doug Anderson <dianders@chromium.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	cros-qcom-dts-watchers@chromium.org, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Matthias Kaehlcke <mka@chromium.org>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240319170055.17942-1-mheyne@amazon.de>
 
-On Tue, Mar 19, 2024 at 5:02=E2=80=AFPM Luiz Augusto von Dentz
-<luiz.dentz@gmail.com> wrote:
->
->  Hi,
->
-> On Tue, Mar 19, 2024 at 4:26=E2=80=AFPM Johan Hovold <johan@kernel.org> w=
-rote:
-> >
-> > On Tue, Mar 19, 2024 at 09:10:23AM -0700, Doug Anderson wrote:
-> > > On Tue, Mar 19, 2024 at 8:29=E2=80=AFAM Johan Hovold <johan+linaro@ke=
-rnel.org> wrote:
-> >
-> > > > +       /* When this quirk is set, the Bluetooth Device Address pro=
-vided by
-> > > > +        * the 'local-bd-address' fwnode property is incorrectly sp=
-ecified in
-> > > > +        * big-endian order.
-> > > > +        *
-> > > > +        * This quirk can be set before hci_register_dev is called =
-or
-> > > > +        * during the hdev->setup vendor callback.
-> > > > +        */
-> > > > +       HCI_QUIRK_BDADDR_PROPERTY_BROKEN,
-> > >
-> > > Like with the binding, I feel like
-> > > "HCI_QUIRK_BDADDR_PROPERTY_BACKWARDS" or
-> > > "HCI_QUIRK_BDADDR_PROPERTY_SWAPPED" would be more documenting but I
-> > > don't feel strongly.
-> >
-> > So, same reasoning here, this it not some quirk that people should go
-> > around setting without first considering to fix their boot firmware.
->
-> Or we just change its meaning to say what byteorder is the BDADDR e.g:
-> HCI_QUIRK_BDADDR_PROPERTY_BYTEORDER=3Dbe
+Hi,
 
-Ah just ignore, it is a flag not really a property that can assume
-different values.
+Thanks for your patch.
 
-> > Johan
->
->
->
-> --
-> Luiz Augusto von Dentz
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 4.19 5.4 5.15] btrfs: defrag: fix memory leak in btrfs_ioctl_defrag
+Link: https://lore.kernel.org/stable/20240319170055.17942-1-mheyne%40amazon.de
+
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
 
---=20
-Luiz Augusto von Dentz
 
