@@ -1,141 +1,123 @@
-Return-Path: <stable+bounces-28440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDF6880386
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:34:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0BE880393
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16F31C229D8
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE301C229B4
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337D71BF2A;
-	Tue, 19 Mar 2024 17:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD371BF53;
+	Tue, 19 Mar 2024 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PojRk8DN"
+	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="Yw23IB9o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1B21B812
-	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 17:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0007E19BDC;
+	Tue, 19 Mar 2024 17:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710869658; cv=none; b=b7JoL1OTcIkmY57pdmoYsEr8ad2iXL25NYCluYgspaQDG3wJrfemD3Rv55ukWhZRxaHT7pSgRXrcFNsGtMbZQQRO5fXUiRi6zX0XoPHjZHFD/Qdcb4JDfx4++2jpSs5L3/w4EXiMufZjGMOT3Q5yVkhMbAvW4eUfod4L6RQzGII=
+	t=1710869871; cv=none; b=W9Lch6yuv+h2FMqrxnNAy3KywyPsaLI/ctplX0e41qdopeZ0MqjtBuhqPdWAQRy8Q5If3p1Agdv6tW1JMlLWiMHr1NnR4HdpdnWuel38tq1uJe1VSRDFXlIYRmcz8XKhV3e1MiEHveOCyKo3ab5EZYk1oQveBM/T4m5X3TUE2zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710869658; c=relaxed/simple;
-	bh=2cv+uOgViz5td2LtyB9BpL841aRXxlirwrFqlMFbk68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EEIxC4pzzDCHFJZlHFW8zajeVtsxDfIQkjdfgZQJqFQeeEbzkQYHqqYK0dv/yb6ldTDwJ2jccGvGtl0NY0JhA3BxbPGMjdt4mhNp0Z8RX+spUKBvvPeu9t/5XHZxqfmaTB6VGi0zLsfJBW9TBdNSfXUZ0n3GY9g05ct1oSWHN+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PojRk8DN; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7cc05ce3c70so3676539f.0
-        for <stable@vger.kernel.org>; Tue, 19 Mar 2024 10:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710869655; x=1711474455; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2cv+uOgViz5td2LtyB9BpL841aRXxlirwrFqlMFbk68=;
-        b=PojRk8DN3SC71AWZKydd7MEYdTNXzCL41DUTUOav7kS37TeDwj8VzQa6jq3b3eC7B3
-         16xQ8R+ChV5VPx1iGycmCbZHvj26DdE3FEfBgn4mfJJzE+gQE6D+kvPHpQUq69uFoMjx
-         FAY+GVBNQPZ/QxV1wQPd2QXUkHaDY9RE0mAkQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710869655; x=1711474455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2cv+uOgViz5td2LtyB9BpL841aRXxlirwrFqlMFbk68=;
-        b=Z18oZCWB7ldk42tAQKZWWNcoPnDBWzX/Xkl+0P8KCnNefhTUQdO9Wb3BAEm8jgMhcl
-         nVl9mhrTKPCa1DXXcki8UwWJh6qspFLqV9VmEN/v/y+DodkRKXFqgF2jqK/u7lcdu9ob
-         cDtLsejzgl0O6TSk6AVT1l0BBb2QrbjOdBs5cTkGdTPzr8qq98cw+Hn4nvTVUJy4jD6Q
-         ORT7p+ZNPDUIpSjj4bazV+tI+GZ6o3j+xW77K6tvt6Sacp+zLdljaZtNhLuXNmeh8T0R
-         TxDOqVWkKNNZgUcWstEhedsRAY5+FtuOSFY5KF7z8NSa8i+megdZGY0CGgyRdwV8c9MH
-         0QvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKZ9H293fL4jAt6LEDiYWtYLIYMlQkm/NtFRy1CXNCmxuvtgluxatL0g5JBUJpZ1P0qqZWEKpg0p/+v8oKq0dXsCwjAsCd
-X-Gm-Message-State: AOJu0Yzg5oikLIJizYabCpcgdrWRyCR09s2aKZdlBEPT9C7lcLVS4bv7
-	t7INC6x+VYKWlwa6y0NYuSNwcWEOb7EIW1BQv042fODUGbwYuuf2ZXdyMT8R+zKc8MU8YGJikrQ
-	=
-X-Google-Smtp-Source: AGHT+IGMv8oDyhBZzwDr9Qa9HKMA1si0Vzn/3WwPnYX3YZDttOjasgzEiXMNgL/+hECdvISPEmIvRw==
-X-Received: by 2002:a5d:8356:0:b0:7cc:89c2:6fd4 with SMTP id q22-20020a5d8356000000b007cc89c26fd4mr4159177ior.2.1710869655357;
-        Tue, 19 Mar 2024 10:34:15 -0700 (PDT)
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com. [209.85.166.176])
-        by smtp.gmail.com with ESMTPSA id s4-20020a02ad04000000b00476df803a46sm2986915jan.21.2024.03.19.10.34.15
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Mar 2024 10:34:15 -0700 (PDT)
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-366abfd7b09so9865ab.0
-        for <stable@vger.kernel.org>; Tue, 19 Mar 2024 10:34:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVTSlDCxyAL6gG85lkz5CTvHrGZw/U4Uh8wAjoazmSdLGS5Y9EyKNS9EKlW5gXgDx5MpRt3+16KntYcbkCiotSIcu2uJjWk
-X-Received: by 2002:a05:622a:2293:b0:430:d723:aa66 with SMTP id
- ay19-20020a05622a229300b00430d723aa66mr20279qtb.16.1710869633686; Tue, 19 Mar
- 2024 10:33:53 -0700 (PDT)
+	s=arc-20240116; t=1710869871; c=relaxed/simple;
+	bh=3SfnrzwmkkMF8R9JhbYStPD6FosPH0R9WbGo/F4C5jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ddkIOmST5czSpzQEB0AiS8c190VCqoS5aceexd9in1/rKfpW2F/PKPxdXMv2tLmIu2h8ijuRavfRSwCStchv2cBz+iNpFz+SR6hGhXj2/kl8scahIf7Eqquygw9c/EiRzEp0npqOKffhiIRu4eruYdkFdYTbFdUT8gew+8U3Vr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=Yw23IB9o; arc=none smtp.client-ip=71.19.156.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: zev)
+	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 8C49F6C5;
+	Tue, 19 Mar 2024 10:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+	s=thorn; t=1710869867;
+	bh=3SfnrzwmkkMF8R9JhbYStPD6FosPH0R9WbGo/F4C5jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yw23IB9oMmIiDLLw4cX4HvHYB6lxgOSm1IJBbODouWBF6Tdg9DIANXgrscEsrepIn
+	 w05eEa0mr0polnd9iRwE9B69iugXx+h8TR/FTlvcRIZwBNtXDJfHVpjNVdn1GFUy9M
+	 k6xGaqa1kNQcU91A5R5+pBy5Xq8yeo6zMG2TgW/I=
+Date: Tue, 19 Mar 2024 10:37:45 -0700
+From: Zev Weiss <zev@bewilderbeest.net>
+To: Helge Deller <deller@gmx.de>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Florent Revest <revest@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check
+ to be per-arch
+Message-ID: <c7bb388b-2c4c-4102-9b84-278f6c6855ee@hatter.bewilderbeest.net>
+References: <20240227013546.15769-4-zev@bewilderbeest.net>
+ <20240227013546.15769-5-zev@bewilderbeest.net>
+ <Zd24aCps4xD28c74@shell.armlinux.org.uk>
+ <e391cad0-7b98-4efd-bea1-cf5ab9c626bf@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319152926.1288-1-johan+linaro@kernel.org>
- <20240319152926.1288-4-johan+linaro@kernel.org> <CAD=FV=WqwY07fMV-TuO8QMRnk555BJYEysv4urcugsELufHr4A@mail.gmail.com>
- <Zfm_oFLNgPHqJKtG@hovoldconsulting.com> <CAD=FV=UgCNmeWJiwWAGj_jm78eeTNoo-_bx7QrqLfyDMJwRNKA@mail.gmail.com>
- <ZfnLKC7B9o2reC8x@hovoldconsulting.com>
-In-Reply-To: <ZfnLKC7B9o2reC8x@hovoldconsulting.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 19 Mar 2024 10:33:37 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=Ujx+f3SxTiuhBGUypwfvHqTO70jy-8EgLUGA93SON5Kw@mail.gmail.com>
-Message-ID: <CAD=FV=Ujx+f3SxTiuhBGUypwfvHqTO70jy-8EgLUGA93SON5Kw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/5] Bluetooth: qca: fix device-address endianness
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	cros-qcom-dts-watchers@chromium.org, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Matthias Kaehlcke <mka@chromium.org>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Nikita Travkin <nikita@trvn.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <e391cad0-7b98-4efd-bea1-cf5ab9c626bf@gmx.de>
 
-Hi,
+On Tue, Feb 27, 2024 at 11:53:59AM PST, Helge Deller wrote:
+>On 2/27/24 11:24, Russell King (Oracle) wrote:
+>>On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
+>>>There exist systems other than PARISC where MDWE may not be feasible
+>>>to support; rather than cluttering up the generic code with additional
+>>>arch-specific logic let's add a generic function for checking MDWE
+>>>support and allow each arch to override it as needed.
+>>>
+>>>Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+>>>Cc: <stable@vger.kernel.org> # v6.3+
+>>
+>>PA-RISC folk need to ack/review-by this patch.
+>
+>I'm fine with patch 1/2:
+>Acked-by: Helge Deller <deller@gmx.de> # parisc
+>
+>>Alternatively, it needs
+>>to be restructured to add the arch_memory_deny_write_exec_supported()
+>>override without touching the PA-RISC code, which then makes the Arm
+>>patch independent of the status of the PA-RISC patch. That will allow
+>>the Arm issue to be solved even if an ack is not forthcoming for the
+>>PA-RISC parts.
+>>>Alternatively, I wonder whether akpm would be willing to pick up this
+>>patch set as-is.
+>
+>I have no preference, but I think both patches should be pushed
+>together via arm tree or akpm.
+>
+>Helge
 
-On Tue, Mar 19, 2024 at 10:28=E2=80=AFAM Johan Hovold <johan@kernel.org> wr=
-ote:
->
-> > I guess I have a different opinion on the matter. I often end up
-> > cherry-picking stuff to older branches and I generally assume that
-> > it's relatively safe to pick the beginning of a series without picking
-> > later patches because I assume everyone has a goal of bisectability.
-> > This breaks that assumption. IMO splitting up the Qualcomm Bluetooth
-> > patch into two patches doesn't help enough with clarity to justify.
->
-> I did that in v2 because then the two patches had to be split to
-> facilitate backporting as wcn3991 support was added later.
->
-> But the big issue here is taking the patches through different trees. If
-> Bjorn could ack the DT patch so that everything goes through the
-> Bluetooth tree, then I guess I can reorder the DT patch and squash the
-> two driver patches.
->
-> But waiting several weeks just to make sure that the DT patch hits
-> mainline (and the binding patch before that?) before the driver fixes
-> can go in just does not seem worth it to me.
+Ping...Russell, Andrew, any thoughts on how this could move forward?
 
-Personally, I don't care quite as much about them going through the
-same tree. It'd be nice, but I agree with you that it's probably not
-worth the hassle (though I wouldn't object if Bjorn wanted to Ack the
-dts) and it's fine with me if the patches "meet up" in mainline. In my
-case, though, I could imagine following the "Link" tag in the patches
-and arriving at the mailing list post. That's where I'd go back and
-look to see the order which I should apply the patches safely. ...and
-I'd prefer that it shows an order that lets things apply safely.
 
--Doug
+Thanks,
+Zev
+
 
