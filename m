@@ -1,113 +1,94 @@
-Return-Path: <stable+bounces-28390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E4187F3FC
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 00:27:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3800887F5AD
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 03:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B35EB21F81
-	for <lists+stable@lfdr.de>; Mon, 18 Mar 2024 23:27:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE9DB21CE2
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 02:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ABA5F54A;
-	Mon, 18 Mar 2024 23:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D427E585;
+	Tue, 19 Mar 2024 02:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZ9De5F4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUeDGdX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24755EE8D;
-	Mon, 18 Mar 2024 23:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880697E572;
+	Tue, 19 Mar 2024 02:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710804468; cv=none; b=gngeMNvp/MNcy7RWXZnlPO+hM7mbtjg4+AIAprnoyxWAtOSnlV+8ujBEjWgUUBwdOqb5aqyEBONNhgC1tHiaxBJ+DfC3gsy5TKKYyN93zK4twzLuMaMA6pFuqvaSCZqDzv1nA5grXQIAgTZelw7D4Jz/KP0Zqci55cu8cY21m2Y=
+	t=1710816542; cv=none; b=Tclwbv2t7purSFM54l20f/UvH0OmhsVlPpE189kKMbyyZhecLH4ij46xdq6RNMAaL9zmCxBjeqfQ9yKQMAiI+6NptHnvDHXreTKG84OUWjiR0QZu+yQkimU3X4ifjOM/reIDWAvtQEfnJ4vrww1WoAuv1AY30gq0TisGYex0/UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710804468; c=relaxed/simple;
-	bh=0S9Y9rj/bpBXjc+MXn4SjJDwIYcQoHrs8PTRftXmKbg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=V2Y/KHeTLFzPKE2S6FWtLfJLE4H2258bRkqD2SvE87WkEH7kahyIp/ARats6j5vFT4lWSJ+7TDD8Dgd3o4qLC796DatVMESZlYFVzUTgVRsWrhnvVbWy9SxQluBUDjnqdhMUpQ9usi4jcGYImqNLYFMBlzaFlFjQ4zK9uLOyuPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZ9De5F4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89F4C433C7;
-	Mon, 18 Mar 2024 23:27:46 +0000 (UTC)
+	s=arc-20240116; t=1710816542; c=relaxed/simple;
+	bh=duyIFh111GdgY8uZhIwil5LxGThPSh0MWa2ewQJ7/Yw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pP9Qoz8lSnkJUmP3lBGBMSI87gferyFyGXXIZLFr2L6YtHbntpqvPxaCPe+fd+ef83eSFJPjlKb/pUqE5xnUHFfMyu+JZWJlyQIAtyy8kFMXabZJMven6A1TA6nHfI3fF3CunFj91P1X4hyy/zyuPNHCZzPT3GGDH88jw1v8Klo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUeDGdX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B76C43399;
+	Tue, 19 Mar 2024 02:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710804468;
-	bh=0S9Y9rj/bpBXjc+MXn4SjJDwIYcQoHrs8PTRftXmKbg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=sZ9De5F4jx9EWCCKHHN68q69J893Wu0LXedrHo0Pd7sshJ4F0LaIa1U2P1QAKLPou
-	 fnz7dOYTgXxkorf/6bxIhpwstJRGMjqRkJYndfWtOmPOR5zPr6hRSAPB7XExg+vL01
-	 /yS9SZWixBhulgLuF2um2WOovtaOAMINgbfuOzO8PQwYBnJvk1ixED+ZR7gA+5m8nu
-	 ESkRmitczgmM8K9NgH5/qK+SKrcIBHJd8ELdV1GHURKz7VGQTpAeLQ7poja+1txgOz
-	 x7jw+0f+PlxJoAqj7cfi7iFbZ9aCJ5/Dd4U9A/lyBcWxrDS21sRV0cNX8bKOKOPkC6
-	 AGS6ByrRim3SA==
+	s=k20201202; t=1710816542;
+	bh=duyIFh111GdgY8uZhIwil5LxGThPSh0MWa2ewQJ7/Yw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mUeDGdX/hQcftX6GXGW+/Al/Q1MKvq9Dp2QePCbjF9SdlaTC4uf85IOFJHIhJYnNW
+	 eyvK3cGo/FP5KRhsR4COq2aiTsbcFINiEQxrsWY20A655RFXGWmtGrSLYpR5NU/7Du
+	 tpoRSqYvQ80uacKoZeEa4ieqRsGEOnh+P4kMuFo2neMiov1ugr6GfSiA7Lptpz1pON
+	 o/XXq3W2NzT2bor2VNvJs5zLjbn5kTlfkIHji1ebk8Opj5XpIHPKR885q6sK5POqJD
+	 Y/TU7veb59xUnHtbOQuaH5OsV2XD0c2HoBpW6qYO4lfOyNWhlGgOgNpRXL0fgaOpVL
+	 RpwJa8ODI1pAw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	Amit Kucheria <amitk@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	stable@vger.kernel.org,
+	Loic Poulain <loic.poulain@linaro.org>
+Subject: Re: (subset) [PATCH v2 0/3] QCM2290 LMH
+Date: Mon, 18 Mar 2024 21:48:33 -0500
+Message-ID: <171081652641.198276.6279515600086976748.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
+References: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Mar 2024 01:27:45 +0200
-Message-Id: <CZX9KHAO8163.2IASOXWIT4OZ5@kernel.org>
-Subject: Re: [PATCH] keys: Fix overwrite of key expiration on instantiation
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Silvio Gissi" <sifonsec@amazon.com>, "David Howells"
- <dhowells@redhat.com>
-Cc: "Hazem Mohamed Abuelfotoh" <abuehaze@amazon.com>,
- <linux-afs@lists.infradead.org>, <linux-cifs@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <netdev@vger.kernel.org>,
- <stable@vger.kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20240315190539.1976-1-sifonsec@amazon.com>
-In-Reply-To: <20240315190539.1976-1-sifonsec@amazon.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri Mar 15, 2024 at 9:05 PM EET, Silvio Gissi wrote:
-> The expiry time of a key is unconditionally overwritten during
-> instantiation, defaulting to turn it permanent. This causes a problem
-> for DNS resolution as the expiration set by user-space is overwritten to
-> TIME64_MAX, disabling further DNS updates. Fix this by restoring the
-> condition that key_set_expiry is only called when the pre-parser sets a
-> specific expiry.
->
-> Fixes: 39299bdd2546 ("keys, dns: Allow key types (eg. DNS) to be reclaime=
-d immediately on expiry")
-> Signed-off-by: Silvio Gissi <sifonsec@amazon.com>
-> cc: David Howells <dhowells@redhat.com>
-> cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-> cc: linux-afs@lists.infradead.org
-> cc: linux-cifs@vger.kernel.org
-> cc: keyrings@vger.kernel.org
-> cc: netdev@vger.kernel.org
-> cc: stable@vger.kernel.org
-> ---
->  security/keys/key.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/security/keys/key.c b/security/keys/key.c
-> index 560790038329..0aa5f01d16ff 100644
-> --- a/security/keys/key.c
-> +++ b/security/keys/key.c
-> @@ -463,7 +463,8 @@ static int __key_instantiate_and_link(struct key *key=
-,
->  			if (authkey)
->  				key_invalidate(authkey);
-> =20
-> -			key_set_expiry(key, prep->expiry);
-> +			if (prep->expiry !=3D TIME64_MAX)
-> +				key_set_expiry(key, prep->expiry);
->  		}
->  	}
-> =20
 
-I checked the original commit and reflected to the fix:
+On Sat, 09 Mar 2024 14:15:01 +0100, Konrad Dybcio wrote:
+> Wire up LMH on QCM2290 and fix a bad bug while at it.
+> 
+> P1-2 for thermal, P3 for qcom
+> 
+> 
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Applied, thanks!
 
-David, I can pick this one too as I'm anyway sending PR for rc2?
+[3/3] arm64: dts: qcom: qcm2290: Add LMH node
+      commit: 7d6d561fa934594faf359f6fffee0e2dd59f8110
 
-[1] https://lore.kernel.org/keyrings/CZX77XLG67HZ.UAU4NUQO27JP@kernel.org/
-
-BR, Jarkko
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
