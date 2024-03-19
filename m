@@ -1,117 +1,86 @@
-Return-Path: <stable+bounces-28400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC77187F88E
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 08:43:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2544A87F894
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 08:52:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85743282DA6
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 07:43:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20CD1F21B65
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 07:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFB2537E5;
-	Tue, 19 Mar 2024 07:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34401537E5;
+	Tue, 19 Mar 2024 07:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ninuFKo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzxvfIc+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D43BBCA
-	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 07:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C461E536;
+	Tue, 19 Mar 2024 07:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710834232; cv=none; b=gql01t6l0pc4wYveR2xEAnkkM9KQRqerkyYizZqebtF8e+hdoW3m6ZHtcJWKvJR3ek0daFOvcUpHEcRlWtZ69BF3o5k2gOBmx5Bmqhjg1YSRf+nu/xJUNg7rGMeu4ggUuZn3PBhXwM7t3samhVoOC1oYCfA3wFYQBpNaIlWMc2g=
+	t=1710834717; cv=none; b=OEDRoq5wjvjptIGwNQKnpjwyNrpzUH9bKpWNe87Tmn8EDXWVH3DusHinTaEv5xzMfMfvdAm47c5VlReaU45y00M5bGTh1L2dxGYy3uU52wSLPSt2I8hm9l9munkLT0WwtqcVZnSiQuC4iG4hoI7IhEfctWvvQf+Oji4llB5AecE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710834232; c=relaxed/simple;
-	bh=ApTDmdxNjCY2t5sAyX6qT0+1HzvroOVF89Qtq6GJnvU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fVsHRCHvOSg0fW/dJ0sv3dLtYXmTPCSDADW0VjSUxqabMOqu/Rh5emzhHAqjFGKJvaPVizxbbGG8rDHPaVOXvOGrv6B5eR2iy04V1CthMx9Y7lGf7KCSM/Ho4i+5wFELbf38Uon434bJvJ622q8Qmp4SHXjiupHefRLOt9Smf60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ninuFKo+; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc693399655so9491028276.1
-        for <stable@vger.kernel.org>; Tue, 19 Mar 2024 00:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1710834230; x=1711439030; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lyVllugR5IqRbqncN1tVXbwrn/I/Myl7P+DNgUkJQao=;
-        b=ninuFKo+GaLFTYzWHlcnCueCOXggw0F+Pc6plm/gYjFvdL+ZWGDQy/TvLD5siDrIa6
-         aoi5zTvVvFug7BVAvLgfDb/f9W0nDFblIXS7IfxKam2dJDHTRGiQvVUE6WmhpP+vsQDl
-         EUWuj4r7oCTg/7GZYdcJpm+Ggw2F9JHYI3/wilLnj7QsxpFk2TVpIIQyh/YgFHOdav1K
-         NGLq0wasWznSAUucOTR087IUZURXgAoA2+ipJXigdKWNzkAFqgAMdn9FABbOruqUFSwI
-         Ewyjh+xG3RGs8XXjt6Z/VigYEUnezF1IuW/fgfI4Myx39gSc65pFbGTgmIVRjT8IYyNa
-         UgRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710834230; x=1711439030;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lyVllugR5IqRbqncN1tVXbwrn/I/Myl7P+DNgUkJQao=;
-        b=mjRWmXczhPIHgJyNdOeqhLVFhSANvGIcE9eE5mbPolk27ErlIxHuC8Bn2Jzb6NRmL/
-         sMAtDfnggHh4/ZDUA2+RODRF87ooTz0zV4jUoWfk4qh77d28DyGhtW2UnKa/59SNXeba
-         7Kx7mkY667lDeshDTSzFT4DJGbgeT+coI1sk801Jj6ZGTjIra28GQxhOG0GyipDhUAGp
-         Ky6FlQ/jIMnzfEmiUekMvKedY1EK3lsXPC2f5umt0xD7OorssYvq9mFOPjawH4roIeb8
-         OuvSKKxch5OXaTkBwrlF0pDnJ04iuwPTlHCuI6sHXDtieLsn0VR7lzIFX0TAnV0El8+X
-         pmBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSi+Hi2GOnfP0jQVsmeSe4bE1JgASq9ijVpvsvcKmLFng7CPaKBvA42CPPgycy7+0vR9d88hFiQap1HWyN4oSboZ79oiD+
-X-Gm-Message-State: AOJu0YzDnEupOIMoh7fM1Pkvswxb9cLc0cb7woxT+6ILK77H3LO/l2On
-	uA/96O7WDN6q3BXarLT7m/Rpl6fXgXaAJGatkTVs5so/jY7R1uYc0FkVLwLyOsqSONpEg2ZySGJ
-	w5bfHSw==
-X-Google-Smtp-Source: AGHT+IECrYSanaCM/eJMHcpwnnLjH7+A/JTbe9uQMg4keXB7FUSMz7wYWYlHT+xWhDeI5pUxpdtJR9xZ93Tq
-X-Received: from kyletso-p620lin01.ntc.corp.google.com ([2401:fa00:fc:202:2f6c:fc01:709:12f4])
- (user=kyletso job=sendgmr) by 2002:a05:6902:2084:b0:dc6:e8a7:fdba with SMTP
- id di4-20020a056902208400b00dc6e8a7fdbamr398999ybb.4.1710834230386; Tue, 19
- Mar 2024 00:43:50 -0700 (PDT)
-Date: Tue, 19 Mar 2024 15:43:37 +0800
+	s=arc-20240116; t=1710834717; c=relaxed/simple;
+	bh=kef+Np91HURoIvxVyGouxjdT+2g3hg7LLKenupgyyto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dyUuXTYp8GroPy6IV8/WCXle0oxuO2ohYizvhG+KZaGBvJkouuZYLdnli/iorprj+Z2Jg3xwBLWYqsndFLLCP6UpwXXx/+9dh4SSHhk7/eqgcHuwGrlyuIsAQWzQvmTPM3PxHj8VP2TpNMesue7g6/dZrMedTWpjc/XBy9Jg0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzxvfIc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCE0C433C7;
+	Tue, 19 Mar 2024 07:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1710834716;
+	bh=kef+Np91HURoIvxVyGouxjdT+2g3hg7LLKenupgyyto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YzxvfIc+MwsNvx2iHqu0lDN3Ndd0PD/7gfzMR/d1rQe0Mgjnd5CXg2N//LW18isZl
+	 wCII7vpkJWrrBHCJOM75xKOuTgOBGXEzSmjKr1V3LXCAiH5C2CaTZ8k8EtOd35ZdLq
+	 c1LOa7cpB72GLfhz2RjYnBvMuuVpNyDbhbmp13Tw=
+Date: Tue, 19 Mar 2024 08:51:43 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wentong Wu <wentong.wu@intel.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: Re: [PATCH 1/1] mei: vsc: Unregister interrupt handler for system
+ suspend
+Message-ID: <2024031915-manhole-winnings-43d4@gregkh>
+References: <20240318080126.2813476-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.291.gc1ea87d7ee-goog
-Message-ID: <20240319074337.3307292-1-kyletso@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: Correct the PDO counting in pd_set
-From: Kyle Tso <kyletso@google.com>
-To: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org
-Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240318080126.2813476-1-sakari.ailus@linux.intel.com>
 
-The index in the loop has already been added one and is equal to the
-number of PDOs to be updated when leaving the loop.
+On Mon, Mar 18, 2024 at 10:01:26AM +0200, Sakari Ailus wrote:
+> Unregister the MEI VSC interrupt handler before system suspend and
+> re-register it at system resume time. This mirrors implementation of other
+> MEI devices.
+> 
+> This patch fixes the bug that causes continuous stream of MEI VSC errors
+> after system resume.
+> 
+> Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+> Cc: stable@vger.kernel.org # for 6.8
+> Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  drivers/misc/mei/platform-vsc.c | 17 ++++++-
+>  drivers/misc/mei/vsc-tp.c       | 84 +++++++++++++++++++++++----------
+>  drivers/misc/mei/vsc-tp.h       |  3 ++
+>  3 files changed, 78 insertions(+), 26 deletions(-)
 
-Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+What is the git commit id of this in Linus's tree?
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 3d505614bff1..566dad0cb9d3 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6852,14 +6852,14 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
- 	if (data->sink_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->sink_desc.pdo[i]; i++)
- 			port->snk_pdo[i] = data->sink_desc.pdo[i];
--		port->nr_snk_pdo = i + 1;
-+		port->nr_snk_pdo = i;
- 		port->operating_snk_mw = data->operating_snk_mw;
- 	}
- 
- 	if (data->source_desc.pdo[0]) {
- 		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
- 			port->snk_pdo[i] = data->source_desc.pdo[i];
--		port->nr_src_pdo = i + 1;
-+		port->nr_src_pdo = i;
- 	}
- 
- 	switch (port->state) {
--- 
-2.44.0.291.gc1ea87d7ee-goog
+thanks,
+
+greg k-h
 
 
