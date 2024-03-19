@@ -1,77 +1,53 @@
-Return-Path: <stable+bounces-28442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BB3880399
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:38:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBDF880452
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 19:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF5E1F259BD
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A2311F21EC7
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1832033E;
-	Tue, 19 Mar 2024 17:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF362C690;
+	Tue, 19 Mar 2024 18:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhpGq69C"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="NPRXUTTh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BFD19BDC;
-	Tue, 19 Mar 2024 17:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E8D2C19F
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 18:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710869916; cv=none; b=e7yO4h/L8fmWDxroIUM0qmid17v+XCPqlo1PQZvEAxCIg1+i2VTClznjEs7xFkY4XLICDkqYSmjW6szf6igixwLTJORGep/LecaOTWvzT6KqzjYtzB+h78yF+T8POcpp5ygOrblAsJ7kmW0TEXYCWKtFtABVU0rMDXiAM1OZbW8=
+	t=1710871383; cv=none; b=C0ZLZF+iFBr5MLmRjAXm9nb+8sDiFL8PbnuU/LrY7yPQX1lHb2Dk8QvAnzoJby+mzyRjrC3wDKq8GDZipmZbv0M9/qQjm5p/LAL7aeiiKDsKNA1JHeeiE8kEvER/HLEn6RvCyQikfF2PS56HssYmPW0/x3WP8jPnTG/ePnyERWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710869916; c=relaxed/simple;
-	bh=4vuAWBj1evs6v+OZMqxOpqf/OaE6RssOo2tlPJIKe2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FBbHb3nfeM5Y/ZwZNvNJO52MK5dNvVsdAY6wmuHFZLsFg7Ua36MpynaYReQNJTxu6/85yVS07Ifwxh4IvH+MK5mQzUbSWyiF5CUkFl7DAEnN1EBJaBMLg8EqXJ+bI3KmJyFIfb5fLbLD5TMlLn95UnSjEaukTu0MgHKwBeKpv6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhpGq69C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00477C433F1;
-	Tue, 19 Mar 2024 17:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710869916;
-	bh=4vuAWBj1evs6v+OZMqxOpqf/OaE6RssOo2tlPJIKe2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FhpGq69CjbpLw7gdlpfimviyUI9rG1eiCMCeg4oRTfRHYiaEvNeWnvg8fB629aLZW
-	 AZ81lwqhxnWfbJDM9iuNZ5Kl5VgSgWoIfbkIO/0TdZPrxNElSmJNv1D4NHBr1x3QQd
-	 d98gs93XJgtAocflD6uznvPw2sPCqqyu19aSUi6BLS8vDa9pSw7V22D7C0mag/CeXa
-	 J+Bwkwx3Dn4Rg02ptndnzDRowRBiznOdoFMON7/tYTQ3gGghhJIQFnLmaFVdaWM7K0
-	 tRNrfqA5FYAFZjs861/KJiC57kUwu+d4A5Q5wuYc3cLP7a6wjL6pOW4W69YHBVCwGG
-	 HvG5QSe0kw+nQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rmdQA-0000000016b-11LA;
-	Tue, 19 Mar 2024 18:38:42 +0100
-Date: Tue, 19 Mar 2024 18:38:42 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] Bluetooth: add quirk for broken address properties
-Message-ID: <ZfnNoi4ahVlzHvvo@hovoldconsulting.com>
-References: <20240319152926.1288-1-johan+linaro@kernel.org>
- <20240319152926.1288-3-johan+linaro@kernel.org>
- <CAD=FV=VUFodCAXEJgfpSqZZdtQaw5-8n_-sX_2p6LuQ2ixLRpQ@mail.gmail.com>
- <Zfm8nifvqb3xO5HG@hovoldconsulting.com>
- <CAA8EJprp89VgFMjHv=EynROUs632CfQPbEka0GAcEAy743EMaA@mail.gmail.com>
+	s=arc-20240116; t=1710871383; c=relaxed/simple;
+	bh=/bOYxA0veCdTw7dWZj2qwekiYpyvVOARZ2+vTVGh08w=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=WfOP4U/HlDDutEsZQXTAOcf5n0Y8i1XAqZ2Eofrwyio1Ub7B50YhGoaOofTphI7W0/f+jmaDcTF4wTLv6tqIrXmNgyEEgpZFV4eXrwyomoQAwU35nR8OP2X8o3EC+vYlOA0xRoheTqFytFNBY/VO2upGkR4HnnMNleYkY30mtOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=NPRXUTTh; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1710871373; x=1711130573;
+	bh=AA4YbM0umuAl4kGtml9n7UI9KGtZnTLfV5Axe2bZA3o=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=NPRXUTThmrkX0+ybosBhdcwELKM7EDYZ1SURCv6t1gUFPUdp4yRh0BKPtZkelos1h
+	 VJyfQboos07nSBKJAQi2CC77UPYPMQ7KHYpWLtpcRA5aVi50yxNkLI1yKvRAKteEng
+	 pLa9qvEa9eTfp1+PdhAhY68QH4eHkZ2ndrWVHWXxDIpvUOwZ+thr6oRP0NDGCtUygz
+	 meIjrX2AnRfNsa6aizGo4Gh7vdjB/JDx7J8Qa9H5baaJmW8KhXtzIHKNIjk63ovKpf
+	 K2MBEFY5CoFFTZqUTUylA8O0ovgUUwwc7R1/ZSyjrhUWpg3ez8f2tKm/Kplu4vmy2U
+	 WJXva94zvDztA==
+Date: Tue, 19 Mar 2024 18:02:47 +0000
+To: jirislaby@kernel.org, gregkh@linuxfoundation.org
+From: Emil Kronborg <emil.kronborg@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, Emil Kronborg <emil.kronborg@protonmail.com>, stable@vger.kernel.org
+Subject: [PATCH v2] serial: mxs-auart: add spinlock around changing cts state
+Message-ID: <20240319180239.69765-1-emil.kronborg@protonmail.com>
+Feedback-ID: 20949900:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,50 +55,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA8EJprp89VgFMjHv=EynROUs632CfQPbEka0GAcEAy743EMaA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2024 at 07:01:57PM +0200, Dmitry Baryshkov wrote:
-> On Tue, 19 Mar 2024 at 18:26, Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Tue, Mar 19, 2024 at 09:10:23AM -0700, Doug Anderson wrote:
-> > > On Tue, Mar 19, 2024 at 8:29 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > > > +       /* When this quirk is set, the Bluetooth Device Address provided by
-> > > > +        * the 'local-bd-address' fwnode property is incorrectly specified in
-> > > > +        * big-endian order.
-> > > > +        *
-> > > > +        * This quirk can be set before hci_register_dev is called or
-> > > > +        * during the hdev->setup vendor callback.
-> > > > +        */
-> > > > +       HCI_QUIRK_BDADDR_PROPERTY_BROKEN,
-> > >
-> > > Like with the binding, I feel like
-> > > "HCI_QUIRK_BDADDR_PROPERTY_BACKWARDS" or
-> > > "HCI_QUIRK_BDADDR_PROPERTY_SWAPPED" would be more documenting but I
-> > > don't feel strongly.
-> >
-> > So, same reasoning here, this it not some quirk that people should go
-> > around setting without first considering to fix their boot firmware.
-> 
-> The address can be considered broken in many different ways. The name
-> should still be descriptive enough. If you want to specify that it is
-> a broken behaviour, please consider something like BROKEN_BE.
+The uart_handle_cts_change() function in serial_core expects the caller
+to hold uport->lock. For example, I have seen the below kernel splat,
+when the Bluetooth driver is loaded on an i.MX28 board.
 
-I doubt that Qualcomm will be able come up with another way to break the
-address property. They'd have to try real hard.
+    [   85.119255] ------------[ cut here ]------------
+    [   85.124413] WARNING: CPU: 0 PID: 27 at /drivers/tty/serial/serial_co=
+re.c:3453 uart_handle_cts_change+0xb4/0xec
+    [   85.134694] Modules linked in: hci_uart bluetooth ecdh_generic ecc w=
+lcore_sdio configfs
+    [   85.143314] CPU: 0 PID: 27 Comm: kworker/u3:0 Not tainted 6.6.3-0002=
+1-gd62a2f068f92 #1
+    [   85.151396] Hardware name: Freescale MXS (Device Tree)
+    [   85.156679] Workqueue: hci0 hci_power_on [bluetooth]
+    (...)
+    [   85.191765]  uart_handle_cts_change from mxs_auart_irq_handle+0x380/=
+0x3f4
+    [   85.198787]  mxs_auart_irq_handle from __handle_irq_event_percpu+0x8=
+8/0x210
+    (...)
 
-And this is an internal define which can be changed at any time. There's
-also some worth in keeping it aligned with the DT property, which I'm
-more open to renaming (e.g. if the DT maintainers thinks dropping the
-vendor prefix makes sense).
+Cc: stable@vger.kernel.org # v6.1+
+Fixes: 4d90bb147ef6 ("serial: core: Document and assert lock requirements f=
+or irq helpers")
+Signed-off-by: Emil Kronborg <emil.kronborg@protonmail.com>
+---
+Changes in v2:
+- Add more of the stack trace to show why the lock is necessary. Note
+  that i removed some unrelated noise for unwinding, showing and dumping
+  the stack trace.
+- Add Fixes tag. Note that this commit do not fix 4d90bb147ef6 ("serial:
+  core: Document and assert lock requirements for irq helpers") as such,
+  but it was the closest commit I could find that makes sense.
+- Cc stable. Commit b0af4bcb4946 ("serial: core: Provide port lock
+  wrappers") is a prerequisite. Therefore, v6.1+.
 
-The alternative I considered but rejected was something like
-"local-bd-address-be" as that would be too neutral.
+ drivers/tty/serial/mxs-auart.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Perhaps "local-bd-address-reversed" would at least signal that something
-is backwards, but I still fear that that may be too subtle.
+diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.=
+c
+index 4749331fe618..1e8853eae504 100644
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -1086,11 +1086,13 @@ static void mxs_auart_set_ldisc(struct uart_port *p=
+ort,
+=20
+ static irqreturn_t mxs_auart_irq_handle(int irq, void *context)
+ {
+-=09u32 istat;
++=09u32 istat, stat;
+ =09struct mxs_auart_port *s =3D context;
+ =09u32 mctrl_temp =3D s->mctrl_prev;
+-=09u32 stat =3D mxs_read(s, REG_STAT);
+=20
++=09uart_port_lock(&s->port);
++
++=09stat =3D mxs_read(s, REG_STAT);
+ =09istat =3D mxs_read(s, REG_INTR);
+=20
+ =09/* ack irq */
+@@ -1126,6 +1128,8 @@ static irqreturn_t mxs_auart_irq_handle(int irq, void=
+ *context)
+ =09=09istat &=3D ~AUART_INTR_TXIS;
+ =09}
+=20
++=09uart_port_unlock(&s->port);
++
+ =09return IRQ_HANDLED;
+ }
+=20
+--=20
+2.44.0
 
-Johan
+
 
