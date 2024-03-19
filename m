@@ -1,119 +1,166 @@
-Return-Path: <stable+bounces-28404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8280F87FAB4
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 10:29:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31A187FB6C
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 11:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B41011C21938
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 09:29:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D57A1C21CE0
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 10:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8467C0BD;
-	Tue, 19 Mar 2024 09:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nw4xmKI+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782CC7D3E4;
+	Tue, 19 Mar 2024 10:06:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4A051C28
-	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 09:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D53C53379;
+	Tue, 19 Mar 2024 10:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710840561; cv=none; b=S5A98pCEGUJL4QuiOJ9gyfX2HvJeFnx9SU0v9dtnuOOcOU3fLq0LGVdUlU4Zglme7v5i4KEeHbsSM7kJlxm/czdxpbK/rbAQojW4dSeYqvou68+Zzx8ty7l3xS9IheFA4v0ZV+cNs1AMmNJBtEHs0XrCf253IHkFPXwuDe7xrSQ=
+	t=1710842765; cv=none; b=HskZrMZjnJUeE+6UObeYIpgODdW6KBmWD3Rx1akXQHJKplgQxOf6v7r+B5qg9/LyprzlTqJ1mWW1mJBQmIW0mdCctqSBROYad76HBvCTSQDYH41Ezwq1XStsVewdrvdsRn59ZJTxaM7lJWT5wCglF7pbwdz3fJJ4G8Frcqj6Rao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710840561; c=relaxed/simple;
-	bh=uaHVx0ncml+pSnJ9yO/wJZGUIiX71HnsafAiV9LPvZQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=p/VcDzZe0V7ZtUCQcyOJ5NaGv8idUfxxmLAjsD2LTV0f/L1yKC3K56o+7CXZcDq9nTEARhyC4HvpOsLug2OAv43+n5pOCpR7UifyY39Lwb1TX6PuU1Fxhs0dURmxOnculth2q2Ql5uSFR75PpSdV9Xgds36sr3TRfxB1ElaDUlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nw4xmKI+; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710840560; x=1742376560;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=uaHVx0ncml+pSnJ9yO/wJZGUIiX71HnsafAiV9LPvZQ=;
-  b=Nw4xmKI+SVrQ3SQo72GRPu3I3fy7bwbp8+ZFcLicqjjo0o0T5cmKW8qZ
-   tDuo4gvhtfjL8bH8YaEoXnAsoCBFDyphkzIHQ/KQtakB1Lriv0bxLGyWz
-   VTX+Y0dynQ+n9c7lZ5oZQHJmwIp08yiP7SsDi6uo/e5+9A2Vu+apHbNkL
-   2qFFmPrxQCd8KU1hlOrUgLCML8x+JVg7+jbDpkOWtEfS8R/SwXUK9+Uqd
-   kv3j2goDqb0YtB/bI5slxe3TuRZVD1H0aE1ZZmme85eCkrWm2qlgiUdQp
-   TU0S9skHOtqOwq6UPPlU708v22tjlpF5OjLpovhR2eVElddn3JoYj6gpa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="9497654"
-X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="9497654"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 02:29:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="18378513"
-Received: from rcritchl-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.36.139])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 02:29:17 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] drm/i915/bios: Tolerate devdata==NULL in
- intel_bios_encoder_supports_dp_dual_mode()
-In-Reply-To: <20240319092443.15769-1-ville.syrjala@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240319092443.15769-1-ville.syrjala@linux.intel.com>
-Date: Tue, 19 Mar 2024 11:29:14 +0200
-Message-ID: <87sf0mo9hx.fsf@intel.com>
+	s=arc-20240116; t=1710842765; c=relaxed/simple;
+	bh=EEy2lMXJzmH6TjIwVmbz71izRsffH2IfZXtYInV7Uh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=J35QYFR+xD079B1exam+++oPetOnr8XWlZ1NjPcIKkDf2aIl6bGqdi7O3Tv/9wDReycNko6cI80xUs3gCo+6Vuu03SvNPRYevp2BH3puy9IsPHMqe7WFEJ8+oOTVNdFp1OapUZEJUTUtPN5iOiIUi35ql3rCrfNjfsFRrH88iWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TzS5m1vYFz1HBhJ;
+	Tue, 19 Mar 2024 18:05:32 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6E79B1A0187;
+	Tue, 19 Mar 2024 18:05:54 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 19 Mar 2024 18:05:53 +0800
+Message-ID: <469c58c5-1095-cb9d-bd1d-514476e262e0@huawei.com>
+Date: Tue, 19 Mar 2024 18:05:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH v3 4/9] ext4: fix slab-out-of-bounds in
+ ext4_mb_find_good_group_avg_frag_lists()
+Content-Language: en-US
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>, Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<ritesh.list@gmail.com>, <adobriyan@gmail.com>,
+	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
+	<yangerkun@huawei.com>, <stable@vger.kernel.org>, Baokun Li
+	<libaokun1@huawei.com>
+References: <20240314140906.3064072-1-libaokun1@huawei.com>
+ <20240314140906.3064072-5-libaokun1@huawei.com>
+ <Zfg19s2+fn9QYnUQ@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <Zfg19s2+fn9QYnUQ@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Tue, 19 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+On 2024/3/18 20:39, Ojaswin Mujoo wrote:
+> On Thu, Mar 14, 2024 at 10:09:01PM +0800, Baokun Li wrote:
+>> --- a/fs/ext4/mballoc.c
+>> +++ b/fs/ext4/mballoc.c
+>> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+>>      return 0;
+>>    if (order == MB_NUM_ORDERS(sb))
+>>      order--;
+>> + if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
+>> +   order = MB_NUM_ORDERS(sb) - 1;
+> Hey Baokun,
+Hi Ojaswin,
 >
-> If we have no VBT, or the VBT didn't declare the encoder
-> in question, we won't have the 'devdata' for the encoder.
-> Instead of oopsing just bail early.
+> Thanks for fixing this. This patch looks good to me, feel free to add:
 >
-> We won't be able to tell whether the port is DP++ or not,
-> but so be it.
+> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Thanks for the review!
+> my comments after this are less about the patch and more about some
+> thoughts on the working of average fragment lists.
 >
-> Cc: stable@vger.kernel.org
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_bios.c | 3 +++
->  1 file changed, 3 insertions(+)
+> So going through the v2 and this patch got me thinking about what really
+> is going to happen when a user tries to allocate 32768 blocks which is also
+> the maximum value we could have in say ac->ac_g_ex.fe_len.
 >
-> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/=
-i915/display/intel_bios.c
-> index c7841b3eede8..c13a98431a7b 100644
-> --- a/drivers/gpu/drm/i915/display/intel_bios.c
-> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
-> @@ -3458,6 +3458,9 @@ bool intel_bios_encoder_supports_dp_dual_mode(const=
- struct intel_bios_encoder_da
->  {
->  	const struct child_device_config *child =3D &devdata->child;
+> When this happens, ext4_mb_regular_allocator() will directly set the
+> criteria as CR_GOAL_LEN_FAST. Now, we'll follow:
+>
+> ext4_mb_choose_next_group_goal_fast()
+>    for (i=mb_avg_fragment_size_order(); i < MB_NUM_ORDERS; i++) { .. }
+>
+> Here, mb_avg_fragment_siz_order() will do something like:
+>
+>    order = fls(32768) - 2 = 14
+>    ...
+>    if (order == MB_NUM_ORDERS(sb))
+>      order--;
+>
+>    return order;
+>
+> And we'll look in the fragment list[13] and since none of the groups
+> there would have 32768 blocks free (since we dont track it here) we'll
+> unnecessarily traverse the full list before falling to CR_BEST_AVAIL_LEN
+> (this will become a noop due to the way order and min_order
+> are calculated) and eventually to CR_GOAL_LEN_SLOW where we might get
+> something or end up splitting.
+That's not quite right, in ext4_mb_choose_next_group_goal_fast() even
+though we're looking for the group with order 13, the group with 32768
+free blocks is also in there. So after passing ext4_mb_good_group() in
+ext4_mb_find_good_group_avg_frag_lists(), we get a group with 32768
+free blocks. And in ext4_mb_choose_next_group_best_avail() we were
+supposed to allocate blocks quickly by trim order, so it's necessary
+here too. So there are no unnecessary loops here.
 
-The above oopses already.
+But this will trigger the freshly added WARN_ON_ONCE, so in the
+new iteration I need to change it to:
 
-BR,
-Jani.
+if (WARN_ON_ONCE(order > MB_NUM_ORDERS(ac->ac_sb) + 1))
+         order = MB_NUM_ORDERS(ac->ac_sb) - 1;
 
->=20=20
-> +	if (!devdata)
-> +		return false;
-> +
->  	if (!intel_bios_encoder_supports_dp(devdata) ||
->  	    !intel_bios_encoder_supports_hdmi(devdata))
->  		return false;
+In addition, when the block size is 4k, there are these limitations:
 
---=20
-Jani Nikula, Intel
+1) Limit the maximum size of the data allocation estimate to 8M in
+     ext4_mb_normalize_request().
+2) #define MAX_WRITEPAGES_EXTENT_LEN 2048
+3) #define DIO_MAX_BLOCKS 4096
+4) Metadata is generally not allocated in many blocks at a time
+
+So it seems that only group_prealloc will allocate more than 2048
+blocks at a time.
+
+And I've tried removing those 8M/2048/4096 limits before, but the
+performance of DIO write barely changed, and it doesn't look like
+the performance bottleneck is here in the number of blocks allocated
+at a time at the moment.
+
+Thanks,
+Baokun
+> I think something more optimal would be to:
+>
+> 1. Add another entry to average fragment lists for completely empty
+> groups. (As a sidenote i think we should use something like MB_NUM_FRAG_ORDER
+> instead of MB_NUM_ORDERS in calculating limits related to average
+> fragment lists since the NUM_ORDERS seems to be the buddy max order ie
+> 8192 blocks only valid for CR_POWER2 and shouldn't really limit the
+> fragment size lists)
+>
+> 2. If we don't want to go with 1 (maybe there's some history for that),
+> then probably should exit early from CR_GOAL_LEN_FAST so that we don't
+> iterate there.
+>
+> Would like to hear your thoughts on it Baokun, Jan.
+>
+> Regards,
+> ojaswin
+>
 
