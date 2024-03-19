@@ -1,143 +1,131 @@
-Return-Path: <stable+bounces-28432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D93880280
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:38:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678588802E9
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 18:02:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7675B1F24C36
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:38:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06DF1B22E3A
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 17:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C272F9E4;
-	Tue, 19 Mar 2024 16:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BF513AF9;
+	Tue, 19 Mar 2024 17:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJY+9+pS"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="pVbJYvWn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BF27470;
-	Tue, 19 Mar 2024 16:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932AD22325;
+	Tue, 19 Mar 2024 17:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710866331; cv=none; b=n7GEtrU6Dmlo+vxNWVdp0evU16q+28JCA7uVyOlR940fmSZeRF43tsc+Sr0g78mlPI5WYeHUv+wtGBBywkyGl7lBPqHDlnZCz6CDEtZoLb9VccB8WjFrpUehIY1Nd2cMgXMJWGq2ofq9HQ/oNKDkbsRIJUggQDNbTNd/Cz/rhPw=
+	t=1710867686; cv=none; b=euiTqLnlrheBm8LG33T0t7RM6JuT2m4pF+FtJW260eJyV5v7V/MKOfcFqvH+pbT6l2NqGP7XUqSYdtTdHLejKekXveKgehZV0VXSPEn1/STsE2g6dsq+aRO33jAY/vuOzL1dUt/YnCWQYPLShqAf/Is5To5/YcEkZfB0qXubFtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710866331; c=relaxed/simple;
-	bh=dYsylaBpQOp3sMEqxBcd5E0VBO1SUJjmx6IkRhLuU/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cNmYiXpgMCopPBR1OZmHmHbyc9um6HsR5Rt85FMZ0MnvFXmR0QXGSalsKALDRuu0PxXxcIp4r7JwKwsQ/uBdpNFiVx3ZNk6EPqQrEJqAjtiDtJ5B+Z+5RbIdzzlZ7oWsDvuQHF4OykUsR9iliXa6dbAJ5b/Mb8gk6h0GZrW0P0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJY+9+pS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81801C43394;
-	Tue, 19 Mar 2024 16:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710866330;
-	bh=dYsylaBpQOp3sMEqxBcd5E0VBO1SUJjmx6IkRhLuU/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pJY+9+pSarDhpFmWIuEdBfUThaZYx4IzquJlP5O64VzWFDoFioQINcZi4p+yopd6F
-	 ErebcMpVyh4KjLRkxscbDd7pdoed6R/I3g9++/WFyZQPcZ8z17rWY3gKGmaeCYZk64
-	 hn+/Y64HGirKPes9zYqyBKvE/jnlNtWaKjws6jjAhQ1G4V31ooEJqiMm4m0c33GZBa
-	 6NWaIKh5JXdu1eel98bZoLAH92veFrGvDHWgbuyrJSiSjmlVz95bjBEweJdwkSCB8T
-	 mVKrcpSYzfMonTbtZj6OW2xbxjp/3XC8WWfwU3MvA5UJx3oYj8gJ9VE339DdVziiOI
-	 X470z+WxwiZlg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rmcUK-000000000ul-22u3;
-	Tue, 19 Mar 2024 17:38:57 +0100
-Date: Tue, 19 Mar 2024 17:38:56 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Nikita Travkin <nikita@trvn.ru>
-Subject: Re: [PATCH v3 3/5] Bluetooth: qca: fix device-address endianness
-Message-ID: <Zfm_oFLNgPHqJKtG@hovoldconsulting.com>
-References: <20240319152926.1288-1-johan+linaro@kernel.org>
- <20240319152926.1288-4-johan+linaro@kernel.org>
- <CAD=FV=WqwY07fMV-TuO8QMRnk555BJYEysv4urcugsELufHr4A@mail.gmail.com>
+	s=arc-20240116; t=1710867686; c=relaxed/simple;
+	bh=wxIxc2IBeR488Pp5V7iK1mrm87z+nRMhkQtib6Wz2fc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XF4cCM80RR4+r01UEuYahHK8pvKsBzKH3fKk45ifBQBE2WEmutY4ZE5u5vnspXKHBklUzbR9UJ4sklYAMipQg8UJ4qRwEofcIzYgdxsBaRlyTbHli55fRJvKJwFEH9Cn6q8QDViFAc1228+eOnY4fHYAw6y/nEsB8ZjKnBjdggM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=pVbJYvWn; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1710867685; x=1742403685;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=57GW99A4GkQXZIGOotFJOmgnSAy9xxXesYfr5PIZPOk=;
+  b=pVbJYvWnjX4L78jT25MhGstivW36dee8y7yVgnfgQW43lgvyFQMOioj8
+   /Xk6BsWRx7W07RdvwvbinOrEH8Sq4gjUXWkkJcHlQTm2vTLoMpGedxdzq
+   g0Sqq9aS8Ja4fobqOVAeUSvrMSMsqgEKIDI3F2XZvuyMSh8Uxfv6E2BrA
+   c=;
+X-IronPort-AV: E=Sophos;i="6.07,137,1708387200"; 
+   d="scan'208";a="388874588"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 17:01:10 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:2537]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.112:2525] with esmtp (Farcaster)
+ id 89419cbc-1a1c-4076-8a80-a430305b7285; Tue, 19 Mar 2024 17:01:09 +0000 (UTC)
+X-Farcaster-Flow-ID: 89419cbc-1a1c-4076-8a80-a430305b7285
+Received: from EX19D008EUA004.ant.amazon.com (10.252.50.158) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 19 Mar 2024 17:01:09 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
+ EX19D008EUA004.ant.amazon.com (10.252.50.158) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 19 Mar 2024 17:01:08 +0000
+Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
+ by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Tue, 19 Mar 2024 17:01:08 +0000
+Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
+	id 3288929D4; Tue, 19 Mar 2024 17:01:08 +0000 (UTC)
+From: Maximilian Heyne <mheyne@amazon.de>
+To: 
+CC: Maximilian Heyne <mheyne@amazon.de>, <stable@vger.kernel.org>, Chris Mason
+	<clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba
+	<dsterba@suse.com>, Filipe Manana <fdmanana@suse.com>, Qu Wenruo
+	<wqu@suse.com>, <linux-btrfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 4.19 5.4 5.15] btrfs: defrag: fix memory leak in btrfs_ioctl_defrag
+Date: Tue, 19 Mar 2024 17:00:55 +0000
+Message-ID: <20240319170055.17942-1-mheyne@amazon.de>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=WqwY07fMV-TuO8QMRnk555BJYEysv4urcugsELufHr4A@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 19, 2024 at 09:10:38AM -0700, Doug Anderson wrote:
-> On Tue, Mar 19, 2024 at 8:30 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
-> > device address in big-endian order when setting it using the
-> > EDL_WRITE_BD_ADDR_OPCODE command.
-> >
-> > Presumably, this is the case for all non-ROME devices which all use the
-> > EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
-> > use a different command and expect the address in little-endian order).
-> >
-> > Reverse the little-endian address before setting it to make sure that
-> > the address can be configured using tools like btmgmt or using the
-> > 'local-bd-address' devicetree property.
-> >
-> > Note that this can potentially break systems with boot firmware which
-> > has started relying on the broken behaviour and is incorrectly passing
-> > the address via devicetree in big-endian order.
-> >
-> > Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
-> > Cc: stable@vger.kernel.org      # 5.1
-> > Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
-> > Cc: Matthias Kaehlcke <mka@chromium.org>
-> > Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/bluetooth/btqca.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> Personally, I'd prefer it if you didn't break bisectability with your
-> series. As it is, if someone applies just the first 3 patches they'll
-> end up with broken Bluetooth.
+Prior to commit c853a5783ebe ("btrfs: allocate
+btrfs_ioctl_defrag_range_args on stack") range is allocated on the heap
+and must be freed. However, commit 173431b274a9 ("btrfs: defrag: reject
+unknown flags of btrfs_ioctl_defrag_range_args") didn't take care of
+this when it was backported to kernel < 5.15.
 
-It doesn't break the build, but yes, the device address would be
-reversed for Trogdor machines for two commits and possible break any
-previous pairings. That's hardly something to worry about.
+Add a kfree on the error path for stable kernels that lack
+commit c853a5783ebe ("btrfs: allocate btrfs_ioctl_defrag_range_args on
+stack").
 
-So I consider this to be acceptable for sake of clarity, and especially
-since these patches will be coming in from separate trees anyway.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-> IMO the order should be:
-> 1. Binding (currently patch #1)
-> 2. Trogdor dt patch, which won't hurt on its own (currently patch #5)
-> 3. Bluetooth subsystem patch handling the quirk (currently patch #2)
-> 4. Qualcomm change to fix the endianness and handle the quirk squashed
-> into 1 patch (currently patch #3 + #4)
-> 
-> ..and the patch that changes the Qualcomm driver should make it
-> obvious that it depends on the trogdor DT patch in the change
-> description.
-> 
-> With patches #3 and #4 combined, feel free to add my Reviewed-by tag
-> as both patches look fine to me.
+Fixes: 173431b274a9 ("btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args")
+CC: stable@vger.kernel.org
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+---
+ fs/btrfs/ioctl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I don't think it's worth spending more time and effort on this issue
-(which should have been caught and fixed years ago) for this.
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 049b837934e5..adc6c4f2b53c 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3195,6 +3195,7 @@ static int btrfs_ioctl_defrag(struct file *file, void __user *argp)
+ 			}
+ 			if (range->flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
+ 				ret = -EOPNOTSUPP;
++				kfree(range);
+ 				goto out;
+ 			}
+ 			/* compression requires us to start the IO */
+-- 
+2.40.1
 
-Johan
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
 
