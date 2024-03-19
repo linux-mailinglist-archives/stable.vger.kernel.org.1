@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-28412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745BD87FD18
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 12:45:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B84187FD2D
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 12:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81A61C21D39
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 11:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0644E283AC3
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 11:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5DF7EF1D;
-	Tue, 19 Mar 2024 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AA37F471;
+	Tue, 19 Mar 2024 11:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffo2jhky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTfn1+gO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046B1CD13;
-	Tue, 19 Mar 2024 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9DA1CD13;
+	Tue, 19 Mar 2024 11:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710848706; cv=none; b=jI4LUcwpQNUnBlRTINzPfP+s+1WIZRi7oyQTSkIGhoxFlD7sf6C2xPCbaT7rpn7+agYxFJQ96WRhSkv/6R0+jkzbD50L9iSAnmHdaDHZWwATDBTqqhAwEtuh0ZeDcDOnK4OikUsIGToB3tsU1x0oIQMx/SSrArfVAqq97z+igWU=
+	t=1710849099; cv=none; b=S8HdxJ6VgPZ37Col/hLd7UHvwp+eezyaFEnul21edTcqcdQclB70EwYj4C3n3WUOyA74lgyY+E6NrWl+ICSKR1V/pDZVhxREeb1P/ULRxbhRrQA9VktkTRvhmwkVV1UpJpnEM5k4jwzuiiERXrOZSTGKjA5NzsInUQm4EuOSESk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710848706; c=relaxed/simple;
-	bh=AxeUdPNBYbJRx9HhDpzLSa8ehsc5hQeqodbcV9lhIAc=;
+	s=arc-20240116; t=1710849099; c=relaxed/simple;
+	bh=iw76am/BAxipiKfEjUG6N/StwBmf4pEy82GZKI/qTdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NipV6QAOrOX1TT1AWxn01Wth7VaOIeeOY5Q8Nv+TcHjoA/HzAmpbkivlSa+CdQHtpCKmMK8np1FIHC7b7lWOmLuErw/OB1YfYS2+Fe17paJd45y2Ci9fK22NZgYES3jcF8CkZ1SLoWk5EkbW34tOlpfk1nR3wBDySuWcpjHqyC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffo2jhky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28A5C433C7;
-	Tue, 19 Mar 2024 11:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710848706;
-	bh=AxeUdPNBYbJRx9HhDpzLSa8ehsc5hQeqodbcV9lhIAc=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=cWFnXTQi0kXxAisWkODWns6WgaPbAhoDlKwB7J2aYp0UxB7qRrKFMb6EjOe/HxdLiQzDXDYkxNQtXjearV68vNhs665D3/iuGmpkdxSlyyD+FiBZE0NBH2UsQRHRyzr1J8DAcW5W4JYQQpkxhH1jd2+1LsShf78tvcBgVv4tVwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTfn1+gO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FD5C433F1;
+	Tue, 19 Mar 2024 11:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1710849098;
+	bh=iw76am/BAxipiKfEjUG6N/StwBmf4pEy82GZKI/qTdg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ffo2jhkyfV9prHAtrirt0gjJCvn0tvOAo6ghM0orDW42E4rKJNCgHhdZCJpk8PB/X
-	 alUe5f1yLMv08OzLRokbVIsa2J2U6Ja8MzoQTpzvKmtlYZkI5IWOl/B7wD/KhTg23o
-	 MYgtoVHrOxWQ9IYH+sfxtw8KMM/s7RDW8sdw4VPKJM8Rp5+kuNZs5Mw/59a02ZmREL
-	 JkQYmCG3pxsE+7pleApScDFLb0EcyjSvZAvrtme76JNejc3Sxzq5Wu71ocHMe3/nkn
-	 y8utWiPxwFOStbWoFchjIyFHqYiQAHrsZNaK04bZgb+k93lpT1N1wew0AMNdeceR4j
-	 U5RN34DwsUBaQ==
-Date: Tue, 19 Mar 2024 12:45:01 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: linux-ide@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	dlemoal@kernel.org, hdegoede@redhat.com, cryptearth@googlemail.com
-Subject: Re: [PATCH] ahci: asm1064: asm1166: don't limit reported ports
-Message-ID: <Zfl6vVKtGpC7-z1w@ryzen>
-References: <20240313214650.2165-1-conikost@gentoo.org>
+	b=dTfn1+gO6g5I//Sw1o0wjHXgZeXePOipCvW3qKsnDnP00We8/q/Ur/OTD+jCq8Lvj
+	 nIXwWy3ibh3+AMdnYrNQJ9jX0oBrf2/Bj2JhymjMd4SDrFyb3OOe8fNr3jDKWwqQ3j
+	 X5gwHBaOsuO3fd+inpbq8FYXX/RgeDYnZDTY85yw=
+Date: Tue, 19 Mar 2024 12:51:34 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wentong Wu <wentong.wu@intel.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: Re: [PATCH 1/1] mei: vsc: Unregister interrupt handler for system
+ suspend
+Message-ID: <2024031905-showpiece-coral-c76c@gregkh>
+References: <20240318080126.2813476-1-sakari.ailus@linux.intel.com>
+ <2024031915-manhole-winnings-43d4@gregkh>
+ <ZfltTgGANYs9uix5@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,70 +58,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240313214650.2165-1-conikost@gentoo.org>
+In-Reply-To: <ZfltTgGANYs9uix5@kekkonen.localdomain>
 
-On Wed, Mar 13, 2024 at 10:46:50PM +0100, Conrad Kostecki wrote:
-> Previously, patches have been added to limit the reported count of SATA
-> ports for asm1064 and asm1166 SATA controllers, as those controllers do
-> report more ports than physical having.
+On Tue, Mar 19, 2024 at 10:47:42AM +0000, Sakari Ailus wrote:
+> Hi Greg,
 > 
-> Unfortunately, this causes trouble for users, which are using SATA
-> controllers, which provide more ports through SATA PMP
-> (Port-MultiPlier) and are now not any more recognized.
+> On Tue, Mar 19, 2024 at 08:51:43AM +0100, Greg Kroah-Hartman wrote:
+> > On Mon, Mar 18, 2024 at 10:01:26AM +0200, Sakari Ailus wrote:
+> > > Unregister the MEI VSC interrupt handler before system suspend and
+> > > re-register it at system resume time. This mirrors implementation of other
+> > > MEI devices.
+> > > 
+> > > This patch fixes the bug that causes continuous stream of MEI VSC errors
+> > > after system resume.
+> > > 
+> > > Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+> > > Cc: stable@vger.kernel.org # for 6.8
+> > > Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> > > Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > ---
+> > >  drivers/misc/mei/platform-vsc.c | 17 ++++++-
+> > >  drivers/misc/mei/vsc-tp.c       | 84 +++++++++++++++++++++++----------
+> > >  drivers/misc/mei/vsc-tp.h       |  3 ++
+> > >  3 files changed, 78 insertions(+), 26 deletions(-)
+> > 
+> > What is the git commit id of this in Linus's tree?
 > 
-> This happens, as asm1064 and 1166 are handling SATA PMP transparently,
-> so all non-physical ports needs to be enabled to use that feature.
-> 
-> This patch reverts both patches for asm1064 and asm1166, so old
-> behavior is restored and SATA PMP will work again, so all physical and
-> non-physical ports will work again.
-> 
-> Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-> Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
-> Cc: stable@vger.kernel.org
-> Reported-by: Matt <cryptearth@googlemail.com>
-> Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-> ---
->  drivers/ata/ahci.c | 13 -------------
->  1 file changed, 13 deletions(-)
-> 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 78570684ff68..562302e2e57c 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -669,19 +669,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
->  static void ahci_pci_save_initial_config(struct pci_dev *pdev,
->  					 struct ahci_host_priv *hpriv)
->  {
-> -	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
-> -		switch (pdev->device) {
-> -		case 0x1166:
-> -			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-> -			hpriv->saved_port_map = 0x3f;
-> -			break;
-> -		case 0x1064:
-> -			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
-> -			hpriv->saved_port_map = 0xf;
-> -			break;
-> -		}
-> -	}
-> -
->  	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
->  		dev_info(&pdev->dev, "JMB361 has only one port\n");
->  		hpriv->saved_port_map = 1;
-> -- 
-> 2.44.0
-> 
+> This one isn't in Linus's (or any other maintainer) tree yet.
 
-I took the liberty to add additional information in the commit message.
+Then why was it sent only for 6.8?  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Applied:
-https://git.kernel.org/pub/scm/linux/kernel/git/libata/linux.git/commit/?id=6cd8adc3e18960f6e59d797285ed34ef473cc896
+thanks,
 
-...and already sent to Linus:
-https://lore.kernel.org/linux-ide/20240319113758.197709-1-cassel@kernel.org/T/#u
-
-
-Kind regards,
-Niklas
+greg k-h
 
