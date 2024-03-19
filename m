@@ -1,79 +1,64 @@
-Return-Path: <stable+bounces-28422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3718800A6
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:30:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6987B8800F2
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5A63B22B90
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:30:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EF5228393F
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B24881AD5;
-	Tue, 19 Mar 2024 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D211C657DC;
+	Tue, 19 Mar 2024 15:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZEu/ANV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYoEadP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD132657BE;
-	Tue, 19 Mar 2024 15:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD892E400;
+	Tue, 19 Mar 2024 15:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710862193; cv=none; b=Hga3DdTiuMqDLCrhGeuHd0rbiXGj0hUCd+CTXIWhQAuMOLNH5QZ2yjzX7HiiVugBjl4bevuQEHz7+TY5eO5rAZfeDns05Z8LYlwLzY1T20sCUzr/sW0C0/koEIYrKzLQ8n5EN3ql/iVXnNkmvTut9YIV9eexOD7O/E2HtIxrQ9o=
+	t=1710863173; cv=none; b=AjcWNPjBxK+bsVpUTtPqtnx9I/6KAzfeXUfnA3Wup47L7GL2yuhWmL5DhvwU34EqECiPLbHFa4GO7Y0yJrXS+LcWSocItqBkRqLCWEvm5XrTS4b9kn8jMCbceDSiMH+/SFwKzm5iXYzB+doySCrkYsWaq5hfhdI79O+Qfsey624=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710862193; c=relaxed/simple;
-	bh=8/BAOgM7/E4Oo/lzhVSkfOrC0gVN60IoirdUeSlLQpk=;
+	s=arc-20240116; t=1710863173; c=relaxed/simple;
+	bh=pd6u63f7QKmzAlsvJyOlOlrn80eFLOYslxGeKqxNvYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUgYcZcQ0NWP/o45wR8H1ja/QCTBDJVG/axzfQKrK81SiSLl1NY6S4jUyhV2erv8E4zEvCBOWePEtcsLeWDr5+Fb24yifiPu+ZpNZ+PpTuaaK8PypRpW1uukECIe1vIr/ATKgcqD5/hXV0EY0YYzg/BgMAwbYuelZONgoOTWzMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZEu/ANV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E101C433C7;
-	Tue, 19 Mar 2024 15:29:53 +0000 (UTC)
+	 MIME-Version; b=naNoGSkTYbOuWZmH2V+u4XYfv9sPRYuvicyOuAatoGKNF9ZjS8y9WtA0UHvKYPjT8q5LklHV/rJxpet0HDYg+28UVfS0BPOIF/ks10GpfUwzWlYnn5hWbYw4O+zyl11ar62KgAzBKdm97pM8zgidF25VRIC27ycDNtei2qqiBKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYoEadP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBB1C43394;
+	Tue, 19 Mar 2024 15:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710862193;
-	bh=8/BAOgM7/E4Oo/lzhVSkfOrC0gVN60IoirdUeSlLQpk=;
+	s=k20201202; t=1710863173;
+	bh=pd6u63f7QKmzAlsvJyOlOlrn80eFLOYslxGeKqxNvYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZEu/ANVOCScrmFrRpYhb6lv9kfcI1MRolgnPAxDfUrvI856KNELYC3gAS8nuBngd
-	 M9XRLrl7h90EkRCEN7dMkycWmKdksVc5h+jviA+dvCsF6khX3idFQrM08mbr/zFiH0
-	 uB30woKsESP10flPIy9Es48hqFbbAc8uRLc4JmkUiN+zkmTmEOeepDeBh68U0qROlK
-	 epUIiwqvdOWJeQTxGFdJIQ7w37pcOzYQEFJDNIsFdzyVgbc//n2AEKPzQYeZgANrb1
-	 q545wrbYA5yREvFDOuo80nyciU2H/jCDmRWOvqvj0GJBaYCxZRVgtqlYOR+KQusKHI
-	 8ACqk3BgRQhGw==
+	b=AYoEadP+Vi9xy8UPK80v19Sx5CBhULXg7DUaeWSBD1YcjvT9Gc7s8lE05390dPPRM
+	 VId9psPr15oh2Q9E+DHnmLlM5eEmcKrPJc9FX3RGu/RRzedznIy6/9K47EbQ9Mbjys
+	 VaeTzpjwN9/ULvyB4Ks+F6XxabSw3iA/6WXwzrumo31df1AZszM7ATOTb7HEv3xWnc
+	 ZzfrwjOAzZJeGog6wAfdIL9oMw7m1Je1IHhBkn663t2W04sVeF/CoQ8f+Z9qKpLDx9
+	 XTPq9DbIRWy1eWFT+gAIpffbkkah+Uu9/Nag5OaLzIB1RJaXC+wvjpQWHEBu68RLxq
+	 xOQRRRalxZR0g==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1rmbPc-000000000LO-0cIK;
-	Tue, 19 Mar 2024 16:30:00 +0100
+	id 1rmbfQ-000000000eV-1bvU;
+	Tue, 19 Mar 2024 16:46:20 +0100
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Zhengping Jiang <jiangzp@google.com>,
 	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Rob Clark <robdclark@chromium.org>
-Subject: [PATCH v3 5/5] arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
-Date: Tue, 19 Mar 2024 16:29:26 +0100
-Message-ID: <20240319152926.1288-6-johan+linaro@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] Bluetooth: qca: fix NULL-deref on non-serdev suspend
+Date: Tue, 19 Mar 2024 16:46:10 +0100
+Message-ID: <20240319154611.2492-2-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240319152926.1288-1-johan+linaro@kernel.org>
-References: <20240319152926.1288-1-johan+linaro@kernel.org>
+In-Reply-To: <20240319154611.2492-1-johan+linaro@kernel.org>
+References: <20240319154611.2492-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,44 +67,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Several Qualcomm Bluetooth controllers lack persistent storage for the
-device address and instead one can be provided by the boot firmware
-using the 'local-bd-address' devicetree property.
+Qualcomm ROME controllers can be registered from the Bluetooth line
+discipline and in this case the HCI UART serdev pointer is NULL.
 
-The Bluetooth bindings clearly states that the address should be
-specified in little-endian order, but due to a long-standing bug in the
-Qualcomm driver which reversed the address some boot firmware has been
-providing the address in big-endian order instead.
+Add the missing sanity check to prevent a NULL-pointer dereference when
+wakeup() is called for a non-serdev controller during suspend.
 
-The boot firmware in SC7180 Trogdor Chromebooks is known to be affected
-so mark the 'local-bd-address' property as broken to maintain backwards
-compatibility with older firmware when fixing the underlying driver bug.
+Just return true for now to restore the original behaviour and address
+the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
+("Bluetooth: hci_qca: only assign wakeup with serial port support") that
+causes the crash to happen already at setup() time.
 
-Note that ChromeOS always updates the kernel and devicetree in lockstep
-so that there is no need to handle backwards compatibility with older
-devicetrees.
-
-Fixes: 7ec3e67307f8 ("arm64: dts: qcom: sc7180-trogdor: add initial trogdor and lazor dt")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Rob Clark <robdclark@chromium.org>
+Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
+Cc: stable@vger.kernel.org      # 5.13
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/hci_qca.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-index 46aaeba28604..ebe37678102f 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi
-@@ -943,6 +943,8 @@ bluetooth: bluetooth {
- 		vddrf-supply = <&pp1300_l2c>;
- 		vddch0-supply = <&pp3300_l10c>;
- 		max-speed = <3200000>;
-+
-+		qcom,local-bd-address-broken;
- 	};
- };
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index c73481c57741..84f728943962 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1672,6 +1672,9 @@ static bool qca_wakeup(struct hci_dev *hdev)
+ 	struct hci_uart *hu = hci_get_drvdata(hdev);
+ 	bool wakeup;
  
++	if (!hu->serdev)
++		return true;
++
+ 	/* BT SoC attached through the serial bus is handled by the serdev driver.
+ 	 * So we need to use the device handle of the serdev driver to get the
+ 	 * status of device may wakeup.
 -- 
 2.43.2
 
