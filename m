@@ -1,123 +1,75 @@
-Return-Path: <stable+bounces-28397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9DE87F827
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 08:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7E687F843
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 08:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDCC1F22254
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 07:08:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214621F228C1
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 07:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44E85103C;
-	Tue, 19 Mar 2024 07:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8482C51C55;
+	Tue, 19 Mar 2024 07:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="vfeXqGem"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NV1+MpRK"
 X-Original-To: stable@vger.kernel.org
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517C951C36;
-	Tue, 19 Mar 2024 07:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435765103F
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 07:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710832072; cv=none; b=QW6jGpkhoXpmKChhFXeFhbyy3Vdhvke/ZMVEx68V7gxLSR30RMfkDa0pnA4mNkebbzf2FXjLcsZD9bdKeAV3LOTIJ+4zvcxc/aZ29TQYNuOdGM5MDcXf03MncWZYCQ2tUzoVqR4zeVKzlZ2VcxJaCNtxlYVLINpp9BtTlQWUX4M=
+	t=1710832923; cv=none; b=nDsaDvcwd2FGmiOigEgDjKbcXaAMgiVYXqObfM/ScY4HTK3ICdw4vjjdtRA3JDzJEbaiN5MsOiaU+Rjl1358U/xY02xJmuuCDaxT9N4SUfrhtLqfahYefYsWuVq97nTzCx/KxHVSqqZAO80Q3raof1tS3qT06AaVPyPI6Ixkhsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710832072; c=relaxed/simple;
-	bh=iPZ2Dnlib6/HoDBFi0g9Pl+JvcOySaOgkfjoXi33KD8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=By1wv/MyXSUVqbLUMibTJ14saA7L6jmKsMug2TBixnB114Grs+lH6zGGQiyK/dKFYMdFtF5/Oh5C46n+xdc+hknd+E5qOxrjJkRWrYm5y3GdLWL0Ct1K7TbMQTAFdCb4q43nYX29O4v8BmZ5JjVIjSVee3dnb4MT3N8rrNCUbXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=vfeXqGem; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 2A45E20799;
-	Tue, 19 Mar 2024 08:07:41 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1JCDnKlMO-Kk; Tue, 19 Mar 2024 08:07:40 +0100 (CET)
-Received: from mailout2.secunet.com (mailout2.secunet.com [62.96.220.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 4024120764;
-	Tue, 19 Mar 2024 08:07:40 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 4024120764
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1710832060;
-	bh=OuUhCp/3VgwJ59EoYl+BnsNytBwFvjtncVtl8l0G2gs=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=vfeXqGemFYmWfTuFMHsz+8vw/HrgzkztJB4eiHCZ9NBSF74oFZXJ2Vq28qmuloQk7
-	 Ov3iTw5+xb2xYAJXwOGungG92qbvdPMNYZ2Nho69P4sWCYSUo7XwHUvHwj/V+/rRNl
-	 PRzSOkcA7fvuSj7JLn0Z/7eIJYtCy+lpZlWrMPe3W8kVI2whWjoPmC4g6sp2I8R8J0
-	 UiYoCJmVJVY3of5AAvcNE5Lx1AlmQ/Vzs/rT2BZLGzznaucKGU6pcTGjYZC/npS2eu
-	 xZGFB77SoZ2EANfwiMy35p7NFAKs+6UrR7QRtOzW8ow5V6hOCor4ZANXcy/oMIb9mG
-	 S/+xXa9DBpwcw==
-Received: from cas-essen-02.secunet.de (unknown [10.53.40.202])
-	by mailout2.secunet.com (Postfix) with ESMTP id 3106080004A;
-	Tue, 19 Mar 2024 08:07:40 +0100 (CET)
-Received: from mbx-essen-02.secunet.de (10.53.40.198) by
- cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 19 Mar 2024 08:07:39 +0100
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
- (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 19 Mar
- 2024 08:07:39 +0100
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 69083318038E; Tue, 19 Mar 2024 08:07:39 +0100 (CET)
-Date: Tue, 19 Mar 2024 08:07:39 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-CC: <almasrymina@google.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Jesper Dangaard Brouer <brouer@redhat.com>, Matteo Croce
-	<mcroce@microsoft.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	<leonro@nvidia.com>, <gal@nvidia.com>, <stable@vger.kernel.org>, "Anatoli N .
- Chechelnickiy" <Anatoli.Chechelnickiy@m.interpipe.biz>, Ian Kumlien
-	<ian.kumlien@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-Subject: Re: [PATCH net v3] net: esp: fix bad handling of pages from page_pool
-Message-ID: <Zfk5uxupr5ntQui9@gauss3.secunet.de>
-References: <20240308152723.831620-1-dtatulea@nvidia.com>
+	s=arc-20240116; t=1710832923; c=relaxed/simple;
+	bh=P8oWE9t6OZmsLWVMIX7d4dqr0ZscXMJ7aAKIhpFmJ1E=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=GdQKD9Qbz50fkUZCuL2hotIv8lRT6MzXE3U5lxxesx9owNlpuwppO0LrvhOtCsOLoYoKV64/AuBjACzXMN9umUOi7bEDyZgDs/x3c9L0vek5kTJEcA67CpsABpzb0S9eVJgG+qSUbeP4sId/4+ug+W/ZXdcDc8w3qtU7eG44qR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NV1+MpRK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBB8C433F1
+	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 07:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710832922;
+	bh=P8oWE9t6OZmsLWVMIX7d4dqr0ZscXMJ7aAKIhpFmJ1E=;
+	h=From:Date:Subject:To:From;
+	b=NV1+MpRK70EB52DtHx4YYGU61lps/wYzFihxs/Bxrod/WdD9Dg8z08/Z74iCRFxTG
+	 j1PnlVM/rtWFmvX+2nY6eDFWEruDa5GsMQIyKlVS5o9gao/mmbPlEWuO73ANLWeBmI
+	 o2uIyv4FyVVgco3t7aFO239kcX06s9Iyzcc3p1jC2hCXRjKbfy4zC/5cLnWwaO1/9w
+	 4WQP+c9JqErJJc3cZd0073qNBhMKBeyS6eJJw0T2HfF8IYj1mc9ZDEAoR9jlAwuguV
+	 lkxf0iW4EihzOCMLKtkOce5rdgBH6cpkSUR98/vrNTgT6Eb5M5RL0hAOA96ZraSy48
+	 H4Nbv8uqVsjaw==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d475b6609eso66930991fa.2
+        for <stable@vger.kernel.org>; Tue, 19 Mar 2024 00:22:02 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw239aXRymbR/0FpRb8gMrxH/okdwNc6bii1kZlkzlOwjCCPadX
+	IvJCnttd46XmXGI+ZA90KJZZl2P3c+sDym2LsXKf7XT0LOho0k7rrzlJ2uBQU774xnzLTUSmIuQ
+	GLrkDVh1TVBP/HSPt018wYB438dg=
+X-Google-Smtp-Source: AGHT+IFoIwVo5NmZspFYGxaNXyBNtI6jwDlrwnK7D5juBBxJyz6Gpd1dRXZWR1opFeyduO11qyWtLOr5917JcJwl8OY=
+X-Received: by 2002:a2e:3c1a:0:b0:2d4:6c72:97fb with SMTP id
+ j26-20020a2e3c1a000000b002d46c7297fbmr1257443lja.26.1710832920942; Tue, 19
+ Mar 2024 00:22:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240308152723.831620-1-dtatulea@nvidia.com>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-02.secunet.de (10.53.40.198)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 19 Mar 2024 08:21:49 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGE5OuqY8=F+_YV0p0mY2wjkdkh3L9-i-3z6tfZdmYMaw@mail.gmail.com>
+Message-ID: <CAMj1kXGE5OuqY8=F+_YV0p0mY2wjkdkh3L9-i-3z6tfZdmYMaw@mail.gmail.com>
+Subject: stable backport request
+To: "# 3.4.x" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 08, 2024 at 05:26:00PM +0200, Dragos Tatulea wrote:
-> When the skb is reorganized during esp_output (!esp->inline), the pages
-> coming from the original skb fragments are supposed to be released back
-> to the system through put_page. But if the skb fragment pages are
-> originating from a page_pool, calling put_page on them will trigger a
-> page_pool leak which will eventually result in a crash.
-> 
-> This leak can be easily observed when using CONFIG_DEBUG_VM and doing
-> ipsec + gre (non offloaded) forwarding:
+Please backport
 
-...
+b3810c5a2cc4a6665f7a65bed5393c75ce3f3aa2
+x86/efistub: Clear decompressor BSS in native EFI entrypoint
 
-> The suggested fix is to introduce a new wrapper (skb_page_unref) that
-> covers page refcounting for page_pool pages as well.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling")
-> Reported-and-tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.interpipe.biz>
-> Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
-> Link: https://lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsqMYk_Lwh4Md5knTq7AyA@mail.gmail.com
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+to stable kernels v6.1 and newer.
 
-Applied to the ipsec tree, thanks a lot!
+Thanks,
+Ard.
 
