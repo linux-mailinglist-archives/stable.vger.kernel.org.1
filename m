@@ -1,108 +1,144 @@
-Return-Path: <stable+bounces-28425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA09880108
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:48:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AC988009A
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 16:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2402428299A
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:48:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB1271F23523
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 15:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F99B657CF;
-	Tue, 19 Mar 2024 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D43657DE;
+	Tue, 19 Mar 2024 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwmreV05"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtd3eZol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03C01EEE8;
-	Tue, 19 Mar 2024 15:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AAC24B33;
+	Tue, 19 Mar 2024 15:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710863273; cv=none; b=qwZrc0q9EGNglsI4j70VsMm81X5MsMomxWFxC8jyUK+VjNG85Nx7ie7TCbYW8Unz/90hwuAP6TeGc8anYosHmpaWkQgsVvh4w9od2cRe1AdPX/RRrAte12ulgyvMjbpglv5JfHerkq+YS59qJ/jYRF5UR3BKAjrQPxZrhUCV++A=
+	t=1710862193; cv=none; b=GfpLlOSb8GTc4W3BPQywerqzvvEGbSJQqQltCxXCdrOVZe1RB3YhYamNf7hZEJCKRV/p02tbFTYk+3BBWFqHwahonlo5xoQnd2IbQNwQsLpfYREqPtASFtS3mnNJSYrs3d3vvncXehEWb0bedOutS+Rk+t3xG1ggJuA8DW+AcPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710863273; c=relaxed/simple;
-	bh=TfGzIDZGL6CbyNtqYWXl6DXZQ/mdt3vXIBDajqSOyAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eE0IUUH/qT6TLmLwmS101coLOA3oiH32DyBxI5cfhW7z2QPAjjL7I7Q+1CcHHmHSYIRdzuFD96Imutu7tHvWK9YdvL+MpdaSbX3WYsIOZ8weCdfTC7kSzbIqbdJisjmjk0Ls3PC/ly70GCqFOf91Wq1mALXQ+rbNlqJLl9UclxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwmreV05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C9DC433F1;
-	Tue, 19 Mar 2024 15:47:52 +0000 (UTC)
+	s=arc-20240116; t=1710862193; c=relaxed/simple;
+	bh=GlKb7exKEjnOBWdPf3Xo0Tq4lX2VT0Np+I2c1gOvVDo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iHOYdbeDfK4O76x3PcaF6jUQZzC9vkRoTnyfIVg8jGbXeTMSsaqIoDROdVQBZJd4eVcbLjyTTH8jDdk8ngACFKKiaqWrpx358N1/p8RpztKL0sjUicQwzoUKVRLFTTPfpzS7nmHKvoxKb3Fd08kf6qJ6Po65F5+xe0IDpLiRweA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtd3eZol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445CAC43390;
+	Tue, 19 Mar 2024 15:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710863273;
-	bh=TfGzIDZGL6CbyNtqYWXl6DXZQ/mdt3vXIBDajqSOyAY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DwmreV05a/zGbKgGjuCNBRVWNlGrph2FF4mblhal9b6SIUnElGHUdK/U9TPup/tWh
-	 yj5KZU5KA5OiAtOo+TVMdzpXtXmP4s1yNaFvcEox32vL/Ec2qdit8ylgpyxNWxP/yB
-	 BnrkJdOwI+SZaR5bEYI9cSw5y1X1+mYyUVTeRFjDoxo/8dejfEv9E7ccfawu6qkSrN
-	 mnvnOJ9KyRNlqooHl89dYvUtWg87cl7C8reAWToIHn4AC/bIpfucrkL+ocBW0Ol73F
-	 1zOjusg0FXFgnO5rW53Kydt9wegLcnlUxvYveNVXMH4OXno1JYHh2Mone+iWO0tSty
-	 vOyoI7E+ZdZuA==
-Date: Tue, 19 Mar 2024 11:25:36 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	pabeni@redhat.com, stable-commits@vger.kernel.org,
+	s=k20201202; t=1710862193;
+	bh=GlKb7exKEjnOBWdPf3Xo0Tq4lX2VT0Np+I2c1gOvVDo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rtd3eZolOpnk+hy4zpiZ1Mz3ZZpaLFJeIV1tvkRAq2x6GEdU6V6OAAaYgoqmWgcJ0
+	 GkEjU2OYG88xD2TXL7Re5tZhjrDwkBxHWUXrsE+inxaGWXsgHCh7g8+ZngnqZBx6hj
+	 jGXoiIljP7qlQmRRnuM04O0+JPTv1hvEYchak6Y5keMzuDjn4HhPSmMY95HEtm7hjC
+	 lQCrV/6K/V0xF2b01kGaNHjaOb0ttyHJprgGjycsOapYSEXC9tig+wkrSvLxjxF+bK
+	 Sn7KcattZWiUTIXug2bvSgiEnahFUY5Hf6vt1CtQ0COi4n500+jC+Y7JB7u+r9Tpj3
+	 FowITlqeA7n7g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rmbPb-000000000LI-3dbm;
+	Tue, 19 Mar 2024 16:29:59 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	cros-qcom-dts-watchers@chromium.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Rocky Liao <quic_rjliao@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: Patch "selftests: mptcp: explicitly trigger the listener diag
- code-path" has been added to the 6.7-stable tree
-Message-ID: <ZfmucN89q-5SL9H8@sashalap>
-References: <20240318230045.2162042-1-sashal@kernel.org>
- <07543c96-f3f4-4df8-b77c-3824d6f53f29@kernel.org>
+Subject: [PATCH v3 2/5] Bluetooth: add quirk for broken address properties
+Date: Tue, 19 Mar 2024 16:29:23 +0100
+Message-ID: <20240319152926.1288-3-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240319152926.1288-1-johan+linaro@kernel.org>
+References: <20240319152926.1288-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <07543c96-f3f4-4df8-b77c-3824d6f53f29@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 19, 2024 at 03:49:52PM +0100, Matthieu Baerts wrote:
->Hi Sasha,
->
->On 19/03/2024 00:00, Sasha Levin wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     selftests: mptcp: explicitly trigger the listener diag code-path
->>
->> to the 6.7-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      selftests-mptcp-explicitly-trigger-the-listener-diag.patch
->> and it can be found in the queue-6.7 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->
->I do :)
->
->> commit 02dc7e7327bc1a3551665745a40029cf96d6a8e6
->> Author: Paolo Abeni <pabeni@redhat.com>
->> Date:   Fri Feb 23 17:14:20 2024 +0100
->>
->>     selftests: mptcp: explicitly trigger the listener diag code-path
->>
->>     [ Upstream commit b4b51d36bbaa3ddb93b3e1ca3a1ef0aa629d6521 ]
->
->I think something went wrong: this patch was not supposed to be added to
->both 6.6 and 6.7 queues:
->
->  https://lore.kernel.org/stable/Zfg36tcGXUsZnJCh@sashalap/
->
->Do you mind dropping them from both queues, please?
+Some Bluetooth controllers lack persistent storage for the device
+address and instead one can be provided by the boot firmware using the
+'local-bd-address' devicetree property.
 
-Gah, sorry, I messed up. Now dropped.
+The Bluetooth devicetree bindings clearly states that the address should
+be specified in little-endian order, but due to a long-standing bug in
+the Qualcomm driver which reversed the address some boot firmware has
+been providing the address in big-endian order instead.
 
+Add a new quirk that can be set on platforms with broken firmware and
+use it to reverse the address when parsing the property so that the
+underlying driver bug can be fixed.
+
+Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
+Cc: stable@vger.kernel.org      # 5.1
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ include/net/bluetooth/hci.h | 9 +++++++++
+ net/bluetooth/hci_sync.c    | 5 ++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index bdee5d649cc6..191077d8d578 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -176,6 +176,15 @@ enum {
+ 	 */
+ 	HCI_QUIRK_USE_BDADDR_PROPERTY,
+ 
++	/* When this quirk is set, the Bluetooth Device Address provided by
++	 * the 'local-bd-address' fwnode property is incorrectly specified in
++	 * big-endian order.
++	 *
++	 * This quirk can be set before hci_register_dev is called or
++	 * during the hdev->setup vendor callback.
++	 */
++	HCI_QUIRK_BDADDR_PROPERTY_BROKEN,
++
+ 	/* When this quirk is set, the duplicate filtering during
+ 	 * scanning is based on Bluetooth devices addresses. To allow
+ 	 * RSSI based updates, restart scanning if needed.
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 5716345a26df..283ae8edc1e5 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -3215,7 +3215,10 @@ static void hci_dev_get_bd_addr_from_property(struct hci_dev *hdev)
+ 	if (ret < 0 || !bacmp(&ba, BDADDR_ANY))
+ 		return;
+ 
+-	bacpy(&hdev->public_addr, &ba);
++	if (test_bit(HCI_QUIRK_BDADDR_PROPERTY_BROKEN, &hdev->quirks))
++		baswap(&hdev->public_addr, &ba);
++	else
++		bacpy(&hdev->public_addr, &ba);
+ }
+ 
+ struct hci_init_stage {
 -- 
-Thanks,
-Sasha
+2.43.2
+
 
