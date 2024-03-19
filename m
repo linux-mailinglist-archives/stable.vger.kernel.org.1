@@ -1,191 +1,172 @@
-Return-Path: <stable+bounces-28395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B2687F6AA
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 06:29:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C29DA87F7A3
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 07:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FC912825E8
-	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 05:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78A81282CBD
+	for <lists+stable@lfdr.de>; Tue, 19 Mar 2024 06:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4157B4438A;
-	Tue, 19 Mar 2024 05:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FE951C3F;
+	Tue, 19 Mar 2024 06:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="k4dXykRg"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nIpdHF14"
 X-Original-To: stable@vger.kernel.org
-Received: from ms11p00im-qufo17281301.me.com (ms11p00im-qufo17281301.me.com [17.58.38.50])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2069.outbound.protection.outlook.com [40.107.237.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D344085B
-	for <stable@vger.kernel.org>; Tue, 19 Mar 2024 05:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710826133; cv=none; b=VD6wLun5tZqnoLGN726PRjPER3pQWTk17b9pqcFXN0bdIWmKoPyb5KNzwxsiXXNYkKP7XxRaKe80zpvtXT/tUmWYK5/4OGxiL11AaOwh6vZovbdU+NxlZOPhXqB3MU6bjtrAd5LL1g8JbnBgapXqzgia06bRwzyYoMZiTIdCZEo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710826133; c=relaxed/simple;
-	bh=GQ69sst6KtWZRI9xIfR8OlxbHRzyV2W310g5+1K6fxg=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=W4Sj3SibBOTbAoUCaUVYlmbZE2n2FhlhvCU65RYmS9OQ7JfYmAowhT8ctrTaEmtyKab2d/3YIS6xF2RooaduPhjg+lNSjMJkj0T/M1bTC3JAvjGsdvt09GyXpQ42EfhAwGU8ABMrvpned9BwGgnBo+J5zII4tWHiOXv4Zvh28hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=k4dXykRg; arc=none smtp.client-ip=17.58.38.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1710826129; bh=jtDAYiiHKEo7z1XIeH+DbE76nJx6PwjxTaWNlxP+9zo=;
-	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
-	b=k4dXykRgixbyPj5jQHYrHy0Oyj/E+OVV9OpR33I95R43Jtb7zwE4xphgzFNEN5rLK
-	 3ZmtWQUzHd6vCOcWexL+Wos3ZV3RzRb4c0OGzuMsY7epNElCLfcCvByXuzDA6zuxZd
-	 5MAIRcEDa5u9KE7abEPH7EQA1L9pgvZcInSf1N6S8mFwEz75HkqEO/c/E+jSODuO1p
-	 pJSgRWIwzZgWFnHjrFrCFN7A9+tYWtksglCjzHi70XNls9c3uwQ4b25R50hn/lA3dc
-	 hP8SkSOr3AmOWaFNXf8mSC6XR18CH6G7BYnQjEcmjPgEPEfy5cUuofm6+QHw6L2C4x
-	 eIoCmvXuAuhvQ==
-Received: from smtpclient.apple (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17281301.me.com (Postfix) with ESMTPSA id D0D40CC0180;
-	Tue, 19 Mar 2024 05:28:47 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A78D5024E;
+	Tue, 19 Mar 2024 06:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710830415; cv=fail; b=ZPOAgD6K7bAhDKY0DENiUI09F3xbA1dbEBZXozEAWwyByhoSPFjx3duj+qYKY8rQClW9KZ+pIhS1MiaI/fW/9wUXZmrUt7uzGURP1fExBdOiulYdsY4vHZdgvRBI0kE6QXdDb6li2/2hRGv13WqtpceKjBw4H5zCOCgzXeCZqzg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710830415; c=relaxed/simple;
+	bh=aS9jbTQtREgGFwGzGVRT9ww0Oc3dq/dThuKWhFBtS6M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uMw8lsxPVkqaqd7Ne2+0Q7DtrN5X6KN39pKnJcDOOO2f2+813nz8AzFCXj6bLcMHuX6K70EVTIHtvanliroKBXedDnA2wK+zILFt//5eaRZXbybh3Carg//GPWspAz2NhEosU94etgvMjxP3hNi/QgpuAMXY07R7UESvDZcOVdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nIpdHF14; arc=fail smtp.client-ip=40.107.237.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PfvbcjVyvUBFtvG9/uPRRLgZwejPT1lyCSx39DCYBeKNNt9Keu5xyhN+WGXX7A+qKFsx1MFOO18uZddNXfieRyUYSC0V1Rc1JIRutK0G8PEQmjJmYT/QP6X/YheHdxwxPOCWHnRbhESw/qVi49wQTJTP/9MAFcuA3NCM0HsqrFjcykM2fEqMd6VTy3ZtmMfodXglgYz18eF3FnUh4zvywfdTFrnRTtSpQ5gDkJbT5R52XHHX4xe+5TIaORsS98AVqN79ktVHuUQyhydJJm0diBRXlm92eDVf0M4oR8T/pvD/tLog6h2QvGtFV7NgkflCTbXdf4rZEQpE0l3woM6ZsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vqmji+BZDXJ+pmBhCkJa63YYHlPhtcyhQ51mgAXAzc8=;
+ b=dYkvkPLeyV2smZNnkMhLeqK7wBMXddQD7XhA+lJUKT4AfnKlEeAUn9d+yzzEDghDiL90nR59u0fWM7VwUfjJkev1yHzyMEWiJ8aXuEPxScM/T/oMcu9dySJCxCfJjj4BExUSrdUzi6KSKLtQUhjMVu7ojscTrnOCUkYmzpEJmwW59trN06XAAXaoCyBgXcwsOLnxbUuj6ZhjtlYuxm4tVwtNNRHNvndg9l9416jUaCnRlIS7v5Ltp2V1cy4qf5srCRoYRB3wUNDJnuIXEP6SGfe4SVrM8mIOKgMkolyQ++ba4eHKLQEbmq338WYmWpqITOKfNtQ0b8BHvODMOB9RWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=purestorage.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vqmji+BZDXJ+pmBhCkJa63YYHlPhtcyhQ51mgAXAzc8=;
+ b=nIpdHF148LHiPFJgG9CiZG9j6WXHsCx5TbAaL4YncbVipB9mrtOOaqum25SU2Y7UblRZ29bPRY//bzvGc/6/x+OXmWWWI+9fr036FIiwXrHVIGLjVl9kRkuvUczEKk7X44HgjeE8cCcqw8eUl8VcVgxXSYoFERjvagmMv9dUVtO5jfuThrFj+SuarAxR02gh44NT/bcxOQOVBOD/38Thn0XRiwQvwb/0phoQrVs/GDOCUTNvDFs5PYLPYJhBzvDdFTaltQUHI3C/vWSNFGPYzrpYhleQCDbYJ6nlW5+gAhDMZXhikzW9G3rw2SVq57vK9E+D34C4pbpxKJueIKajTg==
+Received: from BN0PR04CA0149.namprd04.prod.outlook.com (2603:10b6:408:ed::34)
+ by MN2PR12MB4189.namprd12.prod.outlook.com (2603:10b6:208:1d8::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27; Tue, 19 Mar
+ 2024 06:40:10 +0000
+Received: from BN3PEPF0000B36E.namprd21.prod.outlook.com
+ (2603:10b6:408:ed:cafe::f0) by BN0PR04CA0149.outlook.office365.com
+ (2603:10b6:408:ed::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27 via Frontend
+ Transport; Tue, 19 Mar 2024 06:40:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN3PEPF0000B36E.mail.protection.outlook.com (10.167.243.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7430.0 via Frontend Transport; Tue, 19 Mar 2024 06:40:10 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 18 Mar
+ 2024 23:39:58 -0700
+Received: from [172.27.33.225] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 18 Mar
+ 2024 23:39:54 -0700
+Message-ID: <805b1189-db3a-4763-87de-f55e94c6d8db@nvidia.com>
+Date: Tue, 19 Mar 2024 08:39:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-From: Laine Taffin Altman <alexanderaltman@me.com>
-In-Reply-To: <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
-Date: Mon, 18 Mar 2024 22:28:35 -0700
-Cc: Benno Lossin <benno.lossin@proton.me>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- stable@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- lkml <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
-References: <20240313230713.987124-1-benno.lossin@proton.me>
- <Zfh5DYkxNAm-mY_9@boqun-archlinux>
- <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
- <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
-To: Boqun Feng <boqun.feng@gmail.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-Proofpoint-GUID: JV1TEgZWRV4Q51EWUDIrXol7s29j4YsT
-X-Proofpoint-ORIG-GUID: JV1TEgZWRV4Q51EWUDIrXol7s29j4YsT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2403190041
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/mlx5: offset comp irq index in name by one
+To: Michael Liang <mliang@purestorage.com>, Saeed Mahameed <saeedm@nvidia.com>
+CC: Tariq Toukan <tariqt@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <stable@vger.kernel.org>, Mohamed Khalfella
+	<mkhalfella@purestorage.com>, Yuanyuan Zhong <yzhong@purestorage.com>
+References: <20240311223018.580975-1-mliang@purestorage.com>
+Content-Language: en-US
+From: Shay Drori <shayd@nvidia.com>
+In-Reply-To: <20240311223018.580975-1-mliang@purestorage.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36E:EE_|MN2PR12MB4189:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa1b5965-fcc1-482b-7ab5-08dc47df6cb4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	8v7M3XWN+sIFXCdRM/6IQw00x5T/LuQnzPsGrknB+ibWoQgsJNjVzr5dR3AG4jroz9sZNz8gQFBkH11o24InZnz+k+RivrRMh/HI839HYGT8OhQIEtUG9/x/rHsy27oMesEamciFaG8dKaoSlKSa/TJh2IUe53Chp6mptnDV8/cInpPKZGljeUkwbyc/iY2YcSmi3CSupMZ8/M2t6mcta/LRYjWFRRjbTBOLWeg97xFNnB3XWJj+1Im9YJglT53bZ9rcKPHi8D4UL7mWzWuAH6q5emhKe4S38Hrql5TL5Mb7gxjDCCPLyD+RC9cFf27Rkpnj7fVRsVKSayCOhGHh2qFI3eUityuZtlXT3uy/bMk4+0rr3EFggG6HlV3SP2Z/TYoz8kP9eEJfkDanCsGrLqfujJb5FdRd28cCKolFiiRe/acb4GSw431IIt+OmIYd02XHKK4W1KDMAiL4NX8lh+5wL0tmCnDD+pmJYchwrZR8VbL1248DQpZ5VH4sVto7CedkR+NquTb8WB8BVj7CEZLW4ZI3nRPOyyyMpbmROadxje2hz/vyxOuxgyph7dXNmrhO8l+89wQ3xjcoT7EpDNPbdEUUctEAV1iPqys6fBZo6OfekheB6Bue4Bbb6BuASLETJUpZKKeo7dl3NxbUr5zfPmOoqAsrGwmVXmQSKQLUCgZMmYNLA93gZLdrJ80zNTfLeYxVG62sQUbpC8nZdLSBJw2IPD8/RZIBKJvIAV2qSurmKWfcH6hyeQTXtDBJ
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(36860700004)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2024 06:40:10.4782
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa1b5965-fcc1-482b-7ab5-08dc47df6cb4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B36E.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4189
 
-On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
-wrote:
-> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
->> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng =
-<boqun.feng@gmail.com> wrote:
->>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
->>>> From: Laine Taffin Altman <alexanderaltman@me.com>
->>>>=20
->>>> It is not enough for a type to be a ZST to guarantee that zeroed =
-memory
->>>> is a valid value for it; it must also be inhabited. Creating a =
-value of
->>>> an uninhabited type, ZST or no, is immediate UB.
->>>> Thus remove the implementation of `Zeroable` for `Infallible`, =
-since
->>>> that type is not inhabited.
->>>>=20
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
-`init::zeroed` function")
->>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
->>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
->>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>=20
->>> I think either in the commit log or in the code comment, there =
-better be
->>> a link or explanation on "(un)inhabited type". The rest looks good =
-to
->>> me.
->>=20
->> Would the following be okay for that purpose?
->>=20
->> A type is inhabited if at least one valid value of that type exists; =
-a
->> type is uninhabited if no valid values of that type exist.  The terms
->> "inhabited" and "uninhabited" in this sense originate in type theory,
->> a branch of mathematics.
->>=20
->> In Rust, producing an invalid value of any type is immediate =
-undefined
->> behavior (UB); this includes via zeroing memory.  Therefore, since an
->> uninhabited type has no valid values, producing any values at all for
->> it is UB.
->>=20
->> The Rust standard library type `core::convert::Infallible` is
->> uninhabited, by virtue of having been declared as an enum with no
->> cases, which always produces uninhabited types in Rust.  Thus, remove
->> the implementation of `Zeroable` for `Infallible`, thereby avoiding
->> the UB.
->>=20
->=20
-> Yeah, this works for me. Thanks!
 
-Great!  Should it be re-sent or can the new wording be incorporated upon =
-merge?
-
-Thank,
-Laine
-
->=20
-> Regards,
-> Boqun
->=20
->> Thanks,
->> Laine
->>=20
->>>=20
->>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->>>=20
->>> Regards,
->>> Boqun
->>>=20
->>>> ---
->>>> rust/kernel/init.rs | 4 ++--
->>>> 1 file changed, 2 insertions(+), 2 deletions(-)
->>>>=20
->>>> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
->>>> index 424257284d16..538e03cfc84a 100644
->>>> --- a/rust/kernel/init.rs
->>>> +++ b/rust/kernel/init.rs
->>>> @@ -1292,8 +1292,8 @@ macro_rules! impl_zeroable {
->>>>    i8, i16, i32, i64, i128, isize,
->>>>    f32, f64,
->>>>=20
->>>> -    // SAFETY: These are ZSTs, there is nothing to zero.
->>>> -    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, =
-Infallible, (),
->>>> +    // SAFETY: These are inhabited ZSTs, there is nothing to zero =
-and a valid value exists.
->>>> +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
->>>>=20
->>>>    // SAFETY: Type is allowed to take any value, including all =
-zeros.
->>>>    {<T>} MaybeUninit<T>,
->>>>=20
->>>> base-commit: 768409cff6cc89fe1194da880537a09857b6e4db
->>>> --=20
->>>> 2.42.0
->>>>=20
->>>>=20
->>>>=20
->>=20
-
+On 12/03/2024 0:30, Michael Liang wrote:
+> The mlx5 comp irq name scheme is changed a little bit between
+> commit 3663ad34bc70 ("net/mlx5: Shift control IRQ to the last index")
+> and commit 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation").
+> The index in the comp irq name used to start from 0 but now it starts
+> from 1. There is nothing critical here, but it's harmless to change
+> back to the old behavior, a.k.a starting from 0.
+>
+> Fixes: 3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
+> Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+> Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+> Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+> index 4dcf995cb1a2..6bac8ad70ba6 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+> @@ -19,6 +19,7 @@
+>   #define MLX5_IRQ_CTRL_SF_MAX 8
+>   /* min num of vectors for SFs to be enabled */
+>   #define MLX5_IRQ_VEC_COMP_BASE_SF 2
+> +#define MLX5_IRQ_VEC_COMP_BASE 1
+>   
+>   #define MLX5_EQ_SHARE_IRQ_MAX_COMP (8)
+>   #define MLX5_EQ_SHARE_IRQ_MAX_CTRL (UINT_MAX)
+> @@ -246,6 +247,7 @@ static void irq_set_name(struct mlx5_irq_pool *pool, char *name, int vecidx)
+>   		return;
+>   	}
+>   
+> +	vecidx -= MLX5_IRQ_VEC_COMP_BASE;
+>   	snprintf(name, MLX5_MAX_IRQ_NAME, "mlx5_comp%d", vecidx);
+>   }
+>   
+> @@ -585,7 +587,7 @@ struct mlx5_irq *mlx5_irq_request_vector(struct mlx5_core_dev *dev, u16 cpu,
+>   	struct mlx5_irq_table *table = mlx5_irq_table_get(dev);
+>   	struct mlx5_irq_pool *pool = table->pcif_pool;
+>   	struct irq_affinity_desc af_desc;
+> -	int offset = 1;
+> +	int offset = MLX5_IRQ_VEC_COMP_BASE;
+>   
+>   	if (!pool->xa_num_irqs.max)
+>   		offset = 0;
 
