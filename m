@@ -1,124 +1,164 @@
-Return-Path: <stable+bounces-28484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692FB88140B
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:02:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291BC881423
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901D81C219F6
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BAB1F253D0
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CBE4AEED;
-	Wed, 20 Mar 2024 15:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EE0482C8;
+	Wed, 20 Mar 2024 15:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="khXcSScN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CyTk4tDG"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E48540866;
-	Wed, 20 Mar 2024 15:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E433C53379
+	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 15:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710946964; cv=none; b=RlZyJ1+gLA7H1QBKn0Txc3mTOnoupjcg7qD3ay+RMvJXUlsHjcJIeLKefO1n0wwmQqGggYyZW7Zxoa7pZN1J1aGjYe07wgmbVy6n+MYw9L+qKxYNnvp9gfY+jaqy37rcDc9xw6Nh815Leg446Eh5b+g1I9rzKjg8ooWfKK43ago=
+	t=1710947220; cv=none; b=RAqBclSyq0bMNIkgdTDfRORygmKmAWGkiHjpdJ23LyfpVW8wKNOaLILJRU5rdskQtlE2T+8whzbwYQG2yf3fCvjRzxnY3jOFeptbmUne1S/mhwiPU8WhbYZO/fOjyPpTP3HNJF7ED1HIJH8thpg4rbA/ELeqZnkEReMnzG6qQOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710946964; c=relaxed/simple;
-	bh=6FsNZvBqbDhmAEvPwqQlJAURMDxOT70+vrD2rWGm5PY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d5+Fo7oJ/gJHgZMWIZ3rHxOSzzIHEXE5X+PPLVdHNqPzbl9sy2c1ZeG0I3/fVDnP525eoDoXJM8qyKvJ0ML8cN9tmmRYLk7zw9sZeGeetmC+LzEEozCqTx+Yp2tzQUHl5XC5H9dG7R7zrPFzB8jsPZr0nUCSI1C0fJiQkhdc+Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=khXcSScN; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V0Bf52YHRz6Cnk8y;
-	Wed, 20 Mar 2024 15:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:references:content-language:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1710946954; x=1713538955; bh=I/RsDzP1lcazugLbmfUU+XUL
-	ysauzAEbPNvq73ZKKMg=; b=khXcSScN/+WF978id2jh5imim+jSLvz5thbG0upA
-	D97ilSLTT+fmF/Ikmcj8pf9kwUZApgtQ9+bpvUn+e4LZ5GQFQaGWsH47YWWjws78
-	FeWtLMuWB2NwwCwjAfB9dJyj7CJJZRFRwMKtMTCsxvJVhnjpOHJcsNvEPLp7Lwih
-	uIlM19ZOq4MEuYbG4gVYik5CNapsb7WkiUFZNajH15+0LsQRX7ptUNyfLoJwZmDw
-	HzdnFBxoN2EFrntcxa+I1I+EhRpUdn4VAGx2KKeanWAGT/u2phfxL7nIYml4s7jT
-	7eHg2E6gsEU1KuD5+lfq8wtjnmT7w0XJlVuIe2HalGr3WA==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id b9t_VBaYbN15; Wed, 20 Mar 2024 15:02:34 +0000 (UTC)
-Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V0Bf21rv8z6Cnk8s;
-	Wed, 20 Mar 2024 15:02:33 +0000 (UTC)
-Message-ID: <8b8e5aca-4b97-4662-9ae0-fc36db2436b4@acm.org>
-Date: Wed, 20 Mar 2024 08:02:32 -0700
+	s=arc-20240116; t=1710947220; c=relaxed/simple;
+	bh=tsgHU6iped9BYNKZeocwdMQSHcTaR/5D0OxCdFe1eIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MupVj6pw4VYMc4QvZnIyeNUF9HDOMfjWnRyyFlHXPLxSLW/aVNyUSx32cd+3V0bx+Ff4lW3dlYBEtL2JpHpDSDG5wx0c0K0V67Y6QFLrrp1T2sSIm/XzBapoKtWt2JlxsMT+0eyV6Wr5wT4tqEDYVGeLKYR2lYudaFtHoHnzcLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CyTk4tDG; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710947219; x=1742483219;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tsgHU6iped9BYNKZeocwdMQSHcTaR/5D0OxCdFe1eIw=;
+  b=CyTk4tDGQ/meMTEtE8DrVQBNj7/L0HDjzOSpgEgAD0B/UmcxqW0PROij
+   BbG0JFWKXv1HyyVcJ4PlzJPfaMABTCnyAOw0rOgyqmM8+9QVJgsGeTDTD
+   Os6jgE3mRYM15cgPI94uzsWVLICVwUYnsgjLF5OjDrsLXe5mpX2do2wna
+   hjVMIz0qUOzgjuZLa0CDXzpeWsLEDKdt3tNQSqf274JkAzqmK2t1LxKpd
+   TgJaAVR099czpe+MxUxGox3OuScib3FgHSPLkYBcQYmGLiC1KJ0YaI39i
+   pnW2cAkhGQmtY4LtFV8NCX0GL1NCcMb4I6l6FvHHfTvwJ6E/Fak+KjyJ3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6053228"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="6053228"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 08:06:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="14193862"
+Received: from unknown (HELO intel.com) ([10.247.118.184])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 08:06:50 -0700
+Date: Wed, 20 Mar 2024 16:06:44 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH v6 0/3] Disable automatic load CCS load balancing
+Message-ID: <Zfr7hPs_VAUkTNTX@ashyti-mobl2.lan>
+References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] scsi: sg: Avoid sg device teardown race
-Content-Language: en-US
-To: Alexander Wetzel <Alexander@wetzel-home.de>, dgilbert@interlog.com
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org
-References: <20240318175021.22739-1-Alexander@wetzel-home.de>
- <20240320110809.12901-1-Alexander@wetzel-home.de>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240320110809.12901-1-Alexander@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 
-On 3/20/24 04:08, Alexander Wetzel wrote:
-> sg_remove_sfp_usercontext() must not use sg_device_destroy() after
-> calling scsi_device_put().
-> 
-> sg_device_destroy() is accessing the parent scsi device request_queue.
-> Which will already be set to NULL when the preceding call to
-> scsi_device_put() removed the last reference to the parent scsi device.
-> 
-> The resulting NULL pointer exception will then crash the kernel.
-> 
-> Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-> ---
-> Changes compared to V1:
-> Reworked the commit message
-> 
-> Alexander
-> ---
->   drivers/scsi/sg.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-> index 86210e4dd0d3..80e0d1981191 100644
-> --- a/drivers/scsi/sg.c
-> +++ b/drivers/scsi/sg.c
-> @@ -2232,8 +2232,8 @@ sg_remove_sfp_usercontext(struct work_struct *work)
->   			"sg_remove_sfp: sfp=0x%p\n", sfp));
->   	kfree(sfp);
->   
-> -	scsi_device_put(sdp->device);
->   	kref_put(&sdp->d_ref, sg_device_destroy);
-> +	scsi_device_put(sdp->device);
->   	module_put(THIS_MODULE);
->   }
->   
+Ping! Any thoughts here?
 
-Is it guaranteed that the above kref_put() call is the last kref_put()
-call on sdp->d_ref? If not, how about inserting code between the
-kref_put() call and the scsi_device_put() call that waits until
-sg_device_destroy() has finished?
+Andi
 
-Thanks,
-
-Bart.
+On Wed, Mar 13, 2024 at 09:19:48PM +0100, Andi Shyti wrote:
+> Hi,
+> 
+> this series does basically two things:
+> 
+> 1. Disables automatic load balancing as adviced by the hardware
+>    workaround.
+> 
+> 2. Assigns all the CCS slices to one single user engine. The user
+>    will then be able to query only one CCS engine
+> 
+> >From v5 I have created a new file, gt/intel_gt_ccs_mode.c where
+> I added the intel_gt_apply_ccs_mode(). In the upcoming patches,
+> this file will contain the implementation for dynamic CCS mode
+> setting.
+> 
+> Thanks Tvrtko, Matt, John and Joonas for your reviews!
+> 
+> Andi
+> 
+> Changelog
+> =========
+> v5 -> v6 (thanks Matt for the suggestions in v6)
+>  - Remove the refactoring and the for_each_available_engine()
+>    macro and instead do not create the intel_engine_cs structure
+>    at all.
+>  - In patch 1 just a trivial reordering of the bit definitions.
+> 
+> v4 -> v5
+>  - Use the workaround framework to do all the CCS balancing
+>    settings in order to always apply the modes also when the
+>    engine resets. Put everything in its own specific function to
+>    be executed for the first CCS engine encountered. (Thanks
+>    Matt)
+>  - Calculate the CCS ID for the CCS mode as the first available
+>    CCS among all the engines (Thanks Matt)
+>  - create the intel_gt_ccs_mode.c function to host the CCS
+>    configuration. We will have it ready for the next series.
+>  - Fix a selftest that was failing because could not set CCS2.
+>  - Add the for_each_available_engine() macro to exclude CCS1+ and
+>    start using it in the hangcheck selftest.
+> 
+> v3 -> v4
+>  - Reword correctly the comment in the workaround
+>  - Fix a buffer overflow (Thanks Joonas)
+>  - Handle properly the fused engines when setting the CCS mode.
+> 
+> v2 -> v3
+>  - Simplified the algorithm for creating the list of the exported
+>    uabi engines. (Patch 1) (Thanks, Tvrtko)
+>  - Consider the fused engines when creating the uabi engine list
+>    (Patch 2) (Thanks, Matt)
+>  - Patch 4 now uses a the refactoring from patch 1, in a cleaner
+>    outcome.
+> 
+> v1 -> v2
+>  - In Patch 1 use the correct workaround number (thanks Matt).
+>  - In Patch 2 do not add the extra CCS engines to the exposed
+>    UABI engine list and adapt the engine counting accordingly
+>    (thanks Tvrtko).
+>  - Reword the commit of Patch 2 (thanks John).
+> 
+> Andi Shyti (3):
+>   drm/i915/gt: Disable HW load balancing for CCS
+>   drm/i915/gt: Do not generate the command streamer for all the CCS
+>   drm/i915/gt: Enable only one CCS for compute workload
+> 
+>  drivers/gpu/drm/i915/Makefile               |  1 +
+>  drivers/gpu/drm/i915/gt/intel_engine_cs.c   | 20 ++++++++---
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  6 ++++
+>  drivers/gpu/drm/i915/gt/intel_workarounds.c | 30 ++++++++++++++--
+>  6 files changed, 103 insertions(+), 6 deletions(-)
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> 
+> -- 
+> 2.43.0
 
