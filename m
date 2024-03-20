@@ -1,108 +1,88 @@
-Return-Path: <stable+bounces-28506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A158817D3
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 20:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C24881862
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2E981F23AA8
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 19:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D7E1F22EA0
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 20:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D93B8563C;
-	Wed, 20 Mar 2024 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74A185938;
+	Wed, 20 Mar 2024 20:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="l6z8UkWz"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="F0FP0imW"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72ED6AFAE;
-	Wed, 20 Mar 2024 19:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9328592D;
+	Wed, 20 Mar 2024 20:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710962991; cv=none; b=ska3Q/ZtNdAutaQB/ZMy+fIjXLvAXPTAtQCyHXV2UQUdl3RPZ+CzlZmK3gcrXombhWT/xqjVmkW/Z2DsBlT8Q0ZsJTmbUMI3KMMrUkJP+ZxD12DBtL9jm6PPFw+Kyx7/RRCcqBcBwo9Qns8sCVG9mS6zjXogfOZL00L+MBFiYPQ=
+	t=1710965498; cv=none; b=pEC+Lyg6DZejdl9u/2QS4/WGa3ZsrkLsFhLBTr+QoRrsMCOBx/nSWoanQAwOm/75+wvMtGAq0Tk6JxA/UIzPakrtRxi0J+Y4mHEwSTrfsYwzE6rD7iP8+1oCN2adqqA0kBDFNISn/yeuLA3Cc+XLfrMJn48XA5SStcDR9gltuBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710962991; c=relaxed/simple;
-	bh=zSZ9KkY083/xyX1OWaFfmiEEW4XlP6evc9N/ZITr/Ec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C9R1jNsesPjJ3qh4Ugo0b2wVhjKMAw6gI6UMR5htDIuvzh4FxsFLd0Eu6rA8N1gv+N4BsvnauzhnBOSuFBJf6A14LH2Npjr4WVP88+Or0ovyEjkEchudQAJJfXAuQdn5xst1LmdR38HdDpWEWSH1wRDuK/403AP8wepF23iroao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=l6z8UkWz; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yvq+o8b7UjuJnPOttI4lLotYQ0Q3sPL2mIWTZN8jvW0=; b=l6z8UkWzI0ESS7o9ZWcOPP5lby
-	9zxxbsnFzQthW6djG85BtYcfSPsQF2oOY1v/H/GtyB6eLQiOMHEdm8i+3uwmmBtZWaA0zBuhcKzME
-	TDAcb/GEg7WgmDOHWSq5ABZel17C8g7W0aEu4Qkey+7Q68CtMZLmFMmppnaHL8bIk6DoJZzdz+ZU+
-	MApl7pBBBV69Lo1vj1t/67Mjo0OvdOFMw+btrI7qA+gZR5qnZ6OTqhAAB2QIHt4RMHkn7g/jgOLbs
-	Kt7xRzUDH5w+mM8+JH2gex+3Hxce9HYaRLVufdF/50egFUWr2wvNETPIidYey2WCeyeyWKfgury6j
-	h/fwfNVg==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rn1dB-00000004xuW-1mOR;
-	Wed, 20 Mar 2024 19:29:45 +0000
-Date: Wed, 20 Mar 2024 19:29:45 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <keescook@chromium.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Rich Felker <dalias@libc.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
-Message-ID: <Zfs5KTgGnetmg1we@casper.infradead.org>
-References: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+	s=arc-20240116; t=1710965498; c=relaxed/simple;
+	bh=1QTJYF/WVBiUpPd9h01Zak4bCyOARoYPEAdW5+RbQ0c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cAXKY4ITsti2seT23K2l309G4u6BDrH/Z0BF6uk+qp8pSZof7gcTB0thjjy3C+VJo8kOCHpa9O9lxZI+qnzxeDV2XhBrKMaG1vPGV+I8Ed7lBy3JRh1ab2qSCO010kTxbMuVaDgPQx/KiCQmepyLwqPPjAadyFNmgVstz6AvUfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=F0FP0imW; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id E5C3387F52;
+	Wed, 20 Mar 2024 21:11:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1710965493;
+	bh=qKi5o7N4Mo7W2yDJ2JzF88gBa6ndwUAwavGM4+FFst4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=F0FP0imWKQL5JoKWuRNOIPk7FUIJFO1MsE7vvD+lu/BoIVAEsqnba5tOzOZmhp+Cc
+	 YQoPNNEreLSzRnbBytgkkINuPefTM6y2xSr8qXvW/izW3RQW7jEQGMZzU8znNnxMxX
+	 zSfkoTR1AN2cPVgFGPBi0X/GSvayn91fP6WP2vgMbJRnMWaBp/gPQs1lXJnbp+kDSt
+	 CjDYa8ybHmZMl0EqNpGis2UGZhoJQJ3C0kBz3AqD4WnqEFcE1GpNY3IoV6W3DfT2qn
+	 LIVlyUWh19cXkMKrqys4ocDohGyQLVzc3Dc4s/AnmjKvcNA0w0xU9EJSXEzLb2oWib
+	 gMdj2glYN/ppA==
+Message-ID: <21fce6d1-fadb-4175-9539-73d4cbdad452@denx.de>
+Date: Wed, 20 Mar 2024 21:03:26 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
+Content-Language: en-US
+To: Pavel Machek <pavel@denx.de>, Sasha Levin <sashal@kernel.org>,
+ broonie@kernel.org, tzimmermann@suse.de, omosnace@redhat.com,
+ paul@paul-moore.com, yi.zhang@huawei.com, jack@suse.cz, tytso@mit.edu
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org
+References: <20240313164640.616049-1-sashal@kernel.org>
+ <ZfrngHBf1hbHohFa@duo.ucw.cz>
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <ZfrngHBf1hbHohFa@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Wed, Mar 20, 2024 at 11:26:07AM -0700, Max Filippov wrote:
-> In NUMMU kernel the value of linux_binprm::p is the offset inside the
-> temporary program arguments array maintained in separate pages in the
-> linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-> thus must be adjusted when that array is copied to the user stack.
-> Without that adjustment the value passed by the NOMMU kernel to the ELF
-> program in the AT_EXECFN entry of the aux array doesn't make any sense
-> and it may break programs that try to access memory pointed to by that
-> entry.
-> 
-> Adjust linux_binprm::exec before the successful return from the
-> transfer_args_to_stack().
+On 3/20/24 2:41 PM, Pavel Machek wrote:
 
-Do you know which commit broke this, ie how far back should this be
-backported?  Or has it always been broken?
+>> Marek Vasut (1):
+>>    regmap: Add bulk read/write callbacks into regmap_config
+> 
+> This one quite intrusive for the stable. Plus, at least "regmap: Add
+> missing map->bus check" is marked as fixing this one.
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-> ---
->  fs/exec.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index af4fbb61cd53..5ee2545c3e18 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -895,6 +895,7 @@ int transfer_args_to_stack(struct linux_binprm *bprm,
->  			goto out;
->  	}
->  
-> +	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
->  	*sp_location = sp;
->  
->  out:
-> -- 
-> 2.39.2
-> 
-> 
+If there is no very good reason to include that regmap patch in stable 
+backports, I would skip it, it is a feature patch. Does any backport 
+depend on it ?
 
