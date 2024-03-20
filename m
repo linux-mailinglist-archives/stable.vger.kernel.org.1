@@ -1,164 +1,156 @@
-Return-Path: <stable+bounces-28486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291BC881423
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:07:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826FA88143D
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BAB1F253D0
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A941C20D6C
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EE0482C8;
-	Wed, 20 Mar 2024 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801164EB4A;
+	Wed, 20 Mar 2024 15:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CyTk4tDG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hsSWeJj6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m0sgJUSK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E433C53379
-	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 15:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C2540866;
+	Wed, 20 Mar 2024 15:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710947220; cv=none; b=RAqBclSyq0bMNIkgdTDfRORygmKmAWGkiHjpdJ23LyfpVW8wKNOaLILJRU5rdskQtlE2T+8whzbwYQG2yf3fCvjRzxnY3jOFeptbmUne1S/mhwiPU8WhbYZO/fOjyPpTP3HNJF7ED1HIJH8thpg4rbA/ELeqZnkEReMnzG6qQOY=
+	t=1710947562; cv=none; b=rnOA2DUXrIFtlf5VeFloe1f887zWqh3WPYJ2KzVR2Mw8OCnJLqIo8T9JQgo1yusGwhYfp3aqpzeYcYRGHX+dtp8q9jJV+PlffRgNxGhwpysy5m2pgAQw4dZUgzjN3L8OEmVT7l2GX+lbQfqJf9NcT5pREkoUBQG4JdAkbHiMbfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710947220; c=relaxed/simple;
-	bh=tsgHU6iped9BYNKZeocwdMQSHcTaR/5D0OxCdFe1eIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MupVj6pw4VYMc4QvZnIyeNUF9HDOMfjWnRyyFlHXPLxSLW/aVNyUSx32cd+3V0bx+Ff4lW3dlYBEtL2JpHpDSDG5wx0c0K0V67Y6QFLrrp1T2sSIm/XzBapoKtWt2JlxsMT+0eyV6Wr5wT4tqEDYVGeLKYR2lYudaFtHoHnzcLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CyTk4tDG; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710947219; x=1742483219;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tsgHU6iped9BYNKZeocwdMQSHcTaR/5D0OxCdFe1eIw=;
-  b=CyTk4tDGQ/meMTEtE8DrVQBNj7/L0HDjzOSpgEgAD0B/UmcxqW0PROij
-   BbG0JFWKXv1HyyVcJ4PlzJPfaMABTCnyAOw0rOgyqmM8+9QVJgsGeTDTD
-   Os6jgE3mRYM15cgPI94uzsWVLICVwUYnsgjLF5OjDrsLXe5mpX2do2wna
-   hjVMIz0qUOzgjuZLa0CDXzpeWsLEDKdt3tNQSqf274JkAzqmK2t1LxKpd
-   TgJaAVR099czpe+MxUxGox3OuScib3FgHSPLkYBcQYmGLiC1KJ0YaI39i
-   pnW2cAkhGQmtY4LtFV8NCX0GL1NCcMb4I6l6FvHHfTvwJ6E/Fak+KjyJ3
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6053228"
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="6053228"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 08:06:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="14193862"
-Received: from unknown (HELO intel.com) ([10.247.118.184])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 08:06:50 -0700
-Date: Wed, 20 Mar 2024 16:06:44 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: Re: [PATCH v6 0/3] Disable automatic load CCS load balancing
-Message-ID: <Zfr7hPs_VAUkTNTX@ashyti-mobl2.lan>
-References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1710947562; c=relaxed/simple;
+	bh=348HASSEk8QxvS/erlMJDq6aP8awionNlExKtmUlpmY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UFvvucAifK9uaauaQT0S0viXJTulvLtBE2U6ra/Ug7/8jl1mxMCYL71dg55WShZY1lMwYNfODshVrHQtMdobSXtWcESbMjAfi9FEhdxyNVr/OH9jelwzqJlpKK19sVmLsipqTXPyhQFX0VtCJad8rpWb57Sjih/wcDVRzdV1EuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hsSWeJj6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m0sgJUSK; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 20 Mar 2024 16:12:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1710947557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LqY42itfFZLfggmIMz0Q0EsnZ8t+OvYnRDCYFxlevL8=;
+	b=hsSWeJj6TrjiUW12brMWme8K6vVyTafHuy7VucCN2pHD7oP9IzsRSDYDbMRyKKiW+rpe0K
+	0lQTuaY8Gb0C0agF9+dqf19jbIktNHJdaOmSwN1z0PoH7lxCqSXYtzkONRDQr1sOv1ui1B
+	zl7O3qNhZ//OQ0iXLcHOW8uJtC7szpRnetpo3uoOMhOVhnoyIGU6vhsgIhytRz2hLI+dNC
+	2UWzyk8c3b+4QBNjt1fpE0ulqdZmzSEJI9E4du7A5tJEuNIZhhpzIAlHXvHZvqzWf+L71I
+	zVixRX82UFTkA/TWt2vANyOu/DUYUvfha8Eq6+0gdHdqm5+WoonfcpwUTy/+jw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1710947557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LqY42itfFZLfggmIMz0Q0EsnZ8t+OvYnRDCYFxlevL8=;
+	b=m0sgJUSKkUfQ2JAu2rnH2dWsfJHsEXLemQ6lVHKz3ifzzl4lFVr09Cu4Pgzt9uE+JBxc9q
+	17j4Lrw6ww0J7KAg==
+From: Nam Cao <namcao@linutronix.de>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: tglx@linutronix.de, Paul Walmsley <paul.walmsley@sifive.com>,
+ samuel@sholland.org, Marc Zyngier <maz@kernel.org>, guoren@kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed
+ before EOI
+Message-ID: <20240320161235.7e6916d9@namcao>
+In-Reply-To: <mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
+References: <87wmr8hd7j.ffs@tglx>
+	<mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313201955.95716-1-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Ping! Any thoughts here?
+On 20/Mar/2024 Palmer Dabbelt wrote:
+> On Tue, 13 Feb 2024 02:26:40 PST (-0800), tglx@linutronix.de wrote:
+> > Nam!
+> >
+> > On Wed, Jan 31 2024 at 09:19, Nam Cao wrote:  
+> >> RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
+> >> explained in the description of Interrupt Completion in the PLIC spec:
+> >>
+> >> "The PLIC signals it has completed executing an interrupt handler by
+> >> writing the interrupt ID it received from the claim to the claim/complete
+> >> register. The PLIC does not check whether the completion ID is the same
+> >> as the last claim ID for that target. If the completion ID does not match
+> >> an interrupt source that *is currently enabled* for the target, the
+> >> completion is silently ignored."
+> >>
+> >> Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
+> >> ensured that EOI is successful by enabling interrupt first, before EOI.
+> >>
+> >> Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+> >> operations") removed the interrupt enabling code from the previous
+> >> commit, because it assumes that interrupt should already be enabled at the
+> >> point of EOI. However, this is incorrect: there is a window after a hart
+> >> claiming an interrupt and before irq_desc->lock getting acquired,
+> >> interrupt can be disabled during this window. Thus, EOI can be invoked
+> >> while the interrupt is disabled, effectively nullify this EOI. This
+> >> results in the interrupt never gets asserted again, and the device who
+> >> uses this interrupt appears frozen.  
+> >
+> > Nice detective work!
+> >  
+> >> Make sure that interrupt is really enabled before EOI.
+> >>
+> >> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+> >> Cc: <stable@vger.kernel.org>
+> >> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> >> ---
+> >> v2:
+> >>   - add unlikely() for optimization
+> >>   - re-word commit message to make it clearer
+> >>
+> >>  drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
+> >>  1 file changed, 7 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+> >> index e1484905b7bd..0a233e9d9607 100644
+> >> --- a/drivers/irqchip/irq-sifive-plic.c
+> >> +++ b/drivers/irqchip/irq-sifive-plic.c
+> >> @@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
+> >>  {
+> >>  	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
+> >>
+> >> -	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+> >> +	if (unlikely(irqd_irq_disabled(d))) {
+> >> +		plic_toggle(handler, d->hwirq, 1);
+> >> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+> >> +		plic_toggle(handler, d->hwirq, 0);  
+> >
+> > It's unfortunate to have this condition in the hotpath, though it should
+> > be cache hot, easy to predict and compared to the writel() completely in
+> > the noise.  
+> 
+> Ya, I think it's fine.
+> 
+> I guess we could try and play some tricks.  Maybe hide the load latency 
+> with a relaxed writel and some explict fencing, or claim interrupts when 
+                                                     ^ you mean complete?
+> enabling them.  Those both seem somewhat race-prone, though, so I'm not 
+> even sure if they're sane.
 
-Andi
+The latter option is what I also have in mind. Just need to make sure the
+interrupt is masked and we should be safe. Though there is the question of
+whether it's worth the effort.
 
-On Wed, Mar 13, 2024 at 09:19:48PM +0100, Andi Shyti wrote:
-> Hi,
-> 
-> this series does basically two things:
-> 
-> 1. Disables automatic load balancing as adviced by the hardware
->    workaround.
-> 
-> 2. Assigns all the CCS slices to one single user engine. The user
->    will then be able to query only one CCS engine
-> 
-> >From v5 I have created a new file, gt/intel_gt_ccs_mode.c where
-> I added the intel_gt_apply_ccs_mode(). In the upcoming patches,
-> this file will contain the implementation for dynamic CCS mode
-> setting.
-> 
-> Thanks Tvrtko, Matt, John and Joonas for your reviews!
-> 
-> Andi
-> 
-> Changelog
-> =========
-> v5 -> v6 (thanks Matt for the suggestions in v6)
->  - Remove the refactoring and the for_each_available_engine()
->    macro and instead do not create the intel_engine_cs structure
->    at all.
->  - In patch 1 just a trivial reordering of the bit definitions.
-> 
-> v4 -> v5
->  - Use the workaround framework to do all the CCS balancing
->    settings in order to always apply the modes also when the
->    engine resets. Put everything in its own specific function to
->    be executed for the first CCS engine encountered. (Thanks
->    Matt)
->  - Calculate the CCS ID for the CCS mode as the first available
->    CCS among all the engines (Thanks Matt)
->  - create the intel_gt_ccs_mode.c function to host the CCS
->    configuration. We will have it ready for the next series.
->  - Fix a selftest that was failing because could not set CCS2.
->  - Add the for_each_available_engine() macro to exclude CCS1+ and
->    start using it in the hangcheck selftest.
-> 
-> v3 -> v4
->  - Reword correctly the comment in the workaround
->  - Fix a buffer overflow (Thanks Joonas)
->  - Handle properly the fused engines when setting the CCS mode.
-> 
-> v2 -> v3
->  - Simplified the algorithm for creating the list of the exported
->    uabi engines. (Patch 1) (Thanks, Tvrtko)
->  - Consider the fused engines when creating the uabi engine list
->    (Patch 2) (Thanks, Matt)
->  - Patch 4 now uses a the refactoring from patch 1, in a cleaner
->    outcome.
-> 
-> v1 -> v2
->  - In Patch 1 use the correct workaround number (thanks Matt).
->  - In Patch 2 do not add the extra CCS engines to the exposed
->    UABI engine list and adapt the engine counting accordingly
->    (thanks Tvrtko).
->  - Reword the commit of Patch 2 (thanks John).
-> 
-> Andi Shyti (3):
->   drm/i915/gt: Disable HW load balancing for CCS
->   drm/i915/gt: Do not generate the command streamer for all the CCS
->   drm/i915/gt: Enable only one CCS for compute workload
-> 
->  drivers/gpu/drm/i915/Makefile               |  1 +
->  drivers/gpu/drm/i915/gt/intel_engine_cs.c   | 20 ++++++++---
->  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
->  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
->  drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  6 ++++
->  drivers/gpu/drm/i915/gt/intel_workarounds.c | 30 ++++++++++++++--
->  6 files changed, 103 insertions(+), 6 deletions(-)
->  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
->  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-> 
-> -- 
-> 2.43.0
+I may do that one day when I stop being lazy.
+
+Best regards,
+Nam
+
 
