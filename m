@@ -1,121 +1,138 @@
-Return-Path: <stable+bounces-28461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EDA880B66
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 07:45:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9F9880BAF
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 08:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3A91B2166C
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 06:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0A11C225E5
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 07:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E10ED0;
-	Wed, 20 Mar 2024 06:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E657B1EB23;
+	Wed, 20 Mar 2024 07:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NTb817C2"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R6H1BQAo"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C28A3D;
-	Wed, 20 Mar 2024 06:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47E11EB20;
+	Wed, 20 Mar 2024 07:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710917134; cv=none; b=P9FfulcUvb7A2LxiVPdgnXDlBU7yAsFewttKQ6QA/IJTZhaYyIItqBVIEOQvpF7z20keN/5j+cwzvUCnJGwiLNRwdDRrpzi8Vzgw4wFGBt/8e+IkTsfNln72MsPRM4/xmDOOd10WoDacXjld+CeMrggRBTL6TOuyPaNY35//vJg=
+	t=1710918471; cv=none; b=fymL0h8amq7w8ZI4PamaUXNXpKERaoQYlg3ReXTrvmGBSf7kxqzzHPONiO9KxBss9ciY3/XHU0+0dFaZi4aDw57ulwCsRT42a2+1A9xbcHA9IuvaothKGI1fVvkuOu+ka+b16jSuIQR5AQA1TuLVEbuHrWOGb4DXJxVx2NYKhwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710917134; c=relaxed/simple;
-	bh=fAgGUE2IUmexRk7WdnaZaJoJomUIOTguyBKLcuDXqqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z89b9wLabwh9N6YWryafUxw0a7L66GXkMnAl/x8KmYPWtQJkfDEzuBaN5Od2E51zJamtl5xw9+fw0kRvr95x1JS0jhgL2qH0IkjjwXf9cSMq2nlrAka86SB0DDEKt9OhCbV94cAI+fZF2A0tgRt8l0pBf2RqfFEbYFVw6X+Jq6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NTb817C2; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710917133; x=1742453133;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fAgGUE2IUmexRk7WdnaZaJoJomUIOTguyBKLcuDXqqg=;
-  b=NTb817C2JsYVX76te40VZ7MGXXoztFLUbmrvHLypcGkMa7FDBIfrcctI
-   0cPk2+Tegye4fsn91brImb5UzQUixK5W4SF1m/ygjtn74mmEfFXAPOONj
-   tbGIZJ/+p9IEtfuQxT0pZIYumn4dmQK0+ejEQ0byhHxiwp1BLbefaX5H3
-   qxTPedaBVgEmAVAdZYiHBUGp8uPGfYL2OiiEjzNbOGhEyZLH4KVse5csa
-   c1xUW+51m5It3ty401RWVM4/HTcwHAXLfb1wCxg6jE6VD4AE/TAQcU8Gf
-   +HWaaxynIUWZHxMEC5OOrddRGEj/8cI0jbRcpNHoTFt/zq+5STFGqIrgL
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="17229672"
-X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
-   d="scan'208";a="17229672"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 23:45:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
-   d="scan'208";a="18782241"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 23:45:26 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 89E5F11F853;
-	Wed, 20 Mar 2024 08:45:22 +0200 (EET)
-Date: Wed, 20 Mar 2024 06:45:22 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Wentong Wu <wentong.wu@intel.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>
-Subject: Re: [PATCH 1/1] mei: vsc: Unregister interrupt handler for system
- suspend
-Message-ID: <ZfqGAth743v4Slpx@kekkonen.localdomain>
-References: <20240318080126.2813476-1-sakari.ailus@linux.intel.com>
- <2024031915-manhole-winnings-43d4@gregkh>
- <ZfltTgGANYs9uix5@kekkonen.localdomain>
- <2024031905-showpiece-coral-c76c@gregkh>
+	s=arc-20240116; t=1710918471; c=relaxed/simple;
+	bh=id+YrcKzvPn+roLxUhcmy08zTVa12BwyuqXaxnIsJ0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mkzswf/a4zix6f+zMwba+Bp5X0M5/z41RM4CwUjofaV8FbppjpiMz3lAPsz/U9OXh0hQRwpZALCblCzmjFTvYw/e2WEt47VyJfkdrm3JbFtuVvaUn1177GV2DWTd7bI84C+mVPxmZfMhdtOP+gJJVbG8dA+yRziIey/bLeOvgog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R6H1BQAo; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A01A020003;
+	Wed, 20 Mar 2024 07:07:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1710918459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AL30gxN2yDxjzqImljq77WKx4g//YWKGdQLQDyEKupE=;
+	b=R6H1BQAoVXPekaFsRtzSoEQBULpxTVygeQ5dgqe41dUWGbQm3BwMbL/BkjcYVigscVk7cW
+	93TzuvNn/tzdDUEFGKQiEaJr0dmWsCJkzO42E0MIt+gB3EkUgIcNzrNDwvjjulQqDJV1iC
+	7TghrDUA50RUSI84CT6HanpAWNattl09gNrGskDLdup3YatpyrIdwBROO2dIGgDmYx5Kis
+	qclT1+rueoDo0Q/12GvPbQ7eE41u9AZgd/FQ8xr/nkdyWBsHEYK3dacjF4UXMhvgbyhSCd
+	yfozFtxn4bnKbjSFrQ31rCw7AcR/dVzivfHP+vi6tK4oFVKSqkXkaBchU9Ih9g==
+Date: Wed, 20 Mar 2024 08:07:37 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Richard
+ Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, Md Sadre Alam
+ <quic_mdalam@quicinc.com>, linux-mtd@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mtd: rawnand: qcom: Fix broken misc_cmd_type in exec_op
+Message-ID: <20240320080737.00e7bb37@xps-13>
+In-Reply-To: <20240320001141.16560-1-ansuelsmth@gmail.com>
+References: <20240320001141.16560-1-ansuelsmth@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024031905-showpiece-coral-c76c@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Tue, Mar 19, 2024 at 12:51:34PM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Mar 19, 2024 at 10:47:42AM +0000, Sakari Ailus wrote:
-> > Hi Greg,
-> > 
-> > On Tue, Mar 19, 2024 at 08:51:43AM +0100, Greg Kroah-Hartman wrote:
-> > > On Mon, Mar 18, 2024 at 10:01:26AM +0200, Sakari Ailus wrote:
-> > > > Unregister the MEI VSC interrupt handler before system suspend and
-> > > > re-register it at system resume time. This mirrors implementation of other
-> > > > MEI devices.
-> > > > 
-> > > > This patch fixes the bug that causes continuous stream of MEI VSC errors
-> > > > after system resume.
-> > > > 
-> > > > Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
-> > > > Cc: stable@vger.kernel.org # for 6.8
-> > > > Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
-> > > > Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > > > ---
-> > > >  drivers/misc/mei/platform-vsc.c | 17 ++++++-
-> > > >  drivers/misc/mei/vsc-tp.c       | 84 +++++++++++++++++++++++----------
-> > > >  drivers/misc/mei/vsc-tp.h       |  3 ++
-> > > >  3 files changed, 78 insertions(+), 26 deletions(-)
-> > > 
-> > > What is the git commit id of this in Linus's tree?
-> > 
-> > This one isn't in Linus's (or any other maintainer) tree yet.
-> 
-> Then why was it sent only for 6.8?  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
+Hi Christian,
 
-Ah, I think I mistakenly included the stable@vger e-mail address in
-distribution as the other patch was meant to be sent there. I'll resend
-this.
+ansuelsmth@gmail.com wrote on Wed, 20 Mar 2024 01:11:39 +0100:
 
--- 
-Sakari Ailus
+> misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
+> ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
+> reworked and generalized but actually dropped the handling of the
+> RESET_DEVICE command.
+>=20
+> The rework itself was correct with supporting case where a single misc
+> command is handled, but became problematic by the addition of exiting
+> early if we didn't had an ERASE or an OP_PROGRAM_PAGE operation.
+>=20
+> Also additional logic was added without clear explaination causing the
+> erase command to be broken on testing it on a ipq806x nandc.
+>=20
+> Add some additional logic to restore RESET_DEVICE command handling and
+> fix erase command.
+>=20
+> Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec=
+_op path")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>  drivers/mtd/nand/raw/qcom_nandc.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qco=
+m_nandc.c
+> index b079605c84d3..b8cff9240b28 100644
+> --- a/drivers/mtd/nand/raw/qcom_nandc.c
+> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
+> @@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip=
+ *chip, const struct nand_sub
+>  			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
+>  		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
+>  		instrs =3D 3;
+> -	} else {
+> +	} else if (q_op.cmd_reg !=3D OP_RESET_DEVICE) {
+>  		return 0;
+>  	}
+> =20
+> @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip=
+ *chip, const struct nand_sub
+>  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+> =20
+>  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+> -	(q_op.cmd_reg =3D=3D OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_C=
+FG0,
+> -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+> -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+> +	if (q_op.cmd_reg =3D=3D OP_BLOCK_ERASE)
+> +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
+
+Ugh. How did that went through...
+
+I don't want to get into the details of this controller, but the fix
+looks legitimate.
+
+>  	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
+>  	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+
+
+Thanks,
+Miqu=C3=A8l
 
