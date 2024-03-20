@@ -1,180 +1,121 @@
-Return-Path: <stable+bounces-28478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE7C88132E
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:17:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB5881358
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 400111C22757
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004DA1F23522
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69D54084D;
-	Wed, 20 Mar 2024 14:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD46744C8D;
+	Wed, 20 Mar 2024 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="CZlW0Xne"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTVmsdtW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9870840863
-	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 14:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13815848E;
+	Wed, 20 Mar 2024 14:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710944231; cv=none; b=Du+L7AVOCiKnXujXTtcI2E7r9ZqV0gdCcPWW4kUa1XI2ZFjsMCAHYv+TBVgySXC5yIxnzmAv9XWaXELYlt5aOZPsU5b4InX4N0jn844MjvBe/AdjJFyzrHn+ihVmV38ZwIkPcjQPY6IKCGGM0XcZXoXhUkK+3+Ia96OlC505DLk=
+	t=1710945044; cv=none; b=KLXulYnKAAOYZb7rQDRe4dktTBPaVrgdCRT2LRQ79xRXedYdZDyV3vLFQ+LQpz+VVA8nXkkk0HLn76/Fe4djo1QbNd8XnwhZ0x9dRsHE1qtmRFDIxT5LT1nBkBF0cB1IMbaEVz5pqCjTjAznOVzgk7X1Q65KnSA+RfyK9h1+Alo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710944231; c=relaxed/simple;
-	bh=p6dQqq/oYkWbfdi5xnwDgINsJNpwikfJyCRvq5/qIQI=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=I/tTSS0/zq1tMp1wB0fCnfvBCRU5+PLwiU2lFnkkFJGeTQ8lNUz3OSmNzZl85TC4izXgTzKsbZHt91NelkFLFOfe77DeWhLSd7LDfvZ3vgY9jOmquKdU97CBpS/lUnzuMKJYqCzK/xZG/30NxgOYqXtwqk3lyq3S7uQ/H+BTxEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=CZlW0Xne; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1e01c38f98cso23209115ad.3
-        for <stable@vger.kernel.org>; Wed, 20 Mar 2024 07:17:09 -0700 (PDT)
+	s=arc-20240116; t=1710945044; c=relaxed/simple;
+	bh=zrfVyRY5tL0TunSwp7D8tq7oxVUsmAzsyiCykPlmTnw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nrp/hN4DglxRxT/6YqKME53cMPNqhJzCMfq9Sn1FfoH77Bd9PPz8g6P3O8EVed/TWWqa0X3b7KWbkQ/GP+QwY81LLofNuFKi6RUuWHJgm19mtf2KGT+grMauBKoNsEA+bW/kB7zXnNVAwxgeAjAIGq9lSdfc+M5IuDz6Tu7Zlu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTVmsdtW; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a46a7208eedso595720666b.0;
+        Wed, 20 Mar 2024 07:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1710944229; x=1711549029; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=T2EgfvxxgK+wJvZtFaKjr7t9HOODvH7M/KpVWvGGTzE=;
-        b=CZlW0Xne9LkFEqRqi/HnxU6DS1b7g30iriiHJC78bciKoaqmqd3g1SdAHUe5qD1YuZ
-         Xm42ltTIznjk0DSaYTUWWYsK82hETHigtGs7KLnyOh2tGY8Ic50D7hy8LPVDg/NV/DVe
-         GLFAXs6sD2tm6UhLMCvW4lRXyYoONS4lxUBU3PLJuF/M6kxMsq3YkCkdENwC8O3Nj+aI
-         PlT6sqzwvSrPe/bozKZ49CM7lIJXzp87GMLVAJbn1Cfmu6G77PGM6lpFe5XWx1kCLCLN
-         Gpj81WFjJeumhhWZqvtKOcYntNMgEX7LY7ao0XWeF3Tl5b4pcauiU1sbuoAzx+vkwd94
-         Us/Q==
+        d=gmail.com; s=20230601; t=1710945041; x=1711549841; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aI/xdfnQChwGM+0xeXeUgfzkjQ2ZUFhMzealK0WWSK8=;
+        b=DTVmsdtWUmeiuQXmPwx3O8pTDtQNQ0ng5I2dITrHJQoEvcFwDuICMuz39oUBTlP03K
+         Gd8PLl0bGH7q8bxC8063DBtOI8Yun7/f3D5X4nng1E+92vontkSQsMkEQRT5QQAY7eyS
+         KBoOGlVdReaIQdi/fYrjMF4FRO47JwiFf4dHs2bbs2APlhgRGT2mcm3zFtztOqzHdOhU
+         0K7MjdbrpXjozjRcwiI3Fu5f5P/HHJwhKwOXR0kT+VMrgjGANAEbtvrKYQgZ6FpnDybZ
+         9yL+zl7xmi7VVEC3Twi+Zs9D8hj5ic640XWoF6+UyqDkkNAY8Btxf22SmpZsTMQNILD+
+         gZig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710944229; x=1711549029;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T2EgfvxxgK+wJvZtFaKjr7t9HOODvH7M/KpVWvGGTzE=;
-        b=CejdDDjaG2aoZ8ClMhKp9Jb9F8NyucrK2wlZahPXhBW2VTlsfFPBFoB8/wPeg9rZXv
-         54aPIYg6cChDFMYwoGZt2Ok6C2zxXL+w5SoB9N0o6e+eJGQVdeeLgTqmnE4KLp+dfffT
-         0e8V8jJ24NxRTQcYZVSaoejlNPQk+FEe9hCSF83i9qlz+c2EiDZOm/661TOVmlzzpl+B
-         cGs2G6NvjIWWrHdkn6GyChzJWtRKxUB9X8ywpwOBU6TXlrCLd/ac/t301c+Uk0XD8Hz0
-         kd1AFJuwVdYzZWCaX+U2EfpXLwqAX294wzj5S+/fmlXYaGWretWvXxL1G5930nf5kkic
-         Wzrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnePQ9eyFu02nOb/j/jgxMAJ0rKJq/4l4iFstpuBLmNw7TXQSeljtTByGE3Y6+GU1vKEZk8+lxfoYPia8jt1Ee94VG6jvw
-X-Gm-Message-State: AOJu0Yy8ugdbNVr1S//2fI7FQKIUOvZ+6Mc4f/lnGilxJa5hE0HkbesF
-	bpyC4Avrm6mPz9CqWONAXxDMn2JYGK+Aq6bX92a9Pn1R00gq9xxnAQpM/waR9VI=
-X-Google-Smtp-Source: AGHT+IGycrYcZflVp1sNbYxQH6AqEecSt6Yeb5KG7ltM7bagqWpsCCfgRrtVN3eRcOSSKhXrIi+/+g==
-X-Received: by 2002:a17:902:eb8c:b0:1de:ddc6:278f with SMTP id q12-20020a170902eb8c00b001deddc6278fmr17506092plg.0.1710944228449;
-        Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with ESMTPSA id u10-20020a17090282ca00b001d8edfec673sm13539227plz.214.2024.03.20.07.17.07
+        d=1e100.net; s=20230601; t=1710945041; x=1711549841;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aI/xdfnQChwGM+0xeXeUgfzkjQ2ZUFhMzealK0WWSK8=;
+        b=C1/NBjCqwZmWHz4g21sq4l6fTwhVeDd9iwCqncBB+N05QeuGoQqjcT1ZDE8bjE7bhI
+         Yl8KX04CyyA6il4VI7mAtNG9i2cRGbhyyFB1PimRWbJySSad4R6WwuUTjcrzJFxjDskB
+         V0ttS8Gy90jvZBWAfkUo5Ys5DaokzufZMTk2nfpxjfcTzPskGAdNRESvQM/hv4HQYqHx
+         WBbSbzI3iDDVsGgx929cT4Q9QraJmbySOrFHTLWBqPq4XSZM3qzlbWre5UbGpH5yASMi
+         wzbxZd56aeUV/DCzpRqsG+jA3LBBxL7bpSBE9jGHppE7yRBKRCDvcOEOjk+/hioNfec8
+         DkJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWyf/oKBoFoSq/ZNkAeRTuzIGBNH5f4kXM2FT9MznJud4pUegYICEpMAaz72sO2mroVhGPVIlGwyEbPxpKGlnG6P50K2uxv3+WReBIhDiq6UF7ZRsPUM8YwaYev3l5FmWvqQP70irXtnHXoTloXRuiBPXsKeMmlGbGIy0QbeOf9Ww==
+X-Gm-Message-State: AOJu0Ywg5m2gO9iKWlMS/n60xqw4pGmBArG2Hw+8hM9RIWfwePYHWNuv
+	jGklDMG13UkCKTTd9VJUCJ88nRfp1H8YX7by9k+BhQInQNEdoUz7
+X-Google-Smtp-Source: AGHT+IHZkG6EvpcQLZ/q8cZUoQjNhtFlYTceRTfWxbzEKFSIBzBThSG3aJZYDEow2oePlcW/pxhgvg==
+X-Received: by 2002:a17:906:ef0c:b0:a46:c01b:7e2c with SMTP id f12-20020a170906ef0c00b00a46c01b7e2cmr7612185ejs.75.1710945041157;
+        Wed, 20 Mar 2024 07:30:41 -0700 (PDT)
+Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id a18-20020a170906469200b00a46f69a43a8sm745514ejr.184.2024.03.20.07.30.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
-Date: Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
-X-Google-Original-Date: Wed, 20 Mar 2024 07:17:06 PDT (-0700)
-Subject:     Re: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed before EOI
-In-Reply-To: <87wmr8hd7j.ffs@tglx>
-CC: namcao@linutronix.de, Paul Walmsley <paul.walmsley@sifive.com>,
-  samuel@sholland.org, Marc Zyngier <maz@kernel.org>, guoren@kernel.org, linux-kernel@vger.kernel.org,
-  linux-riscv@lists.infradead.org, namcao@linutronix.de, stable@vger.kernel.org
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: tglx@linutronix.de
-Message-ID: <mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
+        Wed, 20 Mar 2024 07:30:40 -0700 (PDT)
+From: max.oss.09@gmail.com
+To: max.krummenacher@toradex.com
+Cc: conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	francesco.dolcini@toradex.com,
+	kristo@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	nm@ti.com,
+	robh+dt@kernel.org,
+	vigneshr@ti.com,
+	stable@vger.kernel.org
+Subject: [PATCH] arm64: dts: ti: verdin-am62: Set memory size to 2gb
+Date: Wed, 20 Mar 2024 15:29:37 +0100
+Message-ID: <20240320142937.2028707-1-max.oss.09@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Tue, 13 Feb 2024 02:26:40 PST (-0800), tglx@linutronix.de wrote:
-> Nam!
->
-> On Wed, Jan 31 2024 at 09:19, Nam Cao wrote:
->> RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
->> explained in the description of Interrupt Completion in the PLIC spec:
->>
->> "The PLIC signals it has completed executing an interrupt handler by
->> writing the interrupt ID it received from the claim to the claim/complete
->> register. The PLIC does not check whether the completion ID is the same
->> as the last claim ID for that target. If the completion ID does not match
->> an interrupt source that *is currently enabled* for the target, the
->> completion is silently ignored."
->>
->> Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
->> ensured that EOI is successful by enabling interrupt first, before EOI.
->>
->> Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
->> operations") removed the interrupt enabling code from the previous
->> commit, because it assumes that interrupt should already be enabled at the
->> point of EOI. However, this is incorrect: there is a window after a hart
->> claiming an interrupt and before irq_desc->lock getting acquired,
->> interrupt can be disabled during this window. Thus, EOI can be invoked
->> while the interrupt is disabled, effectively nullify this EOI. This
->> results in the interrupt never gets asserted again, and the device who
->> uses this interrupt appears frozen.
->
-> Nice detective work!
->
->> Make sure that interrupt is really enabled before EOI.
->>
->> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Nam Cao <namcao@linutronix.de>
->> ---
->> v2:
->>   - add unlikely() for optimization
->>   - re-word commit message to make it clearer
->>
->>  drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
->>  1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
->> index e1484905b7bd..0a233e9d9607 100644
->> --- a/drivers/irqchip/irq-sifive-plic.c
->> +++ b/drivers/irqchip/irq-sifive-plic.c
->> @@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
->>  {
->>  	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
->>
->> -	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
->> +	if (unlikely(irqd_irq_disabled(d))) {
->> +		plic_toggle(handler, d->hwirq, 1);
->> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
->> +		plic_toggle(handler, d->hwirq, 0);
->
-> It's unfortunate to have this condition in the hotpath, though it should
-> be cache hot, easy to predict and compared to the writel() completely in
-> the noise.
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-Ya, I think it's fine.
+The maximum DDR RAM size stuffed on the Verdin AM62 is 2GB,
+correct the memory node accordingly.
 
-I guess we could try and play some tricks.  Maybe hide the load latency 
-with a relaxed writel and some explict fencing, or claim interrupts when 
-enabling them.  Those both seem somewhat race-prone, though, so I'm not 
-even sure if they're sane.
+Fixes: 316b80246b16 ("arm64: dts: ti: add verdin am62")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+---
+ arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anything with a PLIC is going to have pretty poor interrupt latency 
-already, so I doubt it's worth the headache.
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+index e8d8857ad51f..8c837467069b 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
+@@ -76,7 +76,7 @@ verdin_key_wakeup: key-wakeup {
+ 
+ 	memory@80000000 {
+ 		device_type = "memory";
+-		reg = <0x00000000 0x80000000 0x00000000 0x40000000>; /* 1G RAM */
++		reg = <0x00000000 0x80000000 0x00000000 0x80000000>; /* 2G RAM */
+ 	};
+ 
+ 	opp-table {
+-- 
+2.42.0
 
->> +	} else {
->> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
->> +	}
->>  }
->
-> Can the RISCV folks please have a look at this?
-
-Sorry I missed this.
-
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-
-in case anyone was worried, though I saw it got merged so I think we're 
-safe there.  I'm always a bit lost with the IRQ stuff, I didn't even 
-know that race condition was posisble.
-
-Thanks for the fix!
-
->
-> Thanks,
->
->         tglx
 
