@@ -1,52 +1,63 @@
-Return-Path: <stable+bounces-28483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F738813BD
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:54:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 692FB88140B
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14E41F237A7
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901D81C219F6
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2524D11D;
-	Wed, 20 Mar 2024 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CBE4AEED;
+	Wed, 20 Mar 2024 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="H8WeWHZf"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="khXcSScN"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB134CB5B;
-	Wed, 20 Mar 2024 14:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E48540866;
+	Wed, 20 Mar 2024 15:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710946471; cv=none; b=cN+atIXNolBQfm5sLFRwbtRblC2VGAHlybbJOhX5hPxlLlnDR3nHMw+mO+CnRn9694sUtWl5AlUan/OoIf5zU/iR8KryuyZWNJP3bq/xG9T6O1bWjskOvzZuuMIPakp213CRRgJHJiYtRXi29wXJtqOb3aLf7W+69Fx6sWWl0AE=
+	t=1710946964; cv=none; b=RlZyJ1+gLA7H1QBKn0Txc3mTOnoupjcg7qD3ay+RMvJXUlsHjcJIeLKefO1n0wwmQqGggYyZW7Zxoa7pZN1J1aGjYe07wgmbVy6n+MYw9L+qKxYNnvp9gfY+jaqy37rcDc9xw6Nh815Leg446Eh5b+g1I9rzKjg8ooWfKK43ago=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710946471; c=relaxed/simple;
-	bh=l84i0sEPInrq5lJIYS2I2zVxcDj2BHW/93OahkYwp5c=;
+	s=arc-20240116; t=1710946964; c=relaxed/simple;
+	bh=6FsNZvBqbDhmAEvPwqQlJAURMDxOT70+vrD2rWGm5PY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ig+jE6dM3uIKhVuGFyitEj8t196zNIIXqft83NbPapo7um/4Kj2bpCR4VqxyB+C5kXh+8YY9+X8jBNXbVtVUYrQvaahLXnBGJ8aSHG0DdSyuNjiowOpqurDj2IVra84ctBZbDAxB4hal2Aa5k+6o9sSIzd4OOlKRCtr8f5JOgdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=H8WeWHZf; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=6Gjn1V01WyKkpjbLddeTXkLKXDQ7KdJBsP0B81Mf7Og=;
-	t=1710946469; x=1711378469; b=H8WeWHZfwR1UrES/n/Hoq4kB8xlYUssm/masRNb2G7BN6+b
-	QP4mCIlYKS7CUEVzfixKTDH9mcdYr6ok/qzZToJ502excVlLMYNYvw6jKuCBtW+bQfdD7LNVy1Wam
-	e2nyGKFK4FmYB52HMjqdJLNUmsYY9N2sg/TDmqgGWvBJ4bncd6Hbj4NTSkcqMJfIhrgki757cLd+I
-	DuAujzMNK22zjNwWpAzYR3uyC4EQDCvccHK8/3SKI8XqAuJ9yw+/VGSgJEzi2pOXw+IxatnM9fx8W
-	pWgSX6qC3JE3AQD7g4yYMa4ykwdaU2zADb0oEk4V9aS9Lu0dLvxLN+rtfVo5q2Xg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rmxKc-0004oj-MI; Wed, 20 Mar 2024 15:54:18 +0100
-Message-ID: <256024ba-c889-4400-a7cd-002291e64ad5@leemhuis.info>
-Date: Wed, 20 Mar 2024 15:54:18 +0100
+	 In-Reply-To:Content-Type; b=d5+Fo7oJ/gJHgZMWIZ3rHxOSzzIHEXE5X+PPLVdHNqPzbl9sy2c1ZeG0I3/fVDnP525eoDoXJM8qyKvJ0ML8cN9tmmRYLk7zw9sZeGeetmC+LzEEozCqTx+Yp2tzQUHl5XC5H9dG7R7zrPFzB8jsPZr0nUCSI1C0fJiQkhdc+Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=khXcSScN; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V0Bf52YHRz6Cnk8y;
+	Wed, 20 Mar 2024 15:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1710946954; x=1713538955; bh=I/RsDzP1lcazugLbmfUU+XUL
+	ysauzAEbPNvq73ZKKMg=; b=khXcSScN/+WF978id2jh5imim+jSLvz5thbG0upA
+	D97ilSLTT+fmF/Ikmcj8pf9kwUZApgtQ9+bpvUn+e4LZ5GQFQaGWsH47YWWjws78
+	FeWtLMuWB2NwwCwjAfB9dJyj7CJJZRFRwMKtMTCsxvJVhnjpOHJcsNvEPLp7Lwih
+	uIlM19ZOq4MEuYbG4gVYik5CNapsb7WkiUFZNajH15+0LsQRX7ptUNyfLoJwZmDw
+	HzdnFBxoN2EFrntcxa+I1I+EhRpUdn4VAGx2KKeanWAGT/u2phfxL7nIYml4s7jT
+	7eHg2E6gsEU1KuD5+lfq8wtjnmT7w0XJlVuIe2HalGr3WA==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id b9t_VBaYbN15; Wed, 20 Mar 2024 15:02:34 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V0Bf21rv8z6Cnk8s;
+	Wed, 20 Mar 2024 15:02:33 +0000 (UTC)
+Message-ID: <8b8e5aca-4b97-4662-9ae0-fc36db2436b4@acm.org>
+Date: Wed, 20 Mar 2024 08:02:32 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,76 +65,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: af_alg - Disallow multiple in-flight AIO requests
-Content-Language: en-US, de-DE
-To: Ralph Siemsen <ralph.siemsen@linaro.org>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <ZWWkDZRR33ypncn7@gondor.apana.org.au>
- <20240315175529.GA268782@maple.netwinder.org>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20240315175529.GA268782@maple.netwinder.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1710946469;e25eb307;
-X-HE-SMSGID: 1rmxKc-0004oj-MI
+Subject: Re: [PATCH v2] scsi: sg: Avoid sg device teardown race
+Content-Language: en-US
+To: Alexander Wetzel <Alexander@wetzel-home.de>, dgilbert@interlog.com
+Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org
+References: <20240318175021.22739-1-Alexander@wetzel-home.de>
+ <20240320110809.12901-1-Alexander@wetzel-home.de>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240320110809.12901-1-Alexander@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-[CCing the stable team, as it looks like two prerequisite changes for a
-patch already applied are missing in at least 4.19.y]
+On 3/20/24 04:08, Alexander Wetzel wrote:
+> sg_remove_sfp_usercontext() must not use sg_device_destroy() after
+> calling scsi_device_put().
+> 
+> sg_device_destroy() is accessing the parent scsi device request_queue.
+> Which will already be set to NULL when the preceding call to
+> scsi_device_put() removed the last reference to the parent scsi device.
+> 
+> The resulting NULL pointer exception will then crash the kernel.
+> 
+> Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+> ---
+> Changes compared to V1:
+> Reworked the commit message
+> 
+> Alexander
+> ---
+>   drivers/scsi/sg.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+> index 86210e4dd0d3..80e0d1981191 100644
+> --- a/drivers/scsi/sg.c
+> +++ b/drivers/scsi/sg.c
+> @@ -2232,8 +2232,8 @@ sg_remove_sfp_usercontext(struct work_struct *work)
+>   			"sg_remove_sfp: sfp=0x%p\n", sfp));
+>   	kfree(sfp);
+>   
+> -	scsi_device_put(sdp->device);
+>   	kref_put(&sdp->d_ref, sg_device_destroy);
+> +	scsi_device_put(sdp->device);
+>   	module_put(THIS_MODULE);
+>   }
+>   
 
-On 15.03.24 18:55, Ralph Siemsen wrote:
-> 
-> I have found a regression in userspace behaviour after this patch was
-> merged into the 4.19.y kernel. The fix seems to involve backporting a
-> few more changes. Could you review details below and confirm if this is
-> the right approach?
+Is it guaranteed that the above kref_put() call is the last kref_put()
+call on sdp->d_ref? If not, how about inserting code between the
+kref_put() call and the scsi_device_put() call that waits until
+sg_device_destroy() has finished?
 
-FWIW, developers are totally free to not care about stable and longterm
-kernels series. Not sure if Herbert is among those developers, but it
-might explain why there is no reply yet. That's why I CCed the stable
-maintainers, strictly speaking they are responsible.
+Thanks,
 
-> On Tue, Nov 28, 2023 at 04:25:49PM +0800, Herbert Xu wrote:
->> Having multiple in-flight AIO requests results in unpredictable
->> output because they all share the same IV.  Fix this by only allowing
->> one request at a time.
-> [...]
-> This change got backported on the 4.19 kernel in January:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-4.19.y&id=19af0310c8767c993f2a5d5261e4df3f9f465ce1
-> 
-> Since then, I am seeCiao, ing a regression in a simple openssl encoding test:
-> 
-> openssl enc -k mysecret -aes-256-cbc -in plain.txt -out cipher.txt
-> -engine afalg
-> 
-> It fails intermittently with the message "error writing to file", but
-> this error is a bit misleading, the actual problem is that the kernel
-> returns -16 (EBUSY) on the encoding operation.
-> 
-> This happens only in 4.19, and not under 5.10. The patch seems correct,
-> however it seems we are missing a couple of other patches on 4.19:
-> 
-> f3c802a1f3001 crypto: algif_aead - Only wake up when ctx->more is zero
-> 21dfbcd1f5cbf crypto: algif_aead - fix uninitialized ctx->init
-> 
-> I was able to cherry-pick those into 4.19.y, with just a minor conflict
-> in one case. With those applied, the openssl command no longer fails.
-
-Some feedback here from Herbert would of course be splendid, but maybe
-your tests are all the stable team needs to pick those up for a future
-4.19.y release.
-
-> I suspect similar changes would be needed also in 5.4 kernel, however I
-> neither checked that, nor have I run any tests on that version.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Bart.
 
