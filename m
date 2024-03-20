@@ -1,156 +1,144 @@
-Return-Path: <stable+bounces-28487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826FA88143D
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:12:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF034881449
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A941C20D6C
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:12:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951BE1F23391
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801164EB4A;
-	Wed, 20 Mar 2024 15:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF85535D5;
+	Wed, 20 Mar 2024 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hsSWeJj6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m0sgJUSK"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="T8/8XNdC"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C2540866;
-	Wed, 20 Mar 2024 15:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4797A51C58;
+	Wed, 20 Mar 2024 15:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710947562; cv=none; b=rnOA2DUXrIFtlf5VeFloe1f887zWqh3WPYJ2KzVR2Mw8OCnJLqIo8T9JQgo1yusGwhYfp3aqpzeYcYRGHX+dtp8q9jJV+PlffRgNxGhwpysy5m2pgAQw4dZUgzjN3L8OEmVT7l2GX+lbQfqJf9NcT5pREkoUBQG4JdAkbHiMbfg=
+	t=1710947624; cv=none; b=baC+EyYX9+2eU1ppERQkIw40R5LnfGUmiQ/71GW+kdjG5pbI3zZtGBKJ92pP0Quke1IwVvpcoby53QSmhZK+Qh7K92dblVM68o986znLtKYLzOZS5K1Q0AnroyE8jNsAklOgN7Z3jAzl/Z8NQu0mCi8I1hkxyTyBkJZMSt+G3is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710947562; c=relaxed/simple;
-	bh=348HASSEk8QxvS/erlMJDq6aP8awionNlExKtmUlpmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFvvucAifK9uaauaQT0S0viXJTulvLtBE2U6ra/Ug7/8jl1mxMCYL71dg55WShZY1lMwYNfODshVrHQtMdobSXtWcESbMjAfi9FEhdxyNVr/OH9jelwzqJlpKK19sVmLsipqTXPyhQFX0VtCJad8rpWb57Sjih/wcDVRzdV1EuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hsSWeJj6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m0sgJUSK; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Mar 2024 16:12:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1710947557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LqY42itfFZLfggmIMz0Q0EsnZ8t+OvYnRDCYFxlevL8=;
-	b=hsSWeJj6TrjiUW12brMWme8K6vVyTafHuy7VucCN2pHD7oP9IzsRSDYDbMRyKKiW+rpe0K
-	0lQTuaY8Gb0C0agF9+dqf19jbIktNHJdaOmSwN1z0PoH7lxCqSXYtzkONRDQr1sOv1ui1B
-	zl7O3qNhZ//OQ0iXLcHOW8uJtC7szpRnetpo3uoOMhOVhnoyIGU6vhsgIhytRz2hLI+dNC
-	2UWzyk8c3b+4QBNjt1fpE0ulqdZmzSEJI9E4du7A5tJEuNIZhhpzIAlHXvHZvqzWf+L71I
-	zVixRX82UFTkA/TWt2vANyOu/DUYUvfha8Eq6+0gdHdqm5+WoonfcpwUTy/+jw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1710947557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LqY42itfFZLfggmIMz0Q0EsnZ8t+OvYnRDCYFxlevL8=;
-	b=m0sgJUSKkUfQ2JAu2rnH2dWsfJHsEXLemQ6lVHKz3ifzzl4lFVr09Cu4Pgzt9uE+JBxc9q
-	17j4Lrw6ww0J7KAg==
-From: Nam Cao <namcao@linutronix.de>
-To: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: tglx@linutronix.de, Paul Walmsley <paul.walmsley@sifive.com>,
- samuel@sholland.org, Marc Zyngier <maz@kernel.org>, guoren@kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed
- before EOI
-Message-ID: <20240320161235.7e6916d9@namcao>
-In-Reply-To: <mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
-References: <87wmr8hd7j.ffs@tglx>
-	<mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
+	s=arc-20240116; t=1710947624; c=relaxed/simple;
+	bh=LtLbr9/vDD9oCkEi6bkKIcq4qBaMLATwiFb0k5KE+TU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WMyQyupp3oZVRSuUgxRHzlKbbegxOKj6bPFnG9gk4ojbL9ikL7NrjVRx3Fl6nx4QCx7Oy/1ZDEL8QSpGO3tv6XCrCgKbP1ecdxfetql7GT9fnz6sCkdj0UwPhH+CSj3QnEl0aUj2gV/C/89PbfyqeuddoqSFGGisr8AU6Qzu1S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=T8/8XNdC; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Reply-To:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=OLxm6fLIR0Yj0UHnwoux3tx7eG7VNhXfLRRrf+zGO48=;
+	t=1710947622; x=1711379622; b=T8/8XNdC0Bbhfcq+MyDCKDnP5j7iJctSxm8gwzjsvimd48N
+	zC8aE/w38g+eUdxC2rvmA0+bV72KEtwY4+0epVG87Eda0QH2GrOpecm9JnBbLf3fiyWvrSjtYyauS
+	Q3DObdWY0zYERZfSoyOXWbbRXOawhQ/ieoubrLr8ARJkOCrEkns39h4erPp5fM8gdjM9M4AEZV5gI
+	kcMJeOnzjf2VZjNAwop9jMBIMsCdncWaxtJlVIqFtfiLvZVyXlmjQwSdZH7i5y6dKQOHixucdQA/W
+	vEe93KErzXSJ1K4YTCZSNjijBaO0o4lGZysVcD2Rh/6gwPb3EsUMjmwRTOCLKd3Q==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rmxdL-0000FB-JQ; Wed, 20 Mar 2024 16:13:39 +0100
+Message-ID: <d9aae981-ea93-418e-8c98-94eb27f4a80d@leemhuis.info>
+Date: Wed, 20 Mar 2024 16:13:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: af_alg - Disallow multiple in-flight AIO requests
+Content-Language: en-US, de-DE
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Ralph Siemsen <ralph.siemsen@linaro.org>
+Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+References: <ZWWkDZRR33ypncn7@gondor.apana.org.au>
+ <20240315175529.GA268782@maple.netwinder.org>
+ <256024ba-c889-4400-a7cd-002291e64ad5@leemhuis.info>
+In-Reply-To: <256024ba-c889-4400-a7cd-002291e64ad5@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1710947622;8e374c55;
+X-HE-SMSGID: 1rmxdL-0000FB-JQ
 
-On 20/Mar/2024 Palmer Dabbelt wrote:
-> On Tue, 13 Feb 2024 02:26:40 PST (-0800), tglx@linutronix.de wrote:
-> > Nam!
-> >
-> > On Wed, Jan 31 2024 at 09:19, Nam Cao wrote:  
-> >> RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
-> >> explained in the description of Interrupt Completion in the PLIC spec:
-> >>
-> >> "The PLIC signals it has completed executing an interrupt handler by
-> >> writing the interrupt ID it received from the claim to the claim/complete
-> >> register. The PLIC does not check whether the completion ID is the same
-> >> as the last claim ID for that target. If the completion ID does not match
-> >> an interrupt source that *is currently enabled* for the target, the
-> >> completion is silently ignored."
-> >>
-> >> Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
-> >> ensured that EOI is successful by enabling interrupt first, before EOI.
-> >>
-> >> Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
-> >> operations") removed the interrupt enabling code from the previous
-> >> commit, because it assumes that interrupt should already be enabled at the
-> >> point of EOI. However, this is incorrect: there is a window after a hart
-> >> claiming an interrupt and before irq_desc->lock getting acquired,
-> >> interrupt can be disabled during this window. Thus, EOI can be invoked
-> >> while the interrupt is disabled, effectively nullify this EOI. This
-> >> results in the interrupt never gets asserted again, and the device who
-> >> uses this interrupt appears frozen.  
-> >
-> > Nice detective work!
-> >  
-> >> Make sure that interrupt is really enabled before EOI.
-> >>
-> >> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
-> >> Cc: <stable@vger.kernel.org>
-> >> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> >> ---
-> >> v2:
-> >>   - add unlikely() for optimization
-> >>   - re-word commit message to make it clearer
-> >>
-> >>  drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
-> >>  1 file changed, 7 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-> >> index e1484905b7bd..0a233e9d9607 100644
-> >> --- a/drivers/irqchip/irq-sifive-plic.c
-> >> +++ b/drivers/irqchip/irq-sifive-plic.c
-> >> @@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
-> >>  {
-> >>  	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
-> >>
-> >> -	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
-> >> +	if (unlikely(irqd_irq_disabled(d))) {
-> >> +		plic_toggle(handler, d->hwirq, 1);
-> >> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
-> >> +		plic_toggle(handler, d->hwirq, 0);  
-> >
-> > It's unfortunate to have this condition in the hotpath, though it should
-> > be cache hot, easy to predict and compared to the writel() completely in
-> > the noise.  
+On 20.03.24 15:54, Linux regression tracking (Thorsten Leemhuis) wrote:
+> [CCing the stable team, as it looks like two prerequisite changes for a
+> patch already applied are missing in at least 4.19.y]
+
+Argh, race condition, it's now 15 minutes later and I by chance just saw
+that Ralph about about 45 minutes ago took action as well an brought the
+issue to the stable teams attention:
+https://lore.kernel.org/all/20240320143143.1643630-1-ralph.siemsen@linaro.org/
+
+Guess its best if everyone ignored my earlier mail. Sorry, bad timing,
+happens.
+
+Ciao, Thorsten
+
+> On 15.03.24 18:55, Ralph Siemsen wrote:
+>>
+>> I have found a regression in userspace behaviour after this patch was
+>> merged into the 4.19.y kernel. The fix seems to involve backporting a
+>> few more changes. Could you review details below and confirm if this is
+>> the right approach?
 > 
-> Ya, I think it's fine.
+> FWIW, developers are totally free to not care about stable and longterm
+> kernels series. Not sure if Herbert is among those developers, but it
+> might explain why there is no reply yet. That's why I CCed the stable
+> maintainers, strictly speaking they are responsible.
 > 
-> I guess we could try and play some tricks.  Maybe hide the load latency 
-> with a relaxed writel and some explict fencing, or claim interrupts when 
-                                                     ^ you mean complete?
-> enabling them.  Those both seem somewhat race-prone, though, so I'm not 
-> even sure if they're sane.
-
-The latter option is what I also have in mind. Just need to make sure the
-interrupt is masked and we should be safe. Though there is the question of
-whether it's worth the effort.
-
-I may do that one day when I stop being lazy.
-
-Best regards,
-Nam
-
+>> On Tue, Nov 28, 2023 at 04:25:49PM +0800, Herbert Xu wrote:
+>>> Having multiple in-flight AIO requests results in unpredictable
+>>> output because they all share the same IV.  Fix this by only allowing
+>>> one request at a time.
+>> [...]
+>> This change got backported on the 4.19 kernel in January:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-4.19.y&id=19af0310c8767c993f2a5d5261e4df3f9f465ce1
+>>
+>> Since then, I am seeCiao, ing a regression in a simple openssl encoding test:
+>>
+>> openssl enc -k mysecret -aes-256-cbc -in plain.txt -out cipher.txt
+>> -engine afalg
+>>
+>> It fails intermittently with the message "error writing to file", but
+>> this error is a bit misleading, the actual problem is that the kernel
+>> returns -16 (EBUSY) on the encoding operation.
+>>
+>> This happens only in 4.19, and not under 5.10. The patch seems correct,
+>> however it seems we are missing a couple of other patches on 4.19:
+>>
+>> f3c802a1f3001 crypto: algif_aead - Only wake up when ctx->more is zero
+>> 21dfbcd1f5cbf crypto: algif_aead - fix uninitialized ctx->init
+>>
+>> I was able to cherry-pick those into 4.19.y, with just a minor conflict
+>> in one case. With those applied, the openssl command no longer fails.
+> 
+> Some feedback here from Herbert would of course be splendid, but maybe
+> your tests are all the stable team needs to pick those up for a future
+> 4.19.y release.
+> 
+>> I suspect similar changes would be needed also in 5.4 kernel, however I
+>> neither checked that, nor have I run any tests on that version.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
+> 
 
