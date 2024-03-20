@@ -1,127 +1,132 @@
-Return-Path: <stable+bounces-28466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E723C880E8C
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 10:27:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BAC881006
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 11:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1A04282180
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 09:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33BCB2836BA
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 10:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2FC3BB48;
-	Wed, 20 Mar 2024 09:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF3B2D05C;
+	Wed, 20 Mar 2024 10:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="VJf53SXM"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="msLXyRZm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC583A1DD;
-	Wed, 20 Mar 2024 09:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9932032C;
+	Wed, 20 Mar 2024 10:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710926858; cv=none; b=hzdp57nL6SlTCz2J2eaKcP0a26ED3meA333pplDcLcky0nrKBS1hMnOEZ0TT3OErcZ9nkddUvoUwUew7IvxHfMzjoGRsLpROKYUGlN9a/EU8qzPl4B5BAkSd1VGKF9AXXJuAPYPD+JmyzkzGYujjeWSkqTDXqDX1DjyPWWlU2e4=
+	t=1710931052; cv=none; b=dDYO3E7ZzYNzylQe7m8dmO1s4LOFrDYTZ3vw7L2ri1Ikipa0/yN2KdCc28hJekJSRsLUALknqb5/TAfhA1ztajnSVYCyhEfIDGpDvHrCP8NAjY7GBC4u48uqSwPFPwXPHTN+l2p3pxt8Vjt2jwu4h+K9O2O8IsR+rhsD+kqD4Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710926858; c=relaxed/simple;
-	bh=lp1e1UQxMWOSt3Zp9g29wtJjqc8yh0PpEqjoculsiHI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WRYGbEom5/l1c/23DOYHrJmFO6LI6+GziX65F56AeZ4b1749LP8uR2pOAOTazxki7ve6+Pe8KCtNwLIhrFtVlBbArF7f0xUjgtWIXaX51qYfn/sz3afCljow/8FZENscXJpxlC4ovgQFWkQhdyunsnetw9fRYZMAHZ27ZN8gesI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=VJf53SXM; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1710926857; x=1742462857;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=stUwsaFKUBgVcg251AdzsJPX2dWe+VXKiXVSvKHe/bM=;
-  b=VJf53SXMIgNvhCAT53cxENjkINB070tDO/of6K5qr8Uuai9CMem3p+CF
-   rusHfTbnXglUAdVAmthToSdUX4EqiWcFWhX6swbo5mm2vo9prDod/DLgw
-   vYC93izWc5F2PhjA9mOOyzMQdyiAeZwqxwPmpPGiIADki+kL0kM3QGeVS
-   E=;
-X-IronPort-AV: E=Sophos;i="6.07,139,1708387200"; 
-   d="scan'208";a="394576354"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 09:27:23 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [10.0.29.78:23942]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.16.115:2525] with esmtp (Farcaster)
- id 485e31d1-a74d-46a6-8a77-0dfab6552ef5; Wed, 20 Mar 2024 09:27:22 +0000 (UTC)
-X-Farcaster-Flow-ID: 485e31d1-a74d-46a6-8a77-0dfab6552ef5
-Received: from EX19EXOUEC002.ant.amazon.com (10.252.135.179) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Wed, 20 Mar 2024 09:27:22 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
- EX19EXOUEC002.ant.amazon.com (10.252.135.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Wed, 20 Mar 2024 09:27:22 +0000
-Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
- by mail-relay.amazon.com (10.252.135.35) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Wed, 20 Mar 2024 09:27:22 +0000
-Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
-	id E670196F; Wed, 20 Mar 2024 09:27:21 +0000 (UTC)
-Date: Wed, 20 Mar 2024 09:27:21 +0000
-From: Maximilian Heyne <mheyne@amazon.de>
-To: David Sterba <dsterba@suse.cz>
-CC: <stable@vger.kernel.org>, Chris Mason <clm@fb.com>, Josef Bacik
-	<josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Filipe Manana
-	<fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>, <linux-btrfs@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4.19 5.4 5.15] btrfs: defrag: fix memory leak in
- btrfs_ioctl_defrag
-Message-ID: <Zfqr-V_6-ibIsHiD@amazon.de>
-References: <20240319170055.17942-1-mheyne@amazon.de>
- <20240319185711.GA14596@suse.cz>
+	s=arc-20240116; t=1710931052; c=relaxed/simple;
+	bh=oMcExfi3dY3kbb1sQnyyDLt0+nzIomwQcaxWzI7t2qk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dVpJpu5utDksS04uOkdWvE0oyr2gsOE5PR5Dc+1HGvNmgBBPxjse8wn5Eka9VEWZp/rkTZ+8DLjRwyW5fVhxnWHy/T0BgwQrmyDZAr8fUsSkZ6QHqy0/MCN3eGQFLp6o06/UTlQqu3KUW9sCAnRYzCjYFj4o+BaP4CCu2IHx+14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=msLXyRZm; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+	s=default; t=1710930453;
+	bh=oMcExfi3dY3kbb1sQnyyDLt0+nzIomwQcaxWzI7t2qk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=msLXyRZm3wWEhspe6etI170C6ugUOpgwoo8GpmrfFo1ZjZF8f9/yIqcpwlFXcxrtB
+	 7HMDws+TdWu9+7nRVYJvQQTCs60XeR+sJz48ZZ9tq+rCl7FFqgA2SEUjRSoLs3YY8O
+	 Drz1d2aFmIEOv1ZwQQIe7zrq6fMdn68HgV3URCmc=
+Received: from [192.168.124.9] (unknown [113.140.11.126])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id D09D166F79;
+	Wed, 20 Mar 2024 06:27:29 -0400 (EDT)
+Message-ID: <e8c4062df63f3e8bc8bb2d7209fa2a2a44bd7ed3.camel@xry111.site>
+Subject: Re: [PATCH] LoongArch: Change __my_cpu_offset definition to avoid
+ mis-optimization
+From: Xi Ruoyao <xry111@xry111.site>
+To: Huacai Chen <chenhuacai@loongson.cn>, Arnd Bergmann <arnd@arndb.de>, 
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev, linux-arch@vger.kernel.org, Xuefeng Li
+	 <lixuefeng@loongson.cn>, Guo Ren <guoren@kernel.org>, Xuerui Wang
+	 <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+	linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn, 
+	stable@vger.kernel.org, Xiaotian Wu <wuxiaotian@loongson.cn>, Miao Wang
+	 <shankerwangmiao@gmail.com>, Xing Li <lixing@loongson.cn>, Hongchen Zhang
+	 <zhanghongchen@loongson.cn>, Rui Wang <wangrui@loongson.cn>
+Date: Wed, 20 Mar 2024 18:27:26 +0800
+In-Reply-To: <20240315024526.394772-1-chenhuacai@loongson.cn>
+References: <20240315024526.394772-1-chenhuacai@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.0 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240319185711.GA14596@suse.cz>
 
-On Tue, Mar 19, 2024 at 07:57:11PM +0100, David Sterba wrote:
-> 
-> On Tue, Mar 19, 2024 at 05:00:55PM +0000, Maximilian Heyne wrote:
-> > Prior to commit c853a5783ebe ("btrfs: allocate
-> > btrfs_ioctl_defrag_range_args on stack") range is allocated on the heap
-> > and must be freed. However, commit 173431b274a9 ("btrfs: defrag: reject
-> > unknown flags of btrfs_ioctl_defrag_range_args") didn't take care of
-> > this when it was backported to kernel < 5.15.
-> >
-> > Add a kfree on the error path for stable kernels that lack
-> > commit c853a5783ebe ("btrfs: allocate btrfs_ioctl_defrag_range_args on
-> > stack").
-> >
-> > This bug was discovered and resolved using Coverity Static Analysis
-> > Security Testing (SAST) by Synopsys, Inc.
-> 
-> Good catch, thanks.
-> 
-> The affected versions are as you say 4.19, 5.4, 5.15, the fixup is
+On Fri, 2024-03-15 at 10:45 +0800, Huacai Chen wrote:
+> From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
+> global regs in asms"), global registers will no longer be forced to add
+> to the def-use chain. Then current_thread_info(), current_stack_pointer
+> and __my_cpu_offset may be lifted out of the loop because they are no
+> longer treated as "volatile variables".
 
-I had a typo. Should go to 5.10 because c853a5783ebe is already in 5.15.
+Ooops...  I'm wondering why this issue has not blown up our systems
+before.  The referred GCC commit is far before LoongArch CPUs are taped.
 
-> sufficient and minimal fix, c853a5783ebe is reasonably safe for backport
-> too.
+> This optimization is still correct for the current_thread_info() and
+> current_stack_pointer usages because they are associated to a thread.
+> However it is wrong for __my_cpu_offset because it is associated to a
+> CPU rather than a thread: if the thread migrates to a different CPU in
+> the loop, __my_cpu_offset should be changed.
+>=20
+> Change __my_cpu_offset definition to treat it as a "volatile variable",
+> in order to avoid such a mis-optimization.
+>=20
+> Cc: stable@vger.kernel.org
 
-I think you're right. To avoid divergence it might be better to simply
-backport c853a5783ebe. Let me send this out.
+I suppose we should add Fixes: 5b0b14e550a0 ("LoongArch: Add
+atomic/locking header") here.
 
+> Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+> Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+> Signed-off-by: Xing Li <lixing@loongson.cn>
+> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> Signed-off-by: Rui Wang <wangrui@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+> =C2=A0arch/loongarch/include/asm/percpu.h | 6 +++++-
+> =C2=A01 file changed, 5 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include=
+/asm/percpu.h
+> index 9b36ac003f89..03b98491d301 100644
+> --- a/arch/loongarch/include/asm/percpu.h
+> +++ b/arch/loongarch/include/asm/percpu.h
+> @@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long off=
+)
+> =C2=A0	__my_cpu_offset =3D off;
+> =C2=A0	csr_write64(off, PERCPU_BASE_KS);
+> =C2=A0}
+> -#define __my_cpu_offset __my_cpu_offset
+> +
+> +#define __my_cpu_offset					\
+> +({							\
+> +	__asm__ __volatile__("":"+r"(__my_cpu_offset));	\
+> +	__my_cpu_offset;				\
+> +})
+> =C2=A0
+> =C2=A0#define PERCPU_OP(op, asm_op, c_op)					\
+> =C2=A0static __always_inline unsigned long __percpu_##op(void *ptr,		\
 
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
