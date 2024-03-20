@@ -1,130 +1,116 @@
-Return-Path: <stable+bounces-28510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56064881914
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 22:28:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F20881921
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 22:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB114B21EF8
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C191C20EB4
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7FA8624D;
-	Wed, 20 Mar 2024 21:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA62185C76;
+	Wed, 20 Mar 2024 21:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IUCu0E0K"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="vv1HalPj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C558624B;
-	Wed, 20 Mar 2024 21:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744B585C4E;
+	Wed, 20 Mar 2024 21:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970034; cv=none; b=tulQqSPYwGTYgaxjMgDiRrXIKEOJuMXBczAZszrAe1CSI9IWvd7dIwG77+v107w7IF4bsrJDi+NKUXqW3SZicFVeODD9qZmOYXGposjsyOVo7uWHnGKWyJRfuV8d0eGrprc61mjVMc++3hV/c09gYa4hf26PaD+CtAqxiOP5jgQ=
+	t=1710970310; cv=none; b=GMbkHzXK0XZhhsc/xXZKQuKbqUQhdExbNgvAoFZMew9td0MyjzcPsDGoUCtXUdTSUjCSY3HyAjbE8hQ0yxMb7D8uVrGk4fZGmP3q0ufWbADw1Iht5B269ZDb5BM8dRS1vCT4kpavWtJbjSzsrZVpurjc1G4r8sDdcOwCZXT9ISM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970034; c=relaxed/simple;
-	bh=CjhnpktcNcIRXLzJgkY11a71CMccKoOJwTXiIvUtcXw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bjJewWCbTsxv6p4Err/cJgNBnVNoTVbkpQWDKAubSqliGR5yx66r5RlDcOzunIJdVVGqgDzhSjMtqYAa7UljU3HuACH3XW01ro068lSAXG40qHjPduODWdvsFkHYPEDntq8S5Xucne99ZTGzvOS2GOepkCuS4Wg0mwDm/XNfQ+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IUCu0E0K; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710970033; x=1742506033;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CjhnpktcNcIRXLzJgkY11a71CMccKoOJwTXiIvUtcXw=;
-  b=IUCu0E0KcuYmVK/7nChaFttJoUpUvf5lOL4XrXe6YjUbjn/Hv67YYmDs
-   skBzlCEOaag/exkYSbvTPTm2osXii5eBsMSChw7GMD9ZeN6ejRTmr7gov
-   mmpUWQn3ZaFF2E4WIK21QW3El3WQFB/Nm9w1swHQ8bg9JIa94STB/FJDS
-   M+mABwpgVniSSYkl+jctJpGwINUn4g1uvtbk/GGP3DCcBtsSBq4jFsRW+
-   v2KFHsnn0hQqoYbgkIfNfEhvpZxdD33j6zpoS/vLy6X+vk8lzh+n63KW3
-   0QX/oJNAEgCE3+oyiZHZTNyHU0RtHKZDeT9H9kwnfRV1EPVV7hgWr2nfo
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9698111"
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="9698111"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="14184179"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 14:27:11 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
+	s=arc-20240116; t=1710970310; c=relaxed/simple;
+	bh=NDSi49coxZRxdskul8Gc8KVSDnjMOncHAEdPKeyZEs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u2gYAxg42DQS/5WiI0mHOXKUIV7JydfVucGZ4yRoR05hVhC2BgWqvWIKGTghDLXp5DkFkR5u7lxGlaWhZbgfctYOIWjRbhdzgCEuYfwKoJ8SSBwRM97jqbi1REuqyVp71RAGGfzRuuVXNpMfcka01LGV59f0vX86whnq4GVDemQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=vv1HalPj; arc=none smtp.client-ip=5.252.227.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
+From: Alexander Wetzel <Alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+	s=wetzel-home; t=1710970303;
+	bh=NDSi49coxZRxdskul8Gc8KVSDnjMOncHAEdPKeyZEs8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=vv1HalPj4Y/YKdkqgiNbpxXx+p/6b7sWOhuH22X37l/movhbmO7tfh+8eFnIKdLu8
+	 WZq5kjxQGpSVzyRTrL8ghqGNpEFgclx5eAxueHh8E6G4BlA0lQQOs1CGe1AVPtvh/B
+	 q9B6X84UTKWClp2t0X2+VtUA2eBm+EcuAHvYW3Fo=
+To: dgilbert@interlog.com
+Cc: linux-scsi@vger.kernel.org,
+	bvanassche@acm.org,
+	gregkh@linuxfoundation.org,
+	Alexander Wetzel <Alexander@wetzel-home.de>,
 	stable@vger.kernel.org
-Subject: [PATCH 11/17] wifi: iwlwifi: mvm: handle debugfs names more carefully
-Date: Wed, 20 Mar 2024 23:26:32 +0200
-Message-Id: <20240320232419.4dc1eb3dd015.I32f308b0356ef5bcf8d188dd98ce9b210e3ab9fd@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
-References: <20240320212638.1446082-1-miriam.rachel.korenblit@intel.com>
+Subject: [PATCH v3] scsi: sg: Avoid sg device teardown race
+Date: Wed, 20 Mar 2024 22:30:32 +0100
+Message-ID: <20240320213032.18221-1-Alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240320110809.12901-1-Alexander@wetzel-home.de>
+References: <20240320110809.12901-1-Alexander@wetzel-home.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+sg_remove_sfp_usercontext() must not use sg_device_destroy() after
+calling scsi_device_put().
 
-With debugfs=off, we can get here with the dbgfs_dir being
-an ERR_PTR(). Instead of checking for all this, which is
-often flagged as a mistake, simply handle the names here
-more carefully by printing them, then we don't need extra
-checks.
+sg_device_destroy() is accessing the parent scsi device request_queue.
+Which will already be set to NULL when the preceding call to
+scsi_device_put() removed the last reference to the parent scsi device.
 
-Also, while checking, I noticed theoretically 'buf' is too
-small, so fix that size as well.
+The resulting NULL pointer exception will then crash the kernel.
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218422
-Fixes: c36235acb34f ("wifi: iwlwifi: mvm: rework debugfs handling")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
+Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Changes compared to V2:
+- Fixed the use-after-free pointed out by Bart
+- Added the WARN_ON_ONCE() requested by Bart
+- added the Fixes tag pointed out by Greg
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-index 5485e8bf613e..af56a55063a7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
-@@ -806,7 +806,9 @@ void iwl_mvm_vif_dbgfs_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+This patch has now been tested with KASAN enabled. I also  verified,
+that db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+introduced the issue.
+
+Thanks for all your help!
+
+Alexander
+---
+ drivers/scsi/sg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 86210e4dd0d3..ff6894ce5404 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2207,6 +2207,7 @@ sg_remove_sfp_usercontext(struct work_struct *work)
  {
- 	struct dentry *dbgfs_dir = vif->debugfs_dir;
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	char buf[100];
-+	char buf[3 * 3 + 11 + (NL80211_WIPHY_NAME_MAXLEN + 1) +
-+		 (7 + IFNAMSIZ + 1) + 6 + 1];
-+	char name[7 + IFNAMSIZ + 1];
+ 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
+ 	struct sg_device *sdp = sfp->parentdp;
++	struct scsi_device *device = sdp->device;
+ 	Sg_request *srp;
+ 	unsigned long iflags;
  
- 	/* this will happen in monitor mode */
- 	if (!dbgfs_dir)
-@@ -819,10 +821,11 @@ void iwl_mvm_vif_dbgfs_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- 	 * find
- 	 * netdev:wlan0 -> ../../../ieee80211/phy0/netdev:wlan0/iwlmvm/
- 	 */
--	snprintf(buf, 100, "../../../%pd3/iwlmvm", dbgfs_dir);
-+	snprintf(name, sizeof(name), "%pd", dbgfs_dir);
-+	snprintf(buf, sizeof(buf), "../../../%pd3/iwlmvm", dbgfs_dir);
+@@ -2232,8 +2233,9 @@ sg_remove_sfp_usercontext(struct work_struct *work)
+ 			"sg_remove_sfp: sfp=0x%p\n", sfp));
+ 	kfree(sfp);
  
--	mvmvif->dbgfs_slink = debugfs_create_symlink(dbgfs_dir->d_name.name,
--						     mvm->debugfs_dir, buf);
-+	mvmvif->dbgfs_slink =
-+		debugfs_create_symlink(name, mvm->debugfs_dir, buf);
+-	scsi_device_put(sdp->device);
++	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+ 	kref_put(&sdp->d_ref, sg_device_destroy);
++	scsi_device_put(device);
+ 	module_put(THIS_MODULE);
  }
  
- void iwl_mvm_vif_dbgfs_rm_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
 -- 
-2.34.1
+2.44.0
 
 
