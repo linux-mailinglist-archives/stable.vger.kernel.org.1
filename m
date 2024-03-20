@@ -1,99 +1,148 @@
-Return-Path: <stable+bounces-28475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E7588129E
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:46:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3130A8812AA
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C981C230C9
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 13:46:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90874285B0D
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 13:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F8141211;
-	Wed, 20 Mar 2024 13:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0083542059;
+	Wed, 20 Mar 2024 13:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AA8xkoGy"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F1D4176F;
-	Wed, 20 Mar 2024 13:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA1645974;
+	Wed, 20 Mar 2024 13:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710942251; cv=none; b=opWS49Z3kFoC1wFh19VjMQVLfo/aJkHb81UhpgXF2drEyRcMHHAONTMj7xIHyuKaiUmevUm3C6vYX8hiz9KSqBc6FXNhCAhtNoai5j79gr1BNm2TgypZH8ap7W6hrCXrNjZJfFEHSD69PZyB90vx+1w8wrBRVAWmIgKJ4Lu05HY=
+	t=1710942581; cv=none; b=HKiLDtDBJsshcwfM+yI0AVpDs2OpkXNfP52H4+X8uLDXSbXvmU1XNSMCeCKXcYXFLceSHdp96I9p3rONW+JJQl0oJ/rYW8YDs7P3aasJDFo/uLBAZhtz6I0NmU5HJF3Qd84y+vU3VJmsy8ikDwasd5QsbubyoKwt1ZWg6wwJIKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710942251; c=relaxed/simple;
-	bh=xkrLHfb+cwWUu5OQ4s38CCRC+eqDh3llbk/KQ+2e28k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fyr7js5U7QvLsKpgMcbPP2Gc4sufJ/Hg+MJI+kxDaRR7dk+AoyfY5vp5VAPmFKT70KWkBq7lYVH6TaxJltWP3gkhl6W5bwZQ5crXxjopxPHJzdbiPjlsoBmHxel4cZM8gcPOMHgBxuz2Yq1IAVgDjmjcrDuoq6ysppJFbkC9KyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 5E3951C0082; Wed, 20 Mar 2024 14:44:07 +0100 (CET)
-Date: Wed, 20 Mar 2024 14:44:06 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>, josef@toxicpanda.com, dsterba@suse.com,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de
-Subject: btrfs fix missing in 5.10-stable was Re: [PATCH 5.10 00/73]
- 5.10.213-rc1 review
-Message-ID: <ZfroJoVIz3dBrO1t@duo.ucw.cz>
-References: <20240313164640.616049-1-sashal@kernel.org>
+	s=arc-20240116; t=1710942581; c=relaxed/simple;
+	bh=EAbJvDEPuUAEHqsHcIRB3brQrJYzFil/dHVXDW9zweU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sc5P2eoe+spqfhiMoKgKMEW5i+JC/xVEt1ifSU5uLtGT8KyWTWrJMIfKhvQ0nUlFPBDenZMojDLVrXSZOTQiRSpXTFmJTfJvkaaBZGHh5w0X+Re6YhBvd/+VlOujbwjADBLwYr5Z7jCclizmIyLddpb0T/mpri42dqfuWqOQgeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AA8xkoGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0C2C43330;
+	Wed, 20 Mar 2024 13:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710942581;
+	bh=EAbJvDEPuUAEHqsHcIRB3brQrJYzFil/dHVXDW9zweU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AA8xkoGyJTDUSmLTVP3F3lutWqk879LSCt3IDdjao/9DHtBwzFCbmcgycwK9ECMBs
+	 5hUQ90mYCPnEQqHiJvSwm08EE1h3ZvW0QzhsD5g3jRoNpY5cVeh3TbSM9hhUW2XPwp
+	 mUiQID8k/GrCYhSxLa1A1ChsHXo67+IH7AgkZDmRbYAl/BPIPhUaydmBoBlzrbttPX
+	 Z1cviJzRTc07w3MAIamWlCEpBFznuCV5SmvsKoiQmpZ/hYpKHzaJHqxwyTs7M360Jf
+	 L6BM0ekPACyf1RcWfaLSyFs7N6f4ptbTc1eDrSdOPdfuD5PsLzeCyZwQHYq0C4o5AM
+	 1lGTvdPT9SsyQ==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4644bde1d4so885777366b.3;
+        Wed, 20 Mar 2024 06:49:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWxw2sTxIBQhdvbAz1z+idq/GilEPCG9Pj0cv2NG2kZp852gyRxPZwU4h1KGJmOd3ptI76x0LHcOedNsdZDkE8UuIVK1D3qc3tjkzZ9dZiZovEZxFq8hDRfYa74lUHrYoyKR8MYRXM/Gs6oR0a7Lb1h05mv3SX1cqrmOUSbOEWNbQ==
+X-Gm-Message-State: AOJu0YzL7nN0AzdipP8YiLuIhWg4Ss/9cYbD5HgbleKNeGjByCeMALGd
+	PK2zej89txIgIRXcOpNnrgHnoNA1/ESyBvSuaUzgfvTntlTGjeZ4kty231Z+h4gCN23tOsD/SDS
+	AjeV7hQ7poYpI7SXkP6TrS7Mkzj0=
+X-Google-Smtp-Source: AGHT+IG6MEm+BI8Pn1pGEfr7VXutNJ95vBdKRwS15/HX3UTZBvRAgB1kEBIUPyvnMpx6ZshWbj6yijLu46BWmCWVtow=
+X-Received: by 2002:a17:906:af07:b0:a46:1fba:2c6d with SMTP id
+ lx7-20020a170906af0700b00a461fba2c6dmr1416970ejb.20.1710942579777; Wed, 20
+ Mar 2024 06:49:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="RacRqke8BQzKOhcW"
-Content-Disposition: inline
-In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
-
-
---RacRqke8BQzKOhcW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240315024526.394772-1-chenhuacai@loongson.cn> <e8c4062df63f3e8bc8bb2d7209fa2a2a44bd7ed3.camel@xry111.site>
+In-Reply-To: <e8c4062df63f3e8bc8bb2d7209fa2a2a44bd7ed3.camel@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 20 Mar 2024 21:49:28 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H59EzR7gN0UiJP5x2wbs2_TZCej-NE==OZxVcP0cvt7hg@mail.gmail.com>
+Message-ID: <CAAhV-H59EzR7gN0UiJP5x2wbs2_TZCej-NE==OZxVcP0cvt7hg@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: Change __my_cpu_offset definition to avoid mis-optimization
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Arnd Bergmann <arnd@arndb.de>, loongarch@lists.linux.dev, 
+	linux-arch@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>, 
+	Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, 
+	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org, 
+	Xiaotian Wu <wuxiaotian@loongson.cn>, Miao Wang <shankerwangmiao@gmail.com>, 
+	Xing Li <lixing@loongson.cn>, Hongchen Zhang <zhanghongchen@loongson.cn>, 
+	Rui Wang <wangrui@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Hi, Ruoyao,
 
-> This is the start of the stable review cycle for the 5.10.213 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Mar 20, 2024 at 6:27=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
+e:
+>
+> On Fri, 2024-03-15 at 10:45 +0800, Huacai Chen wrote:
+> > From GCC commit 3f13154553f8546a ("df-scan: remove ad-hoc handling of
+> > global regs in asms"), global registers will no longer be forced to add
+> > to the def-use chain. Then current_thread_info(), current_stack_pointer
+> > and __my_cpu_offset may be lifted out of the loop because they are no
+> > longer treated as "volatile variables".
+>
+> Ooops...  I'm wondering why this issue has not blown up our systems
+> before.  The referred GCC commit is far before LoongArch CPUs are taped.
+>
+> > This optimization is still correct for the current_thread_info() and
+> > current_stack_pointer usages because they are associated to a thread.
+> > However it is wrong for __my_cpu_offset because it is associated to a
+> > CPU rather than a thread: if the thread migrates to a different CPU in
+> > the loop, __my_cpu_offset should be changed.
+> >
+> > Change __my_cpu_offset definition to treat it as a "volatile variable",
+> > in order to avoid such a mis-optimization.
+> >
+> > Cc: stable@vger.kernel.org
+>
+> I suppose we should add Fixes: 5b0b14e550a0 ("LoongArch: Add
+> atomic/locking header") here.
+You are right, but since this patch is in loongarch-next for the pull
+request, I don't want to change things.
 
-While debugging "search for known-bad commit" script, I noticed:
+Huacai
 
-We have
-
-41b3cc57d626d c2e39305299f0 btrfs: clear extent buffer uptodate when
-we fail to write it
-
-commit in 5.10, which is fixed by this, but we don't have that one:
-
-651740a502411 btrfs: check WRITE_ERR when trying to read an extent
-buffer
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---RacRqke8BQzKOhcW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfroJgAKCRAw5/Bqldv6
-8kj2AKC8iIDgRB8TvPqMlcC55VZTzMh4AQCfbocZ2JLnSPPx8ditWw34phNmv9k=
-=enMu
------END PGP SIGNATURE-----
-
---RacRqke8BQzKOhcW--
+>
+> > Reported-by: Xiaotian Wu <wuxiaotian@loongson.cn>
+> > Reported-by: Miao Wang <shankerwangmiao@gmail.com>
+> > Signed-off-by: Xing Li <lixing@loongson.cn>
+> > Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> > Signed-off-by: Rui Wang <wangrui@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >  arch/loongarch/include/asm/percpu.h | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/inclu=
+de/asm/percpu.h
+> > index 9b36ac003f89..03b98491d301 100644
+> > --- a/arch/loongarch/include/asm/percpu.h
+> > +++ b/arch/loongarch/include/asm/percpu.h
+> > @@ -29,7 +29,12 @@ static inline void set_my_cpu_offset(unsigned long o=
+ff)
+> >       __my_cpu_offset =3D off;
+> >       csr_write64(off, PERCPU_BASE_KS);
+> >  }
+> > -#define __my_cpu_offset __my_cpu_offset
+> > +
+> > +#define __my_cpu_offset                                      \
+> > +({                                                   \
+> > +     __asm__ __volatile__("":"+r"(__my_cpu_offset)); \
+> > +     __my_cpu_offset;                                \
+> > +})
+> >
+> >  #define PERCPU_OP(op, asm_op, c_op)                                  \
+> >  static __always_inline unsigned long __percpu_##op(void *ptr,         =
+       \
+>
+> --
+> Xi Ruoyao <xry111@xry111.site>
+> School of Aerospace Science and Technology, Xidian University
 
