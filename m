@@ -1,161 +1,121 @@
-Return-Path: <stable+bounces-28460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75982880B51
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 07:37:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53EDA880B66
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 07:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D597A1F21474
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 06:37:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3A91B2166C
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 06:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A097A34;
-	Wed, 20 Mar 2024 06:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E10ED0;
+	Wed, 20 Mar 2024 06:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1DrGIoF6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NTb817C2"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2068.outbound.protection.outlook.com [40.107.95.68])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B2EA40
-	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 06:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710916621; cv=fail; b=nD4YCckaM7Ml80dXa8doMXSTTsnldJ6EriYoYVlDn5qg5qF+mwafqNwSBR3VEeXLlmkLz58RrP6G8MZYNkt/uPMkAd0dVSFF8qBvSAs8uaeRe8LSvoC8R5GFhm2GH4mnGsdwj5PkSk69D3EF3NY9xKIsfVYdgqWes5zz10QpfCU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710916621; c=relaxed/simple;
-	bh=7rVhQTZHt5Y4GiGm+aYxKtbNTv+MWgPQUHSSoixIn38=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hMTirZk8sO3x/f8u+THbT3Ol7tKo+Qf1kRAhwsOSXfhPF7PLou5RJ6tmqoorgzeevNR7Wa/xtRlfwFy7GQTD0GlJrh6hgbOH84DwmbiO3jzPms53/afh6iAIT0ccPnQYkivyl1ZBt/NVDJfIp7oHFGxGB5zs/gmIFMhNx4Ru1b0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1DrGIoF6; arc=fail smtp.client-ip=40.107.95.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fU+bM2/TOKDB2G6tkud+7Sj5HcPwSeveoBw9ocsUI+DAxIo1MUSP6pa/dWyJCyz2SE360qx+wDZs73TZQYbPm1riuOqRWEZcsLdhSJkY0p7baxUpAljruAMxIdERQr5/Ye/pulXIdt/dGCrvw2D9pjFwhyqpp5GqP5smfmnDCr27ZJnTqofPimxM3yfYxlMPZ/k4wkl6HTXJzG20IKsyI5s5/ZmW3QdupEpCCYzgGCiFGXZGTsYnhvONthi/U0/2fpxwxUIltSFvm00wvm/4HvICMA6h//GAYpa8WDjiowR5wxLvZVMYE+nWjIloEyy2oYRQBcv0O6NJuEBnXynFLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q6+ufv2UWDPqaL9tAmqcsR1DQiRlroP6SPlhNZXsnZQ=;
- b=fRcd5iadXsnzPFqbaTgpTTim0FG6W9g2qAy8LdYyiIQoswCqnV/oWgeojL/klYXpB7Tslm9NlMMGPiyycO00SfKkHvQCWE4X7gMrC1Saag9OCDpfsxXrvbn72i0Gbf77MNqgEjWExskGopcg3t5o9vocQYZUBpX1+z+tolt++bBNZW2GIgRhCdT9TXYVn28hM8cnav8qcznDd/C7fzGDhZmDLmuU8zZ8z93G+nqOzg10w8rXkBY1zYPs26sk2mlcWyOFQHBb2g65eR2MxOiROpJcEr1Xmn7Zg1UsMUs5d0tfzAyPEhq0Syw7SMNlA4oi05tbsub/tNOfFoCHIQBJCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q6+ufv2UWDPqaL9tAmqcsR1DQiRlroP6SPlhNZXsnZQ=;
- b=1DrGIoF63OQ7fh4tXgfiG9cShyJ8Xz5AvgoydXrtPXGHp2wMKvMRu5+Um4V0dIh9JkwX+HASTNV1hazO2rvefrs29Ivm81w8x0CKRslR/vhVNRr9zoIPYBjQlG2z4oEWz3L6fjIiyRFD6p7Sz9pMd2nOqGOG2l/UE7tG3lPWjAQ=
-Received: from BLAPR05CA0001.namprd05.prod.outlook.com (2603:10b6:208:36e::6)
- by SA1PR12MB8721.namprd12.prod.outlook.com (2603:10b6:806:38d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.28; Wed, 20 Mar
- 2024 06:36:56 +0000
-Received: from BL6PEPF0001AB75.namprd02.prod.outlook.com
- (2603:10b6:208:36e:cafe::49) by BLAPR05CA0001.outlook.office365.com
- (2603:10b6:208:36e::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12 via Frontend
- Transport; Wed, 20 Mar 2024 06:36:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL6PEPF0001AB75.mail.protection.outlook.com (10.167.242.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 06:36:56 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 01:36:55 -0500
-Received: from tom-r5.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Wed, 20 Mar 2024 01:36:47 -0500
-From: Tom Chung <chiahsuan.chung@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
-	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
-	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
-	<stable@vger.kernel.org>, Sun peng Li <sunpeng.li@amd.com>
-Subject: [PATCH 12/22] drm/amd/display: Fix bounds check for dcn35 DcfClocks
-Date: Wed, 20 Mar 2024 14:35:46 +0800
-Message-ID: <20240320063556.1326615-13-chiahsuan.chung@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320063556.1326615-1-chiahsuan.chung@amd.com>
-References: <20240320063556.1326615-1-chiahsuan.chung@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C28A3D;
+	Wed, 20 Mar 2024 06:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710917134; cv=none; b=P9FfulcUvb7A2LxiVPdgnXDlBU7yAsFewttKQ6QA/IJTZhaYyIItqBVIEOQvpF7z20keN/5j+cwzvUCnJGwiLNRwdDRrpzi8Vzgw4wFGBt/8e+IkTsfNln72MsPRM4/xmDOOd10WoDacXjld+CeMrggRBTL6TOuyPaNY35//vJg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710917134; c=relaxed/simple;
+	bh=fAgGUE2IUmexRk7WdnaZaJoJomUIOTguyBKLcuDXqqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z89b9wLabwh9N6YWryafUxw0a7L66GXkMnAl/x8KmYPWtQJkfDEzuBaN5Od2E51zJamtl5xw9+fw0kRvr95x1JS0jhgL2qH0IkjjwXf9cSMq2nlrAka86SB0DDEKt9OhCbV94cAI+fZF2A0tgRt8l0pBf2RqfFEbYFVw6X+Jq6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NTb817C2; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710917133; x=1742453133;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fAgGUE2IUmexRk7WdnaZaJoJomUIOTguyBKLcuDXqqg=;
+  b=NTb817C2JsYVX76te40VZ7MGXXoztFLUbmrvHLypcGkMa7FDBIfrcctI
+   0cPk2+Tegye4fsn91brImb5UzQUixK5W4SF1m/ygjtn74mmEfFXAPOONj
+   tbGIZJ/+p9IEtfuQxT0pZIYumn4dmQK0+ejEQ0byhHxiwp1BLbefaX5H3
+   qxTPedaBVgEmAVAdZYiHBUGp8uPGfYL2OiiEjzNbOGhEyZLH4KVse5csa
+   c1xUW+51m5It3ty401RWVM4/HTcwHAXLfb1wCxg6jE6VD4AE/TAQcU8Gf
+   +HWaaxynIUWZHxMEC5OOrddRGEj/8cI0jbRcpNHoTFt/zq+5STFGqIrgL
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="17229672"
+X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
+   d="scan'208";a="17229672"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 23:45:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
+   d="scan'208";a="18782241"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 23:45:26 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 89E5F11F853;
+	Wed, 20 Mar 2024 08:45:22 +0200 (EET)
+Date: Wed, 20 Mar 2024 06:45:22 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wentong Wu <wentong.wu@intel.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: Re: [PATCH 1/1] mei: vsc: Unregister interrupt handler for system
+ suspend
+Message-ID: <ZfqGAth743v4Slpx@kekkonen.localdomain>
+References: <20240318080126.2813476-1-sakari.ailus@linux.intel.com>
+ <2024031915-manhole-winnings-43d4@gregkh>
+ <ZfltTgGANYs9uix5@kekkonen.localdomain>
+ <2024031905-showpiece-coral-c76c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: chiahsuan.chung@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB75:EE_|SA1PR12MB8721:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4796009-7048-4aa1-6521-08dc48a8235f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	oREBYeAvTTh0t0bBN0G5gsXIWbhybDf2G7gQ9wvNoF+cy1N2/VT4emBnJgJoxyC9TgnE6BO+NDRDIImXL0NyqD5zfO7UUXLnefK4foCSgCundIORCZtrwcENGw7y1ieBR4f0ssrbDEGt/Dk6gIWgE+9NUSNvUlpJwcjqm4PTu56b9dY2mbsGX+IT1zX4lFWzFNTsAkpyuF5K4nxaPPbL5FzX7onCwWoLGqkQisumCIz62vz9fV23imzcy1q81j2w+FmzweL7Kp5qjCsexePefnpfX+FUCIlRDnLPsCFsqV0pb5haT/tIJxgp1jHgZchnsRQYgUtnjIt67l5MSAUjJdNnCfZYLUKWHCHYa8fxI4wNwibmqr2zPGcfXoJ7/GL96dBTDy7P26QuAWEJ0Gfe8TFMy5nXYEopvuogd/imF9dA1fMOmsdYkAmi9MDxXNkCf99BBWIpLztSI9/WnvApDWnB1I+H1BuuAow7aQ4ODgo1rL3iORGwit+s66B1oQE5gWdiP+vTqElRXvFjyafyzSFte+w25UxUWgt0iJyabGa8SB2uEN9MbXQzfiLsH5P2hKSUeAEREN3ZcrG4xb9DVXMc3kK4INoco1YkHaRW5Oyh20MLx9HozRzU0xDU8R39qEKmG2Uc1Qh0kYEe82FMtxfc/9i2HCaKU2cdFSvQlUlGmCBb2evsxtKtw1hYvBmVSGeS1z2Tr1pjBaimjNaIaD9Yedr2Qn/imABp13gnRsCLOUqRrCdwq8wkPRNGLC9i
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 06:36:56.4615
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4796009-7048-4aa1-6521-08dc48a8235f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB75.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8721
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024031905-showpiece-coral-c76c@gregkh>
 
-From: Roman Li <roman.li@amd.com>
+On Tue, Mar 19, 2024 at 12:51:34PM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Mar 19, 2024 at 10:47:42AM +0000, Sakari Ailus wrote:
+> > Hi Greg,
+> > 
+> > On Tue, Mar 19, 2024 at 08:51:43AM +0100, Greg Kroah-Hartman wrote:
+> > > On Mon, Mar 18, 2024 at 10:01:26AM +0200, Sakari Ailus wrote:
+> > > > Unregister the MEI VSC interrupt handler before system suspend and
+> > > > re-register it at system resume time. This mirrors implementation of other
+> > > > MEI devices.
+> > > > 
+> > > > This patch fixes the bug that causes continuous stream of MEI VSC errors
+> > > > after system resume.
+> > > > 
+> > > > Fixes: 386a766c4169 ("mei: Add MEI hardware support for IVSC device")
+> > > > Cc: stable@vger.kernel.org # for 6.8
+> > > > Reported-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> > > > Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+> > > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > > ---
+> > > >  drivers/misc/mei/platform-vsc.c | 17 ++++++-
+> > > >  drivers/misc/mei/vsc-tp.c       | 84 +++++++++++++++++++++++----------
+> > > >  drivers/misc/mei/vsc-tp.h       |  3 ++
+> > > >  3 files changed, 78 insertions(+), 26 deletions(-)
+> > > 
+> > > What is the git commit id of this in Linus's tree?
+> > 
+> > This one isn't in Linus's (or any other maintainer) tree yet.
+> 
+> Then why was it sent only for 6.8?  Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> for how to do this properly.
 
-[Why]
-NumFclkLevelsEnabled is used for DcfClocks bounds check
-instead of designated NumDcfClkLevelsEnabled.
-That can cause array index out-of-bounds access.
+Ah, I think I mistakenly included the stable@vger e-mail address in
+distribution as the other patch was meant to be sent there. I'll resend
+this.
 
-[How]
-Use designated variable for dcn35 DcfClocks bounds check.
-
-Fixes: 6b8d9862159f ("drm/amd/display: Fix array-index-out-of-bounds in dcn35_clkmgr")
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
----
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 928d61f9f858..8efde1cfb49a 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -715,7 +715,7 @@ static void dcn35_clk_mgr_helper_populate_bw_params(struct clk_mgr_internal *clk
- 		clock_table->NumFclkLevelsEnabled;
- 	max_fclk = find_max_clk_value(clock_table->FclkClocks_Freq, num_fclk);
- 
--	num_dcfclk = (clock_table->NumFclkLevelsEnabled > NUM_DCFCLK_DPM_LEVELS) ? NUM_DCFCLK_DPM_LEVELS :
-+	num_dcfclk = (clock_table->NumDcfClkLevelsEnabled > NUM_DCFCLK_DPM_LEVELS) ? NUM_DCFCLK_DPM_LEVELS :
- 		clock_table->NumDcfClkLevelsEnabled;
- 	for (i = 0; i < num_dcfclk; i++) {
- 		int j;
 -- 
-2.34.1
-
+Sakari Ailus
 
