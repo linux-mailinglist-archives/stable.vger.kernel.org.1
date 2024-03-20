@@ -1,197 +1,93 @@
-Return-Path: <stable+bounces-28497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73708816B9
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 18:42:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E608816C2
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 18:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2291C223D5
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 17:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BA341C22852
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 17:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC0B6A340;
-	Wed, 20 Mar 2024 17:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406AC6A32B;
+	Wed, 20 Mar 2024 17:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fGF0L05k"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Y79iFE/n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AC0524B7;
-	Wed, 20 Mar 2024 17:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE424436E;
+	Wed, 20 Mar 2024 17:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710956563; cv=none; b=X7s5l4mQ1GRvWgK7i19+UGHWM+6q+0liDRCAxxJdU6rG90CPaGSsjXY7FBWQY/mun8nv48srwQsIAm8PhuRJq9frO7Pj59S0Resc7bhHYjtSLzlv76oYWuTENl98FGixwcGqdA5x5NpQFZb/Gz+FmJur5hqPEPFQY8PZaz6oevY=
+	t=1710956715; cv=none; b=oApJvS04FLb7OY5QQq+gxtvgIBCyntmm/9qnT9aQNVD5La5eyfjtSf7jitnXS3DICR2wzbQ+B7xWp9Eagabl/1cLPYDWqVYpP2KB0evSRqwtNP4F3MN4jqRsda9aQSu0+NxUncQQNXaGAvi/xlKA7nIcIWN5+eVXtgIQHQfe/00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710956563; c=relaxed/simple;
-	bh=8L65Or9/rr57UNhiffCl+0rh3Lazf36OqwDy6Z2KAvs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O5znT3ZsEtsKY+l1/T7OH1NKz7+IEZXGsgcS/hL1TuMSBTP1gTBMQAG5UQ8TWZOocQXe2dWrvT2jEyAdaJFOSNxxacANqPPaSIaQ1KNG2wMSGt7Fu+rGqed4nDzHqO7pI8Yfcr/rJB4N3y1lONuMgrhbmtWUg8AsZRmEHaivoOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fGF0L05k; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dcc6fc978ddso154427276.0;
-        Wed, 20 Mar 2024 10:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710956559; x=1711561359; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4PNmrfeclRSaZ0piCvl3NPFSnMqmFKWwWU1pPxBzzB4=;
-        b=fGF0L05k7M08tVZj9Jq4ghWmERcf+t9Cr4RixarbEDwaj0vXy3QQ7spMgdp2gIG1Fg
-         rs4JnDooSiRwAV5jNmkquvqwnIGslVzJMdgZGyRWMwJ0zMNNQx20in3WcQs6Vx1YC+IS
-         gupl2txQuUt+zrTNvatq8ljNhfV6xvnyppb+HbYYPyVIsdCrLFh6WtDvGBsqUJKDdrNt
-         GeHsN/WuixP32W4t5aTEkMtjc4IkfEBGjHfs4TET3Ofi3Vd/L+FWXeF+VcgjysR6midk
-         XcFJ4bP70KmGgvWADFiFCa71k16OvL6kJar9cptFOT/U8CyxphY56n8bWlrL/GIxEI3H
-         xWyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710956559; x=1711561359;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4PNmrfeclRSaZ0piCvl3NPFSnMqmFKWwWU1pPxBzzB4=;
-        b=hNavRp/Nfh7fto4q2xrMX1Z/urLb4S+1eC1q3YSWQCAnaQNJQ2/Ni1KiLLiTmN2Nsx
-         9UgoRAis73nNBPPZaCqpHL3inoFhbnpxPFs577UFneo9Y9t61KQuqbOazHGGbu2gyZBR
-         5V09xqH4ddFF4d0L7FFNpQsDuoaxMiPSYsRdRO9l4tdBsHIkuccPWzJBdUfhQV8cn+1u
-         v9CK+u7Sj50N1xre2weGQhH1kvhKlE4/2f/xAcpZLW20wyQwNNXi2g68GEngNVJZYFrp
-         YIEfwQvhp5fuevaBTqR+u6CDugeLu3gwkNInHFNj1IwmjqprfgYdC/IyzWIERglLwVQ2
-         fPsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQp9sEgs/lP/TkddxXpHONsuzp9Y8r42ntoMDVxFEZC2ziSh9KQRngF37w4DaNkJpBdt3ooqU+Ls1Ma+MP+hmg2ENceCk1g/KRMtFvQNk85HgXcr8uCjf0TFti5Y0xaIYy1gE=
-X-Gm-Message-State: AOJu0Yx/CISFKtwAQh4KNJjDv54PcvNYJCcGVABNKLj6TOe/pzCVn9hi
-	6YPB88BbyBe/EsAuZvThRHInGe8WohKxHt/nQnIYIrtM1hsXgWSKs7LwMvjixjwWTAiNKy3Cov5
-	J+n3fgjO3LVniZGNO5bt+fMbBSIpe67U6
-X-Google-Smtp-Source: AGHT+IF1vHg3nWNn8XTf2zs//TlcE4NB9URz9j93fR3rDahcsKwH8Qh2oWbvidfw1UwEtC6WUuLogrROJAMX9zdn2KI=
-X-Received: by 2002:a25:c747:0:b0:dd1:6cad:8fd3 with SMTP id
- w68-20020a25c747000000b00dd16cad8fd3mr284023ybe.27.1710956559522; Wed, 20 Mar
- 2024 10:42:39 -0700 (PDT)
+	s=arc-20240116; t=1710956715; c=relaxed/simple;
+	bh=GJUmMn8O1+0Qgr33lDmKiGfqPuy300EzxWsX5/k8E1A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tLoiPcFqQDFIpVjvsanfC2bNvcPzmMrJUOT0Weprrcg82R1+XkmPS7tBJWuV3xLicFfta8/cYEXockI9U4FKgPwikX4lrwQWihQmjAuYywSE7K6448GWq2Z6vV0XHTdDaXL6KVhqVZS+sRNvI0VImZu/qsoHZPlz8HElH7Jgf3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Y79iFE/n; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V0GFZ6wZlz6Cnk8y;
+	Wed, 20 Mar 2024 17:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:references:content-language:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1710956705; x=1713548706; bh=eBkDCxL+4cfPGdEIHqAohiUW
+	a95UqvI7P/+B3TioUJE=; b=Y79iFE/nVdQz6k4kucX0uOkOSTMIyG9O4XFL5rFv
+	HLZcDtmJDpXDjN+rvTaqkXUc0PTfCXBPreIDB/OF6pGT7hWRcRjub8jLOoiEADON
+	050c3cYXDGvNp0UC/OpxHbEsroWL/wpAJTGVicVcGtWbiSnWoHS/ARTPJ81puMRr
+	kLmrN/6f33c6aOBjOoMbGBaaqhHvdwFTpAJqE+SIK2JPcaqljyQLpEQi4NFvA9Ee
+	VImb6t/RcXst5mIjpoROXCz/JAFM5gp1qmPcswXVk+QFuVJl5oms1BM+mSAPGruy
+	1SuJffyoi5F0nUx36oZv9zHUsbL+jI7Ue5AVor3PXnoc9w==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 4d0ZRzNUMVk4; Wed, 20 Mar 2024 17:45:05 +0000 (UTC)
+Received: from [100.96.154.173] (unknown [104.132.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V0GFX6sRJz6Cnk8t;
+	Wed, 20 Mar 2024 17:45:04 +0000 (UTC)
+Message-ID: <bb98f997-b02b-4af6-8488-cb13f424ac44@acm.org>
+Date: Wed, 20 Mar 2024 10:45:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231011193444.81254-1-jandryuk@gmail.com> <CAKf6xpuJe6Cza6bow3QxDGf1viu0kish7Y8YRN8haXL1oEF3HA@mail.gmail.com>
-In-Reply-To: <CAKf6xpuJe6Cza6bow3QxDGf1viu0kish7Y8YRN8haXL1oEF3HA@mail.gmail.com>
-From: Jason Andryuk <jandryuk@gmail.com>
-Date: Wed, 20 Mar 2024 13:42:27 -0400
-Message-ID: <CAKf6xpv2oDpPB3wWh=Fz_ahDVgmvw2MSj_q3RYqQ8NG6km5Tuw@mail.gmail.com>
-Subject: Re: [PATCH v3] Input: xen-kbdfront - drop keys to shrink modalias
-To: linux-kernel@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Phillip Susi <phill@thesusis.net>, stable@vger.kernel.org, 
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>, linux-input@vger.kernel.org, 
-	xen-devel <xen-devel@lists.xenproject.org>, Juergen Gross <jgross@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: sg: Avoid sg device teardown race
+Content-Language: en-US
+To: Alexander Wetzel <alexander@wetzel-home.de>, dgilbert@interlog.com
+Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org
+References: <20240318175021.22739-1-Alexander@wetzel-home.de>
+ <20240320110809.12901-1-Alexander@wetzel-home.de>
+ <8b8e5aca-4b97-4662-9ae0-fc36db2436b4@acm.org>
+ <c2454690-4cb4-41ac-b4f3-b1591ca472e7@wetzel-home.de>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <c2454690-4cb4-41ac-b4f3-b1591ca472e7@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Dmitry,
+On 3/20/24 09:58, Alexander Wetzel wrote:
+> While I'm not familiar with the code, I'm pretty sure kref_put() is 
+> removing the last reference to d_ref here. Anything else would be odd, 
+> based on my - really sketchy - understanding of the flows.
 
-Do you have any feedback, or can you pick up this patch?  It solves a
-real issue affecting udev, which crashes the Debian installer and
-breaks the mouse for Gnome.
-
-Or would you be okay if this patch went in via the Xen tree?
+Please document this by adding a WARN_ON_ONCE() statement before the
+kref_put() call that checks that the refcount equals one.
 
 Thanks,
-Jason
 
-On Wed, Nov 1, 2023 at 10:11=E2=80=AFAM Jason Andryuk <jandryuk@gmail.com> =
-wrote:
->
-> Hi Dmitry,
->
-> Do you have any feedback or can you pick this up?
->
-> Thanks,
-> Jason
->
-> On Wed, Oct 11, 2023 at 3:34=E2=80=AFPM Jason Andryuk <jandryuk@gmail.com=
-> wrote:
-> >
-> > xen kbdfront registers itself as being able to deliver *any* key since
-> > it doesn't know what keys the backend may produce.
-> >
-> > Unfortunately, the generated modalias gets too large and uevent creatio=
-n
-> > fails with -ENOMEM.
-> >
-> > This can lead to gdm not using the keyboard since there is no seat
-> > associated [1] and the debian installer crashing [2].
-> >
-> > Trim the ranges of key capabilities by removing some BTN_* ranges.
-> > While doing this, some neighboring undefined ranges are removed to trim
-> > it further.
-> >
-> > An upper limit of KEY_KBD_LCD_MENU5 is still too large.  Use an upper
-> > limit of KEY_BRIGHTNESS_MENU.
-> >
-> > This removes:
-> > BTN_DPAD_UP(0x220)..BTN_DPAD_RIGHT(0x223)
-> > Empty space 0x224..0x229
-> >
-> > Empty space 0x28a..0x28f
-> > KEY_MACRO1(0x290)..KEY_MACRO30(0x2ad)
-> > KEY_MACRO_RECORD_START          0x2b0
-> > KEY_MACRO_RECORD_STOP           0x2b1
-> > KEY_MACRO_PRESET_CYCLE          0x2b2
-> > KEY_MACRO_PRESET1(0x2b3)..KEY_MACRO_PRESET3(0xb5)
-> > Empty space 0x2b6..0x2b7
-> > KEY_KBD_LCD_MENU1(0x2b8)..KEY_KBD_LCD_MENU5(0x2bc)
-> > Empty space 0x2bd..0x2bf
-> > BTN_TRIGGER_HAPPY(0x2c0)..BTN_TRIGGER_HAPPY40(0x2e7)
-> > Empty space 0x2e8..0x2ff
-> >
-> > The modalias shrinks from 2082 to 1550 bytes.
-> >
-> > A chunk of keys need to be removed to allow the keyboard to be used.
-> > This may break some functionality, but the hope is these macro keys are
-> > uncommon and don't affect any users.
-> >
-> > [1] https://github.com/systemd/systemd/issues/22944
-> > [2] https://lore.kernel.org/xen-devel/87o8dw52jc.fsf@vps.thesusis.net/T=
-/
-> >
-> > Cc: Phillip Susi <phill@thesusis.net>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
-> > Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-> > ---
-> > v3:
-> > Add Mattijs R-b
-> > Put /* and */ on separate lines
-> > ---
-> >  drivers/input/misc/xen-kbdfront.c | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/input/misc/xen-kbdfront.c b/drivers/input/misc/xen=
--kbdfront.c
-> > index 67f1c7364c95..d59ba8f9852e 100644
-> > --- a/drivers/input/misc/xen-kbdfront.c
-> > +++ b/drivers/input/misc/xen-kbdfront.c
-> > @@ -256,7 +256,16 @@ static int xenkbd_probe(struct xenbus_device *dev,
-> >                 __set_bit(EV_KEY, kbd->evbit);
-> >                 for (i =3D KEY_ESC; i < KEY_UNKNOWN; i++)
-> >                         __set_bit(i, kbd->keybit);
-> > -               for (i =3D KEY_OK; i < KEY_MAX; i++)
-> > +               /*
-> > +                * In theory we want to go KEY_OK..KEY_MAX, but that gr=
-ows the
-> > +                * modalias line too long.  There is a gap of buttons f=
-rom
-> > +                * BTN_DPAD_UP..BTN_DPAD_RIGHT and KEY_ALS_TOGGLE is th=
-e next
-> > +                * defined. Then continue up to KEY_BRIGHTNESS_MENU as =
-an upper
-> > +                * limit.
-> > +                */
-> > +               for (i =3D KEY_OK; i < BTN_DPAD_UP; i++)
-> > +                       __set_bit(i, kbd->keybit);
-> > +               for (i =3D KEY_ALS_TOGGLE; i <=3D KEY_BRIGHTNESS_MENU; =
-i++)
-> >                         __set_bit(i, kbd->keybit);
-> >
-> >                 ret =3D input_register_device(kbd);
-> > --
-> > 2.41.0
-> >
+Bart.
+
 
