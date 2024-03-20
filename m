@@ -1,91 +1,102 @@
-Return-Path: <stable+bounces-28512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35DB881939
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 22:39:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F73881A0D
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 00:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EAA6B213B4
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552B61F2201B
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 23:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF4C85955;
-	Wed, 20 Mar 2024 21:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B118D85C73;
+	Wed, 20 Mar 2024 23:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="2XEoXnkG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="roc24Lvw"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833623DE;
-	Wed, 20 Mar 2024 21:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0C86BFDB;
+	Wed, 20 Mar 2024 23:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970790; cv=none; b=c4PksgIZe0nCUaDrJYSKUNaAQFAHBYhtvvHQ62bNIXrZauzrxoe9W3YYO9JoHR7OvW0kjZEl2Dl0iSk+IWu10HSQSkkh4R/TvoHkKBbWvpdpg5j8XW3YcUNdtTGi2flGxQqBLXj/Lu0aBLMS1W6S8cKFPTFI4e1oAQ9+I82XNbc=
+	t=1710975846; cv=none; b=DAq3SX9H0wksFV4h/Q45bC3GxJkZuM2nNK3lJ63/IKAfO1f9Xf98zwYHkycNGRy8mUAPSN5gbVVnyjWDYxt6VSzBe6mq9ZzySWZ1yVUZkyW+QXI9o/fUB3+Oul5WySaO8JDUG+jMh4Su4xUWTnJqxUXVz/4vs+M3JhF92sJ0ZJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970790; c=relaxed/simple;
-	bh=0U5vMjocMlLk8Yw73BfhsWOWk1eQADhqyMLavb/YSnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WMu1qG2Ix43qQc9RZaB1LN80tq12yRsi1VAbyeNFQeYcgvWiO+BtrjQfQ8IiYRESK6KhiSe8Lc1VojkFUWJu6vujAzCKeYO8F1LPYYCKNw3bQtrdbmmaHJjxd5tdc8XVivNKli+goHPK/rhGmYqlUYP3YIxgpF8+GQKF4QKC+uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=2XEoXnkG; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V0MSN1Bd8z6Cnk98;
-	Wed, 20 Mar 2024 21:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:references:content-language:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1710970786; x=1713562787; bh=ntLADi8IR1swSxvMty94trq0
-	yZbd6Lv0xWRvFtJVSeY=; b=2XEoXnkGIlAHLJ17VMcKDeqtSd40UlPFFPMR26P8
-	1ZE1UO8+XU1Kl/ZOCp1VBM22CEboy2Cr8qlJYvqlRrKmcvh06KP/QzYnYCYsXchM
-	FBN6D0/XBcByj+Iw/hMqX3LhCWSFOG7RAmrhjTGLDZ/PZn51/y0WV8m1pc8RBmS1
-	eBWNj0Tqj16QWfGmMkASnCudbp6Gq3U0VPQmhA8qBGBysPFu915NiCWnre02UHAK
-	6NUUPcvXfbWDj61IN+L6uSFC/Y1EuujifSe7n4YPZveZy/kZXY/ivvaRsMN08xzL
-	QOBNVRDizQmoqH2MlT1vFjcBfvZI8+z7aZfJnFbQnjFhTQ==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id oqONWr5OK4Rz; Wed, 20 Mar 2024 21:39:46 +0000 (UTC)
-Received: from [100.96.154.173] (unknown [104.132.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V0MSK5Bvmz6Cnk97;
-	Wed, 20 Mar 2024 21:39:45 +0000 (UTC)
-Message-ID: <f5a263c4-f27d-4df0-ba23-4510a357d19b@acm.org>
-Date: Wed, 20 Mar 2024 14:39:44 -0700
+	s=arc-20240116; t=1710975846; c=relaxed/simple;
+	bh=TAatzuWm2HqdQG4JY+l9UJF3GxwuF/jivevfBscvcfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kHGlG6Ec7KepFlH6jsLH14g8k2j7/SuUUZoY71Z5kUg6ISj6kcDsBf6HsUssOTcyWkoXJU8iUBFFrPHLPmRbgcNLRLtDa31VhLkov4tIg8kdqvoOlKZbMV8mPckjvEwoXmYtsB3SBuJbiXU6vbe2G4544qgw9mtl1Xj2nHoyJkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=roc24Lvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7FAC433C7;
+	Wed, 20 Mar 2024 23:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710975845;
+	bh=TAatzuWm2HqdQG4JY+l9UJF3GxwuF/jivevfBscvcfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=roc24LvwLgx0Gqc1wJS8R1OwkBVs4boegh5+XPMJyOSDy3nA0AVEjTf6WduCcgia5
+	 TNW9ZfHGtlNNVV/bA41xqcYh0cfu+1eZZVP7adotwqzDypRwE6Uuwfhl3FVFj+k4Oc
+	 NyN0x4Zi4Bk02+i8YNGOUww/CK0h+xJMHjO3z9Qjx32T669GrYEirhD5eqE4LsYFBf
+	 2Xw/UQfdc+tntAecpHbeEECqqSOWv8BTes3Qv8NM5zfblDt2J0UmR4+yKQjAD1ylJp
+	 +nr70e+N/N26LWZeXr6AiSpFFc++gYedARii3oRUGw4mq9KNmR3nsvS0PxsmKQYC9Z
+	 bCaebnnTILsQA==
+Date: Wed, 20 Mar 2024 18:12:46 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Pavel Machek <pavel@denx.de>
+Cc: josef@toxicpanda.com, dsterba@suse.com, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org
+Subject: Re: btrfs fix missing in 5.10-stable was Re: [PATCH 5.10 00/73]
+ 5.10.213-rc1 review
+Message-ID: <ZftfXuwvpNVggouB@sashalap>
+References: <20240313164640.616049-1-sashal@kernel.org>
+ <ZfroJoVIz3dBrO1t@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scsi: sg: Avoid sg device teardown race
-Content-Language: en-US
-To: Alexander Wetzel <Alexander@wetzel-home.de>, dgilbert@interlog.com
-Cc: linux-scsi@vger.kernel.org, gregkh@linuxfoundation.org,
- stable@vger.kernel.org
-References: <20240320110809.12901-1-Alexander@wetzel-home.de>
- <20240320213032.18221-1-Alexander@wetzel-home.de>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240320213032.18221-1-Alexander@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ZfroJoVIz3dBrO1t@duo.ucw.cz>
 
-On 3/20/24 14:30, Alexander Wetzel wrote:
-> sg_remove_sfp_usercontext() must not use sg_device_destroy() after
-> calling scsi_device_put().
-> 
-> sg_device_destroy() is accessing the parent scsi device request_queue.
-> Which will already be set to NULL when the preceding call to
-> scsi_device_put() removed the last reference to the parent scsi device.
-> 
-> The resulting NULL pointer exception will then crash the kernel.
+On Wed, Mar 20, 2024 at 02:44:06PM +0100, Pavel Machek wrote:
+>Hi!
+>
+>> This is the start of the stable review cycle for the 5.10.213 release.
+>> There are 73 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>
+>While debugging "search for known-bad commit" script, I noticed:
+>
+>We have
+>
+>41b3cc57d626d c2e39305299f0 btrfs: clear extent buffer uptodate when
+>we fail to write it
+>
+>commit in 5.10, which is fixed by this, but we don't have that one:
+>
+>651740a502411 btrfs: check WRITE_ERR when trying to read an extent
+>buffer
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Hey Pavel,
+
+There are two reasons it didn't make it into 5.10 or 5.4:
+
+1. It doesn't build on any of those kernels, and we haven't gotten a
+backport we could apply.
+
+2. There's a follow-up fix that happened soon after ( 40cdc509877b
+("btrfs: skip reserved bytes warning on unmount after log cleanup
+failure") ) which needs a backport on it's own.
+
+
+-- 
+Thanks,
+Sasha
 
