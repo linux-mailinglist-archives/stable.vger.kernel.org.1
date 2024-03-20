@@ -1,151 +1,136 @@
-Return-Path: <stable+bounces-28492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F578815A5
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 17:29:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7618815FF
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 17:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 256AE1C20C99
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54FDB1F22B63
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D705354BFE;
-	Wed, 20 Mar 2024 16:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC5069DEA;
+	Wed, 20 Mar 2024 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E1cfLjjk"
+	dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b="ljodIoNn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C234F1E5;
-	Wed, 20 Mar 2024 16:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [5.252.227.236])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA70910FA;
+	Wed, 20 Mar 2024 16:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.252.227.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710952186; cv=none; b=HJSc4/uVpy1Hvn/jDD8eSyXdWxo6GnOToKjTSqkqJ7Xs5870sSwk+aHHrC8dqcreySkSrACUifGr3MEKKy41XLn3IYhW5T2WR9XoXoJvDpWiQU6yYslgNlHbiLs4xHd6wi/MuO/WM/dBMiQtwyMfSQuuPCQv9HcJ65HbzXXVJgc=
+	t=1710953930; cv=none; b=kn2dJGJagOwlPaP3gEolDBITZTCk10IQTzBOBOYMkVzIRqo2i59zF9qVCmDDdVIMxqoIxIxFEr9R5mM3ThhrSNKrXoBwGZ5YwIcp3oa1a1LRJh2u+Z8OgiWD3CAfbGIO340s/wWBG024afFcvqisZN1pzJ3n+qbel/i1UiW5w1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710952186; c=relaxed/simple;
-	bh=LgFQfIb4fNHaMJQWnKD+SueEOjahJqUpTHftU/pwsbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V2q3W1Q+LBqdzblHhS7Ze9+S8WbCeFsb3z8H2JtQsxwg+aLb1aez6GnXFS8HfAFxC9N1Slk0kam9bL1X069Ld7PPCE1fYpUC9A5NjO/8XQeOms9h6/2Bpf2744/UPJpuxxHTZZCSEpimqX+gh3LrsUvnE7ZwKdMxwdUAz8KhSGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E1cfLjjk; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so959201fa.0;
-        Wed, 20 Mar 2024 09:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710952183; x=1711556983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LSz7fQzVFVXAFxgeYQXEQZk+nVYjVrCMtbK7Jhjtun0=;
-        b=E1cfLjjkeUUv88eP5e0bNOaTnPzhhoPvXkK1VK4jdWpAEhniWoIlfDq1KbApRa048T
-         BMW9GG3zZCHk1OEtUQ0g2N07BYuA92rVoANz4ozEjJ5E8RlMQr9ye39Chf5O8pKBwpkf
-         5xbdZskPPA3wZifiTZnKZQ0usfPBT7eimK0SQl1iLyRK8u1bjIuPfln+2BF3vSo761dm
-         wZeOILG4f3WSgYdbIqWRaDpBYnddewOUlRe2ZfvtgYD1dVNhO/alsln1/BkvBFYFTrYB
-         5Xp0N72GEMCbdNgKup7EU2s7JwKyZfFj5k6K3Zi94uGyqooRxH3qIRc/jzFXFoxS87Rb
-         sQQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710952183; x=1711556983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LSz7fQzVFVXAFxgeYQXEQZk+nVYjVrCMtbK7Jhjtun0=;
-        b=VeRUXZtMvKvFLjZeLXs0odawlnhp4V9Ifh4QT/HX2fiZAF4P78AJVUqh829mdQQ7NF
-         aVP+zc6gqnOxKYSWI2pFBU8PBwpkZWsnW+hl0JCPYCbDTmesHh1SQlxhcPQbJShei3rr
-         bpSNrlpi9Kvuq+A1ujoT9JVHxkU2WjGs0GpO/ka2V8oNORuztMeOKkjW5JQb+jEk9MeF
-         Gg7ZHKZwVG1HGfxUEb87Juup6QMkB8Vk+DpiS6sVQjzYLSCJKzzGwezmR6JIIlq2KUKZ
-         0Dxnjm5FoLzob5o7JtTycvGIcz5gQdRf/7g54EterUZ/TQ3hspaxfzMsXcm7IR8LoCsk
-         +QaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcUktnMszS2g3ruTYdbM8SIswPYnoTpWaAZoKVTr2rJGGCMKLo1j4+tZmEriJ3JphRsfMteir9sUTgibSzmVjQjX0OUraeO/vUSL8vkNCac7vopxGaLxAw5AivZtwgRYkikH/R
-X-Gm-Message-State: AOJu0YwRVbV2I12UTT/vkDW1fWnXLCHh6vQbgsMcCn3S6AjT4r4p9lQS
-	1/92JaAASsqleoq3vXuouaqb6Y+qp5R2HwDw7OGDvo/IakUogykV
-X-Google-Smtp-Source: AGHT+IGrXcBnTFuQK24EEr9sarEyN5j7+SUWW/AjM5t6F29uCnPCJezOmOuBx2kavAu6gDq7MHe+NA==
-X-Received: by 2002:ac2:5f9a:0:b0:513:5fb0:c5ad with SMTP id r26-20020ac25f9a000000b005135fb0c5admr12638319lfe.17.1710952182786;
-        Wed, 20 Mar 2024 09:29:42 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id fc18-20020a05600c525200b00414105c4cd9sm2692710wmb.21.2024.03.20.09.29.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 09:29:42 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mtd: limit OTP NVMEM Cell parse to non Nand devices
-Date: Wed, 20 Mar 2024 17:29:25 +0100
-Message-ID: <20240320162927.5015-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1710953930; c=relaxed/simple;
+	bh=TxQReDTPFeYIzxbmKhjwiCFg5+LQu3KfvGpmrlrOVdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WmoMzgAvaE7KJ8UB1GZzr95xI8GY4vOqevzs6fJZ5TB0E6PCt+zLIJyc+lly/IVy7wvstqYJ8jVby9GgRbTh4tR1YRkptGH6/8oN9UcSBy/HvKgL6EwEhfa33fKvpX0WfxNs18JWI9InM6pxpHV2coqKkHJenrHapr2aS97OJrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de; spf=pass smtp.mailfrom=wetzel-home.de; dkim=pass (1024-bit key) header.d=wetzel-home.de header.i=@wetzel-home.de header.b=ljodIoNn; arc=none smtp.client-ip=5.252.227.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wetzel-home.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wetzel-home.de
+Message-ID: <c2454690-4cb4-41ac-b4f3-b1591ca472e7@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+	s=wetzel-home; t=1710953922;
+	bh=TxQReDTPFeYIzxbmKhjwiCFg5+LQu3KfvGpmrlrOVdU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ljodIoNnKZ2pjEBGTdKvK6V189Yee7CXKotw6bYdU5ViA/B3hweS4YFx0AM+aEr+I
+	 Ci7eUncg3QPpI9beTqIQZj/mzjbe27LpbHw2sNMZymR/LDz7ZUrwUbCDgmNMcCA3xC
+	 EITpbsuIIbf4E1w6gIWeZhEwIuVWlryhOUegK50c=
+Date: Wed, 20 Mar 2024 17:58:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: sg: Avoid sg device teardown race
+To: Bart Van Assche <bvanassche@acm.org>, dgilbert@interlog.com
+Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org
+References: <20240318175021.22739-1-Alexander@wetzel-home.de>
+ <20240320110809.12901-1-Alexander@wetzel-home.de>
+ <8b8e5aca-4b97-4662-9ae0-fc36db2436b4@acm.org>
+Content-Language: en-US, de-DE
+From: Alexander Wetzel <alexander@wetzel-home.de>
+In-Reply-To: <8b8e5aca-4b97-4662-9ae0-fc36db2436b4@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-MTD OTP logic is very fragile and can be problematic with some specific
-kind of devices.
+On 20.03.24 16:02, Bart Van Assche wrote:
+> On 3/20/24 04:08, Alexander Wetzel wrote:
+>> sg_remove_sfp_usercontext() must not use sg_device_destroy() after
+>> calling scsi_device_put().
+>>
+>> sg_device_destroy() is accessing the parent scsi device request_queue.
+>> Which will already be set to NULL when the preceding call to
+>> scsi_device_put() removed the last reference to the parent scsi device.
+>>
+>> The resulting NULL pointer exception will then crash the kernel.
+>>
+>> Link: 
+>> https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+>> ---
+>> Changes compared to V1:
+>> Reworked the commit message
+>>
+>> Alexander
+>> ---
+>>   drivers/scsi/sg.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+>> index 86210e4dd0d3..80e0d1981191 100644
+>> --- a/drivers/scsi/sg.c
+>> +++ b/drivers/scsi/sg.c
+>> @@ -2232,8 +2232,8 @@ sg_remove_sfp_usercontext(struct work_struct *work)
+>>               "sg_remove_sfp: sfp=0x%p\n", sfp));
+>>       kfree(sfp);
+>> -    scsi_device_put(sdp->device);
+>>       kref_put(&sdp->d_ref, sg_device_destroy);
+>> +    scsi_device_put(sdp->device);
+>>       module_put(THIS_MODULE);
+>>   }
+> 
+> Is it guaranteed that the above kref_put() call is the last kref_put()
+> call on sdp->d_ref? If not, how about inserting code between the
+> kref_put() call and the scsi_device_put() call that waits until
+> sg_device_destroy() has finished?
+> 
 
-NVMEM across the years had various iteration on how Cells could be
-declared in DT and MTD OTP probably was left behind and
-add_legacy_fixed_of_cells was enabled without thinking of the consequences.
+While I'm not familiar with the code, I'm pretty sure kref_put() is 
+removing the last reference to d_ref here. Anything else would be odd, 
+based on my - really sketchy - understanding of the flows.
 
-That option enables NVMEM to scan the provided of_node and treat each
-child as a NVMEM Cell, this was to support legacy NVMEM implementation
-and don't cause regression.
+Also waiting for another process looks wrong. I guess we would then have 
+to delay the call to sg_release().
 
-This is problematic if we have devices like Nand where the OTP is
-triggered by setting a special mode in the flash. In this context real
-partitions declared in the Nand node are registered as OTP Cells and
-this cause probe fail with -EINVAL error.
+And at least for me it's always the last d_ref reference.
+I changed the section to:
 
-This was never notice due to the fact that till now, no Nand supported
-the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-access for MX30LFxG18AC") this changed and coincidentally this Nand is
-used on an FritzBox 7530 supported on OpenWrt.
+         kref_put(&sdp->d_ref, sg_device_destroy);
+         printk("XXXX scsi=%u, dref=%u\n", \
+		kref_read(&sdp->device->sdev_gendev.kobj.kref), \
+		kref_read(&sdp->d_ref));
+         scsi_device_put(sdp->device);
 
-Alternative and more robust way to declare OTP Cells are already
-prossible by using the fixed-layout node or by declaring a child node
-with the compatible set to "otp-user" or "otp-factory".
+And connected/disconnected my test USB device a few times:
+  XXXX scsi=2, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=2, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
+  XXXX scsi=1, dref=0
 
-To fix this and limit any regression with other MTD that makes use of
-declaring OTP as direct child of the dev node, disable
-add_legacy_fixed_of_cells if we have a node called nand since it's the
-standard property name to identify Nand devices attached to a Nand
-Controller.
+(scsi=1 are the cases which would cause the NULL pointer exceptions with 
+the unpatched driver.)
 
-With the following logic, the OTP NVMEM entry is correctly created with
-no Cells and the MTD Nand is correctly probed and partitions are
-correctly exposed.
-
-Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/mtd/mtdcore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 5887feb347a4..6872477a5129 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
- 	config.name = compatible;
- 	config.id = NVMEM_DEVID_AUTO;
- 	config.owner = THIS_MODULE;
--	config.add_legacy_fixed_of_cells = true;
-+	config.add_legacy_fixed_of_cells = !of_node_name_eq(mtd->dev.of_node, "nand");
- 	config.type = NVMEM_TYPE_OTP;
- 	config.root_only = true;
- 	config.ignore_wp = true;
--- 
-2.43.0
+Alexander
 
 
