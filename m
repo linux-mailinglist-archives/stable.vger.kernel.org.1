@@ -1,144 +1,96 @@
-Return-Path: <stable+bounces-28488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF034881449
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:14:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CEE8815A4
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 17:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951BE1F23391
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:14:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42232822B0
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF85535D5;
-	Wed, 20 Mar 2024 15:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EC154BFC;
+	Wed, 20 Mar 2024 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="T8/8XNdC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XChYqn3h"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4797A51C58;
-	Wed, 20 Mar 2024 15:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3AE4E1D5;
+	Wed, 20 Mar 2024 16:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710947624; cv=none; b=baC+EyYX9+2eU1ppERQkIw40R5LnfGUmiQ/71GW+kdjG5pbI3zZtGBKJ92pP0Quke1IwVvpcoby53QSmhZK+Qh7K92dblVM68o986znLtKYLzOZS5K1Q0AnroyE8jNsAklOgN7Z3jAzl/Z8NQu0mCi8I1hkxyTyBkJZMSt+G3is=
+	t=1710952172; cv=none; b=e3G0DECwf+aRQHVA75Vq0e+9GIb4CXWNPi8DprxEnj0IyqG7jFVPwW+ihPHw76SDgd27qyyN2JYjBNRPYnvzQEVhBf8Y1uKkFoKJkIm0TbS3KjA9ntrhqqKDNGnyndrWZcmddwUrsKV68FLqSKY1aChlK2+9VjXTwqzQEIuXmpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710947624; c=relaxed/simple;
-	bh=LtLbr9/vDD9oCkEi6bkKIcq4qBaMLATwiFb0k5KE+TU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WMyQyupp3oZVRSuUgxRHzlKbbegxOKj6bPFnG9gk4ojbL9ikL7NrjVRx3Fl6nx4QCx7Oy/1ZDEL8QSpGO3tv6XCrCgKbP1ecdxfetql7GT9fnz6sCkdj0UwPhH+CSj3QnEl0aUj2gV/C/89PbfyqeuddoqSFGGisr8AU6Qzu1S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=T8/8XNdC; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Reply-To:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=OLxm6fLIR0Yj0UHnwoux3tx7eG7VNhXfLRRrf+zGO48=;
-	t=1710947622; x=1711379622; b=T8/8XNdC0Bbhfcq+MyDCKDnP5j7iJctSxm8gwzjsvimd48N
-	zC8aE/w38g+eUdxC2rvmA0+bV72KEtwY4+0epVG87Eda0QH2GrOpecm9JnBbLf3fiyWvrSjtYyauS
-	Q3DObdWY0zYERZfSoyOXWbbRXOawhQ/ieoubrLr8ARJkOCrEkns39h4erPp5fM8gdjM9M4AEZV5gI
-	kcMJeOnzjf2VZjNAwop9jMBIMsCdncWaxtJlVIqFtfiLvZVyXlmjQwSdZH7i5y6dKQOHixucdQA/W
-	vEe93KErzXSJ1K4YTCZSNjijBaO0o4lGZysVcD2Rh/6gwPb3EsUMjmwRTOCLKd3Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rmxdL-0000FB-JQ; Wed, 20 Mar 2024 16:13:39 +0100
-Message-ID: <d9aae981-ea93-418e-8c98-94eb27f4a80d@leemhuis.info>
-Date: Wed, 20 Mar 2024 16:13:39 +0100
+	s=arc-20240116; t=1710952172; c=relaxed/simple;
+	bh=s6j5OTj/cWvdBWtWXyISEbqo2PuTUp5fqmDFLZlIea0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T1qhT20fhvSNEhunrkaMygUB5OmuT8Ns3XAW1m0NSStcLWtKitrdFPloHtwR0FriR4G4gw91MpuiJaR5mpqx0jZzcc3YU+TOTIm97Iv+HaNtya2rtQoOFbSAVL6jpnPg2r4+V8z4B5nl4CECq6FLl/eh8TSd7stLHnANEWjVQRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XChYqn3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CF7C433F1;
+	Wed, 20 Mar 2024 16:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710952172;
+	bh=s6j5OTj/cWvdBWtWXyISEbqo2PuTUp5fqmDFLZlIea0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XChYqn3hqxA7r1TAxQT7DOQKuIHUjVwsmEJtvFgt+kuKHFsPslkvrOM8Q1imaqspd
+	 WmAJJQPbWzFEbJfXz+gbbQOJSHvX6HBmueYVXugVKAwJIlLNolVF1bd1yunu1+dT1C
+	 77ywABRV+AkcHtJjeeia0qoWG32JT9ckVocnlhiKIrurOLwc/BG8lMotb/6DsDIe6q
+	 sVM3ANaSAcN6uSEOzGTftqV3WOTVLCNblTAkkFsu0qfUVIqkIcukM2JP1nNwE6WyY3
+	 1jONuu6RLuYFdJITW9DR7n/SN5HGhvmXcf9bh6U0/fyB7ZMPQmDKBylz5ohhV0yuYt
+	 4SUf2rcTfYdGg==
+Date: Wed, 20 Mar 2024 11:38:12 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Ralph Siemsen <ralph.siemsen@linaro.org>
+Cc: gregkh@linuxfoundation.org, herbert@gondor.apana.org.au,
+	patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: v4.19 backport request for crypto af_alg
+Message-ID: <ZfsC5FvYwg85nc9o@sashalap>
+References: <20240320143143.1643630-1-ralph.siemsen@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: af_alg - Disallow multiple in-flight AIO requests
-Content-Language: en-US, de-DE
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: Ralph Siemsen <ralph.siemsen@linaro.org>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <ZWWkDZRR33ypncn7@gondor.apana.org.au>
- <20240315175529.GA268782@maple.netwinder.org>
- <256024ba-c889-4400-a7cd-002291e64ad5@leemhuis.info>
-In-Reply-To: <256024ba-c889-4400-a7cd-002291e64ad5@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1710947622;8e374c55;
-X-HE-SMSGID: 1rmxdL-0000FB-JQ
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240320143143.1643630-1-ralph.siemsen@linaro.org>
 
-On 20.03.24 15:54, Linux regression tracking (Thorsten Leemhuis) wrote:
-> [CCing the stable team, as it looks like two prerequisite changes for a
-> patch already applied are missing in at least 4.19.y]
+On Wed, Mar 20, 2024 at 10:31:43AM -0400, Ralph Siemsen wrote:
+>I have found a regression in userspace behaviour after commit 67b164a871a
+>got backported into 4.19.306 as commit 19af0310c8767. The regression
+>can be fixed by backporting two additional commits, detailed below.
+>
+>The regression can be reproduced with the following sequence:
+>
+>echo some text > plain.txt
+>openssl enc -k mysecret -aes-256-cbc -in plain.txt -out cipher.txt -engine afalg
+>
+>It fails intermittently with the message "error writing to file", but
+>this error is a bit misleading, the actual problem is that the kernel
+>returns -16 (EBUSY) on the encoding operation.
+>
+>The EBUSY comes from the newly added in-flight check. This check is correct,
+>however it fails on 4.19 kernel, because it is missing two earlier commits:
+>
+>f3c802a1f3001 crypto: algif_aead - Only wake up when ctx->more is zero
+>21dfbcd1f5cbf crypto: algif_aead - fix uninitialized ctx->init
+>
+>I was able to cherry-pick those into 4.19.y, with just a minor conflict
+>in one case. With those applied, the openssl command no longer fails.
+>
+>Similar fixes are likely needed in 5.4.y, however I did not test this.
+>
+>No change is needed in 5.10 or newer, as the two commits are present.
+>
+>Please add the two commits to 4.19.y (and probably also 5.4.y).
 
-Argh, race condition, it's now 15 minutes later and I by chance just saw
-that Ralph about about 45 minutes ago took action as well an brought the
-issue to the stable teams attention:
-https://lore.kernel.org/all/20240320143143.1643630-1-ralph.siemsen@linaro.org/
+I'll add both to 4.19. They already exist in 5.4. Thanks!
 
-Guess its best if everyone ignored my earlier mail. Sorry, bad timing,
-happens.
-
-Ciao, Thorsten
-
-> On 15.03.24 18:55, Ralph Siemsen wrote:
->>
->> I have found a regression in userspace behaviour after this patch was
->> merged into the 4.19.y kernel. The fix seems to involve backporting a
->> few more changes. Could you review details below and confirm if this is
->> the right approach?
-> 
-> FWIW, developers are totally free to not care about stable and longterm
-> kernels series. Not sure if Herbert is among those developers, but it
-> might explain why there is no reply yet. That's why I CCed the stable
-> maintainers, strictly speaking they are responsible.
-> 
->> On Tue, Nov 28, 2023 at 04:25:49PM +0800, Herbert Xu wrote:
->>> Having multiple in-flight AIO requests results in unpredictable
->>> output because they all share the same IV.  Fix this by only allowing
->>> one request at a time.
->> [...]
->> This change got backported on the 4.19 kernel in January:
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-4.19.y&id=19af0310c8767c993f2a5d5261e4df3f9f465ce1
->>
->> Since then, I am seeCiao, ing a regression in a simple openssl encoding test:
->>
->> openssl enc -k mysecret -aes-256-cbc -in plain.txt -out cipher.txt
->> -engine afalg
->>
->> It fails intermittently with the message "error writing to file", but
->> this error is a bit misleading, the actual problem is that the kernel
->> returns -16 (EBUSY) on the encoding operation.
->>
->> This happens only in 4.19, and not under 5.10. The patch seems correct,
->> however it seems we are missing a couple of other patches on 4.19:
->>
->> f3c802a1f3001 crypto: algif_aead - Only wake up when ctx->more is zero
->> 21dfbcd1f5cbf crypto: algif_aead - fix uninitialized ctx->init
->>
->> I was able to cherry-pick those into 4.19.y, with just a minor conflict
->> in one case. With those applied, the openssl command no longer fails.
-> 
-> Some feedback here from Herbert would of course be splendid, but maybe
-> your tests are all the stable team needs to pick those up for a future
-> 4.19.y release.
-> 
->> I suspect similar changes would be needed also in 5.4 kernel, however I
->> neither checked that, nor have I run any tests on that version.
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
-> 
+-- 
+Thanks,
+Sasha
 
