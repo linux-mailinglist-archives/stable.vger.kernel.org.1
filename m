@@ -1,125 +1,107 @@
-Return-Path: <stable+bounces-28502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1B988174C
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 19:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9600881753
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 19:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC42F2836C6
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 18:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6633D283D04
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 18:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA086BFD0;
-	Wed, 20 Mar 2024 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A61762FA;
+	Wed, 20 Mar 2024 18:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClG9T9QN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WTN+vqMP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAC96A03E;
-	Wed, 20 Mar 2024 18:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD1D75809
+	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 18:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710959199; cv=none; b=m4T6paEWSXgE+J1x6mVqGmL3cjzClGr+t8AZ1klQ02wIQC8G4LOirVrx0nL3OM/DRxhco2QAV5bcv5PODM0wMicevprMTSH5ODfvg4uhFL9Lq0prgaWxN2jwqXro9LhcerJdTDLjo/YJa++zQk7LMFFOZLGcX0kTz1OfayLve3M=
+	t=1710959447; cv=none; b=mO9PEJ5Vc8Wxcx1u/qG1y+Ay3J3rSFuOlK8QrEJ3trpWnfnWSVt7uZZ+PgiyUr0V/hpjpPJc2FLIQhqsyCKRpcFENCacNxW2pRN4kJYVgpWjzr1A7MlQkpiUrcEOVfpmB936M4ZD7Av/uiQj9Prp3LJsYkionEXP+PFnLsZDsN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710959199; c=relaxed/simple;
-	bh=D1LXc0UmUagZVPqKr1Rh4M2j2+83SmyrSsFiinK2Gn0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tppC1Rn8r0uAHinB6r2T2WVrrMDbf+utP/wlivq1xMunkciiMetlfAK66tPOr1stMcwktVSBPqWxwhIPsh3s+BAt47txdnK9FL2ozME+6Gb0sOyAayFpitvYJJvBOliczWBgHRRPLlBRB7kBddk7+Dqh2psY+6ICdt/0hD7EXUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClG9T9QN; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5a470320194so70956eaf.3;
-        Wed, 20 Mar 2024 11:26:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710959196; x=1711563996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8B7P/zRiu0s9e23bBiGTn371yzLAFaX1RO8T0tzOVR4=;
-        b=ClG9T9QNaF2d2HvKKqZyCV3yWTWAxX92RL5kbFoNpqxtuJ1G9n50fCDnCdrYCmkZz2
-         TgOtKJRyOrWOhQ4TPcnfxQpLaKiKZInksxwG3lhFCMxo/P2GUaKMcnhqFG5aQwfo/VnI
-         3wPxf5KYtBDsMZexcZv50pwfLovfEckdldNBAyrhQvWlNmxh1V3Eb4z82GVLtPn1nxxh
-         lghax66nR2vL0LSqO+TlHmsEwi2ouPxdqICuvniANL6yt34h6Op5DRSZzh7B9QMuhXPa
-         pcuzgWKvbb4FM/fLng3ng2ZPSfKY3v9iWkr3XvqqnMfYSZ+4f8DV5A2GVVUoZ2s9YuEs
-         7erw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710959196; x=1711563996;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8B7P/zRiu0s9e23bBiGTn371yzLAFaX1RO8T0tzOVR4=;
-        b=wb0SFZdRIvJ4o4Tz1XEde+Xre6XaYrzKZMa36Cmn/1V2P/c4KsE19Gj2uodHgv/+xA
-         BCwI2hW3lxTF+Afk7tqNZRFw/GQbCnwgrjGBFJoXUnKBIVmTKeUMgKxIB43Vycp62z9M
-         ugV3kYtjugJTk0N92n2ZaF1LRVtWitrmW21loeDSNTmqfs9i95uBjSLtKRVpHkjTw809
-         k6VqLKqWJSTMaoG5+b713+xKAupOFkIBjsoD2gF+nUXWvgz5TQhZDLmGJp38aFfENMRP
-         OB9RQ7lmJ7mQSv6GK/SXtOznGI5NdINiLsVIADEkzRpOzWqny4I6rKSScZ3i/HYU5NLN
-         9dtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUIk1hSH9e7wt6uw2/GuZ8gYTbWPk4EGBygzByKk+Yp4AW1/Ffrt4Tuz4wFjmBM1kJm5udw0TrPYD3kuR7sjE75m/zAVP+iaVMAWjjX6Vt328NM8bzG0p2kPtXQmJzlohqBpIaMg==
-X-Gm-Message-State: AOJu0Yw9AXI5NBhSUAQ0vz8IfPiwIlUwWW3xKHEzh/VSQ4d/otL6fdPt
-	naK4b5HkpbhXwrj4oAxflTaIIX8x/io/2LeeOm49WqQUT/n38OP5oC/5fvF+
-X-Google-Smtp-Source: AGHT+IEE0OoJUKSUHMpvSdcMuTsIv8qJSqKoDqQqd6beQBy3Y/6x9dVKIRV+jdBEc2+m4h/rFRMqTQ==
-X-Received: by 2002:a05:6358:7f1a:b0:17e:c5b9:5f6d with SMTP id p26-20020a0563587f1a00b0017ec5b95f6dmr7427978rwn.14.1710959196191;
-        Wed, 20 Mar 2024 11:26:36 -0700 (PDT)
-Received: from octofox.hsd1.ca.comcast.net ([2601:646:a200:bbd0:b371:84ee:dcf6:87b4])
-        by smtp.gmail.com with ESMTPSA id h62-20020a638341000000b005dc832ed816sm11209679pge.59.2024.03.20.11.26.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 11:26:35 -0700 (PDT)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <keescook@chromium.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Rich Felker <dalias@libc.org>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
-Date: Wed, 20 Mar 2024 11:26:07 -0700
-Message-Id: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1710959447; c=relaxed/simple;
+	bh=pIMvEZlWIVtjNJitQfBbhwqYFC5rypTGNigzi89FX0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qLH2XqpjfyoBMHUF7Z9NFrOG4lHP1sbyeudTZdf/gpidbygV2FwmNinRalQzAK6/B7pJ8R8UOehgacO1ugsSea6HxWwK2de3d/NxkWjsiFl43vO5GE4ZoOys/ObONmZmlyoYzgMSzgdWx6p9563rSxH4yl21ipIiJu8vA76fr9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WTN+vqMP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710959446; x=1742495446;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pIMvEZlWIVtjNJitQfBbhwqYFC5rypTGNigzi89FX0w=;
+  b=WTN+vqMPzTJM/kWoh0KwasBgygzr2cTheP6jKAuS+ePKwDeZZWa/LNwR
+   BxGp7XllMF35Im02i9smL7gip40BELnnHwr4KR6MlaXT8miioaAjNm0kw
+   yDTJTkWSENwhf2RekBmllFCYxZUMeEKm7oSy6PPzcHk3q81gCPmfdoYlZ
+   wjRK906FkLiTUWZRU/D5zA8TFyd9Kml7ArkQhPP56J99hSBnEQR6eYj2p
+   i24lIWfOpUvMTTIUTgdn3sve7me/4EzlbeGe1dhsHPFtLNxSnQLGqsFnT
+   MnGwxgmjv0a1MGupRnPpVFIpfzZjp55/bYqPMVnYEUl4J+XbZaAx5eyZ+
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5754536"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="5754536"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 11:30:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="14303213"
+Received: from unknown (HELO intel.com) ([10.247.118.186])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 11:30:33 -0700
+Date: Wed, 20 Mar 2024 19:30:25 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: "Mrozek, Michal" <michal.mrozek@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@linux.intel.com>,
+	"Landwerlin, Lionel G" <lionel.g.landwerlin@intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	"Hajda, Andrzej" <andrzej.hajda@intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	"Das, Nirmoy" <nirmoy.das@intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/gt: Report full vm address range
+Message-ID: <ZfsrQWNfzDGl8IVV@ashyti-mobl2.lan>
+References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+ <46ab1d25-5d16-4610-8b8f-2ee07064ec2e@intel.com>
+ <35df0767-384f-49f2-806a-f83765ca7c4c@linux.intel.com>
+ <ZfSAo791UDRnBSwc@ashyti-mobl2.lan>
+ <BN9PR11MB527575D97CB63C5E4B1B0E7AE72D2@BN9PR11MB5275.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BN9PR11MB527575D97CB63C5E4B1B0E7AE72D2@BN9PR11MB5275.namprd11.prod.outlook.com>
 
-In NUMMU kernel the value of linux_binprm::p is the offset inside the
-temporary program arguments array maintained in separate pages in the
-linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-thus must be adjusted when that array is copied to the user stack.
-Without that adjustment the value passed by the NOMMU kernel to the ELF
-program in the AT_EXECFN entry of the aux array doesn't make any sense
-and it may break programs that try to access memory pointed to by that
-entry.
+Hi Michal,
 
-Adjust linux_binprm::exec before the successful return from the
-transfer_args_to_stack().
+On Mon, Mar 18, 2024 at 05:21:54AM +0000, Mrozek, Michal wrote:
+> > > Lionel, Michal, thoughts?
+> Compute UMD needs to know exact GTT total size.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
- fs/exec.c | 1 +
- 1 file changed, 1 insertion(+)
+the problem is that we cannot apply the workaround without
+reserving one page from the GTT total size and we need to apply
+the workaround.
 
-diff --git a/fs/exec.c b/fs/exec.c
-index af4fbb61cd53..5ee2545c3e18 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -895,6 +895,7 @@ int transfer_args_to_stack(struct linux_binprm *bprm,
- 			goto out;
- 	}
- 
-+	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
- 	*sp_location = sp;
- 
- out:
--- 
-2.39.2
+If we provide the total GTT size we will have one page that will
+be contended between kernel and userspace and, if userspace is
+unaware that the page belongs to the kernel, we might step on
+each other toe.
 
+The ask here from kernel side is to relax the check on the
+maxNBitValue() in userspace and take what the kernel provides.
+
+Thanks,
+Andi
 
