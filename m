@@ -1,412 +1,120 @@
-Return-Path: <stable+bounces-28508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8F988187D
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E6D28818A3
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 21:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A056D1C23535
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 20:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603031C224E7
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 20:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31E68592D;
-	Wed, 20 Mar 2024 20:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E13E1EA7C;
+	Wed, 20 Mar 2024 20:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iarkuq96"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lkq/o/FI"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7157E84A43
-	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 20:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0A513AC0;
+	Wed, 20 Mar 2024 20:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710965944; cv=none; b=BjlZjE+qCxVCzXKI6JqI4hANroxLV03k4dqRC4rcNHblFK7fpWLr/aRasljMBldsLsx/Ce+sPWHiN4QNSM/aEiLgkOR0Wy2MihF23ttMVOuiVJI4UPYY7HaiHO3j+Uqcu9KhWKyDu41av95XzoZT7q3Al1h0l/AqkBl38F9Au/o=
+	t=1710966696; cv=none; b=njm4Vm8AOW2NO0+N+VKxcWk22/Sdby7WXWAGbRWqXRincpD0NtN7z1OIMHuhGaMaEmTRXfonPuplhapdLUNnlG5loqbdBMvXJV37QHKNFYQ7FtzrFLWOh4MpsRc+0DpKQgnvt9l0YqXpCBxKMyJ/7fUcx8OggumPdJtktvk9qOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710965944; c=relaxed/simple;
-	bh=yvbGK7Kiiontte9NlJf6YqjSOWHEz1G5tw0/3NWkjD8=;
+	s=arc-20240116; t=1710966696; c=relaxed/simple;
+	bh=IHC7W0vdNvnZRFwRjzxwMFPPCAErFAkI/NZiAIwKitk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GuUXyH139O4IpvKiIQpVaEUlSxXvoCSM9aemBv+oVRvmJrY6zL9ZsOAKWALT7SiUFbClsCn/IQefTXEq+avsuVj3dybDEYS90KJY1lySCFZO+kwb2huJvzMlTgd+zZDe1Qq0f2GfTtC6cvUB19nhLbdIVYB6S1+BeB7IMKM5NkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iarkuq96; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710965940;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hkevnCAXYZkWBpYTI/5KLi02bRyM5EGNUTfKZVdsAWw=;
-	b=iarkuq96b2CZl4fmwNE3ErQIaHjTEJJdTZT40DLyRQDyH4/HR/UQEEFsgdLDrUk11RapDf
-	vj4eRLt6WjpEsCdPCliZHza7+uq0DyXkI1y7o26B+Mozpt4Agfy5vcSS/oV8lGOVOAkQBR
-	3xap1mjgnGRHxgLL+p4Q+zHGx/kDFLM=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-8e_abc0jM2Ss5CDGuj8OiA-1; Wed, 20 Mar 2024 16:18:58 -0400
-X-MC-Unique: 8e_abc0jM2Ss5CDGuj8OiA-1
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-29a5bae5b3fso233366a91.2
-        for <stable@vger.kernel.org>; Wed, 20 Mar 2024 13:18:58 -0700 (PDT)
+	 To:Cc:Content-Type; b=cpGrA773lRO8V/55lBIhI0srFdaXX9FJgkj+r1xo20U/ywHV3favmribuBI+xuCENp/vU47ubw3MbyvN/jH4sdLr7sizb/mh4jibQYY6XcRwdUR12eAvzlBYEC7/+y9v74V/mGZhC0F9YaQFz3QD0WAhwbwkdFOe2VsT27qk6qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lkq/o/FI; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5ca29c131ebso160308a12.0;
+        Wed, 20 Mar 2024 13:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710966694; x=1711571494; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MDxbUkBjk4CfBwXEKRf8dRtsz89f25MfMN5IRAlH4Dk=;
+        b=Lkq/o/FIM/WWsO7QKxWAgfmonBg+XebnUi3fRremxiuU1z84Y0MJ9M8BwOq4zlnJZC
+         Oh3G63Xvwqsu8ibftgvrnnEfeicmpK3ToRIWJVnWxtaf0NQQaJgmwzBsN9BwwU1mUrcK
+         eYXRR+z1iPOj8Jo0nbfWc0DtY9RzZYwcM3eKDrkAL1vzPWjg1tXjW01nZw56LLwNoVfo
+         DrHLIPpfipwaTBQJDAMsvqiZDCemwH67yeoQ1b2jtvyTIIvuiP8DuQLKwxDxdaegIL1h
+         Vs4j3Vb6s8hnmfwk7RSyHIvQ8tyjKF3p1eR6K7Scua9AtpU7q/io28p67bEHnSa3vf0Z
+         3IJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710965937; x=1711570737;
+        d=1e100.net; s=20230601; t=1710966694; x=1711571494;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hkevnCAXYZkWBpYTI/5KLi02bRyM5EGNUTfKZVdsAWw=;
-        b=J791Dkavs2ooz4kRTdMecWtgjHIvsKX6oK3yrQ47C1jT7vn/cyzEd9ByJ7NmYRcU+L
-         2H8x7uNW7vveJA0xIDyu/z/Ca7XUCAFFbp3hXzEC9op9TZsJeeRm6G5vMih8M56VV65O
-         bBSe7jSRcCK2uhRPMwXp8wtRBcXc6d0WfqNBKp/9Q/zOsA+N/mftwsqOJ9lTdZVDjg+S
-         ha2mlXTHh5zDHkBnwWdIu0yQT2QGWRIoPUDjy7EFIWLjIjEQIRzHSlIVrgVKYhc02zs3
-         1eU0RgW7LremGEVqqPW7F69IALt2gi69cLHRlZhTNJWiItQUzl2tyylNumtr2DZCYVOL
-         BvlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTmvXNrNLT9F7ZK53DXTyMWdHL2e+5pZT4FABasAWbSVUntea54hC3I1qegf3FgkLPf+s06yW2FuIVo9fkgycxxUjc20X7
-X-Gm-Message-State: AOJu0Yw5lfpzzA0jLTnP067xVUbpfVpN3wi2OIUEkY4jbWKrAZwWoxJ3
-	bGc6Z67nzrKLsPK5mqArM/3VWSRB1DTsPuTgHp9Imxxawz9JsG7yN/kkhavMkQYTnv/cgKYfeN8
-	/+a4d57B+WO7PxmZGKvwj0k6sg7v2qRNRKUGQA8FZv1O4h6WZp/gOy7U2eoYdP+u6fBNcvQuJ9Y
-	grhWzm8jTuOPJIx6Z4v+D/04YeGwDFQ+1eWRFOavCPmw==
-X-Received: by 2002:a17:90a:cb92:b0:29f:b11f:8a85 with SMTP id a18-20020a17090acb9200b0029fb11f8a85mr3123591pju.35.1710965937390;
-        Wed, 20 Mar 2024 13:18:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKn+XkMEsicI0CFgkRRqE7m3F+bUR335681yGE2Ptu9A3XLd6Upml4UzZMTQePd5Ewe72LDN0Do8/7bLm103Y=
-X-Received: by 2002:a17:90a:cb92:b0:29f:b11f:8a85 with SMTP id
- a18-20020a17090acb9200b0029fb11f8a85mr3123560pju.35.1710965936953; Wed, 20
- Mar 2024 13:18:56 -0700 (PDT)
+        bh=MDxbUkBjk4CfBwXEKRf8dRtsz89f25MfMN5IRAlH4Dk=;
+        b=Kn75ThKJYMxkck4zPg+jVK468kzM52ZuLWKeRmrzMApvB7iWLWrrmX8Csgpa3HkR5d
+         rBNcQDnEDoPz1nMZmWqxIVvuE1nxfK0PAB6y6m5Cg/yMK5G/hebtN+XSk3X9tudAGGg9
+         OoUmPEtM4eTsQlOlE0zlZvE7HfcmWuY+wNgDQHIFidJAr3TY+8NrX9b8V6PGuk2a5yCz
+         trLRGl7xtplyKAwSauxCqAKiSRceJorMgbtBGmUWewHXan8XXrY9tJ8F9CPII9zVtVgC
+         hJOfcBBJapFaQv7oln79SimvgKeZVctf2Kz7untj04SYTKumlttSoScU7GvE5OOmX8uh
+         gQqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHmc8kznWK4P7xpNXsgzauLAS1r4jSft/kmOZPSGulULXE/GPIxxcEeVzY3Me/67oKzoSBV7zmYGq7pDD+QuiXPc2ET9KQnUX8y4y8HocEK1YjDjZri/uQR4s8o3PBHBvCR1NGqQ==
+X-Gm-Message-State: AOJu0YwSrSBQx+juxEnxusyzx+AKaGrfD64XAoqQtxWwpVS/wya3qMqF
+	Tke6LNbFopJ9YkJZMTHjsk20ueQuMQtez8CJqZTS2n/8Aq6gcYm1xZdPNxfp68Cl5pude9Qpc7c
+	IL0g584kWsNooWMNxFvTRhUlt62WoClaeqeI=
+X-Google-Smtp-Source: AGHT+IHAab/9jqTa5zNphG2tQeRstGzN3AZLZGJkHzVD8WS1O1KnA51gP4O2XQ9c00tGS/TbRDfVXnZUvtDSfcj+l+I=
+X-Received: by 2002:a17:90a:c24b:b0:29f:91bf:12f4 with SMTP id
+ d11-20020a17090ac24b00b0029f91bf12f4mr3146775pjx.42.1710966693926; Wed, 20
+ Mar 2024 13:31:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <xhsmhfrwncuky.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <20240320140344.3178785-1-neelx@redhat.com> <xhsmha5msdayv.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <xhsmh4jd0da97.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-In-Reply-To: <xhsmh4jd0da97.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-From: Daniel Vacek <neelx@redhat.com>
-Date: Wed, 20 Mar 2024 21:18:20 +0100
-Message-ID: <CACjP9X-9eJB52RG9N27W6F+rzFTux7SQprb=CYRJcJn4-X12Bw@mail.gmail.com>
-Subject: Re: [PATCH] sched/core: fix affine_move_task failure case
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Daniel Bristot de Oliveira <bristot@redhat.com>, stable@vger.kernel.org, 
-	Bill Peters <wpeters@atpco.net>, Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org
+References: <20240320182607.1472887-1-jcmvbkbc@gmail.com> <Zfs5KTgGnetmg1we@casper.infradead.org>
+In-Reply-To: <Zfs5KTgGnetmg1we@casper.infradead.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Wed, 20 Mar 2024 13:31:22 -0700
+Message-ID: <CAMo8BfJOzPbiOz59kmFuD_4Hkxm50gEujyFYjW2ANqzZNviUGg@mail.gmail.com>
+Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>, 
+	Kees Cook <keescook@chromium.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Rich Felker <dalias@libc.org>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 7:33=E2=80=AFPM Valentin Schneider <vschneid@redhat=
-.com> wrote:
-> On 20/03/24 19:17, Valentin Schneider wrote:
-> > On 20/03/24 15:03, Daniel Vacek wrote:
-> >> Hi Valentin,
-> >>
-> >> On Mon, Mar 18, 2024 at 6:34=E2=80=AFPM Valentin Schneider <vschneid@r=
-edhat.com> wrote:
-> >>> On 18/03/24 12:17, Daniel Vacek wrote:
-> >>> > Bill Peters reported CPU hangs while offlining/onlining CPUs on s39=
-0.
-> >>> >
-> >>> > Analyzing the vmcore data shows `stop_one_cpu_nowait()` in `affine_=
-move_task()`
-> >>> > can fail when racing with off-/on-lining resulting in a deadlock wa=
-iting for
-> >>> > the pending migration stop work completion which is never done.
-> >>> >
-> >>> > Fix this by correctly handling such a condition.
-> >>> >
-> >>>
-> >>> IIUC the problem is that the dest_cpu and its stopper thread can be t=
-aken
-> >>> down by take_cpu_down(), and affine_move_task() currently isn't aware=
- of
-> >>> that. I thought we had tested this vs hotplug, but oh well...
-> >>
-> >> I'm sorry, I should have provided more context in the first place. The=
- machine
-> >> is an LPAR with 2 CPUs and CPU 0 was onlining (hotplugging?) CPU 1. Th=
-e traces
-> >> show this scenario:
-> >>
-> >>             CPU 0                       |           CPU 1
-> >>                                         |
-> >>         cpuplugd task 1429              |
-> >>  holds the `cpu_hotplug_lock`           |
-> >>     for writing in _cpu_up+0x16a        |
-> >> blocked on `cpuhp_state:1.done_up`      |
-> >>      completion in __cpuhp_kick_ap+0x76 |
-> >>                                         |
-> >>                                         |       cpuhp/1 task 17
-> >>                                         |supposed to complete bringup =
-of the CPU
-> >>                                         |     (`cpuhp_state:1.done_up`=
-) in cpuhp_thread_fun+0x108
-> >>                                         |blocked on `wq_pool_attach_mu=
-tex`
-> >>                                         |    in workqueue_online_cpu+0=
-x9e
-> >>                                         |
-> >>         xfs-conv/dm-0 task 745          |
-> >>  holds the `wq_pool_attach_mutex`       |
-> >>     in worker_attach_to_pool+0x66        \
-> >> blocked on `task->migration_pending->done`|
-> >>      completion in affine_move_task+0x10a/
-> >>
-> >> ~~~
-> >> crash> b 1429
-> >> PID: 1429     TASK: 99398000          CPU: 0    COMMAND: "cpuplugd"
-> >>  #0 [997df970] __schedule+0x34c at 3089c424
-> >>  #1 [997df9e0] schedule+0x7e at 3089cafe
-> >>  #2 [997dfa20] schedule_timeout+0x26e at 308a1d8e
-> >>      [inlined] do_wait_for_common
-> >>      [inlined] __wait_for_common
-> >>  #3 [997dfad8] wait_for_common+0x14a at 3089d902
-> >>     [ret call] wait_for_completion+0x1a at 3089d96a
-> >>
-> >>      [inlined] wait_for_ap_thread                      <<< blocked on =
-`cpuhp_state:1.done_up` completion
-> >>     [ret call] __cpuhp_kick_ap+0x76 at 300c610e
-> >>  #4 [997dfb58] cpuhp_kick_ap+0xc4 at 300c61dc
-> >>      [inlined] bringup_wait_for_ap
-> >>     [ret call] bringup_cpu+0xea at 300c6402
-> >>  #5 [997dfba8] cpuhp_invoke_callback+0xcc at 300c4f14
-> >>  #6 [997dfc40] _cpu_up+0x16a at 300c798a               <<< holds the `=
-cpu_hotplug_lock` for writing
-> >>  #7 [997dfc98] do_cpu_up+0xc6 at 300c7b66
-> >>  #8 [997dfcd8] cpu_subsys_online+0x58 at 305a0a00
-> >>  #9 [997dfd28] device_online+0x9e at 30598e7e
-> >> #10 [997dfd68] online_store+0x88 at 30598f28
-> >> #11 [997dfda8] kernfs_fop_write+0xdc at 3040276c
-> >> #12 [997dfdf8] vfs_write+0xa8 at 30354760
-> >> #13 [997dfe58] ksys_write+0x62 at 30354a32
-> >>
-> >> crash> cpuhp_cpu_state.state cpuhp_state:a | paste - -
-> >> [0]: 1aef424e0      state =3D CPUHP_ONLINE,               # (195)
-> >> [1]: 1aef654e0      state =3D CPUHP_AP_WORKQUEUE_ONLINE,  # (159)
-> >>
-> >> crash> cpuhp_cpu_state.bringup,thread,done_up.done cpuhp_state:1 -d | =
-paste - - - -
-> >> [1]: 1aef654e0      bringup =3D true,      thread =3D 0x81134400,     =
- done_up.done =3D 0,  <<<
-> >>
-> >> crash> b 17
-> >> PID: 17       TASK: 81134400          CPU: 1    COMMAND: "cpuhp/1"
-> >>  #0 [81143b68] __schedule+0x34c at 3089c424
-> >>  #1 [81143bd8] schedule+0x7e at 3089cafe
-> >>  #2 [81143c18] schedule_preempt_disabled+0x2a at 3089cfba
-> >>  #3 [81143c30] __mutex_lock+0x320 at 3089df60
-> >>
-> >>  #4 [81143cb0] workqueue_online_cpu+0x9e at 300e847e   <<< blocked on =
-`wq_pool_attach_mutex`
-> >>  #5 [81143d20] cpuhp_invoke_callback+0xcc at 300c4f14
-> >>  #6 [81143db8] cpuhp_thread_fun+0x108 at 300c6848      <<< supposed to=
- complete the bring-up of the CPU (`cpuhp_state:1.done_up`)
-> >>
-> >> crash> b 745
-> >> PID: 745      TASK: 82359100          CPU: 0    COMMAND: "xfs-conv/dm-=
-0"
-> >>  #0 [8b4bfa20] __schedule+0x34c at 3089c424
-> >>  #1 [8b4bfa90] schedule+0x7e at 3089cafe
-> >>  #2 [8b4bfad0] schedule_timeout+0x26e at 308a1d8e
-> >>      [inlined] do_wait_for_common
-> >>      [inlined] __wait_for_common
-> >>  #3 [8b4bfb88] wait_for_common+0x14a at 3089d902
-> >>     [ret call] wait_for_completion+0x1a at 3089d96a
-> >>
-> >>  #4 [8b4bfc08] affine_move_task+0x10a at 300fb51a        <<< blocked o=
-n `task->migration_pending->done` completion
-> >>  #5 [8b4bfd08] __set_cpus_allowed_ptr+0x12e at 300fb926
-> >>     [ret call] set_cpus_allowed_ptr+0xa at 300fba32
-> >>  #6 [8b4bfd78] worker_attach_to_pool+0x66 at 300e1dae    <<< holds the=
- `wq_pool_attach_mutex`
-> >>  #7 [8b4bfdc8] rescuer_thread+0x12c at 300e5bac
-> >>
-> >> crash> rx 8b4bfea0
-> >>         8b4bfea0:  [863373c0:kmalloc-192]
-> >>
-> >> crash> worker.task,rescue_wq 863373c0
-> >>   task =3D 0x82359100,
-> >>   rescue_wq =3D 0x8aa44400,
-> >>
-> >> crash> list -s pool_workqueue.pool pool_workqueue.mayday_node -hO work=
-queue_struct.maydays 0x8aa44400 | paste - -
-> >> 1fffff7f751900    pool =3D 0x1aef56a00,
-> >>
-> >> crash> worker_pool.attrs 0x1aef56a00
-> >>   attrs =3D 0x80088180,
-> >>
-> >> crash> workqueue_attrs.cpumask[0].bits 0x80088180
-> >>   cpumask[0].bits =3D {0x1, 0x0, ...
-> >>
-> >> crash> cpumask.bits __cpu_active_mask
-> >>   bits =3D {0x1, 0x0, ...
-> >>
-> >> crash> cpumask.bits __cpu_online_mask
-> >>   bits =3D {0x3, 0x0, ...
-> >>
-> >> crash> task_struct.migration_pending,flags 0x82359100
-> >>     migration_pending =3D 0x8b4bfce8,
-> >>   flags =3D 0x4208060,
-> >>              ^ PF_KTHREAD
-> >>
-> >> crash> pd distribute_cpu_mask_prev:0
-> >> per_cpu(distribute_cpu_mask_prev, 0) =3D 0
-> >>
-> >> crash> set_affinity_pending.refs.refs.counter,arg,stop_pending,done.do=
-ne 0x8b4bfce8 -d
-> >>   refs.refs.counter =3D 1
-> >>   arg =3D {
-> >>     task =3D 0x82359100,
-> >>     dest_cpu =3D 0,
-> >>     pending =3D 0x8b4bfce8
-> >>   }
-> >>   stop_pending =3D 1,
-> >>   done.done =3D 0,
-> >> ~~~
-> >>
-> >> In other words the `set_cpus_allowed_ptr()` is called from a worker th=
-read which
-> >> tries to migrate. The worker pool is only allowed on CPU 0 and that wa=
-s supposed
-> >> to be the destination as per the stack structure. In this case I thoug=
-ht it's OK
-> >> to leave the task on the old CPU
-> >
-> > AFAICT if a call to set_cpus_allowed_ptr() ends up in affine_move_task(=
-)
-> > and down to the stopper call, that means the task isn't allowed on its
-> > current CPU and needs to be moved.
-> >
-> >> and the Bill's testing scenario was successful
-> >> with the proposed patch. IIUC, it's exercising the hotplug due to load=
--balancing.
-> >>
-> >> This was on RHEL 8.8.z kernel. I see upstream changed a bit so I'm not=
- sure it's
-> >> still reproducible. Also, I'm not sure why this only happens on s390 a=
-nd not on
-> >> x86. I imagine the CPU hotplug slightly differs? Anyways this seems to=
- be timing
-> >> sensitive and the timing will differ greatly for sure.
-> >>
-> >
-> > Thanks for the extra context!
-> >
-> > Double checking what I wrote before, I forgot RCU considers preempt-off
-> > sections as read-side critical sections. __set_cpus_allowed_ptr() alrea=
-dy
-> > has preemption disabled all the way from reading the cpu_active_mask to=
- the
-> > stop_one_cpu_nowait() call via task_rq_lock() + preempt_disable().
-> >
-> > IOW we have:
-> >
-> > __set_cpus_allowed_ptr()
-> >   task_rq_lock() <-- PREEMPT OFF
-> >   __set_cpus_allowed_ptr_locked()
-> >     cpu_valid_mask =3D cpu_active_mask;
-> >     dest_cpu =3D cpumask_any_and_distribute(cpu_valid_mask, ctx->new_ma=
-sk);
-> >     affine_move_task()
-> >       preempt_disable();
-> >       task_rq_unlock();
-> >       stop_one_cpu_nowait(); <-- preemption still OFF
-> >
-> > And, considering:
-> >
-> > sched_cpu_deactivate()
-> >   set_cpu_active(cpu, false);
-> >   synchronize_rcu();
-> >
-> > Then, if __set_cpus_allowed_ptr() observes a CPU as being in the
-> > cpu_active_mask and uses that one as a destination CPU, said CPU cannot
-> > reach CPUHP_TEARDOWN_CPU:take_cpu_down() and park the stopper thread
-> > because its hotplug machinery will wait on the synchronize_rcu() in
-> > CPUHP_AP_ACTIVE:sched_cpu_deactivate().
-> >
-> > So "in theory", this shouldn't happen upstream.
+On Wed, Mar 20, 2024 at 12:29=E2=80=AFPM Matthew Wilcox <willy@infradead.or=
+g> wrote:
 >
-> Eh nevermind, in your stacktrace the relevant task is a rescuer thread
-> which is a kthread, so the cpu_valid_mask in use there is
-> cpu_online_mask, not cpu_valid_mask... Back to reading code :-)
+> On Wed, Mar 20, 2024 at 11:26:07AM -0700, Max Filippov wrote:
+> > In NUMMU kernel the value of linux_binprm::p is the offset inside the
+> > temporary program arguments array maintained in separate pages in the
+> > linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
+> > thus must be adjusted when that array is copied to the user stack.
+> > Without that adjustment the value passed by the NOMMU kernel to the ELF
+> > program in the AT_EXECFN entry of the aux array doesn't make any sense
+> > and it may break programs that try to access memory pointed to by that
+> > entry.
+> >
+> > Adjust linux_binprm::exec before the successful return from the
+> > transfer_args_to_stack().
+>
+> Do you know which commit broke this, ie how far back should this be
+> backported?  Or has it always been broken?
 
-I just wanted to correct you on this point but you figured it out for
-yourself after all.
+From reading the code I see that linux_binprm::p started being an offset
+in the commit b6a2fea39318 ("mm: variable length argument support")
+which is v2.6.22-3328-gb6a2fea39318 and filling in the AT_EXECFN
+aux entry was added in the commit
+ 5edc2a5123a7 ("binfmt_elf_fdpic: wire up AT_EXECFD, AT_EXECFN, AT_SECURE")
+which is v2.6.27-4641-g5edc2a5123a7. I don't see any translation
+of the linux_binprm::exec at that time so to me it looks like it's always
+been broken.
 
-On the other hand the `new_mask` (which comes from the worker pool allowed =
-CPUs)
-
-~~~
-2102 static void worker_attach_to_pool(struct worker *worker,
-2103                                    struct worker_pool *pool)
-2104 {
-2105         mutex_lock(&wq_pool_attach_mutex);
 --
-2117         if (worker->rescue_wq)
-2118                 set_cpus_allowed_ptr(worker->task,
-pool_allowed_cpus(pool));
-
-2827 static int rescuer_thread(void *__rescuer)
-2828 {
-2829         struct worker *rescuer =3D __rescuer;
-2830         struct workqueue_struct *wq =3D rescuer->rescue_wq;
---
-2856         while (!list_empty(&wq->maydays)) {
-2857                 struct pool_workqueue *pwq =3D list_first_entry(&wq->m=
-aydays,
-2858                                         struct pool_workqueue,
-mayday_node);
-2859                 struct worker_pool *pool =3D pwq->pool;
---
-2863                 list_del_init(&pwq->mayday_node);
-2864
-2865                 raw_spin_unlock_irq(&wq_mayday_lock);
-2866
-2867                 worker_attach_to_pool(rescuer, pool);
-2868
-2869                 raw_spin_lock_irq(&pool->lock);
-~~~
-
- matches the `cpu_valid_mask` and is ANDed to the `cpu_online_mask` so
-the final result is the same...
-
-Actually double checking now, I may have pulled the wrong pool as the
-right `pwq` is removed from the `maydays` list on line 2863 (the code
-is similar in RHEL 8.8) and I have used whatever `pwq` was remaining
-on that list, but possibly unrelated.
-
-~~~
-crash> rx 8b4bfe30
-        8b4bfe30:  00000001aef56a00
-
-crash> worker_pool.attrs 1aef56a00
-  attrs =3D 0x80088180,
-
-crash> workqueue_attrs.cpumask[0].bits 0x80088180
-  cpumask[0].bits =3D {0x1, 0x0, ...
-
-crash> set_affinity_pending.refs.refs.counter,arg,stop_pending,done.done
-0x8b4bfce8
-  refs.refs.counter =3D 0x1
-  arg =3D {
-    task =3D 0x82359100,
-    dest_cpu =3D 0x0,
-    pending =3D 0x8b4bfce8
-  }
-  stop_pending =3D 0x1,
-  done.done =3D 0x0,
-~~~
-
-Nah, so not unrelated. It's the right one. The rescuer was deadlocked
-for almost 3 days at the time the vmcore was collected, so it seems
-the `pwq` returned to the `maydays` list in the meantime. And I guess
-the pool cpumask could have changed as well. Nevertheless, the local
-`affine_move_task::my_pending.arg.dest_cpu` on stack still shows CPU 0
-was selected that time.
-
-So far I don't see why upstream would not be prone to the same issue.
-But I may be missing something.
-
---nX
-
+Thanks.
+-- Max
 
