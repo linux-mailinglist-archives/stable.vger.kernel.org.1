@@ -1,324 +1,180 @@
-Return-Path: <stable+bounces-28477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2E98812EB
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:06:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE7C88132E
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 15:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42D6228615F
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 400111C22757
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 14:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A754436F;
-	Wed, 20 Mar 2024 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69D54084D;
+	Wed, 20 Mar 2024 14:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iUVh1Jv5"
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="CZlW0Xne"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAE33B2BE
-	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 14:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9870840863
+	for <stable@vger.kernel.org>; Wed, 20 Mar 2024 14:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710943586; cv=none; b=DIpzdAwrMv+3D8wBfxSFELW6YoutsSGPukV3s62/gdIkhIgao2JBGAqJ58SUb+FYDFp0qJyGuCCC18DL3Fdq2MWB23oMFNIIP1kCFLd+fwm8iPMwBHCZWdGiY4DeZ9YyzLs8ymc/qEyAzXgzzyv78Suhpx9CN3tsRf+SPloCPmU=
+	t=1710944231; cv=none; b=Du+L7AVOCiKnXujXTtcI2E7r9ZqV0gdCcPWW4kUa1XI2ZFjsMCAHYv+TBVgySXC5yIxnzmAv9XWaXELYlt5aOZPsU5b4InX4N0jn844MjvBe/AdjJFyzrHn+ihVmV38ZwIkPcjQPY6IKCGGM0XcZXoXhUkK+3+Ia96OlC505DLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710943586; c=relaxed/simple;
-	bh=b2UjMyzyHG+B0opTU4FbI5RLTxAWDJoL12HgRhHCcv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjpCW205ZbjlohDJkNkG+ZAWfo+3p9NCiugnFg3Evt6O7bMDTtYRhHmfyQXx6ajqD2dV84KlsmVB7i1GRZe/HOGBo3ZnNz+1T8o6HUZUJy9Klr7M6oN4vIhN/sM6V8xc4KZHGPoAVanV1jKe1uhaFQoGrptcrNSlIy6ySiFBJ9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iUVh1Jv5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710943584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0WocJ9H5OztFtMbOa930v/B0kbNi2k0MpCuzyQiWZsc=;
-	b=iUVh1Jv50pCwJIogw7vjxFb9SW9SVjqzRxUDbpW0Cpiy77pCY/WwPJdKwY/kcMVXIY7Xb8
-	YMZMl7tMNjIXQu9ygV2YLV6US/ufdKXUh825gQhzYnvB7NPh/EDY0cleazaS5KeRfj/kBL
-	7uuN3fC2N8GmGeHOpQscFXL7SQ6FoOs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-eih9cY7BPNWODcVWdoa8ag-1; Wed, 20 Mar 2024 10:06:18 -0400
-X-MC-Unique: eih9cY7BPNWODcVWdoa8ag-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EAC4E891E68;
-	Wed, 20 Mar 2024 14:06:17 +0000 (UTC)
-Received: from metal.redhat.com (unknown [10.45.225.13])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id F0AC01C060D3;
-	Wed, 20 Mar 2024 14:06:14 +0000 (UTC)
-From: Daniel Vacek <neelx@redhat.com>
-To: Valentin Schneider <vschneid@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Daniel Vacek <neelx@redhat.com>,
-	stable@vger.kernel.org,
-	Bill Peters <wpeters@atpco.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sched/core: fix affine_move_task failure case
-Date: Wed, 20 Mar 2024 15:03:05 +0100
-Message-ID: <20240320140344.3178785-1-neelx@redhat.com>
-In-Reply-To: <xhsmhfrwncuky.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-References: <xhsmhfrwncuky.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	s=arc-20240116; t=1710944231; c=relaxed/simple;
+	bh=p6dQqq/oYkWbfdi5xnwDgINsJNpwikfJyCRvq5/qIQI=;
+	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
+	 Content-Type; b=I/tTSS0/zq1tMp1wB0fCnfvBCRU5+PLwiU2lFnkkFJGeTQ8lNUz3OSmNzZl85TC4izXgTzKsbZHt91NelkFLFOfe77DeWhLSd7LDfvZ3vgY9jOmquKdU97CBpS/lUnzuMKJYqCzK/xZG/30NxgOYqXtwqk3lyq3S7uQ/H+BTxEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=CZlW0Xne; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1e01c38f98cso23209115ad.3
+        for <stable@vger.kernel.org>; Wed, 20 Mar 2024 07:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1710944229; x=1711549029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T2EgfvxxgK+wJvZtFaKjr7t9HOODvH7M/KpVWvGGTzE=;
+        b=CZlW0Xne9LkFEqRqi/HnxU6DS1b7g30iriiHJC78bciKoaqmqd3g1SdAHUe5qD1YuZ
+         Xm42ltTIznjk0DSaYTUWWYsK82hETHigtGs7KLnyOh2tGY8Ic50D7hy8LPVDg/NV/DVe
+         GLFAXs6sD2tm6UhLMCvW4lRXyYoONS4lxUBU3PLJuF/M6kxMsq3YkCkdENwC8O3Nj+aI
+         PlT6sqzwvSrPe/bozKZ49CM7lIJXzp87GMLVAJbn1Cfmu6G77PGM6lpFe5XWx1kCLCLN
+         Gpj81WFjJeumhhWZqvtKOcYntNMgEX7LY7ao0XWeF3Tl5b4pcauiU1sbuoAzx+vkwd94
+         Us/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710944229; x=1711549029;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T2EgfvxxgK+wJvZtFaKjr7t9HOODvH7M/KpVWvGGTzE=;
+        b=CejdDDjaG2aoZ8ClMhKp9Jb9F8NyucrK2wlZahPXhBW2VTlsfFPBFoB8/wPeg9rZXv
+         54aPIYg6cChDFMYwoGZt2Ok6C2zxXL+w5SoB9N0o6e+eJGQVdeeLgTqmnE4KLp+dfffT
+         0e8V8jJ24NxRTQcYZVSaoejlNPQk+FEe9hCSF83i9qlz+c2EiDZOm/661TOVmlzzpl+B
+         cGs2G6NvjIWWrHdkn6GyChzJWtRKxUB9X8ywpwOBU6TXlrCLd/ac/t301c+Uk0XD8Hz0
+         kd1AFJuwVdYzZWCaX+U2EfpXLwqAX294wzj5S+/fmlXYaGWretWvXxL1G5930nf5kkic
+         Wzrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnePQ9eyFu02nOb/j/jgxMAJ0rKJq/4l4iFstpuBLmNw7TXQSeljtTByGE3Y6+GU1vKEZk8+lxfoYPia8jt1Ee94VG6jvw
+X-Gm-Message-State: AOJu0Yy8ugdbNVr1S//2fI7FQKIUOvZ+6Mc4f/lnGilxJa5hE0HkbesF
+	bpyC4Avrm6mPz9CqWONAXxDMn2JYGK+Aq6bX92a9Pn1R00gq9xxnAQpM/waR9VI=
+X-Google-Smtp-Source: AGHT+IGycrYcZflVp1sNbYxQH6AqEecSt6Yeb5KG7ltM7bagqWpsCCfgRrtVN3eRcOSSKhXrIi+/+g==
+X-Received: by 2002:a17:902:eb8c:b0:1de:ddc6:278f with SMTP id q12-20020a170902eb8c00b001deddc6278fmr17506092plg.0.1710944228449;
+        Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
+Received: from localhost ([192.184.165.199])
+        by smtp.gmail.com with ESMTPSA id u10-20020a17090282ca00b001d8edfec673sm13539227plz.214.2024.03.20.07.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
+Date: Wed, 20 Mar 2024 07:17:08 -0700 (PDT)
+X-Google-Original-Date: Wed, 20 Mar 2024 07:17:06 PDT (-0700)
+Subject:     Re: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed before EOI
+In-Reply-To: <87wmr8hd7j.ffs@tglx>
+CC: namcao@linutronix.de, Paul Walmsley <paul.walmsley@sifive.com>,
+  samuel@sholland.org, Marc Zyngier <maz@kernel.org>, guoren@kernel.org, linux-kernel@vger.kernel.org,
+  linux-riscv@lists.infradead.org, namcao@linutronix.de, stable@vger.kernel.org
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: tglx@linutronix.de
+Message-ID: <mhng-2ab049d5-bab9-4d62-8d68-a7159a987f12@palmer-ri-x1c9>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-Hi Valentin,
-
-On Mon, Mar 18, 2024 at 6:34 PM Valentin Schneider <vschneid@redhat.com> wrote:
-> On 18/03/24 12:17, Daniel Vacek wrote:
-> > Bill Peters reported CPU hangs while offlining/onlining CPUs on s390.
-> >
-> > Analyzing the vmcore data shows `stop_one_cpu_nowait()` in `affine_move_task()`
-> > can fail when racing with off-/on-lining resulting in a deadlock waiting for
-> > the pending migration stop work completion which is never done.
-> >
-> > Fix this by correctly handling such a condition.
-> >
+On Tue, 13 Feb 2024 02:26:40 PST (-0800), tglx@linutronix.de wrote:
+> Nam!
 >
-> IIUC the problem is that the dest_cpu and its stopper thread can be taken
-> down by take_cpu_down(), and affine_move_task() currently isn't aware of
-> that. I thought we had tested this vs hotplug, but oh well...
-
-I'm sorry, I should have provided more context in the first place. The machine
-is an LPAR with 2 CPUs and CPU 0 was onlining (hotplugging?) CPU 1. The traces
-show this scenario:
-
-            CPU 0                       |           CPU 1
-                                        |
-        cpuplugd task 1429              |
- holds the `cpu_hotplug_lock`           |
-    for writing in _cpu_up+0x16a        |
-blocked on `cpuhp_state:1.done_up`      |
-     completion in __cpuhp_kick_ap+0x76 |
-                                        |
-                                        |       cpuhp/1 task 17
-                                        |supposed to complete bringup of the CPU
-                                        |     (`cpuhp_state:1.done_up`) in cpuhp_thread_fun+0x108
-                                        |blocked on `wq_pool_attach_mutex`
-                                        |    in workqueue_online_cpu+0x9e
-                                        |
-        xfs-conv/dm-0 task 745          |
- holds the `wq_pool_attach_mutex`       |
-    in worker_attach_to_pool+0x66        \
-blocked on `task->migration_pending->done`|
-     completion in affine_move_task+0x10a/
-
-~~~
-crash> b 1429
-PID: 1429     TASK: 99398000          CPU: 0    COMMAND: "cpuplugd"
- #0 [997df970] __schedule+0x34c at 3089c424
- #1 [997df9e0] schedule+0x7e at 3089cafe
- #2 [997dfa20] schedule_timeout+0x26e at 308a1d8e
-     [inlined] do_wait_for_common
-     [inlined] __wait_for_common
- #3 [997dfad8] wait_for_common+0x14a at 3089d902
-    [ret call] wait_for_completion+0x1a at 3089d96a
-
-     [inlined] wait_for_ap_thread                      <<< blocked on `cpuhp_state:1.done_up` completion
-    [ret call] __cpuhp_kick_ap+0x76 at 300c610e
- #4 [997dfb58] cpuhp_kick_ap+0xc4 at 300c61dc
-     [inlined] bringup_wait_for_ap
-    [ret call] bringup_cpu+0xea at 300c6402
- #5 [997dfba8] cpuhp_invoke_callback+0xcc at 300c4f14
- #6 [997dfc40] _cpu_up+0x16a at 300c798a               <<< holds the `cpu_hotplug_lock` for writing
- #7 [997dfc98] do_cpu_up+0xc6 at 300c7b66
- #8 [997dfcd8] cpu_subsys_online+0x58 at 305a0a00
- #9 [997dfd28] device_online+0x9e at 30598e7e
-#10 [997dfd68] online_store+0x88 at 30598f28
-#11 [997dfda8] kernfs_fop_write+0xdc at 3040276c
-#12 [997dfdf8] vfs_write+0xa8 at 30354760
-#13 [997dfe58] ksys_write+0x62 at 30354a32
-
-crash> cpuhp_cpu_state.state cpuhp_state:a | paste - -
-[0]: 1aef424e0      state = CPUHP_ONLINE,               # (195)
-[1]: 1aef654e0      state = CPUHP_AP_WORKQUEUE_ONLINE,  # (159)
-
-crash> cpuhp_cpu_state.bringup,thread,done_up.done cpuhp_state:1 -d | paste - - - -
-[1]: 1aef654e0      bringup = true,      thread = 0x81134400,      done_up.done = 0,  <<<
-
-crash> b 17
-PID: 17       TASK: 81134400          CPU: 1    COMMAND: "cpuhp/1"
- #0 [81143b68] __schedule+0x34c at 3089c424
- #1 [81143bd8] schedule+0x7e at 3089cafe
- #2 [81143c18] schedule_preempt_disabled+0x2a at 3089cfba
- #3 [81143c30] __mutex_lock+0x320 at 3089df60
-
- #4 [81143cb0] workqueue_online_cpu+0x9e at 300e847e   <<< blocked on `wq_pool_attach_mutex`
- #5 [81143d20] cpuhp_invoke_callback+0xcc at 300c4f14
- #6 [81143db8] cpuhp_thread_fun+0x108 at 300c6848      <<< supposed to complete the bring-up of the CPU (`cpuhp_state:1.done_up`)
-
-crash> b 745
-PID: 745      TASK: 82359100          CPU: 0    COMMAND: "xfs-conv/dm-0"
- #0 [8b4bfa20] __schedule+0x34c at 3089c424
- #1 [8b4bfa90] schedule+0x7e at 3089cafe
- #2 [8b4bfad0] schedule_timeout+0x26e at 308a1d8e
-     [inlined] do_wait_for_common
-     [inlined] __wait_for_common
- #3 [8b4bfb88] wait_for_common+0x14a at 3089d902
-    [ret call] wait_for_completion+0x1a at 3089d96a
-
- #4 [8b4bfc08] affine_move_task+0x10a at 300fb51a        <<< blocked on `task->migration_pending->done` completion
- #5 [8b4bfd08] __set_cpus_allowed_ptr+0x12e at 300fb926
-    [ret call] set_cpus_allowed_ptr+0xa at 300fba32
- #6 [8b4bfd78] worker_attach_to_pool+0x66 at 300e1dae    <<< holds the `wq_pool_attach_mutex`
- #7 [8b4bfdc8] rescuer_thread+0x12c at 300e5bac
-
-crash> rx 8b4bfea0
-        8b4bfea0:  [863373c0:kmalloc-192] 
-
-crash> worker.task,rescue_wq 863373c0
-  task = 0x82359100,
-  rescue_wq = 0x8aa44400,
-
-crash> list -s pool_workqueue.pool pool_workqueue.mayday_node -hO workqueue_struct.maydays 0x8aa44400 | paste - -
-1fffff7f751900    pool = 0x1aef56a00,
-
-crash> worker_pool.attrs 0x1aef56a00
-  attrs = 0x80088180,
-
-crash> workqueue_attrs.cpumask[0].bits 0x80088180
-  cpumask[0].bits = {0x1, 0x0, ...
-
-crash> cpumask.bits __cpu_active_mask
-  bits = {0x1, 0x0, ...
-
-crash> cpumask.bits __cpu_online_mask
-  bits = {0x3, 0x0, ...
-
-crash> task_struct.migration_pending,flags 0x82359100
-    migration_pending = 0x8b4bfce8,
-  flags = 0x4208060,
-             ^ PF_KTHREAD
-
-crash> pd distribute_cpu_mask_prev:0
-per_cpu(distribute_cpu_mask_prev, 0) = 0
-
-crash> set_affinity_pending.refs.refs.counter,arg,stop_pending,done.done 0x8b4bfce8 -d
-  refs.refs.counter = 1
-  arg = {
-    task = 0x82359100,
-    dest_cpu = 0,
-    pending = 0x8b4bfce8
-  }
-  stop_pending = 1,
-  done.done = 0,
-~~~
-
-In other words the `set_cpus_allowed_ptr()` is called from a worker thread which
-tries to migrate. The worker pool is only allowed on CPU 0 and that was supposed
-to be the destination as per the stack structure. In this case I thought it's OK
-to leave the task on the old CPU and the Bill's testing scenario was successful
-with the proposed patch. IIUC, it's exercising the hotplug due to load-balancing.
-
-This was on RHEL 8.8.z kernel. I see upstream changed a bit so I'm not sure it's
-still reproducible. Also, I'm not sure why this only happens on s390 and not on
-x86. I imagine the CPU hotplug slightly differs? Anyways this seems to be timing
-sensitive and the timing will differ greatly for sure.
-
-> > Fixes: 9e81889c7648 ("sched: Fix affine_move_task() self-concurrency")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Bill Peters <wpeters@atpco.net>
-> > Tested-by: Bill Peters <wpeters@atpco.net>
-> > Signed-off-by: Daniel Vacek <neelx@redhat.com>
-> > ---
-> >  kernel/sched/core.c | 13 +++++++++++--
-> >  1 file changed, 11 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> > index 9116bcc903467..d0ff5c611a1c8 100644
-> > --- a/kernel/sched/core.c
-> > +++ b/kernel/sched/core.c
-> > @@ -3069,8 +3069,17 @@ static int affine_move_task(struct rq *rq, struct task_struct *p, struct rq_flag
-> >               preempt_disable();
-> >               task_rq_unlock(rq, p, rf);
-> >               if (!stop_pending) {
-> > -			stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
-> > -					    &pending->arg, &pending->stop_work);
-> > +			stop_pending =
-> > +				stop_one_cpu_nowait(cpu_of(rq), migration_cpu_stop,
-> > +						    &pending->arg, &pending->stop_work);
-> > +
-> > +			if (!stop_pending) {
-> > +				rq = task_rq_lock(p, rf);
-> > +				pending->stop_pending = false;
-> > +				p->migration_pending = NULL;
-> > +				task_rq_unlock(rq, p, rf);
-> > +				complete_all(&pending->done);
-> > +			}
+> On Wed, Jan 31 2024 at 09:19, Nam Cao wrote:
+>> RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
+>> explained in the description of Interrupt Completion in the PLIC spec:
+>>
+>> "The PLIC signals it has completed executing an interrupt handler by
+>> writing the interrupt ID it received from the claim to the claim/complete
+>> register. The PLIC does not check whether the completion ID is the same
+>> as the last claim ID for that target. If the completion ID does not match
+>> an interrupt source that *is currently enabled* for the target, the
+>> completion is silently ignored."
+>>
+>> Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
+>> ensured that EOI is successful by enabling interrupt first, before EOI.
+>>
+>> Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+>> operations") removed the interrupt enabling code from the previous
+>> commit, because it assumes that interrupt should already be enabled at the
+>> point of EOI. However, this is incorrect: there is a window after a hart
+>> claiming an interrupt and before irq_desc->lock getting acquired,
+>> interrupt can be disabled during this window. Thus, EOI can be invoked
+>> while the interrupt is disabled, effectively nullify this EOI. This
+>> results in the interrupt never gets asserted again, and the device who
+>> uses this interrupt appears frozen.
 >
-> This can leave the task @p on a now-illegal CPU; consider a task affined to
-> CPUs 0-1, migrate_disable(); then affined to CPUs 2-3, then in
-> migrate_enable() the dest_cpu is chosen as 3 but that's racing with it
-> being brought down. The stop_one_cpu_nowait() fails, and we leave the task
-> on CPUs 0-1.
+> Nice detective work!
 >
-> Issuing a redo of affine_move_task() with a different dest_cpu doesn't
-> sound great, and while very unlikely that doesn't have forward progress
-> guarantees.
+>> Make sure that interrupt is really enabled before EOI.
+>>
+>> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Nam Cao <namcao@linutronix.de>
+>> ---
+>> v2:
+>>   - add unlikely() for optimization
+>>   - re-word commit message to make it clearer
+>>
+>>  drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+>> index e1484905b7bd..0a233e9d9607 100644
+>> --- a/drivers/irqchip/irq-sifive-plic.c
+>> +++ b/drivers/irqchip/irq-sifive-plic.c
+>> @@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
+>>  {
+>>  	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
+>>
+>> -	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+>> +	if (unlikely(irqd_irq_disabled(d))) {
+>> +		plic_toggle(handler, d->hwirq, 1);
+>> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+>> +		plic_toggle(handler, d->hwirq, 0);
 >
-> Unfortunately we can't hold the hotplug lock during the affinity change of
-> migrate_enable(), as migrate_enable() isn't allowed to block.
->
-> Now, the CPU selection in __set_cpus_allowed_ptr_locked() that is passed
-> down to affine_move_task() relies on the active mask, which itself is
-> cleared in sched_cpu_deactivate() and is followed by a
-> synchronize_rcu().
->
-> What if we made the affinity change of migrate_enable() an RCU read-side
-> section? Then if a CPU X is observed as active in
->   migrate_enable()->__set_cpus_allowed_ptr_locked()
-> , then its' hotplug state cannot go lower than CPUHP_AP_ACTIVE until the task is
-> migrated away.
->
-> Something like the below. Thoughts?
-> ---
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 929fce69f555e..c6d128711d1a9 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -2450,8 +2450,11 @@ void migrate_enable(void)
->  	 * __set_cpus_allowed_ptr(SCA_MIGRATE_ENABLE) doesn't schedule().
->  	 */
->  	guard(preempt)();
-> -	if (p->cpus_ptr != &p->cpus_mask)
-> +	if (p->cpus_ptr != &p->cpus_mask) {
-> +		guard(rcu)();
->  		__set_cpus_allowed_ptr(p, &ac);
-> +	}
-> +
->  	/*
->  	 * Mustn't clear migration_disabled() until cpus_ptr points back at the
->  	 * regular cpus_mask, otherwise things that race (eg.
+> It's unfortunate to have this condition in the hotpath, though it should
+> be cache hot, easy to predict and compared to the writel() completely in
+> the noise.
 
-With the above being said, I don't see any relation to `migrate_enable()` and
-this change looks irrelevant in the context.
+Ya, I think it's fine.
 
-Any fresh ideas?
+I guess we could try and play some tricks.  Maybe hide the load latency 
+with a relaxed writel and some explict fencing, or claim interrupts when 
+enabling them.  Those both seem somewhat race-prone, though, so I'm not 
+even sure if they're sane.
 
---nX
+Anything with a PLIC is going to have pretty poor interrupt latency 
+already, so I doubt it's worth the headache.
 
+>> +	} else {
+>> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+>> +	}
+>>  }
+>
+> Can the RISCV folks please have a look at this?
+
+Sorry I missed this.
+
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+in case anyone was worried, though I saw it got merged so I think we're 
+safe there.  I'm always a bit lost with the IRQ stuff, I didn't even 
+know that race condition was posisble.
+
+Thanks for the fix!
+
+>
+> Thanks,
+>
+>         tglx
 
