@@ -1,142 +1,111 @@
-Return-Path: <stable+bounces-28452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EF2880869
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 01:12:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFB188089D
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 01:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F37961C22237
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 00:12:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D2FF1C22103
+	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 00:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D905A622;
-	Wed, 20 Mar 2024 00:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0456280C;
+	Wed, 20 Mar 2024 00:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FBmv1DkD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ka1sC+6a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37B29A9;
-	Wed, 20 Mar 2024 00:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FD1A32;
+	Wed, 20 Mar 2024 00:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710893518; cv=none; b=bAOVpxbgkRJX5NAsmbaw0cMqkHcXg8JErDJn58H+0W7u0VPyHOmnjkHNpMSXY0umTIbQariXINE3LLfv/h1SmKtNdEaFYceAxxsI8wkTb9qsowY37lqXEtV2BZb9Tv0M+i3aVhSejaYnKgN+JNZRanUpb9ifnQQkTmAyJ2/za48=
+	t=1710895074; cv=none; b=ufXcPva+KerS0QstXdOF26GnybgnswU1maGbkQuz/+srxDjce2xVLfC8G8hSwov/bsYIaHZiYlZBTpC/RtpDUzECKzdCCQdRryKsmRJ/cXv/9V6Gh2hZncq2ysmO/M/MIXqbJmHp5lK4rIJRjjJW81kDLFhyB2XNaJlWUnvXtuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710893518; c=relaxed/simple;
-	bh=tT/cnq29qDS361LtzVLG3+TjD7UVyvgFr5D6DtgnviA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vEjI12F1DaaBJfWdbdF7eiriolBfXd2BQrkXnLS348yNaEyjN0XNTW3cKsJuo+Jhg66NU47nJOuIDoy9nWP8mZbDgpYVg9SUAA6heb80uWi1GKTrFWd43TR+znhutgYePb6jrswEIQZ21YOtzi+qOGJR+e6xfIRGpESswWrftv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FBmv1DkD; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-41462295004so12199095e9.0;
-        Tue, 19 Mar 2024 17:11:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710893515; x=1711498315; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s5UeCuP+rHqrtuTgJs0v1PQXUHTqmsrEuVFHCUle14o=;
-        b=FBmv1DkDhrVDBdi9RyurOfG+9db0yxQQ4e4Ir0e+h4lQl0wcbANLE/7W4VW94yUtMU
-         37HhmZvDx2mgAQkvDo4V2MDdylidsbrxTgW8JBugdKLY5m6Resb6pEh7n1xed24V7lpq
-         OvXIZdJT2D9TcsfWeRWejyTmlhi8JgOvLEkL2eoYxfI7m0tPK6qy0COsdRjFOiSLHHQ9
-         tENer/uf4De+SNsZb/1/BkTXcNyjRIaH9fV1FLscvjYqS/HtkQMkeFuYXjbr+UdyasS5
-         aQQNf+iv3urA5dYeHT9Rs1aAO+x0dsJnVWeHRV+xcAlsfSuhQ9VKOH7QKcCOy3Y/6HRR
-         KLdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710893515; x=1711498315;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s5UeCuP+rHqrtuTgJs0v1PQXUHTqmsrEuVFHCUle14o=;
-        b=kGnbOoRZwzVxWPsdw2QvfR6z9/8Gds5Q5hxRZyMi8A7LpvPN9N42gjm5M4WXSWm9bQ
-         crd/u399iSOG54lS2TouACsYoB+narTE6SdYHjuFaQY11wROwzxZ+wbz2gvQDMnAAFoe
-         hn1N9VUENloqjOVL99p4ClIZaIhcWPqGjEIovA5KJ5aTr1fkliCJpHtl5dn5d5ed2uG1
-         se9ayI80FmCy/AVsYvo9XJlmwiuLmZbeHppGa/mJd85WmUxq/f+g3ulkSNLr+FhYL4ZR
-         NcRxi93wBWfE2JS/xALNjeyDHwgj5Sal9TYml9Du4o8zfkBqx+i2o9LyCcJBDViLUquK
-         Or/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVxSszq1F9tjY3N0UGWwVdDMhULL1wqwy/bq9kmUNqDV4UDcKJFQyzVMIPjnLxtJZoNHNc/hcXy+8ZH+PSwrQz83COJ+AUqcb0CqZVBfA2n64hu+L7rGOUDImQfH6OYrcyLrR8wAqliJiYENkqyDtLZ25TsgzZZ1vSNy5nE3ds6P5ydMw==
-X-Gm-Message-State: AOJu0YwDwi5l7aNkGLA2dNDJUXkeJktKHR1JMe4Sd8gEaeQ+KawBtvBX
-	GdZtNIUoYgFqfZs2VYn3+mX7+FMOZGrRGtkQsn/n06XjLRgpOvWs
-X-Google-Smtp-Source: AGHT+IH3ETbAdh9odNtGmgi5+pc37TVausHqIdd+KaNxNGb33DnpvHbi2eNlp3wRouIqKjFQ5anQpA==
-X-Received: by 2002:a05:600c:3b0a:b0:414:cc0:e4d6 with SMTP id m10-20020a05600c3b0a00b004140cc0e4d6mr5937225wms.26.1710893515176;
-        Tue, 19 Mar 2024 17:11:55 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id f20-20020a05600c155400b00413eedd36a4sm371478wmg.39.2024.03.19.17.11.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Mar 2024 17:11:54 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mtd: rawnand: qcom: Fix broken misc_cmd_type in exec_op
-Date: Wed, 20 Mar 2024 01:11:39 +0100
-Message-ID: <20240320001141.16560-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1710895074; c=relaxed/simple;
+	bh=H5PLorY6Ln0claIexaNlOnDQb1/MD6u9Cfxdq4YBk4g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sjdj+5Rn680c0DcJPLVOHtI6W0/wGQiihw7MLqredST4RDIqaHUelc8/MLRGcT8PuG0bkAUf8jVPj1AvsL722aTtlDrz8wLNts2L8PQu9JeihRVpMzoH5E0kXsOSJ7ljOhEZi8+c8XMFJKIDVjVAPhsB8cp6Y657NiV+02zVZOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ka1sC+6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAF7C433F1;
+	Wed, 20 Mar 2024 00:37:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710895074;
+	bh=H5PLorY6Ln0claIexaNlOnDQb1/MD6u9Cfxdq4YBk4g=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Ka1sC+6a7uyb7+Ow9StGXtuG0370Lf55eX7kC7fEzCN+KIHfNRe9oTjCK7HXSdPCx
+	 ZH5pcBQszzqBXWCdnM3xuFUIJ52XIFYc+ROhO6he9e+EqT4j3hRf9u/BisgQqPq38J
+	 nq4R5/+UB7UzE2edwxuf3pe9Tgl0/5e+kgkbch/5OzmxvzAlychGgH9hq+gMUwy10b
+	 FkOysl1OywhTpmFeklZDw5iWOXD2TSEFFQzOeMfBMlSyj/HsIzx6M7F7d292dbfgJX
+	 +NY6Ej8ZdD2o05ed+Xsxu24ZxYumUOECxPpBYIUg4If8RV+TGPkMYt0vzD6fy/qhbz
+	 qKxUjiDaSFIaw==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 19 Mar 2024 17:37:46 -0700
+Subject: [PATCH] hexagon: vmlinux.lds.S: Handle attributes section
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240319-hexagon-handle-attributes-section-vmlinux-lds-s-v1-1-59855dab8872@kernel.org>
+X-B4-Tracking: v=1; b=H4sIANkv+mUC/x2NwQrDIBBEfyXsuQtqhGB/pfRgdJMsWFPUBCHk3
+ 7v0+GZ4MxdUKkwVnsMFhU6uvGcB/RggbD6vhByFwShj1agdbtT9umeUMiZC31rh+WhUsVJoYuP
+ 5SZyPjilKhsZrO2s7ORcUyOq30ML9//h63/cPfZ1W8IEAAAA=
+To: akpm@linux-foundation.org, bcain@quicinc.com
+Cc: ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, 
+ linux-hexagon@vger.kernel.org, llvm@lists.linux.dev, 
+ patches@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1276; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=H5PLorY6Ln0claIexaNlOnDQb1/MD6u9Cfxdq4YBk4g=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKm/9B9qsb+p+SRtGH/n8z8rPsHpTIs9dQSYs5QechR1y
+ JxwijzWUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACZi+ZThf46n9RW10IRX21T2
+ v3um8tm76yHLDVWnjs3ffNgFs7tf7GD4KxoWdrBDi1s1r25pW7GwhUTWcm6mlR+5T5/b/OSPwuQ
+ pLAA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
-("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-reworked and generalized but actually dropped the handling of the
-RESET_DEVICE command.
+After the linked LLVM change, the build fails with
+CONFIG_LD_ORPHAN_WARN_LEVEL="error", which happens with allmodconfig:
 
-The rework itself was correct with supporting case where a single misc
-command is handled, but became problematic by the addition of exiting
-early if we didn't had an ERASE or an OP_PROGRAM_PAGE operation.
+  ld.lld: error: vmlinux.a(init/main.o):(.hexagon.attributes) is being placed in '.hexagon.attributes'
 
-Also additional logic was added without clear explaination causing the
-erase command to be broken on testing it on a ipq806x nandc.
+Handle the attributes section in a similar manner as arm and riscv by
+adding it after the primary ELF_DETAILS grouping in vmlinux.lds.S, which
+fixes the error.
 
-Add some additional logic to restore RESET_DEVICE command handling and
-fix erase command.
-
-Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Fixes: 113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
+Link: https://github.com/llvm/llvm-project/commit/31f4b329c8234fab9afa59494d7f8bdaeaefeaad
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/hexagon/kernel/vmlinux.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index b079605c84d3..b8cff9240b28 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
- 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
- 		instrs = 3;
--	} else {
-+	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
- 		return 0;
- 	}
+diff --git a/arch/hexagon/kernel/vmlinux.lds.S b/arch/hexagon/kernel/vmlinux.lds.S
+index 1140051a0c45..1150b77fa281 100644
+--- a/arch/hexagon/kernel/vmlinux.lds.S
++++ b/arch/hexagon/kernel/vmlinux.lds.S
+@@ -63,6 +63,7 @@ SECTIONS
+ 	STABS_DEBUG
+ 	DWARF_DEBUG
+ 	ELF_DETAILS
++	.hexagon.attributes 0 : { *(.hexagon.attributes) }
  
-@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
- 
- 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
--	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
--	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
--	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-+	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-+		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
- 
- 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
- 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+ 	DISCARDS
+ }
+
+---
+base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+change-id: 20240319-hexagon-handle-attributes-section-vmlinux-lds-s-2a14b14799c0
+
+Best regards,
 -- 
-2.43.0
+Nathan Chancellor <nathan@kernel.org>
 
 
