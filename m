@@ -1,171 +1,376 @@
-Return-Path: <stable+bounces-28572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E5388609E
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 19:37:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E698860E2
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 20:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F781F22544
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 18:37:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E967B214C4
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 19:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B4A5CB5;
-	Thu, 21 Mar 2024 18:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECC313340B;
+	Thu, 21 Mar 2024 19:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gcjUmpdt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O6j3fTBt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B9131742
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 18:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711046218; cv=none; b=oeVBtrDLLT/jRQsjOWKwB92eg1ZWl2QvWRn5ErlLgKydqa8YR0VfREP4RT4cuoGxjm04gtHaIZcqu2bY6L0rWfREOOfpr2TsW2ekMUYMVH0LAXAtcoXUAPcxMJZMPy7kzOzCfIX0kFjYMq9qE3D0Wm0feoymfbCZPV+elRrfViw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711046218; c=relaxed/simple;
-	bh=eUEa4rrGYlyZhAfRF+ds5sMG/T25zrE7GnOSK5h9F6Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bApBStGQ2wGK33W8V6/EjVFuuqMJ96MgWriwjl/yQkaNX5JcUbLzn1ebbwu/YsbdgQCkxXOOSA+QMcEEf/R6+dkmLY0ydQz6qaZgMw1NqSkHgWevi5s2mPhtIFDXDCoklRUjCXQ3lfZVwEsK8j9EI42gQKiphSxbQ0zNoKse2BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gcjUmpdt; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbf618042daso2039366276.0
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 11:36:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711046216; x=1711651016; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bbCcL6OE4hGPljo6KgMnWz9lsSx4HXWFLCLqK+CpD5w=;
-        b=gcjUmpdtt60sNeEEaUoO5jbxgfIyxKfnljDZEtqqVrjJ9ef+ictz9pmqTbfbWAKZ72
-         qNfKAVkDDeODcF5U1FUJ2ukO3K2046VnGEN/3gGa0qWo5ylKaIj4UNU8WOv+KEwW0T1A
-         Z5uT+HLbmK/vpH+bStv9lCTAgi4c0EyGjQ1qhvIPm1gJjp8gWQ/7TBbUNZneAoO6wW76
-         B3TZdaIAWjnYyWltQcsDfFbIgpOO4NGPfcCAvlNjCgBEUBdVrPdTY2QWE/FjZtdWngbn
-         kwZtS8ZXVTBzNsdwsDeyFojB0wNA+48SC+zrZnDAzrJ8IfQyfFgkhS2DmlB2F/ksHhHK
-         vYJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711046216; x=1711651016;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bbCcL6OE4hGPljo6KgMnWz9lsSx4HXWFLCLqK+CpD5w=;
-        b=DkkC/h+ECbn3QUPyYPk/PxDG5YmSDOAxKE1aDTXuMigXIUIDmJtmgx03d44A6boVZb
-         kteRawhMSI317lrE29FyfSIXjEejQoyBgAaVXaXK9xX0G7f8OmGhJYWiL7Gt3kHRD3ho
-         wTELLgPcQrDMGHABxIIdheqkkBGyIcyb1gtaztuf0P0Ixy08asccVY12JU7xHnL/Z6IU
-         HNloWG7pvrS9qMtdetVa4etzRAvBo0/tLko8A1oGgQIAwyiCowCebc4WJ5R1Rk57uIrP
-         4kVC8CCA8R/woji+do+lzx9D89Y4Ina8n1AV4cLchGt+wT5Fjbn8V46Qp89EPwA4/px/
-         7LgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOhMzkJbIiUs2YdqNyvFZaQ7Kx37hGbT8w3HncRiKpJyjLOJgGyBWa5ej3AUs4IcvoOsLBdY7Ji9CgNUpn3IovJtv2Ck6g
-X-Gm-Message-State: AOJu0YwAJp3lPX4GyKOY7xKY6Y7STJMm51MIJu1EVuiZi0h4uaADA6/5
-	p3rrxmxoYiBHvTEaGXR9zOkEZmdYyXcZboBtlGpB4LAuI+WDZR0dj5uAplZ+fUN2fBIQGiBKDLj
-	CpUJSecjNjnexaZIWvw==
-X-Google-Smtp-Source: AGHT+IGVKM74DX/eJBUX2BxRcTwydQ0lZph+eL4O9Qy//R+b2lvRLwx760LaFZnBPco9gucSiCyzr9XwrWOfpihG
-X-Received: from yosry.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:29b4])
- (user=yosryahmed job=sendgmr) by 2002:a05:6902:2301:b0:dc7:865b:22c6 with
- SMTP id do1-20020a056902230100b00dc7865b22c6mr1248392ybb.8.1711046216453;
- Thu, 21 Mar 2024 11:36:56 -0700 (PDT)
-Date: Thu, 21 Mar 2024 18:36:54 +0000
-In-Reply-To: <20240321182532.60000-1-hannes@cmpxchg.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF7D5CB5
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 19:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711048214; cv=fail; b=lDwnZHkvnJiai6IG6L8sqBeaCJUvw1TXbmuV3uZlDWajgReXdYFafxE88Ybeq1xM1UN4ZfxIsiuHM4gD58RvkgQi0bqOwrt7YKysKAH0uqlK3lVvhauJJ1TBZdLYfntSv49rkg/IqeNEj/P9kKIx06gJu27OyhG1VfRAPMobDZE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711048214; c=relaxed/simple;
+	bh=3kA8SYezCCeGXg6JAcVsr3F+TPmbGuu4ESgvIn6y1Ro=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=do0hMZg/QK0hfyndPdmOtuiy98qB/+UR0Rz6qhkr4hhFvRxWJYFNveNoySa3jSzfguGWa3dF2XHCexdpyF961IW+3UnKhWod0A657cCD6H46YqDgA3rpFtNvRwUMVqkhFDWdrDy+SwVECI2c7ynv/cIgwyaFKFwfYTsnY3LKjPo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O6j3fTBt; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711048213; x=1742584213;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=3kA8SYezCCeGXg6JAcVsr3F+TPmbGuu4ESgvIn6y1Ro=;
+  b=O6j3fTBtUJEm567WiblvUJXozo4eFtbHQawf0oVSEQgMGuwHwc2QQALt
+   3h1vcKw5QPo2aeDRucvNaNhmfIeoriRm9XVHkaA0DBeNpW4kIVIt61vC0
+   GqUoIfE323cucBEDqp4IrDqfwlw0Z2w32zPW1lvZO1h3Cm7zQadNELORK
+   jYjXWpwwiEyOXU+gqFStyV6A9PXiOzDCoz4lrMSyXbHy3F7pxaqwMlVyY
+   nHgM7dpwmAufTMw+tnEr6BwlXbDmGZOPMxN8uZQPgJ6Hth2BOHmiD4oK9
+   IjlXfXbjURYzyTtCPk6WvEf/+gLtJgk6avn//fRfnvGGUc5j0qG51Jqnm
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6276898"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
+   d="scan'208";a="6276898"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 12:10:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
+   d="scan'208";a="19271840"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Mar 2024 12:10:11 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 21 Mar 2024 12:10:11 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 21 Mar 2024 12:10:10 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 21 Mar 2024 12:10:10 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 21 Mar 2024 12:10:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YzbV9a/2G+YtY10WjqkrHSEjKdQwcKtM72e6zmNDWjJFGwNw2RdvC3YXnIVIZ8befvMH7EoAu0fRt+f0h4uMgj/sb91aHKi9aS4xOAscd6GeHN20R45PPMrXxFGRUsd/QR02ypSNlh4ALrKtRsvPOOI0bkonWCKi20xNZ0LB00T6TV5WMhBK2vgMqQwNndO9+2au/1v0rss8uSzpv7v/ZhPKB57H3y6pvq5945tf2uO/agS77n4OjEBiV83Ck9PngMl50XAbfRfWsT3xneyf61Y+IY8/8woFGbRCH+Q2vR8lvLrtsGY08JP823tjXtIKjoawETXVKOTo3+VS/EJlTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GLtERFqgUfU3l4tvfEGWuYt7jIiou8VwFstK7Sk0HFo=;
+ b=hu8U5b7do2irYK89YrvtAGuFMjXDoV/6diKCafTDGc5sjPh/4PuPscngHT3m+AWkrNMHUCJEvnOZ4NLXkVWr6ayYaObL96C9Z5DvVuTakM6ge0lmtwqPasP+68+U372RgrW/FTYK+0Y/XE9xJDRGunwsG28jAHJUEkCY//OKsTtj6H6XRlNnwv3nLAW9W0V9rRt6OSPJQuX8y+LmjMEofcuHu/pziB54yPtU3wG67Z0sEAdmE8GZnTl+pFsr/w+uKpGZeJNSonfrgGYWhBlQs9+MkrwpqO5OiIcQCAlQdZ9w30uustAkkXrqVaveikj2AUt2KVDY0wSM2GzYTmdVuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by PH0PR11MB4791.namprd11.prod.outlook.com (2603:10b6:510:43::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.10; Thu, 21 Mar
+ 2024 19:10:08 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e7c:ccbc:a71c:6c15%5]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
+ 19:10:08 +0000
+Date: Thu, 21 Mar 2024 19:09:34 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/7] drm/xe: Use ring ops TLB invalidation for rebinds
+Message-ID: <ZfyF7kfCE+xcMFa7@DUT025-TGLU.fm.intel.com>
+References: <20240321113720.120865-1-thomas.hellstrom@linux.intel.com>
+ <20240321113720.120865-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240321113720.120865-3-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: SJ0PR13CA0127.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::12) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240321182532.60000-1-hannes@cmpxchg.org>
-Message-ID: <Zfx-RjViLUMwWRmi@google.com>
-Subject: Re: [PATCH] mm: zswap: fix writeback shinker GFP_NOIO/GFP_NOFS recursion
-From: Yosry Ahmed <yosryahmed@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Chengming Zhou <zhouchengming@bytedance.com>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH0PR11MB4791:EE_
+X-MS-Office365-Filtering-Correlation-Id: 329fbc88-a39c-498c-72e0-08dc49da8646
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 70WF17LckTgOHBM5cCrpxFsjwHYCT2pgGnA6mcSpTUimjFLeSxeLVnAmllko8k0+9Xj92nPPhdg1iJAiMrcHQuoMY68+TXvM3wcuEXlNIm5yLg6udmxNLb0vYrvOEjCZfr17jP4gFZiFM35vnZ9OwEjgj/tepDwOZK6IHRAVP83b5zFgDXIU6oU1atId0B9zVGhnfOkUljj2fys3df/wv2Apn0LK6jZxMb9ZWpzbiBLmE4PPOgfXe/oaM6Hh5X5kV2GbVdQtFeLPjR3PKrvoQAJFlqlFCZOGGpYERx1si6Pa4JhTuAoLphlmMuYxwBPoWY0RQYty5kftGPj6PiWU3r6ML2p4Biwsvqw+FdZt1XC6nCckscHxbBvWiymB5FSvxT1UsgG7NYpgpIH9QQp4mi3pcDlE6rx2w3UlcWw1RbCSA1fOH1rBw5nA6ON2ybsgaehC2tHmJhb4PcbvQWNhVFxx+OCmOxFLRupD8ElmtwPuutpy/6P5mzIL8MX5JMClXD4Ovzms+YrzFUisT25sNIVNTvhjE/8OV+MglgpGsJAP/ovNA+LwRImSpj4+FMDPPFQcmbgLjAsHmq2ukUudAzaGlN324/R64Exx6cALAE/cP7ea9TyuevyFFVyAMsTO
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?gIeIwINsq2GG0cYryws/sGzByFmK5Gfr7MakHWChHMdxmvFLgIHcPfAWLa?=
+ =?iso-8859-1?Q?hCdJh14MCGj89rZvWURbbC0G09zlQ4U9oBh4pb5wRsebA526lpcTSSPr6Z?=
+ =?iso-8859-1?Q?TZXsZvSaFVEQZv5F16BJ+Zv0gzuOAj1uCpe8ic3lXTdlIO75PGe1QP09Z4?=
+ =?iso-8859-1?Q?FZqIuHkaVAw1+MdeEvleBYAoTWYT27Y+nF6QBvf23stiB8fQ6zHgaZ2dqY?=
+ =?iso-8859-1?Q?rSm+Uphpnx73R5uqOCNLtnHryBbEgrGnkPZ1OLQw4fBbkQXuhVYKhAgP98?=
+ =?iso-8859-1?Q?lmlKbPH2NaTQ4rJFD5F701ZZwLpl7G2G1+Aw+dTRBmCZVoHVNNaVquw8BW?=
+ =?iso-8859-1?Q?Baj0wCIaT1zno+VfWYFO7KyR0b+EBuoZAZpdTqy2ruWtwal9sLCZXxdIHQ?=
+ =?iso-8859-1?Q?njIuU674hRcT420PiTqifh0uA1U/F9wnYlRFILmNtQckZqOoZRBnIG60bJ?=
+ =?iso-8859-1?Q?RhlbRCBmoPktfGA9wnmuoVmOx12mLrQY6mfexdhZ8NWMnA65FSe2Ayattt?=
+ =?iso-8859-1?Q?W/CJ3NYG0PcTRrw3zKezTz7Jx/zA8OxiE//xN5NNq7U7QoBqa7Sq6vE4Px?=
+ =?iso-8859-1?Q?7CGDmXhN9hlwZCtRpig217RTC873XzFEORHwFY3lOd8Ux9v08/N2rrnNhF?=
+ =?iso-8859-1?Q?p2KjnETxEhdFYdCLoNYlaKkOSk/ZdXNvljHEpiE2X+n1LkIoPzs3pVYDR8?=
+ =?iso-8859-1?Q?zl581ouk6FIsUduLRLF7hnQ+owSLCpzEkZfPwHx8/Jo3gfs+ns2SGT3/k/?=
+ =?iso-8859-1?Q?zcXAVe8ytIIXJqjWNAwQCUDPcb0M5T6DuMaztKBH27Ih8+nMdHDZxIpMAH?=
+ =?iso-8859-1?Q?CYDKanHZtaTox90ugXPFDqDchzeB0SSSNpBY1TeedmlGvTs7DQSZIXvG5E?=
+ =?iso-8859-1?Q?6fnQvA9xB4qLChstiJtaOmedWCiihlMRNgybEC34QJTGmc2F4BvgU/HhCE?=
+ =?iso-8859-1?Q?nDwE3Mp/+DB47NImavysjLVzpAtJqiNoYndGBQZTM4RZJDfdZQUpyCeNsH?=
+ =?iso-8859-1?Q?0RzYv/JHisFcAMkX2v2leiywJ+CfCC+eE6rN0XGhGxn1LHGD1pOnhnU26T?=
+ =?iso-8859-1?Q?2NyArWiXcitXwdrFL+jc58qAQ9ELx+Uvv5C+NxhIM/NfyMy03A0jNh3B00?=
+ =?iso-8859-1?Q?tcrhyVCTTFlKGkEeWo6LjXHHHvGDygMNkPOquP2RU4JN+o5wLT67T2IHJm?=
+ =?iso-8859-1?Q?7CUgWSuMQXzTZbAHtolYdN53RCJdXb7DdTWAObKjl34GU7cyW5clAxN4gI?=
+ =?iso-8859-1?Q?8F4bCl0vuT44p3saiCcZyLr59pE00oLIyVkGoEq6QKr1nfkyab0wjzxc6S?=
+ =?iso-8859-1?Q?d+TSWv37Iqoz3o0fI2PuLXuKXpNzrjlXUPPLrC35cEIaBk8nKMwcx64OcS?=
+ =?iso-8859-1?Q?tImJwYaW/n4cz/yC9F39F62WuTcOiLNMy8Xp7XbdItktKvr51uS33tm2JN?=
+ =?iso-8859-1?Q?pzSwlsGs9zTYn+2K8NhFjHIlUchh8xVx5jG0MQB/N2NooPCoj5yCauqGPU?=
+ =?iso-8859-1?Q?lfr0JYC4+pFluVT5rnwlBgSP6fAVQDunC6fs5gYcc1i5Me5l2CFsXg/DHy?=
+ =?iso-8859-1?Q?fHJcqWJ2YercFpS0esA8BMOp8c++v0CsPSMsgdlJrwMemMauC+P9KqwWaH?=
+ =?iso-8859-1?Q?gEvnlL40AodVtLchwZTy1I+CdtU3eP8GVsW8GgHHo8vdRbKYLyGENjRA?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 329fbc88-a39c-498c-72e0-08dc49da8646
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 19:10:08.5767
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eQGNd6LdP6V3XTmEagKHARkKT1fczXLc/JevdOXYc6okV4859VvCaHGTk0YcZvtq0XLnrqse9MaXNl8vpmdZ9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4791
+X-OriginatorOrg: intel.com
 
-On Thu, Mar 21, 2024 at 02:25:32PM -0400, Johannes Weiner wrote:
-> Kent forwards this bug report of zswap re-entering the block layer
-> from an IO request allocation and locking up:
+On Thu, Mar 21, 2024 at 12:37:11PM +0100, Thomas Hellström wrote:
+> For each rebind we insert a GuC TLB invalidation and add a
+> corresponding unordered TLB invalidation fence. This might
+> add a huge number of TLB invalidation fences to wait for so
+> rather than doing that, defer the TLB invalidation to the
+> next ring ops for each affected exec queue. Since the TLB
+> is invalidated on exec_queue switch, we need to invalidate
+> once for each affected exec_queue.
 > 
-> [10264.128242] sysrq: Show Blocked State
-> [10264.128268] task:kworker/20:0H   state:D stack:0     pid:143   tgid:143   ppid:2      flags:0x00004000
-> [10264.128271] Workqueue: bcachefs_io btree_write_submit [bcachefs]
-> [10264.128295] Call Trace:
-> [10264.128295]  <TASK>
-> [10264.128297]  __schedule+0x3e6/0x1520
-> [10264.128303]  schedule+0x32/0xd0
-> [10264.128304]  schedule_timeout+0x98/0x160
-> [10264.128308]  io_schedule_timeout+0x50/0x80
-> [10264.128309]  wait_for_completion_io_timeout+0x7f/0x180
-> [10264.128310]  submit_bio_wait+0x78/0xb0
-> [10264.128313]  swap_writepage_bdev_sync+0xf6/0x150
-> [10264.128317]  zswap_writeback_entry+0xf2/0x180
-> [10264.128319]  shrink_memcg_cb+0xe7/0x2f0
-> [10264.128322]  __list_lru_walk_one+0xb9/0x1d0
-> [10264.128325]  list_lru_walk_one+0x5d/0x90
-> [10264.128326]  zswap_shrinker_scan+0xc4/0x130
-> [10264.128327]  do_shrink_slab+0x13f/0x360
-> [10264.128328]  shrink_slab+0x28e/0x3c0
-> [10264.128329]  shrink_one+0x123/0x1b0
-> [10264.128331]  shrink_node+0x97e/0xbc0
-> [10264.128332]  do_try_to_free_pages+0xe7/0x5b0
-> [10264.128333]  try_to_free_pages+0xe1/0x200
-> [10264.128334]  __alloc_pages_slowpath.constprop.0+0x343/0xde0
-> [10264.128337]  __alloc_pages+0x32d/0x350
-> [10264.128338]  allocate_slab+0x400/0x460
-> [10264.128339]  ___slab_alloc+0x40d/0xa40
-> [10264.128345]  kmem_cache_alloc+0x2e7/0x330
-> [10264.128348]  mempool_alloc+0x86/0x1b0
-> [10264.128349]  bio_alloc_bioset+0x200/0x4f0
-> [10264.128352]  bio_alloc_clone+0x23/0x60
-> [10264.128354]  alloc_io+0x26/0xf0 [dm_mod 7e9e6b44df4927f93fb3e4b5c782767396f58382]
-> [10264.128361]  dm_submit_bio+0xb8/0x580 [dm_mod 7e9e6b44df4927f93fb3e4b5c782767396f58382]
-> [10264.128366]  __submit_bio+0xb0/0x170
-> [10264.128367]  submit_bio_noacct_nocheck+0x159/0x370
-> [10264.128368]  bch2_submit_wbio_replicas+0x21c/0x3a0 [bcachefs 85f1b9a7a824f272eff794653a06dde1a94439f2]
-> [10264.128391]  btree_write_submit+0x1cf/0x220 [bcachefs 85f1b9a7a824f272eff794653a06dde1a94439f2]
-> [10264.128406]  process_one_work+0x178/0x350
-> [10264.128408]  worker_thread+0x30f/0x450
-> [10264.128409]  kthread+0xe5/0x120
-> 
-> The zswap shrinker resumes the swap_writepage()s that were intercepted
-> by the zswap store. This will enter the block layer, and may even
-> enter the filesystem depending on the swap backing file.
-> 
-> Make it respect GFP_NOIO and GFP_NOFS.
-> 
-> Link: https://lore.kernel.org/linux-mm/rc4pk2r42oyvjo4dc62z6sovquyllq56i5cdgcaqbd7wy3hfzr@n4nbxido3fme/
-> Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-> Cc: stable@vger.kernel.org	[v6.8]
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-
-Acked-by: Yosry Ahmed <yosryahmed@google.com>
-
-Thanks for the quick fix.
-
+> Fixes: 5387e865d90e ("drm/xe: Add TLB invalidation fence after rebinds issued from execs")
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 > ---
->  mm/zswap.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  drivers/gpu/drm/xe/xe_exec_queue_types.h |  2 ++
+>  drivers/gpu/drm/xe/xe_pt.c               |  5 +++--
+>  drivers/gpu/drm/xe/xe_ring_ops.c         | 11 ++++-------
+>  drivers/gpu/drm/xe/xe_sched_job.c        | 11 +++++++++++
+>  drivers/gpu/drm/xe/xe_sched_job_types.h  |  2 ++
+>  drivers/gpu/drm/xe/xe_vm_types.h         |  5 +++++
+>  6 files changed, 27 insertions(+), 9 deletions(-)
 > 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index b31c977f53e9..535c907345e0 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1303,6 +1303,14 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
->  	if (!zswap_shrinker_enabled || !mem_cgroup_zswap_writeback_enabled(memcg))
->  		return 0;
+> diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+> index 62b3d9d1d7cd..891ad30e906f 100644
+> --- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
+> +++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+> @@ -148,6 +148,8 @@ struct xe_exec_queue {
+>  	const struct xe_ring_ops *ring_ops;
+>  	/** @entity: DRM sched entity for this exec queue (1 to 1 relationship) */
+>  	struct drm_sched_entity *entity;
+> +	/** @tlb_flush_seqno: The seqno of the last rebind tlb flush performed */
+> +	u64 tlb_flush_seqno;
+>  	/** @lrc: logical ring context for this exec queue */
+>  	struct xe_lrc lrc[];
+>  };
+> diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+> index 8d3922d2206e..21bc0d13fccf 100644
+> --- a/drivers/gpu/drm/xe/xe_pt.c
+> +++ b/drivers/gpu/drm/xe/xe_pt.c
+> @@ -1254,11 +1254,12 @@ __xe_pt_bind_vma(struct xe_tile *tile, struct xe_vma *vma, struct xe_exec_queue
+>  	 * non-faulting LR, in particular on user-space batch buffer chaining,
+>  	 * it needs to be done here.
+>  	 */
+> -	if ((rebind && !xe_vm_in_lr_mode(vm) && !vm->batch_invalidate_tlb) ||
+> -	    (!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
+> +	if ((!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
+
+Looked why this works in fault mode, we disallow scratch page in fault
+mode. I thought at one point we had implementation for that [1] but it
+looks like it never got merged. Some to keep an eye on.
+
+[1] https://patchwork.freedesktop.org/series/120480/
+
+>  		ifence = kzalloc(sizeof(*ifence), GFP_KERNEL);
+>  		if (!ifence)
+>  			return ERR_PTR(-ENOMEM);
+> +	} else if (rebind && !xe_vm_in_lr_mode(vm) && !vm->batch_invalidate_tlb) {
+> +		vm->tlb_flush_seqno++;
+
+Can we unwind this if / else clause a bit?
+
+I think batch_invalidate_tlb can only be true if !xe_vm_in_lr_mode(vm).
+
+So else if 'rebind && !xe_vm_in_lr_mode(vm)' should work. Also if
+batch_invalidate_tlb is we true we always issue TLB invalidate anyways
+and incrementing the seqno is harmles too.
+
+Side note, I'd be remiss if I didn't mention that I really do not like
+updating these functions (__xe_pt_bind_vma / __xe_pt_unbind_vma) as they
+are going away / being reworked here [2] in order to implement 1 job per
+IOCTL / proper error handling.
+
+[2] https://patchwork.freedesktop.org/series/125608/
+
+>  	}
 >  
-> +	/*
-> +	 * The shrinker resumes swap writeback, which will enter block
-> +	 * and may enter fs. XXX: Harmonize with vmscan.c __GFP_FS
-> +	 * rules (may_enter_fs()), which apply on a per-folio basis.
-> +	 */
-> +	if (!gfp_has_io_fs(sc->gfp_mask))
-> +		return 0;
+>  	rfence = kzalloc(sizeof(*rfence), GFP_KERNEL);
+> diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
+> index c4edffcd4a32..5b2b37b59813 100644
+> --- a/drivers/gpu/drm/xe/xe_ring_ops.c
+> +++ b/drivers/gpu/drm/xe/xe_ring_ops.c
+> @@ -219,10 +219,9 @@ static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc
+>  {
+>  	u32 dw[MAX_JOB_SIZE_DW], i = 0;
+>  	u32 ppgtt_flag = get_ppgtt_flag(job);
+> -	struct xe_vm *vm = job->q->vm;
+>  	struct xe_gt *gt = job->q->gt;
+>  
+> -	if (vm && vm->batch_invalidate_tlb) {
+> +	if (job->ring_ops_flush_tlb) {
+>  		dw[i++] = preparser_disable(true);
+>  		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
+>  					seqno, true, dw, i);
+> @@ -270,7 +269,6 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
+>  	struct xe_gt *gt = job->q->gt;
+>  	struct xe_device *xe = gt_to_xe(gt);
+>  	bool decode = job->q->class == XE_ENGINE_CLASS_VIDEO_DECODE;
+> -	struct xe_vm *vm = job->q->vm;
+>  
+>  	dw[i++] = preparser_disable(true);
+>  
+> @@ -282,13 +280,13 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
+>  			i = emit_aux_table_inv(gt, VE0_AUX_INV, dw, i);
+>  	}
+>  
+> -	if (vm && vm->batch_invalidate_tlb)
+> +	if (job->ring_ops_flush_tlb)
+>  		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
+>  					seqno, true, dw, i);
+>  
+>  	dw[i++] = preparser_disable(false);
+>  
+> -	if (!vm || !vm->batch_invalidate_tlb)
+> +	if (!job->ring_ops_flush_tlb)
+>  		i = emit_store_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
+>  					seqno, dw, i);
+>  
+> @@ -317,7 +315,6 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
+>  	struct xe_gt *gt = job->q->gt;
+>  	struct xe_device *xe = gt_to_xe(gt);
+>  	bool lacks_render = !(gt->info.engine_mask & XE_HW_ENGINE_RCS_MASK);
+> -	struct xe_vm *vm = job->q->vm;
+>  	u32 mask_flags = 0;
+>  
+>  	dw[i++] = preparser_disable(true);
+> @@ -327,7 +324,7 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
+>  		mask_flags = PIPE_CONTROL_3D_ENGINE_FLAGS;
+>  
+>  	/* See __xe_pt_bind_vma() for a discussion on TLB invalidations. */
+> -	i = emit_pipe_invalidate(mask_flags, vm && vm->batch_invalidate_tlb, dw, i);
+> +	i = emit_pipe_invalidate(mask_flags, job->ring_ops_flush_tlb, dw, i);
+>  
+>  	/* hsdes: 1809175790 */
+>  	if (has_aux_ccs(xe))
+> diff --git a/drivers/gpu/drm/xe/xe_sched_job.c b/drivers/gpu/drm/xe/xe_sched_job.c
+> index 8151ddafb940..d55458d915a9 100644
+> --- a/drivers/gpu/drm/xe/xe_sched_job.c
+> +++ b/drivers/gpu/drm/xe/xe_sched_job.c
+> @@ -250,6 +250,17 @@ bool xe_sched_job_completed(struct xe_sched_job *job)
+>  
+>  void xe_sched_job_arm(struct xe_sched_job *job)
+>  {
+> +	struct xe_exec_queue *q = job->q;
+> +	struct xe_vm *vm = q->vm;
 > +
->  #ifdef CONFIG_MEMCG_KMEM
->  	mem_cgroup_flush_stats(memcg);
->  	nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
+> +	if (vm && !xe_sched_job_is_migration(q) && !xe_vm_in_lr_mode(vm) &&
+> +	    vm->tlb_flush_seqno != q->tlb_flush_seqno) {
+> +		q->tlb_flush_seqno = vm->tlb_flush_seqno;
+> +		job->ring_ops_flush_tlb = true;
+> +	} else if (vm && vm->batch_invalidate_tlb) {
+> +		job->ring_ops_flush_tlb = true;
+> +	}
+> +
+
+Can we simplify this too?
+
+	if (vm && (vm->batch_invalidate_tlb || (vm->tlb_flush_seqno != q->tlb_flush_seqno))) {
+		q->tlb_flush_seqno = vm->tlb_flush_seqno;
+		job->ring_ops_flush_tlb = true;
+	}
+
+I think this works as xe_sched_job_is_migration has
+emit_migration_job_gen12 which doesn't look at job->ring_ops_flush_tlb,
+so no need to xe_sched_job_is_migration.
+
+Also no need to check xe_vm_in_lr_mode as we wouldn'y increment the
+seqno above if that true.
+
+Lastly, harmless to increment q->tlb_flush_seqno in the case of
+batch_invalidate_tlb being true.
+
+>  	drm_sched_job_arm(&job->drm);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
+> index b1d83da50a53..5e12724219fd 100644
+> --- a/drivers/gpu/drm/xe/xe_sched_job_types.h
+> +++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
+> @@ -39,6 +39,8 @@ struct xe_sched_job {
+>  	} user_fence;
+>  	/** @migrate_flush_flags: Additional flush flags for migration jobs */
+>  	u32 migrate_flush_flags;
+> +	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
+> +	bool ring_ops_flush_tlb;
+
+How about JOB_FLAG_FLUSH_TLB rather than a new field? See
+JOB_FLAG_SUBMIT flag usage.
+
+Matt
+
+>  	/** @batch_addr: batch buffer address of job */
+>  	u64 batch_addr[];
+>  };
+> diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+> index ae5fb565f6bf..5747f136d24d 100644
+> --- a/drivers/gpu/drm/xe/xe_vm_types.h
+> +++ b/drivers/gpu/drm/xe/xe_vm_types.h
+> @@ -264,6 +264,11 @@ struct xe_vm {
+>  		bool capture_once;
+>  	} error_capture;
+>  
+> +	/**
+> +	 * @tlb_flush_seqno: Required TLB flush seqno for the next exec.
+> +	 * protected by the vm resv.
+> +	 */
+> +	u64 tlb_flush_seqno;
+>  	/** @batch_invalidate_tlb: Always invalidate TLB before batch start */
+>  	bool batch_invalidate_tlb;
+>  	/** @xef: XE file handle for tracking this VM's drm client */
 > -- 
 > 2.44.0
 > 
