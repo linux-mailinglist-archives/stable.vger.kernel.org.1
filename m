@@ -1,131 +1,122 @@
-Return-Path: <stable+bounces-28569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB6D885F42
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 18:09:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EE9885F63
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 18:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0A51F26561
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 17:09:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDCBC2827D4
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 17:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ACF137769;
-	Thu, 21 Mar 2024 17:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962D285C5E;
+	Thu, 21 Mar 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fNCuajIk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iwyjuyp+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CBC1369BD
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 17:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532FF17590
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 17:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711040705; cv=none; b=RlRznHGL0/tO6qXbbvxtkEWGNYTs915yeruWmgyNoGUImpxsCVU5oBlWncYYIBObaTJXj/c46U/mGqw6/nbcT0/ZEhWlJE6+LT9n+8jjGLU7/rv8APaCZlzVRUsYByYx8Lo34q25LbLVzvpTPPkpOkGqMNuSlqSPJ2+yOCwzRAs=
+	t=1711041241; cv=none; b=sd5r30CkKiWL8PotgCvsNvdPXhWrDQICPt2fenpIW39OL/b0W+agJUSfs7lvKJW+PUgfgIRmkyt2RVXUpiRj4HaUiFMVGt68EZx12c3BoapuV4HEJIDAsf5T6NRmXwkWvYfLJtSYJpgIxzGylchohqM5bqmI9fsY/El4CgUmfRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711040705; c=relaxed/simple;
-	bh=F7BZPRrnGiUnAuBv0KvmsW8b1nfHOpvDFLxdGkrbpm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l89eZPMq3woKR6l7yiWNj864+GVW5j5OJS8ZxvJna4Ieh3oqJJIVhwVrhJUYlvrh/K2oA+xVRFB6OT1gMltKTlKegQAC41eHwxeFsxbBLTq07VVrv9/YGmMyv/iGneVg7BTtv4gaCiJJS+CO1OmHUDYo6h5z+SxUH7Q2EuxHy/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fNCuajIk; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e8f76f18d3so999335b3a.0
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 10:05:03 -0700 (PDT)
+	s=arc-20240116; t=1711041241; c=relaxed/simple;
+	bh=Gy9dSISYC3+iioEVBCt5B4Eh35ZBRiWCProDJ1p0Lbc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rxMjrciIS/w0ekVPjlgK+/zs87b3DAOXXLyMebM2rBVyI5CrBDi2f5fDgu64z7ZzCIlMZb7JcH0/9Uyq20Y3apQ6BtzMRKY2/oJmKaHeM+T5PZLZ6WMeNuTwpw40k/qiHXsApJxPzjQ4C1k1DsHFkWUQSpRgjvAqgsT2+Y7wwUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iwyjuyp+; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4146e53d92eso8748035e9.0
+        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 10:13:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1711040703; x=1711645503; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=abV1KSQfMj1DzU4Wxs3gXedK8VwaffSMAGzyZA+mQ48=;
-        b=fNCuajIkfUB0fTpb8UiK4C/yfMmbOvutmU/1Ppb6FePYcwb4lU2BnxCqo0vlNNniwg
-         180bQbGurOpKxEeR1LilXtOfvwIilSztCthOJb9wXUIYJ6Ycqr5v8zEL02FY1tmwT+YK
-         Ujk2x1j6oHhqotvox6FVelVonE5C7hZYMDV/M=
+        d=linaro.org; s=google; t=1711041237; x=1711646037; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WjLTQlvuPOBaz+D+LjUilodmD16xs/15SSgaRqgavvw=;
+        b=iwyjuyp+hhAo4htDuUkMsPGWE/+o39uZTbnjWObUfd0FlsI9fYoeIG+jem5DUe/qS6
+         ftI5Rrtr428hrAB2Dq1TKofkWRDYJ2I5/702rpwWm83eE95SHmlYVpc4XWgdQaXxgtb6
+         nZI0g/lxPR08n5qugI/y+MbL7HJ/Un7BzI9DQB/PLGR0Y2t71h5WbAuglosQQz9E2Wsh
+         lelkTiX2ryva85eObm3U7K1oWZ/7WO6V4jxDIZJqPHibSXrjeYgXhG7Prbp9d6JZm5A5
+         0INKfKrntr6NC3dJL9PjlZIQ6vlr15TgsQGq11RFSfsHxec4qiWos9MAANt6UNNZLcwU
+         WORg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711040703; x=1711645503;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=abV1KSQfMj1DzU4Wxs3gXedK8VwaffSMAGzyZA+mQ48=;
-        b=FfMUSO/Hpk3YLNeXBxniCRdb0tSLVdKXKNAcTlIdRozuMdj4iHxoR0DywYqu3RmsSn
-         RFwVxMjSt6k0m2yblxtH4Wry12LC5sJaIe96spffUPZ0N2ZiPgXDBuEunY/Ax/sAXBpE
-         SH6TypQZwWklYn0YHRmVJDxp6Lj3T5wjybGne/pm0+Osh+gbSQan4FpjQhazST7m5bF3
-         olxBRu5mjjfgdyPB5K2UN7/hqaXKuHUxlOopW4XtD5UvUNgJIJ3rlJfa1Tiu2gAxcnaP
-         BwvHo8U3vJlxg7euCSUmv7d1HYGouYQ3+X2GyUGabxvyQmKpNpmC1fAhRZg+JxmWwTsd
-         qsXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXaQDI0Gkb7nP927Ju1rmaeX7pCcknbr92Lqf++2FDUzeIuKuJm51yPo1FPpzLxwynubMe33aTIGQTV4Wb6MEF7BsOAnjQN
-X-Gm-Message-State: AOJu0Yw16fRxHr2BzNBC2ll2brLtRnwUjzmQ9VUEGCqGFuuC1N8LzjgY
-	YDSoblxbG3umUGoC9KVTs1dxPMjnTGcvO2tayVfE60uxsrkT6YBxVQ5YMfcMfA==
-X-Google-Smtp-Source: AGHT+IHjXoA11dA50WtbnjUSI44eAM2tLeRUNZtkfUInXbO/jmancQD+KVgSdBcSUYmuk5/U/6YV+A==
-X-Received: by 2002:a05:6a00:3a05:b0:6e6:5291:1779 with SMTP id fj5-20020a056a003a0500b006e652911779mr4275257pfb.6.1711040703382;
-        Thu, 21 Mar 2024 10:05:03 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id t16-20020a62d150000000b006e731b44241sm73573pfl.42.2024.03.21.10.05.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 10:05:02 -0700 (PDT)
-Date: Thu, 21 Mar 2024 10:05:02 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Rich Felker <dalias@libc.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
-Message-ID: <202403211004.19F5EE27F@keescook>
-References: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+        d=1e100.net; s=20230601; t=1711041237; x=1711646037;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjLTQlvuPOBaz+D+LjUilodmD16xs/15SSgaRqgavvw=;
+        b=f47Y+S/iQ9w2GJDYSEQ6GLsIsfIOrk3GYyvP1SpAaAMMmAwi+vJnWlYycwYuNem8fi
+         VgesgMnzxH2HWgO8An5ImcevWHxWIbEAsRFkVAeJjPFG2Zl6Wr3QKWFzDVeDb5G+9A3B
+         OlZ7uFvIu5tpk07PddsXs0DFkFvUOcOQXZ2qUyCXfTRcPaNs8IKK919V95PIp79naIWV
+         Z6ri9nFqINzeL3jSKpE/CZCGnJL0fL/Dzqg0qNNIgI0dj8lvqisy7U3SxbioBb2qipis
+         Rj0igHBeyebNMoKFfrLwGW6FzrgDALdgArcTeTbgjGHZAGj3teMCwzGeOuWaEq58Uybg
+         RjPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0fKCONP0PyXwrs80z5rQewIzZPCqDRIDhhvwyKXiN8UCYUn9NOqq2UdpJlp12912KIf4Q4y2sh3sSKxWTPQHrt3rLYOaB
+X-Gm-Message-State: AOJu0Yy0GGjmTLHz1Q6GgFTc5GanT9hgnYlPsC7W8hFhO02TNTwCxPDw
+	fSQY70n+hEPitc4EBf2fSa0GcZTj+/ckFZbGjv10rl/adF4/u8BsC4eMzDTG5Mc=
+X-Google-Smtp-Source: AGHT+IFOV+vBJ3LYFE2xnOuvgPXYkdUnxlYzK1C2rDlHvcszqkpE8OzJg48OnEGPHHmSbsRP45KCIg==
+X-Received: by 2002:a05:600c:3c8c:b0:414:6211:14a0 with SMTP id bg12-20020a05600c3c8c00b00414621114a0mr7243975wmb.2.1711041237531;
+        Thu, 21 Mar 2024 10:13:57 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id v9-20020a05600c470900b0041409db0349sm333276wmo.48.2024.03.21.10.13.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Mar 2024 10:13:57 -0700 (PDT)
+Message-ID: <f17307c3-9996-4189-b326-91b0ebf2e56d@linaro.org>
+Date: Thu, 21 Mar 2024 18:13:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] thermal: qcom: lmh: Check for SCM availability at
+ probe
+Content-Language: en-US
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thara Gopinath
+ <thara.gopinath@gmail.com>, Amit Kucheria <amitk@kernel.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org
+References: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
+ <20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20240308-topic-rb1_lmh-v2-2-bac3914b0fe3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 20, 2024 at 11:26:07AM -0700, Max Filippov wrote:
-> In NUMMU kernel the value of linux_binprm::p is the offset inside the
-> temporary program arguments array maintained in separate pages in the
-> linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-> thus must be adjusted when that array is copied to the user stack.
-> Without that adjustment the value passed by the NOMMU kernel to the ELF
-> program in the AT_EXECFN entry of the aux array doesn't make any sense
-> and it may break programs that try to access memory pointed to by that
-> entry.
+On 09/03/2024 14:15, Konrad Dybcio wrote:
+> Up until now, the necessary scm availability check has not been
+> performed, leading to possible null pointer dereferences (which did
+> happen for me on RB1).
 > 
-> Adjust linux_binprm::exec before the successful return from the
-> transfer_args_to_stack().
-
-What's the best way to test this? (Is there a qemu setup I can use to
-see the before/after of AT_EXECFN?)
-
-How did you encounter the problem?
-
+> Fix that.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+> Fixes: 53bca371cdf7 ("thermal/drivers/qcom: Add support for LMh driver")
+> Cc: <stable@vger.kernel.org>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 > ---
->  fs/exec.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index af4fbb61cd53..5ee2545c3e18 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -895,6 +895,7 @@ int transfer_args_to_stack(struct linux_binprm *bprm,
->  			goto out;
->  	}
->  
-> +	bprm->exec += *sp_location - MAX_ARG_PAGES * PAGE_SIZE;
->  	*sp_location = sp;
->  
->  out:
-> -- 
-> 2.39.2
-> 
+
+Applied, thanks
 
 -- 
-Kees Cook
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
