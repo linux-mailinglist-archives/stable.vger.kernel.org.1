@@ -1,102 +1,181 @@
-Return-Path: <stable+bounces-28513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F73881A0D
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 00:04:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41C1881BE5
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 05:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552B61F2201B
-	for <lists+stable@lfdr.de>; Wed, 20 Mar 2024 23:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91BC1C2171A
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 04:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B118D85C73;
-	Wed, 20 Mar 2024 23:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207B5C13C;
+	Thu, 21 Mar 2024 04:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="roc24Lvw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DIppo7dr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0C86BFDB;
-	Wed, 20 Mar 2024 23:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710975846; cv=none; b=DAq3SX9H0wksFV4h/Q45bC3GxJkZuM2nNK3lJ63/IKAfO1f9Xf98zwYHkycNGRy8mUAPSN5gbVVnyjWDYxt6VSzBe6mq9ZzySWZ1yVUZkyW+QXI9o/fUB3+Oul5WySaO8JDUG+jMh4Su4xUWTnJqxUXVz/4vs+M3JhF92sJ0ZJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710975846; c=relaxed/simple;
-	bh=TAatzuWm2HqdQG4JY+l9UJF3GxwuF/jivevfBscvcfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kHGlG6Ec7KepFlH6jsLH14g8k2j7/SuUUZoY71Z5kUg6ISj6kcDsBf6HsUssOTcyWkoXJU8iUBFFrPHLPmRbgcNLRLtDa31VhLkov4tIg8kdqvoOlKZbMV8mPckjvEwoXmYtsB3SBuJbiXU6vbe2G4544qgw9mtl1Xj2nHoyJkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=roc24Lvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7FAC433C7;
-	Wed, 20 Mar 2024 23:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710975845;
-	bh=TAatzuWm2HqdQG4JY+l9UJF3GxwuF/jivevfBscvcfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=roc24LvwLgx0Gqc1wJS8R1OwkBVs4boegh5+XPMJyOSDy3nA0AVEjTf6WduCcgia5
-	 TNW9ZfHGtlNNVV/bA41xqcYh0cfu+1eZZVP7adotwqzDypRwE6Uuwfhl3FVFj+k4Oc
-	 NyN0x4Zi4Bk02+i8YNGOUww/CK0h+xJMHjO3z9Qjx32T669GrYEirhD5eqE4LsYFBf
-	 2Xw/UQfdc+tntAecpHbeEECqqSOWv8BTes3Qv8NM5zfblDt2J0UmR4+yKQjAD1ylJp
-	 +nr70e+N/N26LWZeXr6AiSpFFc++gYedARii3oRUGw4mq9KNmR3nsvS0PxsmKQYC9Z
-	 bCaebnnTILsQA==
-Date: Wed, 20 Mar 2024 18:12:46 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: josef@toxicpanda.com, dsterba@suse.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org
-Subject: Re: btrfs fix missing in 5.10-stable was Re: [PATCH 5.10 00/73]
- 5.10.213-rc1 review
-Message-ID: <ZftfXuwvpNVggouB@sashalap>
-References: <20240313164640.616049-1-sashal@kernel.org>
- <ZfroJoVIz3dBrO1t@duo.ucw.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6D51C05
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 04:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710995367; cv=fail; b=iGEQJJdm1YwXs5u1N29l/VRifA1LKdqExNNt5ztUxlyO0/VHblBfm5LpJdl+7WVjr3q2wek2q8jc3PcM5xlG+5422ZuY6UirucmuNsM0qaNKj0rB54QooCWm2yBlOjtxX4wvsDtKBxbtTbkcgSPlTvvwx2HWDUoPDb89cLAlTQQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710995367; c=relaxed/simple;
+	bh=wgzIPLnFJ48dvqOyGTnlHun1zb89gaRTkxdFOv7Ye/w=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZISvYgWwoHhdS+vLd81JliyMu171vlL7AomKpxQjVHMv8YD9Tbo2AFE94Sk6Vdzw3nXSDajGrvvZH4gZfceaOem8w+hyH83fgy3uhbb9GObZ8uN8U/BI6WhPWNvqxCZUwpWgSXB5DVWb3wsnunN6aDpF4fPyxKp/bT3ZEL30974=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DIppo7dr; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710995366; x=1742531366;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=wgzIPLnFJ48dvqOyGTnlHun1zb89gaRTkxdFOv7Ye/w=;
+  b=DIppo7drYhHkIOMRJQ4jqVOq7jkcuCj8qHcSRdtUOyimOBpVxG1C9BQQ
+   J/Hka2u2U7189fC6QaToHdpw9gvDA0scvI86mX9ZllzirmYC6GplOS5Nk
+   s+Z8vEr1gBAa8NxCdRSVhEoz+/Xp+vS8HJ05p9SVEIM47kdU6uujPAU2Q
+   b3i/8olOwB4UOBDj1yWTWqP0ZFcO/j8bkA3dY8Qpmd9Ic7vnNxMBJMulJ
+   QLipzD8i6B53sJJhmUV3cUMkGxZAtzc5NrCSJaG1HB3cGaZZxWWpMvpT5
+   8TCfirEqSJ4OQ1MMK2M8xheyB4TZuCKlSWHAwtTDgGYef56hW3S7FVOrf
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5792899"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="5792899"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 21:29:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="19021513"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Mar 2024 21:29:25 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Mar 2024 21:29:24 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Mar 2024 21:29:23 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 20 Mar 2024 21:29:23 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 21:29:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iLKsav9DMcXKzMwTg4EQkfYccskFEWyh0gWI7G9tnMXsvDy+drQH1ncP02Ljl3IqMlVXn6rE+PpYVBBfrbUIJRc+PYaoOLNw9hq1qANBgxkRDP8RVFGP3XUdOwDh4FIzv6773VrdzxG04bLTwcmffupJ8/4ZgNeBh8+GOeSkcyHkG4GyYk1djzxpljBQRiZFV1GG+Wib1YKC+6t8Gef87lNzZxEfuLkVfkmiJAF9+E/O2H+NEWFDQuQ9EYLFDLcEMGmBtuLf4l8IERc5p3H+nG5LRnQL8mO5ebMoaSuj6F/GgGGs+xQqunVPzkKUCiT3tcDd11RVJV1uY/ibDHH/2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wgzIPLnFJ48dvqOyGTnlHun1zb89gaRTkxdFOv7Ye/w=;
+ b=OdRj3uz9vfP49dywzVM/NJ+czKDiWMR0FSYhDpnz7xbIl22vgQhQsJIOeMUZCfzxqK7CyGGNmYhm7ebt94uWtuwq3zui1Vto2wZoRvK3h0dzRdZKlXP/OamCd7WDPKC8jFIC3QuZtBzzd2IsqXgnTkjIiWtKkiH8oAWDlUgFLyUujQF+W4+k84Hz70TurRLGHz/VU+J8EoVDla0eijUIyYUsn6nTCZ/QeMeQ3NLoO2gc5E/YIzU3caQdSfpkfHBcEGyO51hyxgqooBvA00dNf/4wd/x7R41XVrRpq9VOp6Nnsrr/ogGFfneZvYG8qwQNfcPT0m1n+XaqKJpA+SjhCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5275.namprd11.prod.outlook.com (2603:10b6:408:134::24)
+ by SJ0PR11MB5895.namprd11.prod.outlook.com (2603:10b6:a03:42b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.11; Thu, 21 Mar
+ 2024 04:29:21 +0000
+Received: from BN9PR11MB5275.namprd11.prod.outlook.com
+ ([fe80::46dd:6e91:5461:35a]) by BN9PR11MB5275.namprd11.prod.outlook.com
+ ([fe80::46dd:6e91:5461:35a%7]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
+ 04:29:21 +0000
+From: "Mrozek, Michal" <michal.mrozek@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: Nirmoy Das <nirmoy.das@linux.intel.com>, "Landwerlin, Lionel G"
+	<lionel.g.landwerlin@intel.com>, intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>, Andi Shyti
+	<andi.shyti@kernel.org>, "Hajda, Andrzej" <andrzej.hajda@intel.com>, "Chris
+ Wilson" <chris.p.wilson@linux.intel.com>, "Das, Nirmoy"
+	<nirmoy.das@intel.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/i915/gt: Report full vm address range
+Thread-Topic: [PATCH] drm/i915/gt: Report full vm address range
+Thread-Index: AQHadX44Sh9xWy77xE2oPkbaYDlfvLE3RheAgAAhsQCAAaQigIAD8QaQgAQBbYCAAKb08A==
+Date: Thu, 21 Mar 2024 04:29:20 +0000
+Message-ID: <BN9PR11MB5275DE4BABACD254D551A7C2E7322@BN9PR11MB5275.namprd11.prod.outlook.com>
+References: <20240313193907.95205-1-andi.shyti@linux.intel.com>
+ <46ab1d25-5d16-4610-8b8f-2ee07064ec2e@intel.com>
+ <35df0767-384f-49f2-806a-f83765ca7c4c@linux.intel.com>
+ <ZfSAo791UDRnBSwc@ashyti-mobl2.lan>
+ <BN9PR11MB527575D97CB63C5E4B1B0E7AE72D2@BN9PR11MB5275.namprd11.prod.outlook.com>
+ <ZfsrQWNfzDGl8IVV@ashyti-mobl2.lan>
+In-Reply-To: <ZfsrQWNfzDGl8IVV@ashyti-mobl2.lan>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5275:EE_|SJ0PR11MB5895:EE_
+x-ms-office365-filtering-correlation-id: b33e9f83-3c1c-4e2c-8add-08dc495f7ac6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pnW6QwQ2xMIEa7GnyiVBX5seN4IcBEhJcH0tneOX4rCmU8mt2P0mqKVrhvDst0X6QCh7h+XjCUMqLgnF35AMj5bg/2B8F/LQZATxCDQpU1QGVSWJ85So3kR/VugJ+CjSwzec0JIHQs41hOHYNlFNcIFPKoxLXI9nwHS5DvHGyBEeHV8fZj2iqGIxO09GndDRpSA4VO/Swb060u5zUriE+WyUM4paqdRl2Lk2b8agW+mzF9zDky8U8mKsxq8jXtJl4xFXvd2AVvJlgBB+lcoaRL/Q3Nm4a/duW1jru2qN2v44gsxTDeOk09JCBHmhAkSa1qc1GslfveILOm0qycW573Tv6KZtWMh/COnWDPskz5dp/lmlmlaXNSlqOvIIQOqVIXBUY82R3VM9pt9uvCAp1ONkTFWVq9fkIQXUqwNCpETTGUqQmAs2RigC0xpzMXP0bVbSOQ5aRq2y3zbToRuNBOKiw86gkqrnNewiNpef9cmUlVFnH45xMpb9MbkeHI7G0d/umAaY/7ExxfM8d4RBGus2zdJyKxORPGOgb16NpsQ7ghcd1kBSgunqXp5da6xdPZRieojlPrg878xy38qa9qEiRuXsQHxfu7G8/YMBHSjv167XysuL8oyx9yH8ZJxFNd95Euf4uhOdHAaHoAU6NYxLTY3MXo+t5TOIhCJKg+OsVgZE8vAGuywoYl7SA2IkVtfZNDKc00RRMUIuDmc8FQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5275.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?U1eeHLoLbFBE0+cWYUBcVBMG0x0YCodMuSHyNhYel0tQq59J6rsjjvwH4kz7?=
+ =?us-ascii?Q?Vf5aIuFHT6yKfrenhL7pFoqNrtn7631AubNzMWSHgJ4jpS5JJ03xZ9Q3ZoEw?=
+ =?us-ascii?Q?OUyi549IdZ/EMf0fkVOR3KQo2ud7hKxAa6jVrh3Div6fSWSS3jGFGYiCtnNx?=
+ =?us-ascii?Q?xkuPX7XOmCkmBNuU+THI2PPAQTpHywtSbFuXlne/tZtSP/madJkx9KREuJrg?=
+ =?us-ascii?Q?T36bNDq2IlEdMh0P03hWfdFXolntj0/FpauviEgd1XL1ykJThHEv4RiotIA7?=
+ =?us-ascii?Q?PxIJtgeDgm+hvejrRZNl1jppojFJsSHtbFCAYzm6CGnwIvCT7f7CJh27c7t7?=
+ =?us-ascii?Q?BTd4k8G7PMbK27UmoVfn2KvQbQr34l/W+4yLBgcYLV5nVhjO2D0HhLfYgLza?=
+ =?us-ascii?Q?/3jeE0B8rzvfe2sTOlLW1dAGTIB4Gfn//o/yAroBIQh5LzpUJq4ldjJAV+cr?=
+ =?us-ascii?Q?so7qwR55KJVC4l2j2418FbWgwEYRvUFmGhjGCOvTmG3ddiEoeKk4AGcPPqT3?=
+ =?us-ascii?Q?nFzFcmosi4XC8UoFd5z4KEo5VLYmjJt1eo0irpaL1dsb4ejR9gaG83fv7w3f?=
+ =?us-ascii?Q?+i/k/NxgTIOD0x7+urov83jr3gMNELMEG3f0JeOLnYqhz2PPoxeoPM7kv0ck?=
+ =?us-ascii?Q?RIHnbAUcsaVuYh33itkYcxLJ2yQXggAlT50JJUfsvSU1tv5fKZn4dmSNvJuR?=
+ =?us-ascii?Q?cSWDVdB6mQSl5Sxk+2zVpyi/zoLtuIVMLd32y955ItnBnBwTtGiOQPZBJI/W?=
+ =?us-ascii?Q?88hAC+cpeVQJZbwSa+ZwUnATzpCuQAea2vJrr3e8XOAKS4tP/h3Ab2QdKwC7?=
+ =?us-ascii?Q?okqlITOzICQo6xS1qdfCSG45bHsxPm82yxRfNkWQLGBR6OiOUV7ODc+15KMi?=
+ =?us-ascii?Q?Ywp+XnFZfyXPXurxW+aA9QXhtz+KgGC8QWVi0YEI0Tv3irbJkgV2JzKgo9co?=
+ =?us-ascii?Q?ry0OjpYs/IqQl3GvxMxzurQBZ2YFCOLtvm6Ig8rjkeY1IUy5ifaIxzXcw5Ey?=
+ =?us-ascii?Q?3c7koohfNwpkBHxxg9g4sTZLV7a4WEHU+/XtymuQlrNlQFkf3qaBvx/8fxr0?=
+ =?us-ascii?Q?vU/uSX9AZDlkWJyH4UQ5wobv3WT8q/Fwq2h/TjbntD8NFfRDI1RTMKGVrn0O?=
+ =?us-ascii?Q?8QW3K7o/ewVSwctaFq+9+bTOuP78m2t9wJz36YweTt036dmAm6jzyjxqqNYH?=
+ =?us-ascii?Q?OVcVe/B5Azk380aG7irgEQyheoGpnMoQwcY1pzzySBLxmcXwdsxDB4pJXLDL?=
+ =?us-ascii?Q?mo3uAk7DSq3wBogYYke5MsmwwOcK2MxOiFi+/6wuVgvldnRFX1s60Lg3NALE?=
+ =?us-ascii?Q?YmdVo1Y3NQw9a1V8ILucYwOmNChxRy+m0AZvwIAxHe/m6fc6Pfub0wPPM3Py?=
+ =?us-ascii?Q?UWf5IPzAL6ZMs8wv5Gxhjo2GdX9dZWGgPP091OnTb+Cp0hslV9Nz7mhkI8e0?=
+ =?us-ascii?Q?q6HyikPkKaUFsFTPP6+7b3gmqflFgLlFotNP54EL5/7AhVmvyJfHRulNpAIX?=
+ =?us-ascii?Q?PrrpRKhk6nLGL1G/aDBKe8XhU3IDv2KMLcAf00NdTRdY7mjIQJ3Isx66G2Um?=
+ =?us-ascii?Q?GwQtnHWcdWYRkVLnQtYfSf5TGZOA/yVj8YObuoPT?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZfroJoVIz3dBrO1t@duo.ucw.cz>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5275.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b33e9f83-3c1c-4e2c-8add-08dc495f7ac6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2024 04:29:21.0118
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ATIxjxuo2qB+VerguVdwzhYIai2QGJNDOMi3Wf2iSJXAgha3r1VehjB0rc4tkaI5r314hMfHSfSraTiXid870g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5895
+X-OriginatorOrg: intel.com
 
-On Wed, Mar 20, 2024 at 02:44:06PM +0100, Pavel Machek wrote:
->Hi!
->
->> This is the start of the stable review cycle for the 5.10.213 release.
->> There are 73 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->
->While debugging "search for known-bad commit" script, I noticed:
->
->We have
->
->41b3cc57d626d c2e39305299f0 btrfs: clear extent buffer uptodate when
->we fail to write it
->
->commit in 5.10, which is fixed by this, but we don't have that one:
->
->651740a502411 btrfs: check WRITE_ERR when trying to read an extent
->buffer
+> If we provide the total GTT size we will have one page that will be conte=
+nded between kernel and userspace and, if userspace is unaware that the pag=
+e belongs to the > kernel, we might step on each other toe.
 
-Hey Pavel,
+That's fine, Compute needs to know total GTT size.
+Not available GTT size.
 
-There are two reasons it didn't make it into 5.10 or 5.4:
-
-1. It doesn't build on any of those kernels, and we haven't gotten a
-backport we could apply.
-
-2. There's a follow-up fix that happened soon after ( 40cdc509877b
-("btrfs: skip reserved bytes warning on unmount after log cleanup
-failure") ) which needs a backport on it's own.
-
-
--- 
-Thanks,
-Sasha
 
