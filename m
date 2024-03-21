@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-28516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443B3881CC9
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:14:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D7881CCF
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051BA28465C
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 07:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002241F21C46
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 07:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D0B4D9E7;
-	Thu, 21 Mar 2024 07:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A274D9E7;
+	Thu, 21 Mar 2024 07:15:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EE58203
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343EB69314
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711005290; cv=none; b=XvsKH4//BNcoI4PfnquDxBGCuirNjEVWwr/L3pyoWlqsFMRYWqyEho6lXsvFChwrbd77KqHU/28doMzJge0+s1JDwc7zqMU7Wj6BHKF88mzsgErsxfcxmSu4vd9EMU9GTOablxKctA4n9FIc+blu234E3gkbmvR2hJrC03OY5AA=
+	t=1711005353; cv=none; b=IbLbrp3pe03MQeXPL0+By1ttJIzx9ArG9U18pwyUGfKuufqlg2U/wTC35cAgIs+s1NOH4llx8heJKdrBX05XWzrgreNROpbLMTDQs/A1dAPGWEXWHJ0W78aTSJHDKp//AWVv3nk+Ak3K6Ah6XTa3HQIe1V1hnDnN+x0+fIhkrxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711005290; c=relaxed/simple;
+	s=arc-20240116; t=1711005353; c=relaxed/simple;
 	bh=l1DPPk0G8aT58R7Bkm96noh8Um2KT0ETIyTs1PS22AU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hTAgLqQVis2tELEvVVh8zgCcLp5f3cjlZRPsHyaDtfdd3MMYEoHhr1iF9Lntzn+ea3jQlVFga33/oSnNd5BInQko55/2YG+zVI4cgUtaeyRUaFTDWojPLK39r6gxshWvK9RQ5JpKy6hMa5PdCS8frUQ6mPwDEoS4RMwKMkEO7bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U0Ga3YW8npgM04CuwL70B/G0huLOTtd1xJRA3cQiu1aWDmdbmmlMHKVjf97qMSWgQ5Wc3NP6Rv8K6mtmRitLtx8o4M1uAtqx/ALnhgg63R5JJxqHggBhu4gt6E1GMiZ5KJIhQytZKiJBRFckz3y+XtPGUSlXi1yLDdanzwpeeHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4V0c9Y2RDrz1xsDD
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 15:12:49 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V0cB120c1z1h31k;
+	Thu, 21 Mar 2024 15:13:13 +0800 (CST)
 Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
-	by mail.maildlp.com (Postfix) with ESMTPS id 216951400CB
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 15:14:43 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3F95918005F;
+	Thu, 21 Mar 2024 15:15:47 +0800 (CST)
 Received: from huawei.com (10.175.112.208) by kwepemm600013.china.huawei.com
  (7.193.23.68) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 21 Mar
- 2024 15:14:42 +0800
+ 2024 15:15:46 +0800
 From: Guo Mengqi <guomengqi3@huawei.com>
 To: <stable@vger.kernel.org>
-CC: <xuqiang36@huawei.com>
+CC: <airlied@linux.ie>, <dri-devel@lists.freedesktop.org>,
+	<xuqiang36@huawei.com>
 Subject: [PATCH] drm/vkms: call drm_atomic_helper_shutdown before drm_dev_put()
-Date: Thu, 21 Mar 2024 15:06:48 +0800
-Message-ID: <20240321070648.80673-1-guomengqi3@huawei.com>
+Date: Thu, 21 Mar 2024 15:07:52 +0800
+Message-ID: <20240321070752.81405-1-guomengqi3@huawei.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,7 +53,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemm600013.china.huawei.com (7.193.23.68)
 
 commit 73a82b22963d ("drm/atomic: Fix potential use-after-free
