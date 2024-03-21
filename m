@@ -1,71 +1,75 @@
-Return-Path: <stable+bounces-28523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A599E88563D
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B754288564E
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0191C2116F
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8FC11C20F0E
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE2F3FB84;
-	Thu, 21 Mar 2024 09:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018673BBFA;
+	Thu, 21 Mar 2024 09:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="xUb2dfem"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="oXA4lNj1"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EEBC2E6;
-	Thu, 21 Mar 2024 09:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252F220326;
+	Thu, 21 Mar 2024 09:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711012383; cv=none; b=ANkOyQth2PDI6ZCoMWWRlMnyo7/DDMkzmMisEmJOVEE44tvFaK04p6WoONiizXU7E3oJ4hpzWM80DnsKhQ/+lsB1LZ+28do9vFjjuohV+o/dwLCAtLlnskOJS68T2Jeiq5fgvsgPLDvki82n9lINqG+aai+0Udiw61AOTQaHATE=
+	t=1711012831; cv=none; b=pPag0es7u9nezeBZfdqJW7GBUhAUghFMKlDZz5HB1l35zlkytwtx0GJIxLAcT0lglLLa3eAYvOWN8yNkEr/CYQJGUqJgeNdsawnX2K4Ndq4Sg5m0HiaZzu2LGLl/avgusy1iNvJ+dpELTJPnRH9jEBXUuQ9vKK1SQDcAVqg2Ygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711012383; c=relaxed/simple;
-	bh=mfL4lpZfvM7BlCtt4ST58fKYcVjZ6oDkZO2yKupDzdg=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JwcXuJGFNMZeefDitOExgfpc3nzjL3ew8W1YwHE75qm3jpmLCt29GxIqmjA55TVoh3acmXdIj2ujb5xFmq/9WSDE29zmbbaH0+qSpIslhQuredbNHWFaDi5dQc4q+hPvpfh5mre9q3DTP16qS9kdYoOp1Ef47uQtzLey9TkJB4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=xUb2dfem; arc=none smtp.client-ip=91.244.183.115
+	s=arc-20240116; t=1711012831; c=relaxed/simple;
+	bh=tgiiZuGtuUlJKNeJLR3fyE1KgyZ0B2GEPWyE4RXlKF4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cZyNJmaA19pV3X9klV4dbUzHOMfDjooWWu+c/+EDun8oKtFA6WY4HmROHhObjl7pjcNzTo4jR/fXHRPsCpJ2I2ii2v8EODo7CeHAxFU2XNmmIxI0qFt7TubylryG/91pA+fvRcPPuyVDs58DGTsRCICn2w/VYH8DoYHWAEZa9ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=oXA4lNj1; arc=none smtp.client-ip=91.244.183.115
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
 Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 6B5F710BB097;
-	Thu, 21 Mar 2024 12:12:58 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 6B5F710BB097
+	by mx0.infotecs.ru (Postfix) with ESMTP id 0F92F1500A63;
+	Thu, 21 Mar 2024 12:20:27 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 0F92F1500A63
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1711012378; bh=H5icz46cAcV+OVygu5QLzJOl+JIEFHHjACrVhgKwhnk=;
-	h=From:To:CC:Subject:Date:From;
-	b=xUb2dfem2WUN2WoYr3BY0Yo9k1HKwuRtVnHud8cZjtiPkx8R7wvb+rfqVQDa0gkdS
-	 84xQ9xW3TvwbPxnjyBJlHBpiRRsQ0mX0+aoS2zRZ8/MKehyaYozSc31gqEWFshn+1d
-	 X0couzozTxuU38+ayFlG6ZeLjDHsR5nKHX7B8Cno=
+	t=1711012827; bh=tgiiZuGtuUlJKNeJLR3fyE1KgyZ0B2GEPWyE4RXlKF4=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=oXA4lNj1d6mFFkvv9o7B3d/XAIHjpFU6/obACmhPfoUgCi+yKk81CuB6Quk+2PUN2
+	 o3MLkd45mXUeHa3kjANK4hS6uFyxoiDCgoRqKVsssTDmDqaUEnCHofi48U7L5LFLHR
+	 sReTOD87SkE+eKEiAxIEuVynTG9VGjKT/dr+Wz5c=
 Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 6782A3196652;
-	Thu, 21 Mar 2024 12:12:58 +0300 (MSK)
+	by mx0.infotecs-nt (Postfix) with ESMTP id 0C1C831906E0;
+	Thu, 21 Mar 2024 12:20:27 +0300 (MSK)
 From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
 	<gregkh@linuxfoundation.org>
-CC: Michal Ostrowski <mostrows@earthlink.net>, Guillaume Nault
-	<gnault@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory leak in
- pppoe_sendmsg()
-Thread-Topic: [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory leak in
- pppoe_sendmsg()
-Thread-Index: AQHae2/2z5M9RYxR80KDHqxv8N3w3Q==
-Date: Thu, 21 Mar 2024 09:12:57 +0000
-Message-ID: <20240321091256.467553-1-Ilia.Gavrilov@infotecs.ru>
+CC: "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Guillaume Nault
+	<gnault@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, "Michal
+ Ostrowski" <mostrows@earthlink.net>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Subject: Re: [lvc-project] [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory
+ leak in pppoe_sendmsg()
+Thread-Topic: [lvc-project] [PATCH 5.15/5.10/5.4/4.19 0/1] pppoe: Fix memory
+ leak in pppoe_sendmsg()
+Thread-Index: AQHae2/2z5M9RYxR80KDHqxv8N3w3bFBuNkA
+Date: Thu, 21 Mar 2024 09:20:26 +0000
+Message-ID: <abf90a29-33ec-40a0-a386-0f2a36b39bf4@infotecs.ru>
+References: <20240321091256.467553-1-Ilia.Gavrilov@infotecs.ru>
+In-Reply-To: <20240321091256.467553-1-Ilia.Gavrilov@infotecs.ru>
 Accept-Language: ru-RU, en-US
-Content-Language: en-US
+Content-Language: ru-RU
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <222D597251679049B45BD513401BC5A7@infotecs.ru>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,19 +84,15 @@ X-KLMS-AntiPhishing: Clean, bases: 2024/03/21 07:23:00
 X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2024/03/21 04:23:00 #24331522
 X-KLMS-AntiVirus-Status: Clean, skipped
 
-syzbot reports a memory leak in pppoe_sendmsg in 6.6 and 6.1 stable
-releases. The problem has been fixed by the following patch which can be
-cleanly applied to the 6.6 and 6.1 branches.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller
-
-Gavrilov Ilia (1):
-  pppoe: Fix memory leak in pppoe_sendmsg()
-
- drivers/net/ppp/pppoe.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
-
---=20
-2.39.2
+T24gMy8yMS8yNCAxMjoxMiwgR2F2cmlsb3YgSWxpYSB3cm90ZToNCj4gc3l6Ym90IHJlcG9ydHMg
+YSBtZW1vcnkgbGVhayBpbiBwcHBvZV9zZW5kbXNnIGluIDYuNiBhbmQgNi4xIHN0YWJsZQ0KPiBy
+ZWxlYXNlcy4gVGhlIHByb2JsZW0gaGFzIGJlZW4gZml4ZWQgYnkgdGhlIGZvbGxvd2luZyBwYXRj
+aCB3aGljaCBjYW4gYmUNCj4gY2xlYW5seSBhcHBsaWVkIHRvIHRoZSA2LjYgYW5kIDYuMSBicmFu
+Y2hlcy4NCj4gDQo+IEZvdW5kIGJ5IEluZm9UZUNTIG9uIGJlaGFsZiBvZiBMaW51eCBWZXJpZmlj
+YXRpb24gQ2VudGVyDQo+IChsaW51eHRlc3Rpbmcub3JnKSB3aXRoIFN5emthbGxlcg0KPiANCj4g
+R2F2cmlsb3YgSWxpYSAoMSk6DQo+ICAgIHBwcG9lOiBGaXggbWVtb3J5IGxlYWsgaW4gcHBwb2Vf
+c2VuZG1zZygpDQo+IA0KPiAgIGRyaXZlcnMvbmV0L3BwcC9wcHBvZS5jIHwgMjMgKysrKysrKysr
+LS0tLS0tLS0tLS0tLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAxNCBk
+ZWxldGlvbnMoLSkNCj4gDQoNCkknbSBzbyBzb3JyeS4gSSBtZWFudCB0aGUgYnJhbmNoZXMgNS4x
+NSwgNS4xMCwgNS40LCA0LjE5Lg0K
 
