@@ -1,110 +1,107 @@
-Return-Path: <stable+bounces-28573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E698860E2
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 20:10:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DE38860E7
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 20:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E967B214C4
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 19:10:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D41A1C2198F
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 19:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECC313340B;
-	Thu, 21 Mar 2024 19:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F043133423;
+	Thu, 21 Mar 2024 19:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O6j3fTBt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JKH1Kj7v"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF7D5CB5
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 19:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC02D13341A
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 19:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711048214; cv=fail; b=lDwnZHkvnJiai6IG6L8sqBeaCJUvw1TXbmuV3uZlDWajgReXdYFafxE88Ybeq1xM1UN4ZfxIsiuHM4gD58RvkgQi0bqOwrt7YKysKAH0uqlK3lVvhauJJ1TBZdLYfntSv49rkg/IqeNEj/P9kKIx06gJu27OyhG1VfRAPMobDZE=
+	t=1711048601; cv=fail; b=UkWMEEjV3FjD4uVz5baXtuTLXnHTXHMFznla1eZknMmNftQo1kVmdTwzHixXv2okcLKY1VzVmwJocbxggN33OPc8CURb6Ppd3UvZL1OM2YvbLwu2blSdbsZfr/kvEBt5ZbfpjiSKpEeAnFxke74SlomUH8j9y7uy9z675BLR9Ck=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711048214; c=relaxed/simple;
-	bh=3kA8SYezCCeGXg6JAcVsr3F+TPmbGuu4ESgvIn6y1Ro=;
+	s=arc-20240116; t=1711048601; c=relaxed/simple;
+	bh=s9ImtQKmV1p4fIVAeC73hEPhj5B6tZ5SPC2mLipDkGA=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=do0hMZg/QK0hfyndPdmOtuiy98qB/+UR0Rz6qhkr4hhFvRxWJYFNveNoySa3jSzfguGWa3dF2XHCexdpyF961IW+3UnKhWod0A657cCD6H46YqDgA3rpFtNvRwUMVqkhFDWdrDy+SwVECI2c7ynv/cIgwyaFKFwfYTsnY3LKjPo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O6j3fTBt; arc=fail smtp.client-ip=192.198.163.14
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KIZcsqOI6oXCV1sZvqv+3lw+gtpXnsNm/60oFFKV7apeJ/7Dj3cMya4D9LtWkg/xvzwPSjKsUfOHDWCXK48aDdx6Uitm4C78iwOq5yJpUHAYazeOhFFlmJ3Ixsi+7RQwiO5QZ4m52ftIxvpFN6HHaFsKVr9Vj9uNSi7F4sxMwLA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JKH1Kj7v; arc=fail smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711048213; x=1742584213;
+  t=1711048599; x=1742584599;
   h=date:from:to:cc:subject:message-id:references:
    content-transfer-encoding:in-reply-to:mime-version;
-  bh=3kA8SYezCCeGXg6JAcVsr3F+TPmbGuu4ESgvIn6y1Ro=;
-  b=O6j3fTBtUJEm567WiblvUJXozo4eFtbHQawf0oVSEQgMGuwHwc2QQALt
-   3h1vcKw5QPo2aeDRucvNaNhmfIeoriRm9XVHkaA0DBeNpW4kIVIt61vC0
-   GqUoIfE323cucBEDqp4IrDqfwlw0Z2w32zPW1lvZO1h3Cm7zQadNELORK
-   jYjXWpwwiEyOXU+gqFStyV6A9PXiOzDCoz4lrMSyXbHy3F7pxaqwMlVyY
-   nHgM7dpwmAufTMw+tnEr6BwlXbDmGZOPMxN8uZQPgJ6Hth2BOHmiD4oK9
-   IjlXfXbjURYzyTtCPk6WvEf/+gLtJgk6avn//fRfnvGGUc5j0qG51Jqnm
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6276898"
+  bh=s9ImtQKmV1p4fIVAeC73hEPhj5B6tZ5SPC2mLipDkGA=;
+  b=JKH1Kj7v7sn0kgXnbPk6aNFF8Sjlj+BF6Ld7fCAxbu3TfhmQm1nb+YdG
+   siPELVLand+9oLoKaZQH5UwHUKPdPi9J6NA6rtdl1Q/z9O8xm3msaPJ77
+   b1oByZAnyoda4ECUw+aCyWHwyne9PLRGgxVmucBeSQJLv4Rei6SbYe52f
+   Uqbi0ZlvevrT6zNTL/QTt599Lirz8cl2gU9iAXdW+R3SEuzZFQ4RAbaun
+   3tz4Lof9K+AqgWVaOSCwSuOnVQH/6l9Gh1Dk6sNTYKxqNV5Ed8p/o2aR1
+   UL+K48tjwGyu5MTr7wJiH+DjcSQFQ0tu+GNGEiE2RNeA3P6NzvhbjGfAC
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="5901976"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="6276898"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 12:10:12 -0700
+   d="scan'208";a="5901976"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 12:15:38 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="19271840"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Mar 2024 12:10:11 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+   d="scan'208";a="19077452"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Mar 2024 12:15:37 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 21 Mar 2024 12:10:11 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.35; Thu, 21 Mar 2024 12:15:36 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 21 Mar 2024 12:10:10 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 21 Mar 2024 12:10:10 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.35 via Frontend Transport; Thu, 21 Mar 2024 12:15:36 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Mar 2024 12:10:10 -0700
+ 15.1.2507.35; Thu, 21 Mar 2024 12:15:36 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YzbV9a/2G+YtY10WjqkrHSEjKdQwcKtM72e6zmNDWjJFGwNw2RdvC3YXnIVIZ8befvMH7EoAu0fRt+f0h4uMgj/sb91aHKi9aS4xOAscd6GeHN20R45PPMrXxFGRUsd/QR02ypSNlh4ALrKtRsvPOOI0bkonWCKi20xNZ0LB00T6TV5WMhBK2vgMqQwNndO9+2au/1v0rss8uSzpv7v/ZhPKB57H3y6pvq5945tf2uO/agS77n4OjEBiV83Ck9PngMl50XAbfRfWsT3xneyf61Y+IY8/8woFGbRCH+Q2vR8lvLrtsGY08JP823tjXtIKjoawETXVKOTo3+VS/EJlTQ==
+ b=L+nkOyVUqduk4CiLm3Vyh0D9Gc25UjPfcyWPPeGvoZRixynHmiIZtTbq4xoKKCzqBIhtguuCHdUYDSlD796YwZ9U6Rx/E7XOLVxPdlT0sO7EdSkfBf0Xi4rQEiq/23R0E2CpwdS3XFLWxfwUePpjjaRh9vIzMtq/T8G+Kheuup2PeW2K1RNaE6ghlSDkIr2u036FtZauCx9PuH+Z8EzNgCksCenezAEj6+8GmFMDBWDz06pweEKIhi5dw/VEjbnkCrcP/G13pz/ENYo6xNRGY+JroJJEEaGkBvlfafh33CPl71rKK8n8ZGDYdshCpikNcE9iQjgU7CQX0S4POnj42A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GLtERFqgUfU3l4tvfEGWuYt7jIiou8VwFstK7Sk0HFo=;
- b=hu8U5b7do2irYK89YrvtAGuFMjXDoV/6diKCafTDGc5sjPh/4PuPscngHT3m+AWkrNMHUCJEvnOZ4NLXkVWr6ayYaObL96C9Z5DvVuTakM6ge0lmtwqPasP+68+U372RgrW/FTYK+0Y/XE9xJDRGunwsG28jAHJUEkCY//OKsTtj6H6XRlNnwv3nLAW9W0V9rRt6OSPJQuX8y+LmjMEofcuHu/pziB54yPtU3wG67Z0sEAdmE8GZnTl+pFsr/w+uKpGZeJNSonfrgGYWhBlQs9+MkrwpqO5OiIcQCAlQdZ9w30uustAkkXrqVaveikj2AUt2KVDY0wSM2GzYTmdVuw==
+ bh=KIBERawRaATgWtrHvlN/1Sesa0h85kMXGyJ48nA8Axs=;
+ b=EpLPsMe5JhNQNyr+L4tlw9CU6c2c2IEEGJ6lwwAuN2iPxr1j/QtMfLo1G0QRLa4W7QDEEuSiH2ap7xQL/3XPB27A+XxQEqXWv03BDcQtODklKOnvN9N3ylkfZSwHds645IFbkTpChPp7W+q08e2v2ZU1D0KWExH9DPpHq/a+5DQxgvdBURwuM2P5liW+xqlDmgR23mQTnz7KWCvG+E3y0rC8CW2AKlm6oe1xF3IS6R5UvF0JNYtBmEBqwC2x6QIoB7+nSmLaw+5u4pil14vxGNkk0euZuw8jsTm+Tp+Ej5mFiXc8rKyNPoQf3v0U+Qc/hkc3pU9TnCpme9eyIi6h6g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by PH0PR11MB4791.namprd11.prod.outlook.com (2603:10b6:510:43::10) with
+ by PH7PR11MB6427.namprd11.prod.outlook.com (2603:10b6:510:1f5::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.10; Thu, 21 Mar
- 2024 19:10:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.23; Thu, 21 Mar
+ 2024 19:15:32 +0000
 Received: from PH7PR11MB6522.namprd11.prod.outlook.com
  ([fe80::9e7c:ccbc:a71c:6c15]) by PH7PR11MB6522.namprd11.prod.outlook.com
  ([fe80::9e7c:ccbc:a71c:6c15%5]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
- 19:10:08 +0000
-Date: Thu, 21 Mar 2024 19:09:34 +0000
+ 19:15:31 +0000
+Date: Thu, 21 Mar 2024 19:14:58 +0000
 From: Matthew Brost <matthew.brost@intel.com>
 To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/7] drm/xe: Use ring ops TLB invalidation for rebinds
-Message-ID: <ZfyF7kfCE+xcMFa7@DUT025-TGLU.fm.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 2/7] drm/xe: Rework rebinding
+Message-ID: <ZfyHMmxStlECaGs3@DUT025-TGLU.fm.intel.com>
 References: <20240321113720.120865-1-thomas.hellstrom@linux.intel.com>
- <20240321113720.120865-3-thomas.hellstrom@linux.intel.com>
+ <20240321113720.120865-4-thomas.hellstrom@linux.intel.com>
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240321113720.120865-3-thomas.hellstrom@linux.intel.com>
-X-ClientProxiedBy: SJ0PR13CA0127.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::12) To PH7PR11MB6522.namprd11.prod.outlook.com
+In-Reply-To: <20240321113720.120865-4-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: BYAPR05CA0073.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::14) To PH7PR11MB6522.namprd11.prod.outlook.com
  (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -113,264 +110,252 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH0PR11MB4791:EE_
-X-MS-Office365-Filtering-Correlation-Id: 329fbc88-a39c-498c-72e0-08dc49da8646
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH7PR11MB6427:EE_
+X-MS-Office365-Filtering-Correlation-Id: dae8f80c-caf7-4789-f1fc-08dc49db46ea
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 70WF17LckTgOHBM5cCrpxFsjwHYCT2pgGnA6mcSpTUimjFLeSxeLVnAmllko8k0+9Xj92nPPhdg1iJAiMrcHQuoMY68+TXvM3wcuEXlNIm5yLg6udmxNLb0vYrvOEjCZfr17jP4gFZiFM35vnZ9OwEjgj/tepDwOZK6IHRAVP83b5zFgDXIU6oU1atId0B9zVGhnfOkUljj2fys3df/wv2Apn0LK6jZxMb9ZWpzbiBLmE4PPOgfXe/oaM6Hh5X5kV2GbVdQtFeLPjR3PKrvoQAJFlqlFCZOGGpYERx1si6Pa4JhTuAoLphlmMuYxwBPoWY0RQYty5kftGPj6PiWU3r6ML2p4Biwsvqw+FdZt1XC6nCckscHxbBvWiymB5FSvxT1UsgG7NYpgpIH9QQp4mi3pcDlE6rx2w3UlcWw1RbCSA1fOH1rBw5nA6ON2ybsgaehC2tHmJhb4PcbvQWNhVFxx+OCmOxFLRupD8ElmtwPuutpy/6P5mzIL8MX5JMClXD4Ovzms+YrzFUisT25sNIVNTvhjE/8OV+MglgpGsJAP/ovNA+LwRImSpj4+FMDPPFQcmbgLjAsHmq2ukUudAzaGlN324/R64Exx6cALAE/cP7ea9TyuevyFFVyAMsTO
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 84L7p7o99auatxAl/Cg7oTwCLISW5RBJRNnAhBAfFOXjmGkitcPfGSwY3GxpwHeiMkQ77fZaH9tuBttlO0foctgMPb5d4rQQV7K+FnqZ5/RlbUuFQF+cPYIssN9ZOfY8jqHIKcNsXk7e4/9Bfn4mtEYvJ/quqDyjhWOK+gAaMbFrX4aRKz+torV0mThXEm5i8miFXWooii3zEqn3Oz+5ss1qarGu7+akjk/jawKVPs/pQZ5Aqy7nS1wl30cVc3X3YFNr5zwORT4z8C1Ar9W4/dRcdBGxl1TbjIR77BenbYSYTpHSJJFC0erMbIygMCvX1tjYrNRQBGTdQOqgXPkaPzfD2sKI/uWSvSSTCSdcl56B6UeyHqS+DE3UQUjIj+MBqRwnpdfxSIVtvrGMen0PU42teeJ7DjFpoEMoJOWI/lgpWKdc10Xq0PtmCptHkhu+0zzCXZ8SBtv+tWhVG0iPtSlg5JZOqAYzIciGRwm5bYDt0W6bLAWH0wbiVNQVzcEkCUSlmzR4dcQTSlm3jT3qK8sRIoAQwFqrtC3z/dw6ZJtMTGJvupHdZz4LmVilLjPCgPwK1RlbV31jXM0dxrD8BdoRZ2GVL60EHmBR7QBApit6l+D475DwJ5zWn6OCj3L9GEpILv02o8TNcSk6C+xWWmgy41PdsVy0ohbbFG29EVU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?gIeIwINsq2GG0cYryws/sGzByFmK5Gfr7MakHWChHMdxmvFLgIHcPfAWLa?=
- =?iso-8859-1?Q?hCdJh14MCGj89rZvWURbbC0G09zlQ4U9oBh4pb5wRsebA526lpcTSSPr6Z?=
- =?iso-8859-1?Q?TZXsZvSaFVEQZv5F16BJ+Zv0gzuOAj1uCpe8ic3lXTdlIO75PGe1QP09Z4?=
- =?iso-8859-1?Q?FZqIuHkaVAw1+MdeEvleBYAoTWYT27Y+nF6QBvf23stiB8fQ6zHgaZ2dqY?=
- =?iso-8859-1?Q?rSm+Uphpnx73R5uqOCNLtnHryBbEgrGnkPZ1OLQw4fBbkQXuhVYKhAgP98?=
- =?iso-8859-1?Q?lmlKbPH2NaTQ4rJFD5F701ZZwLpl7G2G1+Aw+dTRBmCZVoHVNNaVquw8BW?=
- =?iso-8859-1?Q?Baj0wCIaT1zno+VfWYFO7KyR0b+EBuoZAZpdTqy2ruWtwal9sLCZXxdIHQ?=
- =?iso-8859-1?Q?njIuU674hRcT420PiTqifh0uA1U/F9wnYlRFILmNtQckZqOoZRBnIG60bJ?=
- =?iso-8859-1?Q?RhlbRCBmoPktfGA9wnmuoVmOx12mLrQY6mfexdhZ8NWMnA65FSe2Ayattt?=
- =?iso-8859-1?Q?W/CJ3NYG0PcTRrw3zKezTz7Jx/zA8OxiE//xN5NNq7U7QoBqa7Sq6vE4Px?=
- =?iso-8859-1?Q?7CGDmXhN9hlwZCtRpig217RTC873XzFEORHwFY3lOd8Ux9v08/N2rrnNhF?=
- =?iso-8859-1?Q?p2KjnETxEhdFYdCLoNYlaKkOSk/ZdXNvljHEpiE2X+n1LkIoPzs3pVYDR8?=
- =?iso-8859-1?Q?zl581ouk6FIsUduLRLF7hnQ+owSLCpzEkZfPwHx8/Jo3gfs+ns2SGT3/k/?=
- =?iso-8859-1?Q?zcXAVe8ytIIXJqjWNAwQCUDPcb0M5T6DuMaztKBH27Ih8+nMdHDZxIpMAH?=
- =?iso-8859-1?Q?CYDKanHZtaTox90ugXPFDqDchzeB0SSSNpBY1TeedmlGvTs7DQSZIXvG5E?=
- =?iso-8859-1?Q?6fnQvA9xB4qLChstiJtaOmedWCiihlMRNgybEC34QJTGmc2F4BvgU/HhCE?=
- =?iso-8859-1?Q?nDwE3Mp/+DB47NImavysjLVzpAtJqiNoYndGBQZTM4RZJDfdZQUpyCeNsH?=
- =?iso-8859-1?Q?0RzYv/JHisFcAMkX2v2leiywJ+CfCC+eE6rN0XGhGxn1LHGD1pOnhnU26T?=
- =?iso-8859-1?Q?2NyArWiXcitXwdrFL+jc58qAQ9ELx+Uvv5C+NxhIM/NfyMy03A0jNh3B00?=
- =?iso-8859-1?Q?tcrhyVCTTFlKGkEeWo6LjXHHHvGDygMNkPOquP2RU4JN+o5wLT67T2IHJm?=
- =?iso-8859-1?Q?7CUgWSuMQXzTZbAHtolYdN53RCJdXb7DdTWAObKjl34GU7cyW5clAxN4gI?=
- =?iso-8859-1?Q?8F4bCl0vuT44p3saiCcZyLr59pE00oLIyVkGoEq6QKr1nfkyab0wjzxc6S?=
- =?iso-8859-1?Q?d+TSWv37Iqoz3o0fI2PuLXuKXpNzrjlXUPPLrC35cEIaBk8nKMwcx64OcS?=
- =?iso-8859-1?Q?tImJwYaW/n4cz/yC9F39F62WuTcOiLNMy8Xp7XbdItktKvr51uS33tm2JN?=
- =?iso-8859-1?Q?pzSwlsGs9zTYn+2K8NhFjHIlUchh8xVx5jG0MQB/N2NooPCoj5yCauqGPU?=
- =?iso-8859-1?Q?lfr0JYC4+pFluVT5rnwlBgSP6fAVQDunC6fs5gYcc1i5Me5l2CFsXg/DHy?=
- =?iso-8859-1?Q?fHJcqWJ2YercFpS0esA8BMOp8c++v0CsPSMsgdlJrwMemMauC+P9KqwWaH?=
- =?iso-8859-1?Q?gEvnlL40AodVtLchwZTy1I+CdtU3eP8GVsW8GgHHo8vdRbKYLyGENjRA?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?527uOL3od7vtRwfC1TahNW5T7cgvH+QScEk7lqEmTsACqmWdfN/Oj5hDD0?=
+ =?iso-8859-1?Q?mXUtP+G0LbFklL/aeys7zwHyFmlQxkVn7JQviEJhpKGqf6cziZutlX9MLK?=
+ =?iso-8859-1?Q?LAuA91OY2Ai9NLBEvJW4us9dUt2lb4YkWEdFglUwuRlG3oskSO9wbfURuI?=
+ =?iso-8859-1?Q?HTHhxtG5kVXGdjMsuIQicLEMw2JvUJwwoE2/tbSrx2IGSxJ4BygrYQqP7I?=
+ =?iso-8859-1?Q?+e27HNJ3dlzAjgFXS8kbEFcaBmhG9uCNHKM5OEYfx+pLNFSsTaBSbaCs3j?=
+ =?iso-8859-1?Q?nfdHs85m3mWIx1WjfVrv0joQ2cLGs6zdayXxSA3gUltQ2/qbZ5N7MKNqhi?=
+ =?iso-8859-1?Q?aX/ZDWBkIIlb33zmOuUrLHJfvhFdRK8TZKQDHrtJo4KYiYNA8oJWZ+O7FW?=
+ =?iso-8859-1?Q?3ajgkqAiIhIp0ilbzm+HtIcUKSo0HqgHuWVVV9sxlS5exvtMSlo1QdBUbw?=
+ =?iso-8859-1?Q?vjkYagEVwEq5DekGYmZTucBqyje/TR1K8TpTt0Qn+vDNOy6oRLxQPq1sIA?=
+ =?iso-8859-1?Q?d4KBIla7R6Jo+GXTY+AoAKnCpqDmBM69/usM7SKAStQZAyWj9y0PnB5RuG?=
+ =?iso-8859-1?Q?vBP/bLflzdI3F+3+FROG1O40yKdfvzl2Pg/l2NQOVLLyplQcr4bsmLdQfZ?=
+ =?iso-8859-1?Q?RF58lLCzdnfHVW0BYjUQVsEbE4fsQjX3F4r3PsiV0XNeVmWyb8Cu2LiopA?=
+ =?iso-8859-1?Q?tL4+6EZMq+/idZrD/N61nKpyVNAHADtpSzKQFOMtShA5RCSHm6RYe/0dqj?=
+ =?iso-8859-1?Q?tLe9fc28pSlpsTaX6G8/fDBwf9MNBnGBEK1kHDeKd3LDgJdK6quDtkAIko?=
+ =?iso-8859-1?Q?qP8NPEJgFqjg+J0zch4GfIRcHUkhbK1APUkhBLgCtPJQq67puNFgRmcpBx?=
+ =?iso-8859-1?Q?vgDl6rmxmSucwgBFTJsjy37ptTarcvqPzWfoeA+EHtYyezhxfjV2vp4yfb?=
+ =?iso-8859-1?Q?32kTJrWDCVVcht/XbRA5Rg6jiQoONlL1HxAR0eNKGxyJ+g4wl3f/Cn86cB?=
+ =?iso-8859-1?Q?bEfJI8AlexeRXupKN4sspcUMRygHKoWkFrwwRRSM1DA1iLV2BkqGOs9fXP?=
+ =?iso-8859-1?Q?iHvmGRJxciw9iWyRpvGF54IwVWEgoHsmbcPkTGmu45suaHgiPFe9IXd/hH?=
+ =?iso-8859-1?Q?4TP0umkBY21QGwjhriWGT5AsYWY6UnTmCmOuUWofMlzE7xxcG1PRmhYpGs?=
+ =?iso-8859-1?Q?+yJp9/s1Llk7EERmfX2eCXTtWxUQrCu4uh/L0KsuO09MMdXU769J9ZeNqO?=
+ =?iso-8859-1?Q?3pS93LavYb+FDOuHL+Fzu4fOmcW7MUPHrhdK4m8ck9vdBYEnIDx7DEcrnm?=
+ =?iso-8859-1?Q?9Mdx7gd5mkFL91AV4ixNfHPnnNJG6j/UVKEJiOozxi1JJ1JrwgQiG1YTV2?=
+ =?iso-8859-1?Q?DgLk9xgWFQcn53JP8OkyuJ2zhr4wmbCDqunU3FXWesVEIl/Zdh6bJK3q3Q?=
+ =?iso-8859-1?Q?yj49dtZw326RBkgjYjxFas2s0dH1dZtiPBbmyv0V0OGVfczyxjBC6qjecx?=
+ =?iso-8859-1?Q?IZyFGkIOyHn0PZVp1zhDghqLYmowofiYv74t0wthTG1YVl0gZJ68dbk5cF?=
+ =?iso-8859-1?Q?dO1x9uuiZ0drXxfHox5noZfL+0kTS5ktZuEwZx5jhPVfo3neo2mH3eDHTk?=
+ =?iso-8859-1?Q?3LxV2zxwKq4SrELRjl7dAWLi5vfN0XeSEIfqkBvGx2Z8Rsun2bioreKQ?=
  =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 329fbc88-a39c-498c-72e0-08dc49da8646
+X-MS-Exchange-CrossTenant-Network-Message-Id: dae8f80c-caf7-4789-f1fc-08dc49db46ea
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 19:10:08.5767
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 19:15:31.8987
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eQGNd6LdP6V3XTmEagKHARkKT1fczXLc/JevdOXYc6okV4859VvCaHGTk0YcZvtq0XLnrqse9MaXNl8vpmdZ9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4791
+X-MS-Exchange-CrossTenant-UserPrincipalName: myfGjgp49p+jYmRC6nNTdy7zHaF4JpdMiEcJh71WYrgP9mVpoDLZg7Rf8XGcIdV213Jbuf15OawSrRt+RSWbPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6427
 X-OriginatorOrg: intel.com
 
-On Thu, Mar 21, 2024 at 12:37:11PM +0100, Thomas Hellström wrote:
-> For each rebind we insert a GuC TLB invalidation and add a
-> corresponding unordered TLB invalidation fence. This might
-> add a huge number of TLB invalidation fences to wait for so
-> rather than doing that, defer the TLB invalidation to the
-> next ring ops for each affected exec queue. Since the TLB
-> is invalidated on exec_queue switch, we need to invalidate
-> once for each affected exec_queue.
+On Thu, Mar 21, 2024 at 12:37:12PM +0100, Thomas Hellström wrote:
+> Instead of handling the vm's rebind fence separately,
+> which is error prone if they are not strictly ordered,
+> attach rebind fences as kernel fences to the vm's resv.
 > 
-> Fixes: 5387e865d90e ("drm/xe: Add TLB invalidation fence after rebinds issued from execs")
+
+See comment from previous, do not like updates to __xe_pt_bind_vma but I
+guess I can live with it. Otherwise LGTM.
+
+With that:
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > Cc: Matthew Brost <matthew.brost@intel.com>
 > Cc: <stable@vger.kernel.org> # v6.8+
 > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 > ---
->  drivers/gpu/drm/xe/xe_exec_queue_types.h |  2 ++
->  drivers/gpu/drm/xe/xe_pt.c               |  5 +++--
->  drivers/gpu/drm/xe/xe_ring_ops.c         | 11 ++++-------
->  drivers/gpu/drm/xe/xe_sched_job.c        | 11 +++++++++++
->  drivers/gpu/drm/xe/xe_sched_job_types.h  |  2 ++
->  drivers/gpu/drm/xe/xe_vm_types.h         |  5 +++++
->  6 files changed, 27 insertions(+), 9 deletions(-)
+>  drivers/gpu/drm/xe/xe_exec.c     | 31 +++----------------------------
+>  drivers/gpu/drm/xe/xe_pt.c       |  2 +-
+>  drivers/gpu/drm/xe/xe_vm.c       | 27 +++++++++------------------
+>  drivers/gpu/drm/xe/xe_vm.h       |  2 +-
+>  drivers/gpu/drm/xe/xe_vm_types.h |  3 ---
+>  5 files changed, 14 insertions(+), 51 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-> index 62b3d9d1d7cd..891ad30e906f 100644
-> --- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-> +++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-> @@ -148,6 +148,8 @@ struct xe_exec_queue {
->  	const struct xe_ring_ops *ring_ops;
->  	/** @entity: DRM sched entity for this exec queue (1 to 1 relationship) */
->  	struct drm_sched_entity *entity;
-> +	/** @tlb_flush_seqno: The seqno of the last rebind tlb flush performed */
-> +	u64 tlb_flush_seqno;
->  	/** @lrc: logical ring context for this exec queue */
->  	struct xe_lrc lrc[];
->  };
+> diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
+> index 7692ebfe7d47..759497d4a102 100644
+> --- a/drivers/gpu/drm/xe/xe_exec.c
+> +++ b/drivers/gpu/drm/xe/xe_exec.c
+> @@ -152,7 +152,6 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+>  	struct drm_exec *exec = &vm_exec.exec;
+>  	u32 i, num_syncs = 0, num_ufence = 0;
+>  	struct xe_sched_job *job;
+> -	struct dma_fence *rebind_fence;
+>  	struct xe_vm *vm;
+>  	bool write_locked, skip_retry = false;
+>  	ktime_t end = 0;
+> @@ -294,35 +293,11 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+>  	 * Rebind any invalidated userptr or evicted BOs in the VM, non-compute
+>  	 * VM mode only.
+>  	 */
+> -	rebind_fence = xe_vm_rebind(vm, false);
+> -	if (IS_ERR(rebind_fence)) {
+> -		err = PTR_ERR(rebind_fence);
+> +	err = xe_vm_rebind(vm, false);
+> +	if (err)
+>  		goto err_put_job;
+> -	}
+> -
+> -	/*
+> -	 * We store the rebind_fence in the VM so subsequent execs don't get
+> -	 * scheduled before the rebinds of userptrs / evicted BOs is complete.
+> -	 */
+> -	if (rebind_fence) {
+> -		dma_fence_put(vm->rebind_fence);
+> -		vm->rebind_fence = rebind_fence;
+> -	}
+> -	if (vm->rebind_fence) {
+> -		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+> -			     &vm->rebind_fence->flags)) {
+> -			dma_fence_put(vm->rebind_fence);
+> -			vm->rebind_fence = NULL;
+> -		} else {
+> -			dma_fence_get(vm->rebind_fence);
+> -			err = drm_sched_job_add_dependency(&job->drm,
+> -							   vm->rebind_fence);
+> -			if (err)
+> -				goto err_put_job;
+> -		}
+> -	}
+>  
+> -	/* Wait behind munmap style rebinds */
+> +	/* Wait behind rebinds */
+>  	if (!xe_vm_in_lr_mode(vm)) {
+>  		err = drm_sched_job_add_resv_dependencies(&job->drm,
+>  							  xe_vm_resv(vm),
 > diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-> index 8d3922d2206e..21bc0d13fccf 100644
+> index 21bc0d13fccf..0484ed5b495f 100644
 > --- a/drivers/gpu/drm/xe/xe_pt.c
 > +++ b/drivers/gpu/drm/xe/xe_pt.c
-> @@ -1254,11 +1254,12 @@ __xe_pt_bind_vma(struct xe_tile *tile, struct xe_vma *vma, struct xe_exec_queue
->  	 * non-faulting LR, in particular on user-space batch buffer chaining,
->  	 * it needs to be done here.
->  	 */
-> -	if ((rebind && !xe_vm_in_lr_mode(vm) && !vm->batch_invalidate_tlb) ||
-> -	    (!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
-> +	if ((!rebind && xe_vm_has_scratch(vm) && xe_vm_in_preempt_fence_mode(vm))) {
-
-Looked why this works in fault mode, we disallow scratch page in fault
-mode. I thought at one point we had implementation for that [1] but it
-looks like it never got merged. Some to keep an eye on.
-
-[1] https://patchwork.freedesktop.org/series/120480/
-
->  		ifence = kzalloc(sizeof(*ifence), GFP_KERNEL);
->  		if (!ifence)
->  			return ERR_PTR(-ENOMEM);
-> +	} else if (rebind && !xe_vm_in_lr_mode(vm) && !vm->batch_invalidate_tlb) {
-> +		vm->tlb_flush_seqno++;
-
-Can we unwind this if / else clause a bit?
-
-I think batch_invalidate_tlb can only be true if !xe_vm_in_lr_mode(vm).
-
-So else if 'rebind && !xe_vm_in_lr_mode(vm)' should work. Also if
-batch_invalidate_tlb is we true we always issue TLB invalidate anyways
-and incrementing the seqno is harmles too.
-
-Side note, I'd be remiss if I didn't mention that I really do not like
-updating these functions (__xe_pt_bind_vma / __xe_pt_unbind_vma) as they
-are going away / being reworked here [2] in order to implement 1 job per
-IOCTL / proper error handling.
-
-[2] https://patchwork.freedesktop.org/series/125608/
-
+> @@ -1298,7 +1298,7 @@ __xe_pt_bind_vma(struct xe_tile *tile, struct xe_vma *vma, struct xe_exec_queue
+>  		}
+>  
+>  		/* add shared fence now for pagetable delayed destroy */
+> -		dma_resv_add_fence(xe_vm_resv(vm), fence, !rebind &&
+> +		dma_resv_add_fence(xe_vm_resv(vm), fence, rebind ||
+>  				   last_munmap_rebind ?
+>  				   DMA_RESV_USAGE_KERNEL :
+>  				   DMA_RESV_USAGE_BOOKKEEP);
+> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+> index 80d43d75b1da..35fba6e3f889 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.c
+> +++ b/drivers/gpu/drm/xe/xe_vm.c
+> @@ -522,7 +522,6 @@ static void preempt_rebind_work_func(struct work_struct *w)
+>  {
+>  	struct xe_vm *vm = container_of(w, struct xe_vm, preempt.rebind_work);
+>  	struct drm_exec exec;
+> -	struct dma_fence *rebind_fence;
+>  	unsigned int fence_count = 0;
+>  	LIST_HEAD(preempt_fences);
+>  	ktime_t end = 0;
+> @@ -568,18 +567,11 @@ static void preempt_rebind_work_func(struct work_struct *w)
+>  	if (err)
+>  		goto out_unlock;
+>  
+> -	rebind_fence = xe_vm_rebind(vm, true);
+> -	if (IS_ERR(rebind_fence)) {
+> -		err = PTR_ERR(rebind_fence);
+> +	err = xe_vm_rebind(vm, true);
+> +	if (err)
+>  		goto out_unlock;
+> -	}
+> -
+> -	if (rebind_fence) {
+> -		dma_fence_wait(rebind_fence, false);
+> -		dma_fence_put(rebind_fence);
+> -	}
+>  
+> -	/* Wait on munmap style VM unbinds */
+> +	/* Wait on rebinds and munmap style VM unbinds */
+>  	wait = dma_resv_wait_timeout(xe_vm_resv(vm),
+>  				     DMA_RESV_USAGE_KERNEL,
+>  				     false, MAX_SCHEDULE_TIMEOUT);
+> @@ -773,14 +765,14 @@ xe_vm_bind_vma(struct xe_vma *vma, struct xe_exec_queue *q,
+>  	       struct xe_sync_entry *syncs, u32 num_syncs,
+>  	       bool first_op, bool last_op);
+>  
+> -struct dma_fence *xe_vm_rebind(struct xe_vm *vm, bool rebind_worker)
+> +int xe_vm_rebind(struct xe_vm *vm, bool rebind_worker)
+>  {
+> -	struct dma_fence *fence = NULL;
+> +	struct dma_fence *fence;
+>  	struct xe_vma *vma, *next;
+>  
+>  	lockdep_assert_held(&vm->lock);
+>  	if (xe_vm_in_lr_mode(vm) && !rebind_worker)
+> -		return NULL;
+> +		return 0;
+>  
+>  	xe_vm_assert_held(vm);
+>  	list_for_each_entry_safe(vma, next, &vm->rebind_list,
+> @@ -788,17 +780,17 @@ struct dma_fence *xe_vm_rebind(struct xe_vm *vm, bool rebind_worker)
+>  		xe_assert(vm->xe, vma->tile_present);
+>  
+>  		list_del_init(&vma->combined_links.rebind);
+> -		dma_fence_put(fence);
+>  		if (rebind_worker)
+>  			trace_xe_vma_rebind_worker(vma);
+>  		else
+>  			trace_xe_vma_rebind_exec(vma);
+>  		fence = xe_vm_bind_vma(vma, NULL, NULL, 0, false, false);
+>  		if (IS_ERR(fence))
+> -			return fence;
+> +			return PTR_ERR(fence);
+> +		dma_fence_put(fence);
 >  	}
 >  
->  	rfence = kzalloc(sizeof(*rfence), GFP_KERNEL);
-> diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
-> index c4edffcd4a32..5b2b37b59813 100644
-> --- a/drivers/gpu/drm/xe/xe_ring_ops.c
-> +++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-> @@ -219,10 +219,9 @@ static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc
->  {
->  	u32 dw[MAX_JOB_SIZE_DW], i = 0;
->  	u32 ppgtt_flag = get_ppgtt_flag(job);
-> -	struct xe_vm *vm = job->q->vm;
->  	struct xe_gt *gt = job->q->gt;
->  
-> -	if (vm && vm->batch_invalidate_tlb) {
-> +	if (job->ring_ops_flush_tlb) {
->  		dw[i++] = preparser_disable(true);
->  		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
->  					seqno, true, dw, i);
-> @@ -270,7 +269,6 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
->  	struct xe_gt *gt = job->q->gt;
->  	struct xe_device *xe = gt_to_xe(gt);
->  	bool decode = job->q->class == XE_ENGINE_CLASS_VIDEO_DECODE;
-> -	struct xe_vm *vm = job->q->vm;
->  
->  	dw[i++] = preparser_disable(true);
->  
-> @@ -282,13 +280,13 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
->  			i = emit_aux_table_inv(gt, VE0_AUX_INV, dw, i);
->  	}
->  
-> -	if (vm && vm->batch_invalidate_tlb)
-> +	if (job->ring_ops_flush_tlb)
->  		i = emit_flush_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
->  					seqno, true, dw, i);
->  
->  	dw[i++] = preparser_disable(false);
->  
-> -	if (!vm || !vm->batch_invalidate_tlb)
-> +	if (!job->ring_ops_flush_tlb)
->  		i = emit_store_imm_ggtt(xe_lrc_start_seqno_ggtt_addr(lrc),
->  					seqno, dw, i);
->  
-> @@ -317,7 +315,6 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
->  	struct xe_gt *gt = job->q->gt;
->  	struct xe_device *xe = gt_to_xe(gt);
->  	bool lacks_render = !(gt->info.engine_mask & XE_HW_ENGINE_RCS_MASK);
-> -	struct xe_vm *vm = job->q->vm;
->  	u32 mask_flags = 0;
->  
->  	dw[i++] = preparser_disable(true);
-> @@ -327,7 +324,7 @@ static void __emit_job_gen12_render_compute(struct xe_sched_job *job,
->  		mask_flags = PIPE_CONTROL_3D_ENGINE_FLAGS;
->  
->  	/* See __xe_pt_bind_vma() for a discussion on TLB invalidations. */
-> -	i = emit_pipe_invalidate(mask_flags, vm && vm->batch_invalidate_tlb, dw, i);
-> +	i = emit_pipe_invalidate(mask_flags, job->ring_ops_flush_tlb, dw, i);
->  
->  	/* hsdes: 1809175790 */
->  	if (has_aux_ccs(xe))
-> diff --git a/drivers/gpu/drm/xe/xe_sched_job.c b/drivers/gpu/drm/xe/xe_sched_job.c
-> index 8151ddafb940..d55458d915a9 100644
-> --- a/drivers/gpu/drm/xe/xe_sched_job.c
-> +++ b/drivers/gpu/drm/xe/xe_sched_job.c
-> @@ -250,6 +250,17 @@ bool xe_sched_job_completed(struct xe_sched_job *job)
->  
->  void xe_sched_job_arm(struct xe_sched_job *job)
->  {
-> +	struct xe_exec_queue *q = job->q;
-> +	struct xe_vm *vm = q->vm;
-> +
-> +	if (vm && !xe_sched_job_is_migration(q) && !xe_vm_in_lr_mode(vm) &&
-> +	    vm->tlb_flush_seqno != q->tlb_flush_seqno) {
-> +		q->tlb_flush_seqno = vm->tlb_flush_seqno;
-> +		job->ring_ops_flush_tlb = true;
-> +	} else if (vm && vm->batch_invalidate_tlb) {
-> +		job->ring_ops_flush_tlb = true;
-> +	}
-> +
-
-Can we simplify this too?
-
-	if (vm && (vm->batch_invalidate_tlb || (vm->tlb_flush_seqno != q->tlb_flush_seqno))) {
-		q->tlb_flush_seqno = vm->tlb_flush_seqno;
-		job->ring_ops_flush_tlb = true;
-	}
-
-I think this works as xe_sched_job_is_migration has
-emit_migration_job_gen12 which doesn't look at job->ring_ops_flush_tlb,
-so no need to xe_sched_job_is_migration.
-
-Also no need to check xe_vm_in_lr_mode as we wouldn'y increment the
-seqno above if that true.
-
-Lastly, harmless to increment q->tlb_flush_seqno in the case of
-batch_invalidate_tlb being true.
-
->  	drm_sched_job_arm(&job->drm);
+> -	return fence;
+> +	return 0;
 >  }
 >  
-> diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
-> index b1d83da50a53..5e12724219fd 100644
-> --- a/drivers/gpu/drm/xe/xe_sched_job_types.h
-> +++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
-> @@ -39,6 +39,8 @@ struct xe_sched_job {
->  	} user_fence;
->  	/** @migrate_flush_flags: Additional flush flags for migration jobs */
->  	u32 migrate_flush_flags;
-> +	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
-> +	bool ring_ops_flush_tlb;
-
-How about JOB_FLAG_FLUSH_TLB rather than a new field? See
-JOB_FLAG_SUBMIT flag usage.
-
-Matt
-
->  	/** @batch_addr: batch buffer address of job */
->  	u64 batch_addr[];
->  };
+>  static void xe_vma_free(struct xe_vma *vma)
+> @@ -1588,7 +1580,6 @@ static void vm_destroy_work_func(struct work_struct *w)
+>  		XE_WARN_ON(vm->pt_root[id]);
+>  
+>  	trace_xe_vm_free(vm);
+> -	dma_fence_put(vm->rebind_fence);
+>  	kfree(vm);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
+> index 6df1f1c7f85d..4853354336f2 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.h
+> +++ b/drivers/gpu/drm/xe/xe_vm.h
+> @@ -207,7 +207,7 @@ int __xe_vm_userptr_needs_repin(struct xe_vm *vm);
+>  
+>  int xe_vm_userptr_check_repin(struct xe_vm *vm);
+>  
+> -struct dma_fence *xe_vm_rebind(struct xe_vm *vm, bool rebind_worker);
+> +int xe_vm_rebind(struct xe_vm *vm, bool rebind_worker);
+>  
+>  int xe_vm_invalidate_vma(struct xe_vma *vma);
+>  
 > diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
-> index ae5fb565f6bf..5747f136d24d 100644
+> index 5747f136d24d..badf3945083d 100644
 > --- a/drivers/gpu/drm/xe/xe_vm_types.h
 > +++ b/drivers/gpu/drm/xe/xe_vm_types.h
-> @@ -264,6 +264,11 @@ struct xe_vm {
->  		bool capture_once;
->  	} error_capture;
+> @@ -177,9 +177,6 @@ struct xe_vm {
+>  	 */
+>  	struct list_head rebind_list;
 >  
-> +	/**
-> +	 * @tlb_flush_seqno: Required TLB flush seqno for the next exec.
-> +	 * protected by the vm resv.
-> +	 */
-> +	u64 tlb_flush_seqno;
->  	/** @batch_invalidate_tlb: Always invalidate TLB before batch start */
->  	bool batch_invalidate_tlb;
->  	/** @xef: XE file handle for tracking this VM's drm client */
+> -	/** @rebind_fence: rebind fence from execbuf */
+> -	struct dma_fence *rebind_fence;
+> -
+>  	/**
+>  	 * @destroy_work: worker to destroy VM, needed as a dma_fence signaling
+>  	 * from an irq context can be last put and the destroy needs to be able
 > -- 
 > 2.44.0
 > 
