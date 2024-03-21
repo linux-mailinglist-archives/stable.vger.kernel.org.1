@@ -1,150 +1,153 @@
-Return-Path: <stable+bounces-28518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9203E881CD5
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:17:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B0C885509
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:40:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48081C211C2
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 07:17:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A2AE1F22313
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 07:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965AF4D9F4;
-	Thu, 21 Mar 2024 07:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394A85915A;
+	Thu, 21 Mar 2024 07:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HGvn1b/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZcK0UHY"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E563A1DE;
-	Thu, 21 Mar 2024 07:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9B259144
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711005432; cv=none; b=HkYzq/eMAKlN+azORVpTkyhmkavwV56qjE2HzBMsadHolQ1Aq9rKJfquqdfJguAkXYZDWUJ+VzqjrCBe3YzODL5Zle0ZV6f7vUno4MS1y667bbxkPPBw4xrAYoB0NlHTsNpsGb++Oh8Ut1cw8RZdw+ZdZU9HBFOQXdKqeeSbaQE=
+	t=1711006789; cv=none; b=F0IpufQLNT/Qu/djdQtUPmDAs8F++m+FdXk1HqfatGjc65lUTcKtilYUQB6LBqpoxKzKMdIijPq7UxdhP9R1ce4qraBEvU19PXUAdZvGsucmwYCQ1tV/5+zAnY3Yf6WVd5xMQ8VoO/AWSzkAmG0gZXbX/IPVf+ncRJ5/oZNDXQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711005432; c=relaxed/simple;
-	bh=GzzWbNc0mT8vlM+yDeqE8rS78bXyatgD86F8aqGRPMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qAAZ0jdsjDpDXWFfRfzJnK14dAhsimMUnH6aO5kdHBsqTdo/2FqxJfWKbPjSj/GCL3IHZU+AhYfQeahK3PUv56dxLSeHTi9J1EXcKshV9ax1hHRqI+VWB6QYZrQdfaDUo0FaIqJBfGvKz1wblW3eMnUgbvqBke8fCdzqx5pihGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HGvn1b/G; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C3FAD1C0004;
-	Thu, 21 Mar 2024 07:17:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711005427;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nnjl8NwZzgPwQjCkcjCjQ+FVN05+Q4op74BaS+FN5Yc=;
-	b=HGvn1b/GVl4fpnbQxgNZ/Prs0NyYO5wc1PCRytrdhvGE2nXdpuQI3dkSeqmnisYBExgCTS
-	csRHt58eh5FldcAX/GCpFttN4qAyIQlm406ZbwqkD2l/M7KVVTx7dEMo4cyjZAVkleNr3g
-	41dkjnWhhz/Nx43/lC9sXuXoK8X5dKRALxgynzk1jYW48aQLc8M8J9/43S4q/0Gyl9p09U
-	hJ1GkDbFTxj7wDjjFR8OYHn5DRCl8GUDRGmm9Diwh+iN5bK9fyg/AS0G7YEYel7516m8x0
-	XoMw8qBq3BXhsreHvxtxXZKFDp6V2k2Vfi76eaHeuihaY7+tRPxWDaDlwZa4lg==
-Date: Thu, 21 Mar 2024 08:17:05 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>, Vignesh Raghavendra
- <vigneshr@ti.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
- <rafal@milecki.pl>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mtd: limit OTP NVMEM Cell parse to non Nand devices
-Message-ID: <20240321081705.597f72bf@xps-13>
-In-Reply-To: <20240320162927.5015-1-ansuelsmth@gmail.com>
-References: <20240320162927.5015-1-ansuelsmth@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711006789; c=relaxed/simple;
+	bh=1ZwhE7uUEz+LUSj3scCdEDdHZkCaM6ZMvReQFQVxqeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dnCzEhCpjbWOodClobPrNXiGfMXhqMa13LMHQVR6FjP+j/OzlUs+8kRu24Rf0tHAiPPYtZqTPv8xWC3I+RRdydMICJ4pn7BKmBF5xCz13HpEbe6uVJ89jIVwbN6j57tWvXfnclMYgGXvWaPkmKFdmVSI4Kce+JcXe9sq9hmfddE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZcK0UHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB37C433F1;
+	Thu, 21 Mar 2024 07:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711006788;
+	bh=1ZwhE7uUEz+LUSj3scCdEDdHZkCaM6ZMvReQFQVxqeU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BZcK0UHY/0ZFCxS97v+E9JxHDojUvVBeFYxM8rfVc3jB/EZdUyuXEkQLqwqmhPKQV
+	 AA/bUoCKY8iW8JWyxBbY5JDFkJs6VIO6wKrHVnM7QV5pFZP3UXjYJaCZhT8KusxOjG
+	 RruJ2MpDLs6SvucojsrEyWvOSM0FoS1Z4Rbwma38=
+Date: Thu, 21 Mar 2024 08:39:44 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Guo Mengqi <guomengqi3@huawei.com>
+Cc: stable@vger.kernel.org, airlied@linux.ie,
+	dri-devel@lists.freedesktop.org, xuqiang36@huawei.com
+Subject: Re: [PATCH] drm/vkms: call drm_atomic_helper_shutdown before
+ drm_dev_put()
+Message-ID: <2024032130-dripping-possum-7528@gregkh>
+References: <20240321070752.81405-1-guomengqi3@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240321070752.81405-1-guomengqi3@huawei.com>
 
-Hi Christian,
-
-ansuelsmth@gmail.com wrote on Wed, 20 Mar 2024 17:29:25 +0100:
-
-> MTD OTP logic is very fragile and can be problematic with some specific
-> kind of devices.
->=20
-> NVMEM across the years had various iteration on how Cells could be
-> declared in DT and MTD OTP probably was left behind and
-> add_legacy_fixed_of_cells was enabled without thinking of the consequence=
-s.
->=20
-> That option enables NVMEM to scan the provided of_node and treat each
-> child as a NVMEM Cell, this was to support legacy NVMEM implementation
-> and don't cause regression.
->=20
-> This is problematic if we have devices like Nand where the OTP is
-> triggered by setting a special mode in the flash. In this context real
-> partitions declared in the Nand node are registered as OTP Cells and
-> this cause probe fail with -EINVAL error.
->=20
-> This was never notice due to the fact that till now, no Nand supported
-> the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-> access for MX30LFxG18AC") this changed and coincidentally this Nand is
-> used on an FritzBox 7530 supported on OpenWrt.
->=20
-> Alternative and more robust way to declare OTP Cells are already
-> prossible by using the fixed-layout node or by declaring a child node
-> with the compatible set to "otp-user" or "otp-factory".
->=20
-> To fix this and limit any regression with other MTD that makes use of
-> declaring OTP as direct child of the dev node, disable
-
-The beauty of backward compatibility...
-
-> add_legacy_fixed_of_cells if we have a node called nand since it's the
-> standard property name to identify Nand devices attached to a Nand
-> Controller.
->=20
-> With the following logic, the OTP NVMEM entry is correctly created with
-> no Cells and the MTD Nand is correctly probed and partitions are
-> correctly exposed.
-
-Thanks for the investigation and the fix. An implementation detail
-below.
-
->=20
-> Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old synta=
-x fixed OF cells")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+On Thu, Mar 21, 2024 at 03:07:52PM +0800, Guo Mengqi wrote:
+> commit 73a82b22963d ("drm/atomic: Fix potential use-after-free
+> in nonblocking commits") introduced drm_dev_get/put() to
+> drm_atomic_helper_shutdown(). And this cause problem in vkms driver exit
+> process.
+> 
+> vkms_exit()
+>   drm_dev_put()
+>     vkms_release()
+>       drm_atomic_helper_shutdown()
+>         drm_dev_get()
+>         drm_dev_put()
+>           vkms_release()    ------ null pointer access
+> 
+> Using 4.19 stable x86 image on qemu, below stacktrace can be triggered by
+> load and unload vkms.ko.
+> 
+> root:~ # insmod vkms.ko
+> [  142.135449] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+> [  142.138713] [drm] Driver supports precise vblank timestamp query.
+> [  142.142390] [drm] Initialized vkms 1.0.0 20180514 for virtual device on minor 0
+> root:~ # rmmod vkms.ko
+> [  144.093710] BUG: unable to handle kernel NULL pointer dereference at 00000000000000a0
+> [  144.097491] PGD 800000023624e067 P4D 800000023624e067 PUD 22ab59067 PMD 0
+> [  144.100802] Oops: 0000 [#1] SMP PTI
+> [  144.102502] CPU: 0 PID: 3615 Comm: rmmod Not tainted 4.19.310 #1
+> [  144.104452] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+> [  144.107238] RIP: 0010:device_del+0x34/0x3a0
+> ...
+> [  144.131323] Call Trace:
+> [  144.131962]  ? __die+0x7d/0xc0
+> [  144.132711]  ? no_context+0x152/0x3b0
+> [  144.133605]  ? wake_up_q+0x70/0x70
+> [  144.134436]  ? __do_page_fault+0x342/0x4b0
+> [  144.135445]  ? __switch_to_asm+0x41/0x70
+> [  144.136416]  ? __switch_to_asm+0x35/0x70
+> [  144.137366]  ? page_fault+0x1e/0x30
+> [  144.138214]  ? __drm_atomic_state_free+0x51/0x60
+> [  144.139331]  ? device_del+0x34/0x3a0
+> [  144.140197]  platform_device_del.part.14+0x19/0x70
+> [  144.141348]  platform_device_unregister+0xe/0x20
+> [  144.142458]  vkms_release+0x10/0x30 [vkms]
+> [  144.143449]  __drm_atomic_helper_disable_all.constprop.31+0x13b/0x150
+> [  144.144980]  drm_atomic_helper_shutdown+0x4b/0x90
+> [  144.146102]  vkms_release+0x18/0x30 [vkms]
+> [  144.147107]  vkms_exit+0x29/0x8ec [vkms]
+> [  144.148053]  __x64_sys_delete_module+0x155/0x220
+> [  144.149168]  do_syscall_64+0x43/0x100
+> [  144.150056]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+> 
+> It seems that the proper unload sequence is:
+> 	drm_atomic_helper_shutdown();
+> 	drm_dev_put();
+> 
+> Just put drm_atomic_helper_shutdown() before drm_dev_put()
+> should solve the problem.
+> 
+> Fixes: 73a82b22963d ("drm/atomic: Fix potential use-after-free in nonblocking commits")
+> Signed-off-by: Guo Mengqi <guomengqi3@huawei.com>
 > ---
->  drivers/mtd/mtdcore.c | 2 +-
+>  drivers/gpu/drm/vkms/vkms_drv.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-> index 5887feb347a4..6872477a5129 100644
-> --- a/drivers/mtd/mtdcore.c
-> +++ b/drivers/mtd/mtdcore.c
-> @@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(st=
-ruct mtd_info *mtd,
->  	config.name =3D compatible;
->  	config.id =3D NVMEM_DEVID_AUTO;
->  	config.owner =3D THIS_MODULE;
-> -	config.add_legacy_fixed_of_cells =3D true;
-> +	config.add_legacy_fixed_of_cells =3D !of_node_name_eq(mtd->dev.of_node,=
- "nand");
+> 
+> diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+> index b1201c18d3eb..d32e08f17427 100644
+> --- a/drivers/gpu/drm/vkms/vkms_drv.c
+> +++ b/drivers/gpu/drm/vkms/vkms_drv.c
+> @@ -39,7 +39,6 @@ static void vkms_release(struct drm_device *dev)
+>  	struct vkms_device *vkms = container_of(dev, struct vkms_device, drm);
+>  
+>  	platform_device_unregister(vkms->platform);
+> -	drm_atomic_helper_shutdown(&vkms->drm);
+>  	drm_mode_config_cleanup(&vkms->drm);
+>  	drm_dev_fini(&vkms->drm);
+>  }
+> @@ -137,6 +136,7 @@ static void __exit vkms_exit(void)
+>  	}
+>  
+>  	drm_dev_unregister(&vkms_device->drm);
+> +	drm_atomic_helper_shutdown(&vkms_device->drm);
+>  	drm_dev_put(&vkms_device->drm);
+>  
+>  	kfree(vkms_device);
+> -- 
+> 2.17.1
+> 
+> 
 
-Could we use mtd_type_is_nand() instead?
+What is the commit id of this change in Linus's tree?
 
->  	config.type =3D NVMEM_TYPE_OTP;
->  	config.root_only =3D true;
->  	config.ignore_wp =3D true;
+thanks,
 
-Thanks,
-Miqu=C3=A8l
+greg k-h
 
