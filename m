@@ -1,154 +1,109 @@
-Return-Path: <stable+bounces-28527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98F68856DC
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:55:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB75188575E
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 11:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3D71C219E0
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AB001F2246F
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05EB54BF7;
-	Thu, 21 Mar 2024 09:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4D15645E;
+	Thu, 21 Mar 2024 10:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+IPc+xy"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="FLvH+Y2h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m4921.qiye.163.com (mail-m4921.qiye.163.com [45.254.49.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29BB4F1E5;
-	Thu, 21 Mar 2024 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C056448;
+	Thu, 21 Mar 2024 10:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711014939; cv=none; b=u1tev3mNvnDNHOHbaFGut673iHF4WS1CX8MXf1TVZ/Lf4iQ6I2VZzZrU6Pm/U2awAR5yk6hZUXg5R4oUDPOQocWsI8TPcrLdqtnSZUmpVjAiASmDEr/HfE2JqE9KZ4TwVMG7nbVOZZnT8YJRypvQlnDWTT66O5XTPXYvMsxh3IM=
+	t=1711016516; cv=none; b=KZXKV/spNQghW+qs13sZrOZlJjZu3RGSctsmEjZBpcxnl3/ZRb5M7HQn2ibiUQDG41INjEPdXcPzV72ANsNkZaFoBS9841swWEUV/j3CbMnIa/5s+KnYPMLyLcjfkZAauOPHN8j75gYy/Ja6F8TdDTkXF50RtbBy5NKJf7IETQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711014939; c=relaxed/simple;
-	bh=a7nyevS6kXHl1cnaRea9FJK70FgEPAKs8q8JMOY4PzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O4WP69Qn8wXVW6ovetcXm0u/4zeeMMqpJCPQvXZsH7WKI55hhiDr05bYQ0h1AdkZQuBjf7hBb3YeLvJQX/R4VPzCLSvJ7WA1jj/TcAUCQt9vtLeApKHlzA2minuKJu+7HyFcq7fAXF6suyk5RRztTTfwLmJ5iqzTr3lEVszMdiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+IPc+xy; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d68c6a4630so10133351fa.3;
-        Thu, 21 Mar 2024 02:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711014936; x=1711619736; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oRdYtRQgQCnEH10wkUIxAuGuQILiDbkAHuoOc+MadDQ=;
-        b=X+IPc+xyNrbCVqmF9xYtiA4d919djJ4rSw6EGHDTylPRcAd2uFAiVs/2HQ9BN/fLag
-         Xp3lvnuqzwGKT+Q5Hg1MuI3f89YAlRNoD9q098C9Y7iahD/s6LRIV4oLBZ31L7dm/yfS
-         rf0dsPok3lIfOJWC/h6BwuR5GSZ6wxv4uazxHKd28Eo1GQnCoA0vSGjPwCbFa+hvTlcF
-         2gRGY5zlrIGOuLbo3+sfPLjPWTeLc33vnhecNBM1mHbREyY0i4XG1357+uJEEwfHjwaV
-         17qxdmYUG/+xq0Yg+7uRFoA0Lr3uGWxH5uZ5YOO5mS4lCct5Xclt8qykN/UWz/FW2Dj6
-         kqZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711014936; x=1711619736;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oRdYtRQgQCnEH10wkUIxAuGuQILiDbkAHuoOc+MadDQ=;
-        b=wPnNLirM1H7htGG2JY0+T06elpZnlhXKv94ldyAY6tHhGqfMH8h1NpQkVkLAxDE6kG
-         pEmnWuZopZ1WT+55a/AV8SdmMBKGTowZ6rKoMqoh3A9rvb7BkCId5N216yQU4JmGwQ5Z
-         Wc3HB6qEuUesym67Dgny2OghXvgNZbHmb4JiSoPHKoaZZuMoz8SAWpdDxHRFmRpzhdhy
-         tf8C7Gig26hGy7Xp77Zuq8Yc4JF/cKD/y78h3uelsNtdW32HHSZwxDAr/vixouVOEfTB
-         TO9AR/5Dpd48O7x03bdzRQrZ4vdBOHMglcqY5PUwSMZ6Ruega1fw3genW0zDVY3GFuqq
-         qJRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBAvi61MFaBnblv+rD0t7Z609isZ7xLB8dweXefX+dlJC5vzFc37TWEJJKIRhuGiANGBIxzshewic0vY9BU2hrIklwEUki9PJDrJA6YjT323BNe5zhauol8uDY/9aPlQg87uhN
-X-Gm-Message-State: AOJu0YzNz4cgAPgrD+k/Oz9zfZZcWb+7lgW5vDqlWb1nDUi/rVT4Droo
-	ik85SY/ZUi7DmRuEzM/OOtivTzJ3RmPeJHL7mVERbVVyNUfD8FDS
-X-Google-Smtp-Source: AGHT+IEweDT5R/pbQGL244a1a+Gfu1CUq42BQlOsQYAQ+MsCxskzyKPWWCdQMVQIczFksFberVTLgA==
-X-Received: by 2002:a2e:944d:0:b0:2d5:122a:4b13 with SMTP id o13-20020a2e944d000000b002d5122a4b13mr5932802ljh.16.1711014935817;
-        Thu, 21 Mar 2024 02:55:35 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id p11-20020a05600c358b00b0041408af4b34sm4987103wmq.10.2024.03.21.02.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 02:55:35 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	s=arc-20240116; t=1711016516; c=relaxed/simple;
+	bh=i0+PV72/2dFaK31wvWPoX0d6bxJSY6XBCsINwakqKcM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=f0ry7c/86e4Lemt7VPRtMNdPte6bEg4liB80GjieBiBmx9dXCUh7AN9PDkvI7iwFpuxoW/olcEjC48N03RA0Xl3FG8ObVp4SQebXIJ9EUlGFIh80qZFnjrMrHdwfojlPv+niQI3rP+4XpB+ktXQfbWj8+iqKkB2ogFxCfA7wqfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=FLvH+Y2h; arc=none smtp.client-ip=45.254.49.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+DKIM-Signature: a=rsa-sha256;
+	b=FLvH+Y2h76AlDPjOD9msC4pT2xE4BWTFOguXgNsDgjOA9zfDgm9rtxIFllbE3G/ylIra5kBR+bVFpYUpYYimNX1hSCOjOYl4mF6F3mq7ysdonnY3l2mlGClPUuwb0PGatTcRH269fp6X1Bk6vXcYYht/S7zwiEvgbrxRFTn6APY=;
+	s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=ktnsnF64wj/H5bwoeAclYjmtYjAzqxy2pnWppwBZrP8=;
+	h=date:mime-version:subject:message-id:from;
+Received: from rockchip.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTPA id C897B7E033F;
+	Thu, 21 Mar 2024 18:21:02 +0800 (CST)
+From: Ye Zhang <ye.zhang@rock-chips.com>
+To: ye.zhang@rock-chips.com,
+	finley.xiao@rock-chips.com,
+	heiko@sntech.de,
+	daniel.lezcano@linaro.org,
+	rui.zhang@intel.com,
+	lukasz.luba@arm.com,
+	rafael@kernel.org
+Cc: tao.huang@rock-chips.com,
+	linux-rockchip@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] mtd: limit OTP NVMEM Cell parse to non Nand devices
-Date: Thu, 21 Mar 2024 10:55:13 +0100
-Message-ID: <20240321095522.12755-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
+Date: Thu, 21 Mar 2024 18:21:00 +0800
+Message-Id: <20240321102100.2401340-1-ye.zhang@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh4fGlYZQkoeSkwZQ00aTUJVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlOQ1VJSVVMVUpKT1lXWRYaDxIVHRRZQVlPS0hVSk5DTUtIVUpLS1VKQl
+	kG
+X-HM-Tid: 0a8e60874c5309cfkunmc897b7e033f
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PC46Fxw*ITMKEhVNMgIJITYd
+	NiJPCR9VSlVKTEpKS0pNT01IQ0xMVTMWGhIXVQIeVQETGhUcOwkUGBBWGBMSCwhVGBQWRVlXWRIL
+	WUFZTkNVSUlVTFVKSk9ZV1kIAVlBSU9PSTcG
 
-MTD OTP logic is very fragile and can be problematic with some specific
-kind of devices.
+The issue occurs when the devfreq cooling device uses the EM power model
+and the get_real_power() callback is provided by the driver.
 
-NVMEM across the years had various iteration on how Cells could be
-declared in DT and MTD OTP probably was left behind and
-add_legacy_fixed_of_cells was enabled without thinking of the consequences.
+The EM power table is sorted ascending，can't index the table by cooling
+device state，so convert cooling state to performance state by
+dfc->max_state - dfc->capped_state.
 
-That option enables NVMEM to scan the provided of_node and treat each
-child as a NVMEM Cell, this was to support legacy NVMEM implementation
-and don't cause regression.
-
-This is problematic if we have devices like Nand where the OTP is
-triggered by setting a special mode in the flash. In this context real
-partitions declared in the Nand node are registered as OTP Cells and
-this cause probe fail with -EINVAL error.
-
-This was never notice due to the fact that till now, no Nand supported
-the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-access for MX30LFxG18AC") this changed and coincidentally this Nand is
-used on an FritzBox 7530 supported on OpenWrt.
-
-Alternative and more robust way to declare OTP Cells are already
-prossible by using the fixed-layout node or by declaring a child node
-with the compatible set to "otp-user" or "otp-factory".
-
-To fix this and limit any regression with other MTD that makes use of
-declaring OTP as direct child of the dev node, disable
-add_legacy_fixed_of_cells if we have a node called nand since it's the
-standard property name to identify Nand devices attached to a Nand
-Controller.
-
-With the following logic, the OTP NVMEM entry is correctly created with
-no Cells and the MTD Nand is correctly probed and partitions are
-correctly exposed.
-
-Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
 ---
-Changes v2:
-- Use mtd_type_is_nand instead of node name check
+v1 -> v2:
+  - Update the commit message.
 
- drivers/mtd/mtdcore.c | 2 +-
+ drivers/thermal/devfreq_cooling.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 5887feb347a4..0de87bc63840 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
- 	config.name = compatible;
- 	config.id = NVMEM_DEVID_AUTO;
- 	config.owner = THIS_MODULE;
--	config.add_legacy_fixed_of_cells = true;
-+	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
- 	config.type = NVMEM_TYPE_OTP;
- 	config.root_only = true;
- 	config.ignore_wp = true;
+diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+index 50dec24e967a..8fd7cf1932cd 100644
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -214,7 +214,7 @@ static int devfreq_cooling_get_requested_power(struct thermal_cooling_device *cd
+ 
+ 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+ 		if (!res) {
+-			state = dfc->capped_state;
++			state = dfc->max_state - dfc->capped_state;
+ 
+ 			/* Convert EM power into milli-Watts first */
+ 			rcu_read_lock();
 -- 
-2.43.0
+2.34.1
 
 
