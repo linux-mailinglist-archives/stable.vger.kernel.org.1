@@ -1,174 +1,143 @@
-Return-Path: <stable+bounces-28515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C16F881C09
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 05:54:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443B3881CC9
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F63281D04
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 04:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051BA28465C
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 07:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648B2BB1E;
-	Thu, 21 Mar 2024 04:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="WYBAEEao"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D0B4D9E7;
+	Thu, 21 Mar 2024 07:14:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-ztdg06021701.me.com (mr85p00im-ztdg06021701.me.com [17.58.23.196])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426BA1BDF4
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 04:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EE58203
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710996838; cv=none; b=iRGXixIjGcyqpR8uX4qQaZoCUCz6HUI5FXt5Q+r/hIBU+cRehfj3ynuGXq8kgk12HitdcnkKwRr8P6F/J9EhVeY65lBr3glOVoUrytu5cUSrJX7MO1AAkNUmSxRepPegeoGitaBJL2hBZkF+v0mEq2LESdxlhFYkW3l/V3bEBgk=
+	t=1711005290; cv=none; b=XvsKH4//BNcoI4PfnquDxBGCuirNjEVWwr/L3pyoWlqsFMRYWqyEho6lXsvFChwrbd77KqHU/28doMzJge0+s1JDwc7zqMU7Wj6BHKF88mzsgErsxfcxmSu4vd9EMU9GTOablxKctA4n9FIc+blu234E3gkbmvR2hJrC03OY5AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710996838; c=relaxed/simple;
-	bh=kmIKewn0OS9jBtK0VejszCjBQ3tt+jG0o6bU6vJqHAY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qHQd80jWrbngWl2cxUkAfDcpQkK9O50K7lDnYe3gOlvQa3o0UKevasrZlOnqqX58C0E4OeZZe5I3hdS0Cqq+ZNwlbLArMmIpQvHWkVATWRKCKkdSGKtqqwU8cB3yRUxYGIDklWoVlrQ6Sq3UcndSiETEgOrDj/dkv1K3LK8XBJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=WYBAEEao; arc=none smtp.client-ip=17.58.23.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-	t=1710996836; bh=+3hJM/vrryWqnRrbEBildsXcg7SPWAKSHMy2nbEpucI=;
-	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
-	b=WYBAEEao7veau/h+dkj5VkV+mLzEJu8UybYGkwgD5TSoAKhp7sPAkR5QvtLMl2wv7
-	 45UIQZLM0/N2zfO5xBMX7gbZlT+g1EGm02IaGW7Hte6z5KH39+VlgiGse+P+HkSxTb
-	 2F2XUFRJEyCT19/u+3Q9tCGGxLCBhq9sKLhk3+E/eQ4PQOmplKFxRtw/RN2tBIzMlw
-	 Zao7gbEEnHisQC8jSL7+7DWRWjM09yvapJP+EtH0kZSUysrRT4tHgVfwxCTmtS+Bpc
-	 nOBPCxD1SwaScoJWWq5XUFLYJsig5Cnb7VjnwfVKLyMlPbE57gdb5vvdHo9BooaRBN
-	 6NQSM8bdiURbw==
-Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06021701.me.com (Postfix) with ESMTPSA id A1F652633222;
-	Thu, 21 Mar 2024 04:53:54 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1711005290; c=relaxed/simple;
+	bh=l1DPPk0G8aT58R7Bkm96noh8Um2KT0ETIyTs1PS22AU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hTAgLqQVis2tELEvVVh8zgCcLp5f3cjlZRPsHyaDtfdd3MMYEoHhr1iF9Lntzn+ea3jQlVFga33/oSnNd5BInQko55/2YG+zVI4cgUtaeyRUaFTDWojPLK39r6gxshWvK9RQ5JpKy6hMa5PdCS8frUQ6mPwDEoS4RMwKMkEO7bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4V0c9Y2RDrz1xsDD
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 15:12:49 +0800 (CST)
+Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
+	by mail.maildlp.com (Postfix) with ESMTPS id 216951400CB
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 15:14:43 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemm600013.china.huawei.com
+ (7.193.23.68) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 21 Mar
+ 2024 15:14:42 +0800
+From: Guo Mengqi <guomengqi3@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <xuqiang36@huawei.com>
+Subject: [PATCH] drm/vkms: call drm_atomic_helper_shutdown before drm_dev_put()
+Date: Thu, 21 Mar 2024 15:06:48 +0800
+Message-ID: <20240321070648.80673-1-guomengqi3@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-From: Laine Taffin Altman <alexanderaltman@me.com>
-In-Reply-To: <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
-Date: Wed, 20 Mar 2024 21:53:42 -0700
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- stable@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- lkml <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-References: <20240313230713.987124-1-benno.lossin@proton.me>
- <Zfh5DYkxNAm-mY_9@boqun-archlinux>
- <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
- <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home>
- <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
- <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me>
-To: Benno Lossin <benno.lossin@proton.me>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-Proofpoint-ORIG-GUID: 8t8BjbHkZ_z8T1oGI4ChJjWvYynAMZf7
-X-Proofpoint-GUID: 8t8BjbHkZ_z8T1oGI4ChJjWvYynAMZf7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-21_02,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 mlxscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2403210031
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600013.china.huawei.com (7.193.23.68)
 
-On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin =
-<benno.lossin@proton.me> wrote:
-> On 3/19/24 06:28, Laine Taffin Altman wrote:
->> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng =
-<boqun.feng@gmail.com> wrote:
->>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
->>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng =
-<boqun.feng@gmail.com> wrote:
->>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
->>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>>=20
->>>>>> It is not enough for a type to be a ZST to guarantee that zeroed =
-memory
->>>>>> is a valid value for it; it must also be inhabited. Creating a =
-value of
->>>>>> an uninhabited type, ZST or no, is immediate UB.
->>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, =
-since
->>>>>> that type is not inhabited.
->>>>>>=20
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and =
-`init::zeroed` function")
->>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
->>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>>>=20
->>>>> I think either in the commit log or in the code comment, there =
-better be
->>>>> a link or explanation on "(un)inhabited type". The rest looks good =
-to
->>>>> me.
->>>>=20
->>>> Would the following be okay for that purpose?
->>>>=20
->>>> A type is inhabited if at least one valid value of that type =
-exists; a
->>>> type is uninhabited if no valid values of that type exist.  The =
-terms
->>>> "inhabited" and "uninhabited" in this sense originate in type =
-theory,
->>>> a branch of mathematics.
->>>>=20
->>>> In Rust, producing an invalid value of any type is immediate =
-undefined
->>>> behavior (UB); this includes via zeroing memory.  Therefore, since =
-an
->>>> uninhabited type has no valid values, producing any values at all =
-for
->>>> it is UB.
->>>>=20
->>>> The Rust standard library type `core::convert::Infallible` is
->>>> uninhabited, by virtue of having been declared as an enum with no
->>>> cases, which always produces uninhabited types in Rust.  Thus, =
-remove
->>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
->>>> the UB.
->>>>=20
->>>=20
->>> Yeah, this works for me. Thanks!
->>=20
->> Great!  Should it be re-sent or can the new wording be incorporated =
-upon merge?
->=20
-> I can re-send it for you again, or do you want to send it yourself?
-> I think it is also a good idea to add a link to [1] in the code, since
-> the above explanation is rather long and fits better in the commit
-> message.
->=20
+commit 73a82b22963d ("drm/atomic: Fix potential use-after-free
+in nonblocking commits") introduced drm_dev_get/put() to
+drm_atomic_helper_shutdown(). And this cause problem in vkms driver exit
+process.
 
-I=E2=80=99ll try and do it myself; thank you for sending the first round =
-for me and illustrating procedures!  What =
-Reviewed-By=E2=80=99s/Signed-Off-By's should I retain?
+vkms_exit()
+  drm_dev_put()
+    vkms_release()
+      drm_atomic_helper_shutdown()
+        drm_dev_get()
+        drm_dev_put()
+          vkms_release()    ------ null pointer access
 
-Thanks,
-Laine
+Using 4.19 stable x86 image on qemu, below stacktrace can be triggered by
+load and unload vkms.ko.
 
-> --=20
-> Cheers,
-> Benno
->=20
-> [1]: https://doc.rust-lang.org/nomicon/exotic-sizes.html#empty-types
+root:~ # insmod vkms.ko
+[  142.135449] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[  142.138713] [drm] Driver supports precise vblank timestamp query.
+[  142.142390] [drm] Initialized vkms 1.0.0 20180514 for virtual device on minor 0
+root:~ # rmmod vkms.ko
+[  144.093710] BUG: unable to handle kernel NULL pointer dereference at 00000000000000a0
+[  144.097491] PGD 800000023624e067 P4D 800000023624e067 PUD 22ab59067 PMD 0
+[  144.100802] Oops: 0000 [#1] SMP PTI
+[  144.102502] CPU: 0 PID: 3615 Comm: rmmod Not tainted 4.19.310 #1
+[  144.104452] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+[  144.107238] RIP: 0010:device_del+0x34/0x3a0
+...
+[  144.131323] Call Trace:
+[  144.131962]  ? __die+0x7d/0xc0
+[  144.132711]  ? no_context+0x152/0x3b0
+[  144.133605]  ? wake_up_q+0x70/0x70
+[  144.134436]  ? __do_page_fault+0x342/0x4b0
+[  144.135445]  ? __switch_to_asm+0x41/0x70
+[  144.136416]  ? __switch_to_asm+0x35/0x70
+[  144.137366]  ? page_fault+0x1e/0x30
+[  144.138214]  ? __drm_atomic_state_free+0x51/0x60
+[  144.139331]  ? device_del+0x34/0x3a0
+[  144.140197]  platform_device_del.part.14+0x19/0x70
+[  144.141348]  platform_device_unregister+0xe/0x20
+[  144.142458]  vkms_release+0x10/0x30 [vkms]
+[  144.143449]  __drm_atomic_helper_disable_all.constprop.31+0x13b/0x150
+[  144.144980]  drm_atomic_helper_shutdown+0x4b/0x90
+[  144.146102]  vkms_release+0x18/0x30 [vkms]
+[  144.147107]  vkms_exit+0x29/0x8ec [vkms]
+[  144.148053]  __x64_sys_delete_module+0x155/0x220
+[  144.149168]  do_syscall_64+0x43/0x100
+[  144.150056]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
 
+It seems that the proper unload sequence is:
+	drm_atomic_helper_shutdown();
+	drm_dev_put();
+
+Just put drm_atomic_helper_shutdown() before drm_dev_put()
+should solve the problem.
+
+Fixes: 73a82b22963d ("drm/atomic: Fix potential use-after-free in nonblocking commits")
+Signed-off-by: Guo Mengqi <guomengqi3@huawei.com>
+---
+ drivers/gpu/drm/vkms/vkms_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index b1201c18d3eb..d32e08f17427 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -39,7 +39,6 @@ static void vkms_release(struct drm_device *dev)
+ 	struct vkms_device *vkms = container_of(dev, struct vkms_device, drm);
+ 
+ 	platform_device_unregister(vkms->platform);
+-	drm_atomic_helper_shutdown(&vkms->drm);
+ 	drm_mode_config_cleanup(&vkms->drm);
+ 	drm_dev_fini(&vkms->drm);
+ }
+@@ -137,6 +136,7 @@ static void __exit vkms_exit(void)
+ 	}
+ 
+ 	drm_dev_unregister(&vkms_device->drm);
++	drm_atomic_helper_shutdown(&vkms_device->drm);
+ 	drm_dev_put(&vkms_device->drm);
+ 
+ 	kfree(vkms_device);
+-- 
+2.17.1
 
 
