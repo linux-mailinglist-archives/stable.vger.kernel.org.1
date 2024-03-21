@@ -1,109 +1,96 @@
-Return-Path: <stable+bounces-28525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10797885642
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:13:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA5688563A
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAA7C282428
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA243282370
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFCA3BBC4;
-	Thu, 21 Mar 2024 09:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360A23065B;
+	Thu, 21 Mar 2024 09:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UT83Ttyj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XJuyVuK7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90A612B81;
-	Thu, 21 Mar 2024 09:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65C72E41A
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 09:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711012418; cv=none; b=APGqdi39imQx1BZ57f85YSMZGY3d7jFaxyjfaDuUQ73JtjTTiKoDPcUJanJO/TFDlwCyZqsHsbpqHvpOtX1RS5KLCR/aX6oQJ1MVBx9Cv6mMaTR/AitxJ1LZwWvwMY7iU1+rzpEZ9y0WCf4XaVpyhl9a/WM3uyBae7zWoFEziJ8=
+	t=1711012307; cv=none; b=rnjVv7mZ5flkDFIesjCt4JTMDEL0WIXBRKAlSwronvDvJEC2A9DdqHOzmcSB5KZYi8TX13WYJuJtL2JVcRsQfCz18KNGfhXImsXWWZy/HK8lPqEb7iT9ltSXxlHmzAD4JDj8YAdW7WrwxH1h0HhvrdaHt9I3/rp2Gg+Hxgz9t0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711012418; c=relaxed/simple;
-	bh=0WGf5ZBm03nwzd9rinCCaBGVduGXtNXEkarX6ZlpYsY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pYivrOH/ocwVsQUo/dWPxIn+jpwgxz6d2NqaIL+nFkrpijIUt9H3ElesOvBMSOCvDUZkpx22Zjgh4dkmb5G8FJ7F6y1wKB4ZaXuOdVf+pYCajF7d6AcxTM1h11Wkx00Z+VnenMv0t/CDU5CrECZz/wa2hkdFsUDG247LGNvQKII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UT83Ttyj; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1e034607879so5476835ad.0;
-        Thu, 21 Mar 2024 02:13:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711012416; x=1711617216; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nes78up99EiE9h0M639AFK21t634+dlUJNnADmOZ5TM=;
-        b=UT83TtyjVihMppn+U+hVg3eHjgo2a+DCmTc4K18BMkWkAmxfCFOhHbapSnkVTM5BsV
-         bnutWjpU9edei97AJKMDWCmVseBF2vaFvBRDWzFo60PJwVrHcZddwCVk/ONuP9JqHajN
-         1brqIan4PJLeLG3vwY7F6qTzXzZz51emvE4CRra/wkt2fHT7AW9Cs0ctYS48M+v/Ta4P
-         PFqvAPPVDziYDCI7PAix2rAIa7ZODi75+NksZpm31Gzb+8RH614IOSmzT+BhhWzfr51S
-         ZvGe604hrmpjXYf2yya45e5o61aT6dnUqp0x7Ja6tziDfBzM9VFABP8LFVh33BlsjjxH
-         eLsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711012416; x=1711617216;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nes78up99EiE9h0M639AFK21t634+dlUJNnADmOZ5TM=;
-        b=F2qHimGZoTz3P5V2//6nwShYxt5G5oN7qPd/1IhZSeLXt2ODSfnHyeU7WTDiOhDN7b
-         8zdi8O6E4C/Mt6EsKckSK259l4zVxL3dw41CXlCXxrRKz01Vy00lKXpUnWmPiW/CrnHR
-         Ottgjg+qw4P2xh9chEuik/BzaoPYk/TctPXgN9VQgkXQ+FN658uiw3TZPH/kxl0kr5YL
-         zdykBFUjRUcXpblq7qUJc7FAb3IYybnJhyYDwbcUbvO/PjRd1ieCjxm02Nq7fRyTAffz
-         n0GhPh01xaWmRYhceWQ6rkzNSdCXbRCaG9BoRHeNRO7edle5663R7OlI1nTkU5yn5tVI
-         FRjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUflFWDiMBH5iIB67nREGoBMgK0Utfu2NubsGIz8N1f4xip+MXSczVXyatVWNv2VSBbhn/wGz5SrAW9pWear3vqjRiIBC7T/Df/HttPMnmAeSJ0MYgEJ6fVKN7YCfQyUtV1nrrwW3Ww8egb54mdt0PBOW/dyQ6GTLDpEzWK2zYkzE1zdII=
-X-Gm-Message-State: AOJu0YwKRk5/wiGpzqIt9EG+QJRJ800D0+X+6Dd9iCLlCs0HYBdPdT3i
-	7dWAlL4y3VVu41jocZM9WqQj0GSPQheXJ0xM1cP6zxQjDaHqoaHfNrPR3tQOlRwb/YBNDBdR+nj
-	OWbyt5CCm+Ags/gKzFpGir1U3D6rttDipznYB8g==
-X-Google-Smtp-Source: AGHT+IEc3sbuxLIEXLcNo9hvlvsrCEfAQbe8858Zyh5kZvdTHTT+txNlarkGx3oYaQLqT3cV8SP642r7siWWZIPoOdM=
-X-Received: by 2002:a05:6a21:a5a4:b0:1a3:53ae:80c7 with SMTP id
- gd36-20020a056a21a5a400b001a353ae80c7mr10352067pzc.7.1711012052876; Thu, 21
- Mar 2024 02:07:32 -0700 (PDT)
+	s=arc-20240116; t=1711012307; c=relaxed/simple;
+	bh=0NIU+TJsUOzjrs8pO6/ItcR0avG8D3Okh7qfg8hVwnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kdHmRnRQ849Ol4Nu+RQfj0PA4O2GGHOBEyDR819rz5SJq+6dereKcZDimK5N9MKha3cQG9D5DXF0MZo+ffKZ0XQiEKFzC5QNl7VUmtTpaKyYvRLeGDG4mH4Cb7TQnfR54jjR3K50svvS1e2QOELnHDp17w1VBy0HugNqvyuzsRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XJuyVuK7; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711012304; x=1742548304;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=0NIU+TJsUOzjrs8pO6/ItcR0avG8D3Okh7qfg8hVwnY=;
+  b=XJuyVuK71DZnfmOb5huYX6jcGRBeS9cvgX49HbXRMUaOwbYNvBoqa0/b
+   +SvuNHrp6Ha/GQyHjvonGSt4mRLc2u3KPE07+aL9c2Bih0IKKbYQzx7bn
+   Gz5hGvTMw4SOInhqyvN86jA3nJat7ihy5ilgGu8N0HdPA2+0z4VbFYh8P
+   hnnlw4my/EcINUqBZJPotl7Lu1cqoh7YeWXKqIkZVbbw2lZSTvXZuOjDT
+   8NLe/59CYszEmoFdMUunyo4optpCMGXnLD6QxRrMYxoVHswox2boFAoGI
+   hTdB7iAh1u0BtEFNlIh5ntwBuv03Ulr4ElXyJG+vCO4J7StHr+ttpL9AB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="31424810"
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
+   d="scan'208";a="31424810"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 02:11:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
+   d="scan'208";a="14446650"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 21 Mar 2024 02:11:41 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rnESZ-000JIR-1K;
+	Thu, 21 Mar 2024 09:11:39 +0000
+Date: Thu, 21 Mar 2024 17:11:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guo Mengqi <guomengqi3@huawei.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] drm/vkms: call drm_atomic_helper_shutdown before
+ drm_dev_put()
+Message-ID: <Zfv5uwalPfiJQx1M@28e5c5ca316a>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313230713.987124-1-benno.lossin@proton.me>
- <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
- <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
- <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 21 Mar 2024 10:07:09 +0100
-Message-ID: <CANiq72mAA0d41arVo6q2S6gk2sRMfAyW1FOHhUMytMQeYtNjhQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-To: Laine Taffin Altman <alexanderaltman@me.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240321070752.81405-1-guomengqi3@huawei.com>
 
-On Thu, Mar 21, 2024 at 5:53=E2=80=AFAM Laine Taffin Altman
-<alexanderaltman@me.com> wrote:
->
-> I=E2=80=99ll try and do it myself; thank you for sending the first round =
-for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
-By's should I retain?
+Hi,
 
-For the Signed-off-by, only yours is OK. For the Reviewed-by, it
-depends on how much you have changed, i.e. whether you consider their
-review does not apply anymore -- please see
-https://docs.kernel.org/process/submitting-patches.html#reviewer-s-statemen=
-t-of-oversight
+Thanks for your patch.
 
-Cheers,
-Miguel
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] drm/vkms: call drm_atomic_helper_shutdown before drm_dev_put()
+Link: https://lore.kernel.org/stable/20240321070752.81405-1-guomengqi3%40huawei.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
