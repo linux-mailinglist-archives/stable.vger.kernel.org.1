@@ -1,155 +1,109 @@
-Return-Path: <stable+bounces-28521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA1488560D
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:51:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10797885642
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F561C21198
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 08:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAA7C282428
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 09:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA49C45948;
-	Thu, 21 Mar 2024 08:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFCA3BBC4;
+	Thu, 21 Mar 2024 09:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="LDZEiYRz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UT83Ttyj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA7741C73
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 08:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90A612B81;
+	Thu, 21 Mar 2024 09:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711011063; cv=none; b=gnBjeL6AGoo3HNVQYcMvf86CBekHEk41GqTARK5lb3xcxAuACtqMFVKRb2fiCAlGJb1ywd9tGhKYIBOSmyOb0mn5FDRF4JcZv8yjzI0MCdTB+BcnqXEn7AHT2BT4wdcj1H7AXPJ/egO88yate/bqBGyowxTkvqdCp2Zg1iuNnuI=
+	t=1711012418; cv=none; b=APGqdi39imQx1BZ57f85YSMZGY3d7jFaxyjfaDuUQ73JtjTTiKoDPcUJanJO/TFDlwCyZqsHsbpqHvpOtX1RS5KLCR/aX6oQJ1MVBx9Cv6mMaTR/AitxJ1LZwWvwMY7iU1+rzpEZ9y0WCf4XaVpyhl9a/WM3uyBae7zWoFEziJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711011063; c=relaxed/simple;
-	bh=b0D5UA4UkNTQ3hrb1awYFHUtTZYLtdiN4O7EFOEvags=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VzUMvOng7ld6xLucGygXvjsTX8qJSXHq1lcBZTdfjE4bwoR1c+EnejZqgXMpJ2sFC1MeTryI4G91CSBU4Wag1U/fLIcTE8NK7+dAGL3wg0DeK9Ggm6CQ2Wd3L9TTM8V+tSn4AdGa6MJLAq/xnZI1NXZxNXLecq1y0Oz7rSlSG88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=LDZEiYRz; arc=none smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3c3acf4b0e1so232081b6e.0
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 01:51:01 -0700 (PDT)
+	s=arc-20240116; t=1711012418; c=relaxed/simple;
+	bh=0WGf5ZBm03nwzd9rinCCaBGVduGXtNXEkarX6ZlpYsY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pYivrOH/ocwVsQUo/dWPxIn+jpwgxz6d2NqaIL+nFkrpijIUt9H3ElesOvBMSOCvDUZkpx22Zjgh4dkmb5G8FJ7F6y1wKB4ZaXuOdVf+pYCajF7d6AcxTM1h11Wkx00Z+VnenMv0t/CDU5CrECZz/wa2hkdFsUDG247LGNvQKII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UT83Ttyj; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1e034607879so5476835ad.0;
+        Thu, 21 Mar 2024 02:13:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1711011060; x=1711615860; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1711012416; x=1711617216; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pb2DImA394Xn1GF25dwWbz9ebhgojzvFgrEv+j58JQY=;
-        b=LDZEiYRzupwHf9CELWDC7TlZ2QtUQHw0qIvkW35avc9BQyKfqazv32MorD1fpgAYBc
-         /nu+IvHj1GItxG8GXXF9D7PMIzuqwQC8phEON/0cxxRShKf/3yPxQFszywjqfsyZ+QsH
-         aJZdLigMG7Dxp144TPTolkeLmmIm+VsPtk1zPl40RKRQJ2GIrHydB25g1vDEx6Bst8Ia
-         LeEsFcJVTKzdVlNfEya/AtJws68++FzKE2OqOMnS8Zj6hsIWAApo+u/c5pBDpAN+reVU
-         AgSQ54MAWQNAchrQM0U/sAR3OkUc86JRRhE4zXSTxDfjnZkBRyNSlx8O+tXVqtfLjKJ5
-         azPw==
+        bh=Nes78up99EiE9h0M639AFK21t634+dlUJNnADmOZ5TM=;
+        b=UT83TtyjVihMppn+U+hVg3eHjgo2a+DCmTc4K18BMkWkAmxfCFOhHbapSnkVTM5BsV
+         bnutWjpU9edei97AJKMDWCmVseBF2vaFvBRDWzFo60PJwVrHcZddwCVk/ONuP9JqHajN
+         1brqIan4PJLeLG3vwY7F6qTzXzZz51emvE4CRra/wkt2fHT7AW9Cs0ctYS48M+v/Ta4P
+         PFqvAPPVDziYDCI7PAix2rAIa7ZODi75+NksZpm31Gzb+8RH614IOSmzT+BhhWzfr51S
+         ZvGe604hrmpjXYf2yya45e5o61aT6dnUqp0x7Ja6tziDfBzM9VFABP8LFVh33BlsjjxH
+         eLsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711011060; x=1711615860;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1711012416; x=1711617216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pb2DImA394Xn1GF25dwWbz9ebhgojzvFgrEv+j58JQY=;
-        b=TWMlvbR/mPb71nfpA1KTi8B3CNbdZLYDbtBeHtb5kcDT0F7eC7f+tWfJDOhrbPEi4Z
-         lvfTa5+NrUTBQpPs7DCU0a/S8QL1M+7mUvmvYeN914YryxLsvD030msCNkW0FJZeZ1pM
-         0wR6AWVdOYGa/o2IKOTE3ClhEniF/785U9g89ANDSnQgl8EhzlZAqLoOMCg9PfdwtNNq
-         a8ONpifDQR/sI2L11isfiFQIxPIqxrGAOHsfajhKy+9LFxUERmRrUyni1HS9ot60wVwq
-         FMG7T2IJn1yvnBVTbYAK18rrSnGJ8RWGv0tYO9lmlH84/sXeFXQyaOFea8AiJzf9bAzW
-         h2Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQM8zMSpExtDUILDyMsrMI9aG3OSkL90OJXkVFNAtRFF5usyhaSfGG1YbswdWbtPoYQeu37alrDExbFIQ8n1vLNgdoxIDB
-X-Gm-Message-State: AOJu0Ywu8g7mna+edutsBgckwZUQVpidThPw86mdh3/4eZybP60AS5Uy
-	ufpmQm/bQtP6B3dY9sEh2rp/HFfslVveRZ5xe/PV7XLEVSO9pa2Ffa9uFucAgIo=
-X-Google-Smtp-Source: AGHT+IFm6Yj6dZwM/TRCsKt+MMBPFQPRbWez6YSGqm2WUAe87j/A2qKzPB8fe5tq8WbjG6fC4RnUTA==
-X-Received: by 2002:a05:6808:f90:b0:3c3:a696:c7e1 with SMTP id o16-20020a0568080f9000b003c3a696c7e1mr3806907oiw.3.1711011060344;
-        Thu, 21 Mar 2024 01:51:00 -0700 (PDT)
-Received: from anup-ubuntu-vm.localdomain ([103.97.165.210])
-        by smtp.gmail.com with ESMTPSA id x3-20020a544003000000b003c3753dd869sm2275409oie.58.2024.03.21.01.50.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 01:50:59 -0700 (PDT)
-From: Anup Patel <apatel@ventanamicro.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Atish Patra <atishp@atishpatra.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anup Patel <apatel@ventanamicro.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] RISC-V: KVM: Fix APLIC setipnum_le/be write emulation
-Date: Thu, 21 Mar 2024 14:20:40 +0530
-Message-Id: <20240321085041.1955293-2-apatel@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240321085041.1955293-1-apatel@ventanamicro.com>
-References: <20240321085041.1955293-1-apatel@ventanamicro.com>
+        bh=Nes78up99EiE9h0M639AFK21t634+dlUJNnADmOZ5TM=;
+        b=F2qHimGZoTz3P5V2//6nwShYxt5G5oN7qPd/1IhZSeLXt2ODSfnHyeU7WTDiOhDN7b
+         8zdi8O6E4C/Mt6EsKckSK259l4zVxL3dw41CXlCXxrRKz01Vy00lKXpUnWmPiW/CrnHR
+         Ottgjg+qw4P2xh9chEuik/BzaoPYk/TctPXgN9VQgkXQ+FN658uiw3TZPH/kxl0kr5YL
+         zdykBFUjRUcXpblq7qUJc7FAb3IYybnJhyYDwbcUbvO/PjRd1ieCjxm02Nq7fRyTAffz
+         n0GhPh01xaWmRYhceWQ6rkzNSdCXbRCaG9BoRHeNRO7edle5663R7OlI1nTkU5yn5tVI
+         FRjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUflFWDiMBH5iIB67nREGoBMgK0Utfu2NubsGIz8N1f4xip+MXSczVXyatVWNv2VSBbhn/wGz5SrAW9pWear3vqjRiIBC7T/Df/HttPMnmAeSJ0MYgEJ6fVKN7YCfQyUtV1nrrwW3Ww8egb54mdt0PBOW/dyQ6GTLDpEzWK2zYkzE1zdII=
+X-Gm-Message-State: AOJu0YwKRk5/wiGpzqIt9EG+QJRJ800D0+X+6Dd9iCLlCs0HYBdPdT3i
+	7dWAlL4y3VVu41jocZM9WqQj0GSPQheXJ0xM1cP6zxQjDaHqoaHfNrPR3tQOlRwb/YBNDBdR+nj
+	OWbyt5CCm+Ags/gKzFpGir1U3D6rttDipznYB8g==
+X-Google-Smtp-Source: AGHT+IEc3sbuxLIEXLcNo9hvlvsrCEfAQbe8858Zyh5kZvdTHTT+txNlarkGx3oYaQLqT3cV8SP642r7siWWZIPoOdM=
+X-Received: by 2002:a05:6a21:a5a4:b0:1a3:53ae:80c7 with SMTP id
+ gd36-20020a056a21a5a400b001a353ae80c7mr10352067pzc.7.1711012052876; Thu, 21
+ Mar 2024 02:07:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240313230713.987124-1-benno.lossin@proton.me>
+ <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com>
+ <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com>
+ <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 21 Mar 2024 10:07:09 +0100
+Message-ID: <CANiq72mAA0d41arVo6q2S6gk2sRMfAyW1FOHhUMytMQeYtNjhQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+To: Laine Taffin Altman <alexanderaltman@me.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	lkml <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The writes to setipnum_le/be register for APLIC in MSI-mode have special
-consideration for level-triggered interrupts as-per the section "4.9.2
-Special consideration for level-sensitive interrupt sources" of the RISC-V
-AIA specification.
+On Thu, Mar 21, 2024 at 5:53=E2=80=AFAM Laine Taffin Altman
+<alexanderaltman@me.com> wrote:
+>
+> I=E2=80=99ll try and do it myself; thank you for sending the first round =
+for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
+By's should I retain?
 
-Particularly, the below text from the RISC-V AIA specification defines
-the behaviour of writes to setipnum_le/be register for level-triggered
-interrupts:
+For the Signed-off-by, only yours is OK. For the Reviewed-by, it
+depends on how much you have changed, i.e. whether you consider their
+review does not apply anymore -- please see
+https://docs.kernel.org/process/submitting-patches.html#reviewer-s-statemen=
+t-of-oversight
 
-"A second option is for the interrupt service routine to write the
-APLIC’s source identity number for the interrupt to the domain’s
-setipnum register just before exiting. This will cause the interrupt’s
-pending bit to be set to one again if the source is still asserting
-an interrupt, but not if the source is not asserting an interrupt."
-
-Fix setipnum_le/be write emulation for in-kernel APLIC by implementing
-the above behaviour in aplic_write_pending() function.
-
-Cc: stable@vger.kernel.org
-Fixes: 74967aa208e2 ("RISC-V: KVM: Add in-kernel emulation of AIA APLIC")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
----
- arch/riscv/kvm/aia_aplic.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-index 39e72aa016a4..5e842b92dc46 100644
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -137,11 +137,21 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 	raw_spin_lock_irqsave(&irqd->lock, flags);
- 
- 	sm = irqd->sourcecfg & APLIC_SOURCECFG_SM_MASK;
--	if (!pending &&
--	    ((sm == APLIC_SOURCECFG_SM_LEVEL_HIGH) ||
--	     (sm == APLIC_SOURCECFG_SM_LEVEL_LOW)))
-+	if (sm == APLIC_SOURCECFG_SM_INACTIVE)
- 		goto skip_write_pending;
- 
-+	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
-+	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
-+		if (!pending)
-+			goto skip_write_pending;
-+		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
-+		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
-+			goto skip_write_pending;
-+		if (!(irqd->state & APLIC_IRQ_STATE_INPUT) &&
-+		    sm == APLIC_SOURCECFG_SM_LEVEL_HIGH)
-+			goto skip_write_pending;
-+	}
-+
- 	if (pending)
- 		irqd->state |= APLIC_IRQ_STATE_PENDING;
- 	else
--- 
-2.34.1
-
+Cheers,
+Miguel
 
