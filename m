@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-28551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A76988599D
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:08:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68D688599E
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D141F2128F
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 13:08:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F1FB21779
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 13:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B2884A3F;
-	Thu, 21 Mar 2024 13:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B8084A56;
+	Thu, 21 Mar 2024 13:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TNwa0aW+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJrbL8HR"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED9484A55;
-	Thu, 21 Mar 2024 13:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5676D84A40;
+	Thu, 21 Mar 2024 13:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711026496; cv=none; b=TalvkNhGnkkFQSgTeOI22c6TQqmJrDkAaVXinYRz8EuTCs9v+UAO+Fb2eUM21z05Z/yUyVb8KoIbn1xJCyJgiq7AW34mKuRwp5aR0ziyB59wM/h1vggiyxLOxUyor/a4vrfqCG4jRZvt7tmScszdTkSMB4Aw+yKAJiSH6g53B+I=
+	t=1711026498; cv=none; b=SLqZmq7H75aESWnfjdPVd0dvTF3NxrnstM87sAOqXX09yIHFJhNzx384Tc00xks/qR62y5SF54LPsQcYkzxRThtLD/7kbS/KB+DzWDelMYFlN80TFI5nlw1GJkPtMchEaQmkIzcQ85XiPM+GCwEo5/Vvex8htww9K8O3eEzZ+uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711026496; c=relaxed/simple;
-	bh=XKOy5tx9UPnhGyLYYMhmSJ951yyyOqcpZrfGxLKCFHk=;
+	s=arc-20240116; t=1711026498; c=relaxed/simple;
+	bh=o4jhy8ONO83uP8a6i+oWSqaYYz50PiC32ZZvWTPeOMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKINYxgZfB2MhYfs8K4xT35hoIkE5bSEbBrZop1mXl0/PMUR7bGGkLkaWOdooFYYrf5qpNd0wj86GPAQab/Kz5kb/JPiM6Jltk/CB3Oshw3GxGFTl/daR9ykLzZPqJzuAtKWywzBF22PvC64oSf/kaqFTkd++YU9p2vXwemEC3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TNwa0aW+; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=EOf/qTZ+h8jTGcjGJ1jJ9iIJPWD1JQFmiqUseuc2Z+6AfbaZ5z+L+f/Y4syTQeCpSB+Fb2QlAY+sk8nIyvyBu6VmMGtPkwMZcbmEeIoUL3mVaHGyi4NXAkO+7eWzKCZXv1y9jIq5HHugTIrRrd6f+4v9eRGViTDbr+RrYe2KSsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJrbL8HR; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711026495; x=1742562495;
+  t=1711026497; x=1742562497;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XKOy5tx9UPnhGyLYYMhmSJ951yyyOqcpZrfGxLKCFHk=;
-  b=TNwa0aW+JTDEibd1C1Knl5v4WXdNB4hYRetr9+HmpDm6WZY7G1q9PCoY
-   ghK2QG+BmEPlH3aq6PdY5UKjTiBXUCiZqew6pX9U4xTtgNN09KTyEE34W
-   4x82AipPjPJcW5GAJplk/feQky/zTFRsiRrUdEtZ4ASrIVVp1Oq6ZOTR0
-   ZxbBfWCJp1gkjov66osSyycx/a1dFAX5T8Cm9TF67A9j12uWnQrQMpGdB
-   dGrLnPNvxF3AVCNYKN6ehzyCyk9CN8isP/1PZpQFLnUyj+RRbQF7vQ8RA
-   fGiNvmmoPK+iubw25Xavk8iMwUx7CObl48/hZHf7RJjsU9cc0+Bao8oNi
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6127219"
+  bh=o4jhy8ONO83uP8a6i+oWSqaYYz50PiC32ZZvWTPeOMc=;
+  b=iJrbL8HRicik1nteyRNbudGBHTGrWBnJgqSsF1NkirBYJ7OlqZuGkzOx
+   iNhRrZzbYRGM5Vkl+rNBPo9wzzXnhbiLRGySsdFUeDVDMNtPeOmnnUFRk
+   p0N1m7+TLpwfFbL0wXeRzTF+vXQWI4U6yF7F7g9LZs2JnpDB8fYyF+baD
+   BuhlYoUbtBLfQByU3KM83j9yPW/G/FElo4Q7Cc1nWwIDhM6VJjsCh7snV
+   vD5D467X+BusHEx1f70cmt7mzzE1+oCyk/KJ/46s9fvUMrY/gBBA60ebh
+   4eBD9iX/AhRc/4MDrvFnPLV3KwQLYGGPXHKf0TkHUL6sYrJHsoMFwgAyR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6127225"
 X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
-   d="scan'208";a="6127219"
+   d="scan'208";a="6127225"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:14 -0700
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:17 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
-   d="scan'208";a="51923265"
+   d="scan'208";a="51923273"
 Received: from vyakovle-mobl2.ger.corp.intel.com (HELO pujfalus-desk.ger.corp.intel.com) ([10.252.54.189])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:12 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:14 -0700
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -63,9 +63,9 @@ Cc: linux-sound@vger.kernel.org,
 	kai.vehmanen@linux.intel.com,
 	ranjani.sridharan@linux.intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH 10/17] ASoC: SOF: Remove the get_stream_position callback
-Date: Thu, 21 Mar 2024 15:08:07 +0200
-Message-ID: <20240321130814.4412-11-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH 11/17] ASoC: SOF: ipc4-pcm: Move struct sof_ipc4_timestamp_info definition locally
+Date: Thu, 21 Mar 2024 15:08:08 +0200
+Message-ID: <20240321130814.4412-12-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240321130814.4412-1-peter.ujfalusi@linux.intel.com>
 References: <20240321130814.4412-1-peter.ujfalusi@linux.intel.com>
@@ -77,59 +77,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The get_stream_position has been replaced by get_dai_frame_counter and all
-related code can be dropped form the core.
+The sof_ipc4_timestamp_info is only used by ipc4-pcm.c internally, it
+should not be in a generic header implying that it might be used elsewhere.
 
 Cc: stable@vger.kernel.org # 6.8
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 ---
- sound/soc/sof/ops.h      | 10 ----------
- sound/soc/sof/sof-priv.h |  9 ---------
- 2 files changed, 19 deletions(-)
+ sound/soc/sof/ipc4-pcm.c  | 14 ++++++++++++++
+ sound/soc/sof/ipc4-priv.h | 14 --------------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/sof/ops.h b/sound/soc/sof/ops.h
-index d83cd771015c..3cd748e13460 100644
---- a/sound/soc/sof/ops.h
-+++ b/sound/soc/sof/ops.h
-@@ -523,16 +523,6 @@ static inline int snd_sof_pcm_platform_ack(struct snd_sof_dev *sdev,
- 	return 0;
- }
+diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
+index d0795f77cc15..2d7295221884 100644
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -15,6 +15,20 @@
+ #include "ipc4-topology.h"
+ #include "ipc4-fw-reg.h"
  
--static inline u64 snd_sof_pcm_get_stream_position(struct snd_sof_dev *sdev,
--						  struct snd_soc_component *component,
--						  struct snd_pcm_substream *substream)
--{
--	if (sof_ops(sdev) && sof_ops(sdev)->get_stream_position)
--		return sof_ops(sdev)->get_stream_position(sdev, component, substream);
--
--	return 0;
--}
--
- static inline u64
- snd_sof_pcm_get_dai_frame_counter(struct snd_sof_dev *sdev,
- 				  struct snd_soc_component *component,
-diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
-index 91043f177dfa..d3c436f82604 100644
---- a/sound/soc/sof/sof-priv.h
-+++ b/sound/soc/sof/sof-priv.h
-@@ -261,15 +261,6 @@ struct snd_sof_dsp_ops {
- 	/* pcm ack */
- 	int (*pcm_ack)(struct snd_sof_dev *sdev, struct snd_pcm_substream *substream); /* optional */
++/**
++ * struct sof_ipc4_timestamp_info - IPC4 timestamp info
++ * @host_copier: the host copier of the pcm stream
++ * @dai_copier: the dai copier of the pcm stream
++ * @stream_start_offset: reported by fw in memory window
++ * @llp_offset: llp offset in memory window
++ */
++struct sof_ipc4_timestamp_info {
++	struct sof_ipc4_copier *host_copier;
++	struct sof_ipc4_copier *dai_copier;
++	u64 stream_start_offset;
++	u32 llp_offset;
++};
++
+ static int sof_ipc4_set_multi_pipeline_state(struct snd_sof_dev *sdev, u32 state,
+ 					     struct ipc4_pipeline_set_state_data *trigger_list)
+ {
+diff --git a/sound/soc/sof/ipc4-priv.h b/sound/soc/sof/ipc4-priv.h
+index f3b908b093f9..afed618a15f0 100644
+--- a/sound/soc/sof/ipc4-priv.h
++++ b/sound/soc/sof/ipc4-priv.h
+@@ -92,20 +92,6 @@ struct sof_ipc4_fw_data {
+ 	struct mutex pipeline_state_mutex; /* protect pipeline triggers, ref counts and states */
+ };
  
--	/*
--	 * optional callback to retrieve the link DMA position for the substream
--	 * when the position is not reported in the shared SRAM windows but
--	 * instead from a host-accessible hardware counter.
--	 */
--	u64 (*get_stream_position)(struct snd_sof_dev *sdev,
--				   struct snd_soc_component *component,
--				   struct snd_pcm_substream *substream); /* optional */
+-/**
+- * struct sof_ipc4_timestamp_info - IPC4 timestamp info
+- * @host_copier: the host copier of the pcm stream
+- * @dai_copier: the dai copier of the pcm stream
+- * @stream_start_offset: reported by fw in memory window
+- * @llp_offset: llp offset in memory window
+- */
+-struct sof_ipc4_timestamp_info {
+-	struct sof_ipc4_copier *host_copier;
+-	struct sof_ipc4_copier *dai_copier;
+-	u64 stream_start_offset;
+-	u32 llp_offset;
+-};
 -
- 	/*
- 	 * optional callback to retrieve the number of frames left/arrived from/to
- 	 * the DSP on the DAI side (link/codec/DMIC/etc).
+ extern const struct sof_ipc_fw_loader_ops ipc4_loader_ops;
+ extern const struct sof_ipc_tplg_ops ipc4_tplg_ops;
+ extern const struct sof_ipc_tplg_control_ops tplg_ipc4_control_ops;
 -- 
 2.44.0
 
