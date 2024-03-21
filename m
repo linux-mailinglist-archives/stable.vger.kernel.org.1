@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-28547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D23B88599A
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:08:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5563F885999
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE395B21BCF
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 13:08:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86FB21C213DC
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 13:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD02084A2C;
-	Thu, 21 Mar 2024 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D96D84A35;
+	Thu, 21 Mar 2024 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVbmS1jI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ENciAFbl"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2715083CDD;
-	Thu, 21 Mar 2024 13:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D472D84039;
+	Thu, 21 Mar 2024 13:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711026485; cv=none; b=PznjS2jq5skmZZsgnJ3WPlPrJrowVg3j4R/lyW7JhJMcZaEP5iLpsc28NvcxwEVkBFeqIjfH1LYFA7Gg83+Oj+bWFhNrCDUctjeYky1wuKZdI/u14IittoTZ7GQijomL9oMf+6ut8VXh9XETkYOfr5CiWb7u7Stc4M0ffTZkOHo=
+	t=1711026488; cv=none; b=pR/8X3g5qdUaMv0LkDv5dAirCCTNFr/cymjUWEIfm2kDOZtggZeT3IsQbUyOlfMd+T5e5hZIwxn7NYM4pP4Bdqln4cTIJNknxTyjMxy3hclFXKtfiTTDEKrSDy4spTmiSL1haU3NNbtCUrzKrfOjxW2/1f2uEbfQS5Z1VVicaHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711026485; c=relaxed/simple;
-	bh=YCclC6VgND4VPEMCMuhWZgfGxBGJ1wM4682GxlKtb/U=;
+	s=arc-20240116; t=1711026488; c=relaxed/simple;
+	bh=aKfiUQtOllQNC+BcnqfFelbbkVkMg1jilJqkihqXcog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnvPVzm29mDaelkpMsDxesA4I8/VCmp/+U2Bmf9PFbP/DU3M/dPOdkzcLi6DTjBNJmjQcTL1XfNTQCvomCUriJjr2oVmnMRMefPTirmONvfmeZPq/fd2ShcacQTQoWFljZtI/JSLl6AVAhQ3xMHLxnRj1raN9693JE6ofn6vNfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVbmS1jI; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=FHVf0TuIKfjJJZsYvtp98UngRb5YYUhFbg+gbRLERsSiGcnQxnNDRy/tgTANKSj5EZXbk5XfBmox36YHp6MgIoE+T7iRFoUAZAmKQtT1BTFOcieqNqZ75rr4tX1h6OYjpwn4g7tQChqgm7+ky1/+innAyg2VwcIisGb3240b+cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ENciAFbl; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711026484; x=1742562484;
+  t=1711026487; x=1742562487;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YCclC6VgND4VPEMCMuhWZgfGxBGJ1wM4682GxlKtb/U=;
-  b=MVbmS1jIMLv1srttjIwEgVWhpIHK3Z7f/vJXXOelp3CeSfc9mOknG/Ul
-   YKfg0tfIJPQNwgkT4vQYX/vPK94aQrEKiAgz732GKr3Xz8lNltFwhxUMO
-   3gBfcAzk9/mdiYQf0h4IfYP7DaJDKM/hvJle4EmFNDfpYK59pIpj9LsKx
-   yUTL+3IQq4RzLbb6XjMTcoPNPEZuwOlU6538pqSl5qmtHQ11MJd8eD66V
-   5p0KXwtXB8QMpy/4F3Zb0DuQ2vDcswJmUq85XHas6PsF7p7MPStu1oqWQ
-   DNnpS8J//a/bIQ5vjYNB80KIGW3rs6mUYd/ejxtF4+mxNgD+gnapb6Exl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6127187"
+  bh=aKfiUQtOllQNC+BcnqfFelbbkVkMg1jilJqkihqXcog=;
+  b=ENciAFblsAvrygyPUtG3IcBp2bpIvFxLqcZnJvfP0Sh8uQuJ6p22ZbE7
+   FYRL74QfCqerDBGxx7eU1spG0jcqTJwA1nqVV2Bskh2i0zseWIO0u81zb
+   HP0R/XbC+je5W8AXUhj+m4WV4bMW2OP0B7PnkNFhKFwDFNAv3fVUHEJMi
+   8pq+DnkfuMNll2sTT/DujYZZr1U9IYv9a1acNOg4/Y74qs2YB0DfBuDuj
+   7pcuPcZESKCvX1CseCPGlJjsDtiHfWYdmtQThzFKoF5KEw5kjhW6fOciz
+   LqTcfjEELqc3MPWhfNuRbFnQvHOCZEeE2Lhc8GXb4y/QhUKQfj8N8z399
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6127191"
 X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
-   d="scan'208";a="6127187"
+   d="scan'208";a="6127191"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:04 -0700
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:07 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
-   d="scan'208";a="51923257"
+   d="scan'208";a="51923259"
 Received: from vyakovle-mobl2.ger.corp.intel.com (HELO pujfalus-desk.ger.corp.intel.com) ([10.252.54.189])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:01 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 06:08:04 -0700
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -63,9 +63,9 @@ Cc: linux-sound@vger.kernel.org,
 	kai.vehmanen@linux.intel.com,
 	ranjani.sridharan@linux.intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH 06/17] ASoC: SOF: Introduce a new callback pair to be used for PCM delay reporting
-Date: Thu, 21 Mar 2024 15:08:03 +0200
-Message-ID: <20240321130814.4412-7-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH 07/17] ASoC: SOF: Intel: Set the dai/host get frame/byte counter callbacks
+Date: Thu, 21 Mar 2024 15:08:04 +0200
+Message-ID: <20240321130814.4412-8-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240321130814.4412-1-peter.ujfalusi@linux.intel.com>
 References: <20240321130814.4412-1-peter.ujfalusi@linux.intel.com>
@@ -77,108 +77,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For delay calculation we need two information:
-Number of bytes transferred between the DSP and host memory (ALSA buffer)
-Number of frames transferred between the DSP and external device
-(link/codec/DMIC/etc).
+Add implementation for reading the LDP (Linear DMA Position) to be used as
+get_host_byte_counter().
+The LDP is counting the number of bytes moved between the DSP and host
+memory.
 
-The reason for the different units (bytes vs frames) on host and dai side
-is that the format on the dai side is decided by the firmware and might
-not be the same as on the host side, thus the expectation is that the
-counter reflects the number of frames.
-The kernel know the host side format and in there we have access to the
-DMA position which is in bytes.
-
-In a simplified way, the DSP caused delay is the difference between the
-two counters.
-
-The existing get_stream_position callback is defined to retrieve the frame
-counter on the DAI side but it's name is too generic to be intuitive and
-makes it hard to define a callback for the host side.
-
-This patch introduces a new set of callbacks to replace the
-get_stream_position and define the host side equivalent:
-get_dai_frame_counter
-get_host_byte_counter
-
-Subsequent patches will remove the old callback.
+Set the get_dai_frame_counter to hda_dsp_get_stream_llp, which is counting
+the frames on the link side of the DSP.
 
 Cc: stable@vger.kernel.org # 6.8
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 ---
- sound/soc/sof/ops.h      | 24 ++++++++++++++++++++++++
- sound/soc/sof/sof-priv.h | 21 +++++++++++++++++++++
- 2 files changed, 45 insertions(+)
+ sound/soc/sof/intel/hda-common-ops.c |  2 ++
+ sound/soc/sof/intel/hda-stream.c     | 31 ++++++++++++++++++++++++++++
+ sound/soc/sof/intel/hda.h            |  3 +++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/sound/soc/sof/ops.h b/sound/soc/sof/ops.h
-index 6cf21e829e07..d83cd771015c 100644
---- a/sound/soc/sof/ops.h
-+++ b/sound/soc/sof/ops.h
-@@ -533,6 +533,30 @@ static inline u64 snd_sof_pcm_get_stream_position(struct snd_sof_dev *sdev,
- 	return 0;
+diff --git a/sound/soc/sof/intel/hda-common-ops.c b/sound/soc/sof/intel/hda-common-ops.c
+index 80a69599a8c3..4d7ea18604ee 100644
+--- a/sound/soc/sof/intel/hda-common-ops.c
++++ b/sound/soc/sof/intel/hda-common-ops.c
+@@ -58,6 +58,8 @@ struct snd_sof_dsp_ops sof_hda_common_ops = {
+ 	.pcm_ack	= hda_dsp_pcm_ack,
+ 
+ 	.get_stream_position = hda_dsp_get_stream_llp,
++	.get_dai_frame_counter = hda_dsp_get_stream_llp,
++	.get_host_byte_counter = hda_dsp_get_stream_ldp,
+ 
+ 	/* firmware loading */
+ 	.load_firmware = snd_sof_load_firmware_raw,
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 48ea187f7230..8504a4f27b60 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -1095,3 +1095,34 @@ u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
+ 
+ 	return ((u64)llp_u << 32) | llp_l;
  }
- 
-+static inline u64
-+snd_sof_pcm_get_dai_frame_counter(struct snd_sof_dev *sdev,
-+				  struct snd_soc_component *component,
-+				  struct snd_pcm_substream *substream)
++
++/**
++ * hda_dsp_get_stream_ldp - Retrieve the LDP (Linear DMA Position) of the stream
++ * @sdev: SOF device
++ * @component: ASoC component
++ * @substream: PCM substream
++ *
++ * Returns the raw Linear Link Position value
++ */
++u64 hda_dsp_get_stream_ldp(struct snd_sof_dev *sdev,
++			   struct snd_soc_component *component,
++			   struct snd_pcm_substream *substream)
 +{
-+	if (sof_ops(sdev) && sof_ops(sdev)->get_dai_frame_counter)
-+		return sof_ops(sdev)->get_dai_frame_counter(sdev, component,
-+							    substream);
-+
-+	return 0;
-+}
-+
-+static inline u64
-+snd_sof_pcm_get_host_byte_counter(struct snd_sof_dev *sdev,
-+				  struct snd_soc_component *component,
-+				  struct snd_pcm_substream *substream)
-+{
-+	if (sof_ops(sdev) && sof_ops(sdev)->get_host_byte_counter)
-+		return sof_ops(sdev)->get_host_byte_counter(sdev, component,
-+							    substream);
-+
-+	return 0;
-+}
-+
- /* machine driver */
- static inline int
- snd_sof_machine_register(struct snd_sof_dev *sdev, void *pdata)
-diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
-index d453a4ce3b21..91043f177dfa 100644
---- a/sound/soc/sof/sof-priv.h
-+++ b/sound/soc/sof/sof-priv.h
-@@ -270,6 +270,27 @@ struct snd_sof_dsp_ops {
- 				   struct snd_soc_component *component,
- 				   struct snd_pcm_substream *substream); /* optional */
- 
-+	/*
-+	 * optional callback to retrieve the number of frames left/arrived from/to
-+	 * the DSP on the DAI side (link/codec/DMIC/etc).
-+	 *
-+	 * The callback is used when the firmware does not provide this information
-+	 * via the shared SRAM window and it can be retrieved by host.
-+	 */
-+	u64 (*get_dai_frame_counter)(struct snd_sof_dev *sdev,
-+				     struct snd_soc_component *component,
-+				     struct snd_pcm_substream *substream); /* optional */
++	struct hdac_stream *hstream = substream->runtime->private_data;
++	struct hdac_ext_stream *hext_stream = stream_to_hdac_ext_stream(hstream);
++	u32 ldp_l, ldp_u;
 +
 +	/*
-+	 * Optional callback to retrieve the number of bytes left/arrived from/to
-+	 * the DSP on the host side (bytes between host ALSA buffer and DSP).
++	 * The pphc_addr have been calculated during probe in
++	 * hda_dsp_stream_init():
++	 * pphc_addr = sdev->bar[HDA_DSP_PP_BAR] +
++	 *	       SOF_HDA_PPHC_BASE +
++	 *	       SOF_HDA_PPHC_INTERVAL * stream_index
 +	 *
-+	 * The callback is needed for ALSA delay reporting.
++	 * Use this pre-calculated address to avoid repeated re-calculation.
 +	 */
-+	u64 (*get_host_byte_counter)(struct snd_sof_dev *sdev,
-+				     struct snd_soc_component *component,
-+				     struct snd_pcm_substream *substream); /* optional */
++	ldp_l = readl(hext_stream->pphc_addr + AZX_REG_PPHCLDPL);
++	ldp_u = readl(hext_stream->pphc_addr + AZX_REG_PPHCLDPU);
 +
- 	/* host read DSP stream data */
- 	int (*ipc_msg_data)(struct snd_sof_dev *sdev,
- 			    struct snd_sof_pcm_stream *sps,
++	return ((u64)ldp_u << 32) | ldp_l;
++}
+diff --git a/sound/soc/sof/intel/hda.h b/sound/soc/sof/intel/hda.h
+index 9d26cad785fe..81a1d4606d3c 100644
+--- a/sound/soc/sof/intel/hda.h
++++ b/sound/soc/sof/intel/hda.h
+@@ -665,6 +665,9 @@ snd_pcm_uframes_t hda_dsp_stream_get_position(struct hdac_stream *hstream,
+ u64 hda_dsp_get_stream_llp(struct snd_sof_dev *sdev,
+ 			   struct snd_soc_component *component,
+ 			   struct snd_pcm_substream *substream);
++u64 hda_dsp_get_stream_ldp(struct snd_sof_dev *sdev,
++			   struct snd_soc_component *component,
++			   struct snd_pcm_substream *substream);
+ 
+ struct hdac_ext_stream *
+ 	hda_dsp_stream_get(struct snd_sof_dev *sdev, int direction, u32 flags);
 -- 
 2.44.0
 
