@@ -1,134 +1,109 @@
-Return-Path: <stable+bounces-28565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2298885B87
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 16:18:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF6B885BA1
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 16:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55F7FB209B4
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 15:18:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A9D7284932
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 15:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC4286246;
-	Thu, 21 Mar 2024 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAD98624F;
+	Thu, 21 Mar 2024 15:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UFwmgme6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMBSryKv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4686341775
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 15:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6A41E879;
+	Thu, 21 Mar 2024 15:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711034319; cv=none; b=YIw5084AvOR6VQnLSeN0Ac2Jwt7LNOkcjfi+m7SWxubnRZjKAkjO5tR4PCJNInzEc0CAvDEvhCpAkPBM+4T0qDgEtxqbzrj29uAO0Q0lX8lLVokAeoHLF63FNiM1cglOa8rDpiO39/p3tB6eZ04kFCekfg92FJRu13jY/XQJ8W8=
+	t=1711034951; cv=none; b=Jqe7RBhiW+iz2p5I9ij2Ga6pVKWcZ6gF7OfYmuoQIqo07xPAKMQCQIpxApiejjlAl241puHcz99NSjsBvPjbi3IyVk+D5KgC+H6hrN24NEk8hlxVS3JbH051QpHtKQIZGOjJQntta+7evN+MfvQcFo47X5yWeB6W/7sm7W8AiJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711034319; c=relaxed/simple;
-	bh=vTq6eMlEVlwDOrRT3eh/Y4LPJlYJFenbxEIwPcIxpYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aFDkkwU8x/DamyFIyedYVl1thWMKZMCbHTaRzb9/w4XI3Pwh5Se9uJrv7ZHYuyVAufKCpDztV9Ri07T0M6EMhLUvf5f0idVVpzh04PBMFJpipA/E56mlhzsex+JMKomiwKb//Hr51Pa5q6syXgovJrj5vA6n5HNYs5HnRAuRO94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UFwmgme6; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711034318; x=1742570318;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vTq6eMlEVlwDOrRT3eh/Y4LPJlYJFenbxEIwPcIxpYQ=;
-  b=UFwmgme66tdUMNeXjr6SqEpzI3nz+G3xdb25BSnbnQdI2hQgg1hviAp5
-   opn/BwpZ34WfgIiiMTI6ijw7ZH8e3jwp8NQjV1R9tcMG1CHra3WMPJHQz
-   3tcSurHnTVXLzIFBP96hQ3Uj6+0/4DW5501jiDnMJMSwKoUVipIkzthMH
-   YsTw5P44OlxAZQcv0StDS3TS5xNLkclIXH7c+qWGGVDBZERZ99zdeguQ/
-   jo8hCfP71RHbNsjah/nrNgkoOEZdtu259zM5GSWbBEbiujEgw50v6Rn1+
-   9YOeuzujOkQqkOguEkdH6o48wEJ2CnX5efYzOVbsPAs0hCkmyi65aPYeu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9813521"
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="9813521"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 08:18:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="51976905"
-Received: from unknown (HELO intel.com) ([10.247.118.192])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 08:18:30 -0700
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Andi Shyti <andi.shyti@kernel.org>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/i915/gt: Report full vm address range
-Date: Thu, 21 Mar 2024 16:17:26 +0100
-Message-ID: <20240321151726.207866-1-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1711034951; c=relaxed/simple;
+	bh=CXSD8py/dRXi8FZ8YuRHgGgHgHqdMPuZ3RsnkuJhXj0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uFDXTdARIWs7/Cgk7qaWipJMSvjyW9YOJWxoAoOZz9/EH1k10sN4XXLTSW8jKQ+zCxep7+hVSG45e9iUX/flukwPl4ISs6QloPpIdtfsPRhDdr2Amf4nq3MDtF2GNyrGORVQNBI63ccvdLF9ixBVxDVQxVdkkqMpczn7gSBOMe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMBSryKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74760C433F1;
+	Thu, 21 Mar 2024 15:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711034949;
+	bh=CXSD8py/dRXi8FZ8YuRHgGgHgHqdMPuZ3RsnkuJhXj0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JMBSryKvssHgctd3ZquGd9cqAWYlgCeUaz88xk71YTQ3Rh7CoUELltqVUiAw2Flz3
+	 EqDjHfhyijnRAMUzASrASeflqHdbuc7yw4gZrnLB9+QFRu7DS4q58P7YxC+Zt2PuLt
+	 5bNYQRWrP+nZrYfd4pgge9Xt/rcqzOj8F7WxJww2fMIV77vtCYq1EAQo/jPuEaE59w
+	 +tZR7XHTTwnd3TPozgM5E5dQQCPOguBNZjuSVh6LoEKAxiohzTIV2ENHi2SaORMmNe
+	 a1Ze7xO3Fb08Eu/4XNQqsIw11C0wHpCPgGNTc7ff+0dTLFBlHaIUF9sjhif63l8PqK
+	 qBMufi0VGWhnQ==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d6a1ad08b8so12166851fa.1;
+        Thu, 21 Mar 2024 08:29:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWY79OBUZTne0RgS1hD/Roh5ZpVUH6Kh0tNqT9xkPo5IkA/Gc7MXX81qrEH6zU2ijg1krc1ucNO+39whiXI0rFeYMY7yEWs5hq+0mdpgM6fMdP3zG0nxMQuJgYD0Zt6lU3h
+X-Gm-Message-State: AOJu0YzmikDSmb7haZPIWTEUG1qWyKnNWwYmubONTbtNL9ty3Sf042pP
+	CLVrB1lCzgYf/JlgFoy1fk5RYgp1qzA0HPbpkVATvcATn7ygHgx/IqsCLVSPdGa73H8HprCIpJA
+	jFlHafmM8ev1/1MYT/mxHwHjWkhU=
+X-Google-Smtp-Source: AGHT+IG346hC9qpfxXiA3KLkcYQ/xGwy5fETRQ0nYxMw8EQZLmQ1yLQFnwRf+5DtdUPUFUfKD5zhuZMPC8ykWpD+H4A=
+X-Received: by 2002:a2e:b04d:0:b0:2d4:8fd0:b5f2 with SMTP id
+ d13-20020a2eb04d000000b002d48fd0b5f2mr3913546ljl.7.1711034947840; Thu, 21 Mar
+ 2024 08:29:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CA+eDQTFQ45nWGmctp-CkK=xXXQQHc_DTkM1iN4m-0o5fCjt8VA@mail.gmail.com>
+ <CA+eDQTEiRyddZYwmyX3q+1bBgFRQydC++i4DDbiQ+zC-j72FVQ@mail.gmail.com> <2024032132-fax-unsmooth-f92b@gregkh>
+In-Reply-To: <2024032132-fax-unsmooth-f92b@gregkh>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 21 Mar 2024 16:28:56 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEKfAKJM0o-X5vY9cMpkurvpZ418GpyS5fWqiZO-0H9wg@mail.gmail.com>
+Message-ID: <CAMj1kXEKfAKJM0o-X5vY9cMpkurvpZ418GpyS5fWqiZO-0H9wg@mail.gmail.com>
+Subject: Re: efivarfs fixes without the commit being fixed in 6.1 and 6.6
+ (resending without html)
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Ted Brandston <tbrandston@google.com>, linux-efi@vger.kernel.org, 
+	stable@vger.kernel.org, Jiao Zhou <jiaozhou@google.com>, 
+	Nicholas Bishop <nicholasbishop@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Commit 9bb66c179f50 ("drm/i915: Reserve some kernel space per
-vm") has reserved an object for kernel space usage.
+On Thu, 21 Mar 2024 at 15:59, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Mar 21, 2024 at 10:43:05AM -0400, Ted Brandston wrote:
+> > Hi, this is my first time posting to a kernel list (third try, finally
+> > figured out the html-free -- sorry for the noise).
+> >
+> > I noticed that in the 6.6 kernel there's a fix commit from Ard [1] but
+> > not the commit it's fixing ("efivarfs: Add uid/gid mount options").
+> > Same thing in 6.1 [2]. The commit being fixed doesn't appear until 6.7
+> > [3].
+> >
+> > I'm not familiar with this code so it's unclear to me if this might
+> > cause problems, but I figured I should point it out.
+> >
+> > [1]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/fs/efivarfs/super.c?h=linux-6.6.y&id=48be1364dd387e375e1274b76af986cb8747be2c
+> > [2]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.1.y
+> > [3]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.7.y
+>
+> Good catch.
 
-Userspace, though, needs to know the full address range.
+Indeed. Thanks for reporting this.
 
-In the former patch the reserved space was substructed from the
-total amount of the VM space. Add it back when the user requests
-the GTT size through ioctl (I915_CONTEXT_PARAM_GTT_SIZE).
+>  Ard, should this be reverted?
+>
 
-Fixes: 9bb66c179f50 ("drm/i915: Reserve some kernel space per vm")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: <stable@vger.kernel.org> # v6.2+
-Acked-by: Michal Mrozek <michal.mrozek@intel.com>
-Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
-Hi,
+With this fix applied, we'll end up kfree()'ing a pointer that is
+guaranteed to be NULL, on a code path that typically executes once per
+boot, if at all.
 
-Just proposing a different implementation that doesn't affect
-i915 internally but provides the same result. Instead of not
-substracting the space during the reservation, I add it back 
-during the ioctl call.
+So in practical terms, there is really no difference, and this is the
+only thing I personally care about.
 
-All the "vm->rsvd.vma->node.size" looks a bit ugly, but that's
-how it is. Maybe a comment can help to understand better why
-there is this addition.
-
-I kept the Ack from Michal and Lionel, because the outcome from
-userspace perspactive doesn't really change.
-
-Andi
-
- drivers/gpu/drm/i915/gem/i915_gem_context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-index 81f65cab1330..60d9e7fe33b3 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-@@ -2454,7 +2454,7 @@ int i915_gem_context_getparam_ioctl(struct drm_device *dev, void *data,
- 	case I915_CONTEXT_PARAM_GTT_SIZE:
- 		args->size = 0;
- 		vm = i915_gem_context_get_eb_vm(ctx);
--		args->value = vm->total;
-+		args->value = vm->total + vm->rsvd.vma->node.size;
- 		i915_vm_put(vm);
- 
- 		break;
--- 
-2.43.0
-
+So I wouldn't mind if we just left them, unless there are other
+concerns wrt to maintenance, tidiness etc.
 
