@@ -1,156 +1,101 @@
-Return-Path: <stable+bounces-28560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED87885AD6
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 15:31:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0C2885B0D
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 15:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F4F1F234C9
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73611C2147C
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 14:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D619B3A8DD;
-	Thu, 21 Mar 2024 14:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B48D84FBE;
+	Thu, 21 Mar 2024 14:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8devices.com header.i=@8devices.com header.b="ZXKNLi5v"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hv5Y/Mlt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35C61E534
-	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 14:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA14384A5A
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 14:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711031439; cv=none; b=Yx/T7Y4waJmvEDCffc6qNikujvhKfp8YN0RrYqC/j4B6NQ4Ujiq1j/1EviV/qdFcZljFrbBBgFfpmbCpZ1bMHOloQK2kwHV07YvbWWBRzwqQIvflMPM/6k7yc6b/QzIq3OwQuO1Ov7XO4OglEtE2OUxh0ODt7zKs7MIDf5ZqZHc=
+	t=1711032216; cv=none; b=NISttcVwLzVCxnq8kvnTV0YOLAfZLxGQvK2Tqhf6AQCE5NG6J02UMCZyVp6RsHh+LlaNXbrh2c9i+noou5vSPLyGUg8tcmWD5+nujWUU3FUvzP2NpUWMg0KwgzkyyqPZneHbGWSJG6fZ7cKoe7FW7Eij8FnzZHR0tuhW0vp2Ihk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711031439; c=relaxed/simple;
-	bh=ZEnKwn1pljAqClK9lIpYqWnyIzvmySMS+ZtbJrW7WEY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NCsWGGcGIc4DHQU0dWUFn6FiN6pexPQreamL6UAlaxw9luj2zwxSR1CXWbYpTWDwjdn3BOnoQ5x/F5DXOfrnCq5heRUM3mZmF07PIhPRF0DIz9pa94wvtm2keDB6IRD9S2YcBxCVFWECA368hVZTqy/diabJHgGiuuAEVcLXM3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=8devices.com; spf=pass smtp.mailfrom=8devices.com; dkim=pass (2048-bit key) header.d=8devices.com header.i=@8devices.com header.b=ZXKNLi5v; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=8devices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8devices.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-51381021af1so1675958e87.0
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:30:37 -0700 (PDT)
+	s=arc-20240116; t=1711032216; c=relaxed/simple;
+	bh=/D28luKO4+fyZRSYkzsSDtWc+iksLHsvoDCEYnwnTXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WSZ0bNJX7McWf/6zdVrXPPsuYHUnT6jb59N2gOCSHmh6E3uO6NMljggIr639ToY2CPw70DVIh5slsKSK8CxWGbp0JBL3yGIzoOWlwMrT0jB9XFRwcTXt0F00RvVTrP/CpEvn7XQ1R5IjbD5E0mFfdyPSIr+yKjR/rSOYKYk8z7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hv5Y/Mlt; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-41428b378b9so81845e9.1
+        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 07:43:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=8devices.com; s=8devices; t=1711031436; x=1711636236; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ltbLavQ5SUcMxu21+LjsrYSC7bOM0HmRwXGhQIaGSpM=;
-        b=ZXKNLi5vGx6Qqqes3qPNtWUHuCIKDp8+7Z1VVaTrEHkrjC+89N+b6izkKcmm3UwSfR
-         06JaCoV83MtzMFboXuVBoljyI/096EMzcSmxLr/ZEEjmzpu8OBh0nbktWf57qB+ChLXw
-         Ss96gZuYXh/wNKsKVGa1SRo9b4Ovi+QXlm9ux1/STsExfpqpaD8V080eKLNjm1DzOdLZ
-         i6rIWLAMDoQkO2WEQ/MTgGiVfHbAIKVl5k9HMhqlWXtLGDTzVY1SJ4FIeESrKj0yJpma
-         jetcPWmO5v2zBX6T8MoBGN/bPgaTIg1uB+V5maNhvu3fQQY0CLDQC7nutwDRDJyeytcL
-         FBBw==
+        d=google.com; s=20230601; t=1711032213; x=1711637013; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/D28luKO4+fyZRSYkzsSDtWc+iksLHsvoDCEYnwnTXg=;
+        b=Hv5Y/MltE+elCaGrdW2CFzfyZy7O3O/b8C87XGJuc6+M0zsFKwNSXbtnCBGkxwwzne
+         tFF3zuWEQMVgXJmYjJrs+7DqVlpnvn4T1bGHYQuhHbHjV6WEyF0eBHTCmguwSYhjuet7
+         PUtHMtWUvIZgp7S0mSofVaDGFRzjjdV8uS5dCS6nrqyuJ8T2lIiikXQ1cC5ZqfVcND3r
+         9ewMFyroKo+pNS41nWZd1yZkVDodZv+B5gMhcppejyWUqPhfH4FT/e88tRaI3STJxpBO
+         priy478fh6tfNFhZetTcLvA8GveKGbp8sBdNc4JVne8N4sV+645J9oVsUQiMudrclawo
+         gvsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711031436; x=1711636236;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711032213; x=1711637013;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ltbLavQ5SUcMxu21+LjsrYSC7bOM0HmRwXGhQIaGSpM=;
-        b=HbEEJyMjkyj7Rs6L5M0VpbPXvmX7MPXXbf25CPYew8e++XLrkRqZewHpOwav6GBWvE
-         iU9x98j7ouc55C/xvGjBg3kMV+LbQIrqyDdnnwA3zGAVUyJaAdvZCo9iR5GcBUAZxGmL
-         KA5/9nAN8yhE0+5raBpedXLc3X9LBDiLTZYZwdQHvTla/8YOIcL3Ue1WGQd9dgt7d00Z
-         G4C9w/7pgbuayy8mbWeqpPduwvM/lTqg7QR2bY46MPtTCq8RD5O+BBsHUEVAclARWvgv
-         7WUON8KkDqfMHVOI21TRHYkCu6xMc+nAVFTLNq6peoJyJR6zfXd5yrr212AiZFFLzL+0
-         MHiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUa89yyyxElDfUxhsU3LaPnjl1E5HPXxWuAvzTAiViMi6RY3xOrSpGMCMuwsuAuDYJXLsyqThZSyIbepCks5XGJfD9ELcD
-X-Gm-Message-State: AOJu0YyPwxYyLeTZ694gSKLystna81rKvsCD7hD/m5h6kCwhRZ9WDDnM
-	EzUmFazRgvIK5QpstPzD1izhY8lGUqNeEy/4dhdwoPFWO6zwe4r37N1mlFBrxBs=
-X-Google-Smtp-Source: AGHT+IGtiSfxAmmmSwcgiI4O8Un0r0P1k50Fzz5fGBX+0wUWSXNGcbRyG3rdADr57MC+iqV+aU+PPw==
-X-Received: by 2002:a19:2d05:0:b0:513:cc7e:9919 with SMTP id k5-20020a192d05000000b00513cc7e9919mr1987885lfj.7.1711031435740;
-        Thu, 21 Mar 2024 07:30:35 -0700 (PDT)
-Received: from [172.17.0.10] ([84.15.37.222])
-        by smtp.gmail.com with ESMTPSA id b17-20020a17090636d100b00a47090964casm993330ejc.184.2024.03.21.07.30.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 07:30:35 -0700 (PDT)
-From: Mantas Pucka <mantas@8devices.com>
-Date: Thu, 21 Mar 2024 14:30:01 +0000
-Subject: [PATCH] mmc: sdhci-msm: pervent access to suspended controller
+        bh=/D28luKO4+fyZRSYkzsSDtWc+iksLHsvoDCEYnwnTXg=;
+        b=ZmoxJ/+lYWCwEw/RMMzsnGaucMIhxDvXoYdUoDLZtxkFjiGxnEJg1YlRix5ZJVcS9S
+         LkMTksbChZuMqyV82ha6JLq4vylFvrDlZR4HcXiD4MJyP647BBaVHdN9AUpwYQaYy0RI
+         oHZORFE0dU29uMRNoYkb4giGOQOynNN7SKgujLJGT07ytMTdNZijcCkaxmkra3ddXsxA
+         Hm7KLsYMMboGpbTrPu66McepLLub2neT93X4qrOf5XePxWCSspRzbRJ4yFVQlbOklGFW
+         9eYEO3+gKnSV1N7RVeh6BQFxuPX+cFBWFqgl0oYamzdh9rX8OAeOzuqVFJyUTpe61zLQ
+         ZxcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/P+tUNsORt8mt9iMRXjodbpYsnC7sjNg/7gf8Hxw/7FuTdBJB6m9PPSW6Dws1Ynlz+EtoIVM1VZQujyFPoU1AG85pGD8j
+X-Gm-Message-State: AOJu0Yy4TNMwlnMIqWpOzXoxeCqZjjNZwjwleXIjN0wpnB/yiR4t35/l
+	/zAeQQl1S1O6b4dK65zBFSX1XRC4rWcmEBo3b7X6vmKSHvfG2b5clyKQw8TCHyat/qdUjBtnd0h
+	+D9+r/w/4I/ZxMm22idw0ho6lh5DudMfBbrIsSwgAsiPc05gCG5WC
+X-Google-Smtp-Source: AGHT+IHnrzU4oucfhBLl6rdWusfmGBuKU2FAwDwrqL/zW5LP5tQFnHqv1UHWVy4naHflA0A3yOMpuY5i7pnie4PGdpo=
+X-Received: by 2002:a7b:c850:0:b0:414:1ee:f375 with SMTP id
+ c16-20020a7bc850000000b0041401eef375mr234376wml.0.1711032212914; Thu, 21 Mar
+ 2024 07:43:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com>
-X-B4-Tracking: v=1; b=H4sIAGhE/GUC/x3MQQqAIBBA0avErBtQk4iuEi1Cx5qFFg5FIN49a
- fkW/xcQykwCc1cg08PCZ2rQfQfu2NJOyL4ZjDJWDUaj+MMxxuhQbrkoeRxssFvQXplphNZdmQK
- //3NZa/0A/rL1Y2MAAAA=
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Ulf Hansson <ulf.hansson@linaro.org>, 
- Ritesh Harjani <riteshh@codeaurora.org>, Georgi Djakov <djakov@kernel.org>, 
- Pramod Gurav <pramod.gurav@linaro.org>
-Cc: linux-mmc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Mantas Pucka <mantas@8devices.com>
-X-Mailer: b4 0.13.0
+References: <CA+eDQTFQ45nWGmctp-CkK=xXXQQHc_DTkM1iN4m-0o5fCjt8VA@mail.gmail.com>
+In-Reply-To: <CA+eDQTFQ45nWGmctp-CkK=xXXQQHc_DTkM1iN4m-0o5fCjt8VA@mail.gmail.com>
+From: Ted Brandston <tbrandston@google.com>
+Date: Thu, 21 Mar 2024 10:43:05 -0400
+Message-ID: <CA+eDQTEiRyddZYwmyX3q+1bBgFRQydC++i4DDbiQ+zC-j72FVQ@mail.gmail.com>
+Subject: Re: efivarfs fixes without the commit being fixed in 6.1 and 6.6
+ (resending without html)
+To: ardb@kernel.org, linux-efi@vger.kernel.org, stable@vger.kernel.org, 
+	gregkh@linuxfoundation.org
+Cc: Jiao Zhou <jiaozhou@google.com>, Nicholas Bishop <nicholasbishop@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Generic sdhci code registers LED device and uses host->runtime_suspended
-flag to protect access to it. The sdhci-msm driver doesn't set this flag,
-which causes a crash when LED is accessed while controller is runtime
-suspended. Fix this by setting the flag correctly.
+Hi, this is my first time posting to a kernel list (third try, finally
+figured out the html-free -- sorry for the noise).
 
-Cc: stable@vger.kernel.org
-Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
-Signed-off-by: Mantas Pucka <mantas@8devices.com>
----
- drivers/mmc/host/sdhci-msm.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+I noticed that in the 6.6 kernel there's a fix commit from Ard [1] but
+not the commit it's fixing ("efivarfs: Add uid/gid mount options").
+Same thing in 6.1 [2]. The commit being fixed doesn't appear until 6.7
+[3].
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 668e0aceeeba..e113b99a3eab 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runtime_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = true;
-+	spin_unlock_irqrestore(&host->lock, flags);
- 
- 	/* Drop the performance vote */
- 	dev_pm_opp_set_rate(dev, 0);
-@@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	unsigned long flags;
- 	int ret;
- 
- 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
-@@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
- 
- 	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
- 
--	return sdhci_msm_ice_resume(msm_host);
-+	ret = sdhci_msm_ice_resume(msm_host);
-+	if (ret)
-+		return ret;
-+
-+	spin_lock_irqsave(&host->lock, flags);
-+	host->runtime_suspended = false;
-+	spin_unlock_irqrestore(&host->lock, flags);
-+
-+	return ret;
- }
- 
- static const struct dev_pm_ops sdhci_msm_pm_ops = {
+I'm not familiar with this code so it's unclear to me if this might
+cause problems, but I figured I should point it out.
 
----
-base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
-change-id: 20240321-sdhci-mmc-suspend-34f4af1d0286
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/fs/efivarfs/super.c?h=linux-6.6.y&id=48be1364dd387e375e1274b76af986cb8747be2c
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.1.y
+[3]: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/fs/efivarfs/super.c?h=linux-6.7.y
 
-Best regards,
--- 
-Mantas Pucka <mantas@8devices.com>
-
+Thanks!
 
