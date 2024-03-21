@@ -1,140 +1,99 @@
-Return-Path: <stable+bounces-28530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862EE88577E
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 11:34:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8748857C9
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 12:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 255B01F2140F
-	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 10:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A5D71C21625
+	for <lists+stable@lfdr.de>; Thu, 21 Mar 2024 11:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6627054F89;
-	Thu, 21 Mar 2024 10:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B764B57303;
+	Thu, 21 Mar 2024 11:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pf8Sgnky"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cMAdy8kA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D81F1CA9A;
-	Thu, 21 Mar 2024 10:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589531CA9A
+	for <stable@vger.kernel.org>; Thu, 21 Mar 2024 11:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711017263; cv=none; b=kRb43vHB3NLDo+iudA5peS8cX+B81lussEJ5KQdxphjYU3NK6qzOmRb/+okcxymscszjv5goHSPr7yu3YSftT+c834qpWtnysSjbsLnjPBEAZrLFZKib7VJ+lguo+VeEMsf1LZEp2LXoOt0VIC7QJ0qC8/q/L/uuxXgz/eXPHrM=
+	t=1711019215; cv=none; b=RA4MIh0lfZPHLuWbTsRJ+HsuqY+W/O7dGA/Si234wKAHVZDBSZAP4lkprE4rjhhPUnkKePC+cjYq+8qJYIid5AwW0GdnNRE258lriPBv2CdtM0IvwwfIsyDReudsMYDulVsns998YrFvwFF3MTGBVpd3wHqov+10gApBdDZf36A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711017263; c=relaxed/simple;
-	bh=VOi+PZbV9b+AJm91llBcxlZV4MlF+wjNnLpe9He3k4U=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ugJHGfZftI/Z1VY6rN1EXB5gSddvWrJue5dJ4KCcmrFTVxzPisJUDv9tREJP1k6B66f08E+qgezKPnEH6QOjTJywUQUGYPCtskZIs/iLiqNnbnYXjcs9Xj4diaWjdJweahlU+X1dZg8Vce6xzV3+2UIDRgEXOIbr4PwL1UdPscU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pf8Sgnky; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d21cdbc85bso13144381fa.2;
-        Thu, 21 Mar 2024 03:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711017260; x=1711622060; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=NHG19S00nW0KrNYH2WSzHwN8S/SHdrN0ELw9d3lEmaU=;
-        b=Pf8Sgnky+RpTU8uNqAULmUoqPc7racMy/dxoWq5+OSwoMSk1yaMBYlYxEQlDIzljk5
-         ZQ9Vcf+hbOrrnF0CrodzG9f2RWisa5afqChmXHh8ppYv4Vy4FBiUoNBjebzhjOiD/pZO
-         Qm983ZnShaV2B8060spbw9Yax+UOGlnBZqk/6WleHeywgE/ibZsan1nDclne/mqTWiHW
-         9FiSjKq/nDTBmkW3VUgsV4eDAAapltEupWPJlVSIdT0g71tsX7gszX6ikr4yCOAbvyqh
-         8awws85lijgG7aUjoxCYPrNW9D2DU/rkM9jO5OTmgPUpoW2ZVh+HVi5Ba1Yz9oD2xhG9
-         Piag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711017260; x=1711622060;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NHG19S00nW0KrNYH2WSzHwN8S/SHdrN0ELw9d3lEmaU=;
-        b=p814uV7CrTvNc2FPepjipWgQSyABeY2hWnwQF8f8kfD/iWGKN22Ry6+8+xk2kUsQ9y
-         oxwR+P3QDLyqZd5dNEhTsMbvkD71Sz4O19fQX7qHRP8xr0ZZRWMn84YtthSu+LLV1p8R
-         ly67tYkkKK+QG2JQrSmUGfQUXQuHuAqFOsnrng5Kgx9crEDAeuUT5Cvzi4VW0vt9LPD5
-         NOEhJoJyYTAsENk3skEJR0vXqAWyF6gWP0nvlFX7O6rV4J/MzizQN7YeKAyCvNfM91Wr
-         o0hmE0ZEtYSSZzXBPtw+faZ8QQGbNoy7RxhgIIm2Jh56+xMc3E/H32wKJMGQHanl7dbx
-         RXbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp9/+YAxf0amusY4qCul/HuF1FcL9iaXIjsuuS9Luvlt6ZFsUjDPqNzUPMJR6vEJZKWXAXSVeFv7W8C0vEFlJ37vvB3uGkadQSqlQWTRm27ITkm6Eiew4ZaIOGssategELbEAF
-X-Gm-Message-State: AOJu0Yz+f4zihsrsjYHrbI4a5G5salWcVCMPQMhqX9cKZeLulj1l7mJt
-	RhgNIW3AkbnbxhosyaFdQLPkvzRBCzoSX+rHwNmsTNHx3QookbdN
-X-Google-Smtp-Source: AGHT+IHZsmHDVKcW8S4Muplgc0gm08EDd7GKFo3DN0TZd0vtgrg7sUO9gJqCCt6ZDD/IbDH6dh92eQ==
-X-Received: by 2002:a2e:a4cf:0:b0:2d2:c83c:ffd7 with SMTP id p15-20020a2ea4cf000000b002d2c83cffd7mr2823962ljm.42.1711017259315;
-        Thu, 21 Mar 2024 03:34:19 -0700 (PDT)
-Received: from Ansuel-XPS. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.gmail.com with ESMTPSA id p5-20020a05600c468500b004132ae838absm5174369wmo.43.2024.03.21.03.34.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 03:34:19 -0700 (PDT)
-Message-ID: <65fc0d2b.050a0220.102ac.24f6@mx.google.com>
-X-Google-Original-Message-ID: <ZfwNKKJD5Yy6UjxN@Ansuel-XPS.>
-Date: Thu, 21 Mar 2024 11:34:16 +0100
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1711019215; c=relaxed/simple;
+	bh=tQXD7Hwd2gMtRCd6Pr3b7WgYWBCWl0r/po9N6KGtuSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EtCCoOa8qePmD6w5UrN89dq4wGBVTiFQcyF2A8ya2G80n9pIInq/gDW/wesZDwVLyKfpOIwWyimNkRafy1SqZFHlzuQ2zdTPnUbbN8FytPYC51yFgW516ql2Bjg9lzFeDwM+EvmIqX/FfHZHtM0zSIV4wXDMwsma3BUShPpdFOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cMAdy8kA; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711019213; x=1742555213;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tQXD7Hwd2gMtRCd6Pr3b7WgYWBCWl0r/po9N6KGtuSg=;
+  b=cMAdy8kAAiG9uQo74WytiYyLrXVyUU3ewiwMNLCvB8p5bn2Lq+MGNgTp
+   ltsazgtinFrW+ACG3NtJL5Grs6/O60bdnjLFYmo1FHaZ2eroJ0BlKEkUj
+   OZ1Ut6w/AS14bh6c8v+NHaC0V4HCqtNLDtyZd65jTTjC558BZJjpINb3g
+   mweKowxBFahdwVx+BLBYI+447rsvLeICHfBLV3blF00fThDzo1li8fX8a
+   kOlewy+GhRRkDzpc8d5A7ChwhnU/3YKOaxMD2lvTXvvyl47Iu/iPt+gFQ
+   xrECuhd36GmCnxIfb4PMa/p2u7JxyjSok9E/3PhU6n7zGakGKyidJhiRl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="16638923"
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
+   d="scan'208";a="16638923"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 04:06:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,142,1708416000"; 
+   d="scan'208";a="45469580"
+Received: from unknown (HELO mwauld-mobl1.intel.com) ([10.245.245.59])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2024 04:06:51 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: limit OTP NVMEM Cell parse to non Nand devices
-References: <20240321095522.12755-1-ansuelsmth@gmail.com>
- <20240321113256.7e66ac0f@xps-13>
+Subject: [PATCH] drm/xe/query: fix gt_id bounds check
+Date: Thu, 21 Mar 2024 11:06:30 +0000
+Message-ID: <20240321110629.334701-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240321113256.7e66ac0f@xps-13>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 21, 2024 at 11:32:56AM +0100, Miquel Raynal wrote:
-> Hi Christian,
-> 
-> ansuelsmth@gmail.com wrote on Thu, 21 Mar 2024 10:55:13 +0100:
-> 
-> > MTD OTP logic is very fragile and can be problematic with some specific
-> > kind of devices.
-> > 
-> > NVMEM across the years had various iteration on how Cells could be
-> > declared in DT and MTD OTP probably was left behind and
-> > add_legacy_fixed_of_cells was enabled without thinking of the consequences.
-> > 
-> > That option enables NVMEM to scan the provided of_node and treat each
-> > child as a NVMEM Cell, this was to support legacy NVMEM implementation
-> > and don't cause regression.
-> > 
-> > This is problematic if we have devices like Nand where the OTP is
-> > triggered by setting a special mode in the flash. In this context real
-> > partitions declared in the Nand node are registered as OTP Cells and
-> > this cause probe fail with -EINVAL error.
-> > 
-> > This was never notice due to the fact that till now, no Nand supported
-> > the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-> > access for MX30LFxG18AC") this changed and coincidentally this Nand is
-> > used on an FritzBox 7530 supported on OpenWrt.
-> > 
-> > Alternative and more robust way to declare OTP Cells are already
-> > prossible by using the fixed-layout node or by declaring a child node
-> > with the compatible set to "otp-user" or "otp-factory".
-> > 
-> > To fix this and limit any regression with other MTD that makes use of
-> > declaring OTP as direct child of the dev node, disable
-> > add_legacy_fixed_of_cells if we have a node called nand since it's the
-> > standard property name to identify Nand devices attached to a Nand
-> > Controller.
-> 
-> You forgot to update the commit log :-)
->
+The user provided gt_id should always be less than the
+XE_MAX_GT_PER_TILE.
 
-Ugh... sorry. Ok to resend or I need to wait 24h similar to the rules on
-net-next?
+Fixes: 7793d00d1bf5 ("drm/xe: Correlate engine and cpu timestamps with better accuracy")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+---
+ drivers/gpu/drm/xe/xe_query.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
+index fcd8680d2ccc..df407d73e5f5 100644
+--- a/drivers/gpu/drm/xe/xe_query.c
++++ b/drivers/gpu/drm/xe/xe_query.c
+@@ -133,7 +133,7 @@ query_engine_cycles(struct xe_device *xe,
+ 		return -EINVAL;
+ 
+ 	eci = &resp.eci;
+-	if (eci->gt_id > XE_MAX_GT_PER_TILE)
++	if (eci->gt_id >= XE_MAX_GT_PER_TILE)
+ 		return -EINVAL;
+ 
+ 	gt = xe_device_get_gt(xe, eci->gt_id);
 -- 
-	Ansuel
+2.44.0
+
 
