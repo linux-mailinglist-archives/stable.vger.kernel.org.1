@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-28631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414DF8871F5
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:40:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3C188720B
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAB7C284E38
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E19B41F244C0
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6985FDB0;
-	Fri, 22 Mar 2024 17:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D7D5FDA0;
+	Fri, 22 Mar 2024 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RzRQFc8/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l9FJ/mwH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867EC5FBA5;
-	Fri, 22 Mar 2024 17:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93335FBBF;
+	Fri, 22 Mar 2024 17:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711129241; cv=none; b=gL0aSS33jizyW/OMMWhNqJ7r0GBNjFdOPA9C5cIbZr0WKZtMOGe0WpmY/RTGVsm2jmITnCEYSedPM5NIblrOkrjLOp69rXho6RCP9TGgcxhYAjxu73ltBBbifUGJBgge/8cmCcy0xxLCF31pg4yrVAQ78tp5uvmflxr20e/mBWc=
+	t=1711129420; cv=none; b=hNZpYeM8sC65MpEDpigKnl7u769PjUpOydRQo61Nbap7VjKY829CKDW7CtT486J/sfeOtsWkldsENfmx0xzRET+5Ez8sJEe961WfjPXOgwzU9aJue3NVkwc/sjLBtyDiP7GuL4Bna++MdCzOw/Z9IKSdvOKLWbo2yEZASjgtdhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711129241; c=relaxed/simple;
-	bh=wFZI1PIUaOqlEpxFZyEcVJq0yyXGgKI3wtKeSznMuas=;
+	s=arc-20240116; t=1711129420; c=relaxed/simple;
+	bh=+Ke7JiYTzzkmJt1eudUpKlOYPyexMXs9pD2hW7J0cPk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BOZ5yOTRwaPJizeVPwgaQGorbCSTnG1li2EDpNEIiZ+as3rqSkEPcT5ecLpp3fzNWedOBuP7CSZCty/Cu3oex/UAO8/FYAQk7YgILn9F4nIXLreCv1kjd89CHjjN9mJe8g/3MZBNL5hIGqhp7mr/lwTH8fzogvM5HMU+0rIx+3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RzRQFc8/; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=i9g1jBRWpYy9aY+9VJ6XUi6qK01ZlbHBIexhDqh/JOnklvErURPC7ZwjadK5kd0h7NFRenZkxi+z63ATZPev5pyv3Tb5+jL8lMli2nx6g+8pqoImQRgukw7vfQgV8TcyHAkqENfeG3ChpcItQ3daS+ouiu3DVHudR2vwUH9mph8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l9FJ/mwH; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711129239; x=1742665239;
+  t=1711129419; x=1742665419;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=wFZI1PIUaOqlEpxFZyEcVJq0yyXGgKI3wtKeSznMuas=;
-  b=RzRQFc8/8bMkKO6l8J/TCuIHBB3/+TdmK8zzroUqNsZXBv+g8jK0rqLd
-   s8l2cqGNiVzn2ZM060TeK7QXOe3CyLHoJkQKwHkLWSlPahfiqtyeS5M04
-   X7i1Lm++g/bV7INToXcSufXscqJXTi1ocZY4hV4ZTfQgom0rDpJVMDwui
-   Uac2K5waFk0DxtRx1tVFd5KqLmpVD7VTtrcVavOEyYHanI98D++6M0gNk
-   JDF++JYKoWpVkj5KXwBzWY2QV7yz/a2M9trRgREI3CGe1u8zVTr9Q7chP
-   WcbsJjyN4zXZCwsZ85etuRXfFI2EepYIx9P2i9CLvZFzXUmsMZtthZXq1
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="28666081"
+  bh=+Ke7JiYTzzkmJt1eudUpKlOYPyexMXs9pD2hW7J0cPk=;
+  b=l9FJ/mwHoOHdpG+KXa+4wAfbo0ElU5pPm6N5cPO5cJ6qD4zaizSMWXIZ
+   CfiYf5aFTwZnxe6DZn2Lj1MP5UngzXRbhCq//nskrWfnGOEpaCRcmGSMn
+   6sMdSaEJoTptO5S4dXpdkvEogCOmx3OVzSw/uUEDZznkFIBN7yB9PGaCM
+   zYBkB6XIg13ZqY2wDKkhCXkTiKbvRqmKED2MNGXYFAaxDN2gnyWF73Yud
+   X/eX3QEvFxQ7mKS0Glu42M4fKAIdMOQeEHADKQdVfmtFsDScqu4pfrsi4
+   VtnU9QUFD7zJOCHpbvu7TI9aMZKyYyId2F0HFCKMAKJaQu1XDsUElWau5
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6795665"
 X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="28666081"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:40:38 -0700
+   d="scan'208";a="6795665"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:43:38 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="19710803"
+   d="scan'208";a="19460960"
 Received: from ashwanim-mobl.amr.corp.intel.com (HELO [10.209.56.241]) ([10.209.56.241])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:40:38 -0700
-Message-ID: <2f8d726a-9800-4068-9c0c-6c4a79d69a85@intel.com>
-Date: Fri, 22 Mar 2024 10:40:37 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:43:37 -0700
+Message-ID: <01e64b89-8d30-45c5-9b83-f2e4d81b6344@intel.com>
+Date: Fri, 22 Mar 2024 10:43:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,6 +81,7 @@ Cc: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen
 References: <20240322162135.3984233-1-steve.wahl@hpe.com>
  <003f1e83-fd93-4f4f-a316-d3e89e5a23a5@intel.com>
  <87le6ab2bn.fsf@email.froward.int.ebiederm.org>
+ <2f8d726a-9800-4068-9c0c-6c4a79d69a85@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -125,30 +126,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <87le6ab2bn.fsf@email.froward.int.ebiederm.org>
+In-Reply-To: <2f8d726a-9800-4068-9c0c-6c4a79d69a85@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/22/24 10:31, Eric W. Biederman wrote:
->> I'd much rather add synthetic entries to the memory maps that have this
->> information than hack around it by assuming that things are within a
->> gigabyte.
-> So this change is a partial revert of a change that broke kexec in
-> existing configurations.  To fix a regression that breaks kexec.
+On 3/22/24 10:40, Dave Hansen wrote:
+>  * Mapping extra memory on UV systems causes halts[1]
+>  * Mapping extra memory on UV systems breaks kexec (this thread)
 
-Let's back up for a second:
+Sorry, I said that second one backwards:
 
- * Mapping extra memory on UV systems causes halts[1]
- * Mapping extra memory on UV systems breaks kexec (this thread)
-
-So we're in a pickle.  I understand your concern for kexec.  But I'm
-concerned that fixing the kexec problem will re-expose us to the [1]
-problem.
-
-Steve, can you explain a bit why this patch doesn't re-expose the kernel
-to the [1] bug?
-
-1. https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl@hpe.com/
+ * _Not_ mapping extra memory on UV systems breaks kexec
 
 
 
