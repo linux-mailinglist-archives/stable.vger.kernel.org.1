@@ -1,88 +1,64 @@
-Return-Path: <stable+bounces-28613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4490F886BA4
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 12:54:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF30886BB2
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 12:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4C51F24B0D
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 11:54:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAB77B23739
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 11:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AF03FB31;
-	Fri, 22 Mar 2024 11:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8EC3FE46;
+	Fri, 22 Mar 2024 11:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6EiJl7m"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wH6eNOa+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DA23FB07;
-	Fri, 22 Mar 2024 11:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67C93F8F7;
+	Fri, 22 Mar 2024 11:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711108467; cv=none; b=LgqTqq0Xd9Isdn4i93Dh8ph4Pv8/VTh/kMJiDTvC8ewF2uriUdTTJhuf2sTGtXOY4nJ8MERAY+pVVkishwiDgTyz1yqz1uTps+A11Rcg2SDPtre/TRI6lI16NF49kLRDJfZOVSW6a1jzfd2yDQ0FTp6UlhyGD1w2Tfvw+9tCEtA=
+	t=1711108661; cv=none; b=RnhG8StasZvPPWaUAdak368p2WlM5rBrQNLYrE06nuWt9GOwu0GJtdeB8N7W2xNph9Eczov4AOsxYmmy1qzbjgtYNY8Ju0gcM9SKisovsfbiEjC4gJxi0uTiRBmscKVlKUQPh185bNSWZpuhMhP/WYedF178jWYEpiMGyB+zIhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711108467; c=relaxed/simple;
-	bh=cl4xjErbVI23OC6w9YYx1Y9I9UVaJ3wKtPzhlKhvlaQ=;
+	s=arc-20240116; t=1711108661; c=relaxed/simple;
+	bh=4fLslFzxOvf0s9odzqysPxgn/WllfqCRi1EcNhOBrms=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oexyyT2SBsKwfSvwAn/ELFjAEJ9vyAfxoGlq1T2iIzF2oI1M8t42selBr0mhCj1zrG0ccs83EttUMJWru4HXnUsObugwSfHsDDf75dsEwStqBHK0aPyNqRnlA+dPqf7RA4xaQY/ABEGmLq99K0MlH7Z4m6puqYhdeJhROM0gtYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6EiJl7m; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1dca3951ad9so12803295ad.3;
-        Fri, 22 Mar 2024 04:54:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711108465; x=1711713265; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sugrI04a69D7TsptgUFH0TrJAHa5oTy/e7UovPooNCg=;
-        b=c6EiJl7mU+JkDh6n3wQSIJxcydAMhQ6+uHiYZjR2iUsyXYFSIjemFxd0awfuGmNgKn
-         XHwpDdwmrY2hshxMqvnbNrfoyDHBvzD26Ss2qmIsPcmMCBD2210pb2JE4SZHwG7Xjhdw
-         nyLFwUe+m3PCz9RCm0ad1FBCi/MF2UOgx2lMtCaIMoMW9pQmIa31//V+/aRQQzKPFhyJ
-         bwYDIvvkQYB8o//7AHGkq02NZd52zeHs4NF6DbyzmcyJ4BRv1F2G1xvMZDr1wBbPIHhQ
-         3Nl+T8rAILy9OSG5C+0COGpuPSuwnYnXqtW9YuK0x5I/bekKNTYiGzxR0ejqBZoTvIHD
-         sVcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711108465; x=1711713265;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sugrI04a69D7TsptgUFH0TrJAHa5oTy/e7UovPooNCg=;
-        b=nkbEjUhstLZHwgut3ZIA0gy5mbtCO4rMB+1KKh9WyMxXBvWHDT5rJWs6FC8yueGWzj
-         1xCq/nsfzFAKzVdBKZwJaP+nB/KWUL3nP1l7f3Y3qT4q1UYmLEvsz+TunJZHKdDygbp3
-         TqdduwMJonIqjfg5T6cQSqMk7XwKHShMFBNTJh7z5vZ3d3Nfc03JhMYgNnpSTh24np0r
-         OrEARFmUenmiqRbKPasXytN0ZzOL+IWvV/slqqSBJSNLT9th/q23gXkhTK6YKQ4o1ScK
-         6rfxm9N9uLKOzT6jvAMJ8k24zjFgW4sk2vfXgegOBXWeUy38TRczuPx29+ECzxe0ugpZ
-         xKgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYhAt66ZNSHq4uZGwH02Y546mIS5D74Yul6cRGraiuWe0dthhTN7rNrXNSbM44DKSMRucbrtLerE/mHf8+oJwCDfMO+gTkJVQXYq8xWr6CsQ7s96Z+nqITpPMQbRGZvHRn1NKwOP+F1sRjKpUCBg+qLufd8h44tOa9l6gsjpi7Eg==
-X-Gm-Message-State: AOJu0YzbsrRkZdez14Cxnh9qWWL3inyYZUNnxMqeaiEePfH5cXB6u04P
-	mN2dChIU/5PmuZHam0+NsqkNh4zDR8xdLpa91vdKBJK1v2U2aIQF
-X-Google-Smtp-Source: AGHT+IHblRTDxClg0hncaI3YdLPYlc0ctt2Ultcay3fROynXSndppinQVCFztH0kEfmSc0kK5dykdA==
-X-Received: by 2002:a17:902:f7d1:b0:1e0:18b1:d0a2 with SMTP id h17-20020a170902f7d100b001e018b1d0a2mr2184720plw.40.1711108464936;
-        Fri, 22 Mar 2024 04:54:24 -0700 (PDT)
-Received: from rigel (110-175-159-48.tpgi.com.au. [110.175.159.48])
-        by smtp.gmail.com with ESMTPSA id l15-20020a170903244f00b001dd98195371sm1686451pls.181.2024.03.22.04.54.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Mar 2024 04:54:24 -0700 (PDT)
-Date: Fri, 22 Mar 2024 19:54:19 +0800
-From: Kent Gibson <warthog618@gmail.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
-Subject: Re: [PATCH] gpio: cdev: sanitize the label before requesting the
- interrupt
-Message-ID: <20240322115419.GA31273@rigel>
-References: <20240320125945.16985-1-brgl@bgdev.pl>
- <20240322013034.GA4572@rigel>
- <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
- <f529d746-f8c5-466b-860b-e2bfaeb2cc27@moroto.mountain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GMucqFUUlVDBwwHW8aASbI1Gw5gYZzcX88Pqp90PdmVw2o1UezO/xDIBOkcHmIr56ucT6yOBeA3rGvcnc3TXPVXF1dIVces4ZFxEHqulObccf7rsRH8LGNhc8InRPGWGpbQ4W0NYof4jE2fqIPBVhTe01X1I+8vKRz+rBFLqFjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wH6eNOa+; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2CA45842;
+	Fri, 22 Mar 2024 12:57:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1711108629;
+	bh=4fLslFzxOvf0s9odzqysPxgn/WllfqCRi1EcNhOBrms=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wH6eNOa+I4DHBwEdojUrqDk3Q+u0sJxJPiKlNCJQBQ1tBIiDtqCuXIjhx+A5RxLBy
+	 f0xOof1HkCVTDPiYBlrumRHtixPW3EyxxRKIcbqr6dSrXeBJ+z9fHMI1HAL0DdJ0pQ
+	 kjRjiP+00oU1jfvzrGAxwdUtS5pPDPQkRUzy/4tU=
+Date: Fri, 22 Mar 2024 13:57:34 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <20240322115734.GB31979@pendragon.ideasonboard.com>
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
+ <20240204105227.GB25334@pendragon.ideasonboard.com>
+ <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
+ <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
+ <20240213104725.GC5012@pendragon.ideasonboard.com>
+ <CANiDSCvqEkzD_-pUExT2Aci9t_tfFPWusnjST5iF-5N9yiob4g@mail.gmail.com>
+ <CANiDSCsqER=3OqzxRKYR_vs4as5aO1bfSXmFJtNmzw1kznd_wQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,54 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f529d746-f8c5-466b-860b-e2bfaeb2cc27@moroto.mountain>
+In-Reply-To: <CANiDSCsqER=3OqzxRKYR_vs4as5aO1bfSXmFJtNmzw1kznd_wQ@mail.gmail.com>
 
-On Fri, Mar 22, 2024 at 12:31:36PM +0300, Dan Carpenter wrote:
-> On Fri, Mar 22, 2024 at 08:46:50AM +0100, Bartosz Golaszewski wrote:
-> > On Fri, Mar 22, 2024 at 2:30 AM Kent Gibson <warthog618@gmail.com> wrote:
-> > >
-> > > On Wed, Mar 20, 2024 at 01:59:44PM +0100, Bartosz Golaszewski wrote:
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > >
-> > > > Let's replace all "/" with "-".
-> > > >
-> > >
-> > > I actually prefer the ":" you originally suggested, as it more clearly
-> > > indicates a tier separation, whereas a hyphen is commonly used for
-> > > multi-word names. And as the hyphen is more commonly used the sanitized
-> > > name is more likely to conflict.
-> > >
+On Thu, Feb 29, 2024 at 05:57:38PM +0100, Ricardo Ribalda wrote:
+> Oliver, friendly ping
+
+Seconded :-) We can help with the implementation, but we would like your
+guidance on the direction you think this should take.
+
+> On Mon, 19 Feb 2024 at 16:13, Ricardo Ribalda wrote:
 > >
-> > Sounds good, will do.
-> > > >
-> > > > +     label = make_irq_label(le->label);
-> > > > +     if (!label)
-> > > > +             goto out_free_le;
-> > > > +
-> > >
-> > > Need to set ret = -ENOMEM before the goto, else you will return 0.
-> > >
+> > Hi Oliver
 > >
-> > Eek, right, thanks.
->
-> Smatch has a warning about this, btw.
-> drivers/gpio/gpiolib-cdev.c:2221 lineevent_create() warn: missing error code 'ret'
->
+> > Would you prefer a version like this?
+> >
+> > https://lore.kernel.org/all/20231222-rallybar-v2-1-5849d62a9514@chromium.org/
+> >
+> > If so I can re-submit a version with the 3 vid/pids.  Alan, would you
+> > be happy with that?
+> >
+> > Regards!
+> >
+> > On Tue, 13 Feb 2024 at 11:47, Laurent Pinchart wrote:
+> > > On Mon, Feb 12, 2024 at 02:04:31PM -0500, Alan Stern wrote:
+> > > > On Mon, Feb 12, 2024 at 01:22:42PM +0100, Oliver Neukum wrote:
+> > > > > On 04.02.24 11:52, Laurent Pinchart wrote:
+> > > > > > Hi Ricardo,
+> > > > > >
+> > > > > > Thank you for the patch.
+> > > > >
+> > > > > Hi,
+> > > > >
+> > > > > sorry for commenting on this late, but this patch has
+> > > > > a fundamental issue. In fact this issue is the reason the
+> > > > > handling for quirks is in usbcore at all.
+> > > > >
+> > > > > If you leave the setting/clearing of this flag to a driver you
+> > > > > are introducing a race condition. The driver may or may not be
+> > > > > present at the time a device is enumerated. And you have
+> > > > > no idea how long the autosuspend delay is on a system
+> > > > > and what its default policy is regarding suspending
+> > > > > devices.
+> > > > > That means that a device can have been suspended and
+> > > > > resumed before it is probed. On a device that needs
+> > > > > RESET_RESUME, we are in trouble.
+> > > >
+> > > > Not necessarily.  If the driver knows that one of these devices may
+> > > > already have been suspend and resumed, it can issue its own preemptive
+> > > > reset at probe time.
+> > > >
+> > > > > The inverse issue will arise if a device does not react
+> > > > > well to RESET_RESUME. You cannot rule out that a device
+> > > > > that must not be reset will be reset.
+> > > >
+> > > > That's a separate issue, with its own list of potential problems.
+> > > >
+> > > > > I am sorry, but it seems to me that the exceptions need
+> > > > > to go into usbcore.
+> > > >
+> > > > If we do then we may want to come up with a better scheme for seeing
+> > > > which devices need to have a quirk flag set.  A static listing probably
+> > > > won't be good enough; the decision may have to be made dynamically.
+> > >
+> > > I don't mind either way personally. Oliver, could you try to find a good
+> > > solution with Ricardo ? I'll merge the outcome.
 
-And that triggered a "what the hell does that mean" warning in my
-wetware error parser ;-).
+-- 
+Regards,
 
-That could be better worded - it isn't "missing", it hasn't been
-appropriately set. So maybe "unset error code"?
-
-> The other warning here is:
-> drivers/gpio/gpiolib-cdev.c:2269 lineevent_create() warn: 'irq' from request_threaded_irq() not released on lines: 2258.
->
-
-Looks like a false positive to me - as per the comment in the code, that path
-(2258) results in lineevent_release() being called and that releases the irq.
-
-Cheers,
-Kent.
+Laurent Pinchart
 
