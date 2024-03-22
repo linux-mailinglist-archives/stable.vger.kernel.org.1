@@ -1,149 +1,116 @@
-Return-Path: <stable+bounces-28592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700BF8865B5
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 05:10:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823C088679B
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 08:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0321C22622
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3781B1F22215
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 07:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E77363D5;
-	Fri, 22 Mar 2024 04:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C5A12E72;
+	Fri, 22 Mar 2024 07:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bl83Gsid"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wh08Xc6P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456566FA7;
-	Fri, 22 Mar 2024 04:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F02012E56
+	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 07:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711080613; cv=none; b=g6PdQrRGKrRzE0w3+Q5NsKxf6VV9oR0jnUUVU6FDTAMCFsVH2BWsZ0FNRYQECehG4OlqhokItbR+oEPATNgqI2WynVU+RVf8lsrDdmk+vodgOrme+zMLhEGiRs8ej5l/WmUPq7caOXBdovb0PNYGOUXe4V+Ez7IYIjCd6eiCSGs=
+	t=1711093624; cv=none; b=YLS/mWyWtVtkKDDuf0ci7gXgtaRN/iJ1WQrkwuSRXAs7eMHaUd9EZHr7GREIVnfFfLRcBVhi5WdRFI7FA9iKf6cDMdDLSuoVQ8p3G0sDpLGd1R9cX7KPlSCCJV3vpyrP/RWgBcQUEvYuo07ndr+KG2vgfD7LXRe1SpSCtNK7Ny0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711080613; c=relaxed/simple;
-	bh=bYqOgOUndYgF/xG+o0Gh2rPPW4U8Lxkdfch8sJiHQwY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s3rNgiWAQbinMHg1SxbtFt3HRGQfvhKWdcTKh50btrgxpKFmxma9d/k5uqN4QS7PArOlFKikY1cxrgV+Ie6dBpzo8hyxq905Q5Hk+8rIvv2moJIY1eeUat3Z5qBYw2JJQqwW3Lz7rOtRcvJp6Lxr2aBHyM8Rya0Hjitt4yDc/9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bl83Gsid; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-414783a4a4eso5615165e9.0;
-        Thu, 21 Mar 2024 21:10:10 -0700 (PDT)
+	s=arc-20240116; t=1711093624; c=relaxed/simple;
+	bh=Yhw03HSz0idnna+yR34xpIkCEZSpOgZ5Sf0IEYITasY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=erQ43gHqADQFYtKj0c+QxL7ab2ESF0LPU27V2MtqSh7h4x1UdgBGTsv1bXanajCj7GlY25cUqB4SNjm0dfo5rNOsdEF1tXpxuVkTOa1J6RQoZiBgLTkjk43WQZ+cNp+yoY5zhcDahf2TUXAuapbM1JqIFuUM91fGwhGVa0RmTeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wh08Xc6P; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-513e10a4083so2046816e87.1
+        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 00:47:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711080609; x=1711685409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+NA3Bmop1gCKtv1Q82P2cRoeegkqQuerIZY6ItFpjOU=;
-        b=bl83GsidPhTfZEYs+NjjD1WSJGDdQYDjctamSAkqQKuha7+pxwTA9Vh8TqEGi7tDDB
-         upXkQGc2wXnD3Ph/e5CMQWpUt9IzVL6/xvcUX4+Uhs1+A84LGS6WiGpI1GXCHeQ84FXV
-         MeGIiYU4YPr2OE5vfpU+dibH066rWWIHXwrqUhFjmTi2rvImlfeGO9fFMJuBKFS6MJXU
-         Q79B2h/8hPLBy0tvAF/oOoCop49VTsXCaQCsvCexopmbFqN6TfjD9pgU7wVXQqCGdtO3
-         OufUf9tJ6DtFqqeyE8fmBbKKXwCVkGr/3FJ64ScMTqyCrx7ctWF2TyugrOYIm+fY2EFy
-         wibQ==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1711093621; x=1711698421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lPAa0wf/zbSEHcUANifsWrUgwG+6IErJ7w4tI2+ET3Q=;
+        b=wh08Xc6PxaYRBwEUxMN6mhstqUU0qvYsZweCwbjK/MPBu7dlh+sDFexD82/7CXWarZ
+         h/Kssvh0q2LaVpyjoYvToROOgB+INHmE0buwXzTq2ik+UmzTwaB/ixirseNFvMuLvvv2
+         uJxc9XNVu5N8x+Z0KxGeyBLGvwAcqEQM8sLrRhyDtt0PRVam2LVNhTTyt2f/Yrcpjq88
+         NKjswr/46Z/PojMJRVf+x/fa1VanyWfQmArTuvBjeFqzmbS3K1qI13LdyQmquV67TRdS
+         pnTj9lrXwTv1bBXId4ZGHAsL88IH/F9pLdZq7+GZHguWtbKvc8Pq4Td/+eT+1QCFCSL9
+         fywQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711080609; x=1711685409;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+NA3Bmop1gCKtv1Q82P2cRoeegkqQuerIZY6ItFpjOU=;
-        b=K/885Cr/AE4lcgVOH+tBIkDI51zhSBu3y6jBtoiSb+X3koC4/Q4U2HlSQo+v5XGk+T
-         WdYIy9tuniKcCYz0MmmBiParSgZU4/yFV9al0HPpet/uZ+4Mn8NJfkz/6K+V94Kwuq34
-         dUeF/T3EnQRgnbQn5nMGxquMwqcbCsPIxByea7u8JnBOXC7+aNA5HsRbCkfCHqHiQhpN
-         T67UAr5+SKrKLHxliwszCqPNFjfoRuE9dBV3JMfG9T6Vi/3feuXV/86Fq4UP7pgwGVNF
-         hgnIZ+CfWs75sgwlXFrR/jaxw1t7EsSY8f45FlsOe4pcHAI3RP94XWii+6sDQdqRqbL/
-         k/Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCV20pB1pUrPna8G/UBl+oG+P8JB0rXhGSW3PS8l0Bvq/8hnJXZ6vaM5ubQlhqZ0tbfYrhUmsJHf0kGCSZNLkjxVrCLrfFD+OCxgOdh6xqrVDU2fmgs1PGkVP3ecTqbb4v8nBvcB
-X-Gm-Message-State: AOJu0YzZrvPdxzZhdg+s9Q5Msi+pfF3mH38HlkRrLrDuB/5c6p0AJON9
-	eJfrJmKisOubhiCeGFKCHp3FBXAq189Vf4FYbT5PxVumwd/GLUjZ
-X-Google-Smtp-Source: AGHT+IHzryKQyKjUaWMydnS98Rv2D/wqKdSlap+b3Gib6PJz45la8lFONvHSzUUr6Wjek487pAiq1g==
-X-Received: by 2002:a05:600c:35d1:b0:414:fd8:10b2 with SMTP id r17-20020a05600c35d100b004140fd810b2mr632367wmq.8.1711080609255;
-        Thu, 21 Mar 2024 21:10:09 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id dj9-20020a0560000b0900b0033ec812ee0esm1058605wrb.71.2024.03.21.21.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 21:10:08 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mtd: limit OTP NVMEM Cell parse to non Nand devices
-Date: Fri, 22 Mar 2024 05:09:49 +0100
-Message-ID: <20240322040951.16680-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1711093621; x=1711698421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lPAa0wf/zbSEHcUANifsWrUgwG+6IErJ7w4tI2+ET3Q=;
+        b=Nx5F9bkGIBFMJ+0L1H+zSYkmzfeUn2Hz/IaGGm1mIqu+zuhZDunDRFA1CB9iJ4AtVL
+         cTr8vX4eh8GDJbnJtLYOemghW0k03U5Up7DZmuWW9P3CeAyJbkMvWAjmJSYU2HXiQODR
+         e00NxnOYwH1ZOqBSHj/DFtH1Wx9A0JG2vi89CFrB4TT/FqZsoWO+88Uex1cPJlxELjqN
+         SLSccxs2OyvbIEPL5a0/h58MZMKr7JjbESPbQEr0woY4/Xo/lz5Q6ZeWn7jcwZqbdlOk
+         JtDC4PObHs95KQjRSysfOr6EMQvMTuMnW6khAbH32mxcfvv1GzxTSD0UqUkOAvg11x50
+         2Evg==
+X-Forwarded-Encrypted: i=1; AJvYcCXieQHpVLEclhCBTJB1FTsLMgxLEMSEUQ1zmaS4TBZtKRzLNpB4CPH0+Ne53OO+5JSiWdOUtdaMOSI/VKl4P0mOTDPrTDgz
+X-Gm-Message-State: AOJu0YyG8iJIHYdFpL65mYaGYc4j5rNvwACtB5+nUwZN+9bUt0UwbL4C
+	A8lIfD0NOOcE8Q/hKH843lfOBGAIW9xUufWvu47vHQuZqyxNC1A6FF2ayWZnkTw2g898W17iGND
+	FvWeA+Uyq05Ty92vnoMgddFRB1slJZ75SNGua+A==
+X-Google-Smtp-Source: AGHT+IGMlPmh6WdmqSWErCqF67TPp8BSJ8Ax+s3wvqQfGc+YdlHQhOmUL3UDDQEgmrblKQ0L8twrhkOtXf4xDSab2lM=
+X-Received: by 2002:a05:6512:747:b0:513:d8e3:fe3d with SMTP id
+ c7-20020a056512074700b00513d8e3fe3dmr939101lfs.26.1711093621110; Fri, 22 Mar
+ 2024 00:47:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240320125945.16985-1-brgl@bgdev.pl> <20240322013034.GA4572@rigel>
+In-Reply-To: <20240322013034.GA4572@rigel>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 22 Mar 2024 08:46:50 +0100
+Message-ID: <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: cdev: sanitize the label before requesting the interrupt
+To: Kent Gibson <warthog618@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alexey Dobriyan <adobriyan@gmail.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Stefan Wahren <wahrenst@gmx.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-MTD OTP logic is very fragile and can be problematic with some specific
-kind of devices.
+On Fri, Mar 22, 2024 at 2:30=E2=80=AFAM Kent Gibson <warthog618@gmail.com> =
+wrote:
+>
+> On Wed, Mar 20, 2024 at 01:59:44PM +0100, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > Let's replace all "/" with "-".
+> >
+>
+> I actually prefer the ":" you originally suggested, as it more clearly
+> indicates a tier separation, whereas a hyphen is commonly used for
+> multi-word names. And as the hyphen is more commonly used the sanitized
+> name is more likely to conflict.
+>
 
-NVMEM across the years had various iteration on how Cells could be
-declared in DT and MTD OTP probably was left behind and
-add_legacy_fixed_of_cells was enabled without thinking of the consequences.
+Sounds good, will do.
+> >
+> > +     label =3D make_irq_label(le->label);
+> > +     if (!label)
+> > +             goto out_free_le;
+> > +
+>
+> Need to set ret =3D -ENOMEM before the goto, else you will return 0.
+>
 
-That option enables NVMEM to scan the provided of_node and treat each
-child as a NVMEM Cell, this was to support legacy NVMEM implementation
-and don't cause regression.
+Eek, right, thanks.
 
-This is problematic if we have devices like Nand where the OTP is
-triggered by setting a special mode in the flash. In this context real
-partitions declared in the Nand node are registered as OTP Cells and
-this cause probe fail with -EINVAL error.
-
-This was never notice due to the fact that till now, no Nand supported
-the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-access for MX30LFxG18AC") this changed and coincidentally this Nand is
-used on an FritzBox 7530 supported on OpenWrt.
-
-Alternative and more robust way to declare OTP Cells are already
-prossible by using the fixed-layout node or by declaring a child node
-with the compatible set to "otp-user" or "otp-factory".
-
-To fix this and limit any regression with other MTD that makes use of
-declaring OTP as direct child of the dev node, disable
-add_legacy_fixed_of_cells if we detect the MTD type is Nand.
-
-With the following logic, the OTP NVMEM entry is correctly created with
-no Cells and the MTD Nand is correctly probed and partitions are
-correctly exposed.
-
-Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/mtd/mtdcore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 5887feb347a4..0de87bc63840 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
- 	config.name = compatible;
- 	config.id = NVMEM_DEVID_AUTO;
- 	config.owner = THIS_MODULE;
--	config.add_legacy_fixed_of_cells = true;
-+	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
- 	config.type = NVMEM_TYPE_OTP;
- 	config.root_only = true;
- 	config.ignore_wp = true;
--- 
-2.43.0
-
+Bart
 
