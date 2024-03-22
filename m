@@ -1,146 +1,132 @@
-Return-Path: <stable+bounces-28627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CCA8870D3
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:28:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7138887102
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:40:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5381C22C9E
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 16:28:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 478E8B21286
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 16:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B953057876;
-	Fri, 22 Mar 2024 16:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1805B698;
+	Fri, 22 Mar 2024 16:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hwch4OxJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iXoFqmac"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258934F60D;
-	Fri, 22 Mar 2024 16:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BFB59163;
+	Fri, 22 Mar 2024 16:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711124879; cv=none; b=TZS8/lZLM/U22DZwKTxrQY0gPvK7KZ1wp5gtZ4tsEBWnCUJspJBcbvnfEh2m7Xj+UFCk06s3X2yH+yywW01T0YbFJ42l94DjDB8knWw/Z/G6zEHoArgWFqLrgGv4m8QhKWfu2/GJMIZOYlRVMZdMTbe6FD77PCoSU2bsDvQZDWY=
+	t=1711125597; cv=none; b=jsd5DTfJdutP+0aXWmF8LzSWE096CjpxRLUEzhNRdNLeBEfm34AmRgGjiWPlRxCfpIhoFnzZPhVX58I+MtURsU5uDJM14J4RhaRnvcdw6A67bV+c/7JXcxlR3/8eyAiR8wj0asp6snIFJAzpf8av2qdvwD/cPCS5JGkB6FHj3nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711124879; c=relaxed/simple;
-	bh=Yg2Xfm9bBL3/e8m4eyIH1Wm/XrSP3qfZNh7KZLgdZbg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ALGeQv/Ng/J4ge1nzj2c5si59EYTDs98R+olVHdj9DgpDjJ9ku+JWPZKSgZfxCv/ZLZagGXLMdBKe33QlFgYs4mJDNGMDhxKRaSDRz1YCiEa8Bt8yFWyFb0DWMPgUaOjuaWOE35LmJfaAPIw837kEgK0bGTUqX1Rlh62zYmzgyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hwch4OxJ; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711124878; x=1742660878;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Yg2Xfm9bBL3/e8m4eyIH1Wm/XrSP3qfZNh7KZLgdZbg=;
-  b=Hwch4OxJ2Qx/emOvLbjz5yEaj1I/rY6PYXwhTkmgF0H3bmFDBHb114oM
-   7YiSBV5y7F9pHCnSw+HxQPyLIiYGMr8jr9SQ/2Q0ULNECmYpbAeWeJefy
-   QHwD5ZG6caqX6YjsbM86CuXylw9FOgJPMlqbESYpJFeIwm1zlkcDKqWj6
-   ZleBJmJ20bOjJgSg32hTLdXMj3gZGB3Xckf3Mu3nPalh6QY9RiDiDDG0X
-   sasCeDnBl2QX1MEX90dIKeyiLH2ArcjqTyuDC+Y72IvnqMY3Hznv/2IFX
-   LZqB6hdU5L8txG4TXr7CGVhHYBJFuI9wgfsvwVsx1kOUbwQIAbhkmLCLd
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="17574400"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="17574400"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 09:27:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="15017149"
-Received: from ashwanim-mobl.amr.corp.intel.com (HELO [10.209.56.241]) ([10.209.56.241])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 09:27:55 -0700
-Message-ID: <003f1e83-fd93-4f4f-a316-d3e89e5a23a5@intel.com>
-Date: Fri, 22 Mar 2024 09:27:54 -0700
+	s=arc-20240116; t=1711125597; c=relaxed/simple;
+	bh=7v+ihhXci5sqhX8V+jNruf1JVBOlr5+Ra+WTdULUBEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OVjKzvZ+IhWhLZrqH7g3Nlfcsto6t8O4PCzHTX5t90d0QpPn/HAzb69gl98ihFxDuy3H3k3ErtgPkwiPWIXnD3PtYHwXrPZexXOd8DgiIn2C8giRiSiehRwdpAPgbEgSdJ5vG8vr/YlAm1tpnL63zZ0qnxa5D8IWHIcoCkCtHDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iXoFqmac; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-29fbe140c24so1628199a91.0;
+        Fri, 22 Mar 2024 09:39:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711125596; x=1711730396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZidRDuY5Aevf95sEzZzzxNl7J8LcO4JJpSyMrNFhevQ=;
+        b=iXoFqmac3oBxDQr5Tf4CjkA+6IE3q4pjzalPFe0CJaY+HeoZLRscawiu71n3UJpP4T
+         roRp4rTq4AYoeDDmoepV+TYWsjHeHrnMiyEMyR5mP0M9iBRcOExR2z8rQpV3aR8oc8Ai
+         Xj+ouEQiIeQ+HD/3wIeFXoqjk8fbxOcT2EDxg7m5rIhAP7bZtH7rwNADgDtnpmOWFxP6
+         v1Tu5c9sf1Nza1sxSxkVuJV1xBYEF31aHGPsgGL+72QPRAjcOI7ALj3vZ3nnbje5hAYk
+         f1sfSvimNo8yy8uRUrn8bRU4tWonyawkVRwMOas3hmc2f2MT2Rv6rYVDb5AGXpsWsN+k
+         ASSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711125596; x=1711730396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZidRDuY5Aevf95sEzZzzxNl7J8LcO4JJpSyMrNFhevQ=;
+        b=gzwbfh++ULSwjHU2+oZ8MdCy6cfh7c0rc8iJVdSDFQIZNK5FnXHwtHTUcDRjJ8SAYg
+         9x2ALh56GweJbJyTmIVjTkJAXoA/Ox3aKfa/3eogt/U4YaXg4ntUW/ZshXa2KCcllCG+
+         owq9yx52P+AGw7byP8M+vQiBu6KKtACc049jX86APWydYzZ3nENxK+RzHzW3AYoJfZfP
+         7rYfiT5SVLzHC5yB5DDdnFm5VEk/B88FLd1c12v8O2wnlllBomHa8zTfw3FA74s/Qw2K
+         umX5LAprhnynbPg6Ni/EEn2ih+UeleTWPCJHmPJmqDD4lajdG6bI5JrZLN/i2uMcHZTy
+         KAWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPdWAkYjFJkdRlFVILD2PaqBxwkvNYYEBFLdgMsuKezHgXX0izOPSLK8MyMVyZSND4YaZrJj9unf6LkNft5P9LzpLWV5j9QGAnL5yDIBw8VvlohfE26qz1MJ05RJRmJIp90hH1hw==
+X-Gm-Message-State: AOJu0YxkEqR7zlYt0n0Mi356aI3Vp6ADyyQuFyxAcbul+nPN/GIm4wo5
+	3undBmEURkbGQlA8awFvEGE3w9d6eYGSdhDp/PtoTkK7ONkl/I6jnqrQ3MQclu7v/0bQSRDSJot
+	nPRb40i1HhjmdJKpONUrrYwvIPO4=
+X-Google-Smtp-Source: AGHT+IFFDT4lxr5rv/sSdVPMZV2VS9eEMJx70sZTwM8qOxvzpf7GeHb5N66oQ8piCdfm1OVUveKq3wOuVHYS3S5Oii8=
+X-Received: by 2002:a17:90a:c503:b0:29f:aee7:f41b with SMTP id
+ k3-20020a17090ac50300b0029faee7f41bmr154889pjt.42.1711125595924; Fri, 22 Mar
+ 2024 09:39:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Content-Language: en-US
-To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
- Eric Hagberg <ehagberg@gmail.com>
-Cc: Simon Horman <horms@verge.net.au>, Eric Biederman
- <ebiederm@xmission.com>, Dave Young <dyoung@redhat.com>,
- Sarah Brofeldt <srhb@dbc.dk>, Russ Anderson <rja@hpe.com>,
- Dimitri Sivanich <sivanich@hpe.com>
-References: <20240322162135.3984233-1-steve.wahl@hpe.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240322162135.3984233-1-steve.wahl@hpe.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240320182607.1472887-1-jcmvbkbc@gmail.com> <202403211004.19F5EE27F@keescook>
+ <CAMo8Bf+jbsnok=zy3gT2Z-F8=LCMVVFhAoiJ8sjwaEBSbbJXzw@mail.gmail.com> <202403212041.AEB471AC@keescook>
+In-Reply-To: <202403212041.AEB471AC@keescook>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 22 Mar 2024 09:39:43 -0700
+Message-ID: <CAMo8BfKhk8dk3-n7gx3edZKSZUhCa+GJf4XwFvXr6bYzcwsb-A@mail.gmail.com>
+Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
+To: Kees Cook <keescook@chromium.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Rich Felker <dalias@libc.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/22/24 09:21, Steve Wahl wrote:
-> Some systems have ACPI tables that don't include everything that needs
-> to be mapped for a successful kexec.  These systems rely on identity
-> maps that include the full gigabyte surrounding any smaller region
-> requested for kexec success.  Without this, they fail to kexec and end
-> up doing a full firmware reboot.
-> 
-> So, reduce the use of GB pages only on systems where this is known to
-> be necessary (specifically, UV systems).
+On Thu, Mar 21, 2024 at 8:48=E2=80=AFPM Kees Cook <keescook@chromium.org> w=
+rote:
+> On Thu, Mar 21, 2024 at 12:52:16PM -0700, Max Filippov wrote:
+> > On Thu, Mar 21, 2024 at 10:05=E2=80=AFAM Kees Cook <keescook@chromium.o=
+rg> wrote:
+> > > What's the best way to test this? (Is there a qemu setup I can use to
+> > > see the before/after of AT_EXECFN?)
+> >
+> > I put a readme with the steps to build such system here:
+> >   http://jcmvbkbc.org/~dumb/tmp/202403211236/README
+> > it uses a prebuilt rootfs image and a 6.8 kernel branch with two
+> > patches on top of it: one adds a dts and a defconfig and the other
+> > is this fix. The rootfs boots successfully with this fix, but panics
+> > if this fix is removed.
+>
+> Does musl have something like the LD_SHOW_AUXV env variable. With glibc,
+> I usually explore auxv like so:
+>
+> $ LD_SHOW_AUXV=3D1 uname -a | grep EXECFN
+> AT_EXECFN:            /usr/bin/uname
 
-Isn't this called "buggy firmware"?
+I couldn't find anything like that in either musl or uClibc-ng.
+So I updated the above rootfs and put the following program
+into it as /bin/test-auxv:
 
-I'd much rather add synthetic entries to the memory maps that have this
-information than hack around it by assuming that things are within a
-gigabyte.
+#include <stdio.h>
+#include <sys/auxv.h>
+
+int main()
+{
+       unsigned long p =3D getauxval(AT_EXECFN);
+       fprintf(stderr, "AT_EXECFN: 0x%lx\n", p);
+       if (p)
+               fprintf(stderr, "%s\n", (const char *)p);
+       return 0;
+}
+
+While looking at it I also noticed that /proc/<pid>/auxv is empty
+on NOMMU, looks like there will be yet another fix for that.
+
+--=20
+Thanks.
+-- Max
 
