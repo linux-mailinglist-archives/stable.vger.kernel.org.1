@@ -1,132 +1,123 @@
-Return-Path: <stable+bounces-28601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D52886948
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:31:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFDD8869A1
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D281F23A89
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0284283A42
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7D8200CD;
-	Fri, 22 Mar 2024 09:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522FB20DD2;
+	Fri, 22 Mar 2024 09:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="woCsGRhj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FKhkGeK6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F420326
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869B022071;
+	Fri, 22 Mar 2024 09:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711099905; cv=none; b=bj43YWEBzL8tonPW8EZEEDgpWygwakIEBTcjx3sJP8pKCvbEh+ej+rrrsATmHM93aASs+ha1vJbhzZr+yU3UAeOAsyhoLwmuupN2n0IIjI1EOvc5/KKWsdw1/dVLI5FeN9QHapK1aAAOFhdCaA8a4u7CtVjonQfXsJXn+M+Cilg=
+	t=1711100868; cv=none; b=oumoXRHoNdEgY29pPSTt+dcMia+/igyvmt2QZCuKVK/RVTzN5AXB1Z0/eBiV3yuxWRStnM9d7C8dx8rrCrIy0nZ3KhAu71Rxo+qSVidpmNeGk8NQt9MT2tY1cnwCR1DJbMpIZJ9/NKIeE+bApYv+svDF2WcDtu4X5BtY0JvxJQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711099905; c=relaxed/simple;
-	bh=gADTjc2dxeesohFGmu4WtjCwknaJ3Fafeo6D42wFGkY=;
+	s=arc-20240116; t=1711100868; c=relaxed/simple;
+	bh=d8QI1fvrWimyZ+FSH0Pau+AvhF+Z/HjOosxcR2O3zaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nSxMAJqrOS+/RZK7E4UPzYmf6ddZBSbE5SiT3iAH9nLqyyHQIC6XxWi26TlZtMYmg6g5mIODVSrwvXv3P9bj69VKDU8m+cF2jIYauEIYfqdmsro+qggH0qzVxlrn7vjHM00gpMdTA9HP2jdKxExmtpNplfwmB1OzewnqxpCVk+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=woCsGRhj; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-341808b6217so1063294f8f.3
-        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 02:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711099902; x=1711704702; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7E+eUGe/hdcugl2ZZv/ZnjrSpu6srn2v/HM636IHEis=;
-        b=woCsGRhjq1IoiIsXs8xnssttIN6SQ5LULuMKNhVUAjAz9vj6og0B/XOdcgPxJbySBR
-         65rqEkw25Aj81QFZYmx8/NLiBu3/A+La1/hLJj66xGyTW+K5pDWKdfeOwtMiUrYQLaDv
-         c2usZaoQX/RfBytugCiXzUjyPxOqw4YsouhQ77753UVBk4JJSi2y9L90dkXFPFQreiO2
-         Ju3jBYlT01o7PNUu9ZiNOBHYzfwGyj5xHBBkIRhH0CTGQiaJeCoHhuBTikgH1rQ93e6S
-         rPG9EMjRIR7KLM2/czG7LxOUGhB5XI8S+RZRnVw8xHOJW5BIlpaNDLIV3FrWrIft8k/d
-         cukQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711099902; x=1711704702;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7E+eUGe/hdcugl2ZZv/ZnjrSpu6srn2v/HM636IHEis=;
-        b=AVHM9tc87A35wtDMCkwE7pH/LBEHK5Bbhl8VkR6/oCFFWc5O/Spl4YuubSCSOqWP50
-         8BBl35tu8rK8krMqMqLlYm743/I0MPoDHlJB307IRdlnuF+0iJhqslknxaO1dQ2fyHqF
-         dVyGy2EJGPOck/lpZXItANzzcdBUyFgR+UeyljY0tlXdhM0Mrp11ae2xVHV5ILoTU7CD
-         waf6CJJK7fNdWmKmrfyhCJWG+q2bNBG/LPGSCgG7imbi4x9rHXO0r+XxcCy3wuvUZIde
-         FCW1Vm9X5wrBLSXSg0208oZxnRVc4FJIA+hd1mnze7ZKbIk/7y44Q+P5rXkxZJ0UAp2z
-         vbmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVh8vpb54EIYPQTjaQwxIC/BTTGmzGXEPJGkT7l0+oMdQN931dqwEYPEDwzc+qtdSQ1NbtdRSZtp0Bih/qGbjxH+HVNvrVK
-X-Gm-Message-State: AOJu0Yx4VgLwXKcwzF7bR3/aeqSEgiIOu6fJFPih8nrV/ptFZOUgpqXa
-	QoWr88NUW0nTe0OlufNmf1hNODM6l7+7wHQ2wEU7Bp9vy25zDdtHNH9J4I0+gLQ=
-X-Google-Smtp-Source: AGHT+IEx9+6Qw0hrRUZxzQ7LLuPG4KUN4sIHa+qcrOs3KA2kgTDh+sJcM3kgVXFOcm3zkWzxm860gA==
-X-Received: by 2002:a5d:6583:0:b0:341:ba2d:bddd with SMTP id q3-20020a5d6583000000b00341ba2dbdddmr369781wru.1.1711099901869;
-        Fri, 22 Mar 2024 02:31:41 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id df10-20020a5d5b8a000000b0033e756ed840sm1641939wrb.47.2024.03.22.02.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Mar 2024 02:31:40 -0700 (PDT)
-Date: Fri, 22 Mar 2024 12:31:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Kent Gibson <warthog618@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
-Subject: Re: [PATCH] gpio: cdev: sanitize the label before requesting the
- interrupt
-Message-ID: <f529d746-f8c5-466b-860b-e2bfaeb2cc27@moroto.mountain>
-References: <20240320125945.16985-1-brgl@bgdev.pl>
- <20240322013034.GA4572@rigel>
- <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pb3EXRYV1PnL+SV7po9WQ/Zip6J9DZNrlptRh+5rArsIMSq8UpTCVbXimmxXgvWK3ZSQBB2fHo3coL9FonhIS6V2yr5V/I7JrCtqIYLONFleaIjtZI7PWs4GBiNL88rOv9L8Ecpy5HKmcXVJC99Yek7znpla109oLsx8YjL7Rws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FKhkGeK6; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711100866; x=1742636866;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d8QI1fvrWimyZ+FSH0Pau+AvhF+Z/HjOosxcR2O3zaQ=;
+  b=FKhkGeK6EVi2iOlbZpB4g5G9kOk5gLbKHhi7brru8IjFBkleItDngykA
+   PHE1t6ExjhQfkB097BoriziaACzYAYnG5LdXkuSnWbe3YGUGfM82SaZxc
+   GA4OhiUARCQfCh0rizAv+Q8A96/XVGWG/yeCsjOsKe+bjYu+dG3YjIe+p
+   tELNwp7YIz8/2CkEqKwBBMylAbNgKRtXc1Y6In1Ko/GDVdsDCSjy3ygI3
+   jLeJzz1ARXTgGCW4IzVp+hV4dAJqGFwsC1KMmwKKHBdc14Gk9++giF7do
+   C47LB7/3B1RJRD6m2dQqQF+rH6U3KAAtOhEYtlfXJ3fywRB5jybbiPvTC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="16868984"
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="16868984"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 02:47:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="937066503"
+X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
+   d="scan'208";a="937066503"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 22 Mar 2024 02:47:43 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 22 Mar 2024 11:47:42 +0200
+Date: Fri, 22 Mar 2024 11:47:42 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Kyle Tso <kyletso@google.com>
+Cc: linux@roeck-us.net, gregkh@linuxfoundation.org, badhri@google.com,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: Return size of buffer if pd_set operation
+ succeeds
+Message-ID: <Zf1Tvk0SeE9oxXiA@kuha.fi.intel.com>
+References: <20240319074309.3306579-1-kyletso@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
+In-Reply-To: <20240319074309.3306579-1-kyletso@google.com>
 
-On Fri, Mar 22, 2024 at 08:46:50AM +0100, Bartosz Golaszewski wrote:
-> On Fri, Mar 22, 2024 at 2:30 AM Kent Gibson <warthog618@gmail.com> wrote:
-> >
-> > On Wed, Mar 20, 2024 at 01:59:44PM +0100, Bartosz Golaszewski wrote:
-> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > >
-> > > Let's replace all "/" with "-".
-> > >
-> >
-> > I actually prefer the ":" you originally suggested, as it more clearly
-> > indicates a tier separation, whereas a hyphen is commonly used for
-> > multi-word names. And as the hyphen is more commonly used the sanitized
-> > name is more likely to conflict.
-> >
+On Tue, Mar 19, 2024 at 03:43:09PM +0800, Kyle Tso wrote:
+> The attribute writing should return the number of bytes used from the
+> buffer on success.
 > 
-> Sounds good, will do.
-> > >
-> > > +     label = make_irq_label(le->label);
-> > > +     if (!label)
-> > > +             goto out_free_le;
-> > > +
-> >
-> > Need to set ret = -ENOMEM before the goto, else you will return 0.
-> >
+> Fixes: a7cff92f0635 ("usb: typec: USB Power Delivery helpers for ports and partners")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kyle Tso <kyletso@google.com>
+
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/class.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> Eek, right, thanks.
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 389c7f0b8d93..9610e647a8d4 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -1310,6 +1310,7 @@ static ssize_t select_usb_power_delivery_store(struct device *dev,
+>  {
+>  	struct typec_port *port = to_typec_port(dev);
+>  	struct usb_power_delivery *pd;
+> +	int ret;
+>  
+>  	if (!port->ops || !port->ops->pd_set)
+>  		return -EOPNOTSUPP;
+> @@ -1318,7 +1319,11 @@ static ssize_t select_usb_power_delivery_store(struct device *dev,
+>  	if (!pd)
+>  		return -EINVAL;
+>  
+> -	return port->ops->pd_set(port, pd);
+> +	ret = port->ops->pd_set(port, pd);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return size;
+>  }
+>  
+>  static ssize_t select_usb_power_delivery_show(struct device *dev,
+> -- 
+> 2.44.0.291.gc1ea87d7ee-goog
 
-Smatch has a warning about this, btw.
-drivers/gpio/gpiolib-cdev.c:2221 lineevent_create() warn: missing error code 'ret'
-
-The other warning here is:
-drivers/gpio/gpiolib-cdev.c:2269 lineevent_create() warn: 'irq' from request_threaded_irq() not released on lines: 2258.
-
-regards,
-dan carpenter
-
+-- 
+heikki
 
