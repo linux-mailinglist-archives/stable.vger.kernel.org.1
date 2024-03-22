@@ -1,137 +1,132 @@
-Return-Path: <stable+bounces-28600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FD78868C9
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:03:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D52886948
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B59C2285507
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:03:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D281F23A89
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542B11BC47;
-	Fri, 22 Mar 2024 09:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7D8200CD;
+	Fri, 22 Mar 2024 09:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n+StHnVW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="woCsGRhj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EBF1B801
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 09:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14F420326
+	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 09:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711098151; cv=none; b=WZg6pNWcJD3smA3XOw4CvZmQCtGkzzWochUfxZi/8YwC/3abg7Gux8msghvvT2mGMAD2hSVR5WfVyKTrxB774CR7JIRDI743B2KzIlJoisUL7bmOpZ5xYsAVoVPaxmKXQT9+VFt5Pe59GvEmQGpI7wiWpyZ2PFFOTh4vyZeffeo=
+	t=1711099905; cv=none; b=bj43YWEBzL8tonPW8EZEEDgpWygwakIEBTcjx3sJP8pKCvbEh+ej+rrrsATmHM93aASs+ha1vJbhzZr+yU3UAeOAsyhoLwmuupN2n0IIjI1EOvc5/KKWsdw1/dVLI5FeN9QHapK1aAAOFhdCaA8a4u7CtVjonQfXsJXn+M+Cilg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711098151; c=relaxed/simple;
-	bh=QUP0UEm0A5S8U36SPPy8Kp5rJE2xmPd47K1F60chV1Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k6SL/b4MfIKC/1USF7EHs4xLnkDLgDQw4wrGBk6xsTKq6+ojJ/lTiML2kGDKs+gSLEkECYe+3n0MnoeJxtwlY5K9ChehSGwMT+0Bd6gqRigBIRxnmDoQgRQWjSFASuFpAjYC4KXkEKFDgXRmTA0d7cDZ8c/ZaF2ZbROg8Nfgx/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n+StHnVW; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711098149; x=1742634149;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QUP0UEm0A5S8U36SPPy8Kp5rJE2xmPd47K1F60chV1Y=;
-  b=n+StHnVWeqpeXqgJEXS4UzcVw6RWt4qC905WUVNTPkZFiIHNSc7KdyaQ
-   h9JutIkRNGcTRquD95K0tUiAvrY357f/UzK2l7cmBejsd6+RcV3LfmcMv
-   7xIH/5k2PTUGNMRmr7GfW0Gxz+NbR+tfJLJVHn3uzNIclwgocxq2QIOVc
-   Equ3zasuysz+QM+ujaLchQw26rHIFedVnQQZ6tX1kxVlf122WcdEj5grF
-   7aiEk4wmRjUZ5Pn/dtTa2Fp6EoSFwjazHlyvUusygCg0+4vJbgxLMZp+5
-   zvZSQKy1KiyiMDeYqM341a9eWIJ1wTmYrEjWF0IeEiB1LJAmFgthE45ef
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9087176"
-X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
-   d="scan'208";a="9087176"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 02:02:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,145,1708416000"; 
-   d="scan'208";a="15238784"
-Received: from ettammin-desk.ger.corp.intel.com (HELO fedora..) ([10.249.254.178])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 02:02:28 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/7] drm/xe: Make TLB invalidation fences unordered
-Date: Fri, 22 Mar 2024 10:02:09 +0100
-Message-ID: <20240322090213.6091-4-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240322090213.6091-1-thomas.hellstrom@linux.intel.com>
-References: <20240322090213.6091-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1711099905; c=relaxed/simple;
+	bh=gADTjc2dxeesohFGmu4WtjCwknaJ3Fafeo6D42wFGkY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSxMAJqrOS+/RZK7E4UPzYmf6ddZBSbE5SiT3iAH9nLqyyHQIC6XxWi26TlZtMYmg6g5mIODVSrwvXv3P9bj69VKDU8m+cF2jIYauEIYfqdmsro+qggH0qzVxlrn7vjHM00gpMdTA9HP2jdKxExmtpNplfwmB1OzewnqxpCVk+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=woCsGRhj; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-341808b6217so1063294f8f.3
+        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 02:31:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711099902; x=1711704702; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7E+eUGe/hdcugl2ZZv/ZnjrSpu6srn2v/HM636IHEis=;
+        b=woCsGRhjq1IoiIsXs8xnssttIN6SQ5LULuMKNhVUAjAz9vj6og0B/XOdcgPxJbySBR
+         65rqEkw25Aj81QFZYmx8/NLiBu3/A+La1/hLJj66xGyTW+K5pDWKdfeOwtMiUrYQLaDv
+         c2usZaoQX/RfBytugCiXzUjyPxOqw4YsouhQ77753UVBk4JJSi2y9L90dkXFPFQreiO2
+         Ju3jBYlT01o7PNUu9ZiNOBHYzfwGyj5xHBBkIRhH0CTGQiaJeCoHhuBTikgH1rQ93e6S
+         rPG9EMjRIR7KLM2/czG7LxOUGhB5XI8S+RZRnVw8xHOJW5BIlpaNDLIV3FrWrIft8k/d
+         cukQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711099902; x=1711704702;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7E+eUGe/hdcugl2ZZv/ZnjrSpu6srn2v/HM636IHEis=;
+        b=AVHM9tc87A35wtDMCkwE7pH/LBEHK5Bbhl8VkR6/oCFFWc5O/Spl4YuubSCSOqWP50
+         8BBl35tu8rK8krMqMqLlYm743/I0MPoDHlJB307IRdlnuF+0iJhqslknxaO1dQ2fyHqF
+         dVyGy2EJGPOck/lpZXItANzzcdBUyFgR+UeyljY0tlXdhM0Mrp11ae2xVHV5ILoTU7CD
+         waf6CJJK7fNdWmKmrfyhCJWG+q2bNBG/LPGSCgG7imbi4x9rHXO0r+XxcCy3wuvUZIde
+         FCW1Vm9X5wrBLSXSg0208oZxnRVc4FJIA+hd1mnze7ZKbIk/7y44Q+P5rXkxZJ0UAp2z
+         vbmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVh8vpb54EIYPQTjaQwxIC/BTTGmzGXEPJGkT7l0+oMdQN931dqwEYPEDwzc+qtdSQ1NbtdRSZtp0Bih/qGbjxH+HVNvrVK
+X-Gm-Message-State: AOJu0Yx4VgLwXKcwzF7bR3/aeqSEgiIOu6fJFPih8nrV/ptFZOUgpqXa
+	QoWr88NUW0nTe0OlufNmf1hNODM6l7+7wHQ2wEU7Bp9vy25zDdtHNH9J4I0+gLQ=
+X-Google-Smtp-Source: AGHT+IEx9+6Qw0hrRUZxzQ7LLuPG4KUN4sIHa+qcrOs3KA2kgTDh+sJcM3kgVXFOcm3zkWzxm860gA==
+X-Received: by 2002:a5d:6583:0:b0:341:ba2d:bddd with SMTP id q3-20020a5d6583000000b00341ba2dbdddmr369781wru.1.1711099901869;
+        Fri, 22 Mar 2024 02:31:41 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id df10-20020a5d5b8a000000b0033e756ed840sm1641939wrb.47.2024.03.22.02.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Mar 2024 02:31:40 -0700 (PDT)
+Date: Fri, 22 Mar 2024 12:31:36 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>
+Subject: Re: [PATCH] gpio: cdev: sanitize the label before requesting the
+ interrupt
+Message-ID: <f529d746-f8c5-466b-860b-e2bfaeb2cc27@moroto.mountain>
+References: <20240320125945.16985-1-brgl@bgdev.pl>
+ <20240322013034.GA4572@rigel>
+ <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
 
-They can actually complete out-of-order, so allocate a unique
-fence context for each fence.
+On Fri, Mar 22, 2024 at 08:46:50AM +0100, Bartosz Golaszewski wrote:
+> On Fri, Mar 22, 2024 at 2:30 AM Kent Gibson <warthog618@gmail.com> wrote:
+> >
+> > On Wed, Mar 20, 2024 at 01:59:44PM +0100, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > Let's replace all "/" with "-".
+> > >
+> >
+> > I actually prefer the ":" you originally suggested, as it more clearly
+> > indicates a tier separation, whereas a hyphen is commonly used for
+> > multi-word names. And as the hyphen is more commonly used the sanitized
+> > name is more likely to conflict.
+> >
+> 
+> Sounds good, will do.
+> > >
+> > > +     label = make_irq_label(le->label);
+> > > +     if (!label)
+> > > +             goto out_free_le;
+> > > +
+> >
+> > Need to set ret = -ENOMEM before the goto, else you will return 0.
+> >
+> 
+> Eek, right, thanks.
 
-Fixes: 5387e865d90e ("drm/xe: Add TLB invalidation fence after rebinds issued from execs")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 1 -
- drivers/gpu/drm/xe/xe_gt_types.h            | 7 -------
- drivers/gpu/drm/xe/xe_pt.c                  | 3 +--
- 3 files changed, 1 insertion(+), 10 deletions(-)
+Smatch has a warning about this, btw.
+drivers/gpio/gpiolib-cdev.c:2221 lineevent_create() warn: missing error code 'ret'
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-index 25b4111097bc..93df2d7969b3 100644
---- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-+++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-@@ -63,7 +63,6 @@ int xe_gt_tlb_invalidation_init(struct xe_gt *gt)
- 	INIT_LIST_HEAD(&gt->tlb_invalidation.pending_fences);
- 	spin_lock_init(&gt->tlb_invalidation.pending_lock);
- 	spin_lock_init(&gt->tlb_invalidation.lock);
--	gt->tlb_invalidation.fence_context = dma_fence_context_alloc(1);
- 	INIT_DELAYED_WORK(&gt->tlb_invalidation.fence_tdr,
- 			  xe_gt_tlb_fence_timeout);
- 
-diff --git a/drivers/gpu/drm/xe/xe_gt_types.h b/drivers/gpu/drm/xe/xe_gt_types.h
-index f6da2ad9719f..2143dffcaf11 100644
---- a/drivers/gpu/drm/xe/xe_gt_types.h
-+++ b/drivers/gpu/drm/xe/xe_gt_types.h
-@@ -179,13 +179,6 @@ struct xe_gt {
- 		 * xe_gt_tlb_fence_timeout after the timeut interval is over.
- 		 */
- 		struct delayed_work fence_tdr;
--		/** @tlb_invalidation.fence_context: context for TLB invalidation fences */
--		u64 fence_context;
--		/**
--		 * @tlb_invalidation.fence_seqno: seqno to TLB invalidation fences, protected by
--		 * tlb_invalidation.lock
--		 */
--		u32 fence_seqno;
- 		/** @tlb_invalidation.lock: protects TLB invalidation fences */
- 		spinlock_t lock;
- 	} tlb_invalidation;
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index 632c1919471d..d1b999dbc906 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -1135,8 +1135,7 @@ static int invalidation_fence_init(struct xe_gt *gt,
- 	spin_lock_irq(&gt->tlb_invalidation.lock);
- 	dma_fence_init(&ifence->base.base, &invalidation_fence_ops,
- 		       &gt->tlb_invalidation.lock,
--		       gt->tlb_invalidation.fence_context,
--		       ++gt->tlb_invalidation.fence_seqno);
-+		       dma_fence_context_alloc(1), 1);
- 	spin_unlock_irq(&gt->tlb_invalidation.lock);
- 
- 	INIT_LIST_HEAD(&ifence->base.link);
--- 
-2.44.0
+The other warning here is:
+drivers/gpio/gpiolib-cdev.c:2269 lineevent_create() warn: 'irq' from request_threaded_irq() not released on lines: 2258.
+
+regards,
+dan carpenter
 
 
