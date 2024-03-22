@@ -1,124 +1,184 @@
-Return-Path: <stable+bounces-28608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312DD886A9C
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 11:43:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEEC886AD7
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 11:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3EE31F22281
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:43:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CACA1F22D84
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 10:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE353D3BF;
-	Fri, 22 Mar 2024 10:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645193D547;
+	Fri, 22 Mar 2024 10:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GXt0pcKa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g7xSHxCi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K32R0Kag"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22DC3B2A4
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 10:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3C63F9C7;
+	Fri, 22 Mar 2024 10:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711104223; cv=none; b=hwk22jlu3r+3xqx6on1eJNQQRickr4QrqM7yOGAmAPbGRBV38MUa2rqOan2QwIRj1H4betr0bIa4v/b11tQHAYoLpQdK3AvGwVyaVV+C2L8ISKvUbzx3JGLG77FF0HEYVqeweO2ZUwJ0YCE7SEy9RvVyJB6R5Yypx/zjw6UMBWY=
+	t=1711105164; cv=none; b=mL6h4ugnxZztsOCvb6NzgN0XzllUfEcG6kSF/9DHlrii5WBmU1jwqbEvKLseI8ckMbOPmV3tww4ZS5OPXJjb7oSDVslkCZsMF88/XtsCaK1m5xZhKU6owsvnHZivkUdoG8euZInW+YJ4DBgtAaxcJwlFe463iE4ELVK5K3E4vRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711104223; c=relaxed/simple;
-	bh=S8Z7aChjuflwNhwZ9CR9vs1643uDXcQF3L3Qw+I+IUk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D6/FXwwe+OdPqYsyP6mKzZaJRNbj5FzaWAe0VOBEcScnsoaTNKEc2XXG6Hun96VUA+GUwqAQRfCxtmiHOVUt9Z2/PwSqWu2YuWJPfpjaxDnt80+CnzM0Jbzg5XQLRekRcbaLyfq2bAgQtKPPqoxnkDxi9rFIDHvTsZFM9tgCy3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GXt0pcKa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711104220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1711105164; c=relaxed/simple;
+	bh=oP9af5cniF5p3gxbjXvqLtOL4dq5x8JKZhk0IbRuazE=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=qjWRe27G19lYMpLXQnXEQzlLy0ez7FZ51TsPZHXP0Aa/oQ5TAqs+4Fkyf1kMw/ceD1jg9kReiLGTm3gi0t+14vsXCu1MMIHKGBP8kE275HN+sPaOP/H6ht7VTE4TGrUQu8B4JshzVK9xeunKBeohLyBkKm3maUlLFIP4f+orJvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g7xSHxCi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K32R0Kag; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 22 Mar 2024 10:59:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1711105160;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=e4hqr5sqga/uu4OSt9i/tA6ZdLVrKguR4cLu3EI2g3Y=;
-	b=GXt0pcKaEhclhYYXwroSn1rin/GVpQilNW97ug782OqZoyhZPjhwY34SSIQJIi4Hl5GhsY
-	w8FPf232QAxy0j166Y4EZJ3GkoSInYZ71wxzFtv+5UENbCvoeJR0epgELmJHP3Y/HEauky
-	pDetvwD96J062+R8JpRfesX5DFtJULE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-rUokSxPMN9SQqTlojz6lCw-1; Fri, 22 Mar 2024 06:43:37 -0400
-X-MC-Unique: rUokSxPMN9SQqTlojz6lCw-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3418f237c0bso893638f8f.3
-        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 03:43:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711104216; x=1711709016;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4hqr5sqga/uu4OSt9i/tA6ZdLVrKguR4cLu3EI2g3Y=;
-        b=xTOQu/RZlrsru4099/sgk0WYL/imBq1NODxRWjtQxeKC8KHNxVf6Ro3mJFWjz9RFn7
-         l4l13PedBy/07kYfwSbKqEgwpRNG9XHZ9QGlnWcXeJHGVfOklLs2YYWZrNNFjkUoVSqy
-         VapN0SQFuoDR4Q2cnsZ+tZb67PlQdi1HrClrl9ATZXsgsX70Wnt4dhv3cFk1pGf1/ynZ
-         1I0MTeepu6m8IiA35KZQJFuPRX0tTA088HNNtaNa4i2L9TUcVcVmnnf9llSj0YexWu6g
-         dl/si3fqLZmNz6BgeTAG57lixNIOA6C0rWvWIxtk9noCF4IcvkzkQLvxiHWOpyKi2AOt
-         qCRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCqmTP2T0xepLqjIRVcuEDvTuQiZD5L8zmo+sehtVMutvCLR9Ml7nIOlC9QH6VI5hrchbXYQOBYbcbkqi2mIzm4fyFd/0I
-X-Gm-Message-State: AOJu0YxWOElVtx+m1WAdO//oMNfvwFZiKgtsKrVxILCoxQh0lzAaAhsR
-	X8g2s76vRnorXdfPPaiOvm8rZcuq9wJHo4k46q41jQRPISzaDwey+8iQdz8MHd9VCT8yoqAWvpK
-	o5j/E1QtrHqw7yiMnIk5Vt7Zwe8YuPTx2Hn0GNMY7Vple250Kxoc9kw==
-X-Received: by 2002:a5d:4145:0:b0:33e:9451:c299 with SMTP id c5-20020a5d4145000000b0033e9451c299mr1237992wrq.26.1711104216104;
-        Fri, 22 Mar 2024 03:43:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsAkU+2jK4kRfvDnw8i0oVWh6n19VVa3BIi69kxPxPYLEkn3rIbnPUV1SFTkGh0njd+owt8g==
-X-Received: by 2002:a5d:4145:0:b0:33e:9451:c299 with SMTP id c5-20020a5d4145000000b0033e9451c299mr1237971wrq.26.1711104215672;
-        Fri, 22 Mar 2024 03:43:35 -0700 (PDT)
-Received: from localhost ([90.167.87.57])
-        by smtp.gmail.com with ESMTPSA id n10-20020adfe34a000000b0033de10c9efcsm1771312wrj.114.2024.03.22.03.43.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Mar 2024 03:43:35 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, nbowler@draconx.ca, deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Daniel Vetter <daniel@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>, Arnd
- Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
-In-Reply-To: <20240322083005.24269-1-tzimmermann@suse.de>
-References: <20240322083005.24269-1-tzimmermann@suse.de>
-Date: Fri, 22 Mar 2024 11:43:31 +0100
-Message-ID: <877chu1r8s.fsf@minerva.mail-host-address-is-not-set>
+	bh=cRim6UUbWRNh7EONqTeNK/OtRjMbw8SQJ84ILN6n3Nk=;
+	b=g7xSHxCiMBUnzzRuARnHtu/mNVS9vPVXtHTkpod1i+CVtICssNyzkDSVhOtnVwUJaSaPOE
+	OvhoSc+uXGnUKbV67hHr60pV4xwzXVO2pDvAp0VRwa4vbppB5XBqx91wkXfUBv1ZUpC7Kc
+	QcpLqG9gUXfMhfxwFrUsHShONJj1yMdRwcBcPogExeMbhoLAf9rVYu3smMiCAh9r13pbtL
+	H10GbUF1T0RjTiP8Osj8O6PZtaek02kj9K0IQZMuJlJ0WYqSKzLTQRW3/CTT5922NA3iDH
+	iomQE9lPX+16bDincCMaQBqqT1jRgmhlrbTPyFPYlO9XzTHiuRkt5PFYCRRNng==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1711105160;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cRim6UUbWRNh7EONqTeNK/OtRjMbw8SQJ84ILN6n3Nk=;
+	b=K32R0KagLm5QKck5xSuUyGqnLV0u166lw1fy8+kpqoDmYxGwrGKOlYf371PyvZlbn2Kdwv
+	gJ5iezYoj2HdyVCQ==
+From: "tip-bot2 for Anton Altaparmakov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/pm: Work around false positive kmemleak report
+ in msr_build_context()
+Cc: Anton Altaparmakov <anton@tuxera.com>, Ingo Molnar <mingo@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, stable@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240314142656.17699-1-anton@tuxera.com>
+References: <20240314142656.17699-1-anton@tuxera.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <171110515988.10875.8051105643716026412.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+The following commit has been merged into the x86/urgent branch of tip:
 
-> Framebuffer I/O on the Sparc Sbus requires read/write helpers for
-> I/O memory. Select FB_IOMEM_FOPS accordingly.
->
-> Reported-by: Nick Bowler <nbowler@draconx.ca>
-> Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.8+
-> ---
+Commit-ID:     e3f269ed0accbb22aa8f25d2daffa23c3fccd407
+Gitweb:        https://git.kernel.org/tip/e3f269ed0accbb22aa8f25d2daffa23c3fccd407
+Author:        Anton Altaparmakov <anton@tuxera.com>
+AuthorDate:    Thu, 14 Mar 2024 14:26:56 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 22 Mar 2024 11:01:31 +01:00
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+x86/pm: Work around false positive kmemleak report in msr_build_context()
 
--- 
-Best regards,
+Since:
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
 
+kmemleak reports this issue:
+
+  unreferenced object 0xf68241e0 (size 32):
+    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
+    hex dump (first 32 bytes):
+      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
+      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
+    backtrace:
+      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
+      [<ea65e13b>] __kmalloc+0x54/0x160
+      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
+      [<46635aff>] pm_check_save_msr+0x63/0x80
+      [<6b6bb938>] do_one_initcall+0x41/0x1f0
+      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
+      [<3b538fde>] kernel_init+0x1a/0x110
+      [<938ae2b2>] ret_from_fork+0x1c/0x28
+
+Which is a false positive.
+
+Reproducer:
+
+  - Run rsync of whole kernel tree (multiple times if needed).
+  - start a kmemleak scan
+  - Note this is just an example: a lot of our internal tests hit these.
+
+The root cause is similar to the fix in:
+
+  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
+
+ie. the alignment within the packed struct saved_context
+which has everything unaligned as there is only "u16 gs;" at start of
+struct where in the past there were four u16 there thus aligning
+everything afterwards.  The issue is with the fact that Kmemleak only
+searches for pointers that are aligned (see how pointers are scanned in
+kmemleak.c) so when the struct members are not aligned it doesn't see
+them.
+
+Testing:
+
+We run a lot of tests with our CI, and after applying this fix we do not
+see any kmemleak issues any more whilst without it we see hundreds of
+the above report. From a single, simple test run consisting of 416 individual test
+cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
+which is quite a lot. With this fix applied we get zero kmemleak related failures.
+
+Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
+---
+ arch/x86/include/asm/suspend_32.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
+index a800abb..d8416b3 100644
+--- a/arch/x86/include/asm/suspend_32.h
++++ b/arch/x86/include/asm/suspend_32.h
+@@ -12,11 +12,6 @@
+ 
+ /* image of the saved processor state */
+ struct saved_context {
+-	/*
+-	 * On x86_32, all segment registers except gs are saved at kernel
+-	 * entry in pt_regs.
+-	 */
+-	u16 gs;
+ 	unsigned long cr0, cr2, cr3, cr4;
+ 	u64 misc_enable;
+ 	struct saved_msrs saved_msrs;
+@@ -27,6 +22,11 @@ struct saved_context {
+ 	unsigned long tr;
+ 	unsigned long safety;
+ 	unsigned long return_address;
++	/*
++	 * On x86_32, all segment registers except gs are saved at kernel
++	 * entry in pt_regs.
++	 */
++	u16 gs;
+ 	bool misc_enable_saved;
+ } __attribute__((packed));
+ 
 
