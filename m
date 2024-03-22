@@ -1,142 +1,170 @@
-Return-Path: <stable+bounces-28642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506058874B7
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 23:08:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E928875C3
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 00:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44FC1F223D5
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 22:08:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7527A28452C
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 23:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC628120A;
-	Fri, 22 Mar 2024 22:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A088182C67;
+	Fri, 22 Mar 2024 23:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="borZRU/G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kYJI1VDU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA23680629;
-	Fri, 22 Mar 2024 22:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D366F8174C;
+	Fri, 22 Mar 2024 23:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711145277; cv=none; b=WNcD/eH7wEXoU1Jv95hBdJzohyn5tXIFG9No/jJXYmbfh5VGxzW5sQTHlfBLT9xi6b8d2qoC+JyJWVs54+tcRQHvJ5hlPy9Vrr3TcxygIj46eyM5wmS6aS+k1Vl18A4SLSenPrEeDDdJy3WB22vb+Qeej5DRxfT3dwxVZto9P9w=
+	t=1711150171; cv=none; b=BCNICIQcJh870oTIgF/CIdz6x3aYla6XhWwli+OklbB5aWsMA6tIVyYxoqxfDJbFx5c5YViINh6dvozt+R1NLsCeaqbr3b3xPOg8z6Fsnn45ycP6U0NvCGsDi1MosPHkBkT2ZN8en3RuqUVVhojkkL9NeFsS81xzcpwuDsGxR+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711145277; c=relaxed/simple;
-	bh=6hrbMTOU1EYyulynZyTwGilqoefgMexug9LPZylnaWg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BMKyV54M8MmPBLvxgN8mkjmo87J49qrD2hlWT+4V3kXCEVf7+z1tFycHIIQDtUzPnHhKTJJLoEvB9PrwmVG5WxfGE1t5rDWFh7MzGISM3bbk3dmjoT8NgADqQ6dLSlJ/G7p07gPfS2mQqPSYuGvl6RwtA9HGlaGLyw6HUN0WFD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=borZRU/G; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1711145272; x=1742681272;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=h/WOCoJGg/LvM9qqN1EvQhSNHgEtToPxH0fvwMToOoI=;
-  b=borZRU/GF7TZu7uxHo6uS6nBDZG1DkpLAK6YnfAgNHENLrSABMOSCIBn
-   waPvSrn1+sOxT6FjK9ax2NgZzAFrIngAqhrakzwy+ofgbxgLVFz3nH7vc
-   uX4r6wdtOhai/WUTNBhR9uX4BlmXofZdiQt3DoWwQb40GtmMvYZ7A7X8c
-   0=;
-X-IronPort-AV: E=Sophos;i="6.07,147,1708387200"; 
-   d="scan'208";a="75530079"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 22:07:50 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:49113]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.55:2525] with esmtp (Farcaster)
- id d4817f84-8b84-4d23-be95-419932aa795a; Fri, 22 Mar 2024 22:07:50 +0000 (UTC)
-X-Farcaster-Flow-ID: d4817f84-8b84-4d23-be95-419932aa795a
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 22 Mar 2024 22:07:49 +0000
-Received: from 88665a182662.ant.amazon.com (10.106.101.48) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 22 Mar 2024 22:07:46 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <linux@weissschuh.net>
-CC: <davem@davemloft.net>, <dmitry.torokhov@gmail.com>,
-	<ebiederm@xmission.com>, <edumazet@google.com>, <j.granados@samsung.com>,
-	<kuba@kernel.org>, <kuniyu@amazon.com>, <linux-kernel@vger.kernel.org>,
-	<mcgrof@kernel.org>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v2] fs/proc/proc_sysctl.c: always initialize i_uid/i_gid
-Date: Fri, 22 Mar 2024 15:07:36 -0700
-Message-ID: <20240322220736.77465-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240322-sysctl-net-ownership-v2-1-a8b4a3306542@weissschuh.net>
-References: <20240322-sysctl-net-ownership-v2-1-a8b4a3306542@weissschuh.net>
+	s=arc-20240116; t=1711150171; c=relaxed/simple;
+	bh=aCxz5dhHUIMuqRIxxYPbx79j/iDvyE5i2fZchEXGcFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d7uu4eBJvqjxdUh4dlcmJevicrYlVDRJGs2MN5A2RT8+bW0cWv+J5VInvjWf2VyFVEVZkEAuVgVXVtrBHAJHnwoUrJ6aUBfwMdOMSbN8SZkDIMBvjKvcA/w432IT6gIXCXo7gZ1Vrhfil6yOqxXkNSutbAutTOdc7iux+NKT6DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kYJI1VDU; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711150170; x=1742686170;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=aCxz5dhHUIMuqRIxxYPbx79j/iDvyE5i2fZchEXGcFU=;
+  b=kYJI1VDUoolEcfZOojpEikHlglWqV3A2wZgieETwp/xp4dflJHgmobk+
+   I/R9hU4//4I6LQI19JG03QTgJ+AbTYBFEoYzGYX/kuu73mwv7QijJnu8q
+   9KV0BGO9fuvcGlLHVkgk8WOOpcDsdHWFZiQrx1C8Fij+pZfkoId6FyIXk
+   GMHZdekt1UdOAd6jIn4AyYEVg2ANjm3qSlMqvir8BylbdhGzxYxPYjdSB
+   NvSeWsy6mFGJZlYsEQGFg4KcfLuBwRgFuNytNbxAW3aWR/AJpbSvvoQBe
+   jZt/wZFeFhoFvc154O6GmMA/ezhkV6pSwKnyrTCN2ZhEptC0oXN3jZnQD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="17610562"
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
+   d="scan'208";a="17610562"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 16:29:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,147,1708416000"; 
+   d="scan'208";a="19750852"
+Received: from jdwaldem-mobl1.amr.corp.intel.com (HELO [10.209.55.147]) ([10.209.55.147])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 16:29:28 -0700
+Message-ID: <8cc9e238-fa70-402f-9990-f7e391b367a9@intel.com>
+Date: Fri, 22 Mar 2024 16:29:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EX19D046UWA003.ant.amazon.com (10.13.139.18) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
+ except on UV platform.
+Content-Language: en-US
+To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
+ Eric Hagberg <ehagberg@gmail.com>
+Cc: Simon Horman <horms@verge.net.au>, Eric Biederman
+ <ebiederm@xmission.com>, Dave Young <dyoung@redhat.com>,
+ Sarah Brofeldt <srhb@dbc.dk>, Russ Anderson <rja@hpe.com>,
+ Dimitri Sivanich <sivanich@hpe.com>
+References: <20240322162135.3984233-1-steve.wahl@hpe.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240322162135.3984233-1-steve.wahl@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: "Thomas Weißschuh" <linux@weissschuh.net>
-Date: Fri, 22 Mar 2024 20:51:11 +0100
-> Commit e79c6a4fc923 ("net: make net namespace sysctls belong to container's owner")
-> added default values for i_uid/i_gid.
+On 3/22/24 09:21, Steve Wahl wrote:
+> Some systems have ACPI tables that don't include everything that needs
+> to be mapped for a successful kexec.  These systems rely on identity
+> maps that include the full gigabyte surrounding any smaller region
+> requested for kexec success.  Without this, they fail to kexec and end
+> up doing a full firmware reboot.
 
-The commit that added the default is 5ec27ec735ba ("fs/proc/proc_sysctl.c:
-fix the default values of i_uid/i_gid on /proc/sys inodes.")
+I'm still missing something here.  Which ACPI tables are we talking
+about?  What don't they map?  I normally don't think of ACPI _tables_ as
+"mapping" things.
 
+It seems like there's a theory that some ACPI table isn't mapped, but
+looking through the discussion so far I don't see a smoking gun.  Let's
+say the kernel has a bug and the kernel was actively not mapping
+something that it should have mapped.  The oversized 1GB mappings made
+the bug harder to hit.  If that's the case, we'll just be adding a hack
+which papers over the bug instead of fixing it properly.
 
-> These however are only used when ctl_table_root->set_ownership is not
-> implemented.
-> But the callbacks themselves could fail to compute i_uid/i_gid and they
-> all need to have the same fallback logic for this case.
-> 
-> This is unnecessary code duplication and prone to errors.
-> For example net_ctl_set_ownership() missed the fallback.
-> 
-> Instead always initialize i_uid/i_gid inside the sysfs core so
-> set_ownership() can safely skip setting them.
-> 
-> Fixes: e79c6a4fc923 ("net: make net namespace sysctls belong to container's owner")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
-> Changes in v2:
-> - Move the fallback logic to the sysctl core
-> - Link to v1: https://lore.kernel.org/r/20240315-sysctl-net-ownership-v1-1-2b465555a292@weissschuh.net
-> ---
->  fs/proc/proc_sysctl.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-> index 37cde0efee57..9e34ab9c21e4 100644
-> --- a/fs/proc/proc_sysctl.c
-> +++ b/fs/proc/proc_sysctl.c
-> @@ -479,12 +479,10 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
->  			make_empty_dir_inode(inode);
->  	}
->  
-> +	inode->i_uid = GLOBAL_ROOT_UID;
-> +	inode->i_gid = GLOBAL_ROOT_GID;
->  	if (root->set_ownership)
->  		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
-> -	else {
-> -		inode->i_uid = GLOBAL_ROOT_UID;
-> -		inode->i_gid = GLOBAL_ROOT_GID;
-> -	}
->  
->  	return inode;
->  }
-> 
-> ---
-> base-commit: ff9c18e435b042596c9d48badac7488e3fa76a55
-> change-id: 20240315-sysctl-net-ownership-bc4e17eaeea6
-> 
-> Best regards,
-> -- 
-> Thomas Weißschuh <linux@weissschuh.net>
+I'm kind of leaning to say that we should just revert d794734c9bbf and
+have the UV folks go back to the nogbpages until we get this properly
+sorted.
+
+> @@ -10,6 +10,7 @@ struct x86_mapping_info {
+>  	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
+>  	unsigned long offset;		 /* ident mapping offset */
+>  	bool direct_gbpages;		 /* PUD level 1GB page support */
+> +	bool direct_gbpages_always;	 /* use 1GB pages exclusively */
+>  	unsigned long kernpg_flag;	 /* kernel pagetable flag override */
+>  };
+
+But let's at least talk about this patch in case we decide to go forward
+with it.  We've really got two things:
+
+1. Can the system use gbpages in the first place?
+2. Do the gbpages need to be exact (UV) or sloppy (everything else)?
+
+I wouldn't refer to this at all as "always" use gbpages.  It's really a
+be-sloppy-and-paper-over-bugs mode.  They might be kernel bugs or
+firmware bugs, but they're bugs _somewhere_ right?
 
