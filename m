@@ -1,124 +1,127 @@
-Return-Path: <stable+bounces-28639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDAB887293
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 19:07:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CED887405
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 20:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EE9DB237AD
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348661C2232D
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 19:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1106062145;
-	Fri, 22 Mar 2024 18:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1667EF09;
+	Fri, 22 Mar 2024 19:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="CSNa1Xb7"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="JQXN5m+Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582CE6168B;
-	Fri, 22 Mar 2024 18:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426C117589;
+	Fri, 22 Mar 2024 19:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711130832; cv=none; b=n3QO15IBXzyg6qEIzhZQSDrW9D240KmIOADYzf3ObFBqM53bezEfYDK0z0aL1g1fI05IVMvx26gEpUcxTaDknPedjgAQmHAnzcQzofsKYloC+Khru4onKUjQUcI/CW5BwSE1n/e9KRFZobeaTB+mjJtUL0hs2uh8HnZMISb3KWE=
+	t=1711137098; cv=none; b=VcHCx07/II5wxoRC7U5G4cWaL5F9tNTwQG0izpSb6JbKyMqGKYZN0YcJCwbuWODwJy7wqloADWz2iJlNFl7FTfwCK/i5bzFngtta+khPLYK/zf9rZQ4xYKkrIrhufh9JihTU3tUNW3KR96arElzeYj/gZKxxDRxnO6effKtFV8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711130832; c=relaxed/simple;
-	bh=9SCemixHaPIQTMmMO0MIZkvrCKGmeAXj1EIQqh1Tlto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KTUw4SXJ0Qe83XNz5MgQQN7SonhOj0MaERbd4mjLIJGIY4YIk9a99LgibRhPHIskVmmn0ojzeoWXp7mPIkVgka+9szT1NmI3P0KhtoEnV0taS4TPNYy0CGN4mjUrajhYwArQorqjpFsGTdmlPUGJw7TNDdcM+aE5TrwOBv7sSWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=CSNa1Xb7; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42MDlD4i003362;
-	Fri, 22 Mar 2024 18:06:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pps0720; bh=noi4Ni8/8f6ogQ9HUQ1rGTOkWtvWPwM/bipZwxEfTLQ=;
- b=CSNa1Xb7/gkVovPY4vFozG4DSg7RR/BrYiC3MWx3mL8sts6pxqa4LbuHlNkW6rmLUgBR
- pB9PWcS9ytvFxC2T2eJ0Mhi48t6uYOo13uM6+v1IR6EzIA+eq9onskR3AxRREbU8w+9g
- nV51nQ2SEVNS5MNu7JNgpHt3fAb4Lawg8C3mzYB8zYyM7jUoLV2pD0Gpbs+JPP17/v+f
- Ap/oNpIOwyapz+WaBQoa8aW0YG0uJap/TktRDeohJWV5zcd2JCh2w8KC6f6+QKEjjS3e
- exu+I1MDPod+ZuiuRSmsIlHc0PSjeAMtPObM967OnliZKi0cB9CUN54oxew64Snqvpj4 VQ== 
-Received: from p1lg14880.it.hpe.com ([16.230.97.201])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3x0wy88msj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Mar 2024 18:06:40 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 3BA3C80020F;
-	Fri, 22 Mar 2024 18:06:39 +0000 (UTC)
-Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 9BFAC80044B;
-	Fri, 22 Mar 2024 18:06:34 +0000 (UTC)
-Date: Fri, 22 Mar 2024 13:06:32 -0500
-From: Steve Wahl <steve.wahl@hpe.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
-        Eric Hagberg <ehagberg@gmail.com>, Simon Horman <horms@verge.net.au>,
-        Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
-        Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Message-ID: <Zf3IqJaGlS9HMdHN@swahl-home.5wahls.com>
-References: <20240322162135.3984233-1-steve.wahl@hpe.com>
- <003f1e83-fd93-4f4f-a316-d3e89e5a23a5@intel.com>
- <87le6ab2bn.fsf@email.froward.int.ebiederm.org>
- <2f8d726a-9800-4068-9c0c-6c4a79d69a85@intel.com>
- <01e64b89-8d30-45c5-9b83-f2e4d81b6344@intel.com>
+	s=arc-20240116; t=1711137098; c=relaxed/simple;
+	bh=72Kdlh+PeCaC0JgXHs4uX5Eocp2863XVaM6CXcHJbm0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pOwddbuJYdgwO0TMi8dEqfmG541d2PxAOKDAVFG2ZgE766IdNjjXveySESVKHK/DsS6FEVdTbytQBDWs28tageOPQe2uof76TY/mnGlY+XR3LP8jcK3QpVmraIFUAxkqnV/xqahH5JQWPoEsh/LmytrL09ZZ0IsXvj60J24YDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=JQXN5m+Q; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1711137092;
+	bh=72Kdlh+PeCaC0JgXHs4uX5Eocp2863XVaM6CXcHJbm0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JQXN5m+QdMw2QCyoPeGUyDWN4k0AuD4kkKnRMVw2J3dfukKHyBg5fCK7KJ1tNcvnl
+	 +YYTt8d4PKeK32kHn8ri0RBbPfvSNY7QIvFyjQb6dA/EvOhg9FKMTc8+8tteoWfcfc
+	 2hYeWAKVqxWNuXukXzYhOOpm3kaD61HL2fYyAVTI=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Fri, 22 Mar 2024 20:51:11 +0100
+Subject: [PATCH v2] fs/proc/proc_sysctl.c: always initialize i_uid/i_gid
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01e64b89-8d30-45c5-9b83-f2e4d81b6344@intel.com>
-X-Proofpoint-ORIG-GUID: _Y6kqVOuCd3PhIivrnYwng4jGkjrEVjb
-X-Proofpoint-GUID: _Y6kqVOuCd3PhIivrnYwng4jGkjrEVjb
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-22_10,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 mlxlogscore=813 spamscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403220130
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240322-sysctl-net-ownership-v2-1-a8b4a3306542@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAC7h/WUC/4WNTQ6CMBCFr0Jm7RhaAaMr7mFYlDraSUxLOlgkp
+ He3cgHf7nt5PxsIRSaBa7VBpMTCwRfQhwqsM/5JyPfCoGvd1CfVoqxi5xd6mjEsnqI4nnC0Dak
+ zGSLTQalOkR782WdvQ2HHMoe47i9J/dw/g0mhQj02XVtk9EX3C7GIWPd2xxKFIef8BQ8u26K9A
+ AAA
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ "Eric W. Biederman" <ebiederm@xmission.com>, 
+ Joel Granados <j.granados@samsung.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luis Chamberlain <mcgrof@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711137092; l=1753;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=72Kdlh+PeCaC0JgXHs4uX5Eocp2863XVaM6CXcHJbm0=;
+ b=AHfmIoxytnUEQFA5MfwfoRoRpJGA6Tspr/zU56SHlqDFrZZns1LRwaTeQ2kMKUFXfoZ2WdVNY
+ 1dXk+g3rws6Des2y4Y15HNbuCrGUHEf/A3U5trLOQcAYOMXSovp96ut
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Fri, Mar 22, 2024 at 10:43:36AM -0700, Dave Hansen wrote:
-> On 3/22/24 10:40, Dave Hansen wrote:
-> >  * Mapping extra memory on UV systems causes halts[1]
-> >  * Mapping extra memory on UV systems breaks kexec (this thread)
-> 
-> Sorry, I said that second one backwards:
-> 
->  * _Not_ mapping extra memory on UV systems breaks kexec
+Commit e79c6a4fc923 ("net: make net namespace sysctls belong to container's owner")
+added default values for i_uid/i_gid.
+These however are only used when ctl_table_root->set_ownership is not
+implemented.
+But the callbacks themselves could fail to compute i_uid/i_gid and they
+all need to have the same fallback logic for this case.
 
-Not quite.  This is * _Not_ mapping extra memory on _non_ UV systems
-breaks kexec.
+This is unnecessary code duplication and prone to errors.
+For example net_ctl_set_ownership() missed the fallback.
 
-Thanks,
+Instead always initialize i_uid/i_gid inside the sysfs core so
+set_ownership() can safely skip setting them.
 
---> Steve
+Fixes: e79c6a4fc923 ("net: make net namespace sysctls belong to container's owner")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Changes in v2:
+- Move the fallback logic to the sysctl core
+- Link to v1: https://lore.kernel.org/r/20240315-sysctl-net-ownership-v1-1-2b465555a292@weissschuh.net
+---
+ fs/proc/proc_sysctl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 37cde0efee57..9e34ab9c21e4 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -479,12 +479,10 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 			make_empty_dir_inode(inode);
+ 	}
+ 
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	if (root->set_ownership)
+ 		root->set_ownership(head, table, &inode->i_uid, &inode->i_gid);
+-	else {
+-		inode->i_uid = GLOBAL_ROOT_UID;
+-		inode->i_gid = GLOBAL_ROOT_GID;
+-	}
+ 
+ 	return inode;
+ }
+
+---
+base-commit: ff9c18e435b042596c9d48badac7488e3fa76a55
+change-id: 20240315-sysctl-net-ownership-bc4e17eaeea6
+
+Best regards,
 -- 
-Steve Wahl, Hewlett Packard Enterprise
+Thomas Weißschuh <linux@weissschuh.net>
+
 
