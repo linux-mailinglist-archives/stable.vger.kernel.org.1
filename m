@@ -1,153 +1,117 @@
-Return-Path: <stable+bounces-28589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEA9886541
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 03:45:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8809A88656F
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079CB1C22CAD
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 02:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D221F247CD
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 03:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F031A38C5;
-	Fri, 22 Mar 2024 02:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D84688;
+	Fri, 22 Mar 2024 03:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kORYnHy1"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PbCDnJUJ"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E236F10A01
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 02:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CA94436
+	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 03:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711075516; cv=none; b=nSXLAPOe/FXp1o+klIRuPd+2fQlIDdYvcRr4/sS2/642C9mDK/veGn3h9ZufrHYTOroqz8BcJ0wB5gZP2Zbd9SflQTvgk+Qc6AaOtlqWIstp9mlyTkhpUAySWPFgnlN0WNLpTkooH6dVi8RzdFYNtELOfYWcD+AyneBxb2rnPVo=
+	t=1711077942; cv=none; b=WD2rIJNg7bD3vb7vJaZ6Pp8oJYP2E6XU6zMbAnX0/NQi+ay3Ee2tKjfDKU03q7CSvwpVGtixWj6IES/DNYyR9XOPftDXoHQx5Et7AQmYL+8I86Expmfg8lOO/H7r2uU0A0f44Z+hoMHE4XNV736KPTHnXjtBXGYjIgWN5pFvknw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711075516; c=relaxed/simple;
-	bh=PqSFyP9+hAJWyMQXtSADpzD7TrIo0vO91UKnoJg9KPE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kywICUc9XjGIYHp7rOll3NBauCDDqG66qNEqhuIS0gSrOzJ9BykRGMKZBIBE2U7OU97i8PgE9p19phf+xzDq+tZZMAxYk6qRSQ9E5S6VGlSVLaV1eX5ik9n57g/Z+u7W/Za01nooVlWTrm5IktIcFNciKaH64oEI+7WNLpA9xNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kORYnHy1; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <8a0a3987-bc38-4069-9005-f8097a4d934e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711075511;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OCTXhEVfRcod0gk2uJbigtkgzM1uKiNOmgoxZlYoNnY=;
-	b=kORYnHy1Szf5D8ha4QPHKPsmDUutFpu7FQa1h4gf/O3FrGTgI5ZqhROoEewX027jJhjfoC
-	9Xod03XHmavPou4crSHL+p3zUxS9w1UoF7ChrXg/NDEYbOVwYivtMI4PVaxg/vVqTS6olf
-	tNzVLSbrM1ZxI1CiPTuDv2U1Ug5CwoE=
-Date: Fri, 22 Mar 2024 10:45:05 +0800
+	s=arc-20240116; t=1711077942; c=relaxed/simple;
+	bh=rA9OLiQVBndIxCqI/RnL35hJtQlSZt3ZhLZoSTUWMn8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rfTsS4tlgYi+JmAsaoO3NCR0PTf1o7lm7aC+BOtW9Qt0lRR7TAi+a96Ijmq27RqeKuHkJv+D0/s5sXmRUQzqPV6afiwFf9q+Ns3v4IQaBqN5uV2uAOmxvjp/kS5G9iTEIcFytz++fCrg8OkMlWgA7glrvHQn+VhdM9OxDjRmLTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PbCDnJUJ; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1de0f92e649so11241215ad.0
+        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 20:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1711077940; x=1711682740; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UcsMqmY7811GML8PC3DqwKOCOYs9+H/dHHUmPBVs1BQ=;
+        b=PbCDnJUJS3zAisOyQ5DDkQvi8p5CkTHVnu9Gh/fnWaI2XVAD48T9DUeZUOgaHOsnQ4
+         lR7exPfB028KXLuhYdmkHudjn7faI+3PtMxTdSsYPCbtFx7/SCevBmI+/n9aywYXItA6
+         X8ZengrEq18IFYYRsyAdmeEXlT9PAmForI40I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711077940; x=1711682740;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UcsMqmY7811GML8PC3DqwKOCOYs9+H/dHHUmPBVs1BQ=;
+        b=iLT6b/dLOFPYkXLP/C6EL69V5OIfsbzxOkXpMaCHsfCT77Gw2bIOEwXsVSX/NLdoKs
+         oEgET9jviut22CvZbMyoDQHKVOrSEsCdioELvX1lKBtKrSijNbwWLZosSVlS1mN5Pi72
+         2Q4YemqRE8i6bpwO/ES8x2swSYQdfzhQPLDSx5mDtC5UXBTLblGf6Z9nwqywfhv/X/S8
+         a/aFviwsN3/AiRYVRAQCiPLhG+dYU4N53RDac+k7ugW6zrWizcfORjonlmUrzFn+RQed
+         HXIm1IE3UginsT9nq283cFZdd2ZNaqTMJ6gKy5T9xFr2JdhMmgL7kgR11Hu2h+ncFMdj
+         PjGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcL7nibPNttSZpObRoK+naByOO16l6RwxrnYrSDOwvv+HOKs4ISfXqXigR+8uZVSVeG3IRY7q/xJ9MU1GGo9COC/zSHEsX
+X-Gm-Message-State: AOJu0YzWQ60zn2oyOuJOQppoLJpUT1KzcPL9EGMJYwZ2VOyf/R/qhvfu
+	sYCHRY6Smty2nhGllxDyUydGp+P8WpR2xy1pv7pHR9HRIj0jZjI1nvx5yjoNwpx+b9ssD9l3e2M
+	=
+X-Google-Smtp-Source: AGHT+IFMNGILCIbGOORMV5AHfyreOQC+oqrzNbTvmrzQsA8QnVKKZXTt1rS+A5kiGLdhP2gdpVAEXw==
+X-Received: by 2002:a05:6a21:31c8:b0:1a3:7327:2323 with SMTP id zb8-20020a056a2131c800b001a373272323mr1123844pzb.45.1711077544553;
+        Thu, 21 Mar 2024 20:19:04 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id n10-20020a170902d0ca00b001dc944299acsm657327pln.217.2024.03.21.20.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Mar 2024 20:19:03 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: linux-kernel@vger.kernel.org,
+	Max Filippov <jcmvbkbc@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Eric Biederman <ebiederm@xmission.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Rich Felker <dalias@libc.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
+Date: Thu, 21 Mar 2024 20:18:48 -0700
+Message-Id: <171107752638.466752.7224681033755371253.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+References: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: zswap: fix writeback shinker GFP_NOIO/GFP_NOFS
- recursion
-Content-Language: en-US
-To: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Chengming Zhou <zhouchengming@bytedance.com>, Nhat Pham <nphamcs@gmail.com>,
- Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240321182532.60000-1-hannes@cmpxchg.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Chengming Zhou <chengming.zhou@linux.dev>
-In-Reply-To: <20240321182532.60000-1-hannes@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 2024/3/22 02:25, Johannes Weiner wrote:
-> Kent forwards this bug report of zswap re-entering the block layer
-> from an IO request allocation and locking up:
+On Wed, 20 Mar 2024 11:26:07 -0700, Max Filippov wrote:
+> In NUMMU kernel the value of linux_binprm::p is the offset inside the
+> temporary program arguments array maintained in separate pages in the
+> linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
+> thus must be adjusted when that array is copied to the user stack.
+> Without that adjustment the value passed by the NOMMU kernel to the ELF
+> program in the AT_EXECFN entry of the aux array doesn't make any sense
+> and it may break programs that try to access memory pointed to by that
+> entry.
 > 
-> [10264.128242] sysrq: Show Blocked State
-> [10264.128268] task:kworker/20:0H   state:D stack:0     pid:143   tgid:143   ppid:2      flags:0x00004000
-> [10264.128271] Workqueue: bcachefs_io btree_write_submit [bcachefs]
-> [10264.128295] Call Trace:
-> [10264.128295]  <TASK>
-> [10264.128297]  __schedule+0x3e6/0x1520
-> [10264.128303]  schedule+0x32/0xd0
-> [10264.128304]  schedule_timeout+0x98/0x160
-> [10264.128308]  io_schedule_timeout+0x50/0x80
-> [10264.128309]  wait_for_completion_io_timeout+0x7f/0x180
-> [10264.128310]  submit_bio_wait+0x78/0xb0
-> [10264.128313]  swap_writepage_bdev_sync+0xf6/0x150
-> [10264.128317]  zswap_writeback_entry+0xf2/0x180
-> [10264.128319]  shrink_memcg_cb+0xe7/0x2f0
-> [10264.128322]  __list_lru_walk_one+0xb9/0x1d0
-> [10264.128325]  list_lru_walk_one+0x5d/0x90
-> [10264.128326]  zswap_shrinker_scan+0xc4/0x130
-> [10264.128327]  do_shrink_slab+0x13f/0x360
-> [10264.128328]  shrink_slab+0x28e/0x3c0
-> [10264.128329]  shrink_one+0x123/0x1b0
-> [10264.128331]  shrink_node+0x97e/0xbc0
-> [10264.128332]  do_try_to_free_pages+0xe7/0x5b0
-> [10264.128333]  try_to_free_pages+0xe1/0x200
-> [10264.128334]  __alloc_pages_slowpath.constprop.0+0x343/0xde0
-> [10264.128337]  __alloc_pages+0x32d/0x350
-> [10264.128338]  allocate_slab+0x400/0x460
-> [10264.128339]  ___slab_alloc+0x40d/0xa40
-> [10264.128345]  kmem_cache_alloc+0x2e7/0x330
-> [10264.128348]  mempool_alloc+0x86/0x1b0
-> [10264.128349]  bio_alloc_bioset+0x200/0x4f0
-> [10264.128352]  bio_alloc_clone+0x23/0x60
-> [10264.128354]  alloc_io+0x26/0xf0 [dm_mod 7e9e6b44df4927f93fb3e4b5c782767396f58382]
-> [10264.128361]  dm_submit_bio+0xb8/0x580 [dm_mod 7e9e6b44df4927f93fb3e4b5c782767396f58382]
-> [10264.128366]  __submit_bio+0xb0/0x170
-> [10264.128367]  submit_bio_noacct_nocheck+0x159/0x370
-> [10264.128368]  bch2_submit_wbio_replicas+0x21c/0x3a0 [bcachefs 85f1b9a7a824f272eff794653a06dde1a94439f2]
-> [10264.128391]  btree_write_submit+0x1cf/0x220 [bcachefs 85f1b9a7a824f272eff794653a06dde1a94439f2]
-> [10264.128406]  process_one_work+0x178/0x350
-> [10264.128408]  worker_thread+0x30f/0x450
-> [10264.128409]  kthread+0xe5/0x120
-> 
-> The zswap shrinker resumes the swap_writepage()s that were intercepted
-> by the zswap store. This will enter the block layer, and may even
-> enter the filesystem depending on the swap backing file.
-> 
-> Make it respect GFP_NOIO and GFP_NOFS.
-> 
-> Link: https://lore.kernel.org/linux-mm/rc4pk2r42oyvjo4dc62z6sovquyllq56i5cdgcaqbd7wy3hfzr@n4nbxido3fme/
-> Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-> Cc: stable@vger.kernel.org	[v6.8]
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> [...]
 
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Applied to for-next/execve, thanks!
 
-Thanks.
+[1/1] exec: fix linux_binprm::exec in transfer_args_to_stack()
+      https://git.kernel.org/kees/c/2aea94ac14d1
 
-> ---
->  mm/zswap.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index b31c977f53e9..535c907345e0 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1303,6 +1303,14 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
->  	if (!zswap_shrinker_enabled || !mem_cgroup_zswap_writeback_enabled(memcg))
->  		return 0;
->  
-> +	/*
-> +	 * The shrinker resumes swap writeback, which will enter block
-> +	 * and may enter fs. XXX: Harmonize with vmscan.c __GFP_FS
-> +	 * rules (may_enter_fs()), which apply on a per-folio basis.
-> +	 */
-> +	if (!gfp_has_io_fs(sc->gfp_mask))
-> +		return 0;
-> +
->  #ifdef CONFIG_MEMCG_KMEM
->  	mem_cgroup_flush_stats(memcg);
->  	nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
+Take care,
+
+-- 
+Kees Cook
+
 
