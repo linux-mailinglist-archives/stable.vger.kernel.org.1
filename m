@@ -1,116 +1,123 @@
-Return-Path: <stable+bounces-28593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823C088679B
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 08:47:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219CF8867C2
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3781B1F22215
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 07:47:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5313A1C237A1
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 08:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C5A12E72;
-	Fri, 22 Mar 2024 07:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD10913ADD;
+	Fri, 22 Mar 2024 08:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wh08Xc6P"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YoD5veMT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F02012E56
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 07:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC2D14A93;
+	Fri, 22 Mar 2024 08:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711093624; cv=none; b=YLS/mWyWtVtkKDDuf0ci7gXgtaRN/iJ1WQrkwuSRXAs7eMHaUd9EZHr7GREIVnfFfLRcBVhi5WdRFI7FA9iKf6cDMdDLSuoVQ8p3G0sDpLGd1R9cX7KPlSCCJV3vpyrP/RWgBcQUEvYuo07ndr+KG2vgfD7LXRe1SpSCtNK7Ny0=
+	t=1711094491; cv=none; b=tURZPSKg7l3wxJY+LqfL0baiCBVC8sly4jM2SErDKTT1k5v7DyuDoPtpdhcI6RkXKNZqKG8mm+jWm3duEb6LV9k9mrggB43JHZtQPmg1RIPhgidhL2NETYuCKYnTe/FcrmsTPLOHzoPKmOaCNxu6P7h/0eFFG/m23rWkGl88O7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711093624; c=relaxed/simple;
-	bh=Yhw03HSz0idnna+yR34xpIkCEZSpOgZ5Sf0IEYITasY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=erQ43gHqADQFYtKj0c+QxL7ab2ESF0LPU27V2MtqSh7h4x1UdgBGTsv1bXanajCj7GlY25cUqB4SNjm0dfo5rNOsdEF1tXpxuVkTOa1J6RQoZiBgLTkjk43WQZ+cNp+yoY5zhcDahf2TUXAuapbM1JqIFuUM91fGwhGVa0RmTeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wh08Xc6P; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-513e10a4083so2046816e87.1
-        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 00:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1711093621; x=1711698421; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lPAa0wf/zbSEHcUANifsWrUgwG+6IErJ7w4tI2+ET3Q=;
-        b=wh08Xc6PxaYRBwEUxMN6mhstqUU0qvYsZweCwbjK/MPBu7dlh+sDFexD82/7CXWarZ
-         h/Kssvh0q2LaVpyjoYvToROOgB+INHmE0buwXzTq2ik+UmzTwaB/ixirseNFvMuLvvv2
-         uJxc9XNVu5N8x+Z0KxGeyBLGvwAcqEQM8sLrRhyDtt0PRVam2LVNhTTyt2f/Yrcpjq88
-         NKjswr/46Z/PojMJRVf+x/fa1VanyWfQmArTuvBjeFqzmbS3K1qI13LdyQmquV67TRdS
-         pnTj9lrXwTv1bBXId4ZGHAsL88IH/F9pLdZq7+GZHguWtbKvc8Pq4Td/+eT+1QCFCSL9
-         fywQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711093621; x=1711698421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lPAa0wf/zbSEHcUANifsWrUgwG+6IErJ7w4tI2+ET3Q=;
-        b=Nx5F9bkGIBFMJ+0L1H+zSYkmzfeUn2Hz/IaGGm1mIqu+zuhZDunDRFA1CB9iJ4AtVL
-         cTr8vX4eh8GDJbnJtLYOemghW0k03U5Up7DZmuWW9P3CeAyJbkMvWAjmJSYU2HXiQODR
-         e00NxnOYwH1ZOqBSHj/DFtH1Wx9A0JG2vi89CFrB4TT/FqZsoWO+88Uex1cPJlxELjqN
-         SLSccxs2OyvbIEPL5a0/h58MZMKr7JjbESPbQEr0woY4/Xo/lz5Q6ZeWn7jcwZqbdlOk
-         JtDC4PObHs95KQjRSysfOr6EMQvMTuMnW6khAbH32mxcfvv1GzxTSD0UqUkOAvg11x50
-         2Evg==
-X-Forwarded-Encrypted: i=1; AJvYcCXieQHpVLEclhCBTJB1FTsLMgxLEMSEUQ1zmaS4TBZtKRzLNpB4CPH0+Ne53OO+5JSiWdOUtdaMOSI/VKl4P0mOTDPrTDgz
-X-Gm-Message-State: AOJu0YyG8iJIHYdFpL65mYaGYc4j5rNvwACtB5+nUwZN+9bUt0UwbL4C
-	A8lIfD0NOOcE8Q/hKH843lfOBGAIW9xUufWvu47vHQuZqyxNC1A6FF2ayWZnkTw2g898W17iGND
-	FvWeA+Uyq05Ty92vnoMgddFRB1slJZ75SNGua+A==
-X-Google-Smtp-Source: AGHT+IGMlPmh6WdmqSWErCqF67TPp8BSJ8Ax+s3wvqQfGc+YdlHQhOmUL3UDDQEgmrblKQ0L8twrhkOtXf4xDSab2lM=
-X-Received: by 2002:a05:6512:747:b0:513:d8e3:fe3d with SMTP id
- c7-20020a056512074700b00513d8e3fe3dmr939101lfs.26.1711093621110; Fri, 22 Mar
- 2024 00:47:01 -0700 (PDT)
+	s=arc-20240116; t=1711094491; c=relaxed/simple;
+	bh=vEgSCRk9M8yaBIAvf6yfuXyNYcAHetrVsnO27cdC9TY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FoY60i485Ve1vzy1LuHFmwAOO7pix4P5XayV6c/AM3Y4zYpoehJ60o2NX0PMziKAUQvXpCNQl+Qkfn3eV1lMTkhyXxHSpQeqcI/MquyKgOfCmEoHeCk9mY9R7H6W2FJmbhIrs66oFYX0AouQOgxtdwn/xkNH4OyJR5mF1EU1Gsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=YoD5veMT; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 42M811wl115639;
+	Fri, 22 Mar 2024 03:01:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1711094461;
+	bh=aonmxCcT8p6x3oL13Kq+gj+L0Jfrg/DuVw41r9ecWIM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=YoD5veMTKY7G6a3rf/H2MQGgD8D3cugDZ6ScvIPSAFEDvTrDy8ljtbcUms1dLvORg
+	 Yy8O74xrSihtKkhd9Yxc7l8VyITrV+mYldQmyDZ9X87t7YgptoB3vMVxqNXIMw8XE4
+	 N2eOkbmxTeHUn/+hY1C34wKVu+U6KzrH1rxMrKPg=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 42M811Xu013055
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 22 Mar 2024 03:01:01 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 22
+ Mar 2024 03:01:00 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 22 Mar 2024 03:01:00 -0500
+Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 42M80xA8070119;
+	Fri, 22 Mar 2024 03:01:00 -0500
+Date: Fri, 22 Mar 2024 13:30:59 +0530
+From: Dhruva Gole <d-gole@ti.com>
+To: Ye Zhang <ye.zhang@rock-chips.com>
+CC: <finley.xiao@rock-chips.com>, <heiko@sntech.de>,
+        <daniel.lezcano@linaro.org>, <rui.zhang@intel.com>,
+        <lukasz.luba@arm.com>, <rafael@kernel.org>, <tao.huang@rock-chips.com>,
+        <linux-rockchip@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] thermal: devfreq_cooling: Fix perf state when
+ calculate dfc res_util
+Message-ID: <20240322080059.xopjb2yr766sk5ob@dhruva>
+References: <20240321102100.2401340-1-ye.zhang@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240320125945.16985-1-brgl@bgdev.pl> <20240322013034.GA4572@rigel>
-In-Reply-To: <20240322013034.GA4572@rigel>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 22 Mar 2024 08:46:50 +0100
-Message-ID: <CAMRc=MfQnZQU_t9-uDPp18vFikz_9eP6LtnWJYG0+KFgWjBcEg@mail.gmail.com>
-Subject: Re: [PATCH] gpio: cdev: sanitize the label before requesting the interrupt
-To: Kent Gibson <warthog618@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alexey Dobriyan <adobriyan@gmail.com>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
-	Stefan Wahren <wahrenst@gmx.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240321102100.2401340-1-ye.zhang@rock-chips.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Fri, Mar 22, 2024 at 2:30=E2=80=AFAM Kent Gibson <warthog618@gmail.com> =
-wrote:
->
-> On Wed, Mar 20, 2024 at 01:59:44PM +0100, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Let's replace all "/" with "-".
-> >
->
-> I actually prefer the ":" you originally suggested, as it more clearly
-> indicates a tier separation, whereas a hyphen is commonly used for
-> multi-word names. And as the hyphen is more commonly used the sanitized
-> name is more likely to conflict.
->
+Hi,
 
-Sounds good, will do.
-> >
-> > +     label =3D make_irq_label(le->label);
-> > +     if (!label)
-> > +             goto out_free_le;
-> > +
->
-> Need to set ret =3D -ENOMEM before the goto, else you will return 0.
->
+On Mar 21, 2024 at 18:21:00 +0800, Ye Zhang wrote:
+> The issue occurs when the devfreq cooling device uses the EM power model
+> and the get_real_power() callback is provided by the driver.
+> 
+> The EM power table is sorted ascending，can't index the table by cooling
+> device state，so convert cooling state to performance state by
+> dfc->max_state - dfc->capped_state.
 
-Eek, right, thanks.
+Thanks for the updated explanation!
 
-Bart
+> 
+> Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+> Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+> Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+> ---
+> v1 -> v2:
+>   - Update the commit message.
+> 
+>  drivers/thermal/devfreq_cooling.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+> index 50dec24e967a..8fd7cf1932cd 100644
+> --- a/drivers/thermal/devfreq_cooling.c
+> +++ b/drivers/thermal/devfreq_cooling.c
+> @@ -214,7 +214,7 @@ static int devfreq_cooling_get_requested_power(struct thermal_cooling_device *cd
+>  
+>  		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+>  		if (!res) {
+> -			state = dfc->capped_state;
+> +			state = dfc->max_state - dfc->capped_state;
+
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+
+
+-- 
+Best regards,
+Dhruva
 
