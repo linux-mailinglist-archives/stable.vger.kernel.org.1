@@ -1,157 +1,149 @@
-Return-Path: <stable+bounces-28591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE76C8865AA
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:53:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700BF8865B5
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 05:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFE51C2274B
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 03:53:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0321C22622
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB063FEF;
-	Fri, 22 Mar 2024 03:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E77363D5;
+	Fri, 22 Mar 2024 04:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LHjtTv93"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bl83Gsid"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79232FBFD
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 03:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456566FA7;
+	Fri, 22 Mar 2024 04:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711079635; cv=none; b=n53ZkWdHh3TuKneIS2iXYBPI5HUHamIul9CdCv1ngRVEd5xb92bk5AenepIz8y+78HhLb5A2mTEHiSmH5AmNE/KSyTDfhFdFi+JUoqNQ8JqTsPagiCyNIys+FgU8lxO6UQOcAndGhpwW1/4OAN4oOnXYq4h016EWfbxxV2qe3Ec=
+	t=1711080613; cv=none; b=g6PdQrRGKrRzE0w3+Q5NsKxf6VV9oR0jnUUVU6FDTAMCFsVH2BWsZ0FNRYQECehG4OlqhokItbR+oEPATNgqI2WynVU+RVf8lsrDdmk+vodgOrme+zMLhEGiRs8ej5l/WmUPq7caOXBdovb0PNYGOUXe4V+Ez7IYIjCd6eiCSGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711079635; c=relaxed/simple;
-	bh=khGq0+ZmZFLMVL0aXsjoH0lpg8FPMH55OjBwEzdFfjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GD5l17ZKb/Na780pW9VVZT066IqfnyhR1ju4aE1ni7/5DTUiXRtyAYjv8LY1AofiBnWs1XQmTB/YGFKqV9+Cp+FzkP0dgjJ1jRo+vmMgacnv+I3bdEt1rpiig749NWJtWjii6IFSQfH6WOcIKAVy/hSgo+AY62OYf+Cm6qxBmfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LHjtTv93; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e6aaa2f02cso1141264b3a.2
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 20:53:53 -0700 (PDT)
+	s=arc-20240116; t=1711080613; c=relaxed/simple;
+	bh=bYqOgOUndYgF/xG+o0Gh2rPPW4U8Lxkdfch8sJiHQwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s3rNgiWAQbinMHg1SxbtFt3HRGQfvhKWdcTKh50btrgxpKFmxma9d/k5uqN4QS7PArOlFKikY1cxrgV+Ie6dBpzo8hyxq905Q5Hk+8rIvv2moJIY1eeUat3Z5qBYw2JJQqwW3Lz7rOtRcvJp6Lxr2aBHyM8Rya0Hjitt4yDc/9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bl83Gsid; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-414783a4a4eso5615165e9.0;
+        Thu, 21 Mar 2024 21:10:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1711079633; x=1711684433; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mDi7jYxaJ9l+KBr/OHl27LOvhUXGML1wd1U7ONJ3R9g=;
-        b=LHjtTv93oL/vuAg7ZDom0MVJd7IIHRmIQbyb5jf4hkds1w3lxhTjsXYkpFWF9bqLwc
-         ayLzblZzahTCmAsAZFhLaKcGAmXWgqPLCA0JFaqkYvWRn380sOI7lfIzLqyo8sz1ClG+
-         TBdvRX7NmIbn3PEGnnWpzKXcHvp7zzKvcYydg=
+        d=gmail.com; s=20230601; t=1711080609; x=1711685409; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+NA3Bmop1gCKtv1Q82P2cRoeegkqQuerIZY6ItFpjOU=;
+        b=bl83GsidPhTfZEYs+NjjD1WSJGDdQYDjctamSAkqQKuha7+pxwTA9Vh8TqEGi7tDDB
+         upXkQGc2wXnD3Ph/e5CMQWpUt9IzVL6/xvcUX4+Uhs1+A84LGS6WiGpI1GXCHeQ84FXV
+         MeGIiYU4YPr2OE5vfpU+dibH066rWWIHXwrqUhFjmTi2rvImlfeGO9fFMJuBKFS6MJXU
+         Q79B2h/8hPLBy0tvAF/oOoCop49VTsXCaQCsvCexopmbFqN6TfjD9pgU7wVXQqCGdtO3
+         OufUf9tJ6DtFqqeyE8fmBbKKXwCVkGr/3FJ64ScMTqyCrx7ctWF2TyugrOYIm+fY2EFy
+         wibQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711079633; x=1711684433;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mDi7jYxaJ9l+KBr/OHl27LOvhUXGML1wd1U7ONJ3R9g=;
-        b=xPDamgOx4XQM8aQ1vTf+PewXSeMdJPyRuizNDSIiMnSleta3JFk4DVuBMrZFoPzGGk
-         q8r+IpgDaXi5MLeqA23oLJySBXVN/cjsj1vksZC5t7jvThQU00OvLEwnGae3n/3pxNUl
-         Xj+lnTzkYehwsgUt462RuWXFLxbQBHdO6iTaFz4eQfkxodWl0OuPocUZ7jD/L/AE8EgX
-         vCh31BGXCEPvX8qteVwySk7tBZmzb/y78yByJyTLsNcRdLxg4CscoeDhx/5gCvlO44w8
-         quT1Auzcu6KdPxUzKKbPZEhWtlplJPlzfCQeLpaCsbtTd12OyzX7W6pVjniuQ4ahI1uZ
-         mmOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnF30e3MpYZTEvFdABrmhBGAzkCe6JEIXFcP49hxktYcyVrb62f1d+e4M6jJIKFv3oTNfGlVNI96tqda0eq60/ZhiyuflL
-X-Gm-Message-State: AOJu0YzY/wh5oXxxUB34sYUAIsEyX224Df6uGP9wtEYV7073blvcOGJx
-	4RHje7OFhTf8ZZgHcn4HDmnKB/2p0zMom/iDSGvw0bmEPDAsccW4o1zQAQb1ISyo25rA8hfbGx4
-	=
-X-Google-Smtp-Source: AGHT+IEPtsYWgPg/WZkii4z9qiUUkjOuefnGilZT+nf3dukXjrJpHFNordVwWK4Jzptl7XhBimQxVw==
-X-Received: by 2002:a05:6a20:9151:b0:1a3:59ac:a626 with SMTP id x17-20020a056a20915100b001a359aca626mr1814803pzc.41.1711079284701;
-        Thu, 21 Mar 2024 20:48:04 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id u2-20020a17090ae00200b0029c693a1e6dsm782334pjy.17.2024.03.21.20.48.04
+        d=1e100.net; s=20230601; t=1711080609; x=1711685409;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+NA3Bmop1gCKtv1Q82P2cRoeegkqQuerIZY6ItFpjOU=;
+        b=K/885Cr/AE4lcgVOH+tBIkDI51zhSBu3y6jBtoiSb+X3koC4/Q4U2HlSQo+v5XGk+T
+         WdYIy9tuniKcCYz0MmmBiParSgZU4/yFV9al0HPpet/uZ+4Mn8NJfkz/6K+V94Kwuq34
+         dUeF/T3EnQRgnbQn5nMGxquMwqcbCsPIxByea7u8JnBOXC7+aNA5HsRbCkfCHqHiQhpN
+         T67UAr5+SKrKLHxliwszCqPNFjfoRuE9dBV3JMfG9T6Vi/3feuXV/86Fq4UP7pgwGVNF
+         hgnIZ+CfWs75sgwlXFrR/jaxw1t7EsSY8f45FlsOe4pcHAI3RP94XWii+6sDQdqRqbL/
+         k/Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCV20pB1pUrPna8G/UBl+oG+P8JB0rXhGSW3PS8l0Bvq/8hnJXZ6vaM5ubQlhqZ0tbfYrhUmsJHf0kGCSZNLkjxVrCLrfFD+OCxgOdh6xqrVDU2fmgs1PGkVP3ecTqbb4v8nBvcB
+X-Gm-Message-State: AOJu0YzZrvPdxzZhdg+s9Q5Msi+pfF3mH38HlkRrLrDuB/5c6p0AJON9
+	eJfrJmKisOubhiCeGFKCHp3FBXAq189Vf4FYbT5PxVumwd/GLUjZ
+X-Google-Smtp-Source: AGHT+IHzryKQyKjUaWMydnS98Rv2D/wqKdSlap+b3Gib6PJz45la8lFONvHSzUUr6Wjek487pAiq1g==
+X-Received: by 2002:a05:600c:35d1:b0:414:fd8:10b2 with SMTP id r17-20020a05600c35d100b004140fd810b2mr632367wmq.8.1711080609255;
+        Thu, 21 Mar 2024 21:10:09 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id dj9-20020a0560000b0900b0033ec812ee0esm1058605wrb.71.2024.03.21.21.10.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 20:48:04 -0700 (PDT)
-Date: Thu, 21 Mar 2024 20:48:03 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Rich Felker <dalias@libc.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
-Message-ID: <202403212041.AEB471AC@keescook>
-References: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
- <202403211004.19F5EE27F@keescook>
- <CAMo8Bf+jbsnok=zy3gT2Z-F8=LCMVVFhAoiJ8sjwaEBSbbJXzw@mail.gmail.com>
+        Thu, 21 Mar 2024 21:10:08 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mtd: limit OTP NVMEM Cell parse to non Nand devices
+Date: Fri, 22 Mar 2024 05:09:49 +0100
+Message-ID: <20240322040951.16680-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMo8Bf+jbsnok=zy3gT2Z-F8=LCMVVFhAoiJ8sjwaEBSbbJXzw@mail.gmail.com>
 
-On Thu, Mar 21, 2024 at 12:52:16PM -0700, Max Filippov wrote:
-> On Thu, Mar 21, 2024 at 10:05 AM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Wed, Mar 20, 2024 at 11:26:07AM -0700, Max Filippov wrote:
-> > > In NUMMU kernel the value of linux_binprm::p is the offset inside the
-> > > temporary program arguments array maintained in separate pages in the
-> > > linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-> > > thus must be adjusted when that array is copied to the user stack.
-> > > Without that adjustment the value passed by the NOMMU kernel to the ELF
-> > > program in the AT_EXECFN entry of the aux array doesn't make any sense
-> > > and it may break programs that try to access memory pointed to by that
-> > > entry.
-> > >
-> > > Adjust linux_binprm::exec before the successful return from the
-> > > transfer_args_to_stack().
-> >
-> > What's the best way to test this? (Is there a qemu setup I can use to
-> > see the before/after of AT_EXECFN?)
-> 
-> I put a readme with the steps to build such system here:
->   http://jcmvbkbc.org/~dumb/tmp/202403211236/README
-> it uses a prebuilt rootfs image and a 6.8 kernel branch with two
-> patches on top of it: one adds a dts and a defconfig and the other
-> is this fix. The rootfs boots successfully with this fix, but panics
-> if this fix is removed.
+MTD OTP logic is very fragile and can be problematic with some specific
+kind of devices.
 
-Ah, perfect! Thanks for this.
+NVMEM across the years had various iteration on how Cells could be
+declared in DT and MTD OTP probably was left behind and
+add_legacy_fixed_of_cells was enabled without thinking of the consequences.
 
-> The easiest way to actually see the AT_EXECFN is, I guess, to
-> do something like that:
-> ---8<---
-> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-> index fefc642541cb..22d34272a570 100644
-> --- a/fs/binfmt_elf_fdpic.c
-> +++ b/fs/binfmt_elf_fdpic.c
-> @@ -659,6 +659,7 @@ static int create_elf_fdpic_tables(struct
-> linux_binprm *bprm,
->        NEW_AUX_ENT(AT_EGID,    (elf_addr_t)
-> from_kgid_munged(cred->user_ns, cred->egid));
->        NEW_AUX_ENT(AT_SECURE,  bprm->secureexec);
->        NEW_AUX_ENT(AT_EXECFN,  bprm->exec);
-> +       pr_info("%s: AT_EXECFN = %#lx\n", __func__, bprm->exec);
-> 
-> #ifdef ARCH_DLINFO
->        nr = 0;
-> ---8<---
+That option enables NVMEM to scan the provided of_node and treat each
+child as a NVMEM Cell, this was to support legacy NVMEM implementation
+and don't cause regression.
 
-Does musl have something like the LD_SHOW_AUXV env variable. With glibc,
-I usually explore auxv like so:
+This is problematic if we have devices like Nand where the OTP is
+triggered by setting a special mode in the flash. In this context real
+partitions declared in the Nand node are registered as OTP Cells and
+this cause probe fail with -EINVAL error.
 
-$ LD_SHOW_AUXV=1 uname -a | grep EXECFN
-AT_EXECFN:            /usr/bin/uname
+This was never notice due to the fact that till now, no Nand supported
+the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
+access for MX30LFxG18AC") this changed and coincidentally this Nand is
+used on an FritzBox 7530 supported on OpenWrt.
 
-> > How did you encounter the problem?
-> 
-> I'm doing xtensa FDPIC port of musl libc and this issue popped up when
-> I began testing it on qemu-system-xtensa with the real linux kernel.
-> Related post to the musl ML:
->   https://www.openwall.com/lists/musl/2024/03/20/2
+Alternative and more robust way to declare OTP Cells are already
+prossible by using the fixed-layout node or by declaring a child node
+with the compatible set to "otp-user" or "otp-factory".
 
-Thanks!
+To fix this and limit any regression with other MTD that makes use of
+declaring OTP as direct child of the dev node, disable
+add_legacy_fixed_of_cells if we detect the MTD type is Nand.
 
+With the following logic, the OTP NVMEM entry is correctly created with
+no Cells and the MTD Nand is correctly probed and partitions are
+correctly exposed.
+
+Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/mtd/mtdcore.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index 5887feb347a4..0de87bc63840 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
+ 	config.name = compatible;
+ 	config.id = NVMEM_DEVID_AUTO;
+ 	config.owner = THIS_MODULE;
+-	config.add_legacy_fixed_of_cells = true;
++	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
+ 	config.type = NVMEM_TYPE_OTP;
+ 	config.root_only = true;
+ 	config.ignore_wp = true;
 -- 
-Kees Cook
+2.43.0
+
 
