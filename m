@@ -1,197 +1,96 @@
-Return-Path: <stable+bounces-28595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF705886835
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:30:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B25E886887
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 09:51:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11F11C238F1
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 08:30:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE6241F21541
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 08:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16872C80;
-	Fri, 22 Mar 2024 08:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0S3wt8em";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="93bv81oG";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tvbeTPTp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pA+W3Tr9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DC619452;
+	Fri, 22 Mar 2024 08:50:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0570EC8E0;
-	Fri, 22 Mar 2024 08:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA3F224D8;
+	Fri, 22 Mar 2024 08:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711096212; cv=none; b=AEKSF4JJpzMmZORE6U+TPQ/8E7t1eUa9pEV8VRljruLghn7lje7fZlFEIXkJUzDH0FNw6rpeij8yJnelJnyCXEIVpp5kTvW7PgXcBowe6Xfbi02wEPQJ3sAzwzVoJAzy7gvcHa3lcF7pH0ST9kxKqkTNAo/njVeVLrkrqLG1MMY=
+	t=1711097426; cv=none; b=HWLtSs5n0/N/5vpw/nS7XV9zAeRnVMk9c1H/cnKK7DROrVAkKz5VuvTgiuVC2ZLzxBsEC/mgH/g3WXWJkVLGnuCFpQAibsmh85X0BJnrIIKpn6gB9gKT6s5nWA74gbSvg085mbqVSJr4Zj56+kkhJMPc72RL/6KHj9R8p6V+eBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711096212; c=relaxed/simple;
-	bh=b4zjUk3C+VUBTpa95HKc5b19oE/Zc1fJS2jORLXnSj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dPgSbgdpm1g+exok3WAHGVlbNyCAUwW4dla3jF84H3vPGFV/CJgx4eBrf7sDBFpNy6opVRG/YRO0oYkfG+Z1SlvK9R/Qb3xGjsJklJJbZ15GUrxCkBxOnEYLEhPfFDY3ka9vQPto3KMgHKOvjO69LhQy47H6yz8iq4TU9PNjArU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0S3wt8em; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=93bv81oG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tvbeTPTp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pA+W3Tr9; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 016C05FB69;
-	Fri, 22 Mar 2024 08:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1711096209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=GiUnFDgqNov/IFO4HBVqrimv4mN9kMkaWe5OzF0aaTM=;
-	b=0S3wt8emF8dEf6VbwlC6douPH6aoO61LLFBotox24XrUGgM/+bVd1wEv1EFUfwviT9YOue
-	P9FvKp7r+67dk0v64Z5hrBhFBrbxUT3dozs0ICstPdqVS2zdRsUpiNrZDEQL1YR1XjoVQZ
-	VdemcEAEW59FcykXPjD3NhHFr6oEG40=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1711096209;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=GiUnFDgqNov/IFO4HBVqrimv4mN9kMkaWe5OzF0aaTM=;
-	b=93bv81oGXgeFpfYT2QV3ndduFHv9e0J+thCMwHu8V6bbuYx5etsO3MaL8iJNXkRELwvYSI
-	cJQ7y7dC/Lehp8DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1711096208; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=GiUnFDgqNov/IFO4HBVqrimv4mN9kMkaWe5OzF0aaTM=;
-	b=tvbeTPTpgWOihB4o/wGhNvE7uf+UuJv3t7HY6c4CIYBG1iWqgRxGPz64DxeS/RK/cJi/og
-	OMDJXlcHECCT68gNupmB5BFZPyp2QtZeMa0IyxKPsz3TilDoOcdna9JWX6jFi20AQxEInu
-	0yFxxUpBN/GnXoBe6mzTAG/azfD9mKA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1711096208;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=GiUnFDgqNov/IFO4HBVqrimv4mN9kMkaWe5OzF0aaTM=;
-	b=pA+W3Tr9SQdht+oJcMsv5gqG1JRpN9LzwA9sYFhKp/MVZTZ0dml3PnpBJSkIU4I72AgZx2
-	Xw9CnUsekUhPezCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A4CAC132FF;
-	Fri, 22 Mar 2024 08:30:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ciPqJo9B/WW0MgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 22 Mar 2024 08:30:07 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: nbowler@draconx.ca,
-	deller@gmx.de,
-	javierm@redhat.com
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	stable@vger.kernel.org
-Subject: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
-Date: Fri, 22 Mar 2024 09:29:46 +0100
-Message-ID: <20240322083005.24269-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1711097426; c=relaxed/simple;
+	bh=8ba/XlgbFs7Ype4sixeB3Mh2Ts60t6pN/+s3RLXasJc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lKgj3ec9DrNAMJSjeJNPPrD+RdyGHf6d+llpA05JpjdZ333fyqgSsnyFe6lyDQbnAuKedekGGnACpPu3AwIcmbsJNDCEcLYd3nbcGRPcdiGna2Ti8oY2/IoNyjNaYYdHnsAZDl3JWMrqFiuMpTIrch5GmNcqMnQgeKtJaq47xjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EFA0E1007;
+	Fri, 22 Mar 2024 01:50:50 -0700 (PDT)
+Received: from [10.57.71.57] (unknown [10.57.71.57])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5E183F64C;
+	Fri, 22 Mar 2024 01:50:14 -0700 (PDT)
+Message-ID: <c7b2cb6f-3e14-45c3-9e22-11c0a9422bce@arm.com>
+Date: Fri, 22 Mar 2024 08:50:06 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] thermal: devfreq_cooling: Fix perf state when
+ calculate dfc res_util
+Content-Language: en-US
+To: Ye Zhang <ye.zhang@rock-chips.com>
+Cc: tao.huang@rock-chips.com, heiko@sntech.de, rafael@kernel.org,
+ daniel.lezcano@linaro.org, finley.xiao@rock-chips.com,
+ linux-rockchip@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, rui.zhang@intel.com
+References: <20240321102100.2401340-1-ye.zhang@rock-chips.com>
+From: Lukasz Luba <lukasz.luba@arm.com>
+In-Reply-To: <20240321102100.2401340-1-ye.zhang@rock-chips.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: 6.57
-X-Spam-Flag: NO
-X-Spamd-Bar: ++++++
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tvbeTPTp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pA+W3Tr9
-X-Spamd-Result: default: False [6.57 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 FREEMAIL_TO(0.00)[draconx.ca,gmx.de,redhat.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-0.14)[67.89%];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[renesas];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 NEURAL_SPAM_SHORT(1.52)[0.505];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[12];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[draconx.ca:email,ravnborg.org:email,arndb.de:email,ffwll.ch:email,glider.be:email,suse.de:dkim,suse.de:email,gmx.de:email,lists.freedesktop.org:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Level: ******
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 016C05FB69
 
-Framebuffer I/O on the Sparc Sbus requires read/write helpers for
-I/O memory. Select FB_IOMEM_FOPS accordingly.
 
-Reported-by: Nick Bowler <nbowler@draconx.ca>
-Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.8+
----
- drivers/video/fbdev/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index a61b8260b8f36..edced74f0eeaf 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -494,6 +494,7 @@ config FB_SBUS_HELPERS
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 
- config FB_BW2
- 	bool "BWtwo support"
-@@ -514,6 +515,7 @@ config FB_CG6
- 	depends on (FB = y) && (SPARC && FB_SBUS)
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	help
- 	  This is the frame buffer device driver for the CGsix (GX, TurboGX)
- 	  frame buffer.
-@@ -523,6 +525,7 @@ config FB_FFB
- 	depends on FB_SBUS && SPARC64
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	help
- 	  This is the frame buffer device driver for the Creator, Creator3D,
- 	  and Elite3D graphics boards.
--- 
-2.44.0
+On 3/21/24 10:21, Ye Zhang wrote:
+> The issue occurs when the devfreq cooling device uses the EM power model
+> and the get_real_power() callback is provided by the driver.
+> 
+> The EM power table is sorted ascending，can't index the table by cooling
+> device state，so convert cooling state to performance state by
+> dfc->max_state - dfc->capped_state.
+> 
+> Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+> Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+> Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+> ---
+> v1 -> v2:
+>    - Update the commit message.
+> 
+>   drivers/thermal/devfreq_cooling.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+> index 50dec24e967a..8fd7cf1932cd 100644
+> --- a/drivers/thermal/devfreq_cooling.c
+> +++ b/drivers/thermal/devfreq_cooling.c
+> @@ -214,7 +214,7 @@ static int devfreq_cooling_get_requested_power(struct thermal_cooling_device *cd
+>   
+>   		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+>   		if (!res) {
+> -			state = dfc->capped_state;
+> +			state = dfc->max_state - dfc->capped_state;
+>   
+>   			/* Convert EM power into milli-Watts first */
+>   			rcu_read_lock();
 
+Thanks, LGTM
+
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 
