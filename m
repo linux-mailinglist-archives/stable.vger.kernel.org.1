@@ -1,85 +1,153 @@
-Return-Path: <stable+bounces-28629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FB1887106
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:40:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64998871BC
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFDCF28525D
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 16:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2731F226FF
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904785D729;
-	Fri, 22 Mar 2024 16:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E65E091;
+	Fri, 22 Mar 2024 17:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="RPFXo4jk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrKfRzgJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AB95C90A
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 16:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761B460258;
+	Fri, 22 Mar 2024 17:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711125614; cv=none; b=LMLBAhO8z4F9KiSckWCgYEAwWzXdpnIDDBKikC/xWtpCh0IF1dg5Sk5F67mET0Rxx4kG28XDo37tXaxNWNbkIAobELCVsvnO8OImTMmIlGucz5X5XuNtsjvdNjOGkE867At0E+dFXsZ/fnV1cxyPHLqF3whjbIb+AXlIpSd+WKc=
+	t=1711127412; cv=none; b=GllXG1fR2BsQGCiBUreZs98HznLVP6PlC5zDXVks6PrYG1OA3EKgQjdierD7+h2ted7igx1d423tEj2ff3nwww0Ld3XTfAmYa0Qg96RGdLGH+xaB6D7UH03C+4IIShRbQleB5+ADVVDWraQ4v/WzbSGew17wDjR2p+imkDP1mMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711125614; c=relaxed/simple;
-	bh=3OCd/PG1riagSwvp+0YZBdv6h6xzFkRZdcL7HBpMmjY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pyUoaaY6DhsY11DWHACayHk2Or3wr/rLmDMcHS4zrxOsX6n1nmi51dBNZ9wHm7oxeL26lzM/gSGQO4q+xjK15bQ7l2MXzLv9pFm5cduFWCGnUTEHUl1NQbqfVJdtH9SZCygyhB6Qu5i5Czw4gEL3SP5z3juVqZMgQ4bor10O1BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=RPFXo4jk; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1711127412; c=relaxed/simple;
+	bh=BGf6m+3FUmEtjcPIdIXP/XbcrnNSXJyHQ7Wp/B64z6o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kmy+tvn97LdN56loYzAHc5TA3lGGaJYSgOeA8YIqcLZKDX7Td5h7b7u1jCydMBU8B1JKE9hsJi6NDN358RqSe5h8VZ22G74Qk3ZbRuQzqqsJUKzyrLwBO5kKTdGh8kQsvnocNt1SDvZL1ZFvHbWWy3hgojfVVfPvy1vfOvgcle4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WrKfRzgJ; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5a46b28a77dso1295841eaf.1;
+        Fri, 22 Mar 2024 10:10:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1711125613; x=1742661613;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=3OCd/PG1riagSwvp+0YZBdv6h6xzFkRZdcL7HBpMmjY=;
-  b=RPFXo4jkdevrPK7uL4H14xjWVFUkxTo5bKATL7n+aTsGbnDMyHWoTAj9
-   vI3Cr0HUoGVyUIvhClK5VSqlvcm6AWknNNIrNqJ7Pbwsp+QOhzqUp00ZY
-   BViHl7gZUH8mUCrMJWF9t2maAxx8CaeduHVoywZ+hh0iWbJIJ2bAIE7dQ
-   c=;
-X-IronPort-AV: E=Sophos;i="6.07,146,1708387200"; 
-   d="scan'208";a="395328454"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 16:40:10 +0000
-Received: from EX19MTAUEC002.ant.amazon.com [10.0.29.78:4550]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.1.129:2525] with esmtp (Farcaster)
- id 0702d3c1-33a6-4e66-ab4b-6006588b1c58; Fri, 22 Mar 2024 16:40:09 +0000 (UTC)
-X-Farcaster-Flow-ID: 0702d3c1-33a6-4e66-ab4b-6006588b1c58
-Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 22 Mar 2024 16:40:09 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
- by mail-relay.amazon.com (10.252.135.35) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Fri, 22 Mar 2024 16:40:09 +0000
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-	id 65A9A8F5; Fri, 22 Mar 2024 17:40:09 +0100 (CET)
-From: Mahmoud Adam <mngyadam@amazon.com>
-To: <gregkh@linuxfoundation.org>
-CC: <sashal@kernel.org>, <stable@vger.kernel.org>
-Subject: backport 'regmap: Add missing map->bus check'
-Date: Fri, 22 Mar 2024 17:40:09 +0100
-Message-ID: <lrkyq7chufceu.fsf@dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com>
+        d=gmail.com; s=20230601; t=1711127409; x=1711732209; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0WK7ESWIrsT1mdAzBwJKIthGxoZjuPKZEr2RCxckPCI=;
+        b=WrKfRzgJYbykiD2JH9TbDiXK4BGOdbyHpDGHiWp7TsXwWqx4B4hAeytyqhuxPGT1bZ
+         yCH5gs2vqSfktEvzQHvhV2BIBPyeB9CjhPhdwhFYcCtquH1geCk+y/pdSXIAFI7Kgepp
+         +3C0AOoL+7Wtg8CNQ+b5/0Ky6vLxehFZgpyUkVeRPjyE7hzI/TSgW/mX/GmnxX0F9VdV
+         /sgs4KiBMnllewH/JjpqchypWR5PqoSRJDU4Q9/XTfw8VQyyFolUUREuS+W2zKOG1xtk
+         PC3J+ihUEQa47AdRqmKYfXlDIUKzJ/MPnhytGBJak1scIrThb0bfuQA5Cg22xcPlASET
+         H1Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711127409; x=1711732209;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0WK7ESWIrsT1mdAzBwJKIthGxoZjuPKZEr2RCxckPCI=;
+        b=xUuIcybZzXWVGilKXbbkdCHDPEofECQxj+RwrkszgAGP2Jj3nSCg0NvbnRSr2bPji7
+         +0aFZAWSgz2NgE/gt73RHn03V4AS1OBd7/CGdrzB2/u7CaNYN1rAG6t3Lt+Fp3Ii8LHb
+         izfljcA3+72wFyXKg8TPo8gIg2mlqPPxsHo8ZO6iSsskYufVcU0BRF3rPP3faKzjq0Dp
+         m2E9CDw/xNInn+6ziQXZQ/Pt37ndb499s1xuCSR9octEe6j6kTdu9cD6FWRTLRcKBj8m
+         HMLtBJ+JaJgIAMie6r9lQDGJQyRTYgZ9a+El1DAybdTuA0vEHGEiLePpZinmAB2ez+9K
+         tKgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVO48joyLhZ1FhrKMux/NfTiaAj2gQhwhABNK3qHbgr0Ycny9wyllda78ve6Sdz86vkNTJnJ+eDTQFDUqULlMwtDEqgrIq1BpqLKd2pGcdQqJU8Z13WJAsZEg5dFHyBHE0cBfrO
+X-Gm-Message-State: AOJu0YzLUf1QpZOHNPXTYktxAr+1r3AnztzWLNuEQY6J4b3Jsqy7KGr9
+	VYG2oGeEcFEAVIP6XwNeOxYM2UvFIIfsbNDXVoNf8SWf/pcw1hFq8zI6T5VIbtfY9JlK0dL94XM
+	dxPGOPeWBkb7qsldJYLGp0P5GmRA=
+X-Google-Smtp-Source: AGHT+IHe5lm8Oz3ykhLJ25PlsDeMFHiGkFXpFUiBjYMSOx4eCClJWATfPKU5nxuUmZxlDIAUFAQ1bN0dwuYpPYgZXJ8=
+X-Received: by 2002:a05:6808:198d:b0:3c3:89a8:8de9 with SMTP id
+ bj13-20020a056808198d00b003c389a88de9mr337900oib.51.1711127409375; Fri, 22
+ Mar 2024 10:10:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240321182532.60000-1-hannes@cmpxchg.org>
+In-Reply-To: <20240321182532.60000-1-hannes@cmpxchg.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 22 Mar 2024 10:09:56 -0700
+Message-ID: <CAKEwX=Pnr1HZipHTqnvMruh21uO7UXDP67nAZ5s_WrwgWkNpzg@mail.gmail.com>
+Subject: Re: [PATCH] mm: zswap: fix writeback shinker GFP_NOIO/GFP_NOFS recursion
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Chengming Zhou <zhouchengming@bytedance.com>, Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Mar 21, 2024 at 11:25=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.or=
+g> wrote:
+>
+> Kent forwards this bug report of zswap re-entering the block layer
+> from an IO request allocation and locking up:
+>
+> [10264.128242] sysrq: Show Blocked State
+> [10264.128268] task:kworker/20:0H   state:D stack:0     pid:143   tgid:14=
+3   ppid:2      flags:0x00004000
+> [10264.128271] Workqueue: bcachefs_io btree_write_submit [bcachefs]
+> [10264.128295] Call Trace:
+> [10264.128295]  <TASK>
+> [10264.128297]  __schedule+0x3e6/0x1520
+> [10264.128303]  schedule+0x32/0xd0
+> [10264.128304]  schedule_timeout+0x98/0x160
+> [10264.128308]  io_schedule_timeout+0x50/0x80
+> [10264.128309]  wait_for_completion_io_timeout+0x7f/0x180
+> [10264.128310]  submit_bio_wait+0x78/0xb0
+> [10264.128313]  swap_writepage_bdev_sync+0xf6/0x150
+> [10264.128317]  zswap_writeback_entry+0xf2/0x180
+> [10264.128319]  shrink_memcg_cb+0xe7/0x2f0
+> [10264.128322]  __list_lru_walk_one+0xb9/0x1d0
+> [10264.128325]  list_lru_walk_one+0x5d/0x90
+> [10264.128326]  zswap_shrinker_scan+0xc4/0x130
+> [10264.128327]  do_shrink_slab+0x13f/0x360
+> [10264.128328]  shrink_slab+0x28e/0x3c0
+> [10264.128329]  shrink_one+0x123/0x1b0
+> [10264.128331]  shrink_node+0x97e/0xbc0
+> [10264.128332]  do_try_to_free_pages+0xe7/0x5b0
+> [10264.128333]  try_to_free_pages+0xe1/0x200
+> [10264.128334]  __alloc_pages_slowpath.constprop.0+0x343/0xde0
+> [10264.128337]  __alloc_pages+0x32d/0x350
+> [10264.128338]  allocate_slab+0x400/0x460
+> [10264.128339]  ___slab_alloc+0x40d/0xa40
+> [10264.128345]  kmem_cache_alloc+0x2e7/0x330
+> [10264.128348]  mempool_alloc+0x86/0x1b0
+> [10264.128349]  bio_alloc_bioset+0x200/0x4f0
+> [10264.128352]  bio_alloc_clone+0x23/0x60
+> [10264.128354]  alloc_io+0x26/0xf0 [dm_mod 7e9e6b44df4927f93fb3e4b5c78276=
+7396f58382]
+> [10264.128361]  dm_submit_bio+0xb8/0x580 [dm_mod 7e9e6b44df4927f93fb3e4b5=
+c782767396f58382]
+> [10264.128366]  __submit_bio+0xb0/0x170
+> [10264.128367]  submit_bio_noacct_nocheck+0x159/0x370
+> [10264.128368]  bch2_submit_wbio_replicas+0x21c/0x3a0 [bcachefs 85f1b9a7a=
+824f272eff794653a06dde1a94439f2]
+> [10264.128391]  btree_write_submit+0x1cf/0x220 [bcachefs 85f1b9a7a824f272=
+eff794653a06dde1a94439f2]
+> [10264.128406]  process_one_work+0x178/0x350
+> [10264.128408]  worker_thread+0x30f/0x450
+> [10264.128409]  kthread+0xe5/0x120
+>
+> The zswap shrinker resumes the swap_writepage()s that were intercepted
+> by the zswap store. This will enter the block layer, and may even
+> enter the filesystem depending on the swap backing file.
+>
+> Make it respect GFP_NOIO and GFP_NOFS.
+>
+> Link: https://lore.kernel.org/linux-mm/rc4pk2r42oyvjo4dc62z6sovquyllq56i5=
+cdgcaqbd7wy3hfzr@n4nbxido3fme/
+> Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+> Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+> Cc: stable@vger.kernel.org      [v6.8]
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Hi,
-
- This commit needs to be backported to 5.4, 5.10, 5.15, it fixes
-possible null deference from the following commit 'regmap: Add bulk
-read/write callbacks into regmap_config' which was backported to these
-kernels in the latest released versions (v5.15.152, v5.10.213, v5.4.272).
-
-Commit 5c422f0b970d287efa864b8390a02face404db5d upstream.
-
-Thanks,
-MNAdam
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
