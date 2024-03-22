@@ -1,117 +1,157 @@
-Return-Path: <stable+bounces-28590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8809A88656F
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:25:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE76C8865AA
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 04:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D221F247CD
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 03:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFE51C2274B
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 03:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D84688;
-	Fri, 22 Mar 2024 03:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB063FEF;
+	Fri, 22 Mar 2024 03:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PbCDnJUJ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LHjtTv93"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CA94436
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 03:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79232FBFD
+	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 03:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711077942; cv=none; b=WD2rIJNg7bD3vb7vJaZ6Pp8oJYP2E6XU6zMbAnX0/NQi+ay3Ee2tKjfDKU03q7CSvwpVGtixWj6IES/DNYyR9XOPftDXoHQx5Et7AQmYL+8I86Expmfg8lOO/H7r2uU0A0f44Z+hoMHE4XNV736KPTHnXjtBXGYjIgWN5pFvknw=
+	t=1711079635; cv=none; b=n53ZkWdHh3TuKneIS2iXYBPI5HUHamIul9CdCv1ngRVEd5xb92bk5AenepIz8y+78HhLb5A2mTEHiSmH5AmNE/KSyTDfhFdFi+JUoqNQ8JqTsPagiCyNIys+FgU8lxO6UQOcAndGhpwW1/4OAN4oOnXYq4h016EWfbxxV2qe3Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711077942; c=relaxed/simple;
-	bh=rA9OLiQVBndIxCqI/RnL35hJtQlSZt3ZhLZoSTUWMn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rfTsS4tlgYi+JmAsaoO3NCR0PTf1o7lm7aC+BOtW9Qt0lRR7TAi+a96Ijmq27RqeKuHkJv+D0/s5sXmRUQzqPV6afiwFf9q+Ns3v4IQaBqN5uV2uAOmxvjp/kS5G9iTEIcFytz++fCrg8OkMlWgA7glrvHQn+VhdM9OxDjRmLTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PbCDnJUJ; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1711079635; c=relaxed/simple;
+	bh=khGq0+ZmZFLMVL0aXsjoH0lpg8FPMH55OjBwEzdFfjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GD5l17ZKb/Na780pW9VVZT066IqfnyhR1ju4aE1ni7/5DTUiXRtyAYjv8LY1AofiBnWs1XQmTB/YGFKqV9+Cp+FzkP0dgjJ1jRo+vmMgacnv+I3bdEt1rpiig749NWJtWjii6IFSQfH6WOcIKAVy/hSgo+AY62OYf+Cm6qxBmfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LHjtTv93; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1de0f92e649so11241215ad.0
-        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 20:25:40 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e6aaa2f02cso1141264b3a.2
+        for <stable@vger.kernel.org>; Thu, 21 Mar 2024 20:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1711077940; x=1711682740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UcsMqmY7811GML8PC3DqwKOCOYs9+H/dHHUmPBVs1BQ=;
-        b=PbCDnJUJS3zAisOyQ5DDkQvi8p5CkTHVnu9Gh/fnWaI2XVAD48T9DUeZUOgaHOsnQ4
-         lR7exPfB028KXLuhYdmkHudjn7faI+3PtMxTdSsYPCbtFx7/SCevBmI+/n9aywYXItA6
-         X8ZengrEq18IFYYRsyAdmeEXlT9PAmForI40I=
+        d=chromium.org; s=google; t=1711079633; x=1711684433; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mDi7jYxaJ9l+KBr/OHl27LOvhUXGML1wd1U7ONJ3R9g=;
+        b=LHjtTv93oL/vuAg7ZDom0MVJd7IIHRmIQbyb5jf4hkds1w3lxhTjsXYkpFWF9bqLwc
+         ayLzblZzahTCmAsAZFhLaKcGAmXWgqPLCA0JFaqkYvWRn380sOI7lfIzLqyo8sz1ClG+
+         TBdvRX7NmIbn3PEGnnWpzKXcHvp7zzKvcYydg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711077940; x=1711682740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UcsMqmY7811GML8PC3DqwKOCOYs9+H/dHHUmPBVs1BQ=;
-        b=iLT6b/dLOFPYkXLP/C6EL69V5OIfsbzxOkXpMaCHsfCT77Gw2bIOEwXsVSX/NLdoKs
-         oEgET9jviut22CvZbMyoDQHKVOrSEsCdioELvX1lKBtKrSijNbwWLZosSVlS1mN5Pi72
-         2Q4YemqRE8i6bpwO/ES8x2swSYQdfzhQPLDSx5mDtC5UXBTLblGf6Z9nwqywfhv/X/S8
-         a/aFviwsN3/AiRYVRAQCiPLhG+dYU4N53RDac+k7ugW6zrWizcfORjonlmUrzFn+RQed
-         HXIm1IE3UginsT9nq283cFZdd2ZNaqTMJ6gKy5T9xFr2JdhMmgL7kgR11Hu2h+ncFMdj
-         PjGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcL7nibPNttSZpObRoK+naByOO16l6RwxrnYrSDOwvv+HOKs4ISfXqXigR+8uZVSVeG3IRY7q/xJ9MU1GGo9COC/zSHEsX
-X-Gm-Message-State: AOJu0YzWQ60zn2oyOuJOQppoLJpUT1KzcPL9EGMJYwZ2VOyf/R/qhvfu
-	sYCHRY6Smty2nhGllxDyUydGp+P8WpR2xy1pv7pHR9HRIj0jZjI1nvx5yjoNwpx+b9ssD9l3e2M
+        d=1e100.net; s=20230601; t=1711079633; x=1711684433;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mDi7jYxaJ9l+KBr/OHl27LOvhUXGML1wd1U7ONJ3R9g=;
+        b=xPDamgOx4XQM8aQ1vTf+PewXSeMdJPyRuizNDSIiMnSleta3JFk4DVuBMrZFoPzGGk
+         q8r+IpgDaXi5MLeqA23oLJySBXVN/cjsj1vksZC5t7jvThQU00OvLEwnGae3n/3pxNUl
+         Xj+lnTzkYehwsgUt462RuWXFLxbQBHdO6iTaFz4eQfkxodWl0OuPocUZ7jD/L/AE8EgX
+         vCh31BGXCEPvX8qteVwySk7tBZmzb/y78yByJyTLsNcRdLxg4CscoeDhx/5gCvlO44w8
+         quT1Auzcu6KdPxUzKKbPZEhWtlplJPlzfCQeLpaCsbtTd12OyzX7W6pVjniuQ4ahI1uZ
+         mmOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnF30e3MpYZTEvFdABrmhBGAzkCe6JEIXFcP49hxktYcyVrb62f1d+e4M6jJIKFv3oTNfGlVNI96tqda0eq60/ZhiyuflL
+X-Gm-Message-State: AOJu0YzY/wh5oXxxUB34sYUAIsEyX224Df6uGP9wtEYV7073blvcOGJx
+	4RHje7OFhTf8ZZgHcn4HDmnKB/2p0zMom/iDSGvw0bmEPDAsccW4o1zQAQb1ISyo25rA8hfbGx4
 	=
-X-Google-Smtp-Source: AGHT+IFMNGILCIbGOORMV5AHfyreOQC+oqrzNbTvmrzQsA8QnVKKZXTt1rS+A5kiGLdhP2gdpVAEXw==
-X-Received: by 2002:a05:6a21:31c8:b0:1a3:7327:2323 with SMTP id zb8-20020a056a2131c800b001a373272323mr1123844pzb.45.1711077544553;
-        Thu, 21 Mar 2024 20:19:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPtsYWgPg/WZkii4z9qiUUkjOuefnGilZT+nf3dukXjrJpHFNordVwWK4Jzptl7XhBimQxVw==
+X-Received: by 2002:a05:6a20:9151:b0:1a3:59ac:a626 with SMTP id x17-20020a056a20915100b001a359aca626mr1814803pzc.41.1711079284701;
+        Thu, 21 Mar 2024 20:48:04 -0700 (PDT)
 Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id n10-20020a170902d0ca00b001dc944299acsm657327pln.217.2024.03.21.20.19.02
+        by smtp.gmail.com with ESMTPSA id u2-20020a17090ae00200b0029c693a1e6dsm782334pjy.17.2024.03.21.20.48.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 20:19:03 -0700 (PDT)
+        Thu, 21 Mar 2024 20:48:04 -0700 (PDT)
+Date: Thu, 21 Mar 2024 20:48:03 -0700
 From: Kees Cook <keescook@chromium.org>
-To: linux-kernel@vger.kernel.org,
-	Max Filippov <jcmvbkbc@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>,
-	linux-mm@kvack.org,
+To: Max Filippov <jcmvbkbc@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
 	Eric Biederman <ebiederm@xmission.com>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Rich Felker <dalias@libc.org>,
-	stable@vger.kernel.org
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Rich Felker <dalias@libc.org>, stable@vger.kernel.org
 Subject: Re: [PATCH] exec: fix linux_binprm::exec in transfer_args_to_stack()
-Date: Thu, 21 Mar 2024 20:18:48 -0700
-Message-Id: <171107752638.466752.7224681033755371253.b4-ty@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+Message-ID: <202403212041.AEB471AC@keescook>
 References: <20240320182607.1472887-1-jcmvbkbc@gmail.com>
+ <202403211004.19F5EE27F@keescook>
+ <CAMo8Bf+jbsnok=zy3gT2Z-F8=LCMVVFhAoiJ8sjwaEBSbbJXzw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMo8Bf+jbsnok=zy3gT2Z-F8=LCMVVFhAoiJ8sjwaEBSbbJXzw@mail.gmail.com>
 
-On Wed, 20 Mar 2024 11:26:07 -0700, Max Filippov wrote:
-> In NUMMU kernel the value of linux_binprm::p is the offset inside the
-> temporary program arguments array maintained in separate pages in the
-> linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
-> thus must be adjusted when that array is copied to the user stack.
-> Without that adjustment the value passed by the NOMMU kernel to the ELF
-> program in the AT_EXECFN entry of the aux array doesn't make any sense
-> and it may break programs that try to access memory pointed to by that
-> entry.
+On Thu, Mar 21, 2024 at 12:52:16PM -0700, Max Filippov wrote:
+> On Thu, Mar 21, 2024 at 10:05 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > On Wed, Mar 20, 2024 at 11:26:07AM -0700, Max Filippov wrote:
+> > > In NUMMU kernel the value of linux_binprm::p is the offset inside the
+> > > temporary program arguments array maintained in separate pages in the
+> > > linux_binprm::page. linux_binprm::exec being a copy of linux_binprm::p
+> > > thus must be adjusted when that array is copied to the user stack.
+> > > Without that adjustment the value passed by the NOMMU kernel to the ELF
+> > > program in the AT_EXECFN entry of the aux array doesn't make any sense
+> > > and it may break programs that try to access memory pointed to by that
+> > > entry.
+> > >
+> > > Adjust linux_binprm::exec before the successful return from the
+> > > transfer_args_to_stack().
+> >
+> > What's the best way to test this? (Is there a qemu setup I can use to
+> > see the before/after of AT_EXECFN?)
 > 
-> [...]
+> I put a readme with the steps to build such system here:
+>   http://jcmvbkbc.org/~dumb/tmp/202403211236/README
+> it uses a prebuilt rootfs image and a 6.8 kernel branch with two
+> patches on top of it: one adds a dts and a defconfig and the other
+> is this fix. The rootfs boots successfully with this fix, but panics
+> if this fix is removed.
 
-Applied to for-next/execve, thanks!
+Ah, perfect! Thanks for this.
 
-[1/1] exec: fix linux_binprm::exec in transfer_args_to_stack()
-      https://git.kernel.org/kees/c/2aea94ac14d1
+> The easiest way to actually see the AT_EXECFN is, I guess, to
+> do something like that:
+> ---8<---
+> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+> index fefc642541cb..22d34272a570 100644
+> --- a/fs/binfmt_elf_fdpic.c
+> +++ b/fs/binfmt_elf_fdpic.c
+> @@ -659,6 +659,7 @@ static int create_elf_fdpic_tables(struct
+> linux_binprm *bprm,
+>        NEW_AUX_ENT(AT_EGID,    (elf_addr_t)
+> from_kgid_munged(cred->user_ns, cred->egid));
+>        NEW_AUX_ENT(AT_SECURE,  bprm->secureexec);
+>        NEW_AUX_ENT(AT_EXECFN,  bprm->exec);
+> +       pr_info("%s: AT_EXECFN = %#lx\n", __func__, bprm->exec);
+> 
+> #ifdef ARCH_DLINFO
+>        nr = 0;
+> ---8<---
 
-Take care,
+Does musl have something like the LD_SHOW_AUXV env variable. With glibc,
+I usually explore auxv like so:
+
+$ LD_SHOW_AUXV=1 uname -a | grep EXECFN
+AT_EXECFN:            /usr/bin/uname
+
+> > How did you encounter the problem?
+> 
+> I'm doing xtensa FDPIC port of musl libc and this issue popped up when
+> I began testing it on qemu-system-xtensa with the real linux kernel.
+> Related post to the musl ML:
+>   https://www.openwall.com/lists/musl/2024/03/20/2
+
+Thanks!
 
 -- 
 Kees Cook
-
 
