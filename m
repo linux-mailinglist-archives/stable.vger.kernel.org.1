@@ -1,195 +1,154 @@
-Return-Path: <stable+bounces-28632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F06887204
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:41:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414DF8871F5
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 18:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 934351F24428
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:41:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAB7C284E38
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF5F5FDA0;
-	Fri, 22 Mar 2024 17:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6985FDB0;
+	Fri, 22 Mar 2024 17:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="3BUT3iqW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RzRQFc8/"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805835FB86;
-	Fri, 22 Mar 2024 17:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867EC5FBA5;
+	Fri, 22 Mar 2024 17:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711129260; cv=none; b=deoi59Tbnae4d0mpwMs/tRp9qe92gbPpLI2tLVPE6dWTSgNm4unhSIiRquq6LbVp9fpk9Y55xPe2EfhNh26Ym/ybzT6RnBTIO6DuHjOksEKfZwim3aRMu1UutpN5O9iOXH4R+iAEgTefGLnPFhl9mSZw8E2xuMjb7FLvzWsyPeQ=
+	t=1711129241; cv=none; b=gL0aSS33jizyW/OMMWhNqJ7r0GBNjFdOPA9C5cIbZr0WKZtMOGe0WpmY/RTGVsm2jmITnCEYSedPM5NIblrOkrjLOp69rXho6RCP9TGgcxhYAjxu73ltBBbifUGJBgge/8cmCcy0xxLCF31pg4yrVAQ78tp5uvmflxr20e/mBWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711129260; c=relaxed/simple;
-	bh=hUUZk0R0PklOcj1oYkJC2u/GzExzR1VpkkAZTNMFvYE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mhciXvWF8gWTzsBXwexrj4Pjj0v/Uu2S1b91Kih6KXR4hxXJbxBbLqKUftO1EZvRBF4MnJ5uSbzIoYkl8WleVOTHXN8ymhBi4Hxs0iLHr1TEeh+89GpJsvX9pPYpnBiyBJnsVATLHAV8GbIx9uJNQKAmH0vOzJDfX5SFu1NmwVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=3BUT3iqW; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4V1V3s5kJTz6Cnk95;
-	Fri, 22 Mar 2024 17:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:from:from:received:received; s=mr01; t=
-	1711129251; x=1713721252; bh=Qqz9pnUZk4VENbBV5sZn2Phs3CDKV7Ml0ZC
-	g9USpZEg=; b=3BUT3iqWpS7rsVhRcht6YBVLhS4Yi7oDCH1Smci86A8PRCumJXM
-	euOzoMcWdDYKDbqiECNeNFnJXp44+YveZHXZhLv1xDzEqLpQIzCfKTkjBHAaQ6Dr
-	+sEesZHXz4rxHraOWJuNMApi8fGo4Cm7sHF4/d46ub0UXf/KSoVaMor/qj983yIC
-	dNSxCewKq6tvkkqAK2g7NMu5WTK8k9BDEUOdcZWZhKfVMg3TReOnTiJR3vXZb3rY
-	rIv4vDN/vOgSzWpXVDsW6loU1+bpPQ17veHxEA/wwrS3DB3YTCn3uh7btop0dH2L
-	IHc3aNTuubzv4jcoK9g7A8c7xocsc9gvAVw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id tauoE5ubG2xo; Fri, 22 Mar 2024 17:40:51 +0000 (UTC)
-Received: from bvanassche-linux.mtv.corp.google.com (unknown [104.132.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4V1V3j3cbcz6Cnk94;
-	Fri, 22 Mar 2024 17:40:49 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH] blk-mq: release scheduler resource when request completes
-Date: Fri, 22 Mar 2024 10:40:14 -0700
-Message-ID: <20240322174014.373323-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
+	s=arc-20240116; t=1711129241; c=relaxed/simple;
+	bh=wFZI1PIUaOqlEpxFZyEcVJq0yyXGgKI3wtKeSznMuas=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BOZ5yOTRwaPJizeVPwgaQGorbCSTnG1li2EDpNEIiZ+as3rqSkEPcT5ecLpp3fzNWedOBuP7CSZCty/Cu3oex/UAO8/FYAQk7YgILn9F4nIXLreCv1kjd89CHjjN9mJe8g/3MZBNL5hIGqhp7mr/lwTH8fzogvM5HMU+0rIx+3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RzRQFc8/; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711129239; x=1742665239;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wFZI1PIUaOqlEpxFZyEcVJq0yyXGgKI3wtKeSznMuas=;
+  b=RzRQFc8/8bMkKO6l8J/TCuIHBB3/+TdmK8zzroUqNsZXBv+g8jK0rqLd
+   s8l2cqGNiVzn2ZM060TeK7QXOe3CyLHoJkQKwHkLWSlPahfiqtyeS5M04
+   X7i1Lm++g/bV7INToXcSufXscqJXTi1ocZY4hV4ZTfQgom0rDpJVMDwui
+   Uac2K5waFk0DxtRx1tVFd5KqLmpVD7VTtrcVavOEyYHanI98D++6M0gNk
+   JDF++JYKoWpVkj5KXwBzWY2QV7yz/a2M9trRgREI3CGe1u8zVTr9Q7chP
+   WcbsJjyN4zXZCwsZ85etuRXfFI2EepYIx9P2i9CLvZFzXUmsMZtthZXq1
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="28666081"
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
+   d="scan'208";a="28666081"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:40:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
+   d="scan'208";a="19710803"
+Received: from ashwanim-mobl.amr.corp.intel.com (HELO [10.209.56.241]) ([10.209.56.241])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:40:38 -0700
+Message-ID: <2f8d726a-9800-4068-9c0c-6c4a79d69a85@intel.com>
+Date: Fri, 22 Mar 2024 10:40:37 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
+ except on UV platform.
+Content-Language: en-US
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
+ Eric Hagberg <ehagberg@gmail.com>, Simon Horman <horms@verge.net.au>,
+ Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
+ Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>
+References: <20240322162135.3984233-1-steve.wahl@hpe.com>
+ <003f1e83-fd93-4f4f-a316-d3e89e5a23a5@intel.com>
+ <87le6ab2bn.fsf@email.froward.int.ebiederm.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <87le6ab2bn.fsf@email.froward.int.ebiederm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+On 3/22/24 10:31, Eric W. Biederman wrote:
+>> I'd much rather add synthetic entries to the memory maps that have this
+>> information than hack around it by assuming that things are within a
+>> gigabyte.
+> So this change is a partial revert of a change that broke kexec in
+> existing configurations.  To fix a regression that breaks kexec.
 
-commit e5c0ca13659e9d18f53368d651ed7e6e433ec1cf upstream.
+Let's back up for a second:
 
-Chuck reported [1] an IO hang problem on NFS exports that reside on SATA
-devices and bisected to commit 615939a2ae73 ("blk-mq: defer to the normal
-submission path for post-flush requests").
+ * Mapping extra memory on UV systems causes halts[1]
+ * Mapping extra memory on UV systems breaks kexec (this thread)
 
-We analysed the IO hang problem, found there are two postflush requests
-waiting for each other.
+So we're in a pickle.  I understand your concern for kexec.  But I'm
+concerned that fixing the kexec problem will re-expose us to the [1]
+problem.
 
-The first postflush request completed the REQ_FSEQ_DATA sequence, so go t=
-o
-the REQ_FSEQ_POSTFLUSH sequence and added in the flush pending list, but
-failed to blk_kick_flush() because of the second postflush request which
-is inflight waiting in scheduler queue.
+Steve, can you explain a bit why this patch doesn't re-expose the kernel
+to the [1] bug?
 
-The second postflush waiting in scheduler queue can't be dispatched becau=
-se
-the first postflush hasn't released scheduler resource even though it has
-completed by itself.
+1. https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl@hpe.com/
 
-Fix it by releasing scheduler resource when the first postflush request
-completed, so the second postflush can be dispatched and completed, then
-make blk_kick_flush() succeed.
 
-While at it, remove the check for e->ops.finish_request, as all
-schedulers set that. Reaffirm this requirement by adding a WARN_ON_ONCE()
-at scheduler registration time, just like we do for insert_requests and
-dispatch_request.
-
-[1] https://lore.kernel.org/all/7A57C7AE-A51A-4254-888B-FE15CA21F9E9@orac=
-le.com/
-
-Link: https://lore.kernel.org/linux-block/20230819031206.2744005-1-chengm=
-ing.zhou@linux.dev/
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308172100.8ce4b853-oliver.sang@=
-intel.com
-Fixes: 615939a2ae73 ("blk-mq: defer to the normal submission path for pos=
-t-flush requests")
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Tested-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20230813152325.3017343-1-chengming.zhou@l=
-inux.dev
-[axboe: folded in incremental fix and added tags]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[bvanassche: changed RQF_USE_SCHED into RQF_ELVPRIV; restored the
-finish_request pointer check before calling finish_request and removed
-the new warning from the elevator code. This patch fixes an I/O hang
-when submitting a REQ_FUA request to a request queue for a zoned block
-device for which FUA has been disabled (QUEUE_FLAG_FUA is not set).]
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- block/blk-mq.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 7ed6b9469f97..07610505c177 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -675,6 +675,22 @@ struct request *blk_mq_alloc_request_hctx(struct req=
-uest_queue *q,
- }
- EXPORT_SYMBOL_GPL(blk_mq_alloc_request_hctx);
-=20
-+static void blk_mq_finish_request(struct request *rq)
-+{
-+	struct request_queue *q =3D rq->q;
-+
-+	if ((rq->rq_flags & RQF_ELVPRIV) &&
-+	    q->elevator->type->ops.finish_request) {
-+		q->elevator->type->ops.finish_request(rq);
-+		/*
-+		 * For postflush request that may need to be
-+		 * completed twice, we should clear this flag
-+		 * to avoid double finish_request() on the rq.
-+		 */
-+		rq->rq_flags &=3D ~RQF_ELVPRIV;
-+	}
-+}
-+
- static void __blk_mq_free_request(struct request *rq)
- {
- 	struct request_queue *q =3D rq->q;
-@@ -701,9 +717,7 @@ void blk_mq_free_request(struct request *rq)
- {
- 	struct request_queue *q =3D rq->q;
-=20
--	if ((rq->rq_flags & RQF_ELVPRIV) &&
--	    q->elevator->type->ops.finish_request)
--		q->elevator->type->ops.finish_request(rq);
-+	blk_mq_finish_request(rq);
-=20
- 	if (unlikely(laptop_mode && !blk_rq_is_passthrough(rq)))
- 		laptop_io_completion(q->disk->bdi);
-@@ -1025,6 +1039,8 @@ inline void __blk_mq_end_request(struct request *rq=
-, blk_status_t error)
- 	if (blk_mq_need_time_stamp(rq))
- 		__blk_mq_end_request_acct(rq, ktime_get_ns());
-=20
-+	blk_mq_finish_request(rq);
-+
- 	if (rq->end_io) {
- 		rq_qos_done(rq->q, rq);
- 		if (rq->end_io(rq, error) =3D=3D RQ_END_IO_FREE)
-@@ -1079,6 +1095,8 @@ void blk_mq_end_request_batch(struct io_comp_batch =
-*iob)
- 		if (iob->need_ts)
- 			__blk_mq_end_request_acct(rq, now);
-=20
-+		blk_mq_finish_request(rq);
-+
- 		rq_qos_done(rq->q, rq);
-=20
- 		/*
 
