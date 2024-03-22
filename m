@@ -1,96 +1,146 @@
-Return-Path: <stable+bounces-28626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A34A8870CD
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CCA8870D3
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 17:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C391C22C38
-	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 16:24:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5381C22C9E
+	for <lists+stable@lfdr.de>; Fri, 22 Mar 2024 16:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BB856B76;
-	Fri, 22 Mar 2024 16:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B953057876;
+	Fri, 22 Mar 2024 16:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RoUJhb/j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hwch4OxJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D8554BF7
-	for <stable@vger.kernel.org>; Fri, 22 Mar 2024 16:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258934F60D;
+	Fri, 22 Mar 2024 16:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711124670; cv=none; b=PaijO6dWkhnbjEpAb6fRB84TsQgIQFv7qU1TSaWvXvBv7God+wUkH6HeRSnavgeQzpDGErnPr5fthXosTOYzazPcOTaU0S6lcP5tKFgW3oXz0S9r9Oawyfl2X662cbT0HACqkhtxq3rDKeX7vrjdhBpG17kU0lxo3wdHD/LOs9A=
+	t=1711124879; cv=none; b=TZS8/lZLM/U22DZwKTxrQY0gPvK7KZ1wp5gtZ4tsEBWnCUJspJBcbvnfEh2m7Xj+UFCk06s3X2yH+yywW01T0YbFJ42l94DjDB8knWw/Z/G6zEHoArgWFqLrgGv4m8QhKWfu2/GJMIZOYlRVMZdMTbe6FD77PCoSU2bsDvQZDWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711124670; c=relaxed/simple;
-	bh=ITGp7ggrsxODmpVpH8hzjqT9j/avBBkrwVgI+83TStE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=oDgcVpys5tou30uTrhyrXfzLeaoHolQdozvJDcTtUtU90YnoiM4Jmxbe5w9PIBj4yGY+PEHKjCqsqJP0WbuwtoiC3iYoQkakahZ9fIGaQejlJbTt+YVqjkqCO2b0e+QD0eSmQ1i8WxuguoG1khbVwwqiRn81GjOtt9nV6CKVbpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RoUJhb/j; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1711124879; c=relaxed/simple;
+	bh=Yg2Xfm9bBL3/e8m4eyIH1Wm/XrSP3qfZNh7KZLgdZbg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ALGeQv/Ng/J4ge1nzj2c5si59EYTDs98R+olVHdj9DgpDjJ9ku+JWPZKSgZfxCv/ZLZagGXLMdBKe33QlFgYs4mJDNGMDhxKRaSDRz1YCiEa8Bt8yFWyFb0DWMPgUaOjuaWOE35LmJfaAPIw837kEgK0bGTUqX1Rlh62zYmzgyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hwch4OxJ; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711124669; x=1742660669;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=ITGp7ggrsxODmpVpH8hzjqT9j/avBBkrwVgI+83TStE=;
-  b=RoUJhb/jn+7U62Xgd2nFyRBM3KS79j/AsmS9kxvetT+xll0Tk/NfDyAa
-   qyPqhIAL7Fo0aop5nmsmp9/DG6/D9kkbul3JtuoBNK1hiqkWV6gCZBnk/
-   bcnqaPsel4FZN6qjvwxv+vaRuXU59064jYQv/l6r8CFqF5qBl/vR97/mT
-   OKaFkLFdN2bT8SsyeKUCIP4FVgeYcVauISzcu7ByzqxVezlXFLa27E7Ce
-   5MD3YInq2EgKKAgpKFS5E1Pur2dZoGSe/nvW0d2HpWzX1tCa6zK0JKkfe
-   kjBuDTlSpvDDFvOVhKNKi7+FXuak1r6ZD6xGSIOJXBsXPB6wRB+LH5Qbx
+  t=1711124878; x=1742660878;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Yg2Xfm9bBL3/e8m4eyIH1Wm/XrSP3qfZNh7KZLgdZbg=;
+  b=Hwch4OxJ2Qx/emOvLbjz5yEaj1I/rY6PYXwhTkmgF0H3bmFDBHb114oM
+   7YiSBV5y7F9pHCnSw+HxQPyLIiYGMr8jr9SQ/2Q0ULNECmYpbAeWeJefy
+   QHwD5ZG6caqX6YjsbM86CuXylw9FOgJPMlqbESYpJFeIwm1zlkcDKqWj6
+   ZleBJmJ20bOjJgSg32hTLdXMj3gZGB3Xckf3Mu3nPalh6QY9RiDiDDG0X
+   sasCeDnBl2QX1MEX90dIKeyiLH2ArcjqTyuDC+Y72IvnqMY3Hznv/2IFX
+   LZqB6hdU5L8txG4TXr7CGVhHYBJFuI9wgfsvwVsx1kOUbwQIAbhkmLCLd
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6293082"
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="17574400"
 X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="6293082"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 09:24:29 -0700
+   d="scan'208";a="17574400"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 09:27:57 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="15364244"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 22 Mar 2024 09:24:27 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rnhgv-000KQX-0t;
-	Fri, 22 Mar 2024 16:24:25 +0000
-Date: Sat, 23 Mar 2024 00:23:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steve Wahl <steve.wahl@hpe.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Message-ID: <Zf2wf8MHQAmJQpII@f34f6e606ddc>
+   d="scan'208";a="15017149"
+Received: from ashwanim-mobl.amr.corp.intel.com (HELO [10.209.56.241]) ([10.209.56.241])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 09:27:55 -0700
+Message-ID: <003f1e83-fd93-4f4f-a316-d3e89e5a23a5@intel.com>
+Date: Fri, 22 Mar 2024 09:27:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
+ except on UV platform.
+Content-Language: en-US
+To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
+ Eric Hagberg <ehagberg@gmail.com>
+Cc: Simon Horman <horms@verge.net.au>, Eric Biederman
+ <ebiederm@xmission.com>, Dave Young <dyoung@redhat.com>,
+ Sarah Brofeldt <srhb@dbc.dk>, Russ Anderson <rja@hpe.com>,
+ Dimitri Sivanich <sivanich@hpe.com>
+References: <20240322162135.3984233-1-steve.wahl@hpe.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
 In-Reply-To: <20240322162135.3984233-1-steve.wahl@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 3/22/24 09:21, Steve Wahl wrote:
+> Some systems have ACPI tables that don't include everything that needs
+> to be mapped for a successful kexec.  These systems rely on identity
+> maps that include the full gigabyte surrounding any smaller region
+> requested for kexec success.  Without this, they fail to kexec and end
+> up doing a full firmware reboot.
+> 
+> So, reduce the use of GB pages only on systems where this is known to
+> be necessary (specifically, UV systems).
 
-Thanks for your patch.
+Isn't this called "buggy firmware"?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps except on UV platform.
-Link: https://lore.kernel.org/stable/20240322162135.3984233-1-steve.wahl%40hpe.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+I'd much rather add synthetic entries to the memory maps that have this
+information than hack around it by assuming that things are within a
+gigabyte.
 
