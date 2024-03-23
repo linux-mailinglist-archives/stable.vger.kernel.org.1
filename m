@@ -1,122 +1,150 @@
-Return-Path: <stable+bounces-28657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B6A8879AE
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 18:17:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DF48879B9
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 18:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A4F281AA2
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 17:17:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75E27B20E67
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 17:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B071B53361;
-	Sat, 23 Mar 2024 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E374535A6;
+	Sat, 23 Mar 2024 17:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="C0ADh3f0"
+	dkim=pass (2048-bit key) header.d=thefossguy.com header.i=@thefossguy.com header.b="q8pqdray"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDA718E20;
-	Sat, 23 Mar 2024 17:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD52A53368;
+	Sat, 23 Mar 2024 17:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711214266; cv=none; b=KwFsjYPYf3tUDu2V8k9NROnL2mwee25tAJ5qpfOIAjn6easJxYd82UoiCeUIFZpk0qsIQ6fiVdHfK9ZmzL6kxmX0XtltIX5DOB6V6EYliaI3vVqbxPFvohRa9aJCm4yrsDVF0A7h6AKNSDENX1cHPF9QQYy6zTwL20iy2wp0e5M=
+	t=1711214640; cv=none; b=F7kiMwhDP9gp/XFbbNDIEAc+vx6z39UEskZvHciV4G1DwNxz/+XzKWWp3lSqOPC0VbAxXd2doHSQKkfvSoH1zIPG++Ik0Vvsse2yRpZGEUOnDoAcbZxitqx4dnPoOUNc2M0ix5UwdDoQPGJW+e3ZShWhigykddTwKIce2H0M9/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711214266; c=relaxed/simple;
-	bh=mGAh5fu0/Fw6zUZIRDr+OZ5+xOoq6Q7dS6tDtFcWVQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q7aNmwkmZ3D35SuysI+EJjdlL05WiA56ftp52KoM6ldOi5PqTo1oDhFeGCLHSsQFFb4MNVIfICAeL2+E5DGb+9PMxAhceV5oK1L2JTAnWSQG4WOoRyCi60Ug276UBSoekOoHHzLh+nZE/JYIdPslHbgPHtTdrKA/wf+xlgjD6dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=C0ADh3f0; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=bJ/40L52EMuGnORgpe1TjrWvCrigiJKMPJYJJOTHF8g=;
-	t=1711214264; x=1711646264; b=C0ADh3f0sYm+vEreHCkWmp35KiziMRuws5WQN6fQwOHgxw/
-	b17bHfk3M9R/VwhYmkthlv6pu6lKsQe333ALNuUCDPK5tSs8WiPvWoPVUWExfK9llrzK7bs0KjLco
-	ETJPvGGKFoDqotlvoumWTp67srZIYKSK8IoHfCON/OvX4bW1qIIBzDxtMAnW3pHU2jYd4UZ1zmpS9
-	pLSvkK9EJRvNFhwmpZq1zWaX2StqfWqjnrINuN4kKIWyJAt4DSaYBPq/mTutdCJP5NOpcHbucnuRl
-	k5GqkeZ9hUn7z1Le3vTi6axwQFYoVru3UJRoI19lfm172Cqjd53zP8t0OxMeM6nw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1ro4zz-0008P9-Ok; Sat, 23 Mar 2024 18:17:39 +0100
-Message-ID: <092a7c4c-0a75-4b27-acec-385fdcfb9f7a@leemhuis.info>
-Date: Sat, 23 Mar 2024 18:17:39 +0100
+	s=arc-20240116; t=1711214640; c=relaxed/simple;
+	bh=hLd9g0J+arhug+21RAMsKmSEAuU65lTeZKlInmYv/o0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TlfN1Ffp/Q6Q5aOTEeKuYXoFB2m+Yic1Z5O2VZCynNu/8Fj4RyWGLmz60z+MNQ8rwrxjex8Mt7DmcVPUmTPylQ9zUQMYmHS2p1bjCSsDLqy/ccG0wBBWeyxOPgA3cjCd5bHOeLj9hVGnWWpIEpbcuK9H6uEuRz3veXJDd08fg8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thefossguy.com; spf=pass smtp.mailfrom=thefossguy.com; dkim=pass (2048-bit key) header.d=thefossguy.com header.i=@thefossguy.com header.b=q8pqdray; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thefossguy.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thefossguy.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thefossguy.com;
+	s=protonmail; t=1711214635; x=1711473835;
+	bh=hLd9g0J+arhug+21RAMsKmSEAuU65lTeZKlInmYv/o0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=q8pqdrayecYfqrEuANc8LK9O5kKn9h5cphBj9UumlvrDAVHKSrVxzDyJE2t5F9b5U
+	 Aoe807R7CUJOlv+pR641GkAk/wGuHw7meGMLJ8NaMEhV4Ioy9ZqOMXRlCmENkIR4kx
+	 wQ1PREruEKOtR/cuJpiK3T1YjVqs2XTlJsp1Zb4yaHWnxK8G7ef9ZhOsDYPDevV0YN
+	 eCAPYjydSRmeXZQHdKCl14AACNpfJQ2z2bvbscO93RsszIIHZyE/VbP7x64/fisf5B
+	 bL5eQRQCWVvObycGUmNrwGekIkkQ2xdxsv6RCs2dgNNj2tbqOMFYmotGoFOZ2M2KTe
+	 8+NbVT+9gnO9A==
+Date: Sat, 23 Mar 2024 17:23:38 +0000
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+From: Pratham Patel <prathampatel@thefossguy.com>
+Cc: "sebastian.reichel@collabora.com" <sebastian.reichel@collabora.com>, "saravanak@google.com" <saravanak@google.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Fixing the devicetree of Rock 5 Model B (and possibly others)
+Message-ID: <28S1EMw5YOnQIBpQ8_qaZZ6c9Go-j6-lLuWWbRpe6-MtRUd7Ay-uXq8JHbVVtJv3LzpxjI8jYg7ukNntbN22PVV-hOWbuTY8FNWgvM4zSwI=@thefossguy.com>
+In-Reply-To: <092a7c4c-0a75-4b27-acec-385fdcfb9f7a@leemhuis.info>
+References: <tQ0L3-34g4t-mzfQIP6KDe5OYelGnEo6Udzq6Kb_nEcljppSQUXOktpE__nL-CdLOu9gW-4tIIbjtSbqrdCrjEkdhZLPiiHTqRcCB6WORuM=@thefossguy.com> <092a7c4c-0a75-4b27-acec-385fdcfb9f7a@leemhuis.info>
+Feedback-ID: 104309535:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Fixing the devicetree of Rock 5 Model B (and possibly others)
-Content-Language: en-US, de-DE
-To: Pratham Patel <prathampatel@thefossguy.com>,
- "sebastian.reichel@collabora.com" <sebastian.reichel@collabora.com>,
- "saravanak@google.com" <saravanak@google.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <tQ0L3-34g4t-mzfQIP6KDe5OYelGnEo6Udzq6Kb_nEcljppSQUXOktpE__nL-CdLOu9gW-4tIIbjtSbqrdCrjEkdhZLPiiHTqRcCB6WORuM=@thefossguy.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <tQ0L3-34g4t-mzfQIP6KDe5OYelGnEo6Udzq6Kb_nEcljppSQUXOktpE__nL-CdLOu9gW-4tIIbjtSbqrdCrjEkdhZLPiiHTqRcCB6WORuM=@thefossguy.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1711214264;fa5dfef6;
-X-HE-SMSGID: 1ro4zz-0008P9-Ok
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------f1e788887cf9d788045acc7ae71ae8322eea6a98cb58be5654c24d039bf47d68"; charset=utf-8
 
-On 23.03.24 18:02, Pratham Patel wrote:
-> Since the introduction of the `of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing` patch,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------f1e788887cf9d788045acc7ae71ae8322eea6a98cb58be5654c24d039bf47d68
+Content-Type: multipart/mixed;boundary=---------------------ae8a0b7b1b36c345004b08b7de4976a5
 
-There is an earlier bug report asking for a revert of that patch:
+-----------------------ae8a0b7b1b36c345004b08b7de4976a5
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;charset=utf-8
 
-https://lore.kernel.org/all/ZfvN5jDrftG-YRG4@titan/
+On Saturday, March 23rd, 2024 at 22:47, Linux regression tracking (Thorste=
+n Leemhuis) <regressions@leemhuis.info> wrote:
 
-> an issue 
+> =
 
-Is your problem maybe similar to the one above?
 
-Ciao, Thorsten
+> =
 
-> with the device-tree of the Rock 5 Model B has been detected. All the stable kernels (6.7.y and 6.8.y) work on the Orange Pi 5, which has the Rockchip RK3588S SoC (same as the RK3588, but less I/O basically). So, being an owner of only two SBCs which use the RK3588* SoC, it appears that the Rock 5 Model B's DT is incorrect.
-> 
-> I looked at the patch and tried several things, neither resulted in anything that would point me to the core issue. Then I tried this:
-> 
-> ```
-> $ grep -C 3 remote-endpoint arch/arm64/boot/dts/rockchip/rk3588-rock-5b.dts
-> 
->                 port {
->                         es8316_p0_0: endpoint {
->                                 remote-endpoint = <&i2s0_8ch_p0_0>;
->                         };
->                 };
->         };
-> --
->                 i2s0_8ch_p0_0: endpoint {
->                         dai-format = "i2s";
->                         mclk-fs = <256>;
->                         remote-endpoint = <&es8316_p0_0>;
->                 };
->         };
-> };
-> ```
-> 
-> So, from a cursory look, the issue seems to be related to either the DT node for the audio codec or related to the es8316's binding itself. Though I doubt that the later is the issue because if that were the issue, _someone_ with a Pine64 Pinebook Pro would've raised alarms. So far, this seems to be related to the `rk3588-rock-5b.dts` and possibly with the `rk3588s-rock-5a.dts` too.
-> 
-> I would **love** to help but I'm afraid I device-trees are not something that I am at-all familiar with. That said, I am open to methods of debugging this issue to provide a fix myself.
-> 
-> I would have replied to the patch's link but unfortunately, I haven't yet setup neomutt and my email provider's web UI doesn't have a [straightforward] way to reply using the 'In-Reply-To' header, hence a new thread. Apologies for the inconvenience caused.
-> 
->   -- Pratham Patel
+
+> On 23.03.24 18:02, Pratham Patel wrote:
+> =
+
+
+> > Since the introduction of the `of: property: fw_devlink: Fix stupid bu=
+g in remote-endpoint parsing` patch,
+> =
+
+
+> =
+
+
+> There is an earlier bug report asking for a revert of that patch:
+> =
+
+
+> https://lore.kernel.org/all/ZfvN5jDrftG-YRG4@titan/
+> =
+
+
+> > an issue
+> =
+
+
+> =
+
+
+> Is your problem maybe similar to the one above?
+
+I don't get that exact message in the boot log but yes.
+
+> Ciao, Thorsten
+
+ -- Pratham Patel
+-----------------------ae8a0b7b1b36c345004b08b7de4976a5
+Content-Type: application/pgp-keys; filename="publickey - prathampatel@thefossguy.com - 0xF2DDE54D.asc"; name="publickey - prathampatel@thefossguy.com - 0xF2DDE54D.asc"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="publickey - prathampatel@thefossguy.com - 0xF2DDE54D.asc"; name="publickey - prathampatel@thefossguy.com - 0xF2DDE54D.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4ak1FWmZjR2RSWUpLd1lCQkFI
+YVJ3OEJBUWRBa2VYM3NrdFI1R0lZQTM5VXhoRTlZcitZMy8zd0ZXUmwKZlZ5T1hsaWdnS2ZOT1hC
+eVlYUm9ZVzF3WVhSbGJFQjBhR1ZtYjNOelozVjVMbU52YlNBOGNISmhkR2hoCmJYQmhkR1ZzUUhS
+b1pXWnZjM05uZFhrdVkyOXRQc0tNQkJBV0NnQStCWUpsOXdaMUJBc0pCd2dKa01lcApYbTlkS2Er
+V0F4VUlDZ1FXQUFJQkFoa0JBcHNEQWg0QkZpRUU4dDNsVFJRTDQ4NE9oNDE3eDZsZWIxMHAKcjVZ
+QUFDYlFBUDlMc1NwUlQwSTV2TC8ycHpBa2F2UVhLdStWR1BRMk44RUVYZGpSVkRseGl3RUFwMVpS
+ClB0M2k5RG9qcXg1OE9MQ2R3N2xHMlVwdkJGZ2dCeGVrV216d1dRbk9PQVJsOXdaMUVnb3JCZ0VF
+QVpkVgpBUVVCQVFkQXJlOWp5aVR3VFBGSjNaazJvTVd0ZDVxSi9zcWNKRUZrckZxNUpVVzRWalVE
+QVFnSHduZ0UKR0JZS0FDb0ZnbVgzQm5VSmtNZXBYbTlkS2ErV0Fwc01GaUVFOHQzbFRSUUw0ODRP
+aDQxN3g2bGViMTBwCnI1WUFBRFRGQVA5WUZIL0FxKzVFd3pHQ0xJZWhNNGJsUW5hK2t0cnNPRWlw
+VllVTVZMd0tjQUQvVktHQwo0eFRtTENUQUNDcFNqRjdVRzBVY2NNOVU0T21ZV2RlVU9HUk1hd1k9
+Cj01cTBtCi0tLS0tRU5EIFBHUCBQVUJMSUMgS0VZIEJMT0NLLS0tLS0K
+-----------------------ae8a0b7b1b36c345004b08b7de4976a5--
+
+--------f1e788887cf9d788045acc7ae71ae8322eea6a98cb58be5654c24d039bf47d68
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wnUEARYKACcFgmX/D/UJkMepXm9dKa+WFiEE8t3lTRQL484Oh417x6leb10p
+r5YAAHYlAP9lfb3BSFKYtWm/S0bfoj6e7K4Y+l8y9pnmg7U4pWoPkQEAjxWI
+9LvXFmeUGLD2Z2Lu+WoJ7RU/hCOljmBRtQHtEgU=
+=V9PA
+-----END PGP SIGNATURE-----
+
+
+--------f1e788887cf9d788045acc7ae71ae8322eea6a98cb58be5654c24d039bf47d68--
+
 
