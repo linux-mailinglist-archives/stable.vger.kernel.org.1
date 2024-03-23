@@ -1,127 +1,106 @@
-Return-Path: <stable+bounces-28644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC419887686
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 03:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B64B88772D
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 07:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622051F22DA2
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 02:00:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B455A1F22A99
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 06:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FCA1113;
-	Sat, 23 Mar 2024 02:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F9C53BE;
+	Sat, 23 Mar 2024 06:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FrO3NjeB"
+	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="N+9QMxOp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FB4A55
-	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 02:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A225398
+	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 06:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711159246; cv=none; b=XKljLqHT+eF3JPF9blNqB3RY8+OWhXWU7H6WiqThBj7DPxQEGzs2a1D4P9TwUcOu+lHe1ZneGqZM60gdyVeHnQjbD1Uxoz0kxsN5HB1x0WxZAYaSYaYkOnzXGuJPJNM+8Ubbu8V0OreKVreoiihcWc35sj1G2bdYfkuUbplnUcY=
+	t=1711174633; cv=none; b=DspA7pXD+FpE0wjYTLMlPtxLwIcfjMhFzjLZoU/7oPIhWIaBTH9t+GruLBojlic8KJ5kH+A8klNlEH3UzECVQaips+e/IC1B6g5kek1iNxa/9A0q/V6lt5eAyHINm2hLp6DuPODYj9trMDrLbTlb+WyUtQiCYJ7AvyU08YWiPps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711159246; c=relaxed/simple;
-	bh=x+FdX9DQdTFaHf4AamxvgZg5mk3QbFF5nbQKe4Tw0Hg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WZVu1nd/3biECcIRn6iYDZDYaxT2bKISEBb+glMSDNsbiJaSdB7wtOuFHnq0cVh/hq/ZdmP+Mh6+l8ogqr+q8KI85jBswLL8ME6ipL6PEtmHRiG+YBUznrmSTTbK6N3obFEe+/z3LYe2LTImMN2Q/EX6nd8kYZ3d1c1LeYabceQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FrO3NjeB; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-42ee0c326e8so67811cf.0
-        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 19:00:44 -0700 (PDT)
+	s=arc-20240116; t=1711174633; c=relaxed/simple;
+	bh=dqG0Z288zz1kSYusNKw5auggaqGEU0D07aewlJFuyP0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qJyO1/vXL+oIvSDAlwxm++lKmndAJnSoAgE1NCqbXJ5Dfa8KBu3xAYJRZvPSkR71nG7tc7CEB5ZHJS16B9Isz+/CZDLVLSIfUAprz2Pl78Vu1kUCwf0CoUL/jt57RjjvDEg9r2ky0MQ2GreKCWk2p0eKBSL+id88YCZEFi1TdO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=N+9QMxOp; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-42a029c8e62so21325641cf.1
+        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 23:17:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711159243; x=1711764043; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x+FdX9DQdTFaHf4AamxvgZg5mk3QbFF5nbQKe4Tw0Hg=;
-        b=FrO3NjeB1p3HNQ7n3aAwsjvbCZYdBqLycBLD1KhKgeBahgxAdugvWqpKS0O16MFlBE
-         m5TA6QyHm7dzZ9+abrCQjRWy+wDOOUCUpxoujnCkxhDbo/rMecG6bNLYihZWErrah9t4
-         frSTx2wt6393IX/JZWngN78P0cCGJmY+GRXUuADHYqZKIUPiabLUyk+lwG4Rmy1xPF8h
-         y/YFeV9zsJo9eAI4DjlGmYYY7x16urD2Q5HtvStYAPI8egl4FFScYRdE+A6q7m2+0FTf
-         +3CKkwU7dl2Wqx9jghR0vMLkmIJxf8cZNRLzlCWMsRTfYkoeEZSpLg9+jzABoTtbQaLJ
-         jEzQ==
+        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1711174631; x=1711779431; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YUD52ht+HR3l3eedQqUGqKmwp+yFV4q4zkif3Vs2Vr0=;
+        b=N+9QMxOpE0VJj9HzfPOcRHSV6xmUV/bor65C35aNwmZxESfBFPV0AEBi++5mqP0UmB
+         9fTFz2RyhrPeotg95inB9669MVDiP7Uc6RyBIDyRdACUUdDBDCS1IACWuDrQG6OJwg8K
+         5zTDiIkh+RT90TNKdnUwcubnQ5aW5R9nDtkS3/iXNpDX84mZnXry75hFWr+2VTzZyL2f
+         i69Y5MNkTETI5j6z1Fo2rRNsNIx6jS9CfW34mwC8N7BThAbNyp5KJ/r2zQmPSSPJVbux
+         PY/T6xp2SuiVh9uccdivjOvDkLw9o4BZLewGj3sK1HFXsOw4autrDA9e7Kv8bcBVyVP1
+         Dlyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711159243; x=1711764043;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x+FdX9DQdTFaHf4AamxvgZg5mk3QbFF5nbQKe4Tw0Hg=;
-        b=tkBxpZTvehXnuwTqNQFfrtgJLS5hC7wSuLyqL4eUjGWGGkEDgNiIdZcdzJssHORrNS
-         855qCiMB3+8euPuXfMj17UaOOKD+PP/l8jXZq7UP06A/huFbOIqMusVrsCqG/RafxtQK
-         0H3Gfg8Ln1Oda3UJX5pdbDob6cBztQIi+ZWkD5e/Q9/fuQEqHBNr83KXbgBOnj/lZT5k
-         8LuGJkBHNzRaWkxvOCVTnjNxfPCP47Mh2Ebg/4ICpUBsUEM0NcdGY5PqNDTvlzs/Dhoz
-         XVPdUBEvmNgnGF5fPrfIZPGHDZrws3rGz7D3CmaXoI3APEzB6xINP8G0MMjdz6gczT9n
-         iqxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSg8/WFGcPmeveOGICBOFCo4UKxSJYQExkkLsE7vjx+ytVGqiPhRy0fBuutnsNrq0n2hanqnme23d8ofYeKKVFx/mZ1urD
-X-Gm-Message-State: AOJu0YzhmtneM8GEE3PPvfGEjC+d68Rz2uYlB7IOKflCFLH2rdhSgOcW
-	XJ1A4HDP0ldprJnh/K2j2HCH9H/5CwZBB2sEPoOmfH6EoTjigfXXmBDundcNKr3yD+ZCjcQ0xLz
-	HOwHwrYRxGhFh+824MATlyFnzri+bOCWDhmBp
-X-Google-Smtp-Source: AGHT+IHEu5RsydW1nGrf112JXAAobeSfXYgjaT18QBQKEPz/AjPpVseTu9jTurdFvMxJjea4j9qTo3T86+aT+MmmskM=
-X-Received: by 2002:a05:622a:5cb:b0:430:ed37:bad0 with SMTP id
- d11-20020a05622a05cb00b00430ed37bad0mr663579qtb.13.1711159243461; Fri, 22 Mar
- 2024 19:00:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711174631; x=1711779431;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUD52ht+HR3l3eedQqUGqKmwp+yFV4q4zkif3Vs2Vr0=;
+        b=PhxPjYXvNKmUpbsK3zT3a0muCI7UWGptfNg+Q/B+5e3PV4Cew3riPHN75uOP6iMHjt
+         rOTjwsyMZ4clJAgJmV7fmwJaSk2CPKVzm5Fvr5agbzEKxMEQZ7gU/+zr1/8gdK9XxVKN
+         SFJctVuyw1QBkhM39Fktm19oyRArHGBFPQJZpuhCCb2itvA7RuMe8uf1X0Alkuv0meor
+         1c0LTnOG/skg+JhzkYlZjjATghWq6ET88+qY4TkaN6WwV8HJBMJJ7yPsb/e4/kNKTTKR
+         URRW7omO+3VHJr9FjCdyR5uk7xCCD6pCgoAoY1XfDcnaGBwyFJQ3lUDnbOOshK4E/tak
+         pNvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWVRXQPoig3ytbElZorX4ODuXm6Y3orpZp9WQ9yaQPeYBZsRO19ITBstXAF+t/ulhYj9aNzQ24luHlWyWSlKQZIJ2F/hWJ
+X-Gm-Message-State: AOJu0YzBq1awWw+r6beus9V0Djl2/Y6HAhKYVgeUiHYpMlv4zKe8wioM
+	Gpa9+J5d5c9rLKn5hVgyvqGlF2UKfliVWrsKIVZyp5k9bMlsdsYqSHTt/zTK9yw=
+X-Google-Smtp-Source: AGHT+IHsW+rCkfYvisR1ygy31z8BZc9G7J8m+4nL2/pwwjaGvRY/EyVRR4S6gmRAATdetLzbqae2KA==
+X-Received: by 2002:ac8:7c47:0:b0:431:458a:8ea5 with SMTP id o7-20020ac87c47000000b00431458a8ea5mr220141qtv.55.1711174631036;
+        Fri, 22 Mar 2024 23:17:11 -0700 (PDT)
+Received: from [192.168.0.50] (dhcp-24-53-241-2.cable.user.start.ca. [24.53.241.2])
+        by smtp.gmail.com with ESMTPSA id bb40-20020a05622a1b2800b00431435c34b1sm196691qtb.60.2024.03.22.23.17.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Mar 2024 23:17:10 -0700 (PDT)
+Message-ID: <25ecf18b-7533-410a-9b1f-6c11343b8565@draconx.ca>
+Date: Sat, 23 Mar 2024 02:17:08 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240220111044.133776-1-herve.codina@bootlin.com>
- <20240220111044.133776-3-herve.codina@bootlin.com> <CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
- <20240221095137.616d2aaa@bootlin.com> <CAGETcx9eFuqwJTSrGz9Or8nfHCN3=kNO5KpXwdUxQ4Z7FxHZug@mail.gmail.com>
- <20240321125904.3ed99eb5@bootlin.com>
-In-Reply-To: <20240321125904.3ed99eb5@bootlin.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Fri, 22 Mar 2024 19:00:03 -0700
-Message-ID: <CAGETcx-oMbjtgW-sqzP6GPuM9BwgQrYJawpui3QMf1A-ETHpvg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] of: property: fw_devlink: Fix links to supplier when
- created from phandles
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, 
-	Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
+Content-Language: en-US
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+ Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, stable@vger.kernel.org,
+ Javier Martinez Canillas <javierm@redhat.com>, deller@gmx.de
+References: <20240322083005.24269-1-tzimmermann@suse.de>
+ <877chu1r8s.fsf@minerva.mail-host-address-is-not-set>
+From: Nick Bowler <nbowler@draconx.ca>
+In-Reply-To: <877chu1r8s.fsf@minerva.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 21, 2024 at 4:59=E2=80=AFAM Herve Codina <herve.codina@bootlin.=
-com> wrote:
->
-> Hi Saravana,
->
-> On Mon, 4 Mar 2024 23:14:13 -0800
-> Saravana Kannan <saravanak@google.com> wrote:
->
-> ...
-> >
-> > Thanks for the example. Let me think about this a bit on how we could
-> > fix this and get back to you.
-> >
-> > Please do ping me if I don't get back in a week or two.
-> >
->
-> This is my ping.
-> Do you move forward ?
+On 2024-03-22 06:43, Javier Martinez Canillas wrote:
+> Thomas Zimmermann <tzimmermann@suse.de> writes:
+> 
+>> Framebuffer I/O on the Sparc Sbus requires read/write helpers for
+>> I/O memory. Select FB_IOMEM_FOPS accordingly.
+>>
+>> Reported-by: Nick Bowler <nbowler@draconx.ca>
 
-Thanks for the ping. I thought about it a bit. I think the right fix
-it to undo the overlay fix I had suggested to Geert and then make the
-overlay code call __fw_devlink_pickup_dangling_consumers() on the
-parent device of the top level overlay nodes that get added that don't
-have a device created for them.
+Applied on top of 6.8 and the build is successful.
 
-I'll try to wrap up a patch for this on Monday. But if you want to
-take a shot at this, that's ok too.
-
--Saravana
-
-
--Saravana
+Thanks,
+  Nick
 
