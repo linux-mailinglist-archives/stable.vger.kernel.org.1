@@ -1,115 +1,98 @@
-Return-Path: <stable+bounces-28646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F239F887738
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 07:33:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D85887758
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 07:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330071C20E58
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 06:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C72F282B0C
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 06:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F686FAE;
-	Sat, 23 Mar 2024 06:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C523C9454;
+	Sat, 23 Mar 2024 06:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OxJHeHs0"
+	dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="i6jnN+xq";
+	dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="cVjUCt3q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay4-1.pub.mailoutpod2-cph3.one.com (mailrelay4-1.pub.mailoutpod2-cph3.one.com [46.30.211.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D5F1C05
-	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 06:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6C9441
+	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 06:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711175626; cv=none; b=rvmcOHweYFngkJo725QjHA39Z4xRgMr4Dti00yMWwL8fqKf1bCZa86LCfhSNwakw/nRxuostVx0TxK7IqGiUqQ9jq1dPA/3MefHSpbVx6WjnmeZQfTEzkSEEikXmfuLqY9MB7zPfmQy+tVpRk5YpI00CerhfE3fprQZidfmdApE=
+	t=1711177165; cv=none; b=GBVPTbXEQ3gMkAdzymLJuuhbQoE3a4c3jFjfSnzZt2NrSCd+ZMgQbfL/I1o/Zb0j4iOYrySHtq5D3t8J3t84p68wxOjVjR02ks91CUC0AKMld+El2utKDyC8hyepH0t7KDwQotsZoKI3/YFA47Ct0WZNvOnm9rypAZJq2ug5VkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711175626; c=relaxed/simple;
-	bh=9MoRzpMorl4jmgjybPXxJ3FOpwPB8iAT0iT1EWRFdR8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=q02MYdkdNdJW8WCiMSdjPrg2KTik1qvAOOX0BxKWA2CvhVR6Chb4vKZK5sQPhGJLpHzRb89K0+vCL5O5G4Xhwiz5BoGdcCVFsdyFqLwiXzyG4Ysm5KvZe3hesH+zy1AGYy1GkjnQ1T7GGyMwdOaT7do71RY22jPWUqNcY81OrVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OxJHeHs0; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-610b83ff92bso51148067b3.1
-        for <stable@vger.kernel.org>; Fri, 22 Mar 2024 23:33:44 -0700 (PDT)
+	s=arc-20240116; t=1711177165; c=relaxed/simple;
+	bh=nRJDueQBDn4xbmbB65HmUo5mxerLOF+EPeE6Yi0Vi9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rRdXEqLX3rDq1Oc3UeULC7Ve6wV85f1a/8nCJ0J2vps1ALUN9f3EAUcdnOXjFVdyhmuTZnFk+l/vAkSx9rZWko8h1RK8TXTZPMCTjXtJbMtm8zodD/GXsKMuJpFS6wXfa7YOu8nlOn8J5Jwp2Tyru5nF/RVT09/vT0ehIEecZx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ravnborg.org; spf=none smtp.mailfrom=ravnborg.org; dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b=i6jnN+xq; dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b=cVjUCt3q; arc=none smtp.client-ip=46.30.211.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ravnborg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ravnborg.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711175623; x=1711780423; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=txx7wotKqYRR4TcLWSwMoKBZaEfj0wAl/bTcQ8vVQKg=;
-        b=OxJHeHs0Hv+yCqQjLHaB23SluVeUJE9GjE7FKuiyjZzMX4NHtasCaGDOOm/aeyoHGO
-         8sWQsYDMzX2Eaqbjp6i1s5DO1Tc4Cxy83IbzEiO/UT101GP7FI3l2XGSy8HgWfG+xXS7
-         /notuJVtG2c1W20RxLEV6SK9J7hT0geqWO60Do2BdG/+VAvyZLCUY57idZ9QW+EoX2Ql
-         YElaq5k9O/vs7wcmN3JV64hmIXmeNXDKEhMenrk4n8ruwV2wvSgNapVuNtbjHThpioqG
-         46n/yvxCnH7eXrRG9YpSLOEChnMr7kY+dC8HQ16Ot/q/VgP2wQQdiMjxF2v56esx1Bf7
-         wBuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711175623; x=1711780423;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=txx7wotKqYRR4TcLWSwMoKBZaEfj0wAl/bTcQ8vVQKg=;
-        b=hENpVZUwHU+kkBxmLC13eA+h0Z6YOy4mCJxA+fAH27Pb6+GHumBsZRT3biRGYfyr1i
-         HXUNEL5Xxj/GFgk1uDYSrh+gOJ0fm3T37QAhu61QbmGt5AEh0rJTXKXmY3viYXBqZcgG
-         jjIcAbx3jrE+vZxIrVQTnYozSoDFn/LLZmFRHok5ueT59OqfY/B6kobjcNL3NMLTilAG
-         T5sll06hdakrJ6ZvkF/V7AfrEGsq6CLSGHND7IoI37r1mUICpB17ZCj5nUJNN6yFNYLK
-         myoEOTTzLHjy50lkqUsgUxx09A1znZmxYP6BgDQC37lRcmDm17O83K+lIgPtC9WbZ7eX
-         yLnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpS8lBfKH9pnj+0Ng1IdFnW0j/cZMkOG7d4KRqBPGfxIJToCCSINnvLUD0WgzF2h8xQ3l2drXS8hB52Ro7okweURCiunnZ
-X-Gm-Message-State: AOJu0YybhhFqJ06FYSBic1Rot4dWvhReaA+/YtJNkqs03kfS6Nv2/oKX
-	brNwCbV0m+ILArkiaT/L06D/aHckVU0SqP3AFkCAszP0o0chVBNzV5bfHuBz/njjgA==
-X-Google-Smtp-Source: AGHT+IEk5aj2iQAOOQTVlpVPwtoj+Ahn1h2Lsg5jYpIXleZg2+JKC8U+krr/mfKR++Kv6+vz8+cIUOs=
-X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:925])
- (user=ovt job=sendgmr) by 2002:a81:49cd:0:b0:60c:c986:7cdd with SMTP id
- w196-20020a8149cd000000b0060cc9867cddmr435562ywa.0.1711175623549; Fri, 22 Mar
- 2024 23:33:43 -0700 (PDT)
-Date: Sat, 23 Mar 2024 06:33:33 +0000
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=kHVpvatmACLIHkQBpgUbroXh+MVsVFpq6tArzu/ykOs=;
+	b=i6jnN+xq/VdVv+HkVL4ICMSlaFskB+k+43rEVsmWuJAGORLjqZZsVKaV5JWuTtZco2dadtZR3to5y
+	 srXJuv/2I75lVQj/mnuN94BytRg6V6uiKXOPWFFdA4OwAUmZdaPlaIbx3lVSxo3DgiMtY/yu/dGrXx
+	 Ba6KzApuIu+Tl8OeXqFTIW7Nthk1MHU8XI0ChjY7bWLpFWf7zLLa+yeeCCVqTx4tDVn7Y7mxpjI+nW
+	 vy6yFbjPZUVnbgPlarPlipdN16ijfQal4Cm5PAwQSeNbwB+DCIUOUu25XMmn+dQW7F5u7JaXSNAoLe
+	 4+YHY7YW1+iQv9YyHkWHGp6O8yIC+UA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=kHVpvatmACLIHkQBpgUbroXh+MVsVFpq6tArzu/ykOs=;
+	b=cVjUCt3qIpk1zz093kSoT9yNiAJtNN/6tMO6ofj+yw9LAoN5BEKt6xyNp3YuH+U6MZ5+0Xq5QAGoe
+	 mPps64CAw==
+X-HalOne-ID: b499b8b2-e8e2-11ee-9527-31e85a7fa845
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id b499b8b2-e8e2-11ee-9527-31e85a7fa845;
+	Sat, 23 Mar 2024 06:58:10 +0000 (UTC)
+Date: Sat, 23 Mar 2024 07:58:09 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: nbowler@draconx.ca, deller@gmx.de, javierm@redhat.com,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
+Message-ID: <20240323065809.GA886373@ravnborg.org>
+References: <20240322083005.24269-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
-Message-ID: <20240323063334.735219-1-ovt@google.com>
-Subject: [PATCH v2] efi: fix panic in kdump kernel
-From: Oleksandr Tymoshenko <ovt@google.com>
-To: Ard Biesheuvel <ardb@kernel.org>, Johan Hovold <johan+linaro@kernel.org>
-Cc: ovt@google.com, stable@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322083005.24269-1-tzimmermann@suse.de>
 
-Check if get_next_variable() is actually valid pointer before
-calling it. In kdump kernel this method is set to NULL that causes
-panic during the kexec-ed kernel boot.
-
-Tested with QEMU and OVMF firmware.
-
-Fixes: bad267f9e18f ("efi: verify that variable services are supported")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
----
-Changes in v2:
-  - Style fix
-  - Added Cc: stable
-  - Added Fixes: trailer
----
- drivers/firmware/efi/efi.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 8859fb0b006d..fdf07dd6f459 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -203,6 +203,8 @@ static bool generic_ops_supported(void)
- 
- 	name_size = sizeof(name);
- 
-+	if (!efi.get_next_variable)
-+		return false;
- 	status = efi.get_next_variable(&name_size, &name, &guid);
- 	if (status == EFI_UNSUPPORTED)
- 		return false;
--- 
-2.44.0.396.g6e790dbe36-goog
-
+On Fri, Mar 22, 2024 at 09:29:46AM +0100, Thomas Zimmermann wrote:
+> Framebuffer I/O on the Sparc Sbus requires read/write helpers for
+> I/O memory. Select FB_IOMEM_FOPS accordingly.
+> 
+> Reported-by: Nick Bowler <nbowler@draconx.ca>
+> Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
