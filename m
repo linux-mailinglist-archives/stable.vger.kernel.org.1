@@ -1,98 +1,109 @@
-Return-Path: <stable+bounces-28647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D85887758
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 07:59:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E9A8877E5
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 11:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C72F282B0C
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 06:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDFF2816A4
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 10:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C523C9454;
-	Sat, 23 Mar 2024 06:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B49FBE9;
+	Sat, 23 Mar 2024 10:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="i6jnN+xq";
-	dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b="cVjUCt3q"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a9tQKJWM"
 X-Original-To: stable@vger.kernel.org
-Received: from mailrelay4-1.pub.mailoutpod2-cph3.one.com (mailrelay4-1.pub.mailoutpod2-cph3.one.com [46.30.211.179])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6C9441
-	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 06:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E324B611A;
+	Sat, 23 Mar 2024 10:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711177165; cv=none; b=GBVPTbXEQ3gMkAdzymLJuuhbQoE3a4c3jFjfSnzZt2NrSCd+ZMgQbfL/I1o/Zb0j4iOYrySHtq5D3t8J3t84p68wxOjVjR02ks91CUC0AKMld+El2utKDyC8hyepH0t7KDwQotsZoKI3/YFA47Ct0WZNvOnm9rypAZJq2ug5VkY=
+	t=1711188466; cv=none; b=gx02DbFjOGbdzlofdRZJGn5HIvxDXqOwal08p0DMEm12mZj5staVVXxvyY95/CiYqS80V37H5RU2VT3pQPSr3u68nGDasjhHyUPS/u7kn/XvFEPmnXJVe+ebo2Sf5jcVwXsrp8NSqZfljBrruK5fg97jcPyUkvHINigx5Q1N/6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711177165; c=relaxed/simple;
-	bh=nRJDueQBDn4xbmbB65HmUo5mxerLOF+EPeE6Yi0Vi9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rRdXEqLX3rDq1Oc3UeULC7Ve6wV85f1a/8nCJ0J2vps1ALUN9f3EAUcdnOXjFVdyhmuTZnFk+l/vAkSx9rZWko8h1RK8TXTZPMCTjXtJbMtm8zodD/GXsKMuJpFS6wXfa7YOu8nlOn8J5Jwp2Tyru5nF/RVT09/vT0ehIEecZx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ravnborg.org; spf=none smtp.mailfrom=ravnborg.org; dkim=pass (2048-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b=i6jnN+xq; dkim=permerror (0-bit key) header.d=ravnborg.org header.i=@ravnborg.org header.b=cVjUCt3q; arc=none smtp.client-ip=46.30.211.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ravnborg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ravnborg.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=rsa2;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=kHVpvatmACLIHkQBpgUbroXh+MVsVFpq6tArzu/ykOs=;
-	b=i6jnN+xq/VdVv+HkVL4ICMSlaFskB+k+43rEVsmWuJAGORLjqZZsVKaV5JWuTtZco2dadtZR3to5y
-	 srXJuv/2I75lVQj/mnuN94BytRg6V6uiKXOPWFFdA4OwAUmZdaPlaIbx3lVSxo3DgiMtY/yu/dGrXx
-	 Ba6KzApuIu+Tl8OeXqFTIW7Nthk1MHU8XI0ChjY7bWLpFWf7zLLa+yeeCCVqTx4tDVn7Y7mxpjI+nW
-	 vy6yFbjPZUVnbgPlarPlipdN16ijfQal4Cm5PAwQSeNbwB+DCIUOUu25XMmn+dQW7F5u7JaXSNAoLe
-	 4+YHY7YW1+iQv9YyHkWHGp6O8yIC+UA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=ed2;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=kHVpvatmACLIHkQBpgUbroXh+MVsVFpq6tArzu/ykOs=;
-	b=cVjUCt3qIpk1zz093kSoT9yNiAJtNN/6tMO6ofj+yw9LAoN5BEKt6xyNp3YuH+U6MZ5+0Xq5QAGoe
-	 mPps64CAw==
-X-HalOne-ID: b499b8b2-e8e2-11ee-9527-31e85a7fa845
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id b499b8b2-e8e2-11ee-9527-31e85a7fa845;
-	Sat, 23 Mar 2024 06:58:10 +0000 (UTC)
-Date: Sat, 23 Mar 2024 07:58:09 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: nbowler@draconx.ca, deller@gmx.de, javierm@redhat.com,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
-Message-ID: <20240323065809.GA886373@ravnborg.org>
-References: <20240322083005.24269-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1711188466; c=relaxed/simple;
+	bh=yrz5tJD2ivBv8gxu9RFIQB3uNbtNOvkzFSgl/OgbRwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p0QRTxcyxNBew80hn+SNvgbryzRT/QlxS2bR8d7Gl1zmNrhDf4NDfrNvX33CIzKMQxYtk2PT0IaR70ffJ1TBDYyMBwXjZtsJQP8PSHm6QQagxqqqpOidjVtgrYTtfVFfu+9AHYvxHYYraVmparoRvFOzVfPy6Pke7ZR+mGfDSoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a9tQKJWM; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5448AE0002;
+	Sat, 23 Mar 2024 10:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711188460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GV1XuF5JPp4v9bymBXmpBt4KWMPJCGuzZuFHxkgtHXI=;
+	b=a9tQKJWMioaXkkZXzJKhyupBC0HxXD7byrFMal0CMz3Vp6zrsiZtfOxpcMbl5TNjpCWTVc
+	OznU9lGvw8iS4zS8fyUthRJ+yLLarToIftuK/RLAmwCHqjl8vAWHvPaB37SHhIaEC7L0s2
+	5nlscm6QXxxrL/qs14et4VpAzTEQwcciyu2hdeB3gW7IDodyl0kJOHOzhv0En3gro4gSIP
+	sfYK236t3T6CgwtDIEkvQapzWV7cJKmMEnqlQpYWTvdhyj87rul3U5goeysSRAt/UmDOby
+	gLiIXbxquLXbiRzk4XYedFHFMqnD7u+3FnaKaDjK5W4j7T4GPqhJ1UcUjQvLzA==
+Message-ID: <4c87bc80-c4e4-4a7d-a1d4-c2f90ffbe791@bootlin.com>
+Date: Sat, 23 Mar 2024 11:07:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240322083005.24269-1-tzimmermann@suse.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "wifi: wilc1000: revert reset line logic flip" has been
+ added to the 6.1-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>,
+ stable@vger.kernel.org
+References: <20240322181725.114042-1-sashal@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <20240322181725.114042-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On Fri, Mar 22, 2024 at 09:29:46AM +0100, Thomas Zimmermann wrote:
-> Framebuffer I/O on the Sparc Sbus requires read/write helpers for
-> I/O memory. Select FB_IOMEM_FOPS accordingly.
+Hello,
+
+On 3/22/24 19:17, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Reported-by: Nick Bowler <nbowler@draconx.ca>
-> Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+>     wifi: wilc1000: revert reset line logic flip
+> 
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      wifi-wilc1000-revert-reset-line-logic-flip.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+
+This patch is expected to introduce a breakage on platforms using a wrong device
+tree description. After discussing this consequence with wireless and DT people
+(see this patch RFC in [1]), it has been decided that this is tolerable. However,
+despite the Fixes tag I have put in the patch, I am not sure it is OK to also
+introduce this breakage for people just updating their stable kernels ? My
+opinion here is that they should get this break only when updating to a new
+kernel release, not stable, so I _would_ keep this patch out of stable trees
+(currently applied to 6.1, 6.6, 6.7 and 6.8, if I have followed correctly).
+
+Thanks,
+
+Alexis
+
+[1]
+https://lore.kernel.org/all/20240213-wilc_1000_reset_line-v1-1-e01da2b23fed@bootlin.com/
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
