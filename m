@@ -1,111 +1,139 @@
-Return-Path: <stable+bounces-28649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24ED7887878
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 13:16:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F24388795A
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 17:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E82B1C21B71
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 12:16:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004EC28204F
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 16:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83B82942A;
-	Sat, 23 Mar 2024 12:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161245029;
+	Sat, 23 Mar 2024 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMax+p5K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+kYI9rw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43330224C7;
-	Sat, 23 Mar 2024 12:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99111EB34
+	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 16:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711196164; cv=none; b=U4tiTGvsyfbMdqrFfCgntP0aktCtlixhPhK9ErR2rvTguq4TGbS/kUi3RVU4LI3MpBTJ9zbQCdDXjaHq8ysfr5B5+n620EDnRjNlZLNG2XfYFuDvuARwvZoTYDfXJGHrmJqsYhxJ2q/x51KweWHHPg0uRztlSKXPEl/E9HYtApg=
+	t=1711210692; cv=none; b=oxmYvGOW1OpsAZ14kuuBxtVl1gO32kayNhnZq7TkU1WSKQ5TJkq8jEAda5pGYcRta9RHhVvuNn9u3jcVVtRmu/u7flmZPt9KmNtJabBhRN3rqcKdDPH9Wd9IJjnbglxVBCWT/2pmuKIFjASmifOtRVbKShJJr+HiPVSffvh1kbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711196164; c=relaxed/simple;
-	bh=298pc/6jgFUt0TwsCfTIdMnWzb5pr9qYj3xJKL5h9b4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dtbwy+Ga88SjO2IQI59Nv9Owz1dc7BsltlYNmbR40DTppbvhV7ipLFAi6P7H5Q0zFivlLQ1LG3oHlH7UK8Q8wtwhX9Atgc1s48QefMPqOGIKVkATJCIWhqjHVSZpTqD3nNb1xHRSM924gdaqcv4tbRLyk14q0LSg4d5SAHuluZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMax+p5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1D8C43390;
-	Sat, 23 Mar 2024 12:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711196163;
-	bh=298pc/6jgFUt0TwsCfTIdMnWzb5pr9qYj3xJKL5h9b4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QMax+p5KYlB+npS6Z4iPkf+3iwEXX34LNFxzva2NMTymhzQ2p+A1obKHyBhQUGOwZ
-	 Qw4sJkEcc3vIUBZBNOalhDX+nRpzY31zZ2C85/vzZVv6NTlNDvcO/SSMg06pSdCsOp
-	 ydxnEkcB+4mCsJqZLeEx5ndCIkfL3qM/K/Q7kLLvgJV3rk7EJWT8l+TFE9xznwV05i
-	 9YsYB3UDpdh4o3QwLiH7Ab+9iMXEZLSGMOAyYK7EU/oVyZjOJOP9qiP0nOF6TIHKWu
-	 VU4ov1y4QOxbxkLSWLJ3LAKwUbgRoQH4eChYDR2ONZ/bcEOdvagoWLXG5ISzepx4Rj
-	 Adg8I+HgUrgbg==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d6a1af9c07so41272071fa.3;
-        Sat, 23 Mar 2024 05:16:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW6AxBjmvSJOmpM+Ch9gvalN4wLqx013Ep/e2k+2P+FKAAy+bX2dQKOPFq8ThZd+UtuFEquy8BDpuoniad6nN5CrRUwhcpbU2YdzXoi/n4uUPcH9CUhdz0v+nDnFBDKTWheSAV7NfbYDeUsCjQuEACxjK0HZfR+ehg5YD9wnJP+
-X-Gm-Message-State: AOJu0YwZ8PgLbc4G4ilTQHuFfRB+Buv2aNCZdPcxvSkG+DeEl3hpsR3g
-	S+w0fZvBbYhC85gJne2VGcoL4uKU3KTpjmrGS7nR+logM9Cdhz+ZIYoHdtL434Mvcvo42TeHeiN
-	kQEXEEyfBDTUtVmyxxyzxpo6EHeg=
-X-Google-Smtp-Source: AGHT+IHUBS5vtwn45KMvgPpQE099s2U9NrhFU0h6pQa4pjHfgrf1U2XXsDqbwTu0oIxWu3ZZUniBzF45ZNzdWf2sx2s=
-X-Received: by 2002:a05:651c:11c9:b0:2d3:ada4:1228 with SMTP id
- z9-20020a05651c11c900b002d3ada41228mr1357649ljo.18.1711196162074; Sat, 23 Mar
- 2024 05:16:02 -0700 (PDT)
+	s=arc-20240116; t=1711210692; c=relaxed/simple;
+	bh=qMWZmmyT8evXf26KRzXzsGkaYbvEfz87ruS8pEi87yM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=tMEa7RCCIS4OXsi6IIeMa1x0o+Jzjgt0OJFu7mYSHK7Dijj3YsAJrZoIwbXfqpL6jAawe3+GdB/NddWMIcrIAiwkOtpFYgPki5c3wMH/3OHy0XZxagJE2N4Z6Br1t3LX4rgsPpgEcYr/44i1Kk8pCpVonh3vQRx/xYgdBEgIhYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+kYI9rw; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33ff53528ceso1846017f8f.0
+        for <stable@vger.kernel.org>; Sat, 23 Mar 2024 09:18:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711210689; x=1711815489; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iPw/8WJzxV7HjFfhMmIei/3rtzbLBOeSOetLCesVtF8=;
+        b=O+kYI9rwk4fKI7PuMG+mG1WmRGNkoJFSyiyxACwgC9stmmxetw072SmT6JAovEhjvC
+         L79Du7zxGMriYkTbB97TPQcIkfwxjMqzuylP+pYphPR7KcU2LiXOyZoE3Z3CE0Ljs8n7
+         uTxGH2Cp6P0gVxmMGsiGaDLflIhtTqHn5jfndwiZ9hFV5iZdKFe5S+Jecttt9RsKehXj
+         HgaeA0L/6ONw2GEhF21wNSOhXDJlcNViPgJCelOGyVP6RzqlVobsY1rmh5LU7OBvcoTC
+         i7XqQ5ocU3oJ0kfaHgnMQWT1nMpuLIibgINP25egeoTZC4NHz18YilA5cf7VzfQCj/vI
+         k+YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711210689; x=1711815489;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iPw/8WJzxV7HjFfhMmIei/3rtzbLBOeSOetLCesVtF8=;
+        b=FHAJnePdQAIasQF3rpBsIL8Q56MzyD7mWhuPDWJO1gFZvF2csIRCsTtVZ5mI7E/eCA
+         gRjMz/xQkX7fc+nGeLguvAqsxmjaZ4C0K2GdLzl0EjwQT5AOTlaR67yf5Z+MJ+g2Bguj
+         76EbawXayOUisbrVJZzj+5w8E3Ab/Is7rWvJc6LtifFTuVv8b+YktzHdu6cKQqnxHoyy
+         5OdIkAghtj02J5LgOY1OgW9y3rDCpTm9BLgsbF3ju/En0rdA6zrZ5/CpXeDKbcTbEsgL
+         GoLAXsoBwsWxa8tJIXsCxq5u2sWlYE7C1aUnm+Gz7DlFoynA/lvqP3n5GqF1LT3wjRx9
+         U8zg==
+X-Gm-Message-State: AOJu0YwjH3hTB9BCwKOr/zHayZaujqXktuxRCyCxBIG/yeLVZPBRQlbI
+	eSblf78Mlsl9hWoT4UUEkfduQKwt40WAVO4aQe91SYTYfBpy+osjsHIi2QjC
+X-Google-Smtp-Source: AGHT+IH0KC1CyjfyzssjwDhcDNgOXXC/Go93IwgPHlwEBk0miUYrlJ5rIbq5jhZmn4xZcMykR7qkqA==
+X-Received: by 2002:a5d:5685:0:b0:341:c4d0:4b93 with SMTP id f5-20020a5d5685000000b00341c4d04b93mr706379wrv.43.1711210689043;
+        Sat, 23 Mar 2024 09:18:09 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id bs2-20020a056000070200b00341c310bd4bsm1259472wrb.30.2024.03.23.09.18.08
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Mar 2024 09:18:08 -0700 (PDT)
+Message-ID: <aa20f8ba-d626-4f82-9312-6cc2a4cfc097@gmail.com>
+Date: Sat, 23 Mar 2024 18:18:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240323063334.735219-1-ovt@google.com>
-In-Reply-To: <20240323063334.735219-1-ovt@google.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sat, 23 Mar 2024 14:15:50 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF0oM4CZM6GBQ+JNdk0ipf62cVJWjaR7Qy8YEU2B6=MVg@mail.gmail.com>
-Message-ID: <CAMj1kXF0oM4CZM6GBQ+JNdk0ipf62cVJWjaR7Qy8YEU2B6=MVg@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: fix panic in kdump kernel
-To: Oleksandr Tymoshenko <ovt@google.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtw88: 8821cu: Fix connection failure
+To: stable@vger.kernel.org
+References: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
+Content-Language: en-US
+In-Reply-To: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 23 Mar 2024 at 08:33, Oleksandr Tymoshenko <ovt@google.com> wrote:
->
-> Check if get_next_variable() is actually valid pointer before
-> calling it. In kdump kernel this method is set to NULL that causes
-> panic during the kexec-ed kernel boot.
->
-> Tested with QEMU and OVMF firmware.
->
-> Fixes: bad267f9e18f ("efi: verify that variable services are supported")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-Thanks. Queued as a fix.
+[ Upstream commit 605d7c0b05eecb985273b1647070497142c470d3 ]
 
-> ---
-> Changes in v2:
->   - Style fix
->   - Added Cc: stable
->   - Added Fixes: trailer
-> ---
->  drivers/firmware/efi/efi.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 8859fb0b006d..fdf07dd6f459 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -203,6 +203,8 @@ static bool generic_ops_supported(void)
->
->         name_size = sizeof(name);
->
-> +       if (!efi.get_next_variable)
-> +               return false;
->         status = efi.get_next_variable(&name_size, &name, &guid);
->         if (status == EFI_UNSUPPORTED)
->                 return false;
-> --
-> 2.44.0.396.g6e790dbe36-goog
->
+Clear bit 8 of REG_SYS_STATUS1 after MAC power on.
+
+Without this, some RTL8821CU and RTL8811CU cannot connect to any
+network:
+
+Feb 19 13:33:11 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 1/3)
+Feb 19 13:33:13 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 2/3)
+Feb 19 13:33:14 ideapad2 kernel: wlp3s0f3u2: send auth to
+	90:55:de:__:__:__ (try 3/3)
+Feb 19 13:33:15 ideapad2 kernel: wlp3s0f3u2: authentication with
+	90:55:de:__:__:__ timed out
+
+The RTL8822CU and RTL8822BU out-of-tree drivers do this as well, so do
+it for all three types of chips.
+
+Tested with RTL8811CU (Tenda U9 V2.0).
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/aeeefad9-27c8-4506-a510-ef9a9a8731a4@gmail.com
+---
+ drivers/net/wireless/realtek/rtw88/mac.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 298663b03580..0c1c1ff31085 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -309,6 +309,13 @@ static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
+ 	pwr_seq = pwr_on ? chip->pwr_on_seq : chip->pwr_off_seq;
+ 	ret = rtw_pwr_seq_parser(rtwdev, pwr_seq);
+ 
++	if (pwr_on && rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB) {
++		if (chip->id == RTW_CHIP_TYPE_8822C ||
++		    chip->id == RTW_CHIP_TYPE_8822B ||
++		    chip->id == RTW_CHIP_TYPE_8821C)
++			rtw_write8_clr(rtwdev, REG_SYS_STATUS1 + 1, BIT(0));
++	}
++
+ 	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_SDIO)
+ 		rtw_write32(rtwdev, REG_SDIO_HIMR, imr);
+ 
+-- 
+2.43.2
 
