@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-28659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A53E8879D0
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 18:50:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8B8887A88
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 22:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 591491C20B92
-	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 17:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DCE21F21692
+	for <lists+stable@lfdr.de>; Sat, 23 Mar 2024 21:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD94B535A6;
-	Sat, 23 Mar 2024 17:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AA65A119;
+	Sat, 23 Mar 2024 21:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mIFtlk4m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E1clbKzx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584311EEF8
-	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 17:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2113022625
+	for <stable@vger.kernel.org>; Sat, 23 Mar 2024 21:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711216197; cv=none; b=S7cSRg77+sRfKj87NKlFkU1Ex3S/r8zoI/xmkvRpflqybqi/gx10YFr+WPudS7vVX0bmZqdBv7bjb0LHmDZ/7v+HZ0S+SkKJLZV2BPu3vLunAq93N+JDpjckEZZFwlo/0Qg2A79wm40kGxD/ujG/bx/6SjPxxlsd6pLuXhQ4TDA=
+	t=1711230492; cv=none; b=Us/gq9hdgs+1v2GjbVeHDIQ00zZmp08SzLxzml63EfbIdYDLgrMFCXiKB+/3aFOxD37eCFuIZL41ZVmTN9MkoYojFYtdTTwJ0b0pqq9M8QTNVYZmZo4oIvChzR3zauqY3pbpGjwAc180YtdR59OD6EubqILCWuc20P6hzFYQt8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711216197; c=relaxed/simple;
-	bh=XXcYh3g1PoFWVmk6OQsHSvCqzvu5bJ/43aZzu0g0Gyk=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=DJEiJXg83DpIBksPIV3BeDLUd6hAW1Ev9lqsTARS26hRhjySCIk2RcPt4WT5NDX33L9RSTKcZ+LLC+MLDUUkROKjW4slkTVEmTbkwx6GuRQBWxhdRRQJKT5ZfWIMYJTK8RG9/RQybFkyIEJ2uGSgh0GYP9KZegk/t5A2QltoDME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mIFtlk4m; arc=none smtp.client-ip=209.85.160.49
+	s=arc-20240116; t=1711230492; c=relaxed/simple;
+	bh=prtJMPgUU2oRzHDb/DgGlKpWHhxrJkqwVkhAGks0SJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rq9BLRtniwUHee2KB+GmWo+vVR78XKRO1P9CUf3JLNLffEgCSYvgFfkfW1yaM/90MxpVp7W5qK3f5nSRQ9sR3ozQdcQny9ZYnxLmdc225bvud20xHhpNPDDxLbKHpFI/sA8duULz0UgUzqYBCQntIcSMl4bopDJj/2ch3txua6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E1clbKzx; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-222ba2a19bdso1854364fac.1
-        for <stable@vger.kernel.org>; Sat, 23 Mar 2024 10:49:56 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3416df43cabso1966619f8f.3
+        for <stable@vger.kernel.org>; Sat, 23 Mar 2024 14:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711216194; x=1711820994; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+Ub+4RUktPVGDechh3+AsinqjcVtytPxzuJI7uSOzY=;
-        b=mIFtlk4mvOBHRnOFeovZ8s698mJ5WpSxdov4U5GggOlG5ea1wSTZAjUkofdG9buat5
-         +PAhs6xQl93LP+Z7QRBKIScUkmpjHtPtqIvccFhY6i48sn78lBHu165hVGxMOk9LwYjh
-         +J91P5EKV/J7SnZriaOSV3c4ilkWBUqPo0tAMAriV2xQ/+J9KWcseh1bcS1ZqWbyGxfE
-         SuI+1iP2kjsksR52hMZAOnoby3Yo3RHqdtKNDIzLAKhsmXjOIuTLstcIdvFj6PuBj6UY
-         IadC6mgAN/78XjYr5GfIPp6O4898xdJi9bA2k1kSABtbw+KFw52q6pOh2+/43FHQLZ2j
-         sZ9A==
+        d=gmail.com; s=20230601; t=1711230489; x=1711835289; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uCMUS0MlnJpeL+ScI7XJHjplatXCOFZ9gPJ9nku76U4=;
+        b=E1clbKzxCqQA3zOeb2IiKMz8XWs+VVNs+oe28AIXbJLpP78SiDZhrLkDh7IXI28pT8
+         yPk6Elv2tn2LsN+g0C8dpchnFsIt8/DOya0kGmSlMgOTYJUenGYw7IuPnL3McrDTtLXk
+         OPyk9nTPmz11Ly9kyb4nHvMrXuzVQUosz3wcaiS9LMF8ksU6RdEMYtQKH5TCXp61KLbW
+         hQFy5anWO8hvR4oHkoQOPgYlFTLl/1idfwDbmDNsM+CmtwSkc66OTN2pTQBF2nw9pGOG
+         zASYckI7Ppl39xifXg6Ee0sdstwOFj9Z3816H+7LcYJOQ6QSCKixMfaGU9yOzhSMhuC9
+         nBgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711216194; x=1711820994;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=m+Ub+4RUktPVGDechh3+AsinqjcVtytPxzuJI7uSOzY=;
-        b=J1gSFZs5+a/J5x+RnAcZEkOc1seezmSqI1IbtS0souvJ6CJVD2xoeZ0oZocoUwBXHg
-         6boj9GLetbKoW34EAE2nZg8ZBNN7yTbfsoHVdeduG76uUU6OlwjDTHjrot30VrKGjmSK
-         TjZsJqlBlUdMXY8NsCegHJ8MoR2VBO3jWF9q+tqokgT7hJWOoKEG49ECziR8kdOlPHym
-         1GgCl99EtZ6334+K62zHyCOZGe6aNtvi3rPdZoY7NiIEfyVRJRz4uDROs0oJEGFT4oIX
-         9KJJZHfuU+SOjPgwKYINNlktujf6uR3dENIDPO0W/AmcUALixZBU8hkbk4Y6o9u8Npsw
-         RIyw==
-X-Gm-Message-State: AOJu0YwvoAqUwNDExFwyMaFbhtWrBorydSCH2JNDapFnSbWcbZwUSPmE
-	tLdix18t+dXfkhpy48Z7s5uWMGWNm1I4ngKC99BFylNGBnOX+vxWfSlKwJRA
-X-Google-Smtp-Source: AGHT+IHKKto21wwHRD8k6bkUNWl+o6M1BjNJNxMo/fYEx7NhH0kN44JfvA/g1PGMxqQKMHlBQN5gaA==
-X-Received: by 2002:a05:6871:107:b0:229:e636:921f with SMTP id y7-20020a056871010700b00229e636921fmr3319606oab.49.1711216194438;
-        Sat, 23 Mar 2024 10:49:54 -0700 (PDT)
-Received: from ?IPV6:2600:1700:70:f702:9c77:c230:a0ba:a1a1? ([2600:1700:70:f702:9c77:c230:a0ba:a1a1])
-        by smtp.gmail.com with ESMTPSA id op9-20020a0568702dc900b00220a82352c9sm580320oab.17.2024.03.23.10.49.53
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1711230489; x=1711835289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uCMUS0MlnJpeL+ScI7XJHjplatXCOFZ9gPJ9nku76U4=;
+        b=ezsHAewHgz6/VVI9YJ74kTJuov0kUhmkT05T4D6jE6j8mv0TWWRbUa8F5fp/VavX6x
+         ypDCsr5LiQgplYmbjFhFEbqcQeRxAswMvM2aBxpy6IKrynYPvL2ZHn8duBOPjK9fGCrs
+         JI+YXE7SMELdBB6mj5UV4SXZakpf+vSTCfMYiH3SWMR3qVaF+mO98jUPcMbIY8+tqE1o
+         N8enx+INsJZzsqDrhyLegIy544j9gREBgoz31FbgzYE+dtiBjBsnVOtqwXh2c5GbwPwZ
+         Sg70W0aE6ZO8b1ufSR0W0oAJnr601yP/CiRp5q2Wf0norWYrBHiJOImIscVHUtoupTZG
+         UXDQ==
+X-Gm-Message-State: AOJu0YxFHDljI431QxSAOOlqfe0hJSukY59fa94j+1Iym3wFwyOaTbSS
+	Yvp/6mE34XRHVq7Ht7++35ivAxfJum/La1NDzyiF05uC0hFb23W4esSLSXaB
+X-Google-Smtp-Source: AGHT+IFq+okjJQhOTPWpuo3wJdyiInYXf/s1Ue0vrEMk11ksCP1UOpfb3/cT//sRYAZtfgzibKn6Fw==
+X-Received: by 2002:a5d:6b85:0:b0:341:be75:5e6c with SMTP id n5-20020a5d6b85000000b00341be755e6cmr1905197wrx.3.1711230489311;
+        Sat, 23 Mar 2024 14:48:09 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.211])
+        by smtp.gmail.com with ESMTPSA id k7-20020a5d5247000000b0033dd2a7167fsm5273647wrc.29.2024.03.23.14.48.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Mar 2024 10:49:54 -0700 (PDT)
-Message-ID: <c5e3c677-0687-4417-a8af-b5000295309b@gmail.com>
-Date: Sat, 23 Mar 2024 12:49:53 -0500
+        Sat, 23 Mar 2024 14:48:08 -0700 (PDT)
+Message-ID: <3585a148-2d88-454a-a6b1-d34cfa64460c@gmail.com>
+Date: Sat, 23 Mar 2024 23:48:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,25 +75,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtw88: 8821cu: Fix connection failure
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+References: <f12ed39d-28e8-4b8b-8d22-447bcf295afc@gmail.com>
+ <aa20f8ba-d626-4f82-9312-6cc2a4cfc097@gmail.com>
+ <2024032355-liking-calamari-1571@gregkh>
 Content-Language: en-US
-To: stable@vger.kernel.org
-From: Mario Limonciello <superm1@gmail.com>
-Subject: VRR on Framework 16
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <2024032355-liking-calamari-1571@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On 23/03/2024 18:23, Greg KH wrote:
+> On Sat, Mar 23, 2024 at 06:18:07PM +0200, Bitterblue Smith wrote:
+>> From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>
+>> [ Upstream commit 605d7c0b05eecb985273b1647070497142c470d3 ]
+>>
+>> Clear bit 8 of REG_SYS_STATUS1 after MAC power on.
+>>
+>> Without this, some RTL8821CU and RTL8811CU cannot connect to any
+>> network:
+>>
+>> Feb 19 13:33:11 ideapad2 kernel: wlp3s0f3u2: send auth to
+>> 	90:55:de:__:__:__ (try 1/3)
+>> Feb 19 13:33:13 ideapad2 kernel: wlp3s0f3u2: send auth to
+>> 	90:55:de:__:__:__ (try 2/3)
+>> Feb 19 13:33:14 ideapad2 kernel: wlp3s0f3u2: send auth to
+>> 	90:55:de:__:__:__ (try 3/3)
+>> Feb 19 13:33:15 ideapad2 kernel: wlp3s0f3u2: authentication with
+>> 	90:55:de:__:__:__ timed out
+>>
+>> The RTL8822CU and RTL8822BU out-of-tree drivers do this as well, so do
+>> it for all three types of chips.
+>>
+>> Tested with RTL8811CU (Tenda U9 V2.0).
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+>> Link: https://msgid.link/aeeefad9-27c8-4506-a510-ef9a9a8731a4@gmail.com
+>> ---
+>>  drivers/net/wireless/realtek/rtw88/mac.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+> 
+> What stable kernel(s) is this to be applied to?
+> 
+> thanks,
+> 
+> greg k-h
 
-Framework 16 supports variable refresh rates in it's panel but only 
-advertises it in the DisplayID block not the EDID.  As Plasma 6 and 
-GNOME 46 support VRR this problem is exposed to more people.
+6.6, 6.7, and 6.8, please. The older ones don't have USB support
+in rtw88.
 
-This is fixed by:
-
-2f14c0c8cae8 ("drm/amd/display: Use freesync when 
-`DRM_EDID_FEATURE_CONTINUOUS_FREQ` found")
-
-Can you please bring this back to 6.6.y+?
-
-Thanks,
+Thank you.
 
