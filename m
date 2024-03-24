@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-31965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-31966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B298F889A11
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:23:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718EB889A17
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B871C32791
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 10:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11B831F31272
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 10:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F053B7F07;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543443B7F0B;
 	Mon, 25 Mar 2024 03:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyN32Nmf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TC+P/fvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA47517C638;
-	Sun, 24 Mar 2024 23:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB41317C641;
+	Sun, 24 Mar 2024 23:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711323773; cv=none; b=dN0fYrL4HUrTx1OdiIctt01hvemwTpmhurJ+Z2bInVSjujScRDgOgf43E4ffOUeDibwwJr87na5Jqd+eboF1iM27N8jDXX2XE5Fcfz9Ms9qR0nm9Ll2h3EeGx/RFWKsHOVqJvtcelPJAwUC5UY/0lM+8wygiuZrQs85ISZ8t7EM=
+	t=1711323774; cv=none; b=DMzKg3UVRrt4TkKg5wBC+b7xBL6cz0jrWZqVcKU96Uke5BFaTDTG2YWYthYSS1bvaLoBTNdigQ2qTJeTcIdN3+G9xNd8OJaeqxgQ/xXYSjGfYsPRFsKeI+0CtvdajvzjGZ5r7Mh4CMv/MjQDvPDt7XdtnMBw85/C32EWvGwp7w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711323773; c=relaxed/simple;
-	bh=BAZzIM9JpzWbgzhrY9OZLIrNdLPXeXZI5MUQmeGqK7I=;
+	s=arc-20240116; t=1711323774; c=relaxed/simple;
+	bh=S8Yjdnpevw2WVZxIsS5jm3Cwfo/mtdicJ9k3Caczv4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plUysMRRlz/nz0beqWT2RP4xdC2fpfavxUgk9aVH+N8cZnp9m9ifvTWZGMgCD64nGuVogfYKuilHqb4zdwjvL6TDh+QpbGOSTSTTrjOhVpGBNAlKKwDH3JK2TBDcflpcBG5ZdSsk3AYapEm4uLy+zr7tW022eOz9+IxcRGE6zBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyN32Nmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10F5C433A6;
-	Sun, 24 Mar 2024 23:42:52 +0000 (UTC)
+	 MIME-Version; b=o4nUcHBDTADIA2ZqrK0dVP86WZ5WmxocQehMsW2MZ6WFPXwpYPD7W2zgTjGISxfgNqcLwK4C0R/a9RdcIgAFoxfAoGY82ltkpP5b215BJV8hLjoC6imFGmmLMM9klsWXpl2JT8+4rRWeTRTBUeSaH1dIjLPPy87uimkB49lpQOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TC+P/fvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBB0C433C7;
+	Sun, 24 Mar 2024 23:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711323773;
-	bh=BAZzIM9JpzWbgzhrY9OZLIrNdLPXeXZI5MUQmeGqK7I=;
+	s=k20201202; t=1711323774;
+	bh=S8Yjdnpevw2WVZxIsS5jm3Cwfo/mtdicJ9k3Caczv4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyN32NmfxW8nyC4FbOmlwy7HSF9MGjczFcJaQ2ol6BNu9lt+bBQjV1FwcPs3+8KKt
-	 tPnTt7fLaNC0IIQcN9KnNzul7qqUr++F76Mbgjq/hqhudSHCe1zGTHe7VOoU3gD3CI
-	 EygCaYiQOgkSnnNZjNPZEFmz2ijJ48LAx848QmmmSlNI+WNaOi2YRa4Ps/bUt9AZFz
-	 VngJHB+Z5iJizc0JifPFkzbuickCYJLYuhEFTv/MP20spTIo1sOu1Px9d1Hsl6XmW3
-	 A/e9iBTzi+wp5CTxR8Zqdgla3a0fy5+LSXMdC3xoY7CtNbTJUiBIWIXI9R65S14Vij
-	 9AzcnCuRWXXnQ==
+	b=TC+P/fvJp9NLSaNhcSR/QpPwkXL4nC9oA0UijMt0bSRnfYDCLGMr/vxEDcOEcIbaN
+	 Gdjn7fVmg5tpn8aA7phVE52ucMlwAxjuN0oAq7AO/dOhEZGxWDlR1Q0FBwtMh7mwol
+	 1UfsBKRFCeuXeO98PEZRpztyUmd0ahFiQsO3VLam+UZp9cbI4LpGbmOUZ/fCdIlylL
+	 zGTZsS/kMLybhmDA3T/kbr80Miou0LapEumfmLxlkXQIUnkx4ymNSAsc8ESzJ8mGiS
+	 QdRcQbxz+EHzEJEx6klAcGnv5gustVTzyzb9AzV2f+4Y995RlcF+BvBGCEPGTx5YVZ
+	 3smEH9IS5Ykcw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Jerome Brunet <jbrunet@baylibre.com>,
 	Justin Stitt <justinstitt@google.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/238] ASoC: meson: aiu: fix function pointer type mismatch
-Date: Sun, 24 Mar 2024 19:38:57 -0400
-Message-ID: <20240324234027.1354210-150-sashal@kernel.org>
+Subject: [PATCH 5.10 150/238] ASoC: meson: t9015: fix function pointer type mismatch
+Date: Sun, 24 Mar 2024 19:38:58 -0400
+Message-ID: <20240324234027.1354210-151-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324234027.1354210-1-sashal@kernel.org>
 References: <20240324234027.1354210-1-sashal@kernel.org>
@@ -67,81 +67,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 98ac85a00f31d2e9d5452b825a9ed0153d934043 ]
+[ Upstream commit 5ad992c71b6a8e8a547954addc7af9fbde6ca10a ]
 
 clang-16 warns about casting functions to incompatible types, as is done
 here to call clk_disable_unprepare:
 
-sound/soc/meson/aiu.c:243:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  243 |                                        (void(*)(void *))clk_disable_unprepare,
+sound/soc/meson/t9015.c:274:4: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  274 |                         (void(*)(void *))clk_disable_unprepare,
 
 The pattern of getting, enabling and setting a disable callback for a
 clock can be replaced with devm_clk_get_enabled(), which also fixes
 this warning.
 
-Fixes: 6ae9ca9ce986 ("ASoC: meson: aiu: add i2s and spdif support")
+Fixes: 33901f5b9b16 ("ASoC: meson: add t9015 internal DAC driver")
 Reported-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Reviewed-by: Justin Stitt <justinstitt@google.com>
-Link: https://msgid.link/r/20240213215807.3326688-2-jbrunet@baylibre.com
+Link: https://msgid.link/r/20240213215807.3326688-3-jbrunet@baylibre.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/aiu.c | 19 ++++---------------
- sound/soc/meson/aiu.h |  1 -
- 2 files changed, 4 insertions(+), 16 deletions(-)
+ sound/soc/meson/t9015.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/meson/aiu.c b/sound/soc/meson/aiu.c
-index 386a31a044700..03bc3e5b6cab5 100644
---- a/sound/soc/meson/aiu.c
-+++ b/sound/soc/meson/aiu.c
-@@ -215,11 +215,12 @@ static const char * const aiu_spdif_ids[] = {
- static int aiu_clk_get(struct device *dev)
- {
- 	struct aiu *aiu = dev_get_drvdata(dev);
+diff --git a/sound/soc/meson/t9015.c b/sound/soc/meson/t9015.c
+index cb1eaf678fc3f..b085aa65c688c 100644
+--- a/sound/soc/meson/t9015.c
++++ b/sound/soc/meson/t9015.c
+@@ -48,7 +48,6 @@
+ #define POWER_CFG	0x10
+ 
+ struct t9015 {
+-	struct clk *pclk;
+ 	struct regulator *avdd;
+ };
+ 
+@@ -250,6 +249,7 @@ static int t9015_probe(struct platform_device *pdev)
+ 	struct t9015 *priv;
+ 	void __iomem *regs;
+ 	struct regmap *regmap;
 +	struct clk *pclk;
  	int ret;
  
--	aiu->pclk = devm_clk_get(dev, "pclk");
--	if (IS_ERR(aiu->pclk))
--		return dev_err_probe(dev, PTR_ERR(aiu->pclk), "Can't get the aiu pclk\n");
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+@@ -257,26 +257,14 @@ static int t9015_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	platform_set_drvdata(pdev, priv);
+ 
+-	priv->pclk = devm_clk_get(dev, "pclk");
+-	if (IS_ERR(priv->pclk))
+-		return dev_err_probe(dev, PTR_ERR(priv->pclk), "failed to get core clock\n");
 +	pclk = devm_clk_get_enabled(dev, "pclk");
 +	if (IS_ERR(pclk))
-+		return dev_err_probe(dev, PTR_ERR(pclk), "Can't get the aiu pclk\n");
++		return dev_err_probe(dev, PTR_ERR(pclk), "failed to get core clock\n");
  
- 	aiu->spdif_mclk = devm_clk_get(dev, "spdif_mclk");
- 	if (IS_ERR(aiu->spdif_mclk))
-@@ -236,18 +237,6 @@ static int aiu_clk_get(struct device *dev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Can't get the spdif clocks\n");
+ 	priv->avdd = devm_regulator_get(dev, "AVDD");
+ 	if (IS_ERR(priv->avdd))
+ 		return dev_err_probe(dev, PTR_ERR(priv->avdd), "failed to AVDD\n");
  
--	ret = clk_prepare_enable(aiu->pclk);
+-	ret = clk_prepare_enable(priv->pclk);
 -	if (ret) {
--		dev_err(dev, "peripheral clock enable failed\n");
+-		dev_err(dev, "core clock enable failed\n");
 -		return ret;
 -	}
 -
 -	ret = devm_add_action_or_reset(dev,
--				       (void(*)(void *))clk_disable_unprepare,
--				       aiu->pclk);
+-			(void(*)(void *))clk_disable_unprepare,
+-			priv->pclk);
 -	if (ret)
--		dev_err(dev, "failed to add reset action on pclk");
+-		return ret;
 -
- 	return ret;
- }
- 
-diff --git a/sound/soc/meson/aiu.h b/sound/soc/meson/aiu.h
-index 87aa19ac4af3a..44f8c213d35a0 100644
---- a/sound/soc/meson/aiu.h
-+++ b/sound/soc/meson/aiu.h
-@@ -33,7 +33,6 @@ struct aiu_platform_data {
- };
- 
- struct aiu {
--	struct clk *pclk;
- 	struct clk *spdif_mclk;
- 	struct aiu_interface i2s;
- 	struct aiu_interface spdif;
+ 	ret = device_reset(dev);
+ 	if (ret) {
+ 		dev_err(dev, "reset failed\n");
 -- 
 2.43.0
 
