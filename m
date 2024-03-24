@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-31973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-30805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA92889A48
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:27:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F28888C7D
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 05:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54907B61A82
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 10:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F70A29233D
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 04:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6741622B68B;
-	Mon, 25 Mar 2024 03:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372671C0C16;
+	Mon, 25 Mar 2024 00:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhNm+kvA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxuGGTwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ECC284543;
-	Sun, 24 Mar 2024 23:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B5328454B;
+	Sun, 24 Mar 2024 23:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711323790; cv=none; b=Mc0rkj9aK++/QDwS4NS75xrRPxD7d9tvweK0v/umdIJ2A+2XBUiI4g7JZybrPt3zejGnGZBSZYUUIoH5wmdKw8W2zrGpAz4g7iJZm0kesoD+DCnCeJ6X2kRKPG4/UM7h5kuiO8j5ZyjeaWfTLfbhMWK0jhbqspUMrob+pdSaYSQ=
+	t=1711323791; cv=none; b=MNMyTHTwdJ3mJNHPFyF9sDkrBlEcTNJ/rNeLGb3/MRoy8j8ZGCVDYmLLbhXBYaLzTtuHgpdM2YBqb8C2KrqlMOYRWGg3PEa3c1xL1Gktlvqm9ZCq5mKJQ/l2LzohBBru9SisVHptobtAeVBXpRj04seOZBRp84Ger4TcQTcP4fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711323790; c=relaxed/simple;
-	bh=+v+Bo3Zpez8dY5cSC1s1jooMHNg7M0a4EuKuqRako8E=;
+	s=arc-20240116; t=1711323791; c=relaxed/simple;
+	bh=Ne5JUfK0bvfx027NwHX7WBuLWU4K3WaQyRAFp3b+FPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMl0Cpj9WzISAjQNoGkHzBo6O3NhQs91WP54VXo8F7K2STwZhTiSkyWj3IxONVVXzHe0X7LoUsGBWE/4fzeZQaMa3N/9OcRaJ1UgA5JcXavMKYNv8VjzGUUKm4WC9WOBIvugYMWjCEDW+8QFvJ6pUBEaYsHkyItJqdNmxJ2OOmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhNm+kvA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDF0C43390;
-	Sun, 24 Mar 2024 23:43:08 +0000 (UTC)
+	 MIME-Version; b=oWfYBXsNg8WlSsYsx0oah0HZgJvaIdAGXScU9YiQc61O7yszzaJniOQDg9oMzRgYt6hQ4aNWawRg8sSIO45m5Qwn5k7E9sy913cerPP927IGlpAIY9kQmkBIWxd6+18V0LkvJ9j+lZ1FvoLXg6a50FlwHQmKy5OzrczAQ2udtRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxuGGTwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC93C433C7;
+	Sun, 24 Mar 2024 23:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711323789;
-	bh=+v+Bo3Zpez8dY5cSC1s1jooMHNg7M0a4EuKuqRako8E=;
+	s=k20201202; t=1711323790;
+	bh=Ne5JUfK0bvfx027NwHX7WBuLWU4K3WaQyRAFp3b+FPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhNm+kvApIoymwcmvVsQwKjVpI4kCRa1cXFgmfQFioLIz1Z5jpEFkYkeuVN1OQnk2
-	 Rt9xKHTOjmcra93QlN+y5BRzKBvBTpRQFgMjm2nrSGl/N9NtGjbw3wyCAIAmpsbzVk
-	 IgPPJ8PZualqIih6vieMe1mD0d4+uOlDdq0mrD6k7f5jQWMuiFXYd4Cp1VlvvLTeuo
-	 Gv7kkSiYBQ0o1Q4ZU03O5h4+hgsZlfn2tcPgDnSM9jjvfQjR8Qi7nd1AtZRJlPVm1p
-	 BOYN9GhwzPBP9WjVj0ikJBhgpKR1rYbeeWH833B/P8xrky4r9uMvnYUnO66lBLNDO/
-	 VvP6BxVXNK1gQ==
+	b=BxuGGTwbPrjuTE2BIQNXf0Si6xOT1Pz4nID8I/UXN/iVRmrkT/LJnHCNfb070PhW5
+	 WGmyK93T6IcVYWgXYwKmjhbPh6oBfOwZx0dcJPL+W0Ab/CIPokcnLbQJVa+Rz609j+
+	 bxMX0YyFwCkZYZqd5U5Z3LcjtgcOPC7f19pTg7cuFwshTu5CBM16GavKlaMIckrcor
+	 bndwyWKOuZk3R0cUBY9HxZbJfzJfUWZvZEUDJFO2/00535CTi5mvTq+w9IghlvjEZs
+	 eIFQ0sxatfcktShEwXld0fG20PCixEqkvprpCS25zp9OquVwACfQANVkDIiiBPYzBM
+	 zFG8saruQ1z/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
+Cc: Baruch Siach <baruch@tkos.co.il>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/238] drm/tidss: Fix initial plane zpos values
-Date: Sun, 24 Mar 2024 19:39:14 -0400
-Message-ID: <20240324234027.1354210-167-sashal@kernel.org>
+Subject: [PATCH 5.10 167/238] mtd: maps: physmap-core: fix flash size larger than 32-bit
+Date: Sun, 24 Mar 2024 19:39:15 -0400
+Message-ID: <20240324234027.1354210-168-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324234027.1354210-1-sashal@kernel.org>
 References: <20240324234027.1354210-1-sashal@kernel.org>
@@ -63,54 +63,37 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Baruch Siach <baruch@tkos.co.il>
 
-[ Upstream commit 3ec948ccb2c4b99e8fbfdd950adbe92ea577b395 ]
+[ Upstream commit 3884f03edd34887514a0865a80769cd5362d5c3b ]
 
-When the driver sets up the zpos property it sets the default zpos value
-to the HW id of the plane. That is fine as such, but as on many DSS
-versions the driver arranges the DRM planes in a different order than
-the HW planes (to keep the non-scalable planes first), this leads to odd
-initial zpos values. An example is J721e, where the initial zpos values
-for DRM planes are 1, 3, 0, 2.
+mtd-ram can potentially be larger than 4GB. get_bitmask_order() uses
+fls() that is not guaranteed to work with values larger than 32-bit.
+Specifically on aarch64 fls() returns 0 when all 32 LSB bits are clear.
+Use fls64() instead.
 
-In theory the userspace should configure the zpos values properly when
-using multiple planes, and in that sense the initial zpos values
-shouldn't matter, but there's really no reason not to fix this and help
-the userspace apps which don't handle zpos perfectly. In particular,
-some versions of Weston seem to have issues dealing with the planes
-with the current default zpos values.
-
-So let's change the zpos values for the DRM planes to 0, 1, 2, 3.
-
-Another option would be to configure the planes marked as primary planes
-to zpos 0. On a two display system this would give us plane zpos values
-of 0, 0, 1, 2. The end result and behavior would be very similar in this
-option, and I'm not aware that this would actually help us in any way.
-So, to keep the code simple, I opted for the 0, 1, 2, 3 values.
-
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240213-tidss-fixes-v1-1-d709e8dfa505@ideasonboard.com
+Fixes: ba32ce95cbd987 ("mtd: maps: Merge gpio-addr-flash.c into physmap-core.c")
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/9fbf3664ce00f8b07867f1011834015f21d162a5.1707388458.git.baruch@tkos.co.il
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_plane.c | 2 +-
+ drivers/mtd/maps/physmap-core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_plane.c b/drivers/gpu/drm/tidss/tidss_plane.c
-index 43e72d0b2d84d..e2ebd5fdc1138 100644
---- a/drivers/gpu/drm/tidss/tidss_plane.c
-+++ b/drivers/gpu/drm/tidss/tidss_plane.c
-@@ -202,7 +202,7 @@ struct tidss_plane *tidss_plane_create(struct tidss_device *tidss,
+diff --git a/drivers/mtd/maps/physmap-core.c b/drivers/mtd/maps/physmap-core.c
+index 9ab795f03c546..e5552093585e2 100644
+--- a/drivers/mtd/maps/physmap-core.c
++++ b/drivers/mtd/maps/physmap-core.c
+@@ -528,7 +528,7 @@ static int physmap_flash_probe(struct platform_device *dev)
+ 		if (!info->maps[i].phys)
+ 			info->maps[i].phys = res->start;
  
- 	drm_plane_helper_add(&tplane->plane, &tidss_plane_helper_funcs);
- 
--	drm_plane_create_zpos_property(&tplane->plane, hw_plane_id, 0,
-+	drm_plane_create_zpos_property(&tplane->plane, tidss->num_planes, 0,
- 				       num_planes - 1);
- 
- 	ret = drm_plane_create_color_properties(&tplane->plane,
+-		info->win_order = get_bitmask_order(resource_size(res)) - 1;
++		info->win_order = fls64(resource_size(res)) - 1;
+ 		info->maps[i].size = BIT(info->win_order +
+ 					 (info->gpios ?
+ 					  info->gpios->ndescs : 0));
 -- 
 2.43.0
 
