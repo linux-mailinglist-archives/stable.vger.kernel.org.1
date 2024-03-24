@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-29357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719E388850A
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 536C388850C
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2781C1F22AC9
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00EDA1F22B95
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FE71BEDBE;
-	Sun, 24 Mar 2024 22:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19221BEDDC;
+	Sun, 24 Mar 2024 22:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUhz9/i7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6RC1KYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB4C1BEDB3;
-	Sun, 24 Mar 2024 22:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562C91BEDD1;
+	Sun, 24 Mar 2024 22:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320329; cv=none; b=r83WCzj8I0S6zmeHa1dFsNR7L7ek3EwHh8MhdZ0q87IrGXGMh0hPeLe5ytybbR3iVK33r5udclzOVNT/eglD7FiCiBFP+keAHKW5rtwN9Pr58ZNoyEIXtY0wESJSV1ivPlpmufMAhnGmvKXducbSpDiyFvEoLJov6FVjq8ASQXE=
+	t=1711320330; cv=none; b=ettySKOIeUN2XzEFmWBbfVfj3VM7Ya6q2mWTT4vl6k/iahIXArTn1tW3dnKZlvmHLt4liCPf086+IYYxwr41nEhuedubtiey+MANHw29Ii+Z/L7YruSz2XiOO6CWkGOxMPuLhFxQ3b/g85YR6XF/8GLX2DxqZQDO8YFnHtchAwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320329; c=relaxed/simple;
-	bh=6DQJougX0ptKj6bY2XsiqJrGTso8eSy+jqQnXQDK+8M=;
+	s=arc-20240116; t=1711320330; c=relaxed/simple;
+	bh=4BL+nhp8W4vtBjDVb8FRYuXmV/nZ5/pDZL5T4yDC2Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AIVqXpg14Oc0MjJb6KMOYAtIC6bjkyj3ZGI6ESPU5N13E0JxAcKZuXHhScZ2YrArfdqJahm8Laevj8o4oycP66hElq0P7YaCMkJVjkLxG54769elNo69YksoBANZAkzq6cWmNwrr9hygzd/ZZSjWHJmdNAvMsfz9XbB7gjhRK88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUhz9/i7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB5EC433F1;
-	Sun, 24 Mar 2024 22:45:28 +0000 (UTC)
+	 MIME-Version; b=ctQVVjm9bUnDJsgFyWfIJuXHSaB7QyVQmAldDHq4uiG5fM5hFYmULWrKFbZEIJzzYelIXgeaoHHVtKIDGKJl5zfGnWBfjV7IJkzmSZquRExOiCIFuDe9zCFRjmJx5C5ODWlgsfw9h8O6sOB0i9dhD8JhIs4PFtx2ZIx/7/aQ9RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6RC1KYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AC0C433C7;
+	Sun, 24 Mar 2024 22:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320328;
-	bh=6DQJougX0ptKj6bY2XsiqJrGTso8eSy+jqQnXQDK+8M=;
+	s=k20201202; t=1711320330;
+	bh=4BL+nhp8W4vtBjDVb8FRYuXmV/nZ5/pDZL5T4yDC2Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUhz9/i7PRpN1OB2789f1rlQr9ICwxkY1IplZrP/yNVlxA6QSFm205lQHvqq0Jcjt
-	 MFhEmM3m1JANx21+WEFlER6IT5KXOpRy7WObvS3Im9lQdceiQGIFatU+iOEh+IDxNn
-	 OZFMm0p/CQaSRn+N/fW/JzM2Tz432VRhdj/1b35iWCeoMIl17z1WRBBlhBhyV9+LVN
-	 W1ioi6lNrRcsKnhUZ0CICNwQ1goI6e51mp0h5Lm0+R6aEJ4+SAweQAjzJ91C9PTpZo
-	 XOlyVtifTBLo+9tPRhsybjWcZJXVuBYBmcXYRZXYtwxl5PyIpwnEc2ufCM2QkqfDgI
-	 V5RFiYAdgeJSg==
+	b=T6RC1KYWnUGJ80cgKDbviQW2TegS5A9vP+y6aW4o+IcZVT3wTbS4wVJZFRw1V6dqZ
+	 243B1XeNK2WgYdRu+ZNHi7FRAXvHGo5XCkddM7K82MZrtRK2WKkM6M+O5b9XNgLk3J
+	 yvwnibbuBsdGEzDYGLN3YEnv/cOiKQUBkbQx73M4xa63Ha4QxmLsqV8IIrjSO9QPwQ
+	 k5cHvdkJVHwo8pX/+owzRS6HO0Qy7MkgF0jwGdtSKuwAjcJOxsflaUyrFNY6ssSqS4
+	 6UoYwiW2Zd3DIppwDuY+rqZsIL6bYGt66ioWR392iBYrStnB6GuzV4MdqUD2NCvUcd
+	 AvDgK/B06D/Og==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 636/715] ASoC: tlv320adc3xxx: Don't strip remove function when driver is builtin
-Date: Sun, 24 Mar 2024 18:33:35 -0400
-Message-ID: <20240324223455.1342824-637-sashal@kernel.org>
+Subject: [PATCH 6.8 637/715] thermal/drivers/mediatek/lvts_thermal: Fix a memory leak in an error handling path
+Date: Sun, 24 Mar 2024 18:33:36 -0400
+Message-ID: <20240324223455.1342824-638-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
 References: <20240324223455.1342824-1-sashal@kernel.org>
@@ -60,58 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f31e0d0c2cad23e0cc48731634f85bb2d8707790 ]
+[ Upstream commit ca93bf607a44c1f009283dac4af7df0d9ae5e357 ]
 
-Using __exit for the remove function results in the remove callback
-being discarded with SND_SOC_TLV320ADC3XXX=y. When such a device gets
-unbound (e.g. using sysfs or hotplug), the driver is just removed
-without the cleanup being performed. This results in resource leaks. Fix
-it by compiling in the remove callback unconditionally.
+If devm_krealloc() fails, then 'efuse' is leaking.
+So free it to avoid a leak.
 
-This also fixes a W=1 modpost warning:
-
-	WARNING: modpost: sound/soc/codecs/snd-soc-tlv320adc3xxx: section mismatch in reference: adc3xxx_i2c_driver+0x10 (section: .data) -> adc3xxx_i2c_remove (section: .exit.text)
-
-(which only happens with SND_SOC_TLV320ADC3XXX=m).
-
-Fixes: e9a3b57efd28 ("ASoC: codec: tlv320adc3xxx: New codec driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://msgid.link/r/20240310143852.397212-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/481d345233862d58c3c305855a93d0dbc2bbae7e.1706431063.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tlv320adc3xxx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
-index 420bbf588efea..e100cc9f5c192 100644
---- a/sound/soc/codecs/tlv320adc3xxx.c
-+++ b/sound/soc/codecs/tlv320adc3xxx.c
-@@ -1429,7 +1429,7 @@ static int adc3xxx_i2c_probe(struct i2c_client *i2c)
- 	return ret;
- }
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 98d9c80bd4c62..fd4bd650c77a6 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -719,8 +719,10 @@ static int lvts_calibration_read(struct device *dev, struct lvts_domain *lvts_td
  
--static void __exit adc3xxx_i2c_remove(struct i2c_client *client)
-+static void adc3xxx_i2c_remove(struct i2c_client *client)
- {
- 	struct adc3xxx *adc3xxx = i2c_get_clientdata(client);
+ 		lvts_td->calib = devm_krealloc(dev, lvts_td->calib,
+ 					       lvts_td->calib_len + len, GFP_KERNEL);
+-		if (!lvts_td->calib)
++		if (!lvts_td->calib) {
++			kfree(efuse);
+ 			return -ENOMEM;
++		}
  
-@@ -1452,7 +1452,7 @@ static struct i2c_driver adc3xxx_i2c_driver = {
- 		   .of_match_table = tlv320adc3xxx_of_match,
- 		  },
- 	.probe = adc3xxx_i2c_probe,
--	.remove = __exit_p(adc3xxx_i2c_remove),
-+	.remove = adc3xxx_i2c_remove,
- 	.id_table = adc3xxx_i2c_id,
- };
+ 		memcpy(lvts_td->calib + lvts_td->calib_len, efuse, len);
  
 -- 
 2.43.0
