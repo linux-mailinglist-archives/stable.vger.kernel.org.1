@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-31369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63841889C87
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:22:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63DD8887C2
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 03:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AEC22936BE
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:22:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2037EB23054
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D1F24EDA2;
-	Mon, 25 Mar 2024 02:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293D214264F;
+	Sun, 24 Mar 2024 23:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJTOIbln"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+7gY8xI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4838112D76E;
-	Sun, 24 Mar 2024 22:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A31C14BF96;
+	Sun, 24 Mar 2024 22:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711321134; cv=none; b=oaEOItlF4GgZDZDjqKuiI803XQ8RHY/eeMqhS++OFLbabzUELa7hGYXP1hcpPI4v+mFa3jTWSSViPMqX01OavUWYMz9XgfkIGgtlov2rtQfPwItXmayKlDbUvh2yGBLb16cLeTjAuFjuwfZlX1uP5NVqsMB8iYBFCthgGQ2t6eI=
+	t=1711321136; cv=none; b=kxOpfloBSZsuHtTSaWGuTEQsFY5ZOF8aCYKECA/9EsngXTe7rfKwVloDT0lCdYVXoEHsix46+Ce2p77gkQw9+sYOQdMFEwc6BUXNJt89toCTeDCjQhfHOADgsOt82+7kXgtqxvYsMS3g6oYEK64hwfj9b3/YOsHv+747icATnwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711321134; c=relaxed/simple;
-	bh=VbR4fQBjLC7Rzjg/ep21s0JziHQ4SL9IpGKzUXBLVfA=;
+	s=arc-20240116; t=1711321136; c=relaxed/simple;
+	bh=+gfGD22mjnzhNRULgZth3y7IpdDh67/7ZzicS4dW69c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgFjEyTO4E+ewiEZhkV+m9T/h8dFH4I8jlZklUXsdK7MgDEYHIiZ04NaDxaw2cdqUJ2WcEXz0jpBNz530tHRAzj51L7WLNsMSkIHd5s/9NuADaPZL54oEtke53Aby825L42VSODJKqPL/v4QNmgtxOr2WbZQCdxcxdirg3HInd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJTOIbln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D10C43390;
-	Sun, 24 Mar 2024 22:58:53 +0000 (UTC)
+	 MIME-Version; b=GzWcl6Pv1o85u7Jv/ExENzhQCs8ADOEFeNKrRms0RrPye714LNzYTb15skXkhCH8YcB2LkK9IvE0CHAUIlEWvWiRmwnHtglOjIIvfHsjp4EKELGJ63HwGMiCfAq2kamF31pfhyrkQEukpi1+NyKEJk/NAMj+yNkqZw4xikDewTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+7gY8xI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21763C433C7;
+	Sun, 24 Mar 2024 22:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711321133;
-	bh=VbR4fQBjLC7Rzjg/ep21s0JziHQ4SL9IpGKzUXBLVfA=;
+	s=k20201202; t=1711321134;
+	bh=+gfGD22mjnzhNRULgZth3y7IpdDh67/7ZzicS4dW69c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJTOIblnc6pdXsSHv1M5ZfpiShIErUvjqBsux/v1yiZFKJsm7MZxe8n0THXDc9SVM
-	 85KwVn/g90HxowQy12VcFgHjBU1DmEAA2ENWGSIXp7jBKBOuv/zc1MIMPtjU8GOoUU
-	 Zgd5S13bo9QtkcHk9EcXUfX9suWOQIaUiYYbBolW9ZsNSQyxxv/Pxx9oJfviaQAOgZ
-	 yiNB9M4Eskbek11gXnKTzM4H4CEzpt0h9ee0EwNNj8IqIeJvtQl+YQxaaJyYDg7Z/G
-	 wFg8T1Za5/2NtrxLfc+AktzWh3EUiSiiHXtos7KpZn9dS9cKx/+0dvVb+R19XlSKzn
-	 IfUhFGBXLL4RA==
+	b=U+7gY8xIjopcNEOze+3/knubEcOUIGYjqQirAFOGkxksDsRMjpln8WyKnPs3Exbmz
+	 BHdUm09z/CSbSm09DscAzN8GeR8Gv5ViTsCsmRVAbyCh5QPefkCXCCLOd+9BpttAUj
+	 uHVJutiAnkjAkEMm3Dcx6uu/t3rrSeq1Uc+E1EZm2ZvLu2twFLLxKL6BHkhsOoTIe0
+	 1jbcDRSHiRsKdyOiLDNMfeamaxaQ+3YEOnV8lnn0ogSJFhXVILxwsyR/Rj8aBw5VK+
+	 dMA3jEIcaSOsynZCq8EH3cPUyup46QfrlWgOIOc+tU2HZm/jWQOWj3nhkWSKPDNY+D
+	 Fd+2Dl19N4J7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yifan Zhang <yifan1.zhang@amd.com>,
+Cc: Lang Yu <Lang.Yu@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 695/713] drm/amdgpu: add MMHUB 3.3.1 support
-Date: Sun, 24 Mar 2024 18:47:01 -0400
-Message-ID: <20240324224720.1345309-696-sashal@kernel.org>
+Subject: [PATCH 6.7 696/713] drm/amdgpu: fix mmhub client id out-of-bounds access
+Date: Sun, 24 Mar 2024 18:47:02 -0400
+Message-ID: <20240324224720.1345309-697-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
 References: <20240324224720.1345309-1-sashal@kernel.org>
@@ -63,47 +64,45 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Lang Yu <Lang.Yu@amd.com>
 
-[ Upstream commit 31e0a586f3385134bcad00d8194eb0728cb1a17d ]
+[ Upstream commit 6540ff6482c1a5a6890ae44b23d0852ba1986d9e ]
 
-This patch to add MMHUB 3.3.1 support.
+Properly handle cid 0x140.
 
-v2: squash in fault info fix (Alex)
-
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Fixes: aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6540ff6482c1 ("drm/amdgpu: fix mmhub client id out-of-bounds access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c  | 1 +
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-index c9c653cfc765b..3f1692194b7ad 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -570,6 +570,7 @@ static void gmc_v11_0_set_mmhub_funcs(struct amdgpu_device *adev)
- 		adev->mmhub.funcs = &mmhub_v3_0_2_funcs;
- 		break;
- 	case IP_VERSION(3, 3, 0):
-+	case IP_VERSION(3, 3, 1):
- 		adev->mmhub.funcs = &mmhub_v3_3_funcs;
- 		break;
- 	default:
 diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
-index dc4812ecc98d6..b3961968c10c4 100644
+index b3961968c10c4..238ea40c24500 100644
 --- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
 +++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_3.c
-@@ -98,6 +98,7 @@ mmhub_v3_3_print_l2_protection_fault_status(struct amdgpu_device *adev,
- 
+@@ -99,16 +99,15 @@ mmhub_v3_3_print_l2_protection_fault_status(struct amdgpu_device *adev,
  	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
  	case IP_VERSION(3, 3, 0):
-+	case IP_VERSION(3, 3, 1):
- 		mmhub_cid = mmhub_client_ids_v3_3[cid][rw];
+ 	case IP_VERSION(3, 3, 1):
+-		mmhub_cid = mmhub_client_ids_v3_3[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_3) ?
++			    mmhub_client_ids_v3_3[cid][rw] :
++			    cid == 0x140 ? "UMSCH" : NULL;
  		break;
  	default:
+ 		mmhub_cid = NULL;
+ 		break;
+ 	}
+ 
+-	if (!mmhub_cid && cid == 0x140)
+-		mmhub_cid = "UMSCH";
+-
+ 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
+ 		mmhub_cid ? mmhub_cid : "unknown", cid);
+ 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
 -- 
 2.43.0
 
