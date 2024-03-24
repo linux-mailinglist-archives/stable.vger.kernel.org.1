@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-29511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373308885F8
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:21:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719478885FB
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690771C255CB
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1376F1F24477
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE45B1E064F;
-	Sun, 24 Mar 2024 22:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A074127B40;
+	Sun, 24 Mar 2024 22:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JeLinGK2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siSNM6HH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E288A1D8BC0;
-	Sun, 24 Mar 2024 22:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1E1D8BC5;
+	Sun, 24 Mar 2024 22:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320644; cv=none; b=UzqDi3T1yqXIDkFRg5CxZNzJCB5xk3GtVr7OwGz/6VCz8xxJACduShsxFWkWWYEE3SCDzEfuSR+ws2ysRqidZlBGLcS9t2rkaGcSXsOFa/36yW7iMHYNtzPSdkXJv7n2YMri4D8+W0sWKH7bqVsdpNYDE/DsmK0tXDJEvXgZYio=
+	t=1711320645; cv=none; b=seFJyvjwDJNHxDV2gRndf0QkDzhxxjZUTyPNHFZFHaCM9bIqFBvYYwRtCn984scA8oVO71puMIUsxyPzikP0bXkymeE+g1jIYbUBDIS9EO7unizQGFVX6LToPhxxj7hDCVapkvmai7w83HWNFAJOddfSbZmDiaCG/CThNw1MUAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320644; c=relaxed/simple;
-	bh=4f1erUva8FFOMSrg8Cy7B/IPul9QQ0jPoIHd+IvGvak=;
+	s=arc-20240116; t=1711320645; c=relaxed/simple;
+	bh=IjhCCsBYDRk59ErJJBfFAuXUot+zVTutag8G8d+U7us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AurF4XFnqsQHTA7q3M0/XHp0X0CyaSpskURwPf2/D/ySni3N8zLV5zcRosUSrxsoi1baZdwvGKylhgz5JCcBjEDBV0mTbEAzazbAT0kzyDNep0hJmhoXnFsqEI11aLcgmss6uYH+6zbDCrJPaSedA+SIFb5DNCbr80+J1z9MT9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JeLinGK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E70C43390;
+	 MIME-Version; b=FREFJmCZgkedqTSfiEIgLfWjkXLIsfd/+LsgGvdkKTP4+m9Op6+RGLWY+7fs9zel5+s4T0D4cbigT19rvAsexlqgt2LwZ4/FIaCHEQf+wc6YYn6uUaWbKFPORh7G9oMG5Lisy+qpVnTYwYHrgKhQrGC96Lj9S+nxDAEZAA77MSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=siSNM6HH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B76C43394;
 	Sun, 24 Mar 2024 22:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320642;
-	bh=4f1erUva8FFOMSrg8Cy7B/IPul9QQ0jPoIHd+IvGvak=;
+	s=k20201202; t=1711320643;
+	bh=IjhCCsBYDRk59ErJJBfFAuXUot+zVTutag8G8d+U7us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JeLinGK2WElkcGqglxYidGKWe0AjYdaFAMN+RQ0zWSGxurDawA/8DmNyWFqaT6H1r
-	 CE125I2Ibh0m6rCwsTRxJ75RmcpWGyuyTgl+PgnQ1Szb7wVbzmRcmuqtHe3hYSIBAm
-	 f3G4O782GJJkjthqjL6P0d4+1sZGZ+E7ndt1sN54pJ2GcYmwYUqAYPrzh3O/BzVSiW
-	 nvqBhcJxH8SVkONq1tdGHMzo5xurTuTvV7siBtdJLAB0+LojXaG4FaTupIMyuiQAj3
-	 j/4Ba5hxnQJKWGsOi2vZDA7aNKOeG1pu/DwquEaUSorVDNNdCnAtiE7BoKuyIl6bW5
-	 mu4hehqyIlFbw==
+	b=siSNM6HH7GfMEnlGZoDqs5bdqH0Bp03UObkIHxQrkrmPxzgQbFhF7grLmsUTUjYqD
+	 mAb1nrbBwnMf+Evy1kCOuxU8T+hQPLUTN8qwi1MxVbapIHp6nc1yjhid3kV3qsh5XB
+	 N74n+NaguSQzFkdUWotCcIQrypyPyfgwG03Dkwg1QLqu7cxljtaKjrGwxWEZenmlZi
+	 DSCwMuH2taZPhGitSIS4EBGVW6QGXbh3krCanvusn3yRahaQrfCZn5BkCbRfIEc1h2
+	 Dhs5fYbxS6Ehc2w+C/a8ZrR68VZNN6OW0UTrDhkur1Vykp66/3GjSdrmQmvE4/JkXl
+	 hz6fOpA/r4GIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manorit Chawdhry <m-chawdhry@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
+	kernel test robot <lkp@intel.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 204/713] arm64: dts: ti: k3-j784s4: Fix power domain for VTM node
-Date: Sun, 24 Mar 2024 18:38:50 -0400
-Message-ID: <20240324224720.1345309-205-sashal@kernel.org>
+Subject: [PATCH 6.7 205/713] wifi: ath11k: initialize rx_mcs_80 and rx_mcs_160 before use
+Date: Sun, 24 Mar 2024 18:38:51 -0400
+Message-ID: <20240324224720.1345309-206-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
 References: <20240324224720.1345309-1-sashal@kernel.org>
@@ -64,35 +65,68 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Manorit Chawdhry <m-chawdhry@ti.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit e4d252e6d29208aea56d4c04270523e306b1e3c2 ]
+[ Upstream commit b802e7b7e771dee3377d071418281f8b64d2d832 ]
 
-Fix the power domain device ID for wkup_vtm0 node.
+Currently in ath11k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160
+are used to calculate max_nss, see
+	if (support_160)
+		max_nss = min(rx_mcs_80, rx_mcs_160);
+	else
+		max_nss = rx_mcs_80;
 
-Link: https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j784s4/devices.html
-Fixes: 64821fbf6738 ("arm64: dts: ti: j784s4: Add VTM node")
-Signed-off-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240201-b4-upstream-j721s2-fix-vtm-devid-v2-2-85fd568b77e3@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Kernel test robot complains on uninitialized symbols:
+drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+drivers/net/wireless/ath/ath11k/mac.c:2321 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
+drivers/net/wireless/ath/ath11k/mac.c:2323 ath11k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+
+This is because there are some code paths that never set them, so
+the assignment of max_nss can come from uninitialized variables.
+This could result in some unknown issues since a wrong peer_nss
+might be passed to firmware.
+
+Change to initialize them to an invalid value at the beginning. This
+makes sense because even max_nss gets an invalid value, due to either
+or both of them being invalid, we can get an valid peer_nss with
+following guard:
+	arg->peer_nss = min(sta->deflink.rx_nss, max_nss)
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+
+Fixes: 3db26ecf7114 ("ath11k: calculate the correct NSS of peer for HE capabilities")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401311243.NyXwWZxP-lkp@intel.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240202023547.11141-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-index adb5ea6b97321..37fc48aae6945 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-@@ -616,7 +616,7 @@ wkup_vtm0: temperature-sensor@42040000 {
- 		compatible = "ti,j7200-vtm";
- 		reg = <0x00 0x42040000 0x00 0x350>,
- 		      <0x00 0x42050000 0x00 0x350>;
--		power-domains = <&k3_pds 154 TI_SCI_PD_SHARED>;
-+		power-domains = <&k3_pds 243 TI_SCI_PD_SHARED>;
- 		#thermal-sensor-cells = <1>;
- 	};
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index e09b21a82c20f..1c4613b1bd225 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2297,6 +2297,8 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 	mcs_160_map = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
+ 	mcs_80_map = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
+ 
++	/* Initialize rx_mcs_160 to 9 which is an invalid value */
++	rx_mcs_160 = 9;
+ 	if (support_160) {
+ 		for (i = 7; i >= 0; i--) {
+ 			u8 mcs_160 = (mcs_160_map >> (2 * i)) & 3;
+@@ -2308,6 +2310,8 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 		}
+ 	}
+ 
++	/* Initialize rx_mcs_80 to 9 which is an invalid value */
++	rx_mcs_80 = 9;
+ 	for (i = 7; i >= 0; i--) {
+ 		u8 mcs_80 = (mcs_80_map >> (2 * i)) & 3;
  
 -- 
 2.43.0
