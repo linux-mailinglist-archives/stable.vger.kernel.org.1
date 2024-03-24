@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-31976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-30793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0057A8895AE
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 09:35:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30099888D41
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 05:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32F3F1C2F880
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 08:35:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFDE0B29A00
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 04:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C4C22B692;
-	Mon, 25 Mar 2024 03:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8A72E4B60;
+	Mon, 25 Mar 2024 00:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoFhEBLa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMTVi+/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B5428455B;
-	Sun, 24 Mar 2024 23:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB2284559;
+	Sun, 24 Mar 2024 23:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711323794; cv=none; b=IhNqZusL2hZoyNHeLhTalPVw2s51hJzp500E2zRvVBKlH0vK/YgoqlRyfeLL9WHA3uKmdU3abuJkAHE72RiLiZ4/9nYnZwMdC8/bZRJDf+a9C8bxZDMe1mj6fRXpGOSgxI3es2/AtdaEDQQYVXSvq5Bo6bVxY6pQ3ZyN6D1wVuk=
+	t=1711323794; cv=none; b=ATQV469mmbaoG+p65/UIAdBo/R01WzQa2DIfGdV1JoBNruGf3VIgnw5lKXKecmn7fx9cSzmfHdKW//7HFGJESWpOwlUCUYV6zvgUObrZHgvSNX/xG3NgWrMJoifF/RzKTtxRM0nSlD59Lf9lVYqcHKKB/OdYn0e5ctxam7/f2L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711323794; c=relaxed/simple;
-	bh=myIllbPmWSYMqa2z/yZAREFiWRKzaKp/8Lpn3zjJYXM=;
+	bh=MN8aMj40GuMp0oDJC2Acpjv/qU1lXE28W5v93tDW/l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCdjLXVXWnPJbSG1HhMCvv0Y4GbKOdjeaOUSGLYVHAYEgxdHDpX6hTZlrL2r99uycW8cMmxxhJJo9F0PJD5kkKsf1tTYdITMYXX0z1aaap6u8yFuJL4OLp66R5pq2qEGUBWvxLkRmN+VJeVSneRhoFqnsdsGmPzgVQesxkhkBQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoFhEBLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42892C43390;
-	Sun, 24 Mar 2024 23:43:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=llyMG6Wrzpdq89ggBOb9yqrZdLY4XsIJxOzQyvE5Pe+vTY9QdH1ZffPRiwV6xw1IL/UGLrtfVfCw9dvenko/amdpYWO1Jw148ZfwxMUE+2BmZqDA0yVxlm9jr7B7Ahx/N4hZGdHbkiyNZAxq72nw6XEWp6Eu5UaVBBLqIu8fHoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMTVi+/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292D4C433C7;
+	Sun, 24 Mar 2024 23:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711323792;
-	bh=myIllbPmWSYMqa2z/yZAREFiWRKzaKp/8Lpn3zjJYXM=;
+	s=k20201202; t=1711323794;
+	bh=MN8aMj40GuMp0oDJC2Acpjv/qU1lXE28W5v93tDW/l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoFhEBLaz4bgpW0DiI7G9IMHj4naRfo3zOJ6CFnOA24tlZeBpc0dBDNvk7cRXb1WY
-	 oqd6D+pcynfNPJF9aWzzNW3BjJtrmPjTHTqfIdKy8HcQmUI48axCBPPJ7oJIxzb7rS
-	 j5mKB6g5WLIWABp3jHejxeyxvlltJRW5KGc82rxoB2kFuPssKHTAEUMVVJbQje/N7M
-	 FTRDQhbsQcSkLlhQpEANoEwHr2PnD8fDIbqEIXalHH/f8mNJfrMoMkQzpT1TfsZub0
-	 4tSFGcrwbS/QKL0U6D3o0Qowh7Z+/P9EaB3xO9X1r/8c9FbdMwYhhX4XVZO+sAkyrS
-	 +q9EjrYZx7SYw==
+	b=UMTVi+/81ONudUIouHbbWjKW1AvjyzQ6ymzdMUjHkpJEGk1u/S9SOzWedWXuXXOA8
+	 HWyzuEeoKF5fDeSfeibuq/UADiBULPU+6q7RPOsE9AWzmvslvK/7Vz/RZlB4rx+xiX
+	 jsw4x/7T5UHMIY82CX3x4VsLUYwD/kfK0pTAQbzSFiV2wL+pf7caU6ZFBIVV+MOLcF
+	 c9IxdMnhlwXPJg0raYeX5E+GiEZMxhQLQ1SbRpoRDe9VIIwI1ySXV3hbHJfwo8wAKx
+	 772pmTT2tSQSiBKkPHyHpvJ0ChufipfJU0nMPDSQFzV8rsTEA98JsevIzkOplZXeoW
+	 RH/2H9s9mG1Hw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Jammy Zhou <Jammy.Zhou@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/238] ASoC: meson: axg-tdm-interface: add frame rate constraint
-Date: Sun, 24 Mar 2024 19:39:18 -0400
-Message-ID: <20240324234027.1354210-171-sashal@kernel.org>
+Subject: [PATCH 5.10 171/238] drm/amdgpu: Fix missing break in ATOM_ARG_IMM Case of atom_get_src_int()
+Date: Sun, 24 Mar 2024 19:39:19 -0400
+Message-ID: <20240324234027.1354210-172-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324234027.1354210-1-sashal@kernel.org>
 References: <20240324234027.1354210-1-sashal@kernel.org>
@@ -59,88 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 59c6a3a43b221cc2a211181b1298e43b2c2df782 ]
+[ Upstream commit 7cf1ad2fe10634238b38442a851d89514cb14ea2 ]
 
-According to Amlogic datasheets for the SoCs supported by this driver, the
-maximum bit clock rate is 100MHz.
+Missing break statement in the ATOM_ARG_IMM case of a switch statement,
+adds the missing break statement, ensuring that the program's control
+flow is as intended.
 
-The tdm interface allows the rates listed by the DAI driver, regardless of
-the number slots or their width. However, these will impact the bit clock
-rate.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/atom.c:323 atom_get_src_int() warn: ignoring unreachable code.
 
-Hitting the 100MHz limit is very unlikely for most use cases but it is
-possible.
-
-For example with 32 slots / 32 bits wide, the maximum rate is no longer
-384kHz but ~96kHz.
-
-Add the constraint accordingly if the component is not already active.
-If it is active, the rate is already constrained by the first stream rate.
-
-Fixes: d60e4f1e4be5 ("ASoC: meson: add tdm interface driver")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://msgid.link/r/20240223175116.2005407-3-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Cc: Jammy Zhou <Jammy.Zhou@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-tdm-interface.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/atom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
-index ac43a7ab7bcf6..60d132ab1ab78 100644
---- a/sound/soc/meson/axg-tdm-interface.c
-+++ b/sound/soc/meson/axg-tdm-interface.c
-@@ -12,6 +12,9 @@
- 
- #include "axg-tdm.h"
- 
-+/* Maximum bit clock frequency according the datasheets */
-+#define MAX_SCLK 100000000 /* Hz */
-+
- enum {
- 	TDM_IFACE_PAD,
- 	TDM_IFACE_LOOPBACK,
-@@ -155,19 +158,27 @@ static int axg_tdm_iface_startup(struct snd_pcm_substream *substream,
- 		return -EINVAL;
- 	}
- 
--	/* Apply component wide rate symmetry */
- 	if (snd_soc_component_active(dai->component)) {
-+		/* Apply component wide rate symmetry */
- 		ret = snd_pcm_hw_constraint_single(substream->runtime,
- 						   SNDRV_PCM_HW_PARAM_RATE,
- 						   iface->rate);
--		if (ret < 0) {
--			dev_err(dai->dev,
--				"can't set iface rate constraint\n");
--			return ret;
--		}
-+
-+	} else {
-+		/* Limit rate according to the slot number and width */
-+		unsigned int max_rate =
-+			MAX_SCLK / (iface->slots * iface->slot_width);
-+		ret = snd_pcm_hw_constraint_minmax(substream->runtime,
-+						   SNDRV_PCM_HW_PARAM_RATE,
-+						   0, max_rate);
- 	}
- 
--	return 0;
-+	if (ret < 0)
-+		dev_err(dai->dev, "can't set iface rate constraint\n");
-+	else
-+		ret = 0;
-+
-+	return ret;
- }
- 
- static int axg_tdm_iface_set_stream(struct snd_pcm_substream *substream,
+diff --git a/drivers/gpu/drm/amd/amdgpu/atom.c b/drivers/gpu/drm/amd/amdgpu/atom.c
+index 4cfc786699c7f..c1841fa873f56 100644
+--- a/drivers/gpu/drm/amd/amdgpu/atom.c
++++ b/drivers/gpu/drm/amd/amdgpu/atom.c
+@@ -310,7 +310,7 @@ static uint32_t atom_get_src_int(atom_exec_context *ctx, uint8_t attr,
+ 				DEBUG("IMM 0x%02X\n", val);
+ 			return val;
+ 		}
+-		return 0;
++		break;
+ 	case ATOM_ARG_PLL:
+ 		idx = U8(*ptr);
+ 		(*ptr)++;
 -- 
 2.43.0
 
