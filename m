@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-32107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537E9889E47
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:05:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D904A889E48
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85BFF1C3594B
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:05:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797451F375C8
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8013D52DE;
-	Mon, 25 Mar 2024 03:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE82A2305FB;
+	Mon, 25 Mar 2024 03:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pankwxRA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chaNTRUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D0C294E07;
-	Sun, 24 Mar 2024 23:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BAC294E22;
+	Sun, 24 Mar 2024 23:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711324295; cv=none; b=EMORG7CZamd+3v8lAJSJ9L7yMnD5e2INQ7ik0BPsUitbNgqJ/nd/7870dz23LTd+4ws5colaL/3SUqHtl2Qh0briVapFQmv44dBm7aPVzm+aRUwDX9Y8bpXA24W0nhRwC/OoUBw3K/l/gaCtXd18Bt9X8hkwngOlrr3nGUblrA4=
+	t=1711324296; cv=none; b=Q8AHAgJw2YSQpSoqxcaMDy7THcLr9jR9mYGzrQTrBjvAKua1raO2zgHrc59pq9cGeRtr4QmnWpp5JgywDd1XOGNLg8LC5bE760BDuLPpXzTcGDknwJQyv3DQuXJjM/Ubj/lWi44m7463LffRvUFjgZt+7RvBaC7irfUUnXoQvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711324295; c=relaxed/simple;
-	bh=nwY4BXfYiszV2ZimaeSXexafpBAW7FnAPleR3Q3aaCo=;
+	s=arc-20240116; t=1711324296; c=relaxed/simple;
+	bh=kWGuqHl5CC1lHEqPCwaKWVxeC8jkTmBoQhuiTXg7F9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcZ0OC2pZXVPxx7d5Y3wEZpD7XjtqPxNuDgKbREmBRjKiFgt6C3f5VGitTfXlupRYHUU5sS21q+XOuRQDWD/6lLiWc2U3k/EZzVbJ2jy6og1yhEjjvZcFj8jJ8P4aejNGB3kwG/Lwv+obsFoSCBtMziNSu+M+kOZs1JPsEVQwjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pankwxRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4DFC43390;
-	Sun, 24 Mar 2024 23:51:34 +0000 (UTC)
+	 MIME-Version; b=h8G6HKH6qxLzEb+QTtIfkHcYK2lBMSejAsXXhPaIFuOIItUaUrgjhpYBlkLyGAqOBsqUWePj3R4Gzw82saATUNUbhMahvKdQHfdoZVxcn3jnbLipYK61frYCdfw0VMqRXHRyk6BjH6om5AldJVl1C/YCIRZ1mLU085If5nK50xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chaNTRUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907E3C433F1;
+	Sun, 24 Mar 2024 23:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711324295;
-	bh=nwY4BXfYiszV2ZimaeSXexafpBAW7FnAPleR3Q3aaCo=;
+	s=k20201202; t=1711324296;
+	bh=kWGuqHl5CC1lHEqPCwaKWVxeC8jkTmBoQhuiTXg7F9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pankwxRAYKDlypBOZn7Gr+wl1DcIzOETU8pb+AKNbJlhv9gtwEiSBZYExr2eunBCP
-	 tKNrYct9WAunuawMjLeAloOTb9RLA2Ex7aXN/SDdWzlNalfsI3D9n1fV2NqikMTzWN
-	 E5pFzVwG3vek1BfHfQNkotBocODHgGZBQXKFLS08HjN39q+KxgAKMrt/EeZndxDkjA
-	 deuScqlfTNKcQ5iGgdRREq/7YJikFkqRKW+175RZAR/qfiezBCXifEOQNF5fJWaiYg
-	 Y7fkQIlwxH3VotzshPX+GTRTtZvsqNWX8I5uhcWV5yeBZunoTgEhXc/Q9lfULyggxF
-	 /vft3rJbgzzOQ==
+	b=chaNTRUL43hmwuWPrF/nhz5WsX6Jvb+HvCCMYfds1lvxy8Y0OeS9Gggu2ngUCJrEv
+	 e0gWRhu1D4gMjb9r5DNKWoKVcfnoAQm7eLy9NMoSkYUlF6NYIj0XLF4E0AXAdS6co1
+	 kxg5aOe9j13q/QkwfnYI5EYYjezugNie/prQzV2Wl3A/31CABja+XByyLWIn8o2Wip
+	 uGxTFupHJPX2KtkZCxXdduiPXqTVXnl2d4bM2D4gWH+23yjGm7tHq4124l4FI0IYhC
+	 a7W97JllZr6aSr5Kdw7z/G9ohrXDZ17UyaYaiQdkvYdmRmT2jz37axZop/zlUbWAPl
+	 Uevh2ADPytSYg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Alex Bee <knaerzche@gmail.com>,
+	Zheng Yang <zhengyang@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 070/148] drm/tegra: dsi: Fix missing pm_runtime_disable() in the error handling path of tegra_dsi_probe()
-Date: Sun, 24 Mar 2024 19:48:54 -0400
-Message-ID: <20240324235012.1356413-71-sashal@kernel.org>
+Subject: [PATCH 4.19 071/148] drm/rockchip: inno_hdmi: Fix video timing
+Date: Sun, 24 Mar 2024 19:48:55 -0400
+Message-ID: <20240324235012.1356413-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324235012.1356413-1-sashal@kernel.org>
 References: <20240324235012.1356413-1-sashal@kernel.org>
@@ -63,34 +64,49 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alex Bee <knaerzche@gmail.com>
 
-[ Upstream commit 5286a9fc280c45b6b307ee1b07f7a997e042252c ]
+[ Upstream commit 47a145c03484d33e65d773169d5ca1b9fe2a492e ]
 
-If an error occurs after calling pm_runtime_enable(), pm_runtime_disable()
-should be called as already done in the remove function.
+The controller wants the difference between *total and *sync_start in the
+HDMI_VIDEO_EXT_*DELAY registers. Otherwise the signal is very unstable for
+certain non-VIC modes. See downstream commit [0].
 
-Fixes: ef8187d75265 ("drm/tegra: dsi: Implement runtime PM")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/ee4a15c9cd4b574a55cd67c30d2411239ba2cee9.1693667005.git.christophe.jaillet@wanadoo.fr
+[0] https://github.com/rockchip-linux/kernel/commit/8eb559f2502c
+
+Fixes: 412d4ae6b7a5 ("drm/rockchip: hdmi: add Innosilicon HDMI support")
+Co-developed-by: Zheng Yang <zhengyang@rock-chips.com>
+Signed-off-by: Zheng Yang <zhengyang@rock-chips.com>
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231222174220.55249-4-knaerzche@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dsi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/rockchip/inno_hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
-index 44bf5a731ba72..fb7b000d4d341 100644
---- a/drivers/gpu/drm/tegra/dsi.c
-+++ b/drivers/gpu/drm/tegra/dsi.c
-@@ -1583,6 +1583,7 @@ static int tegra_dsi_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/gpu/drm/rockchip/inno_hdmi.c b/drivers/gpu/drm/rockchip/inno_hdmi.c
+index 1c02b3e61299c..229a1c908ad02 100644
+--- a/drivers/gpu/drm/rockchip/inno_hdmi.c
++++ b/drivers/gpu/drm/rockchip/inno_hdmi.c
+@@ -408,7 +408,7 @@ static int inno_hdmi_config_video_timing(struct inno_hdmi *hdmi,
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_HBLANK_L, value & 0xFF);
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_HBLANK_H, (value >> 8) & 0xFF);
  
- unregister:
-+	pm_runtime_disable(&pdev->dev);
- 	mipi_dsi_host_unregister(&dsi->host);
- mipi_free:
- 	tegra_mipi_free(dsi->mipi);
+-	value = mode->hsync_start - mode->hdisplay;
++	value = mode->htotal - mode->hsync_start;
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_HDELAY_L, value & 0xFF);
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_HDELAY_H, (value >> 8) & 0xFF);
+ 
+@@ -423,7 +423,7 @@ static int inno_hdmi_config_video_timing(struct inno_hdmi *hdmi,
+ 	value = mode->vtotal - mode->vdisplay;
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_VBLANK, value & 0xFF);
+ 
+-	value = mode->vsync_start - mode->vdisplay;
++	value = mode->vtotal - mode->vsync_start;
+ 	hdmi_writeb(hdmi, HDMI_VIDEO_EXT_VDELAY, value & 0xFF);
+ 
+ 	value = mode->vsync_end - mode->vsync_start;
 -- 
 2.43.0
 
