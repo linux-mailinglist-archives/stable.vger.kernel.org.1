@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-28686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3CB887DD6
-	for <lists+stable@lfdr.de>; Sun, 24 Mar 2024 18:10:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D1D887DD8
+	for <lists+stable@lfdr.de>; Sun, 24 Mar 2024 18:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7D81F21227
-	for <lists+stable@lfdr.de>; Sun, 24 Mar 2024 17:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CFC2816D7
+	for <lists+stable@lfdr.de>; Sun, 24 Mar 2024 17:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79B244C86;
-	Sun, 24 Mar 2024 17:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1F319470;
+	Sun, 24 Mar 2024 17:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="liJCm0D/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvT6blnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6413444393;
-	Sun, 24 Mar 2024 17:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B23A18054;
+	Sun, 24 Mar 2024 17:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711300000; cv=none; b=IFoJWHUHY8oaUak7J7htsnbPZeB6kriY0//kF44QcBzGoiDzB7Zt7JWVa7UL7BDzUl93z12WjnEAKLWO/DjWVQam1i8N4vaTo9aRsRBm6+pZ1mpyNhskALraUPU5WQ+f8ywvJLWKWHAH/AKSHjzBqGtNzbS+DmJsW3Bci4aovs4=
+	t=1711300008; cv=none; b=kGeVMK7Qbdbm7sdJ8DjplMD3VS1sF3orcmpWM+8BOf36ByINW3A8Otj0Mtel+tizEAnR/GDUEY/+UmH17Ofvqh9tN8tnS6ApJoLZE/+yU5LgzmwwcqnV10WvhkE+l4qhxlacb+UoKkdUdIGp3gA0tOqL/7CNxl2lYhbWnoej5MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711300000; c=relaxed/simple;
-	bh=EMTz2DrqA4rESU7pXmXjgPYgY3R8oMc/rZtnvteLh48=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eupEhb3gyaaDc/c0lxs6S403St1Gto0dkdgU1Iu/3nO/cI/htP0vzSQtjo81WhR4xE6yfNHWaWgPU3uFAEISbDO1fGCaA9cRm+X2OS4H70JdIthdQl9OuUOsnlhkTNFrPl9WpO1iyGlTT6r8YeSHN0Hpi6VRco1GGYBklWbMxwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=liJCm0D/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14607C433F1;
-	Sun, 24 Mar 2024 17:06:38 +0000 (UTC)
+	s=arc-20240116; t=1711300008; c=relaxed/simple;
+	bh=vY2dHuMi+WBs3WDDgt1k83JDIfXf2frpp4A0vqx+Qsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WvH3SPSa+rZ9ywUonEPbwOi5Y2/SG0wXc+3rt35OiTmOnLJQ1e/4Qh8MUbAfxkbA/n35Tr/xs0ouxtcgL91IEWf96PvdiE7UTkG3c/j4dwPFPihg6AyUpqo6iEv/B8mzJefUSBZJG6/tHQ19lThCHlYDpjaYdSac6xBT0TNC3u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvT6blnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECEEC433F1;
+	Sun, 24 Mar 2024 17:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711299999;
-	bh=EMTz2DrqA4rESU7pXmXjgPYgY3R8oMc/rZtnvteLh48=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=liJCm0D/mQLvvuuZPykc2X1Pxmq+b0vN6kFQ9mS0dyeMZUaD+Bm3j3+rMMqc4DT/3
-	 cxxQmayqLUIvUBtxNXptot4cvY8nbPdLmSUWhQ9qCCaXkWK6HqqYZS6JNWYpxw1JZ4
-	 Ez2qid8xXyu5fmNxNfc/DmFch+eld82ONBg8asOlaOpEsumAwCVbAZ9U2Ij8JIWMsK
-	 vacZmQhk8Z3Qumbc0q3zYAcat20tUlfCyJQk0apZgnbAH21hlYR6e8p7rdg8SYY8IT
-	 SjQOiBApWDb9w/C7R8YSpalzqDDXrzZJmRypHI9eor+kmCIKW+6BNegXjjM9ZlFqPi
-	 9I7+RnLRvgqyA==
+	s=k20201202; t=1711300007;
+	bh=vY2dHuMi+WBs3WDDgt1k83JDIfXf2frpp4A0vqx+Qsc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tvT6blnZynOAbebF0awqL/kBSNQd7CWUj+iU/Pr774Rb8vUYwLBKIEantIrpADj1Y
+	 SRpU5p1nwbUNzaayRwAZNRZBzDYVjRdOxk+EqgpGR8OW4DCQB235iWkBcqgsqI5Uyf
+	 TkGjBhQpqXbPHqeIRpOvWiS1rgPwkwQ245cqAAcoqD22Vd+jeMkA9l64DKFC2SHv39
+	 ahA4rDmi6dBvkzoMTYqpDV+hA5pCLd4/pBbM0AxGhf6ugfx6dlG2kqothMggepAepq
+	 QDCiBoUd2+oInUWxa4Sw1lHkcJ8QIc3qKCS/vkXmBw3NXM3slObZ/wb7i0NZd/DwT/
+	 hPlC0spf9AeKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.7 11/11] nvme: clear caller pointer on identify failure
-Date: Sun, 24 Mar 2024 13:06:14 -0400
-Message-ID: <20240324170619.545975-11-sashal@kernel.org>
+	jlayton@kernel.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org,
+	xiubli@redhat.com,
+	willy@infradead.org,
+	princekumarmaurya06@gmail.com
+Subject: [PATCH AUTOSEL 6.6 01/11] sysv: don't call sb_bread() with pointers_lock held
+Date: Sun, 24 Mar 2024 13:06:31 -0400
+Message-ID: <20240324170645.546220-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240324170619.545975-1-sashal@kernel.org>
-References: <20240324170619.545975-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,47 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.10
+X-stable-base: Linux 6.6.22
 Content-Transfer-Encoding: 8bit
 
-From: Keith Busch <kbusch@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 7e80eb792bd7377a20f204943ac31c77d859be89 ]
+[ Upstream commit f123dc86388cb669c3d6322702dc441abc35c31e ]
 
-The memory allocated for the identification is freed on failure. Set
-it to NULL so the caller doesn't have a pointer to that freed address.
+syzbot is reporting sleep in atomic context in SysV filesystem [1], for
+sb_bread() is called with rw_spinlock held.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+A "write_lock(&pointers_lock) => read_lock(&pointers_lock) deadlock" bug
+and a "sb_bread() with write_lock(&pointers_lock)" bug were introduced by
+"Replace BKL for chain locking with sysvfs-private rwlock" in Linux 2.5.12.
+
+Then, "[PATCH] err1-40: sysvfs locking fix" in Linux 2.6.8 fixed the
+former bug by moving pointers_lock lock to the callers, but instead
+introduced a "sb_bread() with read_lock(&pointers_lock)" bug (which made
+this problem easier to hit).
+
+Al Viro suggested that why not to do like get_branch()/get_block()/
+find_shared() in Minix filesystem does. And doing like that is almost a
+revert of "[PATCH] err1-40: sysvfs locking fix" except that get_branch()
+ from with find_shared() is called without write_lock(&pointers_lock).
+
+Reported-by: syzbot <syzbot+69b40dc5fd40f32c199f@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=69b40dc5fd40f32c199f
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://lore.kernel.org/r/0d195f93-a22a-49a2-0020-103534d6f7f6@I-love.SAKURA.ne.jp
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/sysv/itree.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 86149275ccb8e..ab90b8a118351 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1341,8 +1341,10 @@ static int nvme_identify_ctrl(struct nvme_ctrl *dev, struct nvme_id_ctrl **id)
- 
- 	error = nvme_submit_sync_cmd(dev->admin_q, &c, *id,
- 			sizeof(struct nvme_id_ctrl));
--	if (error)
-+	if (error) {
- 		kfree(*id);
-+		*id = NULL;
-+	}
- 	return error;
+diff --git a/fs/sysv/itree.c b/fs/sysv/itree.c
+index edb94e55de8e5..7b2a07a31e463 100644
+--- a/fs/sysv/itree.c
++++ b/fs/sysv/itree.c
+@@ -82,9 +82,6 @@ static inline sysv_zone_t *block_end(struct buffer_head *bh)
+ 	return (sysv_zone_t*)((char*)bh->b_data + bh->b_size);
  }
  
-@@ -1471,6 +1473,7 @@ static int nvme_identify_ns(struct nvme_ctrl *ctrl, unsigned nsid,
- 	if (error) {
- 		dev_warn(ctrl->device, "Identify namespace failed (%d)\n", error);
- 		kfree(*id);
-+		*id = NULL;
+-/*
+- * Requires read_lock(&pointers_lock) or write_lock(&pointers_lock)
+- */
+ static Indirect *get_branch(struct inode *inode,
+ 			    int depth,
+ 			    int offsets[],
+@@ -104,15 +101,18 @@ static Indirect *get_branch(struct inode *inode,
+ 		bh = sb_bread(sb, block);
+ 		if (!bh)
+ 			goto failure;
++		read_lock(&pointers_lock);
+ 		if (!verify_chain(chain, p))
+ 			goto changed;
+ 		add_chain(++p, bh, (sysv_zone_t*)bh->b_data + *++offsets);
++		read_unlock(&pointers_lock);
+ 		if (!p->key)
+ 			goto no_block;
  	}
- 	return error;
- }
+ 	return NULL;
+ 
+ changed:
++	read_unlock(&pointers_lock);
+ 	brelse(bh);
+ 	*err = -EAGAIN;
+ 	goto no_block;
+@@ -218,9 +218,7 @@ static int get_block(struct inode *inode, sector_t iblock, struct buffer_head *b
+ 		goto out;
+ 
+ reread:
+-	read_lock(&pointers_lock);
+ 	partial = get_branch(inode, depth, offsets, chain, &err);
+-	read_unlock(&pointers_lock);
+ 
+ 	/* Simplest case - block found, no allocation needed */
+ 	if (!partial) {
+@@ -290,9 +288,9 @@ static Indirect *find_shared(struct inode *inode,
+ 	*top = 0;
+ 	for (k = depth; k > 1 && !offsets[k-1]; k--)
+ 		;
++	partial = get_branch(inode, k, offsets, chain, &err);
+ 
+ 	write_lock(&pointers_lock);
+-	partial = get_branch(inode, k, offsets, chain, &err);
+ 	if (!partial)
+ 		partial = chain + k-1;
+ 	/*
 -- 
 2.43.0
 
