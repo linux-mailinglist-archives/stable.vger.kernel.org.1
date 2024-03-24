@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-31589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-31658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767E88897B1
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 10:19:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80058895E5
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 09:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 162201F34620
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 09:19:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 335CFB2FE7E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 08:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3999A226560;
-	Mon, 25 Mar 2024 03:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FB6372A63;
+	Mon, 25 Mar 2024 03:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIUI9NNw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utFVvUp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD21145FE7;
-	Sun, 24 Mar 2024 23:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28131535B6;
+	Sun, 24 Mar 2024 23:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711322045; cv=none; b=QkejbkkwV6zSc7geVR4r+BAZieU6jqUj4Df63Aghx87VEoYL4HVocm2XhKB2t2sjw8XLRDB/QoAuz8WbrtHFLmx0BBgndsZCp9KjEZ2Xlm3lykElISTPeJBmv3QshcHDCNyCx2zpAoI0BH29OVGsKoiQhQ0LiDKZVf/2dMYFCfg=
+	t=1711322046; cv=none; b=TQGCaKw8qoKC3xC2cr5MR4WlFnrbtJGAlqRMHJiPh2H5sN3lNmE3zxAic9IVv4wNs4oPa9GwHi7bMTBaUWTj9jJxitXpYLxWRpLkE9kU2w1/yIjYAxvgvf56nN+nrC84pko8ehWb5dYKFooCcSDQWnXwpTjyZs8AjdqLaHNICfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711322045; c=relaxed/simple;
-	bh=BQQFxfC6hnWa2hVMYnRycBC5lDGGb9w3JnhkFlXJojA=;
+	s=arc-20240116; t=1711322046; c=relaxed/simple;
+	bh=5U0eUZZUNHAgCzjs8VzSGTtjfKcCAcG5sjFRe2C/4hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaceHvq9jNp2325Pn+4QeaIz7Erap8tKGzpv0f/9KTuPgXUVqV7PZ3n6oVI2uYVcWRTJoT39biwKz+BaJ2P+RObA9s9r5Vpy4MwAGO8jy2P8uDLd6iwPB3OoJI7r+lQ+reBF5TMcobvksvxlYtxmge55NHl9pr23fFD293osyYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIUI9NNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53816C43394;
-	Sun, 24 Mar 2024 23:14:04 +0000 (UTC)
+	 MIME-Version; b=WusP5FUsLJ9s+BYEs9blsJWZ5oUZFqi0sHwaUWsGy76GDIv3WOAX+PLcqBPSLqO1ve9WyR4nwvZJJ+JQaJ7MORF8flr4XjlETRPjVE/AHl0iOa9KWdHVDzgfEfsM5ys+S2vFQNpdxpcZyYMWUrldfdTXRX0FH0uRRu/dDKD3/7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utFVvUp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5063DC433C7;
+	Sun, 24 Mar 2024 23:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711322045;
-	bh=BQQFxfC6hnWa2hVMYnRycBC5lDGGb9w3JnhkFlXJojA=;
+	s=k20201202; t=1711322046;
+	bh=5U0eUZZUNHAgCzjs8VzSGTtjfKcCAcG5sjFRe2C/4hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIUI9NNwyk+s8U/wBeV6kfhfibp9d69MiSUM/8eSGFSkdxAgXv5HWG5NSYk3ezWev
-	 DIHKTtU3kDTDi5hqyUWrzw7gsiSKKWTdVTA8yOnb5hW6FWo3lMfkj37OsrhQ4oGz+B
-	 QWS7TuMW4sRRLFLaoTO5xS97eV9UPB6IK3sYkBvuepW9QiXmcfLv2fe4X6rns0D48n
-	 BIAfNadX2AbXYXzCSKuKIbJXXhSkd34+zz0D19IS6Iaw3WeLE+xM88/QQZnwK7ldaL
-	 D6pGVPVa0To8CYXiAAhbeoVnFmeXt3YzqZJ7Hm2Z80T+hSasNHaNP+8P5Z8bgo61it
-	 /ocSOrZpqXuBQ==
+	b=utFVvUp9IxH4j4wYOECCLsbZeb1HcVzlHzXQ+N2SHG26wRmr4LcMj89cjsJ8Ca5P7
+	 zOa8XcIRJJfWJk+4D7mn0IyRyFV2xz6RuEEUK5RE/I+UOkEBuHutcCH/h8fYjMXIln
+	 dNmshgRVeuYF9i8Z8RP97/m7i6wNPLj7DDDrTYvbKUGkuXHogLJjxWJ53Z0vPJi9qM
+	 T+nYA+mYUTQd15prqWqEQ6XLwyinlHHxLsg61tbEFOutaqowN/HnTX6ZZuMW2MRLYN
+	 Jg4pc38C/BcE20f5XwjrL4Dp/jhw0h1M0JfUZDUXyR9z9G/gjCjV0HiSy4HWotwMet
+	 ImDEyjop9rG3w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/451] wifi: iwlwifi: dbg-tlv: ensure NUL termination
-Date: Sun, 24 Mar 2024 19:06:33 -0400
-Message-ID: <20240324231207.1351418-118-sashal@kernel.org>
+Subject: [PATCH 6.1 118/451] wifi: iwlwifi: fix EWRD table validity check
+Date: Sun, 24 Mar 2024 19:06:34 -0400
+Message-ID: <20240324231207.1351418-119-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324231207.1351418-1-sashal@kernel.org>
 References: <20240324231207.1351418-1-sashal@kernel.org>
@@ -64,41 +64,42 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit ea1d166fae14e05d49ffb0ea9fcd4658f8d3dcea ]
+[ Upstream commit c8d8f3911135921ace8e939ea0956b55f74bf8a0 ]
 
-The iwl_fw_ini_debug_info_tlv is used as a string, so we must
-ensure the string is terminated correctly before using it.
+EWRD ACPI table contains up to 3 additional sar profiles.
+According to the BIOS spec, the table contains a n_profile
+variable indicating how many additional profiles exist in the
+table.
+Currently we check that n_profiles is not <= 0.
+But according to the BIOS spec, 0 is a valid value,
+and it can't be < 0 anyway because we receive that from ACPI as
+an unsigned integer.
 
-Fixes: a9248de42464 ("iwlwifi: dbg_ini: add TLV allocation new API support")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Fixes: 39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.be15e858ee89.Ibff93429cf999eafc7b26f3eef4c055dc84984a0@changeid
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://msgid.link/20240129211905.448ea2f40814.Iffd2aadf8e8693e6cb599bee0406a800a0c1e081@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 5979d904bbbd2..677c9e0b46f10 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -103,6 +103,12 @@ static int iwl_dbg_tlv_alloc_debug_info(struct iwl_trans *trans,
- 	if (le32_to_cpu(tlv->length) != sizeof(*debug_info))
- 		return -EINVAL;
- 
-+	/* we use this as a string, ensure input was NUL terminated */
-+	if (strnlen(debug_info->debug_cfg_name,
-+		    sizeof(debug_info->debug_cfg_name)) ==
-+			sizeof(debug_info->debug_cfg_name))
-+		return -EINVAL;
-+
- 	IWL_DEBUG_FW(trans, "WRT: Loading debug cfg: %s\n",
- 		     debug_info->debug_cfg_name);
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index f5fcc547de391..235963e1d7a9a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -725,7 +725,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 	 * from index 1, so the maximum value allowed here is
+ 	 * ACPI_SAR_PROFILES_NUM - 1.
+ 	 */
+-	if (n_profiles <= 0 || n_profiles >= ACPI_SAR_PROFILE_NUM) {
++	if (n_profiles >= ACPI_SAR_PROFILE_NUM) {
+ 		ret = -EINVAL;
+ 		goto out_free;
+ 	}
 -- 
 2.43.0
 
