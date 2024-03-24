@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-29966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABFE8888A4
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 03:33:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420E88888A5
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 03:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FDA7B21721
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740DC1C27567
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB65241905;
-	Sun, 24 Mar 2024 23:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4888202B84;
+	Sun, 24 Mar 2024 23:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvckwecM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUBUiJEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E182036F1;
-	Sun, 24 Mar 2024 23:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF0F2036FB;
+	Sun, 24 Mar 2024 23:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711321448; cv=none; b=Nc8s/OYUWOYkZetIf0gSjTTZhQzNVQaO6ov43qVVf9NXsBPou4lXMS5Jn9L3wQtVr5UR6Z2a7XO6HlP/7JXo7ZcehGwAPLqRnOU8+UObJe1slowjy1s0SYxb4mAYcWDV7cFvLPpax/5wlDYReykR73Xj3Fb7C+UNuOPr5q72y/4=
+	t=1711321449; cv=none; b=J7l5PcDGFnNzroa+MN59PtlSl0IJ66SN46l1JbEGA2xDg9loc85PAzNnoRp19F7UFa7RFBZLvd72bG0sXv6MttJ5kAcC14vtwIacIVVXnc6acM5J13SSDPCaZQZUmxAQpWhXoSGVodtsrfZJFaq5pwITi1Nq+DwSJUV/a8CulJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711321448; c=relaxed/simple;
-	bh=43WdgCSPZo0+IeFhl/e2013WXv4p2treUau15qmUiq8=;
+	s=arc-20240116; t=1711321449; c=relaxed/simple;
+	bh=1Cj3/gyuMtG/xDvzw0tRMJJxRzza3/X2Qgw+2sze/rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1SgmwKo6BhLgHfWgF0tL1Zf/UyKJAN56etL9Gv2uM9YHqNZa/4/QNgZyjF04PBIdNNSHLZgKGUOnd1Hp8nk5nicpmOwCAKFCTdjB9VVQeuX5LJBpfpuV/WSK8ufTmG/KkTH6ISCnA21V5Le4qkq9ENPfq/cgae41JxQcR6MKyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvckwecM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC5FC43394;
-	Sun, 24 Mar 2024 23:04:06 +0000 (UTC)
+	 MIME-Version; b=etEuRs6q7ghAfy28ql/deKz5ydAkDivxytc+9iRititUr1NwWuhZkBbikupiCSwMbfzDDHW/Pyfelp+UFieWs56KhwO0HgYzXFTS1UndiqvNEh956OfS2X6/+wBWn64FM9IGIDMVeJWC6Yvhy5Lty+ren8r8QA2rUG/hRmu1ggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUBUiJEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433ABC433F1;
+	Sun, 24 Mar 2024 23:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711321447;
-	bh=43WdgCSPZo0+IeFhl/e2013WXv4p2treUau15qmUiq8=;
+	s=k20201202; t=1711321448;
+	bh=1Cj3/gyuMtG/xDvzw0tRMJJxRzza3/X2Qgw+2sze/rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvckwecM8vCYOHxExzH6YgSxVAI5KCSVZcxZ9VtJjv4ptrSaaRsW4gKwsy9gMHOkS
-	 15SZ7Edvfp2eqP420UjLnRsRwyX2sxjvzWngMnbwZIDEKqpdWdHrG1uusqbJ48QOUJ
-	 hccCv8w/K/SO9odDPvosGqiUfh9bzLe9V3TD1RXu6JJaxOG26sVgc2dQ2vVWdLdesP
-	 ihXsOGtDpmD1zhR11kTd9630kqJyKgMvyh4E+Pfbq+C3i3AV388EpjFEfNyNc4yzUk
-	 qxtQxrKarIHa8S8IsFsx8HrFkf+GcLxYlXRNFqxgLiPGF8cqlrkvfDJQF0p5PJU2lW
-	 /ptbX2N1bYQ7Q==
+	b=IUBUiJEhrAQqBHRJrR4iRFriQe5SK1xcLaez0aKU4aP/kjK016tdQdtxn0AhwuOKW
+	 qq9G3fmiHWJyyM0feKVE8wlYtkLzfHD4c8UQXMuqUo3uAVwEBGJhSpSYu98zE5kYLE
+	 R89R1HQNFRwuCNmxwJDn2wRy2bZ3aj/PVgiOA18RFL6ytcd1jBTqsqAlltOlk1z4NT
+	 LTGSB7thZPllnKnoCS/CgdmkMySXqqeD0wkeG2N13hLi4eXApRVbK2ExtF/nyM8bkQ
+	 jiVElar2qfhaiDGexLOF/LYvyAFxM+UdUVSYwFHNtY54NYnfKkr3RSgyn0KJt4B9OQ
+	 eVnFaqSZEbIfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/638] wifi: iwlwifi: mvm: initialize rates in FW earlier
-Date: Sun, 24 Mar 2024 18:53:28 -0400
-Message-ID: <20240324230116.1348576-172-sashal@kernel.org>
+Subject: [PATCH 6.6 172/638] wifi: iwlwifi: fix EWRD table validity check
+Date: Sun, 24 Mar 2024 18:53:29 -0400
+Message-ID: <20240324230116.1348576-173-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324230116.1348576-1-sashal@kernel.org>
 References: <20240324230116.1348576-1-sashal@kernel.org>
@@ -63,54 +64,42 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit d3b2c6c65bfd3b9616084e91bd0d402964ea7cef ]
+[ Upstream commit c8d8f3911135921ace8e939ea0956b55f74bf8a0 ]
 
-When connecting to an AP, we currently initialize the rate
-control only after associating. Since we now use firmware
-to assign rates to auth/assoc frames rather than using the
-data in the station and the firmware doesn't know, they're
-transmitted using low mandatory rates. However, if the AP
-advertised only higher supported rates we want to use them
-to be nicer (it still must receive mandatory rates though),
-so send the information to the firmware earlier to have it
-know about it and be able to use it.
+EWRD ACPI table contains up to 3 additional sar profiles.
+According to the BIOS spec, the table contains a n_profile
+variable indicating how many additional profiles exist in the
+table.
+Currently we check that n_profiles is not <= 0.
+But according to the BIOS spec, 0 is a valid value,
+and it can't be < 0 anyway because we receive that from ACPI as
+an unsigned integer.
 
-Fixes: 499d02790495 ("wifi: iwlwifi: Use FW rate for non-data frames")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.ed7ab1c859c2.I4b4d4fc3905c8d8470fc0fee4648f25c950c9bb7@changeid
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://msgid.link/20240129211905.448ea2f40814.Iffd2aadf8e8693e6cb599bee0406a800a0c1e081@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 0aeca64725da6..42da8e94900cf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -3677,6 +3677,19 @@ iwl_mvm_sta_state_notexist_to_none(struct iwl_mvm *mvm,
- 	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
- 		mvmvif->ap_sta = sta;
- 
-+	/*
-+	 * Initialize the rates here already - this really tells
-+	 * the firmware only what the supported legacy rates are
-+	 * (may be) since it's initialized already from what the
-+	 * AP advertised in the beacon/probe response. This will
-+	 * allow the firmware to send auth/assoc frames with one
-+	 * of the supported rates already, rather than having to
-+	 * use a mandatory rate.
-+	 * If we're the AP, we'll just assume mandatory rates at
-+	 * this point, but we know nothing about the STA anyway.
-+	 */
-+	iwl_mvm_rs_rate_init_all_links(mvm, vif, sta);
-+
- 	return 0;
- }
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 564eeb002e8ed..2cda1dcfd059a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -767,7 +767,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 	 * from index 1, so the maximum value allowed here is
+ 	 * ACPI_SAR_PROFILES_NUM - 1.
+ 	 */
+-	if (n_profiles <= 0 || n_profiles >= ACPI_SAR_PROFILE_NUM) {
++	if (n_profiles >= ACPI_SAR_PROFILE_NUM) {
+ 		ret = -EINVAL;
+ 		goto out_free;
+ 	}
 -- 
 2.43.0
 
