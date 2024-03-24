@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-29356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44126888508
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:56:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719E388850A
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F118D285238
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:56:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2781C1F22AC9
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6BC7351F;
-	Sun, 24 Mar 2024 22:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FE71BEDBE;
+	Sun, 24 Mar 2024 22:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCj1elv3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUhz9/i7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182B81BE816;
-	Sun, 24 Mar 2024 22:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB4C1BEDB3;
+	Sun, 24 Mar 2024 22:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320328; cv=none; b=JUEuilAhBVqjzSN21VAczWSJY/jZzqJlWi/B2kxiAuHk5gh5OWwJB0xTXvulpGpJE23TT9rX3jLVwSaw4Nh7XYH8iLUd150UxkyFEZ9q6xVyNIwHdhp8zpAsrObCoy8BF4Hu5xPqkOmELEPfjtqWyfvKUCLtODO+3h7mRCVUYpk=
+	t=1711320329; cv=none; b=r83WCzj8I0S6zmeHa1dFsNR7L7ek3EwHh8MhdZ0q87IrGXGMh0hPeLe5ytybbR3iVK33r5udclzOVNT/eglD7FiCiBFP+keAHKW5rtwN9Pr58ZNoyEIXtY0wESJSV1ivPlpmufMAhnGmvKXducbSpDiyFvEoLJov6FVjq8ASQXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320328; c=relaxed/simple;
-	bh=uquEdJtuigaZvFIpAaO4VKrtKjcu/o4l9cyrRi+kE6c=;
+	s=arc-20240116; t=1711320329; c=relaxed/simple;
+	bh=6DQJougX0ptKj6bY2XsiqJrGTso8eSy+jqQnXQDK+8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILICtcRGGPOZ10Co2FexeaUAvqdYI6zgNUTkbJKb9sEitB/Fa23obB62IhRjQvgvK8wCjrx//DGoxPvaxKjZxGeclqhTlRLM0chegkf6D7MSXfq3e6VMvFZXvR6e+vMPp2ZSm1N/ft3DS8Koc4tHyTx498oZCBNRez+XPu19rtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCj1elv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F73FC433C7;
-	Sun, 24 Mar 2024 22:45:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AIVqXpg14Oc0MjJb6KMOYAtIC6bjkyj3ZGI6ESPU5N13E0JxAcKZuXHhScZ2YrArfdqJahm8Laevj8o4oycP66hElq0P7YaCMkJVjkLxG54769elNo69YksoBANZAkzq6cWmNwrr9hygzd/ZZSjWHJmdNAvMsfz9XbB7gjhRK88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUhz9/i7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB5EC433F1;
+	Sun, 24 Mar 2024 22:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1711320328;
-	bh=uquEdJtuigaZvFIpAaO4VKrtKjcu/o4l9cyrRi+kE6c=;
+	bh=6DQJougX0ptKj6bY2XsiqJrGTso8eSy+jqQnXQDK+8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCj1elv3gMOglkieno2X4Hm/8wkmLaEJj7/hVi9bY43EwjU5RNG5mU2I2NScp4FlM
-	 gQKqhifzCQ+NnjYTyg6SnNHZcixwvkx0tltOmaUUeOUMnujBb2nrfkYtXR7MJk6u2Y
-	 MUtT5eupRpbA7+DzqJcdWrVEnSjYL17e7JXULYyIySy5xcuLXsvGroA/IcErcbEV58
-	 A0tU3FG9uPriwqOfyZ1rRbgNv96AFXVuwEg2IdZyWT6slELoeYOQ3eiYJzPmeS6GBZ
-	 nuTpYFumZiiYMqF/wAnRbhF94PH20cc/lSYpyZ/r4YtEjZXEqs8ofrgw4c2c+MyHnE
-	 OkjUDhXxBKOwQ==
+	b=sUhz9/i7PRpN1OB2789f1rlQr9ICwxkY1IplZrP/yNVlxA6QSFm205lQHvqq0Jcjt
+	 MFhEmM3m1JANx21+WEFlER6IT5KXOpRy7WObvS3Im9lQdceiQGIFatU+iOEh+IDxNn
+	 OZFMm0p/CQaSRn+N/fW/JzM2Tz432VRhdj/1b35iWCeoMIl17z1WRBBlhBhyV9+LVN
+	 W1ioi6lNrRcsKnhUZ0CICNwQ1goI6e51mp0h5Lm0+R6aEJ4+SAweQAjzJ91C9PTpZo
+	 XOlyVtifTBLo+9tPRhsybjWcZJXVuBYBmcXYRZXYtwxl5PyIpwnEc2ufCM2QkqfDgI
+	 V5RFiYAdgeJSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 635/715] x86/hyperv: Use per cpu initial stack for vtl context
-Date: Sun, 24 Mar 2024 18:33:34 -0400
-Message-ID: <20240324223455.1342824-636-sashal@kernel.org>
+Subject: [PATCH 6.8 636/715] ASoC: tlv320adc3xxx: Don't strip remove function when driver is builtin
+Date: Sun, 24 Mar 2024 18:33:35 -0400
+Message-ID: <20240324223455.1342824-637-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
 References: <20240324223455.1342824-1-sashal@kernel.org>
@@ -60,104 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 2b4b90e053a29057fb05ba81acce26bddce8d404 ]
+[ Upstream commit f31e0d0c2cad23e0cc48731634f85bb2d8707790 ]
 
-Currently, the secondary CPUs in Hyper-V VTL context lack support for
-parallel startup. Therefore, relying on the single initial_stack fetched
-from the current task structure suffices for all vCPUs.
+Using __exit for the remove function results in the remove callback
+being discarded with SND_SOC_TLV320ADC3XXX=y. When such a device gets
+unbound (e.g. using sysfs or hotplug), the driver is just removed
+without the cleanup being performed. This results in resource leaks. Fix
+it by compiling in the remove callback unconditionally.
 
-However, common initial_stack risks stack corruption when parallel startup
-is enabled. In order to facilitate parallel startup, use the initial_stack
-from the per CPU idle thread instead of the current task.
+This also fixes a W=1 modpost warning:
 
-Fixes: 3be1bc2fe9d2 ("x86/hyperv: VTL support for Hyper-V")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1709452896-13342-1-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1709452896-13342-1-git-send-email-ssengar@linux.microsoft.com>
+	WARNING: modpost: sound/soc/codecs/snd-soc-tlv320adc3xxx: section mismatch in reference: adc3xxx_i2c_driver+0x10 (section: .data) -> adc3xxx_i2c_remove (section: .exit.text)
+
+(which only happens with SND_SOC_TLV320ADC3XXX=m).
+
+Fixes: e9a3b57efd28 ("ASoC: codec: tlv320adc3xxx: New codec driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://msgid.link/r/20240310143852.397212-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 19 +++++++++++++++----
- drivers/hv/Kconfig       |  1 +
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ sound/soc/codecs/tlv320adc3xxx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index cf1b78cb2d043..c8062975a5316 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -12,6 +12,7 @@
- #include <asm/i8259.h>
- #include <asm/mshyperv.h>
- #include <asm/realmode.h>
-+#include <../kernel/smpboot.h>
- 
- extern struct boot_params boot_params;
- static struct real_mode_header hv_vtl_real_mode_header;
-@@ -64,7 +65,7 @@ static void hv_vtl_ap_entry(void)
- 	((secondary_startup_64_fn)secondary_startup_64)(&boot_params, &boot_params);
+diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
+index 420bbf588efea..e100cc9f5c192 100644
+--- a/sound/soc/codecs/tlv320adc3xxx.c
++++ b/sound/soc/codecs/tlv320adc3xxx.c
+@@ -1429,7 +1429,7 @@ static int adc3xxx_i2c_probe(struct i2c_client *i2c)
+ 	return ret;
  }
  
--static int hv_vtl_bringup_vcpu(u32 target_vp_index, u64 eip_ignored)
-+static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
+-static void __exit adc3xxx_i2c_remove(struct i2c_client *client)
++static void adc3xxx_i2c_remove(struct i2c_client *client)
  {
- 	u64 status;
- 	int ret = 0;
-@@ -78,7 +79,9 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, u64 eip_ignored)
- 	struct ldttss_desc *ldt;
- 	struct desc_struct *gdt;
+ 	struct adc3xxx *adc3xxx = i2c_get_clientdata(client);
  
--	u64 rsp = current->thread.sp;
-+	struct task_struct *idle = idle_thread_get(cpu);
-+	u64 rsp = (unsigned long)idle->thread.sp;
-+
- 	u64 rip = (u64)&hv_vtl_ap_entry;
+@@ -1452,7 +1452,7 @@ static struct i2c_driver adc3xxx_i2c_driver = {
+ 		   .of_match_table = tlv320adc3xxx_of_match,
+ 		  },
+ 	.probe = adc3xxx_i2c_probe,
+-	.remove = __exit_p(adc3xxx_i2c_remove),
++	.remove = adc3xxx_i2c_remove,
+ 	.id_table = adc3xxx_i2c_id,
+ };
  
- 	native_store_gdt(&gdt_ptr);
-@@ -205,7 +208,15 @@ static int hv_vtl_apicid_to_vp_id(u32 apic_id)
- 
- static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip)
- {
--	int vp_id;
-+	int vp_id, cpu;
-+
-+	/* Find the logical CPU for the APIC ID */
-+	for_each_present_cpu(cpu) {
-+		if (arch_match_cpu_phys_id(cpu, apicid))
-+			break;
-+	}
-+	if (cpu >= nr_cpu_ids)
-+		return -EINVAL;
- 
- 	pr_debug("Bringing up CPU with APIC ID %d in VTL2...\n", apicid);
- 	vp_id = hv_vtl_apicid_to_vp_id(apicid);
-@@ -219,7 +230,7 @@ static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip)
- 		return -EINVAL;
- 	}
- 
--	return hv_vtl_bringup_vcpu(vp_id, start_eip);
-+	return hv_vtl_bringup_vcpu(vp_id, cpu, start_eip);
- }
- 
- int __init hv_vtl_early_init(void)
-diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
-index 00242107d62e0..862c47b191afe 100644
---- a/drivers/hv/Kconfig
-+++ b/drivers/hv/Kconfig
-@@ -16,6 +16,7 @@ config HYPERV
- config HYPERV_VTL_MODE
- 	bool "Enable Linux to boot in VTL context"
- 	depends on X86_64 && HYPERV
-+	depends on SMP
- 	default n
- 	help
- 	  Virtual Secure Mode (VSM) is a set of hypervisor capabilities and
 -- 
 2.43.0
 
