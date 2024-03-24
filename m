@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-29764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-31342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A20888774
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 03:01:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA60889420
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 08:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D512A1C268DF
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:01:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB6E4296A37
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 07:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172C513BAE6;
-	Sun, 24 Mar 2024 23:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F44224C33C;
+	Mon, 25 Mar 2024 02:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRHGS0jV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lr32Hr7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7661A12BF1C;
-	Sun, 24 Mar 2024 22:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B86212C80D;
+	Sun, 24 Mar 2024 22:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711321057; cv=none; b=cqLgAXwRb3QbGEzRMAqGEMkRAm2RqkjuF2siUmmaTmgHnN+2rufiM7Z6Lb71iAg12HQffiEfgCT5fEeoKdB13RvWFDhhV47z2RdoFPGCwAFggjQi/f94pGjibWbRvtpazpGQRSH6B7BBgLCWMiyzDfSupnN3nvqYTNHgwiFCjog=
+	t=1711321057; cv=none; b=P34ttgSBqTucGQkJPpDEIeFu/AgrSxW4xEaJaz+lPNUJ3Fh38/+DXoYkhZn/LHyrCqH2UObSz1duCbpXKbbfn3wkApVk7UM0FjU+ZebUTkP6U8ASZ351mFSFUcJSIzkwFKJRiBfscX6xPrrYiYNErtPo9CMQiNx36+RQoxK+AEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711321057; c=relaxed/simple;
-	bh=XJu2PDosWvo6ftdrnpc97k6E/frxFjZouHIAs4sPWt8=;
+	bh=YKSk4417jnkaegNrpdi4LwpmOOlK3FepNJNTBW4pIRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7Mez7C3SK84Jdrj9t4m26iYhnzw43Gx47L9NE+4DgcrEVzR4wjlyt+D4ntwp0iHkbEMitfZQ7GscSUifq/YkC8XWd0eMFKEPBJq90FCf5AfQF0qYWezXK2ZpghQr2sWutCcaQG+OX/vpIZmmnUo/eJsXUihVojDuLrsSXU26h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRHGS0jV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE7BC43394;
-	Sun, 24 Mar 2024 22:57:35 +0000 (UTC)
+	 MIME-Version; b=L7C1IVFEBiJHlJikcfmgQ/sTAotzCtNvGmekoEAxTmKbFLtV5ggekV51RlS5mlx8vbHx7m4YF1QEMIqYtUmXauseoP1DmPaA18e239uzr1YdszvgYqVFM7Cjvx+eX+3Zz4p9Val9TNFlxXDJ3M4Igl57+JaHj5541DcwCZamCX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lr32Hr7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93348C43399;
+	Sun, 24 Mar 2024 22:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711321056;
-	bh=XJu2PDosWvo6ftdrnpc97k6E/frxFjZouHIAs4sPWt8=;
+	s=k20201202; t=1711321057;
+	bh=YKSk4417jnkaegNrpdi4LwpmOOlK3FepNJNTBW4pIRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRHGS0jVUwnREUYmWHlGjuizapYnUumpp3TZ+9Ms8+rFIK2gr9hiKmqpYeurzfucG
-	 7HYEjkra3Z+pwo6+C0gX9hERR2wUiTuXDZk0KVsmcpFleTGvggRlXfo/T6sn52QCjG
-	 bcVhzSEQOYicr7K13kVdt9NDo9qZgQ2sP6pcRtEyPHaDnzk7Aq6qNcz2Us9Tmtfjpf
-	 mkSkV9kkVilafZjuIxRR6wntXjWn5iGKtbb10z3xibwD8oWayCB+0yciC6HYLEKhrJ
-	 5f4UbDhQhCCxfU1RSmzuFm1306GRGuJ3CjMZ/NoH3ZXMA6TSJmbPvJE0/FH5l00FYQ
-	 Kf8KHmRkhPjvQ==
+	b=lr32Hr7TW3AgQ+wNMPKRodTT3sLBnebF0OU8adrU8vbajaJa48D3BRnGpiXosgjX5
+	 srHuOMGyiHk9uKkSCqBrkB/CnYhzRVoPt+KqfkhL1vhNQtsK9TU/w+aw2D8316LpCJ
+	 2jmTg6S0Y1Y17nBPsetph10xhmoeKudCZHVv/jXs++eGWDd0tFFOIWhDYFBo4CMmSH
+	 fvuU8lZFAJ4hD3JDePMMMumJFu5ZjwWKg3RLhn8exu+5lQBzkb99Yd7P0xxirgCanc
+	 wKHDn5N65UCcN2xHhoiNN8EJM3D+DrzpzYBgjUaCvxQwFXDGnxE8CDQu/FFXFjwfDo
+	 0WUDcRZLSjjjA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+Cc: Petre Rodan <petre.rodan@subdimension.ro>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 620/713] remoteproc: stm32: Fix incorrect type assignment returned by stm32_rproc_get_loaded_rsc_tablef
-Date: Sun, 24 Mar 2024 18:45:46 -0400
-Message-ID: <20240324224720.1345309-621-sashal@kernel.org>
+Subject: [PATCH 6.7 621/713] iio: pressure: mprls0025pa fix off-by-one enum
+Date: Sun, 24 Mar 2024 18:45:47 -0400
+Message-ID: <20240324224720.1345309-622-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
 References: <20240324224720.1345309-1-sashal@kernel.org>
@@ -63,41 +64,50 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit c77b35ce66af25bdd6fde60b62e35b9b316ea5c2 ]
+[ Upstream commit 9e65506ca9c7ff716c8441a33417820ad61d3a16 ]
 
-The sparse tool complains about the remove of the _iomem attribute.
+Fix off-by-one error in transfer-function property.
+The honeywell,transfer-function property takes values between 1-3 so
+make sure the proper enum gets used.
 
-stm32_rproc.c:660:17: warning: cast removes address space '__iomem' of expression
-
-Add '__force' to explicitly specify that the cast is intentional.
-This conversion is necessary to cast to addresses pointer,
-which are then managed by the remoteproc core as a pointer to a
-resource_table structure.
-
-Fixes: 8a471396d21c ("remoteproc: stm32: Move resource table setup to rproc_ops")
-Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Link: https://lore.kernel.org/r/20240117135312.3381936-3-arnaud.pouliquen@foss.st.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 713337d9143ed ("iio: pressure: Honeywell mprls0025pa pressure sensor")
+Co-developed-by: Andreas Klinger <ak@it-klinger.de>
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Link: https://lore.kernel.org/r/20231229092445.30180-5-petre.rodan@subdimension.ro
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/stm32_rproc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/pressure/mprls0025pa.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-index 2c28635219ebf..10b442c6f6323 100644
---- a/drivers/remoteproc/stm32_rproc.c
-+++ b/drivers/remoteproc/stm32_rproc.c
-@@ -657,7 +657,7 @@ stm32_rproc_get_loaded_rsc_table(struct rproc *rproc, size_t *table_sz)
- 	 * entire area by overwriting it with the initial values stored in rproc->clean_table.
- 	 */
- 	*table_sz = RSC_TBL_SIZE;
--	return (struct resource_table *)ddata->rsc_va;
-+	return (__force struct resource_table *)ddata->rsc_va;
- }
+diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
+index 30fb2de368210..e3f0de020a40c 100644
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -323,6 +323,7 @@ static int mpr_probe(struct i2c_client *client)
+ 	struct iio_dev *indio_dev;
+ 	struct device *dev = &client->dev;
+ 	s64 scale, offset;
++	u32 func;
  
- static const struct rproc_ops st_rproc_ops = {
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_READ_BYTE))
+ 		return dev_err_probe(dev, -EOPNOTSUPP,
+@@ -362,10 +363,11 @@ static int mpr_probe(struct i2c_client *client)
+ 			return dev_err_probe(dev, ret,
+ 				"honeywell,pmax-pascal could not be read\n");
+ 		ret = device_property_read_u32(dev,
+-				"honeywell,transfer-function", &data->function);
++				"honeywell,transfer-function", &func);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 				"honeywell,transfer-function could not be read\n");
++		data->function = func - 1;
+ 		if (data->function > MPR_FUNCTION_C)
+ 			return dev_err_probe(dev, -EINVAL,
+ 				"honeywell,transfer-function %d invalid\n",
 -- 
 2.43.0
 
