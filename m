@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-31450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-30047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E48B889D1F
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:37:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D92288892E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 03:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD5B42A614D
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:37:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8CB51F2D585
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 02:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D9B35300F;
-	Mon, 25 Mar 2024 02:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C7251987;
+	Sun, 24 Mar 2024 23:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeAHk9uX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWOAXrYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BE92092EE;
-	Sun, 24 Mar 2024 23:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320612092F7;
+	Sun, 24 Mar 2024 23:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711321557; cv=none; b=cBpaVTClWsErmq7/idoffB8T1veJN1zWIvBpjqWVVbk5shScNwSv4ev3oYNi7zk4lO5Nlc699nWlhmmFHxfizIw8aww86VLjDLesko2NDcLeHHAEFs6AQ4LlgJi1zoNntEh/s3mt3/ANsxDmgvQrrnxaTpdbwFnS9D3ynmt+TrU=
+	t=1711321559; cv=none; b=p3Yd+CuuO2se08U21L+FQXSquwkLm4KSDOwrq87Ocrf5S+laHL1Yts5X2N993qehd7RCUHY5piZIK4zSh/HSthkRPW6ShY3oI+U1EEgjkseNgFCZKSRHyVGMAjZ+PlnQZeEt5ErdIFct76fzlqpHcX7sHvHUXm4K/bmx9xw+0q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711321557; c=relaxed/simple;
-	bh=uRoRsaHWAWpKpAmF0MLAb2S1bcEcuSVKZ2mxImqiWlo=;
+	s=arc-20240116; t=1711321559; c=relaxed/simple;
+	bh=SABHHO5iWkeJQHPBFzdh88YsNhXLEezPk/RzQRrTY9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJQHPjCWgGBeWRWxjbSE+KYkrwWIf7FQyZxVdFX1DGSM8JGWedLOwft3Yqpsn1w6BGFW+S26NXq/yToD8hEw1AhHraA4qCu2uq0fOLdfIEppVAuPoUZNB1l53wGyXhLLDDQoR3ohwsvl2bAyywkr4Oy6r9UAIX8dF68YnGxA8z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeAHk9uX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26800C433A6;
+	 MIME-Version; b=cr1egLt1rNlLNuJU1oKpGcKukgNTDv7cQEAqojOnXu7UMOIZftx8lYYfxbpAz4NO9+RFsSXNiOFjjprhxh4rPcMYxmtvRI3yZ7ZyAMHVyXHoZdtn2HSN96rjtRtXKoHjExtp9mvsbj7uBiN1ekI9Iq+7Ot/CFcph9F2e3tVVz3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWOAXrYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A91C43394;
 	Sun, 24 Mar 2024 23:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711321556;
-	bh=uRoRsaHWAWpKpAmF0MLAb2S1bcEcuSVKZ2mxImqiWlo=;
+	s=k20201202; t=1711321557;
+	bh=SABHHO5iWkeJQHPBFzdh88YsNhXLEezPk/RzQRrTY9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SeAHk9uXBRqPWZiVYjbMszM73CE1ASiTeQ68CD9WNqC3F4+Xy1eSFZMojhXvWkybc
-	 CLxpB4VZRp2DBZ18+Ci/SY7thMBXA2rwaeWyGoSTHopTBDd0saVrFVqOMCyPPVUBFx
-	 ADBMRF+5bA6PWikMse1gwD8PyyOI1CU61ziskfeZUy+ikimaHEAJ+JVZnEMBv4JAju
-	 tHVW4AUs1QlT41moPQAx9IyIipKsxW67piN2iI7ebq4EiodxYEU2TSMBeNTr75T98x
-	 UzbUDpqwRCyIHMvkCZ7wGCtiY/j/XPaKPKpp1ZTk/JcbjqXrY/sMMkuvDd1Fw4Pg5l
-	 IMvG5mil9dlfQ==
+	b=gWOAXrYJj3vwbdUqNZMBzyy/4m8KDXPdXTAxeou/I8eCCaxTomAR1vHo5q/Nv0GFC
+	 3XLdCqM06loEI4SrxxFDDyQLReDyPVKIGshrz0BjbMMupuz/+oochSMfpwKpz0yc/2
+	 hKyRWmoA7BOR083Tmznhi6ozMkGXOtlI7cm80XotKUjf9RQa1pEhNaLGU6XV3MMrn5
+	 rPBYhqLhgaBT8ulWpbVYb5xxmAJtblg2lEqnFMGCPf8/IAe+OovTSojXBthnyst1Fm
+	 U5HxyPE43WqimHXJMwQ+Tx2iKjjRyaEGy7Zs0srrOvwwDsXF8nWCez0KKDjpoZLX5U
+	 Hv/K0hsvFz1BQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhipeng Lu <alexious@zju.edu.cn>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/638] SUNRPC: fix some memleaks in gssx_dec_option_array
-Date: Sun, 24 Mar 2024 18:55:22 -0400
-Message-ID: <20240324230116.1348576-286-sashal@kernel.org>
+Subject: [PATCH 6.6 286/638] arm64: dts: qcom: sm8550: Fix SPMI channels size
+Date: Sun, 24 Mar 2024 18:55:23 -0400
+Message-ID: <20240324230116.1348576-287-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324230116.1348576-1-sashal@kernel.org>
 References: <20240324230116.1348576-1-sashal@kernel.org>
@@ -63,84 +65,42 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 3cfcfc102a5e57b021b786a755a38935e357797d ]
+[ Upstream commit 77dd1e50ffcba33c3195ae4fc78f354368ddacb2 ]
 
-The creds and oa->data need to be freed in the error-handling paths after
-their allocation. So this patch add these deallocations in the
-corresponding paths.
+The actual size of the channels registers region is 4MB, according to the
+documentation. This issue was not caught until now because the driver was
+supposed to allow same regions being mapped multiple times for supporting
+multiple buses. Thie driver is using platform_get_resource_byname() and
+devm_ioremap() towards that purpose, which intentionally avoids
+devm_request_mem_region() altogether.
 
-Fixes: 1d658336b05f ("SUNRPC: Add RPC based upcall mechanism for RPCGSS auth")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240221-dts-qcom-sm8550-fix-spmi-chnls-size-v2-1-72b5efd9dc4f@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/auth_gss/gss_rpc_xdr.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/auth_gss/gss_rpc_xdr.c b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-index d79f12c2550ac..cb32ab9a83952 100644
---- a/net/sunrpc/auth_gss/gss_rpc_xdr.c
-+++ b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-@@ -250,8 +250,8 @@ static int gssx_dec_option_array(struct xdr_stream *xdr,
- 
- 	creds = kzalloc(sizeof(struct svc_cred), GFP_KERNEL);
- 	if (!creds) {
--		kfree(oa->data);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto free_oa;
- 	}
- 
- 	oa->data[0].option.data = CREDS_VALUE;
-@@ -265,29 +265,40 @@ static int gssx_dec_option_array(struct xdr_stream *xdr,
- 
- 		/* option buffer */
- 		p = xdr_inline_decode(xdr, 4);
--		if (unlikely(p == NULL))
--			return -ENOSPC;
-+		if (unlikely(p == NULL)) {
-+			err = -ENOSPC;
-+			goto free_creds;
-+		}
- 
- 		length = be32_to_cpup(p);
- 		p = xdr_inline_decode(xdr, length);
--		if (unlikely(p == NULL))
--			return -ENOSPC;
-+		if (unlikely(p == NULL)) {
-+			err = -ENOSPC;
-+			goto free_creds;
-+		}
- 
- 		if (length == sizeof(CREDS_VALUE) &&
- 		    memcmp(p, CREDS_VALUE, sizeof(CREDS_VALUE)) == 0) {
- 			/* We have creds here. parse them */
- 			err = gssx_dec_linux_creds(xdr, creds);
- 			if (err)
--				return err;
-+				goto free_creds;
- 			oa->data[0].value.len = 1; /* presence */
- 		} else {
- 			/* consume uninteresting buffer */
- 			err = gssx_dec_buffer(xdr, &dummy);
- 			if (err)
--				return err;
-+				goto free_creds;
- 		}
- 	}
- 	return 0;
-+
-+free_creds:
-+	kfree(creds);
-+free_oa:
-+	kfree(oa->data);
-+	oa->data = NULL;
-+	return err;
- }
- 
- static int gssx_dec_status(struct xdr_stream *xdr,
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 076715ef09d56..90e6cd239f569 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3017,7 +3017,7 @@ sram@c3f0000 {
+ 		spmi_bus: spmi@c400000 {
+ 			compatible = "qcom,spmi-pmic-arb";
+ 			reg = <0 0x0c400000 0 0x3000>,
+-			      <0 0x0c500000 0 0x4000000>,
++			      <0 0x0c500000 0 0x400000>,
+ 			      <0 0x0c440000 0 0x80000>,
+ 			      <0 0x0c4c0000 0 0x20000>,
+ 			      <0 0x0c42d000 0 0x4000>;
 -- 
 2.43.0
 
