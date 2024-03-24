@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-29360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF85888510
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D313888512
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B2DB1F22BEC
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6E8D1F22D03
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFAD1BF529;
-	Sun, 24 Mar 2024 22:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B5A13E024;
+	Sun, 24 Mar 2024 22:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETs9+QE+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7/HZrxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0ED1BF51D;
-	Sun, 24 Mar 2024 22:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6AE74402;
+	Sun, 24 Mar 2024 22:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320332; cv=none; b=SiLax6rxPsR6QsinhhZ7gmz+ZiWeZN8iZptukoZo+MDM17lqcZUL4y3IieMvAXnWWLyRUdxDDk7dTQ+tx4nwLy+8vxlswrCcfarYwe6HcAV8BRWmnRXXkEQt965Dv9MoaXRvNHlyh3q8QGdZrWlfMJoK9NwEY+aXmn+sWzOMLtQ=
+	t=1711320333; cv=none; b=gcTRcryXIleDPLQQ0IGudHt3QHOGrpYqodD12wNc9/jfdc8OC8dOEqnRwAqlZDrpUj2ucQe+zK/5hlQkba8/7bX8FdIVOIUT9leW04o7R70f693SGRr0rO1a4bOEPur8MxvJMcwwM6N8Kl39Q71fUyOv15SdG8nnvGn988HZFA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320332; c=relaxed/simple;
-	bh=oL9bOEKE6eutJbiJSZAloAwLP9RkgyJ8pIjxmXoq7is=;
+	s=arc-20240116; t=1711320333; c=relaxed/simple;
+	bh=etuvMnhU1Yw1AqFeBdAgKEHh4IM1KJV2ySH1nskxOcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GR+HN0r7mIpahuLomuk34hA7SIi7Pj2NT5qS26HVQ1SOkZRXRVpuiWr4xy7OcZVFilWqItL0rHWc6GGtBH69Z9D4lU9eOouDRqgU78qo7ZoWSSfHSCLNFgQE/xJ/Y6vit1rzZWI+ABVX7vzSU250d16AXvoF6CAefP4JYMR7BSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETs9+QE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8CEC433C7;
-	Sun, 24 Mar 2024 22:45:31 +0000 (UTC)
+	 MIME-Version; b=GJNNaz8ZRSc5mVEiFPaPnxlM6rANvRt8VpKys8MFNvihsxUiiItjqNnwR/vQAo5qyC3s6qpMSJEcN1WRLWWitvx3q2LGXOKaWPj8Lo9H81tNnWUeGY7df+dMfv8hw8dkMlZO1PEErH1e2r9jtVcefqtdJlcD70CwKYXWvfWXNr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7/HZrxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE10C433A6;
+	Sun, 24 Mar 2024 22:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320331;
-	bh=oL9bOEKE6eutJbiJSZAloAwLP9RkgyJ8pIjxmXoq7is=;
+	s=k20201202; t=1711320332;
+	bh=etuvMnhU1Yw1AqFeBdAgKEHh4IM1KJV2ySH1nskxOcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETs9+QE+fFw2UFXip1KqKAmhOGDEuxqmYnnE3ewa+JFRJkJy7aTwxJUq8gMORpO62
-	 PmwrxF5tsevr8HM4/SHDZSwvj2+JJeBoIdbET6ysCThSAes36RijJ8yGmqhH0KJunU
-	 RVIL0FvV/I3CS8+ovU53z1oqUppo9RqTv5t+gkDli9viFFPujOBE6GwgxFj4oZ2X+G
-	 A2xYNiyKKt+aM+ize/LZmwlcI4kFRe3wjCE5FiK1bCBLN2n4jXwLqNKHoOdTjtyRU+
-	 sZgExlmD1IwV9WZh5hMQxMnV5hq8tFLwEMi4gsQXqtACr2kKaxF5c6N+A1LE2TU6B3
-	 Ad6levUrjD6og==
+	b=P7/HZrxyUli9X2kT6zmf9ihUiKgVbDRIogNY2GV47GC/dC9+CdYFzHWn9qqXrqzvA
+	 h2w2WPL+Jgq5ARJi9y1jcZKo6jkDwH/7R+4DTpRgLn1kmKJUi+7tvYS+Mg9nLiZIxQ
+	 IHOFFH41aD+pTjUBSrclOLTGhaitwguH75ecricYRcdSRtntBa3MTUC8NcO1lWKYhZ
+	 XbKjfBDvLhjvNRHoDu0lLZnPCPjPOtCLEh0B0LiMpnFicOxC7ilzGJqpB0yaqWAXjE
+	 SBtJDAaWXSmk/gRfX7Vm4Ux7UZtmncR/8wC1P1+6fhFiHxhoL9v9cSg+0PrhP07gn9
+	 dK4V40EPFJOYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 639/715] io_uring: don't save/restore iowait state
-Date: Sun, 24 Mar 2024 18:33:38 -0400
-Message-ID: <20240324223455.1342824-640-sashal@kernel.org>
+Subject: [PATCH 6.8 640/715] spi: lpspi: Avoid potential use-after-free in probe()
+Date: Sun, 24 Mar 2024 18:33:39 -0400
+Message-ID: <20240324223455.1342824-641-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
 References: <20240324223455.1342824-1-sashal@kernel.org>
@@ -62,52 +63,72 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 6f0974eccbf78baead1735722c4f1ee3eb9422cd ]
+[ Upstream commit 2ae0ab0143fcc06190713ed81a6486ed0ad3c861 ]
 
-This kind of state is per-syscall, and since we're doing the waiting off
-entering the io_uring_enter(2) syscall, there's no way that iowait can
-already be set for this case. Simplify it by setting it if we need to,
-and always clearing it to 0 when done.
+fsl_lpspi_probe() is allocating/disposing memory manually with
+spi_alloc_host()/spi_alloc_target(), but uses
+devm_spi_register_controller(). In case of error after the latter call the
+memory will be explicitly freed in the probe function by
+spi_controller_put() call, but used afterwards by "devm" management outside
+probe() (spi_unregister_controller() <- devm_spi_unregister() below).
 
-Fixes: 7b72d661f1f2 ("io_uring: gate iowait schedule on having pending requests")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000070
+...
+Call trace:
+ kernfs_find_ns
+ kernfs_find_and_get_ns
+ sysfs_remove_group
+ sysfs_remove_groups
+ device_remove_attrs
+ device_del
+ spi_unregister_controller
+ devm_spi_unregister
+ release_nodes
+ devres_release_all
+ really_probe
+ driver_probe_device
+ __device_attach_driver
+ bus_for_each_drv
+ __device_attach
+ device_initial_probe
+ bus_probe_device
+ deferred_probe_work_func
+ process_one_work
+ worker_thread
+ kthread
+ ret_from_fork
+
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://msgid.link/r/20240312112050.2503643-1-alexander.sverdlin@siemens.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 39dfb83dc9fc4..030cc930d1c6a 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2527,7 +2527,7 @@ static bool current_pending_io(void)
- static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 					  struct io_wait_queue *iowq)
- {
--	int io_wait, ret;
-+	int ret;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 11991eb126364..079035db7dd85 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -830,11 +830,11 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
  
- 	if (unlikely(READ_ONCE(ctx->check_cq)))
- 		return 1;
-@@ -2545,7 +2545,6 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 	 * can take into account that the task is waiting for IO - turns out
- 	 * to be important for low QD IO.
- 	 */
--	io_wait = current->in_iowait;
- 	if (current_pending_io())
- 		current->in_iowait = 1;
- 	ret = 0;
-@@ -2553,7 +2552,7 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
- 		schedule();
- 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
- 		ret = -ETIME;
--	current->in_iowait = io_wait;
-+	current->in_iowait = 0;
- 	return ret;
- }
+ 	is_target = of_property_read_bool((&pdev->dev)->of_node, "spi-slave");
+ 	if (is_target)
+-		controller = spi_alloc_target(&pdev->dev,
+-					      sizeof(struct fsl_lpspi_data));
++		controller = devm_spi_alloc_target(&pdev->dev,
++						   sizeof(struct fsl_lpspi_data));
+ 	else
+-		controller = spi_alloc_host(&pdev->dev,
+-					    sizeof(struct fsl_lpspi_data));
++		controller = devm_spi_alloc_host(&pdev->dev,
++						 sizeof(struct fsl_lpspi_data));
  
+ 	if (!controller)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
