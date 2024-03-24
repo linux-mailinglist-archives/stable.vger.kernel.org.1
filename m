@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-29359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654AC88850E
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF85888510
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 965321C241AB
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B2DB1F22BEC
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D011BF50E;
-	Sun, 24 Mar 2024 22:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFAD1BF529;
+	Sun, 24 Mar 2024 22:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfwJkYbz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETs9+QE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D4F1BF503;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0ED1BF51D;
 	Sun, 24 Mar 2024 22:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320331; cv=none; b=OxwwBGitsvwSQySZIq1LhqZGh3KubxXgIzyHWZP3xDPsDWIWmh6DKNtQEFvzR7SiMhBeeBz6zJAgI8ElA2f0nID5wPU/iumzTLwEZhxGoFSc48br31beTgu4P6sxXOYIhd/ITjU87+27ZsNUYLN1ISrDh+5d7p1UX0p/zH2/aUE=
+	t=1711320332; cv=none; b=SiLax6rxPsR6QsinhhZ7gmz+ZiWeZN8iZptukoZo+MDM17lqcZUL4y3IieMvAXnWWLyRUdxDDk7dTQ+tx4nwLy+8vxlswrCcfarYwe6HcAV8BRWmnRXXkEQt965Dv9MoaXRvNHlyh3q8QGdZrWlfMJoK9NwEY+aXmn+sWzOMLtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320331; c=relaxed/simple;
-	bh=q9cK5+CVva2zWZ5121iREcxRFvY+SrqSNGS/pgZCZmo=;
+	s=arc-20240116; t=1711320332; c=relaxed/simple;
+	bh=oL9bOEKE6eutJbiJSZAloAwLP9RkgyJ8pIjxmXoq7is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKY7ULGow0g57gcGqKJ2gnmA1xRsnundoTX4P0gT/Cut2Gj2C3q6NweS7hARCGjDO8LurbJhOpRo4wUkZPRnuX3OD8QjOpeaIQqdM8+D9vgf8XsqxiQdDoCAvFGU6g9R5yfmhfUpLVvquwszhQpCDG5YYnoDkL7u7CH+ZMdafXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfwJkYbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CA4C43390;
-	Sun, 24 Mar 2024 22:45:30 +0000 (UTC)
+	 MIME-Version; b=GR+HN0r7mIpahuLomuk34hA7SIi7Pj2NT5qS26HVQ1SOkZRXRVpuiWr4xy7OcZVFilWqItL0rHWc6GGtBH69Z9D4lU9eOouDRqgU78qo7ZoWSSfHSCLNFgQE/xJ/Y6vit1rzZWI+ABVX7vzSU250d16AXvoF6CAefP4JYMR7BSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETs9+QE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8CEC433C7;
+	Sun, 24 Mar 2024 22:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1711320331;
-	bh=q9cK5+CVva2zWZ5121iREcxRFvY+SrqSNGS/pgZCZmo=;
+	bh=oL9bOEKE6eutJbiJSZAloAwLP9RkgyJ8pIjxmXoq7is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfwJkYbzltux2Oj9D+w6gNybp7/lnuQ3tEVKe4jg9koyQpvXsiEY76PYv103wwns6
-	 Mr/7qOV5orOsoqsW8B+3zeb4w6IsoRHPRCFVbHdkIh7qE3Myp0Bt0lX2alb1zRbz2l
-	 ft/PfoAdHenK3gNpUz7wvSpC0aGHrKAT7uvmRNPMY7bkDdlkMTkl3/JpxoZ0UcNinj
-	 +v7Yxo0Y539p1C706B61vqeqNTlgi1TWa/pNcBR6Hs0dpULlRLJtOrUQL46mN/HTOO
-	 +IwW1QR+ttQhEm0Oaw0Gx6l3LxeSKTTKppySLHkCWkW6xOplyvAS1OAVF/ps9w4M0/
-	 z1OVUs+c0UX1w==
+	b=ETs9+QE+fFw2UFXip1KqKAmhOGDEuxqmYnnE3ewa+JFRJkJy7aTwxJUq8gMORpO62
+	 PmwrxF5tsevr8HM4/SHDZSwvj2+JJeBoIdbET6ysCThSAes36RijJ8yGmqhH0KJunU
+	 RVIL0FvV/I3CS8+ovU53z1oqUppo9RqTv5t+gkDli9viFFPujOBE6GwgxFj4oZ2X+G
+	 A2xYNiyKKt+aM+ize/LZmwlcI4kFRe3wjCE5FiK1bCBLN2n4jXwLqNKHoOdTjtyRU+
+	 sZgExlmD1IwV9WZh5hMQxMnV5hq8tFLwEMi4gsQXqtACr2kKaxF5c6N+A1LE2TU6B3
+	 Ad6levUrjD6og==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 638/715] thermal/drivers/qoriq: Fix getting tmu range
-Date: Sun, 24 Mar 2024 18:33:37 -0400
-Message-ID: <20240324223455.1342824-639-sashal@kernel.org>
+Subject: [PATCH 6.8 639/715] io_uring: don't save/restore iowait state
+Date: Sun, 24 Mar 2024 18:33:38 -0400
+Message-ID: <20240324223455.1342824-640-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
 References: <20240324223455.1342824-1-sashal@kernel.org>
@@ -64,78 +62,52 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 4d0642074c67ed9928e9d68734ace439aa06e403 ]
+[ Upstream commit 6f0974eccbf78baead1735722c4f1ee3eb9422cd ]
 
-TMU Version 1 has 4 TTRCRs, while TMU Version >=2 has 16 TTRCRs.
-So limit the len to 4 will report "invalid range data" for i.MX93.
+This kind of state is per-syscall, and since we're doing the waiting off
+entering the io_uring_enter(2) syscall, there's no way that iowait can
+already be set for this case. Simplify it by setting it if we need to,
+and always clearing it to 0 when done.
 
-This patch drop the local array with allocated ttrcr array and
-able to support larger tmu ranges.
-
-Fixes: f12d60c81fce ("thermal/drivers/qoriq: Support version 2.1")
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240226003657.3012880-1-peng.fan@oss.nxp.com
+Fixes: 7b72d661f1f2 ("io_uring: gate iowait schedule on having pending requests")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qoriq_thermal.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ io_uring/io_uring.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index ccc2eea7f9f54..404f01cca4dab 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -57,6 +57,9 @@
- #define REGS_TTRnCR(n)	(0xf10 + 4 * (n)) /* Temperature Range n
- 					   * Control Register
- 					   */
-+#define NUM_TTRCR_V1	4
-+#define NUM_TTRCR_MAX	16
-+
- #define REGS_IPBRR(n)		(0xbf8 + 4 * (n)) /* IP Block Revision
- 						   * Register n
- 						   */
-@@ -71,6 +74,7 @@ struct qoriq_sensor {
- 
- struct qoriq_tmu_data {
- 	int ver;
-+	u32 ttrcr[NUM_TTRCR_MAX];
- 	struct regmap *regmap;
- 	struct clk *clk;
- 	struct qoriq_sensor	sensor[SITES_MAX];
-@@ -182,17 +186,17 @@ static int qoriq_tmu_calibration(struct device *dev,
- 				 struct qoriq_tmu_data *data)
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 39dfb83dc9fc4..030cc930d1c6a 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2527,7 +2527,7 @@ static bool current_pending_io(void)
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq)
  {
- 	int i, val, len;
--	u32 range[4];
- 	const u32 *calibration;
- 	struct device_node *np = dev->of_node;
+-	int io_wait, ret;
++	int ret;
  
- 	len = of_property_count_u32_elems(np, "fsl,tmu-range");
--	if (len < 0 || len > 4) {
-+	if (len < 0 || (data->ver == TMU_VER1 && len > NUM_TTRCR_V1) ||
-+	    (data->ver > TMU_VER1 && len > NUM_TTRCR_MAX)) {
- 		dev_err(dev, "invalid range data.\n");
- 		return len;
- 	}
+ 	if (unlikely(READ_ONCE(ctx->check_cq)))
+ 		return 1;
+@@ -2545,7 +2545,6 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 	 * can take into account that the task is waiting for IO - turns out
+ 	 * to be important for low QD IO.
+ 	 */
+-	io_wait = current->in_iowait;
+ 	if (current_pending_io())
+ 		current->in_iowait = 1;
+ 	ret = 0;
+@@ -2553,7 +2552,7 @@ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 		schedule();
+ 	else if (!schedule_hrtimeout(&iowq->timeout, HRTIMER_MODE_ABS))
+ 		ret = -ETIME;
+-	current->in_iowait = io_wait;
++	current->in_iowait = 0;
+ 	return ret;
+ }
  
--	val = of_property_read_u32_array(np, "fsl,tmu-range", range, len);
-+	val = of_property_read_u32_array(np, "fsl,tmu-range", data->ttrcr, len);
- 	if (val != 0) {
- 		dev_err(dev, "failed to read range data.\n");
- 		return val;
-@@ -200,7 +204,7 @@ static int qoriq_tmu_calibration(struct device *dev,
- 
- 	/* Init temperature range registers */
- 	for (i = 0; i < len; i++)
--		regmap_write(data->regmap, REGS_TTRnCR(i), range[i]);
-+		regmap_write(data->regmap, REGS_TTRnCR(i), data->ttrcr[i]);
- 
- 	calibration = of_get_property(np, "fsl,tmu-calibration", &len);
- 	if (calibration == NULL || len % 8) {
 -- 
 2.43.0
 
