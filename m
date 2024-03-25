@@ -1,147 +1,104 @@
-Return-Path: <stable+bounces-32269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7C988B326
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 22:50:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8988B466
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 23:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43DED1F621BD
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:50:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A7F1C37CB3
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 22:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3496C6FE15;
-	Mon, 25 Mar 2024 21:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QZMpLRZ/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEAE79DB9;
+	Mon, 25 Mar 2024 22:44:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641776F524
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 21:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA26757FE;
+	Mon, 25 Mar 2024 22:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711403417; cv=none; b=bCJEyk0s9GF3s6MzE/Xuyf8ObfHU7HmHn1cUO9vA39wvOuq2UzvpPcqriDhwQ5zRgsIZIR2O/lcIUG2SBmqDUMwP6fHIOW/Mhl/MiDID261SXwgrGECfMCfpX0IBKrr132UlMx04gZvOWYnOJQLmvoLC+uZCzIY6tG+MrDk5sf8=
+	t=1711406671; cv=none; b=kLVJvRfQ4h/vXC90z4dnfsP67OsCAvOetuOkycizPHkR70XFwwDBMZwAor8t/d56oRxenCPa+UcphEsx0z8gN18QVFJETJ82EixYG9oIIBpNKHGvIBHjmVEG2yYl2Iw++hdcV74G8Fe6LKQ+LwsQgeRVy5mF1U0O+Eot73p01Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711403417; c=relaxed/simple;
-	bh=oMwZrCFp8dMUvhWDn6c0mXIOD2/iSsSXxQYY8pZyntU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tSy49HqUQuSjsYIRKe4vEnj13//kWO5NCnLtIB8F3UYA0/YG2oexALXpmZP2/WxUWluY4DwTS7Gtm6deJhB1enxCcKaYneAtMw1inTMr8izabFgZrd89KsFXGhp0vMSLQwRbYyrbt+6OG9/0U1hYAJDBBX3xnOhrHmxwPNWJddQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QZMpLRZ/; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-431347c6c99so36331cf.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 14:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711403414; x=1712008214; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OlpfV5Tydfz9QyOmPbOHYJo9SnZWGh9oswRld/5cI2o=;
-        b=QZMpLRZ//70d8RXbaSbuDxlnhXIDjyOt8qjCz77lNLdDto/ARhSmVLxMKVpur7loyo
-         xTK/MT6AWWqnreiRAzlyPumW2XZNdWYW84JOhK6Vs3f3GAkOF5+hbpX7zrtbfkcDMG53
-         wAjEAQHY0vitEl4oYxbRTt0dTfN9L5N4w5AysbRffHQBgKYFSQ9iMeDfPQ5W95l7aKTY
-         ism1R5sTfaeEbaaLQBthXv3zHyZNqseL5gdNDohXv71Zh3G41oDy6nXu1hqlnDJQ2w/5
-         4vZGCFAfqiTgkPzrfFXtTp9fK+u9K1HVcoDLaTXj6iPc2XngWkkIzjRRgmVFxbU11fbV
-         PxYg==
+	s=arc-20240116; t=1711406671; c=relaxed/simple;
+	bh=FqAR+Ze93S0/wP3fz86mi6oEKKEdcwrhtvntMZJBRUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pxVJFq9T3x0OfoVj0fmB2V2VGtSdN7lhsRzHPHRMNO3puoxu3EQIh8X7wfPpwn61V3S25M0Dq8gm4M1vEvCxHWO8bmjNsahXcvTkQmG/erxuGmvACPV37V4bah3JgJ3a5m0B6ifHPsJ5+l7Zk3CnPD/yvVzLNbfKfR/3kMps+hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e0ae065d24so15733135ad.1;
+        Mon, 25 Mar 2024 15:44:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711403414; x=1712008214;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OlpfV5Tydfz9QyOmPbOHYJo9SnZWGh9oswRld/5cI2o=;
-        b=Td1gO3KNIKQ44KQCFADGncoFuAfQGLxMnboTMXhQX0Ry4OccZlnIgNlv2oG6iITupl
-         ZhiRv+vzVDOXwwzTHcHH9z/ecteTHCCXTbzBfODaRb454MFyNVhLoCm2FI0oKzw0fpXm
-         uuNIbNG70cA0qJbo3ZoBFqNCmFMbJmAPvzQm6HkKjLbTkPB6SxqPgrKq9rzEGulfepoI
-         YtLqKwPP339DCyhg1xTBn+nOv83ASKPV3yn1FpLSgvEh1sbdTy/Qpt24H33n1hiPrUPo
-         VRdKY7yuE3tTVZRQu777QkT5onzdSCvd36u4LK4PGZ0V8IfEZPRIXU1FiSj0GxUe30JN
-         vHFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtNitd3ULUKdHEqnc07QMSXJ4BMo5hUm/lERH/HDAtKFBBq/rIqyGnEei9sFgwces2o1WhbSh5wWOC1V980ELI5dTYv3GN
-X-Gm-Message-State: AOJu0YzG6xhZ+VkYxp0cAo2rBHTql/kUJO0/+rJivaQQA7jSacMOrBxD
-	d4Kzme9nrSr8zO0vPxf3ArQqKnJGIhRbKxuS96Oc8CgsRvcAZczpVSk77Ul1T1lrpX+MTHNLttx
-	8ZAmUErWYtd5uIUd8jkqSNELP1qOd1nV8k3Nv
-X-Google-Smtp-Source: AGHT+IHasoIaZGVqEl3+edaST5U18ERq0E2RdaIswtzIAMiCmx0wbzav9E6PID12WAD1iyP+5AzI3qWX/zPasJs4gH0=
-X-Received: by 2002:a05:622a:40ca:b0:431:60bf:bba1 with SMTP id
- ch10-20020a05622a40ca00b0043160bfbba1mr24695qtb.15.1711403414204; Mon, 25 Mar
- 2024 14:50:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711406670; x=1712011470;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CEtqN21NPk7qVlH0grRm+VUsTURjOFZF7Zd8pI9zJjw=;
+        b=BjHF/N+RrBiMnoBWkgHBGW/BWwv01v1QCfNNTu2BKq3jA4mv4X4umc4Rp3iHbOz57Y
+         cuKYhRT5uLk+uFtzQZp11eFnEJmhLWD//HcHaKxCVYhAeQg2mEEOmBb08cxB42c62TmT
+         /SZ6k6LQIkyEYTHIt8dGi0lOKFQQJc20fwli9eP+DrnEXaZrzbif/DbaIySmlV+YKNrU
+         H1GxXzY9uDIXV9qkrNVNvIieDpMIiAbk5BWd2mRBAF2xtRKGQkWCR7GS/cgrPJNnUzTf
+         7q82drVISFt/PQofEuvQs85jK+KySIoPSXUCciaK028UIF6laBmYxAn/av0QfWi+yqFe
+         YbJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZnPQv/YdLSJ/sy4E6xV6XNyxsMQIOvwAQtA0SeS12rfXa81ZQ7sl+A7KfBrvA5r3LutSt1oDjtjNulCmbvXrrCa44syzY
+X-Gm-Message-State: AOJu0YwQ18hMDdtvoqHzNOveZlVwKIRCSFQ0XJF5S0Gd22tcsEj8g8Sz
+	McIqFoYmnW0Wfo1l3VkJCbbxovYq51KdSoc3FRWVLJFVaUEQTzJN
+X-Google-Smtp-Source: AGHT+IGLzWWDFm8F/FgdEDB5/LCuAo0yho0JjLmU+SbDhI+17aOgDkdinTbWV+kL0jt+13ujSADavQ==
+X-Received: by 2002:a17:902:e80b:b0:1e0:a839:f2ba with SMTP id u11-20020a170902e80b00b001e0a839f2bamr7881210plg.58.1711406669611;
+        Mon, 25 Mar 2024 15:44:29 -0700 (PDT)
+Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:262:e41e:a4dd:81c6])
+        by smtp.gmail.com with ESMTPSA id b18-20020a170903229200b001e0b5eee802sm3268851plh.123.2024.03.25.15.44.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 15:44:29 -0700 (PDT)
+From: Bart Van Assche <bvanassche@acm.org>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	stable@vger.kernel.org,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	Mike Christie <michael.christie@oracle.com>
+Subject: [PATCH] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
+Date: Mon, 25 Mar 2024 15:44:17 -0700
+Message-ID: <20240325224417.1477135-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325163831.203014-1-herve.codina@bootlin.com>
-In-Reply-To: <20240325163831.203014-1-herve.codina@bootlin.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Mon, 25 Mar 2024 14:49:38 -0700
-Message-ID: <CAGETcx9YpqNhnNgpVNCuxm_nbApVbdXgFRiLVNYP64DKcDEm8g@mail.gmail.com>
-Subject: Re: [PATCH v3 RESEND] driver core: Keep the supplier fwnode
- consistent with the device
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 25, 2024 at 9:39=E2=80=AFAM Herve Codina <herve.codina@bootlin.=
-com> wrote:
->
-> The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-> fwnode's consumer links") introduces the possibility to use the
-> supplier's parent device instead of the supplier itself.
-> In that case the supplier fwnode used is not updated and is no more
-> consistent with the supplier device used.
->
-> Use the fwnode consistent with the supplier device when checking flags.
+There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
+flag but there is no code that clears this flag. Instead of only clearing
+SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
+necessary to preserve any command flags inside scsi_end_request().
 
-Please drop this patch. It's unnecessary churn. fw_devlink took years
-to get to where it is. There are lots of corner cases. So I'd rather
-not touch something if it's not broken. If a particular case for you
-is broken, start with describing the issue please and then we can
-figure out if it needs a change and what's a good way to do it.
+Cc: stable@vger.kernel.org
+Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ drivers/scsi/scsi_lib.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Nack.
-
--Saravana
-
->
-> Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's=
- consumer links")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
-> Changes v2 -> v3:
->   Do not update the supplier handle in order to keep the original handle
->   for debug traces.
->
-> Changes v1 -> v2:
->   Remove sup_handle check and related pr_debug() call as sup_handle canno=
-t be
->   invalid if sup_dev is valid.
->
->  drivers/base/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index b93f3c5716ae..0d335b0dc396 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2163,7 +2163,7 @@ static int fw_devlink_create_devlink(struct device =
-*con,
->                  * supplier device indefinitely.
->                  */
->                 if (sup_dev->links.status =3D=3D DL_DEV_NO_DRIVER &&
-> -                   sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-> +                   sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
->                         dev_dbg(con,
->                                 "Not linking %pfwf - dev might never prob=
-e\n",
->                                 sup_handle);
-> --
-> 2.44.0
->
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index ca48ba9a229a..2fc2b97777ca 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -633,10 +633,9 @@ static bool scsi_end_request(struct request *req, blk_status_t error,
+ 	if (blk_queue_add_random(q))
+ 		add_disk_randomness(req->q->disk);
+ 
+-	if (!blk_rq_is_passthrough(req)) {
+-		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
+-		cmd->flags &= ~SCMD_INITIALIZED;
+-	}
++	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
++		     !(cmd->flags & SCMD_INITIALIZED));
++	cmd->flags = 0;
+ 
+ 	/*
+ 	 * Calling rcu_barrier() is not necessary here because the
 
