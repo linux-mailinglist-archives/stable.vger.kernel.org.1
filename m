@@ -1,180 +1,233 @@
-Return-Path: <stable+bounces-32262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D6588B175
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:33:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F9188B377
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 23:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88423073FD
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:33:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAE6FB3E0B5
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88D34AEEF;
-	Mon, 25 Mar 2024 20:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A4E524B4;
+	Mon, 25 Mar 2024 20:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ktz1eJQk"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E8HReAfK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="e4Gt5Cs0";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="E8HReAfK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="e4Gt5Cs0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFCC6EB69;
-	Mon, 25 Mar 2024 20:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADA71BF31;
+	Mon, 25 Mar 2024 20:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711398729; cv=none; b=sjCOhbzlA+01KSjQoZt56vXMxJYP8f3P0siROZtNeQ0Hk7QCa3H/69/qWq+qVm+ocTPZ8nOVZmxXTwdCtNf/lwGLQOGNttu1Jb9BIIUBNeX5PBOb/L+xSAQMxIbLbZl0rZWHru48FZcka5LSCW3wpFV1Fk1wkYTx0ldk9SzzMhE=
+	t=1711399036; cv=none; b=qv5QkwPSqcdTqZIU2Ok8m1FphhfV6v9dmjBpIgF+sA7yA98WQx3rYUuoxrMpT7JAx4qACp1hkj0iaGqiqUx9mmnMjWDntRWEfGdcj7pXCFVPqCVkuzs/trvrXQT23PZgPZ2Msl+opPz8NgpPVrqUNVdj4tjeOqpXSwZmyBWU6dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711398729; c=relaxed/simple;
-	bh=Y1Qv7WFRuuhXfFyptMkixf3iEE+4tSJqSv5rHXMWASQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cKlgvFn+Y3NnALSEUgYW1KyCYMcjftG2RDb0sljV7N2LfGfTnuN9PCpPP2el4drvDrMvcB96Gd+Dw4yghoe/UMm2H9LXZgyPsb7xI1FHRIJsC1GhIFV36y+FwPnLGFEDwDfx1fPvhg6vZF87oERtKcCOAfCrxPguTxf3pQaPn68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ktz1eJQk; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d228a132acso66132791fa.0;
-        Mon, 25 Mar 2024 13:32:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711398726; x=1712003526; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h7RKIz/MrNg9cMTI1c37D8VVxet1bDqKEYSB/zPacp8=;
-        b=ktz1eJQkNBWg0qpOhYEE2ijuc3jI17rb0piMfkvOaxUW0t6vpIwYKVOIsCcfy4JPVV
-         iqBCmpnWofgQ2TmsG7IBHKXs7b3XlBajqBilXEvB6YLnQEPRRbKCacrBmAVeMpr5B5SR
-         Hq9eMADab2rCA2wkugGCXOXmEDsfpcQRCLjakDB0auRY/G4sAMXpGk2vGZ+1K4GO9PP5
-         JzFbu0YTMls1SKVuaTLOF1kNOoF8WSWzQeWjQGks1VuweQohjQpcGliPyGiw/vlAMKCM
-         djAjctOpW+05Q7/a0CiB5OajOG/hQrfpIy/YT3OGZkbcC/fk//P5U63snp8ajOHhazg1
-         HM0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711398726; x=1712003526;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h7RKIz/MrNg9cMTI1c37D8VVxet1bDqKEYSB/zPacp8=;
-        b=F1nZvH93y1KaVG/bNYJT/ZEJ0UV/pfntbDWF/2+ROM5v5EhwGBRLWoncPmDR495F1+
-         WGa62GhMO2jJEhjQpBbnrazqHIHO45UMvkGC3v3hjqKo640GUrIjQef30mX87rilRFz3
-         Mv5yLjmS+VdhHZsEap4u3eaLcU4un1xaC/0BWfWY5h2WREfOS4sQ1ikCBeQ7CBTT9GF+
-         ZCDmohkooQkMlhWZ7aZuTtNZqFgoXmDtOL7D0LmSD+TwpQOZTWBAIym6wgL29/7o4B9r
-         zaKENoVNwjbKqg731zi8VhM05V1utGJMmlxHo6piferUNdqT2BunM3STAmnTMJdyvoo6
-         X/2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXWu0eJwXQqoqoJsQ66bBGrB3gzlAIkXNzOint+XyvC66ymOaY6t5SZkk973IhOFezpwWqLplsupvIkAuHfxsx09F0MQ7D2zx7YZy7STY0ZaoMpbgpQEbyMlNuOkEaerpAsdupgID+S7u5uX1y6XPei1h4oUkwzz+QqT8T0n0r/u/CVHj8a
-X-Gm-Message-State: AOJu0YzELjhedUIyDOzYY2lB7n7c6ZAGIHT2tOxkDOaVIO8ohFcinWEv
-	RjjrzghaHYkBIgpCBHvkwJ2DhU1lZeZDXgqf/wasiBUpUL1QIusHT8HEG9+tDK7JRCZiHv3WN7+
-	ORucYPHNao/6d7J/VQ+HwlYHA9td5ojMF
-X-Google-Smtp-Source: AGHT+IFCzjTe1PrD1iEgUFB5Rziw5BPMZsUhry6xjN8/w0epyu0Je9rqlozlFF04zGALoUPk2yD3Wyk4FTTYaqbbkeI=
-X-Received: by 2002:a2e:938e:0:b0:2d4:668f:baac with SMTP id
- g14-20020a2e938e000000b002d4668fbaacmr5741497ljh.28.1711398725984; Mon, 25
- Mar 2024 13:32:05 -0700 (PDT)
+	s=arc-20240116; t=1711399036; c=relaxed/simple;
+	bh=27jU2O84cSCjwqulojJe2f0Ho7XmVZpE8G2qy+kcxUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eMqD3w/d403iTazBQ6zYr4atK4hNneL7mnW/QHxcthEsFmSYXHh/PBAHH3HJ1MnuR1xJ3vZRiILORWaWUFs6yvLQ9m/ZmS2p73p+IavqIyo9AmqqnE37BKn08kfROEHwxJz+JbAINDozcDipI6sMk6LmO6r+uuL4PG5FeVM06L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E8HReAfK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=e4Gt5Cs0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=E8HReAfK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=e4Gt5Cs0; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 73CAB372A8;
+	Mon, 25 Mar 2024 20:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711399032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Gm8orQ8RLR5m2Km4fWq1+UBY+BSTbw+xyBEHEg6pdIc=;
+	b=E8HReAfKG1Hn+52mkkZrokzDzBbNRWK49snug4SO4y3oF+8MX3JUe+Xat+Nngx9EPE/GVU
+	8mu4pbsPSfVsqK6hKCcsTNB1jJvtdSnjgRVhyRfv6UhGUu4dHO4Yc15Pe3z7ceT0mz1wM+
+	tMjMmYl3wYXqF1C56HnsptkEo20saxI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711399032;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Gm8orQ8RLR5m2Km4fWq1+UBY+BSTbw+xyBEHEg6pdIc=;
+	b=e4Gt5Cs0/E3srgj2o0whLP4ZCVRUHcE0/oloORmrNtTmkUGBbRcA7miUAPBqSdy2hVsNxl
+	EucfDbKWOoB8/sDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711399032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Gm8orQ8RLR5m2Km4fWq1+UBY+BSTbw+xyBEHEg6pdIc=;
+	b=E8HReAfKG1Hn+52mkkZrokzDzBbNRWK49snug4SO4y3oF+8MX3JUe+Xat+Nngx9EPE/GVU
+	8mu4pbsPSfVsqK6hKCcsTNB1jJvtdSnjgRVhyRfv6UhGUu4dHO4Yc15Pe3z7ceT0mz1wM+
+	tMjMmYl3wYXqF1C56HnsptkEo20saxI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711399032;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Gm8orQ8RLR5m2Km4fWq1+UBY+BSTbw+xyBEHEg6pdIc=;
+	b=e4Gt5Cs0/E3srgj2o0whLP4ZCVRUHcE0/oloORmrNtTmkUGBbRcA7miUAPBqSdy2hVsNxl
+	EucfDbKWOoB8/sDw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id A7D7213A2E;
+	Mon, 25 Mar 2024 20:37:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 8nQjI3bgAWawdQAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Mon, 25 Mar 2024 20:37:10 +0000
+Message-ID: <338bf74a-13db-4b48-ab80-ddd2d80a0840@suse.de>
+Date: Mon, 25 Mar 2024 21:37:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
- <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
- <ZfMStHjwtCT1SW3z@hovoldconsulting.com> <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
- <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
- <ZgGzWWV4Lh2Nal--@hovoldconsulting.com> <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
- <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com> <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
- <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
-In-Reply-To: <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 25 Mar 2024 16:31:53 -0400
-Message-ID: <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-To: Johan Hovold <johan@kernel.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Johan Hovold <johan+linaro@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: Select I/O-memory framebuffer ops for SBus
+To: nbowler@draconx.ca, deller@gmx.de, javierm@redhat.com
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+ Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, stable@vger.kernel.org
+References: <20240322083005.24269-1-tzimmermann@suse.de>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20240322083005.24269-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=E8HReAfK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=e4Gt5Cs0
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.00 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[11];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FREEMAIL_TO(0.00)[draconx.ca,gmx.de,redhat.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[renesas];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Score: -3.00
+X-Rspamd-Queue-Id: 73CAB372A8
+X-Spam-Flag: NO
 
-Hi Johan,
+Merged into drm-misc-fixes.
 
-On Mon, Mar 25, 2024 at 4:14=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
-te:
+Am 22.03.24 um 09:29 schrieb Thomas Zimmermann:
+> Framebuffer I/O on the Sparc Sbus requires read/write helpers for
+> I/O memory. Select FB_IOMEM_FOPS accordingly.
 >
-> On Mon, Mar 25, 2024 at 04:07:03PM -0400, Luiz Augusto von Dentz wrote:
-> > On Mon, Mar 25, 2024 at 3:48=E2=80=AFPM Johan Hovold <johan@kernel.org>=
- wrote:
-> > > On Mon, Mar 25, 2024 at 03:39:03PM -0400, Luiz Augusto von Dentz wrot=
-e:
-> > > > On Mon, Mar 25, 2024 at 1:24=E2=80=AFPM Johan Hovold <johan@kernel.=
-org> wrote:
-> > > > > On Mon, Mar 25, 2024 at 01:10:13PM -0400, Luiz Augusto von Dentz =
-wrote:
-> > >
-> > > > > > I guess the following is the latest version:
-> > > > > >
-> > > > > > https://patchwork.kernel.org/project/bluetooth/list/?series=3D8=
-36664
-> > > > > >
-> > > > > > Or are you working on a v5?
-> > > > >
-> > > > > This patch (revert) fixes a separate issue than the series you li=
-nk to
-> > > > > above, but it is also a prerequisite for that series.
-> > > > >
-> > > > > v4 is indeed the latest version, and it has been acked by Rob and=
- Bjorn
-> > > > > so you can take it all through the Bluetooth tree. Just remember =
-to
-> > > > > apply this patch (the revert) first.
-> > > >
-> > > > Doesn't seem to apply cleanly:
-> > > >
-> > > > Applying: Bluetooth: qca: fix device-address endianness
-> > > > error: patch failed: drivers/bluetooth/hci_qca.c:1904
-> > > > error: drivers/bluetooth/hci_qca.c: patch does not apply
-> > > > Patch failed at 0004 Bluetooth: qca: fix device-address endianness
-> > >
-> > > Did you apply this patch (the revert) before trying to apply the seri=
-es?
-> >
-> > Probably needs rebasing:
-> >
-> > Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exist=
-s in DT"
-> > error: drivers/bluetooth/hci_qca.c: does not match index
-> > Patch failed at 0001 Revert "Bluetooth: hci_qca: Set BDA quirk bit if
-> > fwnode exists in DT"
+> Reported-by: Nick Bowler <nbowler@draconx.ca>
+> Closes: https://lore.kernel.org/lkml/5bc21364-41da-a339-676e-5bb0f4faebfb@draconx.ca/
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 8813e86f6d82 ("fbdev: Remove default file-I/O implementations")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.8+
+> ---
+>   drivers/video/fbdev/Kconfig | 3 +++
+>   1 file changed, 3 insertions(+)
 >
-> I just verified that it applies cleanly to 6.9-rc1.
->
->         $ git checkout tmp v6.9-rc1
->         $ b4 am -sl ZgHVFjAZ1uqEiUa2@hovoldconsulting.com
->         ...
->         $ git am ./20240314_johan_linaro_revert_bluetooth_hci_qca_set_bda=
-_quirk_bit_if_fwnode_exists_in_dt.mbx
->         Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode=
- exists in DT"
->         $ b4 am -sl 20240320075554.8178-2-johan+linaro@kernel.org
->         ...
->         $ git am ./v4_20240320_johan_linaro_bluetooth_qca_fix_device_addr=
-ess_endianness.mbx
->         Applying: dt-bindings: bluetooth: add 'qcom,local-bd-address-brok=
-en'
->         Applying: arm64: dts: qcom: sc7180-trogdor: mark bluetooth addres=
-s as broken
->         Applying: Bluetooth: add quirk for broken address properties
->         Applying: Bluetooth: qca: fix device-address endianness
->
-> Do you have anything else in your tree which may interfere? What tree is
-> that exactly?
+> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+> index a61b8260b8f36..edced74f0eeaf 100644
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -494,6 +494,7 @@ config FB_SBUS_HELPERS
+>   	select FB_CFB_COPYAREA
+>   	select FB_CFB_FILLRECT
+>   	select FB_CFB_IMAGEBLIT
+> +	select FB_IOMEM_FOPS
+>   
+>   config FB_BW2
+>   	bool "BWtwo support"
+> @@ -514,6 +515,7 @@ config FB_CG6
+>   	depends on (FB = y) && (SPARC && FB_SBUS)
+>   	select FB_CFB_COPYAREA
+>   	select FB_CFB_IMAGEBLIT
+> +	select FB_IOMEM_FOPS
+>   	help
+>   	  This is the frame buffer device driver for the CGsix (GX, TurboGX)
+>   	  frame buffer.
+> @@ -523,6 +525,7 @@ config FB_FFB
+>   	depends on FB_SBUS && SPARC64
+>   	select FB_CFB_COPYAREA
+>   	select FB_CFB_IMAGEBLIT
+> +	select FB_IOMEM_FOPS
+>   	help
+>   	  This is the frame buffer device driver for the Creator, Creator3D,
+>   	  and Elite3D graphics boards.
 
-bluetooth-next tree, why would it be anything other than that? All the
-CI automation is done on bluetooth-next and if you are asking to be
-done via bluetooth tree which is based on the latest rc that is not
-how things works here, we usually first apply to bluetooth-next and in
-case it needs to be backported then it later done via pull-request.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-> Johan
-
-
-
---=20
-Luiz Augusto von Dentz
 
