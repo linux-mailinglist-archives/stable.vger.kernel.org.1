@@ -1,125 +1,131 @@
-Return-Path: <stable+bounces-32222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3675C88AE42
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:29:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DA988AE49
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 676661C37C4C
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:29:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57E74321A93
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E62129A82;
-	Mon, 25 Mar 2024 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747BD1BC3F;
+	Mon, 25 Mar 2024 18:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFHHkLtK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uc23wkhs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258A8665D;
-	Mon, 25 Mar 2024 18:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953AE5789F
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 18:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711389600; cv=none; b=VIZy0XVE6Yw/GHnv4lDF+I37XGFLmFdvQoDmnUQj0dfxKwoijUU/P8L1hoccnaZx5zCh06vUQDKxSOJNoYdj9xt52k/oeQUoWvxPAP455IMqUf0LS1IvSpUQtt0lRzkV4pKe81pK9N8ZavL6M5QRn0ZR53h9bioR6QDUm6kO4r4=
+	t=1711389746; cv=none; b=nq04LaZ295ifXqW1cJYs36qRruEo8Vy9MrJ/6IrL9lPYkOGy0JWzPb3IdJAhCEcEEiZDzIfRmou2+NrxJX91MhLWj46Kty8dSoCjDaOWSEB4WqIsgY6ARl2qDT3SUDykTEoJyhwR3KLHAcG26HDT7XREggKjHxS7T0IszhMjaiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711389600; c=relaxed/simple;
-	bh=b7IDzaWT6uTJU6g7eRyocNkJQUp3OphZOZR1xJLUO38=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ub9ezzUoU/HBqKe5bDNiM2TmnsZJ5AgZWBPOnIg2XDRoYMFHpbJpOV6/DR86A+fXdN3AkMUf49vH5Y/JxtIdkJ7ZK/vgJPVs/b1g0+WyAN++FwwvRzowNjmNNADEEFKimGIj4jLKo8jGdnSQ6lnVK2bwr6Trkv9Oks03aP5tE00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFHHkLtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FECBC43390;
-	Mon, 25 Mar 2024 17:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711389600;
-	bh=b7IDzaWT6uTJU6g7eRyocNkJQUp3OphZOZR1xJLUO38=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFHHkLtK0iqzTrNEuYBrrPTak21KVQUboVe3FJY6KPE5A4jjRIUG9LZSJ+xM3IEVH
-	 x//eB9RmYyniy5zHYIrLU1NmVqE9BG0a7qXhjOxxnq9J4MZDLKkhU8a69K41H+krDG
-	 QTwed3DQGN7ETpmW+JSNywKrK+q8XScD1pbVoRliqDbDPnCPkmleN7rpNRKoFjqCLF
-	 Iu/ZYoJxEgb4xRGOhXETGRFSi5NOhZlSSdoSsP+WFM6BIuiCwI8gqml/dwTi2Rbxh9
-	 6p8UDU72yrDsFLEBIquZZhZ1a9Hfre4BnquVXD+1G3PFB0CZ1H9byEnUc7IldwFQsi
-	 WxaF+1CQi02TA==
-From: SeongJae Park <sj@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	florian.fainelli@broadcom.com,
-	pavel@denx.de,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 5.15 000/309] 5.15.153-rc2 review
-Date: Mon, 25 Mar 2024 10:59:57 -0700
-Message-Id: <20240325175957.233640-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240325115928.1765766-1-sashal@kernel.org>
-References: 
+	s=arc-20240116; t=1711389746; c=relaxed/simple;
+	bh=lxLARG/z8mUbwOnEndw/aPaZdDReWbd2fqQJESwXNYc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HUul82zsORng7A3wCQspAIH/cs+hSE0S4REub3owJu89XM/HLwcpMhyoIrAzWIsVMHkWgSXxdraZwzTVtpJ9rUtAfZWWBOULNFpLBBNeiOep25g4kOzXeMZbkTUfOQDYUK/nqPvvzxCMqENhag0m8TXxOOqLsUAh2vV5qYq0074=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uc23wkhs; arc=none smtp.client-ip=209.85.160.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-229a90b7aa9so2146219fac.1
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 11:02:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711389743; x=1711994543; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E52yW+sF6XzKO9Az8rZdRh6PQ7+k4mFgNJL/1sREfRE=;
+        b=uc23wkhsnqp+Ne3OI8jqqaq7oNsj6K+vn/lFDJw93VYA531FcZUpQ4IkSpRXugReIM
+         gMoGer9MmQ5gewb2044+rg4ut3+DEWQcXzE3QpqXNCBWOq6hSqSBjbmthwXgNGoQ0/Na
+         4EqQIrNpemb8khucNV13Lba2Du5EIOC96o36M+XE+bBJ0QBNmA7laZDLhDoDMZ72oT3K
+         NsNEYqKQ/9eMrfV8oeeoTPbFNiE0PrN4CcFpuOCZjCOjrdjprzJkDZwknFNiJio840mx
+         zIU+ZBNG2hIGmm1JsIvE10XdPRhpdgwcvz4ZR/k/rddZ2rBpmlB7uF0MemmX3acad3qE
+         WK8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711389743; x=1711994543;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E52yW+sF6XzKO9Az8rZdRh6PQ7+k4mFgNJL/1sREfRE=;
+        b=bIbg2VYwFJI31NPrZz+bVQG1b08LuD2fBbRhjSBy7uZLnldbOUqNOD7mb/DyqvM2Hs
+         W8PY5ybaQyIFPjYtRMI5lfwEX45bHf+2WjTE618NuNLR7PcTPEK23Rz1RBz4uHa2m07D
+         VTpTjxfwfzwkLQub3eykJsfzB6GkM5X7MOtqwBisgJ6IDQzLLzEfuemur8wQ4Cqs2O6A
+         SnOjwcfePteCh22TzlMPmL5LMVJCzn21c3Axu1sdk7C6TOU4j3CSzxEbfF4ScMqOC6iu
+         JFDLPaxjjcJQjAwBb0f4qeSEUluyLBemD5DBFRlj38WqmM4K+VsSPL9gQHbpVZye/Pnb
+         WHDg==
+X-Forwarded-Encrypted: i=1; AJvYcCX24qspnI8IZaU2R6J2wDsjcfodp+BxLL6XhNQDK2LRoujFxPd3m1/aDimRy4Uh7mVdaVRzx5cNGHSr8SyjXSbDgdDWjcco
+X-Gm-Message-State: AOJu0Yx4FxIdlgtctZku2D1OchCNl4JFpXBP/H0d7ZVRCwxinITkjrAs
+	bop/S15hPoYrqER6O+G5E5hBwjb0qxpWWQzc2sQ2O0G8zJNFv3x2LCaWmghlnIw=
+X-Google-Smtp-Source: AGHT+IGL7MjykGc3x6fq30Iwm4UqOlCErDW/FkZbM+UsXaKx+5/ikyFovIATmsU60pyNmfB1PDf9rQ==
+X-Received: by 2002:a05:6871:3401:b0:22a:4fea:f435 with SMTP id nh1-20020a056871340100b0022a4feaf435mr1956742oac.2.1711389743347;
+        Mon, 25 Mar 2024 11:02:23 -0700 (PDT)
+Received: from [192.168.17.16] ([148.222.132.226])
+        by smtp.gmail.com with ESMTPSA id dw23-20020a05683033b700b006e6cf0f7ba8sm827599otb.57.2024.03.25.11.02.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 11:02:22 -0700 (PDT)
+Message-ID: <fb9b5df4-23fe-4299-938f-dbc36a4dc052@linaro.org>
+Date: Mon, 25 Mar 2024 12:02:20 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/632] 6.6.23-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de,
+ samitolvanen@google.com
+References: <20240325115951.1766937-1-sashal@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20240325115951.1766937-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Hello!
 
-On Mon, 25 Mar 2024 07:59:28 -0400 Sasha Levin <sashal@kernel.org> wrote:
-
-> 
-> This is the start of the stable review cycle for the 5.15.153 release.
-> There are 309 patches in this series, all will be posted as a response
+On 25/03/24 5:59 a. m., Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.6.23 release.
+> There are 632 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Wed Mar 27 11:59:27 AM UTC 2024.
+> Responses should be made by Wed Mar 27 11:59:50 AM UTC 2024.
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.152
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.6.y&id2=v6.6.22
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
 > and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+We see the same problem with new warnings on RISC-V as with 6.7. Just like with 6.7, reverting that patch makes the warnings disappear.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+   commit 34630ced09415d273146191778dfc5338f545db7
+   Author: Sami Tolvanen <samitolvanen@google.com>
+   Date:   Mon Mar 11 19:31:44 2024 +0000
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] d978081b2581 ("Linux 5.15.153-rc2")
+       riscv: Fix syscall wrapper for >word-size arguments
+       
+       [ Upstream commit a9ad73295cc1e3af0253eee7d08943b2419444c4 ]
 
-Thanks,
-SJ
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-[...]
 
----
+Greetings!
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_m68k.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+Daniel Díaz
+daniel.diaz@linaro.org
+
 
