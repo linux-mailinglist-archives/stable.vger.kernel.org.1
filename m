@@ -1,142 +1,191 @@
-Return-Path: <stable+bounces-32249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007E488B04D
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:42:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA7888B068
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC9B301091
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:42:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5E981F638F5
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5510B37145;
-	Mon, 25 Mar 2024 19:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4E219E5;
+	Mon, 25 Mar 2024 19:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="Xzm5vKOK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iHMC0nOX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E2D18638;
-	Mon, 25 Mar 2024 19:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879753DABE0
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 19:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711395720; cv=none; b=MCru+VP6N0bssK425stkelMxLGgCYwqLGSbiYImxD2Jy95mTA2gTVfm99WLYB2PuR1qm/SAaKzFqN9WM/WTpWONVh+vXjXTprrJPKyzQSSErUnRPHE2eDLa4Jd++63rRAuyoHf2EoR0s6TjupH6/+O4j8Sb8JUTl6D9WvOdHhdw=
+	t=1711396075; cv=none; b=HSxyZS+y2Mu6Pysj1wikjHlGOS+/uK6xb/ZbGxf3JTaPEHq/3GlknZpOnh/gepFRVpza+2HmrtfusAM6Ny8Li5XuLXaqdpqm+46A1TlUqmU7wg1PgJj909A0QV0w+xgEkXE8HZRXpHc3P/baIfvetD0dR7qicY2RmPwuJu61rVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711395720; c=relaxed/simple;
-	bh=EUp+UMeeB6aN+5adxNqSMTZOVLIznmtp/NgpGnt8gJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I3EW5xTe9ioyuNvSLi/gtyRmiCNJr6QcLJxhyQ5qWwEMexKq+erDOQX0MwYsmXx6s1qSfAech5xCFCMVmkIEntsgn2RAnc/4Dky9zLd4oDHHDa1+7FUtQzEsC5V6W5K7M9PR8SqiH8IpTpR/ofgjyCrh9RTuT81xQB5QTEQsoE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=Xzm5vKOK; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42PIWvXv009035;
-	Mon, 25 Mar 2024 19:41:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pps0720; bh=Vd0x2s1s8A1eG1ZZUcTHg8PDO3Hnu/HCp1lniIrhfVc=;
- b=Xzm5vKOKDGhfPyk3b6/O2bDDB5/86VsfF9KI8DpOIf+MiXcE7zzwD5sc8gKkt6m8AL4m
- BSvKksShMjoTOyZhVXrqmccNYyTmBD1UvN/Uw7cneP8AweuKbRdtKFCTRxDz8s16ASwq
- 5HT6jTI5xImDMaggDY9LPBFJOOS+LR5ioEYSKXSnV0NlmcGAdJUx4+zGn+t0Q0d7VxS7
- jr5Fc9s/XWg1JHmoUZJqP7o8wfj5t1VN1UNae04aXieJLYTkl0d5MRbZx1kRW/FFJaSe
- TAdmKyeuQlBqW0T1bXvCgACU0VTqkPFvlDO/Apgxglgmfg3fgbiV++UZC+eDwM+OlUG6 3Q== 
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3x37pscaq3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Mar 2024 19:41:24 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 5005E130DB;
-	Mon, 25 Mar 2024 19:41:23 +0000 (UTC)
-Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 90A2F802A5B;
-	Mon, 25 Mar 2024 19:41:20 +0000 (UTC)
-Date: Mon, 25 Mar 2024 14:41:18 -0500
-From: Steve Wahl <steve.wahl@hpe.com>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Russ Anderson <rja@hpe.com>, Ingo Molnar <mingo@kernel.org>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
-        Eric Hagberg <ehagberg@gmail.com>, Simon Horman <horms@verge.net.au>,
-        Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
-        Dimitri Sivanich <sivanich@hpe.com>
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Message-ID: <ZgHTXvCQr6ycbVzp@swahl-home.5wahls.com>
-References: <20240322162135.3984233-1-steve.wahl@hpe.com>
- <ZgABC1oQ9YJW6Bw3@gmail.com>
- <20240325020334.GA10309@hpe.com>
- <87o7b273p2.fsf@email.froward.int.ebiederm.org>
+	s=arc-20240116; t=1711396075; c=relaxed/simple;
+	bh=E1JT7uTAje0LoirQMcLPjl330yK5VeuDvvFl0ILtbvU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sJGKVI1dwR/UEaIzQhh3LE9xNBgYW3CHRnk/jjM5eEuV0WoGb8UpYl8bSD3wZe5uN1zR6A8hyMJxlH2fWGUxDuFStfdlv8sJT6Y7T36/qbSbrQrfbAOmYiaKgnzyzbUrl1bQ+IZliicGf6dfs9rTFN2sq6LoNatkKrLYGjeJL0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iHMC0nOX; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5ce2aada130so3337036a12.1
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 12:47:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711396072; x=1712000872; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmfRQIJ2f4eWBwdaZN8dSz4H2KFzejxhDJGkcx0CRVs=;
+        b=iHMC0nOXxC/BUk+dC/BK2S6xJvZofR2RT12fTX181VbbqfR3lAZB3kGGHnqxAKvia8
+         jfEjvJVDnD1hsJrsrQvvhq7WkLfmGZxH8uFNA2jz2kpDQtbvXURu33nLMjZ1rRKtVhsg
+         1x+TD/rV0yuNSeN+j13/MHykC/3AOoKwJdKoztCKT4UJJaQMzUNKcYRKDxisbt+7lrT/
+         5QCAbMO5d9C41ESTzhDQdC3cXHV7SHbePVSORAOGUu2ZFrM1BfGEfKKSpgWnUmkKOYQj
+         +JVP5brKBgb8/V7BYt4g0RvQUbIpjyP0PU4UnooR8REftzURe2a+PNaCv+jEL1ycTwV8
+         OGfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711396072; x=1712000872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fmfRQIJ2f4eWBwdaZN8dSz4H2KFzejxhDJGkcx0CRVs=;
+        b=m453kjdHRVQ4O+tE8OEECwng5uHVXIFnqir6IpMAsXt+77wFIAm1vehmkutw7nbekp
+         vDJDbE8V8STNF63KOsCjRHVvgMCu7hWU0ByRPvKUK7rNUG/aecXY82FQN+Nl+esh6phC
+         HEL/Hkx5ggG5rK5dSHM13+JKDciTwa2pwwy80VO4zDSYhgh2yWk4YMkNoyepnwsf01oR
+         P/P9iiuMHw+TjNdESjNPQrOaMNwc3uKoB45VoAhWlSaZG09r5WvT7Y03ZLwEoHGOtf4a
+         lpCcdIadCCuIHXW1nWQc4D00ShDBI+lG7lb8Acwb/bT7xtS5P8ooNXYHXHyhwK1BhaCN
+         pvwg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1i59wyRuOvbSIr00QxePEMzDPvTX9XXA80b6caTcQW3TVc3H2yh2fyGkwdI8Xm9WiN3txxXhJxYh2YEW5VCRzXz3Zw/tE
+X-Gm-Message-State: AOJu0YxJ05T+MEWWjjQReNtY54rw+N4uVHXxFxHX0xbYP1H7yFUYZkZZ
+	OaPQTk13xed/Tz391IQSy8Cpc/WV3glGckxQVbSzWwJ23P4dqqUDbwI3KbtumX2vWdkE4i4wuBd
+	J9barC3GXTLPu7SH//nZ0638tUn7Ey39TDIsPMQ==
+X-Google-Smtp-Source: AGHT+IGXplUKBJqtzKmMl9SqNzgFEjsOVRpKapHhNUczt14WyhnyJtCggNrvR51DbcL/sN3wLGc+ZRatmVhsFe8cggY=
+X-Received: by 2002:a17:90b:241:b0:29c:7592:febf with SMTP id
+ fz1-20020a17090b024100b0029c7592febfmr726518pjb.16.1711396071839; Mon, 25 Mar
+ 2024 12:47:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87o7b273p2.fsf@email.froward.int.ebiederm.org>
-X-Proofpoint-ORIG-GUID: tZl88hOSGq0zIbXaZ64Wt72pbBs_sQRp
-X-Proofpoint-GUID: tZl88hOSGq0zIbXaZ64Wt72pbBs_sQRp
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-25_16,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- priorityscore=1501 mlxscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403250118
+References: <20240325120003.1767691-1-sashal@kernel.org> <56d3285a-ed22-44bd-8c22-ce51ad159a81@linaro.org>
+ <20240325181410.GA4122244@google.com>
+In-Reply-To: <20240325181410.GA4122244@google.com>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Mon, 25 Mar 2024 13:47:40 -0600
+Message-ID: <CAEUSe78CQrHFEz92svQKuvjU91FDc=Dt+NNf_5_=pKeE22TzXg@mail.gmail.com>
+Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	florian.fainelli@broadcom.com, pavel@denx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 25, 2024 at 10:04:41AM -0500, Eric W. Biederman wrote:
-> Russ Anderson <rja@hpe.com> writes:
-> > Steve can certainly merge his two patches and resubmit, to replace the
-> > reverted original patch.  He should be on in the morning to speak for
-> > himself.
-> 
-> I am going to push back and suggest that this is perhaps a bug in the
-> HPE UV systems firmware not setting up the cpus memory type range
-> registers correctly.
-> 
-> Unless those systems are using new fangled cpus that don't have 16bit
-> and 32bit support, and don't implement memory type range registers,
-> I don't see how something that only affects HPE UV systems could be
-> anything except an HPE UV specific bug.
+Hello!
 
-Eric,
+On Mon, 25 Mar 2024 at 12:14, Sami Tolvanen <samitolvanen@google.com> wrote=
+:
+> On Mon, Mar 25, 2024 at 11:43:48AM -0600, Daniel D=C3=ADaz wrote:
+> > Hello!
+> >
+> > On 25/03/24 6:00 a. m., Sasha Levin wrote:
+> > > This is the start of the stable review cycle for the 6.7.11 release.
+> > > There are 707 patches in this series, all will be posted as a respons=
+e
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
+> > >
+> > > Responses should be made by Wed Mar 27 12:00:02 PM UTC 2024.
+> > > Anything received after that time might be too late.
+> > >
+> > > The whole patch series can be found in one patch at:
+> > >          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux=
+-stable-rc.git/patch/?id=3Dlinux-6.7.y&id2=3Dv6.7.10
+> > > or in the git tree and branch at:
+> > >          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
+table-rc.git linux-6.7.y
+> > > and the diffstat can be found below.
+> > >
+> > > Thanks,
+> > > Sasha
+> >
+> > We see *lots* of new warnings in RISC-V with Clang 17. Here's one:
+> >
+> > -----8<-----
+> >   /builds/linux/mm/oom_kill.c:1195:1: warning: unused function '___se_s=
+ys_process_mrelease' [-Wunused-function]
+> >    1195 | SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, f=
+lags)
+> >         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~
+> >   /builds/linux/include/linux/syscalls.h:221:36: note: expanded from ma=
+cro 'SYSCALL_DEFINE2'
+> >     221 | #define SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name=
+, __VA_ARGS__)
+> >         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~~~
+> >   /builds/linux/include/linux/syscalls.h:231:2: note: expanded from mac=
+ro 'SYSCALL_DEFINEx'
+> >     231 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+> >         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >   /builds/linux/arch/riscv/include/asm/syscall_wrapper.h:81:2: note: ex=
+panded from macro '__SYSCALL_DEFINEx'
+> >      81 |         __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)      =
+                   \
+> >         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >   /builds/linux/arch/riscv/include/asm/syscall_wrapper.h:40:14: note: e=
+xpanded from macro '__SYSCALL_SE_DEFINEx'
+> >      40 |         static long ___se_##prefix##name(__MAP(x,__SC_LONG,__=
+VA_ARGS__))
+> >         |                     ^~~~~~~~~~~~~~~~~~~~
+> >   <scratch space>:30:1: note: expanded from here
+> >      30 | ___se_sys_process_mrelease
+> >         | ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> >   1 warning generated.
+> > ----->8-----
+>
+> Yup, I can reproduce this with ToT Clang. It looks like the alias
+> isn't sufficient for Clang and we need to add an explicit __used
+> attribute. Can you confirm if this patch fixes the issue for you?
+>
+> diff --git a/arch/riscv/include/asm/syscall_wrapper.h b/arch/riscv/includ=
+e/asm/syscall_wrapper.h
+> index 980094c2e976..ac80216549ff 100644
+> --- a/arch/riscv/include/asm/syscall_wrapper.h
+> +++ b/arch/riscv/include/asm/syscall_wrapper.h
+> @@ -36,7 +36,8 @@ asmlinkage long __riscv_sys_ni_syscall(const struct pt_=
+regs *);
+>                                         ulong)                           =
+               \
+>                         __attribute__((alias(__stringify(___se_##prefix##=
+name))));      \
+>         __diag_pop();                                                    =
+               \
+> -       static long noinline ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_=
+ARGS__));      \
+> +       static long noinline ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_=
+ARGS__))       \
+> +                       __used;                                          =
+               \
+>         static long ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
 
-I took the time to communicate with others in the company who know
-this stuff better than I do before replying on this.
+It does: the hundreds of warnings are gone. Build-tested with Clang
+17. Logs, configs, binaries, etc., here:
 
-One of the problems with using the MTRRs for this is that there are
-simply not enough of them.  The MTRRs size/alignment requirements mean
-that more than one entry would be required per reserved region, and we
-need one reserved region per socket on systems that currently can go
-up to 32 sockets.  (In case you would think to ask, the reserved
-regions also cannot be made contiguous.)
+  https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/daniel/builds/2eC43=
+UtTjYk6loC9pNKT28SGmd5
 
-So MTRRs will not work to keep speculation out of our reserved memory
-regions.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Let me know if you need more information from us on this.
+Thanks and greetings!
 
-Thanks.
-
---> Steve Wahl
--- 
-Steve Wahl, Hewlett Packard Enterprise
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
 
