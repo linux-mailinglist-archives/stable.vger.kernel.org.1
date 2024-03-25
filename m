@@ -1,159 +1,122 @@
-Return-Path: <stable+bounces-32195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3627688A80D
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:01:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6015388A812
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1951F39BDB
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:01:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8761D1C62737
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F4812CDA3;
-	Mon, 25 Mar 2024 13:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C13412EBD6;
+	Mon, 25 Mar 2024 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KAHK62NK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i8usXHRi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E29612C7F9;
-	Mon, 25 Mar 2024 13:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E4912EBDD
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 13:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711374073; cv=none; b=dCkUgkh3gg+liW1LFvKJzpFRHiXttzJ06HJrC0YJLWdZbpq/4Vo6CEaQriL3ulWZXivbjVCVBZ7e3+SnCVQpU2g+AWnwpT+AU4Lea5XoWAa2182KBe/f5x/bCZnecCtyNcxyYdxa2koKPs2hHu8sHL4HpoJBeboWJCl0YZSscu0=
+	t=1711374094; cv=none; b=gtvRHLJn2URdMwhKN/im5a2jjb3j/NEd2aCduaZRkMa0VUDiWVKnJiRxhTPFqaG505JJMAhrnG7toc1WEnxH65VgM6FybdxlMKLd5a8qhh4glfLAv6BMFUDXbHsYg9HzvQNnNq1/6Fw8JyF8JWDupb3lAgYfHbNrxjj3FodwDJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711374073; c=relaxed/simple;
-	bh=WgdUCSrnKAGw2TF5y8bAENJkYNr1jVJYvWxlovRCCZM=;
-	h=Content-Type:Mime-Version:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=q3/QslZ7OwKpdHvG7cw6Hr7XK1Za6/liHgt68fZt8MO8ZqBDhPD5uCOMDAlmwSI5CvqhZZC2tczbZxU0edW8FqPGFjORKwB0nAKj+AC2N4E695aNBdmsQAe+LJMZB+uGihtRnYHqt38rAkb7RE+lP6dyEvfjjBsriTzl0IMOx/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KAHK62NK; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51381021af1so6741597e87.0;
-        Mon, 25 Mar 2024 06:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711374070; x=1711978870; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9fW3TP6U7rAT0YQU6K+tYG9SUW8HtzWbLUAXpV7C8xQ=;
-        b=KAHK62NKHWpZ0MYJUPY2XmYv8WI4YT/tEYrTXI1YsZAp1GvRB7kGA1qyp2xcBL4Xnw
-         vZAqWI+dPcrTvjfu0w11scE1fhZaENb5SorlruXN7npQoanAew77IxGEwfP9vwfDRrcB
-         HmVlnKp5CeG1CHwJYGbikoPXg2HiGcpOxTVwqgehUmQMYGEdDtfZDWTOIBDm9G+dqvZZ
-         CGg+IlJtXFUcn+xGfBl5MZ4Sk/+ROX4jnsQ/F0w5P8nzoU09kYMq51waFClcVbM/vU26
-         KtLrDR1SXIHrRFfx10rsAsvKPcuXOffuB/XHBjd1N7X4pVVajc8OJlUIVW2PR8/3B4b8
-         tVEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711374070; x=1711978870;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9fW3TP6U7rAT0YQU6K+tYG9SUW8HtzWbLUAXpV7C8xQ=;
-        b=R64es4ttsBQuoEPEChmqFZTgrbOv3MdNL/GALwlF//CVtbmR8lms/Uoi1aOP1bRCOR
-         Pub/y+BmASeSXmrjl91hw5zFcRRjXvX117pRLRmnS5U4eclmp5V0NuFHogr0H1H7mmEN
-         iYqR8CMlxQ1ZgRVQZt+iuWUxOfJLtCu4jOT9fxYWTb0149XguZVfHc0E3ZHERQkeAbqX
-         QzV/xPoyTtvaQNlRoK4UIgwie7Q8R0zubad8VFEEMaw8JmUnEWRAlXEa0ewnt9zqNo1T
-         LIdEE2nIWUCRMCx8eH0pf7Cawl2946sZ2FV5FoVKS2Cb50gw/G/CPVGh6TlsTBg3zcxb
-         uiKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3quyAuUxTGP2j7LNEmv4jqA+qv7XZ+BXC0r7ulXGQuuDSzIYP9nqkGvEX4FDJRECP7iSecYeNo+F7UDVQmwcPiFJNjhUVrS3E/ZQghpHosVBXOg3Wm8rurRGiZ846aWCm+SCDq7pmoR1Z6lWsuvjACotPnHzx1BlvmQ2H+SZFsy8=
-X-Gm-Message-State: AOJu0Yz0BToWG1b8bdMaqsp+Mhb+N1MILovezocoPqh7MIn3AQVce+9S
-	d4N+zIZxxAi6IAoZXTDejOaklSWQ//Vvd8NFIuv3l8DART7mjX6/
-X-Google-Smtp-Source: AGHT+IHFZcT7cCZU+2peD7kPFIrbSzoXyVVras2/b4e8Wkx4t8Kby1ECloKaZu4recJeyOK2uAMvKg==
-X-Received: by 2002:a19:4344:0:b0:513:e14d:15e1 with SMTP id m4-20020a194344000000b00513e14d15e1mr5689528lfj.57.1711374069495;
-        Mon, 25 Mar 2024 06:41:09 -0700 (PDT)
-Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id kv20-20020a17090778d400b00a46cc48ab07sm3068893ejc.221.2024.03.25.06.41.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 06:41:09 -0700 (PDT)
-Content-Type: multipart/signed;
- boundary=7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895;
- micalg=pgp-sha256; protocol="application/pgp-signature"
+	s=arc-20240116; t=1711374094; c=relaxed/simple;
+	bh=PiNEWr5x90esMmfh7ZHofO9+fLGzeXqEHD3NoBMXM3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TLciCQSxHxO37T3i0B2TU9QCRTL8hiL7brf6DulsUlBGKi5eGLmJgOMf4bE0E+heDQm0LWJdrZfMclCsxw+Yu4pKwRboYPX2zKafY5kBuXtunmrtBBI3c9pRKqfMmVH/7E3X5/ryhhHkt87LoywSCTfPJZaVJrc9BxsbUxyh7dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i8usXHRi; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711374091;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jIOwlwxzzcSMslwXLrjLWmaoHhvyTmqwx/xJnqLqn6Y=;
+	b=i8usXHRiutGSrxgWoIYw8wHsRLmDdT1h/SB8GATI/QZOyNxElDILwUP0gAkQLncAH9Bnru
+	glUgUBNWoZN4csFdhzLuSrXDNCs8QuFXMEHww466KSJjJCEz4cm6jToe8gggYSnKq4Ba0A
+	mvdCQnbuKUThmYxToNncQN+f8nIsBVc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-beZWhhHSNDqBQcS9cJvtwA-1; Mon,
+ 25 Mar 2024 09:41:29 -0400
+X-MC-Unique: beZWhhHSNDqBQcS9cJvtwA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6DE438035AB;
+	Mon, 25 Mar 2024 13:41:28 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.39.193.143])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AAFEF2166B5D;
+	Mon, 25 Mar 2024 13:41:25 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/3] mm/secretmem: fix GUP-fast succeeding on secretmem folios
+Date: Mon, 25 Mar 2024 14:41:12 +0100
+Message-ID: <20240325134114.257544-2-david@redhat.com>
+In-Reply-To: <20240325134114.257544-1-david@redhat.com>
+References: <20240325134114.257544-1-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Date: Mon, 25 Mar 2024 14:41:08 +0100
-Message-Id: <D02VH5KH4A9R.6IOJPPMBF0K5@gmail.com>
-Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <lgirdwood@gmail.com>, <jonathanh@nvidia.com>, <mkumard@nvidia.com>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH] ASoC: tegra: Fix DSPK 16-bit playback
-From: "Thierry Reding" <thierry.reding@gmail.com>
-To: "Sameer Pujar" <spujar@nvidia.com>, <broonie@kernel.org>,
- <linux-sound@vger.kernel.org>
-X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
-References: <20240325104928.2796868-1-spujar@nvidia.com>
-In-Reply-To: <20240325104928.2796868-1-spujar@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
---7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+folio_is_secretmem() states that secretmem folios cannot be LRU folios:
+so we may only exit early if we find an LRU folio. Yet, we exit early if
+we find a folio that is not a secretmem folio.
 
-On Mon Mar 25, 2024 at 11:49 AM CET, Sameer Pujar wrote:
-> DSPK configuration is wrong for 16-bit playback and this happens because
-> the client config is always fixed at 24-bit in hw_params(). Fix this by
-> updating the client config to 16-bit for the respective playback.
->
-> Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-> ---
->  sound/soc/tegra/tegra186_dspk.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/sound/soc/tegra/tegra186_dspk.c b/sound/soc/tegra/tegra186_d=
-spk.c
-> index aa37c4ab0adb..3a152e76122b 100644
-> --- a/sound/soc/tegra/tegra186_dspk.c
-> +++ b/sound/soc/tegra/tegra186_dspk.c
-> @@ -1,8 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
-> +// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & =
-AFFILIATES. All rights reserved.
->  //
->  // tegra186_dspk.c - Tegra186 DSPK driver
-> -//
-> -// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
-> =20
->  #include <linux/clk.h>
->  #include <linux/device.h>
-> @@ -246,6 +245,7 @@ static int tegra186_dspk_hw_params(struct snd_pcm_sub=
-stream *substream,
->  	switch (params_format(params)) {
->  	case SNDRV_PCM_FORMAT_S16_LE:
->  		cif_conf.audio_bits =3D TEGRA_ACIF_BITS_16;
-> +		cif_conf.client_bits =3D TEGRA_ACIF_BITS_16;
+Consequently, folio_is_secretmem() fails to detect secretmem folios and,
+therefore, we can succeed in grabbing a secretmem folio during GUP-fast,
+crashing the kernel when we later try reading/writing to the folio, because
+the folio has been unmapped from the directmap.
 
-Do we perhaps want to move the common cif_conf.client_bits assignment
-into the S32_LE case now? It doesn't make much sense to have a common
-assignment that's overridden for the S16_LE case and only kept for the
-only other alternative (S32_LE).
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
+Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Tested-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ include/linux/secretmem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thierry
+diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
+index 35f3a4a8ceb1..6996f1f53f14 100644
+--- a/include/linux/secretmem.h
++++ b/include/linux/secretmem.h
+@@ -16,7 +16,7 @@ static inline bool folio_is_secretmem(struct folio *folio)
+ 	 * We know that secretmem pages are not compound and LRU so we can
+ 	 * save a couple of cycles here.
+ 	 */
+-	if (folio_test_large(folio) || !folio_test_lru(folio))
++	if (folio_test_large(folio) || folio_test_lru(folio))
+ 		return false;
+ 
+ 	mapping = (struct address_space *)
+-- 
+2.43.2
 
---7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmYBfvUACgkQ3SOs138+
-s6FALg/+Ife+lFuYpPI7oOhuX256Czmwcb6Ey73+YJeFTYvB51f7oFhaupJh0Urj
-Gda3FfgCjHbEU4cMrx2jYyKN//Fvs1Yqc3+JK4tmt7E5JAPV4S52lLty8Lgpmvd/
-2aDv5UgrH58PrQgQu/QKHmNcGJ0LrAXp6pH6BGrRJZ0URFiOX0CiGRM3W0YsWw9y
-87FYcPkpH8Y0hHjfWhJMeh6npOc6CbcjmCdMo7p3SYjBR9Z88BtJA0JGKyE/JoQ6
-tLCMgAnJCXbWGfTuUOqCck5kZE0zo7n9Mu8lDdMHhlyJalyc5ikSBiIhGXuDJQHO
-LTEyyPO6d3TVaSKF6nRCq5Vg8eaxVW5L5Knc6EYIm+DgsUvXz12ClhXl08EPKtxe
-odUxIZuAajREk8YFon5cGszOLgjLEMbl+/d4abD2+YHe0Ct3Qdxwlb0x6pcdWUeg
-bxYPqTpAw57nMkmTfZmaUgi42xcgekE0OnLuw8oQ+gPrhC1S+MBJYxe5sztN6XNm
-ubfhqDRdniGPGtvnXw9snSpl30q5ec5ZXArARO593ZUSXC6uKK1Rg5s1+na+iKTS
-jaXg+yCMcbx01JO3M/VvC2+fsSuCZ1MjBPskCHg+o2jbs9pbpPLpJRV5xZFISyvT
-IZfDLFEuJJ1DUp6dVbJbaLHAbPhIaFJmxWLLZ0pGdWZ5wGEC8Nk=
-=TLnc
------END PGP SIGNATURE-----
-
---7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895--
 
