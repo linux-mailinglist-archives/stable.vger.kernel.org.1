@@ -1,79 +1,144 @@
-Return-Path: <stable+bounces-32198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A8D88A865
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:09:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DECB988A874
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1C1340EEC
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6641F32AD9
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8071613BC23;
-	Mon, 25 Mar 2024 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6859913C8EC;
+	Mon, 25 Mar 2024 13:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz5hd4pV"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="cJtsiE3T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6A713BC1A;
-	Mon, 25 Mar 2024 13:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BB13CF99;
+	Mon, 25 Mar 2024 13:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711375015; cv=none; b=WVbB+AtskwXePQrRaz3IXbdIZRjIwvF1qaZRzC8J8Z1VVlN8/0GkSo4k2Sf/B8JCKGet9hLYA7XM7XL1o+Cr4GNZhc+V3w1Olq950nt3YTxYL2sRja6wRlVfyeWKxPjr/H5YQlR+p2Sfh/Bs6IOjQabVEiL4wM1A2zp6GVbLEJ8=
+	t=1711375080; cv=none; b=dnPTGbfPj2xrjRcl5XvyxJJ8hHuhWfRqR6VR51swW5UwerF8M9dcVcmrtWNS/3I2thEHTse97oqq2nD/Es2N4SZh6ze/skGIs9vCZ5s6+DMCckA+8eZqklk6m3uEAyVjq0hZchS9sUJ6lYTcf6M2Z1m5tOc6pK4GzcEMuUiXwyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711375015; c=relaxed/simple;
-	bh=yOT9XgocTLoLgZNJfGyS0y3pYO5d4ObVDNhvUTQcvn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BdD4rI857im2nzjR0hgn1xemHajhFOdBs3EJyVmPMP6poaZUXF9HXn6wRDKSdiLtjNCtOvVuJ91pbMtaevpYxngqOu3/4P8dWpUBZCXN/FlogOdGkPwKZaHs4NR48rDP9wU1Kysl32s6RsoTmeK7LpvjyfjvysUADIORA7e+SUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz5hd4pV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD027C433C7;
-	Mon, 25 Mar 2024 13:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711375015;
-	bh=yOT9XgocTLoLgZNJfGyS0y3pYO5d4ObVDNhvUTQcvn4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sz5hd4pVWj4vQL/0xsjawemTQcOfFRCiCcWw9G9EGsSg34NK/ldM0hotOW+pmEQHG
-	 UVqOBLbKIo0mK+fhKgzkYj4+VRxIm64+kEThwqbkTQzPAvPvueudXz+vmSuOEA3NV0
-	 VAt4/L0CitPksuqLjcUwfHsqsMuuv6b+KN8MVex4haFOJfrpbLe9Xh7F6ZTzu34xCo
-	 Z1UljccXHAZujL20WmZPbx/VcxGfjspGX4DzDeUSVQMNGe4QVNRVt3KyR5J0iXzCf4
-	 cQ4CApy0uY7boFNT5jnwIfFGrWwh25SKnR83JghylcgXuL65LcNkPych/eAtzOHRhm
-	 B0B+gLhxb5OCQ==
-Date: Mon, 25 Mar 2024 09:56:53 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: Jiri Slaby <jirislaby@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [PATCH 6.8 119/715] libbpf: Add bpf_token_create() API
-Message-ID: <ZgGCpYilzhJd9dTJ@sashalap>
-References: <20240324223455.1342824-1-sashal@kernel.org>
- <20240324223455.1342824-120-sashal@kernel.org>
- <e35cc021-7f17-479c-bd7c-ea6df836a04b@kernel.org>
- <c89f9cc6-9676-46a4-8f8e-01d8dbf41aa8@leemhuis.info>
+	s=arc-20240116; t=1711375080; c=relaxed/simple;
+	bh=SLkYKf7P/7HX8XrRjqY8I+HwX6HiSpxlmzsrBdk+4vY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fveS+5Ay3vNWzaeW/KF+KVv8djuByRs1YV1vMfDQ3z5qt5VqF55/RL0KwWxb+QSgZPS7vpzUgreV285s7k+e1UJp9to8l6VMWM/L2sSoEKnOfEUS9LDdG5SHTwkWq6M2UN/SfsPb93rswfIy8xkqMpxCCuki3pPu+UH4SqeMjbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=cJtsiE3T; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=zXzI4MBpAZyeY9dZ4v2b6WShvnTo9KadIGopnBs+80c=;
+	t=1711375078; x=1711807078; b=cJtsiE3TGuC5YtQ1tMLq3RnwS2MGlMhDQ4k7J3TWJRf4cE6
+	A79jR8SDckNHuindHSKkmgZC1qt35FVHJ757Y3O/n00+2u38CnJk4juZ8EDPetaVXfXprg4swI9si
+	5JiA7OgxowznlInN76ZJ7+7wZQ7qU5RebYMf48QmP/FkM6bIIxJkWEyaLUgLID3F+GIiKGXticj3+
+	ZU6g+b3toeMz5Z/lERuD/oBpb0N8G8LP7RREaQXmisije3Bzc3l2/wWjEc715MdBsVSilgx8OsfWU
+	w2InjtJWYfhp0LPXy4YhvjblUnzSsV5wKb3mks4nw6SR5cDDVNsaiMNighIG38gQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rokpn-0004yx-OJ; Mon, 25 Mar 2024 14:57:55 +0100
+Message-ID: <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
+Date: Mon, 25 Mar 2024 14:57:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <c89f9cc6-9676-46a4-8f8e-01d8dbf41aa8@leemhuis.info>
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+Content-Language: en-US, de-DE
+To: Johan Hovold <johan@kernel.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+ Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
+ <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
+ <ZfMStHjwtCT1SW3z@hovoldconsulting.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+In-Reply-To: <ZfMStHjwtCT1SW3z@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1711375078;17de2c7d;
+X-HE-SMSGID: 1rokpn-0004yx-OJ
 
-On Mon, Mar 25, 2024 at 12:17:56PM +0100, Thorsten Leemhuis wrote:
->On 25.03.24 06:40, Jiri Slaby wrote:
->> But if you should take it or drop this all, I don't know...
->
->I ran into the same problems while building 6.8.2-rc1 for Fedora using
->the Fedora 39 config and its RPM spec file (with minor modifications):
+Bluetooth Maintainers, what's...
 
-Sorry about that, I've dropped this (and a few other bpf commits) from
-6.8.
+On 14.03.24 16:07, Johan Hovold wrote:
+> On Thu, Mar 14, 2024 at 10:30:36AM -0400, Luiz Augusto von Dentz wrote:
+>> On Thu, Mar 14, 2024 at 4:44 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+> 
+>>> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
+>>>
+>>> Qualcomm Bluetooth controllers like WCN6855 do not have persistent
+>>> storage for the Bluetooth address and must therefore start as
+>>> unconfigured to allow the user to set a valid address unless one has
+>>> been provided by the boot firmware in the devicetree.
+>>>
+>>> A recent change snuck into v6.8-rc7 and incorrectly started marking the
+>>> default (non-unique) address as valid. This specifically also breaks the
+>>> Bluetooth setup for some user of the Lenovo ThinkPad X13s.
+>>>
+>>> Note that this is the second time Qualcomm breaks the driver this way
+>>> and that this was fixed last year by commit 6945795bc81a ("Bluetooth:
+>>> fix use-bdaddr-property quirk"), which also has some further details.
+>>>
+>>> Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+>>> Cc: stable@vger.kernel.org      # 6.8
+>>> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+>>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+>>
+>> Well I guess I will need to start asking for evidence that this works
+>> on regular Linux distros then, because it looks like that is not the
+>> environment Janaki and others Qualcomm folks are testing with.
+>>
+>> What I probably would consider as evidence is bluetoothd logs showing
+>> that the controller has been configured correctly or perhaps there is
+>> a simpler way?
+> 
+> Well, in this case we actually want the controller to remain
+> unconfigured (e.g. to avoid having every user of the X13s unknowingly
+> use the same default address). 
+> 
+> I'm not sure why Qualcomm insists on breaking these quirks, but I guess
+> they just haven't understood why they exist. It's of course convenient
+> to be able to use the default address during development without first
+> having to provide an address, but that's not a valid reason to break the
+> driver.
+> 
+> From what I hear the Qualcomm developers only care about Android and I
+> believe they have some out-of-tree hack for retrieving the device
+> address directly from the rootfs.
+> 
+> For the X13s, and as I think I've mentioned before, we have been trying
+> to get Qualcomm to tell us how to access the assigned addresses that are
+> stored in some secure world storage so that we can set it directly from
+> the driver. But until we figure that out, users will need to continue
+> setting the address manually.
 
--- 
-Thanks,
-Sasha
+...the plan forward here? This to me sounds like a case where a quick
+revert is the right (interim?) solution, but nevertheless nothing
+happened for ~10 days now afaics. Or am I missing something?
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot poke
 
