@@ -1,233 +1,161 @@
-Return-Path: <stable+bounces-32265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F95588B21A
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:56:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB53A88B2B0
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 22:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA902E3812
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:56:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AD761FA4E12
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA3F5BAFC;
-	Mon, 25 Mar 2024 20:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FwlzIbJe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8575D744;
+	Mon, 25 Mar 2024 21:26:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from irl.hu (irl.hu [95.85.9.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4919052F9E
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 20:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD896D1CC;
+	Mon, 25 Mar 2024 21:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711400195; cv=none; b=kDKc+4tul60lGRUIafnueG/O+/S0cpZfL3zXYvI/w1HEzPWXdbKh0cdwEORMvwrPWyfjcFcZGSxHbC+h938Yl35D1n97RdaNq0Qt9wCE+i2+mGjyLgbjWdkNsGXG8foSAp5wX/kwmRAu2V/Zz3lr23r0mOfWPgbpHVT6wkv91GM=
+	t=1711401961; cv=none; b=Dr0GCZPfRg22dAniXMaz/TxQtUiZHoOnjo7tdH6Gd0wIj1c+uxr4wCvMPKG2lKBX4Z3h/GUlCr+4NA5y5Oa+hwVvLGyvfiCABINlATAMUnh0+EyZ4LMJlAc7xHjXjHk16/j8un1SwBXEYUr/pHZWSYUHUfEVwSzSEdqS+TCsL3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711400195; c=relaxed/simple;
-	bh=9UYGMc9oR0eHzWyKCyGIWWDkMJdM4kvKdBugGGt2fxw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qoMRkL4P507BZUabJ32j/XF29lJhDfX1uIVxwDnInA1h9KnC9nkUqItbOjvpRhpMzssMG1/CIPIhp8lKDAgqTl4+P3ohU9tThZRZO84tKClr/E067Ti7M3me/SaZ/sYdyFbG5rjGMFmcsz4ywILPaKdEsFdcN54Yj08NZHxG/pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FwlzIbJe; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so5190328276.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 13:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711400192; x=1712004992; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=besxki1zzZKLyiavhPEaN+iJiY/oxhKxhbXBWHJWvKo=;
-        b=FwlzIbJeELfv5Ko6y9n0xiEPM2nFmhlZWb3RYhTIi9eI7sFnvC3FoSSqCFQPIbRsqU
-         ypGEeH9gGg0R3wIMO/hgZ7XxSo4URcsU618LZ1YJZDbhZ2/Es1QIPGVyd5RD0R9GyHZH
-         WtB3hET7cCdOxgTA3j1D2OoverPycgyhr/H+UMXgdyI9ff9Kcc1KnVjNoEJybsCy9oeD
-         sGMzWQ4UV7CnaxlDUj8QIMoWxGzevxVS10+7O0LCp2DZRBlpt6Pv5pSgkRNWrAIyq2mU
-         XFI2uh1MrJE/rd1cD7uH8TRUUYhLR0Q4vsuHw+93MIhBv0uT0hTNtTiRQtH+8j1wLcoD
-         snWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711400192; x=1712004992;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=besxki1zzZKLyiavhPEaN+iJiY/oxhKxhbXBWHJWvKo=;
-        b=GJevHHWl/1OmpalHnxVSdlZB00W/l8jh9nazEj6XwxYcf/R7/ExhQBE5e2cSoX4KQh
-         WkDLOcOTS6mzfShIuMYGD9rJ9xdE04Zi6IwY1grVGFhvO7xrOohe2hgNb5xLN4hEIbEM
-         Lg22vjlxVoBmJ1gKGWrDJgv2e5LS4dvXMKSC/kxX4CTp6a0CWJb5cq/zw2hjX7dsq7V2
-         uyjO1DJDWiOmJwEOytKAlSxpRI1BEoJD518hoJP3PD4XDH2TKeIFLCGOuAKqoPf++Jp0
-         o9yv2VRW9DpK8MB0iM/CK1zs6mi4rvaiAmPjYb93RkiEWThDPPPeA3/GENdqCE+1cbtj
-         tfDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUH9mnrKXvdQypfj5yhf2RRmOWpFjyhYASxgYGR966aza9xJxcthngRp3Y8sC4aWs5BcJmZhFH/F5tEyM2GyGa5B8oT9DDA
-X-Gm-Message-State: AOJu0YyBrPnGyxOqwoDZbYmXwIt/ICStrqeY8OyAfARgmr3FDEbf2KEi
-	DkqQiZ+Oqsk6BV1jEKmgE+TvDXBH2XKFztbK76vFdV7euHbOvtxgj63pQLWW4EwD2hp3tT0qYZU
-	imolBjWJ6M5onuRjvzA36ZXVh8dc86zhW1YUeMQ==
-X-Google-Smtp-Source: AGHT+IHGDdQ7jXrkcSrON57XhBZ3l9DnPEzT4z7nR2v3+oetUEyIZcbZO1m/thzWE25cnAXAr4k+8VB4qHNQUa4YEwo=
-X-Received: by 2002:a25:7411:0:b0:dd1:6cad:8fd3 with SMTP id
- p17-20020a257411000000b00dd16cad8fd3mr3677424ybc.27.1711400192183; Mon, 25
- Mar 2024 13:56:32 -0700 (PDT)
+	s=arc-20240116; t=1711401961; c=relaxed/simple;
+	bh=AJHi0yEoUy7xt9EwDVeVmYbzGiFayqXL/wNoZ+TUfYg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FH3VM2IPH1a+N2FvtPTbwIpHOFSBx3wH7E4rUB7idf+7MPbknjHqC5XLbYw+kU/ZTMzrYFNEARQagx4elUxzw/PH0zS53ItR6odIx5l2TTuj5CcTO/3CaGNqzU9OYZ0KsTo9zid0sOO2Lc1ogTLvvFFwwgdIzyIbM4TMvGZ4wv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b68717.dsl.pool.telekom.hu [::ffff:81.182.135.23])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 00000000000770AE.000000006601EBE5.0023A884; Mon, 25 Mar 2024 22:25:49 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>
+Cc: alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+  linux-kernel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
+  stable@vger.kernel.org
+Subject: [PATCH 1/3] ALSA: hda/tas2781: remove digital gain kcontrol
+Date: Mon, 25 Mar 2024 22:25:33 +0100
+Message-ID: <313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <cover.1711401621.git.soyer@irl.hu>
+References: <cover.1711401621.git.soyer@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240313-qcom-ucsi-fixes-v1-0-74d90cb48a00@linaro.org> <Zf12vSHvDiFTufLE@hovoldconsulting.com>
-In-Reply-To: <Zf12vSHvDiFTufLE@hovoldconsulting.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 25 Mar 2024 22:56:21 +0200
-Message-ID: <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
-Subject: Re: [PATCH 0/7] usb: typec: ucsi: fix several issues manifesting on
- Qualcomm platforms
-To: Johan Hovold <johan@kernel.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Bjorn Andersson <andersson@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-On Fri, 22 Mar 2024 at 14:16, Johan Hovold <johan@kernel.org> wrote:
->
-> On Wed, Mar 13, 2024 at 05:54:10AM +0200, Dmitry Baryshkov wrote:
-> > Fix several issues discovered while debugging UCSI implementation on
-> > Qualcomm platforms (ucsi_glink). With these patches I was able to
-> > get a working Type-C port managament implementation. Tested on SC8280XP
-> > (Lenovo X13s laptop) and SM8350-HDK.
->
-> > Dmitry Baryshkov (7):
-> >       usb: typec: ucsi: fix race condition in connection change ACK'ing
-> >       usb: typec: ucsi: acknowledge the UCSI_CCI_NOT_SUPPORTED
-> >       usb: typec: ucsi: make ACK_CC_CI rules more obvious
-> >       usb: typec: ucsi: allow non-partner GET_PDOS for Qualcomm devices
-> >       usb: typec: ucsi: limit the UCSI_NO_PARTNER_PDOS even further
-> >       usb: typec: ucsi: properly register partner's PD device
->
-> >       soc: qcom: pmic_glink: reenable UCSI on sc8280xp
->
-> I just gave this series a quick spin on my X13s and it seems there are
-> still some issues that needs to be resolved before merging at least the
-> final patch in this series:
->
-> [    7.786167] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> [    7.786445] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> [    7.883493] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> [    7.883614] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> [    7.905194] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> [    7.905295] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> [    7.913340] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> [    7.913409] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+The "Speaker Digital Gain" kcontrol controls the TAS2781_DVC_LVL (0x1A)
+register. Unfortunately the tas2563 does not have DVC_LVL, but has
+INT_MASK0 in 0x1A, which has been misused so far.
 
-I have traced what is causing these messages. During UCSI startup the
-ucsi_register_port() function queries for PDOs associated with the
-on-board USB-C port. This is allowed by the spec. Qualcomm firmware
-detects that there is no PD-device connected and instead of returning
-corresponding set of PDOs returns Eerror Indicator set to 1b but then
-it returns zero error status in response to GET_ERROR_STATUS, causing
-"unknown error 0" code. I have checked the PPM, it doesn't even have
-the code to set the error status properly in this case (not to mention
-that asking for device's PDOs should not be an error, unless the
-command is inappropriate for the target.
+Since commit c1947ce61ff4 ("ALSA: hda/realtek: tas2781: enable subwoofer
+volume control") the volume of the tas2781 amplifiers can be controlled
+by the master volume, so this digital gain kcontrol is not needed.
 
-Thus said, I think the driver is behaving correctly. Granted that
-these messages are harmless, we can ignore them for now. I'll later
-check if we can update PD information for the device's ports when PD
-device is attached. I have verified that once the PD device is
-attached, corresponding GET_PDOS command returns correct set of PD
-objects. Ccurrently the driver registers usb_power_delivery devices,
-but with neither source nor sink set of capabilities.
+Remove it.
 
-An alternative option is to drop patches 4 and 5, keeping
-'NO_PARTNER_PDOS' quirk equivalent to 'don't send GET_PDOS at all'.
-However I'd like to abstain from this option, since it doesn't allow
-us to check PD capabilities of the attached device.
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+---
+ include/sound/tas2781-tlv.h     |  1 -
+ sound/pci/hda/tas2781_hda_i2c.c | 37 +--------------------------------
+ 2 files changed, 1 insertion(+), 37 deletions(-)
 
-Heikki, Johan, WDYT?
-
-For reference, here is a trace of relevant messages exchanged over the
-GLINK interface during UCSI bootstrap:
-
-[   11.030838] write: 00000000: 10 00 01 00 07 00 00 00
-
-GET_PDOS(connection 1, Source, 3 PDOs)
-
-[   11.044171] write ack: 0
-[   11.044263] notify: 00000000: 00 00 00 c0 00 00 00 00
-
-Command Complete, Error
-
-[   11.044458] read: 00000000: 00 01 00 00 00 00 00 c0 00 00 00 00 00 00 00 00
-[   11.044460] read: 00000010: e7 3f 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.044462] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.059790] read: 00000000: 00 01 00 00 00 00 00 c0 00 00 00 00 00 00 00 00
-[   11.059797] read: 00000010: e7 3f 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.059801] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.059814] write: 00000000: 04 00 02 00 00 00 00 00
-
-Ack_CC command
-
-[   11.075509] write ack: 0
-[   11.075544] notify: 00000000: 00 00 00 20 00 00 00 00
-
-Ack for Ack_CC
-
-[   11.091828] read: 00000000: 00 01 00 00 00 00 00 20 00 00 00 00 00 00 00 00
-[   11.091864] read: 00000010: e7 3f 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.091879] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.092339] write: 00000000: 13 00 00 00 00 00 00 00
-
-GET_ERROR_STATUS
-
-[   11.106398] write ack: 0
-[   11.106435] notify: 00000000: 00 10 00 80 00 00 00 00
-
-command complete, 0x10 bytes of response
-
-[   11.122729] read: 00000000: 00 01 00 00 00 10 00 80 00 00 00 00 00 00 00 00
-[   11.122758] read: 00000010: 00 00 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.122770] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-
-Zero response data
-
-
-[   11.137523] read: 00000000: 00 01 00 00 00 10 00 80 00 00 00 00 00 00 00 00
-[   11.137548] read: 00000010: 00 00 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.137559] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.153028] read: 00000000: 00 01 00 00 00 10 00 80 00 00 00 00 00 00 00 00
-[   11.153064] read: 00000010: 00 00 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.153080] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.153492] write: 00000000: 04 00 02 00 00 00 00 00
-
-Ack_CC for the GET_ERROR_STATUS command
-
-[   11.169060] write ack: 0
-[   11.169108] notify: 00000000: 00 00 00 20 00 00 00 00
-
-Ack for ACK_CC
-
-[   11.184114] read: 00000000: 00 01 00 00 00 00 00 20 00 00 00 00 00 00 00 00
-[   11.184140] read: 00000010: 00 00 00 00 00 00 00 00 02 00 20 01 00 03 30 01
-[   11.184152] read: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   11.184548] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-[   11.184695] ------------[ cut here ]------------
-[   11.184703] WARNING: CPU: 2 PID: 28 at
-drivers/usb/typec/ucsi/ucsi.c:140 ucsi_exec_command+0x284/0x328
-[typec_ucsi]
-[   11.185488] Call trace:
-[   11.185494]  ucsi_exec_command+0x284/0x328 [typec_ucsi]
-[   11.185519]  ucsi_send_command+0x54/0x118 [typec_ucsi]
-[   11.185543]  ucsi_read_pdos+0x5c/0xdc [typec_ucsi]
-[   11.185567]  ucsi_get_pdos+0x30/0xa4 [typec_ucsi]
-[   11.185590]  ucsi_init_work+0x3bc/0x82c [typec_ucsi]
-[   11.185614]  process_one_work+0x148/0x2a0
-[   11.185638]  worker_thread+0x2fc/0x40c
-[   11.185655]  kthread+0x110/0x114
-[   11.185668]  ret_from_fork+0x10/0x20
-
-Then comes the same log for the Connector=1, Sink PDOs, Connector=2
-Source PDOs and finally Connector=2 Sink PDOs.
-
-
+diff --git a/include/sound/tas2781-tlv.h b/include/sound/tas2781-tlv.h
+index 4038dd421150..a29bcfb5bb2b 100644
+--- a/include/sound/tas2781-tlv.h
++++ b/include/sound/tas2781-tlv.h
+@@ -15,7 +15,6 @@
+ #ifndef __TAS2781_TLV_H__
+ #define __TAS2781_TLV_H__
+ 
+-static const DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 100, 0);
+ static const DECLARE_TLV_DB_SCALE(amp_vol_tlv, 1100, 50, 0);
+ 
+ #endif
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 4475cea8e9f7..5acb475c10a7 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -89,7 +89,7 @@ struct tas2781_hda {
+ 	struct snd_kcontrol *dsp_prog_ctl;
+ 	struct snd_kcontrol *dsp_conf_ctl;
+ 	struct snd_kcontrol *prof_ctl;
+-	struct snd_kcontrol *snd_ctls[3];
++	struct snd_kcontrol *snd_ctls[2];
+ };
+ 
+ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
+@@ -294,27 +294,6 @@ static int tasdevice_config_put(struct snd_kcontrol *kcontrol,
+ 	return ret;
+ }
+ 
+-/*
+- * tas2781_digital_getvol - get the volum control
+- * @kcontrol: control pointer
+- * @ucontrol: User data
+- * Customer Kcontrol for tas2781 is primarily for regmap booking, paging
+- * depends on internal regmap mechanism.
+- * tas2781 contains book and page two-level register map, especially
+- * book switching will set the register BXXP00R7F, after switching to the
+- * correct book, then leverage the mechanism for paging to access the
+- * register.
+- */
+-static int tas2781_digital_getvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	return tasdevice_digital_getvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_getvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -325,17 +304,6 @@ static int tas2781_amp_getvol(struct snd_kcontrol *kcontrol,
+ 	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
+ }
+ 
+-static int tas2781_digital_putvol(struct snd_kcontrol *kcontrol,
+-	struct snd_ctl_elem_value *ucontrol)
+-{
+-	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+-	struct soc_mixer_control *mc =
+-		(struct soc_mixer_control *)kcontrol->private_value;
+-
+-	/* The check of the given value is in tasdevice_digital_putvol. */
+-	return tasdevice_digital_putvol(tas_priv, ucontrol, mc);
+-}
+-
+ static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
+ 	struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -381,9 +349,6 @@ static const struct snd_kcontrol_new tas2781_snd_controls[] = {
+ 	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
+ 		1, 0, 20, 0, tas2781_amp_getvol,
+ 		tas2781_amp_putvol, amp_vol_tlv),
+-	ACARD_SINGLE_RANGE_EXT_TLV("Speaker Digital Gain", TAS2781_DVC_LVL,
+-		0, 0, 200, 1, tas2781_digital_getvol,
+-		tas2781_digital_putvol, dvc_tlv),
+ 	ACARD_SINGLE_BOOL_EXT("Speaker Force Firmware Load", 0,
+ 		tas2781_force_fwload_get, tas2781_force_fwload_put),
+ };
 -- 
-With best wishes
-Dmitry
+2.44.0
+
 
