@@ -1,110 +1,148 @@
-Return-Path: <stable+bounces-32154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2781F88ACF0
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:03:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47B388A32E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 470C6B45A37
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:55:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC7A2E205B
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339A315820A;
-	Mon, 25 Mar 2024 10:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC53C16FF54;
+	Mon, 25 Mar 2024 10:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbJf+UDs"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S+6ZXBPD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA237158879;
-	Mon, 25 Mar 2024 09:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FB31802A1
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 09:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711358761; cv=none; b=rMMRjEk5cHDRx5yXEL8ZdOCr0n4tivRFjlYGGAaWWiDaRiuAtMGlNvlATYYsq3XvSKgG2Amj+NK6OWw3oo8bFJWmdkFt5CzuZTcs7gq/gonOsy62KoFUcHrYRHXXK8PyWkkESs+tyy0atGDT3SaGrIJL+iw4uO4UWJxdiEI3ggI=
+	t=1711358917; cv=none; b=CwIu3zqjBc9610QQrvuTBL0lDAGOfQ+w7tw5+jB7uBkbTNOvD7pMqbU6Kb+XVJm1txSRDfD5BIuYJMEDWcXFEM21h3Lo+bCciIcFDbhv07HqieKi9oui1+dOlPYKB8HjgJwtI2aDG8folwDlEy7OBST1bfWepHB0ltuHJ+XmaKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711358761; c=relaxed/simple;
-	bh=GKTtPowYB770kpGGywqSA4TpQAlQog2LM2yqoXhx+HM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dBaetX0+nRapp+Ht9vs3St6EMHVmVYlZBCb89PMKKFbcAuWZgw7fKTCRKxCF7TCdb8NuCRfx8dyIQ+zrx2Ghl1WO3DSbXxl0jQXtYdOnl4dRbILAdG7wxXJg1hHkMLY7nd+v4TITh/hy48Eyi/Ij43Grjjx4RaPOh0m98dQvBz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbJf+UDs; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso2793183a12.3;
-        Mon, 25 Mar 2024 02:25:59 -0700 (PDT)
+	s=arc-20240116; t=1711358917; c=relaxed/simple;
+	bh=uGQJQqqOoV40xJP1y95HDFRdz87FEyHED2qs0kLU3bQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lpTbLT2loJY+XFoVndzwkF8EbNcjO/LBW9Z9QZnpkDfZc4EOSKCgCJKDv4NnPSUUyhmUHqxlS5omEVQElEfs0WWOlfQXHCcIAOyierw7horWZlhncNJhLVTaoCmqKjx4iVWQTirG3BzvXbiaGQlBX5SiiUv/igd8jHeIBY1JN/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S+6ZXBPD; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4d438e141d5so2379122e0c.0
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 02:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711358759; x=1711963559; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKTtPowYB770kpGGywqSA4TpQAlQog2LM2yqoXhx+HM=;
-        b=XbJf+UDs4KEGPQ//BECuqJcpIUp/kAYT2qAo2KQK/x4H1mIuDjQ1qWojBP0Jzmvddm
-         PfpnDD8X7D/G0uayqpd/+uyO/dTSrTWCThOz4fnROHs+3xOHKTNlggKxA0PRSKDK3TUJ
-         iPJugbLNeNi5VIeGgTyMjjkwA3CXhrcjsGIWDDqF3HMrT4hH0GvewX0dX4BA0SyCXlhH
-         kspGQtAUIkXgeEDCr+2M4uJTiAxVs0WTJ6pi12rV+//rC0xAg+qrV5juEHesfju0uaKH
-         v01/hzQo01B+fcW4WIV2jxEcnvz6yjZfmqPN3sdFjaNx3VfjpIoLIyYpeojxbpjNDB8O
-         DqYA==
+        d=linaro.org; s=google; t=1711358915; x=1711963715; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5m0Gh/qeDl7am+4YY8jkZ+PZB+SobIFHIAWFvx2/qhk=;
+        b=S+6ZXBPDlwwzO1ciPHumxH/ZKhaC8u3XW8FOQgQxZsqG48Al1G3YM4sQ73Wh+RzJEt
+         yXC+yytqoPa8IWRDSTUJGpSrpSxN7mlPuRqYZpaGVboBSDFEugTi16kwSPoivdbb8a94
+         PZQ7WvnKBOiobSUUGbAU20copVrIWcGJnsOBs052oFBorhhkIDCWqUliepKbfV56Tkql
+         FdUs3kkjoxXI/UeB4H0njtF5fuWDKB2gcWi3lp8EAzarpAEE1G+cW9656wvgC+8s+OIY
+         kZSOtmKSr9QdbQwC49KWWL6XhfZyT6lXQ/633DD2ZjEY3c0zxVTe3tVLfDvuWray5EVY
+         58aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711358759; x=1711963559;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GKTtPowYB770kpGGywqSA4TpQAlQog2LM2yqoXhx+HM=;
-        b=Pl9eXDzdtuRSX8HkWlmHaAmdrJWXonoQFJagMQcGnUXxw4RSZ+ofTlwwaXYxFIzAfN
-         JI3GDOQRDLN2ySHRTaSkZc6WrCXkXGlgiiwH29cDOqYpJEudN06QDjlexQsnsLs7yYw6
-         0VJEBLFn+pNmS4QmeXeEAGRPwolrZAmEfc40sYi9URKuECu3u48CuhkvT/AiCmCzwyLB
-         wJ69AmgXNPIFXaC6MbCT4ipTM/0pjeOlSv2GHr3C4fyALI9kexupeoX80ZZfRdocuq/R
-         754ohff45GJI8uGq7NyH79hNfvhJthAEUwWmMFMHwxDDPQZeFOtEKgjBSeO3fwadbkIT
-         Cheg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqRu4EUjAQgJ0DvtBwxDBhBPIsBby+gXVPHVQlTDucwxaAolQgS3/OGqHROvnt+kOOSnleyO3jnND2+dT77oRHt8FhtNCKjBOdK0Fj8kw2l9MdtLtWIaNq/3tcWsLICzvn4khD8SgeR4i9C4yIgRfpXsVeaS1DVQ9c1NojmzX36g==
-X-Gm-Message-State: AOJu0Yw7XHZXKM5xkgBgnX89ignaA+gVg9V7r16NOpbbWgsyoZw/ugig
-	O4MNyKp5ry2AGlv0HHtu2QNKyORDFhjjKlacmrnz9UBskTVuJ2m6tWdB0zt9
-X-Google-Smtp-Source: AGHT+IFTzxSRhBJUEYas4N5Fxt9ePU+dtAkFsdTMD85txraTNS0VOVkE+acPU3zRPtGSh1GTsBIjaA==
-X-Received: by 2002:a05:6a20:6a0e:b0:1a3:c3e0:518c with SMTP id p14-20020a056a206a0e00b001a3c3e0518cmr3928099pzk.52.1711358759119;
-        Mon, 25 Mar 2024 02:25:59 -0700 (PDT)
-Received: from rigel (110-175-159-48.tpgi.com.au. [110.175.159.48])
-        by smtp.gmail.com with ESMTPSA id qa14-20020a17090b4fce00b002a04f430937sm3706044pjb.43.2024.03.25.02.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 02:25:58 -0700 (PDT)
-Date: Mon, 25 Mar 2024 17:25:52 +0800
-From: Kent Gibson <warthog618@gmail.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Alexey Dobriyan <adobriyan@gmail.com>,
-	stable@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v3] gpio: cdev: sanitize the label before requesting the
- interrupt
-Message-ID: <20240325092552.GA75236@rigel>
-References: <20240325090242.14281-1-brgl@bgdev.pl>
+        d=1e100.net; s=20230601; t=1711358915; x=1711963715;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5m0Gh/qeDl7am+4YY8jkZ+PZB+SobIFHIAWFvx2/qhk=;
+        b=pFvW1yIN2S2kTW6qMc5xB8vogLFW6ukZjm7ekXxNuzys+0vTshCn6yQovdhpMCEJ/u
+         zCvtm9nqu3T7mMa4dfOZBtkAdNv+guHqLcmPnGKzSW6hn+G5DOWcLbvgIzFMYbUX0ux+
+         Z3eNIk4uqpVvguXsGgsec49CUhqMz06FA0NhZCKPNLZpWbY4uHe1bYGNI8Lmz+1oCzQ0
+         LiPIv2UOatDlCctZ6JMVWDvPtf7RQJjiJFjV/IIr6YMaAi62Qke/psehSFz9uBTKtVVh
+         tPmLvq3DBPl63WhageD4EeIW6OEvN8iocJXaQU1cpAjjBTNiJxV97Mprwkz/EbrFfqqR
+         UBHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNw4i4HYM/yq3d6VemHgihR87kIrEzuo0kofEeQVb/+YYEO9h75YPy/iUiayM0AFpA40yKi8sb8KS6SLwZx6FapwhJ7Dfg
+X-Gm-Message-State: AOJu0YxwE5pK4cuL96lPPvO2jw8nvMMF2AzvNt8fsOntz33oVShkQDHK
+	UxAKA+SQbakyCM+ZvstdKeXPAj6OLgyj5c03OTAtYrhcDwYahBsmdy8Xr4WerO3YcuhNKdTiUPn
+	4Wu3F7DXCdT/jAJH20UwpIx5yc/rqFO/0juDV8A==
+X-Google-Smtp-Source: AGHT+IGM/UyGpUfBFfVFl91MwB4yzh9yxciE0bsa3uvnOjvb8RmeOSlIGcBZRayBfFukhUTmD2y7dkNO9tJXQIK0PSU=
+X-Received: by 2002:a05:6122:12b7:b0:4d3:3334:f2fe with SMTP id
+ j23-20020a05612212b700b004d33334f2femr2658521vkp.1.1711358913507; Mon, 25 Mar
+ 2024 02:28:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325090242.14281-1-brgl@bgdev.pl>
+References: <20240324233458.1352854-1-sashal@kernel.org>
+In-Reply-To: <20240324233458.1352854-1-sashal@kernel.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 25 Mar 2024 14:58:22 +0530
+Message-ID: <CA+G9fYtU7A1XxOS9BvmoQAjhcuUsaSPQKnOzz-qYV6ORnG9k-g@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/317] 5.15.153-rc1 review
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	florian.fainelli@broadcom.com, pavel@denx.de, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Jani Nikula <jani.nikula@intel.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Mar 25, 2024 at 10:02:42AM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Mon, 25 Mar 2024 at 05:05, Sasha Levin <sashal@kernel.org> wrote:
 >
-> When an interrupt is requested, a procfs directory is created under
-> "/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
-> the request_irq() variants.
 >
-> What follows is that the string must not contain the "/" character or
-> the procfs mkdir operation will fail. We don't have such constraints for
-> GPIO consumer labels which are used verbatim as interrupt labels for
-> GPIO irqs. We must therefore sanitize the consumer string before
-> requesting the interrupt.
+> This is the start of the stable review cycle for the 5.15.153 release.
+> There are 317 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Let's replace all "/" with ":".
+> Responses should be made by Tue Mar 26 11:34:43 PM UTC 2024.
+> Anything received after that time might be too late.
 >
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.152
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
 
-Looks good to me.
+As I have already reported on 5.10 regarding powerpc ppc6xx_defconfig
+build regressions noticed on 5.15.
 
-Reviewed-by: Kent Gibson <warthog618@gmail.com>
+> Thomas Zimmermann (1):
+>   arch/powerpc: Remove <linux/fb.h> from backlight code
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build error:
+------------
+drivers/macintosh/via-pmu-backlight.c:22:20: error:
+'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
+   22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+      |                    ^~~~~~~~~~~~~~~~~~~
+In file included from include/linux/kernel.h:16,
+                 from arch/powerpc/include/asm/page.h:11,
+                 from arch/powerpc/include/asm/thread_info.h:13,
+                 from include/linux/thread_info.h:60,
+                 from arch/powerpc/include/asm/ptrace.h:323,
+                 from drivers/macintosh/via-pmu-backlight.c:11:
+drivers/macintosh/via-pmu-backlight.c: In function 'pmu_backlight_curve_lookup':
+include/linux/minmax.h:36:9: error: first argument to
+'__builtin_choose_expr' not a constant
+   36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+      |         ^~~~~~~~~~~~~~~~~~~~~
+
+
+Steps to reproduce:
+# tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12
+--kconfig ppc6xx_defconfig
+
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.152-317-g6f6f22f11928/testrun/23147157/suite/build/test/gcc-12-ppc6xx_defconfig/log
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2e9uOwIbkt3JA6me39nPospWfFL/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.152-317-g6f6f22f11928/testrun/23147157/suite/build/test/gcc-12-ppc6xx_defconfig/details/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
