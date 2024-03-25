@@ -1,110 +1,115 @@
-Return-Path: <stable+bounces-32145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E32388A1C7
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:25:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B11488A32D
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 726A91C384C2
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA931C39B46
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25717F210;
-	Mon, 25 Mar 2024 09:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33A512E1E2;
+	Mon, 25 Mar 2024 10:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oQULipp7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kp8pD+1Q"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5851D158DB5;
-	Mon, 25 Mar 2024 09:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEAB1EB2A;
+	Mon, 25 Mar 2024 09:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711358383; cv=none; b=oyjUZisAAlDGuZupBIFGKEJYV3eOTkKrhUvTYTk/+sWZVawDY4tRTThGU1WycQ4bslSXTMgiIkeX7BbulC9ptBMUQkILSD/zsy/FJWvGNmHZE4XX7qIfgnXmEGZzqEF1u251pQQyfmH7LToqYoV62IRFz7lN2mCZVitf9OgvNUc=
+	t=1711358595; cv=none; b=LZNuvjoUVpQksM2IUDFNgh1ANmRd/ir+i1a6VQ1KTpxHrq/1oLG43X5yfrAn7I4txRQ+t5mluB/kIfYLzJ4OOaGBagcIkJ1YtbalUPYLUQc+3AR/uUFyg6noyUUEjNgzNQn0tvXBr3I2sg7JmXh+30dgCq1ywF/MVpM7zcVTEJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711358383; c=relaxed/simple;
-	bh=H3V7nr7fyekfvV8hDUpZrAFWcpoaN+qI3h65nywyXl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rMdKo0dwOAa964Q/JPfaOuEPP5Go4pKnVYEE3nynCkMZASx4QlowBBkGfB2X+ueKl31J6GQVzcaYArSP/3navCZ0/Tbvebi6n36aGrBGQEdjK6GHpnPHI38CLeW3lyWkgfrDh9CmZ05AJ/Zb6TgUqkR9vEPh+JScc31B6TL+CGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oQULipp7; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E2A8FC000E;
-	Mon, 25 Mar 2024 09:19:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711358372;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qU3idiONxQ8MOsIGn2G3Z38vry1Zi7EOzhSXkBaZx3c=;
-	b=oQULipp7fpuoLENxFEYSzusTa1N+3RT+c29MLC61RSlUAX89wB4XuGe2h/91Is/HVsnDLe
-	1JB5u38X7Yt6TEYS3+2WbV7uIBIBTYaaRoNGULhdRvDjj/qUh3KqiS1WjXWYJAJlnPuQba
-	DvXrnZ1Ms9dX/jhDnqfFcCv8xtTg0ElkoUZEVRcittP8umfxjanofuuFPxuV3TyRlL8ANJ
-	ASwAvZRvzp53EHJkUTgng/7li2TTo46X+0nj41A3KvDP3ppm9qda7+0QExcXYoy8AJLKhy
-	2jj747yfAYmAv1ivg/v5IWzu2EsyLXRCXaQzGzOz9Q4BeZrEhKBQH6UIlHLPNA==
-Date: Mon, 25 Mar 2024 10:19:30 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Christian Marangi <ansuelsmth@gmail.com>, Richard Weinberger
- <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Sricharan
- Ramabadhran <quic_srichara@quicinc.com>, Md Sadre Alam
- <quic_mdalam@quicinc.com>, linux-mtd@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mtd: rawnand: qcom: Fix broken misc_cmd_type in exec_op
-Message-ID: <20240325101930.13ed914d@xps-13>
-In-Reply-To: <20240322150510.GC3774@thinkpad>
-References: <20240320001141.16560-1-ansuelsmth@gmail.com>
-	<20240322150510.GC3774@thinkpad>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711358595; c=relaxed/simple;
+	bh=+Rntwbb4YW9HjwZqjkH2HwaBZOT1e6Wg4co+NigZDyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C4aYrSy4js/LbnrDM+YX414UpM9QoWrJTac/K8BFjlbo9LwVsOu+BxHRRcB1hTsdqurnNL+vX1DOo8rpFwjad+jpGyKOdkani4ggupYAfeBkAls4P9CdsMcsR1aHTMpnXRkbcxJvltSjxKfJmJKpinm24pfeswbYWX9OXD+yJyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kp8pD+1Q; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711358594; x=1742894594;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+Rntwbb4YW9HjwZqjkH2HwaBZOT1e6Wg4co+NigZDyo=;
+  b=Kp8pD+1QQVc0bxOc72i6QGVpMyLh0TmLJxawJlcCptezf77RdMbY3DBy
+   6WVLHwKt4X3t11e+wJHm7b3jdtplysF3rF32oCGla3JwA3hcg9jTQWB7g
+   J/2csaferj9H+KDHhRwDqk4H56toy2tapXjTrhCMM6yvSi2FuyU7ogrcs
+   NVZ8wirrJ4cTld/bPTAMUBheZS851J26K0gNz1OnF5fTpFvXk4pXoV6hZ
+   BQo03AFMVPcbz4ipAOKtI7gJLKL+eElgdbskTo52eG+gFvDnc5Plt7lTt
+   Wy4oun4vDQXDe9P95JgAFnl8sJztKTZoUeRX2nCd87I5XBhy6vAgUrM6V
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6533060"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
+   d="scan'208";a="6533060"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 02:23:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="914837483"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
+   d="scan'208";a="914837483"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 02:23:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rogXr-0000000Fvfn-1Ds7;
+	Mon, 25 Mar 2024 11:23:07 +0200
+Date: Mon, 25 Mar 2024 11:23:07 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] net: wan: framer: Add missing static inline qualifiers
+Message-ID: <ZgFCe39GJEARc9g4@smile.fi.intel.com>
+References: <20240325082505.29385-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325082505.29385-1-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
+On Mon, Mar 25, 2024 at 09:25:05AM +0100, Herve Codina wrote:
+> Compilation with CONFIG_GENERIC_FRAMER disabled lead to the following
+> warnings:
+>   framer.h:184:16: warning: no previous prototype for function 'framer_get' [-Wmissing-prototypes]
+>   184 | struct framer *framer_get(struct device *dev, const char *con_id)
+>   framer.h:184:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+>   184 | struct framer *framer_get(struct device *dev, const char *con_id)
+>   framer.h:189:6: warning: no previous prototype for function 'framer_put' [-Wmissing-prototypes]
+>   189 | void framer_put(struct device *dev, struct framer *framer)
+>   framer.h:189:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+>   189 | void framer_put(struct device *dev, struct framer *framer)
 
-manivannan.sadhasivam@linaro.org wrote on Fri, 22 Mar 2024 20:35:10
-+0530:
+Always try to minimize the warnings/backtraces/etc to the point. In this case
+it's enough to have:
 
-> On Wed, Mar 20, 2024 at 01:11:39AM +0100, Christian Marangi wrote:
-> > misc_cmd_type in exec_op have multiple problems. With commit a82990c8a4=
-09
-> > ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-> > reworked and generalized but actually dropped the handling of the
-> > RESET_DEVICE command.
-> >=20
-> > The rework itself was correct with supporting case where a single misc
-> > command is handled, but became problematic by the addition of exiting
-> > early if we didn't had an ERASE or an OP_PROGRAM_PAGE operation.
-> >=20
-> > Also additional logic was added without clear explaination causing the
-> > erase command to be broken on testing it on a ipq806x nandc.
-> >  =20
->=20
-> Interesting. I believe Alam tested the rework on IPQ platforms and not su=
-re how
-> it got missed.
->=20
-> > Add some additional logic to restore RESET_DEVICE command handling and
-> > fix erase command.
-> >  =20
->=20
-> This sounds like two independent fixes, no? Please split them into separa=
-te
-> patches.
+  warning: no previous prototype for function 'framer_get' [-Wmissing-prototypes]
+  warning: no previous prototype for function 'framer_put' [-Wmissing-prototypes]
 
-Might be split indeed. @Christian, do you plan on sending a v2?
+> Add missing 'static inline' qualifiers for these functions.
 
-Thanks,
-Miqu=C3=A8l
+Code wise looks good,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
