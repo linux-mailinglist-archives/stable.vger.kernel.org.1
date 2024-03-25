@@ -1,147 +1,218 @@
-Return-Path: <stable+bounces-32150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A42688A2C8
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:45:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8115388A2EB
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7B41C38F36
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:45:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0E42E1025
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00D013DBA4;
-	Mon, 25 Mar 2024 10:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CDE161907;
+	Mon, 25 Mar 2024 10:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="bUZNBQWa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064E3156886;
-	Mon, 25 Mar 2024 08:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C319516D31E
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 09:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711356228; cv=none; b=WnbAOqZ9aTF73KuwYosTU+4VqOgRpPjcoub0OiTLjVLXAaRdJputEFIZQ4uWAH+0FXRa07vra2ygGaYvR1PThxyffypY4QBb4blhlcYd/IFlGoO2D/I1XedCJCaaGRqXHk3LUcui21ulh1Iugr39AfKKdv0ZC7jWj0YmmM8qzgw=
+	t=1711357368; cv=none; b=SE0kd35oCQTl2tTYbxcdJHNoHVL8Kp8F4Y1ymQjUdmSaB44ptOa/9qAQ1Geu6Xzw22bsCcKHaRv7hOogXamQCZ17EaEgsMCpYiQ7X6VHZ9iGx4dIcW8PpZXVn6CFyf3oOouMSYlgXg9a48adaUz6suoc1rXs0+JHyIegnSaJej8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711356228; c=relaxed/simple;
-	bh=hcxg4In4aK2uslPZ2l3j/imsw9p/42fA3ITh/yE+w40=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sdt5BLYczjyle8HuMo6wHCGk6vCoElaOWOCslC9b/SlliY0cR8PKCytbhnflFaT3wz7lbKx08Nn8OBhcGc8+VS60v7OyGV8s5Rtkdj86ZbQXpnXDSW0L+vHgsnTso7W9ZIVUM9sjhyWn0Ut/s3lHRmu75idRmyZDE/q77X1AWz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-61149e50602so7363337b3.0;
-        Mon, 25 Mar 2024 01:43:46 -0700 (PDT)
+	s=arc-20240116; t=1711357368; c=relaxed/simple;
+	bh=4reNKSpGjyBIo1QKCNeXq82qEbRTN2WkDpD7rdLXG1k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PsXi7EQji5qMUrTgHXw1lHZwyBp3S/WbzXPBqg4e4SnpjtlXe1OfjNfXNsWxwA3wp2jB7pnRiZOKJYqWv+qzMVbsGxB2zwrAd5g1gDssaaOy0h0ivrITznpAc1vKRE6Emvm64WZcqltQyLLb+Y1HRaAYYJaAJarIw9yniELnHZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=bUZNBQWa; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-34005b5927eso2898802f8f.1
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 02:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1711357365; x=1711962165; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mIHhZHaPF09JSvWfnC/4E/kXpaEgooxUhhCxFC4Dwcg=;
+        b=bUZNBQWaXpD3R7eXgaMy7tHsuOF+YVhh799NnUv9B95kkV+zIlw4dT+0u2FyTtILcR
+         WgKPZpra3rGvPGpVWV54ZM29qX20S/P7swv2irYIz5WVwqkrKAcBhZC09HW7+msjPRPj
+         1MqTqWhs8OEGyvfEZLjo1KIEw7tHrOluV3caav/4znavDfWMzAOlTNqnzW0MZ2pKvgRL
+         kFdbCMtmEKU68yPPVWclUkDPS0BdYk70W5OOhA87LdG94U1sA16ygOs3eEbkMEyqSMh1
+         Z1ZmQLQIx54Xg1puJyZ6lc5OJ3dpAu6pMFp/yCkxyWkCuqQuNZlkwMWOAdwa/uTB957K
+         0Ylw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711356225; x=1711961025;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ChuSgVYGVBf5BrY9y1MgsrXyLyHWL1icjbpaJ35NYnU=;
-        b=wFQmJTOlQU4L2QJR2RBpAPSBFfLYYcsiSa7yVEGracaneA0SsjEVkjBsAaBYPEt8wy
-         Mb8G/VS1ZDR69ZUWD+7MOivHQoL5ORufkE4PNrcSCmPCs5DB3+AHhybnAJCfWAhVHKCF
-         15Do61pRHSiwpGUYbVZhX4OYcWBW/xE3PDXlgZ9I+mid2NahC1+8a1BY+GJ3uRzI6eT8
-         E82bIiWKmf8YXF5baysXrV3X//CXNdFsxdBNO4GlcdT1ZfV7puqfzb6D2xEPEcWw/1Mh
-         I2xXgI6SS8ozjOcOGetaZfPNIrrXYKDPnabU6WoEi/6N2JZMIrLUQ2I6yVVj4FPGYequ
-         djLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsJ5eDMmbkJ/wRTigcEtXPtXex8FWLFo9qwIXZZCbIeghGFTO+f0hJZSm0HebT7eHTcLFdyNUdcs5kX1BJ/Xurpgbcg9uD3a00xvw/W5WNhhnNDWxmklRI6VBKEkjDt7W+x2OgiJ9kh6g=
-X-Gm-Message-State: AOJu0YzrSq/eqpLiY1y/gntTY+FhF8zObAB7i/1yGp3yeSQmS6rulRWG
-	NkP5p8D0yeSx+cOjZ2P1NCIfER3SiMjk8C94xq/p+M7VxZjpFPmJpQjGS/TOMOE=
-X-Google-Smtp-Source: AGHT+IHX/d0PCCB3xpz7d90wwLNQ/zZqtXcuLMyLgTpTDJh7/2lbd6aJn80oJYR7CWp3CZsSibfkuA==
-X-Received: by 2002:a05:690c:610f:b0:610:e891:838c with SMTP id hi15-20020a05690c610f00b00610e891838cmr3162495ywb.7.1711356224199;
-        Mon, 25 Mar 2024 01:43:44 -0700 (PDT)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id v141-20020a814893000000b0060a109ae2b2sm959230ywa.26.2024.03.25.01.43.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 01:43:44 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc6cbe1ac75so3133376276.1;
-        Mon, 25 Mar 2024 01:43:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUY8vlUl8Wd5rFweNWKFzzddpWkA9mrx1LV8i1fHjYOShpS90Giv2G4eLuhnSROuXdrE2eZHGRliY9mH9TZGlokdeuxeDu+J3ASb0Edxxtn3gf4lj2wGHdoI088sVH/7yXmLteC5Gp3JOw=
-X-Received: by 2002:a25:6cc3:0:b0:dcb:b072:82d8 with SMTP id
- h186-20020a256cc3000000b00dcbb07282d8mr2843159ybc.15.1711356223761; Mon, 25
- Mar 2024 01:43:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711357365; x=1711962165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mIHhZHaPF09JSvWfnC/4E/kXpaEgooxUhhCxFC4Dwcg=;
+        b=I+ew5Lbq4NfYeUpQKMitveNK+nYz6G/+8qXQwetUDp6Awsq/Nb2uv/6Oox63QFD3vk
+         Ic6GK25M0LbzGF2nyAgO4vVI1eW3rqQcDfj5lhc2wFkjv0nAPECxf1N0D5QAGvgKsGaM
+         McIMuXzyR+O3Vj/ezSS7V6Q2K32c7sbAE1l24x5ySB6L0TB5eWpHO041mZhNJxfLj5/t
+         09C6bjGCBa40ZbW29d+FvjyllE4uUUjwCO+j4WVMPYIJTIIP0UgZ5xXKbPGFVuLJ34H3
+         /DMlGBEBVkDqoKTeUwCI20L1cVgxUcLGyylit++7i0Go6CwGuE/zdvbldhbPz0b342Cg
+         kJ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX1xV/ogoHxY9xW5HaQaVcCRPH8JhVkqm5FhdFxw/zN1NrH2aJgZNSRWrhI2NRMo+b6+q2/xqG+92X9dIP2NNSXyPe0g1XI
+X-Gm-Message-State: AOJu0Yxv0S5fv106JDp0gdqpRCZA5wGa3NFNX+Ub0q3TmSp3qjzRCNyW
+	SKhIEq+D7sMDbvJfaDUCvCaKCa5cl83AnU6X1m/0ygIw/uZuvkenWiz0yUcNs0w=
+X-Google-Smtp-Source: AGHT+IHDlz4isXhhoQy3pXxXewf4UkN2hExgZfZbPLaUh2ZrJEcYOgtowcRZAMbhNO/2LSamS/cA2g==
+X-Received: by 2002:adf:f58a:0:b0:33e:7ae7:29fa with SMTP id f10-20020adff58a000000b0033e7ae729famr4109722wro.1.1711357365035;
+        Mon, 25 Mar 2024 02:02:45 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:861d:8b72:a859:4ce9])
+        by smtp.gmail.com with ESMTPSA id bn22-20020a056000061600b00341d2604a35sm458458wrb.98.2024.03.25.02.02.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 02:02:44 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	stable@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v3] gpio: cdev: sanitize the label before requesting the interrupt
+Date: Mon, 25 Mar 2024 10:02:42 +0100
+Message-Id: <20240325090242.14281-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324233458.1352854-1-sashal@kernel.org> <20240324233458.1352854-111-sashal@kernel.org>
-In-Reply-To: <20240324233458.1352854-111-sashal@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 25 Mar 2024 09:43:31 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUK0YYELTN=JQDtGuYg03Em6c7kskpqUR0Y6NbNuR7hfQ@mail.gmail.com>
-Message-ID: <CAMuHMdUK0YYELTN=JQDtGuYg03Em6c7kskpqUR0Y6NbNuR7hfQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 110/317] arm64: dts: renesas: r8a779a0: Update to
- R-Car Gen4 compatible values
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-On Mon, Mar 25, 2024 at 12:36=E2=80=AFAM Sasha Levin <sashal@kernel.org> wr=
-ote:
-> From: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> [ Upstream commit a1721bbbdb5c6687d157f8b8714bba837f6028ac ]
->
-> Despite the name, R-Car V3U is the first member of the R-Car Gen4
-> family.  Hence update the compatible properties in various device nodes
-> to include family-specific compatible values for R-Car Gen4 instead of
-> R-Car Gen3:
->   - DMAC,
->   - (H)SCIF,
->   - I2C,
->   - IPMMU,
->   - WDT.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Link: https://lore.kernel.org/r/73cea9d5e1a6639422c67e4df4285042e31c9fd5.=
-1651497071.git.geert+renesas@glider.be
-> Stable-dep-of: 0c51912331f8 ("arm64: dts: renesas: r8a779a0: Correct avb[=
-01] reg sizes")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/arm64/boot/dts/renesas/r8a779a0.dtsi | 24 +++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi b/arch/arm64/boot/=
-dts/renesas/r8a779a0.dtsi
-> index 26899fb768a73..c7d1b79692c11 100644
-> --- a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> @@ -583,7 +583,7 @@ hscif3: serial@e66a0000 {
->
->                 avb0: ethernet@e6800000 {
->                         compatible =3D "renesas,etheravb-r8a779a0",
-> -                                    "renesas,etheravb-rcar-gen3";
-> +                                    "renesas,etheravb-rcar-gen4";
+When an interrupt is requested, a procfs directory is created under
+"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+the request_irq() variants.
 
-This change will break Ethernet, as the Renesas EtherAVB driver in
-v5.15.x does not handle "renesas,etheravb-rcar-gen4" yet.
+What follows is that the string must not contain the "/" character or
+the procfs mkdir operation will fail. We don't have such constraints for
+GPIO consumer labels which are used verbatim as interrupt labels for
+GPIO irqs. We must therefore sanitize the consumer string before
+requesting the interrupt.
 
-That can be fixed by also backporting commit 949f252a8594a860
-("net: ravb: Add R-Car Gen4 support") in v6.1.
+Let's replace all "/" with ":".
 
->                         reg =3D <0 0xe6800000 0 0x800>;
->                         interrupts =3D <GIC_SPI 256 IRQ_TYPE_LEVEL_HIGH>,
->                                      <GIC_SPI 257 IRQ_TYPE_LEVEL_HIGH>,
+Cc: stable@vger.kernel.org
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+v2 -> v3:
+- fix a memory leak in error path
 
-Gr{oetje,eeting}s,
+v1 -> v2:
+- use ':' as the delimiter instead of '-'
+- return -ENOMEM if creating the label fails
 
-                        Geert
+ drivers/gpio/gpiolib-cdev.c | 38 +++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index f384fa278764..fa9635610251 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1083,10 +1083,20 @@ static u32 gpio_v2_line_config_debounce_period(struct gpio_v2_line_config *lc,
+ 	return 0;
+ }
+ 
++static inline char *make_irq_label(const char *orig)
++{
++	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++}
++
++static inline void free_irq_label(const char *label)
++{
++	kfree(label);
++}
++
+ static void edge_detector_stop(struct line *line)
+ {
+ 	if (line->irq) {
+-		free_irq(line->irq, line);
++		free_irq_label(free_irq(line->irq, line));
+ 		line->irq = 0;
+ 	}
+ 
+@@ -1110,6 +1120,7 @@ static int edge_detector_setup(struct line *line,
+ 	unsigned long irqflags = 0;
+ 	u64 eflags;
+ 	int irq, ret;
++	char *label;
+ 
+ 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+ 	if (eflags && !kfifo_initialized(&line->req->events)) {
+@@ -1146,11 +1157,17 @@ static int edge_detector_setup(struct line *line,
+ 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+ 	irqflags |= IRQF_ONESHOT;
+ 
++	label = make_irq_label(line->req->label);
++	if (!label)
++		return -ENOMEM;
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+-				   irqflags, line->req->label, line);
+-	if (ret)
++				   irqflags, label, line);
++	if (ret) {
++		free_irq_label(label);
+ 		return ret;
++	}
+ 
+ 	line->irq = irq;
+ 	return 0;
+@@ -1973,7 +1990,7 @@ static void lineevent_free(struct lineevent_state *le)
+ 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
+ 						   &le->device_unregistered_nb);
+ 	if (le->irq)
+-		free_irq(le->irq, le);
++		free_irq_label(free_irq(le->irq, le));
+ 	if (le->desc)
+ 		gpiod_free(le->desc);
+ 	kfree(le->label);
+@@ -2114,6 +2131,7 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
+ 	int fd;
+ 	int ret;
+ 	int irq, irqflags = 0;
++	char *label;
+ 
+ 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+ 		return -EFAULT;
+@@ -2198,15 +2216,23 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
+ 	if (ret)
+ 		goto out_free_le;
+ 
++	label = make_irq_label(le->label);
++	if (!label) {
++		ret = -ENOMEM;
++		goto out_free_le;
++	}
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq,
+ 				   lineevent_irq_handler,
+ 				   lineevent_irq_thread,
+ 				   irqflags,
+-				   le->label,
++				   label,
+ 				   le);
+-	if (ret)
++	if (ret) {
++		free_irq_label(label);
+ 		goto out_free_le;
++	}
+ 
+ 	le->irq = irq;
+ 
+-- 
+2.40.1
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
