@@ -1,149 +1,94 @@
-Return-Path: <stable+bounces-32142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2749788A108
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:10:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BD188A1EB
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB9E82C5892
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B03401C38642
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C5213D8A5;
-	Mon, 25 Mar 2024 09:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A42C13A24D;
+	Mon, 25 Mar 2024 10:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lWWcGkPE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb+Kb+V1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D2B13B5B3
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 06:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3778486AC6;
+	Mon, 25 Mar 2024 07:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711349741; cv=none; b=M5UZIBkyYH9uyxZ+Flofnp5ndOFNjs8gPwwlIsBGOIGxGqb1fIHHio6uKiKhehxiwOjrra8Hw0BMDpukxvEsnuc45Y75Bxsf3NPStV4vVjtLW5MnSj+I/V6XO12K6Af/jlLYCtnsKLoMis842JHhtcNh2cPjfCEC58HHTbvFY0w=
+	t=1711352093; cv=none; b=tVjcr1F3jWCKb+oDo6t1mhQ4CdSNzVADQcxUuoicda4w54XAqvCeLFg78FWh68LSWSEr1vhF2XhmIq708kl18qflcZWj0F4WxMKJ9lY98p6PFC8A4PVMHD5s6AIp9mN4K1sR/D0g9IPnXooIIlh9+n8Ex25iYWS2yRGPOq7jegs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711349741; c=relaxed/simple;
-	bh=P88yR3cDMPHKm38QMX7NZsF3Kx4AeNS8yVGMjzkOh0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wd/rDUWozJqoUA8doKyVx2UqKcbbXLNpWeiwv1rj9MULNDr2UOsX424WsCL94X5NXMCZmw5K8E4gaLAUjyPurtx7wOFZ+iHqxP8KfModrUpMsL9ScEXM4ru1/EBsWxW3Kx250ajbt/NaZRODQoA75BxA7kRs3NwE8vCAnC5veag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lWWcGkPE; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a55651a1fcso218486eaf.3
-        for <stable@vger.kernel.org>; Sun, 24 Mar 2024 23:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711349738; x=1711954538; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q9vIKugZVU1BuPJl4zZzAha23TIbhoPXcdCsWMyV92I=;
-        b=lWWcGkPESv84IHbvRujnYbqtm2Gn88VNIxnWETM91rr50SeawlO+i1gSApqv7rFJuh
-         McQZw5AfEUyEqq63ekZ44SRk70/RVnULljQGY4f+J/+RiDw5ZVLpYKWgxb3uaV7Rg492
-         LspOk4UGMTy6y/agQjcDwz5x1U3c2+O88dy6bQSuC/D8S7TfGUkKFyWyQ9f4saDR0Oiz
-         JOgV47dqlfg1VGJs9UZKIEpsLAdaRVBDiihxCODQN3LZ4jIBFQOkuXdzVOH+yUG37/ds
-         jqzw6ed4rDynzR+Y/+3HW42EzkZEXgkHAWAHJH0HjgQ5ECFpHuUXbQYesA6To9UpFlx+
-         wFrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711349738; x=1711954538;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q9vIKugZVU1BuPJl4zZzAha23TIbhoPXcdCsWMyV92I=;
-        b=DGChYkOk2hg5zL7xcDTQxOv+agoaCPgj2EJAjhtQToy5hx2ikuAilY2aD/ykpgiHnw
-         PJ3zWbMffolVPNaOyKLfCNlX1dJe/s2zcqsLfCdXOO6p1NFt9G65R0mPd4onMtQOKle9
-         3SQNF5CZJI/24tKzbZycWSg04rt9srkW5RpeAm/L8Wo+zcKkQvjgYdmqYYV5Hjn/hcje
-         cMDsHTvS8m8r3ovDu0gmLqayRXeXIz2SQe1ZXPZHLfNIP4k6/nj2XZ+NgnqspOrQiFdU
-         LeSIcqP9BD8F0MSl4Hte39hDirWLctFQ+OQQTLP+qcP2fh8AIuzYX8AR+iBUUJEzqnod
-         e8cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXiraL9s6hwauuiirkM4SPN5+I2RIsWs8A96f8o2JrjOytV8E+vgH3jyVq3KXdOu+3HYOMFN/5GmKsqoUpXGvE//JclphQ9
-X-Gm-Message-State: AOJu0YweB+KYYPFuX4jrnSQhSH0kq6a5Riu/JIahnbjNjrdcvUDq+b6t
-	FhdWhmIvH9Dx8E4fRT0ZJYTEmts+QwOpIWEhSM0FUVab5eDUGP9qamzFMtHUOPA=
-X-Google-Smtp-Source: AGHT+IEP6gz32x4ekxOJgan0cH9dB/abpFU9xZmOwdhNRdctveKr/d4RFQjjhnocrCR+CBIfwZqlZQ==
-X-Received: by 2002:a05:6820:2714:b0:5a4:942a:2a9b with SMTP id db20-20020a056820271400b005a4942a2a9bmr6548963oob.8.1711349738629;
-        Sun, 24 Mar 2024 23:55:38 -0700 (PDT)
-Received: from [192.168.17.16] ([148.222.132.226])
-        by smtp.gmail.com with ESMTPSA id bi8-20020a05682008c800b005a53e6c7209sm712285oob.28.2024.03.24.23.55.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Mar 2024 23:55:38 -0700 (PDT)
-Message-ID: <cd76c1d0-9622-4a05-9e98-51824bec25bc@linaro.org>
-Date: Mon, 25 Mar 2024 00:55:35 -0600
+	s=arc-20240116; t=1711352093; c=relaxed/simple;
+	bh=YLL8wyThsoNIzlB2gYOJ685aw65IkgO7LR8Ze3FY1ZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6xYVJvdKCOkwR6ijPDkVPI7jhVZ+NndFbbj6CQJLu+hHGefqsvuDWaZypio5NRgwqiWk1NoicsLxVobltbKE0W5oZ8W+j31xu38CqFmjHwowYEVbmXy8aQfCxFdVB9mxr/57NNOTS3QFP7asWYEcc1ZCbDXUi61tIuM4RD1WAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb+Kb+V1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C461AC433C7;
+	Mon, 25 Mar 2024 07:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711352092;
+	bh=YLL8wyThsoNIzlB2gYOJ685aw65IkgO7LR8Ze3FY1ZY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qb+Kb+V1uZs+nDsPawvQlcbPyZELFxSaAxxlVXTdQKgth8JBH+lHdF06KdKXXv/Sh
+	 jXBe6lGhyJkYdCNmqbZCKSQzktnG8gC+qH33JWLAltPI54IccD0K0bCANY9ZvKZEkt
+	 zrU/61rJvSV7pJu6Q3iKYejwk2CpWMbEQMaQqS5McxwByx3ImPnbscYchVlhhPfMVh
+	 ZvimcuQBcT1wP049e4wXnuO10KgiraJW26UccQKz3Ei90tloWREQnGIozaVYobnClB
+	 jm69wsq2/XuMS9sqbpazPm8HNSbC3bHJNhsWWvVP26asSKybOmtKQ3klxUQ+twyffT
+	 TZmch5PyUnCgA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1roerD-000000001iI-0JtJ;
+	Mon, 25 Mar 2024 08:34:59 +0100
+Date: Mon, 25 Mar 2024 08:34:59 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Konrad Dybcio <konrad.dybcio@somainline.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: Re: [PATCH 6.1 130/451] arm64: dts: qcom: sc8280xp: update UFS PHY
+ nodes
+Message-ID: <ZgEpI31-OJkNchPF@hovoldconsulting.com>
+References: <20240324231207.1351418-1-sashal@kernel.org>
+ <20240324231207.1351418-131-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, tzimmermann@suse.de
-References: <20240313164640.616049-1-sashal@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20240313164640.616049-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240324231207.1351418-131-sashal@kernel.org>
 
-Hello!
-
-On 13/03/24 10:45 a. m., Sasha Levin wrote:
-> This is the start of the stable review cycle for the 5.10.213 release.
-> There are 73 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sun, Mar 24, 2024 at 07:06:46PM -0400, Sasha Levin wrote:
+> From: Johan Hovold <johan+linaro@kernel.org>
 > 
-> Responses should be made by Fri Mar 15 04:46:39 PM UTC 2024.
-> Anything received after that time might be too late.
+> [ Upstream commit 33c4e6588e4f018abc43381ee21fe2bed37e34a5 ]
 > 
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.10.y&id2=v5.10.212
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> Update the UFS PHY nodes to match the new binding.
 > 
-> Thanks,
-> Sasha
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> Reviewed-by: Brian Masney <bmasney@redhat.com>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+> Link: https://lore.kernel.org/r/20221104092045.17410-3-johan+linaro@kernel.org
+> Stable-dep-of: 1d4ef9644e21 ("arm64: dts: qcom: sc8280xp: Fix UFS PHY clocks")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-We're seeing regressions while building PowerPC with GCC 8 and 12 with ppc6xx_defconfig:
+As I already pointed out once when you added the patch, this change on
+its own breaks the driver and must not be backported. Neither should the
+Stable-dep-off (similar for the other Qualcomm SoCs).
 
------8<-----
-   /builds/linux/drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_BACKLIGHT_LEVELS' undeclared here (not in a function)
-      22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
-         |                    ^~~~~~~~~~~~~~~~~~~
-   In file included from /builds/linux/include/linux/kernel.h:15,
-                    from /builds/linux/include/asm-generic/bug.h:20,
-                    from /builds/linux/arch/powerpc/include/asm/bug.h:109,
-                    from /builds/linux/include/linux/bug.h:5,
-                    from /builds/linux/include/linux/thread_info.h:12,
-                    from /builds/linux/arch/powerpc/include/asm/ptrace.h:264,
-                    from /builds/linux/drivers/macintosh/via-pmu-backlight.c:11:
------>8-----
+You acked that mail, but looks like they were not dropped from the 6.1
+queue.
 
-Bisection points to:
-
-   commit ee550f669e91c4cb0c884f38aa915497bc201585
-   Author: Thomas Zimmermann <tzimmermann@suse.de>
-   Date:   Wed Mar 6 13:28:20 2024 +0100
-       arch/powerpc: Remove <linux/fb.h> from backlight code
-
-
-Reverting that commit made the build pass again.
-
-Reproducer:
-
-   tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12 --kconfig ppc6xx_defconfig
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
-
+Johan
 
