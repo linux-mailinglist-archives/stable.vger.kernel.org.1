@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-32143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2984B88A159
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:16:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BDB88A116
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CFB2C3C19
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:16:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EAB5BA553E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64228181CEA;
-	Mon, 25 Mar 2024 09:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D456111A2;
+	Mon, 25 Mar 2024 07:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZpH2ehA0"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="E2qN+W8S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297A23D4761;
-	Mon, 25 Mar 2024 03:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895FA18059;
+	Mon, 25 Mar 2024 03:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711338051; cv=none; b=ZAcyu6GktH6vcvqBHBP8aIp01Q5SbNKp2JUnlQZkg2o4xyvW2i/qUdFup4ijqc2Hv6OihAdVGM9YFaUPbuWztpmDWl5NAvw/igOEd4WSS9xc/WSb7jSl6OdlO3wG0ur+VOIyNgdOgapJtK7fZV0iVN8XbB0vxfOguVbwCfD1/eI=
+	t=1711339034; cv=none; b=Unan8oeLmluS1AeLciIyPD6v5zs9OIsDcQYPjX7PEJrg3IYltpb/SR5jm1cFNR4iYnPY1U39bAwVabpybk5kknvs0USu5YF/hHtRwq1EH1LzlCYS2grnH8HzcjmTZeFZ7Rumlc3+WiX4f+Xh5yrns4K6G8ztjAjZINJ3pPDOoiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711338051; c=relaxed/simple;
-	bh=vDZw/Zf+0jGN4n5carmwkrPgH547FTCtQ0xr6X65jhs=;
+	s=arc-20240116; t=1711339034; c=relaxed/simple;
+	bh=l/1f1MNGF9BfhwGztXj3ec5Igc6dItWl5AjiV9qkAQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GaNmmo8ym10PGjhieXw8f7Lp6OV0ELRDkLJKBUllxsSA/yEpM/RUiONJzxumKKmzOSGM6EX+ZLNTlmwhXjZrGpwBIuOpeG8PF21+y6O5Rpy2Yh4jRu9d2jA7eTPHjmqMPbQEz7lHRaDZG1oKO4OOBepVOStPHz93WDv7wumkWas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZpH2ehA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9665BC433C7;
-	Mon, 25 Mar 2024 03:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711338049;
-	bh=vDZw/Zf+0jGN4n5carmwkrPgH547FTCtQ0xr6X65jhs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZpH2ehA0f9PsqlY0yhNuCh8cNP8dpBpRR8OH4AnhpRvw6l2fkoepTuQnVR4lV1R+Z
-	 a5+FhF7V4CIcomtc+6+Vl8RERHl2XN/JonF+8mi8Kv7CRBuld9UKyLIAMFA9hwwCyU
-	 BQnvV/Eiot1FGQ4zJMo5IdVr8J+xqXgk7ux+D8bRxyy0eEEfQp0aedq53YXoqVPrp9
-	 l5e8ruNKKqGdH0HK+oliGa1uFeScKlSZ78PwxsUSZSf5Cg2NV4ibV4cNAum+YHAXju
-	 D83eNUCH6QF3yh1ypp08zZ+FiVYw3+KbyWoqQ1rOVMTw85ACRJ/LkIXyn3K+7bV7kR
-	 gBLXLHG0LCw2w==
-Date: Sun, 24 Mar 2024 20:40:48 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: Re: [PATCH 5.15 032/317] f2fs: implement iomap operations
-Message-ID: <20240325034048.GB37260@sol.localdomain>
-References: <20240324233458.1352854-1-sashal@kernel.org>
- <20240324233458.1352854-33-sashal@kernel.org>
- <20240325033717.GA37260@sol.localdomain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=isEMXOgpuE7UXZFaIFrxRabR6dtwrtKLrUGmpCyj3mbg7EaNOrYBdxZfIVS8mCmfeolwI4/VmiXyKxqLhhahO6puubJPYnVzBeA9FwMaSZ6US+NGAuRxt94XvkI98uIM1rp+9HVlKwEn1diwp2G8NtY1gOizsEHPDtqUwbjoUzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=E2qN+W8S; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IU3Dlzl1rVEiTSxVgVMPzC88N9hT6GmfL1S9I/2JgO0=; b=E2qN+W8S3ZU5YGOKUUO9cBO5zJ
+	B4vbyccJGdv9eLdysd3ijpij1NV9BRohz3uOmTf4NlnOEmU9plOLo3xO0baioyQzSVdsbO4iKAN1J
+	3ctvmi7R3l4FWCQXAUEao1GPS8qQVI2oQOdPAuQNr6hXnl6I6vmm2j+3NoCxKKsDqY4qOWeiCgteg
+	8gZJivN4pdxgLg2bOOZeUKG3WvLwqaEN6B80ItvTZkmoNGUDCORSFQ1vrAakpYtWx11ik/dTS6kqw
+	sgoio6lafIToR7obrEZm5aMJU2MZ+TQZXFKI9Gm8Bv3pifGAjRp1U8Ab4CuAHnnl72Gs0h/IVT5DO
+	wg4LmchQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1robSM-0000000FbhS-0cGD;
+	Mon, 25 Mar 2024 03:57:06 +0000
+Date: Mon, 25 Mar 2024 03:57:06 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Liu Shixin <liushixin2@huawei.com>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH stable-5.10] mm/memory-failure: fix an incorrect use of
+ tail pages
+Message-ID: <ZgD2EvkzS1Uz5wy6@casper.infradead.org>
+References: <20240307124841.2838010-1-liushixin2@huawei.com>
+ <026db58d-feea-8191-616a-3e6dca592786@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,32 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325033717.GA37260@sol.localdomain>
+In-Reply-To: <026db58d-feea-8191-616a-3e6dca592786@huawei.com>
 
-On Sun, Mar 24, 2024 at 08:37:19PM -0700, Eric Biggers wrote:
-> On Sun, Mar 24, 2024 at 07:30:12PM -0400, Sasha Levin wrote:
-> > From: Eric Biggers <ebiggers@google.com>
-> > 
-> > [ Upstream commit 1517c1a7a4456f080fabc4ac9853930e4b880d14 ]
-> > 
-> > Implement 'struct iomap_ops' for f2fs, in preparation for making f2fs
-> > use iomap for direct I/O.
-> > 
-> > Note that this may be used for other things besides direct I/O in the
-> > future; however, for now I've only tested it for direct I/O.
-> > 
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> > Stable-dep-of: ec16b147a55b ("fs: Fix rw_hint validation")
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Mon, Mar 25, 2024 at 11:36:49AM +0800, Liu Shixin wrote:
+> Hi,
 > 
-> Nacked-by: Eric Biggers <ebiggers@google.com>
+> After backport commit c79c5a0a00a9 ("mm/memory-failure: check the mapcount of the precise page"),
 > 
-> No reason to backport this, and the f2fs mailing list wasn't even Cc'ed...
+> I got an error message as written on the patch. The problem can be fixed by the patch or just revert.
 > 
-> - Eric
+> Now I prefer to revert because I think it is related to folio and no impact in stable, or maybe I'm wrong.
 
-I see a lot of other f2fs patches in the queue too, have these been tested?
+I checked out what is going wrong here, and Liu Shixin is correct.
 
-- Eric
+Commit c79c5a0a00a9 was incorrectly backported to v5.10 and
+commit 70168fdc743b changees the page passed to try_to_unmap().
+It now passes the tail page, and should always have passed hpage.
+Please apply the patch below to v5.10 (and any other trees that
+c79c5a0a00a9 got backported to).
+
+> 
+> Thanks,
+> 
+> 
+> On 2024/3/7 20:48, Liu Shixin wrote:
+> > When backport commit c79c5a0a00a9 to 5.10-stable, there is a mistake change.
+> > The head page instead of tail page should be passed to try_to_unmap(),
+> > otherwise unmap will failed as follows.
+> >
+> >  Memory failure: 0x121c10: failed to unmap page (mapcount=1)
+> >  Memory failure: 0x121c10: recovery action for unmapping failed page: Ignored
+> >
+> > Fixes: 70168fdc743b ("mm/memory-failure: check the mapcount of the precise page")
+> > Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> > ---
+> >  mm/memory-failure.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > index f320ff02cc19..dba2936292cf 100644
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> > @@ -1075,7 +1075,7 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
+> >  				unmap_success = false;
+> >  			}
+> >  		} else {
+> > -			unmap_success = try_to_unmap(p, ttu);
+> > +			unmap_success = try_to_unmap(hpage, ttu);
+> >  		}
+> >  	}
+> >  	if (!unmap_success)
+> 
+> 
 
