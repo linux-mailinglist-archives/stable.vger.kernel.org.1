@@ -1,229 +1,142 @@
-Return-Path: <stable+bounces-32193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B3088A9E3
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:46:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A01388A79C
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF0FBCC55E4
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B5E1F66A84
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134C513CAB9;
-	Mon, 25 Mar 2024 12:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5534641C64;
+	Mon, 25 Mar 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Pwf6YTS4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ktSRhk1D"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776D913A245;
-	Mon, 25 Mar 2024 12:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F34512E71
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 13:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711370080; cv=none; b=KZ3j8LgL1y1Uej4OvtcOPJbE1SXBAlGFkl+Nl9833RbytFImYS8DfovcLXfoxkHdvURyI3zht0ck5NeDXuWukJd4rZcnAWUJOdI5zfKT+nWrefWnOJrIOup+Z9nWdJtmSjbjF+VGi9GNKQEMM0wuhgj1NzhjfBkMvbLQJ5sPQNI=
+	t=1711372726; cv=none; b=egkYnW1bqDwsTOWVRb8JoulUuyQV0XDwgMD5DWzk3RnnYeUd+F859yY6AqpUxF08sEpTHOR3L6zpxjgCSMGvgzG6JypYDoGmseMQLDe7jDCaFpLxVlJRVwR+sW3A0stPcBRITkE95mexQ5vAf+7/MgXPylxDWGNGz44mrFdkdYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711370080; c=relaxed/simple;
-	bh=/fVBMV2UWnw1wyfMQdYkFy0hz1HTu93VW89tfybxaps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ry1q60ch45FawWVQ3/32nN2v6ahf2YdsdjcXflorG/acwRW7bo//PR7+e73DoYQt9kbd7Hud32gF14qbWur1BQYM6WDkpka/Qe3m7UnH69M8KnpNXJrJrumL0+ziQykoxDV6pOUl7aN74IlUq3VhLKrfJslDKaZLYIgNKLWEGjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Pwf6YTS4; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1711370075; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Ft3qtYaEtZMEshTVhjrwWpD5LD/8PLTqQczoDNnyhTg=;
-	b=Pwf6YTS4qqvm5smUiI3ABGoJvIn93uSPje3Ye7wYK2uXtWc4fLNmypHel0oOEAiZJbOYFeJz1Yn9W3x6pHKjA0ITHr3yWM/S9FyKfz6agrx7OfM8bWwsg6svUpgMd9LZL73XSVT6bMk6fpV5ZTD8K4doyyjh1r+epruNY+S3cMY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=hengqi@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W3HQz9A_1711370072;
-Received: from 30.221.148.153(mailfrom:hengqi@linux.alibaba.com fp:SMTPD_---0W3HQz9A_1711370072)
-          by smtp.aliyun-inc.com;
-          Mon, 25 Mar 2024 20:34:33 +0800
-Message-ID: <3ea3a097-e119-4615-a262-62c5f878b6fe@linux.alibaba.com>
-Date: Mon, 25 Mar 2024 20:34:32 +0800
+	s=arc-20240116; t=1711372726; c=relaxed/simple;
+	bh=jUHFT7GHBABnNWhUUsb9TaH8zDV3pnOGgOcdjdlYdbA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cR0K+zXA4I+oYVdq+Mw7z+iIZPCdvfVD0Gc9X7+coWtxOVhvT++3KxcBIlFY5UlP6nhNSbT+sjUHR4nJ4YRXguSsQvxHacdYu/kdizqjcza29v3LHbQIQlXeX89I+KBM0AxWSGNZHmX9F2IIuzwoSqcS2mVaiRmsIp9fZpZ4aMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ktSRhk1D; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dc23bf7e5aaso4221643276.0
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 06:18:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711372721; x=1711977521; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ceL10kuUzc1VTmaQNsfHwRb5WEw70QYvCvwFrHJHCrg=;
+        b=ktSRhk1DyPESD79xLJ+UcPqL6I7+rnbBOSDUkhSa+NMBab4kt1sALOp+3BD+MB1YZJ
+         yUbEudMW/Thf0F4e44sKdHj6aubuDJhK4LQKrTx4SMERFg1mHzm1UD3cwuejvn9pWmv0
+         t220Y07NLgyYTRKS/NCe4iX9UQdry/SNhdpOLXe3f/hJemO9MM5ceOecBlUz333g+x1J
+         qb+Scu+SSOech5A5AFGE70zjL59hTCnLBl2Ca9LSpqTsha49ugm7s7ljZgbN23zDBkPO
+         hu00o/POG1PjJ3quMT2TK+BUpTsn1LXasKs8wEfhuI6R+eAq7cKfN//Ljl7j2zwbkUDx
+         m9AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711372721; x=1711977521;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ceL10kuUzc1VTmaQNsfHwRb5WEw70QYvCvwFrHJHCrg=;
+        b=CY9APKDzJ8uAMywWYLDNecm77+FN6WzIqeCoRHt0sdvv3A7ELA3pWYao6RDuw6wSEm
+         BJwMGtHArPxcyMo5HhDpF77zbvvTD+6yBV+DRmxFroMO/wE038zUrt92OIL00Bmzo+B1
+         AYWTiOf6XuQeHse9wH54jyeC03A378u/VIpOZTDwIL524wJFxryjep0rohNq395wSrMP
+         Sds1sU4iebq5So/yt2lE+lNps4wCsTZdcKNUxV34xY+IBoaz63Jg6UA2aENJOr4HixWo
+         ROnt8+/9VEsCfdOJSm9gLNTtDKLQ+bD77WmGoLcS5Xb/q/412MFKNdxgxj1Eo4SwW1Z/
+         lzpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMkq2MOoZzrwoWSn1vzoie7r/MAhabT9D1Z/LYmrtfWN+Z+clYkCXumvBRAqYc7pMWWmefnPO89gxdTL7Z170peZqnLRJS
+X-Gm-Message-State: AOJu0Yw5E3ISFk365POKuNu1Yr5v6qnbRVgrmEwdil/Ig33s+DjMM6RZ
+	GUz8/QBUfe0vEFI6S2NbLLqS+srAnvZZNVDarFB//hlESK7/lnpgAPcVhYhFwXFeFsWYBKer0fE
+	vncOSChtiUkYdKNr8C0/ZdV4CcHcPTNNU1P1DyQ==
+X-Google-Smtp-Source: AGHT+IHBAtsETDpFdGmDQMqeFq/C1HWpnkyJwmkgZqhewbdaKt4PCmaqUyLetMdO7RYqpCQvGSwJSK7+UJmmFu9aNpM=
+X-Received: by 2002:a25:aea0:0:b0:dda:c5ca:c21b with SMTP id
+ b32-20020a25aea0000000b00ddac5cac21bmr3873894ybj.37.1711372721646; Mon, 25
+ Mar 2024 06:18:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virtio_net: Do not send RSS key if it is not supported
-To: Breno Leitao <leitao@debian.org>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org,
- "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>
-References: <20240321165431.3517868-1-leitao@debian.org>
- <1711072822.882584-1-xuanzhuo@linux.alibaba.com> <Zf1bofzE4x0wGEm+@gmail.com>
- <1711346273.5079622-1-xuanzhuo@linux.alibaba.com>
- <ZgFfUHQhMdAWixqB@gmail.com>
- <1711366510.4360204-1-xuanzhuo@linux.alibaba.com>
-From: Heng Qi <hengqi@linux.alibaba.com>
-In-Reply-To: <1711366510.4360204-1-xuanzhuo@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
+In-Reply-To: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 25 Mar 2024 14:18:05 +0100
+Message-ID: <CAPDyKFpkz=LeVR_8z0-jh9QGwdXp1GUZ+VFPdDwKChBNFHyEGg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mmc core block.c: initialize mmc_blk_ioc_data
+To: mikko.rapeli@linaro.org
+Cc: linux-mmc@vger.kernel.org, Avri Altman <avri.altman@wdc.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, stable@vger.kernel.org, 
+	Francesco Dolcini <francesco@dolcini.it>
+Content-Type: text/plain; charset="UTF-8"
 
++ Francesco Dolcini
 
-
-在 2024/3/25 下午7:35, Xuan Zhuo 写道:
-> On Mon, 25 Mar 2024 04:26:08 -0700, Breno Leitao <leitao@debian.org> wrote:
->> Hello Xuan,
->>
->> On Mon, Mar 25, 2024 at 01:57:53PM +0800, Xuan Zhuo wrote:
->>> On Fri, 22 Mar 2024 03:21:21 -0700, Breno Leitao <leitao@debian.org> wrote:
->>>> Hello Xuan,
->>>>
->>>> On Fri, Mar 22, 2024 at 10:00:22AM +0800, Xuan Zhuo wrote:
->>>>> On Thu, 21 Mar 2024 09:54:30 -0700, Breno Leitao <leitao@debian.org> wrote:
->>>>>> 4) Since the command above does not have a key, then the last
->>>>>>     scatter-gatter entry will be zeroed, since rss_key_size == 0.
->>>>>>      sg_buf_size = vi->rss_key_size;
->>>>>
->>>>>
->>>>> 	if (vi->has_rss || vi->has_rss_hash_report) {
->>>>> 		vi->rss_indir_table_size =
->>>>> 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
->>>>> 				rss_max_indirection_table_length));
->>>>> 		vi->rss_key_size =
->>>>> 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
->>>>>
->>>>> 		vi->rss_hash_types_supported =
->>>>> 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
->>>>> 		vi->rss_hash_types_supported &=
->>>>> 				~(VIRTIO_NET_RSS_HASH_TYPE_IP_EX |
->>>>> 				  VIRTIO_NET_RSS_HASH_TYPE_TCP_EX |
->>>>> 				  VIRTIO_NET_RSS_HASH_TYPE_UDP_EX);
->>>>>
->>>>> 		dev->hw_features |= NETIF_F_RXHASH;
->>>>> 	}
->>>>>
->>>>>
->>>>> vi->rss_key_size is initiated here, I wonder if there is something wrong?
->>>> Not really, the code above is never executed (in my machines). This is
->>>> because `vi->has_rss` and `vi->has_rss_hash_report` are both unset.
->>>>
->>>> Looking further, vdev does not have the VIRTIO_NET_F_RSS and
->>>> VIRTIO_NET_F_HASH_REPORT features.
->>>>
->>>> Also, when I run `ethtool -x`, I got:
->>>>
->>>> 	# ethtool  -x eth0
->>>> 	RX flow hash indirection table for eth0 with 1 RX ring(s):
->>>> 	Operation not supported
->>>> 	RSS hash key:
->>>> 	Operation not supported
->>>> 	RSS hash function:
->>>> 	    toeplitz: on
->>>> 	    xor: off
->>>> 	    crc32: off
->>>
->>> The spec saies:
->>> 	Note that if the device offers VIRTIO_NET_F_HASH_REPORT, even if it
->>> 	supports only one pair of virtqueues, it MUST support at least one of
->>> 	commands of VIRTIO_NET_CTRL_MQ class to configure reported hash
->>> 	parameters:
->>>
->>> 	If the device offers VIRTIO_NET_F_RSS, it MUST support
->>> 	VIRTIO_NET_CTRL_MQ_RSS_CONFIG command per 5.1.6.5.7.1.
->>>
->>> 	Otherwise the device MUST support VIRTIO_NET_CTRL_MQ_HASH_CONFIG command
->>> 	per 5.1.6.5.6.4.
->>>
->>>
->>> So if we have not anyone of `vi->has_rss` and `vi->has_rss_hash_report`,
->>> we should return from virtnet_set_rxfh directly.
->> Makes sense. Although it is not clear to me how vi->has_rss_hash_report
->> is related here, but, I am convinced that we shouldn't do any RSS
->> operation if the device doesn't have the RSS feature, i.e, vi->has_rss
->> is false.
->>
->> That said, I am thinking about something like this. How does it sound?
->>
->> 	diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
->> 	index 5a7700b103f8..8c1ad7361cf2 100644
->> 	--- a/drivers/net/virtio_net.c
->> 	+++ b/drivers/net/virtio_net.c
->> 	@@ -3780,6 +3780,9 @@ static int virtnet_set_rxfh(struct net_device *dev,
->> 		struct virtnet_info *vi = netdev_priv(dev);
->> 		int i;
->>
->> 	+	if (!vi->has_rss)
->> 	+		return -EOPNOTSUPP;
->> 	+
-> Should we check has_rss_hash_report?
-
-Hi, Breno.
-
-You can refer to the following modification. It is worth noting
-that \field{rss_max_indirection_table_length} should only be
-accessed if VIRTIO_NET_F_RSS is negotiated, which I have
-modified below:
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 727c874..fb4c438 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3836,10 +3836,16 @@ static int virtnet_set_rxfh(struct net_device *dev,
-         struct virtnet_info *vi = netdev_priv(dev);
-         int i;
-
-+       if (!vi->has_rss && !vi->has_rss_hash_report)
-+               return -EOPNOTSUPP;
-+
-         if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-             rxfh->hfunc != ETH_RSS_HASH_TOP)
-                 return -EOPNOTSUPP;
-
-+       if (rxfh->indir && !vi->has_rss)
-+               return -EINVAL;
-+
-         if (rxfh->indir) {
-                 for (i = 0; i < vi->rss_indir_table_size; ++i)
-                         vi->ctrl->rss.indirection_table[i] = 
-rxfh->indir[i];
-@@ -4757,13 +4763,14 @@ static int virtnet_probe(struct virtio_device *vdev)
-         if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
-                 vi->has_rss_hash_report = true;
-
--       if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-+       if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
-                 vi->has_rss = true;
--
--       if (vi->has_rss || vi->has_rss_hash_report) {
-                 vi->rss_indir_table_size =
-                         virtio_cread16(vdev, offsetof(struct 
-virtio_net_config,
-                                 rss_max_indirection_table_length));
-+       }
-+
-+       if (vi->has_rss || vi->has_rss_hash_report) {
-                 vi->rss_key_size =
-                         virtio_cread8(vdev, offsetof(struct 
-virtio_net_config, rss_max_key_size));
-
-
-Regards,
-Heng
-
+On Wed, 13 Mar 2024 at 14:57, <mikko.rapeli@linaro.org> wrote:
 >
-> @Heng Qi
+> From: Mikko Rapeli <mikko.rapeli@linaro.org>
 >
-> Could you help us?
+> Commit "mmc: core: Use mrq.sbc in close-ended ffu" adds flags uint to
+> struct mmc_blk_ioc_data but it does not get initialized for RPMB ioctls
+> which now fail.
 >
-> Thanks.
+> Fix this by always initializing the struct and flags to zero.
 >
+> Fixes access to RPMB storage.
 >
->> 		if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
->> 		    rxfh->hfunc != ETH_RSS_HASH_TOP)
->> 			return -EOPNOTSUPP;
->>
->> Thanks!
+> Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218587
+>
+> Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
+>
+> Cc: Avri Altman <avri.altman@wdc.com>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Adrian Hunter <adrian.hunter@intel.com>
+> Cc: linux-mmc@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
 
+Both patch1 and patch2 applied fixes, thanks!
+
+I took the liberty of updating the commit messages a bit and dropped
+some of the unessarry newlines.
+
+Kind regards
+Uffe
+
+
+
+> ---
+>  drivers/mmc/core/block.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index 32d49100dff5..0df627de9cee 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -413,7 +413,7 @@ static struct mmc_blk_ioc_data *mmc_blk_ioctl_copy_from_user(
+>         struct mmc_blk_ioc_data *idata;
+>         int err;
+>
+> -       idata = kmalloc(sizeof(*idata), GFP_KERNEL);
+> +       idata = kzalloc(sizeof(*idata), GFP_KERNEL);
+>         if (!idata) {
+>                 err = -ENOMEM;
+>                 goto out;
+> --
+> 2.34.1
+>
 
