@@ -1,127 +1,163 @@
-Return-Path: <stable+bounces-32228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F5488AE91
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:39:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7C888B07E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 449D32C517E
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:39:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99138C4673D
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E2D6EB4E;
-	Mon, 25 Mar 2024 18:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191D55381B;
+	Mon, 25 Mar 2024 18:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HzdHFg32"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dojTplWF";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="phLqAdzQ";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dojTplWF";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="phLqAdzQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA51B1C290
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 18:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54F03FE37;
+	Mon, 25 Mar 2024 18:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711390946; cv=none; b=qKnmypvTxaKGQuCCI0Y7XX/lC3zXhCJ1t4fnNrFKGsSxUz78z9PCl2yEKdb9TAWgF0aESiU3aRGmhzIyTb24N5KINWMCboCrXBDa+MMgtUaQSKFPA181OMoAh1fBeCI7ROCwLZ5Rwep8mOMXEBscnkUzdC+JDh6GtXv2BG8ut9M=
+	t=1711391605; cv=none; b=Eq407QjVt4VNumtJ5MUS/dRoJL4dNt8ue6zroN09tIGDYQhTNitccLIkj3zWWydNFb3bh9ZNm3w+GS/LveIxtEXcf1rcyaQBUbGjb+mvB99GPqJ+mlJLcYJbtCq+tTT+HezKNYsPgK961oHhszUzEfS0HQ3HEbcMamAJodJFeh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711390946; c=relaxed/simple;
-	bh=Sm1iIrE3ptMLoiPYWIx7AYIRSBbYXVJFhrXPHLow/OM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uEp9RSy5ikNsCBcB83VheIVuhERx1tg4xpzfnqOC7B9xpwBfQavTRtaBUUnEG5q3InFTL+KqHSatPaGV15TkwcnsKX0CyLKHwjOkJd+YOxqlYlDkLmKD9we07HxnxGZbyXthysIcBhQpYT9o+NFl6h+jYTK+IRgHtemsnDDIFos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HzdHFg32; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4d88360fd7bso1073309e0c.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 11:22:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711390943; x=1711995743; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=59RbJeT44SKnY/OmzZIX7K9bbID4Uwd0aO1o7f4SUzg=;
-        b=HzdHFg32mQbYqASTOrH9WpFyOK8KNSznF+f7rI+oiWzmXf+HsoIG+UohicioFnp1L2
-         EKMF37B+t0bGULEIKvna9jnzo1FhnzYSPLFQY6EDTpOAxZBERKGuqpqrgYXEp6NnoXc4
-         SaUXZa6QayHTpUOlMyQa2HLjwx7nl654pHD47KiSSqUvgohrkbyiqQ1PNe3q305iHWJy
-         5ILZlN7GwxKrSIFNJ7GV3FmzFU3r/7kXcESNYZkJAD6MZzXLbYdKtWaNeC89/sHF70dL
-         BydxaP8nhUoPfB1ca2BWh+yxDOn5MRapczaV8/xrB5DA/kk+z5iU7/c3+Inz6Jec8hpW
-         Nhmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711390943; x=1711995743;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=59RbJeT44SKnY/OmzZIX7K9bbID4Uwd0aO1o7f4SUzg=;
-        b=cxBEpayJySfzRl4bBVh1Yya3+qn/WaqaXwG2mrW1araBZuE6fzRhlmjH2qUgdNdy6u
-         u30tJddz/H09LduoAUj8WDYqHRC/gKdKhzSSKpbWu5bEAZ/tHxo8PcfFQOPVE8X5Ep5K
-         UiVeKYmilTZcsMbUNrd96YQMjpTjedSUcbZ+x7PbUK2J/CdRGG7337SH4BPBn4kiLtRU
-         JrJywTjkXbCH53XRMoBjIgeOccpcWdu34J/GxnXojI3+OC4JFHe4qrcaOJ9Hij7In4ka
-         f+6olS/MiV2dMkraHELJqCtGxpXS2VDWXuBLOWATfP3KkwJZ7nvaeDSyRJ8gC4uK7j4G
-         Xljg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2ibmsCgXD4BXyZucW8OMV1yV5nQZo8APyeLsB4L5uVwV9u3as92BJY9tRJwsw450NtEZeT1DVNvJwWT1Hg/2uzxQlNlLw
-X-Gm-Message-State: AOJu0YwxBBMry01HjHepfO/TVocizZkDJpz03JMC0lMUOeTPLU311lcu
-	iZ0uf4vJkOwyxAvlpIQlawVMauO1WBabSFdRgGWwO92zwippDT2iw6wEbOoSp4awpOLa1cBvZ9w
-	AQ4hnjekMzYqMcLNtsYZWhJSdmSvsvTg2Gbhs0w==
-X-Google-Smtp-Source: AGHT+IH6xelstakxvT9pP0w8xKZz5NTAFsAotZ60pQaUO1lWc0bDEKkNu8QUnhirWPjBMwiPYlRz7FH/BebwtVIe1X8=
-X-Received: by 2002:a05:6122:2194:b0:4d3:394b:d997 with SMTP id
- j20-20020a056122219400b004d3394bd997mr5085228vkd.4.1711390943180; Mon, 25 Mar
- 2024 11:22:23 -0700 (PDT)
+	s=arc-20240116; t=1711391605; c=relaxed/simple;
+	bh=Yxk4m8d7LalfSXRRRG03wdvuw+sqOeO1OkoHBbeW0AQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOjrse/AxBs0Bqcda2uk13HQpbOXuumhJeBIvH6vogDX42oFtCj/tk1QtNeJSVvdJucTN4RWVNCd1eBBYQ+8VO3QIslQbF88E8aca1f11XqF2UcgU/me8H+wxlGcq5c3C+TkiaCwtm4hw5e9ADvZp6l9ycxqenNOUzFsjbgLndg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dojTplWF; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=phLqAdzQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dojTplWF; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=phLqAdzQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C8AB224D7;
+	Mon, 25 Mar 2024 18:33:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1711391598;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Of8gQ3uWJx2XPDmOVf+BHc8HVH3ZTHXn91pmh2Ulgok=;
+	b=dojTplWFbBvoLH7kOKwYnCRFTRAxAR0cFLxtolz87OZcY/em4P3kRMLRISyRiRoS5vxnGb
+	93v2z7oFMpW0NToz9Lu0ZMaHE4VfDxIgNdsdwEqtVB07RebNp8jUPdwyx+iaVD2W2U4Y4y
+	mv5wCEAQ5EPNCUxMuGmIbziIcWD8jdA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1711391598;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Of8gQ3uWJx2XPDmOVf+BHc8HVH3ZTHXn91pmh2Ulgok=;
+	b=phLqAdzQwb/yMrwO8xUj5nhhD6NfgFzm3jLYruL6DMAlvew5EfHHWXmkmlYa908cI11vnX
+	W7WuSIV88/rGB6Bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1711391598;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Of8gQ3uWJx2XPDmOVf+BHc8HVH3ZTHXn91pmh2Ulgok=;
+	b=dojTplWFbBvoLH7kOKwYnCRFTRAxAR0cFLxtolz87OZcY/em4P3kRMLRISyRiRoS5vxnGb
+	93v2z7oFMpW0NToz9Lu0ZMaHE4VfDxIgNdsdwEqtVB07RebNp8jUPdwyx+iaVD2W2U4Y4y
+	mv5wCEAQ5EPNCUxMuGmIbziIcWD8jdA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1711391598;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Of8gQ3uWJx2XPDmOVf+BHc8HVH3ZTHXn91pmh2Ulgok=;
+	b=phLqAdzQwb/yMrwO8xUj5nhhD6NfgFzm3jLYruL6DMAlvew5EfHHWXmkmlYa908cI11vnX
+	W7WuSIV88/rGB6Bg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 19F2013A2E;
+	Mon, 25 Mar 2024 18:33:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id xmctBm7DAWa4XwAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Mon, 25 Mar 2024 18:33:18 +0000
+Date: Mon, 25 Mar 2024 19:25:56 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>, Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 5.15 005/317] btrfs: add and use helper to check if block
+ group is used
+Message-ID: <20240325182556.GN14596@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20240324233458.1352854-1-sashal@kernel.org>
+ <20240324233458.1352854-6-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325120003.1767691-1-sashal@kernel.org>
-In-Reply-To: <20240325120003.1767691-1-sashal@kernel.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 25 Mar 2024 23:52:12 +0530
-Message-ID: <CA+G9fYtJZAioPkbOVJSRY0k6sSKBLc8_ZeBxv3CNfw-gP7yGtw@mail.gmail.com>
-Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	florian.fainelli@broadcom.com, pavel@denx.de, 
-	Anders Roxell <anders.roxell@linaro.org>, Petr Mladek <pmladek@suse.com>, 
-	ohn Ogness <john.ogness@linutronix.de>, Francesco Dolcini <francesco@dolcini.it>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240324233458.1352854-6-sashal@kernel.org>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dojTplWF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=phLqAdzQ
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	 ARC_NA(0.00)[];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[8];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-1.59)[92.40%]
+X-Spam-Score: -2.80
+X-Rspamd-Queue-Id: 2C8AB224D7
+X-Spam-Flag: NO
 
-On Mon, 25 Mar 2024 at 17:30, Sasha Levin <sashal@kernel.org> wrote:
->
->
-> This is the start of the stable review cycle for the 6.7.11 release.
-> There are 707 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed Mar 27 12:00:02 PM UTC 2024.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.7.y&id2=v6.7.10
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
+On Sun, Mar 24, 2024 at 07:29:45PM -0400, Sasha Levin wrote:
+> From: Filipe Manana <fdmanana@suse.com>
+> 
+> [ Upstream commit 1693d5442c458ae8d5b0d58463b873cd879569ed ]
+> 
+> Add a helper function to determine if a block group is being used and make
+> use of it at btrfs_delete_unused_bgs(). This helper will also be used in
+> future code changes.
+> 
+> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Boris Burkov <boris@bur.io>
+> Signed-off-by: Filipe Manana <fdmanana@suse.com>
+> Reviewed-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-
-From the previous 6.7.11-rc1 and 6.8.2-rc1 report,
-the armv7 and i386 boot failed on v6.8 and v6.7 [1]
-
-Following two patches needed for the boot to pass.
-90ad525c2d9a ("printk: Use prb_first_seq() as base for 32bit seq macros")
-418ec1961c07 ("printk: Adjust mapping for 32bit seq macros")
-
-Please apply the above two patches on v6.8 and v6.7.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-[1]
-https://lore.kernel.org/stable/CA+G9fYtBKCPVmRETNpo3OdQbky-XiY6RDQ+Pc2b4Yj1yLe_e0g@mail.gmail.com/
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Please drop this patch from all stable branches unless it's a
+prerequisite for some other patch. This is clearly a cleanup.
 
