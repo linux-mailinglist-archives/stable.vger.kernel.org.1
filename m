@@ -1,105 +1,160 @@
-Return-Path: <stable+bounces-32201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4384388AA51
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D90688AA5C
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7468D299DB6
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C042A7039
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CDD137C2A;
-	Mon, 25 Mar 2024 15:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E513C678;
+	Mon, 25 Mar 2024 15:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pWvm9OrQ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gbTVfxZc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874B1136E3A
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 15:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEB213C82C
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 15:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711379897; cv=none; b=SOVriBYzk1GLdlJ5KvI4viD8zVbtQG1qhz6YAWyda59hmGPMcoFzEFOGmB+4ZC9z6RC4Aeq4LKJfquSlo1+poxxs9EuNGkPfgMYArhUafKoZ+s38fYbdA2h/NMvCkausVlwyrG7lEVy++EYFYkgcP8kdmoeQitZWf0UbBnXU+fY=
+	t=1711380062; cv=none; b=qZMJMZJVfbirHPamR8ZvBJpp2cjcgo1Hm4/qwJYNKptCctj2IZfwEN1WL/OVCyw10KJFtXoKYMU1UZtYZCurQIehKIm4z98xD+2rbx+k2HF7fmQ4dybGm/KBkcPc11eDDIWd8bupUNF6oYcBi7uVt32NeSb0Z3ZI9+01C61faPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711379897; c=relaxed/simple;
-	bh=TkIg/lvjEPz5lcPcLRg/J/Sr6mWV/AKKVZgeMpHf6WY=;
+	s=arc-20240116; t=1711380062; c=relaxed/simple;
+	bh=yuP0LootthFVjZqLZ7OhKsvkRtgx0FUVczcscmPg1So=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YZjtoXSqf/yiJ/9YAqSKoUabOG/3Wwq0CQSxytJeDU49v+CtnXJ+4j9bdB4EWMsPIjcpm4c08a+gdSIN+Eu7GSfT75VRlBtS5N6RmfeD59AweljbrLLBOIn2nyp2jhh/4Dk5u/6lXujthPGVMl+7K6Zjo0hplpGmdezhwiWEdq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pWvm9OrQ; arc=none smtp.client-ip=209.85.215.175
+	 To:Cc:Content-Type; b=dE7hdGOW3YDur7oDR3OfdSmHalKuE2XQ/sZGUVjoxdB/bGGBe6n3F+3pzFuv1mrMtCyHwWAIIDQ9ZVieYYZUqKBGYYF2/qOA3i9Ve68Q/26InylqaeGGLBDwo3dbFoFS6ecv7OhI8crnz7eBvq2A/x7bHBvc2lWHXpBGd8LJst0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gbTVfxZc; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5dbf7b74402so2450866a12.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 08:18:15 -0700 (PDT)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5d3912c9a83so2004643a12.3
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 08:21:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711379895; x=1711984695; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1711380060; x=1711984860; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HpBAbzji3EZqSEp3CbHVVIz9w0o8Ay39z1NWcQVt35M=;
-        b=pWvm9OrQCBv3sBn4xWH0vIGXjZLUhBk98tx9Pd+od+zIxS8lYSSdnGGQkQtsdYceNV
-         w+hPXK2iUh77vgVaeYJWDYS/rswnwixjlh7eecQd+bSYwKOBlj6B1449P+Wrztz0/rSC
-         0f7pFeaPZ8SmrS84VB3Ui+lF5icqeFSK79wILWTQCD2+hthUWRSUGotq6+rgYi9YYz/v
-         uskov0NBgb0UgZ+4rMFndM+lDJKKCKRsMeo3zBCHyswOXUPzmkn7H1b9LC4ynjsWo09S
-         hgIsrzeAQN5Nrigoz4ppMf+xCul0CkCRq3QwlSoI/ysqPT2FaRhmeyLdaMrU7e3t+ymd
-         m6RA==
+        bh=sHq8iFwza+iunIPn5PLdl3BksOKsh6oEq+D/J9zc1k4=;
+        b=gbTVfxZc/Cwk7ApLcp4uaKeQ7CWEC7taxwaDF94WOwUE071Ri/4ccri+4QwsNeUVOy
+         6sF88SFeMPp8mOcoLc/6ti7lNNjUWfFHeuYF5TWfyppd08SDX14DYSwG1mpiUtLf8SJF
+         Po+EbrRteHx9iCFE4exMvX1pu9/SHzpNekijeNo4eWfeVJf7QPR+DOIYUL8g8IsziXZd
+         uP+a7SUyOzLl4DSyYho/xXOaFh0TffR6e2SQCt5aUUJpTqOLUqdnezK7qgGtBATi90ZD
+         rZ/3hkKReQmdgs+VFuyxgNsZSUiRRS+/bZNRYt2x7KuVCew4vC7Y87yYEVud4AP4623H
+         reLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711379895; x=1711984695;
+        d=1e100.net; s=20230601; t=1711380060; x=1711984860;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HpBAbzji3EZqSEp3CbHVVIz9w0o8Ay39z1NWcQVt35M=;
-        b=NWQ03/l5Hzucg3XmkoMKunLYdlu4birrdvXW6qEGiw5yJ8/QcqHviLxZ3vqLz96UTb
-         Jj+1loCocCVX/55YOmplDdiCfs1nS+Dcxph8PLLkwpkY/0KjGAM+5b4PQmBEBeaXS0QR
-         tLTQxbt0/CE+kslNzufz/AeePOYtpdSTAejqLl/aIoMyFIxWcwxBQpeUdKR4BMqDXlSr
-         i5jTkq3F7Mh7F7coo/aKFK6PfxD2HOnNgBmiHs0AMUhrX8YZ1E33IdtYgMfVH9etZ1S0
-         9VEXGL9VOopeSDfLk7xvvW8ieF3T47MeqQQ6BMmhjkhSn1KZR0FJUJicDuo5fv2zYKER
-         MXmw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6JIgRtdPrsWEbxhupeMQhox1PqsMBZP0/Iyi7emMHDL/327pkCpaIQfVG09CNPyRBab4Ca0Si3Bep54a2n41XZv78bdBX
-X-Gm-Message-State: AOJu0Yyg8hiseixW0wxfatjT3IbNQGYlwZqaPPgSY/SyFcOpjf1shzyB
-	44roszcGRpdnq0MAmMT6wFWWkLRzBgWQhj4iFzVUuK8SXxX8qqwG4oq8N+iOfKI+5wTHh73GYk8
-	kM9+yPpuerm5S/m8vxDVMwjeZi2pmmw3TaZbPFg==
-X-Google-Smtp-Source: AGHT+IGWAxEkzcutnF2I8XHXBCPmjLrlOrn1iC4dX+mBPPeimz4g2ntb2COkxyTtkZYbEYLiFCeB/h6rAYC15aBHuOc=
-X-Received: by 2002:a17:90a:f3cb:b0:29a:8c78:9a7 with SMTP id
- ha11-20020a17090af3cb00b0029a8c7809a7mr23661pjb.40.1711379894874; Mon, 25 Mar
- 2024 08:18:14 -0700 (PDT)
+        bh=sHq8iFwza+iunIPn5PLdl3BksOKsh6oEq+D/J9zc1k4=;
+        b=UTszW6oKcWeu2641MXMohnp6ybX43OILHMjcF4TX1O+kztIXovFBrxdWkj2/g7Ae+C
+         hHXsAPMuTwqDQF32rvffjwdYcqtT62FGy+/Arm//C6cCu0/L5hqrAkqCv5/pF2ZzlvYL
+         ZX/yBRQD0MdY3w0MUzeLE533T9Ak/H98eGBTeEdivZNotcyzg4WD0GZntmuVMTIiMJIO
+         WOQoSv/QBDfb45gLVw57PBmzhegaIKKaSR4ug05THHYsgFvFBcXktOFw/uc/ae+JrRgX
+         +wICmJ2EaRNuNu61qeV8lRgF5OxxJbm8bs6NheDvr+NpeLei9ckCFwfGjk9xyVX8jJOH
+         Hhmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXKGGo7h8yC+6VYtD58rhJZ9RqTQ/kAoLG4x1eT2k+cwIPGzWLIoNv+SDyXSP0iHnTPu3lprIiFQSHJmrLGpG0GkW9qPWC+
+X-Gm-Message-State: AOJu0YwAXy0OE2v9AKZ/eLgHdhSBWfTQJBWIY5YWpLUozHzVYz9zUxeC
+	GZoCePyxboJNOVxKg5EdgEfSFgfD4NuKqezu9DZNDCLctUYDBesYCLoX3V35y6aE+fO2+Oosun6
+	F4LDvT5NH+BlQGSJnG/ejIRp+6Sa4/FGNB6iiDA==
+X-Google-Smtp-Source: AGHT+IHUqjE6K8PE/BfJg5LdFdqFJY793Odjj5Ln/S88wAfb3Da691z4eQcIZhdfiHjSynzDc2YkPCsBlD8T2UgSdio=
+X-Received: by 2002:a17:90a:7409:b0:299:73b3:cf15 with SMTP id
+ a9-20020a17090a740900b0029973b3cf15mr5120956pjg.12.1711380059991; Mon, 25 Mar
+ 2024 08:20:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325120018.1768449-1-sashal@kernel.org>
-In-Reply-To: <20240325120018.1768449-1-sashal@kernel.org>
+References: <20240313164640.616049-1-sashal@kernel.org> <cd76c1d0-9622-4a05-9e98-51824bec25bc@linaro.org>
+In-Reply-To: <cd76c1d0-9622-4a05-9e98-51824bec25bc@linaro.org>
 From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date: Mon, 25 Mar 2024 09:18:03 -0600
-Message-ID: <CAEUSe79J7w3=oRAkTks80HLR9CbbkzGXTnubOuzmBYpZBnnttQ@mail.gmail.com>
-Subject: Re: [PATCH 6.8 000/710] 6.8.2-rc2 review
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	florian.fainelli@broadcom.com, pavel@denx.de
+Date: Mon, 25 Mar 2024 09:20:48 -0600
+Message-ID: <CAEUSe78F1Ab0ZWE+ZcE5=1HgZ+GFiDJKL=DmKUWwcdWOr4yFHA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, tzimmermann@suse.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello!
+On Mon, 25 Mar 2024 at 00:55, Daniel D=C3=ADaz <daniel.diaz@linaro.org> wro=
+te:
+> Hello!
+>
+> On 13/03/24 10:45 a. m., Sasha Levin wrote:
+> > This is the start of the stable review cycle for the 5.10.213 release.
+> > There are 73 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri Mar 15 04:46:39 PM UTC 2024.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
+table-rc.git/patch/?id=3Dlinux-5.10.y&id2=3Dv5.10.212
+> > or in the git tree and branch at:
+> >          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta=
+ble-rc.git linux-5.10.y
+> > and the diffstat can be found below.
+> >
+> > Thanks,
+> > Sasha
+>
+> We're seeing regressions while building PowerPC with GCC 8 and 12 with pp=
+c6xx_defconfig:
+>
+> -----8<-----
+>    /builds/linux/drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_=
+BACKLIGHT_LEVELS' undeclared here (not in a function)
+>       22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
+>          |                    ^~~~~~~~~~~~~~~~~~~
+>    In file included from /builds/linux/include/linux/kernel.h:15,
+>                     from /builds/linux/include/asm-generic/bug.h:20,
+>                     from /builds/linux/arch/powerpc/include/asm/bug.h:109=
+,
+>                     from /builds/linux/include/linux/bug.h:5,
+>                     from /builds/linux/include/linux/thread_info.h:12,
+>                     from /builds/linux/arch/powerpc/include/asm/ptrace.h:=
+264,
+>                     from /builds/linux/drivers/macintosh/via-pmu-backligh=
+t.c:11:
+> ----->8-----
+>
+> Bisection points to:
+>
+>    commit ee550f669e91c4cb0c884f38aa915497bc201585
+>    Author: Thomas Zimmermann <tzimmermann@suse.de>
+>    Date:   Wed Mar 6 13:28:20 2024 +0100
+>        arch/powerpc: Remove <linux/fb.h> from backlight code
+>
+>
+> Reverting that commit made the build pass again.
+>
+> Reproducer:
+>
+>    tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12 --kc=
+onfig ppc6xx_defconfig
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+>
+> Greetings!
+>
+> Daniel D=C3=ADaz
+> daniel.diaz@linaro.org
 
-On Mon, 25 Mar 2024 at 06:00, Sasha Levin <sashal@kernel.org> wrote:
-> This is the start of the stable review cycle for the 6.8.2 release.
-> There are 710 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Apologies for replying to the wrong email here -- it should have been
+for 5.10.214-rc1. Naresh took care of relaying the information to the
+right place.
 
-A newer revision was pushed on to the linux-6.8.y branch a couple of
-hours later (f44e3394ca9c) with 707 patches. Is that on its way to
-become RC3 or is that Git SHA superseding the previous revision
-(eed20d88c6a6)?
-
-Greetings!
-
-Daniel D=C3=ADaz
-daniel.diaz@linaro.org
+--=20
+ddiaz
 
