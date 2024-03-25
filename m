@@ -1,165 +1,90 @@
-Return-Path: <stable+bounces-32247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C91788B02B
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:39:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B6C88B04A
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB303045E0
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:39:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68471C61F53
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFFD1BC58;
-	Mon, 25 Mar 2024 19:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9491C29F;
+	Mon, 25 Mar 2024 19:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+UlkKyz"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wr/mJECD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ECD1946C;
-	Mon, 25 Mar 2024 19:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F474E1A2;
+	Mon, 25 Mar 2024 19:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711395560; cv=none; b=Hkn1mT8Xx9tTFYxTdt7sZjdyaNy7EDmbOFp6MNvsEJ7II0SFOYGNNU51piuDkDhrLgPnq3c1ASnp2I6dN8HOpu4DYCp7XQHNwqy9dlsh9++O9zSuO3y92m06VAe6nAoK+V8T/j66TWsqIA5AzWylCd9DNUoeCcUUThJOKkjXS+Y=
+	t=1711395680; cv=none; b=RbFsdIoWzyW88gPe8qn0nW5DXYRF8DNxfozKASlocRILOjeEVZDEsqBmQMGjiNUDqyvSwYmBPm6hZI6vgBySIbtnvrvhYg4IrOYpLEuZUHyZdfPrgvUwLgToAaIamDxurA3D1cFba9fESL2wVrZGTy1OgMOR6I8qvgddqnTL6t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711395560; c=relaxed/simple;
-	bh=CsVUf50sObcUku/mroVotClxV0W8lcZ0puo+cGBDLrk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VQCafsbMXivNaDfNTRScS/stvuEphcTFPiMi12H22p1/+drodkwr4nF3hVh99m25MhlGlDIacxZgOiEAv0TT8BQhnClr2VLA7cOjGkY//BfTuQT5nsEjShNZcrizXRX7a5M1aP4v2ELtHKuV07ht1KNGh4IslZa13hndBY3BWqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+UlkKyz; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d4886a1cb4so62765271fa.0;
-        Mon, 25 Mar 2024 12:39:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711395556; x=1712000356; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCiFMH0263F/w1Boz/4ACSdzIpxCPhV2O6OirjCh0B0=;
-        b=j+UlkKyzdKkiScGAeDI+RgtrBEyKcHPSuRhxUFAEEjRimySNRdiJG8GYK8CyRPL3UC
-         mcj8PEFeEqII3+K1uTLqqsur/s6ouCNqiODCofqJCGEV+sUGEVrWCBeTcXLGayw6Dqmm
-         VmJf/NUvlv0ZH0WBIPEkPvMtElmTlbkX4xuX/hI1jMp8+YGNQHC8na61VDv2CEX+qVQX
-         15rpB91WUwWWp2BigLic0WqoU+hEa48bsuL4qGHn9jDrbvi4ZutqjVQnrcXW61G3kT3k
-         5qrM4QUbJIFLAcf/tIj+MyNPrqkWHXLe1Ys1RkIF8uDQ9q/5psz0r52MFpUS8ErDTd6B
-         vBCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711395556; x=1712000356;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NCiFMH0263F/w1Boz/4ACSdzIpxCPhV2O6OirjCh0B0=;
-        b=ou+wZa9ILVEHpNW26MYQd3xftQ6HVTviGGWU4j8X6AHL1F36H45IPIx+TjDDr0iCwn
-         tnNx+XpO/T/Y/zw+94Dc/8kwro5sOKZuM0Usv8If4fls0H062UZ94UFDTVsaH0w7+Ufg
-         RZVido5I6OzP4ySSS7lppbQnO5sSaHQ0XjkwPFHrPx8oNFZDWO/BXz8mOwTz8FmDFZQL
-         KWAaO2EThOwddYID/ZudlL3OmAIScYGhAAOSsOy1o/KZwcqjr9Tjws696x1jo9Xiy+Rn
-         /Ap4GQ5aBHCZ0LtqDb7E1gPb5jfBHv4GPwccPU3yqCid8TD351f3xiP6FeIlUC5rRDDN
-         73pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNiDxMh3rCVbK6mp2H+TKHRoN3z3USH2wJxWLiE4UWNYCKHm8DOlF7Ig+mPl28b2NtwNSHEpHZ+7qmPCbTkfemMvfAQyFXGssWUjJZXB9gXh4k7f4VP4yF4mHR0lMXLL9ddo6g51IPrzVhG9PBNh4CZhfo02JnAW7ZogWRmGKN1+8VMsE4
-X-Gm-Message-State: AOJu0Ywjw1tbnHGJEkOReIBKUAfDqHTmE5SH3v5kSw/PwlsSaWFFYw5I
-	60w8ehNaQncD9pPbOBi+DAJU7Bfa+CCq0bsrvpspXzv4VCnRdtV/fpPru/1bPC/k2dSyQe9IH36
-	c1LaO2CP0ZFyl5e2g3E8FDvQIoCQ=
-X-Google-Smtp-Source: AGHT+IEO0HQYH0RAUefHQ88oKPd8VrLRPkmE6nkd2e0YQtTaamD6D0keaaFiiiGRD8g+GOmhBLFR4FTEiV/wSwncUdI=
-X-Received: by 2002:a2e:8e86:0:b0:2d4:8fd0:b5f2 with SMTP id
- z6-20020a2e8e86000000b002d48fd0b5f2mr5556267ljk.7.1711395556273; Mon, 25 Mar
- 2024 12:39:16 -0700 (PDT)
+	s=arc-20240116; t=1711395680; c=relaxed/simple;
+	bh=3xnZx4O3dbcAf+Y7O5EM0rkpFufFse3NgrQVMqIYK90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbnYjy5UQt4uiq/kPjv7hRrNSWa6eiWfarefHWWWmIMjJBPWR4Y3GHqbWkaBa9fxQZQi/AqWqwg938xKhNeGFuXjh0nUT7bXpWdJ6g8JBstdE5Ckf5JZagRqu1wLdMOkbeJVXHGd+VyIxu7VVa4+4ynzi38LcabnYRQW9bJ4uCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wr/mJECD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ib7GsXJL2hwjOEEuaNYmsfMXqAJ+kFKKW9Qz5HRmhc8=; b=Wr/mJECDMriqE1iWmGeyTFQbAo
+	rvKuQ545xY7dKNCtNQmC+5TBM/O8Rbg6xWUY7oypmsUuoQkcOUSohqcz9BIpC7sOPrBQEYOFKH/iU
+	uSWVsiY22Cjk0qNs9mZULIHVy7ox/XRNxYy86SRwBdb7bGMJ8+NzzkVZNZqalfhsF/TI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1roqBf-00BC1C-AC; Mon, 25 Mar 2024 20:40:51 +0100
+Date: Mon, 25 Mar 2024 20:40:51 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	William Wortel <wwortel@dorpstraat.com>, stable@vger.kernel.org
+Subject: Re: [net PATCH] net: phy: qcom: at803x: fix kernel panic with
+ at8031_probe
+Message-ID: <28af27cd-52a5-443c-86a9-60c0699bc0ef@lunn.ch>
+References: <20240325190621.2665-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240314084412.1127-1-johan+linaro@kernel.org>
- <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
- <ZfMStHjwtCT1SW3z@hovoldconsulting.com> <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
- <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com> <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
-In-Reply-To: <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 25 Mar 2024 15:39:03 -0400
-Message-ID: <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-To: Johan Hovold <johan@kernel.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Johan Hovold <johan+linaro@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325190621.2665-1-ansuelsmth@gmail.com>
 
-Hi Johan
+On Mon, Mar 25, 2024 at 08:06:19PM +0100, Christian Marangi wrote:
+> On reworking and splitting the at803x driver, in splitting function of
+> at803x PHYs it was added a NULL dereference bug where priv is referenced
+> before it's actually allocated and then is tried to write to for the
+> is_1000basex and is_fiber variables in the case of at8031, writing on
+> the wrong address.
+> 
+> Fix this by correctly setting priv local variable only after
+> at803x_probe is called and actually allocates priv in the phydev struct.
+> 
+> Reported-by: William Wortel <wwortel@dorpstraat.com>
+> Cc: <stable@vger.kernel.org>
+> Fixes: 25d2ba94005f ("net: phy: at803x: move specific at8031 probe mode check to dedicated probe")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-On Mon, Mar 25, 2024 at 1:24=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Mon, Mar 25, 2024 at 01:10:13PM -0400, Luiz Augusto von Dentz wrote:
-> > On Mon, Mar 25, 2024 at 9:57=E2=80=AFAM Linux regression tracking (Thor=
-sten
-> > Leemhuis) <regressions@leemhuis.info> wrote:
-> > > On 14.03.24 16:07, Johan Hovold wrote:
-> > > > On Thu, Mar 14, 2024 at 10:30:36AM -0400, Luiz Augusto von Dentz wr=
-ote:
-> > > >> On Thu, Mar 14, 2024 at 4:44=E2=80=AFAM Johan Hovold <johan+linaro=
-@kernel.org> wrote:
-> > > >
-> > > >>> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
-> > > >>>
-> > > >>> Qualcomm Bluetooth controllers like WCN6855 do not have persisten=
-t
-> > > >>> storage for the Bluetooth address and must therefore start as
-> > > >>> unconfigured to allow the user to set a valid address unless one =
-has
-> > > >>> been provided by the boot firmware in the devicetree.
-> > > >>>
-> > > >>> A recent change snuck into v6.8-rc7 and incorrectly started marki=
-ng the
-> > > >>> default (non-unique) address as valid. This specifically also bre=
-aks the
-> > > >>> Bluetooth setup for some user of the Lenovo ThinkPad X13s.
-> > > >>>
-> > > >>> Note that this is the second time Qualcomm breaks the driver this=
- way
-> > > >>> and that this was fixed last year by commit 6945795bc81a ("Blueto=
-oth:
-> > > >>> fix use-bdaddr-property quirk"), which also has some further deta=
-ils.
-> > > >>>
-> > > >>> Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fw=
-node exists in DT")
-> > > >>> Cc: stable@vger.kernel.org      # 6.8
-> > > >>> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-> > > >>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
->
-> > > ...the plan forward here? This to me sounds like a case where a quick
-> > > revert is the right (interim?) solution, but nevertheless nothing
-> > > happened for ~10 days now afaics. Or am I missing something?
->
-> > I guess the following is the latest version:
-> >
-> > https://patchwork.kernel.org/project/bluetooth/list/?series=3D836664
-> >
-> > Or are you working on a v5?
->
-> This patch (revert) fixes a separate issue than the series you link to
-> above, but it is also a prerequisite for that series.
->
-> v4 is indeed the latest version, and it has been acked by Rob and Bjorn
-> so you can take it all through the Bluetooth tree. Just remember to
-> apply this patch (the revert) first.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Doesn't seem to apply cleanly:
-
-Applying: Bluetooth: qca: fix device-address endianness
-error: patch failed: drivers/bluetooth/hci_qca.c:1904
-error: drivers/bluetooth/hci_qca.c: patch does not apply
-Patch failed at 0004 Bluetooth: qca: fix device-address endianness
-
-> Johan
-
-
-
---=20
-Luiz Augusto von Dentz
+    Andrew
 
