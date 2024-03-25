@@ -1,94 +1,115 @@
-Return-Path: <stable+bounces-32146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BD188A1EB
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:30:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FE988A1FE
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B03401C38642
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721311C38986
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A42C13A24D;
-	Mon, 25 Mar 2024 10:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb+Kb+V1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3349812B17C;
+	Mon, 25 Mar 2024 10:21:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3778486AC6;
-	Mon, 25 Mar 2024 07:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F44012C7F6;
+	Mon, 25 Mar 2024 07:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711352093; cv=none; b=tVjcr1F3jWCKb+oDo6t1mhQ4CdSNzVADQcxUuoicda4w54XAqvCeLFg78FWh68LSWSEr1vhF2XhmIq708kl18qflcZWj0F4WxMKJ9lY98p6PFC8A4PVMHD5s6AIp9mN4K1sR/D0g9IPnXooIIlh9+n8Ex25iYWS2yRGPOq7jegs=
+	t=1711352542; cv=none; b=IgSWFp9LQY5JSlHKImbNnDoMe+tWR+Wavbj5OEsvtzMJYUU54VkKxDNwJ9l5RwpZwbhAxgEw0hDkjb+uCfMhb2VQZ4GRJp+vX2vtobxbVf1TZbmwmhLUjLJrA9tPCx5J8iqPwJdcnpJFNV84dnjkyG22BDbG0EiYOrrAQOTeX6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711352093; c=relaxed/simple;
-	bh=YLL8wyThsoNIzlB2gYOJ685aw65IkgO7LR8Ze3FY1ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6xYVJvdKCOkwR6ijPDkVPI7jhVZ+NndFbbj6CQJLu+hHGefqsvuDWaZypio5NRgwqiWk1NoicsLxVobltbKE0W5oZ8W+j31xu38CqFmjHwowYEVbmXy8aQfCxFdVB9mxr/57NNOTS3QFP7asWYEcc1ZCbDXUi61tIuM4RD1WAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb+Kb+V1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C461AC433C7;
-	Mon, 25 Mar 2024 07:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711352092;
-	bh=YLL8wyThsoNIzlB2gYOJ685aw65IkgO7LR8Ze3FY1ZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qb+Kb+V1uZs+nDsPawvQlcbPyZELFxSaAxxlVXTdQKgth8JBH+lHdF06KdKXXv/Sh
-	 jXBe6lGhyJkYdCNmqbZCKSQzktnG8gC+qH33JWLAltPI54IccD0K0bCANY9ZvKZEkt
-	 zrU/61rJvSV7pJu6Q3iKYejwk2CpWMbEQMaQqS5McxwByx3ImPnbscYchVlhhPfMVh
-	 ZvimcuQBcT1wP049e4wXnuO10KgiraJW26UccQKz3Ei90tloWREQnGIozaVYobnClB
-	 jm69wsq2/XuMS9sqbpazPm8HNSbC3bHJNhsWWvVP26asSKybOmtKQ3klxUQ+twyffT
-	 TZmch5PyUnCgA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1roerD-000000001iI-0JtJ;
-	Mon, 25 Mar 2024 08:34:59 +0100
-Date: Mon, 25 Mar 2024 08:34:59 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	Konrad Dybcio <konrad.dybcio@somainline.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: Re: [PATCH 6.1 130/451] arm64: dts: qcom: sc8280xp: update UFS PHY
- nodes
-Message-ID: <ZgEpI31-OJkNchPF@hovoldconsulting.com>
-References: <20240324231207.1351418-1-sashal@kernel.org>
- <20240324231207.1351418-131-sashal@kernel.org>
+	s=arc-20240116; t=1711352542; c=relaxed/simple;
+	bh=vdFoUSbKw87TFfNziH/t3xIKevtSzdAVn2OVLXmGMNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gFMjppBbjAVK5Srr2vcvH7lmUZgPyfkKTNFhWI6AJLYB6MY0XGf3ll0uECvjKagL1fuubXkTQdQWtuRpikseHfpcaCDPw/RCkOaLPdKZLnkejZk8/9T1xcSohvUle6WcyUR3OXHXOLZ5IsE8VuDnlvExjNvrIBJ0DJg2rAXy+Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E80040002;
+	Mon, 25 Mar 2024 07:42:17 +0000 (UTC)
+Message-ID: <dc1e2be5-73e1-409b-85bd-6c216a8b76bd@ghiti.fr>
+Date: Mon, 25 Mar 2024 08:42:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240324231207.1351418-131-sashal@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv: Fix spurious errors from __get/put_kernel_nofault
+Content-Language: en-US
+To: Samuel Holland <samuel.holland@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240312022030.320789-1-samuel.holland@sifive.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20240312022030.320789-1-samuel.holland@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: alex@ghiti.fr
 
-On Sun, Mar 24, 2024 at 07:06:46PM -0400, Sasha Levin wrote:
-> From: Johan Hovold <johan+linaro@kernel.org>
-> 
-> [ Upstream commit 33c4e6588e4f018abc43381ee21fe2bed37e34a5 ]
-> 
-> Update the UFS PHY nodes to match the new binding.
-> 
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> Reviewed-by: Brian Masney <bmasney@redhat.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-> Link: https://lore.kernel.org/r/20221104092045.17410-3-johan+linaro@kernel.org
-> Stable-dep-of: 1d4ef9644e21 ("arm64: dts: qcom: sc8280xp: Fix UFS PHY clocks")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hi Samuel,
 
-As I already pointed out once when you added the patch, this change on
-its own breaks the driver and must not be backported. Neither should the
-Stable-dep-off (similar for the other Qualcomm SoCs).
+On 12/03/2024 03:19, Samuel Holland wrote:
+> These macros did not initialize __kr_err, so they could fail even if
+> the access did not fault.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: d464118cdc41 ("riscv: implement __get_kernel_nofault and __put_user_nofault")
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> ---
+> Found while testing the unaligned access speed series[1]. The observed
+> behavior was that with RISCV_EFFICIENT_UNALIGNED_ACCESS=y, the
+> copy_from_kernel_nofault() in prepend_copy() failed every time when
+> filling out /proc/self/mounts, so all of the mount points were "xxx".
+>
+> I'm surprised this hasn't been seen before. For reference, I'm compiling
+> with clang 18.
+>
+> [1]: https://lore.kernel.org/linux-riscv/20240308-disable_misaligned_probe_config-v9-0-a388770ba0ce@rivosinc.com/
+>
+>   arch/riscv/include/asm/uaccess.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+> index ec0cab9fbddd..72ec1d9bd3f3 100644
+> --- a/arch/riscv/include/asm/uaccess.h
+> +++ b/arch/riscv/include/asm/uaccess.h
+> @@ -319,7 +319,7 @@ unsigned long __must_check clear_user(void __user *to, unsigned long n)
+>   
+>   #define __get_kernel_nofault(dst, src, type, err_label)			\
+>   do {									\
+> -	long __kr_err;							\
+> +	long __kr_err = 0;						\
+>   									\
+>   	__get_user_nocheck(*((type *)(dst)), (type *)(src), __kr_err);	\
+>   	if (unlikely(__kr_err))						\
+> @@ -328,7 +328,7 @@ do {									\
+>   
+>   #define __put_kernel_nofault(dst, src, type, err_label)			\
+>   do {									\
+> -	long __kr_err;							\
+> +	long __kr_err = 0;						\
+>   									\
+>   	__put_user_nocheck(*((type *)(src)), (type *)(dst), __kr_err);	\
+>   	if (unlikely(__kr_err))						\
 
-You acked that mail, but looks like they were not dropped from the 6.1
-queue.
 
-Johan
+That's a good a catch! Surprising indeed that we did not find this 
+before, that's the second bug in the uaccess routines in the last 3 (or 
+4) releases, maybe we should improve our coverage here, I'll see what we 
+can do.
+
+You can add:
+
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+
+Thanks,
+
+Alex
+
 
