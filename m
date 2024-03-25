@@ -1,179 +1,180 @@
-Return-Path: <stable+bounces-32261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F888B555
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 00:32:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D6588B175
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EFB2C43F3B
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88423073FD
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6D24E1A8;
-	Mon, 25 Mar 2024 20:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88D34AEEF;
+	Mon, 25 Mar 2024 20:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OdK1arWF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ktz1eJQk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51EC4DA18;
-	Mon, 25 Mar 2024 20:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFCC6EB69;
+	Mon, 25 Mar 2024 20:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711398554; cv=none; b=dAgh7+ZmuFlqeBsxc9yziq70pE1oPmAMJOmZ+CaT7u22sI4OB75tI12q5J5Jvsdn3WXAKoA3lZmKh5wb3JFj/RAJWXoWcpn1Gcwr/msM+CQZCbcg6R7nz/x81Na/B0rQjMk/Spn5sZ1OkAwCMz0vFC1bh+neK02KLISRX74Lrho=
+	t=1711398729; cv=none; b=sjCOhbzlA+01KSjQoZt56vXMxJYP8f3P0siROZtNeQ0Hk7QCa3H/69/qWq+qVm+ocTPZ8nOVZmxXTwdCtNf/lwGLQOGNttu1Jb9BIIUBNeX5PBOb/L+xSAQMxIbLbZl0rZWHru48FZcka5LSCW3wpFV1Fk1wkYTx0ldk9SzzMhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711398554; c=relaxed/simple;
-	bh=PvD6akxqXI8/dNMFrZHvCiPd/3vfM/WpSDW74xBnt+4=;
-	h=Date:To:From:Subject:Message-Id; b=jCxdPcocAn9RvEVr3aSODg2TJZCjDtTwL8vBtzj/H6mi6RyYFpUmQsU71R0pkVBFXL29Vi2negFpnA0LnuwTpPr1TFjMlptN5ncqoxizR4SqEe+ejAzhXygTrd0ODQj9qbGPYexH6dnUDVhi1cp3ZJ80TMqze/C/BQTnKHbuj5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OdK1arWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346C6C43390;
-	Mon, 25 Mar 2024 20:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1711398554;
-	bh=PvD6akxqXI8/dNMFrZHvCiPd/3vfM/WpSDW74xBnt+4=;
-	h=Date:To:From:Subject:From;
-	b=OdK1arWFcKEtnTbBLG/S3JiZCgQHy7IaSJseo585fyMJOV7IppMnwiMAQ/oGRnE8g
-	 p3XBX2dmXrbglgvKjd2ZUvsefFdTFJHQ1syVNT0ELh0OOgrDb6sNtStuSpLrsA07d9
-	 CzkA+wplnN2ZkdrIuazFwtlFH1soqfll0yMi9oOI=
-Date: Mon, 25 Mar 2024 13:29:13 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mingo@kernel.org,lihuafei1@huawei.com,jbohac@suse.cz,dyoung@redhat.com,chenhuacai@loongson.cn,bhe@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240325202914.346C6C43390@smtp.kernel.org>
+	s=arc-20240116; t=1711398729; c=relaxed/simple;
+	bh=Y1Qv7WFRuuhXfFyptMkixf3iEE+4tSJqSv5rHXMWASQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cKlgvFn+Y3NnALSEUgYW1KyCYMcjftG2RDb0sljV7N2LfGfTnuN9PCpPP2el4drvDrMvcB96Gd+Dw4yghoe/UMm2H9LXZgyPsb7xI1FHRIJsC1GhIFV36y+FwPnLGFEDwDfx1fPvhg6vZF87oERtKcCOAfCrxPguTxf3pQaPn68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ktz1eJQk; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d228a132acso66132791fa.0;
+        Mon, 25 Mar 2024 13:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711398726; x=1712003526; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h7RKIz/MrNg9cMTI1c37D8VVxet1bDqKEYSB/zPacp8=;
+        b=ktz1eJQkNBWg0qpOhYEE2ijuc3jI17rb0piMfkvOaxUW0t6vpIwYKVOIsCcfy4JPVV
+         iqBCmpnWofgQ2TmsG7IBHKXs7b3XlBajqBilXEvB6YLnQEPRRbKCacrBmAVeMpr5B5SR
+         Hq9eMADab2rCA2wkugGCXOXmEDsfpcQRCLjakDB0auRY/G4sAMXpGk2vGZ+1K4GO9PP5
+         JzFbu0YTMls1SKVuaTLOF1kNOoF8WSWzQeWjQGks1VuweQohjQpcGliPyGiw/vlAMKCM
+         djAjctOpW+05Q7/a0CiB5OajOG/hQrfpIy/YT3OGZkbcC/fk//P5U63snp8ajOHhazg1
+         HM0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711398726; x=1712003526;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h7RKIz/MrNg9cMTI1c37D8VVxet1bDqKEYSB/zPacp8=;
+        b=F1nZvH93y1KaVG/bNYJT/ZEJ0UV/pfntbDWF/2+ROM5v5EhwGBRLWoncPmDR495F1+
+         WGa62GhMO2jJEhjQpBbnrazqHIHO45UMvkGC3v3hjqKo640GUrIjQef30mX87rilRFz3
+         Mv5yLjmS+VdhHZsEap4u3eaLcU4un1xaC/0BWfWY5h2WREfOS4sQ1ikCBeQ7CBTT9GF+
+         ZCDmohkooQkMlhWZ7aZuTtNZqFgoXmDtOL7D0LmSD+TwpQOZTWBAIym6wgL29/7o4B9r
+         zaKENoVNwjbKqg731zi8VhM05V1utGJMmlxHo6piferUNdqT2BunM3STAmnTMJdyvoo6
+         X/2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXWu0eJwXQqoqoJsQ66bBGrB3gzlAIkXNzOint+XyvC66ymOaY6t5SZkk973IhOFezpwWqLplsupvIkAuHfxsx09F0MQ7D2zx7YZy7STY0ZaoMpbgpQEbyMlNuOkEaerpAsdupgID+S7u5uX1y6XPei1h4oUkwzz+QqT8T0n0r/u/CVHj8a
+X-Gm-Message-State: AOJu0YzELjhedUIyDOzYY2lB7n7c6ZAGIHT2tOxkDOaVIO8ohFcinWEv
+	RjjrzghaHYkBIgpCBHvkwJ2DhU1lZeZDXgqf/wasiBUpUL1QIusHT8HEG9+tDK7JRCZiHv3WN7+
+	ORucYPHNao/6d7J/VQ+HwlYHA9td5ojMF
+X-Google-Smtp-Source: AGHT+IFCzjTe1PrD1iEgUFB5Rziw5BPMZsUhry6xjN8/w0epyu0Je9rqlozlFF04zGALoUPk2yD3Wyk4FTTYaqbbkeI=
+X-Received: by 2002:a2e:938e:0:b0:2d4:668f:baac with SMTP id
+ g14-20020a2e938e000000b002d4668fbaacmr5741497ljh.28.1711398725984; Mon, 25
+ Mar 2024 13:32:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
+ <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
+ <ZfMStHjwtCT1SW3z@hovoldconsulting.com> <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
+ <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
+ <ZgGzWWV4Lh2Nal--@hovoldconsulting.com> <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
+ <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com> <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
+ <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
+In-Reply-To: <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Mon, 25 Mar 2024 16:31:53 -0400
+Message-ID: <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+To: Johan Hovold <johan@kernel.org>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Johan Hovold <johan+linaro@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Johan,
+
+On Mon, Mar 25, 2024 at 4:14=E2=80=AFPM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Mon, Mar 25, 2024 at 04:07:03PM -0400, Luiz Augusto von Dentz wrote:
+> > On Mon, Mar 25, 2024 at 3:48=E2=80=AFPM Johan Hovold <johan@kernel.org>=
+ wrote:
+> > > On Mon, Mar 25, 2024 at 03:39:03PM -0400, Luiz Augusto von Dentz wrot=
+e:
+> > > > On Mon, Mar 25, 2024 at 1:24=E2=80=AFPM Johan Hovold <johan@kernel.=
+org> wrote:
+> > > > > On Mon, Mar 25, 2024 at 01:10:13PM -0400, Luiz Augusto von Dentz =
+wrote:
+> > >
+> > > > > > I guess the following is the latest version:
+> > > > > >
+> > > > > > https://patchwork.kernel.org/project/bluetooth/list/?series=3D8=
+36664
+> > > > > >
+> > > > > > Or are you working on a v5?
+> > > > >
+> > > > > This patch (revert) fixes a separate issue than the series you li=
+nk to
+> > > > > above, but it is also a prerequisite for that series.
+> > > > >
+> > > > > v4 is indeed the latest version, and it has been acked by Rob and=
+ Bjorn
+> > > > > so you can take it all through the Bluetooth tree. Just remember =
+to
+> > > > > apply this patch (the revert) first.
+> > > >
+> > > > Doesn't seem to apply cleanly:
+> > > >
+> > > > Applying: Bluetooth: qca: fix device-address endianness
+> > > > error: patch failed: drivers/bluetooth/hci_qca.c:1904
+> > > > error: drivers/bluetooth/hci_qca.c: patch does not apply
+> > > > Patch failed at 0004 Bluetooth: qca: fix device-address endianness
+> > >
+> > > Did you apply this patch (the revert) before trying to apply the seri=
+es?
+> >
+> > Probably needs rebasing:
+> >
+> > Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exist=
+s in DT"
+> > error: drivers/bluetooth/hci_qca.c: does not match index
+> > Patch failed at 0001 Revert "Bluetooth: hci_qca: Set BDA quirk bit if
+> > fwnode exists in DT"
+>
+> I just verified that it applies cleanly to 6.9-rc1.
+>
+>         $ git checkout tmp v6.9-rc1
+>         $ b4 am -sl ZgHVFjAZ1uqEiUa2@hovoldconsulting.com
+>         ...
+>         $ git am ./20240314_johan_linaro_revert_bluetooth_hci_qca_set_bda=
+_quirk_bit_if_fwnode_exists_in_dt.mbx
+>         Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode=
+ exists in DT"
+>         $ b4 am -sl 20240320075554.8178-2-johan+linaro@kernel.org
+>         ...
+>         $ git am ./v4_20240320_johan_linaro_bluetooth_qca_fix_device_addr=
+ess_endianness.mbx
+>         Applying: dt-bindings: bluetooth: add 'qcom,local-bd-address-brok=
+en'
+>         Applying: arm64: dts: qcom: sc7180-trogdor: mark bluetooth addres=
+s as broken
+>         Applying: Bluetooth: add quirk for broken address properties
+>         Applying: Bluetooth: qca: fix device-address endianness
+>
+> Do you have anything else in your tree which may interfere? What tree is
+> that exactly?
+
+bluetooth-next tree, why would it be anything other than that? All the
+CI automation is done on bluetooth-next and if you are asking to be
+done via bluetooth tree which is based on the latest rc that is not
+how things works here, we usually first apply to bluetooth-next and in
+case it needs to be backported then it later done via pull-request.
+
+> Johan
 
 
-The patch titled
-     Subject: crash: use macro to add crashk_res into iomem early for specific arch
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Baoquan He <bhe@redhat.com>
-Subject: crash: use macro to add crashk_res into iomem early for specific arch
-Date: Mon, 25 Mar 2024 09:50:50 +0800
-
-There are regression reports[1][2] that crashkernel region on x86_64 can't
-be added into iomem tree sometime.  This causes the later failure of kdump
-loading.
-
-This happened after commit 4a693ce65b18 ("kdump: defer the insertion of
-crashkernel resources") was merged.
-
-Even though, these reported issues are proved to be related to other
-component, they are just exposed after above commmit applied, I still
-would like to keep crashk_res and crashk_low_res being added into iomem
-early as before because the early adding has been always there on x86_64
-and working very well.  For safety of kdump, Let's change it back.
-
-Here, add a macro HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY to limit that
-only ARCH defining the macro can have the early adding
-crashk_res/_low_res into iomem. Then define
-HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY on x86 to enable it.
-
-Note: In reserve_crashkernel_low(), there's a remnant of crashk_low_res
-handling which was mistakenly added back in commit 85fcde402db1 ("kexec:
-split crashkernel reservation code out from crash_core.c").
-
-[1]
-[PATCH V2] x86/kexec: do not update E820 kexec table for setup_data
-https://lore.kernel.org/all/Zfv8iCL6CT2JqLIC@darkstar.users.ipa.redhat.com/T/#u
-
-[2]
-Question about Address Range Validation in Crash Kernel Allocation
-https://lore.kernel.org/all/4eeac1f733584855965a2ea62fa4da58@huawei.com/T/#u
-
-Link: https://lkml.kernel.org/r/ZgDYemRQ2jxjLkq+@MiWiFi-R3L-srv
-Fixes: 4a693ce65b18 ("kdump: defer the insertion of crashkernel resources")
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Li Huafei <lihuafei1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/include/asm/crash_reserve.h |    2 ++
- kernel/crash_reserve.c               |    7 +++++++
- 2 files changed, 9 insertions(+)
-
---- a/arch/x86/include/asm/crash_reserve.h~crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch
-+++ a/arch/x86/include/asm/crash_reserve.h
-@@ -39,4 +39,6 @@ static inline unsigned long crash_low_si
- #endif
- }
- 
-+#define HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
-+
- #endif /* _X86_CRASH_RESERVE_H */
---- a/kernel/crash_reserve.c~crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch
-+++ a/kernel/crash_reserve.c
-@@ -366,8 +366,10 @@ static int __init reserve_crashkernel_lo
- 
- 	crashk_low_res.start = low_base;
- 	crashk_low_res.end   = low_base + low_size - 1;
-+#ifdef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
- 	insert_resource(&iomem_resource, &crashk_low_res);
- #endif
-+#endif
- 	return 0;
- }
- 
-@@ -448,8 +450,12 @@ retry:
- 
- 	crashk_res.start = crash_base;
- 	crashk_res.end = crash_base + crash_size - 1;
-+#ifdef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
-+	insert_resource(&iomem_resource, &crashk_res);
-+#endif
- }
- 
-+#ifndef HAVE_ARCH_ADD_CRASH_RES_TO_IOMEM_EARLY
- static __init int insert_crashkernel_resources(void)
- {
- 	if (crashk_res.start < crashk_res.end)
-@@ -462,3 +468,4 @@ static __init int insert_crashkernel_res
- }
- early_initcall(insert_crashkernel_resources);
- #endif
-+#endif
-_
-
-Patches currently in -mm which might be from bhe@redhat.com are
-
-crash-use-macro-to-add-crashk_res-into-iomem-early-for-specific-arch.patch
-mm-vmallocc-optimize-to-reduce-arguments-of-alloc_vmap_area.patch
-x86-remove-unneeded-memblock_find_dma_reserve.patch
-mm-mm_initc-remove-the-useless-dma_reserve.patch
-mm-mm_initc-add-new-function-calc_nr_all_pages.patch
-mm-mm_initc-remove-meaningless-calculation-of-zone-managed_pages-in-free_area_init_core.patch
-mm-mm_initc-remove-unneeded-calc_memmap_size.patch
-mm-mm_initc-remove-arch_reserved_kernel_pages.patch
-
+--=20
+Luiz Augusto von Dentz
 
