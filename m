@@ -1,104 +1,147 @@
-Return-Path: <stable+bounces-32270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8988B466
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 23:44:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C658788B48A
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 23:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A7F1C37CB3
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 22:44:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BE51305DA3
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 22:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEAE79DB9;
-	Mon, 25 Mar 2024 22:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BAF80050;
+	Mon, 25 Mar 2024 22:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KLKiB4vl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA26757FE;
-	Mon, 25 Mar 2024 22:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30797FBDB
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 22:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711406671; cv=none; b=kLVJvRfQ4h/vXC90z4dnfsP67OsCAvOetuOkycizPHkR70XFwwDBMZwAor8t/d56oRxenCPa+UcphEsx0z8gN18QVFJETJ82EixYG9oIIBpNKHGvIBHjmVEG2yYl2Iw++hdcV74G8Fe6LKQ+LwsQgeRVy5mF1U0O+Eot73p01Js=
+	t=1711407115; cv=none; b=J3tqcBmy6obZzmc6v01oQJdSdX6PGuBjK5ZirhSKuCHDRtEUzURlDNhOIvo9kWZA5fEQbfZUM28Z67VUn6HtTEatNXALXGLtk38IZNN3k+zG2R53ZE51+NGm2V3tGQgTV2oei52kqD9B8TxWolH6WqwT90pecZpLo/BtwjPB9rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711406671; c=relaxed/simple;
-	bh=FqAR+Ze93S0/wP3fz86mi6oEKKEdcwrhtvntMZJBRUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pxVJFq9T3x0OfoVj0fmB2V2VGtSdN7lhsRzHPHRMNO3puoxu3EQIh8X7wfPpwn61V3S25M0Dq8gm4M1vEvCxHWO8bmjNsahXcvTkQmG/erxuGmvACPV37V4bah3JgJ3a5m0B6ifHPsJ5+l7Zk3CnPD/yvVzLNbfKfR/3kMps+hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e0ae065d24so15733135ad.1;
-        Mon, 25 Mar 2024 15:44:30 -0700 (PDT)
+	s=arc-20240116; t=1711407115; c=relaxed/simple;
+	bh=WKCyn9Jbsg8Ko9Kdx7LpUFQvg5K3h1c4KeT/q4IWC6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l27FXYRmqMeBUg0W9je+IAJZAFihH6+d6TAKd5X/G8H76Pps4OK1ZK4ILWid4dJj+xY9esDYKKZhsKnz9smUBL7RuI015OeFF0jPoZJRhNQym1U6jebE8OAogBlwq2V8JwfY1YtVAcIDtPo2lL0CZfLRyVmG/92yssit4Jbqy3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KLKiB4vl; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3c3d58cbdbbso388861b6e.2
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 15:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711407113; x=1712011913; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N2QCqoOB2K39Evzy/pSJ0AhYW51cJwfp0a+BuRvX5e0=;
+        b=KLKiB4vl2pjbKGnr4OhRTeNsbz8PzgADxTBHk7rsmfjVThFjO/U0zqwdbwzT9MRoD/
+         odolEYFckuoH87yeYhQLciAV+kOsIil8XUJGb5QxOgEyTfku1rC/hkzKhLRhkcitcF2z
+         8FH1sV+C3C3XSUD/pJDbnXbx9WmHxh+H02zjMNPmeAyXCk1BxPBCXAarqKfK6aMsco33
+         SkbTj5KeqaCakvY/CQ3eKuLikriQWGUyoBSDFWX9ZwLFT+y5jfBvHaugqFZjJKrE80at
+         0AeQaXPDI/oJG0DI6cB/koM2TfRDVl/rhlt91iEbRYUm4kEdTsu797S+K0JGpCTDXxZD
+         PQwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711406670; x=1712011470;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CEtqN21NPk7qVlH0grRm+VUsTURjOFZF7Zd8pI9zJjw=;
-        b=BjHF/N+RrBiMnoBWkgHBGW/BWwv01v1QCfNNTu2BKq3jA4mv4X4umc4Rp3iHbOz57Y
-         cuKYhRT5uLk+uFtzQZp11eFnEJmhLWD//HcHaKxCVYhAeQg2mEEOmBb08cxB42c62TmT
-         /SZ6k6LQIkyEYTHIt8dGi0lOKFQQJc20fwli9eP+DrnEXaZrzbif/DbaIySmlV+YKNrU
-         H1GxXzY9uDIXV9qkrNVNvIieDpMIiAbk5BWd2mRBAF2xtRKGQkWCR7GS/cgrPJNnUzTf
-         7q82drVISFt/PQofEuvQs85jK+KySIoPSXUCciaK028UIF6laBmYxAn/av0QfWi+yqFe
-         YbJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXZnPQv/YdLSJ/sy4E6xV6XNyxsMQIOvwAQtA0SeS12rfXa81ZQ7sl+A7KfBrvA5r3LutSt1oDjtjNulCmbvXrrCa44syzY
-X-Gm-Message-State: AOJu0YwQ18hMDdtvoqHzNOveZlVwKIRCSFQ0XJF5S0Gd22tcsEj8g8Sz
-	McIqFoYmnW0Wfo1l3VkJCbbxovYq51KdSoc3FRWVLJFVaUEQTzJN
-X-Google-Smtp-Source: AGHT+IGLzWWDFm8F/FgdEDB5/LCuAo0yho0JjLmU+SbDhI+17aOgDkdinTbWV+kL0jt+13ujSADavQ==
-X-Received: by 2002:a17:902:e80b:b0:1e0:a839:f2ba with SMTP id u11-20020a170902e80b00b001e0a839f2bamr7881210plg.58.1711406669611;
-        Mon, 25 Mar 2024 15:44:29 -0700 (PDT)
-Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:262:e41e:a4dd:81c6])
-        by smtp.gmail.com with ESMTPSA id b18-20020a170903229200b001e0b5eee802sm3268851plh.123.2024.03.25.15.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 15:44:29 -0700 (PDT)
-From: Bart Van Assche <bvanassche@acm.org>
-To: "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	stable@vger.kernel.org,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	Mike Christie <michael.christie@oracle.com>
-Subject: [PATCH] scsi: core: Fix handling of SCMD_FAIL_IF_RECOVERING
-Date: Mon, 25 Mar 2024 15:44:17 -0700
-Message-ID: <20240325224417.1477135-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
+        d=1e100.net; s=20230601; t=1711407113; x=1712011913;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N2QCqoOB2K39Evzy/pSJ0AhYW51cJwfp0a+BuRvX5e0=;
+        b=Vs0zbA3YVpoYg1z8glevr/RiVggRE0bp6SUTu8361A1cayDTj5S+ZqeEDbam3htMdr
+         OC9GUF+wFHNhKdsSL/IUGoQrlxeU02M8YhoA+pUISz3eTtffez+8KS6CEvZHN0iAV06r
+         fwzW+ucxnYRV+fYACaE19wLbfT4mYm+lzzs5ciPtW8vNgqYmjruk4Kw8CSxlRbumnj8U
+         FtH2yp7DIUo/0jPqeRuiKqmlCPx80LTrAaNJ6k4HUvuj2Yt1gywp14OBzoFLGh2QXzKf
+         8hayVrETAT07U/oE2cqUsIVUgB25Ob80EfKKfic39OD7hdGMEY7XccFNcXIc5+j6SjS8
+         8xpw==
+X-Forwarded-Encrypted: i=1; AJvYcCX20MjWu7Jan3pWKWWoBJidwztRiMXZ2JXlGa+dlM78nsaOWNXazplf1afb334IOynPdhjtS+OS1iIuKWuTm3EDWSOz3k/m
+X-Gm-Message-State: AOJu0Yxdz1PDYx7y56BKOIdoWGEKHIMfvVpJ+CyN+D+tzlSIiGXD3Ius
+	bbEfyikPXuQgFuEAitMg1GG32zIiHwz52lGf6qDjOlvzC9TN6hXS4Qeh/P9Ja5g=
+X-Google-Smtp-Source: AGHT+IHxNHOECY/eqqrOsQbWhG5lFKuwhRTSfSZF9B9SyDESEookZJmP6YG/jNPPsZ/nRRU0Bo6dFA==
+X-Received: by 2002:a05:6808:bc6:b0:3c3:d33b:181f with SMTP id o6-20020a0568080bc600b003c3d33b181fmr2718206oik.17.1711407112769;
+        Mon, 25 Mar 2024 15:51:52 -0700 (PDT)
+Received: from [192.168.17.16] ([148.222.132.226])
+        by smtp.gmail.com with ESMTPSA id l5-20020a544505000000b003c3d6e9f15fsm164956oil.24.2024.03.25.15.51.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 15:51:52 -0700 (PDT)
+Message-ID: <84a54bf1-356a-443a-a463-c0e3b582cd7f@linaro.org>
+Date: Mon, 25 Mar 2024 16:51:50 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 000/180] 5.4.273-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de,
+ abelova@astralinux.ru
+References: <20240325115908.1765126-1-sashal@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20240325115908.1765126-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-There is code in the SCSI core that sets the SCMD_FAIL_IF_RECOVERING
-flag but there is no code that clears this flag. Instead of only clearing
-SCMD_INITIALIZED in scsi_end_request(), clear all flags. It is never
-necessary to preserve any command flags inside scsi_end_request().
+Hello!
 
-Cc: stable@vger.kernel.org
-Fixes: 310bcaef6d7e ("scsi: core: Support failing requests while recovering")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/scsi/scsi_lib.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+On 25/03/24 5:59 a. m., Sasha Levin wrote:
+> This is the start of the stable review cycle for the 5.4.273 release.
+> There are 180 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed Mar 27 11:59:07 AM UTC 2024.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.4.y&id2=v5.4.272
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index ca48ba9a229a..2fc2b97777ca 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -633,10 +633,9 @@ static bool scsi_end_request(struct request *req, blk_status_t error,
- 	if (blk_queue_add_random(q))
- 		add_disk_randomness(req->q->disk);
- 
--	if (!blk_rq_is_passthrough(req)) {
--		WARN_ON_ONCE(!(cmd->flags & SCMD_INITIALIZED));
--		cmd->flags &= ~SCMD_INITIALIZED;
--	}
-+	WARN_ON_ONCE(!blk_rq_is_passthrough(req) &&
-+		     !(cmd->flags & SCMD_INITIALIZED));
-+	cmd->flags = 0;
- 
- 	/*
- 	 * Calling rcu_barrier() is not necessary here because the
+There is a new warning introduced here, on Arm (64- and 32-bits) with GCC 8, GCC 12, Clang 17:
+
+-----8<-----
+   /builds/linux/drivers/cpufreq/brcmstb-avs-cpufreq.c:462:23: warning: mixing declarations and code is a C99 extension [-Wdeclaration-after-statement]
+     462 |         struct private_data *priv = policy->driver_data;
+         |                              ^
+   1 warning generated.
+----->8-----
+
+Bisection points to
+
+   commit 8930178165fac14653ef502321efc3d5ca7c66c4
+   Author: Anastasia Belova <abelova@astralinux.ru>
+   Date:   Wed Jan 17 10:12:20 2024 +0300
+
+       cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value
+       
+       [ Upstream commit f661017e6d326ee187db24194cabb013d81bc2a6 ]
+
+
+Reverting that commits makes the warning disappear.
+
+Reproducer:
+
+   tuxmake --runtime podman --target-arch arm64 --toolchain clang-17 --kconfig defconfig LLVM=1 LLVM_IAS=1
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+
+Greetings!
+
+Daniel Díaz
+daniel.diaz@linaro.org
+
 
