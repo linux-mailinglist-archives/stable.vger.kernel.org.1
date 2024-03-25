@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-32234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A7488AED4
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:47:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A736388AED8
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF53F1FA4E1A
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AFA92C7556
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047CB1D53F;
-	Mon, 25 Mar 2024 18:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450414AEC8;
+	Mon, 25 Mar 2024 18:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLzT+WEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKt979+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80819460;
-	Mon, 25 Mar 2024 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3C4804;
+	Mon, 25 Mar 2024 18:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711391833; cv=none; b=SozFsytfoCRZHzDfljpnpvKKk6DzRWnJZy1mKIMtQ83kwYCpiNhQhaPYlNtUrhKvuqna5t6PK1yRY2upe1JzIFp8Kmj5g6qkpPEwVHAf1uEHuWv/SOE61AOmU7HSPLRiTiox96xcRtYWmiR4GQCVPaViIPaR9/MX1wHHp6J1q1o=
+	t=1711391918; cv=none; b=DH6QtHq7UYtu2yZlHMcOfdqmGHIgTx9bdbYfn0hwlZwfrdUhIgub0Gi2s6SoeijV1UI6dqm2vR/2AD2r05ab1tzmBtEqTcz1LT4qn/M3HZlSETJFKED3WMXt7XhkrA18d2ZoLwxCm5XnhyoRnabG2o1KixN6LfuM3hD5MdzKnsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711391833; c=relaxed/simple;
-	bh=ozLed1RgSofEW/JhzPbh4DFYa4pZ4WP0p3K+tacDuL4=;
+	s=arc-20240116; t=1711391918; c=relaxed/simple;
+	bh=blLcvYAqaiFz1G8fZPDqiwWnJvL9Uqm3A7A++8T3s4E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PypFyY3PtOqODSdITABIthncOYPQOtRmwsRoeZ9fLAD+kWPwKxJAq0+OQhdcwttZCdNm2OODCsbK3qMXHXIjvxnV3L9viniK4AP0TrggcAnJPaafyVGQrknC3QDrM75e/ZOU/jMKcUisVNeK86LhMOVW4KYYJRC1Oa7llPSXM0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLzT+WEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EFEC433F1;
-	Mon, 25 Mar 2024 18:37:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=K2dgaw+1h9tafnTpQueVIaWPL8fRwkAR7njUqQW089NBxazajSrUTqwtUCqWRYzt/gzMytMAHkCtMctH6UlTAjkYwSEQmBlJySeh4Pnfwm7LQCvqSjb2B3hvKhIQRuRKzqLQyUcfseTE8+nHegh8lfI+bKb8lJu4j5uH0Kj9d7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKt979+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F9DC433C7;
+	Mon, 25 Mar 2024 18:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711391833;
-	bh=ozLed1RgSofEW/JhzPbh4DFYa4pZ4WP0p3K+tacDuL4=;
+	s=korg; t=1711391917;
+	bh=blLcvYAqaiFz1G8fZPDqiwWnJvL9Uqm3A7A++8T3s4E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eLzT+WEgcFPrHqlwu8yvATEVwVaCuzHiW2benJYKJGo+cuEwq0Ralk2U6j87c8HYi
-	 1i0hVGHlBbV9Qw9OhV8bop+B5MI5+Bt59k1PD8wSS0WHysuKTaulfTZnU51IXcOz1S
-	 32+uNpXoVf8BQGmYU36Yjy2crV2COr/auNTvgQJk=
-Date: Mon, 25 Mar 2024 19:37:10 +0100
+	b=HKt979+ORk1GhjUQtnxxmtJbwUrwTflAts8wpAM/N32EZjdQOWQv6hEg4o1jT3KHH
+	 TxDtUSOEippLs58N41KVnI1fxTM8cx5ilGEDvgaO6kKL/clCZ29Lo1eiS+BSSwqAZE
+	 BEYre//S80GNmVbAidCHyDdkaWKRij86uLr2LLLA=
+Date: Mon, 25 Mar 2024 19:38:34 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -58,7 +58,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
-Message-ID: <2024032548-rope-improper-4f67@gregkh>
+Message-ID: <2024032554-tipoff-extrude-a631@gregkh>
 References: <20240325152140.198219-1-herve.codina@bootlin.com>
  <20240325152140.198219-2-herve.codina@bootlin.com>
 Precedence: bulk
@@ -86,29 +86,12 @@ On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
 > For instance, in the following sequence:
 >   1) of_platform_depopulate()
 >   2) of_overlay_remove()
-> 
-> During the step 1, devices are released and related devlinks are removed
-> (jobs pushed in the workqueue).
-> During the step 2, OF nodes are destroyed but, without any
-> synchronisation with devlink removal jobs, of_overlay_remove() can raise
-> warnings related to missing of_node_put():
->   ERROR: memory leak, expected refcount 1 instead of 2
-> 
-> Indeed, the missing of_node_put() call is going to be done, too late,
-> from the workqueue job execution.
-> 
-> Introduce device_link_wait_removal() to offer a way to synchronize
-> operations waiting for the end of devlink removals (i.e. end of
-> workqueue jobs).
-> Also, as a flushing operation is done on the workqueue, the workqueue
-> used is moved from a system-wide workqueue to a local one.
-> 
-> Cc: stable@vger.kernel.org
 
-Why is this for stable?  You are just adding a new api, no one is using
-it.
+So this is only an issue for overlays?  Why has no one noticed this in
+the years since 80dd33cf72d1 was added?  Why is this an issue now
+suddenly?
 
-Or if they are, you didn't send me that patch...
+thanks,
 
 greg k-h
 
