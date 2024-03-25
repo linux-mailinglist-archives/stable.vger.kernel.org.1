@@ -1,134 +1,134 @@
-Return-Path: <stable+bounces-32160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2325388B09E
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:58:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322DB88A46F
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9245DB608BD
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF19E2E401B
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52351420D7;
-	Mon, 25 Mar 2024 10:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F0B16EC1D;
+	Mon, 25 Mar 2024 11:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEOwyqP/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ITddNt0z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA79C14659C;
-	Mon, 25 Mar 2024 10:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF68A12883A
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 10:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711362675; cv=none; b=iQcP36RnCGrTgouCKfyhiiqGt2BQXnwWy5EqXbAXy1napq0OLTWer5HIVMtZnAh4ub0kS17ncOR/g35QfXlXSzQ/3wW5T+Aa/Z/tcI9H4k/kVE1/5ZyefJEkUxxEhKZTnXO5caY14IDQM++JOgpVDz9CYlTD9tqaBO/vJvaOlQY=
+	t=1711362740; cv=none; b=MVBpeO2MtGM5AZX+7ok4KwL39LvrME3hUNkdt3/9yq8mTpHuhZefwgdGyVaN/MgUH53UINZCyuFw3Jr1C4CrY/74pJV6cbN5PfabnkyA42Dm6xHXn6m85f/efZNaY1D5Z9pxTDUmEvfKO6LuTC4vBiuhQ9O+F0cODpRo0IUcmuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711362675; c=relaxed/simple;
-	bh=qzP073KpR18hqVmhwSFwvYqRIwDMaaj97OZEQGAprsw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AD9XdlRqiIuv33OaruZUOCw349LN6hL2CqLCxO2WDS2lI553wy3h/gO5LG41kOyd98OsV0pt/hI2d3j9Ev4eabrAuuSXb1NaghiNi0mfyolOAdJkZWdS+K5GkXBAcKBrZPavIiuCUIzz6ORT9pZaDX9ZJiRgS95Ho8I+2iRG4Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEOwyqP/; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d2509c66daso50353541fa.3;
-        Mon, 25 Mar 2024 03:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711362672; x=1711967472; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ITuIJ48ycyvFs85EZCOH/esp3dFgohObI9gAbMbkThw=;
-        b=KEOwyqP/CLeclPk5il8HJOTuLXuqpdTCTFFJrlY/zzdq6NB9Yf7mJIUu4MQO9Pn+oG
-         UQC6vmhB8uTC21rxFNbS1IVUWIY265O2f+tq/aLeAsL5fz4VQu0GX3MkzB5FFj92vJlf
-         8T//7yVb2AAb6pq4p/eE1gsq73dKNGMN3nT4tIVieUwS5Oc45M1XPpX9LlFc7c/nQp4z
-         Y7B2mCmccqsMgX5cD0fV0ak2zoSxlXkFvdh4s0HlDdqTyEArw3YTwcJxxYAoZXG0yzxm
-         +VDrBD+vGOPEKvzvpURJe0WJi8M0ZZCHsTHuIO4u4ZnZ+fKhFTovF3hiJ28ZPcv1cBgc
-         3HNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711362672; x=1711967472;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ITuIJ48ycyvFs85EZCOH/esp3dFgohObI9gAbMbkThw=;
-        b=pLulwUkpqTn3DnRwObHoSOVu9dPrUm+a5s0xdotsBHM4V+NxeEVNh52QpfsuU7Y6UN
-         ISDugDIV1mqv6Kag8fnogIatUIL6ftaIBaVkArprSvB0nkyJZ5FhqxwHHlBccKrzrdq9
-         7tZ08Mn4WuZiNF6niQa6kxemVjp+v44ZrdOmz48JjAXO8qGXJ+tRR0rzrBm+B6ah8+uS
-         RkmrJnmoPe5KNM9/BpOs6yR9UZibuDmiN4/qxbMvq8TUE4l9+US+17WgHXhRSYBGo2ya
-         QbBn+LIjv/tOmaF8c3MDu7UOsSFvBIZQEGaaLxB/g+heWydI87nFtWN+N2EPwLG86HDc
-         m7yA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMCkYKDAasEojT87dUGjyTpezBB9xPDJfScXK98dJHwVEu2CtnMw0XSkanZkq7OrAAXmdwel7wbI/HCgLNXTlAMbEqK7mZShoMHTgUsX1ngpTv1WVntRXwO0x5V1rGKTVA7vIwmE4RKkU/L01EhUw4gQn8AFjzwHIgIeNy/sWQld5Muw==
-X-Gm-Message-State: AOJu0YyQPeS651QMXYq7/5gHHyUlvuJ3rtw2U//RUzMfS+hPCR4wIOZJ
-	vkCiwRw6USSKEwNhm6LXrXkHAgBd3eJQNq++FEof3hj7UMOhGIvF
-X-Google-Smtp-Source: AGHT+IHbEvUfaHQnzm6ZbUyi1TE0Z3wDxGxFHJpDIwcA/5e6DTkA5nfqau/NqIPKGSOLrgKUIQmStA==
-X-Received: by 2002:a2e:994e:0:b0:2d4:2958:6daf with SMTP id r14-20020a2e994e000000b002d429586dafmr4358600ljj.20.1711362671784;
-        Mon, 25 Mar 2024 03:31:11 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id be3-20020a05600c1e8300b004140e701884sm8063878wmb.22.2024.03.25.03.31.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 03:31:11 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mtd: rawnand: qcom: Fix broken reset in misc_cmd_type in exec_op
-Date: Mon, 25 Mar 2024 11:30:48 +0100
-Message-ID: <20240325103053.24408-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240325103053.24408-1-ansuelsmth@gmail.com>
-References: <20240325103053.24408-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1711362740; c=relaxed/simple;
+	bh=/7yLriuhvRcFxs/cJwyFfIpn2d65gbmkfqddeVZbCcA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=l7aSP0r5jpxzOZ6FaxOTc2wWbA+wQVOE0E52bMJOnLSq9p7VQfVFzU54SZQ3ceZZSleIuwZR1fvJGpdOeBtlnQa4zeNBqJuhsRLSCVvR8V2TCuA7E8sS/jGGbwMSMzAWRU+9wZC50mV6FCglr1ZJ2+GDUJ5cCI6ZL++FSEgWjpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ITddNt0z; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711362738; x=1742898738;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=/7yLriuhvRcFxs/cJwyFfIpn2d65gbmkfqddeVZbCcA=;
+  b=ITddNt0zW8h8RzRnZcCph1nHtRihC5Xtl5YAjz0VxfRfYBQ98C02nlq/
+   HNhzCwUf/sE/Xu01Do/oDPDNyNWD0kaVWEgKXRRPfbmt6FnB7nfiY+/pM
+   o0SZ9P9gN518w7PH/C5zgpwNqA3QO4B94FmTYxJl9POch8HNeFwz7h6VR
+   QISWtNJXOA+O86Jcijwto3xe5SNPLGRZrDH28y/qyjXdcm/aBsKSNzCXa
+   npnqkh9isw6xXZj6CKjhcOdknQoAfwVnhGGi0fIdbeVmNEuMmXT2BHOxj
+   REItU/7ZkMS6LTNeqedMZaBaqFfA0ftEeihhlt4VCaaJJYwBQhn3tBz+C
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6461923"
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
+   d="scan'208";a="6461923"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 03:32:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
+   d="scan'208";a="15657281"
+Received: from idirlea-mobl.ger.corp.intel.com (HELO localhost) ([10.252.55.171])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 03:32:13 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/i915/bios: Tolerate devdata==NULL in
+ intel_bios_encoder_supports_dp_dual_mode()
+In-Reply-To: <ZfnVUbHNL4lEeinV@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240319092443.15769-1-ville.syrjala@linux.intel.com>
+ <87sf0mo9hx.fsf@intel.com> <ZfnVUbHNL4lEeinV@intel.com>
+Date: Mon, 25 Mar 2024 12:32:10 +0200
+Message-ID: <871q7yk3f9.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
-("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-reworked and generalized but actually dropped the handling of the
-RESET_DEVICE command.
+On Tue, 19 Mar 2024, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> On Tue, Mar 19, 2024 at 11:29:14AM +0200, Jani Nikula wrote:
+>> On Tue, 19 Mar 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+>> > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>> >
+>> > If we have no VBT, or the VBT didn't declare the encoder
+>> > in question, we won't have the 'devdata' for the encoder.
+>> > Instead of oopsing just bail early.
+>> >
+>> > We won't be able to tell whether the port is DP++ or not,
+>> > but so be it.
+>> >
+>> > Cc: stable@vger.kernel.org
+>> > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
+>> > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>> > ---
+>> >  drivers/gpu/drm/i915/display/intel_bios.c | 3 +++
+>> >  1 file changed, 3 insertions(+)
+>> >
+>> > diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/d=
+rm/i915/display/intel_bios.c
+>> > index c7841b3eede8..c13a98431a7b 100644
+>> > --- a/drivers/gpu/drm/i915/display/intel_bios.c
+>> > +++ b/drivers/gpu/drm/i915/display/intel_bios.c
+>> > @@ -3458,6 +3458,9 @@ bool intel_bios_encoder_supports_dp_dual_mode(co=
+nst struct intel_bios_encoder_da
+>> >  {
+>> >  	const struct child_device_config *child =3D &devdata->child;
+>>=20
+>> The above oopses already.
+>
+> Nope. It's just taking the address of the thing.
 
-The rework itself was correct with supporting case where a single misc
-command is handled, but became problematic by the addition of exiting
-early if we didn't had an ERASE or an OP_PROGRAM_PAGE operation.
+I guess. Still looks a bit suspicious. :/
 
-Add additional logic to handle the reset command and return early only
-if we don't have handling for the requested command.
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
-Changes v2:
-- Add this patch
 
- drivers/mtd/nand/raw/qcom_nandc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>>=20
+>> BR,
+>> Jani.
+>>=20
+>> >=20=20
+>> > +	if (!devdata)
+>> > +		return false;
+>> > +
+>> >  	if (!intel_bios_encoder_supports_dp(devdata) ||
+>> >  	    !intel_bios_encoder_supports_hdmi(devdata))
+>> >  		return false;
+>>=20
+>> --=20
+>> Jani Nikula, Intel
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index 19d76e345a49..b8cff9240b28 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
- 			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
- 		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
- 		instrs = 3;
--	} else {
-+	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
- 		return 0;
- 	}
- 
--- 
-2.43.0
-
+--=20
+Jani Nikula, Intel
 
