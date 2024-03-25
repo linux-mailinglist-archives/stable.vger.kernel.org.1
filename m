@@ -1,169 +1,107 @@
-Return-Path: <stable+bounces-32162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA59F88A3C4
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:11:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873C288A3FF
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12C22E26B1
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:11:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B90B41C3B041
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E58129E77;
-	Mon, 25 Mar 2024 10:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fekZIf+e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C668181CF9;
+	Mon, 25 Mar 2024 10:47:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E114A18C9D0
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 09:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B42C179940;
+	Mon, 25 Mar 2024 10:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711360697; cv=none; b=n3JJRUi0lsd2kDfsUJ64tPBSVr8FmMe5QAUbY/+5jp4NY8m0O1T669olpkW2eAr8wwHgGnzxDJ7mScr9KPN/wPwmU8NygxUZjYXqT3+uEhp1DYJQX5F96HqjhT96mVuoJ4XgwaspSxVZPyfR4qmiEgQLQ36h+SLYofUR8XHpXsw=
+	t=1711361301; cv=none; b=sVWiv+UJv1EYHPJtgh4ByTycUV7iiJLHu1FgBIHmgkRqON4s+JRD/4IhE9KNHrrj/U241KBQyeIiJFZLRV49xB6dcwcnxoYPREeVt58uDcNDvUS9CSQS9RNLBEmVZ7+GnqyJG1X31UIx8gSdjxbpMvEBMvi3cfZ+1IukUkB1d94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711360697; c=relaxed/simple;
-	bh=NqK30dWvMkhMRQos+zh5Gvc0n9gWQPd9IHznIn2q9gg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lqL/RTxLFGLDJygCjK5C4xXQ6g81Pj0Y+JPiGnwT1OkRm6Lrkh1oLkJuTPQMpg6BoyNWtz4DjBRZs+Ey1m2FW4wJIyeXtzq9kKB1GOdY2S2MPar/qOg+fOsD0nHP+ywmoUHLMmaSFvvEf8F5+ZEWO/Jtg8erNh6ztNeNZCkaSgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fekZIf+e; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-7e12b6448faso87898241.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 02:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711360693; x=1711965493; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kyd2fUcre4Z3NgmLnaLMJzBCVzXb0Ngoj6fneWetwoo=;
-        b=fekZIf+eTMoIADWtxEEnssf42KVI+8wW08HN+gUZaFMvoYZLt+KGaRUfA8f3CwBKRR
-         /FYl6YnP+2Cn+chYSyiwJz7elP0P6EOU0XpYHVBSVQpWtazWzmyewrdZkFFqPLbFstgC
-         NZJtYr72wxQIdxHMeBhUgE2y4peQphvEfEQa4ry7Is67KknfClDOJ27DM2cfDqQdhto5
-         riuCV42LVF1rud54rqBxn75LyZ/Ib/gYEsmlHp1uXcnsevJne0RS4dopVk/ZJ204tENn
-         BYDM7CxLUjUIJ9o3uPmY0R0cd+yYddPwVMAw91lwJxYN0/0JaeqRNRUtUpCjRnAyzZDr
-         twlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711360693; x=1711965493;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kyd2fUcre4Z3NgmLnaLMJzBCVzXb0Ngoj6fneWetwoo=;
-        b=kAlto7aw+TC9g3zfppYEt7na9c5pPfwzzDT+TqrEHeUypeWZmgUxLz+89vQ0Zz9MgL
-         lghIHXFVGfReHkohB+6SxseHTQEfLLCYLG/2FmUZymcAqsdCQxm/yXRMmuOKDB+3ahjX
-         a0zxuH1EIG0MMOkBBIpQ4K0FmuSXjYM1ouT9nhKYKF8YTld9l2ORNrXAPjkQ+qSWjvaU
-         0isjVPT4WbxqC9gfuFVTlPmF+rX2yFm5I+XZ706tHBhlIYqrNaxBHqCHjHuL9sSANBHI
-         Grxtq6EQBi67C9h/07fmF7isQW/92XqMKKLGIcZ8MsjSqVE0PS++oYXHgYYyBjpKWQkh
-         yPlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUTjN9J8v8TdGDaMRzXGwZYXIlWi4tCnTNAQunc8/mhcttr6u6FOJj1mbs1zYpnOdhxM1otjvFxELjxRNm1TVmXPKHq1JV
-X-Gm-Message-State: AOJu0YwKqpi+gnIGol3rwwes3wEl4aLqEC9UvGhLBCzAsHPF0DH4vsFi
-	qPiFR2wdmZig8D9Y801GnsOLp6dUKTtmYBKA8CF+DcyjZ18GWmwiUnMlWz3CDh9PmaLdC3jXuXU
-	V4AYg5eCz/lvKymD0+TfUlrHXpkmzgqFD2jtsbw==
-X-Google-Smtp-Source: AGHT+IH/LXe+pZI6T4dYPbrCnIOWYVWHu5aykoWck8P1W1r3msju/rhgAo9E+tewJPXWPjjlSAuDIOssGzyy23FEb/U=
-X-Received: by 2002:a67:fd67:0:b0:476:71f:dc62 with SMTP id
- h7-20020a67fd67000000b00476071fdc62mr2935823vsa.9.1711360692786; Mon, 25 Mar
- 2024 02:58:12 -0700 (PDT)
+	s=arc-20240116; t=1711361301; c=relaxed/simple;
+	bh=Obiecc23MRlgdJJ/CiUuMrOOmy0hmHXApcztQ5D5mfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XGtSRB0mJ+yt3ZYZe8/bnvLOkLxyO8SVwXvZF7Ls1e7s1OLOpXSOwvJWADoEwikQnyp+hPg85XOgN+kPEGrQM6oHropLhGZgzmoJFbEoLex2whE4By3F+u5PJ9fX2hdd+vxWxNR4bqVzxcFoAYFJzRuosFteNVSXVbUY5eV9AOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 271C31C006B; Mon, 25 Mar 2024 11:08:11 +0100 (CET)
+Date: Mon, 25 Mar 2024 11:08:10 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com,
+	pavel@denx.de
+Subject: Re: [PATCH 4.19 000/148] 4.19.311-rc1 review
+Message-ID: <ZgFNCrvcIN30ZWTk@duo.ucw.cz>
+References: <20240324235012.1356413-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324230116.1348576-1-sashal@kernel.org>
-In-Reply-To: <20240324230116.1348576-1-sashal@kernel.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 25 Mar 2024 15:28:01 +0530
-Message-ID: <CA+G9fYueiBdV-uRVbX+JB2_nt831_+8fnyoQ6v62rAsyLQne6g@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/638] 6.6.23-rc1 review
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	florian.fainelli@broadcom.com, pavel@denx.de, 
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Will Deacon <will@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="C99d4dmIyOmlegxQ"
+Content-Disposition: inline
+In-Reply-To: <20240324235012.1356413-1-sashal@kernel.org>
 
-On Mon, 25 Mar 2024 at 04:31, Sasha Levin <sashal@kernel.org> wrote:
->
->
-> This is the start of the stable review cycle for the 6.6.23 release.
-> There are 638 patches in this series, all will be posted as a response
+
+--C99d4dmIyOmlegxQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 4.19.311 release.
+> There are 148 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Tue Mar 26 11:01:10 PM UTC 2024.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.6.y&id2=v6.6.22
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
 
+This fails to build:
 
-The regression detected while building allmodconfig builds with clang-17
-failed on all the architectures.
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
+225692746
 
-> Andrii Nakryiko (3):
->   libbpf: Fix faccessat() usage on Android
->   libbpf: Add missing LIBBPF_API annotation to libbpf_set_memlock_rlim
->     API
->   bpf: don't infer PTR_TO_CTX for programs with unnamed context type
+  CC      drivers/usb/storage/usual-tables.o
+2820drivers/usb/phy/phy-generic.c: In function 'usb_phy_gen_create_phy':
+2821drivers/usb/phy/phy-generic.c:286:19: error: implicit declaration of fu=
+nction 'devm_regulator_get_exclusive'; did you mean 'regulator_get_exclusiv=
+e'? [-Werror=3Dimplicit-function-declaration]
+2822  nop->vbus_draw =3D devm_regulator_get_exclusive(dev, "vbus");
+2823                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2824                   regulator_get_exclusive
+2825drivers/usb/phy/phy-generic.c:286:17: warning: assignment to 'struct re=
+gulator *' from 'int' makes pointer from integer without a cast [-Wint-conv=
+ersion]
+2826  nop->vbus_draw =3D devm_regulator_get_exclusive(dev, "vbus");
+2827                 ^
+2828
 
-arm64 gcc-13 - FAILED (other architectures passed)
-arm64 clang-17 - FAILED (All other architectures failed))
+Best regards,
+								Pavel
 
-The 2 errors are only noticed on arm64.
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-> Jason Gunthorpe (1):
->   iommu/arm-smmu-v3: Check that the RID domain is S1 in SVA
+--C99d4dmIyOmlegxQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+-----BEGIN PGP SIGNATURE-----
 
-Build error:
-------------
-kernel/bpf/btf.c:5660:10: error: expression which evaluates to zero
-treated as a null pointer constant of type 'const struct btf_member *'
-[-Werror,-Wnon-literal-null-conversion]
- 5660 |                 return false;
-      |                        ^~~~~
-1 error generated.
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgFNCgAKCRAw5/Bqldv6
+8tirAJ99GnIKj2LOEFIQkq5iZmSF2QjlMQCcDkq+Pit0P1O7oRlIWUmDBOAi9PU=
+=i7b+
+-----END PGP SIGNATURE-----
 
-<trim>
-
-drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c:358:10: error:
-incompatible integer to pointer conversion returning 'int' from a
-function with result type 'struct iommu_sva *' [-Wint-conversion]
-  358 |                 return -ENODEV;
-      |                        ^~~~~~~
-drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c:361:10: error:
-incompatible integer to pointer conversion returning 'int' from a
-function with result type 'struct iommu_sva *' [-Wint-conversion]
-  361 |                 return -ENODEV;
-      |                        ^~~~~~~
-2 errors generated.
-
-
-Steps to reproduce:
- # tuxmake --runtime podman --target-arch arm64 --toolchain clang-17
---kconfig allmodconfig LLVM=1 LLVM_IAS=1
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.22-638-ga02ac18a4590/testrun/23156094/suite/build/test/gcc-13-allmodconfig/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.22-638-ga02ac18a4590/testrun/23156063/suite/build/test/gcc-13-allmodconfig/history/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2eAPALK4lPo78E8K7ZPm0ayDbfA/
-
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.22-638-ga02ac18a4590/testrun/23156063/suite/build/test/clang-17-allmodconfig/history/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.22-638-ga02ac18a4590/testrun/23156063/suite/build/test/clang-17-allmodconfig/details/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2eAPANvCAoQEpSXaT8nzxKxI0Ft/
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--C99d4dmIyOmlegxQ--
 
