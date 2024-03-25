@@ -1,51 +1,74 @@
-Return-Path: <stable+bounces-32213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8A988AD3E
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:12:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6607588AD52
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FB471C27F5B
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:12:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4FD81FA0FAA
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E301133404;
-	Mon, 25 Mar 2024 17:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEF35C61A;
+	Mon, 25 Mar 2024 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ehuk.net header.i=@ehuk.net header.b="qiN0qqHF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gY5iRAbU"
 X-Original-To: stable@vger.kernel.org
-Received: from james.steelbluetech.co.uk (james.steelbluetech.co.uk [78.40.151.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E59132C0D;
-	Mon, 25 Mar 2024 17:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.40.151.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BFE8663A
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 17:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711388418; cv=none; b=XPcbQtBvushym7TjgUM5rw4dNF9v0kLbOQmFxjzz7hPpCZQhELPQHnvWUg8aLO0YPfcQqJ0UNJBEmNBlWB1sVIUOp5zhGUp8EAhwsw1E/1nhnDxslLKmJ5RAu2MNuS9A+YQBiRYMkaMv+d3gkJbff+KZVQA7tPtjBCm8UilJsHg=
+	t=1711388633; cv=none; b=VDb++WeFDsdZ95FqMFTaD1KQLkexxhm5wF7N5v3SiGTSOZqrmRLZekUNO8aLIR+jH/8JGzp8G5GRzkZxyyhEtPmtk1CycU/Gu2RV/s/NC+IK409RAnMdON5aZu0FDCSwQjHi7oPymOWTa31faxryPCZie7Wh0MI9twnNVbFJvZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711388418; c=relaxed/simple;
-	bh=smFYDSH9B5YUSASHKg2uLIGlrU36nGJWynip0XRYKPI=;
+	s=arc-20240116; t=1711388633; c=relaxed/simple;
+	bh=7YJ8xLb1+mdXej6sC8h+bM6GjrVQfPa+4fUIfZlmK8I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dqBgecYTgyyPKNr60UnV7Tw0+sYksYTrIBEiaxVH22yJiRAHPx9E3IYoVSGesqGx6r9eEvs0vJElE2wH/AgYpG0buj3n5iupXrSr9X+3nuDfTotMdwMrD02gheH/rLySI923jH0QdcGtsoQFraaNi8m9ML7ty95yUvUiEbBblZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ehuk.net; spf=pass smtp.mailfrom=ehuk.net; dkim=pass (2048-bit key) header.d=ehuk.net header.i=@ehuk.net header.b=qiN0qqHF; arc=none smtp.client-ip=78.40.151.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ehuk.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ehuk.net
-Received: from [10.0.5.25] (tv.ehuk.net [10.0.5.25])
-	by james.steelbluetech.co.uk (Postfix) with ESMTP id BB093BFC18;
-	Mon, 25 Mar 2024 17:32:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 james.steelbluetech.co.uk BB093BFC18
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ehuk.net; s=default;
-	t=1711387962; bh=jEA45GxcfxPwikJuID7WzQ1xMUTGgZSJQcil0hACI9k=;
-	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qiN0qqHFeISwY8Sr7Bw5ZDZ1UzFARHSWUL9hgVxRlFXNynwWIfNaD7QCctSJPn4YA
-	 D0OlxS85ufFXs9iY3qkWzDmLJDZSUg6iRqSIjGe6y+Lf507qyIQrFSbV9qv2U2Ogm/
-	 WXy17rBbnyluHMPqm80ZmnaVcuhAepO8E+NqUDtkWgaso2wJrL0uW4etdpzyTaMDGo
-	 1LZN7QYfa3h7gxcKxvcO1ogZQajUW1ljLi6QBbS4LmyHeJGyygsMDauMTv7yqSbh5e
-	 DeLSLmXSVlAR6heJXAOfkF7w1+QUp3wkT3/OqUGPiNx30iCZJw0BW4anlaNPsIpfKd
-	 6KW1OfKSZF+pg==
-Message-ID: <30b3729c-d8ab-4254-8cc4-b5ca3bbe1a59@ehuk.net>
-Date: Mon, 25 Mar 2024 17:32:42 +0000
+	 In-Reply-To:Content-Type; b=cILvcf19zmOKInzmZMGv8TlYd9jiAFFuLpg0oh4iP1AT7nxtXI0rq/0dY8stlbo0sMluSy4E1vU47g4FRybE9UuJ0IrzDoatAVeDsRWN+LJJMrEIGivpxdLfxMkPTfpBJyEeSfZUOkTxZ5kBbZ6eX1GB/1nAWo7mZNiFZReDY7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gY5iRAbU; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6ddf26eba3cso3203203a34.0
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 10:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711388631; x=1711993431; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hBroIUnK/6NwPBkeGi/EpBPRMqiGdh9Ka1UHUq5GsTE=;
+        b=gY5iRAbU/3rDcFV/yfxjXds4nlsCEZDpL5fP22Zkn+PtH7QDbT5m6bI6dnJXkbu+0q
+         A+ATHP5OMurxQAwnbPOHhlZuPH5gE1RaTejMxIISLkusy1Hl8p+hvbYf5kHrENxgGXh0
+         a3q/9CzTnXgLO3Ock7uaB3EpU+2ytlbsQNgeJp8QWK9M+2gqNwSf8AvzWSd4TLY3WMIl
+         XQXSJ6XgKM1xrQKDuDl+Wx/WdkV0uYBYS41KiU5upAjFxqdmSHZjzk4w9+9XUNZz58kH
+         WM0hSXNrCqLtHH/Y0O8DKZnnVGR2qcpQbrIX8okVH4/CjrrsIH+cxVHUwYftZW1MxTtp
+         CMLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711388631; x=1711993431;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hBroIUnK/6NwPBkeGi/EpBPRMqiGdh9Ka1UHUq5GsTE=;
+        b=Ktgc06ApHQNMk2Gx1ZCGMq8//K0qKG4HDKmH9/vSw+LdJwieKfZMmJ6gAvUsnFjHR/
+         MWck+Dpv3V+GVP80L9SQ371AYievE10u5tUJQ2F4ixjaFH9/uD6xOd8JqjZi0OeOTuJA
+         SPkEu1laibsbJ5BeHW10TXqnZgvS1tyWnTOPWe5ddrst2/GeVT8DgUFGg79uJ8cfdiap
+         vf7PFdGrHLOk52sIowe9rV3H/WgK54NWY+a9Ehq4tpt0Mev4jaCDQ/erR20mIdLsF+QM
+         v22/mOqwuYRxyT7pVJ0yQ30HRLTFLQUh/JKvM9311TDRmN8Op/uMqCgodtT8VQLPb8rA
+         wVew==
+X-Forwarded-Encrypted: i=1; AJvYcCVfLiaNZCnbF0SQ3791aP6FDDnFJh7KJn46qr7hMyJtncVmfiFmsjR8kTx+jOmcjZMabJpHWXqVhPPY+GRYpY2G6K61sUUP
+X-Gm-Message-State: AOJu0YxYGPZ8D+ZVr6RiTzWk/A+0cSwMiOZyI2+op2Ul7UoTR3TGJNhS
+	DwZ4PvwSMXjXVqpYjvugD/cU7N9L8x+HC65hArVYA2EcRRvmtxtBoWgoNlzvJzA=
+X-Google-Smtp-Source: AGHT+IEOjTDCJtTUMROYN/GXr/M9nKUsy9+AuRcx+ouebVC3sCr8Xdg+0PuDiib3kTsRF6Dd2i9zDg==
+X-Received: by 2002:a9d:4e8c:0:b0:6e6:a2ea:5488 with SMTP id v12-20020a9d4e8c000000b006e6a2ea5488mr9488667otk.35.1711388631136;
+        Mon, 25 Mar 2024 10:43:51 -0700 (PDT)
+Received: from [192.168.17.16] ([148.222.132.226])
+        by smtp.gmail.com with ESMTPSA id v20-20020a056830141400b006e6e348aa86sm111815otp.41.2024.03.25.10.43.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 10:43:50 -0700 (PDT)
+Message-ID: <56d3285a-ed22-44bd-8c22-ce51ad159a81@linaro.org>
+Date: Mon, 25 Mar 2024 11:43:48 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,133 +76,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: eddie@ehuk.net
-Subject: Re: [PATCH 6.1 000/451] 6.1.83-rc1 review
+Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
  linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de
-References: <20240324231207.1351418-1-sashal@kernel.org>
-Content-Language: en-GB
-From: Eddie Chapman <eddie@ehuk.net>
-In-Reply-To: <20240324231207.1351418-1-sashal@kernel.org>
+ lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de,
+ samitolvanen@google.com
+References: <20240325120003.1767691-1-sashal@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20240325120003.1767691-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang
+Content-Transfer-Encoding: 8bit
 
-On 24/03/2024 23:04, Sasha Levin wrote:
-> 
-> This is the start of the stable review cycle for the 6.1.83 release.
-> There are 451 patches in this series, all will be posted as a response
+Hello!
+
+On 25/03/24 6:00 a. m., Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.7.11 release.
+> There are 707 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Tue Mar 26 11:11:59 PM UTC 2024.
+> Responses should be made by Wed Mar 27 12:00:02 PM UTC 2024.
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.82
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.7.y&id2=v6.7.10
 > or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
 > and the diffstat can be found below.
 > 
 > Thanks,
 > Sasha
 
-Greg & Sasha, thanks for all your hard work.
+We see *lots* of new warnings in RISC-V with Clang 17. Here's one:
 
-Just to report I upgraded eight x86-64 machines from a 5.15.x kernel to 
-6.1.82 plus all patches in the stable queue as of Saturday 23rd March 
-11pm GMT. That's the vast majority of this series as Greg & Sasha have 
-dropped a dozen or so and added 68 new since I built my kernel. Ha ha 
-what fun living on the edge :-)
+-----8<-----
+   /builds/linux/mm/oom_kill.c:1195:1: warning: unused function '___se_sys_process_mrelease' [-Wunused-function]
+    1195 | SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /builds/linux/include/linux/syscalls.h:221:36: note: expanded from macro 'SYSCALL_DEFINE2'
+     221 | #define SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name, __VA_ARGS__)
+         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /builds/linux/include/linux/syscalls.h:231:2: note: expanded from macro 'SYSCALL_DEFINEx'
+     231 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /builds/linux/arch/riscv/include/asm/syscall_wrapper.h:81:2: note: expanded from macro '__SYSCALL_DEFINEx'
+      81 |         __SYSCALL_SE_DEFINEx(x, sys, name, __VA_ARGS__)                         \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /builds/linux/arch/riscv/include/asm/syscall_wrapper.h:40:14: note: expanded from macro '__SYSCALL_SE_DEFINEx'
+      40 |         static long ___se_##prefix##name(__MAP(x,__SC_LONG,__VA_ARGS__))
+         |                     ^~~~~~~~~~~~~~~~~~~~
+   <scratch space>:30:1: note: expanded from here
+      30 | ___se_sys_process_mrelease
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning generated.
+----->8-----
 
-All are running fine 24+ hrs later, no noticeable issues, nothing 
-untoward in dmesg.
+Bisection points to:
 
-They are:
-6 x custom AMD Ryzen servers
-1 x Intel IvyBridge era server
-1 x Intel Skylake era laptop
+   commit 9b4a60bd0b1fa521e786c809ec8815291f150c47
+   Author: Sami Tolvanen <samitolvanen@google.com>
+   Date:   Mon Mar 11 19:31:44 2024 +0000
 
-All running various workloads and with a mixture of addon 
-network/sas/sata/graphics cards from a variety of manufacturers. Some 
-uefi booted, some bios booted.
+       riscv: Fix syscall wrapper for >word-size arguments
+       
+       [ Upstream commit a9ad73295cc1e3af0253eee7d08943b2419444c4 ]
 
-Also zero warnings in the build output using gcc 13.2.1.
+Reverting that patch makes the (300+) warnings disappear.
 
-Just to be clear, the 68 patches listed below, which are in this series, 
-were NOT in the kernel I tested.
+Reproducer:
 
-Eddie
+   tuxmake --runtime podman --target-arch riscv --toolchain clang-17 --kconfig allnoconfig --kconfig-add rv32_defconfig LLVM=1
 
-arm64-dts-broadcom-bcmbca-bcm4908-drop-invalid-switc.patch
-asoc-rockchip-i2s-tdm-fix-inaccurate-sampling-rates.patch
-bpf-report-rcu-qs-in-cpumap-kthread.patch
-comedi-comedi_test-prevent-timers-rescheduling-during-deletion.patch
-dm-address-indent-space-issues.patch
-dm-integrity-align-the-outgoing-bio-in-integrity_rec.patch
-dm-integrity-fix-a-memory-leak-when-rechecking-the-d.patch
-dm-io-support-io-priority.patch
-drm-fix-drm_fixp2int_round-making-it-add-0.5.patch
-hsr-fix-uninit-value-access-in-hsr_get_node.patch
-hsr-handle-failures-in-module-init.patch
-hwtracing-hisi_ptt-move-type-check-to-the-beginning-.patch
-ipv4-raw-fix-sending-packets-from-raw-sockets-via-ip.patch
-kconfig-fix-infinite-loop-when-expanding-a-macro-at-.patch
-net-bnx2x-prevent-access-to-a-freed-page-in-page_poo.patch
-net-dsa-mt7530-fix-handling-of-all-link-local-frames.patch
-net-dsa-mt7530-fix-link-local-frames-that-ingress-vl.patch
-net-dsa-mt7530-prevent-possible-incorrect-xtal-frequ.patch
-net-ethernet-mtk_eth_soc-fix-ppe-hanging-issue.patch
-net-mediatek-mtk_eth_soc-clear-mac_mcr_force_link-on.patch
-net-octeontx2-use-alloc_ordered_workqueue-to-create-.patch
-net-phy-fix-phy_read_poll_timeout-argument-type-in-g.patch
-net-report-rcu-qs-on-threaded-napi-repolling.patch
-net-sched-taprio-proper-tca_taprio_tc_entry_index-ch.patch
-net-veth-do-not-manipulate-gro-when-using-xdp.patch
-netfilter-nf_tables-do-not-compare-internal-table-fl.patch
-netfilter-nft_set_pipapo-release-elements-in-clone-o.patch
-nouveau-reset-the-bo-resource-bus-info-after-an-evic.patch
-nvme-add-the-apple-shared-tag-workaround-to-nvme_all.patch
-nvme-fix-reconnection-fail-due-to-reserved-tag-alloc.patch
-nvme-only-set-reserved_tags-in-nvme_alloc_io_tag_set.patch
-octeontx2-af-add-mbox-for-cpt-lf-reset.patch
-octeontx2-af-add-mbox-to-return-cpt_af_flt_int-info.patch
-octeontx2-af-optimize-cpt-pf-identification.patch
-octeontx2-af-recover-cpt-engine-when-it-gets-fault.patch
-octeontx2-af-use-matching-wake_up-api-variant-in-cgx.patch
-octeontx2-af-use-separate-handlers-for-interrupts.patch
-octeontx2-detect-the-mbox-up-or-down-message-via-reg.patch
-octeontx2-pf-send-up-messages-to-vf-only-when-vf-is-.patch
-octeontx2-pf-use-default-max_active-works-instead-of.patch
-packet-annotate-data-races-around-ignore_outgoing.patch
-rcu-add-a-helper-to-report-consolidated-flavor-qs.patch
-rds-introduce-acquire-release-ordering-in-acquire-re.patch
-rds-tcp-fix-use-after-free-of-net-in-reqsk_timer_han.patch
-remoteproc-stm32-fix-incorrect-optional-pointers.patch
-remoteproc-stm32-fix-incorrect-type-assignment-retur.patch
-remoteproc-stm32-fix-incorrect-type-in-assignment-fo.patch
-remoteproc-stm32-use-correct-format-strings-on-64-bi.patch
-rtc-mt6397-select-irq_domain-instead-of-depending-on.patch
-s390-vtime-fix-average-steal-time-calculation.patch
-sched-fair-take-the-scheduling-domain-into-account-i.patch
-selftests-forwarding-fix-ping-failure-due-to-short-t.patch
-serial-8250_exar-don-t-remove-gpio-device-on-suspend.patch
-serial-max310x-fix-syntax-error-in-irq-error-message.patch
-soc-fsl-dpio-fix-kcalloc-argument-order.patch
-spi-spi-mt65xx-fix-null-pointer-access-in-interrupt-.patch
-staging-greybus-fix-get_channel_from_mode-failure-pa.patch
-tcp-fix-new_syn_recv-handling-in-inet_twsk_purge.patch
-tcp-fix-refcnt-handling-in-__inet_hash_connect.patch
-tty-serial-samsung-fix-tx_empty-to-return-tiocser_te.patch
-tty-vt-fix-20-vs-0x20-typo-in-escsiignore.patch
-usb-gadget-net2272-use-irqflags-in-the-call-to-net22.patch
-usb-phy-generic-get-the-vbus-supply.patch
-vdpa-mlx5-allow-cvq-size-changes.patch
-vdpa_sim-reset-must-not-run.patch
-wireguard-receive-annotate-data-race-around-receivin.patch
-x86-efistub-clear-decompressor-bss-in-native-efi-ent.patch
-x86-efistub-don-t-clear-bss-twice-in-mixed-mode.patch
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Greetings!
+
+Daniel Díaz
+daniel.diaz@linaro.org
+
 
