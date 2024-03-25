@@ -1,157 +1,108 @@
-Return-Path: <stable+bounces-32135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2778899F3
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 11:20:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F50889F20
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 13:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2831F3640C
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 10:20:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5428B2C5EED
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 12:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C2313E02E;
-	Mon, 25 Mar 2024 05:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="PxbrELzz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98E715ECDA;
+	Mon, 25 Mar 2024 07:31:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0319141997;
-	Mon, 25 Mar 2024 02:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B55184322;
+	Mon, 25 Mar 2024 03:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711332415; cv=none; b=juNYLh7N+0r7jqn7Tx4HV0ohr44Ktx1kB0maVowF+oh+qn/v67qgrc2KFEajeM/wdNbxAqJ7A5VlUHHufnmiM/mdvcK2p3Btc/bv2ZGxAdbS1Km8JtdhTOH0MWns0ny1iqUHZKck1GeHyhsl3sHyhe8XDSLvjz/PMZAG6X0bdfw=
+	t=1711337815; cv=none; b=ZeEbhrSB2Of45wZ+qZm7sA6gjMOMiub9UIh0kplosLpg/rEFJqQslPf3KxXV0zqZtZbltQwkkjGTg59p1wz7NxF+u2q2qXlvZIyR9tLBiePi50tgg0/qhBWNiZnl+5I0cvo9MpdfJ5BcfdoiBV95Nrt85K1mnOUsuxjWOIvo4Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711332415; c=relaxed/simple;
-	bh=th+lOl8TaguURs7T4/qevNJns4c251FfNsGSkCJOYCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SKSnqvKpmd2WphB35xhJxMyfCZCBd6UBeSgfZc8OcLPAej9CROlxWH0otMnR/5oMZAmdT+GE6i6NWJ3L6VtCNJ3psO3Gt9LFUYJ4hgT1zM91iB605BsxN2Av3l7tmiyLM1QMMQ0ewXNmw2f/xkQD28P99ne379aYiVihyDJSavQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=PxbrELzz; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42P1WPnj029411;
-	Mon, 25 Mar 2024 02:03:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : content-type : in-reply-to
- : mime-version; s=pps0720;
- bh=dxof5wf3hIra4YnNU29jynn3K8tspUO9+ofjFnVhJ5I=;
- b=PxbrELzzeWv6d8P8+veX1uY4xFJMBZruTXQf/CdNJVNOsrMIbwn77mIMdxNGwG9fzH1r
- Mo/b72iMhvQuY0gx6LtqpdlZIEaxnGqUr69bqJ/Tlfhk7ZduKw5fQJtgVs0rAvFH3GZ7
- rthx+bY8U+TNSKgBqyV8tMOhMcHW4J/ibfDiUUgQe1haXK1FGyssLoWu1tPH/KxT5Nlj
- XxOHp6Y/dxlPGLh69TlsJsZI/maf+imlhB8zmY8eRbR756IsjXwojLt/98e9U/pJ1q65
- wV1t326RyhyHm027t1FiYXm2468KT2PZaBLCX2YlJdcclJg0ubLO17UGA4JOaS8KgDVO dw== 
-Received: from p1lg14880.it.hpe.com ([16.230.97.201])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3x1nrhc41k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Mar 2024 02:03:52 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id ADD96800349;
-	Mon, 25 Mar 2024 02:03:41 +0000 (UTC)
-Received: from hpe.com (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id BF9F2800EFE;
-	Mon, 25 Mar 2024 02:03:36 +0000 (UTC)
-Date: Sun, 24 Mar 2024 21:03:34 -0500
-From: Russ Anderson <rja@hpe.com>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
-        Eric Hagberg <ehagberg@gmail.com>, Simon Horman <horms@verge.net.au>,
-        Eric Biederman <ebiederm@xmission.com>, Dave Young <dyoung@redhat.com>,
-        Sarah Brofeldt <srhb@dbc.dk>, Dimitri Sivanich <sivanich@hpe.com>
-Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
- except on UV platform.
-Message-ID: <20240325020334.GA10309@hpe.com>
-Reply-To: Russ Anderson <rja@hpe.com>
-References: <20240322162135.3984233-1-steve.wahl@hpe.com>
- <ZgABC1oQ9YJW6Bw3@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZgABC1oQ9YJW6Bw3@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-GUID: cE3LkNmzgzy5T9RG2lGAzoCUF_seZTCo
-X-Proofpoint-ORIG-GUID: cE3LkNmzgzy5T9RG2lGAzoCUF_seZTCo
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1711337815; c=relaxed/simple;
+	bh=4lL5XnMf7GNTkV3kYDbLRsz5MXFmRO+PFX0TJ+76mGg=;
+	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=U+ge3BOIP2afoy0/rd/dw/sF+ReGya2AYNsN5MsCOTvoedJQwM6KWHFyRFXjlPZ+5TDByXOtmdzpiSUHPh/W6hRTZzzweQ2IwENQKmAXtvSjlFZOU242sDjUwmVRbjiD9fvvY9XTKtwJ2vWyluiTd07in+KRIh39ZD7kTZ1ezfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V2z7S5nsKz1h3fw;
+	Mon, 25 Mar 2024 11:34:12 +0800 (CST)
+Received: from dggpemd200004.china.huawei.com (unknown [7.185.36.141])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2A3421A016C;
+	Mon, 25 Mar 2024 11:36:50 +0800 (CST)
+Received: from [10.174.179.24] (10.174.179.24) by
+ dggpemd200004.china.huawei.com (7.185.36.141) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 25 Mar 2024 11:36:49 +0800
+Subject: Re: [PATCH stable-5.10] mm/memory-failure: fix an incorrect use of
+ tail pages
+To: Matthew Wilcox <willy@infradead.org>, <stable@vger.kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240307124841.2838010-1-liushixin2@huawei.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Sasha Levin
+	<sashal@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Naoya Horiguchi
+	<n-horiguchi@ah.jp.nec.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+From: Liu Shixin <liushixin2@huawei.com>
+Message-ID: <026db58d-feea-8191-616a-3e6dca592786@huawei.com>
+Date: Mon, 25 Mar 2024 11:36:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-24_18,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- spamscore=0 malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403250010
+In-Reply-To: <20240307124841.2838010-1-liushixin2@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemd200004.china.huawei.com (7.185.36.141)
 
-On Sun, Mar 24, 2024 at 11:31:39AM +0100, Ingo Molnar wrote:
-> 
-> * Steve Wahl <steve.wahl@hpe.com> wrote:
-> 
-> > Some systems have ACPI tables that don't include everything that needs
-> > to be mapped for a successful kexec.  These systems rely on identity
-> > maps that include the full gigabyte surrounding any smaller region
-> > requested for kexec success.  Without this, they fail to kexec and end
-> > up doing a full firmware reboot.
-> > 
-> > So, reduce the use of GB pages only on systems where this is known to
-> > be necessary (specifically, UV systems).
-> > 
-> > Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-> > Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-> > Reported-by: Pavin Joseph <me@pavinjoseph.com>
-> 
-> Sigh, why was d794734c9bbf marked for a -stable backport? The commit 
-> never explains ...
+Hi,
 
-I will try to explain, since Steve is offline.  That commit fixes a
-legitimate bug where more address range is mapped (1G) than the
-requested address range.  The fix avoids the issue of cpu speculativly
-loading beyond the requested range, which inludes specutalive loads
-from reserved memory.  That is why it was marked for -stable.
+After backport commit c79c5a0a00a9 ("mm/memory-failure: check the mapcount of the precise page"),
 
-> If it's broken, it should be reverted - instead of trying to partially 
-> revert and then maybe break some other systems.
+I got an error message as written on the patch. The problem can be fixed by the patch or just revert.
 
-Three people reported that mapping only the correct address range
-caused problems on their platforms.  https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-Steve and several people helped debug the issue.  The commit itself
-looks correct but the correct behavior causes some side effect on
-a few platforms.  Some memory ends up not being mapped, but it is not
-clear if it is due to some other bug, such as bios not accurately
-providing the right memory map or some other kernel code path did
-not map what it should.  The 1G mapping covers up that type issue.
+Now I prefer to revert because I think it is related to folio and no impact in stable, or maybe I'm wrong.
 
-Steve's second patch was to not break those platforms while leaving the
-fix on the platform detected the original mapping problem (UV platform).
 
-> When there's boot breakage with new patches, we back out the bad patch 
-> and re-try in 99.9% of the cases.
+Thanks,
 
-Steve can certainly merge his two patches and resubmit, to replace the
-reverted original patch.  He should be on in the morning to speak for
-himself.
 
-Thanks
--- 
-Russ Anderson,  SuperDome Flex Linux Kernel Group Manager
-HPE - Hewlett Packard Enterprise (formerly SGI)  rja@hpe.com
+On 2024/3/7 20:48, Liu Shixin wrote:
+> When backport commit c79c5a0a00a9 to 5.10-stable, there is a mistake change.
+> The head page instead of tail page should be passed to try_to_unmap(),
+> otherwise unmap will failed as follows.
+>
+>  Memory failure: 0x121c10: failed to unmap page (mapcount=1)
+>  Memory failure: 0x121c10: recovery action for unmapping failed page: Ignored
+>
+> Fixes: 70168fdc743b ("mm/memory-failure: check the mapcount of the precise page")
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> ---
+>  mm/memory-failure.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index f320ff02cc19..dba2936292cf 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1075,7 +1075,7 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
+>  				unmap_success = false;
+>  			}
+>  		} else {
+> -			unmap_success = try_to_unmap(p, ttu);
+> +			unmap_success = try_to_unmap(hpage, ttu);
+>  		}
+>  	}
+>  	if (!unmap_success)
+
 
