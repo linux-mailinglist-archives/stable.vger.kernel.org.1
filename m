@@ -1,160 +1,197 @@
-Return-Path: <stable+bounces-32202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D90688AA5C
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:56:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AB888AA65
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C042A7039
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E26F1C3952F
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E513C678;
-	Mon, 25 Mar 2024 15:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1DE13D628;
+	Mon, 25 Mar 2024 15:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gbTVfxZc"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="W6nC0Pe6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEB213C82C
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 15:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A75DF49;
+	Mon, 25 Mar 2024 15:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711380062; cv=none; b=qZMJMZJVfbirHPamR8ZvBJpp2cjcgo1Hm4/qwJYNKptCctj2IZfwEN1WL/OVCyw10KJFtXoKYMU1UZtYZCurQIehKIm4z98xD+2rbx+k2HF7fmQ4dybGm/KBkcPc11eDDIWd8bupUNF6oYcBi7uVt32NeSb0Z3ZI9+01C61faPw=
+	t=1711380121; cv=none; b=DftLYD6jKmH+H0PL5pYWJyPh2RZKRsqUGU2F7v0MLHA/+slIAVcxT2qziOC1S03YxgbnFAAdgd9o3WLxuYrpGD+FlP7uomF/lOb6kDxc8Y5CklR1ekrenUn4mDZlbJn3JVUMZ9Qg2c8RyuyREmaSxOQaMAwFJd6GsmlVilXD9d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711380062; c=relaxed/simple;
-	bh=yuP0LootthFVjZqLZ7OhKsvkRtgx0FUVczcscmPg1So=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dE7hdGOW3YDur7oDR3OfdSmHalKuE2XQ/sZGUVjoxdB/bGGBe6n3F+3pzFuv1mrMtCyHwWAIIDQ9ZVieYYZUqKBGYYF2/qOA3i9Ve68Q/26InylqaeGGLBDwo3dbFoFS6ecv7OhI8crnz7eBvq2A/x7bHBvc2lWHXpBGd8LJst0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gbTVfxZc; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5d3912c9a83so2004643a12.3
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 08:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711380060; x=1711984860; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sHq8iFwza+iunIPn5PLdl3BksOKsh6oEq+D/J9zc1k4=;
-        b=gbTVfxZc/Cwk7ApLcp4uaKeQ7CWEC7taxwaDF94WOwUE071Ri/4ccri+4QwsNeUVOy
-         6sF88SFeMPp8mOcoLc/6ti7lNNjUWfFHeuYF5TWfyppd08SDX14DYSwG1mpiUtLf8SJF
-         Po+EbrRteHx9iCFE4exMvX1pu9/SHzpNekijeNo4eWfeVJf7QPR+DOIYUL8g8IsziXZd
-         uP+a7SUyOzLl4DSyYho/xXOaFh0TffR6e2SQCt5aUUJpTqOLUqdnezK7qgGtBATi90ZD
-         rZ/3hkKReQmdgs+VFuyxgNsZSUiRRS+/bZNRYt2x7KuVCew4vC7Y87yYEVud4AP4623H
-         reLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711380060; x=1711984860;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sHq8iFwza+iunIPn5PLdl3BksOKsh6oEq+D/J9zc1k4=;
-        b=UTszW6oKcWeu2641MXMohnp6ybX43OILHMjcF4TX1O+kztIXovFBrxdWkj2/g7Ae+C
-         hHXsAPMuTwqDQF32rvffjwdYcqtT62FGy+/Arm//C6cCu0/L5hqrAkqCv5/pF2ZzlvYL
-         ZX/yBRQD0MdY3w0MUzeLE533T9Ak/H98eGBTeEdivZNotcyzg4WD0GZntmuVMTIiMJIO
-         WOQoSv/QBDfb45gLVw57PBmzhegaIKKaSR4ug05THHYsgFvFBcXktOFw/uc/ae+JrRgX
-         +wICmJ2EaRNuNu61qeV8lRgF5OxxJbm8bs6NheDvr+NpeLei9ckCFwfGjk9xyVX8jJOH
-         Hhmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXKGGo7h8yC+6VYtD58rhJZ9RqTQ/kAoLG4x1eT2k+cwIPGzWLIoNv+SDyXSP0iHnTPu3lprIiFQSHJmrLGpG0GkW9qPWC+
-X-Gm-Message-State: AOJu0YwAXy0OE2v9AKZ/eLgHdhSBWfTQJBWIY5YWpLUozHzVYz9zUxeC
-	GZoCePyxboJNOVxKg5EdgEfSFgfD4NuKqezu9DZNDCLctUYDBesYCLoX3V35y6aE+fO2+Oosun6
-	F4LDvT5NH+BlQGSJnG/ejIRp+6Sa4/FGNB6iiDA==
-X-Google-Smtp-Source: AGHT+IHUqjE6K8PE/BfJg5LdFdqFJY793Odjj5Ln/S88wAfb3Da691z4eQcIZhdfiHjSynzDc2YkPCsBlD8T2UgSdio=
-X-Received: by 2002:a17:90a:7409:b0:299:73b3:cf15 with SMTP id
- a9-20020a17090a740900b0029973b3cf15mr5120956pjg.12.1711380059991; Mon, 25 Mar
- 2024 08:20:59 -0700 (PDT)
+	s=arc-20240116; t=1711380121; c=relaxed/simple;
+	bh=WKicl9RpGDu1gJ6HqIzRdJp8b9byCb1GpL96zLyvR+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PAtAJeKBXPWbOsZjsakCb1dsCeIOQwYW01XBoUsxWKbTegEPX603VjSwJ04vrvXaGRHXNOgjLn/fhaQ+iE4nxg+HPqDGcS7nDBHYdazKJLa7pQ16RCnkUsanZSOmNumkIF3vbCZ/HzPrT2QUaHHNNuelMxZXDuVbhbYY2FZNSGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=W6nC0Pe6; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id CBE0AFF80F;
+	Mon, 25 Mar 2024 15:21:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711380116;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UpWR4WCDuNDYnnhlODtqNwmnfIhRuBZf4UaQrvurOwU=;
+	b=W6nC0Pe6py8mNJRQ5DN90Xo92lsaTVdsFAtCuxacVR5zoQEXtgQ5CKY9b1PvN2UIVjn50/
+	asyf2aSpS/JBeQTgfqQNFux2wwum1gxmjP2hpC43U5PoxTvor5QxMpw0nPuWwRLw4hz1VG
+	/v8SRnlpoL/DGg8vaVJ31nsxkgvcO+q1K5S8vAxK21FIenNqhfH7ab6nPItUuvhP4gsf59
+	xL6IFtmEbmeSAro6/reBkPlTdu6f9lIgH5Xj2m28Gr49FOIYbPN/Wj95qyw8GgXaHhG6Ip
+	8jIHq9KfcnMaDsHGqrQh/ZeKr7qyXkF6/vk/2fGvZJsf3TsVi0trVrjicAvxwA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Saravana Kannan <saravanak@google.com>
+Cc: Lizhi Hou <lizhi.hou@amd.com>,
+	Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
+Date: Mon, 25 Mar 2024 16:21:25 +0100
+Message-ID: <20240325152140.198219-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240325152140.198219-1-herve.codina@bootlin.com>
+References: <20240325152140.198219-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313164640.616049-1-sashal@kernel.org> <cd76c1d0-9622-4a05-9e98-51824bec25bc@linaro.org>
-In-Reply-To: <cd76c1d0-9622-4a05-9e98-51824bec25bc@linaro.org>
-From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date: Mon, 25 Mar 2024 09:20:48 -0600
-Message-ID: <CAEUSe78F1Ab0ZWE+ZcE5=1HgZ+GFiDJKL=DmKUWwcdWOr4yFHA@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, tzimmermann@suse.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Mon, 25 Mar 2024 at 00:55, Daniel D=C3=ADaz <daniel.diaz@linaro.org> wro=
-te:
-> Hello!
->
-> On 13/03/24 10:45 a. m., Sasha Levin wrote:
-> > This is the start of the stable review cycle for the 5.10.213 release.
-> > There are 73 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri Mar 15 04:46:39 PM UTC 2024.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
-table-rc.git/patch/?id=3Dlinux-5.10.y&id2=3Dv5.10.212
-> > or in the git tree and branch at:
-> >          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta=
-ble-rc.git linux-5.10.y
-> > and the diffstat can be found below.
-> >
-> > Thanks,
-> > Sasha
->
-> We're seeing regressions while building PowerPC with GCC 8 and 12 with pp=
-c6xx_defconfig:
->
-> -----8<-----
->    /builds/linux/drivers/macintosh/via-pmu-backlight.c:22:20: error: 'FB_=
-BACKLIGHT_LEVELS' undeclared here (not in a function)
->       22 | static u8 bl_curve[FB_BACKLIGHT_LEVELS];
->          |                    ^~~~~~~~~~~~~~~~~~~
->    In file included from /builds/linux/include/linux/kernel.h:15,
->                     from /builds/linux/include/asm-generic/bug.h:20,
->                     from /builds/linux/arch/powerpc/include/asm/bug.h:109=
-,
->                     from /builds/linux/include/linux/bug.h:5,
->                     from /builds/linux/include/linux/thread_info.h:12,
->                     from /builds/linux/arch/powerpc/include/asm/ptrace.h:=
-264,
->                     from /builds/linux/drivers/macintosh/via-pmu-backligh=
-t.c:11:
-> ----->8-----
->
-> Bisection points to:
->
->    commit ee550f669e91c4cb0c884f38aa915497bc201585
->    Author: Thomas Zimmermann <tzimmermann@suse.de>
->    Date:   Wed Mar 6 13:28:20 2024 +0100
->        arch/powerpc: Remove <linux/fb.h> from backlight code
->
->
-> Reverting that commit made the build pass again.
->
-> Reproducer:
->
->    tuxmake --runtime podman --target-arch powerpc --toolchain gcc-12 --kc=
-onfig ppc6xx_defconfig
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
->
-> Greetings!
->
-> Daniel D=C3=ADaz
-> daniel.diaz@linaro.org
+The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+introduces a workqueue to release the consumer and supplier devices used
+in the devlink.
+In the job queued, devices are release and in turn, when all the
+references to these devices are dropped, the release function of the
+device itself is called.
 
-Apologies for replying to the wrong email here -- it should have been
-for 5.10.214-rc1. Naresh took care of relaying the information to the
-right place.
+Nothing is present to provide some synchronisation with this workqueue
+in order to ensure that all ongoing releasing operations are done and
+so, some other operations can be started safely.
 
---=20
-ddiaz
+For instance, in the following sequence:
+  1) of_platform_depopulate()
+  2) of_overlay_remove()
+
+During the step 1, devices are released and related devlinks are removed
+(jobs pushed in the workqueue).
+During the step 2, OF nodes are destroyed but, without any
+synchronisation with devlink removal jobs, of_overlay_remove() can raise
+warnings related to missing of_node_put():
+  ERROR: memory leak, expected refcount 1 instead of 2
+
+Indeed, the missing of_node_put() call is going to be done, too late,
+from the workqueue job execution.
+
+Introduce device_link_wait_removal() to offer a way to synchronize
+operations waiting for the end of devlink removals (i.e. end of
+workqueue jobs).
+Also, as a flushing operation is done on the workqueue, the workqueue
+used is moved from a system-wide workqueue to a local one.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Saravana Kannan <saravanak@google.com>
+---
+ drivers/base/core.c    | 26 +++++++++++++++++++++++---
+ include/linux/device.h |  1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 7e3af0ad770a..f2242aadffb0 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+ static void __fw_devlink_link_to_consumers(struct device *dev);
+ static bool fw_devlink_drv_reg_done;
+ static bool fw_devlink_best_effort;
++static struct workqueue_struct *device_link_wq;
+ 
+ /**
+  * __fwnode_link_add - Create a link between two fwnode_handles.
+@@ -533,12 +534,26 @@ static void devlink_dev_release(struct device *dev)
+ 	/*
+ 	 * It may take a while to complete this work because of the SRCU
+ 	 * synchronization in device_link_release_fn() and if the consumer or
+-	 * supplier devices get deleted when it runs, so put it into the "long"
+-	 * workqueue.
++	 * supplier devices get deleted when it runs, so put it into the
++	 * dedicated workqueue.
+ 	 */
+-	queue_work(system_long_wq, &link->rm_work);
++	queue_work(device_link_wq, &link->rm_work);
+ }
+ 
++/**
++ * device_link_wait_removal - Wait for ongoing devlink removal jobs to terminate
++ */
++void device_link_wait_removal(void)
++{
++	/*
++	 * devlink removal jobs are queued in the dedicated work queue.
++	 * To be sure that all removal jobs are terminated, ensure that any
++	 * scheduled work has run to completion.
++	 */
++	flush_workqueue(device_link_wq);
++}
++EXPORT_SYMBOL_GPL(device_link_wait_removal);
++
+ static struct class devlink_class = {
+ 	.name = "devlink",
+ 	.dev_groups = devlink_groups,
+@@ -4165,9 +4180,14 @@ int __init devices_init(void)
+ 	sysfs_dev_char_kobj = kobject_create_and_add("char", dev_kobj);
+ 	if (!sysfs_dev_char_kobj)
+ 		goto char_kobj_err;
++	device_link_wq = alloc_workqueue("device_link_wq", 0, 0);
++	if (!device_link_wq)
++		goto wq_err;
+ 
+ 	return 0;
+ 
++ wq_err:
++	kobject_put(sysfs_dev_char_kobj);
+  char_kobj_err:
+ 	kobject_put(sysfs_dev_block_kobj);
+  block_kobj_err:
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 1795121dee9a..d7d8305a72e8 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1249,6 +1249,7 @@ void device_link_del(struct device_link *link);
+ void device_link_remove(void *consumer, struct device *supplier);
+ void device_links_supplier_sync_state_pause(void);
+ void device_links_supplier_sync_state_resume(void);
++void device_link_wait_removal(void);
+ 
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
+-- 
+2.44.0
+
 
