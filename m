@@ -1,77 +1,75 @@
-Return-Path: <stable+bounces-32204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B30E88B504
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 00:10:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8925888AADB
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CFFB21AA1
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8043134348E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86E13EFF6;
-	Mon, 25 Mar 2024 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C528713D28A;
+	Mon, 25 Mar 2024 15:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pXf3FPYp"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kr5O9eyd"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4952C13CA97;
-	Mon, 25 Mar 2024 15:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E580713AA42;
+	Mon, 25 Mar 2024 15:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711380122; cv=none; b=lGTjzmQQ76d94PVUoT5+5hRfxJhjLGOeAyC6Dq0Lfilmautq88YEzKFoI3v381rM6D/KEUMBFvDo0reAs9BazweZ5lk6IrkkBXoP2yi05s+E7zJuYJ63RwDYgeh/26Kp/rjtFT3z4W73+mU2RzTVN0SU+OaaRRwqESlZzdQ9OCg=
+	t=1711381175; cv=none; b=PCBbM+i1qzqpNW5pbXJw08xqMej1xx2JH7GInFCcNS91La/O0v4EB5C9csdkPBLGEx8rA8oX6oqk4i2VKWKMetr28viSJr8bWRv+gspQ3YgwBALs4IgNyDjIi4Yg7pX78KpTQmdjK9OndHtt/T8xBpNYJ5rdfD+EuTWeDzsQ/SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711380122; c=relaxed/simple;
-	bh=irAAEUcrV7xB4jx4nOrL/PVBhqWchwYDIeJsAg7Sbj0=;
+	s=arc-20240116; t=1711381175; c=relaxed/simple;
+	bh=h/gSBHnRArX2VKnlimaWRqSx2BilNLtlrRscxKyKgKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yrw9RuFBaZTvLYW4MS37YCN8PTtFvFpa7vKb8AcqoKsKlqgvWYDuvgfwvGNRBTox4dHmKDDay3VPzc9U/BsdRGIntoxwKI3BoGrvmA/gmE+0T9fTuuEFiKq28MYFO0OXKvV3yDywpl2wSg6Vq/VHzVQR0XAidlSldf9iPTEYSzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pXf3FPYp; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version; b=YtaLLf5DL893BqIuOEheMxAiBMbolKWiKgVY+90h+ZPhMHgTxJ2s3aQ629MoZt1a/6ZRTuayFaUpmFNn8fwNp6OXCcC1Z6WirCZoBX16C4veMewYTansdof9saLShwStZNyktzhdpkbcbrMHIuFWmh07lvotgN+Zd9/kfISOdVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kr5O9eyd; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id BA4F2FF80C;
-	Mon, 25 Mar 2024 15:21:57 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 0B9651BF209;
+	Mon, 25 Mar 2024 15:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711380118;
+	t=1711381169;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FQr/k0s/kJSMD8sx4HhB7DuZAab9W+v4kyea1IFYzds=;
-	b=pXf3FPYpsieWAC0uHiLlYblaEjvpxd0eCYtiKvgub243wBLecvqcb3NLlGPKHG3oW2kRYl
-	W8Vat7B94mhIYuEjvjrFI3slIFbUSWN2q7msRTsyRP/whf3Nqc3dlLx9/ghJP/usPBKi5n
-	MyBWc03pJkDKzh1ocH37lFDAa1E93RpTFVM+SZN7CPiz8FKi0KDrSXVdwVoONJzHUBjsph
-	9gv1Ev6C/tGOyTbVhkiE1zAxotBQonTXin0kXmURg/jG65FoSNtXLIXapElOEGuIP6Knuv
-	pz5q33xYLlybq1+61DAZAvijHap9fgYKw5nYzo99gf2NfqcLgq3MGbhOWwVI3w==
+	bh=HQTGLkwc5FM7PqkTkKIyxo75nWhT3EHFGFIKtu+4NBE=;
+	b=kr5O9eyd+6zYEO56uU+79EPm5uo3S0MZIDxkyj+fOYVQU4lPi2/ID9lCJ8QQFyakvPO0ID
+	ucagZ3o+UBnKsxkeljBg4xvOWw/hpw8AL/k1QWXgcd6afKqX9dfPILD+qXpLlBcdfpF8ZM
+	7/vMR4MErbBW7kgCEPnx3qk9tSbRXxaCRJaENLv3fXZfkaqyruCgLZ18mB55GDVCb9tXA1
+	3RPk/1poj5uGYHHROgzoSpA3N5/20RzZzvaROBNKkSqnzJ/d3BIXjDpBFKGWDv7IAcPEet
+	mUnwRENMB3oEft5vt1x5r6x/fAUo8UplhyqWhAm3Q4BzZ3vYiztN8XXADpcLPA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Saravana Kannan <saravanak@google.com>
-Cc: Lizhi Hou <lizhi.hou@amd.com>,
-	Max Zhen <max.zhen@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Rob Herring <robh@kernel.org>
+Cc: Max Zhen <max.zhen@amd.com>,
 	Sonal Santan <sonal.santan@amd.com>,
 	Stefano Stabellini <stefano.stabellini@xilinx.com>,
 	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
 	Allan Nielsen <allan.nielsen@microchip.com>,
 	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v6 2/2] of: dynamic: Synchronize of_changeset_destroy() with the devlink removals
-Date: Mon, 25 Mar 2024 16:21:26 +0100
-Message-ID: <20240325152140.198219-3-herve.codina@bootlin.com>
+Subject: [PATCH v3 1/2] driver core: Introduce device_{add,remove}_of_node()
+Date: Mon, 25 Mar 2024 16:39:14 +0100
+Message-ID: <20240325153919.199337-2-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240325152140.198219-1-herve.codina@bootlin.com>
-References: <20240325152140.198219-1-herve.codina@bootlin.com>
+In-Reply-To: <20240325153919.199337-1-herve.codina@bootlin.com>
+References: <20240325153919.199337-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,67 +79,128 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: herve.codina@bootlin.com
 
-In the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+An of_node can be duplicated from an existing device using
+device_set_of_node_from_dev() or initialized using device_set_node()
+In both cases, these functions have to be called before the device_add()
+call in order to have the of_node link created in the device sysfs
+directory. Further more, these function cannot prevent any of_node
+and/or fwnode overwrites.
 
-During the step 1, devices are destroyed and devlinks are removed.
-During the step 2, OF nodes are destroyed but
-__of_changeset_entry_destroy() can raise warnings related to missing
-of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2 ...
+When adding an of_node on an already present device, the following
+operations need to be done:
+- Attach the of_node if no of_node were already attached
+- Attach the of_node as a fwnode if no fwnode were already attached
+- Create the of_node sysfs link if needed
 
-Indeed, during the devlink removals performed at step 1, the removal
-itself releasing the device (and the attached of_node) is done by a job
-queued in a workqueue and so, it is done asynchronously with respect to
-function calls.
-When the warning is present, of_node_put() will be called but wrongly
-too late from the workqueue job.
+This is the purpose of device_add_of_node().
+device_remove_of_node() reverts the operations done by
+device_add_of_node().
 
-In order to be sure that any ongoing devlink removals are done before
-the of_node destruction, synchronize the of_changeset_destroy() with the
-devlink removals.
-
-Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
 Cc: stable@vger.kernel.org
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/of/dynamic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/base/core.c    | 74 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h |  2 ++
+ 2 files changed, 76 insertions(+)
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 3bf27052832f..4d57a4e34105 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -9,6 +9,7 @@
- 
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/device.h>
- #include <linux/of.h>
- #include <linux/spinlock.h>
- #include <linux/slab.h>
-@@ -667,6 +668,17 @@ void of_changeset_destroy(struct of_changeset *ocs)
- {
- 	struct of_changeset_entry *ce, *cen;
- 
-+	/*
-+	 * When a device is deleted, the device links to/from it are also queued
-+	 * for deletion. Until these device links are freed, the devices
-+	 * themselves aren't freed. If the device being deleted is due to an
-+	 * overlay change, this device might be holding a reference to a device
-+	 * node that will be freed. So, wait until all already pending device
-+	 * links are deleted before freeing a device node. This ensures we don't
-+	 * free any device node that has a non-zero reference count.
-+	 */
-+	device_link_wait_removal();
-+
- 	list_for_each_entry_safe_reverse(ce, cen, &ocs->entries, node)
- 		__of_changeset_entry_destroy(ce);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 521757408fc0..7e3af0ad770a 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -5127,6 +5127,80 @@ void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
  }
+ EXPORT_SYMBOL_GPL(set_secondary_fwnode);
+ 
++/**
++ * device_remove_of_node - Remove an of_node from a device
++ * @dev: device whose device-tree node is being removed
++ */
++void device_remove_of_node(struct device *dev)
++{
++	dev = get_device(dev);
++	if (!dev)
++		return;
++
++	if (!dev->of_node)
++		goto end;
++
++	sysfs_remove_link(&dev->kobj, "of_node");
++
++	if (dev->fwnode == of_fwnode_handle(dev->of_node))
++		dev->fwnode = NULL;
++
++	of_node_put(dev->of_node);
++	dev->of_node = NULL;
++
++end:
++	put_device(dev);
++}
++EXPORT_SYMBOL_GPL(device_remove_of_node);
++
++/**
++ * device_add_of_node - Add an of_node to an existing device
++ * @dev: device whose device-tree node is being added
++ * @of_node: of_node to add
++ */
++void device_add_of_node(struct device *dev, struct device_node *of_node)
++{
++	int ret;
++
++	if (!of_node)
++		return;
++
++	dev = get_device(dev);
++	if (!dev)
++		return;
++
++	if (dev->of_node) {
++		dev_warn(dev, "Replace node %pOF with %pOF\n", dev->of_node, of_node);
++		device_remove_of_node(dev);
++	}
++
++	dev->of_node = of_node_get(of_node);
++
++	if (!dev->fwnode)
++		dev->fwnode = of_fwnode_handle(of_node);
++
++	if (!dev->p) {
++		/*
++		 * device_add() was not previously called.
++		 * The of_node link will be created when device_add() is called.
++		 */
++		goto end;
++	}
++
++	/*
++	 * device_add() was previously called and so the of_node link was not
++	 * created by device_add_class_symlinks().
++	 * Create this link now.
++	 */
++	ret = sysfs_create_link(&dev->kobj, of_node_kobj(of_node), "of_node");
++	if (ret)
++		dev_warn(dev, "Error %d creating of_node link\n", ret);
++
++end:
++	put_device(dev);
++}
++EXPORT_SYMBOL_GPL(device_add_of_node);
++
+ /**
+  * device_set_of_node_from_dev - reuse device-tree node of another device
+  * @dev: device whose device-tree node is being set
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 97c4b046c09d..1795121dee9a 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1127,6 +1127,8 @@ int device_offline(struct device *dev);
+ int device_online(struct device *dev);
+ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
+ void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
++void device_add_of_node(struct device *dev, struct device_node *of_node);
++void device_remove_of_node(struct device *dev);
+ void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
+ void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+ 
 -- 
 2.44.0
 
