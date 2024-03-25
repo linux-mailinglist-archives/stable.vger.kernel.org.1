@@ -1,122 +1,176 @@
-Return-Path: <stable+bounces-32209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA5188ABF6
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:40:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B7388AC88
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6AB1F342BC
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 531951C33657
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6140F149C55;
-	Mon, 25 Mar 2024 16:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E466D53E2E;
+	Mon, 25 Mar 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sh1wH5Sj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHE1u0cm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142B312D747;
-	Mon, 25 Mar 2024 16:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA64691;
+	Mon, 25 Mar 2024 17:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711385044; cv=none; b=n5eqUGgW8rKoGOvgMcxnvV/CInMWdMjKyqlTUT+dCxZGnWfqeTnMBzlgVpV6Pgse+Cu2VuNL9gM9EndtzzLW9SxRQZlz7rHwdmXRj0yNzPfSCSKTOAlGA7t/+cFHPTRE3pBsTjlWhjUEm35SZjcrQXH/DmMWVUG47nVMPCB+gAw=
+	t=1711386629; cv=none; b=IxkkQlUiq2phVXHQvCd1/4e7rVlpCOLUGafzrMImo1OKQczHrCtqRbZvdIsxCpX/euBD1IxGlDdOrEhHJjCJcNpSoztFFHqvd2y4I6F6U251Q3HEQS4roenK/WfZ0GbXtnNBoEtyBtpwTykXFIiFNyHAZSxdoRMiu7pGSQEGaPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711385044; c=relaxed/simple;
-	bh=84lb1y+TpjyavnkWNmwchbU884Msl6lsLUlg6T6K2bo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kAz/3HgKB/MLXJwEQMu4x5WRB5kzMeFYWMWXawYw5d3Gs3hEsP/FnYmZxderb4n7zSf4O2aYVXESclnYHicBNWTiOlliCrZwqHqj1YMX1BGdGirLOHLIrlz+ALt3flDgHpz+gmoVZ6Qc8U5uLLetNqJvu9wjiiZ3CIBDD+2ojD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sh1wH5Sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEA0C433C7;
-	Mon, 25 Mar 2024 16:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711385043;
-	bh=84lb1y+TpjyavnkWNmwchbU884Msl6lsLUlg6T6K2bo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sh1wH5Sj3Lqqu5aNqrEAtLB2OUcyRZ67//17Djc+hwmqvqKd8UyaqpBP25ZGdE9zW
-	 r1a+IUdVJfByjvFc7kTzQaJIS39mYunvmw842g+D5kj7vlVCBv42uJaoAm+Dsr0Ou5
-	 iJpcD8ICTfFn9MZFrRK85ta0LpLmTo3z4RCTsB35vQlvbuNHd53tybRLWd3HhoHtaF
-	 ZlVr5Z7lI/JDWM9AFgMp/zTjI0zVBSy49uAHIxJpS+SeJkEfjDUizK4ViiAsoIDp0G
-	 2rmo1UEVy8ibTSgPuU13Kg97JgagmhMELwdvpey+yUzeYfSe0kDdQACII+gcCE/O6F
-	 9nUNDizpDDSbA==
-Date: Mon, 25 Mar 2024 11:44:01 -0500
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
-Message-ID: <20240325164401.GA276583-robh@kernel.org>
-References: <20240325152140.198219-1-herve.codina@bootlin.com>
- <20240325152140.198219-2-herve.codina@bootlin.com>
+	s=arc-20240116; t=1711386629; c=relaxed/simple;
+	bh=pFp4gPtTDKexn2npyj7o2olGRBQTvM/rJe6ltASYeT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lEHptirc7LtJLgshslA6DvRXZK3K4X8m1r5QSS1keWjaM2O4EVoSzMHWKopkWU0XZUhc0je60P3EMTmTdYNT1M1PKDP0wXjgUkmKDiXuXz7KWog4/e2kfUTVfXZ2+u4z302OCycn5ITKCnxxCo0RAc6359MK0B5SsBTvxgJsGg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHE1u0cm; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d687da75c4so54141001fa.0;
+        Mon, 25 Mar 2024 10:10:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711386626; x=1711991426; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BwMLgzH6wnxYe3UAd8y0FxS7cIE9QmN5MqBKxy7JrsM=;
+        b=ZHE1u0cmtj8AcCfjJmjmqX1zSzJ9gFU1R93ERiu1LLRpBp5zNTk3nLPH2DoURHwe/T
+         B6p6T1suif3mHqEWb6Ahs0DIbgjR1epaOsHeJ0hb7T3UhKmuhEx1HPpheBESVFG45vA6
+         PgxS4sw4IsGbJ59ABFHHV3PKBtHte9zgU/9M6nsTjktSks86vkACkYX98fyQpU5W1GEf
+         6aTu5tH5ku8C5vNIVM6PK9V2989+Z2JOwLR9wUKEQ8145THOXOK63CmIlZqNo0LXpiM5
+         ItLPmXB9/C7e4iW/zIyxpRMX5ZTHnWN6BRCMDN60GED3ebl1ZFxYN1Vei3qxIGVxvDIt
+         AUTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711386626; x=1711991426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BwMLgzH6wnxYe3UAd8y0FxS7cIE9QmN5MqBKxy7JrsM=;
+        b=LhgCoA3SQdED7jAra2/QXcxVQi9pHTdr0pYI6C1UUcQ1kI4e+1jRsnHvu68JCMJLPL
+         wCWVlBXljXU0QUbAgfBHXlI3fauIk7tAOd3r+Ku9QAALx5dvDw5ZeM75lOKK147a7SXU
+         AVxv8WBnBUEUytjhJtxu2/dP45NEC7n93ayyp4U5dGI5PlYJwBjfumLi73nTYq0ZAmrM
+         Cfy5iAS2eYxI/XobV9VAmfeOoB+QMZrtvzVg87U5RzlJrd2cHLahez878tPtgKGHAN+9
+         /SCDQV41uvf2Wy3/9AUFM6K8YI3zAcJGw3Oz3qTc7g6rXsrf91/jI2UWVei9ezeFxS8G
+         /oww==
+X-Forwarded-Encrypted: i=1; AJvYcCXcXEwQ1xjnoodfHtqz0pxPkM9XqC00rfnB2PJBrXHkY1mOB9ek7SCjG905U861KqdeDNzirECb8ZR0+KZ2qTOkp7NJ6Chmw0NBJwpeMPID6twXRbEL5VpkYiSM53e2kgw0zX40q4MAQvziFtwgrAqQaGiGBHILp6cRwZrznmlDSPZAeIyC
+X-Gm-Message-State: AOJu0Yy5acxVv9rWSrxG61MJjBYM+KF/lhVuduQqsy6q68QzUvb++3i5
+	8yo5WbdIgaKo27reY7RRNPpAG/gbBjRiOS9bZqnugNuOf4DmEoeJZytP1gRYVKGf2ePXzkgdqsr
+	xT81WdydK7hbiYl+LZtzt+/FE5ZdDtIQWj4E=
+X-Google-Smtp-Source: AGHT+IH0uLBDu+CPcEXoaO/ggiaMnED1lydzcIxcbXNL3AtmSh1RdhO63bQbgK7wy1bO4NKMyxlFdYHjUYZCH/wcP3E=
+X-Received: by 2002:a2e:7804:0:b0:2d6:ab62:2eae with SMTP id
+ t4-20020a2e7804000000b002d6ab622eaemr4734300ljc.17.1711386625643; Mon, 25 Mar
+ 2024 10:10:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325152140.198219-2-herve.codina@bootlin.com>
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
+ <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
+ <ZfMStHjwtCT1SW3z@hovoldconsulting.com> <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
+In-Reply-To: <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Mon, 25 Mar 2024 13:10:13 -0400
+Message-ID: <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Johan Hovold <johan@kernel.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
-> The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> introduces a workqueue to release the consumer and supplier devices used
-> in the devlink.
-> In the job queued, devices are release and in turn, when all the
-> references to these devices are dropped, the release function of the
-> device itself is called.
-> 
-> Nothing is present to provide some synchronisation with this workqueue
-> in order to ensure that all ongoing releasing operations are done and
-> so, some other operations can be started safely.
-> 
-> For instance, in the following sequence:
->   1) of_platform_depopulate()
->   2) of_overlay_remove()
-> 
-> During the step 1, devices are released and related devlinks are removed
-> (jobs pushed in the workqueue).
-> During the step 2, OF nodes are destroyed but, without any
-> synchronisation with devlink removal jobs, of_overlay_remove() can raise
-> warnings related to missing of_node_put():
->   ERROR: memory leak, expected refcount 1 instead of 2
-> 
-> Indeed, the missing of_node_put() call is going to be done, too late,
-> from the workqueue job execution.
-> 
-> Introduce device_link_wait_removal() to offer a way to synchronize
-> operations waiting for the end of devlink removals (i.e. end of
-> workqueue jobs).
-> Also, as a flushing operation is done on the workqueue, the workqueue
-> used is moved from a system-wide workqueue to a local one.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> Reviewed-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/base/core.c    | 26 +++++++++++++++++++++++---
->  include/linux/device.h |  1 +
->  2 files changed, 24 insertions(+), 3 deletions(-)
+Hi Johan,
 
-Greg, can you ack and I'll take this series.
+On Mon, Mar 25, 2024 at 9:57=E2=80=AFAM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> Bluetooth Maintainers, what's...
+>
+> On 14.03.24 16:07, Johan Hovold wrote:
+> > On Thu, Mar 14, 2024 at 10:30:36AM -0400, Luiz Augusto von Dentz wrote:
+> >> On Thu, Mar 14, 2024 at 4:44=E2=80=AFAM Johan Hovold <johan+linaro@ker=
+nel.org> wrote:
+> >
+> >>> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
+> >>>
+> >>> Qualcomm Bluetooth controllers like WCN6855 do not have persistent
+> >>> storage for the Bluetooth address and must therefore start as
+> >>> unconfigured to allow the user to set a valid address unless one has
+> >>> been provided by the boot firmware in the devicetree.
+> >>>
+> >>> A recent change snuck into v6.8-rc7 and incorrectly started marking t=
+he
+> >>> default (non-unique) address as valid. This specifically also breaks =
+the
+> >>> Bluetooth setup for some user of the Lenovo ThinkPad X13s.
+> >>>
+> >>> Note that this is the second time Qualcomm breaks the driver this way
+> >>> and that this was fixed last year by commit 6945795bc81a ("Bluetooth:
+> >>> fix use-bdaddr-property quirk"), which also has some further details.
+> >>>
+> >>> Fixes: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode=
+ exists in DT")
+> >>> Cc: stable@vger.kernel.org      # 6.8
+> >>> Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+> >>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> >>
+> >> Well I guess I will need to start asking for evidence that this works
+> >> on regular Linux distros then, because it looks like that is not the
+> >> environment Janaki and others Qualcomm folks are testing with.
+> >>
+> >> What I probably would consider as evidence is bluetoothd logs showing
+> >> that the controller has been configured correctly or perhaps there is
+> >> a simpler way?
+> >
+> > Well, in this case we actually want the controller to remain
+> > unconfigured (e.g. to avoid having every user of the X13s unknowingly
+> > use the same default address).
+> >
+> > I'm not sure why Qualcomm insists on breaking these quirks, but I guess
+> > they just haven't understood why they exist. It's of course convenient
+> > to be able to use the default address during development without first
+> > having to provide an address, but that's not a valid reason to break th=
+e
+> > driver.
+> >
+> > From what I hear the Qualcomm developers only care about Android and I
+> > believe they have some out-of-tree hack for retrieving the device
+> > address directly from the rootfs.
+> >
+> > For the X13s, and as I think I've mentioned before, we have been trying
+> > to get Qualcomm to tell us how to access the assigned addresses that ar=
+e
+> > stored in some secure world storage so that we can set it directly from
+> > the driver. But until we figure that out, users will need to continue
+> > setting the address manually.
+>
+> ...the plan forward here? This to me sounds like a case where a quick
+> revert is the right (interim?) solution, but nevertheless nothing
+> happened for ~10 days now afaics. Or am I missing something?
+>
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+>
+> #regzbot poke
 
-Rob
+I guess the following is the latest version:
+
+https://patchwork.kernel.org/project/bluetooth/list/?series=3D836664
+
+Or are you working on a v5?
+
+--=20
+Luiz Augusto von Dentz
 
