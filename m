@@ -1,142 +1,159 @@
-Return-Path: <stable+bounces-32194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A01388A79C
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:51:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3627688A80D
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B5E1F66A84
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:51:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1951F39BDB
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 16:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5534641C64;
-	Mon, 25 Mar 2024 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F4812CDA3;
+	Mon, 25 Mar 2024 13:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ktSRhk1D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KAHK62NK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F34512E71
-	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 13:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E29612C7F9;
+	Mon, 25 Mar 2024 13:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711372726; cv=none; b=egkYnW1bqDwsTOWVRb8JoulUuyQV0XDwgMD5DWzk3RnnYeUd+F859yY6AqpUxF08sEpTHOR3L6zpxjgCSMGvgzG6JypYDoGmseMQLDe7jDCaFpLxVlJRVwR+sW3A0stPcBRITkE95mexQ5vAf+7/MgXPylxDWGNGz44mrFdkdYE=
+	t=1711374073; cv=none; b=dCkUgkh3gg+liW1LFvKJzpFRHiXttzJ06HJrC0YJLWdZbpq/4Vo6CEaQriL3ulWZXivbjVCVBZ7e3+SnCVQpU2g+AWnwpT+AU4Lea5XoWAa2182KBe/f5x/bCZnecCtyNcxyYdxa2koKPs2hHu8sHL4HpoJBeboWJCl0YZSscu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711372726; c=relaxed/simple;
-	bh=jUHFT7GHBABnNWhUUsb9TaH8zDV3pnOGgOcdjdlYdbA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cR0K+zXA4I+oYVdq+Mw7z+iIZPCdvfVD0Gc9X7+coWtxOVhvT++3KxcBIlFY5UlP6nhNSbT+sjUHR4nJ4YRXguSsQvxHacdYu/kdizqjcza29v3LHbQIQlXeX89I+KBM0AxWSGNZHmX9F2IIuzwoSqcS2mVaiRmsIp9fZpZ4aMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ktSRhk1D; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dc23bf7e5aaso4221643276.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 06:18:42 -0700 (PDT)
+	s=arc-20240116; t=1711374073; c=relaxed/simple;
+	bh=WgdUCSrnKAGw2TF5y8bAENJkYNr1jVJYvWxlovRCCZM=;
+	h=Content-Type:Mime-Version:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=q3/QslZ7OwKpdHvG7cw6Hr7XK1Za6/liHgt68fZt8MO8ZqBDhPD5uCOMDAlmwSI5CvqhZZC2tczbZxU0edW8FqPGFjORKwB0nAKj+AC2N4E695aNBdmsQAe+LJMZB+uGihtRnYHqt38rAkb7RE+lP6dyEvfjjBsriTzl0IMOx/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KAHK62NK; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51381021af1so6741597e87.0;
+        Mon, 25 Mar 2024 06:41:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711372721; x=1711977521; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20230601; t=1711374070; x=1711978870; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ceL10kuUzc1VTmaQNsfHwRb5WEw70QYvCvwFrHJHCrg=;
-        b=ktSRhk1DyPESD79xLJ+UcPqL6I7+rnbBOSDUkhSa+NMBab4kt1sALOp+3BD+MB1YZJ
-         yUbEudMW/Thf0F4e44sKdHj6aubuDJhK4LQKrTx4SMERFg1mHzm1UD3cwuejvn9pWmv0
-         t220Y07NLgyYTRKS/NCe4iX9UQdry/SNhdpOLXe3f/hJemO9MM5ceOecBlUz333g+x1J
-         qb+Scu+SSOech5A5AFGE70zjL59hTCnLBl2Ca9LSpqTsha49ugm7s7ljZgbN23zDBkPO
-         hu00o/POG1PjJ3quMT2TK+BUpTsn1LXasKs8wEfhuI6R+eAq7cKfN//Ljl7j2zwbkUDx
-         m9AQ==
+        bh=9fW3TP6U7rAT0YQU6K+tYG9SUW8HtzWbLUAXpV7C8xQ=;
+        b=KAHK62NKHWpZ0MYJUPY2XmYv8WI4YT/tEYrTXI1YsZAp1GvRB7kGA1qyp2xcBL4Xnw
+         vZAqWI+dPcrTvjfu0w11scE1fhZaENb5SorlruXN7npQoanAew77IxGEwfP9vwfDRrcB
+         HmVlnKp5CeG1CHwJYGbikoPXg2HiGcpOxTVwqgehUmQMYGEdDtfZDWTOIBDm9G+dqvZZ
+         CGg+IlJtXFUcn+xGfBl5MZ4Sk/+ROX4jnsQ/F0w5P8nzoU09kYMq51waFClcVbM/vU26
+         KtLrDR1SXIHrRFfx10rsAsvKPcuXOffuB/XHBjd1N7X4pVVajc8OJlUIVW2PR8/3B4b8
+         tVEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711372721; x=1711977521;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=1e100.net; s=20230601; t=1711374070; x=1711978870;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ceL10kuUzc1VTmaQNsfHwRb5WEw70QYvCvwFrHJHCrg=;
-        b=CY9APKDzJ8uAMywWYLDNecm77+FN6WzIqeCoRHt0sdvv3A7ELA3pWYao6RDuw6wSEm
-         BJwMGtHArPxcyMo5HhDpF77zbvvTD+6yBV+DRmxFroMO/wE038zUrt92OIL00Bmzo+B1
-         AYWTiOf6XuQeHse9wH54jyeC03A378u/VIpOZTDwIL524wJFxryjep0rohNq395wSrMP
-         Sds1sU4iebq5So/yt2lE+lNps4wCsTZdcKNUxV34xY+IBoaz63Jg6UA2aENJOr4HixWo
-         ROnt8+/9VEsCfdOJSm9gLNTtDKLQ+bD77WmGoLcS5Xb/q/412MFKNdxgxj1Eo4SwW1Z/
-         lzpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMkq2MOoZzrwoWSn1vzoie7r/MAhabT9D1Z/LYmrtfWN+Z+clYkCXumvBRAqYc7pMWWmefnPO89gxdTL7Z170peZqnLRJS
-X-Gm-Message-State: AOJu0Yw5E3ISFk365POKuNu1Yr5v6qnbRVgrmEwdil/Ig33s+DjMM6RZ
-	GUz8/QBUfe0vEFI6S2NbLLqS+srAnvZZNVDarFB//hlESK7/lnpgAPcVhYhFwXFeFsWYBKer0fE
-	vncOSChtiUkYdKNr8C0/ZdV4CcHcPTNNU1P1DyQ==
-X-Google-Smtp-Source: AGHT+IHBAtsETDpFdGmDQMqeFq/C1HWpnkyJwmkgZqhewbdaKt4PCmaqUyLetMdO7RYqpCQvGSwJSK7+UJmmFu9aNpM=
-X-Received: by 2002:a25:aea0:0:b0:dda:c5ca:c21b with SMTP id
- b32-20020a25aea0000000b00ddac5cac21bmr3873894ybj.37.1711372721646; Mon, 25
- Mar 2024 06:18:41 -0700 (PDT)
+        bh=9fW3TP6U7rAT0YQU6K+tYG9SUW8HtzWbLUAXpV7C8xQ=;
+        b=R64es4ttsBQuoEPEChmqFZTgrbOv3MdNL/GALwlF//CVtbmR8lms/Uoi1aOP1bRCOR
+         Pub/y+BmASeSXmrjl91hw5zFcRRjXvX117pRLRmnS5U4eclmp5V0NuFHogr0H1H7mmEN
+         iYqR8CMlxQ1ZgRVQZt+iuWUxOfJLtCu4jOT9fxYWTb0149XguZVfHc0E3ZHERQkeAbqX
+         QzV/xPoyTtvaQNlRoK4UIgwie7Q8R0zubad8VFEEMaw8JmUnEWRAlXEa0ewnt9zqNo1T
+         LIdEE2nIWUCRMCx8eH0pf7Cawl2946sZ2FV5FoVKS2Cb50gw/G/CPVGh6TlsTBg3zcxb
+         uiKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV3quyAuUxTGP2j7LNEmv4jqA+qv7XZ+BXC0r7ulXGQuuDSzIYP9nqkGvEX4FDJRECP7iSecYeNo+F7UDVQmwcPiFJNjhUVrS3E/ZQghpHosVBXOg3Wm8rurRGiZ846aWCm+SCDq7pmoR1Z6lWsuvjACotPnHzx1BlvmQ2H+SZFsy8=
+X-Gm-Message-State: AOJu0Yz0BToWG1b8bdMaqsp+Mhb+N1MILovezocoPqh7MIn3AQVce+9S
+	d4N+zIZxxAi6IAoZXTDejOaklSWQ//Vvd8NFIuv3l8DART7mjX6/
+X-Google-Smtp-Source: AGHT+IHFZcT7cCZU+2peD7kPFIrbSzoXyVVras2/b4e8Wkx4t8Kby1ECloKaZu4recJeyOK2uAMvKg==
+X-Received: by 2002:a19:4344:0:b0:513:e14d:15e1 with SMTP id m4-20020a194344000000b00513e14d15e1mr5689528lfj.57.1711374069495;
+        Mon, 25 Mar 2024 06:41:09 -0700 (PDT)
+Received: from localhost (p200300e41f162000f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f16:2000:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id kv20-20020a17090778d400b00a46cc48ab07sm3068893ejc.221.2024.03.25.06.41.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 06:41:09 -0700 (PDT)
+Content-Type: multipart/signed;
+ boundary=7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
-In-Reply-To: <20240313133744.2405325-1-mikko.rapeli@linaro.org>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 25 Mar 2024 14:18:05 +0100
-Message-ID: <CAPDyKFpkz=LeVR_8z0-jh9QGwdXp1GUZ+VFPdDwKChBNFHyEGg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc core block.c: initialize mmc_blk_ioc_data
-To: mikko.rapeli@linaro.org
-Cc: linux-mmc@vger.kernel.org, Avri Altman <avri.altman@wdc.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, stable@vger.kernel.org, 
-	Francesco Dolcini <francesco@dolcini.it>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Date: Mon, 25 Mar 2024 14:41:08 +0100
+Message-Id: <D02VH5KH4A9R.6IOJPPMBF0K5@gmail.com>
+Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <lgirdwood@gmail.com>, <jonathanh@nvidia.com>, <mkumard@nvidia.com>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] ASoC: tegra: Fix DSPK 16-bit playback
+From: "Thierry Reding" <thierry.reding@gmail.com>
+To: "Sameer Pujar" <spujar@nvidia.com>, <broonie@kernel.org>,
+ <linux-sound@vger.kernel.org>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20240325104928.2796868-1-spujar@nvidia.com>
+In-Reply-To: <20240325104928.2796868-1-spujar@nvidia.com>
 
-+ Francesco Dolcini
+--7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-On Wed, 13 Mar 2024 at 14:57, <mikko.rapeli@linaro.org> wrote:
+On Mon Mar 25, 2024 at 11:49 AM CET, Sameer Pujar wrote:
+> DSPK configuration is wrong for 16-bit playback and this happens because
+> the client config is always fixed at 24-bit in hw_params(). Fix this by
+> updating the client config to 16-bit for the respective playback.
 >
-> From: Mikko Rapeli <mikko.rapeli@linaro.org>
->
-> Commit "mmc: core: Use mrq.sbc in close-ended ffu" adds flags uint to
-> struct mmc_blk_ioc_data but it does not get initialized for RPMB ioctls
-> which now fail.
->
-> Fix this by always initializing the struct and flags to zero.
->
-> Fixes access to RPMB storage.
->
-> Fixes: 4d0c8d0aef63 ("mmc: core: Use mrq.sbc in close-ended ffu")
->
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218587
->
-> Link: https://lore.kernel.org/all/20231129092535.3278-1-avri.altman@wdc.com/
->
-> Cc: Avri Altman <avri.altman@wdc.com>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Adrian Hunter <adrian.hunter@intel.com>
-> Cc: linux-mmc@vger.kernel.org
+> Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-
-Both patch1 and patch2 applied fixes, thanks!
-
-I took the liberty of updating the commit messages a bit and dropped
-some of the unessarry newlines.
-
-Kind regards
-Uffe
-
-
-
+> Signed-off-by: Sameer Pujar <spujar@nvidia.com>
 > ---
->  drivers/mmc/core/block.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  sound/soc/tegra/tegra186_dspk.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 32d49100dff5..0df627de9cee 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -413,7 +413,7 @@ static struct mmc_blk_ioc_data *mmc_blk_ioctl_copy_from_user(
->         struct mmc_blk_ioc_data *idata;
->         int err;
->
-> -       idata = kmalloc(sizeof(*idata), GFP_KERNEL);
-> +       idata = kzalloc(sizeof(*idata), GFP_KERNEL);
->         if (!idata) {
->                 err = -ENOMEM;
->                 goto out;
-> --
-> 2.34.1
->
+> diff --git a/sound/soc/tegra/tegra186_dspk.c b/sound/soc/tegra/tegra186_d=
+spk.c
+> index aa37c4ab0adb..3a152e76122b 100644
+> --- a/sound/soc/tegra/tegra186_dspk.c
+> +++ b/sound/soc/tegra/tegra186_dspk.c
+> @@ -1,8 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+> +// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & =
+AFFILIATES. All rights reserved.
+>  //
+>  // tegra186_dspk.c - Tegra186 DSPK driver
+> -//
+> -// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
+> =20
+>  #include <linux/clk.h>
+>  #include <linux/device.h>
+> @@ -246,6 +245,7 @@ static int tegra186_dspk_hw_params(struct snd_pcm_sub=
+stream *substream,
+>  	switch (params_format(params)) {
+>  	case SNDRV_PCM_FORMAT_S16_LE:
+>  		cif_conf.audio_bits =3D TEGRA_ACIF_BITS_16;
+> +		cif_conf.client_bits =3D TEGRA_ACIF_BITS_16;
+
+Do we perhaps want to move the common cif_conf.client_bits assignment
+into the S32_LE case now? It doesn't make much sense to have a common
+assignment that's overridden for the S16_LE case and only kept for the
+only other alternative (S32_LE).
+
+Thierry
+
+--7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmYBfvUACgkQ3SOs138+
+s6FALg/+Ife+lFuYpPI7oOhuX256Czmwcb6Ey73+YJeFTYvB51f7oFhaupJh0Urj
+Gda3FfgCjHbEU4cMrx2jYyKN//Fvs1Yqc3+JK4tmt7E5JAPV4S52lLty8Lgpmvd/
+2aDv5UgrH58PrQgQu/QKHmNcGJ0LrAXp6pH6BGrRJZ0URFiOX0CiGRM3W0YsWw9y
+87FYcPkpH8Y0hHjfWhJMeh6npOc6CbcjmCdMo7p3SYjBR9Z88BtJA0JGKyE/JoQ6
+tLCMgAnJCXbWGfTuUOqCck5kZE0zo7n9Mu8lDdMHhlyJalyc5ikSBiIhGXuDJQHO
+LTEyyPO6d3TVaSKF6nRCq5Vg8eaxVW5L5Knc6EYIm+DgsUvXz12ClhXl08EPKtxe
+odUxIZuAajREk8YFon5cGszOLgjLEMbl+/d4abD2+YHe0Ct3Qdxwlb0x6pcdWUeg
+bxYPqTpAw57nMkmTfZmaUgi42xcgekE0OnLuw8oQ+gPrhC1S+MBJYxe5sztN6XNm
+ubfhqDRdniGPGtvnXw9snSpl30q5ec5ZXArARO593ZUSXC6uKK1Rg5s1+na+iKTS
+jaXg+yCMcbx01JO3M/VvC2+fsSuCZ1MjBPskCHg+o2jbs9pbpPLpJRV5xZFISyvT
+IZfDLFEuJJ1DUp6dVbJbaLHAbPhIaFJmxWLLZ0pGdWZ5wGEC8Nk=
+=TLnc
+-----END PGP SIGNATURE-----
+
+--7c0212269c912adc4455d93afd23d4aee2f75956631fcdfadad28a09c895--
 
