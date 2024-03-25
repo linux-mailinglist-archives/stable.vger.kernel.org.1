@@ -1,153 +1,133 @@
-Return-Path: <stable+bounces-32167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7582B88A428
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:20:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5595688A3BC
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 15:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6131F3E736
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:20:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8741F1C3A104
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 14:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C6515E1E8;
-	Mon, 25 Mar 2024 10:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA00217CF68;
+	Mon, 25 Mar 2024 10:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hEnbhZZG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPLnk0eU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CF912FF99;
-	Mon, 25 Mar 2024 10:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED05144D3C;
+	Mon, 25 Mar 2024 10:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711361968; cv=none; b=Gj2eFCYOKzj2UB7k8xAadwBce4sK4A0WfXJARlwjfo+kqckBfCQL/APJt0HnJEpZahoegjXLeaXEt76tARhBqX9hm4ALKrlilQFxviDXC37ljlRcn6IhVU9zu5BEZv2j16FSux7U4Ph10QybCX21XdZqi0xygmbseOep4rRgNm0=
+	t=1711362674; cv=none; b=FMjLVngamspqpWvod6bNqxGDMI42zoz6+d64LK7EDw9SWPo11gS50nWEXyQd2S8pHXXJK9u1aevs+bKrFuwTrPNl8q0KV/btldqvwMmNlFpCLrHwXvyVsNrhlno/Mb8+qAK5SMV/F1LEfp2TUybTbIo+YzNylDfLEpRGcqrcc0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711361968; c=relaxed/simple;
-	bh=BUGNqjoLfsxQHYk/8rWceZNAXz2Yeg4TAAXA9qHpQmQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNmrqBn7ViUJ3lgx3DFLEyQoX5PWGLplQ2Oo83bxXfryYIeAqP1x/wV7NYJChR3OpV1WVh7cSpPEgQRosBL2mRIsPaW8++3Gwl+w8RYppXMjpW9odUskUawcZdpQ72gHBFgpLCxxb0BGHQOoyiYaAsM2gCBS1P7vBZ96A+t5p7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hEnbhZZG; arc=none smtp.client-ip=209.85.208.173
+	s=arc-20240116; t=1711362674; c=relaxed/simple;
+	bh=wIOMwu8LBbR6d05AA5Ev9i3suo88eYpc1/q507nhQKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UuQGLYUh8rM5wYw9XUcevJJa5CQSamN7uJ8oGo4sjPVByZNFY3Kxj5Cf81Wq0MsbXmFGpIvcOmX35gHtf857CgsCRGwjfdklrvwEzOMjaGmlpOQkQVdow4mgAzQjyQ10jAIzoxId3Js1v+fRxvBCvxQC6oKluzDqzbcoNVwLI8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPLnk0eU; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d46c2e8dd7so52809541fa.1;
-        Mon, 25 Mar 2024 03:19:26 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4141156f245so28856885e9.2;
+        Mon, 25 Mar 2024 03:31:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711361965; x=1711966765; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=WHRv7g3CiPKX519Ky5IELZFKVKXY3LsLEia5o8nsqvI=;
-        b=hEnbhZZGMKZPX/A+j2pQpkHdK/Jp6wn6Je77NtPIqFCqSNN7dQFDFvMLYifefYfGUx
-         Yb5xxMT8lSrJzhHPidCDDtc8dm7NhLcas2pz+lV8+hsOtkaAKxy2WUVbw6FkTqJFU2CE
-         1yRqLCaRhlvow1IwoU6ObDRYOD74h2y1K4XzLBmW7V18doBAWxsGoZy44HqdDiy8e8zi
-         /4+cQjuoqL7uFK3gXItgI2cycm66zM4ZxRB8a8CjlqvLZ708PG8yDvVkijxBlWmaqK1N
-         1ILEYn3SxUBXFKPnqRviF3yD028uiS9zvf7UUMSwaS/t4aQQoNpGJY0XARFqIQB2fN7+
-         ctDQ==
+        d=gmail.com; s=20230601; t=1711362671; x=1711967471; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R6+pvzCVufm3Mx2KSZCT9a/GYJoxBfWf9J7OYkciu00=;
+        b=ZPLnk0eUUbvBttpo20fnVfdSoqE5vqObJau7qrLicxcwygGw1+ealSbqgPvQQxkuo+
+         U0t9K3Jtb0ZWqNO5SIaYKI9ZS3Ht16Ao+v31eyIXYh+TgJXVUaZGwHIaA8abYjfNGIQ4
+         HBw4BRpaKY1p6nTzpi6evVcqADUSrM4ZZMN82g+qiXgD84UQFCZ1HHCgEbpthMwyOTq9
+         mzaFbPPkKMiKtLIUNKKCVk8dIY/HhOSC7pKk3ootjM9konnu8P4fmNoDvdQSB1+1GvrN
+         IeAUuJD06WGH3t19IwD3a/eRndrE8fChjyohWpSWc03XSUILVUTdKYWRfyoVk3ZEI/JN
+         uTFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711361965; x=1711966765;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WHRv7g3CiPKX519Ky5IELZFKVKXY3LsLEia5o8nsqvI=;
-        b=Qomr3OMSYcOLME1biEmzYlRuPp6mo54/QlDaEwSI2CdnMAZr8q5liQSDslndTxED2i
-         zEGONIHMb4EyITc6+RSRg7AVm5nKCNrTi9qG4BzsAYryuMKBJQMc2t+FOoe8ebhcL95M
-         dEzB2VGGpKnhGh1SCfpfsJry8Hym0Wz51vP9vxM04r/kiIwx29RQ2Wbe8ZZx2Vmn+Lt1
-         xTbK9osh+jNkx8lU2X1kJbZd+j4fVsR0TAABQcydYgqpNLLiAiCQLc1h4dfPdR9Pm6Jo
-         358O8lr8NZNEVHPONM1wTT3O6UPoD7jvNGXqNURV+6J76R9BY1eC04/p3Lxp1pFimn7p
-         sT7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXMDreAwXFb8sR0PKaO3joN5qmH+Zyl/rwPV7qvt4vUpjM7KISPijVT+O/YXjVobrY+snCcq8LcmGq5Kwq8v04Wtq16lBGzQYzMYH7dMIXp3FN0JZAhG0YxHGXXM8/1+Uf1s7bB
-X-Gm-Message-State: AOJu0YxxyzHiU836lsPCQO5X8LttqWXyeRozlKdvXEmkbMTMFkdGHY8A
-	YLfLWpr7kxLvpifnfS2PlzDT+v1vVUxDvt5n2VGRwgiOwi+LxP3l
-X-Google-Smtp-Source: AGHT+IGg5wJ2qRptsbAUpuTEIcDJSsOM1PIB+jrxgL/A4nsVGf35/xFZrJb8g4txRn38MH5eXDKUqA==
-X-Received: by 2002:a2e:b794:0:b0:2d4:6814:7c98 with SMTP id n20-20020a2eb794000000b002d468147c98mr4026696ljo.43.1711361964560;
-        Mon, 25 Mar 2024 03:19:24 -0700 (PDT)
-Received: from Ansuel-XPS. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.gmail.com with ESMTPSA id gw8-20020a05600c850800b004146dd6bfe2sm7935583wmb.47.2024.03.25.03.19.23
+        d=1e100.net; s=20230601; t=1711362671; x=1711967471;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R6+pvzCVufm3Mx2KSZCT9a/GYJoxBfWf9J7OYkciu00=;
+        b=oUoNqksn/8eRO6/5psegkNGYoyXNhtN70KxOv72Htt4sP5hW0KLmFxtRBLMLaL0Cgc
+         O3bKs+9mNuBBiecvjS/IHsAt151SuccO/bBIVjuqeXabgKU2OMzay73JKiXrepiMOpwP
+         5rULt/npUojdRDjL7oKm2NOAIlUxuK84Fb4nGQ2A7xutNuNbDnG4Gd2DOGuweLzB5Etz
+         64psggjbQ8Cf2v1D1kV6mJgpbHYb3qgGk37bbKbN0n5tEYpONRs6BWlU1I6mbM5xsToN
+         iv+viy3VpaovWVGL+pVScnwFFkdJTYv8i8q/WuKCpcVvxB5UltmRK36hseoO3LJqjFz0
+         DjYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZb0wTpHHLnm898nn51oX2cwpa/yZVUBep892CQUI2rHUXQxhXVpOdsQ6baPQhZe8DX9lHltkSE2vEl2tkdg9CKGXhVPZN/z+TiNgi95Il6AMbfI/m5y6vsYQmPiAdBsh2d83/RBQjY5TQlhYsEvSoN+TY3gLP3dnKE6faiI32KdHXrg==
+X-Gm-Message-State: AOJu0YzFwSrysdaYsEZ970/dCEuJrFHtZ8/CuSRSoN4/ETZMPbij46dM
+	2z6LHI/H/OyIne9yrtOIfCxHX1nJg4rAjNNkQR51KdvuCkwiadz7
+X-Google-Smtp-Source: AGHT+IHy1HIusGGKPe5ZeiznWlk+PCo+gWmMgpHFaNOPq2HgywsUWU0pqUTA/+5Cc977DgMX3TN+Xw==
+X-Received: by 2002:a05:600c:4713:b0:414:8865:bebb with SMTP id v19-20020a05600c471300b004148865bebbmr2474707wmo.7.1711362670527;
+        Mon, 25 Mar 2024 03:31:10 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id be3-20020a05600c1e8300b004140e701884sm8063878wmb.22.2024.03.25.03.31.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 03:19:24 -0700 (PDT)
-Message-ID: <66014fac.050a0220.92b6d.5b41@mx.google.com>
-X-Google-Original-Message-ID: <ZgFPqANkonYB2rla@Ansuel-XPS.>
-Date: Mon, 25 Mar 2024 11:19:20 +0100
+        Mon, 25 Mar 2024 03:31:10 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>,
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Md Sadre Alam <quic_mdalam@quicinc.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	linux-mtd@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: limit OTP NVMEM Cell parse to non Nand devices
-References: <20240321095522.12755-1-ansuelsmth@gmail.com>
- <20240321113256.7e66ac0f@xps-13>
- <65fc0d2b.050a0220.102ac.24f6@mx.google.com>
- <20240321141935.1b9f6e71@xps-13>
+Subject: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in misc_cmd_type in exec_op
+Date: Mon, 25 Mar 2024 11:30:47 +0100
+Message-ID: <20240325103053.24408-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240321141935.1b9f6e71@xps-13>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 21, 2024 at 02:19:35PM +0100, Miquel Raynal wrote:
-> Hi,
-> 
-> ansuelsmth@gmail.com wrote on Thu, 21 Mar 2024 11:34:16 +0100:
-> 
-> > On Thu, Mar 21, 2024 at 11:32:56AM +0100, Miquel Raynal wrote:
-> > > Hi Christian,
-> > > 
-> > > ansuelsmth@gmail.com wrote on Thu, 21 Mar 2024 10:55:13 +0100:
-> > >   
-> > > > MTD OTP logic is very fragile and can be problematic with some specific
-> > > > kind of devices.
-> > > > 
-> > > > NVMEM across the years had various iteration on how Cells could be
-> > > > declared in DT and MTD OTP probably was left behind and
-> > > > add_legacy_fixed_of_cells was enabled without thinking of the consequences.
-> > > > 
-> > > > That option enables NVMEM to scan the provided of_node and treat each
-> > > > child as a NVMEM Cell, this was to support legacy NVMEM implementation
-> > > > and don't cause regression.
-> > > > 
-> > > > This is problematic if we have devices like Nand where the OTP is
-> > > > triggered by setting a special mode in the flash. In this context real
-> > > > partitions declared in the Nand node are registered as OTP Cells and
-> > > > this cause probe fail with -EINVAL error.
-> > > > 
-> > > > This was never notice due to the fact that till now, no Nand supported
-> > > > the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
-> > > > access for MX30LFxG18AC") this changed and coincidentally this Nand is
-> > > > used on an FritzBox 7530 supported on OpenWrt.
-> > > > 
-> > > > Alternative and more robust way to declare OTP Cells are already
-> > > > prossible by using the fixed-layout node or by declaring a child node
-> > > > with the compatible set to "otp-user" or "otp-factory".
-> > > > 
-> > > > To fix this and limit any regression with other MTD that makes use of
-> > > > declaring OTP as direct child of the dev node, disable
-> > > > add_legacy_fixed_of_cells if we have a node called nand since it's the
-> > > > standard property name to identify Nand devices attached to a Nand
-> > > > Controller.  
-> > > 
-> > > You forgot to update the commit log :-)
-> > >  
-> > 
-> > Ugh... sorry. Ok to resend or I need to wait 24h similar to the rules on
-> > net-next?
-> > 
-> 
-> You can go ahead, but I'll only queue it after -rc1 is out.
->
+misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
+("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
+reworked and generalized but actually broke the handling of the
+ERASE_BLOCK command.
 
-Doing it right now.
+Additional logic was added to the erase command cycle without clear
+explaination causing the erase command to be broken on testing it on
+a ipq806x nandc.
 
+Fix the erase command by reverting the additional logic and only adding
+the NAND_DEV0_CFG0 additional call (required for erase command).
+
+Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+Changes v2:
+- Split this and rework commit description and title
+
+ drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+index b079605c84d3..19d76e345a49 100644
+--- a/drivers/mtd/nand/raw/qcom_nandc.c
++++ b/drivers/mtd/nand/raw/qcom_nandc.c
+@@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
+ 	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+ 
+ 	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+-	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
+-	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+-	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
++	if (q_op.cmd_reg == OP_BLOCK_ERASE)
++		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
+ 
+ 	write_reg_dma(nandc, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
+ 	read_reg_dma(nandc, NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
 -- 
-	Ansuel
+2.43.0
+
 
