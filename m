@@ -1,109 +1,122 @@
-Return-Path: <stable+bounces-32208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE7F88AD31
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 19:11:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA5188ABF6
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 18:40:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EC35BA11EA
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:37:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6AB1F342BC
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 17:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7684A137C52;
-	Mon, 25 Mar 2024 16:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6140F149C55;
+	Mon, 25 Mar 2024 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IJhRTwMa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sh1wH5Sj"
 X-Original-To: stable@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA3513D51C;
-	Mon, 25 Mar 2024 16:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142B312D747;
+	Mon, 25 Mar 2024 16:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711384765; cv=none; b=lbjAmg4a4+LCr1oDoCRvMIKjSmAucxtjyPiOodajosj8/8LqqDrT9c5fzu7/xMv8X23QUQ0TeM/Q+rZP9h1r432e6fd5yWCrjFHUthqJMdoXTuzVYu8qtkZA6w4Spd+PNY4EOqPDhey7hT/HpzLy+7eL5xjJK9u5z0SftXR7CsM=
+	t=1711385044; cv=none; b=n5eqUGgW8rKoGOvgMcxnvV/CInMWdMjKyqlTUT+dCxZGnWfqeTnMBzlgVpV6Pgse+Cu2VuNL9gM9EndtzzLW9SxRQZlz7rHwdmXRj0yNzPfSCSKTOAlGA7t/+cFHPTRE3pBsTjlWhjUEm35SZjcrQXH/DmMWVUG47nVMPCB+gAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711384765; c=relaxed/simple;
-	bh=14gtqtCVNayAqIK5rueXTjgkgP8gMseCMqMHcCd2L6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kpMaT86gojdAuYUPqr0D+xOHQ9OVCHJhRzpSlbt9T5zYTcwKpdgRBfUH28AQVCXVUfyitJoQR1Lh/0JVMPjHUa9dYZNpZuQeIybveBseBCRVD1IFfM1tam1PG1oRp4M7xV86wMxbxvp7PTrjHanSwrFu3TTAeI1RcxHff19LIz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IJhRTwMa; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id C44512000A;
-	Mon, 25 Mar 2024 16:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711384761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8iMLGnKdVyyeBqn6RGrsFcqXN0O2cTjmwyktnHMM9S4=;
-	b=IJhRTwMaxBoudK2YoL02Ka+EhnIeHvQTaqyJnEHzsRO8t5qtDGwb3Zpr9s5WBEBtq+1m0y
-	/5Skpb7f1VgtmdupzC+DfCj+FN0L2OYYHWIPMXaXS79c12hIqdkpX1dr77xDcwGd3yjXNH
-	DfMy3xY6cFXP5nAvuoTimDOoGzB6/SYSz8TFIbt4S80dSkoY5AL1Rp7+sxd1aOpM9jKQkm
-	ZGc86rXNQJ6jUmC06dER5ZnWpNn4DZ0QHcukwnS1nule5nlkizowmYh7MPx6t90bm5gR/S
-	dxQHNTJsGLrc3MJfui7YYEd4dWKGmELp92Z6ggtnGaA1g6gYDbGcq/+A4p0sFQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1711385044; c=relaxed/simple;
+	bh=84lb1y+TpjyavnkWNmwchbU884Msl6lsLUlg6T6K2bo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kAz/3HgKB/MLXJwEQMu4x5WRB5kzMeFYWMWXawYw5d3Gs3hEsP/FnYmZxderb4n7zSf4O2aYVXESclnYHicBNWTiOlliCrZwqHqj1YMX1BGdGirLOHLIrlz+ALt3flDgHpz+gmoVZ6Qc8U5uLLetNqJvu9wjiiZ3CIBDD+2ojD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sh1wH5Sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEA0C433C7;
+	Mon, 25 Mar 2024 16:44:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711385043;
+	bh=84lb1y+TpjyavnkWNmwchbU884Msl6lsLUlg6T6K2bo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sh1wH5Sj3Lqqu5aNqrEAtLB2OUcyRZ67//17Djc+hwmqvqKd8UyaqpBP25ZGdE9zW
+	 r1a+IUdVJfByjvFc7kTzQaJIS39mYunvmw842g+D5kj7vlVCBv42uJaoAm+Dsr0Ou5
+	 iJpcD8ICTfFn9MZFrRK85ta0LpLmTo3z4RCTsB35vQlvbuNHd53tybRLWd3HhoHtaF
+	 ZlVr5Z7lI/JDWM9AFgMp/zTjI0zVBSy49uAHIxJpS+SeJkEfjDUizK4ViiAsoIDp0G
+	 2rmo1UEVy8ibTSgPuU13Kg97JgagmhMELwdvpey+yUzeYfSe0kDdQACII+gcCE/O6F
+	 9nUNDizpDDSbA==
+Date: Mon, 25 Mar 2024 11:44:01 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: linux-kernel@vger.kernel.org,
+	Frank Rowand <frowand.list@gmail.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	Allan Nielsen <allan.nielsen@microchip.com>,
 	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Nuno Sa <nuno.sa@analog.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 RESEND] driver core: Keep the supplier fwnode consistent with the device
-Date: Mon, 25 Mar 2024 17:38:31 +0100
-Message-ID: <20240325163831.203014-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.44.0
+Subject: Re: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
+Message-ID: <20240325164401.GA276583-robh@kernel.org>
+References: <20240325152140.198219-1-herve.codina@bootlin.com>
+ <20240325152140.198219-2-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325152140.198219-2-herve.codina@bootlin.com>
 
-The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-fwnode's consumer links") introduces the possibility to use the
-supplier's parent device instead of the supplier itself.
-In that case the supplier fwnode used is not updated and is no more
-consistent with the supplier device used.
+On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
+> The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> introduces a workqueue to release the consumer and supplier devices used
+> in the devlink.
+> In the job queued, devices are release and in turn, when all the
+> references to these devices are dropped, the release function of the
+> device itself is called.
+> 
+> Nothing is present to provide some synchronisation with this workqueue
+> in order to ensure that all ongoing releasing operations are done and
+> so, some other operations can be started safely.
+> 
+> For instance, in the following sequence:
+>   1) of_platform_depopulate()
+>   2) of_overlay_remove()
+> 
+> During the step 1, devices are released and related devlinks are removed
+> (jobs pushed in the workqueue).
+> During the step 2, OF nodes are destroyed but, without any
+> synchronisation with devlink removal jobs, of_overlay_remove() can raise
+> warnings related to missing of_node_put():
+>   ERROR: memory leak, expected refcount 1 instead of 2
+> 
+> Indeed, the missing of_node_put() call is going to be done, too late,
+> from the workqueue job execution.
+> 
+> Introduce device_link_wait_removal() to offer a way to synchronize
+> operations waiting for the end of devlink removals (i.e. end of
+> workqueue jobs).
+> Also, as a flushing operation is done on the workqueue, the workqueue
+> used is moved from a system-wide workqueue to a local one.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Reviewed-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+>  include/linux/device.h |  1 +
+>  2 files changed, 24 insertions(+), 3 deletions(-)
 
-Use the fwnode consistent with the supplier device when checking flags.
+Greg, can you ack and I'll take this series.
 
-Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
-Changes v2 -> v3:
-  Do not update the supplier handle in order to keep the original handle
-  for debug traces.
-
-Changes v1 -> v2:
-  Remove sup_handle check and related pr_debug() call as sup_handle cannot be
-  invalid if sup_dev is valid.
-
- drivers/base/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index b93f3c5716ae..0d335b0dc396 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2163,7 +2163,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 		 * supplier device indefinitely.
- 		 */
- 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
--		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-+		    sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
- 			dev_dbg(con,
- 				"Not linking %pfwf - dev might never probe\n",
- 				sup_handle);
--- 
-2.44.0
-
+Rob
 
