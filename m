@@ -1,187 +1,112 @@
-Return-Path: <stable+bounces-32254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C531788B5C8
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 01:06:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A4A88B0D6
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 21:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85481C016EA
-	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578BD1C62514
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 20:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2253F9FC;
-	Mon, 25 Mar 2024 20:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F2C3DB9B;
+	Mon, 25 Mar 2024 20:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="S0YeFUn3"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Qstw1Oc6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3861D4E1DB;
-	Mon, 25 Mar 2024 20:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D011BC46
+	for <stable@vger.kernel.org>; Mon, 25 Mar 2024 20:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711397072; cv=none; b=RA5LdNMFEd8qwr708JdpELovYv1gBzxo7omcYa7s2RVt1AaU/p5MkNT5s9XLtRIZbPEitsYjZh7awbOp7+3mz0Y+5SNTTcx6mF837g7samE4p69j0gk1r3lCzDkmTJnadsz3Zj8WyA3YppvzkVvhE85BGG+SNtKF9pfAXFJR9Oo=
+	t=1711397159; cv=none; b=X09hG6nTYXreU/aAVAvRgeYJrk1o8qyMZg0kVOL+wg3b2fGU2M4Ju3yOZUxl3ZC4DbpUVMy0iBJD6iw0u6uzQsqBwP80ykui+9ogGBd/7qxv/4OcwXP/iCpPBeQaeIvjre6//ej8FcQbCo8xSeQG9dbT5gvl8VwUtVLvAb7W3Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711397072; c=relaxed/simple;
-	bh=eWSjoT3CGwTEhwKScYkBxtxF+DOY0q9/MwaCKjag3pQ=;
-	h=Date:To:From:Subject:Message-Id; b=TvkX9hFIoylLwFBnuSrSNXRb3vRAKnpjEHnvR3T9+wJtxb6q/VrId2gqYWsZgrv90CNl+ZI4DiUt4Moh8itDXjEBuNvw0WHt5ZVLkvXTZKI0lYZaNEPw5AR70EDnUF8Tqg6X+yfB4MTzSPLTghv/FDiLVvVkBWbONA5HmFbWrI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=S0YeFUn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D747C433A6;
-	Mon, 25 Mar 2024 20:04:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1711397070;
-	bh=eWSjoT3CGwTEhwKScYkBxtxF+DOY0q9/MwaCKjag3pQ=;
-	h=Date:To:From:Subject:From;
-	b=S0YeFUn3i4/ImA8Mai3wLD8f9pevQ8SQjBtfd2bxBaEGTn/9jAZP30MZtHLxqSeWG
-	 HfXdy7S+2KezJkezXkGhB8op9EWWrPDWyTYbzmLecUkh0XmgIk+lZ/isHBmPJse/Ff
-	 tJRrg3+KjLTJ1BNb1V2pQs9VkA+rHXxV47Pa42c8=
-Date: Mon, 25 Mar 2024 13:04:30 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,edliaw@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240325200430.9D747C433A6@smtp.kernel.org>
+	s=arc-20240116; t=1711397159; c=relaxed/simple;
+	bh=UjrUvFUa0XDyVul18UUTRk6viKLJkQaQh7vx2mOVQvs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tu3EwMGGrBIsDDCLqyaLoBeF0+NcOA0v9bcB2HfwxNOTCqIHT3T1+nIpSE5Z2rKj2PN8dY3+Ud7JvCUCKawJH7efEqcX5NYFgzoygAZIp4GE3tvxlEN5nZ5pYtU68ZP2oDTqvSmc+wQUWDs0vHM/Vsje0wagMFK/MFhrgaPkHWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Qstw1Oc6; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-21e45ece781so3142879fac.0
+        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 13:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1711397156; x=1712001956; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0s4wc3i/rfC3/kxPVkBRBN3/JL52yC7W1Cjubckw3aI=;
+        b=Qstw1Oc6PeGe7QTXrkhKhbfHA/q8M3FNDYbOEOPwiwUBvwAgOdHeljJUGVkgeor2YD
+         TGf6MEaDWhhhpZgLVaOYrieSDF2c6qjDKdhsVYO27aMZzmAYaRLEO/OKc5o/7WbIhnfr
+         iT0quJTZ9rPRKyxDVZCPEsqork5YDfAtVT60Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711397156; x=1712001956;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0s4wc3i/rfC3/kxPVkBRBN3/JL52yC7W1Cjubckw3aI=;
+        b=hnSs7nxrK5zlZgznK1Zgt7nO64cemwhtN6QHfwpRFTPmHhmVVKnCAyGRZzN0kDtuDT
+         WuWJQQdDlTMUqAE9etJYRZ/ohj8dDJbdUEDE0NgP5+HpEuU6xYKQOocNRJWieuBWQQCY
+         GvMylxzf0Zzi4mmb4dN85pV9L9Cj7zlxhQD48jF6Yc+ySPLPmQxl/aw0ZnZSyXBvIrQI
+         5DBMjhyle8d50dY3a/QZYh/LTUPyuIUkSH/P83GEflFtmGXChylRkKw1XGMfuMAcItOo
+         jIIj6qczCn33jUAprhqD5aBmyBfRHKtymjvfU7vscQCu4HLFyAUQ5yujqDOef8FwQ+cr
+         ixCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUdQVECzR5wXTxSEX/UlMuBquQd6KO/ZdSMi2rXEve8jYmBs8lK9FjUa4Y/LsKeHia97ByN3F87PqW0iLmZDrIrQMXbLobU
+X-Gm-Message-State: AOJu0YwTSYV3ZNPFyNfsrKkcjSOaMn+dhNCUSgVME++EGuNBKqZlU9yy
+	ARh2sbmxxZ+cgWBGl9ENOPXyopYz5xiuQL5QalsE2I6BJOhquQuE/u9kYXLXIg==
+X-Google-Smtp-Source: AGHT+IEz2C6ZNyFMQGJcw/HWcHLsyuzCTD2CcJ7kx+2L35Lrd7WJVLF0L9DJWnDMbuCXNFX6SJqKrw==
+X-Received: by 2002:a05:6870:55cd:b0:229:fd96:1e40 with SMTP id qk13-20020a05687055cd00b00229fd961e40mr9859382oac.44.1711397156561;
+        Mon, 25 Mar 2024 13:05:56 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id pn17-20020a0568704d1100b0022a56a9dc6csm246922oab.10.2024.03.25.13.05.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 13:05:56 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Mon, 25 Mar 2024 15:05:54 -0500
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com,
+	pavel@denx.de
+Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
+Message-ID: <ZgHZIpmQ5pWcrG-h@fedora64.linuxtx.org>
+References: <20240325120003.1767691-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325120003.1767691-1-sashal@kernel.org>
 
+On Mon, Mar 25, 2024 at 08:00:03AM -0400, Sasha Levin wrote:
+> 
+> This is the start of the stable review cycle for the 6.7.11 release.
+> There are 707 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed Mar 27 12:00:02 PM UTC 2024.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.7.y&id2=v6.7.10
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> Thanks,
+> Sasha
 
-The patch titled
-     Subject: selftests/mm: fix ARM related issue with fork after pthread_create
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create.patch
+Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Edward Liaw <edliaw@google.com>
-Subject: selftests/mm: fix ARM related issue with fork after pthread_create
-Date: Mon, 25 Mar 2024 19:40:52 +0000
-
-Following issue was observed while running the uffd-unit-tests selftest
-on ARM devices. On x86_64 no issues were detected:
-
-pthread_create followed by fork caused deadlock in certain cases wherein
-fork required some work to be completed by the created thread.  Used
-synchronization to ensure that created thread's start function has started
-before invoking fork.
-
-[edliaw@google.com: refactored to use atomic_bool]
-Link: https://lkml.kernel.org/r/20240325194100.775052-1-edliaw@google.com
-Fixes: 760aee0b71e3 ("selftests/mm: add tests for RO pinning vs fork()")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/uffd-common.c     |    3 +++
- tools/testing/selftests/mm/uffd-common.h     |    2 ++
- tools/testing/selftests/mm/uffd-unit-tests.c |   10 ++++++++++
- 3 files changed, 15 insertions(+)
-
---- a/tools/testing/selftests/mm/uffd-common.c~selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create
-+++ a/tools/testing/selftests/mm/uffd-common.c
-@@ -18,6 +18,7 @@ bool test_uffdio_wp = true;
- unsigned long long *count_verify;
- uffd_test_ops_t *uffd_test_ops;
- uffd_test_case_ops_t *uffd_test_case_ops;
-+atomic_bool ready_for_fork;
- 
- static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
- {
-@@ -518,6 +519,8 @@ void *uffd_poll_thread(void *arg)
- 	pollfd[1].fd = pipefd[cpu*2];
- 	pollfd[1].events = POLLIN;
- 
-+	ready_for_fork = true;
-+
- 	for (;;) {
- 		ret = poll(pollfd, 2, -1);
- 		if (ret <= 0) {
---- a/tools/testing/selftests/mm/uffd-common.h~selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create
-+++ a/tools/testing/selftests/mm/uffd-common.h
-@@ -32,6 +32,7 @@
- #include <inttypes.h>
- #include <stdint.h>
- #include <sys/random.h>
-+#include <stdatomic.h>
- 
- #include "../kselftest.h"
- #include "vm_util.h"
-@@ -103,6 +104,7 @@ extern bool map_shared;
- extern bool test_uffdio_wp;
- extern unsigned long long *count_verify;
- extern volatile bool test_uffdio_copy_eexist;
-+extern atomic_bool ready_for_fork;
- 
- extern uffd_test_ops_t anon_uffd_test_ops;
- extern uffd_test_ops_t shmem_uffd_test_ops;
---- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create
-+++ a/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -775,6 +775,8 @@ static void uffd_sigbus_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
-@@ -790,6 +792,9 @@ static void uffd_sigbus_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
-@@ -829,6 +834,8 @@ static void uffd_events_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
-+	ready_for_fork = false;
-+
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
- 			  true, wp, false))
-@@ -838,6 +845,9 @@ static void uffd_events_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
-+	while (!ready_for_fork)
-+		; /* Wait for the poll_thread to start executing before forking */
-+
- 	pid = fork();
- 	if (pid < 0)
- 		err("fork");
-_
-
-Patches currently in -mm which might be from edliaw@google.com are
-
-selftests-mm-sigbus-wp-test-requires-uffd_feature_wp_hugetlbfs_shmem.patch
-selftests-mm-fix-arm-related-issue-with-fork-after-pthread_create.patch
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
