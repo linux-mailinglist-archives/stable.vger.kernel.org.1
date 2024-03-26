@@ -1,115 +1,91 @@
-Return-Path: <stable+bounces-32340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F104788C8E2
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:20:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3508388C8E8
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D7A3306C9B
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:20:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C191F2564D
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9512213CAA5;
-	Tue, 26 Mar 2024 16:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4847713C9B8;
+	Tue, 26 Mar 2024 16:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6C92dz6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GRpHgWZN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73B13CA98;
-	Tue, 26 Mar 2024 16:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE74F13C815
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711470027; cv=none; b=Fw4GL4TrfuRDdq7Gpqb6IDhhkJ4Mr6nXSTj5g5tjPHpKviFSvVwNqdAXVa7qbDwdMqt7ZXcQu+zeNFL2g8mbismeGw0d38j/6BDO1lOdCvD+1okBB/7ZccwyTkHUuh4XdfNqHtPSGGzgcg2RhwXMDGjmlsG1KVRcP+rlTaO63wA=
+	t=1711470113; cv=none; b=XjvyQoc2YueJovQyJP3oz/ZTp1sutw6z9kc60QTMQRtySjjr319g+Ktl7JgLVFnTtd5mRZUP/KaJ9bj+BryimgKN3TAL4UkZbmlJyBE0mn4DsW30yaD94yrjfUtoAgHrKYcSNeuDPSeXv+E9498wLHUky3WPoVLBmXR4At9Bt9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711470027; c=relaxed/simple;
-	bh=tH7ShG5e19q5dk8DGs/7rFZaClfulgISrGFPuWcP0mg=;
+	s=arc-20240116; t=1711470113; c=relaxed/simple;
+	bh=BNws0gDydMfP0P1Q5QnTKaEzayYzV7OQpQeItNJTYKI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CWAkjnaQ1RMfxJ58iRTpgBFDJVYthH8VLGqhuMzy8ShmMWfbB0sREts2gNmmNku0lYma4XhaWgAmoud6U135rXq1jjTPvZhHJn1Vneiqj5Rz+tl3i3Rtc+C0/CYv9aaa3IRjD07a2R0IF3vhoe9mEfnitb08LSet+FGkD++e8lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6C92dz6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EE8C43394;
-	Tue, 26 Mar 2024 16:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711470026;
-	bh=tH7ShG5e19q5dk8DGs/7rFZaClfulgISrGFPuWcP0mg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6C92dz6raZp0WrjtLHCxqpCcVWV3awH3jwOkT/LShocw+towYCYzHIpMxVqVR6ci
-	 S4vUVgmYGNay0dotswGf42xd6YmI7FN3UtHnq6i4yoeLo+CYBvI39oh+zvkPu/nwP6
-	 ze88G0lKQJKrmGrEVoi348mOb39+eZjNn3WGMk9Elebb301GZ8pneFWt9kNFD/0BoR
-	 C2ADW6obNGlsFyXcw3F6Z0qvBucbUllRtd/Dd06q/8Xx85VfeplO6YXdN3Kd3Ia0RI
-	 O4dyir2E/RrcwhToChH4LNMoUI3HwPM4CWyWULbzkCZysMCLqQdXDQiswmdtYCXJOZ
-	 munyLNIT7r7zQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rp9XO-000000006Yi-1ZUs;
-	Tue, 26 Mar 2024 17:20:35 +0100
-Date: Tue, 26 Mar 2024 17:20:34 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-Message-ID: <ZgL10ur0825LgWVK@hovoldconsulting.com>
-References: <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
- <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
- <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
- <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com>
- <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
- <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
- <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
- <ZgJ0okobGv5nPreG@hovoldconsulting.com>
- <CABBYNZKJJuPHEwyXFRi8Z=P0GyaY-HdamsxmV8sR+R97ETTmEg@mail.gmail.com>
- <ZgLnOHiCzo5AQzra@hovoldconsulting.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nsn7MKqnGmbjFh25KK6AvlAaGNwwEh0kwrjhh5BkClicLBNzrbeVNHyaashk96ydD05EKLcblZpc3Zo1vrh4CqYPl0DWQsMI/PFH7sd8LelNvUFlyGYSpVaugO9xZZI6+H2t3OWXHuEscTYD+FYZV5iuQFhVRc1AEBeE+El7j0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GRpHgWZN; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711470112; x=1743006112;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BNws0gDydMfP0P1Q5QnTKaEzayYzV7OQpQeItNJTYKI=;
+  b=GRpHgWZN1CUIppK3mgnwRYWA06K3pVCjl27sTgQKhW8CnhyZI6GouUqz
+   2/2L4JFajEYkd4gCMbTRLOvFVOPKVjtbujJvVWvqmv3lshgMuZtV5+peP
+   oKNXheTi0uOZT+WjIuEewsA5QKT4xC1z1emfFroIY9X/EWkKQfOUhmQ8/
+   7KwwkPIWBJDy6ww6XKTTf9HH5C4kk/gX5Y1e6wIaL9aBzu7rCW32ygXTL
+   9gdW8KBoPtplTf2XiGiKsZgw3U7ixrL3AI9Ux41URLLNVf/7dqFSOl7Bx
+   qgPc0xNl8qPEu2KEo5P9NY0HcjUQz2Fa1RrAjN+y2PnEdvEaFetyhGemD
+   g==;
+X-CSE-ConnectionGUID: y7c7i3B/R+mHfgvRXfZM0w==
+X-CSE-MsgGUID: yTIxs44GQTCcxOC0KtaV6g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17263725"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="17263725"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:21:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="16069043"
+Received: from unknown (HELO intel.com) ([10.247.118.204])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:21:44 -0700
+Date: Tue, 26 Mar 2024 17:21:38 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH v6 0/3] Disable automatic load CCS load balancing
+Message-ID: <ZgL2EqrsHBoBmoGv@ashyti-mobl2.lan>
+References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZgLnOHiCzo5AQzra@hovoldconsulting.com>
+In-Reply-To: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 
-Hi Luiz,
+Joonas,
 
-On Tue, Mar 26, 2024 at 04:18:16PM +0100, Johan Hovold wrote:
-> On Tue, Mar 26, 2024 at 10:17:13AM -0400, Luiz Augusto von Dentz wrote:
-> > On Tue, Mar 26, 2024 at 3:09 AM Johan Hovold <johan@kernel.org> wrote:
-> > > On Mon, Mar 25, 2024 at 04:31:53PM -0400, Luiz Augusto von Dentz wrote:
+> 1. Disables automatic load balancing as adviced by the hardware
+>    workaround.
 
-> > > > All the
-> > > > CI automation is done on bluetooth-next and if you are asking to be
-> > > > done via bluetooth tree which is based on the latest rc that is not
-> > > > how things works here, we usually first apply to bluetooth-next and in
-> > > > case it needs to be backported then it later done via pull-request.
-> > >
-> > > The revert fixes a regression in 6.7-rc7 and should get to Linus as soon
-> > > as possible and I assume you have some way to get fixes into mainline
-> > > for the current development cycle.
-> > 
-> > Yeah I will send it later today to be included in the next rc release
-> > and since it is marked for stable that shall trigger the process of
-> > backporting it.
-> > 
-> > > The series fixes a critical bug in the Qualcomm driver and should
-> > > similarly get into mainline as soon as possible to avoid having people
-> > > unknowingly start relying on the broken behaviour (reversed address).
-> > > The bug in this case is older, but since the bug is severe and we're
-> > > only at rc1, I don't think this one should wait for 6.10 either.
+do we need a documentation update here?
 
-I just double checked the bluetooth-next branch and everything looks
-good now (revert + endianness fix series). Thanks!
-
-Did I understand you correctly that you'll be able to get all five
-commits into 6.9 during this development cycle (e.g. 6.9-rc2)?
- 
-Johan
+Andi
 
