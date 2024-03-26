@@ -1,94 +1,171 @@
-Return-Path: <stable+bounces-32376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811DB88CD2A
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 20:27:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C214C88CD96
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 20:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09ED7B29D80
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59F51C62B38
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91A23A8D0;
-	Tue, 26 Mar 2024 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4A113D260;
+	Tue, 26 Mar 2024 19:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOpRYTEj"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="GEj2oICR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851C6802;
-	Tue, 26 Mar 2024 19:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C6613D267
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 19:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711480983; cv=none; b=Hdm2NMBJP8Z1RbUVFRnvRbvSPINarNKyjDPeBp/F2pnXfQLYFp2/KZid0X7Pz4dSVWfMrSl5D4lFSKxSUBOrDxivLyfBnguOhmOPH9JCrFKUMbrygBmJ/+cZ9EvItdRH64/Ega0VEnD9+BHR34l5dQhFaJS9DT/dEZCq6NhQqGs=
+	t=1711482858; cv=none; b=tt3K7xwB9vSKGq5CRobdcMifrSxSquLAdLPOUS6NklLucjlTXGFK1NFNGRZgAromZ3P8gjGV2CEJfkTG2rOnjWZwQcXh/nGTKvBQRNcnkFTXIr5D8pmfvVk4QZYx1LApJzhx4aoRWxFv3aPMaXN7i9bgF1ZQxZ73NIukn4F7h1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711480983; c=relaxed/simple;
-	bh=iU53mz5gVhq7abaXjUhQvx4ORrW9DRxK/HIImuuyIds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kCbsakZqkbtgYbYSS9uXFxrUNGT2/1MfsQp4cHo0jaK2uQG1oZSfa4hUnXqai396DUOB5pUR+nP7DBlB1DuOlffK7Z+3NW5ZA6qk83+fkTZIPtTdYFK8ox+iZH5GH+MISsZvCYjXSo42P00EiwlNEZm7B+5h7UGJ4ExIehOKIFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOpRYTEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010C7C433C7;
-	Tue, 26 Mar 2024 19:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711480983;
-	bh=iU53mz5gVhq7abaXjUhQvx4ORrW9DRxK/HIImuuyIds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bOpRYTEjb87rY0ta/eyqmfeD7t0ZUKI7b89BThwplqDjAbcHsH5o2H2EEi0v8t1ix
-	 vJ+5EbN6G71Rn8bsJHNniEl+hUmQjOF4oQA6hC6gzGVQIyJuguC/XjI6F0wWaC7ERj
-	 KJTsnHNxnbhP90o0MVYLFsKBiL/8KziOvM1Ugoji3RsAaPmcWNCK1Ht7/8aj5XHysC
-	 EfUxee+QoVNj6Skd3MrxXd5XYAT8jsppQxJYkkJ0w5+nGGyvUw+6AfYfdn19Hd4ucP
-	 CHVf/aeAChuo7h/FEKlPTtJI0aUQ0h+aKRfBvyfWublMzzhS8AwqBXcimGIqY5glus
-	 vdsLH0/vkjtmg==
-Date: Tue, 26 Mar 2024 15:23:02 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: David Sterba <dsterba@suse.cz>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>, Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 5.15 005/317] btrfs: add and use helper to check if block
- group is used
-Message-ID: <ZgMgljyKh01iWOzt@sashalap>
-References: <20240324233458.1352854-1-sashal@kernel.org>
- <20240324233458.1352854-6-sashal@kernel.org>
- <20240325182556.GN14596@twin.jikos.cz>
+	s=arc-20240116; t=1711482858; c=relaxed/simple;
+	bh=TVQh7He8pCNuQhQFnvn+Z1vWx3JX3W8dztAvzVfDPJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Dl4gkRLMMwS7brjwYl0QS/Z7WA2dNTwOguWhl1WJ1FXKj0Oo5y/p4yS7PLxmbtpJxmE3aWvoyms8J4UX7F3qYzOUcJUhY47pa1umEDGsd/OihAKJu+MVqNWj7xoc7e22lfPbzLQtiQKXFsiAgprnbN+/GyKZDEvuBRxYE8x+RTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=GEj2oICR; arc=none smtp.client-ip=193.222.135.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 25507 invoked from network); 26 Mar 2024 20:47:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1711482450; bh=IIhoIWpRJSiDJH2NqAEhNqlU5eNagQrEs7VzWuVJG3c=;
+          h=Subject:To:From;
+          b=GEj2oICR/tiC1RhMgpXfAS9rSCh7DhVHAREXphEekjYoFbosrPdJAlKilygj371ki
+           pgx50zgg5o57Q+/gmbIXY+zfeKXlDvHJL0+6xt7Js/eTGvJGhgqvl1nCP82c1JB+VL
+           MSC3lUgZoxZWKBsEeBWZci9y1p4Bq2BKErOUIA94=
+Received: from aaer216.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.121.216])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <sashal@kernel.org>; 26 Mar 2024 20:47:30 +0100
+Message-ID: <49e3ce4a-e77e-47a6-819f-eba74c05f5f5@o2.pl>
+Date: Tue, 26 Mar 2024 20:47:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240325182556.GN14596@twin.jikos.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/444] 6.1.83-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240325115939.1766258-1-sashal@kernel.org>
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20240325115939.1766258-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 1bbdf9110afad6aeac496f367f500c2f
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [QVM0]                               
 
-On Mon, Mar 25, 2024 at 07:25:56PM +0100, David Sterba wrote:
->On Sun, Mar 24, 2024 at 07:29:45PM -0400, Sasha Levin wrote:
->> From: Filipe Manana <fdmanana@suse.com>
->>
->> [ Upstream commit 1693d5442c458ae8d5b0d58463b873cd879569ed ]
->>
->> Add a helper function to determine if a block group is being used and make
->> use of it at btrfs_delete_unused_bgs(). This helper will also be used in
->> future code changes.
->>
->> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
->> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
->> Reviewed-by: Boris Burkov <boris@bur.io>
->> Signed-off-by: Filipe Manana <fdmanana@suse.com>
->> Reviewed-by: David Sterba <dsterba@suse.com>
->> Signed-off-by: David Sterba <dsterba@suse.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+W dniu 25.03.2024 o 12:59, Sasha Levin pisze:
+> This is the start of the stable review cycle for the 6.1.83 release.
+> There are 444 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->Please drop this patch from all stable branches unless it's a
->prerequisite for some other patch. This is clearly a cleanup.
+> Responses should be made by Wed Mar 27 11:59:37 AM UTC 2024.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.1.y&id2=v6.1.82
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
 
-Ack, thanks!
+Hello,
 
--- 
-Thanks,
-Sasha
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+
+Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+
+Stack:
+- amd64,
+- ext4 on top of LVM on top of LUKS on top of mdraid on top of
+  NVMe and SATA drives (the SATA drive in write-mostly mode).
+
+Tested (lightly):
+- suspend to RAM,
+- suspend to disk,
+
+- GPU (Intel HD Graphics 620, with a Duke Nukem 3D game on Proton (Wine fork) and a Unigine benchmark)
+- WiFi (Realtek RTL8822BE),
+- Bluetooth (Realtek RTL8822BE),
+- webcam,
+
+- USB soundcard (Logitech Pro X),
+- PCI soundcard (Intel HD Audio),
+
+Filesystems tested very lightly:
+- NFS,
+- NTFS via FUSE
+- exFAT
+- vfat.
+
+Nitpicks:
+- Mozilla Thunderbird displays the main panel with a long delay,
+    - likely not connected with the kernel upgrade,
+- intermittent problems with suspend in GNOME (suspend hangs until I log back in),
+    - likely not connected with the kernel upgrade,
+- when I have GNOME Bluetooth settings open, the computer cannot receive any files from the phone,
+    - same as on some older kernels,
+- several errors in dmesg: "Bluetooth: hci0: SCO packet for unknown connection handle 2"
+    - same as on some older kernels,
+
+Greetings,
+
+Mateusz
+
 
