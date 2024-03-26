@@ -1,232 +1,115 @@
-Return-Path: <stable+bounces-32339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBCC88C8DC
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:19:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F104788C8E2
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 309D1B2445E
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D7A3306C9B
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB9013CA95;
-	Tue, 26 Mar 2024 16:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9512213CAA5;
+	Tue, 26 Mar 2024 16:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6C92dz6"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E871D13C9C5;
-	Tue, 26 Mar 2024 16:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73B13CA98;
+	Tue, 26 Mar 2024 16:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711469943; cv=none; b=lje3nEXJbtfeoGJt/hysgbSpslgibYzB0ZqaMke+1ydZBT/McX0dtOuMx62Mk36fo7HkHRFiVBGOzsJD13vcaW5YO+1suN7fnddce2gURPByOG6T6A6aV279IhbzhxXZkXYJR9A2V6aWxMB2sN4xmMf+DLdYE1w3o46jAHpmE9g=
+	t=1711470027; cv=none; b=Fw4GL4TrfuRDdq7Gpqb6IDhhkJ4Mr6nXSTj5g5tjPHpKviFSvVwNqdAXVa7qbDwdMqt7ZXcQu+zeNFL2g8mbismeGw0d38j/6BDO1lOdCvD+1okBB/7ZccwyTkHUuh4XdfNqHtPSGGzgcg2RhwXMDGjmlsG1KVRcP+rlTaO63wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711469943; c=relaxed/simple;
-	bh=fdU0/4nAFfsDVSfMuzjWoxODhsFLL7hOMH1mO1m1t+M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=WeXQmvMbb2aZBubLm2ljz8TmS/umMOJ3WxAs1+SFKMUgHuuV872QpUtcFALY+E8Ns0jJa4PtFTdgwt+hQpkZynVu2AV+f4L1A0r/75hIBejZA1lgUxp3yWli/0HluRlbGBmmGBsLy9S4VZdKQNXY4V8pev8irC+OOrsBa2uwzpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b68717.dsl.pool.telekom.hu [::ffff:81.182.135.23])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000007733A.000000006602F572.0023D3B2; Tue, 26 Mar 2024 17:18:57 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>
-Cc: alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-  linux-kernel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH v2 2/4] ALSA: hda/tas2781: add locks to kcontrols
-Date: Tue, 26 Mar 2024 17:18:46 +0100
-Message-ID: <e35b867f6fe5fa1f869dd658a0a1f2118b737f57.1711469583.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1711469583.git.soyer@irl.hu>
-References: <cover.1711469583.git.soyer@irl.hu>
+	s=arc-20240116; t=1711470027; c=relaxed/simple;
+	bh=tH7ShG5e19q5dk8DGs/7rFZaClfulgISrGFPuWcP0mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CWAkjnaQ1RMfxJ58iRTpgBFDJVYthH8VLGqhuMzy8ShmMWfbB0sREts2gNmmNku0lYma4XhaWgAmoud6U135rXq1jjTPvZhHJn1Vneiqj5Rz+tl3i3Rtc+C0/CYv9aaa3IRjD07a2R0IF3vhoe9mEfnitb08LSet+FGkD++e8lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6C92dz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EE8C43394;
+	Tue, 26 Mar 2024 16:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711470026;
+	bh=tH7ShG5e19q5dk8DGs/7rFZaClfulgISrGFPuWcP0mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e6C92dz6raZp0WrjtLHCxqpCcVWV3awH3jwOkT/LShocw+towYCYzHIpMxVqVR6ci
+	 S4vUVgmYGNay0dotswGf42xd6YmI7FN3UtHnq6i4yoeLo+CYBvI39oh+zvkPu/nwP6
+	 ze88G0lKQJKrmGrEVoi348mOb39+eZjNn3WGMk9Elebb301GZ8pneFWt9kNFD/0BoR
+	 C2ADW6obNGlsFyXcw3F6Z0qvBucbUllRtd/Dd06q/8Xx85VfeplO6YXdN3Kd3Ia0RI
+	 O4dyir2E/RrcwhToChH4LNMoUI3HwPM4CWyWULbzkCZysMCLqQdXDQiswmdtYCXJOZ
+	 munyLNIT7r7zQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rp9XO-000000006Yi-1ZUs;
+	Tue, 26 Mar 2024 17:20:35 +0100
+Date: Tue, 26 Mar 2024 17:20:34 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+Message-ID: <ZgL10ur0825LgWVK@hovoldconsulting.com>
+References: <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
+ <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
+ <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
+ <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com>
+ <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
+ <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
+ <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
+ <ZgJ0okobGv5nPreG@hovoldconsulting.com>
+ <CABBYNZKJJuPHEwyXFRi8Z=P0GyaY-HdamsxmV8sR+R97ETTmEg@mail.gmail.com>
+ <ZgLnOHiCzo5AQzra@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZgLnOHiCzo5AQzra@hovoldconsulting.com>
 
-The rcabin.profile_cfg_id, cur_prog, cur_conf, force_fwload_status
-variables are acccessible from multiple threads and therefore require
-locking.
+Hi Luiz,
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
----
- sound/pci/hda/tas2781_hda_i2c.c | 50 +++++++++++++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 2 deletions(-)
+On Tue, Mar 26, 2024 at 04:18:16PM +0100, Johan Hovold wrote:
+> On Tue, Mar 26, 2024 at 10:17:13AM -0400, Luiz Augusto von Dentz wrote:
+> > On Tue, Mar 26, 2024 at 3:09 AM Johan Hovold <johan@kernel.org> wrote:
+> > > On Mon, Mar 25, 2024 at 04:31:53PM -0400, Luiz Augusto von Dentz wrote:
 
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 5acb475c10a7..9a43f563bb9e 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -185,8 +185,12 @@ static int tasdevice_get_profile_id(struct snd_kcontrol *kcontrol,
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->rcabin.profile_cfg_id;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -200,11 +204,15 @@ static int tasdevice_set_profile_id(struct snd_kcontrol *kcontrol,
- 
- 	val = clamp(nr_profile, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->rcabin.profile_cfg_id != val) {
- 		tas_priv->rcabin.profile_cfg_id = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -241,8 +249,12 @@ static int tasdevice_program_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->cur_prog;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -257,11 +269,15 @@ static int tasdevice_program_put(struct snd_kcontrol *kcontrol,
- 
- 	val = clamp(nr_program, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->cur_prog != val) {
- 		tas_priv->cur_prog = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -270,8 +286,12 @@ static int tasdevice_config_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->cur_conf;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -286,11 +306,15 @@ static int tasdevice_config_put(struct snd_kcontrol *kcontrol,
- 
- 	val = clamp(nr_config, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->cur_conf != val) {
- 		tas_priv->cur_conf = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -300,8 +324,15 @@ static int tas2781_amp_getvol(struct snd_kcontrol *kcontrol,
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
-+	int ret;
-+
-+	mutex_lock(&tas_priv->codec_lock);
-+
-+	ret = tasdevice_amp_getvol(tas_priv, ucontrol, mc);
-+
-+	mutex_unlock(&tas_priv->codec_lock);
- 
--	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
-+	return ret;
- }
- 
- static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
-@@ -310,9 +341,16 @@ static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
-+	int ret;
-+
-+	mutex_lock(&tas_priv->codec_lock);
- 
- 	/* The check of the given value is in tasdevice_amp_putvol. */
--	return tasdevice_amp_putvol(tas_priv, ucontrol, mc);
-+	ret = tasdevice_amp_putvol(tas_priv, ucontrol, mc);
-+
-+	mutex_unlock(&tas_priv->codec_lock);
-+
-+	return ret;
- }
- 
- static int tas2781_force_fwload_get(struct snd_kcontrol *kcontrol,
-@@ -320,10 +358,14 @@ static int tas2781_force_fwload_get(struct snd_kcontrol *kcontrol,
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = (int)tas_priv->force_fwload_status;
- 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
- 			tas_priv->force_fwload_status ? "ON" : "OFF");
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -333,6 +375,8 @@ static int tas2781_force_fwload_put(struct snd_kcontrol *kcontrol,
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	bool change, val = (bool)ucontrol->value.integer.value[0];
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->force_fwload_status == val)
- 		change = false;
- 	else {
-@@ -342,6 +386,8 @@ static int tas2781_force_fwload_put(struct snd_kcontrol *kcontrol,
- 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
- 		tas_priv->force_fwload_status ? "ON" : "OFF");
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return change;
- }
- 
--- 
-2.44.0
+> > > > All the
+> > > > CI automation is done on bluetooth-next and if you are asking to be
+> > > > done via bluetooth tree which is based on the latest rc that is not
+> > > > how things works here, we usually first apply to bluetooth-next and in
+> > > > case it needs to be backported then it later done via pull-request.
+> > >
+> > > The revert fixes a regression in 6.7-rc7 and should get to Linus as soon
+> > > as possible and I assume you have some way to get fixes into mainline
+> > > for the current development cycle.
+> > 
+> > Yeah I will send it later today to be included in the next rc release
+> > and since it is marked for stable that shall trigger the process of
+> > backporting it.
+> > 
+> > > The series fixes a critical bug in the Qualcomm driver and should
+> > > similarly get into mainline as soon as possible to avoid having people
+> > > unknowingly start relying on the broken behaviour (reversed address).
+> > > The bug in this case is older, but since the bug is severe and we're
+> > > only at rc1, I don't think this one should wait for 6.10 either.
 
+I just double checked the bluetooth-next branch and everything looks
+good now (revert + endianness fix series). Thanks!
+
+Did I understand you correctly that you'll be able to get all five
+commits into 6.9 during this development cycle (e.g. 6.9-rc2)?
+ 
+Johan
 
