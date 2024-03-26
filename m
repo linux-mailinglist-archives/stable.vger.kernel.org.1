@@ -1,149 +1,170 @@
-Return-Path: <stable+bounces-32306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9124C88BF4D
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:25:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC1488BFCF
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04847B27CC3
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6EE1F6274B
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F486BFD4;
-	Tue, 26 Mar 2024 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838F9610D;
+	Tue, 26 Mar 2024 10:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CjIXOk+I"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AbI+vVcJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2052.outbound.protection.outlook.com [40.107.237.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCC13DABE8;
-	Tue, 26 Mar 2024 10:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711448728; cv=none; b=Q6Fb5gMSUibfDRec98Oqx8fbe848rgDY1DYNu1e3fO80/SbBnGkKXsJBV9x4W2blYEcz2LcIAwHXJ1HUnZ4FbPaGlKgKzpPHDvKimVfxR+g+teXR0Jud++qIoE7JU5/mLrIjhaSFotCbhFdfdawDJq3v8z7tP/QbmLT8Z7pTiaI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711448728; c=relaxed/simple;
-	bh=apIKmvfoqCCziBUKxRgHaz8L8n5IlOgWUbMMp/ziAZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=agbHmvOTM96H352vMAmNpNsM4jb3XH35hwkY7unGOxZh0X/OB3JZULaTBa/m81v56PrWcAdPbbCpwhU/osin2vgYvJPIdeV3psQB6iVjxiRF05TGnb5nWrKpXJ5m/dfcF3AhNFbUa4amfiVAZ4DZLP+J46eWS1bqB4q/3DbBgHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CjIXOk+I; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711448726; x=1742984726;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=apIKmvfoqCCziBUKxRgHaz8L8n5IlOgWUbMMp/ziAZg=;
-  b=CjIXOk+IqgANgAAZfcbMCl+6qJbiUe6OpFmeltd5XOsKmuuYcFuowZwS
-   uO3kh2V3S6X8ZfsiCcEjPZ0UNEas2Dqtf7LZP9RvIZw52oq16ne4uKYwj
-   K64wzeWYIhTFKZspQX8f+eTSAphbMWcRTF7vfiv770DNIyq4m3GI8EN1h
-   4Hrn7eU+DoSZS8xtRDKxpsFuBJi6xMlOc31ncmrlSusUZdBy+zEtSM9BP
-   X/KVjw0KZQO/P3122DHUiQbwVdb7cHCwSS0hBETt+SV9ho36hIGqXoLg6
-   qLl3ZtwmVpJB1CTQQEFbNwQuNZIsjWOJXX15acSjqJ2N/++9gQYlBw23y
-   g==;
-X-CSE-ConnectionGUID: fKXYkTq4QzeRVtq3Js6oTw==
-X-CSE-MsgGUID: 6+utZfqWRJav+n/wO334Rw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6702712"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="6702712"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 03:25:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="15835316"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.38.215])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 03:25:22 -0700
-Message-ID: <2e712cf6-7521-4c0b-b6fd-76bacc309496@intel.com>
-Date: Tue, 26 Mar 2024 12:25:17 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718B51BC46;
+	Tue, 26 Mar 2024 10:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711450074; cv=fail; b=adu7bZ7xzH3UO05RLp2hMSlKnTPXhPv2zVJ0aa09chpCFy0J8q8wW7wScm3chnp9aWiqLZNmgx0Mgq7ypyj1AfKwJRDgiiRP5E+bCsu4lvo/gJQHVwi71qAvisa35CtCjddaRZqEmK7c/T3fZaeihlBUYDCB4/RFiWUqfXaBO5c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711450074; c=relaxed/simple;
+	bh=U1wk8y+BhqOMDJzZajcRiFQ8pqMlkSxIlj0bEdBrBmU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qvKpAdgxkJvan2Jm5UaCkGMQvudu3zZQ9pk8msfkD2oBjFoHyWvp0TGwJS1/kPNUTvXCkauNWpcF/v9DD3inQN76qZdFyy+sRD847jIHavvLqGQn5tAJyhhJsiy1deNEpfAw+rJaHyF5AyhFecSwD4iSRYEQIF4bqmJUOM9qI2I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AbI+vVcJ; arc=fail smtp.client-ip=40.107.237.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SXPDbGraChxYgSbYYJO6h4Ggdfp1k/MI2G93rrCpTpAZF38k+1Ztu37mcPh6Vn6eLM7S6Fx6qtmwcB2QV1LIE9gQ0TWwa0U5xNdzzm0NyUmzBvAXk1vHvLjcYw4T0AqyhFlSmIJz3SGoP5KLptrj6QdKzEVQYw1B5Wr7Y8Ld61V//5gk7UFUvCxWuje4jXy5SwON50OqutkxCloPQB18y2l2tDZQw26BbBG5owLzXk78bgCN5y0Nmu/kds2NgkNgrPCIA97M4OCl7pU2+XWkf//CX7N/XGthB8wzHk5hQtqDL0628fJJNbIPlv6ViBXxXiRAtQiwLRRLmKCF87jRlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e8/hV0CjDxFc6wzjF4+MNtX/I/fU+FjyLUL0JhUakV8=;
+ b=m5Hppgg6Wbm1CAr0icU8XdVHH7tLm2AUOGNZdlv3r5e4xU2j43RTzS5hm6m31FAQkrA5TYjqddA+x7kCjEy8asKxWKN8q2/xG4X8VbcUbDomrMJXzMtLd2u51a7MRMsHJwwz0lVsKbHNwUKxMKPAKQrmR2aJjqIio3qZJdYeDhETr6XlZhtP6SRWDbSA6UC+Utze0vCEUQ390jgO6E9leOo56CaYbOkOWnb0StD4V6LubPN1f3+uWGECCRXpjV/ls80PgqVbdsRjVf8PDzB7/cGzpG78hBLPqsaJOhdHJXJbnJPShS4p4+2zr9zMmXHMWi+Ed8Paeml/m/EEO69AfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e8/hV0CjDxFc6wzjF4+MNtX/I/fU+FjyLUL0JhUakV8=;
+ b=AbI+vVcJVUUv699Auk2ZLvW04I0wXAKWpX0vnQ2gbVKPixeHwA6jQlHvHJUI4KbQPN+p2yU4g+UTjoQXv0GyQxSYseJqD4esrulNxuBjg/g6n5jlzO9lKAY2THYM07BYtN96Y/ANytQ5UpmQ2pfpfz7fmDrBeTgiRfPkHqUzLJ75mh59NcNnVyL4HiF4YcTpuhbIpCsBYlonAMvbY5F9csscCeIwl1uobHT5qtDARU7CiwPTiS5Jqdw8yaaeqZC5bwUXk6Ha3rypHEjxVOl8+qCB8L/K6KDDX9i5bqSwh1hllJ8gkyQ6myuOV7MGjFNuQ1SCqU51TheyTM8EL/vU/Q==
+Received: from MW4PR03CA0130.namprd03.prod.outlook.com (2603:10b6:303:8c::15)
+ by PH0PR12MB7839.namprd12.prod.outlook.com (2603:10b6:510:286::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
+ 2024 10:47:49 +0000
+Received: from MWH0EPF000A672E.namprd04.prod.outlook.com
+ (2603:10b6:303:8c:cafe::9) by MW4PR03CA0130.outlook.office365.com
+ (2603:10b6:303:8c::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13 via Frontend
+ Transport; Tue, 26 Mar 2024 10:47:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000A672E.mail.protection.outlook.com (10.167.249.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.10 via Frontend Transport; Tue, 26 Mar 2024 10:47:46 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 26 Mar
+ 2024 03:47:31 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 26 Mar
+ 2024 03:47:31 -0700
+Received: from build-spujar-20230918T214410352.internal (10.127.8.9) by
+ mail.nvidia.com (10.129.68.10) with Microsoft SMTP Server id 15.2.1258.12 via
+ Frontend Transport; Tue, 26 Mar 2024 03:47:31 -0700
+From: Sameer Pujar <spujar@nvidia.com>
+To: <broonie@kernel.org>, <linux-sound@vger.kernel.org>
+CC: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lgirdwood@gmail.com>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+	<mkumard@nvidia.com>, Sameer Pujar <spujar@nvidia.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] ASoC: tegra: Fix DSPK 16-bit playback
+Date: Tue, 26 Mar 2024 10:47:25 +0000
+Message-ID: <20240326104725.2895151-1-spujar@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-msm: pervent access to suspended controller
-To: Mantas Pucka <mantas@8devices.com>, Bjorn Andersson
- <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Georgi Djakov <djakov@kernel.org>,
- Pramod Gurav <pramod.gurav@linaro.org>,
- Ritesh Harjani <ritesh.list@gmail.com>
-Cc: linux-mmc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A672E:EE_|PH0PR12MB7839:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51ce102b-f4ab-48a3-3c72-08dc4d822cac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	k+Q9eZBfTW6v8VOvehv0P1h1geurrjA4BqNWY1OjfsQizjYeMX2WrEt5XzKkcyGvF4UrvLQ1Q8LNm0XiXTonex/emP+iMyUht8Tq3AlFtgPPyv1r9Hy/FTA2X+V+RvBi/1r4u5NabuBDz8XaBhCSQFyrNIwdXWaSFqW4gpRTlWhlER70fHTV/exy/v4vn9D29A4FVXrZ54rFyIcOH0CXz4E5rxbLIcyDcfwWFEyuXn/xfSXJvaw9gSdFZz1oBihno19LE5tBI2CHl42jh6sE2Yu2Lom+8s2snIUmkroTvU/ep8RDcye3cG+Q5Fh6RX9vxqhx2qbKJSsxJlVeBeM7nbrhZyuPSzC48UvmYR8Vnt3hTdaFQ2LTyFmNjw6nV3sNtYZ4ViLFpRVjp9KacV/1XrkchKjJfWAxns44kTkOUXhS6puSWGAGLGqvODEYdjTJQnuNzfVTUVR1CObh11P3kpGhXOAO4gnV4xJW/3ekmjetsD8E7dWJZTWKarj5mhxq7Di75Jw97elc2yE7WnNUrYEzZB97EuxrovqcxgECfVxLafqhwXjFT1Q4wKDg0jBpgGFQSFgwiXKRKTQS0UcP4acpkMNg6vi0N1v4qBQIGqM1W6NFTBEw0toIKBhPKz0Vb0+GVZ8BHm3RFIeqgXaMPZHOLbDDiYLd7HHxSWlvIqugOoqoKNTdWDMVM7RK/dpd5Vxk7SHNXQ8zyKEX+6fWUjqwOdit0B2vGNuldctzPtQldgMSFf+lBIlzc+ajApPJ
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 10:47:46.9402
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51ce102b-f4ab-48a3-3c72-08dc4d822cac
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A672E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7839
 
-On 21/03/24 16:30, Mantas Pucka wrote:
-> Generic sdhci code registers LED device and uses host->runtime_suspended
-> flag to protect access to it. The sdhci-msm driver doesn't set this flag,
-> which causes a crash when LED is accessed while controller is runtime
-> suspended. Fix this by setting the flag correctly.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
-> Signed-off-by: Mantas Pucka <mantas@8devices.com>
+DSPK configuration is wrong for 16-bit playback and this happens because
+the client config is always fixed at 24-bit in hw_params(). Fix this by
+updating the client config to 16-bit for the respective playback.
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+---
+ changes in v2:
+   * moved common setting to S32_LE switch case.
 
-> ---
->  drivers/mmc/host/sdhci-msm.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-> index 668e0aceeeba..e113b99a3eab 100644
-> --- a/drivers/mmc/host/sdhci-msm.c
-> +++ b/drivers/mmc/host/sdhci-msm.c
-> @@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runtime_suspend(struct device *dev)
->  	struct sdhci_host *host = dev_get_drvdata(dev);
->  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
->  	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&host->lock, flags);
-> +	host->runtime_suspended = true;
-> +	spin_unlock_irqrestore(&host->lock, flags);
->  
->  	/* Drop the performance vote */
->  	dev_pm_opp_set_rate(dev, 0);
-> @@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
->  	struct sdhci_host *host = dev_get_drvdata(dev);
->  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
->  	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-> +	unsigned long flags;
->  	int ret;
->  
->  	ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
-> @@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
->  
->  	dev_pm_opp_set_rate(dev, msm_host->clk_rate);
->  
-> -	return sdhci_msm_ice_resume(msm_host);
-> +	ret = sdhci_msm_ice_resume(msm_host);
-> +	if (ret)
-> +		return ret;
-> +
-> +	spin_lock_irqsave(&host->lock, flags);
-> +	host->runtime_suspended = false;
-> +	spin_unlock_irqrestore(&host->lock, flags);
-> +
-> +	return ret;
->  }
->  
->  static const struct dev_pm_ops sdhci_msm_pm_ops = {
-> 
-> ---
-> base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
-> change-id: 20240321-sdhci-mmc-suspend-34f4af1d0286
-> 
-> Best regards,
+ sound/soc/tegra/tegra186_dspk.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/sound/soc/tegra/tegra186_dspk.c b/sound/soc/tegra/tegra186_dspk.c
+index aa37c4ab0adb..21cd41fec7a9 100644
+--- a/sound/soc/tegra/tegra186_dspk.c
++++ b/sound/soc/tegra/tegra186_dspk.c
+@@ -1,8 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ //
+ // tegra186_dspk.c - Tegra186 DSPK driver
+-//
+-// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
+ 
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -241,14 +240,14 @@ static int tegra186_dspk_hw_params(struct snd_pcm_substream *substream,
+ 		return -EINVAL;
+ 	}
+ 
+-	cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+-
+ 	switch (params_format(params)) {
+ 	case SNDRV_PCM_FORMAT_S16_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_16;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_16;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_32;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+ 		break;
+ 	default:
+ 		dev_err(dev, "unsupported format!\n");
+-- 
+2.25.1
 
 
