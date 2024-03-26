@@ -1,118 +1,128 @@
-Return-Path: <stable+bounces-32326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47D388C579
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 15:44:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7729C88C609
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 15:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F3B28176D
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 14:44:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33565305853
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 14:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A5E13C3F8;
-	Tue, 26 Mar 2024 14:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6B412D76F;
+	Tue, 26 Mar 2024 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j7eF0AEr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkGbXX4/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629AE13C3EB
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 14:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3FF2233A;
+	Tue, 26 Mar 2024 14:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711464238; cv=none; b=fjqbHjRHvtKeBMxhij9CI5yCnMcHc6LSpjmIoa1UD6ZyUM8dqXc7Sy3aee7y/s+8LtY0pl9/ny3Q08/1F55dvJujgqRhz/eWbSgQi4qGw82I2SaQ03obykGNl4YlCF+/Lj05tXiwv6ObLUatCOJEFZDD/DNkIaZZwAFcpJmCKWc=
+	t=1711465046; cv=none; b=rRR3ZRl/GnNqrM+AD47h+bvtbtnAub/EqRauLuvs4a5xc+NxRm0IXq5+qCwlc+qOwn97+c6k0cTL9zWX7sGInDV90KoDIsdKGM6EwB0IlofIlCv8jziafzBKcKl7dCDh0vReXCJlpLSh5ulSMiaYLOH3aLJ9XuPViGBTkL4WGm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711464238; c=relaxed/simple;
-	bh=PKvs+Ifa+14hX9p1LNFxIABmBql5tpHj1BT+AEjdf4U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eQhFdGac6uxagty3d8tdy3etEBQiB8zZ7UXIx2ZpuQEhtanMdg6OMwKWxEc7U8/jV4a3CeggXirvICnqusWQIBYnwGx8cXYKclcvO0TO9JTls6YLy5E3NXrBNsdW1+eZeP/g7WGjVJdfSrXrdYNiyLJ8ZOMbbc9yGlzYd4D6Bj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j7eF0AEr; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-413f8c8192eso81575e9.0
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 07:43:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711464235; x=1712069035; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QvRPX0srI6Nwl8MPf7Dm2KIiqeWF1NL4djSI9z970zQ=;
-        b=j7eF0AErNCfdNZ2PD1wsOWfXdC5Jh8J7dBnJO33CYFakuVAfmomB1afAjrA2ZQKaf7
-         SMCUShieYJmAq7gWFqeKiuzNsdPlakY567KsZgQtG6gDsvwrQnihtDX9+7U6NnTFaRZx
-         RHdmBYPFetsNb4ILWudJVYpkr4lIVhA7ivbuDLUlArt/M4CW8YovnQw3HaJC3Vve4LJk
-         07Dc1d2Xmbg2GP5NJiN4sJkJFjjOH+WJ4ise/PHJgmz0GVRw0XTJDFpcV+OEaxiIIlbM
-         5ZVB2IfKYG47wlrtEXxWyDwcV5YZW42vBkqVqTdsC59D7fdDc8Bu9Y/dWpeZ/dX6pmg1
-         KlYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711464235; x=1712069035;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QvRPX0srI6Nwl8MPf7Dm2KIiqeWF1NL4djSI9z970zQ=;
-        b=RDj340SmryIiVi5V/0AaQUY2/ORzp/3n9VQShBg/WzxssTXgp87wB8nYJ38x/Vxc8X
-         hi6ptg9f/aWqNWQE28zbriHrz1LYtxZ7RWZf8RyAPrwVitPUzNO57WYc485gTuTDGExB
-         CzeEjiXQtQ7QloGbFUzaXSVmkY4FKv0R9C7oBT9aL3wjeSmyWJd1hFOx27po4ldaiMto
-         zN2iJCJo8yuGVS42kOmDkUsrYQaOXpy4Ya14Y93Llg25rUTeDXx9aUEjlNHYzbH4JycP
-         V9/oPsYkfcl0eUyC4KJArBUjlLaCVqxLHXLJKp9OgKuTcvY33r7iCjMPFF3U+KSt9Yd2
-         wlrA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+wqSGYMH5EAkp4OC6KYZ/lKpXBbIoWWr2ZAwUvtD9jze+gV+H+lACM7MNy91SBW2uwOiJQt+D84MYWq+bfnVZCLO9Hgrm
-X-Gm-Message-State: AOJu0YxoopyGor6cSJbADiM4sXljrHkXyzb6xMDwqc0XnESqkv+2OD9K
-	U1MW7CVByy/wf5KgOdJrM2jjbwEh95KCWvnjv9CJRMpGxHZ1gr0zjWiBfPalGaw5zQxNta8TwOn
-	TmBrWfXyZiAVE8wleyuU8MFdIEMKnV8TrAi04
-X-Google-Smtp-Source: AGHT+IHyQfy0mSMBb57kAfmIDvkx81N8QcG0TvDbWsHX47nCDYyzaS87QB9tRR8mdSTMbNlTZoEBVpDdNz8bsVEN72U=
-X-Received: by 2002:a05:600c:1c06:b0:414:11:ec14 with SMTP id
- j6-20020a05600c1c0600b004140011ec14mr185229wms.6.1711464234407; Tue, 26 Mar
- 2024 07:43:54 -0700 (PDT)
+	s=arc-20240116; t=1711465046; c=relaxed/simple;
+	bh=sq1B4yPNkZWKh6th8vPtdVzhFb7i5RMJZN/k6yxDj2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=clnFYXA433xNvuE01p7342+uJhxnVVVfcdzYKxACYBexhHNocC6zI+c2J3LkJNkcDPHVURx0G6pUOs0tvW+JHpSENCG+4tekQT4Mi7pCjms4ZTKhXbRW/vfpsyL1EHJn7vv3S3de1sOTuzMRMdeHNj6PZtbgsJYBM4bUwvv8zbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkGbXX4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F0CC433C7;
+	Tue, 26 Mar 2024 14:57:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711465046;
+	bh=sq1B4yPNkZWKh6th8vPtdVzhFb7i5RMJZN/k6yxDj2Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mkGbXX4/6d2pvS4gRiFkrP1zX6w2uIWEkJXcnLCgDB+QMZLLOth07HQf1k23UuxSK
+	 rKKgmefLXwFeqhX5uZVKYcTOq9908DNjPHTDDh93PD9urSfCDgf41GDQRzyA1xHBXI
+	 6UzBC0H/zpeY0hXouZmJ63J1DkqU0eyIQB9Da2H7A8ghyBuDVUywavIK3htwwJk1ac
+	 ORIg24R2gqHTwfrzXF4Gz6p3nfgDY+Rw/bxyQ+gXPkrDVJzHjEJ+bAiG8DgMqiM9vc
+	 e6QONn1q9Vvh+L72URJnrKYQHzKnnz9gHOGO1QvF0FpCgGsQgjp/iUPaC3UePFgL+q
+	 xlh0j2gmDG9Gw==
+Date: Tue, 26 Mar 2024 16:56:44 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] mm/secretmem: fix GUP-fast succeeding on
+ secretmem folios
+Message-ID: <ZgLiLB2Fl1lFhEYc@kernel.org>
+References: <20240326143210.291116-1-david@redhat.com>
+ <20240326143210.291116-2-david@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319074337.3307292-1-kyletso@google.com> <2024032624-drizzle-coaster-c97f@gregkh>
-In-Reply-To: <2024032624-drizzle-coaster-c97f@gregkh>
-From: Kyle Tso <kyletso@google.com>
-Date: Tue, 26 Mar 2024 22:43:36 +0800
-Message-ID: <CAGZ6i=1BGzRD7nGnLKcbZJOWT_d88gAS_NWUg9KvZ4=wmT8xsw@mail.gmail.com>
-Subject: Re: [PATCH v1] usb: typec: tcpm: Correct the PDO counting in pd_set
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, badhri@google.com, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240326143210.291116-2-david@redhat.com>
 
-On Tue, Mar 26, 2024 at 5:30=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Tue, Mar 19, 2024 at 03:43:37PM +0800, Kyle Tso wrote:
-> > The index in the loop has already been added one and is equal to the
-> > number of PDOs to be updated when leaving the loop.
->
-> That says what is happening but not the issue that is being addressed.
-> What is the problem with the number being off by one?  Is this a "crash
-> the system" or merely "our accounting is wrong"?
->
-> thank,
->
-> greg k-h
+On Tue, Mar 26, 2024 at 03:32:08PM +0100, David Hildenbrand wrote:
+> folio_is_secretmem() currently relies on secretmem folios being LRU folios,
+> to save some cycles.
+> 
+> However, folios might reside in a folio batch without the LRU flag set, or
+> temporarily have their LRU flag cleared. Consequently, the LRU flag is
+> unreliable for this purpose.
+> 
+> In particular, this is the case when secretmem_fault() allocates a
+> fresh page and calls filemap_add_folio()->folio_add_lru(). The folio might
+> be added to the per-cpu folio batch and won't get the LRU flag set until
+> the batch was drained using e.g., lru_add_drain().
+> 
+> Consequently, folio_is_secretmem() might not detect secretmem folios
+> and GUP-fast can succeed in grabbing a secretmem folio, crashing the
+> kernel when we would later try reading/writing to the folio, because
+> the folio has been unmapped from the directmap.
+> 
+> Fix it by removing that unreliable check.
+> 
+> Reported-by: xingwei lee <xrivendell7@gmail.com>
+> Reported-by: yue sun <samsun1006219@gmail.com>
+> Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
+> Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
+> Tested-by: Miklos Szeredi <mszeredi@redhat.com>
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-When doing the power negotiation, TCPM relies on the "nr_snk_pdo" as
-the size of the local sink PDO array to match the Source capabilities
-of the partner port. If the off-by-one overflow  occurs, a wrong RDO
-might be sent and unexpected power transfer might happen such as over
-voltage or over current (than expected).
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-"nr_src_pdo" is used to set the Rp level when the port is in Source
-role. It is also the array size of the local Source capabilities when
-filling up the buffer which will be sent as the Source PDOs (such as
-in Power Negotiation). If the off-by-one overflow occurs, a wrong Rp
-level might be set and wrong Source PDOs will be sent to the partner
-port. This could potentially cause over current or port resets.
+> ---
+>  include/linux/secretmem.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
+> index 35f3a4a8ceb1..acf7e1a3f3de 100644
+> --- a/include/linux/secretmem.h
+> +++ b/include/linux/secretmem.h
+> @@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(struct folio *folio)
+>  	/*
+>  	 * Using folio_mapping() is quite slow because of the actual call
+>  	 * instruction.
+> -	 * We know that secretmem pages are not compound and LRU so we can
+> +	 * We know that secretmem pages are not compound, so we can
+>  	 * save a couple of cycles here.
+>  	 */
+> -	if (folio_test_large(folio) || !folio_test_lru(folio))
+> +	if (folio_test_large(folio))
+>  		return false;
+>  
+>  	mapping = (struct address_space *)
+> -- 
+> 2.43.2
+> 
 
-I will update the commit message in the next version of this patch.
-
-Kyle
+-- 
+Sincerely yours,
+Mike.
 
