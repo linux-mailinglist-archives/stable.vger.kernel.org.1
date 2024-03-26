@@ -1,127 +1,175 @@
-Return-Path: <stable+bounces-32279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A702688B8EA
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 04:45:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7002C88B976
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 05:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 626842E6F8D
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 03:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C5BB2C3E6B
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 04:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56781129A71;
-	Tue, 26 Mar 2024 03:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338974204E;
+	Tue, 26 Mar 2024 04:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9KkelDY"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="RqZXpf/X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01ED21353;
-	Tue, 26 Mar 2024 03:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0714533FD;
+	Tue, 26 Mar 2024 04:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711424746; cv=none; b=RRc2crBi9M3SjId179Z4/FHpkJYXiYeC4VVwgdmsYiQiYzMcKfm56m/Fv/TusOFC3m0yInUnlMzCuNUwWA8NOGNJ6jCx8QNV2OlbhdHC6quC5D0ixAkus7e9pNZV483BkY2LVyYPnM7z6KjLr8L/mCHsgy+9Vw7/RtOlePjsd2g=
+	t=1711427784; cv=none; b=aF6Q/yE+SnYJZqRE7EfAWygyJhdmo+xD+8lvabcujkxHLPbyqfKkF8Hxcr+ylglZk/qxiLrqN3Zpe858g7+D01PQRiYbjrSlMOpm77qPK+3zaMnZKPs4o9ncBcGt72OaYhCTKEmJtUwO2pJrqcBIs3ti/aH+UCeqFpSL0MjDMKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711424746; c=relaxed/simple;
-	bh=ksIDaTJR1kBwQLBHuVqFIn/ic3OHvFLmAdKuJ79h8sY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XDOZs6Y3DPF46B6wI1ZdfDytUbweNCKpvwBzQrO1wFb6uPgPKFkFfYx06h7nl+DLkUPFmE436y47uOZvSJWKUv0/9IVfhzV0ta95/wCJ+7lLqpJ4oGvqAFYWdm3mYIyaI4bql2zdXHx60qrDYTfT255hjfGmHCP393rQY2DzcvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9KkelDY; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e7425a6714so3218536b3a.0;
-        Mon, 25 Mar 2024 20:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711424744; x=1712029544; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1fYlZ/3hmBw4nvXtVpF10RkhB88OJ8ZZm7dAmINvHA=;
-        b=X9KkelDYu93b/2AJqB2JVVuHEvPuxKWMAJ0sXBVXlb+5FhSC3La9Minu5/zyFFV4Ku
-         nhkoFbpSgVIgoJR1c1AZoBg6DD5n2L9Te1sGUNdeVORiXOAm1bQ+xVBLWbJSN768NHti
-         Mp74p0yAh0/J9vJaVsqwTuU9xS6VPNnVbaAUMIp8RZ1VVqasLV3+A1x1uzQNlWCnLoxj
-         jdSObubcbTtCGK/hhc8rrhGiqEPZ5SwBp1Jbxa+axXzNJbjSxKciv3Tur6qYseR1nh5Y
-         90yJjKOE0ByKG+k6hILChZKF0a1/RrA2WFf+Sz6zUqpf6GWxcBI8HOdCAAa3hArrEM8u
-         HG1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711424744; x=1712029544;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f1fYlZ/3hmBw4nvXtVpF10RkhB88OJ8ZZm7dAmINvHA=;
-        b=j6Ralym2Q0FsEHQT3gJTjMzTFRIYad7qQUpy/npQePMXonV6KuCph+R+r92z/WhduD
-         8qqhsWZ0C/7uuyIn4kcybf6T5Dq+buzbm92tzlMjeRv7MwzORjtu/NFkKCPGUMmTfP1l
-         oKlcof9Zfaf3SeUl5MEVWpcLFCwlyuWfy9GUPdFF9inH4IssjYmRs72YqlGgOHV1xR9Q
-         rpC0UTUs7esyEiH5i7UNWh3rkdxhOgE6+O4oehdCNQm6CVZmLbm7kLdQTKbNQh46GS7e
-         1c53Ub6e+wBQpJulEDJanwd8+sycsu9+55DJNgCUmvQMoWMkuofuyNet3YkjhP4RIQQR
-         4L3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXCzOutLOsomTZQsQSB1qO1cV1oP3HeRkSgvzBGCvLDC2wOQaiPeVI75Wi4YV+aZW/E9eJzqfKrWMJHy0Lj2SrkRd80mZfw0cbWntcPijSaMgXtMIilEPN7ZmvYy3YM5w9YZzAy
-X-Gm-Message-State: AOJu0YwO/hxS1zyRvUVQGdfIQKmn+o0vCtdEGp0gsYrZiem++0udwDP+
-	WRzTEKmyvi+gMpkynKP34XcR2YGFi/Udt1QZtBHY4wY/eGvlHlgC
-X-Google-Smtp-Source: AGHT+IGec8796eKwoF9eBcusOEaR8GvWhrQZYO7m3ZkpbCHdsjlERpG06NfhRw+ovQWYeRzn/qZdvw==
-X-Received: by 2002:aa7:888f:0:b0:6e6:8ca5:c0d4 with SMTP id z15-20020aa7888f000000b006e68ca5c0d4mr9578557pfe.12.1711424744005;
-        Mon, 25 Mar 2024 20:45:44 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id z7-20020a634c07000000b005f05c9ee8d3sm2190528pga.93.2024.03.25.20.45.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 20:45:43 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id BC09F18462B10; Tue, 26 Mar 2024 10:45:39 +0700 (WIB)
-Date: Tue, 26 Mar 2024 10:45:39 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+	s=arc-20240116; t=1711427784; c=relaxed/simple;
+	bh=ZEC6sKLqIkQccXzPYnYYsEVVK+HsHTS1ecytu2JLpc8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TsDDNl1kjTFJc1Q5QQrHoItqav8Rmj31SDWrBO/0gWuegwS+zebwXZq/iUTcJ9qL7KFpXP5JQSN5RiHOQyx4YZKkNEOGBxvTXtA4tqyaqDyDgY6xADh5LSBBnnSKVF3eEbPN6Tm4/c3pHQaEws9V8XBPMn0TAE2WwGHEbf/L1X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=RqZXpf/X; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1711427777;
+	bh=8i9XYJmK9q6diP6s8+fki5DH3YDE5cf+HG71ptTgJww=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RqZXpf/XEd2DQAqrOAyyChkhsjN//XvytOil84PZUBgXY9hHzNFAingFLe+BzFt1D
+	 yzyVzmKOX+Kt6a+hPcLuArO2y2NergxLFpXS77YUvJR4lLL1LivI6SKbwzb10m1zPI
+	 dzZPX1mmpV6RxURztJaSB5iozDy4hcyKXpTf4LKEBzZt6iwsv2dg1HmMvii8vYbB/e
+	 xtPekiVoy/r7O8YSoD4F4JIctNxctthxieEB1ZyJCIheJsq4WhpVrndODbUAi4JTMm
+	 2RVG3sVom+hHcVwPJZ3AzC86fa/HtO54MHFAEB/9tMJ6DSvB2l5oJy5PpYq4h5pyuL
+	 R2JrEYHzgZDGA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4V3cSd4DgDz4wcs;
+	Tue, 26 Mar 2024 15:36:17 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com,
-	pavel@denx.de
-Subject: Re: [PATCH 6.8 000/710] 6.8.2-rc2 review
-Message-ID: <ZgJE4_YCcav6jO2V@archie.me>
-References: <20240325120018.1768449-1-sashal@kernel.org>
+ stable@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Geoff Levand <geoff@infradead.org>,
+ Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 430/638] powerpc/ps3: Fix lv1 hcall assembly for
+ ELFv2 calling convention
+In-Reply-To: <20240324230116.1348576-431-sashal@kernel.org>
+References: <20240324230116.1348576-1-sashal@kernel.org>
+ <20240324230116.1348576-431-sashal@kernel.org>
+Date: Tue, 26 Mar 2024 15:36:15 +1100
+Message-ID: <87wmppip8g.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="P6JA4jGNmeSeElZB"
-Content-Disposition: inline
-In-Reply-To: <20240325120018.1768449-1-sashal@kernel.org>
+Content-Type: text/plain
 
+Sasha Levin <sashal@kernel.org> writes:
+> From: Nicholas Piggin <npiggin@gmail.com>
+>
+> [ Upstream commit 6735fef14c1f089ae43fd6d43add818b7ff682a8 ]
+>
+> Stack-passed parameters begin at a different offset in the caller's
+> stack in the ELFv2 ABI.
+>
+> Reported-by: Geoff Levand <geoff@infradead.org>
+> Fixes: 8c5fa3b5c4df ("powerpc/64: Make ELFv2 the default for big-endian builds")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Tested-by: Geoff Levand <geoff@infradead.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Link: https://msgid.link/20231227072405.63751-2-npiggin@gmail.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/powerpc/include/asm/ppc_asm.h  |  6 ++++--
+>  arch/powerpc/platforms/ps3/hvcall.S | 18 +++++++++---------
+>  2 files changed, 13 insertions(+), 11 deletions(-)
 
---P6JA4jGNmeSeElZB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This commit is OK on its own, but it doesn't have any effect unless the
+full series up to 914d081ead11 ("Revert "powerpc/ps3_defconfig: Disable
+PPC64_BIG_ENDIAN_ELF_ABI_V2"") is backported.
 
-On Mon, Mar 25, 2024 at 08:00:18AM -0400, Sasha Levin wrote:
->=20
-> This is the start of the stable review cycle for the 6.8.2 release.
-> There are 710 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+I don't think the full series warrants backporting, it's really enabling
+a new feature (ELFv2 build for ps3).
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+So IMHO please drop this patch from 6.6, 6.7, 6.8.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+cheers
 
---=20
-An old man doll... just what I always wanted! - Clara
-
---P6JA4jGNmeSeElZB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZgJE3wAKCRD2uYlJVVFO
-oyexAQCT3iD4Rf32yvaBFFY6sxPnZpmsSUL48HkEyamg5KgrTAEAzuKnjLpXBIBH
-TwkDqEac2sk5mPOg6OMAvUXlqpMLqQI=
-=B6Lt
------END PGP SIGNATURE-----
-
---P6JA4jGNmeSeElZB--
+> diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+> index e7792aa135105..041ee25955205 100644
+> --- a/arch/powerpc/include/asm/ppc_asm.h
+> +++ b/arch/powerpc/include/asm/ppc_asm.h
+> @@ -201,11 +201,13 @@
+>  
+>  #ifdef CONFIG_PPC64_ELF_ABI_V2
+>  #define STK_GOT		24
+> -#define __STK_PARAM(i)	(32 + ((i)-3)*8)
+> +#define STK_PARAM_AREA	32
+>  #else
+>  #define STK_GOT		40
+> -#define __STK_PARAM(i)	(48 + ((i)-3)*8)
+> +#define STK_PARAM_AREA	48
+>  #endif
+> +
+> +#define __STK_PARAM(i)	(STK_PARAM_AREA + ((i)-3)*8)
+>  #define STK_PARAM(i)	__STK_PARAM(__REG_##i)
+>  
+>  #ifdef CONFIG_PPC64_ELF_ABI_V2
+> diff --git a/arch/powerpc/platforms/ps3/hvcall.S b/arch/powerpc/platforms/ps3/hvcall.S
+> index 509e30ad01bb4..59ea569debf47 100644
+> --- a/arch/powerpc/platforms/ps3/hvcall.S
+> +++ b/arch/powerpc/platforms/ps3/hvcall.S
+> @@ -714,7 +714,7 @@ _GLOBAL(_##API_NAME)				\
+>  	std	r4, 0(r11);			\
+>  	ld	r11, -16(r1);			\
+>  	std	r5, 0(r11);			\
+> -	ld	r11, 48+8*8(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*8(r1);	\
+>  	std	r6, 0(r11);			\
+>  						\
+>  	ld	r0, 16(r1);			\
+> @@ -746,22 +746,22 @@ _GLOBAL(_##API_NAME)				\
+>  	mflr	r0;				\
+>  	std	r0, 16(r1);			\
+>  						\
+> -	std	r10, 48+8*7(r1);		\
+> +	std	r10, STK_PARAM_AREA+8*7(r1);	\
+>  						\
+>  	li	r11, API_NUMBER;		\
+>  	lv1call;				\
+>  						\
+> -	ld	r11, 48+8*7(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*7(r1);	\
+>  	std	r4, 0(r11);			\
+> -	ld	r11, 48+8*8(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*8(r1);	\
+>  	std	r5, 0(r11);			\
+> -	ld	r11, 48+8*9(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*9(r1);	\
+>  	std	r6, 0(r11);			\
+> -	ld	r11, 48+8*10(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*10(r1);	\
+>  	std	r7, 0(r11);			\
+> -	ld	r11, 48+8*11(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*11(r1);	\
+>  	std	r8, 0(r11);			\
+> -	ld	r11, 48+8*12(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*12(r1);	\
+>  	std	r9, 0(r11);			\
+>  						\
+>  	ld	r0, 16(r1);			\
+> @@ -777,7 +777,7 @@ _GLOBAL(_##API_NAME)				\
+>  	li      r11, API_NUMBER;		\
+>  	lv1call;				\
+>  						\
+> -	ld	r11, 48+8*8(r1);		\
+> +	ld	r11, STK_PARAM_AREA+8*8(r1);	\
+>  	std	r4, 0(r11);			\
+>  						\
+>  	ld	r0, 16(r1);			\
+> -- 
+> 2.43.0
 
