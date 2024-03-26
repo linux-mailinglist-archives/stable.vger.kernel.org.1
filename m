@@ -1,58 +1,52 @@
-Return-Path: <stable+bounces-32301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAE988BDF9
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:37:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BF288BE03
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD004304E80
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5061C38DC4
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5996FB9D;
-	Tue, 26 Mar 2024 09:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094CB7580B;
+	Tue, 26 Mar 2024 09:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZs53TSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/G4l/Ou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D547454BF0;
-	Tue, 26 Mar 2024 09:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40A673539;
+	Tue, 26 Mar 2024 09:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711445106; cv=none; b=KXoPuyJm0WP4f4LrYQURtzuua1QFvtxBe2Vee6Pi7BG8+0G1Fx4kwBPViK1tI3lkaQCeKppVWnJ/iQTfdqzxnDpPaFAq0mEF5u9x/ZKgUwbhMAeWHiUfqmtWN+WZqhuaI4IGCIUd6RtWJRVRU86ZYsrgEKp8TCBQvP9z0Y25C0k=
+	t=1711445413; cv=none; b=p5ygQLgF7Mr5TTi/DMyWzVKOz0w096St3QKjploMPXDidlNkKBOvI60owJlQ53dAF1k6pjwJj15lP4Av/KbEhfE1EEtsEASyC/qDvv9lVKlcYbyVxKyuh6d2ak+pDinUezXVY6qyEvh6Qa8QZMhb7FzUaQJ4c8jegqvTTi67BZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711445106; c=relaxed/simple;
-	bh=ljvUxtK/9jOt8kIDbODRBzu12bdgGAnl4c7NLEPO/4A=;
+	s=arc-20240116; t=1711445413; c=relaxed/simple;
+	bh=TmO8LZS/iJ3ZXxl/r7qHjzUSiyZSbemk8sv8R3kPSOI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IGtECuVcFuVfcmmAeylpD1TjtgpitfMWrAwO84kxkFcZqJmHYptN03Nki1iU8FcgMHutL+KZRrZPdjwK+FgyO47IRcyHrGEBjeA8Pl4KR88cFEbH1Bi9dxPRBwSOdPbKbX0O+CfTjVUnyNxPpuel6aiKvLuuU7Jx5vqjlpH4g9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZs53TSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298F7C433C7;
-	Tue, 26 Mar 2024 09:25:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711445106;
-	bh=ljvUxtK/9jOt8kIDbODRBzu12bdgGAnl4c7NLEPO/4A=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=MMYpZZ+tS8ZlivPVs/s3Xv59IEkD6PbpP3Jk1B1gMACQPwh0b5biNM7js3MENv9aduhgU+p1NgCFfVOdC20iPp6ZIcSj//PylS2xxN29HWYNwxnnH7EccAc/K2Hba6zq8t3i+nKTR/aSd7VT8UMNt7EjS9+WSa2gavJs2JTc/sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/G4l/Ou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF838C433C7;
+	Tue, 26 Mar 2024 09:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711445413;
+	bh=TmO8LZS/iJ3ZXxl/r7qHjzUSiyZSbemk8sv8R3kPSOI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TZs53TSZOugXXT8bwTOrikFQZb0aY2cYhS4a1hN7NQDQy90LeZ6+kpGLt5zm9IeJ/
-	 zDJpQg+TadxLf0+vCuJWPDCXy3erj3Ubacg1npWKgX0Sg4OKAMxVSvXEqSqAqvHM+W
-	 0Pv/eL2R8yfjq76aI0eZcd1dVv20/CtkXUGdhVv19PEgjGygk10ongdHKVfmB4HkTH
-	 qnEu/TRiXnVKsI5Q3fO5F1LS+B8q0lc5HIesQwgmFqGkksdD1sW9uM93CAJiOUKv7i
-	 4nNVTmQ07wWQ9ALtMyX1adzeR2KokJ5CmkvXvZpa3+SDGZDt5TCXJxyqYim586G0kw
-	 BKKGjoWLTCXLg==
-Date: Tue, 26 Mar 2024 09:24:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>
-Subject: Re: [PATCH] net: usb: ax88179_178a: avoid the interface always
- configured as random address
-Message-ID: <20240326092459.GG403975@kernel.org>
-References: <20240325173155.671807-1-jtornosm@redhat.com>
+	b=F/G4l/OuQjxv+o/7NKr/07ZmBhUW+OadMjpt2lOVT92fEJ9kRN7F/D5IahchUyBvb
+	 MZMvUnOoeKIUaJ09SUgWSsmRiH+S5ZFQI0qjm+nHBHgr8JG4YL00j/m3/nxPyZXken
+	 3Oxdv4daNNmwXFdDHk+0hDkwJi1Rk453JTyj0g4w=
+Date: Tue, 26 Mar 2024 10:30:10 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Kyle Tso <kyletso@google.com>
+Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, badhri@google.com,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: Correct the PDO counting in pd_set
+Message-ID: <2024032624-drizzle-coaster-c97f@gregkh>
+References: <20240319074337.3307292-1-kyletso@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,70 +55,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325173155.671807-1-jtornosm@redhat.com>
+In-Reply-To: <20240319074337.3307292-1-kyletso@google.com>
 
-On Mon, Mar 25, 2024 at 06:31:50PM +0100, Jose Ignacio Tornos Martinez wrote:
-> After the commit d2689b6a86b9 ("net: usb: ax88179_178a: avoid two
-> consecutive device resets"), reset is not executed from bind operation and
-> mac address is not read from the device registers or the devicetree at that
-> moment. Since the check to configure if the assigned mac address is random
-> or not for the interface, happens after the bind operation from
-> usbnet_probe, the interface keeps configured as random address, although the
-> address is correctly read and set during open operation (the only reset
-> now).
-> 
-> In order to keep only one reset for the device and to avoid the interface
-> always configured as random address, after reset, configure correctly the
-> suitable field from the driver, if the mac address is read successfully from
-> the device registers or the devicetree.
+On Tue, Mar 19, 2024 at 03:43:37PM +0800, Kyle Tso wrote:
+> The index in the loop has already been added one and is equal to the
+> number of PDOs to be updated when leaving the loop.
 
-Thanks Jose,
+That says what is happening but not the issue that is being addressed.
+What is the problem with the number being off by one?  Is this a "crash
+the system" or merely "our accounting is wrong"?
 
-The above makes sense to me and I agree with your fix and
-corresponding Fixes tag.
+thank,
 
-> In addition, if mac address can not be read from the driver, a random
-> address is configured again, so it is not necessary to call
-> eth_hw_addr_random from here. Indeed, in this situtatuon, when reset was
-> also executed from bind, this was invalidating the check to configure if the
-> assigned mac address for the interface was random or not.
-
-I also agree with your analysis here. However it does seem to be a separate
-problem. And perhaps warrants a separate patch. I am also wondering
-if this is more of a clean-up than a fix: does it cause a bug
-that is observable by users?
-
-> cc: stable@vger.kernel.org # 6.6+
-> Fixes: d2689b6a86b9 ("net: usb: ax88179_178a: avoid two consecutive device resets")
-> Reported-by: Dave Stevenson  <dave.stevenson@raspberrypi.com>
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
->  drivers/net/usb/ax88179_178a.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-> index 88e084534853..d2324cc02461 100644
-> --- a/drivers/net/usb/ax88179_178a.c
-> +++ b/drivers/net/usb/ax88179_178a.c
-> @@ -1273,10 +1273,9 @@ static void ax88179_get_mac_addr(struct usbnet *dev)
->  
->  	if (is_valid_ether_addr(mac)) {
->  		eth_hw_addr_set(dev->net, mac);
-> -	} else {
-> +		dev->net->addr_assign_type = NET_ADDR_PERM;
-> +	} else
->  		netdev_info(dev->net, "invalid MAC address, using random\n");
-> -		eth_hw_addr_random(dev->net);
-> -	}
-
-nit: AFAIK, if one arm of a conditional has curly-brackets, then all should.
-     So there is no need to drop them here.
-
->  
->  	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_NODE_ID, ETH_ALEN, ETH_ALEN,
->  			  dev->net->dev_addr);
-> -- 
-> 2.44.0
-> 
-> 
+greg k-h
 
