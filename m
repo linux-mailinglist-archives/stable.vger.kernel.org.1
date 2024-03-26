@@ -1,137 +1,128 @@
-Return-Path: <stable+bounces-32291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E5D88BB89
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:42:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A6888BBC3
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FFB29FDB0
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FB972E37BF
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4F7132816;
-	Tue, 26 Mar 2024 07:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5081E132C23;
+	Tue, 26 Mar 2024 07:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NmeTkp1V"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MtRbwoAX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B524F130A48
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 07:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8C113281F;
+	Tue, 26 Mar 2024 07:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711438954; cv=none; b=rfjYTPUUE5OQAU2TVyJt41IkM+diOAnFOfNx6H6w03bxwl76gCcD7wEQAjkeQslXHtP3c2NtoluF7MRaZdn9N6KGuWr6WWfER0wIhqTU+VLNj4V9ojYv/GeGUFcWWxcPc2AC8XGJyI4YpRD0JfhuIMhnxdWYXyg+8jwwfv+oeD8=
+	t=1711439786; cv=none; b=rvDiuuaKcnPx/34jIHNVBYGthhRQmUnQ3X07SSHXHkD1bMTGou9JeN5f4MxixMEPp7GTl0MggzXmBe2gTeker2EBEgpjmCWVXIeCnBsfet2MALB2iPcx4GuguEeuJBHenT2NxWEBfFux8yspy3D8lVKQe5DUVz9ShB07kcbVfQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711438954; c=relaxed/simple;
-	bh=lQLJYF/S6aNnizdrvZwuqBFYXgWMgmOQnMbgfAPsYiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6Vj6Um6Q9yM8i4j7YOgfyz1rBlBSoSJW5yzfLtX0IdgFbLLRbk2lUaQJxj/uDgApf338yjj1cVkfzrHbiopyWUIMwOunTKQ1BlAWNZT4maVV3ySnukGsJDj5jEQ8lF/8iOTM22LQR9hnt/LaCHQS83mQQlpiobVouQhPWbvGoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NmeTkp1V; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e6ee9e3cffso3572120b3a.1
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 00:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711438951; x=1712043751; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=suWtwDEm4B03eU+FNeyx8FV8u6kO5WvtfeH16xAc4og=;
-        b=NmeTkp1V7Xu9S3lMJMQawDIf6myHY8XQCtdQq4/jp9Gq+emaSf90nqfPH91VjefEkm
-         vqXx+vZPNSJLOnWYOhmGmkUXTIWM79eaab1nhBtRnuDgXwAaSmgAjfhli4hDVpZnO8A0
-         vd8PSXor5j0NWFBfuynf1kpNOBmMHHYI2AKuuwV3iJYQVsAOHjVieCrC61XwHVnDkZbM
-         tXUPob354J2vaQFIueDJp7mYvD6Sy5r2Hw2pEArkoVm0Yv92nZ71C4UCC/l/oiVKtf48
-         sL4RxwOQjrBQjDZk5b4ZuV1bJ7m5LJX/2CfyomH7lvgPkqLJBdLumG9Vd7JoAw9WAoJf
-         k4YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711438951; x=1712043751;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=suWtwDEm4B03eU+FNeyx8FV8u6kO5WvtfeH16xAc4og=;
-        b=pQvDA3PBZjFDHIbOZoIZ2NalpR4sWCtBwho4t54a4dlA0NkRT05UAglquLiQ8k5Uy4
-         KIoYc+1h30c1ixiu2uAstrp1DehzFUaEIuiD6yeEHoKGQe4D/OLSmknUqkYBUHwDYb1w
-         WjfIVVwVgnUr60AXrDBhOfE+tW7Q3o+bZsNL6SdZfFXENbkR8MF+VBnvHvtxQzEsj5S8
-         9wJid+6SXguzRjdczQvn5G3Ik3uJta6+tn9RTYH02tIL4XyFJTf0uz1hg/96u7AEs3iZ
-         KEQvNQjqmZjqN8wKX5E/gEADzlivumS0NUMCdbIqQuOaOIniD6cC5dJ6zc9NsEcSohqN
-         dkZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSgSXF6RM184DJ4wtYIlLqS9kvbJghE4lPo/T2KX4Q3PPPEioDnRbK7295LKBXwFkYCXeCQpLQwgvWPWrcufkCSdPb76nC
-X-Gm-Message-State: AOJu0YwxM8UWIUiXtovKOBtHRd9izSYJGjY6EZrfykFJrTwfJ7Lo8xtQ
-	cUaCbPxtL+RMov8i1tky4FM28j0eMOrjGYhMaclfLJ0vH7fOs9IhF+yb1LH9NQ==
-X-Google-Smtp-Source: AGHT+IENYADQhqltAgsX3SaQGsChrRbnmlYma0ZqXAvA2PgQ9EbWV1JZJVQXA1LqKU8H1D8C5SxnMA==
-X-Received: by 2002:a05:6a20:3d87:b0:1a3:a8ff:473b with SMTP id s7-20020a056a203d8700b001a3a8ff473bmr939435pzi.29.1711438950796;
-        Tue, 26 Mar 2024 00:42:30 -0700 (PDT)
-Received: from thinkpad ([117.207.28.168])
-        by smtp.gmail.com with ESMTPSA id fi16-20020a056a00399000b006e795082439sm5313094pfb.25.2024.03.26.00.42.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 00:42:30 -0700 (PDT)
-Date: Tue, 26 Mar 2024 13:12:23 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mtd: rawnand: qcom: Fix broken reset in
- misc_cmd_type in exec_op
-Message-ID: <20240326074223.GB9565@thinkpad>
-References: <20240325103053.24408-1-ansuelsmth@gmail.com>
- <20240325103053.24408-2-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1711439786; c=relaxed/simple;
+	bh=ZhjPFTOQpzOVcd27gwoGXa9xyp/xBd/MZT46RvxTdVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gI571iUWbxRr7h0+PZSnHiFdtWaLZWcHVExzEELmE4uQjxErkIunG1n0a5niEFcm13qvcE9l4ffODkcag3qc2/PWoGxRNy774Ez21Qy2wIP25Guu9aeVyZq25tTEoaZ2TvF4zsGK899NXIKSQ0B7GO7t+zlHTtth8b4/X9fIS3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MtRbwoAX; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6C092E0009;
+	Tue, 26 Mar 2024 07:56:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711439780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q3PckqHmeL8Qlv6PGSssocDsbW2N2t4rB3eMlEpT7SU=;
+	b=MtRbwoAXlKOJXFBo2uw1U3FfF18lh/9Un2QrPY99lbMOggoYxh4YoueN3OlcohCi2Yx0Gt
+	RG3XxXY1xPbGjWLbb+g9yVDEzOT0hE5gbIqOorQx1UtF0HSmgYFpmg59R1SUpD91ifHS+p
+	CxoKnuh6g7K/dpNExERJKrYq/nhKxpupBmWvKB41uSlylTWcNJ9n//izG8ruIcsqBiT5Tt
+	ZZVyosb8aeJp4Beu/PVmJGzJLoHKJGRGHAt11MiG7R15BtQJRRjHUJZm7XoPsntxPuQaZd
+	wCBMkXr3B41DnZdT+XoCjsDFIGsNqqOfI7wzvYDIt0/tA5KGCGwzLafl3w7qvA==
+Date: Tue, 26 Mar 2024 08:56:17 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring
+ <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Saravana
+ Kannan <saravanak@google.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen
+ <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini
+ <stefano.stabellini@xilinx.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] driver core: Introduce
+ device_link_wait_removal()
+Message-ID: <20240326085617.0cf217d3@bootlin.com>
+In-Reply-To: <2024032548-rope-improper-4f67@gregkh>
+References: <20240325152140.198219-1-herve.codina@bootlin.com>
+	<20240325152140.198219-2-herve.codina@bootlin.com>
+	<2024032548-rope-improper-4f67@gregkh>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240325103053.24408-2-ansuelsmth@gmail.com>
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Mon, Mar 25, 2024 at 11:30:48AM +0100, Christian Marangi wrote:
-> misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
-> ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-> reworked and generalized but actually dropped the handling of the
-> RESET_DEVICE command.
-> 
-> The rework itself was correct with supporting case where a single misc
-> command is handled, but became problematic by the addition of exiting
-> early if we didn't had an ERASE or an OP_PROGRAM_PAGE operation.
-> 
-> Add additional logic to handle the reset command and return early only
-> if we don't have handling for the requested command.
-> 
-> Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> ---
-> Changes v2:
-> - Add this patch
-> 
->  drivers/mtd/nand/raw/qcom_nandc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-> index 19d76e345a49..b8cff9240b28 100644
-> --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> @@ -2815,7 +2815,7 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
->  			      host->cfg0_raw & ~(7 << CW_PER_PAGE));
->  		nandc_set_reg(chip, NAND_DEV0_CFG1, host->cfg1_raw);
->  		instrs = 3;
-> -	} else {
-> +	} else if (q_op.cmd_reg != OP_RESET_DEVICE) {
+On Mon, 25 Mar 2024 19:37:10 +0100
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-But this will fail if the previous patch is not applied. So this makes me think
-that you are trying to fix the OP_RESET_DEVICE command with these 2 patches.
+> On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
+> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > introduces a workqueue to release the consumer and supplier devices used
+> > in the devlink.
+> > In the job queued, devices are release and in turn, when all the
+> > references to these devices are dropped, the release function of the
+> > device itself is called.
+> > 
+> > Nothing is present to provide some synchronisation with this workqueue
+> > in order to ensure that all ongoing releasing operations are done and
+> > so, some other operations can be started safely.
+> > 
+> > For instance, in the following sequence:
+> >   1) of_platform_depopulate()
+> >   2) of_overlay_remove()
+> > 
+> > During the step 1, devices are released and related devlinks are removed
+> > (jobs pushed in the workqueue).
+> > During the step 2, OF nodes are destroyed but, without any
+> > synchronisation with devlink removal jobs, of_overlay_remove() can raise
+> > warnings related to missing of_node_put():
+> >   ERROR: memory leak, expected refcount 1 instead of 2
+> > 
+> > Indeed, the missing of_node_put() call is going to be done, too late,
+> > from the workqueue job execution.
+> > 
+> > Introduce device_link_wait_removal() to offer a way to synchronize
+> > operations waiting for the end of devlink removals (i.e. end of
+> > workqueue jobs).
+> > Also, as a flushing operation is done on the workqueue, the workqueue
+> > used is moved from a system-wide workqueue to a local one.
+> > 
+> > Cc: stable@vger.kernel.org  
+> 
+> Why is this for stable?  You are just adding a new api, no one is using
+> it.
+> 
+> Or if they are, you didn't send me that patch...
 
-- Mani
+The patch 2 in this current series uses the new api.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Best regards,
+Hervé
+
 
