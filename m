@@ -1,134 +1,125 @@
-Return-Path: <stable+bounces-32387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0183C88D01F
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 22:34:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCFB88D06C
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 23:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABCA91F81313
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 21:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAC0B2E80C9
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 22:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C2A13D63B;
-	Tue, 26 Mar 2024 21:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD6313D8AA;
+	Tue, 26 Mar 2024 22:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lRywwh/x"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FED213D617;
-	Tue, 26 Mar 2024 21:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F8E13D89D;
+	Tue, 26 Mar 2024 22:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711488863; cv=none; b=YP1hL/vTuf3wAvx3QRl5Iw1g7qaab7jcjVrrm2W+zqe1NGoedmAkSPgc3lYkogciPh6RcDOfAwp6FaDttg+9h0rAJBqSRDwHvNG4hS9irrocVMMzkmsV0NT5oT/y/ofo2Ad+JotQbQoka6CTPg/KSRuAnjNGNVV60lA2LPiMhzQ=
+	t=1711490836; cv=none; b=Ga+QqXz7QuijLSnOcn+bLxu5z9h+9dxlQVJnVshrySgnkn0+EIrtkVS4IaMYpI9H5NXJxNyQh49+hNzM2dQaSJdAhEs/AaX7msH+akw78Jhdzj1SNDiKudWl6XSmpXbn5t9g6pmtz9118u0anDW4o4tnCeuFzs2tUSe8Tk19P5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711488863; c=relaxed/simple;
-	bh=xZP2Ji27/WUgLA4q9DMoYCa04xDn6nXu+RxVklse45A=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=E2bmlXYC0wtbu5GagAeZA6NdmtlaKhXTFrZr7HfZ2Hq2ws5MhDp+CWoAuQDCnYXNLUCiJK4gssco+yAijyXgkG2iEEsb3O8cChActMLrUnrX7TR7EvegngzMcMs0e66N7Ht1v2XRG+YcG4XDd40QU8jrRU2uQ82aP8ScfUABiuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
-	by madrid.collaboradmins.com (Postfix) with ESMTP id 676CC378110A;
-	Tue, 26 Mar 2024 21:34:17 +0000 (UTC)
-From: "Shreeya Patel" <shreeya.patel@collabora.com>
-In-Reply-To: <20240325120018.1768449-1-sashal@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <20240325120018.1768449-1-sashal@kernel.org>
-Date: Tue, 26 Mar 2024 21:34:17 +0000
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
-To: "Sasha Levin" <sashal@kernel.org>
+	s=arc-20240116; t=1711490836; c=relaxed/simple;
+	bh=YGvbIleA0LOhGaqG06ruV12u0OVqKMc60UnttBqAfqg=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=p258kqfvaEZH0k0W/Iy5gCtZJBiVbn13pFJPCJuVlUWwvOHVDmfMvkllzlKTT42/jGL/3tQnz/wT1s9pX4o+DGfkX77KfZ/t6QskhimBVrWkjs5XYbSPl6apO+rpnOrX/hpA8idfW8sTAZOeDLcSYQWXJubuU9dZCe/98CYZCD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lRywwh/x; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1e0f0398553so11208775ad.3;
+        Tue, 26 Mar 2024 15:07:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711490833; x=1712095633; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a3fmf1adB2/rvktIlF/K8tyaOGpYk92mIufdpsSn9O0=;
+        b=lRywwh/xVdg6MpwRy3RMmM2+/9mkmeekVvLkMFeXRibZqwCMtixxmJbMhjMJSGtMyr
+         dwhj/d0nCaa5hcJcANr0TCwlF9ZpiGafyzwJKIUg+NEs6nqwC5IYjkZ1g3SG6dg35qHk
+         x7909eirYPGvqN6Z+0vt+RHzEKsCY6gxPX3feVh0F+KAeSYgpJy7SCColcJLfnXGuKir
+         7xnLI+SDkpBYVzT1nlzrv6l2CGbfEs8bjsp8voentUCHYQHKzT6RRYpRfDNSMjrVzjCp
+         5jMsvHb4QV0rAUPIy1MttkJQQhGZsZXBi/ggXrVMK7JGYQzmBEDx2aaC74NVB+ZJAyrj
+         UMkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711490833; x=1712095633;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a3fmf1adB2/rvktIlF/K8tyaOGpYk92mIufdpsSn9O0=;
+        b=wfpDAPGRtUzzOkUqgJm9Bo+C8lAB9834IEg7FE6Dw5Ag77rpzOb00CrDj3yI9nCJbn
+         aSJbX+xMr4jkcjIfuEVhAsdBUqoBoWJt7aHK2sbROAmCbiuhsiZsQTBkshtRmw8VlVwP
+         w779HA3dURkzaP5hu9T3z2223X92sfCKZemPdNh/wbrezQA2dh4zrOA1cESUXQNYd/hR
+         AAwYYjBYpFwgUeWViLBk4UG7EUNDS9GhNEpQn/6RYsh1wuHK0RmSd8W/k5AeNArUyF3A
+         FID+BdbinhRCcYdjRWwC09/+EAkpevXpN3xgX/sPmLMNJpjMZ6x1+cGbNbhFlTO899iK
+         Wf6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUyhiLY9q148/fzpjJsuGEcCjDfmxFuFhRqERgGNHf5XSlsqtutqeUlcw4sMWjkFqqAv7DQqMNRtlfK448jwYbHrbY/jCtDzbWYW2BBB5/33/gBausKHNrEQEwQ/ZsDwjjSISQupJbcQc+q3rjuypu2BMzSr/5EAwKyD21V8fD8sg==
+X-Gm-Message-State: AOJu0Yx2Nlfb60uoEfuseJRrkNJ0L4PeLS2/q/SlaYktDLcAzKEJIPuI
+	EB0HFTxMXj+n9OHs5sL/tcgLp7km1sdT244HofzkvWp+m54q2e07bJ9sBgPJQpE=
+X-Google-Smtp-Source: AGHT+IFxaXNxU+DnOrLBeSwZcxi9osHaZNBS5Ck+rrtSNCA3ap4piacyMK02b6gEPK269uVMRKmOLw==
+X-Received: by 2002:a17:903:120c:b0:1e0:fb8c:f45f with SMTP id l12-20020a170903120c00b001e0fb8cf45fmr2491401plh.2.1711490833528;
+        Tue, 26 Mar 2024 15:07:13 -0700 (PDT)
+Received: from [192.168.0.13] ([172.92.174.232])
+        by smtp.gmail.com with ESMTPSA id 13-20020a170902ee4d00b001dddcfca329sm7436304plo.148.2024.03.26.15.07.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Mar 2024 15:07:12 -0700 (PDT)
+Subject: Re: [PATCH v2] riscv: dts: starfive: Remove PMIC interrupt info for
+ Visionfive 2 board
+To: Conor Dooley <conor@kernel.org>, ganboing@gmail.com, kernel@esmil.dk,
+ robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Shengyu Qu <wiagn233@outlook.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org
+References: <TY3P286MB26116B828A34D614C09F4E8898202@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <20240326-create-motivate-2792be1692c5@spud>
+From: Bo Gan <ganboing@gmail.com>
+Message-ID: <f472affe-d1ef-cbdb-b5c5-76f6b3ac78b3@gmail.com>
+Date: Tue, 26 Mar 2024 15:06:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <289a17-66033f80-3-29238bc0@200611248>
-Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E8?= 000/710] 
- =?utf-8?q?6=2E8=2E2-rc2?= review
-User-Agent: SOGoMail 5.10.0
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240326-create-motivate-2792be1692c5@spud>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-On Monday, March 25, 2024 17:30 IST, Sasha Levin <sashal@kernel.org> wr=
-ote:
+On 3/26/24 1:37 PM, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
+> 
+> On Thu, 07 Mar 2024 20:21:12 +0800, Shengyu Qu wrote:
+>> Interrupt line number of the AXP15060 PMIC is not a necessary part of
+>> its device tree. And this would cause kernel to try to enable interrupt
+>> line 0, which is not expected. So delete this part from device tree.
+>>
+>>
+> 
+> Applied to riscv-dt-fixes, thanks! And I didn't forget, so I re-wrote
+> the commit message to add some more information as promised.
+> 
+> [1/1] riscv: dts: starfive: Remove PMIC interrupt info for Visionfive 2 board
+>        https://git.kernel.org/conor/c/0b163f43920d
+> 
+> Thanks,
+> Conor.
+> 
+Hi Conor,
 
->=20
-> This is the start of the stable review cycle for the 6.8.2 release.
-> There are 710 patches in this series, all will be posted as a respons=
-e
-> to this one.  If anyone has any issues with these being applied, plea=
-se
-> let me know.
->=20
-> Responses should be made by Wed Mar 27 12:00:13 PM UTC 2024.
-> Anything received after that time might be too late.
->=20
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
-stable-rc.git/patch/?id=3Dlinux-6.8.y&id2=3Dv6.8.1
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git linux-6.8.y
-> and the diffstat can be found below.
->=20
+Thank you very much for taking care of this. Actually the PLIC may silently
+ignore the enablement of interrupt 0, so the upstream openSBI won't notice
+anything. My modified version, however, will deliberately trigger a fault
+for all writes to the reserved fields of PLIC, thus catching this issue.
 
-KernelCI report for stable-rc/linux-6.8.y for this week :-
+Hope it can clarify things a bit more.
 
-## stable-rc HEAD for linux-6.8.y:
-Date: 2024-03-26
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
-git/log/?h=3Df44e3394ca9c2225643f2727e0949c770ef5ef8e
-
-## Build failures:
-No build failures seen for the stable-rc/linux-6.8.y commit head \o/
-
-## Boot failures:
-
-Devices failing to boot :-
-Architecture : arm
-at91sam9g20ek ( multi=5Fv5=5Fdefconfig )
-beaglebone-black ( multi=5Fv7=5Fdefconfig )
-imx6dl-udoo ( imx=5Fv6=5Fv7=5Fdefconfig )
-imx6dl-udoo ( multi=5Fv7=5Fdefconfig )
-imx6q-udoo ( imx=5Fv6=5Fv7=5Fdefconfig )
-imx6q-udoo ( multi=5Fv7=5Fdefconfig )
-qemu=5Farm-vexpress-a15 ( vexpress=5Fdefconfig )
-qemu=5Farm-vexpress-a9 ( vexpress=5Fdefconfig )
-qemu=5Farm-virt-gicv2 ( multi=5Fv7=5Fdefconfig )
-qemu=5Farm-virt-gicv2-uefi ( multi=5Fv7=5Fdefconfig )
-qemu=5Farm-virt-gicv3 ( multi=5Fv7=5Fdefconfig )
-qemu=5Farm-virt-gicv3-uefi ( multi=5Fv7=5Fdefconfig )
-stm32mp157a-dhcor-avenger96 ( multi=5Fv7=5Fdefconfig )
-sun7i-a20-cubieboard2 ( multi=5Fv7=5Fdefconfig )
-sun8i-a33-olinuxino ( multi=5Fv7=5Fdefconfig )
-sun8i-h3-orangepi-pc ( multi=5Fv7=5Fdefconfig )
-sun8i-r40-bananapi-m2-ultra ( multi=5Fv7=5Fdefconfig )
-imx6q-sabrelite ( multi=5Fv7=5Fdefconfig )
-odroid-xu3 ( multi=5Fv7=5Fdefconfig )
-kontron-kswitch-d10-mmt-6g-2gs ( multi=5Fv7=5Fdefconfig )=20
-kontron-kswitch-d10-mmt-8g ( multi=5Fv7=5Fdefconfig )
-imx6dl-riotboard ( imx=5Fv6=5Fv7=5Fdefconfig )
-imx6dl-riotboard ( multi=5Fv7=5Fdefconfig )
-imx6qp-wandboard-revd1 ( imx=5Fv6=5Fv7=5Fdefconfig )
-imx6qp-wandboard-revd1 ( multi=5Fv7=5Fdefconfig )
-rk3288-veyron-jaq ( multi=5Fv7=5Fdefconfig )
-
-Architecture : i386
-qemu=5Fi386 ( i386=5Fdefconfig )
-qemu=5Fi386-uefi ( i386=5Fdefconfig )
-
-KernelCI Dashboard Link :- https://linux.kernelci.org/test/job/stable-r=
-c/branch/linux-6.8.y/kernel/v6.8.1-707-gf44e3394ca9c2/plan/baseline/
-
-We are currently investigating this issue and will let you know if ther=
-e are any further updates.
-
-Tested-by: kernelci.org bot <bot@kernelci.org>
-
-Thanks,
-Shreeya Patel
-
+Bo
 
