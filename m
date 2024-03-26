@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-32288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413CB88BB29
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:25:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2BC88BB77
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB0F1C2C5BE
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:25:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFD629DA1D
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192B7130A66;
-	Tue, 26 Mar 2024 07:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9671804F;
+	Tue, 26 Mar 2024 07:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S5t9B9JF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jCiGPbub"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9D130485
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 07:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05A6130AC7
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 07:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711437921; cv=none; b=XkLkpGnOLHwgDAF5D02mZAJqYUIXyTL811TWQmLLDCXxCDwaIt/OCqWmKA/2xF5Z/0n2a8HUAAhQ5kGFKliDNDqYiHgVJkr70S/nbbzFq/lsCcOobwoTPDto6Q0RSULQ3TEYg9eLVAuIZrz0kv2qpEPKSx3Ev8T7iaedSZvgLB4=
+	t=1711438797; cv=none; b=XsPTwfb+hFxwhdpY4LeWSbophrJ76cM7a2TEN6/mnneUlfBNh4vUPuqqcJC7yMo715Xz3PgJuvtUhfojHrMdHOYvTCKiS92Autmd7nlMfrag2PHqRvlMjNEo4MRI+wPx3y9oDYm8zqJrGZccgz5/VUe/RXI+dGnSauXKLErjTWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711437921; c=relaxed/simple;
-	bh=RCJd7q0o3ZJEoAOEbM8/cHPtVvSmD4lVXiyFy7D0BdQ=;
+	s=arc-20240116; t=1711438797; c=relaxed/simple;
+	bh=esPNlzpWbLxMQzI1yxZu2zFQjKNKfzX8D+qjmApMNiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWqqg9M3WBMKgpQHo7mamgFcvQvOEB8YK4vwEO9drZMFxZ0w9sLPM2DQLTPyV1UJheyPB64lWOLq0tgO0fbTFA3G5nny9w8OWRmd5jiHNt15IXSpxFpfbPwIJw6V+PndI6oOzwKsbghPT208rvdQg38wLDkihplBAqXN5xyAj3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S5t9B9JF; arc=none smtp.client-ip=209.85.210.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=PHCAYRfJAFiWRYvoPoUGKyKiWxl7myGYCKKZ8/jy5EZO6Zk8E/BkFr6qTVEoCHGDc25qw0BCjxR+bm6ZWEt52H/0kf6jsFEDmQQDT5ojO9T1TC6uK69zdoOUhArbKqUAeVefpyEgv5Kyevd0Z4IhkYmG3JfODC9ov0Pv+4d1/9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jCiGPbub; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6eabbce2d15so172538b3a.2
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 00:25:20 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6e6ca2ac094so4398698b3a.0
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 00:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711437919; x=1712042719; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1711438795; x=1712043595; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ziezrdSsh0z8yLzL6N5wKqOMM+Xy/az5Lcsk/lp8gTM=;
-        b=S5t9B9JF+F9ogctCTfN/kOz9bx+j2nIIIW3LXPRQoKp2Kqpbtc+IKHq5w67wAnKWss
-         hzZteIrOjiIjbz2gRNlq8MeYRPjATUjurpLAcG/KNPgM5wGXJrqxc0CjzCW8Ywl6rjBD
-         8BarCTsPD0ZfvkjU9WK2sLP2xZ756FqfUkO2ReMvaAIU811hcUW1nBRpDp72BRBKIhzv
-         mZkav0Pc66SYqVu/MuR9Xoy5wanFaB5jsW63A6xmsuMiruDDWbXvoxeER4kY9t70I4ox
-         F4zpyTa6aLTfsW6WhNsFpU1RQ6cV8ADucjEdnaCIzYfnzwH7/qW5SuJgAfFi38skEHA9
-         /vbA==
+        bh=4FNmONmGMNfUWAyGbjVY02MYpPraJ84XZnXoSpBgNIE=;
+        b=jCiGPbub/vlTBcEG0jnQejpN1fc10Zs1NVFLp1IHkmUryg1tuaGX4NQtmo9vvj1za6
+         Kaxui34bmIyCj6iUgTyAtCLWpxcHr1pNTitCLBafan19R/RY/Xu+ZCIL60xS3+APyzRE
+         y9yUv+NaVy+/bxYaOOgzXrX2JNYp3TeDZ4AdakoT0HnaDSxyuM84V+oqiwbaX8ywoUk1
+         LXTmNL7jGT4r69cZ9qzezSTI4g5OgcreLPAtqKaT8OBP833za4j9dNPWyEom58cAW/3y
+         8/zHYqKrsNKolimh4UHRsodc2nNYecPTzR/vA0CL3AgHLdYq7LnfS2fkc3FFSC4kV1Hm
+         DV/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711437919; x=1712042719;
+        d=1e100.net; s=20230601; t=1711438795; x=1712043595;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziezrdSsh0z8yLzL6N5wKqOMM+Xy/az5Lcsk/lp8gTM=;
-        b=fXKtLFfCnWFJQaQB7fx2uVaNY2mXCuVWH0AYqzXPYBOhtoItv9S138GoTc2HphG5Lh
-         2GxDkMNU9bP7dMqexPePCxu+N1iYAALZtHe6aVldZbcsnOnQRvSqPM7Po2kqg8e8hN68
-         klLbilUXwWM0zHlwHvwggCBUg0/HlBIjIU3vuFycsHqzv/Mdzz/7gCuotO8xaEDlmanm
-         2RQihdQZmUWFS1XPQSvw/8ruYSC0xQ7GEzHiQKZ7nQaJ2uk+qhiWpJaNGSUx9KoE40dt
-         qc3V07SXyjYsamwlZ8R3jpjWKg/qGcsO3+8UhEXwEoOB6Nl1mS0SPqigZQu/u3SpaBnX
-         GYpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnu6ujQF33D+tzrWNwhG7WGtt0RHyxbwMKEnrBOEj/u7bNG77DMIx9yMrhay11OYhwFXVd0eK6pvKXyrdNuzDE48k/pQ6l
-X-Gm-Message-State: AOJu0YxGOGfoVJjQB2bU/cn+aKlKP0Dqg0f8/lL5e9B++GE91mkyZnz1
-	055vbEvqzCXaGtMQigems0iPepkhpDX3efOg/8T86HrmQPYQTiJ5NVgZHSZasA==
-X-Google-Smtp-Source: AGHT+IHWfgFpUSpNvP9uI3sCuKgKc8JET+a3gmSe493+ufibi13U2SnauOugHZJYLmPcovLDrvBtjQ==
-X-Received: by 2002:a05:6a00:1d1b:b0:6ea:bd1a:5dd6 with SMTP id a27-20020a056a001d1b00b006eabd1a5dd6mr483754pfx.32.1711437919416;
-        Tue, 26 Mar 2024 00:25:19 -0700 (PDT)
+        bh=4FNmONmGMNfUWAyGbjVY02MYpPraJ84XZnXoSpBgNIE=;
+        b=bQ55RBkUln73e9KTAqUACbYXLLZrBycHOKiMqOs1eMwRezw/ikFkID16XurLinkIBR
+         r7VEpyhm/ppgOEB1vIGYunbcTJXT7mjD+5C2lHaJjFrL8BiKax6jaFlSLgF9VcP3yOb2
+         9L93ixnmLyrBre5SGI272VmzUPsxa0yxBvCloz7NCBabpLijgES4+1kM1ymM3kveXMyZ
+         V4Yk7IgFIBCotHmYy7o/zcbk+XA6LEURbiRiX+0E0uYs4Dgtu2al8wAFk7CUGFNrR0Jg
+         6GeStcWeDtADcv4l2NSk4z0eJRoV1e5iMzYULvnkmXJnd0yuFCZWv3XNuvoccj8cIIvx
+         4FoA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbB9l814/R5vZuMN7dNh4ON1RewG58OdFB53ozeaIcOSi1PEV/aRwBohIixnQkhVrJZs1gn5J8VTwwx4o7yQecJSwI/722
+X-Gm-Message-State: AOJu0YyyOyTzpOb9d27jMZVU5kQQP4HB1F+skwc87P7HuUSW15Cix39R
+	TQZYMOTx8vO6dUAT6FOcELv83Zmu3LBpKm7NpeOXKZ5ycJEqAQoM+VqT0IN+Bw==
+X-Google-Smtp-Source: AGHT+IHJlXwZ3IC716MHv8npsQJ6w1dHTImu5xrrXh/rtboJQ6PofKuxB0iLA8zqqLrX+vk2q6DCmw==
+X-Received: by 2002:a05:6a21:99a2:b0:1a3:a67f:f3a8 with SMTP id ve34-20020a056a2199a200b001a3a67ff3a8mr9651411pzb.48.1711438794819;
+        Tue, 26 Mar 2024 00:39:54 -0700 (PDT)
 Received: from thinkpad ([117.207.28.168])
-        by smtp.gmail.com with ESMTPSA id fh7-20020a056a00390700b006eaacc63435sm2874254pfb.173.2024.03.26.00.25.16
+        by smtp.gmail.com with ESMTPSA id d2-20020a170902cec200b001db5ecd115bsm6010635plg.276.2024.03.26.00.39.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 00:25:19 -0700 (PDT)
-Date: Tue, 26 Mar 2024 12:55:12 +0530
+        Tue, 26 Mar 2024 00:39:54 -0700 (PDT)
+Date: Tue, 26 Mar 2024 13:09:47 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -79,8 +79,9 @@ Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in
  misc_cmd_type in exec_op
-Message-ID: <20240326072512.GA8436@thinkpad>
+Message-ID: <20240326073947.GA9565@thinkpad>
 References: <20240325103053.24408-1-ansuelsmth@gmail.com>
+ <20240326072512.GA8436@thinkpad>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,52 +91,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240325103053.24408-1-ansuelsmth@gmail.com>
+In-Reply-To: <20240326072512.GA8436@thinkpad>
 
-On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote:
-> misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
-> ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-> reworked and generalized but actually broke the handling of the
-> ERASE_BLOCK command.
+On Tue, Mar 26, 2024 at 12:55:19PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote:
+> > misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
+> > ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
+> > reworked and generalized but actually broke the handling of the
+> > ERASE_BLOCK command.
+> > 
+> > Additional logic was added to the erase command cycle without clear
+> > explaination causing the erase command to be broken on testing it on
+> > a ipq806x nandc.
+> > 
+> > Fix the erase command by reverting the additional logic and only adding
+> > the NAND_DEV0_CFG0 additional call (required for erase command).
+> > 
+> > Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > ---
+> > Changes v2:
+> > - Split this and rework commit description and title
+> > 
+> >  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+> > index b079605c84d3..19d76e345a49 100644
+> > --- a/drivers/mtd/nand/raw/qcom_nandc.c
+> > +++ b/drivers/mtd/nand/raw/qcom_nandc.c
+> > @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
+> >  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+> >  
+> >  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+> > -	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
+> > -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+> > -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+> > +	if (q_op.cmd_reg == OP_BLOCK_ERASE)
+> > +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
 > 
-> Additional logic was added to the erase command cycle without clear
-> explaination causing the erase command to be broken on testing it on
-> a ipq806x nandc.
+> So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS, 1,
+> NAND_BAM_NEXT_SGL)' if q_op.cmd_reg != OP_BLOCK_ERASE. But for q_op.cmd_reg ==
+> OP_BLOCK_ERASE, the result is the same.
 > 
-> Fix the erase command by reverting the additional logic and only adding
-> the NAND_DEV0_CFG0 additional call (required for erase command).
+> I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
 > 
-> Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> ---
-> Changes v2:
-> - Split this and rework commit description and title
-> 
->  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-> index b079605c84d3..19d76e345a49 100644
-> --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
->  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
->  
->  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
-> -	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
-> -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
-> -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-> +	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-> +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
 
-So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS, 1,
-NAND_BAM_NEXT_SGL)' if q_op.cmd_reg != OP_BLOCK_ERASE. But for q_op.cmd_reg ==
-OP_BLOCK_ERASE, the result is the same.
-
-I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
-
-Can you share the actual issue that you are seeing? Like error logs etc...
+Perhaps you are trying to fix the OP_RESET_DEVICE command altogether?
 
 - Mani
 
