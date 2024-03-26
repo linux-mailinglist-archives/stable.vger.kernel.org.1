@@ -1,145 +1,98 @@
-Return-Path: <stable+bounces-32369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B6888CBD8
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A02788CBF7
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B08A1C66676
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 18:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C90B1C62EBB
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 18:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7728526B;
-	Tue, 26 Mar 2024 18:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wRJTDKLy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CA38662C;
+	Tue, 26 Mar 2024 18:25:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04B4EB22;
-	Tue, 26 Mar 2024 18:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7A9482EE;
+	Tue, 26 Mar 2024 18:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711476985; cv=none; b=gXQqlvRLx2S3SXnOSf9JzlA+2YVCaW7R1fiuz7fL8fjI7NIGJoB7WUW5kfW+GeR56BRJKc09/lW6RiQOQyfS0mKumHJDuua4ha2WJwMv72dSl/h9Xvp340+su2DwfDZVhoO6F3l3MrOXyWw+oAXd9Q78bjO1LR+nMZANY/KdF6k=
+	t=1711477521; cv=none; b=bVQX0bDTeImgxlK8Nw4KLp92hiIhhrQ28x7gPVl1p38KujzTDMU2UaM12vzcs0pvYGdzIPMPlFx3LwY55SzierPp0cqI3xvqxebWzwt1bDA0BHHhPUO1AOPGU4GIyVrLWIeRhhGgKPgCTVSoPJfPtMrGUpbB9aB7PQPjudwr2L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711476985; c=relaxed/simple;
-	bh=MQoub1cDl++U+lTzVG/k0v6PriqtgfcQ+T9+mrxvLt4=;
-	h=Date:To:From:Subject:Message-Id; b=Sw5bx5iISQDGzZ8NsMhBFen1pUS3xxUZKZpLvVUon0myunMAcrb5vn9YyatV+MbwuePIVKvHn64ouArAEY5UODqg6VXOCc865splW69HFpUMlbKJhxGFWsBsh8xqwqxgaSVuY+jI6llRw4QPU7VQBK+onKEoRwqV0EEgfrO/iwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wRJTDKLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23307C433F1;
-	Tue, 26 Mar 2024 18:16:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1711476984;
-	bh=MQoub1cDl++U+lTzVG/k0v6PriqtgfcQ+T9+mrxvLt4=;
-	h=Date:To:From:Subject:From;
-	b=wRJTDKLy+5n44yMRDtsvHfCwNWQFLqwurS3FQGqc8qMDt1nBkB1fHutNMTesgXTlC
-	 DVRGH1gBUOKJmFnXv6mriqKsMVyrMvQ90H2oXkSUwVNAuyUGWZicsCwt2o0I7kE04Q
-	 6lhUamotda3fZOyzLbcfevjChbuyHSomBWza9/m4=
-Date: Tue, 26 Mar 2024 11:16:23 -0700
-To: mm-commits@vger.kernel.org,xrivendell7@gmail.com,stable@vger.kernel.org,samsun1006219@gmail.com,rppt@kernel.org,mszeredi@redhat.com,miklos@szeredi.hu,lstoakes@gmail.com,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240326181624.23307C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1711477521; c=relaxed/simple;
+	bh=PS4v8wUt8nGUndi43RCDdFlDiRKh22UGvcJwOMISI4M=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=dJJUhVUw4DUHutxVA9U2op/2Ih8KH5LM+8GtS/6MLVmdR5OfCvT1GJ9p4RFvuyEtP9X0z+4RsUJKvHt22n+rkDDuAvWKMxqwUOg06Dur2eseQ2bKC8KSJwk0mH3KD/hqewNOZLt1VsW/km0gvNgV5F0t9ArhqCa3+0OfbCFcY6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 27C403780C6C;
+	Tue, 26 Mar 2024 18:25:17 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <20240324234027.1354210-1-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240324234027.1354210-1-sashal@kernel.org>
+Date: Tue, 26 Mar 2024 18:25:16 +0000
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
+To: "Sasha Levin" <sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <28824a-66031300-1-3bb0ad80@260002568>
+Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?5=2E10?= 000/238] 
+ =?utf-8?q?5=2E10=2E214-rc1?= review
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
+On Monday, March 25, 2024 05:06 IST, Sasha Levin <sashal@kernel.org> wr=
+ote:
 
-The patch titled
-     Subject: mm/secretmem: fix GUP-fast succeeding on secretmem folios
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch
+>=20
+> This is the start of the stable review cycle for the 5.10.214 release=
+.
+> There are 238 patches in this series, all will be posted as a respons=
+e
+> to this one.  If anyone has any issues with these being applied, plea=
+se
+> let me know.
+>=20
+> Responses should be made by Tue Mar 26 11:40:23 PM UTC 2024.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
+stable-rc.git/patch/?id=3Dlinux-5.10.y&id2=3Dv5.10.213
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>=20
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch
+KernelCI report for stable-rc/linux-5.10.y for this week.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+## stable-rc HEAD for linux-5.10.y:
+Date: 2024-03-25
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/log/?h=3Dbbdc0ccf6f1665aabba4a0a227f9c118e86804eb
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+## Build failures:
+No build failures seen for the stable-rc/linux-5.10.y commit head \o/
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+## Boot failures:
+No **new** boot failures seen for the stable-rc/linux-5.10.y commit hea=
+d \o/
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Tested-by: kernelci.org bot <bot@kernelci.org>
 
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/secretmem: fix GUP-fast succeeding on secretmem folios
-Date: Tue, 26 Mar 2024 15:32:08 +0100
-
-folio_is_secretmem() currently relies on secretmem folios being LRU
-folios, to save some cycles.
-
-However, folios might reside in a folio batch without the LRU flag set, or
-temporarily have their LRU flag cleared.  Consequently, the LRU flag is
-unreliable for this purpose.
-
-In particular, this is the case when secretmem_fault() allocates a fresh
-page and calls filemap_add_folio()->folio_add_lru().  The folio might be
-added to the per-cpu folio batch and won't get the LRU flag set until the
-batch was drained using e.g., lru_add_drain().
-
-Consequently, folio_is_secretmem() might not detect secretmem folios and
-GUP-fast can succeed in grabbing a secretmem folio, crashing the kernel
-when we would later try reading/writing to the folio, because the folio
-has been unmapped from the directmap.
-
-Fix it by removing that unreliable check.
-
-Link: https://lkml.kernel.org/r/20240326143210.291116-2-david@redhat.com
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CABOYnLyevJeravW=QrH0JUPYEcDN160aZFb7kwndm-J2rmz0HQ@mail.gmail.com/
-Debugged-by: Miklos Szeredi <miklos@szeredi.hu>
-Tested-by: Miklos Szeredi <mszeredi@redhat.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/secretmem.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/include/linux/secretmem.h~mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios
-+++ a/include/linux/secretmem.h
-@@ -13,10 +13,10 @@ static inline bool folio_is_secretmem(st
- 	/*
- 	 * Using folio_mapping() is quite slow because of the actual call
- 	 * instruction.
--	 * We know that secretmem pages are not compound and LRU so we can
-+	 * We know that secretmem pages are not compound, so we can
- 	 * save a couple of cycles here.
- 	 */
--	if (folio_test_large(folio) || !folio_test_lru(folio))
-+	if (folio_test_large(folio))
- 		return false;
- 
- 	mapping = (struct address_space *)
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-secretmem-fix-gup-fast-succeeding-on-secretmem-folios.patch
-mm-madvise-make-madv_populate_readwrite-handle-vm_fault_retry-properly.patch
-mm-madvise-dont-perform-madvise-vma-walk-for-madv_populate_readwrite.patch
-mm-userfaultfd-dont-place-zeropages-when-zeropages-are-disallowed.patch
-s390-mm-re-enable-the-shared-zeropage-for-pv-and-skeys-kvm-guests.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared.patch
-mm-convert-folio_estimated_sharers-to-folio_likely_mapped_shared-fix.patch
-selftests-memfd_secret-add-vmsplice-test.patch
-mm-merge-folio_is_secretmem-into-folio_fast_pin_allowed.patch
+Thanks,
+Shreeya Patel
 
 
