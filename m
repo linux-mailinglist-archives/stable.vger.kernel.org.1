@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-32293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4AD88BC2E
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:20:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F38F88BCA7
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05D4F2E10E4
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:20:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35991F34CAB
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B71E132C37;
-	Tue, 26 Mar 2024 08:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D770410A19;
+	Tue, 26 Mar 2024 08:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDm8XQaP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hC0vCnzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F272E21A0D;
-	Tue, 26 Mar 2024 08:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C13DAC01;
+	Tue, 26 Mar 2024 08:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711441252; cv=none; b=TgduVlkDqSyhQSUuO5lDmlQug5w96hO3aQ02gk2wNJr9gokLHhXm7L6V9JG4wiIH9SUpmTkUHrtMvCuendjGopJyyFhyu/1P7eNViawh1qPqV1vqZJdbMwDWRf65E8tAB7pv/CApegm9WjWnQpuxfpr1uCXxI/++qZFPx9Cwork=
+	t=1711442489; cv=none; b=DuJvcbGMoCYjnn+UMV2mHz472iokcwfCDO4dP9LRUMjQI74EOJKzyNQnNh74UBa98wSj19WebYvX/F4OqVTDHGXLe6eoz8WtRFI/OavQE+atLX2AfSz/IaVx82mupJn7WFaOq03NTu8afsjs2r+Hbe5JD1GanXGiDzPu1HabaPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711441252; c=relaxed/simple;
-	bh=qz9xGWKw9TwZIZmkOtsqi7+FfSavXvo92wFhs8sRnkQ=;
+	s=arc-20240116; t=1711442489; c=relaxed/simple;
+	bh=s3Y5LkcJQN20xjSmIYi1tJZcUYC36nkGzb2O3cLJfks=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PEZM9m4sE1BCq2lLuaZ0NdqE2Uh1iWGk8j+z6fEK8qEoKxg3l2hyr/uSM1lbK5MATFj4W8EVJr/+4XNyih4RJCQ+f+Nc1VekxRM/Aa0SvjD9Gdw+fVOCLsEff+QHbKgduf7i1siaty9hFwuWrHFCd7pPWr0ZcBB4eYJhuIGbjVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDm8XQaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82CCC433C7;
-	Tue, 26 Mar 2024 08:20:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711441251;
-	bh=qz9xGWKw9TwZIZmkOtsqi7+FfSavXvo92wFhs8sRnkQ=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=CGzjaE1080ILAfdDNopuXNMeWfMdDNldPtQDddm4o8iWMNhAb9itChJdzzaBuE8ege/yDAXwWmLFOnkYdIYbXjLftZcq3QVbQ7auWyZcK5131YNCh91V1hpuLs6vIAYzeOcYxHTF4/hqKR8axYzQ0/a2bwpMRruB2jq9Fv/s6ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hC0vCnzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA52C433C7;
+	Tue, 26 Mar 2024 08:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711442489;
+	bh=s3Y5LkcJQN20xjSmIYi1tJZcUYC36nkGzb2O3cLJfks=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LDm8XQaPKUEiClyhmzcOTtjFSd3byVDHpoMPcmb6vbREBzl7cdpjcrT+vH/U0WQbm
-	 LukRcNmEVpHJ0XrmZvUNdLs52U4/MB11/5vIYuawqiNf+jDy9KtUj+wiuFJvpfHLpd
-	 Bj2BoKpm9BYgKf/PeoJcvrCq1NF+vBNnXnNmY1Ec=
-Date: Tue, 26 Mar 2024 09:20:48 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
-Message-ID: <2024032634-suitable-jeeringly-37f2@gregkh>
-References: <20240325152140.198219-1-herve.codina@bootlin.com>
- <20240325152140.198219-2-herve.codina@bootlin.com>
- <20240325164401.GA276583-robh@kernel.org>
+	b=hC0vCnzR0lDXbfPmyt935zY387vwAbBeh34M7cQylYiHXqTHcf4OATBDQL0NnZK5H
+	 XWDWmU6MKNlq4I7lNLsoXXtxmlH2kOHs3z76CgX/ChBXlcFNp7M71YuL1da7XVdn35
+	 6w2scdmrbPpeefSxKC+BxCRrkvU3nCNorbV4Kyg3xWspkctp0gQMywhqJWbXHrJ2aK
+	 rZw1Igvl7QaRd4+w+TZG7F4AwfUgzqw2HxAwTKs4tLJDD9RrfnaAh36rbQCVhoIYYT
+	 NoAVz2z2w/6UAuhyziKbydXFP2RQnvPdPpVSoHvyQkPJqcLw0Tu5kzdlxcTCMIMo4v
+	 gT1vCp8w59Ejw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rp2ND-00000000635-2rSm;
+	Tue, 26 Mar 2024 09:41:36 +0100
+Date: Tue, 26 Mar 2024 09:41:35 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>, linux-usb@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/7] usb: typec: ucsi: fix several issues manifesting on
+ Qualcomm platforms
+Message-ID: <ZgKKPyLUr8qoMi9t@hovoldconsulting.com>
+References: <20240313-qcom-ucsi-fixes-v1-0-74d90cb48a00@linaro.org>
+ <Zf12vSHvDiFTufLE@hovoldconsulting.com>
+ <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,54 +70,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325164401.GA276583-robh@kernel.org>
+In-Reply-To: <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
 
-On Mon, Mar 25, 2024 at 11:44:01AM -0500, Rob Herring wrote:
-> On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
-> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > introduces a workqueue to release the consumer and supplier devices used
-> > in the devlink.
-> > In the job queued, devices are release and in turn, when all the
-> > references to these devices are dropped, the release function of the
-> > device itself is called.
-> > 
-> > Nothing is present to provide some synchronisation with this workqueue
-> > in order to ensure that all ongoing releasing operations are done and
-> > so, some other operations can be started safely.
-> > 
-> > For instance, in the following sequence:
-> >   1) of_platform_depopulate()
-> >   2) of_overlay_remove()
-> > 
-> > During the step 1, devices are released and related devlinks are removed
-> > (jobs pushed in the workqueue).
-> > During the step 2, OF nodes are destroyed but, without any
-> > synchronisation with devlink removal jobs, of_overlay_remove() can raise
-> > warnings related to missing of_node_put():
-> >   ERROR: memory leak, expected refcount 1 instead of 2
-> > 
-> > Indeed, the missing of_node_put() call is going to be done, too late,
-> > from the workqueue job execution.
-> > 
-> > Introduce device_link_wait_removal() to offer a way to synchronize
-> > operations waiting for the end of devlink removals (i.e. end of
-> > workqueue jobs).
-> > Also, as a flushing operation is done on the workqueue, the workqueue
-> > used is moved from a system-wide workqueue to a local one.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > Reviewed-by: Saravana Kannan <saravanak@google.com>
-> > ---
-> >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
-> >  include/linux/device.h |  1 +
-> >  2 files changed, 24 insertions(+), 3 deletions(-)
+On Mon, Mar 25, 2024 at 10:56:21PM +0200, Dmitry Baryshkov wrote:
+> On Fri, 22 Mar 2024 at 14:16, Johan Hovold <johan@kernel.org> wrote:
+
+> > I just gave this series a quick spin on my X13s and it seems there are
+> > still some issues that needs to be resolved before merging at least the
+> > final patch in this series:
+> >
+> > [    7.786167] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > [    7.786445] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > [    7.883493] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > [    7.883614] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > [    7.905194] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > [    7.905295] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > [    7.913340] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > [    7.913409] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
 > 
-> Greg, can you ack and I'll take this series.
+> I have traced what is causing these messages. During UCSI startup the
+> ucsi_register_port() function queries for PDOs associated with the
+> on-board USB-C port. This is allowed by the spec. Qualcomm firmware
+> detects that there is no PD-device connected and instead of returning
+> corresponding set of PDOs returns Eerror Indicator set to 1b but then
+> it returns zero error status in response to GET_ERROR_STATUS, causing
+> "unknown error 0" code. I have checked the PPM, it doesn't even have
+> the code to set the error status properly in this case (not to mention
+> that asking for device's PDOs should not be an error, unless the
+> command is inappropriate for the target.
+> 
+> Thus said, I think the driver is behaving correctly. Granted that
+> these messages are harmless, we can ignore them for now. I'll later
+> check if we can update PD information for the device's ports when PD
+> device is attached. I have verified that once the PD device is
+> attached, corresponding GET_PDOS command returns correct set of PD
+> objects. Ccurrently the driver registers usb_power_delivery devices,
+> but with neither source nor sink set of capabilities.
+> 
+> An alternative option is to drop patches 4 and 5, keeping
+> 'NO_PARTNER_PDOS' quirk equivalent to 'don't send GET_PDOS at all'.
+> However I'd like to abstain from this option, since it doesn't allow
+> us to check PD capabilities of the attached device.
+> 
+> Heikki, Johan, WDYT?
 
-Looks semi-sane:
+Whatever you do, you need to suppress those errors above before enabling
+anything more on sc8280xp (e.g. even if it means adding a quirk to the
+driver).
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Johan
 
