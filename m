@@ -1,144 +1,135 @@
-Return-Path: <stable+bounces-32286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B703588BAED
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:05:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0696988BAF8
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C0A31F3A88F
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:05:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B353F2E2148
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AEE12DDBA;
-	Tue, 26 Mar 2024 07:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9650712DD8E;
+	Tue, 26 Mar 2024 07:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bpkQwHub"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2tAol0C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B863C129E99;
-	Tue, 26 Mar 2024 07:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464CD128394;
+	Tue, 26 Mar 2024 07:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711436744; cv=none; b=EVJlkRQfxP1Y21V19l7hmVoR4PCIwNgjwsMkoeqxmVhKl+IwxpagfX41b2bXyDupcAHR7GWCNa9ag2q+2pXhh75qwuNgRmeb+8Fni+fS4JFm1O7U80nJSWNpvmBguMX9goywNsv+wBbT7OdhDxt/tW9O1Fz7lphiePahv17SQc4=
+	t=1711436956; cv=none; b=HYWEv5sBLDK8sQq+zWyBntE+e0QPxtiBL3ES0yNCw2b6JCgDHt05MxXS8yb+f3nFXrayXwtsWWB897Mrrsfcdcxa5eoMc3kfD7/8uWIN+dLvULBIYYbseDVma1wIgren1a2bibZxbAz0poevFf1dujchx/n2uutrIdQSow/9u8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711436744; c=relaxed/simple;
-	bh=v4v27zf/Du3GEjUn8WMGe0XsAPchh5ctG1u/pFL8EZw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J5nTDjflU5ygcj3gh1iUwZRtQPjYWMMBSqlElWs3eUfAL/deYSOZQF4M0fESoypEalKA6cmICyNsOEqhs8LgPiefG1Tu/M4N/JqcAKKJC7ZSD4d/Ri/Svde8OzlgULM+t0TAeuyeq97a708Ow5OhwQmjqO8YobKD3WDHlKOoAac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bpkQwHub; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-56c2df28f15so47168a12.0;
-        Tue, 26 Mar 2024 00:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711436740; x=1712041540; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=v4v27zf/Du3GEjUn8WMGe0XsAPchh5ctG1u/pFL8EZw=;
-        b=bpkQwHubTFTAyXreDY5UoRcMYCzwm1aL/aF4oQY6/C7qL3xOeOtB3saViOHd2olpPu
-         YWwsNGpX1qsYLdQT8sZhiVb5ugTiPO6E7uQp5JHVZLRR8rQUgCkDiGs1+ILJU18oLUw+
-         GYxrDGlJZOHYGXi5SeVzSRvtGwrV8/8T/xCRLBEaSrw9eObHVnr7rWDEu8loRBmavFro
-         I/9RNEHaAIPbhLkOC1WlEIIvqTX108djgrhvD2/ZJQ1xyy7QseSjfqK/eJFsf+VhnPx4
-         HIZ5s0S+VNjXTXYP/En1GFGT3q6fIwW52MQRk6y+8DMRyc5PGUKGyhfE4223R0FxKWkU
-         7AyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711436740; x=1712041540;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v4v27zf/Du3GEjUn8WMGe0XsAPchh5ctG1u/pFL8EZw=;
-        b=P4aLcZWig7R7M9UWbdEan99jgAQb3wLIZYSPnp5rh2asbVTZmQu2p7tcmVur7ou4L0
-         yUHRCJp2u9y9ztQHnvRrqKcw5krDe/pQgdKj3JHLEEAbUvVHdsFx9Vc2BQhldVZ3z439
-         1kveM91VBU+d4dlrsg7S3GNjuO/40SLmeaouRD/g6z8tTKtsP8IeBEUma1zSJrJ6Ut+u
-         +sOdhWU15WWOwamFnMCs1FJz+PdQ9OqK5YpeWTZ2Bi6i9N5L5Zgx43D6OOOtrpEdyV+5
-         +HqeHvssUxHkWrbmQFoMTmrf0EoK+N6IXFYnGdWYNz+WmbAYyBh1Un4aQxfd2Rv2Tn5e
-         FUkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXd/SiJxYX1Y6tw4J2nm/GnfCEs77F2+IVIKlfV//W+C4ib5pGhZCPxnqOzGMheJXUh6bjP/nUbWnaqzItZ2N178DPF9LXiDe8zTkIOO7bbb5iwNLRLPKcgYdKFjRejVr0SNCJmiepBsiHD3EyrzK0Dwra65zBR/0UAjAYAdzLP/Q==
-X-Gm-Message-State: AOJu0YzLYJgoAz16mfJ/GjGxNURGLZzuxgnAV/itHyPLnkzbtBSyjWmF
-	6ADsL8GifyYNHzB4YIX0dItMMWD2P7BljLKjrVJ8IbG8a7r8IsHu
-X-Google-Smtp-Source: AGHT+IFfsXz9OY1v3x4os4etHL3YdPMza3/jQ97c5ftyRW4nz+jwiYu1E4UIniKF2tm1OWuqRPJv9g==
-X-Received: by 2002:a17:906:b0cd:b0:a47:48d7:d393 with SMTP id bk13-20020a170906b0cd00b00a4748d7d393mr437692ejb.33.1711436739835;
-        Tue, 26 Mar 2024 00:05:39 -0700 (PDT)
-Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
-        by smtp.gmail.com with ESMTPSA id oq25-20020a170906cc9900b00a46c8dbd5e4sm3858326ejb.7.2024.03.26.00.05.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Mar 2024 00:05:39 -0700 (PDT)
-Message-ID: <ea13bc4f8a8aaf5b91ab3ca403533475000d5d87.camel@gmail.com>
-Subject: Re: [PATCH v6 1/2] driver core: Introduce device_link_wait_removal()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Herve Codina
-	 <herve.codina@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring
- <robh+dt@kernel.org>,  Frank Rowand <frowand.list@gmail.com>, Saravana
- Kannan <saravanak@google.com>, Lizhi Hou <lizhi.hou@amd.com>,  Max Zhen
- <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini
- <stefano.stabellini@xilinx.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,  Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Tue, 26 Mar 2024 08:05:37 +0100
-In-Reply-To: <2024032554-tipoff-extrude-a631@gregkh>
-References: <20240325152140.198219-1-herve.codina@bootlin.com>
-	 <20240325152140.198219-2-herve.codina@bootlin.com>
-	 <2024032554-tipoff-extrude-a631@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711436956; c=relaxed/simple;
+	bh=S1+D5CctG8AMUv6EK6M5WzyBfkPV4fTXRAVv7FJqFkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KUkEz95uDrswXKzl8dxd1FwfF8krHFXgd3wPFl2hvUnyZrxL+NjDzBiWxAK65++z45FYp4IxTPOiBI1FBnp3FXF5G+Df8pEZkPdD7nB020a+TEsY/GgBTIicSwW0t++DY2iwKGBy+B2mIY1VYzIPscfCnpla8sw+WtziyTyxJfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2tAol0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AE2C433C7;
+	Tue, 26 Mar 2024 07:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711436955;
+	bh=S1+D5CctG8AMUv6EK6M5WzyBfkPV4fTXRAVv7FJqFkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o2tAol0CxU9tomWHC/iz/dFozSU/D59ojiuI/3zLTetuGVO/oo53gqCkFAjGte4fo
+	 OgTaF/oL32d4rpcz4jpKxZ5qi4ho8M8KM9iM4rPJq2fb2+eAacq7uAMh2B0rfyd4TQ
+	 C9doQKhvnHmOfXgHKXqXMB8jGLcbieY0ce5C83YP/2Jxx84vYPC+DVXF047sSClPjs
+	 qctSgRjmbz1s35PsYz8G6J1n+Qp/XNJ64DuBVX5iBJgzFsaYGXWGlffbT0c8nLgsHi
+	 30MWDlByuga01WNoMg8HG18fZTn3QX7dUxzxfd+VOb/wNDdnj3zPrsV22u2ZZaURBW
+	 WjuEBLEm8qkyQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rp0vy-000000004q7-21w1;
+	Tue, 26 Mar 2024 08:09:23 +0100
+Date: Tue, 26 Mar 2024 08:09:22 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+Message-ID: <ZgJ0okobGv5nPreG@hovoldconsulting.com>
+References: <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
+ <ZfMStHjwtCT1SW3z@hovoldconsulting.com>
+ <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
+ <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
+ <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
+ <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
+ <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com>
+ <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
+ <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
+ <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
 
-On Mon, 2024-03-25 at 19:38 +0100, Greg Kroah-Hartman wrote:
-> On Mon, Mar 25, 2024 at 04:21:25PM +0100, Herve Codina wrote:
-> > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > introduces a workqueue to release the consumer and supplier devices use=
-d
-> > in the devlink.
-> > In the job queued, devices are release and in turn, when all the
-> > references to these devices are dropped, the release function of the
-> > device itself is called.
-> >=20
-> > Nothing is present to provide some synchronisation with this workqueue
-> > in order to ensure that all ongoing releasing operations are done and
-> > so, some other operations can be started safely.
-> >=20
-> > For instance, in the following sequence:
-> > =C2=A0 1) of_platform_depopulate()
-> > =C2=A0 2) of_overlay_remove()
->=20
-> So this is only an issue for overlays?=C2=A0 Why has no one noticed this =
-in
-> the years since 80dd33cf72d1 was added?=C2=A0 Why is this an issue now
-> suddenly?
->=20
+On Mon, Mar 25, 2024 at 04:31:53PM -0400, Luiz Augusto von Dentz wrote:
+> On Mon, Mar 25, 2024 at 4:14 PM Johan Hovold <johan@kernel.org> wrote:
+> > On Mon, Mar 25, 2024 at 04:07:03PM -0400, Luiz Augusto von Dentz wrote:
 
-Not sure either... Note this is only an issue if device links are in place.=
- So the
-overlay needs to have nodes creating those links. You need to have regulato=
-rs, pwm,
-eth phy (at least these ones I'm aware they create links) to trigger this. =
-We would
-have to dig through git to understand when would this be noticeable. But no=
-te this is
-very straight to trigger.
+> > > Probably needs rebasing:
+> > >
+> > > Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
+> > > error: drivers/bluetooth/hci_qca.c: does not match index
+> > > Patch failed at 0001 Revert "Bluetooth: hci_qca: Set BDA quirk bit if
+> > > fwnode exists in DT"
+> >
+> > I just verified that it applies cleanly to 6.9-rc1.
+> >
+> >         $ git checkout tmp v6.9-rc1
+> >         $ b4 am -sl ZgHVFjAZ1uqEiUa2@hovoldconsulting.com
+> >         ...
+> >         $ git am ./20240314_johan_linaro_revert_bluetooth_hci_qca_set_bda_quirk_bit_if_fwnode_exists_in_dt.mbx
+> >         Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
+> >         $ b4 am -sl 20240320075554.8178-2-johan+linaro@kernel.org
+> >         ...
+> >         $ git am ./v4_20240320_johan_linaro_bluetooth_qca_fix_device_address_endianness.mbx
+> >         Applying: dt-bindings: bluetooth: add 'qcom,local-bd-address-broken'
+> >         Applying: arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
+> >         Applying: Bluetooth: add quirk for broken address properties
+> >         Applying: Bluetooth: qca: fix device-address endianness
+> >
+> > Do you have anything else in your tree which may interfere? What tree is
+> > that exactly?
+> 
+> bluetooth-next tree, why would it be anything other than that?
 
-May also very well be that most people don't really "play" with overlay rem=
-oval...
-For example, I have been dealing with overlays on rpi's for the last 5 year=
-s and only
-noticed this last year when we had an usecase that involved overlay removal=
-.
+I ask because I did not see anything in either the bluetooth or
+bluetooth-next tree which should interfere.
 
-- Nuno S=C3=A1
+And I just verified that by applying the revert followed by the series
+to bluetooth-next. In that order it applies just fine, as expected.
 
+> All the
+> CI automation is done on bluetooth-next and if you are asking to be
+> done via bluetooth tree which is based on the latest rc that is not
+> how things works here, we usually first apply to bluetooth-next and in
+> case it needs to be backported then it later done via pull-request.
+
+The revert fixes a regression in 6.7-rc7 and should get to Linus as soon
+as possible and I assume you have some way to get fixes into mainline
+for the current development cycle.
+
+The series fixes a critical bug in the Qualcomm driver and should
+similarly get into mainline as soon as possible to avoid having people
+unknowingly start relying on the broken behaviour (reversed address).
+The bug in this case is older, but since the bug is severe and we're
+only at rc1, I don't think this one should wait for 6.10 either.
+
+Johan
 
