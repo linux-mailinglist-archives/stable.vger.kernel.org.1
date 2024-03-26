@@ -1,236 +1,110 @@
-Return-Path: <stable+bounces-32336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD388C892
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:08:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4762988C8CC
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F41A1C38307
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:08:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8D07B22709
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD013C9A2;
-	Tue, 26 Mar 2024 16:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46A513C9AE;
+	Tue, 26 Mar 2024 16:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LA3vWYhI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCBaOfCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C13B13C696;
-	Tue, 26 Mar 2024 16:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E7913C815;
+	Tue, 26 Mar 2024 16:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711469278; cv=none; b=XfuXH6HXJIiGsFOxTO2Az6yyTob/nMWHj7xah76wnMdL5hC3TGPkteHg7ziovOziZm2nsQ4hEhNest+paZ1EASNto98hkurMCKKCjPoIaSpw8+0gGbKWXAj32nIXW4J8UOm16698IaCIaWIMYYLDHf+swEK+hYRRmDX3ZoYdO3I=
+	t=1711469779; cv=none; b=Y7j3yBOngMuM2wVIwhRkWE8/hfLKc7MZz7Y2IPES2B33zAZrwQbTkk2jB83BiC2oZS3v9fXgHsiiSD82hPcV8lGLLMsdvH6rmEe5gKpFRe9cAnDdh48KF/KXpwxmmRr8NrllW2/koVrAcESuaP8m1AL/4OdiFudP7FdRBOos38Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711469278; c=relaxed/simple;
-	bh=30JIHtimg6n8W6Ta1n9cVF3rWKvRQkP+z9819UW55F0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BEAXgJZL1H5/ieHkf0t70l5X7jKosarUC6pQxIjAWagJoGXFkwn8wC/jTXZq6RWH0bUeaNhKf8wKUPjV55KAMlSVI08ATx8eID3fD5RgQaPajjmEtgCaknTXlRFzsCxWfCtlsOCNeLcQbEvBA/r27lnADaeWEGk157fYzDa/ikM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=LA3vWYhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576F1C433F1;
-	Tue, 26 Mar 2024 16:07:56 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LA3vWYhI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1711469273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRlhV/wNtR2/43VLUsHVHpymnq61r5ZGY83YpOPrN94=;
-	b=LA3vWYhI8E4ciTAaUxImG87k3puXPqFgsORrEg9fZYgFW/SG1E0KEx+Rx0H/C+11JQaZb/
-	YsKQZeDQnqdSrNM3co0GO+PVi6PzoTiPcQXlgqATXGbjFzfRIYAj5/DgV3jQCtMOwA474e
-	E+6DyVgXy88k+fRqt8op4STygCX8Q4M=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 557207e9 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 26 Mar 2024 16:07:53 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	stable@vger.kernel.org,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Theodore Ts'o <tytso@mit.edu>
-Subject: [PATCH v6] x86/coco: Require seeding RNG with RDRAND on CoCo systems
-Date: Tue, 26 Mar 2024 17:07:35 +0100
-Message-ID: <20240326160735.73531-1-Jason@zx2c4.com>
-In-Reply-To: <20240326112137.GDZgKvwRHD4yQs3Zm-@fat_crate.local>
-References: <20240326112137.GDZgKvwRHD4yQs3Zm-@fat_crate.local>
+	s=arc-20240116; t=1711469779; c=relaxed/simple;
+	bh=uu5YswgyRKr1NEtLECW11lvdLQTNhkw30cz7TaktJj8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LD0IZD3oek74CjJJK3ocn1RfDGGY8nddN0qsDbOh+44bIQLK4nuE5UmbQvyB2FyGz0HnRCiAkghpMGumQ+RTGc87NqYjVS/irDDXcy4+XaNiHwCNmPKf2pw5r0Z1ZVix4nmwI1BDfMJGDGn5pD6BIIQ4KQQey//MQIZ9G4A8Uww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCBaOfCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8B5C43394;
+	Tue, 26 Mar 2024 16:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711469778;
+	bh=uu5YswgyRKr1NEtLECW11lvdLQTNhkw30cz7TaktJj8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nCBaOfCIK0jVs1NE7ZYPNhytAkUEeddgUUp0GlxxXF1FO/AfDin/1g9GGM+fo/NBO
+	 xzhHlGcHbRaseNsQ2txKe2ZCLIYtrwr6/sfpZg++LX3cyInCThQJJ5flkzmbwnX3Vd
+	 3488teR/DlXDNqKtt1/aKFAQBMA5cqa6iwHpEmAfqqquyGNJUunKtIMGfgP7tNmQz3
+	 6X7iO/wqlCHwZJmCd9beSTMj/opWaUpgzWCji5ryGJk9RBgnyK8AiDwtKTxQbCnGSn
+	 drmcau4MOreVlRJ3xq0EKBft9cRePDBfWf1UOE+jLbcvJyC40IGmiOBHjV0dfGUFeO
+	 4Bes9IY3VJYVg==
+Date: Tue, 26 Mar 2024 16:16:13 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com,
+	pavel@denx.de
+Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
+Message-ID: <cb00ee0c-ed03-4351-9782-99eab1894234@sirena.org.uk>
+References: <20240325120003.1767691-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="N65eYDdE+sWianZv"
+Content-Disposition: inline
+In-Reply-To: <20240325120003.1767691-1-sashal@kernel.org>
+X-Cookie: 1 bulls, 3 cows.
 
-There are few uses of CoCo that don't rely on working cryptography and
-hence a working RNG. Unfortunately, the CoCo threat model means that the
-VM host cannot be trusted and may actively work against guests to
-extract secrets or manipulate computation. Since a malicious host can
-modify or observe nearly all inputs to guests, the only remaining source
-of entropy for CoCo guests is RDRAND.
 
-If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
-is meant to gracefully continue on gathering entropy from other sources,
-but since there aren't other sources on CoCo, this is catastrophic.
-This is mostly a concern at boot time when initially seeding the RNG, as
-after that the consequences of a broken RDRAND are much more
-theoretical.
+--N65eYDdE+sWianZv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
-fails, panic(). This will also trigger if the system is booted without
-RDRAND, as RDRAND is essential for a safe CoCo boot.
+On Mon, Mar 25, 2024 at 08:00:03AM -0400, Sasha Levin wrote:
+>=20
+> This is the start of the stable review cycle for the 6.7.11 release.
+> There are 707 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Wed Mar 27 12:00:02 PM UTC 2024.
+> Anything received after that time might be too late.
 
-This patch is deliberately written to be "just a CoCo x86 driver
-feature" and not part of the RNG itself. Many device drivers and
-platforms have some desire to contribute something to the RNG, and
-add_device_randomness() is specifically meant for this purpose. Any
-driver can call this with seed data of any quality, or even garbage
-quality, and it can only possibly make the quality of the RNG better or
-have no effect, but can never make it worse. Rather than trying to
-build something into the core of the RNG, this patch interprets the
-particular CoCo issue as just a CoCo issue, and therefore separates this
-all out into driver (well, arch/platform) code.
+This is broken on at least the original Raspberry Pi, no output appears
+on the console.  Bisection tells me that the problem is introduced by
+d7303ef54fae6 ("printk: Disable passing console lock owner completely
+during panic()") though I'm not entirely sure I believe this.  I've got
+some bisects running on other 32 bit arm platforms with the same
+symptoms which I suspect will turn out to be the same issue, and v6.8 is
+failing in what looks like the same way.
 
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Changes v5->v6:
-- Rebase on tip/master.
-- Add string.h include.
+BTW I did ask to be CCed on the review mails, it'd make life a bit
+easier.
 
- arch/x86/coco/core.c        | 41 +++++++++++++++++++++++++++++++++++++
- arch/x86/include/asm/coco.h |  2 ++
- arch/x86/kernel/setup.c     |  2 ++
- 3 files changed, 45 insertions(+)
+--N65eYDdE+sWianZv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index d07be9d05cd0..ddd4efdc79d6 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -3,13 +3,17 @@
-  * Confidential Computing Platform Capability checks
-  *
-  * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-  */
- 
- #include <linux/export.h>
- #include <linux/cc_platform.h>
-+#include <linux/string.h>
-+#include <linux/random.h>
- 
-+#include <asm/archrandom.h>
- #include <asm/coco.h>
- #include <asm/processor.h>
- 
-@@ -148,3 +152,40 @@ u64 cc_mkdec(u64 val)
- 	}
- }
- EXPORT_SYMBOL_GPL(cc_mkdec);
-+
-+__init void cc_random_init(void)
-+{
-+	/*
-+	 * The seed is 32 bytes (in units of longs), which is 256 bits, which
-+	 * is the security level that the RNG is targeting.
-+	 */
-+	unsigned long rng_seed[32 / sizeof(long)];
-+	size_t i, longs;
-+
-+	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return;
-+
-+	/*
-+	 * Since the CoCo threat model includes the host, the only reliable
-+	 * source of entropy that can be neither observed nor manipulated is
-+	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
-+	 * CoCo guests have no other unobservable source of entropy, it's
-+	 * important to at least ensure the RNG gets some initial random seeds.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
-+		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
-+
-+		/*
-+		 * A zero return value means that the guest doesn't have RDRAND
-+		 * or the CPU is physically broken, and in both cases that
-+		 * means most crypto inside of the CoCo instance will be
-+		 * broken, defeating the purpose of CoCo in the first place. So
-+		 * just panic here because it's absolutely unsafe to continue
-+		 * executing.
-+		 */
-+		if (longs == 0)
-+			panic("RDRAND is defective.");
-+	}
-+	add_device_randomness(rng_seed, sizeof(rng_seed));
-+	memzero_explicit(rng_seed, sizeof(rng_seed));
-+}
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index fb7388bbc212..c086699b0d0c 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -22,6 +22,7 @@ static inline void cc_set_mask(u64 mask)
- 
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
-+void cc_random_init(void);
- #else
- #define cc_vendor (CC_VENDOR_NONE)
- 
-@@ -34,6 +35,7 @@ static inline u64 cc_mkdec(u64 val)
- {
- 	return val;
- }
-+static inline void cc_random_init(void) { }
- #endif
- 
- #endif /* _ASM_X86_COCO_H */
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index f04cef846e51..e3f01caf104b 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -37,6 +37,7 @@
- #include <asm/bios_ebda.h>
- #include <asm/bugs.h>
- #include <asm/cacheinfo.h>
-+#include <asm/coco.h>
- #include <asm/cpu.h>
- #include <asm/efi.h>
- #include <asm/gart.h>
-@@ -993,6 +994,7 @@ void __init setup_arch(char **cmdline_p)
- 	 * memory size.
- 	 */
- 	mem_encrypt_setup_arch();
-+	cc_random_init();
- 
- 	efi_fake_memmap();
- 	efi_find_mirror();
--- 
-2.44.0
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYC9M0ACgkQJNaLcl1U
+h9CDVwf+Is/eRLhqlgtF3tcmbj4g5ps5aeSqwytWmPKtsL2q9sn4WrT8j3ApkAfU
+QJLsAl7D2xfE21zjfsiyqQ2ZMmOVZXK7d9BrAvctKB4reTvwLlT2myzNYLpF21lM
+5e34Kl0vahfQRxQxyMHZBPUc0bWGTW080XIuYa8y11wSbAEFe/A7WJEOH+mbgj5k
+3RH9xriaRvokhCm8SYcC+yPCJj6nr7xxDSfmYrLNA8+ZBOw6qwV6rYU3TpQx74eI
+XbLLycflENPbWO5t4WIljnLowMS32DgpZndtL8g8MS5ipRsStBbI7fT4rIwVrFbt
+CIjHFBDYmqdIKJqmG3nOBjmQxH5qQA==
+=J3NM
+-----END PGP SIGNATURE-----
+
+--N65eYDdE+sWianZv--
 
