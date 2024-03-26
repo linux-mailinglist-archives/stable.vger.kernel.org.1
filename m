@@ -1,120 +1,132 @@
-Return-Path: <stable+bounces-32318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8FB88C249
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 13:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AA588C2CD
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 13:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E74D1C33902
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:37:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07CBD1C332E4
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E357A5B5B3;
-	Tue, 26 Mar 2024 12:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2166EB56;
+	Tue, 26 Mar 2024 12:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YgxS9mQo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HgczrhOE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192D356B6D
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 12:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6DE5C8FF;
+	Tue, 26 Mar 2024 12:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711456648; cv=none; b=LnZDqCwGM37ZNlNLeuACBPeedETAsWdoiSHCfsW/bSESJGlneJ6frffhs1u288bWU96S+DmpKZMOI0oVtNGTmGuM1J+oos+dqAwQs9xcIa647HES8LYpLKcLyatnk+9lggAqUV8PHoZpCuY+bcj2frQVmPHQxeJqd6wEXg50n3M=
+	t=1711457932; cv=none; b=I4TiyjcVM7YI2jsS3TKc6n2epd8GFcCRx/Ncwvzs7KusQmBzRzsGGjVP9bydmNpFswNBF3S4ioLPNfBGBHtqkZS41JGnc4mr3FrDZGH51zY3aFXTl4TPIHLZc9MhEZZXgJMnaDLJgWcrzsR6fbDOtAutQyN6zwR4cySaJVfRg1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711456648; c=relaxed/simple;
-	bh=qOgEt04Cktj3ZOzRSsKojbUHmC+nS7AdLE93qncD5hk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ckhaqGbYsi9WzBoXEXqOgF8Vb3kEoBnCtdL5MABrO5tAwN6ejGB1ly7hjz0cS90bdXZfAQF+ZSfGddcPibt57HR9MPwLm0VjVfrYPweDIEgJwsqV1Gl1bOlplrmGvtgl9SdFtUWUfqxOhdgwoMJLXYJZ9zT8jS3np9kaGhj+dZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YgxS9mQo; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4768156d947so1555406137.3
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 05:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711456646; x=1712061446; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qckAaAQvDawa2rOtERY8cmOyLEyi0qkEFSxxXb4vMwg=;
-        b=YgxS9mQoa6ZQoQd++4TwJUBOHuR5SuUeWE7bouimw+fui7HdZhkFwU4cpW8R2r7iP9
-         4x2uncp7dwAIpBK2n7MjATmEEE1ONqK6Y7a4TuAdBiUNEYvymCxEwW9H8MdK0100TjKO
-         fzc7811pRUQpq3Tp7SxMa2BBMKRQ2j3vlCrOoA1fK/a9dSSEFe9w+XnJIQ27hda106mX
-         tE7+puW5b0RdRSkooQmd2CWlBIJP1AmklI66GVoOqIM0x/GKo+0YDjh6QdHKsvC6Pr4E
-         E44RkCQRcDUlyoAIV3GtDyBq0FuTOQ0/2g1JuBHLKOwxdSunjDegFPy8FpKKUclWVb1G
-         Le1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711456646; x=1712061446;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qckAaAQvDawa2rOtERY8cmOyLEyi0qkEFSxxXb4vMwg=;
-        b=wqQiGSYFcdXWwZbptRoPOxJiGfsqbPLR2So73o9F8nxzXKoPOjC8yBhh2T7+MZfu0A
-         JMvnDg/RfEnbEngXC0XKnkoexyI/QRfim37W4fXarZXZoTIOSYPpr3wQdkiYEDRgj7Yj
-         yDKa6rlRwhL6t6/FRqq+VrMGiPWGKL1e4D1fSBqJOgvUSeGj0IbpYprkzZRBLulwMmGC
-         GMKPe9OrL6dq+50tQ4Ud4JXdEYzsUpCQjR8mcNV3zQc5ky14VHya4TVtDBfibz85E9Gy
-         vQN3Fr+HfAMUORHZnPaXv1EB/I0B5cWa7xnFryNWpU7cuwAZGjTyUZFbjpgzlIW+3Xfz
-         3wgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVx3nFAq5AUw0uG9QFWnD916A4M9Nm1Tdp8/n3FFwQBuEPf8PNHBizZaIx2RekAacCgeXkGwZRY73V0vm/K9I5VN7DyJ0vf
-X-Gm-Message-State: AOJu0YzjIaUe9oQKsoLkA/HH5vm1uHJU7QO4xoyvuMghVjp9ZPBMWvWI
-	5iL2i2NNXEM1mIFRXAhbwuRPBSaAHH9VbRuIHjwXorwfvnMaBUYVWWYn3ZQzPNtpztaqAorqRoq
-	Ov9lnwvRSkaBS8XPvr0W3w3wxjv53P4+ximAd4Q==
-X-Google-Smtp-Source: AGHT+IEm2t0vuIygi1Dm4Yr7MU2IhJVp8dkz6GzE7gg/+xkeSUaT1bDZQ97tXChOMdP4g0wsuvJ8Sb+rHHAMC8LYm4I=
-X-Received: by 2002:a05:6102:a54:b0:478:224b:5aae with SMTP id
- i20-20020a0561020a5400b00478224b5aaemr4344749vss.11.1711456645714; Tue, 26
- Mar 2024 05:37:25 -0700 (PDT)
+	s=arc-20240116; t=1711457932; c=relaxed/simple;
+	bh=MtfhUEPPdvxqzOoAPyYQzVuPsUOh0otfavoqH+DBvNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UuYMabMNBX+DbD6iIY60go57zOaAXUT51wTyaxcxJWfBlNECvNuTBVtyFYT4SKtxEA8jOSRraMAGW4eoeTlakvsXYNM1kbQ22nglpAgbOAAfe97NN3PXheBad61NzY/1tYcnNhZVc1yU7qaUGWgUFgADFHVSTv4cw+vd36kUC88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HgczrhOE; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711457931; x=1742993931;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MtfhUEPPdvxqzOoAPyYQzVuPsUOh0otfavoqH+DBvNY=;
+  b=HgczrhOEpGXNqmsakg/SLY84LWY2aMh438b4xSHF03g26JTY7hen7SgO
+   sQR/q5ck1pR95IBLDWhWpA1XNYbYFzY7WIGH/gbqDYh+J4mkrnVvEtMoR
+   CxRlBtZftEb1yTbEFvVNX70x6ZbkoMoQEU/S0uWzYBrvEKpeYew3NRQl2
+   uhdEaVXa33gzfPxzdMSui2hpuwnPLoGLobeJB3z9S0MvGMNQhV8kdEK7V
+   mT2NLwvzhodB66OrsrpoTpzApDDMCX5fzHhSNNbEcpRHBcQ594Jza3K0s
+   AK93iJtNk3kxD8Z7nw3P6OrTHfGBtwZb4SB/PtfI0M1w8UVJdKCRZiPxF
+   w==;
+X-CSE-ConnectionGUID: RK+MHI/cTEK2XpodvZouBw==
+X-CSE-MsgGUID: HZ+/je3iTeGFH5McCr62nQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6717075"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="6717075"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 05:58:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="46972395"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 26 Mar 2024 05:58:47 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rp6O4-00003Q-2A;
+	Tue, 26 Mar 2024 12:58:44 +0000
+Date: Tue, 26 Mar 2024 20:58:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gergo Koteles <soyer@irl.hu>, Shenghao Ding <shenghao-ding@ti.com>,
+	Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: oe-kbuild-all@lists.linux.dev, alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Gergo Koteles <soyer@irl.hu>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ALSA: hda/tas2781: remove digital gain kcontrol
+Message-ID: <202403262031.SxBP17EM-lkp@intel.com>
+References: <313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325115854.1764898-1-sashal@kernel.org>
-In-Reply-To: <20240325115854.1764898-1-sashal@kernel.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 26 Mar 2024 18:07:14 +0530
-Message-ID: <CA+G9fYttAJcRBq2F-TfOvfsWJQuCKW9SAo_3C1nv5ok43j4Aeg@mail.gmail.com>
-Subject: Re: [PATCH 4.19 000/147] 4.19.311-rc2 review
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	florian.fainelli@broadcom.com, pavel@denx.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer@irl.hu>
 
-On Mon, 25 Mar 2024 at 17:29, Sasha Levin <sashal@kernel.org> wrote:
->
->
-> This is the start of the stable review cycle for the 4.19.311 release.
-> There are 147 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed Mar 27 11:58:33 AM UTC 2024.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-4.19.y&id2=v4.19.310
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> Thanks,
-> Sasha
+Hi Gergo,
 
-One more important update from Linaro LKFT testing,
+kernel test robot noticed the following build errors:
 
-LTP syscalls fallocate06 fails on qemu-arm64 and juno-r2 devices.
+[auto build test ERROR on 4cece764965020c22cff7665b18a012006359095]
 
-fallocate06.c:155: TFAIL: fallocate(FALLOC_FL_PUNCH_HOLE |
-FALLOC_FL_KEEP_SIZE) failed unexpectedly: ENOSPC (28)
+url:    https://github.com/intel-lab-lkp/linux/commits/Gergo-Koteles/ALSA-hda-tas2781-remove-digital-gain-kcontrol/20240326-052937
+base:   4cece764965020c22cff7665b18a012006359095
+patch link:    https://lore.kernel.org/r/313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer%40irl.hu
+patch subject: [PATCH 1/3] ALSA: hda/tas2781: remove digital gain kcontrol
+config: i386-buildonly-randconfig-004-20240326 (https://download.01.org/0day-ci/archive/20240326/202403262031.SxBP17EM-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240326/202403262031.SxBP17EM-lkp@intel.com/reproduce)
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403262031.SxBP17EM-lkp@intel.com/
 
-We are running bisections on this issue and get back to you.
+All errors (new ones prefixed by >>):
 
---
-Linaro LKFT
-https://lkft.linaro.org
+   In file included from sound/soc/codecs/tas2781-i2c.c:29:
+>> sound/soc/codecs/tas2781-i2c.c:148:41: error: 'dvc_tlv' undeclared here (not in a function)
+     148 |                 tas2781_digital_putvol, dvc_tlv),
+         |                                         ^~~~~~~
+   include/sound/soc.h:271:19: note: in definition of macro 'SOC_SINGLE_RANGE_EXT_TLV'
+     271 |         .tlv.p = (tlv_array), \
+         |                   ^~~~~~~~~
+
+
+vim +/dvc_tlv +148 sound/soc/codecs/tas2781-i2c.c
+
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  141  
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  142  static const struct snd_kcontrol_new tas2781_snd_controls[] = {
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  143  	SOC_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  144  		1, 0, 20, 0, tas2781_amp_getvol,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  145  		tas2781_amp_putvol, amp_vol_tlv),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  146  	SOC_SINGLE_RANGE_EXT_TLV("Speaker Digital Gain", TAS2781_DVC_LVL,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  147  		0, 0, 200, 1, tas2781_digital_getvol,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18 @148  		tas2781_digital_putvol, dvc_tlv),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  149  	SOC_SINGLE_BOOL_EXT("Speaker Force Firmware Load", 0,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  150  		tas2781_force_fwload_get, tas2781_force_fwload_put),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  151  };
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  152  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
