@@ -1,172 +1,253 @@
-Return-Path: <stable+bounces-32320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3C488C348
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 14:23:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2401C88C360
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 14:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1517BB22235
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 13:23:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D59BB24157
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 13:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE88773518;
-	Tue, 26 Mar 2024 13:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D072973528;
+	Tue, 26 Mar 2024 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hkAu5fOc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bWooAFsu"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6675C61F
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 13:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0944F890
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 13:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711459424; cv=none; b=pkSZ7RJB/I5NzTjgNjhsj+CIqi9RzO3sctlOSeiaEmCJUZjGFj5a1QLIHX9ZauBYNGW38EHq6kBkR1ASCbHOZyHFutFp+wdhAdl8apbFi9zz8AJT2/C96e9gY5qJ3dPvXcdUErxxMKD0ryV5XwqGmeIjB2JcM8zLYWg781Z8eHA=
+	t=1711459735; cv=none; b=Jm2J6cio8Q0ssU77STB6mDK7tcjmpcsp/1Cd1bWqM/Ud5DmjnpbGwPSUm++L+BkVmdonp+OkgcH16nSYohBttXaf5PaiqTSyQU9OgACoqf39cIvfaAW3F24P8eMmONSQpEy53O/cOEhWdyU6AwoTencw1yd8T0IyKrld7bh1hwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711459424; c=relaxed/simple;
-	bh=gzp9HtZPHmUn2IpZTAA5N4ZxIlth75V81YTf8VVwynk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cZS84jI35qnpqSPUEFVorTebiaf9uWEKOFgxLO2qlUFeS7vAYbZbtMvkdmAeaau4tLLHe/tjVm7N6Xii0f2tnrpYgTmznNo3gUuLIvlv0oUEtLsg0n/rviq8AkKNd84X5ooqMSMMtnsebQubTicGQvd0L3AjcmmBLpj/8ZFqkw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hkAu5fOc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711459422;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l+N09hIgKxgAU9tA6LuUWkFZXIuGJhEsplZapeNz2CQ=;
-	b=hkAu5fOc4EzkLnVLVJ86rs5wXhEsaC5D5BVrpcugqi91id+zMzlrzMVlcGGAQghO/+m6zC
-	reM+ofnoSyTGiseU2RzXndd8u7i59fqW6nUSlGhXeJ4g8OVOxz9uOj22qAVQ0Ao2b03Y01
-	4uzDGBplDQUjrMG7liTaWcNxEStQ8E8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-nowr65xQMVyoIffMfWQrQA-1; Tue, 26 Mar 2024 09:23:40 -0400
-X-MC-Unique: nowr65xQMVyoIffMfWQrQA-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33ec06aac83so3732696f8f.2
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 06:23:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711459419; x=1712064219;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1711459735; c=relaxed/simple;
+	bh=Swj/95wS2gUtQFGPSA7/zzcTtPt6bJNQghes3qZ27Gs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JgXrL91RgruGj50qqAJWoPx5V3jftNZVwPcXpS+56Kx2VsMLshoIn19d923qDuJT6n1TYZZ/MVNDXf13pnp2ad4SZYq1mnTZ4Gj91XqvXBml0thD39sZo+5oWdbrOPadmKH11MAavKgLQcC+0lGhK14UmrBJpHDGPh06lkDRYvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bWooAFsu; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4d8a748881aso94039e0c.1
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 06:28:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711459733; x=1712064533; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l+N09hIgKxgAU9tA6LuUWkFZXIuGJhEsplZapeNz2CQ=;
-        b=aqwMuJ3Czrqyxox6+lNMdA6Ol3C2jHgEy0NylVgOM8EhqUFVUun5Nqy4pxbevNRvN9
-         +5V2gD9t56x+twM0H3cDGVY8eVNlYbZU0AfHVQTifqo1J9rYtjXCN746DmGSIuhiwQmB
-         HT/7PQ8D6R1QP2sBQSMPvXehwRt2MLyIoTXfOMGlVN3kIaoYhGAMHYG7sPtxvebzq3EK
-         SIzKbeOa4IYHqkxqdnsfEZU7reI6D7YvOfDVTCITKW5TYAm3I5yMk24eVA3orSTnUiLG
-         /nAjs+mLvfvT9Z4Z6Bw7DoOG2O8TEPbGFhHvBsVjC3jq/Dz3nbzTMVTAAt65CpmtTTg/
-         cTVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMJwn+wK1TemsQ3FL4/BCVQEbMLDdVILrIe/6MbxxiGbBAtNR5LLWCjnJJV6m+myxWCXs/ax6DlnGaQ7OrX20/n6dx6IBo
-X-Gm-Message-State: AOJu0Yz5oUumXTJuWphGBq31XcKgdYXSPHuEGvesIrHjgDcDVGsO+eLi
-	hAFurX7TwQ2/MKE3lwewtbwoQUMxOQNCK2SS5aDKzg3OAC8MKfJzJMHbc1S5BMmEYn2pbIa8uwc
-	wF/pAsy/YGmMgWKgOR3gtzYop8M30y9/Rh30AI42EvRBrxEFSWxezKQ==
-X-Received: by 2002:adf:e405:0:b0:33d:755c:30db with SMTP id g5-20020adfe405000000b0033d755c30dbmr7322426wrm.36.1711459419305;
-        Tue, 26 Mar 2024 06:23:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGoCR56iaBXoWbXZUgwkU4y9u+YQ7V/iwZa+zZdgoQ4Tb6TodyARqqHsg3B+94V1uu6z3OTUw==
-X-Received: by 2002:adf:e405:0:b0:33d:755c:30db with SMTP id g5-20020adfe405000000b0033d755c30dbmr7322411wrm.36.1711459418903;
-        Tue, 26 Mar 2024 06:23:38 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c741:c700:3db9:94c9:28b0:34f2? (p200300cbc741c7003db994c928b034f2.dip0.t-ipconnect.de. [2003:cb:c741:c700:3db9:94c9:28b0:34f2])
-        by smtp.gmail.com with ESMTPSA id o20-20020a5d58d4000000b0033e7503ce7esm12153734wrf.46.2024.03.26.06.23.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Mar 2024 06:23:38 -0700 (PDT)
-Message-ID: <414cb2da-52c1-4f4f-9dcf-986f7aaccb0a@redhat.com>
-Date: Tue, 26 Mar 2024 14:23:37 +0100
+        bh=LjFwqu6+3f07g96CRPO03syfjozezYZEWTppALvkfKA=;
+        b=bWooAFsuzUES+XIQnwM96jgqopbPOaLgjsM6hJkwLHtGDOhq1Vsjhn06GEdtJQnW+E
+         S4xOzJqZgC+8Cj4W9k2XKkxU9DMBdAN5XCjrjtLEP8mff//6gwyswjO0wifeJt37ZB9i
+         nJSkbXWSsTFM9FsTWOeGMpzYYseuOmOz5vrHhQV3tNdVBUKmazWjyRQ24tWwWL6Nw3cf
+         dWx2l6+n7bBVZbqlF16gfUhiSaS2BnEO7z7lmJP1euLctcV3AUYVXo1mWXMNUp0XrhtK
+         piaBfrsqO84iyAINNv6iJVDzLQEUEyj/YzHXw31H6tNr1iGsJYm5RivAHjTqGjjVp1qv
+         tr3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711459733; x=1712064533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LjFwqu6+3f07g96CRPO03syfjozezYZEWTppALvkfKA=;
+        b=H1GQA2U6bLptCxVu/keTYWzp5Y4066D7ciRJHXm4XI00ZNeGqhWBNlQ51BrSCNMMeq
+         s3N43lVqX3vJdOhsHX1sUuZC2e+ZuwGLBdzt5zZmik09eWQCjdbWs6B9p7cR50RAbRCZ
+         cyHRBEXN9qljQUo4jcR9Ajmc+nuG9UcH/4ZIEPc9fZPwmzXnvA2dnjOkJpgaa7UvSBGJ
+         JudKmw4sn877zmV8gbRVL3gw/hwVVWhmpE2MJfhMETs8ljfYU6jsMYZ5cRXg9zivrD4x
+         zttHK2g1uL9+zca93dn8LHFhJWRWfkFwemF8opF4sejcq0XHFP6FTZU+PHu8SdxX4Q/R
+         VJlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrY2JIAJ8SeAv4va2jkIqPvSSgd4XSuPET/J8aS76dYkpyKcL29KXn24MzawahG67GZq0DArLG0XNbG4ucMnEmhyCqu31K
+X-Gm-Message-State: AOJu0YwphyA7e+UyoBQJuitUxslpDQRGofAVhv/YCt23NicYIn/jqzix
+	iAQaybDz2MuH6wVu4EtlHxD0vvYXLhTHddNoqz2uvrjdvvqCVYXtmktLHnHBhKe63+dyq2SwcWk
+	Y6Bd//QDmYp2OaX4g1qSI5P1imld4oBDLTbLabA==
+X-Google-Smtp-Source: AGHT+IHXCLqpoMAW9fF8qA/TBAvi3Oul8k2IEjY8WDO93+loax+v4Qjb7StP1j9MmJ88oJxPBV+gJySh09PiquEN2F4=
+X-Received: by 2002:a05:6122:4c16:b0:4d4:19e9:db0 with SMTP id
+ ff22-20020a0561224c1600b004d419e90db0mr6478355vkb.0.1711459732681; Tue, 26
+ Mar 2024 06:28:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] mm/secretmem: fix GUP-fast succeeding on secretmem
- folios
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Mike Rapoport <rppt@kernel.org>, Miklos Szeredi <mszeredi@redhat.com>,
- Lorenzo Stoakes <lstoakes@gmail.com>, xingwei lee <xrivendell7@gmail.com>,
- yue sun <samsun1006219@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>,
- stable@vger.kernel.org
-References: <20240325134114.257544-1-david@redhat.com>
- <20240325134114.257544-2-david@redhat.com>
- <20240325113043.4fb05ab324e5c21ec4c0c0d4@linux-foundation.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240325113043.4fb05ab324e5c21ec4c0c0d4@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240325115939.1766258-1-sashal@kernel.org>
+In-Reply-To: <20240325115939.1766258-1-sashal@kernel.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 26 Mar 2024 18:58:40 +0530
+Message-ID: <CA+G9fYtMXdJ_csKhi1VuxLByo0tXyLM-GaOORhmE_tNdJ+d8Yw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/444] 6.1.83-rc2 review
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	florian.fainelli@broadcom.com, pavel@denx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25.03.24 19:30, Andrew Morton wrote:
-> On Mon, 25 Mar 2024 14:41:12 +0100 David Hildenbrand <david@redhat.com> wrote:
-> 
->> folio_is_secretmem() states that secretmem folios cannot be LRU folios:
->> so we may only exit early if we find an LRU folio. Yet, we exit early if
->> we find a folio that is not a secretmem folio.
->>
->> ...
->>
->> Cc: <stable@vger.kernel.org>
-> 
-> Thanks, I split up this series.  Because this patch goes
-> mm-hotfixes-unstable -> mm-hotfixes-stable -> mainline whereas the
-> other two go mm-unstable -> mm-stable -> mainline at a later time.
+On Mon, 25 Mar 2024 at 17:29, Sasha Levin <sashal@kernel.org> wrote:
+>
+>
+> This is the start of the stable review cycle for the 6.1.83 release.
+> There are 444 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed Mar 27 11:59:37 AM UTC 2024.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git/patch/?id=3Dlinux-6.1.y&id2=3Dv6.1.82
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
 
-Makes sense. I'll resend a v2 later, because there are some major 
-changes (the fix was wrong/incomplete, we have to remove the LRU test 
-completely).
 
--- 
-Cheers,
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-David / dhildenb
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.1.83-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: cfc80383a3dc406b53bfbbee423b2d623b17b6e2
+* git describe: v6.1.82-444-gcfc80383a3dc
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.8=
+2-444-gcfc80383a3dc
+
+## Test Regressions (compared to v6.1.82)
+
+## Metric Regressions (compared to v6.1.82)
+
+## Test Fixes (compared to v6.1.82)
+
+## Metric Fixes (compared to v6.1.82)
+
+## Test result summary
+total: 120554, pass: 103236, fail: 1870, skip: 15328, xfail: 120
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 31 total, 31 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 34 passed, 2 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
