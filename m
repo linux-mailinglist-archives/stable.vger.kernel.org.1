@@ -1,205 +1,156 @@
-Return-Path: <stable+bounces-32312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8397788C0F5
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:40:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A0188C112
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0331F391BA
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5723EB23FDE
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E778354905;
-	Tue, 26 Mar 2024 11:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE22C59B7F;
+	Tue, 26 Mar 2024 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A5rBkgIf"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e/E902rc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220FC5475D
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 11:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C93E4E1CC
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 11:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711453224; cv=none; b=JdyydDYDS/oSpcq8H6Odo0zK9NBG6jhSchKngMn7AUUJBNbJqdKHjyO3n2Q84wLGOgkHYTeW5tfgfTIuDnnAAeR6GoiQ/UiEtPNhIH7vC9QqAcaHoJ5WrSz/lx0yhyX3RoVS1k0PLUue32rREwdSS0ngXdAiEDZRwR7FHf9jd4I=
+	t=1711453489; cv=none; b=t4k9O8TbsPutdgZMueL0/DdbJs6wYlWyeuE84iBVAj1gvbg+qPiT7bwVEjq/8oysTI7a2YQ6ars1B5qqaOc7pNllYhcI1zzqNIal4M22JZ2J1RzAi5jnwZGE46t5lxnp6X6TQ6B8fBHlXm9xXVlpNmL1h29GQUovnt/JrspHNX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711453224; c=relaxed/simple;
-	bh=HSrcWmxETJ8E8spBRNHk4NS3co0WzT5Z4jEDA/qhCp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=baDYn7uRgWaRWbICXusKgXY/iBSNGEjGzG3i14ag591E6zDLEFDRxq6aJtJ1Vd9N5hppQzmEu+O8kWvwHNLduvhP/jTMFmillkmb0RzoAuohrWFUjgwIUFLt46E3bGh+FEHW3oY6m+1Ghy9u+nwg91x2/AySNoQW/EifjyLpgu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A5rBkgIf; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711453223; x=1742989223;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=HSrcWmxETJ8E8spBRNHk4NS3co0WzT5Z4jEDA/qhCp8=;
-  b=A5rBkgIf6ThPTGj9GtV+h9Rdip8KSAo3aLXEhbPb/ugH2HXpEiH6ZUuj
-   AYOAQFZHs48Q9NDqaCrs7ZFrOEVNgd3Ck5PXFAs33GnB3Bh6V2aAKwH0e
-   IoDnm9edeFqFnX4A8mbn9YVAoNpf+SAoM8Uag07ixbqLr2Of9KxPO5I7H
-   t10wXIrCTU++K9sjyCELEIAuESomprBQx1TU9ZPp3tL0NKxGK0/S1E3us
-   dkquv0+Rw/EzJu+tsl4oTxi02MmmLevX71GlFnJsaplC2G7IxK0N60QG0
-   12hUXy2M6VPjr7uUJeWlfa6BUF6tfv/b7fCLQNW/dpoq37lxdpIXa1M9W
-   w==;
-X-CSE-ConnectionGUID: z9q/4sJpRaWWtNY6D4AVrA==
-X-CSE-MsgGUID: ZSDTtANKQhiSOvOmLR5Chw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="28978975"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="28978975"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 04:40:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="827785181"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="827785181"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga001.jf.intel.com with SMTP; 26 Mar 2024 04:40:19 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 26 Mar 2024 13:40:19 +0200
-Date: Tue, 26 Mar 2024 13:40:19 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH] drm/i915: Pre-populate the cursor physical dma address
-Message-ID: <ZgK0IxB3I81KdFsh@intel.com>
-References: <20240325175738.3440-1-ville.syrjala@linux.intel.com>
- <SJ1PR11MB612907EA0F41B6CD6ECC9B1AB9352@SJ1PR11MB6129.namprd11.prod.outlook.com>
- <ZgKzPZWovqa-hm30@intel.com>
+	s=arc-20240116; t=1711453489; c=relaxed/simple;
+	bh=TPWhwv+KRlzro9i+G8q+7WgX8bFtID9eaqSCRuZ9k0U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WZVuHsruRdiiwSPIMglZh2cZyvLtJB9Y+A1KoKzpKHuxDf20OLyMSRime5j32dDu6CiLAl55xdu9RNkNfebwoQB3Y8nIGLyAllW9+7y6K6I6A4jXl+PtSanst/am0tVz5v+qIf6YiORl6Uj5Y6GySoCT2ZNrsioV93Kd4qm9usY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e/E902rc; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dcc80d6006aso5105711276.0
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 04:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711453487; x=1712058287; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BfBBobQhbSAjaX8cbUm1iPx6XRVWHf0Hxnofb3snX04=;
+        b=e/E902rcoK6lKu76/5fKrq/W/yEWigitVZNzjK6KLES4JbcBg+jH4dTqaYpuyk8b1g
+         bl+mb1KeIpFlVBNzr9Ufkznbo1zERhHC7hLS8HpUfk5X/0Sh681Dblt3Pw7dvtKwShUy
+         k9zeJJGjvj77LKeWW5j6xgN/akL27HLHeKGDrEcscYKKr8KqObit7cNmDkHhIEu8l+FN
+         qpdgcQpgD78hD5GwIPZ8DDRUzpS/ETzEK4m3Fh/tCZOwJJSDffk+M55B3kSxhd14PBlm
+         ExKGFOJUq2upRiGaAURoBO0L3zfTz3NOALakp+baVXYqsm7ZXOSclh7IWmjx1aW3yTuU
+         SpXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711453487; x=1712058287;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BfBBobQhbSAjaX8cbUm1iPx6XRVWHf0Hxnofb3snX04=;
+        b=XJoG0xgGq9yf+67fsR4e4gmfejwEwo7YCkUWlcRLaL2p48wYWQ7+XrmmEP7WBiNGk/
+         Rz7pDIoXMDnfIUMzIh+ehmCefg4NrgF8xbfeuiJpfNU69AwTrynClruupcQTFJvIEhPr
+         5sXX2pcq+9Xvw9Kp0jRYrbMRdFh6XgpvlOU7dC4Dc2uYJYvHZaZDrnk0AAMEiQA3tdgs
+         SUX93InrmoDi17PmMJEfP+4AZBd4/oiFChiQzqmjTvsBDyAvFm1z2Ee1aPe1XxvH9YVR
+         /GlYC+GUicwtW7kasLSDtOfzvqecbMr0RAB8/wQ6EWDTisZ5hBYnIVWVjX8m+DWaheHP
+         1jNg==
+X-Forwarded-Encrypted: i=1; AJvYcCWzFeOHOoiTd4R8pVq1+nVXbl/HNdaN5UzZxMpkLJB8Meia8Ftl8f8xjVSjOf6ZuL5K3UqOtOdLA7mhbSdIx5jj0Q7I4GlB
+X-Gm-Message-State: AOJu0YxJrdxBR3bkSAQcw7sx7ajTXELLWqj56rbN1RsImpTj6I7iET23
+	iKtJAifRuGFH+a9B5KoVh3ZkoYRPxDkUxDwzBVOzeiBZqe1H/WHRe/NxOCgKHjuxhLtEnnrVJwc
+	GeIszbR/bETNQc+BPVByHXrUqIVWNrGszffkf4w==
+X-Google-Smtp-Source: AGHT+IGV/IldNegl7UYglh8OXyeCtrfkDEESctYYnN7ssFWk68NS2pWqE1mYEGrxWJii7Mh94ms6U2padYaxYpTntPM=
+X-Received: by 2002:a25:ac8e:0:b0:dc6:d6f6:cc13 with SMTP id
+ x14-20020a25ac8e000000b00dc6d6f6cc13mr7595962ybi.20.1711453487051; Tue, 26
+ Mar 2024 04:44:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZgKzPZWovqa-hm30@intel.com>
-X-Patchwork-Hint: comment
+References: <20240313-qcom-ucsi-fixes-v1-0-74d90cb48a00@linaro.org>
+ <Zf12vSHvDiFTufLE@hovoldconsulting.com> <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
+ <ZgKKPyLUr8qoMi9t@hovoldconsulting.com> <CAA8EJpqwYrskXMLyyYwW_4e-NXPPS0+MGbumEvXXNwj0p1u12A@mail.gmail.com>
+In-Reply-To: <CAA8EJpqwYrskXMLyyYwW_4e-NXPPS0+MGbumEvXXNwj0p1u12A@mail.gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Tue, 26 Mar 2024 13:44:35 +0200
+Message-ID: <CAA8EJpoUwcyEkQJoX2X0tnbXZQ3F=HbcWuhsiyRdSqypyqRHNQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] usb: typec: ucsi: fix several issues manifesting on
+ Qualcomm platforms
+To: Johan Hovold <johan@kernel.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Bjorn Andersson <andersson@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 26, 2024 at 01:36:29PM +0200, Ville Syrjälä wrote:
-> On Tue, Mar 26, 2024 at 04:57:57AM +0000, Borah, Chaitanya Kumar wrote:
-> > > -----Original Message-----
-> > > From: Intel-gfx <intel-gfx-bounces@lists.freedesktop.org> On Behalf Of Ville
-> > > Syrjala
-> > > Sent: Monday, March 25, 2024 11:28 PM
-> > > To: intel-gfx@lists.freedesktop.org
-> > > Cc: stable@vger.kernel.org; Borislav Petkov <bp@alien8.de>
-> > > Subject: [PATCH] drm/i915: Pre-populate the cursor physical dma address
-> > > 
-> > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > 
-> > > Calling i915_gem_object_get_dma_address() from the vblank evade critical
-> > > section triggers might_sleep().
-> > > 
-> > > While we know that we've already pinned the framebuffer and thus
-> > > i915_gem_object_get_dma_address() will in fact not sleep in this case, it
-> > > seems reasonable to keep the unconditional might_sleep() for maximum
-> > > coverage.
-> > > 
-> > > So let's instead pre-populate the dma address during fb pinning, which all
-> > > happens before we enter the vblank evade critical section.
-> > > 
-> > > We can use u32 for the dma address as this class of hardware doesn't
-> > > support >32bit addresses.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 0225a90981c8 ("drm/i915: Make cursor plane registers unlocked")
-> > > Link: https://lore.kernel.org/intel-
-> > > gfx/20240227100342.GAZd2zfmYcPS_SndtO@fat_crate.local/
-> > 
-> > Nit. This could be changed to Closes and moved after Reported-by to keep checkpatch happy but otherwise, LGTM.
-> 
-> It's not a gitlab link, so Closes doesn't seem appropriate.
+On Tue, 26 Mar 2024 at 12:22, Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> On Tue, 26 Mar 2024 at 10:41, Johan Hovold <johan@kernel.org> wrote:
+> >
+> > On Mon, Mar 25, 2024 at 10:56:21PM +0200, Dmitry Baryshkov wrote:
+> > > On Fri, 22 Mar 2024 at 14:16, Johan Hovold <johan@kernel.org> wrote:
+> >
+> > > > I just gave this series a quick spin on my X13s and it seems there are
+> > > > still some issues that needs to be resolved before merging at least the
+> > > > final patch in this series:
+> > > >
+> > > > [    7.786167] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > > [    7.786445] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > > [    7.883493] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > > [    7.883614] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > > [    7.905194] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > > [    7.905295] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > > [    7.913340] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > > [    7.913409] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > >
+> > > I have traced what is causing these messages. During UCSI startup the
+> > > ucsi_register_port() function queries for PDOs associated with the
+> > > on-board USB-C port. This is allowed by the spec. Qualcomm firmware
+> > > detects that there is no PD-device connected and instead of returning
+> > > corresponding set of PDOs returns Eerror Indicator set to 1b but then
+> > > it returns zero error status in response to GET_ERROR_STATUS, causing
+> > > "unknown error 0" code. I have checked the PPM, it doesn't even have
+> > > the code to set the error status properly in this case (not to mention
+> > > that asking for device's PDOs should not be an error, unless the
+> > > command is inappropriate for the target.
+> > >
+> > > Thus said, I think the driver is behaving correctly. Granted that
+> > > these messages are harmless, we can ignore them for now. I'll later
+> > > check if we can update PD information for the device's ports when PD
+> > > device is attached. I have verified that once the PD device is
+> > > attached, corresponding GET_PDOS command returns correct set of PD
+> > > objects. Ccurrently the driver registers usb_power_delivery devices,
+> > > but with neither source nor sink set of capabilities.
+> > >
+> > > An alternative option is to drop patches 4 and 5, keeping
+> > > 'NO_PARTNER_PDOS' quirk equivalent to 'don't send GET_PDOS at all'.
+> > > However I'd like to abstain from this option, since it doesn't allow
+> > > us to check PD capabilities of the attached device.
+> > >
+> > > Heikki, Johan, WDYT?
+> >
+> > Whatever you do, you need to suppress those errors above before enabling
+> > anything more on sc8280xp (e.g. even if it means adding a quirk to the
+> > driver).
+>
+> Why? The errors are legitimate.
 
-Hmm. Seems people have started to used Closes: for non-gitlab stuff
-as well. I suppose it's OK then.
+Just to expand my answer. We have the 'driver should be quiet by
+default' policy. Which usually means that there should be no 'foo
+registered' or 'foo bound' messages if everything goes smooth. We do
+not have 'don't warn about manufacturer issues' or 'don't barf if
+firmware returns an error' kind of requirements. We can be nicer and
+skip something if we know that it may return an error. But we don't
+have to.
 
-> 
-> > 
-> > Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> 
-> Thanks.
-> 
-> > 
-> > > Reported-by: Borislav Petkov <bp@alien8.de>
-> > > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > ---
-> > >  drivers/gpu/drm/i915/display/intel_cursor.c        |  4 +---
-> > >  drivers/gpu/drm/i915/display/intel_display_types.h |  1 +
-> > >  drivers/gpu/drm/i915/display/intel_fb_pin.c        | 10 ++++++++++
-> > >  3 files changed, 12 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_cursor.c
-> > > b/drivers/gpu/drm/i915/display/intel_cursor.c
-> > > index f8b33999d43f..0d3da55e1c24 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_cursor.c
-> > > +++ b/drivers/gpu/drm/i915/display/intel_cursor.c
-> > > @@ -36,12 +36,10 @@ static u32 intel_cursor_base(const struct
-> > > intel_plane_state *plane_state)  {
-> > >  	struct drm_i915_private *dev_priv =
-> > >  		to_i915(plane_state->uapi.plane->dev);
-> > > -	const struct drm_framebuffer *fb = plane_state->hw.fb;
-> > > -	struct drm_i915_gem_object *obj = intel_fb_obj(fb);
-> > >  	u32 base;
-> > > 
-> > >  	if (DISPLAY_INFO(dev_priv)->cursor_needs_physical)
-> > > -		base = i915_gem_object_get_dma_address(obj, 0);
-> > > +		base = plane_state->phys_dma_addr;
-> > >  	else
-> > >  		base = intel_plane_ggtt_offset(plane_state);
-> > > 
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h
-> > > b/drivers/gpu/drm/i915/display/intel_display_types.h
-> > > index 8a35fb6b2ade..68f26a33870b 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_display_types.h
-> > > +++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-> > > @@ -728,6 +728,7 @@ struct intel_plane_state {  #define PLANE_HAS_FENCE
-> > > BIT(0)
-> > > 
-> > >  	struct intel_fb_view view;
-> > > +	u32 phys_dma_addr; /* for cursor_needs_physical */
-> > > 
-> > >  	/* Plane pxp decryption state */
-> > >  	bool decrypt;
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_fb_pin.c
-> > > b/drivers/gpu/drm/i915/display/intel_fb_pin.c
-> > > index 7b42aef37d2f..b6df9baf481b 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_fb_pin.c
-> > > +++ b/drivers/gpu/drm/i915/display/intel_fb_pin.c
-> > > @@ -255,6 +255,16 @@ int intel_plane_pin_fb(struct intel_plane_state
-> > > *plane_state)
-> > >  			return PTR_ERR(vma);
-> > > 
-> > >  		plane_state->ggtt_vma = vma;
-> > > +
-> > > +		/*
-> > > +		 * Pre-populate the dma address before we enter the vblank
-> > > +		 * evade critical section as
-> > > i915_gem_object_get_dma_address()
-> > > +		 * will trigger might_sleep() even if it won't actually sleep,
-> > > +		 * which is the case when the fb has already been pinned.
-> > > +		 */
-> > > +		if (phys_cursor)
-> > > +			plane_state->phys_dma_addr =
-> > > +
-> > > 	i915_gem_object_get_dma_address(intel_fb_obj(fb), 0);
-> > >  	} else {
-> > >  		struct intel_framebuffer *intel_fb = to_intel_framebuffer(fb);
-> > > 
-> > > --
-> > > 2.43.2
-> > 
-> 
-> -- 
-> Ville Syrjälä
-> Intel
 
--- 
-Ville Syrjälä
-Intel
+--
+With best wishes
+Dmitry
 
