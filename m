@@ -1,321 +1,236 @@
-Return-Path: <stable+bounces-32335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DABD88C886
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:06:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD388C892
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6281323813
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F41A1C38307
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4A713C913;
-	Tue, 26 Mar 2024 16:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD013C9A2;
+	Tue, 26 Mar 2024 16:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UcnkWW+F"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LA3vWYhI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFF913C908
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711469189; cv=fail; b=pNE4W7tY2X/Zm1mP/BUZhvprRYd1C20Xt5l6HfUwaKEZ3fXtWCKqsXK3NU1jBM+MCUYkNTd/ZYntktbC5CuC9yjbOQBoYUoDalWSDuzJJOnJ0w8pIPcdjxKX8sybbdBeZ1q0OuE0aMxHJ7Io33CmkGUwDyWaUZMHtUPPWNds9Lg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711469189; c=relaxed/simple;
-	bh=w4BYE3Kg1UHOyonPq7sv+2nEzw9F17HES/g0GBCBuJQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lBTwMFVrpvUrjWHf8iq5WXqllGZI9Sf3/O6GF1smscM2nphL0V2sbrVn8AJM85FJU5VavsIXn7OGDn+0fslF7DTcoBdopX5IsKOHkpihIl2SqzEKiyQ7bnnUj9AQF7VViotnd59J/+3v32ZiH5Rc8R0t0S8eV/bCGrApojAfp8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UcnkWW+F; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711469187; x=1743005187;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=w4BYE3Kg1UHOyonPq7sv+2nEzw9F17HES/g0GBCBuJQ=;
-  b=UcnkWW+Fex5bDPvIkEcL4rQYzL8KyfyPdEwTvpOleqnUTE/F5CEGFZY/
-   xZQmZ6DRfCBfvmuFFdDMt1y0EjlLnwNgA3/wkdCr4L+ehzRxdVNJRXpDY
-   v/fufZ9GwbH3TxxrhsFC21a8UGOncmpVNR9YMUQhwwgR3kSgCBYm63wTb
-   gMv3mqMOL5mc+zCiWQ3KMge6ttUXdzhb+90wh28L27+v7LEousOk6SIv8
-   tenjIgCJKazvOYpq/neQ5zZKZgvWzLhxa70gd8qGE2ZPlKb6SsR30+5+K
-   pszT1adUowrSp1+V+s1zPiiOQ2U873mGnGuLiQrmciaiktdmkmdxU68AL
-   Q==;
-X-CSE-ConnectionGUID: llw0jO25SWuXwnHQguWH9g==
-X-CSE-MsgGUID: hthc6sPMRAKl5oQHdZB1fg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10329722"
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="10329722"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:06:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="20657580"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Mar 2024 09:06:25 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 26 Mar 2024 09:06:25 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 26 Mar 2024 09:06:25 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 26 Mar 2024 09:06:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AbFz6Y6JdMRPZbCVCCjr8IDy3iLdSN86OOi88NQoIwhFnyXjbnsX5EMCNG8kzaZqWVzxLHDDT2PsD5dGvluxe3Fr2XWB0D6hj4XJhmd5JWfe1iXZ/R8qvbqXM6qEEc3UD9A3E/mcLepnca4QjyqotJtKCXIEz7qOBgXzsvFF9V83MLogvfodSPcWLjBEcy/QeFnM/EK/J/TdLH/+sVu5amMoQtXt3hfWQIymqlKUE5WjblDEO7OOIYg4yBC7X7DOsePTXcfD06KCV6jaTwjiVVESPm5LOw+6XFWbfXVrc2EbO629fsYmtIYy8Y4egGRatVOh0W71XL1HSqEPSDf5Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j2uVqWVgn00z5rtCtYDYvwXMGBpxJRiq1Tr23HufeSY=;
- b=HhpRYQPdV2xPywnPoh5VSWFLjCmaeRSO0pf+0hQ2/usZ9RuCIEhzQhLHz5lysJh5nsQRupY3yivMNPE8LqqoLUxSCXVEnK4ZJWk5TRGe/hJbJnotP3gGHPOBBMUrKJedNgMBTELnpToTF4q+eYyI+3H2/aNmvgvszudHfJRabl1h/fOw/N7it/MUkBMW5Zvd8Et+SCeEod70gILk/CjWZZpaluw5UnDTRDm6142jYJxEMkw5sToj2yxRXHDlF7MWwvbBFnXSgVkyCkZeHkurKbVBY1ZGkX+ztucp3vNaPzdgsPeEKbjkvMdiiQ9bx/DK+eAVRT+iSEAoO0AQLuB3rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by CH3PR11MB8137.namprd11.prod.outlook.com (2603:10b6:610:15c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
- 2024 16:06:23 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::45cf:261e:c084:9493%6]) with mapi id 15.20.7409.028; Tue, 26 Mar 2024
- 16:06:23 +0000
-Date: Tue, 26 Mar 2024 09:06:20 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
-	<stable@vger.kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Tvrtko Ursulin
-	<tursulin@ursulin.net>
-Subject: Re: [PATCH v6 3/3] drm/i915/gt: Enable only one CCS for compute
- workload
-Message-ID: <20240326160613.GD718896@mdroper-desk1.amr.corp.intel.com>
-References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
- <20240313201955.95716-4-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240313201955.95716-4-andi.shyti@linux.intel.com>
-X-ClientProxiedBy: SJ0PR13CA0187.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::12) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C13B13C696;
+	Tue, 26 Mar 2024 16:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711469278; cv=none; b=XfuXH6HXJIiGsFOxTO2Az6yyTob/nMWHj7xah76wnMdL5hC3TGPkteHg7ziovOziZm2nsQ4hEhNest+paZ1EASNto98hkurMCKKCjPoIaSpw8+0gGbKWXAj32nIXW4J8UOm16698IaCIaWIMYYLDHf+swEK+hYRRmDX3ZoYdO3I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711469278; c=relaxed/simple;
+	bh=30JIHtimg6n8W6Ta1n9cVF3rWKvRQkP+z9819UW55F0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BEAXgJZL1H5/ieHkf0t70l5X7jKosarUC6pQxIjAWagJoGXFkwn8wC/jTXZq6RWH0bUeaNhKf8wKUPjV55KAMlSVI08ATx8eID3fD5RgQaPajjmEtgCaknTXlRFzsCxWfCtlsOCNeLcQbEvBA/r27lnADaeWEGk157fYzDa/ikM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=LA3vWYhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576F1C433F1;
+	Tue, 26 Mar 2024 16:07:56 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LA3vWYhI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1711469273;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRlhV/wNtR2/43VLUsHVHpymnq61r5ZGY83YpOPrN94=;
+	b=LA3vWYhI8E4ciTAaUxImG87k3puXPqFgsORrEg9fZYgFW/SG1E0KEx+Rx0H/C+11JQaZb/
+	YsKQZeDQnqdSrNM3co0GO+PVi6PzoTiPcQXlgqATXGbjFzfRIYAj5/DgV3jQCtMOwA474e
+	E+6DyVgXy88k+fRqt8op4STygCX8Q4M=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 557207e9 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 26 Mar 2024 16:07:53 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@vger.kernel.org,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: [PATCH v6] x86/coco: Require seeding RNG with RDRAND on CoCo systems
+Date: Tue, 26 Mar 2024 17:07:35 +0100
+Message-ID: <20240326160735.73531-1-Jason@zx2c4.com>
+In-Reply-To: <20240326112137.GDZgKvwRHD4yQs3Zm-@fat_crate.local>
+References: <20240326112137.GDZgKvwRHD4yQs3Zm-@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|CH3PR11MB8137:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iqmzRxTvOtResOXmCIfvYvSP239XF4Lns6CzaIXGM8Ek1OCUY9Wh3+BhCEoEMswTbM+OmEk4fmhfnfJkV9zU257bPW8UIW55JchS0/8304qomSHcQJHbLlHwHkzaJm9KAfAicrEnwG5hEVwCQ0JRQydjP3jMmxvSclwTsAeTOHfRMcuDHX/pPCbyYp0WcR6+5pFWXFzOC+Gl3vIY2Trt2I7L5sSYAYfrda7DtW76AK3paX2e4Lv0Jm6m9JRDAS2grkFl84UivTed9ku4nSE3hlaSyvrwYOD1WfFmXNJq04BfiX4uKhWVBnNykNa0ERhpSWfQxJJUK/qoOH4yo/BbpF9gMMHxCg9veMr9ZjGL5n1peaLLrg54oQAAyQuGruvvpjIdjTHoFdvoVOyeYboLLRlQIUJ3aUy/ADHvX9ZLoHugaPfgTRcR9fHyD/x3bIEg9ylAyVzS1uFyZzusIdGfm00oFkP7kSQjtYf3rM9KgHOVF/6a4K3syKZllV1HKM545M0jrK5zLU0tqbcpbo6AHbanPhvVLJ1DycVWnaUHqWKjP3GimZvQPzSkPzskJZVPZM4IuydXFdo7rdZ0YIvvNDA6CvM+BVp6m0+WZdMBTEi0XN40E8z7w46Y3Zgfx0ct8UKzNPf57vtQi1B/iQGcHEAhUcEUUpgOq6TsxmOXGZc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?S7aJH3o65B2+EMOTyykoar9Xo6iAUYL/sDDmbjRSWkISTeumt+/9Pw41ee?=
- =?iso-8859-1?Q?Iybym57wOtPt2H38yPCRZBRIT9ugTH3YWOZ386oMPAwfa6jSEv7l8RjRFa?=
- =?iso-8859-1?Q?I/L4CYhNIwwBZxfQ2U/StyRD1MloM3Fauxw0RdyimtK3hEyQaPkwJ16utp?=
- =?iso-8859-1?Q?rc/h63WJErwDamB7l0J1OCaWPEuvHLNBZLAeBmsDoGu/LLWEaWHIxLtYrj?=
- =?iso-8859-1?Q?bXt7ByHORKrJA4FT4GQ2A8ZJC3bAcy3lij5UXbXUpomZkjJSqYkFKaZMX0?=
- =?iso-8859-1?Q?/OW6zX5avdbqZRGNBMCEw30U2JvyIjdRuDNgiPuCKOthfpEEVferaYWWqN?=
- =?iso-8859-1?Q?5KeebfFy7QN+BXzea7yikpc/jrvMuNCBwLSb9J5wXjQvuzCDdUdtPGlrDV?=
- =?iso-8859-1?Q?1IW4VN05PbSoyI8Km5RdZQwJYWMWVO57eDlhVGaA2qKcQ0NLz+5dcNtad3?=
- =?iso-8859-1?Q?b1nfM7Y0O3cr4b5i6A0O1+orCAi9YXNCxEofhoAR+ZSuEtrN6i+W53ErpY?=
- =?iso-8859-1?Q?vFlcw1ahcx2huSL8W/BTMQHwSj/OPuTycGNmJwoMCZDJ+bEyg6yulF/qyJ?=
- =?iso-8859-1?Q?YOigFZKHEF9pksT9Aot5v/zKL32YSDwZMdzjLSFza/e4P2uFyUHOlK+bbb?=
- =?iso-8859-1?Q?uQ/SFRKUWj5JvjU0+W5fIRy3YQbTD5OH1ldC8NQGothvvOPIZ/Qt8uMT5N?=
- =?iso-8859-1?Q?6ZdqjXzo276UQJG4y3WxNRfQd4j+6dRNp7/rMyoIDIGrBAHs3SujEXQaqt?=
- =?iso-8859-1?Q?QPH4wOqCiuiCSlEmC4MWVSQ1l3pGxU8bDRWpUY01qiScdd+M55OZbH/utq?=
- =?iso-8859-1?Q?cVrCX7mpogE7ep4FXjkLl2EoZXJMjXa1sNO0KV0kCj2Vw7xmc/fbc+beyn?=
- =?iso-8859-1?Q?5kdyHcS0jvU2DnsXk3VzdW5tQVTCbskOSiAtivjIQvB5khrgvBgJYsLphC?=
- =?iso-8859-1?Q?zwstVjB15ivG2gHu79L1YyGAokA9FsVH/Z4+UY9MYc+UfAYrxrzpoF2vXp?=
- =?iso-8859-1?Q?BwidH5MsJs1d8qJF5t7psQR9bF23ThiQtBIIteCqrSjdSkwlCggXgQ7HYu?=
- =?iso-8859-1?Q?4OXwz5/XaH3uGyfabuDrgBZHrOYNMdz4UGDvbK1FAsk7fWJUHo5mA4iUV4?=
- =?iso-8859-1?Q?GdgaG4m2s4dZLucczfWvcMV8R+RfV5ktUsFtpMlvpYK0NKSqnMebfp65yY?=
- =?iso-8859-1?Q?gThgZ5w32NLmY3naTHEji6kdqSuJmV2k99VRMgKlDVUd+EIdfxQOXebu55?=
- =?iso-8859-1?Q?veZrxPrvjGud2IHCQK9PNWqRNmFSCiv678vplglksxYmY4QZaD+d8fr+kN?=
- =?iso-8859-1?Q?/biFDCoRKkvgZ2WR+q/8KGeEEoA6zFeKWDCVvsVko+dWB6K5eY8jZgMv/E?=
- =?iso-8859-1?Q?j7aZgY90iObo2c2zKCjGCGbOXKg0VoclYGeBpektGXdsEfmSPDxD8ik5n8?=
- =?iso-8859-1?Q?scyBlhMod/yiwPmxBbLVxK8b7rx37WUFVxmTbDM0h+CMkYexCShbCzchhN?=
- =?iso-8859-1?Q?wMUB1pUCuJ7wkovJN6Rnf5mbufpTx3Wpam0gNhRhSNmyTsc/HBx7iArCZZ?=
- =?iso-8859-1?Q?ZKy4xjnN9BRBHKB7JZVEP5mByfAoluAfhQNys2dbt4uQN0PxAf9deUpkPn?=
- =?iso-8859-1?Q?pASs/dojFLEvCpF3eKdY8AbJ9I3rAIkMKOijr6F+/FbehUM1wfoENr7A?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 751758a5-cb06-4fa0-15b4-08dc4daeae82
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 16:06:22.9006
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qkXFjdIfjmxkrmuHsxBG2zkrUFaCLeze63UAWNr6rMbfxLwkdgKQWg/4mOQtnKO1ZMSxMheOTq+AWDV8dDtxUGInFQU6QNCWX1C0/R1wjyw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8137
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 13, 2024 at 09:19:51PM +0100, Andi Shyti wrote:
-> Enable only one CCS engine by default with all the compute sices
-> allocated to it.
-> 
-> While generating the list of UABI engines to be exposed to the
-> user, exclude any additional CCS engines beyond the first
-> instance.
-> 
-> This change can be tested with igt i915_query.
-> 
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
+There are few uses of CoCo that don't rely on working cryptography and
+hence a working RNG. Unfortunately, the CoCo threat model means that the
+VM host cannot be trusted and may actively work against guests to
+extract secrets or manipulate computation. Since a malicious host can
+modify or observe nearly all inputs to guests, the only remaining source
+of entropy for CoCo guests is RDRAND.
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
+is meant to gracefully continue on gathering entropy from other sources,
+but since there aren't other sources on CoCo, this is catastrophic.
+This is mostly a concern at boot time when initially seeding the RNG, as
+after that the consequences of a broken RDRAND are much more
+theoretical.
 
-> ---
->  drivers/gpu/drm/i915/Makefile               |  1 +
->  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
->  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
->  drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  5 +++
->  drivers/gpu/drm/i915/gt/intel_workarounds.c |  7 ++++
->  5 files changed, 65 insertions(+)
->  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
->  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-> 
-> diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
-> index 3ef6ed41e62b..a6885a1d41a1 100644
-> --- a/drivers/gpu/drm/i915/Makefile
-> +++ b/drivers/gpu/drm/i915/Makefile
-> @@ -118,6 +118,7 @@ gt-y += \
->  	gt/intel_ggtt_fencing.o \
->  	gt/intel_gt.o \
->  	gt/intel_gt_buffer_pool.o \
-> +	gt/intel_gt_ccs_mode.o \
->  	gt/intel_gt_clock_utils.o \
->  	gt/intel_gt_debugfs.o \
->  	gt/intel_gt_engines_debugfs.o \
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-> new file mode 100644
-> index 000000000000..044219c5960a
-> --- /dev/null
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-> @@ -0,0 +1,39 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +#include "i915_drv.h"
-> +#include "intel_gt.h"
-> +#include "intel_gt_ccs_mode.h"
-> +#include "intel_gt_regs.h"
-> +
-> +void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-> +{
-> +	int cslice;
-> +	u32 mode = 0;
-> +	int first_ccs = __ffs(CCS_MASK(gt));
-> +
-> +	if (!IS_DG2(gt->i915))
-> +		return;
-> +
-> +	/* Build the value for the fixed CCS load balancing */
-> +	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
-> +		if (CCS_MASK(gt) & BIT(cslice))
-> +			/*
-> +			 * If available, assign the cslice
-> +			 * to the first available engine...
-> +			 */
-> +			mode |= XEHP_CCS_MODE_CSLICE(cslice, first_ccs);
-> +
-> +		else
-> +			/*
-> +			 * ... otherwise, mark the cslice as
-> +			 * unavailable if no CCS dispatches here
-> +			 */
-> +			mode |= XEHP_CCS_MODE_CSLICE(cslice,
-> +						     XEHP_CCS_MODE_CSLICE_MASK);
-> +	}
-> +
-> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
-> +}
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-> new file mode 100644
-> index 000000000000..9e5549caeb26
-> --- /dev/null
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +#ifndef __INTEL_GT_CCS_MODE_H__
-> +#define __INTEL_GT_CCS_MODE_H__
-> +
-> +struct intel_gt;
-> +
-> +void intel_gt_apply_ccs_mode(struct intel_gt *gt);
-> +
-> +#endif /* __INTEL_GT_CCS_MODE_H__ */
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> index 31b102604e3d..743fe3566722 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> @@ -1480,6 +1480,11 @@
->  #define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
->  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
->  
-> +#define XEHP_CCS_MODE				_MMIO(0x14804)
-> +#define   XEHP_CCS_MODE_CSLICE_MASK		REG_GENMASK(2, 0) /* CCS0-3 + rsvd */
-> +#define   XEHP_CCS_MODE_CSLICE_WIDTH		ilog2(XEHP_CCS_MODE_CSLICE_MASK + 1)
-> +#define   XEHP_CCS_MODE_CSLICE(cslice, ccs)	(ccs << (cslice * XEHP_CCS_MODE_CSLICE_WIDTH))
-> +
->  #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
->  #define   CHV_FGT_DISABLE_SS0			(1 << 10)
->  #define   CHV_FGT_DISABLE_SS1			(1 << 11)
-> diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> index 9963e5725ae5..8188c9f0b5ce 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-> @@ -10,6 +10,7 @@
->  #include "intel_engine_regs.h"
->  #include "intel_gpu_commands.h"
->  #include "intel_gt.h"
-> +#include "intel_gt_ccs_mode.h"
->  #include "intel_gt_mcr.h"
->  #include "intel_gt_print.h"
->  #include "intel_gt_regs.h"
-> @@ -2869,6 +2870,12 @@ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_li
->  	 * made to completely disable automatic CCS load balancing.
->  	 */
->  	wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
-> +
-> +	/*
-> +	 * After having disabled automatic load balancing we need to
-> +	 * assign all slices to a single CCS. We will call it CCS mode 1
-> +	 */
-> +	intel_gt_apply_ccs_mode(gt);
->  }
->  
->  /*
-> -- 
-> 2.43.0
-> 
+So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
+fails, panic(). This will also trigger if the system is booted without
+RDRAND, as RDRAND is essential for a safe CoCo boot.
 
+This patch is deliberately written to be "just a CoCo x86 driver
+feature" and not part of the RNG itself. Many device drivers and
+platforms have some desire to contribute something to the RNG, and
+add_device_randomness() is specifically meant for this purpose. Any
+driver can call this with seed data of any quality, or even garbage
+quality, and it can only possibly make the quality of the RNG better or
+have no effect, but can never make it worse. Rather than trying to
+build something into the core of the RNG, this patch interprets the
+particular CoCo issue as just a CoCo issue, and therefore separates this
+all out into driver (well, arch/platform) code.
+
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Daniel P. Berrang√© <berrange@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+Changes v5->v6:
+- Rebase on tip/master.
+- Add string.h include.
+
+ arch/x86/coco/core.c        | 41 +++++++++++++++++++++++++++++++++++++
+ arch/x86/include/asm/coco.h |  2 ++
+ arch/x86/kernel/setup.c     |  2 ++
+ 3 files changed, 45 insertions(+)
+
+diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+index d07be9d05cd0..ddd4efdc79d6 100644
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -3,13 +3,17 @@
+  * Confidential Computing Platform Capability checks
+  *
+  * Copyright (C) 2021 Advanced Micro Devices, Inc.
++ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+  *
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+ #include <linux/export.h>
+ #include <linux/cc_platform.h>
++#include <linux/string.h>
++#include <linux/random.h>
+ 
++#include <asm/archrandom.h>
+ #include <asm/coco.h>
+ #include <asm/processor.h>
+ 
+@@ -148,3 +152,40 @@ u64 cc_mkdec(u64 val)
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(cc_mkdec);
++
++__init void cc_random_init(void)
++{
++	/*
++	 * The seed is 32 bytes (in units of longs), which is 256 bits, which
++	 * is the security level that the RNG is targeting.
++	 */
++	unsigned long rng_seed[32 / sizeof(long)];
++	size_t i, longs;
++
++	if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++		return;
++
++	/*
++	 * Since the CoCo threat model includes the host, the only reliable
++	 * source of entropy that can be neither observed nor manipulated is
++	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
++	 * CoCo guests have no other unobservable source of entropy, it's
++	 * important to at least ensure the RNG gets some initial random seeds.
++	 */
++	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
++		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
++
++		/*
++		 * A zero return value means that the guest doesn't have RDRAND
++		 * or the CPU is physically broken, and in both cases that
++		 * means most crypto inside of the CoCo instance will be
++		 * broken, defeating the purpose of CoCo in the first place. So
++		 * just panic here because it's absolutely unsafe to continue
++		 * executing.
++		 */
++		if (longs == 0)
++			panic("RDRAND is defective.");
++	}
++	add_device_randomness(rng_seed, sizeof(rng_seed));
++	memzero_explicit(rng_seed, sizeof(rng_seed));
++}
+diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
+index fb7388bbc212..c086699b0d0c 100644
+--- a/arch/x86/include/asm/coco.h
++++ b/arch/x86/include/asm/coco.h
+@@ -22,6 +22,7 @@ static inline void cc_set_mask(u64 mask)
+ 
+ u64 cc_mkenc(u64 val);
+ u64 cc_mkdec(u64 val);
++void cc_random_init(void);
+ #else
+ #define cc_vendor (CC_VENDOR_NONE)
+ 
+@@ -34,6 +35,7 @@ static inline u64 cc_mkdec(u64 val)
+ {
+ 	return val;
+ }
++static inline void cc_random_init(void) { }
+ #endif
+ 
+ #endif /* _ASM_X86_COCO_H */
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index f04cef846e51..e3f01caf104b 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -37,6 +37,7 @@
+ #include <asm/bios_ebda.h>
+ #include <asm/bugs.h>
+ #include <asm/cacheinfo.h>
++#include <asm/coco.h>
+ #include <asm/cpu.h>
+ #include <asm/efi.h>
+ #include <asm/gart.h>
+@@ -993,6 +994,7 @@ void __init setup_arch(char **cmdline_p)
+ 	 * memory size.
+ 	 */
+ 	mem_encrypt_setup_arch();
++	cc_random_init();
+ 
+ 	efi_fake_memmap();
+ 	efi_find_mirror();
 -- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+2.44.0
+
 
