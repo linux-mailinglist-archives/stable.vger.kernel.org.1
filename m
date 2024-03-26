@@ -1,117 +1,321 @@
-Return-Path: <stable+bounces-32334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B88788C883
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:06:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DABD88C886
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD9D81C64B39
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:06:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6281323813
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2080313C9DB;
-	Tue, 26 Mar 2024 16:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4A713C913;
+	Tue, 26 Mar 2024 16:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Djz9MgX9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UcnkWW+F"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3748D13C9B4
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711469158; cv=none; b=bCPC2JpyV5VGuO4xz356g2f1AHATKUNTb9S4TrO0q+nTD/lTrA5dcHF4IP/A0CyNK4zLP8/0gk14XDNMyA3SEVZbpiwYZcTqmdR1wTnlDHSfwsVu7O5jlLXYORyjMI4tdG6PcKH6euppx5QPoEuIhEXrcYskYwBoNkSGk24GEpQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711469158; c=relaxed/simple;
-	bh=VeXxi6qHZQylZGBHh4BKY5FXS27zFr0AFMXg9sxVX2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SNV4fbdChv2Kr3Hl1oYoLcsBawml+s1h+RJ2Mu7hnm4Ll74A65JvrW1KbMRc1vH+ENGn7rk4nHpvzUOXXHRYiaR35qpgSrrCYn/Qaamu9646ArMXte/zN0ES8vevAUz0vAdBnVn7xuyygfqHkoC7PTOWXYfTPaCOovqmIorK18w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Djz9MgX9; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711469156;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k0yFV2iWOWXUGcViPgWX13kSZw6Bw/i9IM+nByXHIb4=;
-	b=Djz9MgX9qrtp2EdCTbk3zBzInOuD1dsFblPAhM1t6bQlBeVUM/bMTxSn1k38/rHBSmx0Fe
-	BNKdo9YLwItI/x6jrT5Hi4VKa34dVzHlRpCEECJ5oUp6kQO1Eo5FOEi/EilMZtdvisKjKo
-	ioDvrkHH2/u5W6K5ufZ7wq1yQxtt4xI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-oIgkKUfwNn6PRb1GdqH7fw-1; Tue,
- 26 Mar 2024 12:05:49 -0400
-X-MC-Unique: oIgkKUfwNn6PRb1GdqH7fw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF23D3815EE8;
-	Tue, 26 Mar 2024 16:05:48 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.193.147])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0B2782022C1E;
-	Tue, 26 Mar 2024 16:05:45 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: horms@kernel.org
-Cc: dave.stevenson@raspberrypi.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: ax88179_178a: avoid the interface always configured as random address
-Date: Tue, 26 Mar 2024 17:05:37 +0100
-Message-ID: <20240326160540.224450-1-jtornosm@redhat.com>
-In-Reply-To: <20240326092459.GG403975@kernel.org>
-References: <20240326092459.GG403975@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFF913C908
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711469189; cv=fail; b=pNE4W7tY2X/Zm1mP/BUZhvprRYd1C20Xt5l6HfUwaKEZ3fXtWCKqsXK3NU1jBM+MCUYkNTd/ZYntktbC5CuC9yjbOQBoYUoDalWSDuzJJOnJ0w8pIPcdjxKX8sybbdBeZ1q0OuE0aMxHJ7Io33CmkGUwDyWaUZMHtUPPWNds9Lg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711469189; c=relaxed/simple;
+	bh=w4BYE3Kg1UHOyonPq7sv+2nEzw9F17HES/g0GBCBuJQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lBTwMFVrpvUrjWHf8iq5WXqllGZI9Sf3/O6GF1smscM2nphL0V2sbrVn8AJM85FJU5VavsIXn7OGDn+0fslF7DTcoBdopX5IsKOHkpihIl2SqzEKiyQ7bnnUj9AQF7VViotnd59J/+3v32ZiH5Rc8R0t0S8eV/bCGrApojAfp8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UcnkWW+F; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711469187; x=1743005187;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=w4BYE3Kg1UHOyonPq7sv+2nEzw9F17HES/g0GBCBuJQ=;
+  b=UcnkWW+Fex5bDPvIkEcL4rQYzL8KyfyPdEwTvpOleqnUTE/F5CEGFZY/
+   xZQmZ6DRfCBfvmuFFdDMt1y0EjlLnwNgA3/wkdCr4L+ehzRxdVNJRXpDY
+   v/fufZ9GwbH3TxxrhsFC21a8UGOncmpVNR9YMUQhwwgR3kSgCBYm63wTb
+   gMv3mqMOL5mc+zCiWQ3KMge6ttUXdzhb+90wh28L27+v7LEousOk6SIv8
+   tenjIgCJKazvOYpq/neQ5zZKZgvWzLhxa70gd8qGE2ZPlKb6SsR30+5+K
+   pszT1adUowrSp1+V+s1zPiiOQ2U873mGnGuLiQrmciaiktdmkmdxU68AL
+   Q==;
+X-CSE-ConnectionGUID: llw0jO25SWuXwnHQguWH9g==
+X-CSE-MsgGUID: hthc6sPMRAKl5oQHdZB1fg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10329722"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="10329722"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:06:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="20657580"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Mar 2024 09:06:25 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 26 Mar 2024 09:06:25 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 26 Mar 2024 09:06:25 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 26 Mar 2024 09:06:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AbFz6Y6JdMRPZbCVCCjr8IDy3iLdSN86OOi88NQoIwhFnyXjbnsX5EMCNG8kzaZqWVzxLHDDT2PsD5dGvluxe3Fr2XWB0D6hj4XJhmd5JWfe1iXZ/R8qvbqXM6qEEc3UD9A3E/mcLepnca4QjyqotJtKCXIEz7qOBgXzsvFF9V83MLogvfodSPcWLjBEcy/QeFnM/EK/J/TdLH/+sVu5amMoQtXt3hfWQIymqlKUE5WjblDEO7OOIYg4yBC7X7DOsePTXcfD06KCV6jaTwjiVVESPm5LOw+6XFWbfXVrc2EbO629fsYmtIYy8Y4egGRatVOh0W71XL1HSqEPSDf5Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j2uVqWVgn00z5rtCtYDYvwXMGBpxJRiq1Tr23HufeSY=;
+ b=HhpRYQPdV2xPywnPoh5VSWFLjCmaeRSO0pf+0hQ2/usZ9RuCIEhzQhLHz5lysJh5nsQRupY3yivMNPE8LqqoLUxSCXVEnK4ZJWk5TRGe/hJbJnotP3gGHPOBBMUrKJedNgMBTELnpToTF4q+eYyI+3H2/aNmvgvszudHfJRabl1h/fOw/N7it/MUkBMW5Zvd8Et+SCeEod70gILk/CjWZZpaluw5UnDTRDm6142jYJxEMkw5sToj2yxRXHDlF7MWwvbBFnXSgVkyCkZeHkurKbVBY1ZGkX+ztucp3vNaPzdgsPeEKbjkvMdiiQ9bx/DK+eAVRT+iSEAoO0AQLuB3rw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
+ by CH3PR11MB8137.namprd11.prod.outlook.com (2603:10b6:610:15c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
+ 2024 16:06:23 +0000
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::45cf:261e:c084:9493]) by DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::45cf:261e:c084:9493%6]) with mapi id 15.20.7409.028; Tue, 26 Mar 2024
+ 16:06:23 +0000
+Date: Tue, 26 Mar 2024 09:06:20 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
+	<dri-devel@lists.freedesktop.org>, Chris Wilson
+	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
+	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
+	<stable@vger.kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Tvrtko Ursulin
+	<tursulin@ursulin.net>
+Subject: Re: [PATCH v6 3/3] drm/i915/gt: Enable only one CCS for compute
+ workload
+Message-ID: <20240326160613.GD718896@mdroper-desk1.amr.corp.intel.com>
+References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
+ <20240313201955.95716-4-andi.shyti@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240313201955.95716-4-andi.shyti@linux.intel.com>
+X-ClientProxiedBy: SJ0PR13CA0187.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::12) To DS0PR11MB8182.namprd11.prod.outlook.com
+ (2603:10b6:8:163::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|CH3PR11MB8137:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: iqmzRxTvOtResOXmCIfvYvSP239XF4Lns6CzaIXGM8Ek1OCUY9Wh3+BhCEoEMswTbM+OmEk4fmhfnfJkV9zU257bPW8UIW55JchS0/8304qomSHcQJHbLlHwHkzaJm9KAfAicrEnwG5hEVwCQ0JRQydjP3jMmxvSclwTsAeTOHfRMcuDHX/pPCbyYp0WcR6+5pFWXFzOC+Gl3vIY2Trt2I7L5sSYAYfrda7DtW76AK3paX2e4Lv0Jm6m9JRDAS2grkFl84UivTed9ku4nSE3hlaSyvrwYOD1WfFmXNJq04BfiX4uKhWVBnNykNa0ERhpSWfQxJJUK/qoOH4yo/BbpF9gMMHxCg9veMr9ZjGL5n1peaLLrg54oQAAyQuGruvvpjIdjTHoFdvoVOyeYboLLRlQIUJ3aUy/ADHvX9ZLoHugaPfgTRcR9fHyD/x3bIEg9ylAyVzS1uFyZzusIdGfm00oFkP7kSQjtYf3rM9KgHOVF/6a4K3syKZllV1HKM545M0jrK5zLU0tqbcpbo6AHbanPhvVLJ1DycVWnaUHqWKjP3GimZvQPzSkPzskJZVPZM4IuydXFdo7rdZ0YIvvNDA6CvM+BVp6m0+WZdMBTEi0XN40E8z7w46Y3Zgfx0ct8UKzNPf57vtQi1B/iQGcHEAhUcEUUpgOq6TsxmOXGZc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?S7aJH3o65B2+EMOTyykoar9Xo6iAUYL/sDDmbjRSWkISTeumt+/9Pw41ee?=
+ =?iso-8859-1?Q?Iybym57wOtPt2H38yPCRZBRIT9ugTH3YWOZ386oMPAwfa6jSEv7l8RjRFa?=
+ =?iso-8859-1?Q?I/L4CYhNIwwBZxfQ2U/StyRD1MloM3Fauxw0RdyimtK3hEyQaPkwJ16utp?=
+ =?iso-8859-1?Q?rc/h63WJErwDamB7l0J1OCaWPEuvHLNBZLAeBmsDoGu/LLWEaWHIxLtYrj?=
+ =?iso-8859-1?Q?bXt7ByHORKrJA4FT4GQ2A8ZJC3bAcy3lij5UXbXUpomZkjJSqYkFKaZMX0?=
+ =?iso-8859-1?Q?/OW6zX5avdbqZRGNBMCEw30U2JvyIjdRuDNgiPuCKOthfpEEVferaYWWqN?=
+ =?iso-8859-1?Q?5KeebfFy7QN+BXzea7yikpc/jrvMuNCBwLSb9J5wXjQvuzCDdUdtPGlrDV?=
+ =?iso-8859-1?Q?1IW4VN05PbSoyI8Km5RdZQwJYWMWVO57eDlhVGaA2qKcQ0NLz+5dcNtad3?=
+ =?iso-8859-1?Q?b1nfM7Y0O3cr4b5i6A0O1+orCAi9YXNCxEofhoAR+ZSuEtrN6i+W53ErpY?=
+ =?iso-8859-1?Q?vFlcw1ahcx2huSL8W/BTMQHwSj/OPuTycGNmJwoMCZDJ+bEyg6yulF/qyJ?=
+ =?iso-8859-1?Q?YOigFZKHEF9pksT9Aot5v/zKL32YSDwZMdzjLSFza/e4P2uFyUHOlK+bbb?=
+ =?iso-8859-1?Q?uQ/SFRKUWj5JvjU0+W5fIRy3YQbTD5OH1ldC8NQGothvvOPIZ/Qt8uMT5N?=
+ =?iso-8859-1?Q?6ZdqjXzo276UQJG4y3WxNRfQd4j+6dRNp7/rMyoIDIGrBAHs3SujEXQaqt?=
+ =?iso-8859-1?Q?QPH4wOqCiuiCSlEmC4MWVSQ1l3pGxU8bDRWpUY01qiScdd+M55OZbH/utq?=
+ =?iso-8859-1?Q?cVrCX7mpogE7ep4FXjkLl2EoZXJMjXa1sNO0KV0kCj2Vw7xmc/fbc+beyn?=
+ =?iso-8859-1?Q?5kdyHcS0jvU2DnsXk3VzdW5tQVTCbskOSiAtivjIQvB5khrgvBgJYsLphC?=
+ =?iso-8859-1?Q?zwstVjB15ivG2gHu79L1YyGAokA9FsVH/Z4+UY9MYc+UfAYrxrzpoF2vXp?=
+ =?iso-8859-1?Q?BwidH5MsJs1d8qJF5t7psQR9bF23ThiQtBIIteCqrSjdSkwlCggXgQ7HYu?=
+ =?iso-8859-1?Q?4OXwz5/XaH3uGyfabuDrgBZHrOYNMdz4UGDvbK1FAsk7fWJUHo5mA4iUV4?=
+ =?iso-8859-1?Q?GdgaG4m2s4dZLucczfWvcMV8R+RfV5ktUsFtpMlvpYK0NKSqnMebfp65yY?=
+ =?iso-8859-1?Q?gThgZ5w32NLmY3naTHEji6kdqSuJmV2k99VRMgKlDVUd+EIdfxQOXebu55?=
+ =?iso-8859-1?Q?veZrxPrvjGud2IHCQK9PNWqRNmFSCiv678vplglksxYmY4QZaD+d8fr+kN?=
+ =?iso-8859-1?Q?/biFDCoRKkvgZ2WR+q/8KGeEEoA6zFeKWDCVvsVko+dWB6K5eY8jZgMv/E?=
+ =?iso-8859-1?Q?j7aZgY90iObo2c2zKCjGCGbOXKg0VoclYGeBpektGXdsEfmSPDxD8ik5n8?=
+ =?iso-8859-1?Q?scyBlhMod/yiwPmxBbLVxK8b7rx37WUFVxmTbDM0h+CMkYexCShbCzchhN?=
+ =?iso-8859-1?Q?wMUB1pUCuJ7wkovJN6Rnf5mbufpTx3Wpam0gNhRhSNmyTsc/HBx7iArCZZ?=
+ =?iso-8859-1?Q?ZKy4xjnN9BRBHKB7JZVEP5mByfAoluAfhQNys2dbt4uQN0PxAf9deUpkPn?=
+ =?iso-8859-1?Q?pASs/dojFLEvCpF3eKdY8AbJ9I3rAIkMKOijr6F+/FbehUM1wfoENr7A?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 751758a5-cb06-4fa0-15b4-08dc4daeae82
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 16:06:22.9006
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qkXFjdIfjmxkrmuHsxBG2zkrUFaCLeze63UAWNr6rMbfxLwkdgKQWg/4mOQtnKO1ZMSxMheOTq+AWDV8dDtxUGInFQU6QNCWX1C0/R1wjyw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8137
+X-OriginatorOrg: intel.com
 
-Hello Simon,
+On Wed, Mar 13, 2024 at 09:19:51PM +0100, Andi Shyti wrote:
+> Enable only one CCS engine by default with all the compute sices
+> allocated to it.
+> 
+> While generating the list of UABI engines to be exposed to the
+> user, exclude any additional CCS engines beyond the first
+> instance.
+> 
+> This change can be tested with igt i915_query.
+> 
+> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.2+
 
->> In addition, if mac address can not be read from the driver, a random
->> address is configured again, so it is not necessary to call
->> eth_hw_addr_random from here. Indeed, in this situtatuon, when reset was
->> also executed from bind, this was invalidating the check to configure if the
->> assigned mac address for the interface was random or not.
->
-> I also agree with your analysis here. However it does seem to be a separate
-> problem. And perhaps warrants a separate patch. I am also wondering
-> if this is more of a clean-up than a fix: does it cause a bug
-> that is observable by users?
-You are right, really it is a separate improvement or simplification.
-Right now, it is not affecting the users and it is not producing any
-problem, just a second random address is generated if there is any problem,
-and this is not necessary, because there is a random address generated
-previously.
-When the extra reset was done during binding operation, as we were modifying
-the pregenerated random address, the check in usbnet_probe was useless.
-Ok, I will split the patch in two to be considered separately, the first
-with the important fix and the second with the commented improvement or
-clean-up. 
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
-> nit: AFAIK, if one arm of a conditional has curly-brackets, then all should.
->     So there is no need to drop them here.
-I didn't know the related criteria, I will do as you say.
+> ---
+>  drivers/gpu/drm/i915/Makefile               |  1 +
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  5 +++
+>  drivers/gpu/drm/i915/gt/intel_workarounds.c |  7 ++++
+>  5 files changed, 65 insertions(+)
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> 
+> diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
+> index 3ef6ed41e62b..a6885a1d41a1 100644
+> --- a/drivers/gpu/drm/i915/Makefile
+> +++ b/drivers/gpu/drm/i915/Makefile
+> @@ -118,6 +118,7 @@ gt-y += \
+>  	gt/intel_ggtt_fencing.o \
+>  	gt/intel_gt.o \
+>  	gt/intel_gt_buffer_pool.o \
+> +	gt/intel_gt_ccs_mode.o \
+>  	gt/intel_gt_clock_utils.o \
+>  	gt/intel_gt_debugfs.o \
+>  	gt/intel_gt_engines_debugfs.o \
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+> new file mode 100644
+> index 000000000000..044219c5960a
+> --- /dev/null
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+> @@ -0,0 +1,39 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +#include "i915_drv.h"
+> +#include "intel_gt.h"
+> +#include "intel_gt_ccs_mode.h"
+> +#include "intel_gt_regs.h"
+> +
+> +void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+> +{
+> +	int cslice;
+> +	u32 mode = 0;
+> +	int first_ccs = __ffs(CCS_MASK(gt));
+> +
+> +	if (!IS_DG2(gt->i915))
+> +		return;
+> +
+> +	/* Build the value for the fixed CCS load balancing */
+> +	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
+> +		if (CCS_MASK(gt) & BIT(cslice))
+> +			/*
+> +			 * If available, assign the cslice
+> +			 * to the first available engine...
+> +			 */
+> +			mode |= XEHP_CCS_MODE_CSLICE(cslice, first_ccs);
+> +
+> +		else
+> +			/*
+> +			 * ... otherwise, mark the cslice as
+> +			 * unavailable if no CCS dispatches here
+> +			 */
+> +			mode |= XEHP_CCS_MODE_CSLICE(cslice,
+> +						     XEHP_CCS_MODE_CSLICE_MASK);
+> +	}
+> +
+> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
+> +}
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> new file mode 100644
+> index 000000000000..9e5549caeb26
+> --- /dev/null
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +#ifndef __INTEL_GT_CCS_MODE_H__
+> +#define __INTEL_GT_CCS_MODE_H__
+> +
+> +struct intel_gt;
+> +
+> +void intel_gt_apply_ccs_mode(struct intel_gt *gt);
+> +
+> +#endif /* __INTEL_GT_CCS_MODE_H__ */
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> index 31b102604e3d..743fe3566722 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> @@ -1480,6 +1480,11 @@
+>  #define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
+>  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+>  
+> +#define XEHP_CCS_MODE				_MMIO(0x14804)
+> +#define   XEHP_CCS_MODE_CSLICE_MASK		REG_GENMASK(2, 0) /* CCS0-3 + rsvd */
+> +#define   XEHP_CCS_MODE_CSLICE_WIDTH		ilog2(XEHP_CCS_MODE_CSLICE_MASK + 1)
+> +#define   XEHP_CCS_MODE_CSLICE(cslice, ccs)	(ccs << (cslice * XEHP_CCS_MODE_CSLICE_WIDTH))
+> +
+>  #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
+>  #define   CHV_FGT_DISABLE_SS0			(1 << 10)
+>  #define   CHV_FGT_DISABLE_SS1			(1 << 11)
+> diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> index 9963e5725ae5..8188c9f0b5ce 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> @@ -10,6 +10,7 @@
+>  #include "intel_engine_regs.h"
+>  #include "intel_gpu_commands.h"
+>  #include "intel_gt.h"
+> +#include "intel_gt_ccs_mode.h"
+>  #include "intel_gt_mcr.h"
+>  #include "intel_gt_print.h"
+>  #include "intel_gt_regs.h"
+> @@ -2869,6 +2870,12 @@ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_li
+>  	 * made to completely disable automatic CCS load balancing.
+>  	 */
+>  	wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
+> +
+> +	/*
+> +	 * After having disabled automatic load balancing we need to
+> +	 * assign all slices to a single CCS. We will call it CCS mode 1
+> +	 */
+> +	intel_gt_apply_ccs_mode(gt);
+>  }
+>  
+>  /*
+> -- 
+> 2.43.0
+> 
 
-Thank you
-
-Best regards
-Jos√© Ignacio
-
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
