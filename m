@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-32341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3508388C8E8
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E4F88C90F
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 17:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C191F2564D
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:21:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A271F3BB6F
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4847713C9B8;
-	Tue, 26 Mar 2024 16:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A99013CAB7;
+	Tue, 26 Mar 2024 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GRpHgWZN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LYbxrmfZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE74F13C815
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C31C13CAB6
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 16:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711470113; cv=none; b=XjvyQoc2YueJovQyJP3oz/ZTp1sutw6z9kc60QTMQRtySjjr319g+Ktl7JgLVFnTtd5mRZUP/KaJ9bj+BryimgKN3TAL4UkZbmlJyBE0mn4DsW30yaD94yrjfUtoAgHrKYcSNeuDPSeXv+E9498wLHUky3WPoVLBmXR4At9Bt9U=
+	t=1711470259; cv=none; b=fBWl6Hc//kYmx763m/Yh2vOxRCvBzVdm+/2nqY5QM3hFwXD25syPVRtHtOUKWk1+QfkXN6BGhurkk16tnQdpEol5+6LMd4BHtGl/nZ7eKSTUmXK8UhTGYckaRRg43SZ039K2eEtZGUyzNDThQj8xqpzFRJIBc6EENMrjgLnBvWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711470113; c=relaxed/simple;
-	bh=BNws0gDydMfP0P1Q5QnTKaEzayYzV7OQpQeItNJTYKI=;
+	s=arc-20240116; t=1711470259; c=relaxed/simple;
+	bh=FfwX0VEtAy+auA9LmxwyTk7bWi3IdaPEomwQSo/jBEQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nsn7MKqnGmbjFh25KK6AvlAaGNwwEh0kwrjhh5BkClicLBNzrbeVNHyaashk96ydD05EKLcblZpc3Zo1vrh4CqYPl0DWQsMI/PFH7sd8LelNvUFlyGYSpVaugO9xZZI6+H2t3OWXHuEscTYD+FYZV5iuQFhVRc1AEBeE+El7j0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GRpHgWZN; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=TsTv/zhL25fOOmhQa426Ft/nazZ8PzdEXwu/XOPsCdITwwNM3VEp4sWDDERF803ybLnmIQynyPcxydQU2uh3ZQUTQXt7RqIrYapWdzswcQ02GfZu0w92VIRKHSdcGJxD7hFqeFQESrEx3wGOavxVoeGT0OZPmEGbTKd8ZeXXlUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LYbxrmfZ; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711470112; x=1743006112;
+  t=1711470258; x=1743006258;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=BNws0gDydMfP0P1Q5QnTKaEzayYzV7OQpQeItNJTYKI=;
-  b=GRpHgWZN1CUIppK3mgnwRYWA06K3pVCjl27sTgQKhW8CnhyZI6GouUqz
-   2/2L4JFajEYkd4gCMbTRLOvFVOPKVjtbujJvVWvqmv3lshgMuZtV5+peP
-   oKNXheTi0uOZT+WjIuEewsA5QKT4xC1z1emfFroIY9X/EWkKQfOUhmQ8/
-   7KwwkPIWBJDy6ww6XKTTf9HH5C4kk/gX5Y1e6wIaL9aBzu7rCW32ygXTL
-   9gdW8KBoPtplTf2XiGiKsZgw3U7ixrL3AI9Ux41URLLNVf/7dqFSOl7Bx
-   qgPc0xNl8qPEu2KEo5P9NY0HcjUQz2Fa1RrAjN+y2PnEdvEaFetyhGemD
-   g==;
-X-CSE-ConnectionGUID: y7c7i3B/R+mHfgvRXfZM0w==
-X-CSE-MsgGUID: yTIxs44GQTCcxOC0KtaV6g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17263725"
+  bh=FfwX0VEtAy+auA9LmxwyTk7bWi3IdaPEomwQSo/jBEQ=;
+  b=LYbxrmfZHWH12gBuxG5JtW1iusJTtO7ba834WnLWsBmuARXCt2VlzmzW
+   7GZIfgSxsP+d44VlFBNJJzSGbOD/LyC+ZuPllOhBtwERSW26kPkxgAY90
+   wbp+6nX69XYuDPaBTW0wjNd1on9s5OmTs8pg9in114vpDGYQilQVRFQ0J
+   SvqOXPuy4mONOhcTirRXvcGCEUuqL4RPpMAfXMyQcRtGbBvLFZs+ntInE
+   6mQQ+CQT7xhfUyqcyLM8YBkuQQMZVWGBSwD146I9sBiMf9uLzKt5abSQt
+   ntDXn+poCa6tO7cHDeq6k0DiuGHj6AlUB6ptRPTUEAklN/vL7lFd+9Oc3
+   w==;
+X-CSE-ConnectionGUID: 6XGsSR0qSKW+sdVMD4RxYA==
+X-CSE-MsgGUID: Cf8wVPASQTepAhbI01oLIg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10332384"
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="17263725"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:21:51 -0700
+   d="scan'208";a="10332384"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:24:17 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
-   d="scan'208";a="16069043"
+   d="scan'208";a="47026954"
 Received: from unknown (HELO intel.com) ([10.247.118.204])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:21:44 -0700
-Date: Tue, 26 Mar 2024 17:21:38 +0100
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 09:24:10 -0700
+Date: Tue, 26 Mar 2024 17:24:03 +0100
 From: Andi Shyti <andi.shyti@linux.intel.com>
 To: Andi Shyti <andi.shyti@linux.intel.com>
 Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
@@ -66,9 +66,10 @@ Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
 	Matt Roper <matthew.d.roper@intel.com>,
 	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
 	Andi Shyti <andi.shyti@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
+	Tvrtko Ursulin <tursulin@ursulin.net>, michal.mrozek@intel.com,
+	mark.j.buxton@intel.com
 Subject: Re: [PATCH v6 0/3] Disable automatic load CCS load balancing
-Message-ID: <ZgL2EqrsHBoBmoGv@ashyti-mobl2.lan>
+Message-ID: <ZgL2o7c0R_Z7shFJ@ashyti-mobl2.lan>
 References: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,12 +81,90 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20240313201955.95716-1-andi.shyti@linux.intel.com>
 
-Joonas,
+Hi Michal, Mark,
 
+can you please ack from your side this first batch of changes?
+
+Thanks,
+Andi
+
+On Wed, Mar 13, 2024 at 09:19:48PM +0100, Andi Shyti wrote:
+> Hi,
+> 
+> this series does basically two things:
+> 
 > 1. Disables automatic load balancing as adviced by the hardware
 >    workaround.
-
-do we need a documentation update here?
-
-Andi
+> 
+> 2. Assigns all the CCS slices to one single user engine. The user
+>    will then be able to query only one CCS engine
+> 
+> >From v5 I have created a new file, gt/intel_gt_ccs_mode.c where
+> I added the intel_gt_apply_ccs_mode(). In the upcoming patches,
+> this file will contain the implementation for dynamic CCS mode
+> setting.
+> 
+> Thanks Tvrtko, Matt, John and Joonas for your reviews!
+> 
+> Andi
+> 
+> Changelog
+> =========
+> v5 -> v6 (thanks Matt for the suggestions in v6)
+>  - Remove the refactoring and the for_each_available_engine()
+>    macro and instead do not create the intel_engine_cs structure
+>    at all.
+>  - In patch 1 just a trivial reordering of the bit definitions.
+> 
+> v4 -> v5
+>  - Use the workaround framework to do all the CCS balancing
+>    settings in order to always apply the modes also when the
+>    engine resets. Put everything in its own specific function to
+>    be executed for the first CCS engine encountered. (Thanks
+>    Matt)
+>  - Calculate the CCS ID for the CCS mode as the first available
+>    CCS among all the engines (Thanks Matt)
+>  - create the intel_gt_ccs_mode.c function to host the CCS
+>    configuration. We will have it ready for the next series.
+>  - Fix a selftest that was failing because could not set CCS2.
+>  - Add the for_each_available_engine() macro to exclude CCS1+ and
+>    start using it in the hangcheck selftest.
+> 
+> v3 -> v4
+>  - Reword correctly the comment in the workaround
+>  - Fix a buffer overflow (Thanks Joonas)
+>  - Handle properly the fused engines when setting the CCS mode.
+> 
+> v2 -> v3
+>  - Simplified the algorithm for creating the list of the exported
+>    uabi engines. (Patch 1) (Thanks, Tvrtko)
+>  - Consider the fused engines when creating the uabi engine list
+>    (Patch 2) (Thanks, Matt)
+>  - Patch 4 now uses a the refactoring from patch 1, in a cleaner
+>    outcome.
+> 
+> v1 -> v2
+>  - In Patch 1 use the correct workaround number (thanks Matt).
+>  - In Patch 2 do not add the extra CCS engines to the exposed
+>    UABI engine list and adapt the engine counting accordingly
+>    (thanks Tvrtko).
+>  - Reword the commit of Patch 2 (thanks John).
+> 
+> Andi Shyti (3):
+>   drm/i915/gt: Disable HW load balancing for CCS
+>   drm/i915/gt: Do not generate the command streamer for all the CCS
+>   drm/i915/gt: Enable only one CCS for compute workload
+> 
+>  drivers/gpu/drm/i915/Makefile               |  1 +
+>  drivers/gpu/drm/i915/gt/intel_engine_cs.c   | 20 ++++++++---
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  6 ++++
+>  drivers/gpu/drm/i915/gt/intel_workarounds.c | 30 ++++++++++++++--
+>  6 files changed, 103 insertions(+), 6 deletions(-)
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+>  create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+> 
+> -- 
+> 2.43.0
 
