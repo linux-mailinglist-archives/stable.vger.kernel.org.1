@@ -1,128 +1,145 @@
-Return-Path: <stable+bounces-32304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABF888BE4A
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:48:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC7788BF3C
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0863D1C2CB32
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:48:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A362C1CD1
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABB073505;
-	Tue, 26 Mar 2024 09:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12316679F3;
+	Tue, 26 Mar 2024 10:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="XH1Mb8Xf"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bEgOKATE"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B52F71758
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 09:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529065C904
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 10:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711446288; cv=none; b=u80uQt5uy5OhWhfTShzr5blTZ6vUZLESsoNCus0ulhR5eVlhhIAxUZt+Ijcsd1EvrUq+ADKGoPSNNTCBzJZuP82YhsnJXvS3Sua12YfZeNm0zZ9y/DQujGCIkJHU95K08pv0B1df1YMQ5Qexk5avUQUZztCBZ5V536+vJ0Nwdqg=
+	t=1711448587; cv=none; b=mSfxTExpVZgqEVcYcUzpRaVab2DPHAnY21dWL0cqUrvSj5cV7x10kuAFZ2tcZErMrDJZcYxS5wvRvXrDVhPVxnSPdXK+Fw4jyS4e4l1ekfyJQFmkwFDgXnShIocPmrsydqHShZKAn63l6ypHIuQZjXs+Sgm8yHkYBmnFF7foqsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711446288; c=relaxed/simple;
-	bh=bM7N53HW9cHbe50fwGGMC411UGj2Ub64m/xb2/CvoaU=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=XEstk5/dExy6GSXTaNFV1e+uU0JbRp54xxmK3udXnm6+k32b88Nrhn4Jc5idMzloO8EP7lNs5rCpwXyBHc4+TjqCmyswG5S7AcsngcaI552RVZBHBC6Td+E1cteo8HYiR1uDhdXUhRWKNCPnoWn1zXqeqsUTUOJlyiAxd696kfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=XH1Mb8Xf; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-	by cmsmtp with ESMTPS
-	id omuFrLif2PM1hp3MKrds0F; Tue, 26 Mar 2024 09:44:44 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id p3MJrKMlNVdenp3MKrU31Z; Tue, 26 Mar 2024 09:44:44 +0000
-X-Authority-Analysis: v=2.4 cv=M4FLKTws c=1 sm=1 tr=0 ts=6602990c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9iAOw1w6GKBEvWc4NOk4V7o0xfGci2jFMetZcqy8gS8=; b=XH1Mb8XfaPUmFoXWHcvR4FTa3y
-	Kyds04WUrP9VuYsLdYrp11IB2omqHQvD3c3F/1svaKhIOFAmebj+C7CFNsW3MZzMO3M4mjMvCvC47
-	1wZFHHfICRmmI3HyYOJtU+Bfu4T2F9afcmIGocU3LZX0GnhBECp/Ib1l8d3O4sNiwa9aBvXUTOK08
-	nu+ml5sVZGmnhIR/TSYuu3KKMcaJC2hC2Pin4I8ANSIOW+uikme4RKGQgi34ds0xyvUVuz5DPD0bO
-	yJ9EUwI3RqfpIFApaGIKJkMvLWP5UNTFf0Td3r+ZTdBwwggfbEVV9Pn1FEmt1qB+gMuMDHfQUzz06
-	kyswNzsw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53530 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rp3MJ-001hkc-1A;
-	Tue, 26 Mar 2024 03:44:43 -0600
-Subject: Re: [PATCH 5.15 000/309] 5.15.153-rc2 review
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de
-References: <20240325115928.1765766-1-sashal@kernel.org>
-In-Reply-To: <20240325115928.1765766-1-sashal@kernel.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <b3c6b362-a995-a8dd-97cd-f7eca94d8ebc@w6rz.net>
-Date: Tue, 26 Mar 2024 02:44:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1711448587; c=relaxed/simple;
+	bh=0IMne5VBa+58VtuzJy8j+olboFvZILX2uTItPkJtrOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FssAY5f2AE5YdldBd6szf5W7YxnO0s8SL+DDU44PP8xcMNcq/rLeEXvuzyMtN05AkLsHnIO+w+ZEsBWkbicrUBibp1ieIp9S+RZcmLyrvFz8KsBCVb7DV6titPJOcLi3Jw80A7elYby80pv/JGTBMDrown3t66rlb3wc02qHye4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bEgOKATE; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dcbcea9c261so5362025276.3
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 03:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711448585; x=1712053385; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Coz5QHcwkc4vvJyKILt3BgtloDsW9YU/fidz3bPl5fI=;
+        b=bEgOKATEUmCwFyAj0sc4Qh04jJA3MiukpC4IWsTj9K0I3hCy5cOJDzlKYRC8ogOjs+
+         6UyVpmhmhWbyTnjZ8Xsh5aTxivPgkgHqlgW2u7h23pyBSVmC0pzZ0AAwCVXolNiWhQlQ
+         GZT158YdoRODnoiFcy6ixnS7KMfzDYjggL0NdX49BAyX25fV4QaeMioTcmEVG0tR5dNr
+         CG+jg9oPTngAKYsms3BEVj/fkj45DH1Dlzovhx5rr4hlCLf/MiLs41ShxLj3bY7o0Dld
+         bh0wUxew239+fMt1944m6IYgtsunJJChnYpN+c27GXDsm5+Gx8yOdWoig+7GuAMgbjR2
+         Y+pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711448585; x=1712053385;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Coz5QHcwkc4vvJyKILt3BgtloDsW9YU/fidz3bPl5fI=;
+        b=cYsPwhkGFip5oV15ZZYMXVMJWq+RSSKVaA3IYxtF5QECHRKd+8ygJz3fMIz94ZJ51j
+         SrJsdKMVs2qhnkDoaYL5WBWyIz11CVsq4rqBeaQt001kZYbQlhaV05mOQvhsIZdOrs1i
+         ECknpokiKOwsHn0HimS+y56ltZXlf/7kKMOyCPJsh2I06IgmoU3CRVh5QPpKi6nYhfZ3
+         RmkugLqtiGpeJd7cCG96u63jRe/j8Sl0B4X4qFT6QWGWndr2DEurSI7gHk3IeDwLNBxd
+         Ofr0RnInuWWesXOFOOiLT8e0I0IOD4Lbf4QlzifWBMhd+obPprRKs8J4rUo23PRZoOEM
+         OkeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNfjnD8WCayZiPSSsAOQTtdYuzmdMJT2vcC6I8PuG+UO6pe2Nwk+ob3HmAk/Zh5v6LRP+hJEiDEoBFoFPQhat8WCEyV1SI
+X-Gm-Message-State: AOJu0Yx1qIGC7ShSFz2Am7tA0fnfypqP4D10YDNxYtPHvS9JlmT4YyMr
+	RxIUQbMGHw8uAAqHY+IuLlR/RNEPxfPlV11A2BhPMz0LpOwuuWeNefPmzKQTDZjeK2oOC8ackXn
+	DEtqbbosA1CXT5e/fYhHAhodHblTID8uRxn1rrg==
+X-Google-Smtp-Source: AGHT+IHzeL7j+Lap+SUend6NOhzvfZN+ev2xsTWYhqeCohIsS3abfKm94TKmLelfb7+6rCNqB5JgwttmAh38+nk8EuU=
+X-Received: by 2002:a25:abef:0:b0:dcb:f7a0:b031 with SMTP id
+ v102-20020a25abef000000b00dcbf7a0b031mr487313ybi.50.1711448585041; Tue, 26
+ Mar 2024 03:23:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rp3MJ-001hkc-1A
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53530
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 52
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJ5fmJfvTriGYJY7Wscwt623qEMDSEuPDUm/bhJkmb7RyXwKrId7uoY4eJVnJYtOrkxL0SsF5gBJjWz4SYHO8iOrJa40/gGFjX0bj7e5q5huys3Gq5u/
- VJeAKF4NNF9DtuR1xS8Ix8iRmRLWVGaFMG4IEPTj0/kA2Wz/K+eSf5i1OWnuoxQnvrdMTplnKPO9rA==
+References: <20240313-qcom-ucsi-fixes-v1-0-74d90cb48a00@linaro.org>
+ <Zf12vSHvDiFTufLE@hovoldconsulting.com> <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
+ <ZgKKPyLUr8qoMi9t@hovoldconsulting.com>
+In-Reply-To: <ZgKKPyLUr8qoMi9t@hovoldconsulting.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Tue, 26 Mar 2024 12:22:53 +0200
+Message-ID: <CAA8EJpqwYrskXMLyyYwW_4e-NXPPS0+MGbumEvXXNwj0p1u12A@mail.gmail.com>
+Subject: Re: [PATCH 0/7] usb: typec: ucsi: fix several issues manifesting on
+ Qualcomm platforms
+To: Johan Hovold <johan@kernel.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Bjorn Andersson <andersson@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 3/25/24 4:59 AM, Sasha Levin wrote:
-> This is the start of the stable review cycle for the 5.15.153 release.
-> There are 309 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, 26 Mar 2024 at 10:41, Johan Hovold <johan@kernel.org> wrote:
 >
-> Responses should be made by Wed Mar 27 11:59:27 AM UTC 2024.
-> Anything received after that time might be too late.
+> On Mon, Mar 25, 2024 at 10:56:21PM +0200, Dmitry Baryshkov wrote:
+> > On Fri, 22 Mar 2024 at 14:16, Johan Hovold <johan@kernel.org> wrote:
 >
-> The whole patch series can be found in one patch at:
->          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-5.15.y&id2=v5.15.152
-> or in the git tree and branch at:
->          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
+> > > I just gave this series a quick spin on my X13s and it seems there are
+> > > still some issues that needs to be resolved before merging at least the
+> > > final patch in this series:
+> > >
+> > > [    7.786167] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > [    7.786445] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > [    7.883493] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > [    7.883614] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > [    7.905194] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > [    7.905295] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> > > [    7.913340] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
+> > > [    7.913409] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
+> >
+> > I have traced what is causing these messages. During UCSI startup the
+> > ucsi_register_port() function queries for PDOs associated with the
+> > on-board USB-C port. This is allowed by the spec. Qualcomm firmware
+> > detects that there is no PD-device connected and instead of returning
+> > corresponding set of PDOs returns Eerror Indicator set to 1b but then
+> > it returns zero error status in response to GET_ERROR_STATUS, causing
+> > "unknown error 0" code. I have checked the PPM, it doesn't even have
+> > the code to set the error status properly in this case (not to mention
+> > that asking for device's PDOs should not be an error, unless the
+> > command is inappropriate for the target.
+> >
+> > Thus said, I think the driver is behaving correctly. Granted that
+> > these messages are harmless, we can ignore them for now. I'll later
+> > check if we can update PD information for the device's ports when PD
+> > device is attached. I have verified that once the PD device is
+> > attached, corresponding GET_PDOS command returns correct set of PD
+> > objects. Ccurrently the driver registers usb_power_delivery devices,
+> > but with neither source nor sink set of capabilities.
+> >
+> > An alternative option is to drop patches 4 and 5, keeping
+> > 'NO_PARTNER_PDOS' quirk equivalent to 'don't send GET_PDOS at all'.
+> > However I'd like to abstain from this option, since it doesn't allow
+> > us to check PD capabilities of the attached device.
+> >
+> > Heikki, Johan, WDYT?
 >
-> Thanks,
-> Sasha
+> Whatever you do, you need to suppress those errors above before enabling
+> anything more on sc8280xp (e.g. even if it means adding a quirk to the
+> driver).
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Why? The errors are legitimate.
 
-Tested-by: Ron Economos <re@w6rz.net>
 
+-- 
+With best wishes
+Dmitry
 
