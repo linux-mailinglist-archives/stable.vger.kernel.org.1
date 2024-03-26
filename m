@@ -1,255 +1,129 @@
-Return-Path: <stable+bounces-32284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C589388BA6C
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:29:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4995988BADC
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 522FC1F37490
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 06:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D172C5ABA
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 06:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2319D132C04;
-	Tue, 26 Mar 2024 06:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EC51292E8;
+	Tue, 26 Mar 2024 06:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PvJiQP3Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FMnBGkri"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70866130497
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 06:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB46B12880F;
+	Tue, 26 Mar 2024 06:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711434566; cv=none; b=g4v7Tsq0dGQ6d3pMJF5m/R9yxKN0VwuMQBL3R3+r31SyFT2KQGa1fRKF/X6lalZR+TUMOCVs7UYfNQA8WCXxNaaPilnx8xosJeP5GGID7q3qGUGt9TZxgY2cexRTS1fUyW8zjAOgwtPKdKKYMWoIYOfl7O3rxuZiFdGoWwmm+DY=
+	t=1711436378; cv=none; b=dGr0L78DABJ/Ml/rPtnM0q5fLgazIclofUn5vgxYyw8ZPulpX+Sgyc4JedwY/cqF6FzQPHcPQyQwT66h3M/XQHH+XXUGwlhArEOgZLRj8JKPBB8y+RTHHZ3beat9BgFofVH7aXmrA2deE1iAcH0J2e3MzkbZg1VSosuwWF/9zmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711434566; c=relaxed/simple;
-	bh=SR9YNar3/X3F4Y7T5Iev7JOeoTFsIajhJNRqCU0l+tc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dbsFC+pqh+ZWICh+RDmgXXla4u3YjcHgrLcw66yaF6Dnv21xUQ7ahp2uWeTBc4MNfkTxP366WxdrthFJwPDjPtmPc0mEW6lqvfOf9Ln3AWo8IinnP0hkQS1cth4joNxdX3MZMp8JchKFiNOtdjWvlMnw2Kf3Fck8QVuSGHbSgqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PvJiQP3Y; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-566e869f631so5430175a12.0
-        for <stable@vger.kernel.org>; Mon, 25 Mar 2024 23:29:21 -0700 (PDT)
+	s=arc-20240116; t=1711436378; c=relaxed/simple;
+	bh=9bnvoj6q4JRR1lYLLkAWD4fYP4y91/3k3df/uRd0GKA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8IkCyglfd4aK8epBqD6Whm+8lsziBjlgfgRMbJWnycNs3xZ0FmM7RiY6K1a8eTI5cXkGqp81fA565TC0zrtoqnAtmSlGDNn2w2Ikolx+2ZSoi6G22Rr2FrAc4KSqTrVPEUJub6pT8vDVqHNcqf/3YHyrBxxOT9xhtIVmoY4t2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FMnBGkri; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513d599dbabso6763975e87.1;
+        Mon, 25 Mar 2024 23:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711434560; x=1712039360; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5QDBHaSC5fntPQdx5nI9UDxMCD9F3a8euvISqTDLhTk=;
-        b=PvJiQP3YbGwbuoAej92Vu/nUGx2B7zPW3Pjuid3x9lOyeLvWuK9dxA9N9dfUUrEnL6
-         286cgmGkNNGNmsg76xa/iGbZ+iDMymmZ5xPb8alIhhlrtApYktwXf6iKgT4Mog9oFIov
-         qr+htwfi4X+9Iqi0GYb25eP1i5T6giUK1OltbGxaCZVZGw/FvPBGDfD0ZFy0fg75OAb5
-         uxmPxnXWGvRsgCqB2b6HN0EJjnrOCtwmo/dwJDp/XYk9eoTew7lE0NPyAow1MEauCgeN
-         c41EfBQQDi4d9yeDw9/J0WltaG4/aSuNHSegfS/3OgjDNhmhAJd3EU6Bbv14abe+A0Ee
-         rHtw==
+        d=gmail.com; s=20230601; t=1711436375; x=1712041175; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Adrz2UKt91HT9UEqTQ/lxgqrvfLugF+WBz3CLKokIek=;
+        b=FMnBGkrinYL2PBCPQke2aEI5hw10ATWLqtpVWFVpYcMIIgZz/px6p6JH1tho/5pi9U
+         YBbBPOrrBZ3RxuuPCjlevxgGjoOYKKxEZdhD2VnrZpGTxBm3PRVok4sdyky80f/yJrcF
+         fwucQf9T/+sqYEqZxj8tJ/PWKCn8HaZXzHCBZ8dpRXz4RWV9kvLNeYSac1mBbrXtTu37
+         A+Vy2L1EHIxoNibw3jNXlyGEEb0+TypwTBJTcOBUyrBuB009Uj6ucXrtiBU+Qkmw2ktb
+         4jLu3KlBUJo/6NBbj3PHnIqlAY88gNgQKfJEhPjvaQJGPTF70u8q35JXHO5NvlSuLv+1
+         goEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711434560; x=1712039360;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5QDBHaSC5fntPQdx5nI9UDxMCD9F3a8euvISqTDLhTk=;
-        b=hZT+jf6N3u0QKblMSssaic+wyXk1oQrIvKdnfvFChBf7M5ZhVgCKaJODmANy/dTuGY
-         CcQ5Mman0UJgn2kAfoZB0UPwO2pL1+ZKNkf3Y/gh60X8L5EEwlzqSEqv+zTVDglsNwhv
-         U8RdC1yBX2sx/QehHrzICZkjK5QvqkFb1KqI94H0ZjxYLFnA4pMjPPpkRTksAQ00ZkDz
-         9QIJ0Af/qgQfUk5/QS1vJRXEd/x8A+XmP0wrvx21WPhP19BzHI3oIrEpeW9NsyK+AYXY
-         qwqmxcRLNzbMH8HsuQgFm1dm3j6IDpFLISS9FTEhqmoksFkCWlS85wV9wOZqgHfULhvk
-         GYHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXwTT3vgBJtv0q5YrQOwtmhWsO7U5gxpx6gAqiBlqde0U3FIL4gHdKKqxgQ7NSIpmUztaxtTGbN1qVq7y5z1abwEswOIOyA
-X-Gm-Message-State: AOJu0Yzf2tWN6sgs2EZlPV4Z/ESzK4wlysCrb6keY5TjfWfdsBglXIno
-	Kr0zwZOpLzs8U3q6d5GEqnyiEAxIoXBrJ58LOmX938ZhnIRed257tRGgrkjWzB0=
-X-Google-Smtp-Source: AGHT+IHS+Py7F4eCiITse8lcGWhLrhntEwe1W757/7QYsqErqTxDqZZZwsaVh7yrPgaOIa8FUDlqxg==
-X-Received: by 2002:a50:9b58:0:b0:566:2aff:2d38 with SMTP id a24-20020a509b58000000b005662aff2d38mr5980629edj.26.1711434559971;
-        Mon, 25 Mar 2024 23:29:19 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id fk26-20020a056402399a00b0056c2bd89354sm219887edb.14.2024.03.25.23.29.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 23:29:19 -0700 (PDT)
-Message-ID: <68dbebe0-acaa-40f0-9a5c-fd49d265ae08@linaro.org>
-Date: Tue, 26 Mar 2024 07:29:17 +0100
+        d=1e100.net; s=20230601; t=1711436375; x=1712041175;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Adrz2UKt91HT9UEqTQ/lxgqrvfLugF+WBz3CLKokIek=;
+        b=YtGsvlE+HpGqphO9nn/bj6Brcol0/H1PXOoWBCP/al+2KY9JYD9AyFK7yWRJ0sfxcq
+         +xwZIh1N0WOusC5dISqHussSKupBy3kbQMFwxg1/HBtBPs7qO15iBUegPFVwDjPpXgjw
+         i5nZQB0xMZ2kXBEjBSqZ32ZZ2H+d0xDnaACxR9Audy9mThB6ZBzzDjRtEnC+IWH0zMCp
+         d6+ySpUTUISV23zum/8mMR6zB1Sl+HxPU3udVMV5+UCByhnlfjl+FOPQBgym+kUYuipi
+         dRgAtzKSOC4nGEdpnE5WCawId6zkNfHZPGTo2WtMHWbIqfisyuxHpbmP1Fk56ph4Y/PF
+         o3sA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2KN4vJhpZJKlWr3wVNTrNWeBaU3RCvgM0Q/fKpyL2IqO6Yj68lWiQU4GKOQxMcXUCPs+5Xax1/oc69KxMIvnS4zfERSx0
+X-Gm-Message-State: AOJu0YxEO03hQVnm6fJ9EA1aqbL4mkT+sD5taVfJ6m1Lk/QiJxHt1zdK
+	rLBIOMaYPGKGZl3kaTpZNoF5xRBLWVOofQq4U2UA99tTDCTq1EXX5EsDms1tBXg=
+X-Google-Smtp-Source: AGHT+IHJULcSjGY+2bfyPb37+1IpdGS93hSu6EOR2DCrF3wM3B3CsDCg0CoiF9OxOaVfokBUw/D5uA==
+X-Received: by 2002:ac2:562d:0:b0:513:3214:ae03 with SMTP id b13-20020ac2562d000000b005133214ae03mr5392450lff.69.1711436374672;
+        Mon, 25 Mar 2024 23:59:34 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id e7-20020adfc847000000b0033ec91c9eadsm11320418wrh.53.2024.03.25.23.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 23:59:32 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id F3A67BE2EE8; Tue, 26 Mar 2024 07:59:31 +0100 (CET)
+Date: Tue, 26 Mar 2024 07:59:31 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 5.10 00/73] 5.10.213-rc1 review
+Message-ID: <ZgJyUxKgKhjVTqI5@eldamar.lan>
+References: <20240313164640.616049-1-sashal@kernel.org>
+ <ZfNwZ2dqQfw3Fsxe@eldamar.lan>
+ <ZfSV6RVweBOlKZW_@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] QCM2290 LMH
-To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Thara Gopinath
- <thara.gopinath@gmail.com>, Amit Kucheria <amitk@kernel.org>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org,
- Loic Poulain <loic.poulain@linaro.org>
-References: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
- <d8ed4e6c-549f-4c04-b38a-2d788df8b707@notapiano>
- <dbe90a1c-bac2-4176-8eba-7ad96a182313@linaro.org>
- <8e0cc005-0b3a-4475-bfe4-82ec46d918a5@notapiano>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <8e0cc005-0b3a-4475-bfe4-82ec46d918a5@notapiano>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZfSV6RVweBOlKZW_@sashalap>
 
-On 26/03/2024 00:01, Nícolas F. R. A. Prado wrote:
-> On Mon, Mar 25, 2024 at 08:59:55PM +0100, Krzysztof Kozlowski wrote:
->> On 20/03/2024 20:08, Nícolas F. R. A. Prado wrote:
->>>> Loic Poulain (1):
->>>>       arm64: dts: qcom: qcm2290: Add LMH node
->>>>
->>>>  Documentation/devicetree/bindings/thermal/qcom-lmh.yaml | 12 ++++++++----
->>>>  arch/arm64/boot/dts/qcom/qcm2290.dtsi                   | 14 +++++++++++++-
->>>>  drivers/thermal/qcom/lmh.c                              |  3 +++
->>>>  3 files changed, 24 insertions(+), 5 deletions(-)
->>>
->>> Hi,
->>>
->>> I've started tracking the results of 'make dtbs_check' on linux-next, and I've
->>> noticed that on today's next, next-20240320, there's a new warning coming from
->>> this. The reason is that the DT change has landed, but the binding has not,
->>> since it goes through a separate tree. I thought the binding was supposed to
->>> always land before the driver and DT that make use of it, but looking through
->>
->> There is no such rule. Of course new binding should be documented in
->> earlier or the same kernel release cycle as users get in, but it's not a
->> requirement.
+Hi Sasha,
+
+On Fri, Mar 15, 2024 at 02:39:37PM -0400, Sasha Levin wrote:
+> On Thu, Mar 14, 2024 at 10:47:19PM +0100, Salvatore Bonaccorso wrote:
+> > Hi Sasha,
+> > 
+> > On Wed, Mar 13, 2024 at 12:45:27PM -0400, Sasha Levin wrote:
+> > > 
+> > > This is the start of the stable review cycle for the 5.10.213 release.
+> > > There are 73 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Fri Mar 15 04:46:39 PM UTC 2024.
+> > > Anything received after that time might be too late.
+> > 
+> > This one still has the problem with the documentation build and does
+> > not yet include:
+> > 
+> > https://lore.kernel.org/regressions/ZeZAHnzlmZoAhkqW@eldamar.lan/
+> > 
+> > Can you pick it up as well?
 > 
-> So, after giving the documentation a second look, I found this:
-> 
-> "For new platforms, or additions to existing ones, make dtbs_check should not
-> add any new warnings."
-> 
-> Source: https://www.kernel.org/doc/html/latest/process/maintainer-soc.html#validating-devicetree-files
+> I'll pick it up for the next release cycle, thanks!
 
-It's just "should"...
+Did something went wrong here? I do not see in in the current review
+for 5.10.214-rc2. Can you still pick it for 5.10.214 to get
+documentation build working?
 
-> 
-> What is not clear there is what the reference point is: is it on linux-next?
-> Mainline release?
+Thanks a lot already,
 
-Does it matter? There was never a new warning introduced by this
-patchset. The patchset itself is correct. No new warnings.
-
-> 
-> As Konrad pointed out it's tricky (and maybe not worth it) to guarantee this for
-> linux-next. But for mainline release it seems feasible (and IMO the target, as
-> after that stability guarantees should apply).
-
-I don't believe in such guarantees. Different maintainers apply patches
-differently, especially bindings, so this is beyond our control. Often
-also beyond SoC maintainer control.
-
-> 
->>
->>
->>> the dt-binding documentation pages I couldn't find anything confirming or
->>> denying that.
->>>
->>> I expect this to happen again in the future, which is why I'm reaching out to
->>> understand better how to deal with this kind of situation.
->>
->> Deal as what to do? Are you asking in terms of maintenance of some
->> subsystem or sending some patches? In this particular case here, I don't
->> think there is anything on your side to deal with.
-> 
-> I'm asking what's the most helpful way to you the maintainers for me to report
-> these failures in the future.
-
-The most effective way is LKP-like or Rob's-bot-like automated replies
-to original email threads, by testing the original patchset on
-linux-next. But Rob's bot is actually doing it, just on different base.
-
-Other reports, like for cases when only parts of patch is applied, could
-be also useful but I am afraid you will generate way too much of them.
-Binding is supposed to go via subsystem, DTS via SoC, so basically 90%
-of patchsets might have some sort of delays resulting in dtbs_check
-false positive warnings.
-
-For my SoC I check my trees, mainline and next, and keep adding list of
-exceptions for expected issues. What's useful for Qualcomm? Konrad,
-Bjorn, any thoughts?
-
-Have in mind that expected warnings can be for entire cycle when dealing
-with technical debt, because DTS goes N+1.
-
-> 
-> Rob has already automated running dtbs_check for patches coming into the mailing
-> list. And I have set up KernelCI to run dtbs_check on linux-next in order to
-> catch any issues that might slip through, or happen during integration of the
-> trees, etc.
-> 
-> Now, if we agree that dtbs_check regressions on linux-next are acceptable, at
-> least ones like this, where the issue is just synchronization between
-
-Yes and no. True regressions are not acceptable. Expected intermediate
-regressions as a result of patchset being applying, but not yet fully
-applied, are OK. Expected regressions for intra-cycle-work are also OK.
-
-> maintainers, then I can simply not report them in the future. But we should
-> have some point where dtbs_check should not regress, and mainline release seems
-> the reasonable choice, because if we don't then dtbs_check warnings would just
-> keep growing forever.
-
-I invite therefore to my session:
-https://eoss24.sched.com/event/1aBEf?iframe=no
-We'll see if they keep growing :)
-
-Best regards,
-Krzysztof
-
+Regards,
+Salvatore
 
