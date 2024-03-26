@@ -1,117 +1,126 @@
-Return-Path: <stable+bounces-32277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B65F88B6C0
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 02:22:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC7B88B72F
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 03:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D00F1C32680
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 01:22:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E282C7E6B
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 02:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE171CD20;
-	Tue, 26 Mar 2024 01:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023524CB54;
+	Tue, 26 Mar 2024 02:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HdRwkKoK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPeORWmc"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85611BF58;
-	Tue, 26 Mar 2024 01:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BD71CAA5;
+	Tue, 26 Mar 2024 02:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711416156; cv=none; b=ikkXb7hPhynqcc4IRFWoviloograo/AJkNPQ3kSLxhVPl13hHiCEMsMr/s0yYz4diWRxBXtbR22xOdqjP0RbiIPCg56HXElUmvRvLpZSu28i3LX+QgHdMyh6rla+FzI9AF4iIRcOMF83aRilWKgkxdwuhMrKmkCSZitj2rSEN1k=
+	t=1711418955; cv=none; b=TwLONcN/EvsNihlZ0Z3/egT7zQkL8XygscY7T6dGX5HJXE1hAixMJeIwrpBuFxjbBzhLFqRpDcPWrVvRIvmvIXwn108dTNezcieotBA7n8mDN3Aqo+uUpMgripHuEQrl2Ow3Nk38JnrnsJ0QW+MvTuOj4hhw09oJ2MJCr/wJBHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711416156; c=relaxed/simple;
-	bh=/zvy1BaXy0FsVN/a8po256aR+SnO3OH7+CH31z0vBiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nLYQ8oBRhaeAHCWnSIcMaXE1Ar4ADVucM2+VR5jmsb7Q8dDhvNe8Te3EZ5cVEb7iHUI38WbxS1+04vzEPBOfcnXoe73K2p3O4cs0i6yegDPy/s7WisBh9KCUCwPUaL3pWS3aOTR7lHh2l8MabNex0N6h/lMBBJR48OE3Cvr9Ikw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HdRwkKoK; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42PLG26f002315;
-	Tue, 26 Mar 2024 01:22:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=N/KeRr2q9pvDKKuCTTv7AYS0SB+2Dro+WiEupeavjcA=;
- b=HdRwkKoKIMr4kaSKtJeivc3TKl13flQwP6RAsm6Ty0dA7Gmc7sfdZ+P1IfZ0WFU13I8L
- qIy6uED2WSdX07bldU20Da2t4kTG+wAJTwm4WSnDZbQpEyN7gBlj5L5OLOQDttcNjTpx
- AYQagGkkG3F9Rrj81nB7KsKLQq4UN7Zl+C8GX6eFpo9+BqdUnQ63iffeIfObTpWMIqZA
- zC2o55KwfJGTUaMKsXuVROxK5zHoa+uW1CJqruC8NyJBi6dIvE+GfCrwav2pkf+ObYtN
- 7czY577tUi3XHSLagTT5hD8ilLAfb1QX+RfXKUUIDKlr0Fl4zBW1ok9nyi251evCVbpZ Ug== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x1np2c0bu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Mar 2024 01:22:03 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 42Q140is024714;
-	Tue, 26 Mar 2024 01:22:03 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3x1nh6hfs2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Mar 2024 01:22:03 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42Q1Lx4C002449;
-	Tue, 26 Mar 2024 01:22:02 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3x1nh6hfkw-3;
-	Tue, 26 Mar 2024 01:22:02 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, jejb@linux.ibm.com,
-        stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-        usb-storage@lists.one-eyed-alien.net, kernel-dev@igalia.com,
-        kernel@gpiccoli.net,
-        syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
-        stable@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-        John Garry <john.g.garry@oracle.com>,
-        Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Subject: Re: [PATCH] scsi: core: Fix unremoved procfs host directory regression
-Date: Mon, 25 Mar 2024 21:21:45 -0400
-Message-ID: <171141606218.2006662.11145964739643960309.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240313113006.2834799-1-gpiccoli@igalia.com>
-References: <20240313113006.2834799-1-gpiccoli@igalia.com>
+	s=arc-20240116; t=1711418955; c=relaxed/simple;
+	bh=bEf0WUnJbqlmVNqarioLAax5bxE8sZZnJg1j9i2kLvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OWSylRqiBzHHToGTSAEmUHzkpmE0JYX7w8HXFgivBUEdSRCpCgMcGxSQwPbH1wQpYWUR+smihAaHr8g0phTzb367/JTNfkhz7tRkaAY0EUx1tyGXTCk8CWDx/Jj3/t9jYfSfv1vb+SQeDtfmL2atTQoK3e7uTGbGul6bJF5y3Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPeORWmc; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1dffa5e3f2dso31367315ad.2;
+        Mon, 25 Mar 2024 19:09:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711418954; x=1712023754; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=73eQR7CGAkz95d7GXos8MkovGVByD2X2H2r6s8fqSg8=;
+        b=BPeORWmcrflkY1Kq/NmOTaXj3SkBueTEEB/kojoXKKTJqlpm041xpQjY8h1rhgqZHo
+         W5cOSW8qs8I1IGGAdLpBqU8WdRSw/j0E3xf/OcniTomrmvcK1yjv4dOfZ2Z5nyss0mph
+         5XBsB9Qfya6eKycQfsgVIMD2uB7D9pJQ+66URpjFhC3zu4t3tN+V1g8j93oBFO2OGThb
+         EvHVc1tByrKCTXNLjOGqXus8RRmTm7hsXfxzIaaMot0cTOZ/yK3QYu1tOoF6OCoi8uod
+         mHv1+swMEVRTDxeqAZe80s+TnXTXFTzllSvb3t8ZnmE+Z73RcZ9xRTtq6aqIWKHmnnCX
+         BD1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711418954; x=1712023754;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=73eQR7CGAkz95d7GXos8MkovGVByD2X2H2r6s8fqSg8=;
+        b=bpQnu81HomDgq4PiO5ZrFpu0+dGNZPbNe1uUJSvJ8/wZtyFFrNS091IJ1p7sd0YyZ8
+         h3BUdCjoVgrFFKmiK9PrgYL04LX5aa4vFxxTfSoZNS62PFIYbrXbcieTBSqm6ZNi2vtN
+         gwzpg0anfFIk8r9MuX4fy1TRHWPPUrhcoHKijeP9weuuU9uT24uEVmNGsd9b68yJR+M0
+         iPJiN+gKxu+tEsOviVrmDS733O3IyC5NtqhBBXz0D3+lgYxqaoImN1aTnFYy0sDsjjpq
+         /6gLfElWsJbV8LRzFIIFidXJevhvBXS28qZVWpOqccGh0H0tgVr1494Xj83BZIx/dgH/
+         lOMA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0JwqL59q6By+iH5bNMt0uxlheGyCNrKmNdumzTUexqQT/8v6Ak6uhsVYV36pJexBYtZaTOVWJ4sJskeyqkc6C2QbcbxhsbLtBdpNK0LxxUfegmtG3iW5EnZBAyp9t5XVXSMfu
+X-Gm-Message-State: AOJu0YzTkUWKe7AapqfJJBNtiR3NcPQpGva7bDN3iQiykfwe3jLxH1er
+	rbzcUc2bJdKd0xM6fNtBtqSKK0UOoUaw9swvf6zLr03zu2cIlgCs
+X-Google-Smtp-Source: AGHT+IF6GXa2VTA1W1YPk3cnu4xdmPVrbcFJi+tCRu4NHMa9iYP+ttbmNglSA9D3f9fMMrQD8FFQSQ==
+X-Received: by 2002:a17:903:298c:b0:1e0:8931:d372 with SMTP id lm12-20020a170903298c00b001e08931d372mr10003221plb.23.1711418953480;
+        Mon, 25 Mar 2024 19:09:13 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id e3-20020a170902ed8300b001e00285b727sm5473228plj.294.2024.03.25.19.09.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 19:09:12 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 6D9901846856B; Tue, 26 Mar 2024 09:09:10 +0700 (WIB)
+Date: Tue, 26 Mar 2024 09:09:10 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com,
+	pavel@denx.de
+Subject: Re: [PATCH 6.7 000/707] 6.7.11-rc2 review
+Message-ID: <ZgIuRpP1UgkZQftn@archie.me>
+References: <20240325120003.1767691-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-25_26,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=843 mlxscore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403260007
-X-Proofpoint-GUID: PeMcQ7PkllAYRKy9EnMQNAsITpGP4uuC
-X-Proofpoint-ORIG-GUID: PeMcQ7PkllAYRKy9EnMQNAsITpGP4uuC
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iPkO6wcSfm1xOeY9"
+Content-Disposition: inline
+In-Reply-To: <20240325120003.1767691-1-sashal@kernel.org>
 
-On Wed, 13 Mar 2024 08:21:20 -0300, Guilherme G. Piccoli wrote:
 
-> Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name} directory
-> earlier") fixed a bug related to modules loading/unloading, by adding a
-> call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led to a
-> potential duplicate call to the hostdir_rm() routine, since it's also
-> called from scsi_host_dev_release(). That triggered a regression report,
-> which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
-> directory removal regression"). The fix just dropped the hostdir_rm() call
-> from dev_release().
-> 
-> [...]
+--iPkO6wcSfm1xOeY9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to 6.9/scsi-fixes, thanks!
+On Mon, Mar 25, 2024 at 08:00:03AM -0400, Sasha Levin wrote:
+> Sasha Levin (1):
+>   Linux 6.7.11-rc2
 
-[1/1] scsi: core: Fix unremoved procfs host directory regression
-      https://git.kernel.org/mkp/scsi/c/f23a4d6e0757
+Hi Sasha,
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Commit 506a04d850a45d ("Linux 6.7.11-rc2") bumps EXTRAVERSION to -rc1 inste=
+ad
+of -rc2 as it should be.
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--iPkO6wcSfm1xOeY9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZgIuQgAKCRD2uYlJVVFO
+o05zAQD5KzpC5v2SHArWZcmbZ/QqSraBJ2hQUaLIOsDxJaaTQQEA2iGgt7eKOu47
+O1zAHbEMqWPm9dhdqndG1KC30owdXwc=
+=1w9U
+-----END PGP SIGNATURE-----
+
+--iPkO6wcSfm1xOeY9--
 
