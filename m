@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-32360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE7F88CB92
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:08:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D781488CB96
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 19:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C231C353DC
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 18:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB8B1F2BCEF
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 18:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8588627A;
-	Tue, 26 Mar 2024 18:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1D7126F3D;
+	Tue, 26 Mar 2024 18:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="i7xYEfmc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tG7Pxz7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6084D11;
-	Tue, 26 Mar 2024 18:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8623286AE9;
+	Tue, 26 Mar 2024 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711476502; cv=none; b=QoSmAIgS9E1rskW18wV2DVBiQOEWmzuFnJeh00ipYXZxmvb53V1Z0Ahy7XajxS7H6fT16r9DTdEYRgXl6zjA+YjQi9D6zWQvS+DE7zeykFSJ1rgL+baGG/VkKc/tTaiHr7BhFTXjAtciWbw//qE+xy3VvuknWUg1QsOOh8DqQn8=
+	t=1711476505; cv=none; b=ktWWkqT5A+Cw5UmDm+Yx3dMutWKifhMqtdTA6+RPoVyNFcD669sZ4ukKb/RN4nIbgAlsKN6cpfJnV4QB89PBX494Zo44nuUJusnhOLHfohaEbNdigoP/yoUX8i+izgx8UWEfUK3ELe6EhrFzoJFnedGAIR0BqgQhs55SyDMGgpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711476502; c=relaxed/simple;
-	bh=2KqROH7vzSI+Bi7pqDiHxES3G3QesV3e/fO4GFCOSsE=;
-	h=Date:To:From:Subject:Message-Id; b=Vu4PSPH9xl8xmxYZR2qCceRa0hy6yjdAQz9KeBadp1msqwrJRIQTkRUeSh2Cr9eV9jc5Qic6HFExAzd6OlBJEybECJLxMduRB34MhgdyCblaTmuOX4MtFO01u3q/ohQpI8dfDcTm9BsBziDoux7OwYn3FGrvWUrOt6mF5RBXp34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=i7xYEfmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF06BC433C7;
-	Tue, 26 Mar 2024 18:08:21 +0000 (UTC)
+	s=arc-20240116; t=1711476505; c=relaxed/simple;
+	bh=8qAQjKK8IxkWeiFg9rQqmOXh6rlHyrGyVrlH4/OYatQ=;
+	h=Date:To:From:Subject:Message-Id; b=B8nl9Z1CwH56+NNjaPihjMe+OwEpP7qYBrDtdBdAtQKvBq8qpzb9Xf9Y2UB8DJYzsaBDepdz7nCGXtsjrlk7M/1iVtK7qb0SNokS0Znk8Vb93kTTY2lOybxaCXZI90J71xoodfTcgXhzL1BYw/yq8j95Rmwa8A8qS7nykWAwXD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tG7Pxz7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11521C43390;
+	Tue, 26 Mar 2024 18:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1711476501;
-	bh=2KqROH7vzSI+Bi7pqDiHxES3G3QesV3e/fO4GFCOSsE=;
+	s=korg; t=1711476504;
+	bh=8qAQjKK8IxkWeiFg9rQqmOXh6rlHyrGyVrlH4/OYatQ=;
 	h=Date:To:From:Subject:From;
-	b=i7xYEfmcW+IBxXiLhQLUvcGUwtabI7dY2sZjocvv+gOzkyOdlCRY88POxS0XDK+Lo
-	 WVmt0XY6kFHI9dERpy7Jt+AT/oMDt3I/1Y5sCgNKgu8LIHbH2uoW5ZHnLPm6GeQ7oT
-	 KCg0SRytsr/OExrWIvYHi/tsnUmj6ygctNuEATl0=
-Date: Tue, 26 Mar 2024 11:08:21 -0700
-To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,stable@vger.kernel.org,shr@devkernel.io,sam@gentoo.org,rppt@kernel.org,rick.p.edgecombe@intel.com,revest@chromium.org,omosnace@redhat.com,oleg@redhat.com,ojeda@kernel.org,linux@armlinux.org.uk,keescook@chromium.org,josh@joshtriplett.org,James.Bottomley@HansenPartnership.com,fengwei.yin@intel.com,deller@gmx.de,david@redhat.com,bp@alien8.de,zev@bewilderbeest.net,akpm@linux-foundation.org
+	b=tG7Pxz7WNWq3kw4SOSUlJJhApT3dCuUX8xsCXeeeDKb4WLezXDx0+9n1S3CFER9id
+	 aff4RYUc5eCVobulr+jqSuwKiEzu8EHv3/E3u0QTJLPOke+5u+Sh9W72eb/kDscPI7
+	 iqNEOlFf5ByP5a6Q/7sRAhenvrZQNM+wpIKPzNgI=
+Date: Tue, 26 Mar 2024 11:08:23 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,edliaw@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] arm-prctl-reject-pr_set_mdwe-on-pre-armv6.patch removed from -mm tree
-Message-Id: <20240326180821.BF06BC433C7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-sigbus-wp-test-requires-uffd_feature_wp_hugetlbfs_shmem.patch removed from -mm tree
+Message-Id: <20240326180824.11521C43390@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,72 +50,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ARM: prctl: reject PR_SET_MDWE on pre-ARMv6
+     Subject: selftests/mm: sigbus-wp test requires UFFD_FEATURE_WP_HUGETLBFS_SHMEM
 has been removed from the -mm tree.  Its filename was
-     arm-prctl-reject-pr_set_mdwe-on-pre-armv6.patch
+     selftests-mm-sigbus-wp-test-requires-uffd_feature_wp_hugetlbfs_shmem.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Zev Weiss <zev@bewilderbeest.net>
-Subject: ARM: prctl: reject PR_SET_MDWE on pre-ARMv6
-Date: Mon, 26 Feb 2024 17:35:42 -0800
+From: Edward Liaw <edliaw@google.com>
+Subject: selftests/mm: sigbus-wp test requires UFFD_FEATURE_WP_HUGETLBFS_SHMEM
+Date: Thu, 21 Mar 2024 23:20:21 +0000
 
-On v5 and lower CPUs we can't provide MDWE protection, so ensure we fail
-any attempt to enable it via prctl(PR_SET_MDWE).
+The sigbus-wp test requires the UFFD_FEATURE_WP_HUGETLBFS_SHMEM flag for
+shmem and hugetlb targets.  Otherwise it is not backwards compatible with
+kernels <5.19 and fails with EINVAL.
 
-Previously such an attempt would misleadingly succeed, leading to any
-subsequent mmap(PROT_READ|PROT_WRITE) or execve() failing unconditionally
-(the latter somewhat violently via force_fatal_sig(SIGSEGV) due to
-READ_IMPLIES_EXEC).
-
-Link: https://lkml.kernel.org/r/20240227013546.15769-6-zev@bewilderbeest.net
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Cc: <stable@vger.kernel.org>	[6.3+]
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Florent Revest <revest@chromium.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Ondrej Mosnacek <omosnace@redhat.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: Sam James <sam@gentoo.org>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: Yin Fengwei <fengwei.yin@intel.com>
+Link: https://lkml.kernel.org/r/20240321232023.2064975-1-edliaw@google.com
+Fixes: 73c1ea939b65 ("selftests/mm: move uffd sig/events tests into uffd unit tests")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Peter Xu <peterx@redhat.com
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/arm/include/asm/mman.h |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- /dev/null
-+++ a/arch/arm/include/asm/mman.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MMAN_H__
-+#define __ASM_MMAN_H__
-+
-+#include <asm/system_info.h>
-+#include <uapi/asm/mman.h>
-+
-+static inline bool arch_memory_deny_write_exec_supported(void)
-+{
-+	return cpu_architecture() >= CPU_ARCH_ARMv6;
-+}
-+#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
-+
-+#endif /* __ASM_MMAN_H__ */
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-sigbus-wp-test-requires-uffd_feature_wp_hugetlbfs_shmem
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1427,7 +1427,8 @@ uffd_test_case_t uffd_tests[] = {
+ 		.uffd_fn = uffd_sigbus_wp_test,
+ 		.mem_targets = MEM_ALL,
+ 		.uffd_feature_required = UFFD_FEATURE_SIGBUS |
+-		UFFD_FEATURE_EVENT_FORK | UFFD_FEATURE_PAGEFAULT_FLAG_WP,
++		UFFD_FEATURE_EVENT_FORK | UFFD_FEATURE_PAGEFAULT_FLAG_WP |
++		UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
+ 	},
+ 	{
+ 		.name = "events",
 _
 
-Patches currently in -mm which might be from zev@bewilderbeest.net are
+Patches currently in -mm which might be from edliaw@google.com are
 
 
 
