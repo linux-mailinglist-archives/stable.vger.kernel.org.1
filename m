@@ -1,156 +1,165 @@
-Return-Path: <stable+bounces-32313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A0188C112
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:44:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15B688C1DA
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 13:16:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5723EB23FDE
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 11:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 587501F3AD29
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 12:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE22C59B7F;
-	Tue, 26 Mar 2024 11:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4287174B;
+	Tue, 26 Mar 2024 12:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e/E902rc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N590jXAm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C93E4E1CC
-	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 11:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8E56BFD4;
+	Tue, 26 Mar 2024 12:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711453489; cv=none; b=t4k9O8TbsPutdgZMueL0/DdbJs6wYlWyeuE84iBVAj1gvbg+qPiT7bwVEjq/8oysTI7a2YQ6ars1B5qqaOc7pNllYhcI1zzqNIal4M22JZ2J1RzAi5jnwZGE46t5lxnp6X6TQ6B8fBHlXm9xXVlpNmL1h29GQUovnt/JrspHNX4=
+	t=1711455367; cv=none; b=adrSxmzd3lCYNnynkYg9Af3kiPKrXD5YoXZZx+9zozs/OdBtWGSbAjXyRYkkwvDvQxMQZ481GfS7RJP8DSdRKn8nxHyJ2NYuCXXTdg2IpRCWbPuoqOfYfCkJS3tQ+LGZY8SlpqtqYI0uSfkaQJmbRfBRgJExKqQIGg7pOZycsRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711453489; c=relaxed/simple;
-	bh=TPWhwv+KRlzro9i+G8q+7WgX8bFtID9eaqSCRuZ9k0U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WZVuHsruRdiiwSPIMglZh2cZyvLtJB9Y+A1KoKzpKHuxDf20OLyMSRime5j32dDu6CiLAl55xdu9RNkNfebwoQB3Y8nIGLyAllW9+7y6K6I6A4jXl+PtSanst/am0tVz5v+qIf6YiORl6Uj5Y6GySoCT2ZNrsioV93Kd4qm9usY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e/E902rc; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dcc80d6006aso5105711276.0
-        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 04:44:47 -0700 (PDT)
+	s=arc-20240116; t=1711455367; c=relaxed/simple;
+	bh=XcYTGNUP0d/t/YLHu//d62nSyNh2driN4jDgcinv76U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PSEnMzAv0MfLWUG18j5TW44K8bWEhGfHnjeMNliqTnTjOrVzgbCkjZkNNZ1b01H2Jpvb7zszZrQIokp5t0EzsA1cTiXOKJD9gmxQ7OE/Pk37qAJDnhhndxQaBTSn2o4rXv9bjUXU/90KosM0usyUBl67fsYbxX+BX4L3Yjkmifg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N590jXAm; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513d599dbabso7106272e87.1;
+        Tue, 26 Mar 2024 05:16:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711453487; x=1712058287; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BfBBobQhbSAjaX8cbUm1iPx6XRVWHf0Hxnofb3snX04=;
-        b=e/E902rcoK6lKu76/5fKrq/W/yEWigitVZNzjK6KLES4JbcBg+jH4dTqaYpuyk8b1g
-         bl+mb1KeIpFlVBNzr9Ufkznbo1zERhHC7hLS8HpUfk5X/0Sh681Dblt3Pw7dvtKwShUy
-         k9zeJJGjvj77LKeWW5j6xgN/akL27HLHeKGDrEcscYKKr8KqObit7cNmDkHhIEu8l+FN
-         qpdgcQpgD78hD5GwIPZ8DDRUzpS/ETzEK4m3Fh/tCZOwJJSDffk+M55B3kSxhd14PBlm
-         ExKGFOJUq2upRiGaAURoBO0L3zfTz3NOALakp+baVXYqsm7ZXOSclh7IWmjx1aW3yTuU
-         SpXg==
+        d=gmail.com; s=20230601; t=1711455363; x=1712060163; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JDPy0oZRU/yyYmSQH7wJjbHAam1AVRGf91TfaaWf3iM=;
+        b=N590jXAmZUzpHhWCgaawb5SA82m97+4hvJJ8aTQb0eNs1Mj2wP3i9vkDKNw4jQQ5u5
+         mb3G8W77wt9Lu/V5O9sMP1yNMnrEdGOqKcTDW0jj7aaIMFFyy/ILlXYOsud8hOcQemfT
+         5HyLCdAPUBUEyhwbXw3VjD1atWtvsGzbPka9GEWk+ISQ656GUQNXTR2d0nfA964Dl2yG
+         3HM6+FGEONRInOJWoKZtzFPR+ZWupIzXCwtZvNxGjTrChicNuG8bJ6nl/ydhibZTVmI/
+         9dvRy6Bnm+M+AmfzmFCxHOw+XwN31ows3KiQbBTY1GOePHX3TBdRFNHdlsJEjb0NCL8U
+         KyQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711453487; x=1712058287;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711455363; x=1712060163;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BfBBobQhbSAjaX8cbUm1iPx6XRVWHf0Hxnofb3snX04=;
-        b=XJoG0xgGq9yf+67fsR4e4gmfejwEwo7YCkUWlcRLaL2p48wYWQ7+XrmmEP7WBiNGk/
-         Rz7pDIoXMDnfIUMzIh+ehmCefg4NrgF8xbfeuiJpfNU69AwTrynClruupcQTFJvIEhPr
-         5sXX2pcq+9Xvw9Kp0jRYrbMRdFh6XgpvlOU7dC4Dc2uYJYvHZaZDrnk0AAMEiQA3tdgs
-         SUX93InrmoDi17PmMJEfP+4AZBd4/oiFChiQzqmjTvsBDyAvFm1z2Ee1aPe1XxvH9YVR
-         /GlYC+GUicwtW7kasLSDtOfzvqecbMr0RAB8/wQ6EWDTisZ5hBYnIVWVjX8m+DWaheHP
-         1jNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWzFeOHOoiTd4R8pVq1+nVXbl/HNdaN5UzZxMpkLJB8Meia8Ftl8f8xjVSjOf6ZuL5K3UqOtOdLA7mhbSdIx5jj0Q7I4GlB
-X-Gm-Message-State: AOJu0YxJrdxBR3bkSAQcw7sx7ajTXELLWqj56rbN1RsImpTj6I7iET23
-	iKtJAifRuGFH+a9B5KoVh3ZkoYRPxDkUxDwzBVOzeiBZqe1H/WHRe/NxOCgKHjuxhLtEnnrVJwc
-	GeIszbR/bETNQc+BPVByHXrUqIVWNrGszffkf4w==
-X-Google-Smtp-Source: AGHT+IGV/IldNegl7UYglh8OXyeCtrfkDEESctYYnN7ssFWk68NS2pWqE1mYEGrxWJii7Mh94ms6U2padYaxYpTntPM=
-X-Received: by 2002:a25:ac8e:0:b0:dc6:d6f6:cc13 with SMTP id
- x14-20020a25ac8e000000b00dc6d6f6cc13mr7595962ybi.20.1711453487051; Tue, 26
- Mar 2024 04:44:47 -0700 (PDT)
+        bh=JDPy0oZRU/yyYmSQH7wJjbHAam1AVRGf91TfaaWf3iM=;
+        b=QRIjaaBvUjDQRitcUcEBtzS7HUsoWBVmRIjBBw6Vk2mx+zvOO8llwUos5lmSp5Kq7U
+         u4wJJ8koOC9Vh4KyTmqVT29VTFYOlDwzBKvMJX50Ush0hWa2LeaVSMDBCsyHzQkrMtrn
+         MLCNNkoWjbpWNGAmoBQf1IsP24d1VI0cVYiW7V4tzeXSXWXXbg7f/qG2OgTOj2upBahh
+         oIpaGrlwlMHaAKKtndm2ydda70K94BgK+n0BDjzEXwvB53rpKyFVMGC+Wp6zWbzqXHiH
+         US8Wralv+zl6jdPWONL5+H0g6/7twOhRKTwNmAztlpHJ+W41mzb6Kx4EXBSsd/sDpEiN
+         eM6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXwD4juMiwRGwS3iNhnk1c4Hmtv/WepoZrEnLkU7V2r5E/7KXFOIUtKjr7f/WIA05BMXGzqMaYxtSoALJmqkVCRLTul6J+JI75HuagdWtp4oeASWoxW709/BwSXaiaIhqb34pak2wsQesk8F0cl18P/4YjUf5eBKMLYK9ymcfSS
+X-Gm-Message-State: AOJu0YzC7PaTNWQogtbxTguzeDLaZ8vZ0LyoL6o5355WOjCd0OUrJiin
+	2CtENmJ63FC5wdJTIetcxfIPgzn3ciTqaRqjhp04J2+1OErUd5qK
+X-Google-Smtp-Source: AGHT+IGm30vxu7t2G0cwSlNM3BcJUW4wMMIUuxjWdKbyljp5HFXxsVAW9BFsAWEaPWqZKYTzvO2nvQ==
+X-Received: by 2002:a19:430c:0:b0:515:9ee7:ce45 with SMTP id q12-20020a19430c000000b005159ee7ce45mr6522025lfa.49.1711455362846;
+        Tue, 26 Mar 2024 05:16:02 -0700 (PDT)
+Received: from [192.168.1.253] (57657817.catv.pool.telekom.hu. [87.101.120.23])
+        by smtp.googlemail.com with ESMTPSA id x18-20020adfffd2000000b0034181bea3b0sm12096616wrs.3.2024.03.26.05.16.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 05:16:02 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Tue, 26 Mar 2024 13:15:51 +0100
+Subject: [PATCH v2] clk: qcom: clk-alpha-pll: fix rate setting for Stromer
+ PLLs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313-qcom-ucsi-fixes-v1-0-74d90cb48a00@linaro.org>
- <Zf12vSHvDiFTufLE@hovoldconsulting.com> <CAA8EJprAzy41pn7RMtRgbA-3MO8LoMf8UXQqJ3hD-SzHS_=AOg@mail.gmail.com>
- <ZgKKPyLUr8qoMi9t@hovoldconsulting.com> <CAA8EJpqwYrskXMLyyYwW_4e-NXPPS0+MGbumEvXXNwj0p1u12A@mail.gmail.com>
-In-Reply-To: <CAA8EJpqwYrskXMLyyYwW_4e-NXPPS0+MGbumEvXXNwj0p1u12A@mail.gmail.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 26 Mar 2024 13:44:35 +0200
-Message-ID: <CAA8EJpoUwcyEkQJoX2X0tnbXZQ3F=HbcWuhsiyRdSqypyqRHNQ@mail.gmail.com>
-Subject: Re: [PATCH 0/7] usb: typec: ucsi: fix several issues manifesting on
- Qualcomm platforms
-To: Johan Hovold <johan@kernel.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Bjorn Andersson <andersson@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240326-alpha-pll-fix-stromer-set-rate-v2-1-48ae83af71c8@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAHa8AmYC/42NTQqDMBBGryKz7pT8qbSr3qO4iHbUQDRhEqRFv
+ HtTT9Dl+/h4b4dE7CjBvdqBaXPJhbWAulQwzHadCN2rMCihjNDKoPVxthi9x9G9MWUOCzEmysg
+ 2E5pW6bahRplRQJFEpvI7A8+u8OxSDvw5e5v8rX+rN4kSta570cu6VfL2mBbr/HUIC3THcXwBD
+ JLSg8wAAAA=
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Varadarajan Narayanan <quic_varada@quicinc.com>, 
+ Sricharan R <quic_srichara@quicinc.com>, 
+ Kathiravan T <quic_kathirav@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.13.0
 
-On Tue, 26 Mar 2024 at 12:22, Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Tue, 26 Mar 2024 at 10:41, Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Mon, Mar 25, 2024 at 10:56:21PM +0200, Dmitry Baryshkov wrote:
-> > > On Fri, 22 Mar 2024 at 14:16, Johan Hovold <johan@kernel.org> wrote:
-> >
-> > > > I just gave this series a quick spin on my X13s and it seems there are
-> > > > still some issues that needs to be resolved before merging at least the
-> > > > final patch in this series:
-> > > >
-> > > > [    7.786167] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> > > > [    7.786445] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> > > > [    7.883493] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> > > > [    7.883614] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> > > > [    7.905194] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> > > > [    7.905295] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> > > > [    7.913340] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: unknown error 0
-> > > > [    7.913409] ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: UCSI_GET_PDOS failed (-5)
-> > >
-> > > I have traced what is causing these messages. During UCSI startup the
-> > > ucsi_register_port() function queries for PDOs associated with the
-> > > on-board USB-C port. This is allowed by the spec. Qualcomm firmware
-> > > detects that there is no PD-device connected and instead of returning
-> > > corresponding set of PDOs returns Eerror Indicator set to 1b but then
-> > > it returns zero error status in response to GET_ERROR_STATUS, causing
-> > > "unknown error 0" code. I have checked the PPM, it doesn't even have
-> > > the code to set the error status properly in this case (not to mention
-> > > that asking for device's PDOs should not be an error, unless the
-> > > command is inappropriate for the target.
-> > >
-> > > Thus said, I think the driver is behaving correctly. Granted that
-> > > these messages are harmless, we can ignore them for now. I'll later
-> > > check if we can update PD information for the device's ports when PD
-> > > device is attached. I have verified that once the PD device is
-> > > attached, corresponding GET_PDOS command returns correct set of PD
-> > > objects. Ccurrently the driver registers usb_power_delivery devices,
-> > > but with neither source nor sink set of capabilities.
-> > >
-> > > An alternative option is to drop patches 4 and 5, keeping
-> > > 'NO_PARTNER_PDOS' quirk equivalent to 'don't send GET_PDOS at all'.
-> > > However I'd like to abstain from this option, since it doesn't allow
-> > > us to check PD capabilities of the attached device.
-> > >
-> > > Heikki, Johan, WDYT?
-> >
-> > Whatever you do, you need to suppress those errors above before enabling
-> > anything more on sc8280xp (e.g. even if it means adding a quirk to the
-> > driver).
->
-> Why? The errors are legitimate.
+The clk_alpha_pll_stromer_set_rate() function writes inproper
+values into the ALPHA_VAL{,_U} registers which results in wrong
+clock rates when the alpha value is used.
 
-Just to expand my answer. We have the 'driver should be quiet by
-default' policy. Which usually means that there should be no 'foo
-registered' or 'foo bound' messages if everything goes smooth. We do
-not have 'don't warn about manufacturer issues' or 'don't barf if
-firmware returns an error' kind of requirements. We can be nicer and
-skip something if we know that it may return an error. But we don't
-have to.
+The broken behaviour can be seen on IPQ5018 for example, when
+dynamic scaling sets the CPU frequency to 800000 KHz. In this
+case the CPU cores are running only at 792031 KHz:
 
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  792031
 
---
-With best wishes
-Dmitry
+This happens because the function ignores the fact that the alpha
+value calculated by the alpha_pll_round_rate() function is only
+32 bits wide which must be extended to 40 bits if it is used on
+a hardware which supports 40 bits wide values.
+
+Extend the clk_alpha_pll_stromer_set_rate() function to convert
+the alpha value to 40 bits before wrinting that into the registers
+in order to ensure that the hardware really uses the requested rate.
+
+After the change the CPU frequency is correct:
+
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  800000
+
+Cc: stable@vger.kernel.org
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+Changes in v2:
+  - fix subject prefix
+  - rebase on v6.9-rc1
+  - Link to v1: https://lore.kernel.org/r/20240324-alpha-pll-fix-stromer-set-rate-v1-1-335b0b157219@gmail.com
+
+Depends on the following patch:
+  https://lore.kernel.org/r/20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com
+---
+ drivers/clk/qcom/clk-alpha-pll.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 8a412ef47e163..8e98198d4b4b6 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2490,6 +2490,10 @@ static int clk_alpha_pll_stromer_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	rate = alpha_pll_round_rate(rate, prate, &l, &a, ALPHA_REG_BITWIDTH);
+ 
+ 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++
++	if (ALPHA_REG_BITWIDTH > ALPHA_BITWIDTH)
++		a <<= ALPHA_REG_BITWIDTH - ALPHA_BITWIDTH;
++
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+ 		     a >> ALPHA_BITWIDTH);
+
+---
+base-commit: 5eab983c5e31e5f0bf2d583731e320e21814d1b7
+change-id: 20240324-alpha-pll-fix-stromer-set-rate-472376e624f0
+
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
+
 
