@@ -1,72 +1,86 @@
-Return-Path: <stable+bounces-32287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0696988BAF8
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:09:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413CB88BB29
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B353F2E2148
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB0F1C2C5BE
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 07:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9650712DD8E;
-	Tue, 26 Mar 2024 07:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192B7130A66;
+	Tue, 26 Mar 2024 07:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2tAol0C"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S5t9B9JF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464CD128394;
-	Tue, 26 Mar 2024 07:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9D130485
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 07:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711436956; cv=none; b=HYWEv5sBLDK8sQq+zWyBntE+e0QPxtiBL3ES0yNCw2b6JCgDHt05MxXS8yb+f3nFXrayXwtsWWB897Mrrsfcdcxa5eoMc3kfD7/8uWIN+dLvULBIYYbseDVma1wIgren1a2bibZxbAz0poevFf1dujchx/n2uutrIdQSow/9u8o=
+	t=1711437921; cv=none; b=XkLkpGnOLHwgDAF5D02mZAJqYUIXyTL811TWQmLLDCXxCDwaIt/OCqWmKA/2xF5Z/0n2a8HUAAhQ5kGFKliDNDqYiHgVJkr70S/nbbzFq/lsCcOobwoTPDto6Q0RSULQ3TEYg9eLVAuIZrz0kv2qpEPKSx3Ev8T7iaedSZvgLB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711436956; c=relaxed/simple;
-	bh=S1+D5CctG8AMUv6EK6M5WzyBfkPV4fTXRAVv7FJqFkI=;
+	s=arc-20240116; t=1711437921; c=relaxed/simple;
+	bh=RCJd7q0o3ZJEoAOEbM8/cHPtVvSmD4lVXiyFy7D0BdQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KUkEz95uDrswXKzl8dxd1FwfF8krHFXgd3wPFl2hvUnyZrxL+NjDzBiWxAK65++z45FYp4IxTPOiBI1FBnp3FXF5G+Df8pEZkPdD7nB020a+TEsY/GgBTIicSwW0t++DY2iwKGBy+B2mIY1VYzIPscfCnpla8sw+WtziyTyxJfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2tAol0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AE2C433C7;
-	Tue, 26 Mar 2024 07:09:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711436955;
-	bh=S1+D5CctG8AMUv6EK6M5WzyBfkPV4fTXRAVv7FJqFkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o2tAol0CxU9tomWHC/iz/dFozSU/D59ojiuI/3zLTetuGVO/oo53gqCkFAjGte4fo
-	 OgTaF/oL32d4rpcz4jpKxZ5qi4ho8M8KM9iM4rPJq2fb2+eAacq7uAMh2B0rfyd4TQ
-	 C9doQKhvnHmOfXgHKXqXMB8jGLcbieY0ce5C83YP/2Jxx84vYPC+DVXF047sSClPjs
-	 qctSgRjmbz1s35PsYz8G6J1n+Qp/XNJ64DuBVX5iBJgzFsaYGXWGlffbT0c8nLgsHi
-	 30MWDlByuga01WNoMg8HG18fZTn3QX7dUxzxfd+VOb/wNDdnj3zPrsV22u2ZZaURBW
-	 WjuEBLEm8qkyQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rp0vy-000000004q7-21w1;
-	Tue, 26 Mar 2024 08:09:23 +0100
-Date: Tue, 26 Mar 2024 08:09:22 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
- exists in DT"
-Message-ID: <ZgJ0okobGv5nPreG@hovoldconsulting.com>
-References: <CABBYNZJV1htg46Gyu=7_iUWdukM+rHLitsLjxmWWYFGXty3tVw@mail.gmail.com>
- <ZfMStHjwtCT1SW3z@hovoldconsulting.com>
- <964131ff-293d-47d1-8119-a389fa21f385@leemhuis.info>
- <CABBYNZJ0ukd_8=SFzy8CEwgP7hV5unodca0NZ2zDZh+jPJsEFQ@mail.gmail.com>
- <ZgGzWWV4Lh2Nal--@hovoldconsulting.com>
- <CABBYNZJaXUhu1A+NyVT-TAJw49zcV6TMdGeVy2F+AVKWBOVC-g@mail.gmail.com>
- <ZgHVFjAZ1uqEiUa2@hovoldconsulting.com>
- <CABBYNZJUVhNKVD=s+=eYJ1q+j1W8rVSRqM4bKPbxT=TKrnZdoQ@mail.gmail.com>
- <ZgHbPo57UKUxK7G8@hovoldconsulting.com>
- <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dWqqg9M3WBMKgpQHo7mamgFcvQvOEB8YK4vwEO9drZMFxZ0w9sLPM2DQLTPyV1UJheyPB64lWOLq0tgO0fbTFA3G5nny9w8OWRmd5jiHNt15IXSpxFpfbPwIJw6V+PndI6oOzwKsbghPT208rvdQg38wLDkihplBAqXN5xyAj3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S5t9B9JF; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6eabbce2d15so172538b3a.2
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 00:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711437919; x=1712042719; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ziezrdSsh0z8yLzL6N5wKqOMM+Xy/az5Lcsk/lp8gTM=;
+        b=S5t9B9JF+F9ogctCTfN/kOz9bx+j2nIIIW3LXPRQoKp2Kqpbtc+IKHq5w67wAnKWss
+         hzZteIrOjiIjbz2gRNlq8MeYRPjATUjurpLAcG/KNPgM5wGXJrqxc0CjzCW8Ywl6rjBD
+         8BarCTsPD0ZfvkjU9WK2sLP2xZ756FqfUkO2ReMvaAIU811hcUW1nBRpDp72BRBKIhzv
+         mZkav0Pc66SYqVu/MuR9Xoy5wanFaB5jsW63A6xmsuMiruDDWbXvoxeER4kY9t70I4ox
+         F4zpyTa6aLTfsW6WhNsFpU1RQ6cV8ADucjEdnaCIzYfnzwH7/qW5SuJgAfFi38skEHA9
+         /vbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711437919; x=1712042719;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ziezrdSsh0z8yLzL6N5wKqOMM+Xy/az5Lcsk/lp8gTM=;
+        b=fXKtLFfCnWFJQaQB7fx2uVaNY2mXCuVWH0AYqzXPYBOhtoItv9S138GoTc2HphG5Lh
+         2GxDkMNU9bP7dMqexPePCxu+N1iYAALZtHe6aVldZbcsnOnQRvSqPM7Po2kqg8e8hN68
+         klLbilUXwWM0zHlwHvwggCBUg0/HlBIjIU3vuFycsHqzv/Mdzz/7gCuotO8xaEDlmanm
+         2RQihdQZmUWFS1XPQSvw/8ruYSC0xQ7GEzHiQKZ7nQaJ2uk+qhiWpJaNGSUx9KoE40dt
+         qc3V07SXyjYsamwlZ8R3jpjWKg/qGcsO3+8UhEXwEoOB6Nl1mS0SPqigZQu/u3SpaBnX
+         GYpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWnu6ujQF33D+tzrWNwhG7WGtt0RHyxbwMKEnrBOEj/u7bNG77DMIx9yMrhay11OYhwFXVd0eK6pvKXyrdNuzDE48k/pQ6l
+X-Gm-Message-State: AOJu0YxGOGfoVJjQB2bU/cn+aKlKP0Dqg0f8/lL5e9B++GE91mkyZnz1
+	055vbEvqzCXaGtMQigems0iPepkhpDX3efOg/8T86HrmQPYQTiJ5NVgZHSZasA==
+X-Google-Smtp-Source: AGHT+IHWfgFpUSpNvP9uI3sCuKgKc8JET+a3gmSe493+ufibi13U2SnauOugHZJYLmPcovLDrvBtjQ==
+X-Received: by 2002:a05:6a00:1d1b:b0:6ea:bd1a:5dd6 with SMTP id a27-20020a056a001d1b00b006eabd1a5dd6mr483754pfx.32.1711437919416;
+        Tue, 26 Mar 2024 00:25:19 -0700 (PDT)
+Received: from thinkpad ([117.207.28.168])
+        by smtp.gmail.com with ESMTPSA id fh7-20020a056a00390700b006eaacc63435sm2874254pfb.173.2024.03.26.00.25.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Mar 2024 00:25:19 -0700 (PDT)
+Date: Tue, 26 Mar 2024 12:55:12 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Md Sadre Alam <quic_mdalam@quicinc.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in
+ misc_cmd_type in exec_op
+Message-ID: <20240326072512.GA8436@thinkpad>
+References: <20240325103053.24408-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,60 +90,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZJFzDaLdXsdNEP1384JaJEN5E78cgmWfOus_LGOREGsWA@mail.gmail.com>
+In-Reply-To: <20240325103053.24408-1-ansuelsmth@gmail.com>
 
-On Mon, Mar 25, 2024 at 04:31:53PM -0400, Luiz Augusto von Dentz wrote:
-> On Mon, Mar 25, 2024 at 4:14 PM Johan Hovold <johan@kernel.org> wrote:
-> > On Mon, Mar 25, 2024 at 04:07:03PM -0400, Luiz Augusto von Dentz wrote:
-
-> > > Probably needs rebasing:
-> > >
-> > > Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
-> > > error: drivers/bluetooth/hci_qca.c: does not match index
-> > > Patch failed at 0001 Revert "Bluetooth: hci_qca: Set BDA quirk bit if
-> > > fwnode exists in DT"
-> >
-> > I just verified that it applies cleanly to 6.9-rc1.
-> >
-> >         $ git checkout tmp v6.9-rc1
-> >         $ b4 am -sl ZgHVFjAZ1uqEiUa2@hovoldconsulting.com
-> >         ...
-> >         $ git am ./20240314_johan_linaro_revert_bluetooth_hci_qca_set_bda_quirk_bit_if_fwnode_exists_in_dt.mbx
-> >         Applying: Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
-> >         $ b4 am -sl 20240320075554.8178-2-johan+linaro@kernel.org
-> >         ...
-> >         $ git am ./v4_20240320_johan_linaro_bluetooth_qca_fix_device_address_endianness.mbx
-> >         Applying: dt-bindings: bluetooth: add 'qcom,local-bd-address-broken'
-> >         Applying: arm64: dts: qcom: sc7180-trogdor: mark bluetooth address as broken
-> >         Applying: Bluetooth: add quirk for broken address properties
-> >         Applying: Bluetooth: qca: fix device-address endianness
-> >
-> > Do you have anything else in your tree which may interfere? What tree is
-> > that exactly?
+On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote:
+> misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
+> ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
+> reworked and generalized but actually broke the handling of the
+> ERASE_BLOCK command.
 > 
-> bluetooth-next tree, why would it be anything other than that?
+> Additional logic was added to the erase command cycle without clear
+> explaination causing the erase command to be broken on testing it on
+> a ipq806x nandc.
+> 
+> Fix the erase command by reverting the additional logic and only adding
+> the NAND_DEV0_CFG0 additional call (required for erase command).
+> 
+> Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+> Changes v2:
+> - Split this and rework commit description and title
+> 
+>  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
+> index b079605c84d3..19d76e345a49 100644
+> --- a/drivers/mtd/nand/raw/qcom_nandc.c
+> +++ b/drivers/mtd/nand/raw/qcom_nandc.c
+> @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
+>  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+>  
+>  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+> -	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
+> -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+> -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+> +	if (q_op.cmd_reg == OP_BLOCK_ERASE)
+> +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);
 
-I ask because I did not see anything in either the bluetooth or
-bluetooth-next tree which should interfere.
+So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS, 1,
+NAND_BAM_NEXT_SGL)' if q_op.cmd_reg != OP_BLOCK_ERASE. But for q_op.cmd_reg ==
+OP_BLOCK_ERASE, the result is the same.
 
-And I just verified that by applying the revert followed by the series
-to bluetooth-next. In that order it applies just fine, as expected.
+I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
 
-> All the
-> CI automation is done on bluetooth-next and if you are asking to be
-> done via bluetooth tree which is based on the latest rc that is not
-> how things works here, we usually first apply to bluetooth-next and in
-> case it needs to be backported then it later done via pull-request.
+Can you share the actual issue that you are seeing? Like error logs etc...
 
-The revert fixes a regression in 6.7-rc7 and should get to Linus as soon
-as possible and I assume you have some way to get fixes into mainline
-for the current development cycle.
+- Mani
 
-The series fixes a critical bug in the Qualcomm driver and should
-similarly get into mainline as soon as possible to avoid having people
-unknowingly start relying on the broken behaviour (reversed address).
-The bug in this case is older, but since the bug is severe and we're
-only at rc1, I don't think this one should wait for 6.10 either.
-
-Johan
+-- 
+மணிவண்ணன் சதாசிவம்
 
