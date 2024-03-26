@@ -1,103 +1,128 @@
-Return-Path: <stable+bounces-32295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D4D88BCBB
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:47:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD9E88BD14
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 10:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938B82E35B0
-	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 08:47:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6AF1B21659
+	for <lists+stable@lfdr.de>; Tue, 26 Mar 2024 09:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9611918B04;
-	Tue, 26 Mar 2024 08:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BE61B960;
+	Tue, 26 Mar 2024 09:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGQgDsUz"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Aak6/QcC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAEB17BA6;
-	Tue, 26 Mar 2024 08:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146482575B
+	for <stable@vger.kernel.org>; Tue, 26 Mar 2024 09:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711442814; cv=none; b=eC496dHncvMtlPZO5NQi2o4F0qZ3+e/6c2K5bxGn6PnZ1VV8IudWSIIyHMSS3P+Kzw1RQqKg/8K2WzpXP2YKnrxRy/VDdTE7p7wMLItWqBBmkp0A5XvVUfQSQ4SWLnN2gWn91teQSurP2xCk2fkILvTeXnkWWSL+tNdTyuZI2bc=
+	t=1711443669; cv=none; b=WOj5hZ/MNYaIxmUoeUI7ZMFlUNw9UPJtyi2edzcOBrLhmXHbCkQbi+rmcrPQQq7Gg6y9W2iTPh/Z8LMIv+TtnEqt8gf6dUHhnInkbLbIddJecH/xuL7XLhmgpDQkD9YcWTAG0bg1tYBHvj1Y2v1nE6mv2/tf65d0CGoxBR0gVdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711442814; c=relaxed/simple;
-	bh=D5m0ZG9RCn4nBm+14VdPQyaCMy22RRj8GUHoQnlgo58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lBAukXECWJi2E7r5gDfgIyflbh6Sj8PBNucfo54lR6s3+eA0/pi+7CP7chyzr+cFoIxzMsdd0uyZYbMil/TaUkB1+7WKMIjEG6JQ9Ewb0TrEYUKlfHI2zJIjgQYXXuv7uLfvuCspsADnL+wdq8NAaI3tdyUCb6rmiWM163OleyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGQgDsUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E4BC43390;
-	Tue, 26 Mar 2024 08:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711442813;
-	bh=D5m0ZG9RCn4nBm+14VdPQyaCMy22RRj8GUHoQnlgo58=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MGQgDsUzOh85KnHUXSzUCF4JBzoNz0X/+wL6VV+TkvqUpFclLdvHhdHWI931bS3HM
-	 7J2pB9RXs6V6jBHYMJQDuaE/9ecfso72XIRiYkTXalNdydF34/iWqaZGU2W5U08O1R
-	 JZZ25FrnP3g6bYmTBc2RNHkpxax3guUf6Gggs+9NF5y/DAI1V+VJNgmLAmXeSY2Mh6
-	 GcUbY07QeHx2Vp17h5oC+EegH+PY6QOo27eHPP+lM/hI8sIT7sCaU6CCF9xyQ0q6i/
-	 2w5Vb417xg3GZWbp+mRcVauDW28h/QvRKn/NOWVRoEM58DB5Eqe14aXmV3tARLdtGU
-	 fX/jmT1lmIRPw==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d68651e253so84912521fa.0;
-        Tue, 26 Mar 2024 01:46:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWynWRe7ScWUfkKQTb4hHojhvl7lFU1aZOJXVdQU1RxIs5Bj/1Fu9j45J2DUkPjVqKtHenZwNAh1NotRE6bKFQ0DLfjz4PLI6IZsSBt+zquVOJUkexx4lSEvI5g41VM6x8JN0uRE7O0TtFqXmTITpnrsr9Dp5hU+PFu/7acs5IKog==
-X-Gm-Message-State: AOJu0YxFxpEB4EEE3PzyqVGTL9PHrSdR+AC7NktZsuNvBWUmXNvhw6VK
-	bwXcfQsfcoizeQNJyms0Nsl/RFRY/5w9QI4xYT5K8ufOqmsV/I8NRXFAVLoxQ2MJXULpMLskR9r
-	AIPEn/C/YREzWUMnNj3rqDp8lvw8=
-X-Google-Smtp-Source: AGHT+IHTYZhU4AuzglO/Tss8SBqXtC85d+iybnnr6HV5QnZ2k+bE8F3ypVPeOaFi/iVVRvayMUjGaymwh3LLa5f0OmE=
-X-Received: by 2002:a2e:a4ae:0:b0:2d4:a925:d5bc with SMTP id
- g14-20020a2ea4ae000000b002d4a925d5bcmr5329014ljm.16.1711442812199; Tue, 26
- Mar 2024 01:46:52 -0700 (PDT)
+	s=arc-20240116; t=1711443669; c=relaxed/simple;
+	bh=KKF/etnlAV4Vo3CaEiBAQT7vC0jCBkZ2PL192e0ugq8=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=dm4iMp46nwR+MBl1gr8zqt6YO1eLfQ4HFTVPuZM7O70SJ57HrMm6PC4mWG/AyqJcHglugTUt2SRIZwxXKGQgTAFgjLjjRxRqvUZMve1XLGItf1zWXytryPWFhVV460J8hZvfh6Ae5IldWtR2UJxNgnQcFRARCOLV0tmSZCYVpP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Aak6/QcC; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+	by cmsmtp with ESMTPS
+	id ocSgr2Xual9dRp2g0rRSs7; Tue, 26 Mar 2024 09:01:00 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id p2fzrG9oIsT9Bp2fzrLt0Z; Tue, 26 Mar 2024 09:01:00 +0000
+X-Authority-Analysis: v=2.4 cv=LIutQ4W9 c=1 sm=1 tr=0 ts=66028ecc
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=8TK6sc/s+cs5hpXijczBVPYRK+UzTbR5M4d+vTT+vRI=; b=Aak6/QcCwmzWh09DWXAuMCYp3X
+	4PQKxhPkHrm2EyprFKM/bgKb4o5th2V1I7JoVM3RNJFkJUhtMUcGFlTT3oUlyzI2/bhKvevYRzwRB
+	J4bFjFGeBMmgGyzSNVSt3GQhk2uiQGPllxpkrHEON0ILPkEzFiSHFi4jd7iHDAk/zTTPNKw+qiCaB
+	qc99L75lW3UWMft0Gv2iorZgJYyAt0Krb9MxxnaeF6fjztkvnjz0bEgmAOXmGWRMW/C/ILTSiDXhq
+	E1GcxYl37GNegNx9PUNRbAFO3+UUgm7CqEZ8L2p94vJteTSTbkTbzWcbVnoAf+woL58dgrATJRI2V
+	ZnctS+4w==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53476 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rp2fy-001LV7-2z;
+	Tue, 26 Mar 2024 03:00:58 -0600
+Subject: Re: [PATCH 6.8 000/710] 6.8.2-rc2 review
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, florian.fainelli@broadcom.com, pavel@denx.de
+References: <20240325120018.1768449-1-sashal@kernel.org>
+In-Reply-To: <20240325120018.1768449-1-sashal@kernel.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <ca0c2ac9-2328-5db3-feab-77dc3c4da733@w6rz.net>
+Date: Tue, 26 Mar 2024 02:00:57 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324234027.1354210-1-sashal@kernel.org> <20240324234027.1354210-34-sashal@kernel.org>
- <20240325010435.GA23652@lst.de> <ZgFfc2b6VsX_QSu4@sashalap> <20240326074029.GB9773@lst.de>
-In-Reply-To: <20240326074029.GB9773@lst.de>
-From: Song Liu <song@kernel.org>
-Date: Tue, 26 Mar 2024 01:46:40 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW7FREFLrAnt2iYDRoJG0d=OXm-5vy3OCJ7MOJDp2SE9GQ@mail.gmail.com>
-Message-ID: <CAPhsuW7FREFLrAnt2iYDRoJG0d=OXm-5vy3OCJ7MOJDp2SE9GQ@mail.gmail.com>
-Subject: Re: [PATCH 5.10 033/238] md: implement ->set_read_only to hook into
- BLKROSET processing
-To: Christoph Hellwig <hch@lst.de>, linux-raid <linux-raid@vger.kernel.org>, 
-	Li Nan <linan666@huaweicloud.com>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rp2fy-001LV7-2z
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53476
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 3
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOI6MjppmDyT7nyRoAsKVCjJMrDvr3JDv3KG4uAxHDsbTG5VOg1l/2L/NJRD0fActbMfelX20kQ40rBUO4fj3DcjzqHP62lpPVVikm3mJLe4mQlI+tTx
+ +ThklXs122AevnB4uyVWuWuppcaU3S/RnyJKlX/v719+KsJgjHtfkLhvHAhochrlqGax5IewXZmypA==
 
-Hi Li Nan,
-
-Could you please look into this (back port 9674f54e41ff to older stable
-kernels)? If there is no clean back port, I would recommend we not do
-the back port.
-
-Thanks,
-Song
-
-On Tue, Mar 26, 2024 at 12:40=E2=80=AFAM Christoph Hellwig <hch@lst.de> wro=
-te:
+On 3/25/24 5:00 AM, Sasha Levin wrote:
+> This is the start of the stable review cycle for the 6.8.2 release.
+> There are 710 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On Mon, Mar 25, 2024 at 07:26:43AM -0400, Sasha Levin wrote:
-> > On Mon, Mar 25, 2024 at 02:04:35AM +0100, Christoph Hellwig wrote:
-> >> How did we end up backporting all these block layer API changes?
-> >
-> > They were brought in as a dependency for 9674f54e41ff ("md: Don't clear
-> > MD_CLOSING when the raid is about to stop").
-> >
-> > It's possible to work around bringing them during backport, but I
-> > preferred to bring the dependencies instead.
+> Responses should be made by Wed Mar 27 12:00:13 PM UTC 2024.
+> Anything received after that time might be too late.
 >
-> I really don't see what these giant backports bring us.  If people
-> want all the changes they'd just be better off on a modern kernel
-> rather than these frankenkernels.  The automatic backporting is
-> gettind way out of hand.  If the MD maintainers want
-> 9674f54e41ff, maybe they can send a tailor made backport?
+> The whole patch series can be found in one patch at:
+>          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/patch/?id=linux-6.8.y&id2=v6.8.1
+> or in the git tree and branch at:
+>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> Thanks,
+> Sasha
+
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
 
