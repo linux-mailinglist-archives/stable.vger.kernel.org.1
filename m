@@ -1,47 +1,75 @@
-Return-Path: <stable+bounces-32438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F01A88D486
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 03:28:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD17088D54E
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 05:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81CA1F240E5
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 02:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E5051F2DF43
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 04:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C8A20B0F;
-	Wed, 27 Mar 2024 02:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208D523748;
+	Wed, 27 Mar 2024 04:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Q+w9NU5B"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GbhTlD05"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A229120334;
-	Wed, 27 Mar 2024 02:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2522577D
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 04:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711506491; cv=none; b=puEfXgFJ5CrourBhZzOvQq96B4WYE4RNKtO6kFa8C01TWKreLItMv82DtudK6Ks7PZhP7M8xm6DY4NtjLLXFmNPzryFkz0iDkpMGFAUZ5w6Lg1kzbvZt9mHcawD9XDFxIGCBWUE2XNAA0Vu8QQbkD++i8ZCGHpC/xkWyfELgXKk=
+	t=1711512269; cv=none; b=mKeaWkhTYZgaFNk2m5PztH/wbvOlBg7fGcnjicuKbMX8Xy7sfO2wwbgWiNhRezZK4X2DHCYGZVMFhMwC58R2Xx8y5LP/jsruHxyX88ikGHd2RX/DlP4sDub+d6OsFyFElsHlTZjVR/6rE1qk18oi/FQf/z4Q4DP5mlq+UgMt/hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711506491; c=relaxed/simple;
-	bh=suO/hxHkYIiR7aN5fNMxxIMiIKDf7s7yifppD3JVj0k=;
+	s=arc-20240116; t=1711512269; c=relaxed/simple;
+	bh=dnWx/tOA3ujLDTRjAPgH5cNpRXyNmOoS+V1Uc6WEI74=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UGJDyie/1XsRB9X7ERTb0oh8kx6aTRyov8ZGu6qI0r7vUuNKW30FhT2UZBJVbaZOu95Mgodp3NC+juyjpSLRlF7++11X4pckBi3XqOiExVK+nfjomDdXQVreAywmd53x7dp3n5HomTbCKgLyfEJ5w7K0dRmnn6zbCiU7dnxgF0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Q+w9NU5B; arc=none smtp.client-ip=115.124.30.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1711506481; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=/zfwjKKsw5HeZkRsJXEcqJbxo+5sK1+snEjBOm3OoIY=;
-	b=Q+w9NU5B9Krkmfa+4MMlen2FiZBR713PSX35fsyzFuwIKo2HqxHWA5BAQbbu9P6W4MxsHifoknxTn+YvUCRRSrQIqG+z3tvtgHaU26PYKkfpRqDQVmSpCtNMrsoHk8c+V+p1oZRwVFRaL8fDKoiq4LWXvgnGT4kuDegQPanhGWs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=hengqi@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W3Mvu.x_1711506478;
-Received: from 30.221.148.214(mailfrom:hengqi@linux.alibaba.com fp:SMTPD_---0W3Mvu.x_1711506478)
-          by smtp.aliyun-inc.com;
-          Wed, 27 Mar 2024 10:27:59 +0800
-Message-ID: <bc5a835b-94c8-4500-b05b-0dd32afddbe8@linux.alibaba.com>
-Date: Wed, 27 Mar 2024 10:27:58 +0800
+	 In-Reply-To:Content-Type; b=t72L9n1W9ifDjC6Z5jwV1NA8tJMAmXQ0lBlBW0dwxSXlgEZKfSivknP3aRX13EsxhrcHCnfPMuILcSbZ2dzD9dTibnsK6TbRnFZQiFOw95YU7iVJeOKRE9I3L5sV5leSk1hLFWR6AO1ZCEe3GyuHhxxDeHMCASk0HUFMVHH2vvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GbhTlD05; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-56c404da0ebso11587a12.0
+        for <stable@vger.kernel.org>; Tue, 26 Mar 2024 21:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711512266; x=1712117066; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ylqoaINJKjY6KxvMr7XBu8tTBBrVTZkDyFAlF9BL3/I=;
+        b=GbhTlD059MDl6RkQExk6EVfYd2nP52OEGB+NyDjTpqPS+9wg/zElGUBhQmYwTkbWw3
+         /lZ+TGU2oREu/P+S5+A2mcT2mWTYe2fe0LebhF2XV7qlK7p8Y6aMG3U7CvkSjm/aRaXk
+         8e/7UaIJi2RFVG1s3iP9Ix0glZ3Ykdk9gmpwlFVCTbYHQKdHezQem0zB819iJTudOjOd
+         IZ0v/qFp5dntfZyqxnp+zEeb8klt+M5FeCqjkKYTKvpoUgYc8QP6diCbQCp0LRKV7A6p
+         vVlgyLO16R8h9/MHtcXlAdz4oEUEZSW1URZn6W6OGIs+ISgFuW7DD58PKD/WRtb1o6Gy
+         l2LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711512266; x=1712117066;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ylqoaINJKjY6KxvMr7XBu8tTBBrVTZkDyFAlF9BL3/I=;
+        b=gBLqIeZ/8mgU+RcOAbNHpRxC9R+kNJYwc/yvoRfK3vPywoDeDoIrpJLvU6xBsVv588
+         WXGgamYt34fpW9LCoJ054uh0tPpDH22n5v/2B+ztYdi9i8JBGOl+L/ZF3EVSzNfYA1dG
+         TuGC/mSuHN6NY50XK8ZYCTb9CJ4KRzPBlAXj+QhyXxUpBKPZ4h9AaD65tHu8ROCRPCxa
+         etk0lvPTMLOAGpRe2poWTzJtVkBPMbU20LmfXaMpT4KAIYtqyhutYxEWJL7Apx/3a/kR
+         8qZ6c+bdWrvrsSAQVyaNjDEpt2Ytfbcn9/y7qIH/aS1Z0E0qTVkFyFPCaEP4Eqxu92Hy
+         9b5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVG9pp+keExiOOHNj+Xqh4nsyofJT+XaFwpB1ZgSv//XnDZqFDDo1BXKdQ/KjVkVRpdBTJW+UJYRYF+6jdtaEoV6KVUmbHT
+X-Gm-Message-State: AOJu0YxzykUrmpL+uE+IRZNH+K8LuDEMmUGDaM+v54XGtbsWqUIJGneJ
+	zmzRFyYjpSJO5QLNCn63Y1yfWI0lU4GbOKkPumU3kUKHg6FVYCzz++U3LtkXcPE=
+X-Google-Smtp-Source: AGHT+IHLRvepEW/fgdeY0FRotqmd3js3U30b3tZgzw6lU1Fy65zuTFJVcFKec+SLMfuDkmHNZofZ6A==
+X-Received: by 2002:a17:907:9449:b0:a4e:693:3089 with SMTP id dl9-20020a170907944900b00a4e06933089mr295277ejc.2.1711512266321;
+        Tue, 26 Mar 2024 21:04:26 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.44])
+        by smtp.gmail.com with ESMTPSA id w12-20020a170907270c00b00a469be48551sm4912138ejk.45.2024.03.26.21.04.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Mar 2024 21:04:25 -0700 (PDT)
+Message-ID: <b5938894-3e8b-4928-b82b-f13e5c196f87@linaro.org>
+Date: Wed, 27 Mar 2024 05:04:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,113 +77,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] virtio_net: Do not send RSS key if it is not
- supported
-To: Breno Leitao <leitao@debian.org>, xuanzhuo@linux.alibaba.com,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>
-Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org,
- "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20240326151911.2155689-1-leitao@debian.org>
- <20240326151911.2155689-2-leitao@debian.org>
-From: Heng Qi <hengqi@linux.alibaba.com>
-In-Reply-To: <20240326151911.2155689-2-leitao@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 0/3] QCM2290 LMH
+To: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Thara Gopinath
+ <thara.gopinath@gmail.com>, Amit Kucheria <amitk@kernel.org>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org,
+ Loic Poulain <loic.poulain@linaro.org>
+References: <20240308-topic-rb1_lmh-v2-0-bac3914b0fe3@linaro.org>
+ <d8ed4e6c-549f-4c04-b38a-2d788df8b707@notapiano>
+ <dbe90a1c-bac2-4176-8eba-7ad96a182313@linaro.org>
+ <8e0cc005-0b3a-4475-bfe4-82ec46d918a5@notapiano>
+ <68dbebe0-acaa-40f0-9a5c-fd49d265ae08@linaro.org>
+ <33cb5ab6-1b15-4903-a5fa-f0d2f86fb438@notapiano>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <33cb5ab6-1b15-4903-a5fa-f0d2f86fb438@notapiano>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+On 26/03/2024 15:07, Nícolas F. R. A. Prado wrote:
+>> Other reports, like for cases when only parts of patch is applied, could
+>> be also useful but I am afraid you will generate way too much of them.
+>> Binding is supposed to go via subsystem, DTS via SoC, so basically 90%
+>> of patchsets might have some sort of delays resulting in dtbs_check
+>> false positive warnings.
+>>
+>> For my SoC I check my trees, mainline and next, and keep adding list of
+>> exceptions for expected issues. What's useful for Qualcomm? Konrad,
+> 
+> Is that list of exceptions in-tree? If there are known false-positives (issues
 
+None of the warnings - C, sparse, smatch, coccinelle, Coverity, dtc,
+dtbs_check - are stored in-tree. I don't think dtbs_check should be here
+exception, because all these warnings can be fixed - it's just a matter
+of effort. ARM64 Exynos is warning free since a year. ARM Exynos
+similarly, but with one undocumented compatible and few bumps due to
+intra-cycle DTS changes.
 
-在 2024/3/26 下午11:19, Breno Leitao 写道:
-> There is a bug when setting the RSS options in virtio_net that can break
-> the whole machine, getting the kernel into an infinite loop.
->
-> Running the following command in any QEMU virtual machine with virtionet
-> will reproduce this problem:
->
->      # ethtool -X eth0  hfunc toeplitz
->
-> This is how the problem happens:
->
-> 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
->
-> 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
->
-> 3) virtnet_commit_rss_command() populates 4 entries for the rss
-> scatter-gather
->
-> 4) Since the command above does not have a key, then the last
-> scatter-gatter entry will be zeroed, since rss_key_size == 0.
-> sg_buf_size = vi->rss_key_size;
->
-> 5) This buffer is passed to qemu, but qemu is not happy with a buffer
-> with zero length, and do the following in virtqueue_map_desc() (QEMU
-> function):
->
->    if (!sz) {
->        virtio_error(vdev, "virtio: zero sized buffers are not allowed");
->
-> 6) virtio_error() (also QEMU function) set the device as broken
->
->      vdev->broken = true;
->
-> 7) Qemu bails out, and do not repond this crazy kernel.
->
-> 8) The kernel is waiting for the response to come back (function
-> virtnet_send_command())
->
-> 9) The kernel is waiting doing the following :
->
->        while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-> 	     !virtqueue_is_broken(vi->cvq))
-> 	      cpu_relax();
->
-> 10) None of the following functions above is true, thus, the kernel
-> loops here forever. Keeping in mind that virtqueue_is_broken() does
-> not look at the qemu `vdev->broken`, so, it never realizes that the
-> vitio is broken at QEMU side.
->
-> Fix it by not sending RSS commands if the feature is not available in
-> the device.
->
-> Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-> Cc: stable@vger.kernel.org
-> Cc: qemu-devel@nongnu.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->   drivers/net/virtio_net.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index c640fdf28fc5..e6b0eaf08ac2 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -3809,6 +3809,9 @@ static int virtnet_set_rxfh(struct net_device *dev,
->   	struct virtnet_info *vi = netdev_priv(dev);
->   	int i;
->   
-> +	if (!vi->has_rss && !vi->has_rss_hash_report)
-> +		return -EOPNOTSUPP;
-> +
+> that can't be "properly" fixed), they should be public knowledge. And if we all
 
-Why not make the second patch as the first, this seems to work better.
-Or squash them into one patch.
+They are "public":
+https://github.com/krzk/tools/blob/master/buildbot/master_build_common.py#L26
 
-Apart from these and Xuan's comments.
+but I don't know how to make them public and usable knowledge.
 
-For series:
-
-         Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-
-Regards,
-Heng
-
->   	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
->   	    rxfh->hfunc != ETH_RSS_HASH_TOP)
->   		return -EOPNOTSUPP;
+Best regards,
+Krzysztof
 
 
