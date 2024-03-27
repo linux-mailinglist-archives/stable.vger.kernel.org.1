@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-32969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF1488E864
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5555488E883
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 981BD1F33A9B
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:20:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E5F1F32C40
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC7B13119A;
-	Wed, 27 Mar 2024 15:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244C4146002;
+	Wed, 27 Mar 2024 15:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8VT8UZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+RkH3Ug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0C912E1CC
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB05A5A4DC
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711551617; cv=none; b=HbK6dMyyRy3XymA2LeT91/Bj0rDDVa9cmJz97fBOsFEte1f3Qjs9EczMrjgbS49W+XlJV5K2NAXcoA7auBmBNMrSE1o0YjqZ5Gv9ZUjpNct04kF2cNnSEcU9rKF8N3DZhgXQcWqWsWljt7fCoGgD0xjfRcqRAQYzrMccfMZjEJ8=
+	t=1711551914; cv=none; b=DIhDnlIidHokakJ5NK0xRWFlplX1ynkMrhjLnkWLYaCxjvXGCW1PRr8CMm7zEVr25tHevYf9dBKK6Ws55NznVOe8q61WaNUTgzwe5f0SjW7Z700UKyWibcYy52aS2PVrQjPE7KNUExvNADtV+HgfePNcUhIKA3O7Vy2cXmoA0FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711551617; c=relaxed/simple;
-	bh=DByAiGpZ31Et5KdUGeGaECxfdy/8Ida/iJAqLtexy3o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GKLEIWy2NbO0qkdzeU/6HoMtnxlApA5KY2t09u8CnT7k/PBfrmJ8b4Zu/BbcTzSC1s+tKjukyQMbVS2c5nUIMQ7k3tQhlGXSfEefQ4sTnWeRDoPWXksA6OIyoOCLC+OAGjRZDBtF7hP7hfD83tNqY1aUPeF+qfzVLLZr+AuiYGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8VT8UZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C66C433F1;
-	Wed, 27 Mar 2024 15:00:16 +0000 (UTC)
+	s=arc-20240116; t=1711551914; c=relaxed/simple;
+	bh=aops87D4HqbwK5G9dG9Don6o0UqSp4pC1D50QOe6zYs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OTvKLhC91inkbkcHek0eTFHZvuU8N184llbIysGb9h9rLntomcB4x1Y2solTY0ZO2XyIsmkxFPqbeHuj923oVzh+h0r6q6lyN7QEANPvhweFw6JpkxxWF0J36Wk2h9YebVOFa+L8Wd2lAx6vsRt6JHy8eNBJjnIslui2XlFZNK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+RkH3Ug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF1DC433F1;
+	Wed, 27 Mar 2024 15:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711551616;
-	bh=DByAiGpZ31Et5KdUGeGaECxfdy/8Ida/iJAqLtexy3o=;
+	s=korg; t=1711551914;
+	bh=aops87D4HqbwK5G9dG9Don6o0UqSp4pC1D50QOe6zYs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=f8VT8UZu5OfOfHQDY8cCsyKfDfLhFUmdE4wiA1Euqheo8Bbgc4FVaTwjZku4nqvpQ
-	 9jtkbDjtMiOSWiSw2Xl/ddJBXztlDJ7bHY2OZVpXoQ9iMuY+lCt3bGVRnVNQIkG84r
-	 hEjUEMPaljEAfcf947MEe67u6XNbM2sgtrSWcqpY=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Flush pages under kvm->lock to fix UAF in" failed to apply to 5.4-stable tree
-To: seanjc@google.com,gkirkpatrick@google.com,josheads@google.com,pbonzini@redhat.com,pgonda@google.com
+	b=o+RkH3UgQeviGfzIXNFBA1iNoocSdF/lYYfmYWpGfB3kIJmbrLKrhjasNE36gKlER
+	 145AxDbHTE2ElYdxY3q0KZflMEWya+gt+xI3HRcvvfzSziVAVgEb+ySX3lZDGrsNYT
+	 3vI54+RKBYxZUELaS0hqPiu8vsv8rUt9Mo00nPdQ=
+Subject: FAILED: patch "[PATCH] phy: qcom-qmp-combo: fix drm bridge registration" failed to apply to 6.7-stable tree
+To: johan+linaro@kernel.org,andersson@kernel.org,dmitry.baryshkov@linaro.org,neil.armstrong@linaro.org,quic_bjorande@quicinc.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 16:00:02 +0100
-Message-ID: <2024032702-emphasis-favorite-5e62@gregkh>
+Date: Wed, 27 Mar 2024 16:05:11 +0100
+Message-ID: <2024032711-saxophone-flammable-5cc1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,33 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807
+git cherry-pick -x d2d7b8e88023b75320662c2305d61779ff060950
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032702-emphasis-favorite-5e62@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032711-saxophone-flammable-5cc1@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-5ef1d8c1ddbf ("KVM: SVM: Flush pages under kvm->lock to fix UAF in svm_register_enc_region()")
-19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-a8d908b5873c ("KVM: x86: report sev_pin_memory errors with PTR_ERR")
-dc42c8ae0a77 ("KVM: SVM: convert get_user_pages() --> pin_user_pages()")
-78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
-996ed22c7a52 ("arch/x86/kvm/svm/sev.c: change flag passed to GUP fast in sev_pin_memory()")
-eaf78265a4ab ("KVM: SVM: Move SEV code to separate file")
-ef0f64960d01 ("KVM: SVM: Move AVIC code to separate file")
-883b0a91f41a ("KVM: SVM: Move Nested SVM Implementation to nested.c")
-46a010dd6896 ("kVM SVM: Move SVM related files to own sub-directory")
-8c1b724ddb21 ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm")
+d2d7b8e88023 ("phy: qcom-qmp-combo: fix drm bridge registration")
+35921910bbd0 ("phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE")
 
 thanks,
 
@@ -87,68 +78,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5ef1d8c1ddbf696e47b226e11888eaf8d9e8e807 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 16 Feb 2024 17:34:30 -0800
-Subject: [PATCH] KVM: SVM: Flush pages under kvm->lock to fix UAF in
- svm_register_enc_region()
+From d2d7b8e88023b75320662c2305d61779ff060950 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Sat, 17 Feb 2024 16:02:27 +0100
+Subject: [PATCH] phy: qcom-qmp-combo: fix drm bridge registration
 
-Do the cache flush of converted pages in svm_register_enc_region() before
-dropping kvm->lock to fix use-after-free issues where region and/or its
-array of pages could be freed by a different task, e.g. if userspace has
-__unregister_enc_region_locked() already queued up for the region.
+Due to a long-standing issue in driver core, drivers may not probe defer
+after having registered child devices to avoid triggering a probe
+deferral loop (see fbc35b45f9f6 ("Add documentation on meaning of
+-EPROBE_DEFER")).
 
-Note, the "obvious" alternative of using local variables doesn't fully
-resolve the bug, as region->pages is also dynamically allocated.  I.e. the
-region structure itself would be fine, but region->pages could be freed.
+This could potentially also trigger a bug in the DRM bridge
+implementation which does not expect bridges to go away even if device
+links may avoid triggering this (when enabled).
 
-Flushing multiple pages under kvm->lock is unfortunate, but the entire
-flow is a rare slow path, and the manual flush is only needed on CPUs that
-lack coherency for encrypted memory.
+Move registration of the DRM aux bridge to after looking up clocks and
+other resources.
 
-Fixes: 19a23da53932 ("Fix unsynchronized access to sev members through svm_register_enc_region")
-Reported-by: Gabe Kirkpatrick <gkirkpatrick@google.com>
-Cc: Josh Eads <josheads@google.com>
-Cc: Peter Gonda <pgonda@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20240217013430.2079561-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Note that PHY creation can in theory also trigger a probe deferral when
+a 'phy' supply is used. This does not seem to affect the QMP PHY driver
+but the PHY subsystem should be reworked to address this (i.e. by
+separating initialisation and registration of the PHY).
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index f760106c31f8..a132547fcfb5 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1975,20 +1975,22 @@ int sev_mem_enc_register_region(struct kvm *kvm,
- 		goto e_free;
- 	}
+Fixes: 35921910bbd0 ("phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE")
+Fixes: 1904c3f578dc ("phy: qcom-qmp-combo: Introduce drm_bridge")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Vinod Koul <vkoul@kernel.org>
+Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240217150228.5788-6-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+index 1ad10110dd25..e19d6a084f10 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -3566,10 +3566,6 @@ static int qmp_combo_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
-+	/*
-+	 * The guest may change the memory encryption attribute from C=0 -> C=1
-+	 * or vice versa for this memory range. Lets make sure caches are
-+	 * flushed to ensure that guest data gets written into memory with
-+	 * correct C-bit.  Note, this must be done before dropping kvm->lock,
-+	 * as region and its array of pages can be freed by a different task
-+	 * once kvm->lock is released.
-+	 */
-+	sev_clflush_pages(region->pages, region->npages);
-+
- 	region->uaddr = range->addr;
- 	region->size = range->size;
- 
- 	list_add_tail(&region->list, &sev->regions_list);
- 	mutex_unlock(&kvm->lock);
- 
--	/*
--	 * The guest may change the memory encryption attribute from C=0 -> C=1
--	 * or vice versa for this memory range. Lets make sure caches are
--	 * flushed to ensure that guest data gets written into memory with
--	 * correct C-bit.
--	 */
--	sev_clflush_pages(region->pages, region->npages);
+-	ret = drm_aux_bridge_register(dev);
+-	if (ret)
+-		return ret;
 -
- 	return ret;
+ 	/* Check for legacy binding with child nodes. */
+ 	usb_np = of_get_child_by_name(dev->of_node, "usb3-phy");
+ 	if (usb_np) {
+@@ -3589,6 +3585,10 @@ static int qmp_combo_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_node_put;
  
- e_free:
++	ret = drm_aux_bridge_register(dev);
++	if (ret)
++		goto err_node_put;
++
+ 	pm_runtime_set_active(dev);
+ 	ret = devm_pm_runtime_enable(dev);
+ 	if (ret)
 
 
