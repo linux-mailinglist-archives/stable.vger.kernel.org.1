@@ -1,93 +1,141 @@
-Return-Path: <stable+bounces-32957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D89A88E831
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:14:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F1888E78A
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10D19B3547F
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE941F31EF2
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04629148FE9;
-	Wed, 27 Mar 2024 14:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F111311AC;
+	Wed, 27 Mar 2024 14:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b="J26IBcLP"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="g5Kl822I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.cybernetics.com (mail.cybernetics.com [72.215.153.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB8C148FE3
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.215.153.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92412EBD1;
+	Wed, 27 Mar 2024 14:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711549632; cv=none; b=aSaxPCDwL/cWFtLF5cwLRf6tcUNIAEGeJcb/Ar1dJSK1K8CxFf2P3yzqRk2irbPLC63lnytgJjnB/j6fGy2LVJ5bb5IebQZgEVVP9VFGUKZaOaXE1NeOUub4O57GYmrwqI4oorLKB1hJYrknHC32i4F1xOJNh8uV/pdbS/eBSnk=
+	t=1711548616; cv=none; b=ZBs3h9Sm6/cMvTnNI2oOY8V8XKGcvz5q1wCRhEloYPzlkkzXUaWRUx2cdUlYil1UjPffDbXS7wnksga8D1czgkwP+xT0OfF4W27XWlrKG+0vXr1vf/P8l81MpSOCCuJmDQREiH674npoOjUORzK2k+9pVvpHAOMCNU/8XUvOuAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711549632; c=relaxed/simple;
-	bh=x6PxAa5ZVZWjP6xCYO2J744lJgOyCSGeKhHH3KX3svQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VG/Vcgu43zw0yxMe13PlEenHHxNRksbiMJ0EMAl0HgWYAiv2Z899DU9ioLG07mIpRzMVwbwm9vHk457lou0ta+ymzOfKyddQIOQF0Y08WJJrihajQpBidICQDOSLHW6Nc+WOSm+nL+h9Rdo3h+7fQwPrDlkidlgZlVzU4sAyWUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com; spf=pass smtp.mailfrom=cybernetics.com; dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b=J26IBcLP; arc=none smtp.client-ip=72.215.153.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cybernetics.com
-X-ASG-Debug-ID: 1711547641-1cf4391b1c11fc0001-OJig3u
-Received: from cybernetics.com ([10.10.4.126]) by mail.cybernetics.com with ESMTP id JgvhKPqniD8w60fx; Wed, 27 Mar 2024 09:54:24 -0400 (EDT)
-X-Barracuda-Envelope-From: tonyb@cybernetics.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.10.4.126
-X-ASG-Whitelist: Client
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cybernetics.com; s=mail;
-	bh=x6PxAa5ZVZWjP6xCYO2J744lJgOyCSGeKhHH3KX3svQ=;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:Content-Language:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID; b=J26IBcLPfnIsTxmoBkyo
-	iOb3zgZp/wymAwuWuQ8k4KWEn42h/uEuJ1IgFu2IALsQWGNDCD8xcuOfrueizMEwoFSzu2rp+YjVE
-	thSU7E6XWG9IhsOjYaJvDg+0IQluGugak86DefUGL0CCYETo9IB36vdT9R26csfYcVHZio7suQ=
-Received: from [10.157.2.224] (HELO [192.168.200.1])
-  by cybernetics.com (CommuniGate Pro SMTP 7.1.1)
-  with ESMTPS id 13149216; Wed, 27 Mar 2024 09:54:01 -0400
-Message-ID: <45ea3c6a-18d3-469a-b368-d657b739edd2@cybernetics.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.157.2.224
-Date: Wed, 27 Mar 2024 09:54:01 -0400
+	s=arc-20240116; t=1711548616; c=relaxed/simple;
+	bh=grYRpcm7mknCGj/hePXyJKWu2qoHoEJ5UPnuNUewlO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S6z9bkf4OcLyz3U136H6uweQgV08Ch4pGsmZQ4rrRP5W1QxtB3vC3CuL3hicHXUFZrZ2OBUJFBSsXEHqOBS4gvpfP8uE549v68+Sr9tv6DWw7pg1xV4Pbj8/ZJy9HZ+KgYIaS+u5KLkTjLBlzMVe8ZHKEjCi9++MUAptdwYoV9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=g5Kl822I; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dETpzncT5Z+aB2mkIGV5m3/MWAMpuQdDFo4UMaJMJ6s=; b=g5Kl822IUxs+SNAzMS0m3I8mUY
+	Ja/h37cwMfkNqEPieY2rWItzuCWwTuALtZbWKcA3Zwvrd3DsUfo3hpmYb/cmMwFiqYWSaFIWis0s6
+	qfyxEzoBe525H01bto7QX07rw2zhuZMZC5MAG1AJ9C0GaU4IvRG2ktosbMFD4Rcmbc+fNP21ZQy3j
+	SAoDDBKFcfC61/EhGqQ4woVQiXgp28SlZDyWpUN+bXyAXACaga601JYTPRSzxHrE4C+zjdIVvgj23
+	kQcY7AHxPRJikls0FvLlaDYpdfHA9/Y04S7BdUQ4U+Q8PbFSvxjeeaS0tgcIYKTm/Nw04idZZy7Io
+	0ptTXkBQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rpTyk-000000040jb-29BP;
+	Wed, 27 Mar 2024 14:10:10 +0000
+Date: Wed, 27 Mar 2024 14:10:10 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Rik van Riel <riel@surriel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "bounds: support non-power-of-two CONFIG_NR_CPUS"
+ failed to apply to 5.4-stable tree
+Message-ID: <ZgQowqqGf-E7Cpcz@casper.infradead.org>
+References: <20240327122125.2836828-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "block: Fix page refcounts for unaligned buffers in
- __bio_release_pages()" failed to apply to 6.1-stable tree
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-X-ASG-Orig-Subj: Re: FAILED: Patch "block: Fix page refcounts for unaligned buffers in
- __bio_release_pages()" failed to apply to 6.1-stable tree
-Cc: Greg Edwards <gedwards@ddn.com>, Jens Axboe <axboe@kernel.dk>,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240327121329.2830355-1-sashal@kernel.org>
-Content-Language: en-US
-From: Tony Battersby <tonyb@cybernetics.com>
-In-Reply-To: <20240327121329.2830355-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Barracuda-Connect: UNKNOWN[10.10.4.126]
-X-Barracuda-Start-Time: 1711547664
-X-Barracuda-URL: https://10.10.4.122:443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at cybernetics.com
-X-Barracuda-Scan-Msg-Size: 497
-X-Barracuda-BRTS-Status: 1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327122125.2836828-1-sashal@kernel.org>
 
-On 3/27/24 08:13, Sasha Levin wrote:
-> The patch below does not apply to the 6.1-stable tree.
+On Wed, Mar 27, 2024 at 08:21:25AM -0400, Sasha Levin wrote:
+> The patch below does not apply to the 5.4-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
->
+
+Looks like you just need a little more fuzz on the patch.
+
+diff --git a/kernel/bounds.c b/kernel/bounds.c
+index 9795d75b09b2..a94e3769347e 100644
+--- a/kernel/bounds.c
++++ b/kernel/bounds.c
+@@ -19,7 +19,7 @@ int main(void)
+ 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+ 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+ #ifdef CONFIG_SMP
+-	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
++	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+ #endif
+ 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+ 	/* End of constants */
+
 > Thanks,
 > Sasha
-
-I already sent a backport for 6.1 on March 13.  5.15 and older kernels
-do not need the patch.
-
-https://lore.kernel.org/stable/a764cc80-5b7c-4186-a66d-5957de5beee4@cybernetics.com/
-
-Tony
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> >From f2d5dcb48f7ba9e3ff249d58fc1fa963d374e66a Mon Sep 17 00:00:00 2001
+> From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Date: Tue, 10 Oct 2023 15:55:49 +0100
+> Subject: [PATCH] bounds: support non-power-of-two CONFIG_NR_CPUS
+> 
+> ilog2() rounds down, so for example when PowerPC 85xx sets CONFIG_NR_CPUS
+> to 24, we will only allocate 4 bits to store the number of CPUs instead of
+> 5.  Use bits_per() instead, which rounds up.  Found by code inspection.
+> The effect of this would probably be a misaccounting when doing NUMA
+> balancing, so to a user, it would only be a performance penalty.  The
+> effects may be more wide-spread; it's hard to tell.
+> 
+> Link: https://lkml.kernel.org/r/20231010145549.1244748-1-willy@infradead.org
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Fixes: 90572890d202 ("mm: numa: Change page last {nid,pid} into {cpu,pid}")
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Acked-by: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>  kernel/bounds.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/bounds.c b/kernel/bounds.c
+> index b529182e8b04f..c5a9fcd2d6228 100644
+> --- a/kernel/bounds.c
+> +++ b/kernel/bounds.c
+> @@ -19,7 +19,7 @@ int main(void)
+>  	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+>  	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+>  #ifdef CONFIG_SMP
+> -	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
+> +	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+>  #endif
+>  	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+>  #ifdef CONFIG_LRU_GEN
+> -- 
+> 2.43.0
+> 
+> 
+> 
+> 
 
