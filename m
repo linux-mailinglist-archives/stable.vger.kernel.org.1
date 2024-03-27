@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-32543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7F288DF7A
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:24:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F5388DF82
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E7ACB27659
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 12:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713C72978C7
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 12:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493E513E6C0;
-	Wed, 27 Mar 2024 12:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B3D13E6DD;
+	Wed, 27 Mar 2024 12:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ay/TNkWb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrDH+U6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0696313E413;
-	Wed, 27 Mar 2024 12:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B562312DDB9;
+	Wed, 27 Mar 2024 12:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711541408; cv=none; b=KhJvXo9Z6NxsaRM7P6pV07p5ZFChqvxdzN91Ts/1IhUD8rHQy7wyqSnIgJK98VZPROrcBqi2waIsvAt96bEg2MSjjno6NhzZDHFC2bng5W6hW5PeFOcSPh5CNFBIZ173724hPO4saFBFUZtPNxiFPKJ0PgvrajJvotGXCTrYMUw=
+	t=1711541410; cv=none; b=jgTmg5tT2oaWatOfxv+U+tYXDY/ZVe8YPK5fMHISiUFWjoQSLfm7MjAy143VfsJnap2nsF5WFY81JaCW9OoORkian5AtTgOzXP8wIeOR6M86kADnt5ZLxsECgsu9aQFocRFltfZ84Sd7JYhJYh3SVnY7ajt0zG7gT8CA3VzHck8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711541408; c=relaxed/simple;
-	bh=9qfTXJZO+HAIhcdp/1hyiuYc3mV3HlWI7xfDbQw8HYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H2HodF8dkHvUf++jfkqk4TBzrhAKJdha7iFAmMm3Q6oKMCO9J1yUMfcWaojRu91CVD5RL3AxqVhzQf7qd1fvF5FVGMUpN6xGJB7ebl2TJv23sf96YPu+SGNZIGk4QRLs97YMT1ISe5vq79AZ7Cji5//pESeyRANPjIu8tVKlauk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ay/TNkWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60E3C433C7;
-	Wed, 27 Mar 2024 12:10:06 +0000 (UTC)
+	s=arc-20240116; t=1711541410; c=relaxed/simple;
+	bh=CT9lboX6DGNHp4gMzO6XDm6vSdLnNJfbC/23vBoP+d8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bdLvk6It7NCSAAGtXVtPoBpnDhRoPXQcoaINPYrAbJ049kvxcliErRUIVvRjHSLOjrZgD1kF71BfmWDFX1F8VvfDh72hDCUmVlnRVz2ydVU81VRCKMgyKnkO/eYYG/2CjjBvLmd1+lm4PYH7YzHOl5nfa8+LlATHnJD2L6rhV4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrDH+U6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B159FC43390;
+	Wed, 27 Mar 2024 12:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541407;
-	bh=9qfTXJZO+HAIhcdp/1hyiuYc3mV3HlWI7xfDbQw8HYc=;
+	s=k20201202; t=1711541410;
+	bh=CT9lboX6DGNHp4gMzO6XDm6vSdLnNJfbC/23vBoP+d8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ay/TNkWb1gBshbJ2cBRCHOSzFOJOG5GyvZXnXjxIj/3DvvYLtwW2dgHJf3bfouGP7
-	 89QoMelKumrYQ8cImV4rioTA3acnMHEd8vgr5zLI9SW/6H1nPnXeRwMNDBwQX31IDf
-	 oI2TfpY/+EiyoZouC6v23M9EqyizLwbBCKEf1HUKmL5TfA9zG4D5o9jUJ12RhwgStf
-	 Xel5HV/oPG0IchrZV3/NhSNu1shX3EfITE++soW1kjcgYwRTUa7BgTPDXLiI4WmCzk
-	 YVAzMTu0g9P3U5c7hdZwUrWX3+SodY3l8rVbqNruD1gtwCn6t9jSMjruzXTSs+ETIH
-	 IHJbJP/YnK1Dw==
+	b=qrDH+U6NpFvPXBwfEy0lyJQZJMlZCVEThnAP2wz1kh/nsprLQ7CLCOOUqVYmI3rMj
+	 RT4aMts5H1t+cmZUfqQE2lPvcMHwYewderAA5LLcuXkUHqJifMterLaFQWJfe4jPFl
+	 cPSyWjucgtAZoe60A3wEXBx9IzGjJYo1HniBESawCOA5Y/wgcZWomUJPaIWXgAIN7m
+	 v9nxoVXMret1FhlOhqtYUnHdCsB8bWQZmgfoGyzh57xABh5QzZm18cApr4fA7o+8sf
+	 Oa7ejQrPa4qb2XWdhJGDbnnqQSdWPEU95YvEIaoldjJk6cdjcUcZD/FGTTgaBjJLfh
+	 Zp2g5zogepU1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	wenjing.liu@amd.com
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "drm/amd/display: Lock all enabled otg pipes even with no planes" failed to apply to 6.6-stable tree
-Date: Wed, 27 Mar 2024 08:10:05 -0400
-Message-ID: <20240327121005.2827579-1-sashal@kernel.org>
+	leyfoon.tan@starfivetech.com
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: FAILED: Patch "clocksource/drivers/timer-riscv: Clear timer interrupt on timer initialization" failed to apply to 6.6-stable tree
+Date: Wed, 27 Mar 2024 08:10:08 -0400
+Message-ID: <20240327121008.2827616-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,92 +72,43 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 94040c2cbb1a872ff779da06bf034ccfee0f9cba Mon Sep 17 00:00:00 2001
-From: Wenjing Liu <wenjing.liu@amd.com>
-Date: Fri, 23 Feb 2024 15:17:39 -0500
-Subject: [PATCH] drm/amd/display: Lock all enabled otg pipes even with no
- planes
+From 8248ca30ef89f9cc74ace62ae1b9a22b5f16736c Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+Date: Thu, 7 Mar 2024 01:23:30 +0800
+Subject: [PATCH] clocksource/drivers/timer-riscv: Clear timer interrupt on
+ timer initialization
 
-[WHY]
-On DCN32 we support dynamic ODM even when OTG is blanked. When ODM
-configuration is dynamically changed and the OTG is on blank pattern,
-we will need to reprogram OPP's test pattern based on new ODM
-configuration. Therefore we need to lock the OTG pipe to avoid temporary
-corruption when we are reprogramming OPP blank patterns.
+In the RISC-V specification, the stimecmp register doesn't have a default
+value. To prevent the timer interrupt from being triggered during timer
+initialization, clear the timer interrupt by writing stimecmp with a
+maximum value.
 
-[HOW]
-Add a new interdependent update lock implementation to lock all enabled
-OTG pipes even when there is no plane on the OTG for DCN32.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+Tested-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240306172330.255844-1-leyfoon.tan@starfivetech.com
 ---
- .../amd/display/dc/hwss/dcn32/dcn32_hwseq.c   | 23 +++++++++++++++++++
- .../amd/display/dc/hwss/dcn32/dcn32_hwseq.h   |  2 ++
- .../amd/display/dc/hwss/dcn32/dcn32_init.c    |  2 +-
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-riscv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index b890db0bfc46b..c0b526cf17865 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -1785,3 +1785,26 @@ void dcn32_prepare_bandwidth(struct dc *dc,
- 		context->bw_ctx.bw.dcn.clk.p_state_change_support = p_state_change_support;
- 	}
- }
-+
-+void dcn32_interdependent_update_lock(struct dc *dc,
-+		struct dc_state *context, bool lock)
-+{
-+	unsigned int i;
-+	struct pipe_ctx *pipe;
-+	struct timing_generator *tg;
-+
-+	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-+		pipe = &context->res_ctx.pipe_ctx[i];
-+		tg = pipe->stream_res.tg;
-+
-+		if (!resource_is_pipe_type(pipe, OTG_MASTER) ||
-+				!tg->funcs->is_tg_enabled(tg) ||
-+				dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_PHANTOM)
-+			continue;
-+
-+		if (lock)
-+			dc->hwss.pipe_control_lock(dc, pipe, true);
-+		else
-+			dc->hwss.pipe_control_lock(dc, pipe, false);
-+	}
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
-index 069e20bc87c0a..f55c11fc56ec7 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
-@@ -129,4 +129,6 @@ bool dcn32_is_pipe_topology_transition_seamless(struct dc *dc,
- void dcn32_prepare_bandwidth(struct dc *dc,
- 	struct dc_state *context);
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index e66dcbd665665..79bb9a98baa7b 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -108,6 +108,9 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
+ {
+ 	struct clock_event_device *ce = per_cpu_ptr(&riscv_clock_event, cpu);
  
-+void dcn32_interdependent_update_lock(struct dc *dc,
-+		struct dc_state *context, bool lock);
- #endif /* __DC_HWSS_DCN32_H__ */
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
-index 2b073123d3ede..67d661dbd5b7c 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
-@@ -58,7 +58,7 @@ static const struct hw_sequencer_funcs dcn32_funcs = {
- 	.disable_plane = dcn20_disable_plane,
- 	.disable_pixel_data = dcn20_disable_pixel_data,
- 	.pipe_control_lock = dcn20_pipe_control_lock,
--	.interdependent_update_lock = dcn10_lock_all_pipes,
-+	.interdependent_update_lock = dcn32_interdependent_update_lock,
- 	.cursor_lock = dcn10_cursor_lock,
- 	.prepare_bandwidth = dcn32_prepare_bandwidth,
- 	.optimize_bandwidth = dcn20_optimize_bandwidth,
++	/* Clear timer interrupt */
++	riscv_clock_event_stop();
++
+ 	ce->cpumask = cpumask_of(cpu);
+ 	ce->irq = riscv_clock_event_irq;
+ 	if (riscv_timer_cannot_wake_cpu)
 -- 
 2.43.0
 
