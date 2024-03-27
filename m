@@ -1,148 +1,73 @@
-Return-Path: <stable+bounces-33011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64CC88EBA4
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:51:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAFA88EBAA
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C0222965C1
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7F01F22C2B
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7F214D29E;
-	Wed, 27 Mar 2024 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53583149C70;
+	Wed, 27 Mar 2024 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OlCqOZhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17pu6OjO"
 X-Original-To: stable@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806E412F5A2;
-	Wed, 27 Mar 2024 16:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BFB132804
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 16:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711558299; cv=none; b=cUhoFSGz99CY8g0Aw8Oqn6C9H7CEdRIKeUZEL7CqQN/SLfx+DOt0Xj8uJskZvVjz090MpeOgaip0yWiKFNc9wzCF6109UN3IFrHxi9Mxtrb9o+lggt+jFxSGnOkwbTPk5kng7IDmu055qja8/LU//aSmwSjtaibwfoWt8I7JpXs=
+	t=1711558368; cv=none; b=Q+CcYJVUijdmBx/r16bkQISdOxLicE4wl3hT+ksdvFFnz6YDZeq9acIrwW/2vYBCtabxf1L9j5QxBVm6sAnSZy7MLrlBKxr9E2WN6eudKwUfs9YUB40JCW1RndajEmijhEH+9hv0E8+0S1c36zMfAmrZpw3Wsy2yK2G+9Zj0dxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711558299; c=relaxed/simple;
-	bh=LM8sbbiZKaeBPMakgJ3MutVIXuYeOb/HCEs0DQyWv2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nZ2nGNmNo43CkXIDmLuAheSjYZsFmkdsiTQFgP060ixXj5gIOves2qUeGUltiKzQrvaUoYY79o9fJvZaISdIbRRiwH9NCnnRBNFtBwBRqMusFp/wrsHuJlxzxGFSAlzXSz1wh4MQcgeKu5qKaaDJhQhrLDQYNPCG7jvisM6iUlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OlCqOZhR; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B652240008;
-	Wed, 27 Mar 2024 16:51:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711558294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8dkDsTM+CyF3T1RfUsZvTaGtiJGxz0u7kuWWxBLiq70=;
-	b=OlCqOZhRUE+LEglVKAzyRaIJnfHwR7NpVwTLoTmHNcTFLc1l2Ze/9ictqKZcclr3fbO0nE
-	JFO/Ll9eSZm0QJZUc7JFGocaYue1wLCziUiLa/3wRMVohIQ2NLg7RI87xwUd3YtaU+owPM
-	Vll6eIkZQFjuJGT1soHhKBI2DemQ2JnZx3vT1lIb+F2cQ2AuT2ZTc9LDO+/YBI6d+FnvGW
-	kDbQt4FW3pInjRk5kBdRExWdgGsNnLTQbx3ypV2enI06lf+G8BbHC05YFWikJ+bJHQBIA+
-	7arwt6GAfJQ/f6JD3pTIs/h0gSnDzYG4vuEA8A/B3CVYNpBvSNN/iujE0U5JhA==
-Date: Wed, 27 Mar 2024 17:51:31 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Richard
- Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Md
- Sadre Alam <quic_mdalam@quicinc.com>, Sricharan Ramabadhran
- <quic_srichara@quicinc.com>, linux-mtd@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in
- misc_cmd_type in exec_op
-Message-ID: <20240327175131.3c0100c3@xps-13>
-In-Reply-To: <66044bea.050a0220.dee16.c250@mx.google.com>
-References: <20240325103053.24408-1-ansuelsmth@gmail.com>
-	<20240326072512.GA8436@thinkpad>
-	<66044bea.050a0220.dee16.c250@mx.google.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711558368; c=relaxed/simple;
+	bh=CjyzYC8YA0H7p0e9+8ivFjiP3xTl2Gvz5yiKSTC+UVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ovkEUI/BPB1PlOgCXnPDEdRMx244ME1gJHfLotmqTr5lBDhL+fIzK86TGuX6/vpye+uZfw1oWI18497bxkbZpmNsxoA0SrYIaVGN60nhs4pqdls8Rq8G6nqvuaWfQN31V/zqcIqle2X64xTb3wLaPUePkRQSZ5FHJwWMYXcdGB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17pu6OjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1589AC433F1;
+	Wed, 27 Mar 2024 16:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711558367;
+	bh=CjyzYC8YA0H7p0e9+8ivFjiP3xTl2Gvz5yiKSTC+UVY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=17pu6OjOvmb4XrPGMQ4dWnELDCTYHT7JgUhqSAdp4D5VH8QfMbCKagTAOpp6graQM
+	 aa5BUkBItWHk7PGvFmjwN5r/FLWsue9FvECAWbtnwDgESACU6pq77Z/0wSm1wR1zkH
+	 zMpaJKUxP6RZxZorRl9Ych9WzrWvaIyzfRt70VI4=
+Date: Wed, 27 Mar 2024 17:52:44 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: stable@vger.kernel.org
+Subject: Re: Please backport commit 13e3a512a290 (i2c: smbus: Support up to 8
+ SPD EEPROMs)
+Message-ID: <2024032713-atom-saxophone-0c15@gregkh>
+References: <3bea11ec-32fe-4288-bc03-8c3ba63979f6@molgen.mpg.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3bea11ec-32fe-4288-bc03-8c3ba63979f6@molgen.mpg.de>
 
-Hi,
+On Wed, Mar 27, 2024 at 04:13:26PM +0100, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> Please apply commit 13e3a512a290 (i2c: smbus: Support up to 8 SPD EEPROMs)
+> [1] to the stable series to get rid of a warning and to support more SPDs.
+> That commit is present since v6.8-rc1.
 
-ansuelsmth@gmail.com wrote on Wed, 27 Mar 2024 16:20:58 +0100:
+How far back?  But isn't this a new feature, why is it needed in older
+kernels?  It's not a fix for a regression.
 
-> On Tue, Mar 26, 2024 at 12:55:12PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote: =20
-> > > misc_cmd_type in exec_op have multiple problems. With commit a82990c8=
-a409
-> > > ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-> > > reworked and generalized but actually broke the handling of the
-> > > ERASE_BLOCK command.
-> > >=20
-> > > Additional logic was added to the erase command cycle without clear
-> > > explaination causing the erase command to be broken on testing it on
-> > > a ipq806x nandc.
-> > >=20
-> > > Fix the erase command by reverting the additional logic and only addi=
-ng
-> > > the NAND_DEV0_CFG0 additional call (required for erase command).
-> > >=20
-> > > Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in =
-exec_op path")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> > > ---
-> > > Changes v2:
-> > > - Split this and rework commit description and title
-> > >=20
-> > >  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > >=20
-> > > diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw=
-/qcom_nandc.c
-> > > index b079605c84d3..19d76e345a49 100644
-> > > --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> > > +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> > > @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_=
-chip *chip, const struct nand_sub
-> > >  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
-> > > =20
-> > >  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
-> > > -	(q_op.cmd_reg =3D=3D OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DE=
-V0_CFG0,
-> > > -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
-> > > -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-> > > +	if (q_op.cmd_reg =3D=3D OP_BLOCK_ERASE)
-> > > +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL); =20
-> >=20
-> > So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS=
-, 1,
-> > NAND_BAM_NEXT_SGL)' if q_op.cmd_reg !=3D OP_BLOCK_ERASE. But for q_op.c=
-md_reg =3D=3D
-> > OP_BLOCK_ERASE, the result is the same.
-> >=20
-> > I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
-> >=20
-> > Can you share the actual issue that you are seeing? Like error logs etc=
-...
-> > =20
->=20
-> Issue is that nandc goes to ADM timeout as soon as a BLOCK_ERASE is
-> called. BLOCK_ERASE operation match also another operation from MTD
-> read. (parser also maps to other stuff)
->=20
-> I will be away from the testing board for 7-10 days so I can't provide
-> logs currently.
+thanks,
 
-So, shall we wait for additional logs from Christian or shall I merge
-the two-patches series? I'm not sure what's the status anymore.
-
-Thanks,
-Miqu=C3=A8l
+greg k-h
 
