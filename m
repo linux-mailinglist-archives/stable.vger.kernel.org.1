@@ -1,214 +1,136 @@
-Return-Path: <stable+bounces-32440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507B188D553
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 05:05:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B960788D573
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 05:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D180C1F285A4
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 04:05:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1918329FE04
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 04:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECF7224F0;
-	Wed, 27 Mar 2024 04:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245BD249F9;
+	Wed, 27 Mar 2024 04:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X2+z6AyO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FdOe85eu"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6E22F02
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 04:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711512344; cv=fail; b=YJQepcXDx7Y8j3I2+fFCk5hCWAVaePVLZrkuQYFM1rHwl6FEgQNe7zvvgIpTbhnpjgH+qjjKyEV7GJ8XbDTRceTjuhWr3waLY0CnhFqTgKAC0rZXZvXPuGxtR3tQiGpE2wWr3nDx3IwRyVa6Z0G66jhEproosIPoyUFG/Vd6Ib4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711512344; c=relaxed/simple;
-	bh=4q/3AbipgbsxfgjjflGVCzVHPaa9ZFCS0ALBtBVYLKI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=P6iL4zMrgzs52AwkisKUTgKBO5WIy2DDRGZ4Y13qZCOrgjJM9cGnm8UpGlv/g5bK7DIJEHs85UL29PBIWeIj0aYtcnNJ58X5i1L7+G/wBmjSbnEawHxfkcpPBKN0mEMv970I3Ekpt9EHy+TNNkePktlaoiyFJFQm7sDofx/3S3Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X2+z6AyO; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA5A23773;
+	Wed, 27 Mar 2024 04:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711513339; cv=none; b=kEcZGltCzEbFFujsfK4FD0DJ+PkMXNPLVhwlKimo5ciNNWPTcI8yC/4dCYiSZ9Hxla+1Er+A9EImmvjP5Ma+avpAklLQZrK0XL5P2sTQftFs2U+zN24MfXGZnBEzPRqrNzj6mzHd6gRbvM9UNuBwgrWMdyA7rZvpbhBQztBuYYw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711513339; c=relaxed/simple;
+	bh=HTItWPms0pqAtokhHLP7v+ctnR3icIkNDyzsM1SRPxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WHKWCoxRwpM3AUstcGqiWJV/NN+PhmyHdFeYVNxCrEMvQimuYOxW0cT3S0Mkozndcz1Ml01zOS6alSDzQU+hURsDCwxdeX7ndzX14ZaXDsUovjBVOyHnSL7TsjbsrLVjsnWtKejcaGiN3W74E7Ya66OIDiMPDxPlwBxhG6TBGPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FdOe85eu; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711512342; x=1743048342;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=4q/3AbipgbsxfgjjflGVCzVHPaa9ZFCS0ALBtBVYLKI=;
-  b=X2+z6AyOyIOuJPJWUMuQCCi65pR07QJPeES6WTcW+ezeQA/dB50WzkaK
-   7MyUgAxvBZzcEzzOQURgSEgFMYa2LZhoIB0zrHAg+zIQVTMdnc6T31+N/
-   oMwGa7uTGhcjJqie43CB4Cdhlm6P6NZHmYQ3lqpiVCMCJOgAOZKqG1hLE
-   htH1C1ouQ7JwH5Vn5YXaenAUvQMO8wgC47uWKH56GD8tc7wmEd0Vo+bBk
-   slivAnMBMvJoH2k+1LRR93CJSqK68deg8RdLriOQ82BDHs8itavFooYZl
-   YBL9scraK+vif4oz8juh11WuNDJfeOxEYbBzZM6aFf0Yjgrz5BnE+3+Gk
-   g==;
-X-CSE-ConnectionGUID: udMRBp9sT0S1xWmVTRYTBg==
-X-CSE-MsgGUID: 83i8CiPLTsCofQkHYBqKGw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6457387"
+  t=1711513337; x=1743049337;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HTItWPms0pqAtokhHLP7v+ctnR3icIkNDyzsM1SRPxI=;
+  b=FdOe85euLdWIOv7xDQ+eVNo8u6zvemRufl8utXQV7lAGGR73wm2r6hjl
+   zlzgi9NBnTI7IPFc668zyTAvNSN2CDZyvbtsoj65glroM8u3e8Uh0MFrJ
+   hdw6eUsraLoNgWJfyLIyDvdZteGPgVT6Uz0QA/je/t6YhD6IaVN3Cit+a
+   FuaZ5mzej60lz+oOE2XocwJTgXZYZJirvz/4auYuhVZ+t6XXXxLC3t8Qb
+   0Wd41H0rzRYzwXSbIwjNR8qQstVcwZLGgp5WltAfJfd2Q7i144Yizudf6
+   vfCypPZL8GKyBdHKTbe/cbQ4mD9syzIh4NSrl80rNyKeqqASUncOHwsFV
+   A==;
+X-CSE-ConnectionGUID: 8uK4tGYMQHqLEJYVsMy/eA==
+X-CSE-MsgGUID: MNTMRv68SdK9+H6FjMX1nQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6458260"
 X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="6457387"
+   d="scan'208";a="6458260"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 21:05:41 -0700
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 21:22:16 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="20889865"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Mar 2024 21:05:40 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 26 Mar 2024 21:05:40 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 26 Mar 2024 21:05:40 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 26 Mar 2024 21:05:40 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 26 Mar 2024 21:05:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X7UvBonX0r8oXS4i1AOYcaiL5QezTMIxhxlO1YwY00AtlAqs0RzXrEzwqmGB/GNcJm0dd/bYPL2O5roN09r2SKguYlG1fxDeRWkFvVNhGfIqxKOVj7iIavFA9654mLbNwbFx2d8VekRoeRYJZIAfyht3H/HFWbfA1OF4pb5G5g7K0058zLTo0ka3rx6hOpUc+6nDs7Bo26fa8+JQXfYM1zyGXnC7fwOHXypRObMnT+oGClWxnLe8Ob0sT5zV+HXalDKqH4SglYEyGjOiTvsHagtBpopoCPuneAreuqhnG5zPAWJXpRSh6chJ0sdiWTX80nCSWr40s8LrJY1AatZAfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k0qImTpcbQsBzDXSxKR2EcVQPo8IU40sgFYLDk5U9WM=;
- b=h9PtpWBJCWpGSZimEVHBmPtp/4uYhk2cjlpSfNEwbUHCROfOtcnc9ZICpw571ZVM95ZuoKmwlcGzUGlnMKnuOI1mYO0W30BV2tjwMyHZ0CRf8wS48tQYUwX2DrHa20WCEukaPJXqHtqyzQy8mnRkD/sDrKM614p0mXaJlYn66KdY2KxoFyFNSwHneGTeq4WHJGFy1tQGNl8Fpg05tvyzPvtbqjfvN8+ZMAUjQT/riX9PanWY+nH4TEaCbiGKA4eLDi7OK2FQ+CZnvIqOZpTW2szWyqr7eSGpckpC64oZCU9ZSK/eCuEBbp2w1d0iMhYxiE3RzbkrwxodfMUvViD1mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB6750.namprd11.prod.outlook.com (2603:10b6:806:266::21)
- by PH7PR11MB7663.namprd11.prod.outlook.com (2603:10b6:510:27c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Wed, 27 Mar
- 2024 04:05:36 +0000
-Received: from SN7PR11MB6750.namprd11.prod.outlook.com
- ([fe80::4b13:ba21:57e8:6da8]) by SN7PR11MB6750.namprd11.prod.outlook.com
- ([fe80::4b13:ba21:57e8:6da8%5]) with mapi id 15.20.7409.028; Wed, 27 Mar 2024
- 04:05:36 +0000
-From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
-	"Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, "Lisovskiy, Stanislav"
-	<stanislav.lisovskiy@intel.com>, "jani.nikula@linux.intel.com"
-	<jani.nikula@linux.intel.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH] drm/i915/dp: Fix the computation for compressed_bpp for
- DISPLAY < 13
-Thread-Topic: [PATCH] drm/i915/dp: Fix the computation for compressed_bpp for
- DISPLAY < 13
-Thread-Index: AQHabsEpF8nBZzxlHkWQzfiDf6rlwrFLGi4g
-Date: Wed, 27 Mar 2024 04:05:36 +0000
-Message-ID: <SN7PR11MB67505CB6CA830E1553138A31E3342@SN7PR11MB6750.namprd11.prod.outlook.com>
-References: <20240305054443.2489895-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20240305054443.2489895-1-ankit.k.nautiyal@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB6750:EE_|PH7PR11MB7663:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hz8AESN9IAj2mssCSZ/0+uHwt4WyCYjJRrCSfx08sOlZaw+bNmay9140gEpOoiS7DsG/j43uDZj/t1CZYNs44Ul+BovFZH1dp1DUShTLnLN2pe95ZM7D+vGoDlF/FNqKMjoYwMQGvPq8N1AFT6xtUQJXKw5rbS3Hnzu0o+uIw/l1xemnK8GnWt3DL4KhQiK20VvYcR2EtwxtqjM3iyy9W8MUWUxTO0RU0/NxWgn5UEwyVMYoyu0nH0YecLWh52BHtjt1NKvaz0x651dFofNGIB8dGI/BZufHCEP8HTe71mthVDtpheXI52P7u4PKqXbZSgA+KdPfvosHt4ktwVBaLVTgMG7EckAafEmiZoA5X3K8h4yWeiYQ4lQNUS1rU4Jj9n3GlXbFM2NNPdEHN0VszEKOwKEyrgZB4nBuN+hOCokiVQi3n421kTYRtbc/LOS1Wjku1hbxgpUcodG6KW/oSLNEP+hXI4brv5A2XTtHudXSlTSwAtm9js/ZoJAKugO2eD7ZQyn5dj8XF47vq19s4kZVLgK07cqe2/2KcZcq8e1Qt+U3Cav4nq9kC+MvDKPXkiOOfHIuqdc7CvbXszcYagkVaNy9tVc8kZA4tv/s4UU=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6750.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oDxflJkc3mlR+1gHN4FB/kjgwBLNwrrUPI7WE/oXuqNb5ZgqjpFYISiYHj3E?=
- =?us-ascii?Q?S9FNFFOz20SB/m/fz4yGH84+xQ8wqllUlpBNkk87crn6CH8SKmUkgD0QbkeZ?=
- =?us-ascii?Q?VrzhYEgj8Ad4Q85B/fTyioXPxR6DiYFUmyNIGBS6cIVFMBbex0+pETCgn/bY?=
- =?us-ascii?Q?obz6RbMxGfJuKPGDSJ/n1JrizwOdbhhiwztUHpB5tZTeHnxBmTczWuYNvYw9?=
- =?us-ascii?Q?Q8Rj+jeSqmRiyu4JIvK5k/RNB+GX8aUvP7jkcltj5c8OsY4iDtFN2Iaex0Vq?=
- =?us-ascii?Q?atyr7A4zz13LcEv30xv0I97PcDg+mlVo51JCfHw6WO7t0lWXHlwwoy5DHuHT?=
- =?us-ascii?Q?eo9YuJ/ax43S6LrcmhoxC0Efs7o4EKQeyxO9iUAVyKCbQSJo4a4tbHlCuChf?=
- =?us-ascii?Q?wRnYeBzh0EqIRM44+eS5hH2yjz3UC55Dd04C3U+3AQ06X2T9+E18vznCK0oO?=
- =?us-ascii?Q?Ozi5Z2jc5GnDJmBCmWOUzfOaVdzEld4VE3ribhN1+j331UyxHkZLCaAV/ESh?=
- =?us-ascii?Q?8VHEHNlnu/6CplRn3FCsUYt4zsTZxC84aiFzp7yEtiRH8PRqC2Xq2GYfksMU?=
- =?us-ascii?Q?I1DE82Ccsfbb1peDkvUz+PJpoFNuWZDID0KMR07VaeQDZY+XcdB7Z/+eNs/Z?=
- =?us-ascii?Q?3hSwrzxOOVwn+oSoxiFhBjAADxKf/vAw211S8h9y1GjCPIUPvU7re2Ckt7UC?=
- =?us-ascii?Q?lxfBoKj6ZRFsGWRwT+IsIpCCO0IbmO39Oe5r5l5a4JkI183CD/+X2mSXN8hk?=
- =?us-ascii?Q?ugnNlZPP1T8VuDkFUqfPvQ57FTJB6TfKnHjybEIiDx92TnDUKnMljFfcUFj4?=
- =?us-ascii?Q?0w9rqewgOzUn7bF0t08vSgPRm7t/5LjFKLAYQtJGC7Ee1+seOPtbEQqoXM9A?=
- =?us-ascii?Q?do0caGRnjYi2pTOlu6S1VpBv16QDenLWrzht2EpM/CAzzxeInxZPF7sxw+vJ?=
- =?us-ascii?Q?l+FFFU+eDqAyTX/0XYhN3vVgSNW7hdW0MlHmaqbXDA2+6I9ybAQRI17k4YTf?=
- =?us-ascii?Q?Loknpr/UeAJSlddodYZbg+BiUkdM/BVvhVbSl4SI22ajB6S+z82Lab9xySxr?=
- =?us-ascii?Q?D8RP5xIQ8AUJ/IBJKN50lEKJvv5GLuX3dMY+FYENQ2U8bWSjaJDq8x7QEwOY?=
- =?us-ascii?Q?JH7u4enFIQhEoSMFMeDkd2XHHUVrxB5mP7prPE38duRZU9cFcskPkppSnnwD?=
- =?us-ascii?Q?Khva7Qrd15tBB3xotRi9T8nWua243UCvQmlkpz7esasPc/Ho79+TekktmAwt?=
- =?us-ascii?Q?RCsfqUkEAHsg/R3elfsj24czAQ7jWbqumLCvC8MUasuIlSNXVqXAkATQEAOw?=
- =?us-ascii?Q?pgqmNtEGfOi4Z/d/RvQHx21zQQT4XaYboukmbY3Cwd84hBiE5kl4S8zgF7hQ?=
- =?us-ascii?Q?6BFsHdRmuX5mwJ74aBDG3CZpHkfizxkMbZTAWqjH7bzthJ6IH3pMTJqlUlJo?=
- =?us-ascii?Q?rAwFJLJx3HG6MUf8gMOUx1VbWsZvjIOzv/ddxuE5MDtGBXLjBfrK+LN16lu0?=
- =?us-ascii?Q?jGFiwahZ55cuCnASqusMg/zz1l45vQ06sHwQCnEMWVnk1GuYKe/fwxlAz8Gm?=
- =?us-ascii?Q?Sb+7Ylguc4rv3BEM+TIzkBMdZHZGHX5O1S72uBPk?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="20892618"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 26 Mar 2024 21:22:14 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rpKnj-0000kS-0U;
+	Wed, 27 Mar 2024 04:22:11 +0000
+Date: Wed, 27 Mar 2024 12:21:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gergo Koteles <soyer@irl.hu>, Shenghao Ding <shenghao-ding@ti.com>,
+	Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ALSA: hda/tas2781: remove digital gain kcontrol
+Message-ID: <202403271212.5Lxo4b20-lkp@intel.com>
+References: <313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6750.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0f902eb-4995-471f-9ccc-08dc4e1327ff
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2024 04:05:36.1993
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2wxnmYbezust4Fpr0EUBX0cCy19NRO3fg/OJXhcFtR67pPiOIAVSf2nWB7o1OmTJD0je56uGt5VTdLfAR3bbYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7663
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer@irl.hu>
 
-> Subject: [PATCH] drm/i915/dp: Fix the computation for compressed_bpp for
-> DISPLAY < 13
->=20
-> For DISPLAY < 13, compressed bpp is chosen from a list of supported
-> compressed bpps. Fix the condition to choose the appropriate compressed
-> bpp from the list.
->=20
+Hi Gergo,
 
-LGTM,
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+kernel test robot noticed the following build errors:
 
-> Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
-> compressed bpp")
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.7+
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10162
-> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_dp.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c
-> b/drivers/gpu/drm/i915/display/intel_dp.c
-> index e13121dc3a03..d579195f84ee 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -1918,8 +1918,9 @@ icl_dsc_compute_link_config(struct intel_dp
-> *intel_dp,
->  	dsc_max_bpp =3D min(dsc_max_bpp, pipe_bpp - 1);
->=20
->  	for (i =3D 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
-> -		if (valid_dsc_bpp[i] < dsc_min_bpp ||
-> -		    valid_dsc_bpp[i] > dsc_max_bpp)
-> +		if (valid_dsc_bpp[i] < dsc_min_bpp)
-> +			continue;
-> +		if (valid_dsc_bpp[i] > dsc_max_bpp)
->  			break;
->=20
->  		ret =3D dsc_compute_link_config(intel_dp,
-> --
-> 2.40.1
+[auto build test ERROR on 4cece764965020c22cff7665b18a012006359095]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Gergo-Koteles/ALSA-hda-tas2781-remove-digital-gain-kcontrol/20240326-052937
+base:   4cece764965020c22cff7665b18a012006359095
+patch link:    https://lore.kernel.org/r/313e00499eb2caadd23a92284fdec418b650b7f4.1711401621.git.soyer%40irl.hu
+patch subject: [PATCH 1/3] ALSA: hda/tas2781: remove digital gain kcontrol
+config: i386-randconfig-011-20240326 (https://download.01.org/0day-ci/archive/20240327/202403271212.5Lxo4b20-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240327/202403271212.5Lxo4b20-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403271212.5Lxo4b20-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> sound/soc/codecs/tas2781-i2c.c:148:27: error: use of undeclared identifier 'dvc_tlv'
+     148 |                 tas2781_digital_putvol, dvc_tlv),
+         |                                         ^
+>> sound/soc/codecs/tas2781-i2c.c:595:19: error: invalid application of 'sizeof' to an incomplete type 'const struct snd_kcontrol_new[]'
+     595 |         .num_controls           = ARRAY_SIZE(tas2781_snd_controls),
+         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/array_size.h:11:32: note: expanded from macro 'ARRAY_SIZE'
+      11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+         |                                ^~~~~
+   2 errors generated.
+
+
+vim +/dvc_tlv +148 sound/soc/codecs/tas2781-i2c.c
+
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  141  
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  142  static const struct snd_kcontrol_new tas2781_snd_controls[] = {
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  143  	SOC_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  144  		1, 0, 20, 0, tas2781_amp_getvol,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  145  		tas2781_amp_putvol, amp_vol_tlv),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  146  	SOC_SINGLE_RANGE_EXT_TLV("Speaker Digital Gain", TAS2781_DVC_LVL,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  147  		0, 0, 200, 1, tas2781_digital_getvol,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18 @148  		tas2781_digital_putvol, dvc_tlv),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  149  	SOC_SINGLE_BOOL_EXT("Speaker Force Firmware Load", 0,
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  150  		tas2781_force_fwload_get, tas2781_force_fwload_put),
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  151  };
+ef3bcde75d06d6 Shenghao Ding 2023-06-18  152  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
