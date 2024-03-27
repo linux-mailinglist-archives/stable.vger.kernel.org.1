@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-32965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED8A88E83D
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D188E83E
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BA12C3446
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:16:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4E82A708E
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896C14A093;
-	Wed, 27 Mar 2024 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB44514A08F;
+	Wed, 27 Mar 2024 14:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtO4RLQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otJw1cLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454514A08B
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC6B14A089
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711550772; cv=none; b=Z6r8ovjFuQHjKYwfSCWDz1y/avuMIvUKNYyRSqfXYG8kUhK4TJzDg0CzY34zsPP3cmLlYQjt876ySTjdOyKICw0g70W36g8e997SIay60VtDiB9PqZj5m2UllunqBc3lYsR1UwsucOjdqWrGsNkgCesOUNnbrh5cAuONyRotTSI=
+	t=1711550777; cv=none; b=DlGxGqnYWlGARdPXxDKHpDcaOaJaNIqX8htRHNHvgbkPj/DK3op0NLYfeyqFaA62sd8ON1J8ZmXfQunEYRBWXxK5dUcUVfQ3cJisMww0XKf9Yo+V6cAF5weDqgGJ3PwDKjBUDhN0yQNkOaMW/C+FBLKqp1n+uc32mRrJVPLwrEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711550772; c=relaxed/simple;
-	bh=Tnbz7rW/muDVgVpvogyrqG+Kg8smP9VctlrVXDEYPsw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PYGpkcnRMwcf8HXMqaPXBsE29QDuoA1QIGVrjCv3mHIWuwlETMEcwLfOGlO22oj0mZcloJs6wIps3paHeltHP9t5Pqspm8x0AF0tzmuWMI5A9+kzuow4tUTtundD7rXSyEXINYb3n+pTB7RCYvKHEBPG+O8YmegivjhcaYML9vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtO4RLQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CA5C433C7;
-	Wed, 27 Mar 2024 14:46:11 +0000 (UTC)
+	s=arc-20240116; t=1711550777; c=relaxed/simple;
+	bh=5fvHtDC1YExdkcQy2LTqqNgh8KpC1Z3EmtoXTNTwjLE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZBIVqvlVLnAFxqSoMS3bIhYV0aDUrf4u1fb54PWb5SFj6WOpsVeCz1oTmsmzcqtb0tWMtFXtE35Isu9fXkYacpXqyqevEriviD/hcaDN/4Yh/nPENhXrYbMeKs+OqXmjp8Jm3tj4+yVv/dlmvltvRqLrOtA9C0G0btJnBRCcEQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otJw1cLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F4AC433F1;
+	Wed, 27 Mar 2024 14:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711550771;
-	bh=Tnbz7rW/muDVgVpvogyrqG+Kg8smP9VctlrVXDEYPsw=;
+	s=korg; t=1711550777;
+	bh=5fvHtDC1YExdkcQy2LTqqNgh8KpC1Z3EmtoXTNTwjLE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NtO4RLQNLw02QFt0ZWG32340qOcU4h6jszRAnvOXj1wOikWQ6QZ90EhFNcrO4Gfgm
-	 aMYOl0HV8Xo58MuSoBiS29ehTAraPnoeDJAdrooNqp0H9xyw7ihtgJ/kfmxcGbCWXk
-	 3cuevrGWT/rRUu8VI0l8u6BkH8lNlOzB+j4A7eXY=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: diag: return KSFT_FAIL not test_cnt" failed to apply to 6.1-stable tree
+	b=otJw1cLIScf3szgCpPz0QiScLG9NkFzSUN50RKySj2BumIv1LnBvxfccNdrly0NMi
+	 P3v7BMZJokX56n9gKw+u3nY6mokuFX6Z3UvXiq5LY4xCpphCtW7buaEoOxezG5wQs+
+	 tHY9SaOXH0F14Exnyb8e9ksnKDjprY3cKT2xzpes=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: diag: return KSFT_FAIL not test_cnt" failed to apply to 5.15-stable tree
 To: tanggeliang@kylinos.cn,davem@davemloft.net,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 15:46:08 +0100
-Message-ID: <2024032708-vagrancy-backlash-61dd@gregkh>
+Date: Wed, 27 Mar 2024 15:46:13 +0100
+Message-ID: <2024032713-identity-slightly-586d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45bcc0346561daa3f59e19a753cc7f3e08e8dff1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032708-vagrancy-backlash-61dd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032713-identity-slightly-586d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,9 @@ Possible dependencies:
 ce9902573652 ("selftests: mptcp: diag: format subtests results in TAP")
 dc97251bf0b7 ("selftests: mptcp: diag: skip listen tests if not supported")
 e04a30f78809 ("selftest: mptcp: add test for mptcp socket in use")
+42fb6cddec3b ("selftests: mptcp: more stable diag tests")
+f2ae0fa68e28 ("selftests/mptcp: add diag listen tests")
+0cd33c5ffec1 ("selftests: mptcp: fix diag instability")
 
 thanks,
 
