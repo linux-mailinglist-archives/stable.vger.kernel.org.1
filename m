@@ -1,208 +1,198 @@
-Return-Path: <stable+bounces-33025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB5488EFDE
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 21:07:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670B688F017
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 21:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 641C01F2764D
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 20:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89BDE1C2BEC1
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 20:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73568155739;
-	Wed, 27 Mar 2024 20:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B26115250B;
+	Wed, 27 Mar 2024 20:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="enNBfZGV"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BxVBXQbc";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="K97Ez81x";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BxVBXQbc";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="K97Ez81x"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F552155392
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 20:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673B61514F7;
+	Wed, 27 Mar 2024 20:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711569854; cv=none; b=b7CcdzsXRiKf5+i09KcvEYl1n2p+hPVMMNAKqgOaXdn/A5pQHUx8DyiO4vilcDrmb6q7WOkMyZqNfU7ty99HAxincBKjdhstpTvZ9fpoYtjoy2It5GK970e4+BOeEQZ/lGUGFhHk2XjVA2IkyX4VgbMYqUsHeOdgzwwqzU0By0s=
+	t=1711571310; cv=none; b=nSLKaKiS31kAE9WAQOf3V7o563yuGwUJHRSPQd4Z0LPGkRNgUUQcW+ARl1jR3aFFfyO3PPQLptwybX6yv1z1BWqQFd6VFTGNM76BTd6W1qc8f43QxLFzz7jj0R4/r2AUGQ6z68jRFMxTjkgxtkASnECOGGx+Yvfc93lKu8DdG5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711569854; c=relaxed/simple;
-	bh=pgMb9uGoyAIyFbF9znVIz68QYrW0g+ex10ZFvjS1k8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dMlWP7/oVeLIdK2vmT8lhTzfYGb6HtePnemISvbPLGuRkmjdBdTLmLCSq9Kl7B+0Uu6m1Yi3it147ZPy3c+4H9+XYqYQ98gSlJTzDActjJEYKqBCYegIkxWg0SkKXbFx6pj+PnwhpugzoYukYs+BJ/OrMj+Afa+HSU4q7pBVBnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=enNBfZGV; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711569851;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2pUwkeyxpCIgmMVeDahMru1IGnRUaXTuK4+0dNpSIAI=;
-	b=enNBfZGVb+OhpoiZZjlKm+t6DIVi98sdgB14zP/BFg/8VQConBdi6aLRv73nrmI4QFvM+o
-	s2vgJuoq340vnmg+Igyodua58+0nU1Dur0h/zH/2fTQsuiteMoGLBjDEo8f1ZgQe+R5Cle
-	ha4mXlnmPK+3xkS2Uyy5GYFqAKlUzQY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-WN9QYDJyNJ2FmVXphxf4-A-1; Wed, 27 Mar 2024 16:04:09 -0400
-X-MC-Unique: WN9QYDJyNJ2FmVXphxf4-A-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33ec6c43a9cso104152f8f.1
-        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 13:04:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711569848; x=1712174648;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2pUwkeyxpCIgmMVeDahMru1IGnRUaXTuK4+0dNpSIAI=;
-        b=mjoRdLg+Vf0WTxR/BBfk7TZBqCxGZhD1E2GeaHr8jnpnDTgkGDOOBlOt+uD8V/MdhG
-         WUaMHY3FucHAmA2yWGMTRqUMcHh52ui2x7uY1so5mySvP+CZLxQgHxOrp2hUs20N0UO/
-         vtH+BNmgYG1Xq168mitahcinV0lbQI33yF5NOIY3TzYbzXKYaueMxaqNWZXTEFoCSKrC
-         gaUVYTHMJxcJ+t/skXgFYqxvKR2DOmjce5m/HPBIIOQXU/5Q/FqHuSI13WTpFPJnt6a+
-         AhoXnf85KPq4Ps6WqdYfZ419kWGfxwcPs4fbI+zcvTghC9mc+s1RVFmED66MIhyQgsMv
-         aUQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWy72whLI1C54w2QPFc0Z6WwD/4Z9QlvbNd9HQ22BL/UnXUPgSocNgUPvx1k2OPZxy5hTvMJv7RCF++kZjzVvqN/7V7Hcxl
-X-Gm-Message-State: AOJu0YzV1P/TsK+TZdr+WY5qGs6TryNDANKmu1nwSgtp4nD7Cgir3FcG
-	RTpl/7Xz7PVNON0BRQhUqL+RGjo2pYqGNXEeuvsX3Unhyf1OV/gSRBlqmKIcUE/pDpbOYZtBvFS
-	lcItvjUKmBhqRDgvpI+gGvoA6CkYFnKWUlPaei5VXTKehpp+m/ioKwQ==
-X-Received: by 2002:adf:a4d0:0:b0:33e:737f:2f2b with SMTP id h16-20020adfa4d0000000b0033e737f2f2bmr855570wrb.53.1711569847977;
-        Wed, 27 Mar 2024 13:04:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTklukmtRKY9zEEGC4iwvdgrZ6nHRSYn8IS9kk7sn2RF5Cfz9P+w2Hhw3wmG5duVPhRlleig==
-X-Received: by 2002:adf:a4d0:0:b0:33e:737f:2f2b with SMTP id h16-20020adfa4d0000000b0033e737f2f2bmr855554wrb.53.1711569847214;
-        Wed, 27 Mar 2024 13:04:07 -0700 (PDT)
-Received: from redhat.com ([2.52.20.36])
-        by smtp.gmail.com with ESMTPSA id ck19-20020a5d5e93000000b00341c6440c36sm11892032wrb.74.2024.03.27.13.04.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 13:04:06 -0700 (PDT)
-Date: Wed, 27 Mar 2024 16:04:01 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Will Deacon <will@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Gavin Shan <gshan@redhat.com>, Jason Wang <jasowang@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH untested] vhost: order avail ring reads after index
- updates
-Message-ID: <20240327155750-mutt-send-email-mst@kernel.org>
-References: <f7be6f4ed4bc5405e9a6b848e5ac3dd1f9955c2a.1711560268.git.mst@redhat.com>
- <20240327195202.GB12000@willie-the-truck>
+	s=arc-20240116; t=1711571310; c=relaxed/simple;
+	bh=UpUOyzIoicAiSAUUbpqychIlGaoQK9rh/sgsGu0bpwA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MiOWiKT+gO/TKnQtxFgC7pB5ykkITjJMxRSEiAmzga1TDDjLK6hRiu04V7vlaaKEbAgDjbtKbL4IGVeF1T4aGqYjFbwLDn1ENe7B6KsPlmv7a4wDBzDyepyudMC7KOIQFbJJJi3hgVG6lk0ZgQIw6AK6X7v1QSCEBcutTdyJdJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BxVBXQbc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=K97Ez81x; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BxVBXQbc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=K97Ez81x; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 84E0E1FB6E;
+	Wed, 27 Mar 2024 20:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711571306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1DwBX/Ioxr6p7/z032afJeSuUVlWTs0NlyebTRJsgxA=;
+	b=BxVBXQbct7a8JRNQSwI/g+RzMMGE/Hsa9pxQCIa3PqR6bjb2cTAPI8BjbzO9wULFX/vC+Y
+	a1VHQ5zpiTINQ72cBjokvsYvChcfv7QmXBfOmXgwIaOvmKltedxQFMksUCpZ9+omml1yBl
+	LIJH/qTT9aVkY22rXXSI9RWMcopC9jw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711571306;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1DwBX/Ioxr6p7/z032afJeSuUVlWTs0NlyebTRJsgxA=;
+	b=K97Ez81xCppZbLqRxrwLBwvnch6LSOtsfMff+bMu6C1koV6kWud5U7TypvFeB0ArIYB695
+	KWCEo2KafGRN9TCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711571306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1DwBX/Ioxr6p7/z032afJeSuUVlWTs0NlyebTRJsgxA=;
+	b=BxVBXQbct7a8JRNQSwI/g+RzMMGE/Hsa9pxQCIa3PqR6bjb2cTAPI8BjbzO9wULFX/vC+Y
+	a1VHQ5zpiTINQ72cBjokvsYvChcfv7QmXBfOmXgwIaOvmKltedxQFMksUCpZ9+omml1yBl
+	LIJH/qTT9aVkY22rXXSI9RWMcopC9jw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711571306;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1DwBX/Ioxr6p7/z032afJeSuUVlWTs0NlyebTRJsgxA=;
+	b=K97Ez81xCppZbLqRxrwLBwvnch6LSOtsfMff+bMu6C1koV6kWud5U7TypvFeB0ArIYB695
+	KWCEo2KafGRN9TCg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 125E013AB3;
+	Wed, 27 Mar 2024 20:28:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id hJVdAmqBBGZBEQAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Wed, 27 Mar 2024 20:28:26 +0000
+Message-ID: <5df1d391-7683-4d9c-accc-9b446d46a150@suse.de>
+Date: Wed, 27 Mar 2024 21:28:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327195202.GB12000@willie-the-truck>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/ast: Fix soft lockup
+Content-Language: en-US
+To: Jocelyn Falempe <jfalempe@redhat.com>, Jammy Huang
+ <orbit.huang@gmail.com>, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@redhat.com, airlied@gmail.com, daniel@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Jammy Huang <jammy_huang@aspeedtech.com>, stable@vger.kernel.org
+References: <20240325033515.814-1-jammy_huang@aspeedtech.com>
+ <c04ebd16-f0b0-45be-a831-fae8b50b7011@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <c04ebd16-f0b0-45be-a831-fae8b50b7011@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -0.40
+X-Spamd-Result: default: False [-0.40 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-0.998];
+	 BAYES_HAM(-0.61)[81.97%];
+	 RCPT_COUNT_SEVEN(0.00)[11];
+	 FREEMAIL_TO(0.00)[redhat.com,gmail.com,linux.intel.com,kernel.org,ffwll.ch];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Flag: NO
 
-On Wed, Mar 27, 2024 at 07:52:02PM +0000, Will Deacon wrote:
-> On Wed, Mar 27, 2024 at 01:26:23PM -0400, Michael S. Tsirkin wrote:
-> > vhost_get_vq_desc (correctly) uses smp_rmb to order
-> > avail ring reads after index reads.
-> > However, over time we added two more places that read the
-> > index and do not bother with barriers.
-> > Since vhost_get_vq_desc when it was written assumed it is the
-> > only reader when it sees a new index value is cached
-> > it does not bother with a barrier either, as a result,
-> > on the nvidia-gracehopper platform (arm64) available ring
-> > entry reads have been observed bypassing ring reads, causing
-> > a ring corruption.
-> > 
-> > To fix, factor out the correct index access code from vhost_get_vq_desc.
-> > As a side benefit, we also validate the index on all paths now, which
-> > will hopefully help catch future errors earlier.
-> > 
-> > Note: current code is inconsistent in how it handles errors:
-> > some places treat it as an empty ring, others - non empty.
-> > This patch does not attempt to change the existing behaviour.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Gavin Shan <gshan@redhat.com>
-> > Reported-by: Will Deacon <will@kernel.org>
-> > Suggested-by: Will Deacon <will@kernel.org>
-> > Fixes: 275bf960ac69 ("vhost: better detection of available buffers")
-> > Cc: "Jason Wang" <jasowang@redhat.com>
-> > Fixes: d3bb267bbdcb ("vhost: cache avail index in vhost_enable_notify()")
-> > Cc: "Stefano Garzarella" <sgarzare@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > I think it's better to bite the bullet and clean up the code.
-> > Note: this is still only built, not tested.
-> > Gavin could you help test please?
-> > Especially on the arm platform you have?
-> > 
-> > Will thanks so much for finding this race!
-> 
-> No problem, and I was also hoping that the smp_rmb() could be
-> consolidated into a single helper like you've done here.
-> 
-> One minor comment below:
-> 
-> >  drivers/vhost/vhost.c | 80 +++++++++++++++++++++++--------------------
-> >  1 file changed, 42 insertions(+), 38 deletions(-)
-> > 
-> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> > index 045f666b4f12..26b70b1fd9ff 100644
-> > --- a/drivers/vhost/vhost.c
-> > +++ b/drivers/vhost/vhost.c
-> > @@ -1290,10 +1290,38 @@ static void vhost_dev_unlock_vqs(struct vhost_dev *d)
-> >  		mutex_unlock(&d->vqs[i]->mutex);
-> >  }
-> >  
-> > -static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq,
-> > -				      __virtio16 *idx)
-> > +static inline int vhost_get_avail_idx(struct vhost_virtqueue *vq)
-> >  {
-> > -	return vhost_get_avail(vq, *idx, &vq->avail->idx);
-> > +	__virtio16 idx;
-> > +	u16 avail_idx;
-> > +	int r = vhost_get_avail(vq, idx, &vq->avail->idx);
-> > +
-> > +	if (unlikely(r < 0)) {
-> > +		vq_err(vq, "Failed to access avail idx at %p: %d\n",
-> > +		       &vq->avail->idx, r);
-> > +		return -EFAULT;
-> > +	}
-> > +
-> > +	avail_idx = vhost16_to_cpu(vq, idx);
-> > +
-> > +	/* Check it isn't doing very strange things with descriptor numbers. */
-> > +	if (unlikely((u16)(avail_idx - vq->last_avail_idx) > vq->num)) {
-> > +		vq_err(vq, "Guest moved used index from %u to %u",
-> > +		       vq->last_avail_idx, vq->avail_idx);
-> > +		return -EFAULT;
-> > +	}
-> > +
-> > +	/* Nothing new? We are done. */
-> > +	if (avail_idx == vq->avail_idx)
-> > +		return 0;
-> > +
-> > +	vq->avail_idx = avail_idx;
-> > +
-> > +	/* We updated vq->avail_idx so we need a memory barrier between
-> > +	 * the index read above and the caller reading avail ring entries.
-> > +	 */
-> > +	smp_rmb();
-> 
-> I think you could use smp_acquire__after_ctrl_dep() if you're feeling
-> brave, but to be honest I'd prefer we went in the opposite direction
-> and used READ/WRITE_ONCE + smp_load_acquire()/smp_store_release() across
-> the board. It's just a thankless, error-prone task to get there :(
+Hi
 
-Let's just say that's a separate patch, I tried hard to make this one
-a bugfix only, no other functional changes at all.
+Am 27.03.24 um 09:53 schrieb Jocelyn Falempe:
+> Hi,
+>
+> Thanks for your patch.
+> I'm wondering how you can trigger this infinite loop ?
 
-> So, for the patch as-is:
-> 
-> Acked-by: Will Deacon <will@kernel.org>
-> 
-> (I've not tested it either though, so definitely wait for Gavin on that!)
-> 
-> Cheers,
-> 
-> Will
+Yeah, a bit more context for this bug would be welcome. It's hard to 
+judge the fix without.
+
+Best regards
+Thomas
+
+>
+> Also this looks like a simple fix, that can be easily backported, so 
+> I'm adding stable in Cc.
+>
+> If Thomas has no objections, I can push it to drm-misc-fixes.
+>
+> Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+>
+
+
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
