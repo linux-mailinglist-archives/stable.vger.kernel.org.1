@@ -1,164 +1,121 @@
-Return-Path: <stable+bounces-32947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCEF88E8B3
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:24:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2472288E73A
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09656B34098
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE951F23A6D
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE7713E3E6;
-	Wed, 27 Mar 2024 13:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC181304B8;
+	Wed, 27 Mar 2024 13:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="hQBohv5M";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lXM24WwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxMEOz0s"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0120513D88E;
-	Wed, 27 Mar 2024 13:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B73212DDAF;
+	Wed, 27 Mar 2024 13:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711546749; cv=none; b=QUl1RzxPhambIt1i/AmQVo34nBAKAyHQr/zswh/otV2Egl6ZiqCr/cj9GVZcoCMKSf4jNYZoqN4q8KElzHgM3moTmYT8v2ndyMkAZAhLksOJK/YuGQzj6ZhSQHgBu25ffKh3MBM/ngg51zpRT3wknwXrY439xvNaNxhr+IqB5SM=
+	t=1711547024; cv=none; b=ACNWhOptIFHL9QPPWUwTmxranYn17K0w2s3/7w6Gz0iQ9IJHiKzpw3XoiEXG369i3kCtB4ImUbYo3u1ZXvR+XT7JQCtxY0rvv8lUNexuQJW269FfAi3gxs9LKX9bn/C/9kSaN4XZ6N6Z+g8KLwwqPigXtnfp6AcxW7s0Njslqgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711546749; c=relaxed/simple;
-	bh=qUFiWNXiUrR77Gv7KOV/6YydyP+bT/nhCwdUzTXgoWs=;
+	s=arc-20240116; t=1711547024; c=relaxed/simple;
+	bh=jDFSsc2I8O7lsiinPAqe5K2U9ZhqiVvG7UDP4Qyx7bM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ijJZbnONTO/fxO8T99CdMcfhH4Kagnp0LG4t+ncqAvlaU79RC7gDU97+juQ0Cu2iKGCH6fOTfez0wLl8FZGrPLNnpHuFzIkJ0hG4BQZ2maDIKN3vKwe0X8/NiLZQyXeMe1lWzoyi89QYna005gEOW4KPrJzA53agqI6TSJU9ekk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=hQBohv5M; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lXM24WwO; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id F41EB114013B;
-	Wed, 27 Mar 2024 09:39:05 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 27 Mar 2024 09:39:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1711546745;
-	 x=1711633145; bh=hFePx7NNk9uBLYJHp+RoxkcN879v2VFyWa6LPIRbuuQ=; b=
-	hQBohv5Ml5iGIWhncp6Rz8mMnGwxGbpxIfeGporsTET/hqCfPO19S6XQaTDX5F6V
-	ORQdj8e/gZSZieuG8x0BE54cjCZzSCWFbuTOx14iQp1pVOBt/XQU7IsmLPEnaKYB
-	Hfj0v6QhhdwGn1INqI3cd9LrKPo3eyQMzHd69CjMi4a8QB8xq2HwvGuAEKxTWczV
-	CS0BvFXzMkR5JPI5Tv5JU+00POpkEjl5wJeXt8w5SaN5BsUBFA/1/23DCZg0c4QY
-	NIYnTcgCvegYqlVDynTVUHPG0Q8fMzQhtJPr2LSSHaSW3m4fxJ0B1+BWC9ZLgckT
-	0FUGC6Q0oZtZPEzTRigK3g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1711546745; x=
-	1711633145; bh=hFePx7NNk9uBLYJHp+RoxkcN879v2VFyWa6LPIRbuuQ=; b=l
-	XM24WwO9dsLcc8MvC8RdkIpah3CWFB6oWjp0VV5CfEvNKS3eFIvCpTIjIRNPXXpr
-	5Mm5kg4dlQwxzyZYYN2gG1lND2MKLpTbPUJYSHsMNf/1LegMLWltAtJe83hwApYV
-	vlQ7REWmN1+Glifg/CoADv6wO28bDDkAoS6/wPgr1C28Ga9kkTJf9916+UigXanD
-	1RHhDYpI03c0BGJl2oVuk3r8Ow/HEuf/FCq1HthxW3Fpt4xr2zJWZL9hCCpA8NKw
-	BHJ94irZvtROQR8+zZHiXQK8Bsyz1brx0dbtScAZ6E1Xb24Rl+F6G1TVmmGNkD+U
-	/wvB5VAkD0GJ6wMM0rkuA==
-X-ME-Sender: <xms:eSEEZh1VmVc-Qh9pIuXUa9FYR9sg52o1LtZwctNhPOCkofyJ_6nSWw>
-    <xme:eSEEZoFnc_PsSoC1o6eks8sYEFuJh3Wumw_HhO78Ihg-Fp1poXT8K5511a9XpeJHx
-    7o1a14ddVpyug>
-X-ME-Received: <xmr:eSEEZh5QbZeYzGrHcmGBQnFJpkMpJ1blZ_Ne9y710VEBvwfxRGduSIw2LMfxyV2MAeB4O1VIVFwydekKXu5sFsvKepGeGwgBuBdLcA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduiedgfedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelke
-    ehjeejieehjedvteehjeevkedugeeuiefgfedufefgfffhfeetueeikedufeenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:eSEEZu18EdSvRN8OWJqhwXCkw8Vy8MPWHRNkad5Ke_6wEUBhgREGfA>
-    <xmx:eSEEZkHjbu5Uzcf75EyMLNbKJhYopxlw6vgqNVfKGS2Fq6qIQoQuqA>
-    <xmx:eSEEZv_ENYTorHRTrxCcqEMyB6K8_wJS4PS2f_v4z2ESKGip_ivfEw>
-    <xmx:eSEEZhmMk8kMX6bCcu8JIhhMzxIvlU74PHU74HRt2JAHlzMI62fefg>
-    <xmx:eSEEZoGnm4HTlM18VtuHpdB_VaXi0s_GKLnzoazvpd-LIzLjw-_NiQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 Mar 2024 09:39:04 -0400 (EDT)
-Date: Wed, 27 Mar 2024 14:39:03 +0100
-From: Greg KH <greg@kroah.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tLSNory83q06/POaex2LgFb8j+05nnScU6gxvS1RzfiSha/YgMCMYoU+FB7YOHhXbh7okBx+qGGy4Rj6RPYtQQ8gPYK8TkiFlUkk8DT75CnJAHMJz001MKsDxlFxeiT25HwhhqGtVlii9TSQp2WXBhgWn4yeun4c5UY6KqfI4kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxMEOz0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EBDC433F1;
+	Wed, 27 Mar 2024 13:43:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711547023;
+	bh=jDFSsc2I8O7lsiinPAqe5K2U9ZhqiVvG7UDP4Qyx7bM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IxMEOz0souoepUUY4FjZnzzZPm/Qz+ztLIF3UheOgq/xHV9PJ9vdx1xUXwAurB8wG
+	 MyrGCWjKP/blb6quJBwXmjPi7KbiJNvn4c/5qosGkGKJ6cdLeo6v0GDkn9qvdGlqq/
+	 1iw+HuEHc/hUwNxBXtO6NJd0umi+d0NrlnDf1Pi4=
+Date: Wed, 27 Mar 2024 14:43:40 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ron Economos <re@w6rz.net>
 Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH 5.15 110/317] arm64: dts: renesas: r8a779a0: Update to
- R-Car Gen4 compatible values
-Message-ID: <2024032754-alias-frosted-0903@gregkh>
-References: <20240324233458.1352854-1-sashal@kernel.org>
- <20240324233458.1352854-111-sashal@kernel.org>
- <CAMuHMdUK0YYELTN=JQDtGuYg03Em6c7kskpqUR0Y6NbNuR7hfQ@mail.gmail.com>
- <ZgMfbenM7Kav2BTJ@sashalap>
- <CAMuHMdUU0TYKhm3FkqjgrYQdS58oLPQJFPxYidjn0h-ZJ9qeFg@mail.gmail.com>
+	stable@vger.kernel.org, Audra Mitchell <audra@redhat.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 6.8 002/715] workqueue.c: Increase workqueue name length
+Message-ID: <2024032733-freebase-dipped-0b4b@gregkh>
+References: <20240324223455.1342824-1-sashal@kernel.org>
+ <20240324223455.1342824-3-sashal@kernel.org>
+ <10844429-b80f-ca9d-bf1d-c42efcc635f6@w6rz.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdUU0TYKhm3FkqjgrYQdS58oLPQJFPxYidjn0h-ZJ9qeFg@mail.gmail.com>
+In-Reply-To: <10844429-b80f-ca9d-bf1d-c42efcc635f6@w6rz.net>
 
-On Wed, Mar 27, 2024 at 10:41:22AM +0100, Geert Uytterhoeven wrote:
-> Hi Sasha,
+On Tue, Mar 26, 2024 at 02:36:22AM -0700, Ron Economos wrote:
+> On 3/24/24 3:23 PM, Sasha Levin wrote:
+> > From: Audra Mitchell <audra@redhat.com>
+> > 
+> > [ Upstream commit 31c89007285d365aa36f71d8fb0701581c770a27 ]
+> > 
+> > Currently we limit the size of the workqueue name to 24 characters due to
+> > commit ecf6881ff349 ("workqueue: make workqueue->name[] fixed len")
+> > Increase the size to 32 characters and print a warning in the event
+> > the requested name is larger than the limit of 32 characters.
+> > 
+> > Signed-off-by: Audra Mitchell <audra@redhat.com>
+> > Signed-off-by: Tejun Heo <tj@kernel.org>
+> > Stable-dep-of: 5797b1c18919 ("workqueue: Implement system-wide nr_active enforcement for unbound workqueues")
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   kernel/workqueue.c | 8 ++++++--
+> >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+> > index 7b482a26d7419..8a06fddb23e66 100644
+> > --- a/kernel/workqueue.c
+> > +++ b/kernel/workqueue.c
+> > @@ -108,7 +108,7 @@ enum {
+> >   	RESCUER_NICE_LEVEL	= MIN_NICE,
+> >   	HIGHPRI_NICE_LEVEL	= MIN_NICE,
+> > -	WQ_NAME_LEN		= 24,
+> > +	WQ_NAME_LEN		= 32,
+> >   };
+> >   /*
+> > @@ -4666,6 +4666,7 @@ struct workqueue_struct *alloc_workqueue(const char *fmt,
+> >   	va_list args;
+> >   	struct workqueue_struct *wq;
+> >   	struct pool_workqueue *pwq;
+> > +	int len;
+> >   	/*
+> >   	 * Unbound && max_active == 1 used to imply ordered, which is no longer
+> > @@ -4692,9 +4693,12 @@ struct workqueue_struct *alloc_workqueue(const char *fmt,
+> >   	}
+> >   	va_start(args, max_active);
+> > -	vsnprintf(wq->name, sizeof(wq->name), fmt, args);
+> > +	len = vsnprintf(wq->name, sizeof(wq->name), fmt, args);
+> >   	va_end(args);
+> > +	if (len >= WQ_NAME_LEN)
+> > +		pr_warn_once("workqueue: name exceeds WQ_NAME_LEN. Truncating to: %s\n", wq->name);
+> > +
+> >   	max_active = max_active ?: WQ_DFL_ACTIVE;
+> >   	max_active = wq_clamp_max_active(max_active, flags, wq->name);
 > 
-> On Tue, Mar 26, 2024 at 8:18 PM Sasha Levin <sashal@kernel.org> wrote:
-> > On Mon, Mar 25, 2024 at 09:43:31AM +0100, Geert Uytterhoeven wrote:
-> > >On Mon, Mar 25, 2024 at 12:36 AM Sasha Levin <sashal@kernel.org> wrote:
-> > >> From: Geert Uytterhoeven <geert+renesas@glider.be>
-> > >>
-> > >> [ Upstream commit a1721bbbdb5c6687d157f8b8714bba837f6028ac ]
-> > >>
-> > >> Despite the name, R-Car V3U is the first member of the R-Car Gen4
-> > >> family.  Hence update the compatible properties in various device nodes
-> > >> to include family-specific compatible values for R-Car Gen4 instead of
-> > >> R-Car Gen3:
-> > >>   - DMAC,
-> > >>   - (H)SCIF,
-> > >>   - I2C,
-> > >>   - IPMMU,
-> > >>   - WDT.
-> > >>
-> > >> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > >> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> > >> Link: https://lore.kernel.org/r/73cea9d5e1a6639422c67e4df4285042e31c9fd5.1651497071.git.geert+renesas@glider.be
-> > >> Stable-dep-of: 0c51912331f8 ("arm64: dts: renesas: r8a779a0: Correct avb[01] reg sizes")
-> > >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > >> ---
-> > >>  arch/arm64/boot/dts/renesas/r8a779a0.dtsi | 24 +++++++++++------------
-> > >>  1 file changed, 12 insertions(+), 12 deletions(-)
-> > >>
-> > >> diff --git a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi b/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> > >> index 26899fb768a73..c7d1b79692c11 100644
-> > >> --- a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> > >> +++ b/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> > >> @@ -583,7 +583,7 @@ hscif3: serial@e66a0000 {
-> > >>
-> > >>                 avb0: ethernet@e6800000 {
-> > >>                         compatible = "renesas,etheravb-r8a779a0",
-> > >> -                                    "renesas,etheravb-rcar-gen3";
-> > >> +                                    "renesas,etheravb-rcar-gen4";
-> > >
-> > >This change will break Ethernet, as the Renesas EtherAVB driver in
-> > >v5.15.x does not handle "renesas,etheravb-rcar-gen4" yet.
-> > >
-> > >That can be fixed by also backporting commit 949f252a8594a860
-> > >("net: ravb: Add R-Car Gen4 support") in v6.1.
-> >
-> > I'll just drop this patch instead, thanks!
+> Minor issue. The upstream commit 8318d6a6362f5903edb4c904a8dd447e59be4ad1
+> "workqueue: Shorten events_freezable_power_efficient name" goes with this
+> patch. Otherwise the warning "kernel: workqueue: name exceeds WQ_NAME_LEN.
+> Truncating to: events_freezable_power_efficien" occurs.
 > 
-> Looks like it still made v5.15.153?
-> The easiest fix is to backport 949f252a8594a860, too.
+> Same for 6.7.11-rc2 and 6.6.23-rc2.
 
-Now applied, thanks.
+Now queued up, thanks.
 
 greg k-h
 
