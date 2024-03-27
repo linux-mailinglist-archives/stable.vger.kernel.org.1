@@ -1,75 +1,93 @@
-Return-Path: <stable+bounces-32953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DC588E74C
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:53:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D89A88E831
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5E82A0FD6
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:53:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10D19B3547F
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C349D130A44;
-	Wed, 27 Mar 2024 13:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04629148FE9;
+	Wed, 27 Mar 2024 14:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swS5lbs0"
+	dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b="J26IBcLP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.cybernetics.com (mail.cybernetics.com [72.215.153.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69117130A42
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 13:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB8C148FE3
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.215.153.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711547291; cv=none; b=WhOxQzRIPUwCptHFXcZFphaCuiFcfpnPCmlHTCKY92pLbmoNMDXgymiTg6jYK1NXSD9NoKVfFX3wdU7E2pnuwbgw+wbuYuZlPIhw6S959PWeda71ueVh+WhxWQTaKPgIuNnLenMA2+YcUI+VwuOlMt167zbQqV/nT/4Rrx3Me6c=
+	t=1711549632; cv=none; b=aSaxPCDwL/cWFtLF5cwLRf6tcUNIAEGeJcb/Ar1dJSK1K8CxFf2P3yzqRk2irbPLC63lnytgJjnB/j6fGy2LVJ5bb5IebQZgEVVP9VFGUKZaOaXE1NeOUub4O57GYmrwqI4oorLKB1hJYrknHC32i4F1xOJNh8uV/pdbS/eBSnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711547291; c=relaxed/simple;
-	bh=h621EV0BAzcni0diSO70P8wQX8ZggVhhV2thuDOx1Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jOtPS9Sm6DDi3NgwH8UneZzQ4czOTY+9X/TFgOxMSw5EuBpN/3iwTrLZK51I/i4E5Ud2bK9wPOD2BNJiDZfE2nEZe8/hdeXXvoqf7/cpsHQIZQpb9KTlWY5aHt8qA6MeMYNJ3EWHmjCndfwOMc/6OhqfSyy7kQljQhrf4Xfxg+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swS5lbs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89774C433C7;
-	Wed, 27 Mar 2024 13:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711547291;
-	bh=h621EV0BAzcni0diSO70P8wQX8ZggVhhV2thuDOx1Kg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=swS5lbs0VnptcQ8t3vyPbcj+bhzjnDtUwvLkWXqRWZA4JFgPq0OYEjh+V2vJOHVWD
-	 bjvECR5tw48faVrT3suivu8MAXkj9jV1PCtgfSbfqC55FdQfTsSdiJ236vuZ+Scwyq
-	 1KAoAjvxo7TCnHBxjlYIyTqUA3WhAl0Xg02RjuNY=
-Date: Wed, 27 Mar 2024 14:48:07 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mario Limonciello <superm1@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: VRR on Framework 16
-Message-ID: <2024032701-pushy-launder-a1ca@gregkh>
-References: <c5e3c677-0687-4417-a8af-b5000295309b@gmail.com>
+	s=arc-20240116; t=1711549632; c=relaxed/simple;
+	bh=x6PxAa5ZVZWjP6xCYO2J744lJgOyCSGeKhHH3KX3svQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VG/Vcgu43zw0yxMe13PlEenHHxNRksbiMJ0EMAl0HgWYAiv2Z899DU9ioLG07mIpRzMVwbwm9vHk457lou0ta+ymzOfKyddQIOQF0Y08WJJrihajQpBidICQDOSLHW6Nc+WOSm+nL+h9Rdo3h+7fQwPrDlkidlgZlVzU4sAyWUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com; spf=pass smtp.mailfrom=cybernetics.com; dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b=J26IBcLP; arc=none smtp.client-ip=72.215.153.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cybernetics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cybernetics.com
+X-ASG-Debug-ID: 1711547641-1cf4391b1c11fc0001-OJig3u
+Received: from cybernetics.com ([10.10.4.126]) by mail.cybernetics.com with ESMTP id JgvhKPqniD8w60fx; Wed, 27 Mar 2024 09:54:24 -0400 (EDT)
+X-Barracuda-Envelope-From: tonyb@cybernetics.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.10.4.126
+X-ASG-Whitelist: Client
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cybernetics.com; s=mail;
+	bh=x6PxAa5ZVZWjP6xCYO2J744lJgOyCSGeKhHH3KX3svQ=;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:Content-Language:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID; b=J26IBcLPfnIsTxmoBkyo
+	iOb3zgZp/wymAwuWuQ8k4KWEn42h/uEuJ1IgFu2IALsQWGNDCD8xcuOfrueizMEwoFSzu2rp+YjVE
+	thSU7E6XWG9IhsOjYaJvDg+0IQluGugak86DefUGL0CCYETo9IB36vdT9R26csfYcVHZio7suQ=
+Received: from [10.157.2.224] (HELO [192.168.200.1])
+  by cybernetics.com (CommuniGate Pro SMTP 7.1.1)
+  with ESMTPS id 13149216; Wed, 27 Mar 2024 09:54:01 -0400
+Message-ID: <45ea3c6a-18d3-469a-b368-d657b739edd2@cybernetics.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.157.2.224
+Date: Wed, 27 Mar 2024 09:54:01 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c5e3c677-0687-4417-a8af-b5000295309b@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: Patch "block: Fix page refcounts for unaligned buffers in
+ __bio_release_pages()" failed to apply to 6.1-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+X-ASG-Orig-Subj: Re: FAILED: Patch "block: Fix page refcounts for unaligned buffers in
+ __bio_release_pages()" failed to apply to 6.1-stable tree
+Cc: Greg Edwards <gedwards@ddn.com>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240327121329.2830355-1-sashal@kernel.org>
+Content-Language: en-US
+From: Tony Battersby <tonyb@cybernetics.com>
+In-Reply-To: <20240327121329.2830355-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Barracuda-Connect: UNKNOWN[10.10.4.126]
+X-Barracuda-Start-Time: 1711547664
+X-Barracuda-URL: https://10.10.4.122:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at cybernetics.com
+X-Barracuda-Scan-Msg-Size: 497
+X-Barracuda-BRTS-Status: 1
 
-On Sat, Mar 23, 2024 at 12:49:53PM -0500, Mario Limonciello wrote:
-> Hi,
-> 
-> Framework 16 supports variable refresh rates in it's panel but only
-> advertises it in the DisplayID block not the EDID.  As Plasma 6 and GNOME 46
-> support VRR this problem is exposed to more people.
-> 
-> This is fixed by:
-> 
-> 2f14c0c8cae8 ("drm/amd/display: Use freesync when
-> `DRM_EDID_FEATURE_CONTINUOUS_FREQ` found")
-> 
-> Can you please bring this back to 6.6.y+?
+On 3/27/24 08:13, Sasha Levin wrote:
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> Thanks,
+> Sasha
 
-Now queued up, thanks.
+I already sent a backport for 6.1 on March 13.  5.15 and older kernels
+do not need the patch.
 
-greg k-h
+https://lore.kernel.org/stable/a764cc80-5b7c-4186-a66d-5957de5beee4@cybernetics.com/
+
+Tony
 
