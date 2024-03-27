@@ -1,151 +1,138 @@
-Return-Path: <stable+bounces-32466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C22E88DB44
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 11:31:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E888DC1A
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 12:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9607D297827
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C212E1F280BD
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 11:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175383DABF3;
-	Wed, 27 Mar 2024 10:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F0B54BD5;
+	Wed, 27 Mar 2024 11:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9aglByU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZdCXmf4G"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE8F3DABF0
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 10:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C9B4EB4F;
+	Wed, 27 Mar 2024 11:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711535474; cv=none; b=aQzofZPASfNJEGXdchDVzKF23ncV0USszeYM/iP8/xZGa3nd7mzcTV2CltKxtOc/6dA3JiRRl86rNfFxHJVrMjtIDlBjR66KiybJrgMcm1+/AL3cMe7KcKfqakla9N30xJcMKtochzHk+BfkgS3brjX9ZvfdvU78zzKbvdh3zN4=
+	t=1711537808; cv=none; b=DMH7bpG33pQw6ofjo/tRYyEn4v8EtEVP/CmPWLFfCdi+8dv9Ol1+zF3SmGNZgydfogHk0VGWDJMMqw0tOar4SjkswNJd/pmjyfArPkCgPBIDMHr0ak69MqzznhjwaPGuTqehwXC/5gGBom+KQPdxfnpsSwp8ZKZre6V7+PHoulc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711535474; c=relaxed/simple;
-	bh=BWcv2u4ZFz9iLQ4PRAzI+XEWhCpBoMKy/9/KLS71lNk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zet1JznjWqElJiTwznj5kVCsgccu6hyUuzhMwAUFcIFJFIliM0ELfjLoa1MfWcXvTwWMrPcyvy9HRhgUql57h38qC/z6DDIe90c+D+OLZDX4VXbgxFa08s7JYfcSCud6RiED913hgLVjF1y5lA6IbShvuaaOIXY9Ov2ZooOqwY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9aglByU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711535471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oz/8STdJVcyP6J/NyQLwNyYMgSr1ywh4W3yd2bcGzAU=;
-	b=L9aglByUZgo7SVshozZDIcETGymf1AyUPnF0u6y4gBV4mhxV0L97Kiz2BJDN42SZHIimcd
-	ugCoIzMeme0YOJpKpEoJ83OaSKor4bDBXm2ZDi+BTdXE9DJpEbfbe8QTIlIQPO2Cgz9H3+
-	lRaGzesI43t1/O+4qyTef7e+0qvS3m4=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-vPw3D-EvMUai2jQVbQdozA-1; Wed, 27 Mar 2024 06:31:09 -0400
-X-MC-Unique: vPw3D-EvMUai2jQVbQdozA-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a450265c7b6so360604466b.0
-        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 03:31:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711535468; x=1712140268;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oz/8STdJVcyP6J/NyQLwNyYMgSr1ywh4W3yd2bcGzAU=;
-        b=VdnLEeIfjByaM1hIF8RQKU0fwaqgIapw/fjEEF/M86OGOS9lkUTjpA9ARQSajqhEbU
-         SEqZtF5BCU72bIx8uIdeqlU4+8UAqgtY+dlPK2A+OSnkPoI9oLsKid90+peoX2Fzq3D9
-         Bm+BSh1SM7joQhPPZUk8ZNrbrl3It94ztSohVYP8Wi0d1pHVS2wo6/eiA47RmcujMAZI
-         dh055lluE8hO4hRjxvQL+Hr11WQwNsjLg0+bwc2zoda9rZjZz7K1p48uATYnmulyq5+c
-         lxcdXsItoB0buwJFfcrLNOVlv4IcxjAKQrUtJutCK8w81UXxoYjuEl3oL3ZOO/zBiRrf
-         nhEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBzuuZPQMQTFy6HcMNaoeHAIeXrWbvw2ZglirwKNZA7ND6NHOZFGZeF3fR8Aa/uuA/B1VIUJuYnz3vzPTWMWN2rjT9zTrR
-X-Gm-Message-State: AOJu0YyzTFjKuObUyD8SOwbRJa5oYgYFd13gNzqy6rKExwnPlqxAglwk
-	iP2JtMQ7R79ruIrUzLn6cBR1l7Vp1LvM9D2+xn7BSCv03LoJ9wfGhiAphtBWGyDYxLINWJpf0ej
-	DYIA/H+Y/qA23/FpQbT5dxXGNdFJz9u7w5eadic2A4GJ13xkgx5JEJOq+/G5k8A==
-X-Received: by 2002:a17:906:4ad3:b0:a46:7c9c:10d0 with SMTP id u19-20020a1709064ad300b00a467c9c10d0mr525191ejt.23.1711535468358;
-        Wed, 27 Mar 2024 03:31:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvDn/acwG/UGqPiarbF67n1Zs2AqAU0k5k27uFzbZ/mo94RLYU3Pu0VxMg2scean105xtJXQ==
-X-Received: by 2002:a17:906:4ad3:b0:a46:7c9c:10d0 with SMTP id u19-20020a1709064ad300b00a467c9c10d0mr525179ejt.23.1711535468032;
-        Wed, 27 Mar 2024 03:31:08 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id li2-20020a170906f98200b00a4736ace734sm5272252ejb.115.2024.03.27.03.31.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Mar 2024 03:31:07 -0700 (PDT)
-Message-ID: <2ae8b161-b0e6-404a-afab-3822b8b223f4@redhat.com>
-Date: Wed, 27 Mar 2024 11:31:07 +0100
+	s=arc-20240116; t=1711537808; c=relaxed/simple;
+	bh=YQXxdHYf5ZUqRCsSk4Vy+9QKTvmMBfJYYDknysNlH7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BiudNP0YXPfrhCQWwDus5eVUUDMKwEKWp/3VaWNvDeelzAVofYXZqmAcqqJ0zIy4VvFbmwdLFUdVdoVI5PbSdP0INF+oixQDEBLQsZQ1EPhMnMRe5ozVLXKSY8T3JEMsp78kWV0Xx4Aw7lYniEnOesO0TOUhCWPrXVt//aRg/v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZdCXmf4G; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711537807; x=1743073807;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YQXxdHYf5ZUqRCsSk4Vy+9QKTvmMBfJYYDknysNlH7s=;
+  b=ZdCXmf4GNAmD71F1ytlWlR6s4VkM626ZZyv5P8emTSkgf3A8Fx+sud/g
+   tpEJvgHXG3GPsJgbCq5cBo4qd5QtbLMObyhii0QmYyKYhXy9/SjM5Dj05
+   AV3W21rkLUdeHoaXrkksqkL9Mx595Qpv7jWQktEBWvcGQqBna7q6b8jm2
+   8PhrgY7LZ3gQb3GMYdFZ5phn89FhCvvyqEsm42/r4sUD+S0IdbW8SBQfB
+   ACFthNyVYNlxszLfgXXoDim2qPQuqvs3VKK39rKM8lLyMPRMNW2DJkQL+
+   D0krrwz/aVNeUSWmNRXKEvgMHQ1N6Pg8hAKfAg3oqNzEO4KKbPt5ACIIv
+   A==;
+X-CSE-ConnectionGUID: mX/BMoAMSUG7edqLzVPoBA==
+X-CSE-MsgGUID: cVSMfy1aRGmxTdCIwRzPzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="17360782"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
+   d="scan'208";a="17360782"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 04:10:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937074456"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
+   d="scan'208";a="937074456"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 27 Mar 2024 04:10:02 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 27 Mar 2024 13:10:02 +0200
+Date: Wed, 27 Mar 2024 13:10:02 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Kyle Tso <kyletso@google.com>
+Cc: linux@roeck-us.net, gregkh@linuxfoundation.org, badhri@google.com,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: tcpm: Correct the PDO counting in pd_set
+Message-ID: <ZgP+ih7CuXa2S2zb@kuha.fi.intel.com>
+References: <20240326151909.440275-1-kyletso@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Regression] 6.8 - i2c_hid_acpi: probe of i2c-XXX0001:00 failed
- with error -110
-Content-Language: en-US, nl
-To: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <9a880b2b-2a28-4647-9f0f-223f9976fdee@manjaro.org>
- <a587f3f3-e0d5-4779-80a4-a9f7110b0bd2@manjaro.org>
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <a587f3f3-e0d5-4779-80a4-a9f7110b0bd2@manjaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240326151909.440275-1-kyletso@google.com>
 
-Hi Philip,
-
-On 3/19/24 5:52 AM, Philip Müller wrote:
-> On 18/03/2024 17:58, Philip Müller wrote:
->> I'm currently developing on the OrangePi Neo-01, which ships with two similar touchpads using the Synaptics driver. On 6.7.10 those two devices get detected normally. On 6.8.1 it seems to error out.
->>
->> I either get none, or at best only one of those two devices.
->>
->> i2c_hid_acpi: probe of i2c-XXX0001:00 failed with error -110
->> i2c_hid_acpi: probe of i2c-XXX0002:00 failed with error -110
->>
->> what would be the best way to debug this?
->>
+On Tue, Mar 26, 2024 at 11:19:09PM +0800, Kyle Tso wrote:
+> Off-by-one errors happen because nr_snk_pdo and nr_src_pdo are
+> incorrectly added one. The index of the loop is equal to the number of
+> PDOs to be updated when leaving the loop and it doesn't need to be added
+> one.
 > 
-> I found the regression in commit aa69d6974185e9f7a552ba982540a38e34f69690
-> HID: i2c-hid: Switch i2c_hid_parse() to goto style error handling
-
-I just checked that patch and I don't see anyway how that can create
-this regression. I assume you did a git bisect ? 
-
-Did you try the last commit in the tree before that commit got added
-and verified that that one works where as building a kernel from commit
-aa69d6974185e9f itself does not work ?
-
-> When I use the commit before I can rmmod and modprobe in a batch script using a loop without erroring out to -110. Attached the testing script and dmesg log snippets
+> When doing the power negotiation, TCPM relies on the "nr_snk_pdo" as
+> the size of the local sink PDO array to match the Source capabilities
+> of the partner port. If the off-by-one overflow occurs, a wrong RDO
+> might be sent and unexpected power transfer might happen such as over
+> voltage or over current (than expected).
 > 
-> #!/bin/bash
-> for ((n=0;n<5;n++))
-> do
-> sudo rmmod i2c_hid_acpi
-> sleep 1
-> sudo modprobe i2c_hid_acpi --force-vermagic
-> sleep 2
-> done
+> "nr_src_pdo" is used to set the Rp level when the port is in Source
+> role. It is also the array size of the local Source capabilities when
+> filling up the buffer which will be sent as the Source PDOs (such as
+> in Power Negotiation). If the off-by-one overflow occurs, a wrong Rp
+> level might be set and wrong Source PDOs will be sent to the partner
+> port. This could potentially cause over current or port resets.
+> 
+> Fixes: cd099cde4ed2 ("usb: typec: tcpm: Support multiple capabilities")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kyle Tso <kyletso@google.com>
 
-Ok, so you did try the commit before and that did work. Are you
-sure that aa69d6974185e9f was not actually the last working
-commit ?
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-AFAICT aa69d6974185e9f makes no functional changes, except for
-actually propagating the error from i2c_hid_read_register()
-rather then hardcoding -EIO. But that should not matter...
+> ---
+> v1 -> v2:
+> - update the commit message (adding the problems this patch solves)
+> 
+>  drivers/usb/typec/tcpm/tcpm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index ae2b6c94482d..2464710ea0c8 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -6855,14 +6855,14 @@ static int tcpm_pd_set(struct typec_port *p, struct usb_power_delivery *pd)
+>  	if (data->sink_desc.pdo[0]) {
+>  		for (i = 0; i < PDO_MAX_OBJECTS && data->sink_desc.pdo[i]; i++)
+>  			port->snk_pdo[i] = data->sink_desc.pdo[i];
+> -		port->nr_snk_pdo = i + 1;
+> +		port->nr_snk_pdo = i;
+>  		port->operating_snk_mw = data->operating_snk_mw;
+>  	}
+>  
+>  	if (data->source_desc.pdo[0]) {
+>  		for (i = 0; i < PDO_MAX_OBJECTS && data->source_desc.pdo[i]; i++)
+>  			port->snk_pdo[i] = data->source_desc.pdo[i];
+> -		port->nr_src_pdo = i + 1;
+> +		port->nr_src_pdo = i;
+>  	}
+>  
+>  	switch (port->state) {
+> -- 
+> 2.44.0.396.g6e790dbe36-goog
 
-Note that commit aa69d6974185e9f is part of a series and
-I would not be surprised if some other commit in that series
-is causing your problem, but aa69d6974185e9f itself seems
-rather harmless.
-
-Regards,
-
-Hans
-
-
+-- 
+heikki
 
