@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-32986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FDF88E89D
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:23:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBFC88E89E
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4064E1F27412
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BF551C280D6
 	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA51C12D774;
-	Wed, 27 Mar 2024 15:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC5A1879;
+	Wed, 27 Mar 2024 15:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7TpMDg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7GQ5nc+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AB728E2E
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B4A1272C7
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711552224; cv=none; b=g1QkuKOdvHbaE53md4nFtIJeFgO+VK3I65roEiVG+ZDNwLb/vig6/tsJReVTFwUx5NS1+r8sH6QuB2eTWbK3Kvxa6j7nLhyfp52pe+gz3ylAULwfk4U5eB63ZM5rCHlUuv8kBr9V/Gbf3/S8X5U0r+wgp4/f/hblDmv7k/faDKk=
+	t=1711552228; cv=none; b=ihHRZmMMSHoEset80fYzlh81yPSG9xAczc4rmc9Y8Jp1INPleM5I871zMaqUoMEXWfBV2hpT32kHvwnB7M+7VuVfKRWhf19KdukRlzJfoxt+xTGLeR8N378M695QBbQHJ1IF630+o9QQb4QlkvQfGLL/viizP2iViUZiVkPlEp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711552224; c=relaxed/simple;
-	bh=0mZQm4BwVTXhJINwnkN/x7zQ+sncevlJVPUx/OzGjr4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=paapB6BRVFx0DlqVznjkrO4GQQUovS6KrZYWmg+Acrj9oo4bfsAOmUJ8xNdN1SUAt+F7C4tF+qIXgcUNAzILbMrRXDaFVAFAVQafFCw2w57MPnS1UNk5D6rzgtSYLRfXZKvrC35RrcVOnSk1WP0E1A+uSAPvykDoA/WhFPzqBuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7TpMDg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA380C43390;
-	Wed, 27 Mar 2024 15:10:23 +0000 (UTC)
+	s=arc-20240116; t=1711552228; c=relaxed/simple;
+	bh=9f/6GzI5+XNZLuHt7yzCWIuchge1gsqxIBe3r9QZGfU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mgeU5C7DARs96QsU/NqJVvGHjHbRywcJN/OTD4AqF4CmoRRdnOaMbs+Pg4Nt8Bqcer+wwehQ8S55LBzpn/MF0i0H7AgoubbEnCo+4mCtOQ6vGsM6TmMa/tjm6NTCIqQFlmTHCB9CjfA+akcwF0MU5cSQvS6uR3NeZrc8dXluze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7GQ5nc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D6BC433C7;
+	Wed, 27 Mar 2024 15:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711552224;
-	bh=0mZQm4BwVTXhJINwnkN/x7zQ+sncevlJVPUx/OzGjr4=;
+	s=korg; t=1711552227;
+	bh=9f/6GzI5+XNZLuHt7yzCWIuchge1gsqxIBe3r9QZGfU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=W7TpMDg9u/Oz9EM7xTGYZ8Uyl/oQ4v8pRwtGDhT9WQ3emk2FSFaj7gJXHiSGO5Kyg
-	 U5UeiyMebpypRMtTVrev//MxJGNIv3QqrSaaUhwzpCuY7cdoGmdthP89zhuavOizii
-	 eUiwdN9lgP2PvSsRf6VlkmS6PiEEDeai3C17ZZHM=
-Subject: FAILED: patch "[PATCH] serial: 8250_dw: Do not reclock if already at correct rate" failed to apply to 5.4-stable tree
+	b=q7GQ5nc+NjVWWL1rmmfqx9q0J/S/hvcHyQ9RwBjn9RWyZ9jotvZmOy3V5/3uXww/R
+	 U+qWQB2oASrcOfLIMzxdY7l4tCOYI9+XtOwWjNLHxfyCRYtn5uU3WpD6UrC6YPPiaj
+	 Uh3oS7Ciqxo+3ilY7JNS4vH9XVQoFd2ql5ckSicE=
+Subject: FAILED: patch "[PATCH] serial: 8250_dw: Do not reclock if already at correct rate" failed to apply to 4.19-stable tree
 To: pcc@google.com,andriy.shevchenko@linux.intel.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 16:10:17 +0100
-Message-ID: <2024032717-vehicular-nutlike-6de9@gregkh>
+Date: Wed, 27 Mar 2024 16:10:18 +0100
+Message-ID: <2024032718-mockup-swoosh-2069@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x e5d6bd25f93d6ae158bb4cd04956cb497a85b8ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032717-vehicular-nutlike-6de9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032718-mockup-swoosh-2069@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,8 @@ cc816969d7b5 ("serial: 8250_dw: Fix common clocks usage race condition")
 0be160cf86f9 ("serial: 8250_dw: Pass the same rate to the clk round and set rate methods")
 442fdef1b931 ("serial: 8250_dw: Simplify the ref clock rate setting procedure")
 a8afc193558a ("serial: 8250_dw: Use devm_clk_get_optional() to get the input clock")
+4d5675c3b10b ("serial: 8250_dw: switch to use 8250_dwlib library")
+62907e90cc7e ("serial: 8250_dw: use pointer to uart local variable")
 
 thanks,
 
