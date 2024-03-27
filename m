@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-32974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BF688EAED
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:17:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0515088E889
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C667DB22898
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 944BD1F32DDE
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40EB12E1FB;
-	Wed, 27 Mar 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C88A1CA9C;
+	Wed, 27 Mar 2024 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQKsHI6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+uYEM5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8162D81AD2
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA1312FB29
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711552010; cv=none; b=YQjicuqvlBO8XqYzGkLUHE+DLZTvpFzkU+t5oIf49/BUzWZS7zLBYIeY/J3C842r+WKhYjS+KXaHpDzNBBl93MrZ2c2FRcv27OpLV9Sq6KWLguOcadoPJyh4Jut6VpHucVEHcCP3BMOKexiEclIUhOHiJDTPnD5jFTAkTVMZfkE=
+	t=1711552018; cv=none; b=XRGNnZbpdJ2C6C5xEFYh88vwg0JuVKOQi4vZdLKMJ7FhNMN/fSCzST4ze/hAgTC3FLzpE/ugz3yhGC9mazQ57sAczblgRBfV/BPBx5oa4MC6nxRrc4F8JpYwDLbHyqZBI25k2/4Zsh6EAManNeRQoFC856Vwj/Cos+2VB1Pnp6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711552010; c=relaxed/simple;
-	bh=o2i3pmpv4/VDk7hXnY2gUBEYm/5O8SUSnJI5ZUcsJP8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sx5s+YuOZn57rUaBIhBWbPAuwiRNIgrJmSorDw+Fw8tp3e+4ZGEiDqHFdrW/pnNod3FE9jeYR3DNvc0yGPHL20YxBaRYH0uqVSBjdsoCTJZTIGwMYL6bz4me9YbFYtB6rZaCQVQNji8EbEUpMw0eIXTPibr6TGAX0KfrNjIjxi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQKsHI6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCFCC433F1;
-	Wed, 27 Mar 2024 15:06:48 +0000 (UTC)
+	s=arc-20240116; t=1711552018; c=relaxed/simple;
+	bh=+78fclx7lF+C4SKysyboaDXz1CfytKNlOMipS0AkmKA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Gx8NM0JweXqvcVdqFkrHfNaF59tfaCxZvJseGRPM3aSOeG9BVQR9/+2G4C5Lm6n1B7xVUTxb+eh7cOGhMCM/pBNaPb/uHPaa2lff9rwl6y0I78aLttXMqnBoFiiKVdQ5rNiupYb6uqR9yG2Pp0SS6K60g1AOvE4EH3oHQgB2Pss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+uYEM5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82183C433F1;
+	Wed, 27 Mar 2024 15:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711552010;
-	bh=o2i3pmpv4/VDk7hXnY2gUBEYm/5O8SUSnJI5ZUcsJP8=;
+	s=korg; t=1711552017;
+	bh=+78fclx7lF+C4SKysyboaDXz1CfytKNlOMipS0AkmKA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fQKsHI6YduY0xprY+nrLOqAXRPA3CqYy6WkynTkf6ZghQtVbjVAAZYIeOa9hDRPs5
-	 EXysLCb5tLEiO+rY6IJH5/8tq/F7MiByNziEvBaXvCJu4xfREZsHACq8Wr3DyIYHqp
-	 Q7tbkMLksFJ1TKjfIsyOlSzAUjUq7Kg5CkaUyHrE=
-Subject: FAILED: patch "[PATCH] tty: serial: imx: Fix broken RS485" failed to apply to 6.1-stable tree
+	b=z+uYEM5ztG0uD6N1JP68l+yDRWlfyFVpO8m+FMvvqJEANypOic7C2lNYoRkEd3Fxh
+	 0TcTI02HhQRtdkKsn3cEPA/RaxXj9ZFSKFgKSadK2+9VErMlzLKVpkbSCUIb+RwuYq
+	 0t1ZTIRPUWZhHSzw0H8J0FHZ7NTlOTEYkW0PRgQk=
+Subject: FAILED: patch "[PATCH] tty: serial: imx: Fix broken RS485" failed to apply to 5.15-stable tree
 To: rickaran@axis.com,cniedermaier@dh-electronics.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 16:06:46 +0100
-Message-ID: <2024032746-stilt-vaporizer-fb22@gregkh>
+Date: Wed, 27 Mar 2024 16:06:47 +0100
+Message-ID: <2024032747-spiritism-worsening-c504@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 672448ccf9b6a676f96f9352cbf91f4d35f4084a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032746-stilt-vaporizer-fb22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032747-spiritism-worsening-c504@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 672448ccf9b6 ("tty: serial: imx: Fix broken RS485")
 ca530cfa968c ("serial: imx: Add support for RS485 RX_DURING_TX output GPIO")
 79d0224f6bf2 ("tty: serial: imx: Handle RS485 DE signal active high")
+915162460152 ("serial: imx: remove redundant assignment in rs485_config")
+028e083832b0 ("tty: serial: imx: disable UCR4_OREN in .stop_rx() instead of .shutdown()")
 
 thanks,
 
