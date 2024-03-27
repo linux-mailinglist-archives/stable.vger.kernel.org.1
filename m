@@ -1,169 +1,114 @@
-Return-Path: <stable+bounces-32459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015B188DA79
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:45:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97D188DACD
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95807B22492
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 09:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB03F1C26BFF
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 09:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661523B18D;
-	Wed, 27 Mar 2024 09:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7805841C64;
+	Wed, 27 Mar 2024 09:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="JqBwZm7U"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MRW0GmJG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D7E4AECA
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 09:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597D22EB05;
+	Wed, 27 Mar 2024 09:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711532718; cv=none; b=ZVQ73IDRPbJteU0hkc/nbV8OLaKFdHJNkPfH3knDnDG26isYXTc0/Phzg+iz8LESaSKQ2CIsy3LQs68FMT3zJYM60qSC/O7Qti7BdMda7gzHLjBja+KFe+60COLirlkA1iOYEwD6XnpC33TW0iVSoX8xe71pBeYtOaB/oPHDSUc=
+	t=1711533554; cv=none; b=In44JU6iRCdu7VHilFt/X1ruy4QZHALGBAosl9vwFicjANPgKX/aFecS3zxtePe0Ay7qYx7pJHkfcVMzNxy0zvk59GZw92hD3W1jGvISEJOoXaZm/HWtvYZbAUZ4mt+6vj98tQ+wvLAwjrN0aAIDJI7OJfgYCmOeLdvNXXJF5yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711532718; c=relaxed/simple;
-	bh=mBf6wZN0cIO/N0wB3JaiYh3xHh0wn1kXf+UEavA0MRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SBaK5THQs8AmgwA/m1ZW22s0a049NJJGr+zkmF+ZNovxfWFC1j8mVbeGGnYQwmlFqSiqPQ2B+0nUJAsgOV+FaziqH7cvn5Po+YGht29XzTdpHL12mdtLwyibZl1HVhbsW6Tq5xfdrDcAbRBB26gHHHMmWdPgqBOMuVLaXylJ5LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=JqBwZm7U; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1dee5ef2a7bso47398845ad.1
-        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 02:45:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1711532716; x=1712137516; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+ptT0otTY0d8yLPVMZk8S5EDz2pvO8mJ9CtUPG2vMjQ=;
-        b=JqBwZm7Uh21Z122aHPpU64U2hTBcdSUeGej19I2AsVTphXMn1l6e4ICR8d/gX+DoHO
-         bhiBG89FxCWjce2nFd4sy7KZZuD3lHuPRDymmzhpGewOGqKmZuxPUcse59mrGnz3wfY5
-         877a1CVB/4/eMOphosi1tmmoTxiiVbYWokMZpiAGWUmbKRtZVrNVNwjqfA1aH18lVrat
-         66FOVKpIglGQOiQlSKIDI4KvsBEH2CTKT81OqSbIR//6d6Vot4Oba8zVUcvGB9IOk2kI
-         4+r5wpmmqeQ35sJUQapPsYPJT1ZqnrGxR35xYiL8cqfrPi3Ab1ERgdNj3n/2dy4l7nWN
-         VZpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711532716; x=1712137516;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+ptT0otTY0d8yLPVMZk8S5EDz2pvO8mJ9CtUPG2vMjQ=;
-        b=L9WtZi9sBhV3X6zPTzdCcjocUnsAvfs0vJ0hmykmkWkv6O8VuQZYMFNZ6gcvj6S4Mr
-         30klSsCiYKrbBT/MVb6JfWqfJZCdH0c9pDB4SqiOW4YXMQfpql19CPcAoqEhUJMrTkrr
-         DkwOGNBUb202I03CEoeyMMPQSSIKuUfcGtyqjY+sCW1HYK0HAMHJSsGXjo1KH/2Xnn2f
-         xrTZu0lbsvf9DTPBiZbKM2cvxgJzES2Uo7DivCJLdWY9pxuWNC8Rlfjx5jkDxd5Vi08A
-         RhJ75QC1NWvcP95HaQcVPHCLO88x7eBM+AUl6Ec7vSA032TxW0mIe9tiSQHXzHRoE3KM
-         Cklg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHFlDkS8y3W8lpJhNHD2P1mPsPCY2AVbtP6DNyBuR0maGjADfbFvwG5UAEVzSoYR46sU76QleRCL6XKzYvFqQ/6cZV9o0A
-X-Gm-Message-State: AOJu0YwzCt2Jd7mejy/UoIygwolM2dZPnABQI3gpYKfLJJx0XFCxfyom
-	ok+mz036utmwdszwaNSHNxETVZY2VUCqytLsqlQnmwWDVO/HC2lCfUZ2up7ii1E=
-X-Google-Smtp-Source: AGHT+IFjFnJBRihujye+oVYrOczmV8gAbnCg1VNzHZYgH3CquqStysAK6Hmybu83Wrb83RcqMPIU9A==
-X-Received: by 2002:a17:902:c94f:b0:1dd:6263:62d4 with SMTP id i15-20020a170902c94f00b001dd626362d4mr4669647pla.3.1711532716241;
-        Wed, 27 Mar 2024 02:45:16 -0700 (PDT)
-Received: from C02CV19DML87.bytedance.net ([2001:c10:ff04:0:1000:0:1:7])
-        by smtp.gmail.com with ESMTPSA id q3-20020a170902e30300b001e002673fddsm8500474plc.194.2024.03.27.02.45.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 02:45:15 -0700 (PDT)
-From: Rui Qi <qirui.001@bytedance.com>
-To: bp@alien8.de,
-	mingo@redhat.com,
-	tglx@linutronix.de,
-	hpa@zytor.com,
-	jpoimboe@redhat.com,
-	peterz@infradead.org,
-	mbenes@suse.cz,
-	gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	alexandre.chartre@oracle.com
-Cc: x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	sashal@kernel.org,
-	Rui Qi <qirui.001@bytedance.com>
-Subject: [PATCH V3 RESEND 3/3] x86/speculation: Support intra-function call validation
-Date: Wed, 27 Mar 2024 17:44:47 +0800
-Message-Id: <20240327094447.47375-4-qirui.001@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20240327094447.47375-1-qirui.001@bytedance.com>
-References: <20240327094447.47375-1-qirui.001@bytedance.com>
+	s=arc-20240116; t=1711533554; c=relaxed/simple;
+	bh=hH3nkol0D9n+79wP1SeGr0CEiZZZ6HOE9y+63tUTgbc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GY1ZjYz+F7kTyO7bumO8dT3xeZhvO9QKG9Aadmea89nMHRKIGetFiBu1u+ge++2LfRCIcptSkAdKkIdZAC/06HlzBYJhqVGQ8hkG9DTt+Lu6LS1DsTP844LypeX0Y3KyJvM4W3tu7EQUGn4uefN/fpWDlkR/DwoT2T/62gxwFo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MRW0GmJG; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D04492000A;
+	Wed, 27 Mar 2024 09:59:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711533549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7AOXxENiOZu9Q6E3lamw5EvRntGLECkgd1135Gi9eBM=;
+	b=MRW0GmJGmT5NXlfZgPDZ/CmlB9F26D3GSUxcAKua51sDU37KRtUxeHOF7IN0L0hCpRYVxe
+	UREGGnXzExpEhaS24jSVfOogB7aYJMy2X/T7Ol99ClztzmgQcjJETRj6Opgp0aDKrdvy1y
+	ZGucnqwmXtyGw4EXO17++BZ2WHvvR8cDtfqPLsSEEbfPnvdgd9KcKZdq9vucrNEd9GH1Ci
+	EOXPQj8QTzcyrd+5YXzec3fN2/pJEQjf1pbCZGpnbQOQ3w0k8wD+WkLEtv2pNz3YVSvRh2
+	0KuOMM3zLY5EtHzgDxUfotTfV7V1zvWWOBnAEmV0ebkKSR32RwW/EgCYAHXB0Q==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: [PATCH 0/3] dmaengine: xilinx: xdma: Various fixes for xdma
+Date: Wed, 27 Mar 2024 10:58:47 +0100
+Message-Id: <20240327-digigram-xdma-fixes-v1-0-45f4a52c0283@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANftA2YC/x3LTQqAIBBA4avIrBvInwi6SrSYcrJZZKEQgnT3p
+ OXH41XInIQzTKpC4keyXLFBdwq2g2JgFN8Mpjeut8aglyAh0YnFn4S7FM5IpK0b9Dq60UE778R
+ /aOO8vO8HCsbB0GUAAAA=
+To: Lizhi Hou <lizhi.hou@amd.com>, Brian Xu <brian.xu@amd.com>, 
+ Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, 
+ Vinod Koul <vkoul@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+ Jan Kuliga <jankul@alatek.krakow.pl>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Louis Chauvet <louis.chauvet@bootlin.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=927;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=hH3nkol0D9n+79wP1SeGr0CEiZZZ6HOE9y+63tUTgbc=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmA+3rUgXjk92zRe2bs1JcSuniCJEA2pWJHuOXfeNo
+ 13hmjpuJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZgPt6wAKCRAgrS7GWxAs4hVxEA
+ C77RZ5Smytho2eHluPFl/tNiMpTM13E2gnesZiJIllJO9w6RNQemRttPhvUtGurWFnmZhUS44Ax14y
+ +Bqp7O98ut1vyIxDQSs81D7wzkpL2UkhSkzCpli2Th5U+6c6kxrq1NMCRGSSPCgIlbecwvZP5oTk0S
+ rt8koWLl69W7lxnaH8yJmlH9WuW2E02Zt7li5SF6/N7J4t78D0BZCrYcYE04IN5gjzJDLu12BGaQly
+ 2iCXZ+MOFEiqaDNpaCNA5bEVArgYjqRvSYFWJcZBQyNu+QLE/qHUAgdOVeu7THzkgXxGONf8dMCYHi
+ 5KbryTkfRGC3DJZ6BKFy0DMduGoeTdMqujAKi0vm+Oh4rfJNSGoNu+o+hYhCeo1ftcQvCVNkvMwiVq
+ GKERHylegaimhBMj1obVlXbn/TXQmDzVlm4Aql9ffsr02OGWIuUgWYPw/4WOjD/ZnPJt9q9kLFtxL0
+ BTOon4x23OwZNzmTpnSylaX3BUTQjXvRrWAta5z+Ylg2mqj7vyFa6cUMl6+smItDlVbIq6XtKYbK24
+ oOQvyZQWA6Q2TCK3MclWGXj/n/SgyYasjrJlKS3LRIVMQkp/cvrFK+vv/+6wQhmbdS08qiNjkeoFX4
+ ACrf013c/F1QYS/sahrejJEI2o0I8PvxhSPDCGByZQwAHFlsDsNFN2iYr2yA==
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-GND-Sasl: louis.chauvet@bootlin.com
 
-commit 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER
- to work with objtool") does not support intra-function call
- stack validation, which causes kernel live patching to fail.
-This commit adds support for this, and after testing, the kernel
- live patching feature is restored to normal.
+The current driver have some issues, this series fixes them.
 
-Fixes: 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER to work with objtool")
-Cc: <stable@vger.kernel.org> # v5.4.250+
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
+PATCH 1 is fixing a wrong offset computation in the dma descriptor address
+PATCH 2 is fixing the xdma_synchronize callback, which was not waiting 
+   properly for the last transfer.
+PATCH 3 is clarifing the documentation for xdma_fill_descs 
+
 ---
- arch/x86/include/asm/nospec-branch.h | 7 +++++++
- arch/x86/include/asm/unwind_hints.h  | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+Louis Chauvet (1):
+      dmaengine: xilinx: xdma: Fix synchronization issue
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index c8819358a332..a88135c358c0 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -13,6 +13,8 @@
- #include <asm/unwind_hints.h>
- #include <asm/percpu.h>
- 
-+#include <linux/frame.h>
-+#include <asm/unwind_hints.h>
- /*
-  * This should be used immediately before a retpoline alternative. It tells
-  * objtool where the retpolines are so that it can make sense of the control
-@@ -51,14 +53,18 @@
- #define __FILL_RETURN_BUFFER(reg, nr, sp)	\
- 	mov	$(nr/2), reg;			\
- 771:						\
-+	ANNOTATE_INTRA_FUNCTION_CALL;           \
- 	call	772f;				\
- 773:	/* speculation trap */			\
-+	UNWIND_HINT_EMPTY;		\
- 	pause;					\
- 	lfence;					\
- 	jmp	773b;				\
- 772:						\
-+	ANNOTATE_INTRA_FUNCTION_CALL;           \
- 	call	774f;				\
- 775:	/* speculation trap */			\
-+	UNWIND_HINT_EMPTY;                      \
- 	pause;					\
- 	lfence;					\
- 	jmp	775b;				\
-@@ -152,6 +158,7 @@
- .endm
- 
- .macro ISSUE_UNBALANCED_RET_GUARD
-+	ANNOTATE_INTRA_FUNCTION_CALL;
- 	call .Lunbalanced_ret_guard_\@
- 	int3
- .Lunbalanced_ret_guard_\@:
-diff --git a/arch/x86/include/asm/unwind_hints.h b/arch/x86/include/asm/unwind_hints.h
-index 0bcdb1279361..0fd9a22b2eca 100644
---- a/arch/x86/include/asm/unwind_hints.h
-+++ b/arch/x86/include/asm/unwind_hints.h
-@@ -101,7 +101,7 @@
- 	".popsection\n\t"
- 
- #define UNWIND_HINT_SAVE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_SAVE, 0)
--
-+#define UNWIND_HINT_EMPTY
- #define UNWIND_HINT_RESTORE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_RESTORE, 0)
- 
- #endif /* __ASSEMBLY__ */
+Miquel Raynal (2):
+      dmaengine: xilinx: xdma: Fix wrong offsets in the buffers addresses in dma descriptor
+      dmaengine: xilinx: xdma: Clarify kdoc in XDMA driver
+
+ drivers/dma/xilinx/xdma-regs.h |  3 +++
+ drivers/dma/xilinx/xdma.c      | 42 +++++++++++++++++++++++++++---------------
+ 2 files changed, 30 insertions(+), 15 deletions(-)
+---
+base-commit: 8e938e39866920ddc266898e6ae1fffc5c8f51aa
+change-id: 20240322-digigram-xdma-fixes-aa13451b7474
+
+Best regards,
 -- 
-2.20.1
+Louis Chauvet <louis.chauvet@bootlin.com>
 
 
