@@ -1,154 +1,154 @@
-Return-Path: <stable+bounces-32455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C5788DA65
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:41:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5262A88DA73
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5494295D99
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 09:41:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC94F1F28D85
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 09:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12EC2D04E;
-	Wed, 27 Mar 2024 09:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8038DD9;
+	Wed, 27 Mar 2024 09:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="fMH+qMCu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09101EEE3;
-	Wed, 27 Mar 2024 09:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53F4381AB
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 09:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711532498; cv=none; b=NOpSGdiO/elITeNJ/AS/Nt0uJhHcTUgkgX3wXn9jUBEv0alv9IUcivcASx7ZC7haRjbhIKiW91PKkXZDGfP2Rko0SnI+jQcMh8nWu8vZJhvBAZt71pBwXap6xRnkzDLgwhW5U4zh+AQ0CtSrBcQcfbIJy/9xEb1IM5xjVGrC/Ss=
+	t=1711532703; cv=none; b=FHbgFk8o1lMCzna9Xh7FTxAJniWEd4v7Q/43u25zBKkckHPChnmmRdyr4njae/rmSm0pBmYOg7purPGdK2J0CTrqASKGQfi04NOhNwLfOt17rlpgbAkNeVPGNEGcJ+q+QdYntIMo32f4Fp28U8ekCwjJ0utlrzOtWPr8zwsKdYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711532498; c=relaxed/simple;
-	bh=y2rDKQzYyf9wanVJ3dcvgOgPMFErVnUpmRh76I+k0/Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VDM6FWGpCnmqz7TK4guAyNQEV7g7gxLepuJYWNSD/yTAITKt2kPWYbtR8fSNiYyIxgh68XLU+cF3RJA4VXWhkOcg1bvTvkE64x9TOhV9Pm0n7+NH/hvEEkjV1E5zR6cfxCZzPKqxFn6V9cjZhLd3XwPcWEtTxFdwo1jqWEbz9p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-611248b4805so48267677b3.0;
-        Wed, 27 Mar 2024 02:41:36 -0700 (PDT)
+	s=arc-20240116; t=1711532703; c=relaxed/simple;
+	bh=5zTEJoGPB+tgay4nvfgbQK4EeEdhwCMFFHER4asBSQ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=D2ceVZB0iZdjwV/bDvXcoSeLufspbEu0CfRMtSm9fQzSkIApEpDgQTTsxpCCXbyyNrABeGv/0HU92bVWne+ZzDOnmVQ9ZZSYEDgzobpr0BrrvOjlQtGWV46k+423D+Z1zj633yjHi4abuPXR/1LBWZ62iJZ0psMKI1JskF+OqCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=fMH+qMCu; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e0ae065d24so29240035ad.1
+        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 02:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1711532700; x=1712137500; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W0s2/2nt92fOMZjCKazAsy5Mowx4acP5f/CX6uku2zg=;
+        b=fMH+qMCu78f+H76DQlMprxo/7KgHq7gJ8MFzfTaoOy3yckwOMY+c5sITLa6LAEFUeT
+         Pk3j4AN99zYJd+tM1WHz0+64nx0UnsqIsO/VbIY3lfcj5BtGJsoyQ8I/zmGpaQVD0KdS
+         hQfKZATQ1vEuAlrs7w9iJ9rqLo8fJGx72f/fiBQh6BDt08nlgQgMe+gVUJuQsPtkupoY
+         Hkc1jFRJXJBv2l51fTon3tnI5dzJ+eMeAxUx3sQ+UxudG7mp7qwO+sM/ZHslSd/lLXRq
+         sa24mVvoCooLkO85ejqLbipy3dbpIWodgGmCDJ8X0eqQDwMM9JxpA+F1Heu8EWJzlyDE
+         /Qjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711532495; x=1712137295;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=neGfOeBkEcopbYO8hmsRVi5kcTfEIsxbfUuBOXrqKxk=;
-        b=vqr9ppRzNhDnNbDci/D0f7ZWKz2HE3/rBV/eY0jF13B+MFgHa2+RnGqf3Apnp8iIrM
-         Sk+NZT4d6u05vfNqM4HBLrPfEDUhm9Jwm1y8aC13V+5c9EsbEUcNSC1d4Okbt9HCta/L
-         io9yjpuDJMlEUxIwEDJwUy3NtVESwXirda4iB8eTZt29TrrCJtdL0jLwBFJl1GMeqWSI
-         Q84WXynwFAkcUDMa20XdvqULaIwBFHVMtxjU//ZnmGkbg4pAfcTlChRg6MJCpBMk5t+H
-         ZV/fJ3tlXFu+UWN49wJrM9WVGD6GvTaXBIpqSV+GyLO0gzeA/hwiDLO7zDbdvdrWK6ox
-         /AgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXfe5RJ9Xi6mLh6uCR/yGkp47/6dTa6TWxsexhN9kA5NQPohpOoqkt1u5cg5KD7MA4Fx0FKyPab+lwt0rGtb54/3ruiEX34dorSExtBcBcRth9CaPmESXvKjoZUqp9q1F/qitvixDwSBHI=
-X-Gm-Message-State: AOJu0Yy/mZLHYyw1gNbjLOg/HjD5N1OleNPMX8c3IjNW7UIH+vCbiMjw
-	l0IfEOV8qNXTJGoGc6bwYdc5lpDKkAqXik47NUHtrV+Brs3nwRc/MVmilRVHq5g=
-X-Google-Smtp-Source: AGHT+IFJcsvj0s3RzT2Z5O7gAYP2rxlDzGM9aM4aITYfNawcoG/j8p0SsSJXzhcXOCKJd8slPtDgbA==
-X-Received: by 2002:a81:87c4:0:b0:608:290d:9f1b with SMTP id x187-20020a8187c4000000b00608290d9f1bmr3515713ywf.49.1711532495246;
-        Wed, 27 Mar 2024 02:41:35 -0700 (PDT)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id ev7-20020a05690c2f0700b00610fdb81077sm1840791ywb.139.2024.03.27.02.41.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Mar 2024 02:41:34 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6098a20ab22so58956537b3.2;
-        Wed, 27 Mar 2024 02:41:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZSH1+7aze+cwKXl+gCVFMqSMvawi4oZDui/5JLQCznBTdr1lVp7SEj1rA8O7ApFzEZgGZkOFEpNgdvLGFzeuWP1DCx/eQMTjgEGVHsHTZYeTnBtt7WdEnIMzcsQiwawpzB5fu18cVTx8=
-X-Received: by 2002:a25:6b45:0:b0:dcd:4e54:9420 with SMTP id
- o5-20020a256b45000000b00dcd4e549420mr3841275ybm.5.1711532494725; Wed, 27 Mar
- 2024 02:41:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711532700; x=1712137500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W0s2/2nt92fOMZjCKazAsy5Mowx4acP5f/CX6uku2zg=;
+        b=fgP7fKg1vj8YdZ4X8c89E2MjnohP/Mmx3hC1WOz86iPVYyAEVquks7rZ9VYN2NV0QF
+         4a3WzzV63kWBGtIxANXtb6ccw/iQDG95YQNKaI4Prp4USHr/KCLJ3p5x8qO+dOQkPw5z
+         iezuyhGk7xZAl9Yxo4rb/4D0TdyavqThUZJJrukYGAwaFeP6XkV6lpi/qQSyxfrgHlwD
+         CJzIgZ4CZH57xFDMcG3dIBj7cZqgGCQJU8fAb02XjKpstqom/7EGCwQwg1YVNRPAZ53J
+         Z5Sf8e/zsK7eXyp868mJY0gir2sFMVG2XR0TOqA67OobG4QnupjOIx3L+PKit8fwPYaf
+         Mcrw==
+X-Forwarded-Encrypted: i=1; AJvYcCULPo5+HRBO/UYgV7nxfZzp84i3/DAWWhUUbLrQphqGiyzziNUsSOQgjMOmv/dXCAXBWXIRmKDhwu2Dg49ktuganyFsM6QW
+X-Gm-Message-State: AOJu0YwMSULUbTWDMAK8TXsIGuK9aLi809gYp/UFOX67zdZztJI5odMC
+	fbFmTzsS/ameaBcWTCA7EOqApV07vcM8r4Yoc77vvvy/dYcJADDutSyyv6LroRM=
+X-Google-Smtp-Source: AGHT+IESl6EbiprGQ7fdcjtdxHL/0CNtsLJmj2bp7YqhGwHMzCmgr3tnJfDwqDhyhQtmEsddUxcJ1A==
+X-Received: by 2002:a17:903:110c:b0:1e0:e9d7:83de with SMTP id n12-20020a170903110c00b001e0e9d783demr672164plh.12.1711532699925;
+        Wed, 27 Mar 2024 02:44:59 -0700 (PDT)
+Received: from C02CV19DML87.bytedance.net ([2001:c10:ff04:0:1000:0:1:7])
+        by smtp.gmail.com with ESMTPSA id q3-20020a170902e30300b001e002673fddsm8500474plc.194.2024.03.27.02.44.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 02:44:59 -0700 (PDT)
+From: Rui Qi <qirui.001@bytedance.com>
+To: bp@alien8.de,
+	mingo@redhat.com,
+	tglx@linutronix.de,
+	hpa@zytor.com,
+	jpoimboe@redhat.com,
+	peterz@infradead.org,
+	mbenes@suse.cz,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	alexandre.chartre@oracle.com
+Cc: x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	sashal@kernel.org,
+	Rui Qi <qirui.001@bytedance.com>
+Subject: [PATCH V3 RESEND 0/3] Support intra-function call validation
+Date: Wed, 27 Mar 2024 17:44:44 +0800
+Message-Id: <20240327094447.47375-1-qirui.001@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324233458.1352854-1-sashal@kernel.org> <20240324233458.1352854-111-sashal@kernel.org>
- <CAMuHMdUK0YYELTN=JQDtGuYg03Em6c7kskpqUR0Y6NbNuR7hfQ@mail.gmail.com> <ZgMfbenM7Kav2BTJ@sashalap>
-In-Reply-To: <ZgMfbenM7Kav2BTJ@sashalap>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 27 Mar 2024 10:41:22 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUU0TYKhm3FkqjgrYQdS58oLPQJFPxYidjn0h-ZJ9qeFg@mail.gmail.com>
-Message-ID: <CAMuHMdUU0TYKhm3FkqjgrYQdS58oLPQJFPxYidjn0h-ZJ9qeFg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 110/317] arm64: dts: renesas: r8a779a0: Update to
- R-Car Gen4 compatible values
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+Since kernel version 5.4.217 LTS, there has been an issue with the kernel live patching feature becoming unavailable. 
+When compiling the sample code for kernel live patching, the following message is displayed when enabled:
 
-On Tue, Mar 26, 2024 at 8:18=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
-> On Mon, Mar 25, 2024 at 09:43:31AM +0100, Geert Uytterhoeven wrote:
-> >On Mon, Mar 25, 2024 at 12:36=E2=80=AFAM Sasha Levin <sashal@kernel.org>=
- wrote:
-> >> From: Geert Uytterhoeven <geert+renesas@glider.be>
-> >>
-> >> [ Upstream commit a1721bbbdb5c6687d157f8b8714bba837f6028ac ]
-> >>
-> >> Despite the name, R-Car V3U is the first member of the R-Car Gen4
-> >> family.  Hence update the compatible properties in various device node=
+livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
+
+Reproduction steps:
+1.git checkout v5.4.269 -b v5.4.269
+2.make defconfig
+3. Set CONFIG_LIVEPATCH=y、CONFIG_SAMPLE_LIVEPATCH=m
+4. make -j bzImage
+5. make samples/livepatch/livepatch-sample.ko
+6. qemu-system-x86_64 -kernel arch/x86_64/boot/bzImage -nographic -append "console=ttyS0" -initrd initrd.img -m 1024M
+7. insmod livepatch-sample.ko
+
+Kernel live patch cannot complete successfully.
+
+After some debugging, the immediate cause of the patch failure is an error in stack checking. The logs are as follows:
+[ 340.974853] livepatch: klp_check_stack: kworker/u256:0:23486 has an unreliable stack
+[ 340.974858] livepatch: klp_check_stack: kworker/u256:1:23487 has an unreliable stack
+[ 340.974863] livepatch: klp_check_stack: kworker/u256:2:23488 has an unreliable stack
+[ 340.974868] livepatch: klp_check_stack: kworker/u256:5:23489 has an unreliable stack
+[ 340.974872] livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
+......
+
+BTW,if you use the v5.4.217 tag for testing, make sure to set CONFIG_RETPOLINE = y and CONFIG_LIVEPATCH = y, and other steps are consistent with v5.4.269
+
+After investigation, The problem is strongly related to the commit 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER to work with objtool"),
+which would cause incorrect ORC entries to be generated, and the v5.4.217 version can undo this commit to make kernel livepatch work normally. 
+It is a back-ported upstream patch with some code adjustments,from the git log, the author also mentioned no intra-function call validation support.
+
+Based on commit 24489321d0cd5339f9c2da01eb8bf2bccbac7956 (Linux 5.4.273), This patchset adds stack validation support for intra-function calls, 
+allowing the kernel live patching feature to work correctly.
+
+v3 - v2
+ - fix the compile error in arch/x86/kvm/svm.c, the error message is../arch/x86/include/asm/nospec-branch.h: 313: Error: no such instruction: 'unwind_hint_empty'
+
+v2 - v1
+ - add the tag "Cc: stable@vger.kernel.org" in the sign-off area for patch x86/speculation: Support intra-function call
+ - add my own Signed-off to all patches
 s
-> >> to include family-specific compatible values for R-Car Gen4 instead of
-> >> R-Car Gen3:
-> >>   - DMAC,
-> >>   - (H)SCIF,
-> >>   - I2C,
-> >>   - IPMMU,
-> >>   - WDT.
-> >>
-> >> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> >> Link: https://lore.kernel.org/r/73cea9d5e1a6639422c67e4df4285042e31c9f=
-d5.1651497071.git.geert+renesas@glider.be
-> >> Stable-dep-of: 0c51912331f8 ("arm64: dts: renesas: r8a779a0: Correct a=
-vb[01] reg sizes")
-> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >> ---
-> >>  arch/arm64/boot/dts/renesas/r8a779a0.dtsi | 24 +++++++++++-----------=
--
-> >>  1 file changed, 12 insertions(+), 12 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi b/arch/arm64/bo=
-ot/dts/renesas/r8a779a0.dtsi
-> >> index 26899fb768a73..c7d1b79692c11 100644
-> >> --- a/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> >> +++ b/arch/arm64/boot/dts/renesas/r8a779a0.dtsi
-> >> @@ -583,7 +583,7 @@ hscif3: serial@e66a0000 {
-> >>
-> >>                 avb0: ethernet@e6800000 {
-> >>                         compatible =3D "renesas,etheravb-r8a779a0",
-> >> -                                    "renesas,etheravb-rcar-gen3";
-> >> +                                    "renesas,etheravb-rcar-gen4";
-> >
-> >This change will break Ethernet, as the Renesas EtherAVB driver in
-> >v5.15.x does not handle "renesas,etheravb-rcar-gen4" yet.
-> >
-> >That can be fixed by also backporting commit 949f252a8594a860
-> >("net: ravb: Add R-Car Gen4 support") in v6.1.
->
-> I'll just drop this patch instead, thanks!
+Alexandre Chartre (2):
+  objtool: is_fentry_call() crashes if call has no destination
+  objtool: Add support for intra-function calls
 
-Looks like it still made v5.15.153?
-The easiest fix is to backport 949f252a8594a860, too.
+Rui Qi (1):
+  x86/speculation: Support intra-function call validation
 
-Gr{oetje,eeting}s,
+ arch/x86/include/asm/nospec-branch.h          |  7 ++
+ arch/x86/include/asm/unwind_hints.h           |  2 +-
+ include/linux/frame.h                         | 11 ++++
+ .../Documentation/stack-validation.txt        |  8 +++
+ tools/objtool/arch/x86/decode.c               |  6 ++
+ tools/objtool/check.c                         | 64 +++++++++++++++++--
+ 6 files changed, 92 insertions(+), 6 deletions(-)
 
-                        Geert
+-- 
+2.20.1
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
