@@ -1,129 +1,97 @@
-Return-Path: <stable+bounces-32463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B01688DAD5
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 276C288DAE6
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 11:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C6E2984E3
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 09:59:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E0929C89F
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 10:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A454CB4B;
-	Wed, 27 Mar 2024 09:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B8A38393;
+	Wed, 27 Mar 2024 10:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FbC8p5/A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/m/7pyD"
 X-Original-To: stable@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BA93BBE5;
-	Wed, 27 Mar 2024 09:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4D84C9B
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 10:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711533555; cv=none; b=rraLIE6L+d85qc2fnSNogaC03ycMfONbQ+dJknBEbHa/mwp5WQALY3yc9+Y3kCaVBJcHH15IaC/7t44Z/zOgPOd0jF28XD03+Evh1JKOu2Jev9ljhBj0FS1VVsSgj30MNOIyEV179qQ8wrr60vEin2DLNdgzmwoU9lTGPRz8T2A=
+	t=1711533745; cv=none; b=a7mgQkMHOt2jPwsTIJ87NVxOFHZ4mzd53eqJXguWenID5B0KVscRxNDMhpeksuZBPH0O1HT1n3DVVyWKC8TYzOPmIvv3l1B2zlWM/wrBgbBmZ52DHlJuPRIDbyX/EyXYj3ADXzttSQM28KhvnyxY56RQm8lIIYMlGzSXZBrKDy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711533555; c=relaxed/simple;
-	bh=O0oknYQk5az9YCtIwYXgCgTNcoCSEGY/4TTLust/ZZM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=poh1iVfUyX61chweiKj3GULhEB/WbhTXcwB0RykGxpgbMqmw1l1jrs1eVrTVmCYQGomTQUgmPfe7lrZl9vv/osmNEqvP4TizO2hj6gPwgjTmiDo3SBoBKo75v0fM+Msw9ON38nEoBUTv2vU1pzxEtaeDTGiocGSb1Lm4avv+DnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FbC8p5/A; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E94EC2000E;
-	Wed, 27 Mar 2024 09:59:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711533551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XLH57fwLTXfBUc6BX3tfnkCCcKVQ9c7Io2++9VEubdw=;
-	b=FbC8p5/A/zJBAFi+obVk3JTmtO4K7jIoBH0kTghWLEuZbxxDWAj2x6wN/4wacUDPLnbgSY
-	aIUmK6op2nt7cnMn9weKSjOhIi+djnoSpiIG7Pdbsd2bo87fqx4AskZ26h/zS9yA6t1SVw
-	2+2OU5rjVPqpQ7ucpvLOC55GxGewEeaEWUaWRm4swpVkAlVLOB4Prsk6ycZpAOxOPgqVI3
-	VtdnlageoRViWIeGnxHOd0dNVmAmXeScIvVSF3zti0wioj6/xicMPEHofk/aHF9hNTXfV0
-	msIC7VnF93VvOubQATG3rvnS1BIqAugodDZ4PHIpPSLBEWaAllIvVLMQ5rOxjA==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 27 Mar 2024 10:58:50 +0100
-Subject: [PATCH 3/3] dmaengine: xilinx: xdma: Clarify kdoc in XDMA driver
+	s=arc-20240116; t=1711533745; c=relaxed/simple;
+	bh=9iW5xJx6WxJBBWiNO8jh4MBDSDzA5wBamW/td2VqX2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=pM0svd8WQHr8pNJkT45f9ypY7XsEpSMpf3jmglmXwLuzIVBySqt1wcYkE7fsoRzwYbr2UgunfwIgk4OeO3lcccfa521SD+zD8zEA9Ip/XTTIXgTMsrmFgMdRB/tEqFqWO7ny13bX72UjC6UyOrrbg1JDk/gL81gYkB6vigS1fnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/m/7pyD; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711533743; x=1743069743;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=9iW5xJx6WxJBBWiNO8jh4MBDSDzA5wBamW/td2VqX2A=;
+  b=a/m/7pyDNFSJr+Am0Zi/zc/icnV4wEe9VMZWJWpcJdYYZJW6+QAttT3l
+   c9zJ3XJZCWIiSeKbBB2ku5i/SOqvqoTcyNQtRaWsw//x+1BA73CmpAlQs
+   YuFN1f/waFwIK9/mAYQsmkVP8aQ8mm5QBfnVwA8Ts7S7lqtbVEc6XXTFZ
+   5aYS4rjd82AnImnqWr0O20XzhE00rfEsqa2ehqy0bui6hrT9hmwsLsrsS
+   kFIKUF0DAAAPp/jGcU2OTp5vPRztUC0Chjih1soFdvN6tteLTDdR3Ixpp
+   Ohc2BP4UMK4ekDQ4Hq1ROp+FxzYlT5to87eNoyycNItlfWbz1dcA7GVkP
+   A==;
+X-CSE-ConnectionGUID: c93P1bW2TnaGSlXJyBKy4g==
+X-CSE-MsgGUID: wmbTZ40YQjeQI5ad/nc2aQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="24114290"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
+   d="scan'208";a="24114290"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 03:02:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
+   d="scan'208";a="16230410"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 27 Mar 2024 03:02:21 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rpQ6t-0000x4-11;
+	Wed, 27 Mar 2024 10:02:19 +0000
+Date: Wed, 27 Mar 2024 18:01:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 3/3] dmaengine: xilinx: xdma: Clarify kdoc in XDMA driver
+Message-ID: <ZgPufNGKBqE9HN-u@f34f6e606ddc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240327-digigram-xdma-fixes-v1-3-45f4a52c0283@bootlin.com>
-References: <20240327-digigram-xdma-fixes-v1-0-45f4a52c0283@bootlin.com>
-In-Reply-To: <20240327-digigram-xdma-fixes-v1-0-45f4a52c0283@bootlin.com>
-To: Lizhi Hou <lizhi.hou@amd.com>, Brian Xu <brian.xu@amd.com>, 
- Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, 
- Vinod Koul <vkoul@kernel.org>, Michal Simek <michal.simek@amd.com>, 
- Jan Kuliga <jankul@alatek.krakow.pl>, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1602;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=Qu3N1kH//gP+Zhn4r+vc3YZmGiId+GfbdTx9l1LnfhA=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmA+3sS9HVQIWiFg2uWF+TzbykBXZyV4P4JePFYOSL
- GqiUWc+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZgPt7AAKCRAgrS7GWxAs4tV+EA
- C5S9ZpDRclxOf6wzOsIvQV1M1IfOGbnVbBQvAn0EXG0QvS+XLMQTvQ/tzMEhc/xJw+dbLBCBRRT7yr
- fjLCiLUUMsMJU/fU91gpORTSHZ82xttwR2AYCmvEi4VQmDZkZFMAgpQHXxHatc9Sge0wpL3LB0y6WS
- 2zdY+gdaFguTg8zBza1SKMs/lsJ4y6pq2fytp7rr3hIOkfrNZH76BC6WV+9kbNIRgbdImB+HZlSopE
- 6rgCgBY4ZB1ciu8/Buo0WDMy7RE96+PmgNsy7vhUFvoyBxuyDVojuXtTuWg9zSpnQXgAM23Avrey5g
- xE9YFROL7cuqPWAQyYovPgj8nwueaePCZcQebWSUtga1DYikKxKb2oghPZw1Gz8Zh9O1nsMtQmNCk5
- oDT7vnSlVE4DNUoLpGPHcB6DveeDvP2fM7j+b3wwf1zc+HQAy7lgcChqm1w1L9mwrhCsZWvIEXw/b+
- 8t71rwvDB74V9Ihw2spnKDwiRcaV2DT7FCYouXSzDyF2VEnBGBA/ujyOtsL010kNZIat7xr6f1qwE2
- 0QHEJwimgaoiBzXRqPD6mtpoxLxkbKe+XOGqsRDSXN/hl+EIPvH5m8mGoW4jnTqEt17wOsVU5MVzrD
- tKoOox28Mis4O8s4pzjvdTvwoOPmTCd6655l5wfHyhzd4v9wqc0nOI+ipCHQ==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-Sasl: louis.chauvet@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327-digigram-xdma-fixes-v1-3-45f4a52c0283@bootlin.com>
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+Hi,
 
-Clarify the kernel doc of xdma_fill_descs(), especially how big chunks
-will be handled.
+Thanks for your patch.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- drivers/dma/xilinx/xdma.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/dma/xilinx/xdma.c b/drivers/dma/xilinx/xdma.c
-index 5a3a3293b21b..313b217388fe 100644
---- a/drivers/dma/xilinx/xdma.c
-+++ b/drivers/dma/xilinx/xdma.c
-@@ -554,12 +554,14 @@ static void xdma_synchronize(struct dma_chan *chan)
- }
- 
- /**
-- * xdma_fill_descs - Fill hardware descriptors with contiguous memory block addresses
-- * @sw_desc: tx descriptor state container
-- * @src_addr: Value for a ->src_addr field of a first descriptor
-- * @dst_addr: Value for a ->dst_addr field of a first descriptor
-- * @size: Total size of a contiguous memory block
-- * @filled_descs_num: Number of filled hardware descriptors for corresponding sw_desc
-+ * xdma_fill_descs() - Fill hardware descriptors for one contiguous memory chunk.
-+ *		       More than one descriptor will be used if the size is bigger
-+ *		       than XDMA_DESC_BLEN_MAX.
-+ * @sw_desc: Descriptor container
-+ * @src_addr: First value for the ->src_addr field
-+ * @dst_addr: First value for the ->dst_addr field
-+ * @size: Size of the contiguous memory block
-+ * @filled_descs_num: Index of the first descriptor to take care of in @sw_desc
-  */
- static inline u32 xdma_fill_descs(struct xdma_desc *sw_desc, u64 src_addr,
- 				  u64 dst_addr, u32 size, u32 filled_descs_num)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 3/3] dmaengine: xilinx: xdma: Clarify kdoc in XDMA driver
+Link: https://lore.kernel.org/stable/20240327-digigram-xdma-fixes-v1-3-45f4a52c0283%40bootlin.com
 
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
