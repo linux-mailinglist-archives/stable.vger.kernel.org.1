@@ -1,101 +1,157 @@
-Return-Path: <stable+bounces-32956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34A788E7CC
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:05:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E87088EC05
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 18:04:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448A81F34772
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:05:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC61B240EA
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14C6147C75;
-	Wed, 27 Mar 2024 14:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efm+yqeZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C1114D2BB;
+	Wed, 27 Mar 2024 16:53:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 1.mo583.mail-out.ovh.net (1.mo583.mail-out.ovh.net [188.165.57.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FB512E1CE;
-	Wed, 27 Mar 2024 14:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ACA12EBE7
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 16:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.57.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711549527; cv=none; b=BrKI77d/EvCuJjza6KvrroEDSYcor5N3Y9ZsW9E9za85Z4rIceToIYVQUDJDzFWlJ9IfLQoweK7lyeT2NZwUjYTAp/086D0oYLA7Q8U5+TlWiuuCsDuqvHhjuvtsXNk8mKKMfTBDpMZ8hJrKj0MtKAyblg34PHDSltwsEPRdOJU=
+	t=1711558394; cv=none; b=q6b913DICb50Wc1SZRMwsaRR9EA83K64DXdNDtLso6o6Jwn8HUULyGuyqbsAjYMneWG8XrZRMuPS2sTUuJpn7b1iZ2mOuj8u602wlNPI5UvjxQ1AWLToooSaupWv+/x+SlycAnTD91hq1PwDCCvic1u2007gRUM7ijL8r5/cOFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711549527; c=relaxed/simple;
-	bh=PCLhu36SUCSWD5hd9q/ImeV2OBTVcU1BHYANgskVWXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=attaiVSnpHnpA0NhkwOrEmfKviJ2SwqL/PbvSwHv/0UJ5dIEGPp6o2bp91k64pXx/fQGPlUOK1wL7ebs0ILmV+w/Mg1rm4w1+H8bren2SX4OevuqgZliXYI9BeECBOXd7CNXnnHJxDtZrh1c7u3PE6QbRL5Swf+h8o5EJK8P3cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efm+yqeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D26C433C7;
-	Wed, 27 Mar 2024 14:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711549527;
-	bh=PCLhu36SUCSWD5hd9q/ImeV2OBTVcU1BHYANgskVWXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=efm+yqeZcz77LonJiFyjEJsh7JcQ+jobo9eHseizLeiCk9Q+anM4jxl+Qq0bVoJkF
-	 hK/d2VA+jQ5zhx+KUZ5bFCou5YdJitg9SbIooXMkX4zEsjWeeGTWqud7cfJWx2EXWP
-	 Kfei5q+6flnyUUd4NfLVjS3XdT1Z1C2nyZdqhxD4=
-Date: Wed, 27 Mar 2024 15:25:23 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	florian.fainelli@broadcom.com, pavel@denx.de,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Darren Kenny <darren.kenny@oracle.com>
-Subject: Re: [PATCH 5.15 000/309] 5.15.153-rc2 review
-Message-ID: <2024032713-paver-irritant-7277@gregkh>
-References: <20240325115928.1765766-1-sashal@kernel.org>
- <e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com>
+	s=arc-20240116; t=1711558394; c=relaxed/simple;
+	bh=pkuiviAAn0Uftfef1W5rS8J5Melpm/txesyxIQb8HRg=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=dqMqoRVyl7dHBm4tq5/LZfSkRUiGo6oiPw4JU2g4WQl+sBEyF6b2jr5MGxPaogj7aoRjWkmlQWDBvMbjSmOMYkbGIzXv+rhJ5kV7OFFWDy5Y4DvpOuhiQCepNd2V1fEOqHKceScRo+Yy/Vbs7clCaCDd0C7M1U0hXg2ypPjAXXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=milecki.pl; spf=pass smtp.mailfrom=milecki.pl; arc=none smtp.client-ip=188.165.57.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=milecki.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=milecki.pl
+Received: from director10.ghost.mail-out.ovh.net (unknown [10.108.25.169])
+	by mo583.mail-out.ovh.net (Postfix) with ESMTP id 4V4TWh5JKMz1GYW
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:26:56 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-5j6lf (unknown [10.110.96.237])
+	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 9D2931FE92;
+	Wed, 27 Mar 2024 14:26:55 +0000 (UTC)
+Received: from milecki.pl ([37.59.142.103])
+	by ghost-submission-6684bf9d7b-5j6lf with ESMTPSA
+	id lEULJa8sBGYx4A0AML5+ww
+	(envelope-from <rafal@milecki.pl>); Wed, 27 Mar 2024 14:26:55 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-103G0051bcccc50-b51a-4dd6-be14-20d89d3369be,
+                    AD8588E3BB83D84E59DEA8CE8674EAB20989D6B2) smtp.auth=rafal@milecki.pl
+X-OVh-ClientIp:178.33.236.78
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e114d9e5-26af-42be-9baa-72c3a6ec8fe5@oracle.com>
+Date: Wed, 27 Mar 2024 15:26:55 +0100
+From: =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger
+ <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Srinivas Kandagatla
+ <srinivas.kandagatla@linaro.org>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mtd: limit OTP NVMEM Cell parse to non Nand devices
+In-Reply-To: <20240322040951.16680-1-ansuelsmth@gmail.com>
+References: <20240322040951.16680-1-ansuelsmth@gmail.com>
+Message-ID: <44a377b11208ff33045f12f260b667dd@milecki.pl>
+X-Sender: rafal@milecki.pl
+X-Webmail-UserID: rafal@milecki.pl
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 3220073736837835577
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudduiedggedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggffhffvvefujghfkfigihgtgfesthejjhdttddtvdenucfhrhhomheptfgrfhgrlhcuofhilhgvtghkihcuoehrrghfrghlsehmihhlvggtkhhirdhplheqnecuggftrfgrthhtvghrnhepkeeftefghfetueetveevvddugfelfeevvedvleeljeetfefggfdtteevuddtleeunecukfhppeduvdejrddtrddtrddupdefuddruddurddvudekrddutdeipddujeekrdeffedrvdefiedrjeekpdefjedrheelrddugedvrddutdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehrrghfrghlsehmihhlvggtkhhirdhplhdpnhgspghrtghpthhtohepuddprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheekfedpmhhouggvpehsmhhtphhouhht
 
-On Wed, Mar 27, 2024 at 02:09:31PM +0530, Harshit Mogalapalli wrote:
-> Hi Sasha,
+On 2024-03-22 05:09, Christian Marangi wrote:
+> MTD OTP logic is very fragile and can be problematic with some specific
+> kind of devices.
 > 
-> On 25/03/24 17:29, Sasha Levin wrote:
-> > 
-> > This is the start of the stable review cycle for the 5.15.153 release.
-> > There are 309 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Wed Mar 27 11:59:27 AM UTC 2024.
-> > Anything received after that time might be too late.
-> > 
-> 
-> We still see this: Same as what Daniel reported at [1]
-> 
-> drivers/cpufreq/brcmstb-avs-cpufreq.c: In function 'brcm_avs_cpufreq_get':
-> drivers/cpufreq/brcmstb-avs-cpufreq.c:486:9: error: ISO C90 forbids mixed
-> declarations and code [-Werror=declaration-after-statement]
->   486 |         struct private_data *priv = policy->driver_data;
->       |         ^~~~~~
-> cc1: all warnings being treated as errors
-> make[2]: *** [scripts/Makefile.build:289:
-> drivers/cpufreq/brcmstb-avs-cpufreq.o] Error 1
-> make[1]: *** [scripts/Makefile.build:552: drivers/cpufreq] Error 2
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [Makefile:1907: drivers] Error 2
-> 
-> [1] https://lore.kernel.org/stable/20240327015023.GC7502@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/T/#m15bff0fe96986ef780e848b4fff362bf8ea03f08
-> 
-> 
-> Looks like, 5.15.153 is released, so we need to work on fixing this.
+> NVMEM across the years had various iteration on how Cells could be
+> declared in DT and MTD OTP probably was left behind and
+> add_legacy_fixed_of_cells was enabled without thinking of the 
+> consequences.
 
-Will go fix this up now, thanks for the report.
+Er... thank you?
 
-greg k-h
+
+> That option enables NVMEM to scan the provided of_node and treat each
+> child as a NVMEM Cell, this was to support legacy NVMEM implementation
+> and don't cause regression.
+> 
+> This is problematic if we have devices like Nand where the OTP is
+> triggered by setting a special mode in the flash. In this context real
+> partitions declared in the Nand node are registered as OTP Cells and
+> this cause probe fail with -EINVAL error.
+> 
+> This was never notice due to the fact that till now, no Nand supported
+> the OTP feature. With commit e87161321a40 ("mtd: rawnand: macronix: OTP
+> access for MX30LFxG18AC") this changed and coincidentally this Nand is
+> used on an FritzBox 7530 supported on OpenWrt.
+
+So as you noticed this problem was *exposed* by adding OTP support for
+Macronix NAND chips.
+
+
+> Alternative and more robust way to declare OTP Cells are already
+> prossible by using the fixed-layout node or by declaring a child node
+> with the compatible set to "otp-user" or "otp-factory".
+> 
+> To fix this and limit any regression with other MTD that makes use of
+> declaring OTP as direct child of the dev node, disable
+> add_legacy_fixed_of_cells if we detect the MTD type is Nand.
+> 
+> With the following logic, the OTP NVMEM entry is correctly created with
+> no Cells and the MTD Nand is correctly probed and partitions are
+> correctly exposed.
+> 
+> Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old 
+> syntax fixed OF cells")
+
+It's not that commit however that introduced the problem. Introducing
+"add_legacy_fixed_of_cells" just added a clean way of enabling parsing
+of old cells syntax. Even before my commit NVMEM subsystem was looking
+for NVMEM cells in NAND devices.
+
+I booted kernel 6.6 which has commit e87161321a40 ("mtd: rawnand:
+macronix: OTP > access for MX30LFxG18AC") but does NOT have commit
+2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax
+fixed OF cells").
+
+Look at this log from Broadcom Northstar (Linux 6.6):
+[    0.410107] nand: device found, Manufacturer ID: 0xc2, Chip ID: 0xdc
+[    0.416531] nand: Macronix MX30LF4G18AC
+[    0.420409] nand: 512 MiB, SLC, erase size: 128 KiB, page size: 2048, 
+OOB size: 64
+[    0.428022] iproc_nand 18028000.nand-controller: detected 512MiB 
+total, 128KiB blocks, 2KiB pages, 16B OOB, 8-bit, BCH-8
+[    0.438991] Scanning device for bad blocks
+[    0.873598] Bad eraseblock 738 at 0x000005c40000
+[    1.030279] random: crng init done
+[    1.854895] Bad eraseblock 2414 at 0x000012dc0000
+[    2.657354] Bad eraseblock 3783 at 0x00001d8e0000
+[    2.662967] Bad eraseblock 3785 at 0x00001d920000
+[    2.848418] nvmem user-otp1: nvmem: invalid reg on 
+/nand-controller@18028000/nand@0
+[    2.856126] iproc_nand 18028000.nand-controller: error -EINVAL: 
+Failed to register OTP NVMEM device
+
+So to summary it up:
+1. Problem exists since much earlier and wasn't introduced by 
+2cc3b37f5b6d
+2. Commit 2cc3b37f5b6d just gives you a clean way of solving this issue
+3. Problem was exposed by commit e87161321a40
+4. We miss fix for v6.6 which doesn't have 2cc3b37f5b6d (it hit v6.7)
+
+
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
