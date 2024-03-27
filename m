@@ -1,107 +1,167 @@
-Return-Path: <stable+bounces-32963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C368E88E932
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:35:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C1C88E82F
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18C50B2DC56
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:13:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0658E2853EF
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58EC83A14;
-	Wed, 27 Mar 2024 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000B13B58C;
+	Wed, 27 Mar 2024 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HICW2jou"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhsGwOJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B051EF0E
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842512F5B4;
+	Wed, 27 Mar 2024 14:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711550559; cv=none; b=fS0GtLO9m+1CU4kHPVvYVqilvjhDrI2cM5OQBVYEd9mZInDc2uY5+CWsRNvyCHZadEXXVWJ81+EJdZMuA29T5Z0ot7TL+jdtNRzVTidO4EI6Xp6cwqdc69MGXrLsDAEcPIOSzDF3nJfMGyxkwrbPtopEIj5DbSwIWbMVpIDv7Rk=
+	t=1711550714; cv=none; b=LW+Ge+8EVItjxYnYmiR+kRXajXm8zSlOC2+dHYVEqQCl95jHJ52TAYHxn9q/HCt0JOnj+J9mAzEhjtrPD4MfcAT2Ktu6ONSTHMJzlXObqzWwzZUYm7xepNgjAAoJQFYV15OhwCWCyvHnxrnagUO+x8Vjuv9GO58wgCpF20vKeSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711550559; c=relaxed/simple;
-	bh=7O5BIR0nPVoBgF7YMOPrQALX4heSXBKNsw2P1LKbsbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TnoqObYGumgQlq9D4e+HtblzcyG/Yqik0aquiy3nME+T2yQyFPO4Pw5h7uehxq+KhjfZtiAq3dFJgbQ8DC4We6x8WOqFGT91ptc9yvRN496IbnFzzEFvCLQAD9IyJhW1MCq0Th9HsKU410ayTdVptEyjD6XrQDIE1xImuHcFa6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HICW2jou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC2DC433C7;
-	Wed, 27 Mar 2024 14:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711550559;
-	bh=7O5BIR0nPVoBgF7YMOPrQALX4heSXBKNsw2P1LKbsbA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HICW2jouEbXJaLDVPNo+rM8Pc07BDALW4N9ZVkMEC9nBJqfyyiWgu1k1tUAuQe+RT
-	 ogaEb5+4wMHY26X05m/8oi5+DYOKBgq+/gHccN9zsh1LIKvSazoXl1iExZU+hZdydG
-	 uLdF93itl1ks7qyN09hBRVhElY0rp8KEwKujG8YBVd0RB+2aaDn5A2Un1qDn3qNywI
-	 l/5hMJ8pDR0ylnWKYXt5LNM/rZRXCuclG1UY/WSP0XQ/xQ4DfQ1JUc0VL/Xpk7qJtZ
-	 tBoeoaVkwpwlmfjEJadQWnbqL8WmgD/0eGSa5pNbzpqBsm4IxYQOrtkJQBF3iaF50g
-	 57UjKcKGQsUdQ==
-Date: Wed, 27 Mar 2024 14:42:34 +0000
-From: Lee Jones <lee@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	valis <sec@valis.email>, Simon Horman <horms@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 1/1] tls: fix race between tx work scheduling and
- socket close
-Message-ID: <20240327144234.GU13211@google.com>
-References: <20240307155930.913525-1-lee@kernel.org>
- <2024032703-wager-mandatory-d732@gregkh>
+	s=arc-20240116; t=1711550714; c=relaxed/simple;
+	bh=G6ZV58zkX33Obd5w85Utc6DxXzyUWVj1uIRJ4W5Xwao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MoRm/Y3zK99feljTAilGfv8Ri0R77HspDOGW7/Xf7wgbIjAM1+Foevr1nZeJPtaerjO0q6oRLEhONDAu9v4I+KKoui04h4i4ZFDepJJL6JV/Qloj9i/eWKhN9hBvtR4hONW5XwuPFYO0rfmK8tDWQlZ9tLiGqE2VC0CLyM7Bilw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhsGwOJZ; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-22215ccbafeso3298504fac.0;
+        Wed, 27 Mar 2024 07:45:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711550712; x=1712155512; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wnV36qdnlfNuyZS7uSndjgNOhrMaNYjde0YXgs5g7cc=;
+        b=NhsGwOJZZl0/rznnBHHcNZa0YZ13i6Gv9Gn7nBNeNZza0f/HhWwi0h/jR6sqGuQvBc
+         GeAv6hR2bzjK21dRRXXn8oEP+gfaIGK7YGF/igjAvOrF0EW+pOxe2RI+rJDYP0lcT0y7
+         Fg4inW0KPMB3DYJ0Eoz8+jaBxqdH5tS27PJOk/YVs160S3W/FFSsqoAtQUG6irc/pQr4
+         HirGACH2qIKUtqRqewAdZyke/odSN1jHLz8AWU63KOPvFFpT+JoAlUf6NfgeTHNXFBw2
+         qKdjXpnV/vOf+Dlc0TnP0Z/dkIFF6boHHSe9Pdp7aWOawBxkKoatEgPv+oRbyy20D6IH
+         waHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711550712; x=1712155512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wnV36qdnlfNuyZS7uSndjgNOhrMaNYjde0YXgs5g7cc=;
+        b=TBRNdOxfK+gRImUVP0oZoxIVj/2yw0lTpGvpU5mm+132IzdjOEomTajsZHdNj3U3wq
+         EzkEea+pRGVc58EiCdy8CQAeXVAGzh/P8r6VMLpIungR8cwVqIXKc9gnuYX35MGpo3n1
+         rgmCePygHUL7U/dEc62HZrNPJbFrd8Q1uxE8IAzcM1evIBdDU+4mJkuS6XNhdUSQzDZG
+         asXYko5XecXkUW75bO8EAyITXlng3TQI8YzBmsgzTF4QoJBi7WT6GAmwQCOu+WqDxOZh
+         gPtAHQFkrfXxd/ZhmhJ2q34UsDKn7IRIK2ypVTWlayeEsoTryiEqcCfBByHuXmO5FX/U
+         bSwg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9sU77PNN2GgWVq0TUZM8hX0oLdkArts42L/gkHVyJbRcFCJbdlnjb9V3U8w+zdQCv6LtinoZ42Jko4IMW+lKQPRrvLg/Z0xfQImmriFBgoOZIiW4TcWoSJrKpM67dpU003B3GxcRJv2T9p5WvU7rKoWbIBJmFX+WvTzgNym5b
+X-Gm-Message-State: AOJu0YxaaXM27uL4k86P68LSawqkZPoojyhRtg+9MrKUJfi5miWfVX3B
+	dlxunCTtvOd4NJbNpf1uJaIWM7c/X/teNdsC708LrneWV0XF2eYLZ0DLYUTj
+X-Google-Smtp-Source: AGHT+IEkWkV4lUpvnsYu7XLudbEd8vmyWcxUpYjFmWonSSskQrRN0x5sPtw6hSk+bBCwA8ltYgeINQ==
+X-Received: by 2002:a05:6870:1c8:b0:229:f61d:7e52 with SMTP id n8-20020a05687001c800b00229f61d7e52mr6908575oad.34.1711550711899;
+        Wed, 27 Mar 2024 07:45:11 -0700 (PDT)
+Received: from [10.0.2.15] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
+        by smtp.gmail.com with ESMTPSA id fj11-20020a056a003a0b00b006eab7ca005esm3808785pfb.18.2024.03.27.07.45.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Mar 2024 07:45:11 -0700 (PDT)
+Message-ID: <8ce05c2d-eb0d-4c30-8e1e-eaf22528779e@gmail.com>
+Date: Wed, 27 Mar 2024 23:45:07 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024032703-wager-mandatory-d732@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: Patch "docs: Makefile: Add dependency to $(YNL_INDEX) for
+ targets other than htmldocs" failed to apply to 6.7-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Thorsten Blum <thorsten.blum@toblux.com>, Breno Leitao
+ <leitao@debian.org>, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240327120842.2826444-1-sashal@kernel.org>
+Content-Language: en-US
+From: Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <20240327120842.2826444-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 27 Mar 2024, Greg KH wrote:
-
-> On Thu, Mar 07, 2024 at 03:59:29PM +0000, Lee Jones wrote:
-> > From: Jakub Kicinski <kuba@kernel.org>
-> > 
-> > [ Upstream commit e01e3934a1b2d122919f73bc6ddbe1cdafc4bbdb ]
-> > 
-> > Similarly to previous commit, the submitting thread (recvmsg/sendmsg)
-> > may exit as soon as the async crypto handler calls complete().
-> > Reorder scheduling the work before calling complete().
-> > This seems more logical in the first place, as it's
-> > the inverse order of what the submitting thread will do.
-> > 
-> > Reported-by: valis <sec@valis.email>
-> > Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-> > Signed-off-by: David S. Miller <davem@davemloft.net>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > (cherry picked from commit 6db22d6c7a6dc914b12c0469b94eb639b6a8a146)
-> > [Lee: Fixed merge-conflict in Stable branches linux-6.1.y and older]
-> > Signed-off-by: Lee Jones <lee@kernel.org>
-> > ---
-> >  net/tls/tls_sw.c | 16 ++++++----------
-> >  1 file changed, 6 insertions(+), 10 deletions(-)
-> > 
+On Wed, 27 Mar 2024 08:08:42 -0400, Sasha Levin wrote:
+> The patch below does not apply to the 6.7-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
-> Now qeueued up, but only this version, the older ones I've dropped from
-> my review queue based on the review from Jakub.  If they are still
-> needed, can you provide backported versions?
+> Thanks,
+> Sasha
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From a304fa1d10fcb974c117d391e5b4d34c2baa9a62 Mon Sep 17 00:00:00 2001
+> From: Akira Yokosawa <akiyks@gmail.com>
+> Date: Tue, 5 Mar 2024 13:23:00 +0900
+> Subject: [PATCH] docs: Makefile: Add dependency to $(YNL_INDEX) for targets
+>  other than htmldocs
+> 
+> Commit f061c9f7d058 ("Documentation: Document each netlink family")
+> added recipes for YAML -> RST conversion.
+> Then commit 7da8bdbf8f5d ("docs: Makefile: Fix make cleandocs by
+> deleting generated .rst files") made sure those converted .rst files
+> are cleaned by "make cleandocs".
+> 
+> However, they took care of htmldocs build only.
+> 
+> If one of other targets such as latexdocs or epubdocs is built
+> without building htmldocs, missing .rst files can cause additional
+> WARNINGs from sphinx-build as follow:
+> 
+>     ./Documentation/userspace-api/netlink/specs.rst:18: WARNING: undefined label: 'specs'
+>     ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/rt_link'
+>     ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/tc'
+>     ./Documentation/userspace-api/netlink/index.rst:21: WARNING: undefined label: 'specs'
+> 
+> Add dependency to $(YNL_INDEX) for other targets and allow any targets
+> to be built cleanly right after "make cleandocs".
+> 
+> Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+> Cc: stable@vger.kernel.org  # v6.7
 
-Thanks.
+My bad.
 
-Full disclosure, I have no plans to backport the remainder given Jakub's
-comments.
+This should have been "# v6.8".
+No need of backport.  Sorry for making the noise.
 
--- 
-Lee Jones [李琼斯]
+        Regards, Akira
+
+> Cc: Thorsten Blum <thorsten.blum@toblux.com>
+> Cc: Breno Leitao <leitao@debian.org>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Reviwed-by: Breno Leitao <leitao@debian.org>
+> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+> Message-ID: <e876e3c8-109d-4bc8-9916-05a4bc4ee9ac@gmail.com>
+> ---
+>  Documentation/Makefile | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/Makefile b/Documentation/Makefile
+> index 4479910166fc1..b68f8c816897b 100644
+> --- a/Documentation/Makefile
+> +++ b/Documentation/Makefile
+> @@ -111,7 +111,9 @@ $(YNL_INDEX): $(YNL_RST_FILES)
+>  $(YNL_RST_DIR)/%.rst: $(YNL_YAML_DIR)/%.yaml $(YNL_TOOL)
+>  	$(Q)$(YNL_TOOL) -i $< -o $@
+>  
+> -htmldocs: $(YNL_INDEX)
+> +htmldocs texinfodocs latexdocs epubdocs xmldocs: $(YNL_INDEX)
+> +
+> +htmldocs:
+>  	@$(srctree)/scripts/sphinx-pre-install --version-check
+>  	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
+>
+
 
