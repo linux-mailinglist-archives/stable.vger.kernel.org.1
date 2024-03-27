@@ -1,167 +1,130 @@
-Return-Path: <stable+bounces-32964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C1C88E82F
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED8A88E83D
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0658E2853EF
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BA12C3446
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000B13B58C;
-	Wed, 27 Mar 2024 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9896C14A093;
+	Wed, 27 Mar 2024 14:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhsGwOJZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtO4RLQN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842512F5B4;
-	Wed, 27 Mar 2024 14:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454514A08B
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 14:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711550714; cv=none; b=LW+Ge+8EVItjxYnYmiR+kRXajXm8zSlOC2+dHYVEqQCl95jHJ52TAYHxn9q/HCt0JOnj+J9mAzEhjtrPD4MfcAT2Ktu6ONSTHMJzlXObqzWwzZUYm7xepNgjAAoJQFYV15OhwCWCyvHnxrnagUO+x8Vjuv9GO58wgCpF20vKeSA=
+	t=1711550772; cv=none; b=Z6r8ovjFuQHjKYwfSCWDz1y/avuMIvUKNYyRSqfXYG8kUhK4TJzDg0CzY34zsPP3cmLlYQjt876ySTjdOyKICw0g70W36g8e997SIay60VtDiB9PqZj5m2UllunqBc3lYsR1UwsucOjdqWrGsNkgCesOUNnbrh5cAuONyRotTSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711550714; c=relaxed/simple;
-	bh=G6ZV58zkX33Obd5w85Utc6DxXzyUWVj1uIRJ4W5Xwao=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MoRm/Y3zK99feljTAilGfv8Ri0R77HspDOGW7/Xf7wgbIjAM1+Foevr1nZeJPtaerjO0q6oRLEhONDAu9v4I+KKoui04h4i4ZFDepJJL6JV/Qloj9i/eWKhN9hBvtR4hONW5XwuPFYO0rfmK8tDWQlZ9tLiGqE2VC0CLyM7Bilw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhsGwOJZ; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-22215ccbafeso3298504fac.0;
-        Wed, 27 Mar 2024 07:45:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711550712; x=1712155512; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wnV36qdnlfNuyZS7uSndjgNOhrMaNYjde0YXgs5g7cc=;
-        b=NhsGwOJZZl0/rznnBHHcNZa0YZ13i6Gv9Gn7nBNeNZza0f/HhWwi0h/jR6sqGuQvBc
-         GeAv6hR2bzjK21dRRXXn8oEP+gfaIGK7YGF/igjAvOrF0EW+pOxe2RI+rJDYP0lcT0y7
-         Fg4inW0KPMB3DYJ0Eoz8+jaBxqdH5tS27PJOk/YVs160S3W/FFSsqoAtQUG6irc/pQr4
-         HirGACH2qIKUtqRqewAdZyke/odSN1jHLz8AWU63KOPvFFpT+JoAlUf6NfgeTHNXFBw2
-         qKdjXpnV/vOf+Dlc0TnP0Z/dkIFF6boHHSe9Pdp7aWOawBxkKoatEgPv+oRbyy20D6IH
-         waHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711550712; x=1712155512;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wnV36qdnlfNuyZS7uSndjgNOhrMaNYjde0YXgs5g7cc=;
-        b=TBRNdOxfK+gRImUVP0oZoxIVj/2yw0lTpGvpU5mm+132IzdjOEomTajsZHdNj3U3wq
-         EzkEea+pRGVc58EiCdy8CQAeXVAGzh/P8r6VMLpIungR8cwVqIXKc9gnuYX35MGpo3n1
-         rgmCePygHUL7U/dEc62HZrNPJbFrd8Q1uxE8IAzcM1evIBdDU+4mJkuS6XNhdUSQzDZG
-         asXYko5XecXkUW75bO8EAyITXlng3TQI8YzBmsgzTF4QoJBi7WT6GAmwQCOu+WqDxOZh
-         gPtAHQFkrfXxd/ZhmhJ2q34UsDKn7IRIK2ypVTWlayeEsoTryiEqcCfBByHuXmO5FX/U
-         bSwg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9sU77PNN2GgWVq0TUZM8hX0oLdkArts42L/gkHVyJbRcFCJbdlnjb9V3U8w+zdQCv6LtinoZ42Jko4IMW+lKQPRrvLg/Z0xfQImmriFBgoOZIiW4TcWoSJrKpM67dpU003B3GxcRJv2T9p5WvU7rKoWbIBJmFX+WvTzgNym5b
-X-Gm-Message-State: AOJu0YxaaXM27uL4k86P68LSawqkZPoojyhRtg+9MrKUJfi5miWfVX3B
-	dlxunCTtvOd4NJbNpf1uJaIWM7c/X/teNdsC708LrneWV0XF2eYLZ0DLYUTj
-X-Google-Smtp-Source: AGHT+IEkWkV4lUpvnsYu7XLudbEd8vmyWcxUpYjFmWonSSskQrRN0x5sPtw6hSk+bBCwA8ltYgeINQ==
-X-Received: by 2002:a05:6870:1c8:b0:229:f61d:7e52 with SMTP id n8-20020a05687001c800b00229f61d7e52mr6908575oad.34.1711550711899;
-        Wed, 27 Mar 2024 07:45:11 -0700 (PDT)
-Received: from [10.0.2.15] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
-        by smtp.gmail.com with ESMTPSA id fj11-20020a056a003a0b00b006eab7ca005esm3808785pfb.18.2024.03.27.07.45.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Mar 2024 07:45:11 -0700 (PDT)
-Message-ID: <8ce05c2d-eb0d-4c30-8e1e-eaf22528779e@gmail.com>
-Date: Wed, 27 Mar 2024 23:45:07 +0900
+	s=arc-20240116; t=1711550772; c=relaxed/simple;
+	bh=Tnbz7rW/muDVgVpvogyrqG+Kg8smP9VctlrVXDEYPsw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PYGpkcnRMwcf8HXMqaPXBsE29QDuoA1QIGVrjCv3mHIWuwlETMEcwLfOGlO22oj0mZcloJs6wIps3paHeltHP9t5Pqspm8x0AF0tzmuWMI5A9+kzuow4tUTtundD7rXSyEXINYb3n+pTB7RCYvKHEBPG+O8YmegivjhcaYML9vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtO4RLQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CA5C433C7;
+	Wed, 27 Mar 2024 14:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711550771;
+	bh=Tnbz7rW/muDVgVpvogyrqG+Kg8smP9VctlrVXDEYPsw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=NtO4RLQNLw02QFt0ZWG32340qOcU4h6jszRAnvOXj1wOikWQ6QZ90EhFNcrO4Gfgm
+	 aMYOl0HV8Xo58MuSoBiS29ehTAraPnoeDJAdrooNqp0H9xyw7ihtgJ/kfmxcGbCWXk
+	 3cuevrGWT/rRUu8VI0l8u6BkH8lNlOzB+j4A7eXY=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: diag: return KSFT_FAIL not test_cnt" failed to apply to 6.1-stable tree
+To: tanggeliang@kylinos.cn,davem@davemloft.net,matttbe@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 27 Mar 2024 15:46:08 +0100
+Message-ID: <2024032708-vagrancy-backlash-61dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "docs: Makefile: Add dependency to $(YNL_INDEX) for
- targets other than htmldocs" failed to apply to 6.7-stable tree
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@toblux.com>, Breno Leitao
- <leitao@debian.org>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240327120842.2826444-1-sashal@kernel.org>
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <20240327120842.2826444-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Wed, 27 Mar 2024 08:08:42 -0400, Sasha Levin wrote:
-> The patch below does not apply to the 6.7-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> Thanks,
-> Sasha
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From a304fa1d10fcb974c117d391e5b4d34c2baa9a62 Mon Sep 17 00:00:00 2001
-> From: Akira Yokosawa <akiyks@gmail.com>
-> Date: Tue, 5 Mar 2024 13:23:00 +0900
-> Subject: [PATCH] docs: Makefile: Add dependency to $(YNL_INDEX) for targets
->  other than htmldocs
-> 
-> Commit f061c9f7d058 ("Documentation: Document each netlink family")
-> added recipes for YAML -> RST conversion.
-> Then commit 7da8bdbf8f5d ("docs: Makefile: Fix make cleandocs by
-> deleting generated .rst files") made sure those converted .rst files
-> are cleaned by "make cleandocs".
-> 
-> However, they took care of htmldocs build only.
-> 
-> If one of other targets such as latexdocs or epubdocs is built
-> without building htmldocs, missing .rst files can cause additional
-> WARNINGs from sphinx-build as follow:
-> 
->     ./Documentation/userspace-api/netlink/specs.rst:18: WARNING: undefined label: 'specs'
->     ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/rt_link'
->     ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/tc'
->     ./Documentation/userspace-api/netlink/index.rst:21: WARNING: undefined label: 'specs'
-> 
-> Add dependency to $(YNL_INDEX) for other targets and allow any targets
-> to be built cleanly right after "make cleandocs".
-> 
-> Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-> Cc: stable@vger.kernel.org  # v6.7
 
-My bad.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This should have been "# v6.8".
-No need of backport.  Sorry for making the noise.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-        Regards, Akira
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 45bcc0346561daa3f59e19a753cc7f3e08e8dff1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032708-vagrancy-backlash-61dd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> Cc: Thorsten Blum <thorsten.blum@toblux.com>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Reviwed-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-> Message-ID: <e876e3c8-109d-4bc8-9916-05a4bc4ee9ac@gmail.com>
-> ---
->  Documentation/Makefile | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/Makefile b/Documentation/Makefile
-> index 4479910166fc1..b68f8c816897b 100644
-> --- a/Documentation/Makefile
-> +++ b/Documentation/Makefile
-> @@ -111,7 +111,9 @@ $(YNL_INDEX): $(YNL_RST_FILES)
->  $(YNL_RST_DIR)/%.rst: $(YNL_YAML_DIR)/%.yaml $(YNL_TOOL)
->  	$(Q)$(YNL_TOOL) -i $< -o $@
->  
-> -htmldocs: $(YNL_INDEX)
-> +htmldocs texinfodocs latexdocs epubdocs xmldocs: $(YNL_INDEX)
-> +
-> +htmldocs:
->  	@$(srctree)/scripts/sphinx-pre-install --version-check
->  	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
->
+Possible dependencies:
+
+45bcc0346561 ("selftests: mptcp: diag: return KSFT_FAIL not test_cnt")
+ce9902573652 ("selftests: mptcp: diag: format subtests results in TAP")
+dc97251bf0b7 ("selftests: mptcp: diag: skip listen tests if not supported")
+e04a30f78809 ("selftest: mptcp: add test for mptcp socket in use")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 45bcc0346561daa3f59e19a753cc7f3e08e8dff1 Mon Sep 17 00:00:00 2001
+From: Geliang Tang <tanggeliang@kylinos.cn>
+Date: Fri, 1 Mar 2024 18:11:22 +0100
+Subject: [PATCH] selftests: mptcp: diag: return KSFT_FAIL not test_cnt
+
+The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
+if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
+the whole test will be marked as skipped instead of 'failed'!
+
+So we should do ret=${KSFT_FAIL} instead.
+
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Cc: stable@vger.kernel.org
+Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+
+diff --git a/tools/testing/selftests/net/mptcp/diag.sh b/tools/testing/selftests/net/mptcp/diag.sh
+index f300f4e1eb59..18d37d4695c1 100755
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -69,7 +69,7 @@ __chk_nr()
+ 		else
+ 			echo "[ fail ] expected $expected found $nr"
+ 			mptcp_lib_result_fail "${msg}"
+-			ret=$test_cnt
++			ret=${KSFT_FAIL}
+ 		fi
+ 	else
+ 		echo "[  ok  ]"
+@@ -124,11 +124,11 @@ wait_msk_nr()
+ 	if [ $i -ge $timeout ]; then
+ 		echo "[ fail ] timeout while expecting $expected max $max last $nr"
+ 		mptcp_lib_result_fail "${msg} # timeout"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	elif [ $nr != $expected ]; then
+ 		echo "[ fail ] expected $expected found $nr"
+ 		mptcp_lib_result_fail "${msg} # unexpected result"
+-		ret=$test_cnt
++		ret=${KSFT_FAIL}
+ 	else
+ 		echo "[  ok  ]"
+ 		mptcp_lib_result_pass "${msg}"
 
 
