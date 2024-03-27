@@ -1,186 +1,148 @@
-Return-Path: <stable+bounces-33010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A0888EBA1
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:50:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64CC88EBA4
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D901C2B7CF
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C0222965C1
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8E614C5BA;
-	Wed, 27 Mar 2024 16:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7F214D29E;
+	Wed, 27 Mar 2024 16:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPh07F05"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OlCqOZhR"
+X-Original-To: stable@vger.kernel.org
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A397A14A0A7
-	for <Stable@vger.kernel.org>; Wed, 27 Mar 2024 16:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806E412F5A2;
+	Wed, 27 Mar 2024 16:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711558247; cv=none; b=AUR8/ZfNpVQ83y2p0mB6juwBNI+P7bQCkBRf6grwyp5/2WEPpfty74zyo1r4RGKZmYxPuDca+Q6Pq2cEU2jz2PmC9iCoTRXHa1UtAGKJy2txfo9clmd3QCNcFV2Nxt6rfSFIRDBv9Fc05VynIiPn2N7fld8rEtbIaNxJqDhgYtU=
+	t=1711558299; cv=none; b=cUhoFSGz99CY8g0Aw8Oqn6C9H7CEdRIKeUZEL7CqQN/SLfx+DOt0Xj8uJskZvVjz090MpeOgaip0yWiKFNc9wzCF6109UN3IFrHxi9Mxtrb9o+lggt+jFxSGnOkwbTPk5kng7IDmu055qja8/LU//aSmwSjtaibwfoWt8I7JpXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711558247; c=relaxed/simple;
-	bh=/7yohUneVkkdei0jfxDZhZMj0ftl071uZiWKwt3NQsM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qxWlG+okFDpgGZWmfoUxZdTEyZNkkVSKXO8y+8LoUu7CsDOayqDd8bAyAuSXn0/osdemQrSuXzjp35j55v7iRwUZQm1ZghPmrXecOA5IfDUZWCAegUofz2jO4JiWUk3ZzP66CLXa0MSAkBLsqvTt/Wy9tFwGpqWKJVxm9t0Cmck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPh07F05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A32C433F1;
-	Wed, 27 Mar 2024 16:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711558247;
-	bh=/7yohUneVkkdei0jfxDZhZMj0ftl071uZiWKwt3NQsM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=DPh07F05eJWrMI5xCKKXZgeabtxY77XwNbm4bf/6P6bbxEUzkbzu7SJueGpMFDcHM
-	 AhHTbvLClt6GSZnppwKTFMHBQbyYgSkGIv8EX0XXhAwu9eObaATX91fjmaaVqVvo34
-	 WQPLKXmbeDu6hUWb91qN52GAlp6qYSE+SLPLjWxc=
-Subject: FAILED: patch "[PATCH] iio: pressure: Fixes BMP38x and BMP390 SPI support" failed to apply to 6.6-stable tree
-To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@linux.intel.com,ang.iglesiasg@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 17:50:31 +0100
-Message-ID: <2024032731-refocus-droop-1342@gregkh>
+	s=arc-20240116; t=1711558299; c=relaxed/simple;
+	bh=LM8sbbiZKaeBPMakgJ3MutVIXuYeOb/HCEs0DQyWv2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nZ2nGNmNo43CkXIDmLuAheSjYZsFmkdsiTQFgP060ixXj5gIOves2qUeGUltiKzQrvaUoYY79o9fJvZaISdIbRRiwH9NCnnRBNFtBwBRqMusFp/wrsHuJlxzxGFSAlzXSz1wh4MQcgeKu5qKaaDJhQhrLDQYNPCG7jvisM6iUlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OlCqOZhR; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B652240008;
+	Wed, 27 Mar 2024 16:51:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711558294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8dkDsTM+CyF3T1RfUsZvTaGtiJGxz0u7kuWWxBLiq70=;
+	b=OlCqOZhRUE+LEglVKAzyRaIJnfHwR7NpVwTLoTmHNcTFLc1l2Ze/9ictqKZcclr3fbO0nE
+	JFO/Ll9eSZm0QJZUc7JFGocaYue1wLCziUiLa/3wRMVohIQ2NLg7RI87xwUd3YtaU+owPM
+	Vll6eIkZQFjuJGT1soHhKBI2DemQ2JnZx3vT1lIb+F2cQ2AuT2ZTc9LDO+/YBI6d+FnvGW
+	kDbQt4FW3pInjRk5kBdRExWdgGsNnLTQbx3ypV2enI06lf+G8BbHC05YFWikJ+bJHQBIA+
+	7arwt6GAfJQ/f6JD3pTIs/h0gSnDzYG4vuEA8A/B3CVYNpBvSNN/iujE0U5JhA==
+Date: Wed, 27 Mar 2024 17:51:31 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Richard
+ Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Md
+ Sadre Alam <quic_mdalam@quicinc.com>, Sricharan Ramabadhran
+ <quic_srichara@quicinc.com>, linux-mtd@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in
+ misc_cmd_type in exec_op
+Message-ID: <20240327175131.3c0100c3@xps-13>
+In-Reply-To: <66044bea.050a0220.dee16.c250@mx.google.com>
+References: <20240325103053.24408-1-ansuelsmth@gmail.com>
+	<20240326072512.GA8436@thinkpad>
+	<66044bea.050a0220.dee16.c250@mx.google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
+Hi,
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+ansuelsmth@gmail.com wrote on Wed, 27 Mar 2024 16:20:58 +0100:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> On Tue, Mar 26, 2024 at 12:55:12PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote: =20
+> > > misc_cmd_type in exec_op have multiple problems. With commit a82990c8=
+a409
+> > > ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
+> > > reworked and generalized but actually broke the handling of the
+> > > ERASE_BLOCK command.
+> > >=20
+> > > Additional logic was added to the erase command cycle without clear
+> > > explaination causing the erase command to be broken on testing it on
+> > > a ipq806x nandc.
+> > >=20
+> > > Fix the erase command by reverting the additional logic and only addi=
+ng
+> > > the NAND_DEV0_CFG0 additional call (required for erase command).
+> > >=20
+> > > Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in =
+exec_op path")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> > > ---
+> > > Changes v2:
+> > > - Split this and rework commit description and title
+> > >=20
+> > >  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
+> > >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw=
+/qcom_nandc.c
+> > > index b079605c84d3..19d76e345a49 100644
+> > > --- a/drivers/mtd/nand/raw/qcom_nandc.c
+> > > +++ b/drivers/mtd/nand/raw/qcom_nandc.c
+> > > @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_=
+chip *chip, const struct nand_sub
+> > >  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
+> > > =20
+> > >  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
+> > > -	(q_op.cmd_reg =3D=3D OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DE=
+V0_CFG0,
+> > > -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
+> > > -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
+> > > +	if (q_op.cmd_reg =3D=3D OP_BLOCK_ERASE)
+> > > +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL); =20
+> >=20
+> > So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS=
+, 1,
+> > NAND_BAM_NEXT_SGL)' if q_op.cmd_reg !=3D OP_BLOCK_ERASE. But for q_op.c=
+md_reg =3D=3D
+> > OP_BLOCK_ERASE, the result is the same.
+> >=20
+> > I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
+> >=20
+> > Can you share the actual issue that you are seeing? Like error logs etc=
+...
+> > =20
+>=20
+> Issue is that nandc goes to ADM timeout as soon as a BLOCK_ERASE is
+> called. BLOCK_ERASE operation match also another operation from MTD
+> read. (parser also maps to other stuff)
+>=20
+> I will be away from the testing board for 7-10 days so I can't provide
+> logs currently.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x a9dd9ba323114f366eb07f1d9630822f8df6cbb2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032731-refocus-droop-1342@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+So, shall we wait for additional logs from Christian or shall I merge
+the two-patches series? I'm not sure what's the status anymore.
 
-Possible dependencies:
-
-a9dd9ba32311 ("iio: pressure: Fixes BMP38x and BMP390 SPI support")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a9dd9ba323114f366eb07f1d9630822f8df6cbb2 Mon Sep 17 00:00:00 2001
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-Date: Mon, 19 Feb 2024 20:13:59 +0100
-Subject: [PATCH] iio: pressure: Fixes BMP38x and BMP390 SPI support
-
-According to the datasheet of BMP38x and BMP390 devices, for an SPI
-read operation the first byte that is returned needs to be dropped,
-and the rest of the bytes are the actual data returned from the
-sensor.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Link: https://lore.kernel.org/r/20240219191359.18367-1-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index e8a5fed07e88..a444d4b2978b 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -4,6 +4,7 @@
-  *
-  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
-  */
-+#include <linux/bits.h>
- #include <linux/module.h>
- #include <linux/spi/spi.h>
- #include <linux/err.h>
-@@ -35,6 +36,34 @@ static int bmp280_regmap_spi_read(void *context, const void *reg,
- 	return spi_write_then_read(spi, reg, reg_size, val, val_size);
- }
- 
-+static int bmp380_regmap_spi_read(void *context, const void *reg,
-+				  size_t reg_size, void *val, size_t val_size)
-+{
-+	struct spi_device *spi = to_spi_device(context);
-+	u8 rx_buf[4];
-+	ssize_t status;
-+
-+	/*
-+	 * Maximum number of consecutive bytes read for a temperature or
-+	 * pressure measurement is 3.
-+	 */
-+	if (val_size > 3)
-+		return -EINVAL;
-+
-+	/*
-+	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
-+	 * the first byte needs to be dropped and the rest are the requested
-+	 * data.
-+	 */
-+	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
-+	if (status)
-+		return status;
-+
-+	memcpy(val, rx_buf + 1, val_size);
-+
-+	return 0;
-+}
-+
- static struct regmap_bus bmp280_regmap_bus = {
- 	.write = bmp280_regmap_spi_write,
- 	.read = bmp280_regmap_spi_read,
-@@ -42,10 +71,19 @@ static struct regmap_bus bmp280_regmap_bus = {
- 	.val_format_endian_default = REGMAP_ENDIAN_BIG,
- };
- 
-+static struct regmap_bus bmp380_regmap_bus = {
-+	.write = bmp280_regmap_spi_write,
-+	.read = bmp380_regmap_spi_read,
-+	.read_flag_mask = BIT(7),
-+	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-+	.val_format_endian_default = REGMAP_ENDIAN_BIG,
-+};
-+
- static int bmp280_spi_probe(struct spi_device *spi)
- {
- 	const struct spi_device_id *id = spi_get_device_id(spi);
- 	const struct bmp280_chip_info *chip_info;
-+	struct regmap_bus *bmp_regmap_bus;
- 	struct regmap *regmap;
- 	int ret;
- 
-@@ -58,8 +96,18 @@ static int bmp280_spi_probe(struct spi_device *spi)
- 
- 	chip_info = spi_get_device_match_data(spi);
- 
-+	switch (chip_info->chip_id[0]) {
-+	case BMP380_CHIP_ID:
-+	case BMP390_CHIP_ID:
-+		bmp_regmap_bus = &bmp380_regmap_bus;
-+		break;
-+	default:
-+		bmp_regmap_bus = &bmp280_regmap_bus;
-+		break;
-+	}
-+
- 	regmap = devm_regmap_init(&spi->dev,
--				  &bmp280_regmap_bus,
-+				  bmp_regmap_bus,
- 				  &spi->dev,
- 				  chip_info->regmap_config);
- 	if (IS_ERR(regmap)) {
-
+Thanks,
+Miqu=C3=A8l
 
