@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-32895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E4988E42A
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:54:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9879A88E42D
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33BD01F2DFB1
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E8E2A47B1
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AE218C9E9;
-	Wed, 27 Mar 2024 12:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241A918C9FD;
+	Wed, 27 Mar 2024 12:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlQTrvO4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WskRsreO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D841411ED;
-	Wed, 27 Mar 2024 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77FC18C9E6;
+	Wed, 27 Mar 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711542405; cv=none; b=GKI1mlXwDMaBBmdiVu3lAt+q78tglIZakCACJ02oWr/xVMhP2fXye4tXOUy3uj5v0dgdu1x0o043Qgon7mnogQOqODjZlgG9VASSSKkl6Kdl0YT5mE9JQuq5uPxBzMYP7/7nCmr78OkO8Xq9dycJOOXnwT/3hwJr66i75vetmNE=
+	t=1711542407; cv=none; b=gTQdKe6azmPvdTkEQuPevrJl1Njg0HiaWnHkAkMR3X9TD3mBzcmizQYgEI3WPyrPaurFfWifCvx6ZZH6zaUNUigFWGT5UQu47tgde5GkcIW6Njlb3FqioxdsyItQePVs5tIXO14FIc/VLbHsEo0KNBG4K9ARpBpmaFfXbgGwQYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711542405; c=relaxed/simple;
-	bh=GmeKlkNLUaS/w5sqHZUfTZPWxqKPVKXvoNIaWRL/jzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JLwib6WkO7G2vLfHYp65BlCNnfWmzGG0ICLhD10bCiKaNgnq1rztWCfWD8WXBXUKjXUqwbry7YW8imBniHbZ7ptBV41+eN9qcqOJX2lp58UfDOO3X6P8Uzbnkhc7OLk2XQ4eFr8tqbHS8t15/KBjMyTb0Gv4iMIDFlm6ZbL/oA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlQTrvO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AE3C433C7;
-	Wed, 27 Mar 2024 12:26:43 +0000 (UTC)
+	s=arc-20240116; t=1711542407; c=relaxed/simple;
+	bh=tmi0DDv8RYhN8hfyp5ZBxPv/BlQAcv524yEMtzi6NfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TMmyPW3GN9nvYminsrw0VRKodg2Zg5wr7UoYjG7Ld/XXZNdEJ1NTxxnVbEvcP0QVcDdTehhc6l3xnqVcXm5fm8HMXlJhDDyiXOYHvPn1CXtAXkrlSEYx3HCu493Nq467A83QqPje6xHhvy0PN1k4g31l4vDbKTSGoFa7Ra8E27s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WskRsreO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8903DC433F1;
+	Wed, 27 Mar 2024 12:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711542404;
-	bh=GmeKlkNLUaS/w5sqHZUfTZPWxqKPVKXvoNIaWRL/jzA=;
+	s=k20201202; t=1711542407;
+	bh=tmi0DDv8RYhN8hfyp5ZBxPv/BlQAcv524yEMtzi6NfY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ZlQTrvO4GtcvMgBW8OMNzp6hJ+pBdJo6iCi9XRAytEOGcsrVK8jReCD37CQ2vgmaJ
-	 Io6NyP5vpp+zyNnQb1TyryJzGmhcxVQGIJvsqLmWKj7/2XZKt27YEGjOKvIRm/Js7/
-	 aB+ixxFpg40JQhOYI/d3qD8U/R4y97v+MOGEAUMJ/1rL6BW2Ho+zXAFqhdlad8KoDA
-	 hFeFkYedQL5kTp0V7wj4OWflJy4TbEpdy07+8GAKAJ8XC9Z6cDsWKkJyvKerxb8Ujz
-	 bs0aFmuNDscV7y/TwwhDIviXIZoP4JfkWDRu6B1ieyU70ut+ZQUjYGnCpyG45MbX/l
-	 +sCOwV6pHQOKw==
+	b=WskRsreOiWQPpEDnWHb5MEtxSfwQLqtyeGzOsFPWlRcxhh+0gPNfK+FOd/xiZam5y
+	 h+Co3bde+5YrWv2873GbEJgHRn4yLoAYBoVYrSt8IgG7biMrBa45Yqy9D0vBRXNTGF
+	 Xw0qfFkx8r9/JJWKCApk0Dov6dm56vqbKqDLOLJ7t7+cdRslszwUyqp94P82yWtPLZ
+	 UpYNZoQCHwJ3l+YB0o17SHodvPnU/1RtV+DpVKxJF/gzRv4AYDMq2hNWppqD4iKkWj
+	 DZxYkqgTdi2XDCH/ySwjRrqhpOvxjLrcZXX1R2XfDXCP29vVyd/sMCSH9Mqwp3Lr7K
+	 jtG+gc6UTHrRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	david@redhat.com
-Cc: stable@kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	virtualization@lists.linux.dev,
+	srinivasan.shanmugam@amd.com
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Qingqing Zhuo <qingqing.zhuo@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "virtio: reenable config if freezing device failed" failed to apply to 4.19-stable tree
-Date: Wed, 27 Mar 2024 08:26:42 -0400
-Message-ID: <20240327122643.2841302-1-sashal@kernel.org>
+Subject: FAILED: Patch "drm/amd/display: Fix late derefrence 'dsc' check in 'link_set_dsc_pps_packet()'" failed to apply to 4.19-stable tree
+Date: Wed, 27 Mar 2024 08:26:45 -0400
+Message-ID: <20240327122645.2841343-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,48 +76,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 310227f42882c52356b523e2f4e11690eebcd2ab Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Tue, 13 Feb 2024 14:54:25 +0100
-Subject: [PATCH] virtio: reenable config if freezing device failed
+From 166225e79ccc3d02c4c46e1b3c09d03eb91473ca Mon Sep 17 00:00:00 2001
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Date: Wed, 10 Jan 2024 20:58:35 +0530
+Subject: [PATCH] drm/amd/display: Fix late derefrence 'dsc' check in
+ 'link_set_dsc_pps_packet()'
 
-Currently, we don't reenable the config if freezing the device failed.
+In link_set_dsc_pps_packet(), 'struct display_stream_compressor *dsc'
+was dereferenced in a DC_LOGGER_INIT(dsc->ctx->logger); before the 'dsc'
+NULL pointer check.
 
-For example, virtio-mem currently doesn't support suspend+resume, and
-trying to freeze the device will always fail. Afterwards, the device
-will no longer respond to resize requests, because it won't get notified
-about config changes.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_dpms.c:905 link_set_dsc_pps_packet() warn: variable dereferenced before check 'dsc' (see line 903)
 
-Let's fix this by re-enabling the config if freezing fails.
-
-Fixes: 22b7050a024d ("virtio: defer config changed notifications")
-Cc: <stable@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240213135425.795001-1-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: stable@vger.kernel.org
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc: Wenjing Liu <wenjing.liu@amd.com>
+Cc: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- drivers/virtio/virtio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index f4080692b3513..f513ee21b1c18 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -510,8 +510,10 @@ int virtio_device_freeze(struct virtio_device *dev)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 3de148004c066..3cbfbf8d107e9 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -900,11 +900,15 @@ bool link_set_dsc_pps_packet(struct pipe_ctx *pipe_ctx, bool enable, bool immedi
+ {
+ 	struct display_stream_compressor *dsc = pipe_ctx->stream_res.dsc;
+ 	struct dc_stream_state *stream = pipe_ctx->stream;
+-	DC_LOGGER_INIT(dsc->ctx->logger);
  
- 	if (drv && drv->freeze) {
- 		ret = drv->freeze(dev);
--		if (ret)
-+		if (ret) {
-+			virtio_config_enable(dev);
- 			return ret;
-+		}
- 	}
+-	if (!pipe_ctx->stream->timing.flags.DSC || !dsc)
++	if (!pipe_ctx->stream->timing.flags.DSC)
+ 		return false;
  
- 	if (dev->config->destroy_avq)
++	if (!dsc)
++		return false;
++
++	DC_LOGGER_INIT(dsc->ctx->logger);
++
+ 	if (enable) {
+ 		struct dsc_config dsc_cfg;
+ 		uint8_t dsc_packed_pps[128];
 -- 
 2.43.0
 
