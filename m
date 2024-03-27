@@ -1,339 +1,186 @@
-Return-Path: <stable+bounces-33007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FC888EB8E
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:46:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AFA88EBA0
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 17:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7237B37A4B
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:11:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F861C254C8
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED5F1442E9;
-	Wed, 27 Mar 2024 16:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4983114D283;
+	Wed, 27 Mar 2024 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NZF/48Dz"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hgp6fqS2"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D804A1311B2
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 16:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9A912F5A2
+	for <Stable@vger.kernel.org>; Wed, 27 Mar 2024 16:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711555455; cv=none; b=atoEFoA3GgnMbFG91C3+j8uN8vYyF/BFrxSObhT/rossdX9VZs1EQKGo36xm8yxhz67e5yocRgZEMXSPF4y3ycLilE4BUshkEnpSsYBHFSUDdho8stOgVHmozMHbtEtF6s3LmW0kWkQYxfiwyMU2czqMlLz2KbRc4aGubZC4RFQ=
+	t=1711558234; cv=none; b=ubN9dynstf6f59Q0uTB6n09sitAXMxdYDCVJyn8ynnThBNX7OQPRTnip4ZCT4M1I+zivc8TDqLYfjGmQvJBBleOYddtDVuXwK2vACSsIu8KnAAMzKX0l3ngZWer2Pw6O/KE1rZELyKhiXddvGQtWBsoThNLsV0T2J+/L73zf+yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711555455; c=relaxed/simple;
-	bh=EdLNzX8uuiq2CjNBfiXznOjIDyfPc5MSkqemwj47Fxc=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=V8pBwOe1cpJ0kKTfL0eskvF/ykqEhhgIadlGqURaOgrEVpRDrmaW9wLPO5XJ7lri5a5HTSRpWJmpHZpdZP8EQ6XrHXEesKFwloSqh0z0KBbSj/B3Hze32BlTCS2kHGU8+xNyXIR3qTjTLmnLMIdERblPucYdG+p/tADGx4Q53eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NZF/48Dz; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711555449; x=1711814649;
-	bh=Ka2xa47AQ5Q73+6JzpnFAcof+BAgDh2tkVUlnUr2JVE=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NZF/48Dzz7IZFkHGpV08pk9cJ7GI15CSkz6G7ljNb8L0GFu0DXubC+dd4sdTcXM3H
-	 Xj1rhsJcVFBzolFWgok7ZIe0B05tC3TPi0SKfNy6W3AAqjJ5ygJg7e9TLl+y/gUGoB
-	 fcOo4Blj81axwFF1KJ1btZKNtSy+DycpIeyFa5YlYpwu3NZKYqHV7aHFMTJESDbjDG
-	 aLYPXQSnoT1//TjkkGBa7i43YDx3/yCsspZU62HNLzS7xhxXlFbs4YipRArvC7QJfd
-	 R7pGm6y9hFfmem6wli+vHzpyKKqo0mz/s7tc4UwJPkV6s83FKmo2/SlogR/sX1Wkg2
-	 2Ux5GFZ+Q3pww==
-Date: Wed, 27 Mar 2024 16:04:03 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, Adam Bratschi-Kaye <ark.email@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <20240327160346.22442-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1711558234; c=relaxed/simple;
+	bh=9cbjrTvg8NY/N9lN6kaHJJsRHVmQr6PKqmr9x0UOl+U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MR1vSOFR5j1ypYQgfUrxI5F1Z1d3UKvdJOD4o7spzLMnf8b4wxRExW8NNnIGDAfDMYpmNmifYExZqpubD3GFIhytEQldmve+dF0wQ8al6rWnc9prJ3wVVpqZyugusRL7RztwOnEHr2RV55LQ4VCknWxNdtoL0tsZ1ElVTuZ8j7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hgp6fqS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237BAC43390;
+	Wed, 27 Mar 2024 16:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711558233;
+	bh=9cbjrTvg8NY/N9lN6kaHJJsRHVmQr6PKqmr9x0UOl+U=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Hgp6fqS2Y4ACRmY1/sFTw1A+6PqG2mXAvRAFg7N1m8FsQYaxAWB4wwD9+xFRvhlK8
+	 RcdsMQUp0A6Fhup6+1PNRZwOQFFTaIOE+NTl+MhMo1N2VBqRb9yBn8VUv5JAJNhJPJ
+	 2eT/a7EHIPMHOQJZ9YBfd29yPk5sB+cbDtT6hUT0=
+Subject: FAILED: patch "[PATCH] iio: pressure: Fixes BMP38x and BMP390 SPI support" failed to apply to 6.7-stable tree
+To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andriy.shevchenko@linux.intel.com,ang.iglesiasg@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 27 Mar 2024 17:50:30 +0100
+Message-ID: <2024032730-sift-sneak-98b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The `module!` macro creates glue code that are called by C to initialize
-the Rust modules using the `Module::init` function. Part of this glue
-code are the local functions `__init` and `__exit` that are used to
-initialize/destroy the Rust module.
-These functions are safe and also visible to the Rust mod in which the
-`module!` macro is invoked. This means that they can be called by other
-safe Rust code. But since they contain `unsafe` blocks that rely on only
-being called at the right time, this is a soundness issue.
 
-Wrap these generated functions inside of two private modules, this
-guarantees that the public functions cannot be called from the outside.
-Make the safe functions `unsafe` and add SAFETY comments.
+The patch below does not apply to the 6.7-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/Rust-for-Linux/linux/issues/629
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
-This patch is best viewed with `git show --ignore-space-change`, since I
-also adjusted the indentation.
+To reproduce the conflict and resubmit, you may use the following commands:
 
- rust/macros/module.rs | 198 ++++++++++++++++++++++++------------------
- 1 file changed, 112 insertions(+), 86 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git checkout FETCH_HEAD
+git cherry-pick -x a9dd9ba323114f366eb07f1d9630822f8df6cbb2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032730-sift-sneak-98b8@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 27979e582e4b..16c4921a08f2 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -199,103 +199,129 @@ pub(crate) fn module(ts: TokenStream) -> TokenStrea=
-m {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] =3D b\"{name}\\0\";
-=20
--            /// The \"Rust loadable module\" mark.
--            //
--            // This may be best done another way later on, e.g. as a new m=
-odinfo
--            // key or a new section. For the moment, keep it simple.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[used]
--            static __IS_RUST_MODULE: () =3D ();
--
--            static mut __MOD: Option<{type_}> =3D None;
--
--            // SAFETY: `__this_module` is constructed by the kernel at loa=
-d time and will not be
--            // freed until the module is unloaded.
--            #[cfg(MODULE)]
--            static THIS_MODULE: kernel::ThisModule =3D unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_mod=
-ule as *const _ as *mut _)
--            }};
--            #[cfg(not(MODULE))]
--            static THIS_MODULE: kernel::ThisModule =3D unsafe {{
--                kernel::ThisModule::from_ptr(core::ptr::null_mut())
--            }};
--
--            // Loadable modules need to export the `{{init,cleanup}}_modul=
-e` identifiers.
--            /// # Safety
--            ///
--            /// This function must not be called after module initializati=
-on, because it may be
--            /// freed after that completes.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            #[link_section =3D \".init.text\"]
--            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {=
-{
--                __init()
--            }}
-+            // Double nested modules, since then nobody can access the pub=
-lic items inside.
-+            mod __module_init {{
-+                mod __module_init {{
-+                    use super::super::{type_};
+Possible dependencies:
+
+a9dd9ba32311 ("iio: pressure: Fixes BMP38x and BMP390 SPI support")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a9dd9ba323114f366eb07f1d9630822f8df6cbb2 Mon Sep 17 00:00:00 2001
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+Date: Mon, 19 Feb 2024 20:13:59 +0100
+Subject: [PATCH] iio: pressure: Fixes BMP38x and BMP390 SPI support
+
+According to the datasheet of BMP38x and BMP390 devices, for an SPI
+read operation the first byte that is returned needs to be dropped,
+and the rest of the bytes are the actual data returned from the
+sensor.
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+Link: https://lore.kernel.org/r/20240219191359.18367-1-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index e8a5fed07e88..a444d4b2978b 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -4,6 +4,7 @@
+  *
+  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
+  */
++#include <linux/bits.h>
+ #include <linux/module.h>
+ #include <linux/spi/spi.h>
+ #include <linux/err.h>
+@@ -35,6 +36,34 @@ static int bmp280_regmap_spi_read(void *context, const void *reg,
+ 	return spi_write_then_read(spi, reg, reg_size, val, val_size);
+ }
+ 
++static int bmp380_regmap_spi_read(void *context, const void *reg,
++				  size_t reg_size, void *val, size_t val_size)
++{
++	struct spi_device *spi = to_spi_device(context);
++	u8 rx_buf[4];
++	ssize_t status;
 +
-+                    /// The \"Rust loadable module\" mark.
-+                    //
-+                    // This may be best done another way later on, e.g. as=
- a new modinfo
-+                    // key or a new section. For the moment, keep it simpl=
-e.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[used]
-+                    static __IS_RUST_MODULE: () =3D ();
++	/*
++	 * Maximum number of consecutive bytes read for a temperature or
++	 * pressure measurement is 3.
++	 */
++	if (val_size > 3)
++		return -EINVAL;
 +
-+                    static mut __MOD: Option<{type_}> =3D None;
++	/*
++	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
++	 * the first byte needs to be dropped and the rest are the requested
++	 * data.
++	 */
++	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
++	if (status)
++		return status;
 +
-+                    // SAFETY: `__this_module` is constructed by the kerne=
-l at load time and will not be
-+                    // freed until the module is unloaded.
-+                    #[cfg(MODULE)]
-+                    static THIS_MODULE: kernel::ThisModule =3D unsafe {{
-+                        kernel::ThisModule::from_ptr(&kernel::bindings::__=
-this_module as *const _ as *mut _)
-+                    }};
-+                    #[cfg(not(MODULE))]
-+                    static THIS_MODULE: kernel::ThisModule =3D unsafe {{
-+                        kernel::ThisModule::from_ptr(core::ptr::null_mut()=
-)
-+                    }};
++	memcpy(val, rx_buf + 1, val_size);
 +
-+                    // Loadable modules need to export the `{{init,cleanup=
-}}_module` identifiers.
-+                    /// # Safety
-+                    ///
-+                    /// This function must not be called after module init=
-ialization, because it may be
-+                    /// freed after that completes.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    #[link_section =3D \".init.text\"]
-+                    pub unsafe extern \"C\" fn init_module() -> core::ffi:=
-:c_int {{
-+                        __init()
-+                    }}
-=20
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn cleanup_module() {{
--                __exit()
--            }}
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn cleanup_module() {{
-+                        __exit()
-+                    }}
-=20
--            // Built-in modules are initialized through an initcall pointe=
-r
--            // and the identifiers need to be unique.
--            #[cfg(not(MODULE))]
--            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
--            #[doc(hidden)]
--            #[link_section =3D \"{initcall_section}\"]
--            #[used]
--            pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::=
-c_int =3D __{name}_init;
--
--            #[cfg(not(MODULE))]
--            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
--            core::arch::global_asm!(
--                r#\".section \"{initcall_section}\", \"a\"
--                __{name}_initcall:
--                    .long   __{name}_init - .
--                    .previous
--                \"#
--            );
-+                    // Built-in modules are initialized through an initcal=
-l pointer
-+                    // and the identifiers need to be unique.
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-+                    #[doc(hidden)]
-+                    #[link_section =3D \"{initcall_section}\"]
-+                    #[used]
-+                    pub static __{name}_initcall: extern \"C\" fn() -> cor=
-e::ffi::c_int =3D __{name}_init;
++	return 0;
++}
 +
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-+                    core::arch::global_asm!(
-+                        r#\".section \"{initcall_section}\", \"a\"
-+                        __{name}_initcall:
-+                            .long   __{name}_init - .
-+                            .previous
-+                        \"#
-+                    );
+ static struct regmap_bus bmp280_regmap_bus = {
+ 	.write = bmp280_regmap_spi_write,
+ 	.read = bmp280_regmap_spi_read,
+@@ -42,10 +71,19 @@ static struct regmap_bus bmp280_regmap_bus = {
+ 	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+ };
+ 
++static struct regmap_bus bmp380_regmap_bus = {
++	.write = bmp280_regmap_spi_write,
++	.read = bmp380_regmap_spi_read,
++	.read_flag_mask = BIT(7),
++	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
++	.val_format_endian_default = REGMAP_ENDIAN_BIG,
++};
 +
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_init() -> core::ffi::c_in=
-t {{
-+                        __init()
-+                    }}
-=20
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
--                __init()
--            }}
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_exit() {{
-+                        __exit()
-+                    }}
-=20
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_exit() {{
--                __exit()
--            }}
-+                    /// # Safety
-+                    ///
-+                    /// This function must
-+                    /// - only be called once,
-+                    /// - not be called concurrently with `__exit`.
-+                    unsafe fn __init() -> core::ffi::c_int {{
-+                        match <{type_} as kernel::Module>::init(&THIS_MODU=
-LE) {{
-+                            Ok(m) =3D> {{
-+                                // SAFETY:
-+                                // no data race, since `__MOD` can only be=
- accessed by this module and
-+                                // there only `__init` and `__exit` access=
- it. These functions are only
-+                                // called once and `__exit` cannot be call=
-ed before or during `__init`.
-+                                unsafe {{
-+                                    __MOD =3D Some(m);
-+                                }}
-+                                return 0;
-+                            }}
-+                            Err(e) =3D> {{
-+                                return e.to_errno();
-+                            }}
-+                        }}
-+                    }}
-=20
--            fn __init() -> core::ffi::c_int {{
--                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
--                    Ok(m) =3D> {{
-+                    /// # Safety
-+                    ///
-+                    /// This function must
-+                    /// - only be called once,
-+                    /// - be called after `__init`,
-+                    /// - not be called concurrently with `__init`.
-+                    unsafe fn __exit() {{
-+                        // SAFETY:
-+                        // no data race, since `__MOD` can only be accesse=
-d by this module and there
-+                        // only `__init` and `__exit` access it. These fun=
-ctions are only called once
-+                        // and `__init` was already called.
-                         unsafe {{
--                            __MOD =3D Some(m);
-+                            // Invokes `drop()` on `__MOD`, which should b=
-e used for cleanup.
-+                            __MOD =3D None;
-                         }}
--                        return 0;
-                     }}
--                    Err(e) =3D> {{
--                        return e.to_errno();
--                    }}
--                }}
--            }}
-=20
--            fn __exit() {{
--                unsafe {{
--                    // Invokes `drop()` on `__MOD`, which should be used f=
-or cleanup.
--                    __MOD =3D None;
-+                    {modinfo}
-                 }}
-             }}
--
--            {modinfo}
-         ",
-         type_ =3D info.type_,
-         name =3D info.name,
-
-base-commit: 4cece764965020c22cff7665b18a012006359095
---=20
-2.44.0
-
+ static int bmp280_spi_probe(struct spi_device *spi)
+ {
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
+ 	const struct bmp280_chip_info *chip_info;
++	struct regmap_bus *bmp_regmap_bus;
+ 	struct regmap *regmap;
+ 	int ret;
+ 
+@@ -58,8 +96,18 @@ static int bmp280_spi_probe(struct spi_device *spi)
+ 
+ 	chip_info = spi_get_device_match_data(spi);
+ 
++	switch (chip_info->chip_id[0]) {
++	case BMP380_CHIP_ID:
++	case BMP390_CHIP_ID:
++		bmp_regmap_bus = &bmp380_regmap_bus;
++		break;
++	default:
++		bmp_regmap_bus = &bmp280_regmap_bus;
++		break;
++	}
++
+ 	regmap = devm_regmap_init(&spi->dev,
+-				  &bmp280_regmap_bus,
++				  bmp_regmap_bus,
+ 				  &spi->dev,
+ 				  chip_info->regmap_config);
+ 	if (IS_ERR(regmap)) {
 
 
