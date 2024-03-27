@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-32672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D30088E14D
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:58:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C7188E153
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17BB829FB26
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 12:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC64C1F217F8
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 12:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D99156F45;
-	Wed, 27 Mar 2024 12:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1819B15746D;
+	Wed, 27 Mar 2024 12:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ro7Ed/5+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/0Ryloy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10745156F2D;
-	Wed, 27 Mar 2024 12:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C933E157466;
+	Wed, 27 Mar 2024 12:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711541790; cv=none; b=WEyZzmNxJfzSXZ8OV00erW9DSusfutvrP+h5aHiYCr+jbhqrQiilZ7nJQLjCueDgzBK2R/29nZZxbuSixqHGaI9nQlbLlwYQ919RLLXYdT07KrNPIMOy/9a40iHzVPbXHnH9WJs2k9Rmtu/JFGKXa04LVprZsNT9CFpOj8gU89o=
+	t=1711541792; cv=none; b=NFRjnArjVoS0w6owoVyo3jEGS7SImzh6G8uRLvFDbDgDELalU3qAX42xYCRWY8ezR8sDX4f/5Fo9g8lbd6Fwe2A2ymH1xFuODhVEsf5jmB/hYHLlNBqrF2c2twsenBX1MUeQ2x7hbGnORqQ60rueOas0HqhsSghUBx6uQkdEAYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711541790; c=relaxed/simple;
-	bh=TSwAlfxkLHgRmT/0S2t2Bo/+FY2EgBInY0RLKm1ChlM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=edBgnLFlSb2GWYUz1hSjiu3OnThez2bydvAQev6ffXNtnROUIhQsCl1iXWn8uc3O++xrQagcR1Sl8n5SqMV0WgUrFER1BJ2NzDVVEgWQCz+83aQkdhK49FDzW9CK7UoTovrTM2k/it8teIAQH7ah2knzNGCZ/LkD6ShMkZQKI8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ro7Ed/5+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2C0C43390;
-	Wed, 27 Mar 2024 12:16:28 +0000 (UTC)
+	s=arc-20240116; t=1711541792; c=relaxed/simple;
+	bh=FujCHVpJ5gIRHrfDclljDZRoTl+bci6ruXRGgOBsMmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t7d+011y7O/taPkMI8DQDSj4lbI7l7lvGbsmsF71lUOubX1AL4FLlB1z7zv8c+c25RC2I5IpDzFQ50rEQmLB6zF4NDwPE3t3Axh5dT2J3rPC7bUhn/oSaK8xa14qvlMPxPApL5911XeWy/MyEuaEvpi+Cl8Wy0SqesHl4fS3NFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/0Ryloy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72727C433F1;
+	Wed, 27 Mar 2024 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541789;
-	bh=TSwAlfxkLHgRmT/0S2t2Bo/+FY2EgBInY0RLKm1ChlM=;
+	s=k20201202; t=1711541792;
+	bh=FujCHVpJ5gIRHrfDclljDZRoTl+bci6ruXRGgOBsMmo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Ro7Ed/5+relyMRjCahK38dMVU5ASixH6zyIkbu0zyzIyfbA6cFnn92lzWsQcenbHx
-	 Y5qFYH93ohT5itOjMGrUXNqS4IvWTkyhuHBQAZ+JU8UAtc9Oa+GM0H5tXvpKgGNhbj
-	 OHCtqsxJNRvWVw5R5HTKJfGjxrgt1E9mnlr68NTU2d78fX98UllYGHTDGJLcWEM1sS
-	 PvVOQodYRLY20KbnNsRVc6WDy/3I69g1WISmkVcEwQrPpBgodUMCqDcxhAFhUMAbas
-	 md4kL8jBNBn8Sh79u2rt4DD3jt9xKzbkcPQmf2VAlbqI4ZdlTNey5hRWP/3oczEbtt
-	 jLRi0XAQPcc0Q==
+	b=L/0Ryloy+BaDX1WU6D6vyQWmbA/HubURatRsftdcXvdddt1+aCZZIGRRCT+e9me6J
+	 fym4zFUh7wFYSExezPQ9DSvaRf1twXIzBch3rJ+ccpoj2GaE/L31ykN4tWIxnxqDB9
+	 TrybJ9kBFgBa4nG2lvOl6tgjMNVKMoncUSOZFKFlbKb2p79ya6E/01H3uG5RdkcsHd
+	 rb5j5ckcA2GZVZxjGxH7jlducf1YujtLCV0pFSLekn8QWdX389j/kjIJwo0VXUTjGo
+	 XkuAKIwoK8k4Z+c6J5GJrEfIZVVqk+v2bVxVWc2bGmBE6a9K3q2oF/+8K0IWeDThWm
+	 MGB9hPI7k7W4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	faetalize@proton.me
-Cc: Takashi Iwai <tiwai@suse.de>,
-	linux-sound@vger.kernel.org,
+	sohaib.nadeem@amd.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "ALSA: hda/realtek - ALC236 fix volume mute & mic mute LED on some HP models" failed to apply to 5.15-stable tree
-Date: Wed, 27 Mar 2024 08:16:27 -0400
-Message-ID: <20240327121627.2832730-1-sashal@kernel.org>
+Subject: FAILED: Patch "Revert "drm/amd/display: increased min_dcfclk_mhz and min_fclk_mhz"" failed to apply to 5.15-stable tree
+Date: Wed, 27 Mar 2024 08:16:30 -0400
+Message-ID: <20240327121630.2832767-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,37 +75,42 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 300ab0dfbf3903f36b4456643d8201438e6553b1 Mon Sep 17 00:00:00 2001
-From: Valentine Altair <faetalize@proton.me>
-Date: Tue, 12 Mar 2024 14:42:00 +0000
-Subject: [PATCH] ALSA: hda/realtek - ALC236 fix volume mute & mic mute LED on
- some HP models
+From 194bef0cc1f5ce5e2ca84d366c74be2bd9736aa3 Mon Sep 17 00:00:00 2001
+From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Date: Mon, 29 Jan 2024 17:33:40 -0500
+Subject: [PATCH] Revert "drm/amd/display: increased min_dcfclk_mhz and
+ min_fclk_mhz"
 
-Some HP laptops have received revisions that altered their board IDs
-and therefore the current patches/quirks do not apply to them.
-Specifically, for my Probook 440 G8, I have a board ID of 8a74.
-It is necessary to add a line for that specific model.
+[why]:
+This reverts commit 2ff33c759a4247c84ec0b7815f1f223e155ba82a.
 
-Signed-off-by: Valentine Altair <faetalize@proton.me>
-Cc: <stable@vger.kernel.org>
-Message-ID: <kOqXRBcxkKt6m5kciSDCkGqMORZi_HB3ZVPTX5sD3W1pKxt83Pf-WiQ1V1pgKKI8pYr4oGvsujt3vk2zsCE-DDtnUADFG6NGBlS5N3U4xgA=@proton.me>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The commit caused corruption when running some applications in fullscreen
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4f92b19a58501..b6cd13b1775d9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9870,6 +9870,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
-+	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a78, "HP Dev One", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x8aa0, "HP ProBook 440 G9 (MB 8A9E)", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8aa3, "HP ProBook 450 G9 (MB 8AA1)", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index ba76dd4a2ce29..a0a65e0991041 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -2760,7 +2760,7 @@ static int build_synthetic_soc_states(bool disable_dc_mode_overwrite, struct clk
+ 	struct _vcs_dpi_voltage_scaling_st entry = {0};
+ 	struct clk_limit_table_entry max_clk_data = {0};
+ 
+-	unsigned int min_dcfclk_mhz = 399, min_fclk_mhz = 599;
++	unsigned int min_dcfclk_mhz = 199, min_fclk_mhz = 299;
+ 
+ 	static const unsigned int num_dcfclk_stas = 5;
+ 	unsigned int dcfclk_sta_targets[DC__VOLTAGE_STATES] = {199, 615, 906, 1324, 1564};
 -- 
 2.43.0
 
