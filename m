@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-32849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A7888E326
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6E288E328
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 14:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8537E1C286FA
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FACB1C286C3
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 13:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B5917D25A;
-	Wed, 27 Mar 2024 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B24F13E6DD;
+	Wed, 27 Mar 2024 12:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onk8m2i2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtPx5/xo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED3917D254;
-	Wed, 27 Mar 2024 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B38213E6DA;
+	Wed, 27 Mar 2024 12:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711542278; cv=none; b=pqUGGYS31LpqW8T0zLvbg4NT1JjEBIrgJ+wHdtfOTAP9Iznx1vGJFmPBaO6Uy5Cs5N2uT0zD8ofI9HZxk/Q+lAWXqtovkSrbE3Jmkn92KpepWuPincgRbCDYyu6VrkmzmsKKaFTwu5hY61/92zF/R3piTnpx9vkY5UjvGKHekCY=
+	t=1711542282; cv=none; b=Xd5tcvdB4pwwuImuXGmrjPwbr2M1B8jJAz+MwHdM/EjotgCHD2Y23k4dvc4aSUH+Rq1YspkSc5C0PkE/0DLENWbjrzEoWNb7RvNMfm+c9YzRxqUWX7Pd3NfWuT78qX/7zBCQfjysM0FYGXTh31yrIJsk9qfOjdbz+OEjHqXAqhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711542278; c=relaxed/simple;
-	bh=XaSPV+5pouUPw9O5X70X00PpD2subqUAH+hDMk77jgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OvQtG9tmb71G0TeSRXqMXAVCHiUmJ00GrqU0H3Y4rF3K/LSFZUFLoYvkpMnQOUXX7tnH8/0Ckn4esJsx5U2YSBZRSPmiq8zgdQfkmHVCCbepIOledQWwqpiyVYuITfkrIRl/4Df5Gu6FMWWOdvGL7MH22R2hFSh95dwkoBUkf8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onk8m2i2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FE3C433F1;
-	Wed, 27 Mar 2024 12:24:37 +0000 (UTC)
+	s=arc-20240116; t=1711542282; c=relaxed/simple;
+	bh=C2d6GD0TWS1CsTBKcGIMBMZTIFDag7H2/LZ3G281QpY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jN6K2+sXbxpae77ZSPvQvOI8/+rOCtn0iMIrLEonjRSRyPfDTtt21eNrZaY8CiwDgQd50KfyS2snJnaHo9b+6u3I5k5UV0ai/Q22Rit9inZDdoiJQ16tVE+gZ9LznM0j+qVLbhkVPMHoijukBN1tKcfLTCl+hNC0GfSATJsK6jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtPx5/xo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B713CC433C7;
+	Wed, 27 Mar 2024 12:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711542278;
-	bh=XaSPV+5pouUPw9O5X70X00PpD2subqUAH+hDMk77jgg=;
+	s=k20201202; t=1711542280;
+	bh=C2d6GD0TWS1CsTBKcGIMBMZTIFDag7H2/LZ3G281QpY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=onk8m2i2LZxfB6xNxpq3VPzEKnvsJEBN7uGyWCa0wKgwJmunUpdWcI5LlMwzmcKTy
-	 9/Nuo3ap4AvJB/3NNn0QOwwVY3EIHjJPhWyzb0aistX6XYuqvJYUh73WbvkVxKEGKx
-	 9lL2v4Ke0BgwGlVYAoQ9kX14eYf9NJ/VATjr2uhEgDPRc65DGSGO/wkd3eWhzv1ly8
-	 +5Z3OXDz7xWUB34RSstlqO4odSQg5RqIObzkv9VE3L/gvXBBaMDYXrBBJCIWYX0mnX
-	 m2MnIh3PzY1AnxPCQ8UZtcnDf7glIoNR16lQpooQVi3KPXNUUQvpHemV3JkChdm+y8
-	 BPQRWL0YltUig==
+	b=CtPx5/xo4fSbQdeMb6EE2cM0Z5kMHVJ0ubJNTwBAx25ljHhiemIkbAZiAMckXq6zX
+	 saLPbHYBeyzs1JF/wESKTTf+3gin3SFEUJAGQw4RbVOpJ6hc18UcDiJrGEspy6ftaz
+	 wqGN87T7H039movQGw7YmJvbY0D4CgHLq+rvCTWBt2WzQgP5NxYGEAqdB+bLcyK6r8
+	 1Vz/0FpiDBrlIyzpUFa4DbLpaD9hvjkP8BWqxSSff/+nie9HNnoBs9LB/0obWIn1hg
+	 Nn8HzdbdKM+PxTlVQLDF7EPtIC/6SmcdAsHXK+cUVVAxcqUPnR31vWBV3wXlrH93lj
+	 MQHHFB789NSMg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	Philip.Yang@amd.com
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	nicholas.kazlauskas@amd.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag" failed to apply to 5.4-stable tree
-Date: Wed, 27 Mar 2024 08:24:36 -0400
-Message-ID: <20240327122436.2839540-1-sashal@kernel.org>
+Subject: FAILED: Patch "drm/amd/display: Port DENTIST hang and TDR fixes to OTG disable W/A" failed to apply to 5.4-stable tree
+Date: Wed, 27 Mar 2024 08:24:38 -0400
+Message-ID: <20240327122438.2839579-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,7 +63,6 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the 5.4-stable tree.
@@ -73,40 +75,87 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 Mon Sep 17 00:00:00 2001
-From: Philip Yang <Philip.Yang@amd.com>
-Date: Mon, 11 Mar 2024 18:07:34 -0400
-Subject: [PATCH] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 6c605f44086af24d7ac1867245aa10bb3360c5bf Mon Sep 17 00:00:00 2001
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Date: Fri, 15 Dec 2023 11:01:42 -0500
+Subject: [PATCH] drm/amd/display: Port DENTIST hang and TDR fixes to OTG
+ disable W/A
 
-Otherwise after the GTT bo is released, the GTT and gart space is freed
-but amdgpu_ttm_backend_unbind will not clear the gart page table entry
-and leave valid mapping entry pointing to the stale system page. Then
-if GPU access the gart address mistakely, it will read undefined value
-instead page fault, harder to debug and reproduce the real issue.
+[Why]
+We can experience DENTIST hangs during optimize_bandwidth or TDRs if
+FIFO is toggled and hangs.
 
+[How]
+Port the DCN35 fixes to DCN314.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../dc/clk_mgr/dcn314/dcn314_clk_mgr.c        | 21 ++++++++-----------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 8722beba494e5..fc418e670fdae 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -864,6 +864,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
- 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
- 				 gtt->ttm.dma_address, flags);
- 	}
-+	gtt->bound = true;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+index 878c0e7b78abd..a84f1e376dee4 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+@@ -145,30 +145,27 @@ static int dcn314_get_active_display_cnt_wa(
+ 	return display_count;
  }
  
- /*
+-static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
++static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
++				  bool safe_to_lower, bool disable)
+ {
+ 	struct dc *dc = clk_mgr_base->ctx->dc;
+ 	int i;
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
+-		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe = safe_to_lower
++			? &context->res_ctx.pipe_ctx[i]
++			: &dc->current_state->res_ctx.pipe_ctx[i];
+ 
+ 		if (pipe->top_pipe || pipe->prev_odm_pipe)
+ 			continue;
+ 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
+-			struct stream_encoder *stream_enc = pipe->stream_res.stream_enc;
+-
+ 			if (disable) {
+-				if (stream_enc && stream_enc->funcs->disable_fifo)
+-					pipe->stream_res.stream_enc->funcs->disable_fifo(stream_enc);
++				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
++					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+ 
+-				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+ 				reset_sync_context_for_pipe(dc, context, i);
+ 			} else {
+ 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
+-
+-				if (stream_enc && stream_enc->funcs->enable_fifo)
+-					pipe->stream_res.stream_enc->funcs->enable_fifo(stream_enc);
+ 			}
+ 		}
+ 	}
+@@ -297,11 +294,11 @@ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	}
+ 
+ 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
+-		dcn314_disable_otg_wa(clk_mgr_base, context, true);
++		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+ 		dcn314_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
+-		dcn314_disable_otg_wa(clk_mgr_base, context, false);
++		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
+ 	}
 -- 
 2.43.0
 
