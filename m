@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-33023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9A788EED8
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 20:07:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5474F88EECB
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 20:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454BF1F285B2
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 19:07:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED6429E365
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 19:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261C6150996;
-	Wed, 27 Mar 2024 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6F614F134;
+	Wed, 27 Mar 2024 19:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="OxTwfr1i"
+	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="DDOkuAMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5A214D42C
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 19:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA4014C5A8
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 19:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.39.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711566419; cv=none; b=MtxOuvmRQzIrX6gmpXv2of6kNNhgFj/rbLhIT1AFdMiIkSq/p7zVgaVjlY44PlPomeGr6bR1cwceqpxZ8rUxAWRk6jiaq0gGuV0sMFVy9WTPo3D5crBmpZIUVivCcC1rHJ4AzNkxLjd7hVzdt6kwRhF6zU+VwFnnGn0hJVUuRXM=
+	t=1711566093; cv=none; b=Ze0nd9zJIbfsgaCm0Ug9OCys/kjkfeY0cxbl3Rq7xx06S+S0hssxcC0mL+zUXYaVCScxI2fNmuey9tjv9+7DgkNMqFCBsLFdNcTQNC6rhdlJ8uwuYnUOzxpAEDNchBn5yY+T4+UW/x9ihvt9fW3kRJ2B7/T0DJ+/1ZB4IyRVccQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711566419; c=relaxed/simple;
-	bh=931da/ylSqjuimSE4V14Ta8oO1CeMdXlHV82S24KDaQ=;
+	s=arc-20240116; t=1711566093; c=relaxed/simple;
+	bh=qrgl+ZWpA/DjzAvGcU1iRmRlqrtPWq1IsOKXBjQx10s=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aQK8DEa8eaz/Gg3bEwZzYecTRs5nYNz43ovFsDeLwH4GBRKkOmOqhYw2tCu2iJDMyg24XnqliOZw7hY58qG4tCynEuyEXScnVxssj+hwWE+DclJymLe+ZOAH/a9omOVlgd1HgMitgC6uKObAA1f/JMzcIqcH6aFFQDRrU9z0v1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com; spf=pass smtp.mailfrom=dh-electronics.com; dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b=OxTwfr1i; arc=none smtp.client-ip=188.68.39.254
+	 MIME-Version:Content-Type; b=Z1mt8OQJUcgixjsPw+Ap6QXowI3Hq/erjFB9/PACsgfxGHI4gQbuU/9iABGxdH2PSi4ktKkHQuSI7vOcLWYap+qE5Ejvnz+atAJ8v1HmP7XJ5mEzGysmlGzQ2WY4tMaoE2Kes5mVUa9x8N9QeLZLFqyFc2ansGtdDaUritA55Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com; spf=pass smtp.mailfrom=dh-electronics.com; dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b=DDOkuAMZ; arc=none smtp.client-ip=188.68.39.254
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1711565832;
-	bh=2lyz0TIKSDHRRsHUIZCqG670coNOFK3jcKjBJWOJKig=;
+	s=dhelectronicscom; t=1711566070;
+	bh=8WlR25MI/MkzRRWYW4HcJ/0ECBjIgsrzAcoYD5gz2KQ=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=OxTwfr1iACpW4MQJWyx+SndKfWkT2gwcBA3zOfGF2l7EiWYLdoqoZ8lk71+d87+Xc
-	 F2d1phd+L+hWTX4IgQx6fhOCIKNkQCeuj3mOU/KsSKrDDQSsfsDZQm+VkaLdvy6Cdm
-	 SHVf2YDYUpGBYrwkqP1Lukz+6O6DVaYTiGAFXRA9Nj+V2L+LkXrAwDqFq8YfRN1Iqe
-	 x/a16vH6gRw3rAquHl/oIXoj3+jCxjgFAcqJRf6X5T9XZRym016fy7uy7QPdkn9fdJ
-	 H23xe8zeK4UWdinwZAEcJDZBA1Zh8Xbt3Kk6xUxSCCAvtt3ISy1MAxA8l6Lg8cgyhC
-	 ax6IaSNJgttrw==
+	b=DDOkuAMZ3I8wdV2SM72FzMo2d89YowTOPrkmL2zZswDipNQ2+hgQ/1HbK7qgeqpRt
+	 w9MRTlf/mUMt0q7ScdTGxtcKMSMgJIf6iTMSYpBlrJQFKJKmDWxbYJFWV3B+8aK7AW
+	 Mh+PcXgPe0zZaEk2R2KBTVzqKqzs7XSmAuShm/U5tgjT0PvI33e829HjjZvE7+JLZy
+	 LUGaxnsBBVuv6Acy4wuB21bVqgp5hJ72467vxHRj8WwHXv/1WI9iuhYSIDggqe6+iw
+	 umidgWsDGLoZAmEOI8CjUL528bihYv/BPGjjDD8BoSU4AaI7TL76R3tDDVLF+KhoFT
+	 XjJI6GdqQwpKQ==
 From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 To: <stable@vger.kernel.org>
 CC: Rickard x Andersson <rickaran@axis.com>, stable <stable@kernel.org>, "Greg
  Kroah-Hartman" <gregkh@linuxfoundation.org>, Christoph Niedermaier
 	<cniedermaier@dh-electronics.com>
-Subject: [PATCH 6.1.y] tty: serial: imx: Fix broken RS485
-Date: Wed, 27 Mar 2024 19:54:59 +0100
-Message-ID: <20240327185459.4717-1-cniedermaier@dh-electronics.com>
+Subject: [PATCH 5.15.y] tty: serial: imx: Fix broken RS485
+Date: Wed, 27 Mar 2024 19:59:54 +0100
+Message-ID: <20240327185954.5129-1-cniedermaier@dh-electronics.com>
 X-klartext: yes
-In-Reply-To: <2024032746-stilt-vaporizer-fb22@gregkh>
-References: <2024032746-stilt-vaporizer-fb22@gregkh>
+In-Reply-To: <2024032747-spiritism-worsening-c504@gregkh>
+References: <2024032747-spiritism-worsening-c504@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,10 +85,10 @@ Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
  1 file changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index f8962a3d4421..573bf7e9b797 100644
+index 4504b5fcc171..0587beaaea08 100644
 --- a/drivers/tty/serial/imx.c
 +++ b/drivers/tty/serial/imx.c
-@@ -496,8 +496,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
+@@ -491,8 +491,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
  	}
  }
  
@@ -98,7 +98,7 @@ index f8962a3d4421..573bf7e9b797 100644
  {
  	struct imx_port *sport = (struct imx_port *)port;
  	u32 ucr1, ucr2, ucr4, uts;
-@@ -519,7 +518,7 @@ static void imx_uart_stop_rx(struct uart_port *port)
+@@ -514,7 +513,7 @@ static void imx_uart_stop_rx(struct uart_port *port)
  	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
  	if (port->rs485.flags & SER_RS485_ENABLED &&
  	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
@@ -107,7 +107,7 @@ index f8962a3d4421..573bf7e9b797 100644
  		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
  		uts |= UTS_LOOP;
  		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-@@ -532,6 +531,16 @@ static void imx_uart_stop_rx(struct uart_port *port)
+@@ -527,6 +526,16 @@ static void imx_uart_stop_rx(struct uart_port *port)
  }
  
  /* called with port.lock taken and irqs off */
@@ -124,7 +124,7 @@ index f8962a3d4421..573bf7e9b797 100644
  static void imx_uart_enable_ms(struct uart_port *port)
  {
  	struct imx_port *sport = (struct imx_port *)port;
-@@ -719,8 +728,13 @@ static void imx_uart_start_tx(struct uart_port *port)
+@@ -714,8 +723,13 @@ static void imx_uart_start_tx(struct uart_port *port)
  				imx_uart_rts_inactive(sport, &ucr2);
  			imx_uart_writel(sport, ucr2, UCR2);
  
@@ -138,7 +138,7 @@ index f8962a3d4421..573bf7e9b797 100644
 +				imx_uart_stop_rx_with_loopback_ctrl(port, false);
  
  			sport->tx_state = WAIT_AFTER_RTS;
- 
+ 			start_hrtimer_ms(&sport->trigger_start_tx,
 -- 
 2.11.0
 
