@@ -1,285 +1,163 @@
-Return-Path: <stable+bounces-32993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1303388E8CE
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:25:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D90488E8D1
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:25:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BFD288057
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:25:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0371F331A7
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF111465A6;
-	Wed, 27 Mar 2024 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813F0130484;
+	Wed, 27 Mar 2024 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTcZjayH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xORqEnHL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7FE1482E3
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909301E511
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711552604; cv=none; b=jfKTcfWJenXmMNrH+G9h0yuTjym9IZtjuYViluWraTi56RT+MYEI8yfq0XjhC2K0ZEf2uWNyBBtBljyzMcY96NzOI5EZAmOn7tyFtkJExGSyWbI2GdIlLAevCrKRVDfMz5ZVRraf6IZln//JzOMlLntnrDOytYzeeInwfojawjM=
+	t=1711552702; cv=none; b=mOL8y06qRoKS3IY//YGgIkkHMPoL6KsvnTPd7petMVc/JXWCiph8W0QuutofACVb7nn4C6SRl4qQroTC36hJyIUA+TBo7fG/rBV7uuDZF/SnCybC6Z9Fxa/tlqC4FxGG/UMo2i4oTa1tMR3wnY/0uG7fjEcaWBzJ2H5F1xw+61w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711552604; c=relaxed/simple;
-	bh=LJLH1NWYfGV5ICxT3j/251jJ1wFcZJUEuT1MiwS5YcU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OelRxvuOvzhNSA5jIl9SpYKNZJsD0g0eMUYSMDCdA01trFTFZ+HZOzV8fYHf3UTqizv6I9HWjqk3XmchO9AL1iUnQYbcaGzbYal4ijBMpdPeP8HWT5J6J8LO+jUX3+aXrYwOVfqSGZOttaaU/wJEdjQOzET9Lvt1YVSgsq5dPb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTcZjayH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D4EC433F1;
-	Wed, 27 Mar 2024 15:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711552604;
-	bh=LJLH1NWYfGV5ICxT3j/251jJ1wFcZJUEuT1MiwS5YcU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yTcZjayHjYwC4i/6cnv/shh/bldeJ03Rj7cchlyLRfrly9KBS2nRTQrQvRg23AQ36
-	 GG5a00YaO1DxgJKkGiHOUtyvlNlgb29U2SnPLc2GymhHjOGv28ONZ7IEakurPmd5T8
-	 k0ivaY/oEt+kmjLWd4jIYhN7PHKzM0M1BMLDRTB8=
-Subject: FAILED: patch "[PATCH] mm, vmscan: prevent infinite loop for costly GFP_NOIO |" failed to apply to 4.19-stable tree
-To: vbabka@suse.cz,akpm@linux-foundation.org,bgeffon@google.com,cujomalainey@chromium.org,kramasub@chromium.org,mgorman@techsingularity.net,mhocko@kernel.org,perex@perex.cz,stable@vger.kernel.org,svenva@chromium.org,tiwai@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 16:16:32 +0100
-Message-ID: <2024032732-prowess-craving-9106@gregkh>
+	s=arc-20240116; t=1711552702; c=relaxed/simple;
+	bh=HoUmdYuyO4TXhHzYOArK1IfW06wpBYBpTZDoyHjEXK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V3yIP5TxZZL4O6IMDrnDfu5y0VlFWOO4Kdda8QaPvuAtATjWWwNpmwQv0MVG1FzOdxlrSaG4w4YQrQfbBtjpqpowWsLciOnPQ3xj056JeAKsBKD0hJX2xIbAj32JaxuYfl7z8U1lZmzdbko16+FR2Nh3wlgTdiQMaXtKedqACbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xORqEnHL; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-609fb0450d8so73114687b3.0
+        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 08:18:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711552699; x=1712157499; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hJujr9RimFfO2QmiTRr7usgxHtS2vMpREAuBqxXSA/M=;
+        b=xORqEnHL/grCqbSkfRzqkD4cK+nGyyodJjbAQVfzprUeDOe2/fw5+Xan3qzdgFlRCe
+         9H0rmqsYoSlfmIMqKOTJZV3w2NeIqt5boCwEEa7yrz25cDICmbMeidrEHb+NbFS5nswl
+         8UnCOGrXPHCECYey6WLvFgzKN9konNQHb+cV3eUZ3q5YWWudMasU98ULmClLZNreZRAk
+         t5snH3EISOraWPKu3BhhkA63MyODfxyngQhisgG66FwqgMF8oExlSinuNyvYK2VswwXm
+         SI7hEEZdTK4n4tjzJvHb1LDChGc0fEuraWCu0MyT74sPYlKZZHeGNRTPkjN6VM7/jisn
+         ZucQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711552699; x=1712157499;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hJujr9RimFfO2QmiTRr7usgxHtS2vMpREAuBqxXSA/M=;
+        b=dydePGxGwy6ObTjcn1RTAF1/jHcDM8ygw7jNqLZ8A+aylF+ogRILpJg54Db0QYdnRG
+         398pD/jobfDLk0deXKCG1y2gsDyS++cCjDOAJ+G5/w4jcQ2laznFXxfDvnIpDvN4s3xo
+         8RTIP9qo4401JEZd1tCs+Ae+AqgNu9Q2JutWKNoYmFYuANxPGgh8eOvo2+9OK61guW0R
+         y4Sx1VvovWiaH6gqpjHF0SY5cnXM3vEudrmYusey0Aw1qb8UaOroJVMr9ubu/uL12gxO
+         h6LMxsCidxLA/C1QNEjepKxkyEKSj0pKCn9ftDUqJL4cvMPhD/QiLmsWDF8Vcsl0pINc
+         GnsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcenXJJcHeYAz9HIzXlHfo4QFvH5n40LLaYZnuSjTfTtQFHcwZe+jJeJ7apWP5J+Kkfk9kZkNeI+cxVP8SsO31l8ud+MLU
+X-Gm-Message-State: AOJu0Yyc1oym7Dp12CywyfVGb6ECE5WmmKz0ZP+lW703rqD7G4thPN/F
+	J1dr90w+TuO+N8RdtCBA+AzcFDfyqFWc4ZpXuQ3djAA8RWoROjeKFI6po0gSzRwpCx7Ooq2V5yT
+	FME7B5BJO3eQcr07qwtu1wgW+UzfPysEvBO9dFQ==
+X-Google-Smtp-Source: AGHT+IFbbnNsIwN9QIYafUzgy5PDtN8IbI5jwCbt0izw9mxTrfV6JaCm7Lt4CkK8Bmrp2eixisUNCE/8moYMBJZ2dRg=
+X-Received: by 2002:a5b:509:0:b0:dc7:4859:6f1 with SMTP id o9-20020a5b0509000000b00dc7485906f1mr99707ybp.33.1711552699663;
+ Wed, 27 Mar 2024 08:18:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20240321-sdhci-mmc-suspend-v1-1-fbc555a64400@8devices.com> <2e712cf6-7521-4c0b-b6fd-76bacc309496@intel.com>
+In-Reply-To: <2e712cf6-7521-4c0b-b6fd-76bacc309496@intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 27 Mar 2024 16:17:43 +0100
+Message-ID: <CAPDyKFoBgwWDXhcXsbCfBD_nJ=3w1e5eReqHgDQ1BiPf0zJRxw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-msm: pervent access to suspended controller
+To: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Mantas Pucka <mantas@8devices.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Georgi Djakov <djakov@kernel.org>, 
+	Pramod Gurav <pramod.gurav@linaro.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	linux-mmc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, 26 Mar 2024 at 11:25, Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 21/03/24 16:30, Mantas Pucka wrote:
+> > Generic sdhci code registers LED device and uses host->runtime_suspended
+> > flag to protect access to it. The sdhci-msm driver doesn't set this flag,
+> > which causes a crash when LED is accessed while controller is runtime
+> > suspended. Fix this by setting the flag correctly.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 67e6db113c90 ("mmc: sdhci-msm: Add pm_runtime and system PM support")
+> > Signed-off-by: Mantas Pucka <mantas@8devices.com>
+>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Looks like this problem may exist for other sdhci drivers too. In
+particular for those that enables runtime PM, don't set
+SDHCI_QUIRK_NO_LED and don't use sdhci_runtime|suspend_resume_host().
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Don't know if there is a better way to address this, if not on a case
+by case basis. Do you have any thoughts about this?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 803de9000f334b771afacb6ff3e78622916668b0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032732-prowess-craving-9106@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Kind regards
+Uffe
 
-Possible dependencies:
-
-803de9000f33 ("mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations")
-f98a497e1f16 ("mm: compaction: remove unnecessary is_via_compact_memory() checks")
-e8606320e9af ("mm: compaction: refactor __compaction_suitable()")
-fe573327ffb1 ("tracing: incorrect gfp_t conversion")
-cff387d6a294 ("mm: compaction: make compaction_zonelist_suitable return false when COMPACT_SUCCESS")
-9353ffa6e9e9 ("kasan, page_alloc: allow skipping memory init for HW_TAGS")
-53ae233c30a6 ("kasan, page_alloc: allow skipping unpoisoning for HW_TAGS")
-f49d9c5bb15c ("kasan, mm: only define ___GFP_SKIP_KASAN_POISON with HW_TAGS")
-e9d0ca922816 ("kasan, page_alloc: rework kasan_unpoison_pages call site")
-7e3cbba65de2 ("kasan, page_alloc: move kernel_init_free_pages in post_alloc_hook")
-89b271163328 ("kasan, page_alloc: move SetPageSkipKASanPoison in post_alloc_hook")
-9294b1281d0a ("kasan, page_alloc: combine tag_clear_highpage calls in post_alloc_hook")
-b42090ae6f3a ("kasan, page_alloc: merge kasan_alloc_pages into post_alloc_hook")
-b8491b9052fe ("kasan, page_alloc: refactor init checks in post_alloc_hook")
-1c0e5b24f117 ("kasan: only apply __GFP_ZEROTAGS when memory is zeroed")
-c82ce3195fd1 ("mm: clarify __GFP_ZEROTAGS comment")
-7c13c163e036 ("kasan, page_alloc: merge kasan_free_pages into free_pages_prepare")
-5b2c07138cbd ("kasan, page_alloc: move tag_clear_highpage out of kernel_init_free_pages")
-94ae8b83fefc ("kasan, page_alloc: deduplicate should_skip_kasan_poison")
-3bf03b9a0839 ("Merge branch 'akpm' (patches from Andrew)")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 803de9000f334b771afacb6ff3e78622916668b0 Mon Sep 17 00:00:00 2001
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 21 Feb 2024 12:43:58 +0100
-Subject: [PATCH] mm, vmscan: prevent infinite loop for costly GFP_NOIO |
- __GFP_RETRY_MAYFAIL allocations
-
-Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
-__GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
-can happen in a suspend/resume context where a GFP_KERNEL allocation can
-have __GFP_IO masked out via gfp_allowed_mask.
-
-Quoting Sven:
-
-1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
-   with __GFP_RETRY_MAYFAIL set.
-
-2. page alloc's __alloc_pages_slowpath tries to get a page from the
-   freelist. This fails because there is nothing free of that costly
-   order.
-
-3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
-   which bails out because a zone is ready to be compacted; it pretends
-   to have made a single page of progress.
-
-4. page alloc tries to compact, but this always bails out early because
-   __GFP_IO is not set (it's not passed by the snd allocator, and even
-   if it were, we are suspending so the __GFP_IO flag would be cleared
-   anyway).
-
-5. page alloc believes reclaim progress was made (because of the
-   pretense in item 3) and so it checks whether it should retry
-   compaction. The compaction retry logic thinks it should try again,
-   because:
-    a) reclaim is needed because of the early bail-out in item 4
-    b) a zonelist is suitable for compaction
-
-6. goto 2. indefinite stall.
-
-(end quote)
-
-The immediate root cause is confusing the COMPACT_SKIPPED returned from
-__alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
-indicating a lack of order-0 pages, and in step 5 evaluating that in
-should_compact_retry() as a reason to retry, before incrementing and
-limiting the number of retries.  There are however other places that
-wrongly assume that compaction can happen while we lack __GFP_IO.
-
-To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
-evaluation and switch the open-coded test in try_to_compact_pages() to use
-it.
-
-Also use the new helper in:
-- compaction_ready(), which will make reclaim not bail out in step 3, so
-  there's at least one attempt to actually reclaim, even if chances are
-  small for a costly order
-- in_reclaim_compaction() which will make should_continue_reclaim()
-  return false and we don't over-reclaim unnecessarily
-- in __alloc_pages_slowpath() to set a local variable can_compact,
-  which is then used to avoid retrying reclaim/compaction for costly
-  allocations (step 5) if we can't compact and also to skip the early
-  compaction attempt that we do in some cases
-
-Link: https://lkml.kernel.org/r/20240221114357.13655-2-vbabka@suse.cz
-Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invocation for high order request"")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: Sven van Ashbrook <svenva@chromium.org>
-Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
-Tested-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Curtis Malainey <cujomalainey@chromium.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index de292a007138..e2a916cf29c4 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -353,6 +353,15 @@ static inline bool gfp_has_io_fs(gfp_t gfp)
- 	return (gfp & (__GFP_IO | __GFP_FS)) == (__GFP_IO | __GFP_FS);
- }
- 
-+/*
-+ * Check if the gfp flags allow compaction - GFP_NOIO is a really
-+ * tricky context because the migration might require IO.
-+ */
-+static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
-+{
-+	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
-+}
-+
- extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
- 
- #ifdef CONFIG_CONTIG_ALLOC
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 4add68d40e8d..b961db601df4 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2723,16 +2723,11 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
- 		unsigned int alloc_flags, const struct alloc_context *ac,
- 		enum compact_priority prio, struct page **capture)
- {
--	int may_perform_io = (__force int)(gfp_mask & __GFP_IO);
- 	struct zoneref *z;
- 	struct zone *zone;
- 	enum compact_result rc = COMPACT_SKIPPED;
- 
--	/*
--	 * Check if the GFP flags allow compaction - GFP_NOIO is really
--	 * tricky context because the migration might require IO
--	 */
--	if (!may_perform_io)
-+	if (!gfp_compaction_allowed(gfp_mask))
- 		return COMPACT_SKIPPED;
- 
- 	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 150d4f23b010..a663202045dc 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4041,6 +4041,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 						struct alloc_context *ac)
- {
- 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
-+	bool can_compact = gfp_compaction_allowed(gfp_mask);
- 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
- 	struct page *page = NULL;
- 	unsigned int alloc_flags;
-@@ -4111,7 +4112,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	 * Don't try this for allocations that are allowed to ignore
- 	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
- 	 */
--	if (can_direct_reclaim &&
-+	if (can_direct_reclaim && can_compact &&
- 			(costly_order ||
- 			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
- 			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
-@@ -4209,9 +4210,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 
- 	/*
- 	 * Do not retry costly high order allocations unless they are
--	 * __GFP_RETRY_MAYFAIL
-+	 * __GFP_RETRY_MAYFAIL and we can compact
- 	 */
--	if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
-+	if (costly_order && (!can_compact ||
-+			     !(gfp_mask & __GFP_RETRY_MAYFAIL)))
- 		goto nopage;
- 
- 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-@@ -4224,7 +4226,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	 * implementation of the compaction depends on the sufficient amount
- 	 * of free memory (see __compaction_suitable)
- 	 */
--	if (did_some_progress > 0 &&
-+	if (did_some_progress > 0 && can_compact &&
- 			should_compact_retry(ac, order, alloc_flags,
- 				compact_result, &compact_priority,
- 				&compaction_retries))
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4f9c854ce6cc..4255619a1a31 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5753,7 +5753,7 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- /* Use reclaim/compaction for costly allocs or under memory pressure */
- static bool in_reclaim_compaction(struct scan_control *sc)
- {
--	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
-+	if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
- 			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
- 			 sc->priority < DEF_PRIORITY - 2))
- 		return true;
-@@ -5998,6 +5998,9 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
- {
- 	unsigned long watermark;
- 
-+	if (!gfp_compaction_allowed(sc->gfp_mask))
-+		return false;
-+
- 	/* Allocation can already succeed, nothing to do */
- 	if (zone_watermark_ok(zone, sc->order, min_wmark_pages(zone),
- 			      sc->reclaim_idx, 0))
-
+>
+> > ---
+> >  drivers/mmc/host/sdhci-msm.c | 16 +++++++++++++++-
+> >  1 file changed, 15 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> > index 668e0aceeeba..e113b99a3eab 100644
+> > --- a/drivers/mmc/host/sdhci-msm.c
+> > +++ b/drivers/mmc/host/sdhci-msm.c
+> > @@ -2694,6 +2694,11 @@ static __maybe_unused int sdhci_msm_runtime_suspend(struct device *dev)
+> >       struct sdhci_host *host = dev_get_drvdata(dev);
+> >       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> >       struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+> > +     unsigned long flags;
+> > +
+> > +     spin_lock_irqsave(&host->lock, flags);
+> > +     host->runtime_suspended = true;
+> > +     spin_unlock_irqrestore(&host->lock, flags);
+> >
+> >       /* Drop the performance vote */
+> >       dev_pm_opp_set_rate(dev, 0);
+> > @@ -2708,6 +2713,7 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
+> >       struct sdhci_host *host = dev_get_drvdata(dev);
+> >       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> >       struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+> > +     unsigned long flags;
+> >       int ret;
+> >
+> >       ret = clk_bulk_prepare_enable(ARRAY_SIZE(msm_host->bulk_clks),
+> > @@ -2726,7 +2732,15 @@ static __maybe_unused int sdhci_msm_runtime_resume(struct device *dev)
+> >
+> >       dev_pm_opp_set_rate(dev, msm_host->clk_rate);
+> >
+> > -     return sdhci_msm_ice_resume(msm_host);
+> > +     ret = sdhci_msm_ice_resume(msm_host);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     spin_lock_irqsave(&host->lock, flags);
+> > +     host->runtime_suspended = false;
+> > +     spin_unlock_irqrestore(&host->lock, flags);
+> > +
+> > +     return ret;
+> >  }
+> >
+> >  static const struct dev_pm_ops sdhci_msm_pm_ops = {
+> >
+> > ---
+> > base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
+> > change-id: 20240321-sdhci-mmc-suspend-34f4af1d0286
+> >
+> > Best regards,
+>
 
