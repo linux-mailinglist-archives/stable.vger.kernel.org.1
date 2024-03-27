@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-32976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-32977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B2188E890
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C2888E893
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 16:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276891C2A025
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3E71C2A025
+	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 15:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0451EB39;
-	Wed, 27 Mar 2024 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302B62C877;
+	Wed, 27 Mar 2024 15:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsPGqDKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jghMGVvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1946A2C877
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43981C06
+	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 15:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711552082; cv=none; b=DWPi/xmUvqNeUTLNL39td40Nqf282N1hP4TxFEXbRy6zyuM9z/wDPCrZC3Y7SgvZk6md8PobTAJ2b5LZncQpqk92Rq+uUg6XBjgTYr8NloIUJE1RsYiEp3LMPlGOPGvjU7DRePRNwA2oEqWiiK0n1yji/ZDGUs9no6j2tGFAn48=
+	t=1711552089; cv=none; b=tAPPHvlnPTwr/34v/oZtwRKQg4P1O8PC00tLPWWXLarE09wDVRu2/YkrcICLlPTdmDemvwxu7d8qNKs8d7OdgaCCkhdyCnFYthCKJjIFiu/8f4jTGQ5OQ6wy+bFJ/dFmMkoTvm7/5vCeDjTcAvncwOoa3YBTIE2tFeMnlw+CUB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711552082; c=relaxed/simple;
-	bh=nWK6EAHJYUzNVkL/tVg0nxOwhcdZ0nz6Cb+tujMQ1R4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ti6UD0+PgaVH14/REIoBxq2x5ojwSl9+0pgites4XjrGJqu8E9WE0YLuGV47N9ZiAyHW48g0sgrNdO7seXq/B1MTYMxw1Pot0zIqaiTvUJZBLKCeW4Cme6dSn2PbzOmIaOulpV6/r+QW8N53mGtjjr+ZXJJaBGTF6CUyaiZgstA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsPGqDKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CB3C433C7;
-	Wed, 27 Mar 2024 15:08:01 +0000 (UTC)
+	s=arc-20240116; t=1711552089; c=relaxed/simple;
+	bh=QrywI9ILh93mZx4Wwri4xTF774Zl2lw0wMS4zHwVOfk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f5tWUZSRbfXjPDWZmjclGH6FVJ00N1goPwUzT2Vt7mto0NKKDX2IU6oAomd/ZUzZ2ASU7K7LvwgRmxbYfXMtheOoNbwc9eoHBaEOkZxtnFCNYLaKO/T0Muo0Qu3LRqWx0KisxE0SlgsIL4S+O1pkx7iKkPDAEcBj/SXzh1wtiic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jghMGVvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DCCC433C7;
+	Wed, 27 Mar 2024 15:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711552081;
-	bh=nWK6EAHJYUzNVkL/tVg0nxOwhcdZ0nz6Cb+tujMQ1R4=;
+	s=korg; t=1711552088;
+	bh=QrywI9ILh93mZx4Wwri4xTF774Zl2lw0wMS4zHwVOfk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OsPGqDKce7cHe5QiQW4NI4DpdFmkvYFZznfoToQe04/TiYQRT6+J2MskBwFvLTWWE
-	 VdyBelipDKDxVbq6k+07aW92vicLdQVkZ8q9/MdPRdoedZJMkENNX9wp4HQN9pbwbo
-	 6lnHc/TmipctMrF/QKQaGVut2Yp8gy9SeIyDDmBc=
-Subject: FAILED: patch "[PATCH] usb: typec: altmodes/displayport: create sysfs nodes as" failed to apply to 6.1-stable tree
+	b=jghMGVvworGPDIIkEjHHysS4Nc3G8CzKnGcU8EFkMvjxbRYkmvNjOgmLugLj/fePn
+	 RrcSzKnzeXSSmzOGJGSKKH9FUHzyUVabWHjAFz99JQ9EvBrKVwiHkYPQMcPPIXW2EU
+	 3ReOcw/ZtodLy3y9Zn9i0Va442PqGNzCa2jN9Chg=
+Subject: FAILED: patch "[PATCH] usb: typec: altmodes/displayport: create sysfs nodes as" failed to apply to 5.15-stable tree
 To: rdbabiera@google.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 27 Mar 2024 16:07:58 +0100
-Message-ID: <2024032758-thesaurus-rabid-563c@gregkh>
+Date: Wed, 27 Mar 2024 16:07:59 +0100
+Message-ID: <2024032759-written-hypnotize-0b2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 165376f6b23e9a779850e750fb2eb06622e5a531
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032758-thesaurus-rabid-563c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024032759-written-hypnotize-0b2f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 165376f6b23e ("usb: typec: altmodes/displayport: create sysfs nodes as driver's default device attribute group")
 001b0c780eac ("usb: typec: altmodes/displayport: Add hpd sysfs attribute")
+7f8113948785 ("usb: typec: altmodes/displayport: Notify drm subsys of hotplug events")
 
 thanks,
 
