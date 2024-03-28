@@ -1,232 +1,169 @@
-Return-Path: <stable+bounces-33057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36ED88F8DE
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 08:35:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363EA88F93B
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 08:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E51C81C2788D
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 07:35:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1001C29DE5
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 07:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC2450279;
-	Thu, 28 Mar 2024 07:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B6053813;
+	Thu, 28 Mar 2024 07:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PH7x8DOf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtHr+Wsr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9050F3DABF3
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 07:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528CC537E0;
+	Thu, 28 Mar 2024 07:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711611312; cv=none; b=VxTksi896sSnc9+pbJJoMhBwCTAUcs5dwoXFb6V33wLGyjPIYuRvI2SSLbEb0MzqrzaS9Po0gJeCNosulC+4ShpczbKoUzYJWokzcPaDyJ7gHcbRTvHulsdeN6HVYjEDRig8tLuWKVgbagJcf7I6GqtwCG49IFaMFwd6pplseu4=
+	t=1711612490; cv=none; b=N57xoxsTPP65lmTwxiMtFoptx3YHnPR0/kS/3B4B8FZGMOTBiXPMU6HfPNP7O6Vx7q9fqYHS9Xqul1rqp2ip6uspl8EKuBjz7ckKiMb09U/oLmOVgmrw2vdLSe6KsJBo9JAfU3jQU94ut4DpCfpa3IgmKXytaynh37x2dVuBlAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711611312; c=relaxed/simple;
-	bh=k8Ql+VLU1en2pJZ1eYsJpuDGO5FG0FeYjxlH+JUGc08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Th6mQe3WoJzR4oLfFcnqcEI4WxhPwjU//m1+rs9QKhPt/xy8qA/ssdQutxHFKR84AKp+RF/KqDYVSlmZ/ZL8eFKvydJeOANKa2pBDWA00jX7kq2gF672JZBcvkT/sNH2MBM7ctxTcBHt22gQMm9Z8BK5+2Glhib8ge1jQjTHcoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PH7x8DOf; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711611311; x=1743147311;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=k8Ql+VLU1en2pJZ1eYsJpuDGO5FG0FeYjxlH+JUGc08=;
-  b=PH7x8DOf1jefUXoPl0b8Rj5yex2x5/VWYEqN0M1levzQb0uyw7vR1KUs
-   3lCMefZ01KEXufMzkh+VTPQAVJZ7Bc9vavfhmmmELJC0G6+RugEgaQ0ip
-   Smb74P0zECxoRpSt6Aq4IEKaNe5kpo+hnl0jpz7cCUNyPdASxLZPmjnf8
-   2U2xoJt4AUp5R7Q395V9g2GWYJtxY+xWmOrVnuVOkAURtnXTYUauS2wV0
-   kBXlBGYB7dThfUybxeb08L3+FE43L0MsCmgGNT3EcUQEUopLsAkL0KO1w
-   RloZHLQwG00KQXLWtVkznpzwPr/v/cDm+3Z83Ay5IJGrEmGL8RXkLSz8S
-   Q==;
-X-CSE-ConnectionGUID: OusrwMuCRx2pfljyTHtEcg==
-X-CSE-MsgGUID: V3gT2U0aQkKyC79C7LH18Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="10555573"
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; 
-   d="scan'208";a="10555573"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 00:35:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,161,1708416000"; 
-   d="scan'208";a="16568639"
-Received: from unknown (HELO intel.com) ([10.247.118.221])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 00:35:03 -0700
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH v8 3/3] drm/i915/gt: Enable only one CCS for compute workload
-Date: Thu, 28 Mar 2024 08:34:05 +0100
-Message-ID: <20240328073409.674098-4-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240328073409.674098-1-andi.shyti@linux.intel.com>
-References: <20240328073409.674098-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1711612490; c=relaxed/simple;
+	bh=7TuQoMUJ6APooA15msUPA1QoRn2CnlT4blDuFPO0e+k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=G7RsTgsVGmgTB8g2727+BBqfzUDURwy2lMEyxGd3RTCYxsdQbxsiZ/yMmFBa56W4HWTj7S8cJTctTcubxTpSkBMkinRGcVomBjKBmVQS+8kejE8PjVT0KND4Hwm805vdV/ue8Un2USOxMDw544UlXg00MPe6mQDFmAkiSz+CPdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtHr+Wsr; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-415482307b0so1023405e9.0;
+        Thu, 28 Mar 2024 00:54:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711612487; x=1712217287; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=z/9k825Fqxzz9jmkn3nJFGHIDNvvQD/xvUg6iDj53dY=;
+        b=gtHr+WsrSWA3TwdphK7gmjAqWeh6VER4m13wzcLh6z/zZJ4MbVmT6Eo7TEWHFfp1c5
+         nU5khv7GGnyu/lYIBg5h3uzfKRgLsdgfVWg6w2YZ8DTzoUxqXG3umew/FCnUdtwdNsSg
+         itValM0uX0VCix9FLXMg5JRbP8LUWBDvjNyjzukI+DwuzBes13K9ZopXZVAsnGzwN3M9
+         bn+C1ekZFA9vgicGoBiY3wiJgNDn/NJJD6n8S2I0zjHqX/OOD9fZQfPobsXp7lcioboq
+         Aj5dk6x+U+2UNhr50PrQ5ioyFNDyabNe+dWIQz4zMoZhqiQJmxU3NHys84wV5v4Qghig
+         nXZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711612487; x=1712217287;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z/9k825Fqxzz9jmkn3nJFGHIDNvvQD/xvUg6iDj53dY=;
+        b=j9QSYyTb7c34ojK8UxcsTyiWHT5ziIs5H+A6bGwlPNSNUSedPkaQWKXyI28/IAtIRB
+         BTCqD/ERgZUCBX4aNLVZvm8R3Dyc1sjfhXFtTkSJ/2FLvwN2O8uZ32WZRgwMi+5l0m6y
+         xxxfRSceV8BMPmKQ/Oq4uort363tbH0BG73Tg+ypR+YWvfprqqk2t8HH2+wPwmfXsIDz
+         E2mVnc/i1nqOxqnNSJd25YczLhK4tkBR1TiuZd7R/NPntN4SYEM78pOKVIvg4pus5Qd/
+         Es8sMGrsAeHpOb6tdXvFQqfytrkXP4gkN64T8MIzOlf/hh2yWJqvc38RDPHxFMBvtoBQ
+         0exg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+hrH2sjLeQ39KQkLmD3Bx1GzVS+E8DFsFRzXZugGGc2PMu9LCVTTUmRpH29yWJIDvK6NyUgikHrREMBpCQUMike+1cafBoeDfukjuImDcsXAD7leW6m2UAwN0dfK7Eh1/zZXJX5d2yk4nHJ+ifxq/q75zfP4QzRxqmuQGvvzV
+X-Gm-Message-State: AOJu0YzUQtEOC8xWkWjq+9EAFyAv5SHEZoZkGr4HfQNdemkyC1wjbYXF
+	JR0oYWmC3GTeUSFvQoIrOhQtTLn6yBpq/pLazc4UOZlFLAFfvSlqswBwG5bMn0k=
+X-Google-Smtp-Source: AGHT+IHZs9twLePrVnJ1cVOtuujAwLRvaOgRuObZxlafswz4BIhH6CPle3cRX9DVemoO803NyyQIMg==
+X-Received: by 2002:a05:600c:3505:b0:413:7f3:8d5 with SMTP id h5-20020a05600c350500b0041307f308d5mr2229096wmq.0.1711612486695;
+        Thu, 28 Mar 2024 00:54:46 -0700 (PDT)
+Received: from [192.168.20.102] (57657817.catv.pool.telekom.hu. [87.101.120.23])
+        by smtp.googlemail.com with ESMTPSA id v12-20020a05600c470c00b004131310a29fsm1425083wmo.15.2024.03.28.00.54.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 00:54:46 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Thu, 28 Mar 2024 08:54:31 +0100
+Subject: [PATCH v3] clk: qcom: clk-alpha-pll: fix rate setting for Stromer
+ PLLs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240328-alpha-pll-fix-stromer-set-rate-v3-1-1b79714c78bc@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADYiBWYC/43NQQ6CMBCF4auYrh3TTgtFV97DuCg4QBOgpG0aD
+ eHuFlbsdPlPJt9bWCBvKbDbaWGekg3WTTnk+cSa3kwdgX3lZshRcYkKzDD3BuZhgNa+IUTvRvI
+ QKII3kUBplLqkElXLWUZmT/lvH3g8c/c2ROc/+14S2/VvOgkQIGVR81oUGsX13o3GDpfGjWyjE
+ x658ieHmVOVoUqaVoumOnLrun4BROUC6hsBAAA=
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ Varadarajan Narayanan <quic_varada@quicinc.com>, 
+ Sricharan R <quic_srichara@quicinc.com>, 
+ Kathiravan T <quic_kathirav@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.13.0
 
-Enable only one CCS engine by default with all the compute sices
-allocated to it.
+The clk_alpha_pll_stromer_set_rate() function writes inproper
+values into the ALPHA_VAL{,_U} registers which results in wrong
+clock rates when the alpha value is used.
 
-While generating the list of UABI engines to be exposed to the
-user, exclude any additional CCS engines beyond the first
-instance.
+The broken behaviour can be seen on IPQ5018 for example, when
+dynamic scaling sets the CPU frequency to 800000 KHz. In this
+case the CPU cores are running only at 792031 KHz:
 
-This change can be tested with igt i915_query.
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  792031
 
-Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v6.2+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+This happens because the function ignores the fact that the alpha
+value calculated by the alpha_pll_round_rate() function is only
+32 bits wide which must be extended to 40 bits if it is used on
+a hardware which supports 40 bits wide values.
+
+Extend the clk_alpha_pll_stromer_set_rate() function to convert
+the alpha value to 40 bits before wrinting that into the registers
+in order to ensure that the hardware really uses the requested rate.
+
+After the change the CPU frequency is correct:
+
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+  800000
+  # cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq
+  800000
+
+Cc: stable@vger.kernel.org
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
 ---
- drivers/gpu/drm/i915/Makefile               |  1 +
- drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 39 +++++++++++++++++++++
- drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h | 13 +++++++
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  5 +++
- drivers/gpu/drm/i915/gt/intel_workarounds.c |  7 ++++
- 5 files changed, 65 insertions(+)
- create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
- create mode 100644 drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+Changes in v3:
+  - remove constants' comparison (Konrad)
+  - Link to v2: https://lore.kernel.org/r/20240326-alpha-pll-fix-stromer-set-rate-v2-1-48ae83af71c8@gmail.com
 
-diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
-index 3ef6ed41e62b..a6885a1d41a1 100644
---- a/drivers/gpu/drm/i915/Makefile
-+++ b/drivers/gpu/drm/i915/Makefile
-@@ -118,6 +118,7 @@ gt-y += \
- 	gt/intel_ggtt_fencing.o \
- 	gt/intel_gt.o \
- 	gt/intel_gt_buffer_pool.o \
-+	gt/intel_gt_ccs_mode.o \
- 	gt/intel_gt_clock_utils.o \
- 	gt/intel_gt_debugfs.o \
- 	gt/intel_gt_engines_debugfs.o \
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-new file mode 100644
-index 000000000000..044219c5960a
---- /dev/null
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#include "i915_drv.h"
-+#include "intel_gt.h"
-+#include "intel_gt_ccs_mode.h"
-+#include "intel_gt_regs.h"
-+
-+void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-+{
-+	int cslice;
-+	u32 mode = 0;
-+	int first_ccs = __ffs(CCS_MASK(gt));
-+
-+	if (!IS_DG2(gt->i915))
-+		return;
-+
-+	/* Build the value for the fixed CCS load balancing */
-+	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
-+		if (CCS_MASK(gt) & BIT(cslice))
-+			/*
-+			 * If available, assign the cslice
-+			 * to the first available engine...
-+			 */
-+			mode |= XEHP_CCS_MODE_CSLICE(cslice, first_ccs);
-+
-+		else
-+			/*
-+			 * ... otherwise, mark the cslice as
-+			 * unavailable if no CCS dispatches here
-+			 */
-+			mode |= XEHP_CCS_MODE_CSLICE(cslice,
-+						     XEHP_CCS_MODE_CSLICE_MASK);
-+	}
-+
-+	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
-+}
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-new file mode 100644
-index 000000000000..9e5549caeb26
---- /dev/null
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#ifndef __INTEL_GT_CCS_MODE_H__
-+#define __INTEL_GT_CCS_MODE_H__
-+
-+struct intel_gt;
-+
-+void intel_gt_apply_ccs_mode(struct intel_gt *gt);
-+
-+#endif /* __INTEL_GT_CCS_MODE_H__ */
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index f8829be40199..e42b3a5d4e63 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1427,6 +1427,11 @@
- #define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
- #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+Changes in v2:
+  - fix subject prefix
+  - rebase on v6.9-rc1
+  - Link to v1: https://lore.kernel.org/r/20240324-alpha-pll-fix-stromer-set-rate-v1-1-335b0b157219@gmail.com
+
+Depends on the following patch:
+  https://lore.kernel.org/r/20240315-apss-ipq-pll-ipq5018-hang-v2-1-6fe30ada2009@gmail.com
+---
+ drivers/clk/qcom/clk-alpha-pll.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 8a412ef47e16..8a8abb429577 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2490,6 +2490,8 @@ static int clk_alpha_pll_stromer_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	rate = alpha_pll_round_rate(rate, prate, &l, &a, ALPHA_REG_BITWIDTH);
  
-+#define XEHP_CCS_MODE				_MMIO(0x14804)
-+#define   XEHP_CCS_MODE_CSLICE_MASK		REG_GENMASK(2, 0) /* CCS0-3 + rsvd */
-+#define   XEHP_CCS_MODE_CSLICE_WIDTH		ilog2(XEHP_CCS_MODE_CSLICE_MASK + 1)
-+#define   XEHP_CCS_MODE_CSLICE(cslice, ccs)	(ccs << (cslice * XEHP_CCS_MODE_CSLICE_WIDTH))
+ 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
 +
- #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
- #define   CHV_FGT_DISABLE_SS0			(1 << 10)
- #define   CHV_FGT_DISABLE_SS1			(1 << 11)
-diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-index 74cf678b7589..68b6aa11bcf7 100644
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -10,6 +10,7 @@
- #include "intel_engine_regs.h"
- #include "intel_gpu_commands.h"
- #include "intel_gt.h"
-+#include "intel_gt_ccs_mode.h"
- #include "intel_gt_mcr.h"
- #include "intel_gt_print.h"
- #include "intel_gt_regs.h"
-@@ -2713,6 +2714,12 @@ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_li
- 	 * made to completely disable automatic CCS load balancing.
- 	 */
- 	wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
-+
-+	/*
-+	 * After having disabled automatic load balancing we need to
-+	 * assign all slices to a single CCS. We will call it CCS mode 1
-+	 */
-+	intel_gt_apply_ccs_mode(gt);
- }
- 
- /*
++	a <<= ALPHA_REG_BITWIDTH - ALPHA_BITWIDTH;
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+ 		     a >> ALPHA_BITWIDTH);
+
+---
+base-commit: 4cece764965020c22cff7665b18a012006359095
+change-id: 20240324-alpha-pll-fix-stromer-set-rate-472376e624f0
+
+Best regards,
 -- 
-2.43.0
+Gabor Juhos <j4g8y7@gmail.com>
 
 
