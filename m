@@ -1,111 +1,119 @@
-Return-Path: <stable+bounces-33108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614488907ED
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 19:05:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139E2890940
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 20:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1626B1F26D2C
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 18:05:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7A0CB24BD9
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 19:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B9F131BD9;
-	Thu, 28 Mar 2024 18:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C94130E50;
+	Thu, 28 Mar 2024 19:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AFkxlUXh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LzaXj6ei"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED169130AF3;
-	Thu, 28 Mar 2024 18:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B413C08E
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 19:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711649127; cv=none; b=Kk6d93hnLCsUM+CCAwXT+y/1eySxAh+sGnA9kkrr4528zQNhA918xNcwN32iUdu04m61lW6c+whCXgdT1g+4jGTiF3AeiaMc9D/MV5q5pLCBvSxHYBog3Htj20BVlm6TNGLPkVcjF6Kz+fnL2yZV2YMnuDseq2LyPXwDucWXcgg=
+	t=1711654128; cv=none; b=WV8C56YZEuUc7gKxCsI018b1K/nJG+q6A18zntHrYK7cw6tlzMgKYGZOcvGq5d4OmNF1GO+Va8HNQRamnWBXfA8faf6vJ0lkMNU4kz4NcWH4AYa6AheWErv9KknppMRCZUDheldiyQIZsz2kCLYIR4AsIFeCh4eGXRwv+n/hf+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711649127; c=relaxed/simple;
-	bh=aFSCjclxqeDyxNPG8CG1rNS3d6TVmOgwGEULmjQ33k8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gCINsIeTAl39NpGA+TijMMmCu+jCkF/4zM4J7dGWW0qplc/WJV4oAWOuKAUP8sx9nn934ZZPx8x9Mor/QaegE6HfADlWmIxE2zXA2NmSF3scYSYRzJdQXOCvHPJat7Y94IU/Bf/H6WfqyIq0G+sx+rSbONi0tNxbUGe78VSvx+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AFkxlUXh; arc=none smtp.client-ip=209.85.166.178
+	s=arc-20240116; t=1711654128; c=relaxed/simple;
+	bh=9faXT7l+qaSBO4mqtB3cD/DqxEjrBwI3jUcLmMit5jw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ONnXpZGnyeVe2wzBs34d9M8FxqpNCQZR2MUOBNbo/Vv+gGTozNlbTU5lyWwF4K4chpUVYkFT68RytIz9PrDAv0buJDUtnQ523KpU0sQd5xsVazw7IsaRZZktWu0CxzuhbH46VaGWn++PFb+GtfEd68cENfo61n63+iC5kGC3z3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LzaXj6ei; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-368aa96233bso5540895ab.3;
-        Thu, 28 Mar 2024 11:05:25 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5157af37806so1542846e87.0
+        for <stable@vger.kernel.org>; Thu, 28 Mar 2024 12:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711649125; x=1712253925; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K/sacnz72CwRH0otyTGzert8z0sn/i0tise2f/EaGiQ=;
-        b=AFkxlUXhxQ4uagL3m4z+FmOX9CseFAlOwucLW35YJaZf/EJMi8hhzcwx2VpwXmw1C3
-         trAdlBcN5GPx/ozFJT8sZtaUApbZbSHhC8ePhdPq6XDazgUGOKyzlAuBzSbD5FRM2KGt
-         haVSVcKwOQjfT1HDGUir495mYYEQAoVEVcLJ7vUheyaKlXnAjZ9bWUIulQi0lWn+v+zq
-         S1v7U8A5gNzs7YE5TQDCViLGZzR68/Bt8ebWc+x3YrrVn1TdioG4G5j2BSrQhx8q7yx9
-         3XgG4JqXyXk5q2eEKfJ0dGxithYdjpsy363HZhZdxwvCL//MqH2oxK2rpBcVJDNzf0Yk
-         8hRA==
+        d=gmail.com; s=20230601; t=1711654124; x=1712258924; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=n9P7hWbY9C6Nla2YUvTJAf/gcqA+AhFrg60X/e8vcXc=;
+        b=LzaXj6ei3uyXV2aeZF9ZdOpyjqTjQZZRy5uOu7sHxyEiTZbRjryNVDEk3NJYAA23w8
+         Tots9YvOeveECLHB9AxA2ep0d5G9yGU0LQFk05et2+Y4rAbVV5a/mhBGClfyv0GbxVYy
+         6hhvKFNFW+Zdv5nOwP2C3UoZFK81tiSqXCVQHZ1IbolsOqfyC7faywK4lMt43U4DDZ4T
+         0ItmPEAkxTHV8p3BW1wzZRGlp2bNAeqREXRpbkYLq2gqVjBS4AGknPKFseTVteqKFr/m
+         v5CjDKl4wWGDo3ba+XLqgydirgCA9gVHLiQQ6UCgHeXvB6072vxWu0wuvNJlOWrokwYd
+         +osA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711649125; x=1712253925;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K/sacnz72CwRH0otyTGzert8z0sn/i0tise2f/EaGiQ=;
-        b=o0CYd/bwSUdPN4o1uexWSleRIfc9q5UEr2MX2WgD/NV9CSDpuBv7etWvlfFqO28SKx
-         CJaQr5kV/0tOjvec4gCl2Cq3QhdCIlcQqNri7RNZiyLQHKmubGjNeYHs/G+ydG29uMg2
-         vSrwEHrtRNz3mYnPbPD6IOhwvQrNsAwZ8Bw3rL8TtxCZKBzTs7bJVSV0g7IcM8H3GJ3Y
-         HZZcdvzbwFpl21UjRiqaVqDi5K8k+5YgYqPuNI/7suKeHQu5CCyCO3REziz8FVyrXHj6
-         OYjnsdqHB1wBsS+QoVWe+YA9xMdV/KWmneM7+/uyWLNvzvOcmf9HWasB1WA6vnXxkHTY
-         Epqg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1B6Bs8O5cZlPoI9K7J2zPJ9AKkHJwlpcpnZYmCNk7loELLLZABjDAhoUX/KpGsWfEw5uYwbiC0fdJd0fKHiNLJUdARnd6zCNm5JYqKhcqvKQg8w4dGnZbQkQtfh6K1OL9CSU=
-X-Gm-Message-State: AOJu0Yx0fKem8S807OJLSSwlB8TXa163JQPv/WYVFyISZuS288YzJbIc
-	DXpU/Vk/5Y+fNdCV+6mo1ggtDHhJMyzh3NWKl3AtZS1IzMGTcLfl
-X-Google-Smtp-Source: AGHT+IFxenVy3Vpe40qXySr/FIX8Cmzlhc9MA4Bak20UWKfT1c1La/2Q3sNRmDFpNQjvs7U7sVA40g==
-X-Received: by 2002:a92:d486:0:b0:368:a474:4410 with SMTP id p6-20020a92d486000000b00368a4744410mr4494143ilg.2.1711649124902;
-        Thu, 28 Mar 2024 11:05:24 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:493e:82a3:49f9:d88])
-        by smtp.gmail.com with ESMTPSA id a185-20020a6366c2000000b005dc88b232a5sm1593248pgc.26.2024.03.28.11.05.24
+        d=1e100.net; s=20230601; t=1711654124; x=1712258924;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n9P7hWbY9C6Nla2YUvTJAf/gcqA+AhFrg60X/e8vcXc=;
+        b=lKSxOgJg9QMYuvpBYlheicJwB7vqKnm0l9bppV51E6tRfg5d8OrkY0NKb2Yu+jgmQ1
+         +2n3Npc7MrPiKL9LIe+7eFY1d7EEnmg/6IobLgzrb2TjFXzmMPyAwn5VqfTlHjzll7BE
+         2slYMde3ONLh9ieDUH8vx1pkYDJzeTtIoA0DLyhzAc1bt7u9Y9qqErKE9RbwcO13IHEp
+         MJzeYki9ds+ndh9zGZ/4uoukakTbmSTLLZQGZ5JroDb+Pwemx31QMnaarxOCgb/o39Lj
+         gS2P8y2uzvNTQzlIaReR3tP7LSqX87qZSMOe8ekVDfeqRnECMZMFoCkkUVc5UfNGVwSk
+         fBPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyRdlXTUXrlI/AFAjtXfTqRVIjkLRPBZlqyYkqTCxGl20VqO5cdzEt8eP9FE8cuzS2YnZQWW3MMfjjgaoTVxP+bPyhfSpI
+X-Gm-Message-State: AOJu0YwdHapGcWjAeB2VsgPi52NY/x9xxqqE4dBpRUtVeNe1ANUte4gW
+	NFg6l6iXA31QJckhQWDoIqzXOavMI9s6E0b1LZYEzHvoy2zygLITl4YigEmv
+X-Google-Smtp-Source: AGHT+IH0oUctJFzIaitvUxhux+LherP1Q93ahLEOBzF/6A/0BR5tyHe1AHzyiDU7tkAl6ibKB1RSXg==
+X-Received: by 2002:a05:6512:310d:b0:515:9568:fb14 with SMTP id n13-20020a056512310d00b005159568fb14mr247402lfb.46.1711654123699;
+        Thu, 28 Mar 2024 12:28:43 -0700 (PDT)
+Received: from localhost.localdomain (109-252-163-179.dynamic.spd-mgts.ru. [109.252.163.179])
+        by smtp.gmail.com with ESMTPSA id u2-20020ac258c2000000b005134b126f0asm321369lfo.110.2024.03.28.12.28.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 11:05:24 -0700 (PDT)
-Date: Thu, 28 Mar 2024 11:05:22 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Jason Andryuk <jandryuk@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Phillip Susi <phill@thesusis.net>,
-	stable@vger.kernel.org,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	linux-input@vger.kernel.org,
-	xen-devel <xen-devel@lists.xenproject.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH v3] Input: xen-kbdfront - drop keys to shrink modalias
-Message-ID: <ZgWxYvQH4A_Vh1i4@google.com>
-References: <20231011193444.81254-1-jandryuk@gmail.com>
- <CAKf6xpuJe6Cza6bow3QxDGf1viu0kish7Y8YRN8haXL1oEF3HA@mail.gmail.com>
- <CAKf6xpv2oDpPB3wWh=Fz_ahDVgmvw2MSj_q3RYqQ8NG6km5Tuw@mail.gmail.com>
+        Thu, 28 Mar 2024 12:28:43 -0700 (PDT)
+From: Salomatkina Elena <elena.salomatkina.cmc@gmail.com>
+To: Sobaka <nuclear12explosion@gmail.com>
+Cc: Salomatkina Elena <elena.salomatkina.cmc@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/vkms: fix memory leak when drm_gem_handle_create() fails
+Date: Thu, 28 Mar 2024 22:24:41 +0300
+Message-Id: <20240328192441.136115-1-elena.salomatkina.cmc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKf6xpv2oDpPB3wWh=Fz_ahDVgmvw2MSj_q3RYqQ8NG6km5Tuw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jason,
+If drm_gem_handle_create() fails in vkms_gem_create(), then the
+vkms_gem_object is not freed.
 
-On Wed, Mar 20, 2024 at 01:42:27PM -0400, Jason Andryuk wrote:
-> Hi Dmitry,
-> 
-> Do you have any feedback, or can you pick up this patch?  It solves a
-> real issue affecting udev, which crashes the Debian installer and
-> breaks the mouse for Gnome.
-> 
-> Or would you be okay if this patch went in via the Xen tree?
+Fix it by adding a call to vkms_gem_free_object().
 
-I'd rather not. Could you please ping me in 2 weeks on this. I promise
-we find a solution before the next release.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Thanks.
+Fixes: 0ea2ea42b31a ("drm/vkms: Hold gem object while still in-use")
+Cc: stable@vger.kernel.org#v5.10.212
+#Co-developed-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Salomatkina Elena <elena.salomatkina.cmc@gmail.com>
+---
+ drivers/gpu/drm/vkms/vkms_gem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/vkms/vkms_gem.c b/drivers/gpu/drm/vkms/vkms_gem.c
+index a017fc59905e..cc6584767a1b 100644
+--- a/drivers/gpu/drm/vkms/vkms_gem.c
++++ b/drivers/gpu/drm/vkms/vkms_gem.c
+@@ -113,9 +113,10 @@ static struct drm_gem_object *vkms_gem_create(struct drm_device *dev,
+ 		return ERR_CAST(obj);
+ 
+ 	ret = drm_gem_handle_create(file, &obj->gem, handle);
+-	if (ret)
++	if (ret) {
++		vkms_gem_free_object(&obj->gem);
+ 		return ERR_PTR(ret);
+-
++	}
+ 	return &obj->gem;
+ }
+ 
 -- 
-Dmitry
+2.34.1
+
 
