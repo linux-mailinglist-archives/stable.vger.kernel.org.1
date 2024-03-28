@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-33070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9B088FD36
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:37:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADAB88FD42
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613481C262ED
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:37:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC05F1C27235
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FAA7D07C;
-	Thu, 28 Mar 2024 10:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC657CF18;
+	Thu, 28 Mar 2024 10:40:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7285E57895;
-	Thu, 28 Mar 2024 10:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F05C7C6D5;
+	Thu, 28 Mar 2024 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711622218; cv=none; b=a1huI4paDbTK3mHmgneluQmc9j+PkrxmrNou6wwRCo+yc06kC20Q5dO/t5QmAabpdDK4ncP+4+EafilIO3lKZUU4EuHGlDABHOnjCg+n531+LGeAUFOQmoAtCy4OHnh3Nygd6L+//temyqKSu/xYx34rfdPqG4pKuOMp0xvLW6g=
+	t=1711622430; cv=none; b=VIhT+gJD9HUfSlnxFmNZ1+ltPyZr51CXmVsSzg+p5KamZqBum3O1jsEAFhWLi/EENJclyaDlE4F1RSCzaw0u1D+lO1Pt6W8npjQF+xz0Qdjknv02gru1QjL1cRBDONiE7BtzhL5qSmBmjc9XmQ/Kak9DxXwEafzE7w9vubWYsT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711622218; c=relaxed/simple;
-	bh=1tLDjrlhyi2d5C+bucKg0yc9r5BN3QOnrP8/yaJXcjA=;
+	s=arc-20240116; t=1711622430; c=relaxed/simple;
+	bh=dw2qE9ljhz6X/z7yDJs6sMEP5mr/rY/P6qXHuiQ6/iE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KsrdwAq85NlhqL95+DORUaXY9tW1rhR1UPBJ/A4IhNf5XB4B3mC3xa4b6TQMkfk2gxnnC72Z3CUCDWYOeR5WQPBHfV+MmSVFkfa191yy0WT0XwOfQ/Pf6eFEU1IMOMlfD8Axww+vIs8NMQTJWaTWrrgd3h/neYpTXULtDATOyCw=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZtMac9h90wRqRM03GxeyKnyj140+xkQasSW7FTE6ORZbwZzvX8eirVWjo3+dZ+BKVSSntNrKhqZ1+TQTyTfaxcnujFt7tnkxaVEJdvE/RT2zcNmiqmWxX9136XBPxOYV2ALHSS9p1+vKZC1cd4bdhKbpBixyuqqjcAXFox9siuc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 7CBB31C0081; Thu, 28 Mar 2024 11:36:54 +0100 (CET)
-Date: Thu, 28 Mar 2024 11:36:54 +0100
+	id BD9181C0081; Thu, 28 Mar 2024 11:40:26 +0100 (CET)
+Date: Thu, 28 Mar 2024 11:40:26 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Bert Karwatzki <spasswolf@web.de>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH 6.1 212/451] iommu: Fix compilation without
- CONFIG_IOMMU_INTEL
-Message-ID: <ZgVIRpCkWtJvEWnf@duo.ucw.cz>
-References: <20240324231207.1351418-1-sashal@kernel.org>
- <20240324231207.1351418-213-sashal@kernel.org>
+	Mikhail Khvainitski <me@khvoinitsky.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: Re: [PATCH 5.10 127/238] HID: lenovo: Add middleclick_workaround
+ sysfs knob for cptkbd
+Message-ID: <ZgVJGs2OI/4QsJCQ@duo.ucw.cz>
+References: <20240324234027.1354210-1-sashal@kernel.org>
+ <20240324234027.1354210-128-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,81 +49,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vZ6/CY6IfejnIZqG"
+	protocol="application/pgp-signature"; boundary="+xPubCJWfEMGwzQ2"
 Content-Disposition: inline
-In-Reply-To: <20240324231207.1351418-213-sashal@kernel.org>
+In-Reply-To: <20240324234027.1354210-128-sashal@kernel.org>
 
 
---vZ6/CY6IfejnIZqG
+--+xPubCJWfEMGwzQ2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> [ Upstream commit 70bad345e622c23bb530016925c936ab04a646ac ]
+> From: Mikhail Khvainitski <me@khvoinitsky.org>
 >=20
-> When the kernel is comiled with CONFIG_IRQ_REMAP=3Dy but without
-> CONFIG_IOMMU_INTEL compilation fails since commit def054b01a8678 with an
-> undefined reference to device_rbtree_find(). This patch makes sure that
-> intel specific code is only compiled with CONFIG_IOMMU_INTEL=3Dy.
+> [ Upstream commit 2814646f76f8518326964f12ff20aaee70ba154d ]
+>=20
+> Previous attempt to autodetect well-behaving patched firmware
+> introduced in commit 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw
+> on cptkbd and stop applying workaround") has shown that there are
+> false-positives on original firmware (on both 1st gen and 2nd gen
+> keyboards) which causes the middle button click workaround to be
+> mistakenly disabled.
+>=20
+> This commit adds explicit parameter to sysfs to control this
+> workaround.
 
-We don't have commit def054b01a8678 in -stable, so we should not need
-this.
+Should this go to stable? We have stream of lenovo workarounds, maybe
+-stable should wait for upstream to solve this.
+
+Plus it should really have documentation.
+
+Oh and we normally solve this stuff with module parameters, so that it
+can be fixed during bootup.
 
 Best regards,
-								Pavel
+							Pavel
 
-> +++ b/drivers/iommu/Kconfig
-> @@ -192,7 +192,7 @@ source "drivers/iommu/intel/Kconfig"
->  config IRQ_REMAP
->  	bool "Support for Interrupt Remapping"
->  	depends on X86_64 && X86_IO_APIC && PCI_MSI && ACPI
-> -	select DMAR_TABLE
-> +	select DMAR_TABLE if INTEL_IOMMU
->  	help
->  	  Supports Interrupt remapping for IO-APIC and MSI devices.
->  	  To use x2apic mode in the CPU's which support x2APIC enhancements or
-> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
-> index 7af3b8a4f2a00..29d26a4371327 100644
-> --- a/drivers/iommu/intel/Makefile
-> +++ b/drivers/iommu/intel/Makefile
-> @@ -5,5 +5,7 @@ obj-$(CONFIG_DMAR_TABLE) +=3D trace.o cap_audit.o
->  obj-$(CONFIG_DMAR_PERF) +=3D perf.o
->  obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) +=3D debugfs.o
->  obj-$(CONFIG_INTEL_IOMMU_SVM) +=3D svm.o
-> +ifdef CONFIG_INTEL_IOMMU
->  obj-$(CONFIG_IRQ_REMAP) +=3D irq_remapping.o
-> +endif
->  obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) +=3D perfmon.o
-> diff --git a/drivers/iommu/irq_remapping.c b/drivers/iommu/irq_remapping.c
-> index 83314b9d8f38b..ee59647c20501 100644
-> --- a/drivers/iommu/irq_remapping.c
-> +++ b/drivers/iommu/irq_remapping.c
-> @@ -99,7 +99,8 @@ int __init irq_remapping_prepare(void)
->  	if (disable_irq_remap)
->  		return -ENOSYS;
-> =20
-> -	if (intel_irq_remap_ops.prepare() =3D=3D 0)
-> +	if (IS_ENABLED(CONFIG_INTEL_IOMMU) &&
-> +	    intel_irq_remap_ops.prepare() =3D=3D 0)
->  		remap_ops =3D &intel_irq_remap_ops;
->  	else if (IS_ENABLED(CONFIG_AMD_IOMMU) &&
->  		 amd_iommu_irq_ops.prepare() =3D=3D 0)
+> Fixes: 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw on cptkbd and sto=
+p applying workaround")
+> Fixes: 43527a0094c1 ("HID: lenovo: Restrict detection of patched firmware=
+ only to USB cptkbd")
+> Signed-off-by: Mikhail Khvainitski <me@khvoinitsky.org>
+> Signed-off-by: Jiri Kosina <jkosina@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---vZ6/CY6IfejnIZqG
+--+xPubCJWfEMGwzQ2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVIRgAKCRAw5/Bqldv6
-8gZYAJ0dAltTpDHidc4ImFcKiK5HNSKFhgCcCqMLqo5lIL5+3AZeO+JDJB4mEjE=
-=FF3G
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVJGgAKCRAw5/Bqldv6
+8jCuAJ91l5476iPTU59SHkJjNcGTxb6i8gCgoecaRojX1warU2+YBOQIBk9uESY=
+=vVWE
 -----END PGP SIGNATURE-----
 
---vZ6/CY6IfejnIZqG--
+--+xPubCJWfEMGwzQ2--
 
