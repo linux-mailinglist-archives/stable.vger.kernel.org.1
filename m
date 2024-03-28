@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-33069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD6688FD2C
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9B088FD36
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F371C2C9D3
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:35:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613481C262ED
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA4557895;
-	Thu, 28 Mar 2024 10:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FAA7D07C;
+	Thu, 28 Mar 2024 10:36:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8D6364DA;
-	Thu, 28 Mar 2024 10:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7285E57895;
+	Thu, 28 Mar 2024 10:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711622120; cv=none; b=ia5CdBHPUw2QnQnmR4jo0NDoXQC56e5YQR4mADsUDxC8e5fJtKmctTbq+uQpop+wyyCqPN9GPrUg85uRwfxqpPAefVhaW21WRU+YsJnPVnRwFOgl8Vreiosr3sDVAfZRMvMUyEsuNgyMPrE+1Vmh0AnggFFxUAcYjtAtdBbq5B0=
+	t=1711622218; cv=none; b=a1huI4paDbTK3mHmgneluQmc9j+PkrxmrNou6wwRCo+yc06kC20Q5dO/t5QmAabpdDK4ncP+4+EafilIO3lKZUU4EuHGlDABHOnjCg+n531+LGeAUFOQmoAtCy4OHnh3Nygd6L+//temyqKSu/xYx34rfdPqG4pKuOMp0xvLW6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711622120; c=relaxed/simple;
-	bh=7vFSQ747FM06KN1wrNfHC48TjsBeAGoEHNFZdXAOOxM=;
+	s=arc-20240116; t=1711622218; c=relaxed/simple;
+	bh=1tLDjrlhyi2d5C+bucKg0yc9r5BN3QOnrP8/yaJXcjA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TRKtlYrwq0HZPE4ZfDnifoG6jYgGUgknRaLIOyQTR0mxTHogSA1XFMrkeQCPOpXMXJBqJ8dDZFRArHSwDtko5pdc+VvuaIsjRiqkCJwLnyEicXni1ED+lXuJUhkgxyp4dFuY+toTGn2BkMenLqMe7GMKWG4yFsBh0m8OZb3U9F0=
+	 Content-Type:Content-Disposition:In-Reply-To; b=KsrdwAq85NlhqL95+DORUaXY9tW1rhR1UPBJ/A4IhNf5XB4B3mC3xa4b6TQMkfk2gxnnC72Z3CUCDWYOeR5WQPBHfV+MmSVFkfa191yy0WT0XwOfQ/Pf6eFEU1IMOMlfD8Axww+vIs8NMQTJWaTWrrgd3h/neYpTXULtDATOyCw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id B1D141C0081; Thu, 28 Mar 2024 11:35:16 +0100 (CET)
-Date: Thu, 28 Mar 2024 11:35:16 +0100
+	id 7CBB31C0081; Thu, 28 Mar 2024 11:36:54 +0100 (CET)
+Date: Thu, 28 Mar 2024 11:36:54 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>, Taehee Yoo <ap420073@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 6.1 140/451] ipv6: mcast: remove one synchronize_net()
- barrier in ipv6_mc_down()
-Message-ID: <ZgVH5FhlyKXmbJ99@duo.ucw.cz>
+	Bert Karwatzki <spasswolf@web.de>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <jroedel@suse.de>
+Subject: Re: [PATCH 6.1 212/451] iommu: Fix compilation without
+ CONFIG_IOMMU_INTEL
+Message-ID: <ZgVIRpCkWtJvEWnf@duo.ucw.cz>
 References: <20240324231207.1351418-1-sashal@kernel.org>
- <20240324231207.1351418-141-sashal@kernel.org>
+ <20240324231207.1351418-213-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,62 +49,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jR9q48rvjneaP0k+"
+	protocol="application/pgp-signature"; boundary="vZ6/CY6IfejnIZqG"
 Content-Disposition: inline
-In-Reply-To: <20240324231207.1351418-141-sashal@kernel.org>
+In-Reply-To: <20240324231207.1351418-213-sashal@kernel.org>
 
 
---jR9q48rvjneaP0k+
+--vZ6/CY6IfejnIZqG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Eric Dumazet <edumazet@google.com>
+> [ Upstream commit 70bad345e622c23bb530016925c936ab04a646ac ]
 >=20
-> [ Upstream commit 17ef8efc00b34918b966388b2af0993811895a8c ]
->=20
-> As discussed in the past (commit 2d3916f31891 ("ipv6: fix skb drops
-> in igmp6_event_query() and igmp6_event_report()")) I think the
-> synchronize_net() call in ipv6_mc_down() is not needed.
->=20
-> Under load, synchronize_net() can last between 200 usec and 5 ms.
->=20
-> KASAN seems to agree as well.
+> When the kernel is comiled with CONFIG_IRQ_REMAP=3Dy but without
+> CONFIG_IOMMU_INTEL compilation fails since commit def054b01a8678 with an
+> undefined reference to device_rbtree_find(). This patch makes sure that
+> intel specific code is only compiled with CONFIG_IOMMU_INTEL=3Dy.
 
-This is performance tweak, not a bugfix. We probably should not have
-it in stable.
+We don't have commit def054b01a8678 in -stable, so we should not need
+this.
 
 Best regards,
 								Pavel
 
-> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index 566f3b7b957e9..a777695389403 100644
-> --- a/net/ipv6/mcast.c
-> +++ b/net/ipv6/mcast.c
-> @@ -2722,7 +2722,6 @@ void ipv6_mc_down(struct inet6_dev *idev)
->  	/* Should stop work after group drop. or we will
->  	 * start work again in mld_ifc_event()
->  	 */
-> -	synchronize_net();
->  	mld_query_stop_work(idev);
->  	mld_report_stop_work(idev);
+> +++ b/drivers/iommu/Kconfig
+> @@ -192,7 +192,7 @@ source "drivers/iommu/intel/Kconfig"
+>  config IRQ_REMAP
+>  	bool "Support for Interrupt Remapping"
+>  	depends on X86_64 && X86_IO_APIC && PCI_MSI && ACPI
+> -	select DMAR_TABLE
+> +	select DMAR_TABLE if INTEL_IOMMU
+>  	help
+>  	  Supports Interrupt remapping for IO-APIC and MSI devices.
+>  	  To use x2apic mode in the CPU's which support x2APIC enhancements or
+> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
+> index 7af3b8a4f2a00..29d26a4371327 100644
+> --- a/drivers/iommu/intel/Makefile
+> +++ b/drivers/iommu/intel/Makefile
+> @@ -5,5 +5,7 @@ obj-$(CONFIG_DMAR_TABLE) +=3D trace.o cap_audit.o
+>  obj-$(CONFIG_DMAR_PERF) +=3D perf.o
+>  obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) +=3D debugfs.o
+>  obj-$(CONFIG_INTEL_IOMMU_SVM) +=3D svm.o
+> +ifdef CONFIG_INTEL_IOMMU
+>  obj-$(CONFIG_IRQ_REMAP) +=3D irq_remapping.o
+> +endif
+>  obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) +=3D perfmon.o
+> diff --git a/drivers/iommu/irq_remapping.c b/drivers/iommu/irq_remapping.c
+> index 83314b9d8f38b..ee59647c20501 100644
+> --- a/drivers/iommu/irq_remapping.c
+> +++ b/drivers/iommu/irq_remapping.c
+> @@ -99,7 +99,8 @@ int __init irq_remapping_prepare(void)
+>  	if (disable_irq_remap)
+>  		return -ENOSYS;
 > =20
+> -	if (intel_irq_remap_ops.prepare() =3D=3D 0)
+> +	if (IS_ENABLED(CONFIG_INTEL_IOMMU) &&
+> +	    intel_irq_remap_ops.prepare() =3D=3D 0)
+>  		remap_ops =3D &intel_irq_remap_ops;
+>  	else if (IS_ENABLED(CONFIG_AMD_IOMMU) &&
+>  		 amd_iommu_irq_ops.prepare() =3D=3D 0)
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---jR9q48rvjneaP0k+
+--vZ6/CY6IfejnIZqG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVH5AAKCRAw5/Bqldv6
-8uwFAJ4jiqh3X7yU1KwHULt+PeY5XCqq7QCfSPZ1HLmE8WjWvaJvbb6vDYMqS6Y=
-=Ft3s
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVIRgAKCRAw5/Bqldv6
+8gZYAJ0dAltTpDHidc4ImFcKiK5HNSKFhgCcCqMLqo5lIL5+3AZeO+JDJB4mEjE=
+=FF3G
 -----END PGP SIGNATURE-----
 
---jR9q48rvjneaP0k+--
+--vZ6/CY6IfejnIZqG--
 
