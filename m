@@ -1,72 +1,53 @@
-Return-Path: <stable+bounces-33101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B8489052B
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 17:28:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72630890636
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 17:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10DD61C2F3E0
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 16:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B32D1C305F7
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 16:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB7E130AD4;
-	Thu, 28 Mar 2024 16:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633AB535CA;
+	Thu, 28 Mar 2024 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LVUULs0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBgiB3V1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572412FF96
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 16:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EFA3BBEF;
+	Thu, 28 Mar 2024 16:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711643298; cv=none; b=elBoRGRP/e2U1BDFxPn2bGInMUTq4dz3cYYW4J6wlz63xdD3pGojjJiZrk46FbhV125o6ehyFTOkzKQp0nGQlgXT85KGh1KOvP4HQlD5aeKCgvckrf415NH60sMetvpqor/IqiUFu+bD8eBDKNIvdOO6isGDZTqTzzinYPI9jOw=
+	t=1711644274; cv=none; b=p5tiNUyLWiCfZVoE7MzyzEm3PjA62kDL1DoLaXefY/huCU1EO1gRbucK+hCaFpmch4Z+yYqqachvAwZkf4uRArgHmSeeBi89Zg/VYc2enft/oqnYSe9g0mafnhH4MlNmRIZnktMfXDn/kjD6oCzEyQCvMzlbLyu4JYVOoZxJaY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711643298; c=relaxed/simple;
-	bh=choMBFtkmj6+7+fYC/4s5/pIwYec5KUcH193u4BpNQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=c37Re2xfwJGMpVcSMR96cQ7uD6p6v1v2p+PFHe7me3BPAcktYqxIc+cX4o7kMFpwQ430QV7CJ4IZtD0T56fprJ7QSVuXMU4oIoL3fG/7842/JutFDMfEKhvPTcZnTAajBq+t6IWZefQToLrKKfK41JKrX6EHzqOrvL1HPX9mpf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LVUULs0B; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711643296; x=1743179296;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=choMBFtkmj6+7+fYC/4s5/pIwYec5KUcH193u4BpNQ4=;
-  b=LVUULs0Bjw8ao/gtiO0vFGSFw8BN3Ti32iSAvqwFM1B/ww3P/tdsq3GL
-   5UJ3KxRIQPTiYs3wbjb6XJxeCeel+g3cUvMajqpm3vWlw/ZH1skdS4jeP
-   49wm4ic3o8vNBM6VKOygX4B3Llptd8SDWPW4lB4CK7fqKLeezFwbahbjI
-   I8HqEikoM2USMog47WpKZ8gToGq9JwlE+q1Xwx50vshOJkn2gUDbkbtyf
-   UPyGVC2+PldeQl9RCdZo2kIQTvKWJRp7koePdmQ/178B6GDrl+ROpb1TH
-   Zlt/MOwmgBngJdSk+hwL8C1kLjynIpkSvv8hf5kEBE1GbAhOcjgmANXAR
-   Q==;
-X-CSE-ConnectionGUID: YDSEyH2uRIOILYGa9+fidw==
-X-CSE-MsgGUID: 0z0PCy0USw+LTps8mJyBBw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="6703626"
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="6703626"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2024 09:28:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,162,1708416000"; 
-   d="scan'208";a="21202645"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 28 Mar 2024 09:28:15 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rpsbs-0002KM-2M;
-	Thu, 28 Mar 2024 16:28:12 +0000
-Date: Fri, 29 Mar 2024 00:28:09 +0800
-From: kernel test robot <lkp@intel.com>
+	s=arc-20240116; t=1711644274; c=relaxed/simple;
+	bh=VTys3YpvicCW7hzI150+v9+jo5zNzxdDN4MVR7jcuPo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xj+XEgkVOsJI8f3ji6Ver0vCgUjpFkQ8QiGXUe6qyhs8ftBeOLZaV/IP+KEzvUhZNTAU8bZ0Z2aXKsgH3ukY1U3beokS8Gm0KpGZrwV7w9tEN39riMc0j/ClIYFzO24SBc++30CzvDIq45uHPrsKZYqqkQpKR/W5qP17AKEG2xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBgiB3V1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52A1C433F1;
+	Thu, 28 Mar 2024 16:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711644273;
+	bh=VTys3YpvicCW7hzI150+v9+jo5zNzxdDN4MVR7jcuPo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KBgiB3V1j9rN1RR05OFTvoN7/73Wg2r8aV4sIl2jbQrjFN15IVV5zffH0hXavzegq
+	 czSRjnPDWpThJoeaFkzlfbJnMtiHsV+0IjQ0f9mQBHarKdGLTvoPOYHQV1VuxXajov
+	 YRsvddH/bbe9YxTKUg1Dq0MINGU3I5tpIaQzh6e4=
+Date: Thu, 28 Mar 2024 17:44:29 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Javier Carrasco <javier.carrasco@wolfvision.net>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH RESEND 1/2] usb: typec: tipd: fix event checking for
- tps25750
-Message-ID: <ZgWameBil6fAmN8T@f34f6e606ddc>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abdel Alkuor <abdelalkuor@geotab.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 0/2] usb: typec: tipd: fix event checking in
+ interrupt service routines
+Message-ID: <2024032824-rasping-zone-7564@gregkh>
+References: <20240328-tps6598x_fix_event_handling-v1-0-865842a30009@wolfvision.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,24 +56,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240328-tps6598x_fix_event_handling-v1-1-865842a30009@wolfvision.net>
+In-Reply-To: <20240328-tps6598x_fix_event_handling-v1-0-865842a30009@wolfvision.net>
 
-Hi,
+On Thu, Mar 28, 2024 at 05:25:20PM +0100, Javier Carrasco wrote:
+> The ISRs of the tps25750 and tps6598x do not handle generated events
+> properly under all circumstances.
+> 
+> The tps6598x ISR does not read all bits of the INT_EVENTX registers,
+> leaving events signaled with bits above 64 unattended. Moreover, these
+> events are not cleared, leaving the interrupt enabled.
+> 
+> The tps25750 reads all bits of the INT_EVENT1 register, but the event
+> checking is not right because the same event is checked in two different
+> regions of the same register by means of an OR operation.
+> 
+> This series aims to fix both issues by reading all bits of the
+> INT_EVENTX registers, and limiting the event checking to the region
+> where the supported events are defined (currently they are limited to
+> the first 64 bits of the registers, as the are defined as BIT_ULL()).
+> 
+> If the need for events above the first 64 bits of the INT_EVENTX
+> registers arises, a different mechanism might be required. But for the
+> current needs, all definitions can be left as they are.
+> 
+> Note: resend to add 'stable' mailing list (fixes in the series).
 
-Thanks for your patch.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+<formletter>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH RESEND 1/2] usb: typec: tipd: fix event checking for tps25750
-Link: https://lore.kernel.org/stable/20240328-tps6598x_fix_event_handling-v1-1-865842a30009%40wolfvision.net
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+</formletter>
 
