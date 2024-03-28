@@ -1,151 +1,127 @@
-Return-Path: <stable+bounces-33085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2996B89023E
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 15:51:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D2489025B
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 15:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577171C22732
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 14:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B7B41C26ECC
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 14:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF8612BF08;
-	Thu, 28 Mar 2024 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844E78565D;
+	Thu, 28 Mar 2024 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FVRqf8y7"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hlwUv/1I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F947CF3E
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 14:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912481E48C;
+	Thu, 28 Mar 2024 14:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711637501; cv=none; b=JtJEQJVHCh7pPW4JDjAnuN51ENNO2OSsb07AHczochFkvn9P6Afxce8S4cgad84LplTUwcoa8vlaJ4DCHq9Vt+qyudVkGkClrJoI6hXRQgfbmgl+GD8XNrDDYkYdQ9V8iSVV4ftBzMG15y/kj6IckGZIJHEUfqCeKB0ZskTlI8g=
+	t=1711637731; cv=none; b=pELeYOcHZ/qu3yMURgNbY/idB94VvNfBN2T/0pF+ExmWlIO2ClDdk/dJ0LZikuKyDDi6SepioheKD1R5IjqFzlork5sF5tNPp350FJt2PORqFeGR9RnrIrAIbsNzAjoEZGuR2hcZLBYB5BVgjVFD9EP0u4279suSSoLzd5DkgIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711637501; c=relaxed/simple;
-	bh=ux6IFglXde1ERd54R7V4j1Ml1pPp+O0GYiElVJc4Bfw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=X1eu8qChqaonvoONhzJhEDPlYOjQQupvzU1ipk5/Jz2YXtKDBFMX9SZwnG769oOR80FUXHgQwPHfvdk0aX2zVi7wC8gPNhx6LMjLzDVQpuDo8PcbsgHVvxSEWlOAmowvfXM9hvLaDZUA0lCEfKBJQQ/Mj+pYsAPAYCLAcjHqePU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FVRqf8y7; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56c1922096cso1375092a12.0
-        for <stable@vger.kernel.org>; Thu, 28 Mar 2024 07:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1711637497; x=1712242297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Tj0J7fNo7JaNqggtcLUYIbAlRhY6zh5m7OfApE5VAVQ=;
-        b=FVRqf8y7mfXArQ3Zr3EP50wMzbg9QvQsijou6+spnKjIMt6sQGJ3LO5r7CdQoOtYFZ
-         NnfpaENDmYMtMmdyKVPhhkmihV7robi7w7R0xIC1wSEvkaR5Mvawm3f8V3elpmK+9oA2
-         pwAiECxti2SIjTigUVtKKqAW8+92RImwC2NaGdlqRUw5YApISfJ5vi+1Pkb/a1UMm6MN
-         wmHC0OmG+Zq08r2WQCaW+aHuxQug9s/VOC6Ylefv+dRjqv0O9Z0RlJF69yeNs4NkHF7k
-         IrI+Z+nw3ToZUZpLiWizdkeUrnkBfEAXsx9ZLk95qMnZL566IqIXVRMi0CCG1FLUviG0
-         Ko4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711637497; x=1712242297;
-        h=content-transfer-encoding:mime-version:user-agent:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tj0J7fNo7JaNqggtcLUYIbAlRhY6zh5m7OfApE5VAVQ=;
-        b=ViICaCCwuYIwpKVxpMYnLFIyaIIaN65syuSC8bLfd2B7gmOzEYUFz8h7KN6cMMOd+E
-         bt+qtPd09x0Fk75uJqzqIg9iT3n1Aq1ywbHbWQaYZIsu77BoYjz2nK//F5nXpseoFqrX
-         iDTe3SRbIm08kwVmN3cT9jW4qXo8yIncFJZskRwvNowZFhNlhlxbN/eSTvHXvFwE0APH
-         m3eBrUu5WMKmm6dsSBPsvHdUQ60opThX4RhfR+gsBerr0O1cTiRNXHzcvJuKwoqFtjSZ
-         4H6SkySUbJYvUfL3bp9OVlNLEPPzJqvFPH9z9NL6pYL/9Wd0WL8G6dOdvDbLCXX6+dtU
-         4/yg==
-X-Gm-Message-State: AOJu0YxJEjaaKGbmUZ55W2cxPtHtjxEZPSoEC85CmcsnfJ63ibGjnkU4
-	+dbkTlN+3znUVCm4/ES0eHleuQ8GUktTl+VnGxcYAKuPr8L/Tq5viqdel5P4zJI=
-X-Google-Smtp-Source: AGHT+IGTITQEdKTZjPj//fpsc7l4Mfxj5rl5wKaYL/aBb2bua1vgl0UWhgrKOjBQL8vGcr9As9OUhQ==
-X-Received: by 2002:a50:d6d7:0:b0:568:a9f3:b3fb with SMTP id l23-20020a50d6d7000000b00568a9f3b3fbmr2153146edj.8.1711637497098;
-        Thu, 28 Mar 2024 07:51:37 -0700 (PDT)
-Received: from ?IPv6:2a01:e0a:1d:5380:6cdc:9dff:7d8c:ff76? ([2a01:e0a:1d:5380:6cdc:9dff:7d8c:ff76])
-        by smtp.gmail.com with ESMTPSA id n7-20020a509347000000b0056c24df7a78sm949811eda.5.2024.03.28.07.51.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 07:51:36 -0700 (PDT)
-Message-ID: <cf21b9dd6499d3e6fa8d9e8c46d77eb035e9c7b5.camel@suse.com>
-Subject: Re: Please backport commit 13e3a512a290 (i2c: smbus: Support up to
- 8 SPD EEPROMs)
-From: Jean DELVARE <jdelvare@suse.com>
-To: Greg KH <gregkh@linuxfoundation.org>, Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: stable@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, 
-	linux-i2c@vger.kernel.org
-Date: Thu, 28 Mar 2024 15:51:35 +0100
-In-Reply-To: <2024032814-colony-observant-4e42@gregkh>
-References: <3bea11ec-32fe-4288-bc03-8c3ba63979f6@molgen.mpg.de>
-	 <2024032713-atom-saxophone-0c15@gregkh>
-	 <4fa53db0-358d-4e30-bcfa-745cab71fa72@molgen.mpg.de>
-	 <2024032814-colony-observant-4e42@gregkh>
-Organization: SUSE Linux
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1711637731; c=relaxed/simple;
+	bh=N1Hlh0/nQyHFsmO9kXfMBpqfOjJKnBxxQzST5ZvMFGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=COSlVt72JtdkwknvsGtLln1LGxaJS+iOASefJOeuDWxTmF6IlYjfHry/boLJpufOdYCHim+jcdb4+56vidb24f7fY3NAykdYQlRbfE9Hk6F0O2cGLp7dnIImW1dUeEakezbWXWLvSYwB8oHKKH3inxYwVJdPv1pm5F8XmlHsraE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hlwUv/1I; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42SBA2M6023688;
+	Thu, 28 Mar 2024 14:55:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=JQTagzTLA0ahr+zdqFFccuIih+ODyT0fmJmBoKrjDoo=; b=hl
+	wUv/1IeIk8g5cFNiLFj7Si3KibGei4qTmHufiufhKKa07Mn33fC03xh9dcZqz8q2
+	Bf/YFRU8YKzm1n3qGJCqGa5NPMum3hP4ayG+SF5IxdiJhnMz3RplOeYofD5+xywY
+	GEd7WyIefrXm+3kCRXdh8cZiy0izTXPj5nZDOEOs3YkOCm4dFEV5ha6WDy/JfNu5
+	wwIEYCldKb6TqRGhK0yIM4fQp8AMKBY0JtI1DOQf+giSqFvQiu5TDUe/9p0ruQr7
+	bMcFzNpGTffCakh4zbYRicgffIXSDKMGjwyb/NL/3DkrKsaqZdSxgbQe9hyvg8lp
+	2K5K/UsBVIpuFHnUHVFw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x4u203ptv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 14:55:23 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42SEtMnc027055
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 28 Mar 2024 14:55:22 GMT
+Received: from [10.218.29.219] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 28 Mar
+ 2024 07:55:19 -0700
+Message-ID: <124a7d54-5a18-4be7-9a76-a12017f6cce5@quicinc.com>
+Date: Thu, 28 Mar 2024 20:25:16 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode
+ exists in DT"
+To: <patchwork-bot+bluetooth@kernel.org>,
+        Johan Hovold
+	<johan+linaro@kernel.org>
+CC: <luiz.dentz@gmail.com>, <marcel@holtmann.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <quic_mohamull@quicinc.com>,
+        <quic_hbandi@quicinc.com>
+References: <20240314084412.1127-1-johan+linaro@kernel.org>
+ <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
+Content-Language: en-US
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+In-Reply-To: <171146704035.9961.13096206001570615153.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9N6dvkzbmne6emHvKabkk5wZfoBqHh1i
+X-Proofpoint-ORIG-GUID: 9N6dvkzbmne6emHvKabkk5wZfoBqHh1i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-28_15,2024-03-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 malwarescore=0 phishscore=0
+ adultscore=0 clxscore=1011 mlxlogscore=821 mlxscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2403280102
 
-Hi Greg, Paul,
+Hi Johan,
+We made this change to configure the device which supports persistent memory for the BD-Address
+So to make device functional in both scenarios we are adding a new property in dts file to distinguish persistent and non-persistent support of BD Address and set HCI_QUIRK_USE_BDADDR_PROPERTY bit accordingly
 
-On Thu, 2024-03-28 at 07:10 +0100, Greg KH wrote:
-> On Wed, Mar 27, 2024 at 09:35:38PM +0100, Paul Menzel wrote:
-> > Am 27.03.24 um 17:52 schrieb Greg KH:
-> > > On Wed, Mar 27, 2024 at 04:13:26PM +0100, Paul Menzel wrote:
-> > 
-> > > > Please apply commit 13e3a512a290 (i2c: smbus: Support up to 8
-> > > > SPD EEPROMs) [1] to the stable series to get rid of a warning
-> > > > and to support more SPDs.
-> > > > That commit is present since v6.8-rc1.
-> > > 
-> > > How far back?
-> > 
-> > I’d say 6.1.
-> > 
-> > > But isn't this a new feature, why is it needed in older kernels?
-> > > It's not a fix for a regression.
-> > decode-dimm does not work on systems with more than four SPD
-> > EEPROMs, so I’d say it’s a fix.
->
-> But it's never worked on such systems so it's not a regression fix,
-> right?
+On 3/26/2024 9:00 PM, patchwork-bot+bluetooth@kernel.org wrote:
+> Hello:
+> 
+> This patch was applied to bluetooth/bluetooth-next.git (master)
+> by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+> 
+> On Thu, 14 Mar 2024 09:44:12 +0100 you wrote:
+>> This reverts commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696.
+>>
+>> Qualcomm Bluetooth controllers like WCN6855 do not have persistent
+>> storage for the Bluetooth address and must therefore start as
+>> unconfigured to allow the user to set a valid address unless one has
+>> been provided by the boot firmware in the devicetree.
+>>
+>> [...]
+> 
+> Here is the summary with links:
+>    - Revert "Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT"
+>      https://git.kernel.org/bluetooth/bluetooth-next/c/ac0cf3552972
+> 
+> You are awesome, thank you!
 
-It's hard to qualify whether this is a regression or not.
-
-On the one hand, automatic detection of SPD EEPROMs only ever supported
-4 modules maximum (since kernel v5.8):
-
-01590f361e94 ("i2c: i801: Instantiate SPD EEPROMs automatically")
-5ace60859e84 ("i2c: smbus: Add a way to instantiate SPD EEPROMs automatically")
-
-
-OTOH, this was implemented using the at24 driver, which replaced the
-legacy eeprom driver. Said legacy driver was removed in kernel v6.7:
-
-0113a99b8a75 ("eeprom: Remove deprecated legacy eeprom driver")
-
-As it would be possible to see up to 8 SPD EEPROMs using the legacy
-eeprom driver, and only 4 when using the at24 driver, you could say
-that kernel v6.7 suffers from a regression. So backporting commit
-13e3a512a290 to 6.7-stable would make sense.
-
-> Anyway, I'll defer to the i2c maintainers as to what they want to
-> have happen here, as they did not originally tag this commit for
-> stable inclusion.
-
-I'm definitely in favor of backporting 13e3a512a290 to 6.7-stable.
-
-For older kernels, I'm not so sure, as there's a fairly easy
-workaround: loading the legacy eeprom driver should let decode-dimms
-see all memory modules (modules 1-4 using the at24 driver and modules
-5-8 using the eeprom driver). Paul, can you try and confirm that this
-does work?
-
--- 
-Jean Delvare
-SUSE L3 Support
+Thanks,
+Janaki Ram
 
