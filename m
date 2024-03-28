@@ -1,173 +1,267 @@
-Return-Path: <stable+bounces-33043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4728B88F609
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 04:47:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95A588F6F7
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 06:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B255D1F27CEC
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 03:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8449D29663C
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 05:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FEC32C9C;
-	Thu, 28 Mar 2024 03:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rKX317pG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09543FB92;
+	Thu, 28 Mar 2024 05:05:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FBB2C6A3
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 03:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980D23FB98;
+	Thu, 28 Mar 2024 05:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711597660; cv=none; b=ALHLu8EENSFFoqPHVocjaux3BDJe9y5ZoJiSvLeJSezOxoiGZ1M/yCMiupfHdbUIkXLPEPKZwoIHWyGIVIA6pvPxjdwlmUd3BK/1rUwpQg3aGF60LOmhbRkxVtDke/jT+tGAW1KdsuN/LDs/v0+CYTCOspRFGaxBjte4Tzrnm7Y=
+	t=1711602344; cv=none; b=TLb4vCpxyOCbyrx3Bkeh4/Ub97eWKVXDrdJ2QI+PkszBPp7OgbQXEWC64oHIChn3XWaGqMMUaZBqjKumjCVyb5cBTybOTZs+x54vuf40Ryh/IxlQs33Wl7nxylK920gRc0xbxZNaxi6mfWEj0zlLZksrCLGRk4q4haxzuzShz64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711597660; c=relaxed/simple;
-	bh=+T8+oibyFXQseWnRP1RvqNoOK9iWnGTIOM6XcBrSfHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G6LMjWG2blhC+dci108uXVso5REHPJ71hwI//1EPwdS3tjqYz5eDpdGzjY91phNUMndogZW5icTVbRwUJhg9ayp/CIv7GkM+FhTkvCL82HTfmIq7XOn+ZDV5SZBbegGEE/ejQKkjFnqH9HwJMyNbnOtaKy8Wbj0ojL0Idet0unk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rKX317pG; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6ea9a60f7f5so487881b3a.3
-        for <stable@vger.kernel.org>; Wed, 27 Mar 2024 20:47:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711597658; x=1712202458; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=z/WHCgPvut6hI6qyx5z8tojeBqigzDZUqYNvjOT4a48=;
-        b=rKX317pGKvHAm9GVzGfofDM+Vgw7heOFld+v9fAvU0S4BcOLR9ytMF5ubJcdEEbyCI
-         XPIu7yz7B/uMzvOUSJcYQT/zyLJlftlpOxfTQHhRVYAREiz3kWMyCyVqikEVxdkad8Y3
-         nPCfPEM5VJE5WibwSQB0+7jwLit91ZmKHEmxytROb1amaFk1CH4uReYhZiouaDbC9P+J
-         9Q1HfG9qDCYLtIMFSTB03kwLF0E6ALVbPWDgh22jny/razXpNzVHzcW8HTYAXGkwFh+K
-         DHOy9tIwL1SvxagtecCr+QSH87LVHPIhFiuYALokGoHTweKMGcmLaVmzfwnABaOZUuNj
-         EdXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711597658; x=1712202458;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z/WHCgPvut6hI6qyx5z8tojeBqigzDZUqYNvjOT4a48=;
-        b=RdcgThAG1nUJIZazONGaqzFskK+FYggs+4FnXRS5m/0bu0T2jYdoJHqpZrK7LEa3ce
-         d6cZ2zuRhhk9vYym+isHj55HFnksbJXPhA+WG5qcKnaXb6SrCWttdP4KdfxsOfXSW0bj
-         p1ZPvD5Ag3IBIwinOrjBhBm2JNN/eizBZG1KHM5MjlbIW3L8P+QFWWywutEgAeS98FVr
-         fwvAxIn45buatt1vQkbtds958FUCa3POLsx+4zLhBtxsb4IkkVS44c63BtKcmt9Nl6dt
-         xGScFfLBweV66GrXz3igVv/todyFAl8BQZkSybklWzLDRztqsjSHu+fR9K/U8CpW1BBk
-         1Ufw==
-X-Forwarded-Encrypted: i=1; AJvYcCV67fnikOvfiLQIB6N47PlJcEzt/sNYm1zjF/RVuj0+p+xRNH+HjQpbWIpxaCPmfCPpNZz0yfT63HueOOeGT/pnIdaejSEI
-X-Gm-Message-State: AOJu0Yxl69X+E2faPuNZwQh7qjCdaCrI95S4SvFT4WsLaORxZO4dFrXq
-	8qDj8ZSAzQZaqWFaljV2wr1vS4GpKhNx60C1DsOSTbv3hjXilXYImq8l06mJVA==
-X-Google-Smtp-Source: AGHT+IFW8Ftt5Bl/FbK/TnyOqAWEKoBzX1S89JTvlxTfnXlgLZ1WsKpzD4IlN1QhZseJ6ZbHIVvikg==
-X-Received: by 2002:a05:6a00:182a:b0:6ea:c2a2:5637 with SMTP id y42-20020a056a00182a00b006eac2a25637mr2027249pfa.12.1711597657716;
-        Wed, 27 Mar 2024 20:47:37 -0700 (PDT)
-Received: from thinkpad ([2409:40f2:201b:315f:8cec:6523:95f2:3f93])
-        by smtp.gmail.com with ESMTPSA id p6-20020a056a000b4600b006ea7b343877sm325711pfo.9.2024.03.27.20.47.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 20:47:37 -0700 (PDT)
-Date: Thu, 28 Mar 2024 09:17:32 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mtd: rawnand: qcom: Fix broken erase in
- misc_cmd_type in exec_op
-Message-ID: <20240328034732.GA3212@thinkpad>
-References: <20240325103053.24408-1-ansuelsmth@gmail.com>
- <20240326072512.GA8436@thinkpad>
- <66044bea.050a0220.dee16.c250@mx.google.com>
- <20240327175131.3c0100c3@xps-13>
+	s=arc-20240116; t=1711602344; c=relaxed/simple;
+	bh=uyNP3A4nFMKzdjPXwhMNvOH4+khsPK7PwkFgVwnBGGQ=;
+	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=c/Vr1VK9+j+P/Sjhbeke4PDeUHDF3VfHSY3A4F6m0tgQsFr6Pt2ZHCcVx+Bl/RTsid7O6Fd86T5aQCWqBWPmoWK8MOhvUiw/BIE+6KIzRA3SV/RogBFRowwBinUvFuLtJMZ3ms6zbe+p+em2dgut77VljXNuBBth6caLW9218l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
+Received: from in01.mta.xmission.com ([166.70.13.51]:49518)
+	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1rphxI-002r46-J6; Wed, 27 Mar 2024 23:05:36 -0600
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:38046 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1rphxF-001XDL-MF; Wed, 27 Mar 2024 23:05:36 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Steve Wahl <steve.wahl@hpe.com>
+Cc: Russ Anderson <rja@hpe.com>,  Ingo Molnar <mingo@kernel.org>,  Dave
+ Hansen <dave.hansen@linux.intel.com>,  Andy Lutomirski <luto@kernel.org>,
+  Peter Zijlstra <peterz@infradead.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,
+  linux-kernel@vger.kernel.org,  Linux regressions mailing list
+ <regressions@lists.linux.dev>,  Pavin Joseph <me@pavinjoseph.com>,
+  stable@vger.kernel.org,  Eric Hagberg <ehagberg@gmail.com>,  Simon Horman
+ <horms@verge.net.au>,  Dave Young <dyoung@redhat.com>,  Sarah Brofeldt
+ <srhb@dbc.dk>,  Dimitri Sivanich <sivanich@hpe.com>
+References: <20240322162135.3984233-1-steve.wahl@hpe.com>
+	<ZgABC1oQ9YJW6Bw3@gmail.com> <20240325020334.GA10309@hpe.com>
+	<87o7b273p2.fsf@email.froward.int.ebiederm.org>
+	<ZgHTXvCQr6ycbVzp@swahl-home.5wahls.com>
+	<87r0fv6ddb.fsf@email.froward.int.ebiederm.org>
+	<ZgQ8Ej-MLlNJR6wn@swahl-home.5wahls.com>
+Date: Thu, 28 Mar 2024 00:05:02 -0500
+In-Reply-To: <ZgQ8Ej-MLlNJR6wn@swahl-home.5wahls.com> (Steve Wahl's message of
+	"Wed, 27 Mar 2024 10:33:20 -0500")
+Message-ID: <87zfuj2bgh.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240327175131.3c0100c3@xps-13>
+Content-Type: text/plain
+X-XM-SPF: eid=1rphxF-001XDL-MF;;;mid=<87zfuj2bgh.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1/rP3vBnFdeRfpMQaudSwPj7iI+6ka9cSU=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+	*      [score: 0.3079]
+	*  0.7 XMSubLong Long Subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa08 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  0.0 T_TooManySym_02 5+ unique symbols in subject
+	*  0.0 T_TooManySym_01 4+ unique symbols in subject
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-DCC: XMission; sa08 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Steve Wahl <steve.wahl@hpe.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 2272 ms - load_scoreonly_sql: 0.10 (0.0%),
+	signal_user_changed: 15 (0.6%), b_tie_ro: 13 (0.6%), parse: 1.61
+	(0.1%), extract_message_metadata: 19 (0.8%), get_uri_detail_list: 4.5
+	(0.2%), tests_pri_-2000: 5 (0.2%), tests_pri_-1000: 3.4 (0.2%),
+	tests_pri_-950: 2.4 (0.1%), tests_pri_-900: 2.2 (0.1%), tests_pri_-90:
+	520 (22.9%), check_bayes: 505 (22.2%), b_tokenize: 15 (0.7%),
+	b_tok_get_all: 407 (17.9%), b_comp_prob: 7 (0.3%), b_tok_touch_all: 69
+	(3.0%), b_finish: 1.45 (0.1%), tests_pri_0: 458 (20.1%),
+	check_dkim_signature: 0.61 (0.0%), check_dkim_adsp: 3.1 (0.1%),
+	poll_dns_idle: 1224 (53.9%), tests_pri_10: 2.0 (0.1%), tests_pri_500:
+	1239 (54.5%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] x86/mm/ident_map: Use full gbpages in identity maps
+ except on UV platform.
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 
-On Wed, Mar 27, 2024 at 05:51:31PM +0100, Miquel Raynal wrote:
-> Hi,
-> 
-> ansuelsmth@gmail.com wrote on Wed, 27 Mar 2024 16:20:58 +0100:
-> 
-> > On Tue, Mar 26, 2024 at 12:55:12PM +0530, Manivannan Sadhasivam wrote:
-> > > On Mon, Mar 25, 2024 at 11:30:47AM +0100, Christian Marangi wrote:  
-> > > > misc_cmd_type in exec_op have multiple problems. With commit a82990c8a409
-> > > > ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path") it was
-> > > > reworked and generalized but actually broke the handling of the
-> > > > ERASE_BLOCK command.
-> > > > 
-> > > > Additional logic was added to the erase command cycle without clear
-> > > > explaination causing the erase command to be broken on testing it on
-> > > > a ipq806x nandc.
-> > > > 
-> > > > Fix the erase command by reverting the additional logic and only adding
-> > > > the NAND_DEV0_CFG0 additional call (required for erase command).
-> > > > 
-> > > > Fixes: a82990c8a409 ("mtd: rawnand: qcom: Add read/read_start ops in exec_op path")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> > > > ---
-> > > > Changes v2:
-> > > > - Split this and rework commit description and title
-> > > > 
-> > > >  drivers/mtd/nand/raw/qcom_nandc.c | 5 ++---
-> > > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-> > > > index b079605c84d3..19d76e345a49 100644
-> > > > --- a/drivers/mtd/nand/raw/qcom_nandc.c
-> > > > +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-> > > > @@ -2830,9 +2830,8 @@ static int qcom_misc_cmd_type_exec(struct nand_chip *chip, const struct nand_sub
-> > > >  	nandc_set_reg(chip, NAND_EXEC_CMD, 1);
-> > > >  
-> > > >  	write_reg_dma(nandc, NAND_FLASH_CMD, instrs, NAND_BAM_NEXT_SGL);
-> > > > -	(q_op.cmd_reg == OP_BLOCK_ERASE) ? write_reg_dma(nandc, NAND_DEV0_CFG0,
-> > > > -	2, NAND_BAM_NEXT_SGL) : read_reg_dma(nandc,
-> > > > -	NAND_FLASH_STATUS, 1, NAND_BAM_NEXT_SGL);
-> > > > +	if (q_op.cmd_reg == OP_BLOCK_ERASE)
-> > > > +		write_reg_dma(nandc, NAND_DEV0_CFG0, 2, NAND_BAM_NEXT_SGL);  
-> > > 
-> > > So this only avoids the call to, 'read_reg_dma(nandc, NAND_FLASH_STATUS, 1,
-> > > NAND_BAM_NEXT_SGL)' if q_op.cmd_reg != OP_BLOCK_ERASE. But for q_op.cmd_reg ==
-> > > OP_BLOCK_ERASE, the result is the same.
-> > > 
-> > > I'm wondering how it results in fixing the OP_BLOCK_ERASE command.
-> > > 
-> > > Can you share the actual issue that you are seeing? Like error logs etc...
-> > >  
-> > 
-> > Issue is that nandc goes to ADM timeout as soon as a BLOCK_ERASE is
-> > called. BLOCK_ERASE operation match also another operation from MTD
-> > read. (parser also maps to other stuff)
-> > 
-> > I will be away from the testing board for 7-10 days so I can't provide
-> > logs currently.
-> 
-> So, shall we wait for additional logs from Christian or shall I merge
-> the two-patches series? I'm not sure what's the status anymore.
-> 
+Steve Wahl <steve.wahl@hpe.com> writes:
 
-TBH, I don't know how OP_BLOCK_ERASE can fail without this change. But I can
-clearly see the 2 patches required for OP_RESET_DEVICE command. But merging the
-patches as it is doesn't look good to me.
+> On Wed, Mar 27, 2024 at 07:57:52AM -0500, Eric W. Biederman wrote:
+>> Steve Wahl <steve.wahl@hpe.com> writes:
+>> 
+>> > On Mon, Mar 25, 2024 at 10:04:41AM -0500, Eric W. Biederman wrote:
+>> >> Russ Anderson <rja@hpe.com> writes:
+>> >> > Steve can certainly merge his two patches and resubmit, to replace the
+>> >> > reverted original patch.  He should be on in the morning to speak for
+>> >> > himself.
+>> >> 
+>> >> I am going to push back and suggest that this is perhaps a bug in the
+>> >> HPE UV systems firmware not setting up the cpus memory type range
+>> >> registers correctly.
+>> >> 
+>> >> Unless those systems are using new fangled cpus that don't have 16bit
+>> >> and 32bit support, and don't implement memory type range registers,
+>> >> I don't see how something that only affects HPE UV systems could be
+>> >> anything except an HPE UV specific bug.
+>> >
+>> > Eric,
+>> >
+>> > I took the time to communicate with others in the company who know
+>> > this stuff better than I do before replying on this.
+>> >
+>> > One of the problems with using the MTRRs for this is that there are
+>> > simply not enough of them.  The MTRRs size/alignment requirements mean
+>> > that more than one entry would be required per reserved region, and we
+>> > need one reserved region per socket on systems that currently can go
+>> > up to 32 sockets.  (In case you would think to ask, the reserved
+>> > regions also cannot be made contiguous.)
+>> >
+>> > So MTRRs will not work to keep speculation out of our reserved memory
+>> > regions.
+>> >
+>> > Let me know if you need more information from us on this.
+>> 
+>> Thanks for this.
+>> 
+>> Do you know if there are enough MTRRs for the first 4GB?
+>
+> I don't personally know all the details of how BIOS chooses to place
+> things, but I suspect that might be true.  The restricted spaces
+> usually end up at the end of the address range for a particular node,
+> and 4GB would be in the early part of node 0.  If the conversation
+> develops further along these lines, I can find out more definitively.
+>
+>> I am curious if kexec should even consider going into 32bit mode without
+>> page tables or even into 16bit mode on such a system.  Or if such a
+>> system will always require using page tables.
+>
+> Unless I'm mistaken, wouldn't that put a pretty heavy restriction on
+> where the kdump kernel could be located?
 
-So I think if Christian can club the two patches into 1 as like v1 and reword
-the commit message and subject to reflect the fact that OP_RESET_DEVICE command
-is being fixed would work for me.
+If you are coming from 64bit EFI it adds restrictions.
 
-- Mani
+Most of my experience involves systems using a real mode BIOS and
+folks thought I was strange for wanting to be able to load the kernel
+above 4GB.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Having that experience, I am stuck wondering how all of the weird
+backwards compatibility cases are going to work. Hmm.
+
+There is one concrete case where it matters that I think still exists.
+
+x86_64 processors startup in 16bit real mode, then have to transition
+through 32bit protected mode, before transitioning to 64bit protected
+mode.  Only in 64bit protected mode are page tables enabled.
+
+All this happens during early kernel startup when the bootstrap
+processor sends STARTUP IPIs to all of the secondary processors.
+
+The startup IPI lets you pick where in the first 1MiB the secondary
+processors will start.
+
+Assuming there isn't a new processor startup sequence on your cpus
+speculation before the processor loads it's first page table is a
+legitimate concern.
+
+> Or the target region for KASLR?
+
+As I recall the kernel is limited to the last 2GB of the virtual
+address space, as parts of the instruction 
+
+>> If you don't have enough MTRRs on a big NUMA system I think it is
+>> perfectly understandable, to need to use the page tables.
+>> 
+>> Please include this the fact that splitting GBpages is necessary because
+>> of a lack of MTRRs in the change description.
+>
+> OK.
+>
+>> Given that it is the lack of MTRRs on a large NUMA system that make the
+>> change necessary.   The goes from a pure bug fix change to a change to
+>> accommodate systems without enough MTRRs.
+>> 
+>> That information makes it more understandable why older systems (at
+>> least in the case of kexec) might not be ok with the change.  As for
+>> older systems their MTRRs are sufficient and thus they can use fewer
+>> page table entries.  Allowing for use of larger TLB entries.
+>
+> That last paragraph doesn't match what I think is happening.
+>
+> At least from my point of view, that some systems aren't OK with the
+> change has nothing to do with MTRRs or TLB page size.  They simply
+> require the extra "slop" of GB pages, implicitly adding a full GB of
+> space around any smaller space requested by map_acpi_tables().
+>
+> The systems that failed with my original change also failed on earlier
+> kernels when nogbpages was added to the kernel command line.  That
+> creates the identity map using 2M pages for everything, with no GB
+> page "slop".   I'm pretty sure these systems will continue to fail with
+> "nogbpages" enabled.
+>
+> For one debug-kernel cycle on Pavin's system I added in hard-coded
+> requests to explicitly add back in the areas that not being sloppy had
+> excluded, and that brought kexec back to functioning; which further
+> proves my point.  
+>
+> I wanted to be sure you understood this in case it has any effect on
+> what you think should be done.
+
+Sort of.
+
+What kexec wants of an identity mapped page table really is to simulate
+disabling paging altogether.  There isn't enough memory in most systems
+to identity map the entire 48bit or 52bit physical address space so some
+compromises have to be made.  I seem to recall only mapping up to
+maxpfn, and using 1GB pages when I originally wrote the code.  It was
+later refactored to share the identity map page table building code with
+the rest of the kernel.
+
+When you changed the page tables not to map everything, strictly
+speaking you created an ABI break of the kexec ABI.
+
+Which is a long way of saying it isn't being sloppy it is deliberate,
+and that the problem from my perspective is that things have become too
+fine grained, too optimized.
+
+Pavin's definitely proves the issue was not mapping enough pages, it is
+nice that we have that confirmation.
+
+From my perspective the entire reason for wanting to be fine grained and
+precise in the kernel memory map is because the UV systems don't have
+enough MTRRs.  So you have to depend upon the cache-ability attributes
+for specific addresses of memory coming from the page tables instead of
+from the MTRRs.
+
+If you had enough MTRRs more defining the page tables to be precisely
+what is necessary would be simply an exercise in reducing kernel
+performance, because it is more efficient in both page table size, and
+in TLB usage to use 1GB pages instead of whatever smaller pages you have
+to use for oddball regions.
+
+For systems without enough MTRRs the small performance hit in paging
+performance is the necessary trade off.
+
+At least that is my perspective.  Does that make sense?
+
+Eric
 
