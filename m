@@ -1,107 +1,143 @@
-Return-Path: <stable+bounces-33039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4FF88F3AD
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 01:26:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34BE88F453
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 02:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D08B240C8
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 00:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A94F92A6C0B
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 01:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24792BE55;
-	Thu, 28 Mar 2024 00:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770C61BF2A;
+	Thu, 28 Mar 2024 01:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Zj6lr0AL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a0zeFM1y"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5951E498;
-	Thu, 28 Mar 2024 00:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717A8BA2F;
+	Thu, 28 Mar 2024 01:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711585406; cv=none; b=BcMuXeUGWUHaEnLQZrWpY7tOyYqu/jtojRcgXwxVCS9KWjXsTKghUjddymbpy6MMSSehi0ZyM51pQmmBPCKgm4RNMZbMFRATShioxfK5XHEFpmiyDx82TNEJS27Pk4duPOHAI4Mz8dsE+QO1ONwucvS69pC/9I6z8ArJxx9BxI0=
+	t=1711588194; cv=none; b=GAMlaIgv64U8piL0mBZpIQhv9ehY8OgqDYXuSj+Wrl+hktc34lRazMQhYISEK9tYDm7ruAAdVVemCqqmPkR7H99zc88D8nFQaCfNTnlp3OFiadIl9Orb31JOyLaI9rwl6fq2VSSerUcDtzsVYLE2cetKfeIq/UN1tSNqUO8iD68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711585406; c=relaxed/simple;
-	bh=QBhJNdXt3ZDE1KYix7kVNCLNrhefe3LPg7AK/U9VUX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYmj9afwlijNeXYr1FVsyj/Z2f78J8j71Jh9MS1Qf9Sm2rvNtI712wmFC67qvMvmSJcHl8CLO4sWcnTASgpYdjM84X/HKWQ+h8wc5xgLb4THgdu38q6Spv3wOSTofdbAZaq3KSqTUybb7TZl2Bc3SFU4Kp0a1G88EyaQgSTxbuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Zj6lr0AL; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 71C63FF802;
-	Thu, 28 Mar 2024 00:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711585396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wrkfJcTuEi+D+HvBe61cn2FoxEmO6/EMkOnHD/GfbVk=;
-	b=Zj6lr0AL5lpyDHEmBNKHoDUp8yYNVdu+j6B2c/n+9L4YqqNlPbqUykWamyW25LRM7Zl2n0
-	4gBIpQViRbWJi50k/2DGDhQoluW7Mx2v5juh32IvkijyCIXq/oTpkCD7HT5VRhJwcATOWL
-	j38C8hYFXRA+OjFsOorQUiUzwWY7DgvKekSna9OBvnB9/jLcp0E4G0CY48x5zSfA78ec/h
-	6jlZrsYjsyOWsxKeOrtZVbJpLTr1z86o74MT4buG1l3QBFMb8gAN0ZUR6z2aadu1DpZrOU
-	kaugZr7iYw0QuWll34OHEdvLE9nN2GQhGces5PpaaOA23A7wp3LNPmxlAYDeYg==
-Date: Thu, 28 Mar 2024 01:23:13 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Lizhi Hou <lizhi.hou@amd.com>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>, Brian Xu <brian.xu@amd.com>,
- Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, Vinod Koul
- <vkoul@kernel.org>, Michal Simek <michal.simek@amd.com>, Jan Kuliga
- <jankul@alatek.krakow.pl>, <dmaengine@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
+	s=arc-20240116; t=1711588194; c=relaxed/simple;
+	bh=Udc/J/js8gW3bfsrXjFKt4foNU5vAVjuTKQH3YecMVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxguDCVPpFibYexr7Hgnq1f9BZ4NX1rAnfZqgsKwvwci0H0HdP6tHXP2CesrsuUl6AdrsMRkEHGlrmBN9//X06V1opJ5OtpH03KP1LWcr7QPtr+VAArKBevW15ytmUrE4NPXT5qV4rPiLUQdsddfq6sLT8nPYKMXBGZ0RImQX38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a0zeFM1y; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711588191; x=1743124191;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Udc/J/js8gW3bfsrXjFKt4foNU5vAVjuTKQH3YecMVI=;
+  b=a0zeFM1yFsPLBaFAhUMdQK09FnPnvxVJNoktWfXuBxWxX97eHPkZQnBN
+   uzz6QRB9HdMHvDVkFIGUuGHKZQDiVotfsTd6o2EqU1hXuHgaCcIoj0b/O
+   bXDb1RljRiE9eIF2bK5zcEpcG9UHeg2gFAkHWeSLea2U6QFahdygwptYE
+   Opm8ToW9sVkmrg6oiTfPoacBhRlKTz9SxpbeuAPQPhxUv2Ks394yf6n1U
+   aMp6a53MoV8YAhQ8cVdWi1iPuK48+Es2PXDm4vBJ1O8DCnylv5wMiKhLE
+   YzkT1Dwn+wW1COO1gPN5EoZcbL0qlYCpGDdAP3NuuED34ZbZ82KSBmPdK
+   g==;
+X-CSE-ConnectionGUID: T6807yvVQTqdp8EEtQFn/w==
+X-CSE-MsgGUID: 6ByE7gCqSU+mzrXk1gbHLQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="9684482"
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; 
+   d="scan'208";a="9684482"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2024 18:09:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; 
+   d="scan'208";a="17095487"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 27 Mar 2024 18:09:47 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rpeH2-0001f8-1i;
+	Thu, 28 Mar 2024 01:09:44 +0000
+Date: Thu, 28 Mar 2024 09:09:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>,
+	Lizhi Hou <lizhi.hou@amd.com>, Brian Xu <brian.xu@amd.com>,
+	Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>,
+	Vinod Koul <vkoul@kernel.org>, Michal Simek <monstr@monstr.eu>,
+	Jan Kuliga <jankul@alatek.krakow.pl>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: oe-kbuild-all@lists.linux.dev, dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Louis Chauvet <louis.chauvet@bootlin.com>
 Subject: Re: [PATCH 2/3] dmaengine: xilinx: xdma: Fix synchronization issue
-Message-ID: <20240328012257.4a5955f2@xps-13>
-In-Reply-To: <b59dd8cd-fd75-5342-d411-817f33e0ff48@amd.com>
-References: <20240327-digigram-xdma-fixes-v1-0-45f4a52c0283@bootlin.com>
-	<20240327-digigram-xdma-fixes-v1-2-45f4a52c0283@bootlin.com>
-	<b59dd8cd-fd75-5342-d411-817f33e0ff48@amd.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Message-ID: <202403280803.IAFl90ZE-lkp@intel.com>
+References: <20240327-digigram-xdma-fixes-v1-2-45f4a52c0283@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327-digigram-xdma-fixes-v1-2-45f4a52c0283@bootlin.com>
 
-Hi Lizhi,
+Hi Louis,
 
-> > @@ -376,6 +378,8 @@ static int xdma_xfer_start(struct xdma_chan *xchan)
-> >   		return ret; =20
-> >   >   	xchan->busy =3D true; =20
-> > +	xchan->stop_requested =3D false;
-> > +	reinit_completion(&xchan->last_interrupt); =20
->=20
-> If stop_requested is true, it should not start another transfer. So I wou=
-ld suggest to add
->=20
->  =C2=A0=C2=A0=C2=A0=C2=A0 if (xchan->stop_requested)
->=20
->  =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 return -ENODEV;
+kernel test robot noticed the following build warnings:
 
-Maybe -EBUSY in this case?
+[auto build test WARNING on 8e938e39866920ddc266898e6ae1fffc5c8f51aa]
 
-I thought synchronize() was mandatory in-between. If that's not the
-case then indeed we need to block or error-out if a new transfer
-gets started.
+url:    https://github.com/intel-lab-lkp/linux/commits/Louis-Chauvet/dmaengine-xilinx-xdma-Fix-wrong-offsets-in-the-buffers-addresses-in-dma-descriptor/20240327-180155
+base:   8e938e39866920ddc266898e6ae1fffc5c8f51aa
+patch link:    https://lore.kernel.org/r/20240327-digigram-xdma-fixes-v1-2-45f4a52c0283%40bootlin.com
+patch subject: [PATCH 2/3] dmaengine: xilinx: xdma: Fix synchronization issue
+config: sparc-allyesconfig (https://download.01.org/0day-ci/archive/20240328/202403280803.IAFl90ZE-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240328/202403280803.IAFl90ZE-lkp@intel.com/reproduce)
 
->=20
-> at the beginning of xdma_xfer_start().
->=20
-> xdma_xfer_start() is protected by chan lock.
->=20
-> >   >   	return 0; =20
-> >   }
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403280803.IAFl90ZE-lkp@intel.com/
 
-Thanks,
-Miqu=C3=A8l
+All warnings (new ones prefixed by >>):
+
+>> drivers/dma/xilinx/xdma.c:76: warning: Function parameter or struct member 'last_interrupt' not described in 'xdma_chan'
+>> drivers/dma/xilinx/xdma.c:76: warning: Function parameter or struct member 'stop_requested' not described in 'xdma_chan'
+
+
+vim +76 drivers/dma/xilinx/xdma.c
+
+17ce252266c7f0 Lizhi Hou     2023-01-19  53  
+17ce252266c7f0 Lizhi Hou     2023-01-19  54  /**
+17ce252266c7f0 Lizhi Hou     2023-01-19  55   * struct xdma_chan - Driver specific DMA channel structure
+17ce252266c7f0 Lizhi Hou     2023-01-19  56   * @vchan: Virtual channel
+17ce252266c7f0 Lizhi Hou     2023-01-19  57   * @xdev_hdl: Pointer to DMA device structure
+17ce252266c7f0 Lizhi Hou     2023-01-19  58   * @base: Offset of channel registers
+17ce252266c7f0 Lizhi Hou     2023-01-19  59   * @desc_pool: Descriptor pool
+17ce252266c7f0 Lizhi Hou     2023-01-19  60   * @busy: Busy flag of the channel
+17ce252266c7f0 Lizhi Hou     2023-01-19  61   * @dir: Transferring direction of the channel
+17ce252266c7f0 Lizhi Hou     2023-01-19  62   * @cfg: Transferring config of the channel
+17ce252266c7f0 Lizhi Hou     2023-01-19  63   * @irq: IRQ assigned to the channel
+17ce252266c7f0 Lizhi Hou     2023-01-19  64   */
+17ce252266c7f0 Lizhi Hou     2023-01-19  65  struct xdma_chan {
+17ce252266c7f0 Lizhi Hou     2023-01-19  66  	struct virt_dma_chan		vchan;
+17ce252266c7f0 Lizhi Hou     2023-01-19  67  	void				*xdev_hdl;
+17ce252266c7f0 Lizhi Hou     2023-01-19  68  	u32				base;
+17ce252266c7f0 Lizhi Hou     2023-01-19  69  	struct dma_pool			*desc_pool;
+17ce252266c7f0 Lizhi Hou     2023-01-19  70  	bool				busy;
+17ce252266c7f0 Lizhi Hou     2023-01-19  71  	enum dma_transfer_direction	dir;
+17ce252266c7f0 Lizhi Hou     2023-01-19  72  	struct dma_slave_config		cfg;
+17ce252266c7f0 Lizhi Hou     2023-01-19  73  	u32				irq;
+70e8496bf693e1 Louis Chauvet 2024-03-27  74  	struct completion		last_interrupt;
+70e8496bf693e1 Louis Chauvet 2024-03-27  75  	bool				stop_requested;
+17ce252266c7f0 Lizhi Hou     2023-01-19 @76  };
+17ce252266c7f0 Lizhi Hou     2023-01-19  77  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
