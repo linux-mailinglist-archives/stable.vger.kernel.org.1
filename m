@@ -1,134 +1,151 @@
-Return-Path: <stable+bounces-33088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF1E89027E
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 16:00:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2996B89023E
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ADAB1C28C52
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 15:00:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577171C22732
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4BC7E56E;
-	Thu, 28 Mar 2024 15:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF8612BF08;
+	Thu, 28 Mar 2024 14:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FVRqf8y7"
 X-Original-To: stable@vger.kernel.org
-Received: from 15.mo550.mail-out.ovh.net (15.mo550.mail-out.ovh.net [188.165.38.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E437D417
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 15:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.38.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F947CF3E
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 14:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711638031; cv=none; b=KefBZo6HZTwRCDipFYuuw4hkRs3Z/yjicLEzzk0DsvdaX3RCx9mAMrhw3i7wBfHMmQQgMWezbB7WEoc7NbrS03zi/S1IXsa9UUTcmf9FRZm74I3TDIW0jBS0uHOK5qcBZ2Or+2vG/uvSKutChpCzIpewCWUj/jsrCOPVmv88DT4=
+	t=1711637501; cv=none; b=JtJEQJVHCh7pPW4JDjAnuN51ENNO2OSsb07AHczochFkvn9P6Afxce8S4cgad84LplTUwcoa8vlaJ4DCHq9Vt+qyudVkGkClrJoI6hXRQgfbmgl+GD8XNrDDYkYdQ9V8iSVV4ftBzMG15y/kj6IckGZIJHEUfqCeKB0ZskTlI8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711638031; c=relaxed/simple;
-	bh=PBil/XoTgdd3/TtGZlrRclNaQYhUhUn9fk15tLO9hdA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=S5QWgZKFFCe3rh4vpo7zj6dd0pUM/HyOjWYT0N7dxTnDS26O8T3PZ/42nPVV4igfciHpxKcirfj7zFHBB2sgxEUWMgrESy8twr4/OlsZMze8BlbODVbaXXMGKeoIU8swSNWCb1ygbYKY6wjs68Xs2Uw8Efe3bRv1JGmcVJ8cu1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=milecki.pl; spf=pass smtp.mailfrom=milecki.pl; arc=none smtp.client-ip=188.165.38.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=milecki.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=milecki.pl
-Received: from director2.ghost.mail-out.ovh.net (unknown [10.109.148.12])
-	by mo550.mail-out.ovh.net (Postfix) with ESMTP id 4V55sD70qyz18wp
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 14:44:16 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-wxtpn (unknown [10.110.113.85])
-	by director2.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 7E9DF1FE90;
-	Thu, 28 Mar 2024 14:44:15 +0000 (UTC)
-Received: from milecki.pl ([37.59.142.101])
-	by ghost-submission-6684bf9d7b-wxtpn with ESMTPSA
-	id IMV9Hj+CBWbZXggAzwvfSA
-	(envelope-from <rafal@milecki.pl>); Thu, 28 Mar 2024 14:44:15 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-101G0045d0b1274-b274-498f-8ead-e6da2683c4fd,
-                    2235DC1EC97375EE3D784BB84CDB06A8C08B71DD) smtp.auth=rafal@milecki.pl
-X-OVh-ClientIp:51.255.71.60
+	s=arc-20240116; t=1711637501; c=relaxed/simple;
+	bh=ux6IFglXde1ERd54R7V4j1Ml1pPp+O0GYiElVJc4Bfw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=X1eu8qChqaonvoONhzJhEDPlYOjQQupvzU1ipk5/Jz2YXtKDBFMX9SZwnG769oOR80FUXHgQwPHfvdk0aX2zVi7wC8gPNhx6LMjLzDVQpuDo8PcbsgHVvxSEWlOAmowvfXM9hvLaDZUA0lCEfKBJQQ/Mj+pYsAPAYCLAcjHqePU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FVRqf8y7; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56c1922096cso1375092a12.0
+        for <stable@vger.kernel.org>; Thu, 28 Mar 2024 07:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1711637497; x=1712242297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Tj0J7fNo7JaNqggtcLUYIbAlRhY6zh5m7OfApE5VAVQ=;
+        b=FVRqf8y7mfXArQ3Zr3EP50wMzbg9QvQsijou6+spnKjIMt6sQGJ3LO5r7CdQoOtYFZ
+         NnfpaENDmYMtMmdyKVPhhkmihV7robi7w7R0xIC1wSEvkaR5Mvawm3f8V3elpmK+9oA2
+         pwAiECxti2SIjTigUVtKKqAW8+92RImwC2NaGdlqRUw5YApISfJ5vi+1Pkb/a1UMm6MN
+         wmHC0OmG+Zq08r2WQCaW+aHuxQug9s/VOC6Ylefv+dRjqv0O9Z0RlJF69yeNs4NkHF7k
+         IrI+Z+nw3ToZUZpLiWizdkeUrnkBfEAXsx9ZLk95qMnZL566IqIXVRMi0CCG1FLUviG0
+         Ko4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711637497; x=1712242297;
+        h=content-transfer-encoding:mime-version:user-agent:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tj0J7fNo7JaNqggtcLUYIbAlRhY6zh5m7OfApE5VAVQ=;
+        b=ViICaCCwuYIwpKVxpMYnLFIyaIIaN65syuSC8bLfd2B7gmOzEYUFz8h7KN6cMMOd+E
+         bt+qtPd09x0Fk75uJqzqIg9iT3n1Aq1ywbHbWQaYZIsu77BoYjz2nK//F5nXpseoFqrX
+         iDTe3SRbIm08kwVmN3cT9jW4qXo8yIncFJZskRwvNowZFhNlhlxbN/eSTvHXvFwE0APH
+         m3eBrUu5WMKmm6dsSBPsvHdUQ60opThX4RhfR+gsBerr0O1cTiRNXHzcvJuKwoqFtjSZ
+         4H6SkySUbJYvUfL3bp9OVlNLEPPzJqvFPH9z9NL6pYL/9Wd0WL8G6dOdvDbLCXX6+dtU
+         4/yg==
+X-Gm-Message-State: AOJu0YxJEjaaKGbmUZ55W2cxPtHtjxEZPSoEC85CmcsnfJ63ibGjnkU4
+	+dbkTlN+3znUVCm4/ES0eHleuQ8GUktTl+VnGxcYAKuPr8L/Tq5viqdel5P4zJI=
+X-Google-Smtp-Source: AGHT+IGTITQEdKTZjPj//fpsc7l4Mfxj5rl5wKaYL/aBb2bua1vgl0UWhgrKOjBQL8vGcr9As9OUhQ==
+X-Received: by 2002:a50:d6d7:0:b0:568:a9f3:b3fb with SMTP id l23-20020a50d6d7000000b00568a9f3b3fbmr2153146edj.8.1711637497098;
+        Thu, 28 Mar 2024 07:51:37 -0700 (PDT)
+Received: from ?IPv6:2a01:e0a:1d:5380:6cdc:9dff:7d8c:ff76? ([2a01:e0a:1d:5380:6cdc:9dff:7d8c:ff76])
+        by smtp.gmail.com with ESMTPSA id n7-20020a509347000000b0056c24df7a78sm949811eda.5.2024.03.28.07.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 07:51:36 -0700 (PDT)
+Message-ID: <cf21b9dd6499d3e6fa8d9e8c46d77eb035e9c7b5.camel@suse.com>
+Subject: Re: Please backport commit 13e3a512a290 (i2c: smbus: Support up to
+ 8 SPD EEPROMs)
+From: Jean DELVARE <jdelvare@suse.com>
+To: Greg KH <gregkh@linuxfoundation.org>, Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: stable@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, 
+	linux-i2c@vger.kernel.org
+Date: Thu, 28 Mar 2024 15:51:35 +0100
+In-Reply-To: <2024032814-colony-observant-4e42@gregkh>
+References: <3bea11ec-32fe-4288-bc03-8c3ba63979f6@molgen.mpg.de>
+	 <2024032713-atom-saxophone-0c15@gregkh>
+	 <4fa53db0-358d-4e30-bcfa-745cab71fa72@molgen.mpg.de>
+	 <2024032814-colony-observant-4e42@gregkh>
+Organization: SUSE Linux
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 28 Mar 2024 15:44:15 +0100
-From: =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger
- <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] mtd: limit OTP NVMEM Cell parse to non Nand devices
-In-Reply-To: <66057c71.050a0220.e4ba.97dc@mx.google.com>
-References: <20240322040951.16680-1-ansuelsmth@gmail.com>
- <30bc0d38-b610-4397-ba42-46819d5507fc@milecki.pl>
- <66057c71.050a0220.e4ba.97dc@mx.google.com>
-Message-ID: <a4632f1ba701f6b333c50a5366723cf4@milecki.pl>
-X-Sender: rafal@milecki.pl
-X-Webmail-UserID: rafal@milecki.pl
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 9385501623872629561
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudduledgieeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggffhffvvefujghfkfigihgtgfesthekjhdttddtjeenucfhrhhomheptfgrfhgrlhcuofhilhgvtghkihcuoehrrghfrghlsehmihhlvggtkhhirdhplheqnecuggftrfgrthhtvghrnhepgedttdevfffhueduvddvgfeufedtudevgefgteehhfehudelteehteekteeuffeinecuffhomhgrihhnpehophgvnhifrhhtrdhorhhgnecukfhppeduvdejrddtrddtrddupdefuddruddurddvudekrddutdeipdehuddrvdehhedrjedurdeitddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprhgrfhgrlhesmhhilhgvtghkihdrphhlpdhnsggprhgtphhtthhopedupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehhedtpdhmohguvgepshhmthhpohhuth
 
-On 2024-03-28 15:19, Christian Marangi wrote:
-> On Wed, Mar 27, 2024 at 11:15:02PM +0100, Rafał Miłecki wrote:
->> On 22.03.2024 05:09, Christian Marangi wrote:
->> > diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
->> > index 5887feb347a4..0de87bc63840 100644
->> > --- a/drivers/mtd/mtdcore.c
->> > +++ b/drivers/mtd/mtdcore.c
->> > @@ -900,7 +900,7 @@ static struct nvmem_device *mtd_otp_nvmem_register(struct mtd_info *mtd,
->> >   	config.name = compatible;
->> >   	config.id = NVMEM_DEVID_AUTO;
->> >   	config.owner = THIS_MODULE;
->> > -	config.add_legacy_fixed_of_cells = true;
->> > +	config.add_legacy_fixed_of_cells = !mtd_type_is_nand(mtd);
->> >   	config.type = NVMEM_TYPE_OTP;
->> >   	config.root_only = true;
->> >   	config.ignore_wp = true;
->> 
->> I think there may be even more unwanted behaviour here. If
->> mtd_otp_nvmem_register() fails to find node with "user-otp" /
->> "factory-otp" compatible then it sets "config.of_node" to NULL but 
->> that
->> means NVMEM core still looks for NVMEM cells in device's "of_node".
->> 
->> I believe we should not look for OTP NVMEM cells out of the "user-otp" 
->> /
->> "factory-otp" compatible nodes.
->> 
->> So maybe what we need in the first place is just:
->> config.add_legacy_fixed_of_cells = !!np;
->> ?
->> 
->> Any extra limitation of .add_legacy_fixed_of_cells should probably be
->> used only if we want to prevent new users of the legacy syntax. The
->> problem is that mtd.yaml binding allowed "user-otp" and "factory-otp"
->> with old syntax cells. It means every MTD device was allowed to have
->> them.
->> 
->> No in-kernel DTS even used "user-otp" or "factory-otp" with NVMEM 
->> legacy
->> cells but I'm not sure about downstream DTS files. Ideally we would do
->> config.add_legacy_fixed_of_cells = false;
->> but that could break compatibility with some downstream DTS files.
-> 
-> Yes the main problem is prevent regression in downstream. I feel for 
-> the
-> nand usage, this is 100% of the times broken. For SPI and other corner
-> case MTD devices it's not?
-> 
-> Anyway did you by chance have a suggestion for a better fixes tag?
+Hi Greg, Paul,
 
-My personal idea for that would be to put two Fixes with two commits and
-describe in commit body that one just exposed existing bug.
+On Thu, 2024-03-28 at 07:10 +0100, Greg KH wrote:
+> On Wed, Mar 27, 2024 at 09:35:38PM +0100, Paul Menzel wrote:
+> > Am 27.03.24 um 17:52 schrieb Greg KH:
+> > > On Wed, Mar 27, 2024 at 04:13:26PM +0100, Paul Menzel wrote:
+> > 
+> > > > Please apply commit 13e3a512a290 (i2c: smbus: Support up to 8
+> > > > SPD EEPROMs) [1] to the stable series to get rid of a warning
+> > > > and to support more SPDs.
+> > > > That commit is present since v6.8-rc1.
+> > > 
+> > > How far back?
+> > 
+> > I’d say 6.1.
+> > 
+> > > But isn't this a new feature, why is it needed in older kernels?
+> > > It's not a fix for a regression.
+> > decode-dimm does not work on systems with more than four SPD
+> > EEPROMs, so I’d say it’s a fix.
+>
+> But it's never worked on such systems so it's not a regression fix,
+> right?
 
-You may check my OpenWrt quick patch for an idea how I'd handle that:
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=target/linux/generic/pending-6.6/440-mtd-don-t-look-for-OTP-legacy-NVMEM-cells-if-proper-.patch;h=d9d15a4048c144d8565c8ea38e15a79f7f4a5fe1;hb=dd78a59cd7b029560b33cb3ac0e1aa8b747bd807
+It's hard to qualify whether this is a regression or not.
+
+On the one hand, automatic detection of SPD EEPROMs only ever supported
+4 modules maximum (since kernel v5.8):
+
+01590f361e94 ("i2c: i801: Instantiate SPD EEPROMs automatically")
+5ace60859e84 ("i2c: smbus: Add a way to instantiate SPD EEPROMs automatically")
+
+
+OTOH, this was implemented using the at24 driver, which replaced the
+legacy eeprom driver. Said legacy driver was removed in kernel v6.7:
+
+0113a99b8a75 ("eeprom: Remove deprecated legacy eeprom driver")
+
+As it would be possible to see up to 8 SPD EEPROMs using the legacy
+eeprom driver, and only 4 when using the at24 driver, you could say
+that kernel v6.7 suffers from a regression. So backporting commit
+13e3a512a290 to 6.7-stable would make sense.
+
+> Anyway, I'll defer to the i2c maintainers as to what they want to
+> have happen here, as they did not originally tag this commit for
+> stable inclusion.
+
+I'm definitely in favor of backporting 13e3a512a290 to 6.7-stable.
+
+For older kernels, I'm not so sure, as there's a fairly easy
+workaround: loading the legacy eeprom driver should let decode-dimms
+see all memory modules (modules 1-4 using the at24 driver and modules
+5-8 using the eeprom driver). Paul, can you try and confirm that this
+does work?
 
 -- 
-Rafał Miłecki
+Jean Delvare
+SUSE L3 Support
 
