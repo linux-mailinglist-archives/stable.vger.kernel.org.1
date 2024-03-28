@@ -1,265 +1,119 @@
-Return-Path: <stable+bounces-33096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA8B8904C9
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 17:18:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD348904D9
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 17:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6781298D04
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 16:18:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AD328BCF7
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 16:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20F812BF39;
-	Thu, 28 Mar 2024 16:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABB9131E34;
+	Thu, 28 Mar 2024 16:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="OSCiqtkn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0r/vY99k"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF2B130A4D;
-	Thu, 28 Mar 2024 16:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA5E130E35
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 16:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711642676; cv=none; b=X2BlFPVTpWNqDhcrDeKaCanz4d8qleED+DU3p/+ribJhYRxaF+OcWR9D2vpXctnv0PLkZjqc6VZmhc3dxA++1DIC9lbnb6lfg/x2ueuAi7i3mFgkIdisdHhho2cyYmFyV1KGI8TnHyb1WvM903qpK5aK3v1CS0nPgbaY7Q1+qgA=
+	t=1711642736; cv=none; b=kHBe1neIUrCBXWWdXwtt2aWtVzmpoToCAb4yh2MVwVML8R0mY3uav3GXcEfc4Eikm3+N2kREmxgIkqxHXkEVBgejzWuXhWyX0OVAq9l4WSe9kYrH/ACzOa5kuUrphPfKzJcl3LB8ueRQk9CojwF3PXadBvEEhnJNcG2lG10JYVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711642676; c=relaxed/simple;
-	bh=XXzHklSlwZUBc70mb+IrCrGHDHHicLnr6FwTlMm8dZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lSimGF5uZI734DqLJXU1D+bCk3QXwp896bkCqtNl5bZpRwrydlDziAK3atuUQf3SFHFvjHPCQAKtJm60y2RyWJaWZukbAnLN+l7TCZiEN0O2VMh8hOHyw8sEVFjz/az//0YZL+Uhj0Bh76sJwHkHC+TorGOiJIKjV0+xWTKAWcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=OSCiqtkn; arc=none smtp.client-ip=148.163.147.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42SGGknu029299;
-	Thu, 28 Mar 2024 16:17:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pps0720; bh=O1mCM99rDKh1WnktnKGuwlFcn5k0KykkoCp2lndeuMg=;
- b=OSCiqtkn8xZcj7dr0jQBJM5mHq+Izb5Ir7I+Xzk/K8ZeLGHC/r7pLTDegj/BubOKPyol
- oCR8CBxkG0QMHMhRPGH8PmMVI09Tf0NAWaIVYuolQ4VLPi2VTd4tlIPiLEI1Up3iO+0t
- u5+N2X0xnNezU9MslN+WKpxNmaSdfWOEzMgBADr1KisT+gFKxq9DAWDFwYu60CYUefnF
- QOS+0/fMql4uW0HaT714ZHrzQNj8avHslcd3l9NUzAB990JQk/j4aRkSY7qWAXU10O1W
- WlMDmE8PXQf2oBAu+c4EjXRvrNVBudb3DILoXPyjTwC/c1B77T0DL6/pSM18lqfvcXEW Zg== 
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3x51q7da27-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Mar 2024 16:17:10 +0000
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 86D3313045;
-	Thu, 28 Mar 2024 16:17:09 +0000 (UTC)
-Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 90E168014FE;
-	Thu, 28 Mar 2024 16:17:05 +0000 (UTC)
-Date: Thu, 28 Mar 2024 11:17:03 -0500
-From: Steve Wahl <steve.wahl@hpe.com>
-To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
-        Eric Hagberg <ehagberg@gmail.com>
-Cc: Simon Horman <horms@verge.net.au>, Eric Biederman <ebiederm@xmission.com>,
-        Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
-        Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>,
-        Hou Wenlong <houwenlong.hwl@antgroup.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
-        Yuntao Wang <ytcoode@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v4] x86/mm/ident_map: On UV systems, use gbpages only
- where full GB page should be mapped.
-Message-ID: <ZgWX_x-CB7OjKAGD@swahl-home.5wahls.com>
-References: <20240328160614.1838496-1-steve.wahl@hpe.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328160614.1838496-1-steve.wahl@hpe.com>
-X-Proofpoint-GUID: yktVL9b0sBOCXIFUqc1t4HYfWi__5IaH
-X-Proofpoint-ORIG-GUID: yktVL9b0sBOCXIFUqc1t4HYfWi__5IaH
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1711642736; c=relaxed/simple;
+	bh=GBsn4xh0VH3bSK4OltJrohHyGLgnl+zZmaIezM4iDdA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N2nHrvAgFLtroqxaDvj5SRP3Mbj1lBDZtROhMXUDwcyoL3lOVwuxJhNE5DAdAiNRnIBptUuAN6dQBlILF2MwRnCEnSRfXjRAmJLdQX7xbcdn/rXK7gCddS9KGxrJn7Nz0lPQclG/QuEb1WHrgr7z643BmhbILqMIEKmaByfsLdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gthelen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0r/vY99k; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gthelen.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dcbee93a3e1so1667196276.3
+        for <stable@vger.kernel.org>; Thu, 28 Mar 2024 09:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1711642734; x=1712247534; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=umIDKJbLUeVjB30WBmxntoX4c0W2blxouvOQBNQgTYQ=;
+        b=0r/vY99kXoMzxkp4WPFgKJ0GDP+V8Gwm+QmvZ+Fc9oyjqDd5/gHMIjMRlRhtHIY10D
+         WVDAlKUYiZWlKgYN67wG3236TFGcol02GKfz0/4C0dUcq25hVT4GJk+RFoGPsmFBSGLt
+         KK5rOj1yqtH7/2QFgvAuwJf9X7QMZfYvkLZCGs9c0u7h4hbhxSh2VlLzdXGYrn02EEkX
+         ix7r9HQCoNchwR6mXhKkBziU3ubyXuEMouTDkkeOH63kgPA5AdHsK3YdXechPbqHEP6c
+         Q169M/2uYfBbNUDkJSEkiMvdeXyImB4UCpnzJwl7joD4KsmkbKeuJfvTjdEZDeyhE9pd
+         2fNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711642734; x=1712247534;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=umIDKJbLUeVjB30WBmxntoX4c0W2blxouvOQBNQgTYQ=;
+        b=NGZRfk9InP+m6lF5tG+5yoozILJs/NDxdIIzKvxWHxk749BHuBCRQ+X72tmHSFukrE
+         IJl19ctRmPgTAJKx0hyCEYx6dksF3qVJTuEFVX7h6vQmvmJCLhN1HatNXjtcJlu2GImk
+         SiMCohOPlR+vjBbdWDmySlXQe0w+zD8sT8rPeTbBDj2rJrEdxm+ZV+MF+sm9hNJAP0fz
+         ScTEUiunrhbxbTuP4H4Jyw71PBC09M+HxnwHh8Clrg9TYjLevb5uJorNW36uczANI9Hn
+         RK2HuUj4DNx7Y0Y5jQqsqxQoYh9ZnVny2z3ktlTtanuUT5H0TeNsgpCAAfbbY/aMsNlg
+         KM6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUbnmLpBCnHRXWga+0JHmyZ3zBMFqUMXUEMHUS+Jcu29R0O9igZnCqaHh3YP+8PyYimKXMbRa0EJ5exAAeKx9XTaD0qqML4
+X-Gm-Message-State: AOJu0YzsItQVvegYcfR46SzDoxVuB0IWfp5j/1B8T+slCqi4wuzT+GWP
+	P/y5/kY62E3qP1sL+mkJvtiIOGf755dHmh1SlZmtGVEKTcQ1zxx2GrX5b6KPtLvpOhUear+Uhu0
+	UTFHBnA==
+X-Google-Smtp-Source: AGHT+IG3wG69Xu1UOnAeobYYfeZbnbL1W7AO1OICQ5yW749ORUJQcN09ufbTLMPe/kI+kz+CtqMiH5GZrRAU
+X-Received: from gthelen-cloudtop.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1b13])
+ (user=gthelen job=sendgmr) by 2002:a05:6902:2292:b0:ddd:7581:1234 with SMTP
+ id dn18-20020a056902229200b00ddd75811234mr194893ybb.11.1711642734480; Thu, 28
+ Mar 2024 09:18:54 -0700 (PDT)
+Date: Thu, 28 Mar 2024 09:18:52 -0700
+In-Reply-To: <20240328110103.28734-1-ncopa@alpinelinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-28_15,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 mlxscore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 spamscore=0 adultscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2403210000
- definitions=main-2403280111
+Mime-Version: 1.0
+References: <20240328110103.28734-1-ncopa@alpinelinux.org>
+Message-ID: <xr93zfuifhxv.fsf@gthelen-cloudtop.c.googlers.com>
+Subject: Re: [PATCH] tools/resolve_btfids: fix build with musl libc
+From: Greg Thelen <gthelen@google.com>
+To: Natanael Copa <ncopa@alpinelinux.org>, bpf@vger.kernel.org
+Cc: Natanael Copa <ncopa@alpinelinux.org>, stable@vger.kernel.org, 
+	Viktor Malik <vmalik@redhat.com>, Daniel Xu <dxu@dxuuu.xyz>, Alexei Starovoitov <ast@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	linux-kernel@vger.kernel.org, Khazhy Kumykov <khazhy@chromium.org>, 
+	Dmitrii Bundin <dmitrii.bundin.a@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-Note: I cc:'d stable in the email headers by mistake.  NO CC: stable
-tag, I don't want this to go into stable.
+Natanael Copa <ncopa@alpinelinux.org> wrote:
 
-Thanks,
+> Include the header that defines u32.
 
---> Steve
+> Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with  
+> types from btf_ids.h")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
 
-On Thu, Mar 28, 2024 at 11:06:14AM -0500, Steve Wahl wrote:
-> When ident_pud_init() uses only gbpages to create identity maps, large
-> ranges of addresses not actually requested can be included in the
-> resulting table; a 4K request will map a full GB.  On UV systems, this
-> ends up including regions that will cause hardware to halt the system
-> if accessed (these are marked "reserved" by BIOS).  Even processor
-> speculation into these regions is enough to trigger the system halt.
-> And MTRRs cannot be used to restrict this speculation, there are not
-> enough MTRRs to cover all the reserved regions.
-> 
-> The fix for that would be to only use gbpages when map creation
-> requests include the full GB page of space, and falling back to using
-> smaller 2M pages when only portions of a GB page are included in the
-> request.
-> 
-> But on some other systems, possibly due to buggy bios, that solution
-> leaves some areas out of the identity map that are needed for kexec to
-> succeed.  It is believed that these areas are not marked properly for
-> map_acpi_tables() in arch/x86/kernel/machine_kexec_64.c to catch and
-> map them.  The nogbpages kernel command line option also causes these
-> systems to fail even without these changes.
-> 
-> So, create kexec identity maps using full GB pages on all platforms
-> but UV; on UV, use narrower 2MB pages in the identity map where a full
-> GB page would include areas outside the region requested.
-> 
-> No attempt is made to coalesce mapping requests. If a request requires
-> a map entry at the 2M (pmd) level, subsequent mapping requests within
-> the same 1G region will also be at the pmd level, even if adjacent or
-> overlapping such requests could have been combined to map a full
-> gbpage.  Existing usage starts with larger regions and then adds
-> smaller regions, so this should not have any great consequence.
-> 
-> Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-> 
-> Fixes: d794734c9bbf ("x86/mm/ident_map: Use gbpages only where full GB page should be mapped.")
-> Reported-by: Pavin Joseph <me@pavinjoseph.com>
-> Closes: https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
-> Link: https://lore.kernel.org/all/20240322162135.3984233-1-steve.wahl@hpe.com/
-> Tested-by: Pavin Joseph <me@pavinjoseph.com>
-> Tested-by: Eric Hagberg <ehagberg@gmail.com>
-> Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Greg Thelen <gthelen@google.com>
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
 > ---
-> 
-> v4: Incorporate fix for regression on systems relying on gbpages
->     mapping more than the ranges actually requested for successful
->     kexec, by limiting the effects of the change to UV systems.
->     This patch based on tip/x86/urgent.
-> 
-> v3: per Dave Hansen review, re-arrange changelog info,
->     refactor code to use bool variable and split out conditions.
-> 
-> v2: per Dave Hansen review: Additional changelog info,
->     moved pud_large() check earlier in the code, and
->     improved the comment describing the conditions
->     that restrict gbpage usage.
->    
-> 
->  arch/x86/include/asm/init.h        |  1 +
->  arch/x86/kernel/machine_kexec_64.c | 10 ++++++++++
->  arch/x86/mm/ident_map.c            | 24 +++++++++++++++++++-----
->  3 files changed, 30 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-> index cc9ccf61b6bd..371d9faea8bc 100644
-> --- a/arch/x86/include/asm/init.h
-> +++ b/arch/x86/include/asm/init.h
-> @@ -10,6 +10,7 @@ struct x86_mapping_info {
->  	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
->  	unsigned long offset;		 /* ident mapping offset */
->  	bool direct_gbpages;		 /* PUD level 1GB page support */
-> +	bool direct_gbpages_only;	 /* use 1GB pages exclusively */
->  	unsigned long kernpg_flag;	 /* kernel pagetable flag override */
->  };
->  
-> diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-> index b180d8e497c3..3a2f5d291a88 100644
-> --- a/arch/x86/kernel/machine_kexec_64.c
-> +++ b/arch/x86/kernel/machine_kexec_64.c
-> @@ -28,6 +28,7 @@
->  #include <asm/setup.h>
->  #include <asm/set_memory.h>
->  #include <asm/cpu.h>
-> +#include <asm/uv/uv.h>
->  
->  #ifdef CONFIG_ACPI
->  /*
-> @@ -212,6 +213,15 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
->  
->  	if (direct_gbpages)
->  		info.direct_gbpages = true;
-> +	/*
-> +	 * UV systems need restrained use of gbpages in the identity
-> +	 * maps to avoid system halts.  But some other systems rely on
-> +	 * using gbpages to expand mappings outside the regions
-> +	 * actually listed, to include areas required for kexec but
-> +	 * not explicitly named by the bios.
-> +	 */
-> +	if (!is_uv_system())
-> +		info.direct_gbpages_only = true;
->  
->  	for (i = 0; i < nr_pfn_mapped; i++) {
->  		mstart = pfn_mapped[i].start << PAGE_SHIFT;
-> diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-> index 968d7005f4a7..a538a54aba5d 100644
-> --- a/arch/x86/mm/ident_map.c
-> +++ b/arch/x86/mm/ident_map.c
-> @@ -26,18 +26,32 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
->  	for (; addr < end; addr = next) {
->  		pud_t *pud = pud_page + pud_index(addr);
->  		pmd_t *pmd;
-> +		bool use_gbpage;
->  
->  		next = (addr & PUD_MASK) + PUD_SIZE;
->  		if (next > end)
->  			next = end;
->  
-> -		if (info->direct_gbpages) {
-> -			pud_t pudval;
-> +		/* if this is already a gbpage, this portion is already mapped */
-> +		if (pud_leaf(*pud))
-> +			continue;
-> +
-> +		/* Is using a gbpage allowed? */
-> +		use_gbpage = info->direct_gbpages;
->  
-> -			if (pud_present(*pud))
-> -				continue;
-> +		if (!info->direct_gbpages_only) {
-> +			/* Don't use gbpage if it maps more than the requested region. */
-> +			/* at the beginning: */
-> +			use_gbpage &= ((addr & ~PUD_MASK) == 0);
-> +			/* ... or at the end: */
-> +			use_gbpage &= ((next & ~PUD_MASK) == 0);
-> +		}
-> +		/* Never overwrite existing mappings */
-> +		use_gbpage &= !pud_present(*pud);
-> +
-> +		if (use_gbpage) {
-> +			pud_t pudval;
->  
-> -			addr &= PUD_MASK;
->  			pudval = __pud((addr - info->offset) | info->page_flag);
->  			set_pud(pud, pudval);
->  			continue;
-> 
-> base-commit: b6540de9b5c867b4c8bc31225db181cc017d8cc7
-> -- 
-> 2.26.2
-> 
+> This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
+> uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
 
--- 
-Steve Wahl, Hewlett Packard Enterprise
+>   tools/include/linux/btf_ids.h | 2 ++
+>   1 file changed, 2 insertions(+)
+
+> diff --git a/tools/include/linux/btf_ids.h b/tools/include/linux/btf_ids.h
+> index 72535f00572f..72ea363d434d 100644
+> --- a/tools/include/linux/btf_ids.h
+> +++ b/tools/include/linux/btf_ids.h
+> @@ -3,6 +3,8 @@
+>   #ifndef _LINUX_BTF_IDS_H
+>   #define _LINUX_BTF_IDS_H
+
+> +#include <linux/types.h> /* for u32 */
+> +
+>   struct btf_id_set {
+>   	u32 cnt;
+>   	u32 ids[];
 
