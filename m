@@ -1,124 +1,91 @@
-Return-Path: <stable+bounces-33075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252B988FDDF
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:14:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D693788FE25
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49A5294091
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:14:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1412D1C269A0
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C89657C4;
-	Thu, 28 Mar 2024 11:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9967E775;
+	Thu, 28 Mar 2024 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b="Fyl+N1f0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMusgAIl"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCE354665
-	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 11:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715DD7D3E7;
+	Thu, 28 Mar 2024 11:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711624472; cv=none; b=sTdhWcL+zL9CD71p9iQ9hZmSDoWnGPw7U/YuduX/JI9zuKKhvJqIWWmNEw4lKB4dZUY72fRauhe1vT/l9MPNRpIY6yBlnsnNhi3QWYT+K7kKtDLSGUNpf06ctWgohlRPPYM42cGmE+ztGtqpH9i8IXoyTnV0CglEeL460YwEOfw=
+	t=1711625648; cv=none; b=CbxhrCfqsL4iA3J5UhZIUfulFqYot15AcDH7DKgPn3jE1CWU7QSXOUc6PVz39liSRs3tX5mOLwQqp/zXmbiTjCVntxC2x7aEoY4WYlKGWJWW4xoctxkS6HrmyMiWE7KTbwpbBOh8YTZOPbeTJ6Jb53Xp/1F8A8YBFmlOL1jG98w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711624472; c=relaxed/simple;
-	bh=ih0F07PnNJ+ccJsZ5jWXyBWyimm8raUL914bms3twsE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dBuiTnPRwvQvxqtXTBxZLzuXvQVOU26QRyOlcGqcHX+SOBUzme7R6NbavoAxfzkWL/XXkbL+pSD6MVZU3DDSmOqYc4AGhL3lcE5cNZ6B5f9X02ZSMaGv9ndWR3JqAyi7vaUszxAIvWsNC9mc+87IlKEHaAhMjRQuVV7otpJpUPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org; spf=pass smtp.mailfrom=khvoinitsky.org; dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b=Fyl+N1f0; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=khvoinitsky.org
-X-Forwarded-Encrypted: i=1; AJvYcCVW4U0GLmODIhKI3RbPwRUVQWMfZKffME3hCG8PKH227A7x5V0BG9325dqMX6gCJQXaSw93s0JqHxro+NSiAd8KkXKQ8hxMpBH+YR7VhOEpuP2BIXp2nJJ2cPNV7D2LyHnb7YPw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=khvoinitsky.org;
-	s=key1; t=1711624467;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WyBdVLeR0iGztScqRFw42hXy5mWAAq735aD6y6toOHg=;
-	b=Fyl+N1f0YO9MXqnulUPITqDlTH6mLyYzhwkSMRAUew3ScV4yMi5BGekDVqNqN/4pbVeVT1
-	iviIOdy1hsp09koAF/ppHeLXZKHhpFzB2t0Up+TcP0lIqWTDOR+VEP7pSI5N6SVKedCaiz
-	HBGqwhrZ8uP9P/Lk7Ue0wV46bvXRPUE=
-X-Gm-Message-State: AOJu0YwZpFLgGjjWaaJHQhd8a+5w00zcU+Me6isJs64JlqCUgnAbYbdi
-	HGGQtCk/BsLZdIEbIoSBRdRfN19Nqnur0W5Ik3LzNbA63zOgKOJdnqA3GS6qbLvBbgRQUNFTnmq
-	jxBssZBOK8N0cWXHyKmLDWDrvRlc=
-X-Google-Smtp-Source: AGHT+IFtQTfimY5bygJfYb3mmH01UJxeFQyJouq/lZdlVc9aDYaf/0Zl1hsQw4Uz3UOnLX8E/RvhVnsq6FB1N2ZYrmw=
-X-Received: by 2002:a19:5e47:0:b0:513:bb6:6966 with SMTP id
- z7-20020a195e47000000b005130bb66966mr1391855lfi.6.1711624465164; Thu, 28 Mar
- 2024 04:14:25 -0700 (PDT)
+	s=arc-20240116; t=1711625648; c=relaxed/simple;
+	bh=Siq6kaxaVBIR62A+RO4MpSDHLY/IlSEjSEoHPEC7/m8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uiOHmWNKGsUQY6hNtXH4DVLEpijPIdnQxOhI7nJnE2UjVy7AsIqV1f7wPR2NppNYXDxL9mdVZsWPtsgGOW9dAeTK+NYsltZeofK9UVuAs+3CItAwa7u/ayAgR3FzFujSlP/f+qpCQa3q2yECbVd1q7HmaRQGfS6j2u8DHUCl+5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMusgAIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CA8C43390;
+	Thu, 28 Mar 2024 11:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711625648;
+	bh=Siq6kaxaVBIR62A+RO4MpSDHLY/IlSEjSEoHPEC7/m8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GMusgAIlmZmf9qJSVVmQNyMikMiSnVOWZUU2w8lqJJisdMh7Lz0F4IhRLLow1wLHL
+	 nh6Ttc34G+2ZzoAMNbiD9kMElcsHBytelLVB6En8RMjrOAaj47CKRmdP6T2jtgELQX
+	 7vu4zIuCxw83yXf9xmCjQ+c+F/9FbI+ateG3d47U=
+Date: Thu, 28 Mar 2024 12:34:04 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Mukunda,Vijendar" <vijendar.mukunda@amd.com>
+Cc: Luca Stefani <luca.stefani.ge1@gmail.com>,
+	Sasha Levin <sashal@kernel.org>, Jiawei Wang <me@jwang.link>,
+	Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] Revert "ASoC: amd: yc: add new YC platform variant
+ (0x63) support"
+Message-ID: <2024032853-drainage-deflator-5bae@gregkh>
+References: <20240312023326.224504-1-me@jwang.link>
+ <bc0c1a15-ba31-44ba-85be-273147472240@gmail.com>
+ <2024032722-transpose-unable-65d0@gregkh>
+ <465c52a1-2f61-4585-9622-80b8a30c715a@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240324234027.1354210-1-sashal@kernel.org> <20240324234027.1354210-128-sashal@kernel.org>
- <ZgVJGs2OI/4QsJCQ@duo.ucw.cz>
-In-Reply-To: <ZgVJGs2OI/4QsJCQ@duo.ucw.cz>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Mikhail Khvoinitsky <me@khvoinitsky.org>
-Date: Thu, 28 Mar 2024 13:14:13 +0200
-X-Gmail-Original-Message-ID: <CAMMabwPNaHF67fTunfr9L2H1msntquypcd0kgzdza+OwyuZRRw@mail.gmail.com>
-Message-ID: <CAMMabwPNaHF67fTunfr9L2H1msntquypcd0kgzdza+OwyuZRRw@mail.gmail.com>
-Subject: Re: [PATCH 5.10 127/238] HID: lenovo: Add middleclick_workaround
- sysfs knob for cptkbd
-To: Pavel Machek <pavel@denx.de>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jiri Kosina <jkosina@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <465c52a1-2f61-4585-9622-80b8a30c715a@amd.com>
 
-Hi,
-This patch is already on upstream. Unfortunately, previous backports
-of related commits caused some issues so just skipping this one isn't
-a good option.
-
-For module parameters, while it's quite unrealistic for users to have
-more than one identical keyboard but with different firmware, this is
-possible and having a module option would prevent tuning only specific
-keyboard.
-
-For the documentation, makes sense. Sorry, I should have done it
-together with the change, I'll fix it, thanks for pointing it out.
-
-On Thu, 28 Mar 2024 at 12:40, Pavel Machek <pavel@denx.de> wrote:
->
-> Hi!
->
-> > From: Mikhail Khvainitski <me@khvoinitsky.org>
+On Thu, Mar 28, 2024 at 04:10:38PM +0530, Mukunda,Vijendar wrote:
+> On 27/03/24 23:39, Greg KH wrote:
+> > On Wed, Mar 27, 2024 at 06:56:18PM +0100, Luca Stefani wrote:
+> >> Hello everyone,
+> >>
+> >> Can those changes be pulled in stable? They're currently breaking mic input
+> >> on my 21K9CTO1WW, ThinkPad P16s Gen 2, and probably more devices in the
+> >> wild.
 > >
-> > [ Upstream commit 2814646f76f8518326964f12ff20aaee70ba154d ]
+> > <formletter>
 > >
-> > Previous attempt to autodetect well-behaving patched firmware
-> > introduced in commit 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw
-> > on cptkbd and stop applying workaround") has shown that there are
-> > false-positives on original firmware (on both 1st gen and 2nd gen
-> > keyboards) which causes the middle button click workaround to be
-> > mistakenly disabled.
+> > This is not the correct way to submit patches for inclusion in the
+> > stable kernel tree.  Please read:
+> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > for how to do this properly.
 > >
-> > This commit adds explicit parameter to sysfs to control this
-> > workaround.
->
-> Should this go to stable? We have stream of lenovo workarounds, maybe
-> -stable should wait for upstream to solve this.
->
-> Plus it should really have documentation.
->
-> Oh and we normally solve this stuff with module parameters, so that it
-> can be fixed during bootup.
->
-> Best regards,
->                                                         Pavel
->
-> > Fixes: 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw on cptkbd and stop applying workaround")
-> > Fixes: 43527a0094c1 ("HID: lenovo: Restrict detection of patched firmware only to USB cptkbd")
-> > Signed-off-by: Mikhail Khvainitski <me@khvoinitsky.org>
-> > Signed-off-by: Jiri Kosina <jkosina@suse.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> --
-> DENX Software Engineering GmbH,        Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+> > </formletter>
+> These patches already got merged in V6.9-rc1 release.
+> Need to be cherry-picked for stable release.
+> 
+
+What changes exactly?  I do not see any git ids here.
+
+confused,
+
+greg k-h
 
