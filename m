@@ -1,95 +1,97 @@
-Return-Path: <stable+bounces-33073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E02F88FD8D
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:57:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01A688FDC6
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4FD8B258BD
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:57:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38169B24457
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D357CF17;
-	Thu, 28 Mar 2024 10:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861E87E0F2;
+	Thu, 28 Mar 2024 11:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="dpXOQPKD"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E682B9C6;
-	Thu, 28 Mar 2024 10:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19AB4A18;
+	Thu, 28 Mar 2024 11:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711623413; cv=none; b=W/Hwl0jcQE1itdl9TI9HoWBTXzsLtcU8h9XPSjZawq0Ib8JzJpSvN9ZbLVdA9jtNTFwzvn+/k+4L3p2bC7Jo6Lq5yguHJ4m5hG6bLmM0dpWd0p59lFRSWrz5rdEfM+ohOhEuomf7L/9WmgiFSOAYWjzAEiHBYxtFVMnjsiQnzvc=
+	t=1711624205; cv=none; b=QnRCdd1lTAHODB6IWyYeBvBCmJghvnZdg9NFSrKCr0xTKzDpbkGqan8hTDbhSqRPnghmd73In/UAeAdsCp5NcgMrQKCxdIk50MrseO4kB0ojYKV6ozl5+dYPd0n4eXfI9JuqhIa310nvd+AmxFKlM5Blav76njJGYkr3rRc15CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711623413; c=relaxed/simple;
-	bh=TPIsNz6gfRZzaJZqY9pHJHdC43AuokpDy2fKWTQJ8Rg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H7R+I/KPCrLtPecqGYfZWsyrhWT9Zt1XOd+lFjxRi6ykAQjPsVzTQf8hqtoc8QF+7RGnDIww6UPOPBZPn0JYkfszorarATOUuLz+io5MI8hBz2Iz+RuURDNfgql3AXaGRfvIzcFrXtD1dzoA6HEgXDZzjXJCOOg/kP6uzRDsAqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rpnQw-00C8T2-2E; Thu, 28 Mar 2024 18:56:35 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 28 Mar 2024 18:56:50 +0800
-Date: Thu, 28 Mar 2024 18:56:50 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: linux-crypto@vger.kernel.org, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br,
-	vt@altlinux.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: ecdsa - Fix module auto-load on add-key
-Message-ID: <ZgVM8nNQhkIPgh30@gondor.apana.org.au>
-References: <20240321144433.1671394-1-stefanb@linux.ibm.com>
+	s=arc-20240116; t=1711624205; c=relaxed/simple;
+	bh=YPtwI/73XQMq5pLXmdBDn594QE8iR58OHaXvHludfN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGXmaIclnMpHTdCZ1EZmsrO4S9Vs8j6nyVFfaYVYY6EMBBaJWrr12aMgtsAaYo7cds5gOVtXEVs4emrcysAMJyrWVmdCsTFFbJxY2jzMYtQ5KAT9IQ8JV6JRzBefa2X5w9TJYxBbwObL5xqHugtJ0vZDBacbrsgjUQwwQw107VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=dpXOQPKD; arc=none smtp.client-ip=213.219.36.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
+Received: from ncopa-desktop.lan (ti0056a400-4037.bb.online.no [85.167.238.210])
+	(Authenticated sender: ncopa@alpinelinux.org)
+	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id AE80B226016;
+	Thu, 28 Mar 2024 11:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
+	s=smtp; t=1711623671;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=e3J+7uknz3z0s1JqJlEsccjqrrENP/4M0ZqplTq5eJU=;
+	b=dpXOQPKDkCmrGhqGtBgCQrWFj4n4hd60kAQwPK9oWxZK4nzVZv0Ek02vCFVsu0sUavFj3B
+	iWRCjOFoqF/LdParHOH5uf+yZe0QieCKFmxpW5EvuwS+Mx/skL0HWDUBjNQXooQuXATPq5
+	2h/gQTWy8YdnnRV12Jzob3ZYqBmIRLI=
+From: Natanael Copa <ncopa@alpinelinux.org>
+To: bpf@vger.kernel.org
+Cc: Natanael Copa <ncopa@alpinelinux.org>,
+	stable@vger.kernel.org,
+	Viktor Malik <vmalik@redhat.com>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tools/resolve_btfids: fix build with musl libc
+Date: Thu, 28 Mar 2024 11:59:13 +0100
+Message-ID: <20240328110103.28734-1-ncopa@alpinelinux.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240321144433.1671394-1-stefanb@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 21, 2024 at 10:44:33AM -0400, Stefan Berger wrote:
-> Add module alias with the algorithm cra_name similar to what we have for
-> RSA-related and other algorithms.
-> 
-> The kernel attempts to modprobe asymmetric algorithms using the names
-> "crypto-$cra_name" and "crypto-$cra_name-all." However, since these
-> aliases are currently missing, the modules are not loaded. For instance,
-> when using the `add_key` function, the hash algorithm is typically
-> loaded automatically, but the asymmetric algorithm is not.
-> 
-> Steps to test:
-> 
-> 1. Create certificate
-> 
->   openssl req -x509 -sha256 -newkey ec \
->   -pkeyopt "ec_paramgen_curve:secp384r1" -keyout key.pem -days 365 \
->   -subj '/CN=test' -nodes -outform der -out nist-p384.der
-> 
-> 2. Optionally, trace module requests with: trace-cmd stream -e module &
-> 
-> 3. Trigger add_key call for the cert:
-> 
->    # keyctl padd asymmetric "" @u < nist-p384.der
->    641069229
->    # lsmod | head -2
->    Module                  Size  Used by
->    ecdsa_generic          16384  0
-> 
-> Fixes: c12d448ba939 ("crypto: ecdsa - Register NIST P384 and extend test suite")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> ---
->  crypto/ecdsa.c | 3 +++
->  1 file changed, 3 insertions(+)
+Include the header that defines u32.
 
-Patch applied.  Thanks.
+Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
+Cc: stable@vger.kernel.org
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+---
+This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
+uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
+
+ tools/include/linux/btf_ids.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/include/linux/btf_ids.h b/tools/include/linux/btf_ids.h
+index 72535f00572f..72ea363d434d 100644
+--- a/tools/include/linux/btf_ids.h
++++ b/tools/include/linux/btf_ids.h
+@@ -3,6 +3,8 @@
+ #ifndef _LINUX_BTF_IDS_H
+ #define _LINUX_BTF_IDS_H
+ 
++#include <linux/types.h> /* for u32 */
++
+ struct btf_id_set {
+ 	u32 cnt;
+ 	u32 ids[];
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.44.0
+
 
