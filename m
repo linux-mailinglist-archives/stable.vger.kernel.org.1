@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-33068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543AE88FD27
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:34:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD6688FD2C
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F2962969F2
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F371C2C9D3
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 10:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7735D54777;
-	Thu, 28 Mar 2024 10:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA4557895;
+	Thu, 28 Mar 2024 10:35:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1E57895;
-	Thu, 28 Mar 2024 10:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8D6364DA;
+	Thu, 28 Mar 2024 10:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711622048; cv=none; b=L1cC9zNfYdM7gQljoPouDCevciotLwYCnV+EH7JM/xOT7J0hsHSXx6Vc9pFSEYC1hDmrPA6557fn5yuNxQQsdR35KSUuxdi93YwtV181dSZgywsyFw1dHfyu8mep3KYEeUA/mNu+W/I4wxZMo9e/v6HUfoQqXNqyMh0ppOfdf8E=
+	t=1711622120; cv=none; b=ia5CdBHPUw2QnQnmR4jo0NDoXQC56e5YQR4mADsUDxC8e5fJtKmctTbq+uQpop+wyyCqPN9GPrUg85uRwfxqpPAefVhaW21WRU+YsJnPVnRwFOgl8Vreiosr3sDVAfZRMvMUyEsuNgyMPrE+1Vmh0AnggFFxUAcYjtAtdBbq5B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711622048; c=relaxed/simple;
-	bh=9GKBgRe8M71pv5YsV8sYX43vihykXoAI4QMvCVvtNFc=;
+	s=arc-20240116; t=1711622120; c=relaxed/simple;
+	bh=7vFSQ747FM06KN1wrNfHC48TjsBeAGoEHNFZdXAOOxM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DmBsPnGbSprLGQLwLbDrJkkwY7p3tP20ljUWmSTVvt+4JqqEhJf2+fPUP4QXzomP7HjyQ1BtlJdSbZkg5zB3OfmgpHJbyI263HQSrYtduUFcHCtf/5uiUoyJKbdsDPquXDdcdX3gczZd6TejXGDyfGdm78bikGH/L2WZ0JKAxIE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=TRKtlYrwq0HZPE4ZfDnifoG6jYgGUgknRaLIOyQTR0mxTHogSA1XFMrkeQCPOpXMXJBqJ8dDZFRArHSwDtko5pdc+VvuaIsjRiqkCJwLnyEicXni1ED+lXuJUhkgxyp4dFuY+toTGn2BkMenLqMe7GMKWG4yFsBh0m8OZb3U9F0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id C0AA91C0081; Thu, 28 Mar 2024 11:34:04 +0100 (CET)
-Date: Thu, 28 Mar 2024 11:34:04 +0100
+	id B1D141C0081; Thu, 28 Mar 2024 11:35:16 +0100 (CET)
+Date: Thu, 28 Mar 2024 11:35:16 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Russell King <linux@armlinux.org.uk>, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH 4.19 035/148] wifi: mwifiex: debugfs: Drop unnecessary
- error check for debugfs_create_dir()
-Message-ID: <ZgVHnFAGan7e+mYK@duo.ucw.cz>
-References: <20240324235012.1356413-1-sashal@kernel.org>
- <20240324235012.1356413-36-sashal@kernel.org>
+	Eric Dumazet <edumazet@google.com>, Taehee Yoo <ap420073@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 6.1 140/451] ipv6: mcast: remove one synchronize_net()
+ barrier in ipv6_mc_down()
+Message-ID: <ZgVH5FhlyKXmbJ99@duo.ucw.cz>
+References: <20240324231207.1351418-1-sashal@kernel.org>
+ <20240324231207.1351418-141-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,63 +51,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tkcsipe4i8KMbCTU"
+	protocol="application/pgp-signature"; boundary="jR9q48rvjneaP0k+"
 Content-Disposition: inline
-In-Reply-To: <20240324235012.1356413-36-sashal@kernel.org>
+In-Reply-To: <20240324231207.1351418-141-sashal@kernel.org>
 
 
---tkcsipe4i8KMbCTU
+--jR9q48rvjneaP0k+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Jinjie Ruan <ruanjinjie@huawei.com>
+> From: Eric Dumazet <edumazet@google.com>
 >=20
-> [ Upstream commit 50180c7f8e3de7c2d87f619131776598fcb1478d ]
+> [ Upstream commit 17ef8efc00b34918b966388b2af0993811895a8c ]
 >=20
-> debugfs_create_dir() returns ERR_PTR and never return NULL.
+> As discussed in the past (commit 2d3916f31891 ("ipv6: fix skb drops
+> in igmp6_event_query() and igmp6_event_report()")) I think the
+> synchronize_net() call in ipv6_mc_down() is not needed.
 >=20
-> As Russell suggested, this patch removes the error checking for
-> debugfs_create_dir(). This is because the DebugFS kernel API is developed
-> in a way that the caller can safely ignore the errors that occur during
-> the creation of DebugFS nodes. The debugfs APIs have a IS_ERR() judge in
-> start_creating() which can handle it gracefully. So these checks are
-> unnecessary.
+> Under load, synchronize_net() can last between 200 usec and 5 ms.
+>=20
+> KASAN seems to agree as well.
 
-Additional error handling does not break anything.
-
-This does not fix a bug, and thus does not belong into stable.
+This is performance tweak, not a bugfix. We probably should not have
+it in stable.
 
 Best regards,
 								Pavel
-							=09
-> +++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
-> @@ -977,9 +977,6 @@ mwifiex_dev_debugfs_init(struct mwifiex_private *priv)
->  	priv->dfs_dev_dir =3D debugfs_create_dir(priv->netdev->name,
->  					       mwifiex_dfs_dir);
+
+> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+> index 566f3b7b957e9..a777695389403 100644
+> --- a/net/ipv6/mcast.c
+> +++ b/net/ipv6/mcast.c
+> @@ -2722,7 +2722,6 @@ void ipv6_mc_down(struct inet6_dev *idev)
+>  	/* Should stop work after group drop. or we will
+>  	 * start work again in mld_ifc_event()
+>  	 */
+> -	synchronize_net();
+>  	mld_query_stop_work(idev);
+>  	mld_report_stop_work(idev);
 > =20
-> -	if (!priv->dfs_dev_dir)
-> -		return;
-> -
->  	MWIFIEX_DFS_ADD_FILE(info);
->  	MWIFIEX_DFS_ADD_FILE(debug);
->  	MWIFIEX_DFS_ADD_FILE(getlog);
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---tkcsipe4i8KMbCTU
+--jR9q48rvjneaP0k+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVHnAAKCRAw5/Bqldv6
-8nWfAJ9PHvxLJw8k4iAUnXui+VmjI/BQ4gCeJBZ/PeipfPLhm5EZaYu7SOY+W4c=
-=Cb2c
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZgVH5AAKCRAw5/Bqldv6
+8uwFAJ4jiqh3X7yU1KwHULt+PeY5XCqq7QCfSPZ1HLmE8WjWvaJvbb6vDYMqS6Y=
+=Ft3s
 -----END PGP SIGNATURE-----
 
---tkcsipe4i8KMbCTU--
+--jR9q48rvjneaP0k+--
 
