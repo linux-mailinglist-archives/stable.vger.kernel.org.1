@@ -1,355 +1,175 @@
-Return-Path: <stable+bounces-33045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CD088F6FA
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 06:07:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DDC88F700
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 06:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A60CA296CC8
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 05:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2EF1F26DAF
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 05:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4553FB98;
-	Thu, 28 Mar 2024 05:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D203FB8D;
+	Thu, 28 Mar 2024 05:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="htiELj68";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="rPKM2cK4"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="v8DoiVCS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2073.outbound.protection.outlook.com [40.107.223.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6E215C0;
-	Thu, 28 Mar 2024 05:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B018315C0
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 05:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.73
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711602457; cv=fail; b=juf7kQeMtI7ScY5i9KybFuNXse8xvDGIwrkIK2jFDoqgT1poi+3dXF5IeRgG4Z4NxBEEvhsyu9BNjmhHQwlMHmtbyI4gygEvRlkJfRCApvRQ59++6yRPpbQnT02DPpA9sNw7ZezxgRqL5rINBu/C6nsfAr776f6A+Gtdkjuac8A=
+	t=1711602659; cv=fail; b=G6RML5QlXmhPuaamRyLBBoNzCvdH3HCpdUp6voO9Gi3KB06fJDjTOQZPtrOKgnL9+h8kS6aT1MjPeA8IXpEz6oH4DMo56hs2SypZ2mmNqq5Vao/RpjRT3+67WWB3IkczG53pm2Un8hNVVg3TgjK8hKL5/BCEdH3Uw8e5rM/TD9Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711602457; c=relaxed/simple;
-	bh=H40udhh2ZoPL4JNAj8QrWjngGxZJawVI9p4dmJKHG/c=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=jVpxrrQwcVJg5GE2LDhynWKMHb9ZfQyq11uUKIeElcxYCPDLgw5xu7s2V8dmwPjJuxTWFEFPnf+sRy/i8nDQcg7E6liQkzK8sA6KuDL6v38EvPsoYDXLCo0OEfDWCXQ3QqOSCDMdfeGui/N91igS5+iXcbo0oAvm0ljtxdAzQWM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=htiELj68; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=rPKM2cK4; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42RK9UJO027745;
-	Thu, 28 Mar 2024 05:07:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=+uDeKCuhW/q6JlIwYZbRjXN2mQSAImhX50bYbPHUBsg=;
- b=htiELj680jp9nENn7pCwM5cxUL7QiwGE21s+E0Yn0zq+/9uXreMaK0cqLe5Lf7F1O1TB
- jbScKVZbFq2esgZyguVqahdH9CQPJyJIVb0mvFmumPMbIWqvj+cBKwLFRddZlE5gkpKb
- 9t9JD4juRMtPa9gGSKeWo/l2lhTWNT48RqUEJjO9PZbFO6/kB3029Gr8Z3YQ9tbO+Tu1
- sv0LCxYXUWjHzkXyzGhgTivjMBr27nhW4qswLt9SqtSalUY7+3GSwjFJ0X4AVLqEVH8j
- Rty54xJ+5I/WDlzXeARIIRtFiiF6jRIakbJLS0Ttp6dIanrltY2sXVaLr5j4YibHBnL/ Ag== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x2s9gycfu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Mar 2024 05:07:24 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 42S47sSG015036;
-	Thu, 28 Mar 2024 05:07:22 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3x1nhfrdqw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Mar 2024 05:07:22 +0000
+	s=arc-20240116; t=1711602659; c=relaxed/simple;
+	bh=oJW0GczT4sXsmjZCrhrwYT8e0qfQeQ7bWp28xX6/JeI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OD4cyBLH1OxDv9G1uPkzq0aQcL+GiFg3aYABcXWioIfRQ+LWWBLNPKKuLjnaCwF5JecN9EDJrISmPhQqcQt+Ze4NxbLjeI4OyKAtfUIwkaka7dz6exP7RA2+mAcLPoYR1jBmhL36rDWcmJfOekkYVRMn+AdqCCh3pXNiqV00MD0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=v8DoiVCS; arc=fail smtp.client-ip=40.107.223.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cdq6sZWekmqme+m9TcCmjr/fyjxgQ98b2tUjqR48OgXhTD9OSBP7LnPeYp5W6ONr+hF8AICZIpHY9pQ29hCIK3tXzAjywM1w71RGX+ZkFW+/CNJsAIxWDGmM2q3bF6Xgu8/hdmxij22Ci3LaaN0I8rNEvV4Z0j2JsBUxC0XYuhfxi1HZcEHk2YMlR9vwRzXvUBPxQoA7YzSntGcJlgNgFR2FJzIJpsEnKkC6nNisMrSGs8GpOSjsc3xhgEy0MTXpurGosvSU+Gub/e94bfN/WBSLii3gpQPfcd3rUvq/VX9gM4AuzUgzySxF/awuRK/Ej94n2XN6s1bPGu5D5KP+lg==
+ b=Oo/qvPPxFUa7jLxVRlBZF6pHNN/gXQRTSA4Sb38VEiCtbp4VbH4w6kepwoUoyOSep+Ke4FNLPgj7ULMrxKZaHTFgJPtCb024EMMyljiqqR4kgKKWCnEFlRc2vhqQBy40ahdS3l6ZaEFMP87AsY6rh3hFck+XfViOoDjfhD7pJfpMS997Av0rxjaA3jHc0JNxZzgZ4Kf1AsMfWhEBa5+lQDsDMxXX4i43DN2AI9mw5IBv4VJ4/lJ/rayn18V7Acy4e+J41jO2+wBY22zhAohGjcdjlc4siVSk+PzncYzEfU639zw1krDAcRCBWQw3M+E5Fb/vCt4S2GjFs4LCxN+5Mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+uDeKCuhW/q6JlIwYZbRjXN2mQSAImhX50bYbPHUBsg=;
- b=Um53ZvbhEaaha31KCAxfyvSceFbY68ogTApjr8ukq/s7ZWN/AY5F8nTra/i6GUDAH9wera4hk5E4qix8ohjcOFnASahM9hsaf+ZHHDG9jZNMCfW1zttWoh5hIS0XjJK4VIXlrMJMaTbxhZQsV09Z9khrVJvHQKbka8Duegik2HXh2KXyN+e7JIzflfNQ2iGrss2JYQKYwzBWrGlLJS6WUNblpfYUr0fz33a57XtbhtIGIDCXEXNZaMxh3rGROo/U3WVG2E4jTCSfWsarOgylKWLV/efVrU0mVT0W8NNT79FxewTkIuc+3rk8Anq64btgsZf7KQ/q6vx1X92Z+ulVoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ bh=VVjEBLOlS2CwSI3OKwVT5+7mOoT79Zt1G5xS//aTaFU=;
+ b=VTExxyX4g1mhL/d/LfakBcD0gZoUa6kFdMZxfp40n3tCjmssKqcdrz6wUxof4lkrlcO2ytY9qrlSswbzEwd5QAiViwyvqSt8O2+nL+ZKpj0nC0BOQJF+SYr5BytqKmSnd6QZy9b6MCa6mzRAazV49hCeCYBMHiYdT57gRPlgU3D7wmBniaBWupyYEVOg9C9x1fqBeMFOgBk35r1l3/8jWuYA2Vj/dLw3cGAuEz6TOS4cOKxepJMH8Amr7iZy2g4MGQEXRyZQx8rxmQGY0yNY+q6SPgSGuET4V7flYuUJzi9qiIqfY00FuMtHLDNQw2y25VO8gH2CN7oAuKSPSyE2aw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+uDeKCuhW/q6JlIwYZbRjXN2mQSAImhX50bYbPHUBsg=;
- b=rPKM2cK4thpe/wYchOLDAyvfQVe5lczxS5HQ7zki129z+uxl4gsG03M9opJEBmKNsXYaZeIksNq9hPCSnTqk7RGiHIKcEiO/OMVA04VW8y4BWczhMZYrtEsUfKAJUyHlS9YAo8apSKa0NzPKsqnDyqwOwCkMbCmXWfNwb7hetYg=
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com (2603:10b6:510:148::10)
- by IA0PR10MB7369.namprd10.prod.outlook.com (2603:10b6:208:40e::14) with
+ bh=VVjEBLOlS2CwSI3OKwVT5+7mOoT79Zt1G5xS//aTaFU=;
+ b=v8DoiVCSQH67DrlhaU71louNWIUJgO2GX6QAxLcV6AogkjK+7I8mSnuMuFJnkPvgVDwQqxB/ddGGXzzpU54axAhSDgLaz5oLQGfu95CF9rcMYqn2/eJ9Jw3pG4zarZFe+RBPEeL9jth0jbm6sGf/O2kl+I1Am2RkBGivUH03tck=
+Received: from PH8PR22CA0006.namprd22.prod.outlook.com (2603:10b6:510:2d1::10)
+ by CYYPR12MB8855.namprd12.prod.outlook.com (2603:10b6:930:bb::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
- 2024 05:07:20 +0000
-Received: from PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b]) by PH0PR10MB5706.namprd10.prod.outlook.com
- ([fe80::814:3d5c:443b:17b%7]) with mapi id 15.20.7409.031; Thu, 28 Mar 2024
- 05:07:20 +0000
-Message-ID: <2e3ed2fb-8b68-447e-9781-aa6f32a95c2e@oracle.com>
-Date: Thu, 28 Mar 2024 13:07:12 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: Patch "btrfs: do not skip re-registration for the mounted
- device" failed to apply to 6.8-stable tree
-To: dsterba@suse.cz
-Cc: stable@vger.kernel.org, Alex Romosan <aromosan@gmail.com>,
-        CHECK_1234543212345@protonmail.com, David Sterba <dsterba@suse.com>,
-        linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-References: <20240327120640.2824671-1-sashal@kernel.org>
- <20240327213751.GW14596@twin.jikos.cz>
-Content-Language: en-US
-From: Anand Jain <anand.jain@oracle.com>
-In-Reply-To: <20240327213751.GW14596@twin.jikos.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR02CA0009.apcprd02.prod.outlook.com
- (2603:1096:3:17::21) To PH0PR10MB5706.namprd10.prod.outlook.com
- (2603:10b6:510:148::10)
+ 2024 05:10:55 +0000
+Received: from SN1PEPF000252A4.namprd05.prod.outlook.com
+ (2603:10b6:510:2d1:cafe::f4) by PH8PR22CA0006.outlook.office365.com
+ (2603:10b6:510:2d1::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13 via Frontend
+ Transport; Thu, 28 Mar 2024 05:10:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF000252A4.mail.protection.outlook.com (10.167.242.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Thu, 28 Mar 2024 05:10:54 +0000
+Received: from mlse-blrlinux-ll.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 28 Mar
+ 2024 00:10:52 -0500
+From: Lijo Lazar <lijo.lazar@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: <Hawking.Zhang@amd.com>, <Alexander.Deucher@amd.com>,
+	<kevinyang.wang@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v3] drm/amdgpu: Reset dGPU if suspend got aborted
+Date: Thu, 28 Mar 2024 10:40:36 +0530
+Message-ID: <20240328051036.826751-1-lijo.lazar@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5706:EE_|IA0PR10MB7369:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3663a2da-7d46-45b9-2b29-08dc4ee4f20f
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A4:EE_|CYYPR12MB8855:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32244ba6-0b8d-4407-6d14-08dc4ee5722e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	PyNpOY5LN5W3kY9cihUCt3vPun0iKLHO2egbO211emFwSOjUtAA72rn/z3OV3haKgNKijeR9YjBRulh6vJMFw9h1yrf0jttu/XWQy1jySuBTOtNMKVB9S5bvfmoFXHD4B6kTHznkuIAnpVN93RJmB6PLCqedBSDiY1vHvnwc5DXZwz+0Vc5/YFdX/en5d4qlXoCfEx6kAX7itUe+1PSanRssxjUpZJD4sYB7SskeRFT2BUpKk4eYyMG1ZPydyrL4H8VgwBdH27RwBuzWgwcDfkApPcCnPH9jz1aYEvjWasq5sUe7y7mJGQl37mr26Lld+dpNuPN2D7ZyILeuWm9ZQeqPKJKrXivHQU7jdzLGRUnrWFSiHIk9psTt2oRyg9n4PfmWq/659sXxvsZkviREyHm8k/D3Qmsedt47DtwfbSagZp4iTrigoAywyvd7km3ouZSfickMdRoGyfEfrqxCvwRUVrvzb96RqSNgty2Iqyq6z4AcEEHOewT5A+u/IsmuGdXYENqN1njTfZdQ1kvXtU15X5tIgKjPA3LnzhClwaBxJEoa588rfEOUmSaKHnkhSevMPmK7aWLRorwx+DL8AD+YRNi4sE6HoFlgS6EURI0=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5706.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?MzdUbzk1ZDBKQWpCci91NGoyR0hHZGo4UHphN1BkMFVkaXd1Z1NjN1VmTjEz?=
- =?utf-8?B?TDcreGFsQngwbDNTY0ZYVG1UM2xzMzdtbExseUtJOGhHYVlrREdLVjlBY05P?=
- =?utf-8?B?K3BhSTNqN1dvU2dTUGUvRDdQNEV4MGdncU1hTGRuZ0lobXp0b0J3NkMzSkpQ?=
- =?utf-8?B?YmdEZCtoS1J3R1k5d09HOXF1d3ZOZ21RWWU1QmNCeElRaEZYWXFGRy80QnFM?=
- =?utf-8?B?Tll6c25zd08vcVR2blhRY3BTSnkrWTJ2T3FPc2pDTCtVK1hWZk9yZW1vYnZS?=
- =?utf-8?B?ekV6NHlCWklHbVBGcjhSYmVNYlRCbzVlYzJoRHBSRitnUTBrSUo2UDFieFpB?=
- =?utf-8?B?Q3NNbldoWUdWK1R0eW5VZnhLNWhjN0ZCbXdXT1kyK0Z4K3o5RE9pSlE1dXVO?=
- =?utf-8?B?RW1SSE0vUXNuMG50NldPYTgvU3ZlSzhJOGRUa0MvelNtODFIQnRhM01MN2Fu?=
- =?utf-8?B?VTBqYUc0SEZZK1pBYXJuVHZSS2p6RXg4eUlrSHU4cHJwZVRBakxXbTV5ZkhQ?=
- =?utf-8?B?eWxRL1hoblpxM2RJdXhaWmJPZXZlcmNjeG85OXI4a09lWWVJUThueFNYQTVj?=
- =?utf-8?B?a0VwTU90SUVWb3RqQmlRWWF5bG9vbnZBdHFPSXN6QWxTbTJOenJUK2taYlNG?=
- =?utf-8?B?K1FucTRLUHlPUkF3UEZ4clc4NEVUeG1FbGsxQi9RU2JCNE82bnE1Y0xKREhY?=
- =?utf-8?B?VjFSanFvUnYrNVhmbkttWDIvaW1Nd0U5S1JPeVcrWExTdGRWM0EvSm5qZlFF?=
- =?utf-8?B?MVZCVGt2aUNxUWsyMmJuRitETC9SWFFWY3R4czhLUFMyczJKclRUdUhQMERj?=
- =?utf-8?B?SVRRY0Q5c1JsV3lVa0JoakR0aFhsS3k0MHdtNkRDMW54NmE4bFNQSG5vendY?=
- =?utf-8?B?QjMwVVQ3YU02TzB3eTNOd3RkYmVDb0lUYURWeXVtQWcwQzMzdWE4SHo4Zkd0?=
- =?utf-8?B?NlNqYTZOa2F6cTVBTXFzSWgyVnJYODRIUWN5TEwwNk1PVjFqUG8zYVUxRWt2?=
- =?utf-8?B?UmhSYWZHcWhoZE5uOWF3UGY0MVl3OE9tS1NuakpMYzVxb255SkJXdUYwck1K?=
- =?utf-8?B?MFlvemFNUEZhZVNmVEZoUjV4bUlUdGlUNmh1bWF4Wk1QSnZUdVpNWkNSendW?=
- =?utf-8?B?dXdPcGJaZUdJUndDalZXNEVjaHY5RUNNMElqU2U2bW54NGpCdkZLeXlqZVpT?=
- =?utf-8?B?ME5Id3lzZlF6MkZIVzA0Mkw4cGt2aXZ5dlJZWUQ4U2pwNnZNazBJSnB4a0pQ?=
- =?utf-8?B?WGR3V01OblhFc015a2s1NTIyM09WR1puTCtNV1lFclhEK0tzYnEzZmw1VXI1?=
- =?utf-8?B?aGU5cm5rb1did1NxY0Z3YjhkNEhYZGY2cVBBQzJCRUxMcVFVMWsxV1I4OHVE?=
- =?utf-8?B?Nmd3Q3ZhOUtHQ0Y1aUVacmNucFFSYS9TN0h0Qy9kQkNqRjZHbS9VaVo0Wjlr?=
- =?utf-8?B?amt1dmNMTXVCczEwTHVMTlRZcHVWTEF2NGNaUERNM3VyZ3MwT0psY2RndERy?=
- =?utf-8?B?ME5HRDQ1ay9aOGMvTkJuSFRTY1B1SUQrSUV2UlUyMDMvL1lna3pGeG1xVnI5?=
- =?utf-8?B?TW00QlpLQXZoSUVaSW5jU2htOUlLOUpuckZaZVV2cUFnbEQ0U1o4SENNN0sy?=
- =?utf-8?B?bFRBUUFZenRYYzBFRVRaRXdVZGk1bjM1VDBRbm1wMldTQWNBcUI4VXJxQVNP?=
- =?utf-8?B?VEJ1TG9LT3hnWW83eHRBdGQveCtvK0JlWEdFMkhWazNGcDROMWVMeEFielVG?=
- =?utf-8?B?OWFDT0FRcE1DTnpWOGFFQkJ2WXZScVFjelJFUjFjZ3RCVWE3a2ltdElDQ2wx?=
- =?utf-8?B?OXkwUFVlL0xSVjZkS000SEVjN1prVmZXOGpLYjhNODV5ZS9UZDBXNXNaSHJM?=
- =?utf-8?B?MFRRZDZOTHUyUjFaMyt3Yk80d0p5WnExM0s0UkRZSkJHQzlmL2l4VHJxYXI3?=
- =?utf-8?B?Qmg1NWlEUTMwOGpyWXJnTXIvMG5JdURLTVRmVkRiMDZuMlhxUlV2c1NyNVY5?=
- =?utf-8?B?Z2pQVGtHWVQrcEdGZXFmNnhOUlF6d1NjSTRuMWhPWmtNT0YvVWZYT09HSWRr?=
- =?utf-8?B?R0FpM2w3SnJLSjg2VERCejVMTy8yMjlxQ0pLeFFKaWNhalFQRWRwRnppOXBN?=
- =?utf-8?B?VGVaZDkvWWRDMzRiTks0NkIvV0FYcS9xSnJSaFhzYW5zSEhRaUY3OFo3MUdF?=
- =?utf-8?B?bHc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	uftHrfC0gDdBZXaHvDSdPgDyYnVlx/44sLlG3SKKHua+zVHXWVzf4ksgWIyaKt7n7xfJhjStJE7kIuh+AV3fN4NVnn+9xjS2JtbBJZi6FOyyKyAbItuaIslHUVrzUfy7xKlZy5Fm8amRceXtPYsZJUQxq1ScL9bruC0aFRlbk0eOrmYIRt3PeBq0F8c4RH6CRurqori57q3Ls+DRx12ozf3HvYkKsd7+Be5vxOcyFCiN/U3GEXZbYapKImlJps3VDzE4d4ZQXlhlr3WN64FIvdKVfn39QPz7TqPxujZUo2nHusvm/FxJMElSpxmTwuAOEfzwRgMl9CsQZ4lZHgijumtwXjFmabmIlm4CS63MXnDOI+KYZs8WxQoSj/4dA0iWLxFGFJBKbMWt1c1SdapZgs+qP0sim65Iz7pJvwHqsFAqEKtSj+nFjPmM+Jms7uMfLF+OQ+vs0ag4y05Ii8cOaYdXLThuqb0bZSUaYJjDr5LLd70v3KAz+vMm0RTEx4cOriG9Rh/kagdDUZ577tDFqLqFZ2+sGIwzdBdS0clqaKimhupzEF4lm4GBZtNleSMApjGHCkSghAVFiC3PFJ6vwSNtTpFxHo8qFdjAIBuABJs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3663a2da-7d46-45b9-2b29-08dc4ee4f20f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5706.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 05:07:20.3692
+X-Microsoft-Antispam-Message-Info:
+	zEcNmUd0uIgBACWfA+Tp2rLa73qFJuyy7KrnRcnCICxTn2M2vkzObaEYhDXwuqA96wKBQ2bp9zWBx5WV75dKEBFCgZWCqqFkVdsJrrq6ze24ztNe839K2xOw71jAybZovWSesu7GPxajzt6yAYKqDH3Ue/E7+d9Il4p3kKYDXqfTHdU2ozATsOs0h74reGCj1ZlZS7eze1fZCPYMI1M8i0pXCXFYXurCvb+jq00FWnV8ZJKLamk+BilyV1uPo5pl4/f2yEl+ugQz59eAyIcnWPhn1yKpB+o/dnOZ4tbxbps9mLSlI8e5eQefUUHtHmdJO6cTCf/LeTeLOI1tnmaeL1/bh2Ehchr3dU9wubG43xP44yggj7PPMM1G37trhPyARYVzqnurfEw8BKRprwToUDfZ99wWOYniy7W80HN2JDb8PEPN3onFtD2bsOeTnpTE7/JQUs+nCj5lXOKkWvsaFTyGkP6UGyjnvJmgicgwMJJ1SZF9lI9dqG+uAfMFkEusY8ryU3DQVbsIhGwQ1sG0YgRHo1Oxv3Pt4Wsx77ufwESBRKFMJzERQg7hy1WfD8ED6cB0IW23WWJ9IcGYOKYiaxzpeGQ8bcdhd4waRoDKk+E9T0B/DVFPSpVnnzGlgC7jSC1c1lU0VVPFbzsSWOlIHaXh9PxDqpYaL1BshlW/E9gDxEMad4gmbyX0Y9nJMHZHBpr2ZT40Ngw8lTl7yngKG+efzknnkAh6olHHYmjGzmR5MpooYsT3qN3prbaPkGgy
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(376005)(82310400014)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 05:10:54.9421
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SSwKcpDAE3HohI1FIb9gage+/WOLJ4fUmvXG5/6/yxXZhK5aDoAnsTknU8UGCCTc2fzc3i8k2/oOENidlmE8Rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7369
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-28_04,2024-03-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
- definitions=main-2403280029
-X-Proofpoint-GUID: 3JGomjIwh2Gjc-bdDU3z0eMsW3K_Fw3H
-X-Proofpoint-ORIG-GUID: 3JGomjIwh2Gjc-bdDU3z0eMsW3K_Fw3H
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32244ba6-0b8d-4407-6d14-08dc4ee5722e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000252A4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8855
 
+For SOC21 ASICs, there is an issue in re-enabling PM features if a
+suspend got aborted. In such cases, reset the device during resume
+phase. This is a workaround till a proper solution is finalized.
 
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 
-On 3/28/24 05:37, David Sterba wrote:
-> On Wed, Mar 27, 2024 at 08:06:40AM -0400, Sasha Levin wrote:
->> The patch below does not apply to the 6.8-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
-> 
-> Please use the version below, applies cleanly on 6.7.x and 6.8.x.
-> 
+Cc: stable@vger.kernel.org
+---
+v2: Read TOS status only if required (Kevin).
+    Refine log message.
 
-  Thank You!
-Anand
+v3: Add stable trees tag
 
-> ---
-> 
-> From: Anand Jain <anand.jain@oracle.com>
-> Subject: [PATCH] btrfs: do not skip re-registration for the mounted device
-> 
-> [ Upstream commit d565fffa68560ac540bf3d62cc79719da50d5e7a ]
-> 
-> There are reports that since version 6.7 update-grub fails to find the
-> device of the root on systems without initrd and on a single device.
-> 
-> This looks like the device name changed in the output of
-> /proc/self/mountinfo:
-> 
-> 6.5-rc5 working
-> 
->    18 1 0:16 / / rw,noatime - btrfs /dev/sda8 ...
-> 
-> 6.7 not working:
-> 
->    17 1 0:15 / / rw,noatime - btrfs /dev/root ...
-> 
-> and "update-grub" shows this error:
-> 
->    /usr/sbin/grub-probe: error: cannot find a device for / (is /dev mounted?)
-> 
-> This looks like it's related to the device name, but grub-probe
-> recognizes the "/dev/root" path and tries to find the underlying device.
-> However there's a special case for some filesystems, for btrfs in
-> particular.
-> 
-> The generic root device detection heuristic is not done and it all
-> relies on reading the device infos by a btrfs specific ioctl. This ioctl
-> returns the device name as it was saved at the time of device scan (in
-> this case it's /dev/root).
-> 
-> The change in 6.7 for temp_fsid to allow several single device
-> filesystem to exist with the same fsid (and transparently generate a new
-> UUID at mount time) was to skip caching/registering such devices.
-> 
-> This also skipped mounted device. One step of scanning is to check if
-> the device name hasn't changed, and if yes then update the cached value.
-> 
-> This broke the grub-probe as it always read the device /dev/root and
-> couldn't find it in the system. A temporary workaround is to create a
-> symlink but this does not survive reboot.
-> 
-> The right fix is to allow updating the device path of a mounted
-> filesystem even if this is a single device one.
-> 
-> In the fix, check if the device's major:minor number matches with the
-> cached device. If they do, then we can allow the scan to happen so that
-> device_list_add() can take care of updating the device path. The file
-> descriptor remains unchanged.
-> 
-> This does not affect the temp_fsid feature, the UUID of the mounted
-> filesystem remains the same and the matching is based on device major:minor
-> which is unique per mounted filesystem.
-> 
-> This covers the path when the device (that exists for all mounted
-> devices) name changes, updating /dev/root to /dev/sdx. Any other single
-> device with filesystem and is not mounted is still skipped.
-> 
-> Note that if a system is booted and initial mount is done on the
-> /dev/root device, this will be the cached name of the device. Only after
-> the command "btrfs device scan" it will change as it triggers the
-> rename.
-> 
-> The fix was verified by users whose systems were affected.
-> 
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218353
-> Link: https://lore.kernel.org/lkml/CAKLYgeJ1tUuqLcsquwuFqjDXPSJpEiokrWK2gisPKDZLs8Y2TQ@mail.gmail.com/
-> Fixes: bc27d6f0aa0e ("btrfs: scan but don't register device on single device filesystem")
-> CC: stable@vger.kernel.org # 6.7+
-> Tested-by: Alex Romosan <aromosan@gmail.com>
-> Tested-by: CHECK_1234543212345@protonmail.com
-> Signed-off-by: Anand Jain <anand.jain@oracle.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> ---
->   fs/btrfs/volumes.c | 57 ++++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 47 insertions(+), 10 deletions(-)
-> 
-> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> index f627674b37db..6f4dd3ebbf7a 100644
-> --- a/fs/btrfs/volumes.c
-> +++ b/fs/btrfs/volumes.c
-> @@ -1290,6 +1290,47 @@ int btrfs_forget_devices(dev_t devt)
->   	return ret;
->   }
->   
-> +static bool btrfs_skip_registration(struct btrfs_super_block *disk_super,
-> +				    const char *path, dev_t devt,
-> +				    bool mount_arg_dev)
-> +{
-> +	struct btrfs_fs_devices *fs_devices;
-> +
-> +	/*
-> +	 * Do not skip device registration for mounted devices with matching
-> +	 * maj:min but different paths. Booting without initrd relies on
-> +	 * /dev/root initially, later replaced with the actual root device.
-> +	 * A successful scan ensures grub2-probe selects the correct device.
-> +	 */
-> +	list_for_each_entry(fs_devices, &fs_uuids, fs_list) {
-> +		struct btrfs_device *device;
-> +
-> +		mutex_lock(&fs_devices->device_list_mutex);
-> +
-> +		if (!fs_devices->opened) {
-> +			mutex_unlock(&fs_devices->device_list_mutex);
-> +			continue;
-> +		}
-> +
-> +		list_for_each_entry(device, &fs_devices->devices, dev_list) {
-> +			if (device->bdev && (device->bdev->bd_dev == devt) &&
-> +			    strcmp(device->name->str, path) != 0) {
-> +				mutex_unlock(&fs_devices->device_list_mutex);
-> +
-> +				/* Do not skip registration. */
-> +				return false;
-> +			}
-> +		}
-> +		mutex_unlock(&fs_devices->device_list_mutex);
-> +	}
-> +
-> +	if (!mount_arg_dev && btrfs_super_num_devices(disk_super) == 1 &&
-> +	    !(btrfs_super_flags(disk_super) & BTRFS_SUPER_FLAG_SEEDING))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->   /*
->    * Look for a btrfs signature on a device. This may be called out of the mount path
->    * and we are not allowed to call set_blocksize during the scan. The superblock
-> @@ -1346,18 +1387,14 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
->   		goto error_bdev_put;
->   	}
->   
-> -	if (!mount_arg_dev && btrfs_super_num_devices(disk_super) == 1 &&
-> -	    !(btrfs_super_flags(disk_super) & BTRFS_SUPER_FLAG_SEEDING)) {
-> -		dev_t devt;
-> +	if (btrfs_skip_registration(disk_super, path, bdev_handle->bdev->bd_dev,
-> +				    mount_arg_dev)) {
-> +		pr_debug("BTRFS: skip registering single non-seed device %s (%d:%d)\n",
-> +			  path, MAJOR(bdev_handle->bdev->bd_dev),
-> +			  MINOR(bdev_handle->bdev->bd_dev));
->   
-> -		ret = lookup_bdev(path, &devt);
-> -		if (ret)
-> -			btrfs_warn(NULL, "lookup bdev failed for path %s: %d",
-> -				   path, ret);
-> -		else
-> -			btrfs_free_stale_devices(devt, NULL);
-> +		btrfs_free_stale_devices(bdev_handle->bdev->bd_dev, NULL);
->   
-> -		pr_debug("BTRFS: skip registering single non-seed device %s\n", path);
->   		device = NULL;
->   		goto free_disk_super;
->   	}
+ drivers/gpu/drm/amd/amdgpu/soc21.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc21.c b/drivers/gpu/drm/amd/amdgpu/soc21.c
+index 8526282f4da1..abe319b0f063 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -867,10 +867,35 @@ static int soc21_common_suspend(void *handle)
+ 	return soc21_common_hw_fini(adev);
+ }
+ 
++static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
++{
++	u32 sol_reg1, sol_reg2;
++
++	/* Will reset for the following suspend abort cases.
++	 * 1) Only reset dGPU side.
++	 * 2) S3 suspend got aborted and TOS is active.
++	 */
++	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
++	    !adev->suspend_complete) {
++		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++		msleep(100);
++		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++
++		return (sol_reg1 != sol_reg2);
++	}
++
++	return false;
++}
++
+ static int soc21_common_resume(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	if (soc21_need_reset_on_resume(adev)) {
++		dev_info(adev->dev, "S3 suspend aborted, resetting...");
++		soc21_asic_reset(adev);
++	}
++
+ 	return soc21_common_hw_init(adev);
+ }
+ 
+-- 
+2.25.1
+
 
