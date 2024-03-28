@@ -1,180 +1,285 @@
-Return-Path: <stable+bounces-33077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E1A88FE72
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0582388FF25
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 13:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E83EDB23DD9
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:58:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543CFB22538
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423657E590;
-	Thu, 28 Mar 2024 11:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCAE7EEF0;
+	Thu, 28 Mar 2024 12:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bXs34ynI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BiffD4wm"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2066.outbound.protection.outlook.com [40.107.101.66])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC4043ABE;
-	Thu, 28 Mar 2024 11:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711627091; cv=fail; b=UrXtSEZK2abr+uUkyOXcnuSNq2mzIsyc6y1YLO6EAL6rDH7pVMA3BPZBtW3T+UzXXi9+a44tEouM19CfkTy1HnGQ3lhAe/DrKZuuyj0japKmGMA54McGKtp9qh8DUD7cn3t9qoReKxthGmiDupBMDOM97BFsa24lUeMK1m9hCYw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711627091; c=relaxed/simple;
-	bh=w1uhxUcWlzKVu0VF03902lVNSR89oWdMWYEfxYFOD+s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=l2wQqFdvlWsbWSOsgmJ309cTDQ7AkPSeDBsBuInWbW7NfkRb+x9HzJqc/SY83UsvuwNKapCkNmpM4IyaGs+U4XI94PzE67g79RsyZMFwQgJtfS0TIbFcajuamP5AxLpaWcXDaFrLFzvUBpKy3nBrk6aIqOZIobJaUYz1lcZ3NmQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bXs34ynI; arc=fail smtp.client-ip=40.107.101.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JUIXvHCw7L+G7MyvC6dSpXYm4jM9vxyaCAH4YiH4MZHZ+PAl5NzzHZI8nGdJZDFUyyXNcAkpIOOciSvKoL0aPwZD/VArn4R/NxbfdfiEyVxDQCr3FkSFuXbb4cmzf6ioEs0Y+m3OHvjpISUkeMkb0kEd/maeivQJ1gkcGDakoHdHuZ7yFhtZ8w8j7i5BIwpnuzmSi8EydW9BpfLmnezM2URy77DumoCxe0zqdFRUNHvZhzUaG0Y9+V+rm3T/3VR6vOSLuyuqS+UpoCYgdr9SnmjyELx0ldhFOrlU9Xu54nstawMTspqS0LJ7f44L2L+SBj2dWQBbUyU4Xm3N5aJjng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=77dwfFDOr3o9xKY3OHQ6Xr8AdoIlGMmcjveSf5sRCrw=;
- b=IFWdWAr13x4d/1KW+t+g1MuYKEMi4Ncu1+qv6Wy4b6ku7jfATz4LCcybuRI5O27mVt0y1a6VbnTaSCE+uRxeW3fH7ZIItMn6ippHo44Ary3aq6O1Gjz2Wqdk5F/ClScJERl5EMXYowldUH5Fq7srIXJxpIJ8sv7mPjEgs4HeEYGzrpgBF5vU/BUBRR6A8TUqvDGHC0JnVIkIahIPpElTkfx+zM6RaZ6oQd40BwSNxL8WmaHrKIyMGQaUvBmQ+8kLWkktCPWiSYjsXRVQU58AY0ljkjbvZmaFhAyZ5ob7o09YAtZbwHG65YcDnqX9exWxD+TstxBnyWSOTHjE17Q4Cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=77dwfFDOr3o9xKY3OHQ6Xr8AdoIlGMmcjveSf5sRCrw=;
- b=bXs34ynIZw81cSVgwdPbei+w56RHrfdZQjcaqFmBKK/4ME261YxhHhFDZCo8jBs8bsjMfTUYnJUpfOOqE0zBaCVhooO6seM1XKH4u05x/TwDqhmpj9mXCalLmsLhIhtbxcjch/vnttLS15CfZtqUj49nASbVpTUoUGBaKxTAEY0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4123.namprd12.prod.outlook.com (2603:10b6:5:21f::23)
- by LV8PR12MB9230.namprd12.prod.outlook.com (2603:10b6:408:186::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
- 2024 11:58:07 +0000
-Received: from DM6PR12MB4123.namprd12.prod.outlook.com
- ([fe80::57a8:313:6bf6:ccb3]) by DM6PR12MB4123.namprd12.prod.outlook.com
- ([fe80::57a8:313:6bf6:ccb3%3]) with mapi id 15.20.7409.031; Thu, 28 Mar 2024
- 11:58:07 +0000
-Message-ID: <8e5127ff-0ffa-495a-bd6a-ca452375f5f6@amd.com>
-Date: Thu, 28 Mar 2024 17:27:58 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Revert "ASoC: amd: yc: add new YC platform variant
- (0x63) support"
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Luca Stefani <luca.stefani.ge1@gmail.com>, Sasha Levin
- <sashal@kernel.org>, Jiawei Wang <me@jwang.link>,
- Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240312023326.224504-1-me@jwang.link>
- <bc0c1a15-ba31-44ba-85be-273147472240@gmail.com>
- <2024032722-transpose-unable-65d0@gregkh>
- <465c52a1-2f61-4585-9622-80b8a30c715a@amd.com>
- <2024032853-drainage-deflator-5bae@gregkh>
-From: "Mukunda,Vijendar" <vijendar.mukunda@amd.com>
-In-Reply-To: <2024032853-drainage-deflator-5bae@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0020.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:97::16) To DM6PR12MB4123.namprd12.prod.outlook.com
- (2603:10b6:5:21f::23)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A237EF16
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 12:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711629331; cv=none; b=U9b6jnSZZWhfdBapDOjpYzvFF0lvLmXYehnYvlVdT0aINhSmLDSVBf3+Fl+0qMtA5+h9sfbHIQSj3TH4/QmqoGu9NGFoTwRaZXa6PGfHmfZSeDCYkS3mwJksSU7OwfavckgEBNx/hGCbgh3OcLTs/zfXFuQxgf87qigCe9odVuE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711629331; c=relaxed/simple;
+	bh=/u+EHZhPX7ZUWzslCdo92AaoP1R77aPK1GR/RmbeY2w=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SKssmuGL47LTGWjeOsavqbOCzpw+HD0hHftZsD4DQc+MXZHpDRpDCq39r4kPVkEgarOppP6XslclPH/Z/zwQSRbwkknKD385c2GLj35TCsmm753CBTAio/DqnEW55P8+vJ//u2VofnHA1dV+yPlsosPhS5FAWAMM4D5PdB/pWEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BiffD4wm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711629327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k5ORqLKh8/XLA09MZvXXVlo+iCvFUPkDkTTQOLhXc0g=;
+	b=BiffD4wmdAdf0LFutrBUyan+9uFhYru12+JZE0K8bi2EDjrBrLrKSMnkAdVUf0UkzN7mTa
+	Wg2UhlRywqUwBY6rSLIha05JYG77kU7+g8OS1CoAO3MaJLu+7NQoAMojWCztO3xk4MHQxo
+	r2VWOLgJIcohYsvafuETt8Qx6bDdSZ8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-SZNeUcddPzilEusuGKz3lA-1; Thu, 28 Mar 2024 08:35:26 -0400
+X-MC-Unique: SZNeUcddPzilEusuGKz3lA-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-56c137aef05so446436a12.1
+        for <stable@vger.kernel.org>; Thu, 28 Mar 2024 05:35:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711629325; x=1712234125;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k5ORqLKh8/XLA09MZvXXVlo+iCvFUPkDkTTQOLhXc0g=;
+        b=CKc8CyuKq7tevUZl2d9TIBSZpsLZ2aSoUP4Ky5Ym2WANA+HbECIzkIZnDIFO0HNEZq
+         G+REEAFtpUEChS+ZPq/9AqBMdnOSRwlZNXn8N+r68BZ3rTJza6OwO3UaGhWKergKGrKd
+         uZg0ys4HuakM9BuAKi3+NoKVOGKoHYvFRCmOu6xS3mqQAbNNTF2/GiGML7EycWtorMgv
+         rI0xJmziO7y4ckVq/Zk4CLTDVt5Od0TvE66Fyj3gFP+BPRwd1bptPSuyodYb/0D5Ss4S
+         UP4Uk5/647B1lRiJWMK9odYopp8+T2Eq20eidHqJUeV02dcMO8FNtgsYYBB4B2REsNRV
+         zUpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUC5kCznPGTSoAbqqNKrq3yglDzE9k8KtyUUbdecmuqHzJnoOUpaKG2g1uKV/yP9+vZfTK9gW/h1RJF+A0p4EW3GQVZMu/T
+X-Gm-Message-State: AOJu0Ywp72xETkSK5hUGXUHV3kdk0xyPpPjg2weRx6xUo4Iq4EkM0wN1
+	KzTcwF4cLaPrW+jncHxXPtRBCDDHmBQo6DW33v3PxeMgRSiFhUWZfwQpUJB3q9AeLqMDHrEnsuL
+	mcTpE8XGpI4QzAnXJOn2B5NQy6neQ/qMPNGvgmyFP3hvHGkh1o9/ZZA==
+X-Received: by 2002:a50:d714:0:b0:56b:7f43:5a57 with SMTP id t20-20020a50d714000000b0056b7f435a57mr2076133edi.15.1711629325340;
+        Thu, 28 Mar 2024 05:35:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFooB4Zt8/8qHxcmDN4v9ebCm33206sgn4YrQJS/Io9J57x9QQacIHnpsXrzjZtCuYBg5j0Bg==
+X-Received: by 2002:a50:d714:0:b0:56b:7f43:5a57 with SMTP id t20-20020a50d714000000b0056b7f435a57mr2076119edi.15.1711629324905;
+        Thu, 28 Mar 2024 05:35:24 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id g28-20020a056402321c00b0056c1c2b851esm793288eda.0.2024.03.28.05.35.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Mar 2024 05:35:24 -0700 (PDT)
+Message-ID: <33110d20-45d6-45b9-8af0-d3eac8c348b8@redhat.com>
+Date: Thu, 28 Mar 2024 13:35:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4123:EE_|LV8PR12MB9230:EE_
-X-MS-Office365-Filtering-Correlation-Id: d36ea1cf-3798-4a49-ab05-08dc4f1e548f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	FLDUgYW4Dki8AamvucW7caFNg+wbYpv6M9mtEMDDyQlCDOa/EIIh/N5pWKxIPsElfyhPftYz0s434XGigEDXb72uE5GSABxbSQM3IXcZ5U9dp2+OTpmIvaeupOVJcF+g1DrPC8K1EypvkQgtt+1z0OMCr0E7xO1m1hhVDNQpNv6x9+7Q+SkKuDFa4hPyG1kK6IBdzkbX6cIicxYolLwihrU6wuXIzgR5hINorOLdGVnS/pgOkm9+M45FrYi2bou18j0PG7rTVSyHzJaoYsaI476SbPfSjLy1+mRkRfGvAcHrDFK5ySUtUwf60rhdEGY26aBhi/V9RhG/vEGKPwhlManSdRSUhHO4GkbKOYzH4tG4EcNFea33p3tKj820twTycNjNTr2gQKmhA0baoMaWaEObUDKrBENB8Dj0ciGB2/dIHjGyZA2SqB2XlPBNczs2rbRoRXIxHGjFXFX6grjbS+O3AxOHaCs1n5dF4bJpaH3CtUnwx0BpL12dGbpNcp8IVUrs+100IvB22VQXIdLxZjmPvlJEh+XB7rkjAAfGkeQfolFr6alnqN/OPqEug9JxPfQlzN9RM+ajKwEVID67BMwJLnHDCb8TAawIfQN2cs4bwGDx0TGkTHcuzB73x7AzRWymO87LoV/IFnOwjFNmuD7nszcehLQhZDnb4sXc6zU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4123.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RHBYcHlNOEpKazdJS21zclFGN0J0ZzJKUnhTbEsxT3FraDF1SlBPTy9xQTNk?=
- =?utf-8?B?KzQzaVFaMmN3eStHOW5rMzhZbDN1WE5nMHd4dDZ2LzBvY3g2MVJTdW9vWWFh?=
- =?utf-8?B?Z3VFdUg2RTFUTEREZnI1Z0tDbFljNCtZWFZWekJWM0JFL0ZraGN0bk5mTkVO?=
- =?utf-8?B?c0VCQzRzalllUmxPajRnRFRhNGQrWjRVNzZPUWZRTVJrc1BFZjF6eHB3K1BR?=
- =?utf-8?B?RGNIWlJndkhpT05lYjRSb0JUODJOVCt0WlUrK0tHSUpJYkp3S1hRUitqVTJ5?=
- =?utf-8?B?T3A2M0QwTjFia0ZYZHNaSGhaZVNKdnkwTmt0d0l5WldEVU5pRVVXK29PL2or?=
- =?utf-8?B?NURRbkFVcGR3QXN6UnJaM3o4ZTU2TnpmU094U0ZDOTZYR3FiazgwdkFTTDNT?=
- =?utf-8?B?VDlTUVorWVgxVW5VTTREM3JqTjNYYjBOUCtWRUtUK3VTcjJjYnRrY0VDd1Za?=
- =?utf-8?B?K1ZncWl5Y01xWllUZGM5Vmd0aDFTQ2VYbXBIOWxxMGIrN0tVZEQ5Wk93U3I5?=
- =?utf-8?B?REtRWlEvRzZtcGw5M3NUQnBJWXdxbzNBaUFjeGNmdHRhTnNhcjR4RTVNc2JG?=
- =?utf-8?B?b3B6VTAvT0M0dmI5NDFJbllZTlk0OHRaVE9tMzhLOEhXTFI4eEtRQnVhbFdh?=
- =?utf-8?B?NUFjL1AxcHNDOUhXbmVNT2RGNHNBTnN6ajZuTXpYK1Bld0Z4VjU4aG0xUGFo?=
- =?utf-8?B?Q3JGODRaaXlIdGdReVZNV0ZiOWFsQ0FMNmppY1llTGZQRytPQlVKTlh2bVhn?=
- =?utf-8?B?dEVVMi81MWozUm9iQ292b0JNODUwNWNZMTMva2YwU0ZxVUFsc1lyNHMxYUo1?=
- =?utf-8?B?dGpFTzhITEhVSlBIM3hobitJWWlIbjFSdHYzMkFoaDNtb3lHcHBRZmNvSHhE?=
- =?utf-8?B?K3BPOTl3cWJQQzhLc2JENHlHMnZTZnlKRHhNSWluUzhkYlMwUkRUc09wOXl2?=
- =?utf-8?B?RjBDUThYSlZkZlZlSHJ1Y3hvOExzeDB2dFVrSGFOdldwZUJPZStKRWdMaVlP?=
- =?utf-8?B?SnBBc2laSHpFL0syTmphRzZhMFVWYjAwdmdTUVZNMHJidDZTVWtLd2d6WGkr?=
- =?utf-8?B?QXZqTktnQUpBNm00dnRxeWx1Zm5ZVEF3dlJDckpjVDJ1eXFORDdYbERCOFBK?=
- =?utf-8?B?VWpIcUNubHJrTE0wUmF4WjNYNkdvWDFiSVhyMUh1d001RmxVemhzWnM5SkUr?=
- =?utf-8?B?NFFXalB4aFZuV2dVcFB6M05xcjBPWmhCQ01nZUxLUkJ5NmVibTZJaDAwYXRh?=
- =?utf-8?B?U3pIaXgvSDhGeUc1Z3Q2bmpLZ1V0SmJxeklabVdQMUV2cjZrTmkxUWtIRFBS?=
- =?utf-8?B?RkdGVmpFSzJVeVFERkdnakFQdEFmd3loOWVrYlo3L3BzbnhnZHBYVTRHblBC?=
- =?utf-8?B?eWhlaVZiR0ZBNUxQaFhvVTVqMVJHQy9HRXk3ZUM2ZHVNcHNwNjc4NXc4aEx6?=
- =?utf-8?B?VWlHOS8yYjhrcitlU3Y1a0JwN2h2KzBSRzdmQTlVRVJDcUI2NnVIcHdBL0ZJ?=
- =?utf-8?B?YkdiUDVhTmJkOWdqY1ZLR2ExUXBxYXBXeDNKSzQ0Vm5zS29PQktoQm5YKzRo?=
- =?utf-8?B?M3l5VW15R3FhNTg3dllhcmdyTE1KblBacW9OcjFTYW5QUEJGQ1pKdEg4K2tE?=
- =?utf-8?B?L0puRk9rMlNTSlFxVHVHeC9ielkwb3pKZUFhWUY5VGdJQTQ3OVdwQWo1dS96?=
- =?utf-8?B?NG0wSHllY2dXWUtNZEFLdm5CSnMxYkdqOEFobjZqaWREV3lZMGp4U3NJWGpI?=
- =?utf-8?B?Wjdzc1hHLzlaZTFzVjVHUjM2UE9qdGQ3ZndTZDBaWFZucmdFM2lWSkdjUlF0?=
- =?utf-8?B?NEo0bnliMFk3K2JPenBlNHYyUWdXejhBY3BRbnpNcTlxV28wY1dnelRVT1Fp?=
- =?utf-8?B?UlhYU2orRkZzSVM3SmU5bmV3T1JXWGtjRzVXQjJkbklhTHFFQU1iTDRpenhU?=
- =?utf-8?B?MXpYekVPUmtsYklFaG05YXBSMGkxdVp5bDhQTTErZ1Y5TFhDS3hhaXBBbmhr?=
- =?utf-8?B?QWFIRzRwa0lZZWFoMGIrc2lJdjBYclpOWkNpaks5R3lENTFpcXdxc1QrUmZ3?=
- =?utf-8?B?am8xYmY2YTBsUklmNzBnMUUzeHdZaktiRkVCYWExQnQxRVlDb2x1NmROaitF?=
- =?utf-8?Q?7gGG13A4H7gPQs8pbzrcdQ2Yi?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d36ea1cf-3798-4a49-ab05-08dc4f1e548f
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4123.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 11:58:06.9751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: isFPZKpEl4MRPuwnfieU19Kg7B8jYgqQsZJpEenTNGkmzuFYZ321FLmSzHzYfUjk4hqs3TKCOPNLODVya24XzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9230
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] serial: 8250_dw: Revert: Do not reclock if already at
+ correct rate
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+To: Peter Collingbourne <pcc@google.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240317214123.34482-1-hdegoede@redhat.com>
+ <ZfgZEcg2RXSz08Gd@smile.fi.intel.com>
+ <CAMn1gO4zPpwVDcv5FFiimG0MkGdni_0QRMoJH9SSA3LJAk7JqQ@mail.gmail.com>
+ <35cdaf7e-ef32-470f-ab61-e5f4a3b35238@redhat.com>
+In-Reply-To: <35cdaf7e-ef32-470f-ab61-e5f4a3b35238@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 28/03/24 17:04, Greg KH wrote:
-> On Thu, Mar 28, 2024 at 04:10:38PM +0530, Mukunda,Vijendar wrote:
->> On 27/03/24 23:39, Greg KH wrote:
->>> On Wed, Mar 27, 2024 at 06:56:18PM +0100, Luca Stefani wrote:
->>>> Hello everyone,
+Hi,
+
+On 3/28/24 8:10 AM, Hans de Goede wrote:
+> Hi,
+> 
+> On 3/18/24 7:52 PM, Peter Collingbourne wrote:
+>> On Mon, Mar 18, 2024 at 3:36 AM Andy Shevchenko
+>> <andriy.shevchenko@linux.intel.com> wrote:
+>>>
+>>> On Sun, Mar 17, 2024 at 10:41:23PM +0100, Hans de Goede wrote:
+>>>> Commit e5d6bd25f93d ("serial: 8250_dw: Do not reclock if already at
+>>>> correct rate") breaks the dw UARTs on Intel Bay Trail (BYT) and
+>>>> Cherry Trail (CHT) SoCs.
 >>>>
->>>> Can those changes be pulled in stable? They're currently breaking mic input
->>>> on my 21K9CTO1WW, ThinkPad P16s Gen 2, and probably more devices in the
->>>> wild.
->>> <formletter>
+>>>> Before this change the RTL8732BS Bluetooth HCI which is found
+>>>> connected over the dw UART on both BYT and CHT boards works properly:
+>>>>
+>>>> Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
+>>>> Bluetooth: hci0: RTL: rom_version status=0 version=1
+>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
+>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
+>>>> Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
+>>>> Bluetooth: hci0: RTL: fw version 0x365d462e
+>>>>
+>>>> where as after this change probing it fails:
+>>>>
+>>>> Bluetooth: hci0: RTL: examining hci_ver=06 hci_rev=000b lmp_ver=06 lmp_subver=8723
+>>>> Bluetooth: hci0: RTL: rom_version status=0 version=1
+>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_fw.bin
+>>>> Bluetooth: hci0: RTL: loading rtl_bt/rtl8723bs_config-OBDA8723.bin
+>>>> Bluetooth: hci0: RTL: cfg_sz 64, total sz 24508
+>>>> Bluetooth: hci0: command 0xfc20 tx timeout
+>>>> Bluetooth: hci0: RTL: download fw command failed (-110)
+>>>>
+>>>> Revert the changes to fix this regression.
 >>>
->>> This is not the correct way to submit patches for inclusion in the
->>> stable kernel tree.  Please read:
->>>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
->>> for how to do this properly.
+>>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 >>>
->>> </formletter>
->> These patches already got merged in V6.9-rc1 release.
->> Need to be cherry-picked for stable release.
+>>>> Note it is not entirely clear to me why this commit is causing
+>>>> this issue. Maybe probe() needs to explicitly set the clk rate
+>>>> which it just got (that feels like a clk driver issue) or maybe
+>>>> the issue is that unless setup before hand by firmware /
+>>>> the bootloader serial8250_update_uartclk() needs to be called
+>>>> at least once to setup things ?  Note that probe() does not call
+>>>> serial8250_update_uartclk(), this is only called from the
+>>>> dw8250_clk_notifier_cb()
+>>>>
+>>>> This requires more debugging which is why I'm proposing
+>>>> a straight revert to fix the regression ASAP and then this
+>>>> can be investigated further.
+>>>
+>>> Yep. When I reviewed the original submission I was got puzzled with
+>>> the CLK APIs. Now I might remember that ->set_rate() can't be called
+>>> on prepared/enabled clocks and it's possible the same limitation
+>>> is applied to ->round_rate().
+>>>
+>>> I also tried to find documentation about the requirements for those
+>>> APIs, but failed (maybe was not pursuing enough, dunno). If you happen
+>>> to know the one, can you point on it?
 >>
-> What changes exactly?  I do not see any git ids here.
->
-> confused,
->
-> greg k-h
+>> To me it seems to be unlikely to be related to round_rate(). It seems
+>> more likely that my patch causes us to never actually set the clock
+>> rate (e.g. because uartclk was initialized to the intended clock rate
+>> instead of the current actual clock rate).
+> 
+> I agree that the likely cause is that we never set the clk-rate. I'm not
+> sure if the issue is us never actually calling clk_set_rate() or if
+> the issue is that by never calling clk_set_rate() dw8250_clk_notifier_cb()
+> never gets called and thus we never call serial8250_update_uartclk()
+> 
+>> It should be possible to
+>> confirm by checking the behavior with my patch with `&& p->uartclk !=
+>> rate` removed, which I would expect to unbreak Hans's scenario. If my
+>> hypothesis is correct, the fix might involve querying the clock with
+>> clk_get_rate() in the if instead of reading from uartclk.
+> 
+> Querying the clk with clk_get_rate() instead of reading it from
+> uartclk will not help as uartclk gets initialized with clk_get_rate()
+> in dw8250_probe(). So I believe that in my scenario clk_get_rate()
+> already returns the desired rate causing us to never call clk_set_rate()
+> at all which leaves 2 possible root causes for the regressions:
+> 
+> 1. The clk generator has non readable registers and the returned
+> rate from clk_get_rate() is a default rate and the actual hw is
+> programmed differently, iow we need to call clk_set_rate() at
+> least once on this hw to ensure that the clk generator is prggrammed
+> properly.
+> 
+> 2. The 8250 code is not working as it should because
+> serial8250_update_uartclk() has never been called.
 
-Below are the commits.
+Ok, so it looks like this actually is an issue with how clk_round_rate()
+works on this hw (atm, maybe the clk driver needs fixing).
 
-37bee1855d0e ASoC: amd: yc: Revert "add new YC platform variant (0x63) support"
-861b3415e4de ASoC: amd: yc: Revert "Fix non-functional mic on Lenovo 21J2"
+I have added the following to debug this:
 
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index a3acbf0f5da1..3152872e50b2 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -306,6 +306,8 @@ static void dw8250_clk_work_cb(struct work_struct *work)
+ 	if (rate <= 0)
+ 		return;
+ 
++	pr_info("uartclk work_cb clk_get_rate() returns: %ld\n", rate);
++
+ 	up = serial8250_get_port(d->data.line);
+ 
+ 	serial8250_update_uartclk(&up->port, rate);
+@@ -353,11 +355,15 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+ {
+ 	unsigned long newrate = tty_termios_baud_rate(termios) * 16;
+ 	struct dw8250_data *d = to_dw8250_data(p->private_data);
++	unsigned long currentrate = clk_get_rate(d->clk);
+ 	long rate;
+ 	int ret;
+ 
++
+ 	rate = clk_round_rate(d->clk, newrate);
+-	if (rate > 0 && p->uartclk != rate) {
++	pr_info("uartclk set_termios new: %ld new-rounded: %ld current %ld cached %d\n",
++		newrate, rate, currentrate, p->uartclk);
++	if (rate > 0) {
+ 		clk_disable_unprepare(d->clk);
+ 		/*
+ 		 * Note that any clock-notifer worker will block in
+@@ -593,6 +599,8 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	if (!p->uartclk)
+ 		return dev_err_probe(dev, -EINVAL, "clock rate not defined\n");
+ 
++	pr_info("uartclk initial cached %d\n", p->uartclk);
++
+ 	data->pclk = devm_clk_get_optional_enabled(dev, "apb_pclk");
+ 	if (IS_ERR(data->pclk))
+ 		return PTR_ERR(data->pclk);
+
+And then I get the following output:
+
+[    3.119182] uartclk initial cached 44236800
+[    3.139923] uartclk work_cb clk_get_rate() returns: 44236800
+[    3.152469] uartclk initial cached 44236800
+[    3.172165] uartclk work_cb clk_get_rate() returns: 44236800
+[   34.128257] uartclk set_termios new: 153600 new-rounded: 44236800 current 44236800 cached 44236800
+[   34.130039] uartclk work_cb clk_get_rate() returns: 153600
+[   34.131975] uartclk set_termios new: 153600 new-rounded: 153600 current 153600 cached 153600
+[   34.132091] uartclk set_termios new: 153600 new-rounded: 153600 current 153600 cached 153600
+[   34.132140] uartclk set_termios new: 153600 new-rounded: 153600 current 153600 cached 153600
+[   34.132187] uartclk set_termios new: 1843200 new-rounded: 153600 current 153600 cached 153600
+[   34.133536] uartclk work_cb clk_get_rate() returns: 1843200
+
+Notice how the new-rounded just returns the current rate of the clk,
+rather then a rounded value of new.
+
+I'm not familiar enough with the clk framework to debug this further.
+
+Peter, IMHO we really must revert your commit since it is completely
+breaking UARTs on many different Intel boards. Can you please give your
+ack for reverting this for now ?
+
+Regards,
+
+Hans
+
+
+p.s.
+
+For anyone who wants to dive into the clk_round_rate() issue deeper,
+the code registering the involved clks is here:
+
+drivers/acpi/acpi_lpss.c: register_device_clock()
+
+And for the clocks in question fixed_clk_rate is 0 and both
+the LPSS_CLK_GATE and LPSS_CLK_DIVIDER flags are set, so
+for a single UART I get:
+
+[root@fedora ~]# ls -d /sys/kernel/debug/clk/80860F0A:01*
+/sys/kernel/debug/clk/80860F0A:01      /sys/kernel/debug/clk/80860F0A:01-update
+/sys/kernel/debug/clk/80860F0A:01-div
+
+With the 80860F0A:01-update clk being the clk which is
+actually used / controlled by the 8250_dw.c code.
 
 
