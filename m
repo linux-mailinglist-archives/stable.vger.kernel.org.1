@@ -1,129 +1,107 @@
-Return-Path: <stable+bounces-33036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8407988F232
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 23:55:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4FF88F3AD
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 01:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 380AA29C344
-	for <lists+stable@lfdr.de>; Wed, 27 Mar 2024 22:55:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D08B240C8
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 00:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E83D154C07;
-	Wed, 27 Mar 2024 22:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24792BE55;
+	Thu, 28 Mar 2024 00:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aSxKIyOg"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Zj6lr0AL"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B09154437
-	for <stable@vger.kernel.org>; Wed, 27 Mar 2024 22:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5951E498;
+	Thu, 28 Mar 2024 00:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711580113; cv=none; b=NYdbIQ/JsOw4a/P24QYVIIPtSE6dnKcc+30kZpXvCNxjLP5AOceWFz0YBM7bW3ZJhCgQV64bCMvmy0rhh1R9kttnCzO01+9rAC7kLnXPQ1xCAF6CDLtxJPUzU1XTOkoljn6irSGcqaLaOBntUUz/2S9s1oJwO2REOXQJmZQDmok=
+	t=1711585406; cv=none; b=BcMuXeUGWUHaEnLQZrWpY7tOyYqu/jtojRcgXwxVCS9KWjXsTKghUjddymbpy6MMSSehi0ZyM51pQmmBPCKgm4RNMZbMFRATShioxfK5XHEFpmiyDx82TNEJS27Pk4duPOHAI4Mz8dsE+QO1ONwucvS69pC/9I6z8ArJxx9BxI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711580113; c=relaxed/simple;
-	bh=tFk2WDgPQcum9GMb7IfkK53TeSOXfNcXazSFIhRsKEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwxWNE6NUB1ZeVRMQwJjpPcZ5dCJon57PZhKgCDsurSdR4TXln8Wy/YyPSnOZZuz1q1HjSFaIGOK/lZ8d61bT1ttYsps63aEEfNkl9yckCy00CK8gfp0X4fikuara2aQ0FniJSeAb4HTh2OHS5UJrTvGmzW1ZFqE1JpNjclPI1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aSxKIyOg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711580110;
+	s=arc-20240116; t=1711585406; c=relaxed/simple;
+	bh=QBhJNdXt3ZDE1KYix7kVNCLNrhefe3LPg7AK/U9VUX4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EYmj9afwlijNeXYr1FVsyj/Z2f78J8j71Jh9MS1Qf9Sm2rvNtI712wmFC67qvMvmSJcHl8CLO4sWcnTASgpYdjM84X/HKWQ+h8wc5xgLb4THgdu38q6Spv3wOSTofdbAZaq3KSqTUybb7TZl2Bc3SFU4Kp0a1G88EyaQgSTxbuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Zj6lr0AL; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 71C63FF802;
+	Thu, 28 Mar 2024 00:23:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1711585396;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9cDODoHFQAdzqju7uysEdGyC001D3/wBE/vEANKSTwk=;
-	b=aSxKIyOgXH4dcOs9gl3UjsZYJedOE4qEHr1ZjTqYmu0PtSTD0s4xfms8kQoi0bidm/Uqas
-	L9xUuQBnVEm0T39gJChFDydcsa0NFG+Y/v+qFmMgxQwn/are99Mx4DgV2/ZuTNXrIqJ2bp
-	8UA01YzPhGhEj70GJhU1AVsJ0mClHZw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-78-Tot_C2N4Mu2BkgaWIg3ZsQ-1; Wed,
- 27 Mar 2024 18:55:08 -0400
-X-MC-Unique: Tot_C2N4Mu2BkgaWIg3ZsQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 618DA1C05EBD;
-	Wed, 27 Mar 2024 22:55:08 +0000 (UTC)
-Received: from omen.home.shazbot.org (unknown [10.22.34.212])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6EA5B111F3C6;
-	Wed, 27 Mar 2024 22:55:07 +0000 (UTC)
-From: Alex Williamson <alex.williamson@redhat.com>
-To: stable@vger.kernel.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	eric.auger@redhat.com,
-	sashal@kernel.org,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.6.y 4/4] vfio/fsl-mc: Block calling interrupt handler without trigger
-Date: Wed, 27 Mar 2024 16:54:30 -0600
-Message-ID: <20240327225444.909882-5-alex.williamson@redhat.com>
-In-Reply-To: <20240327225444.909882-1-alex.williamson@redhat.com>
-References: <20240327225444.909882-1-alex.williamson@redhat.com>
+	bh=wrkfJcTuEi+D+HvBe61cn2FoxEmO6/EMkOnHD/GfbVk=;
+	b=Zj6lr0AL5lpyDHEmBNKHoDUp8yYNVdu+j6B2c/n+9L4YqqNlPbqUykWamyW25LRM7Zl2n0
+	4gBIpQViRbWJi50k/2DGDhQoluW7Mx2v5juh32IvkijyCIXq/oTpkCD7HT5VRhJwcATOWL
+	j38C8hYFXRA+OjFsOorQUiUzwWY7DgvKekSna9OBvnB9/jLcp0E4G0CY48x5zSfA78ec/h
+	6jlZrsYjsyOWsxKeOrtZVbJpLTr1z86o74MT4buG1l3QBFMb8gAN0ZUR6z2aadu1DpZrOU
+	kaugZr7iYw0QuWll34OHEdvLE9nN2GQhGces5PpaaOA23A7wp3LNPmxlAYDeYg==
+Date: Thu, 28 Mar 2024 01:23:13 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Lizhi Hou <lizhi.hou@amd.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>, Brian Xu <brian.xu@amd.com>,
+ Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, Vinod Koul
+ <vkoul@kernel.org>, Michal Simek <michal.simek@amd.com>, Jan Kuliga
+ <jankul@alatek.krakow.pl>, <dmaengine@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/3] dmaengine: xilinx: xdma: Fix synchronization issue
+Message-ID: <20240328012257.4a5955f2@xps-13>
+In-Reply-To: <b59dd8cd-fd75-5342-d411-817f33e0ff48@amd.com>
+References: <20240327-digigram-xdma-fixes-v1-0-45f4a52c0283@bootlin.com>
+	<20240327-digigram-xdma-fixes-v1-2-45f4a52c0283@bootlin.com>
+	<b59dd8cd-fd75-5342-d411-817f33e0ff48@amd.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-[ Upstream commit 7447d911af699a15f8d050dfcb7c680a86f87012 ]
+Hi Lizhi,
 
-The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-initially NULL and may become NULL if the user sets the trigger
-eventfd to -1.  The interrupt handler itself is guaranteed that
-trigger is always valid between request_irq() and free_irq(), but
-the loopback testing mechanisms to invoke the handler function
-need to test the trigger.  The triggering and setting ioctl paths
-both make use of igate and are therefore mutually exclusive.
+> > @@ -376,6 +378,8 @@ static int xdma_xfer_start(struct xdma_chan *xchan)
+> >   		return ret; =20
+> >   >   	xchan->busy =3D true; =20
+> > +	xchan->stop_requested =3D false;
+> > +	reinit_completion(&xchan->last_interrupt); =20
+>=20
+> If stop_requested is true, it should not start another transfer. So I wou=
+ld suggest to add
+>=20
+>  =C2=A0=C2=A0=C2=A0=C2=A0 if (xchan->stop_requested)
+>=20
+>  =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
+=A0 return -ENODEV;
 
-The vfio-fsl-mc driver does not make use of irqfds, nor does it
-support any sort of masking operations, therefore unlike vfio-pci
-and vfio-platform, the flow can remain essentially unchanged.
+Maybe -EBUSY in this case?
 
-Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
----
- drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+I thought synchronize() was mandatory in-between. If that's not the
+case then indeed we need to block or error-out if a new transfer
+gets started.
 
-diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-index c51229fccbd6..1a1d0d5ec35c 100644
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-@@ -141,13 +141,14 @@ static int vfio_fsl_mc_set_irq_trigger(struct vfio_fsl_mc_device *vdev,
- 	irq = &vdev->mc_irqs[index];
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		u8 trigger = *(u8 *)data;
- 
--		if (trigger)
--			vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (trigger && irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 	}
- 
- 	return 0;
--- 
-2.44.0
+>=20
+> at the beginning of xdma_xfer_start().
+>=20
+> xdma_xfer_start() is protected by chan lock.
+>=20
+> >   >   	return 0; =20
+> >   }
 
+Thanks,
+Miqu=C3=A8l
 
