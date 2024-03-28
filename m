@@ -1,97 +1,124 @@
-Return-Path: <stable+bounces-33074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01A688FDC6
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:10:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252B988FDDF
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 12:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38169B24457
-	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49A5294091
+	for <lists+stable@lfdr.de>; Thu, 28 Mar 2024 11:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861E87E0F2;
-	Thu, 28 Mar 2024 11:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C89657C4;
+	Thu, 28 Mar 2024 11:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="dpXOQPKD"
+	dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b="Fyl+N1f0"
 X-Original-To: stable@vger.kernel.org
-Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19AB4A18;
-	Thu, 28 Mar 2024 11:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCE354665
+	for <stable@vger.kernel.org>; Thu, 28 Mar 2024 11:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711624205; cv=none; b=QnRCdd1lTAHODB6IWyYeBvBCmJghvnZdg9NFSrKCr0xTKzDpbkGqan8hTDbhSqRPnghmd73In/UAeAdsCp5NcgMrQKCxdIk50MrseO4kB0ojYKV6ozl5+dYPd0n4eXfI9JuqhIa310nvd+AmxFKlM5Blav76njJGYkr3rRc15CE=
+	t=1711624472; cv=none; b=sTdhWcL+zL9CD71p9iQ9hZmSDoWnGPw7U/YuduX/JI9zuKKhvJqIWWmNEw4lKB4dZUY72fRauhe1vT/l9MPNRpIY6yBlnsnNhi3QWYT+K7kKtDLSGUNpf06ctWgohlRPPYM42cGmE+ztGtqpH9i8IXoyTnV0CglEeL460YwEOfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711624205; c=relaxed/simple;
-	bh=YPtwI/73XQMq5pLXmdBDn594QE8iR58OHaXvHludfN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGXmaIclnMpHTdCZ1EZmsrO4S9Vs8j6nyVFfaYVYY6EMBBaJWrr12aMgtsAaYo7cds5gOVtXEVs4emrcysAMJyrWVmdCsTFFbJxY2jzMYtQ5KAT9IQ8JV6JRzBefa2X5w9TJYxBbwObL5xqHugtJ0vZDBacbrsgjUQwwQw107VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=dpXOQPKD; arc=none smtp.client-ip=213.219.36.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
-Received: from ncopa-desktop.lan (ti0056a400-4037.bb.online.no [85.167.238.210])
-	(Authenticated sender: ncopa@alpinelinux.org)
-	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id AE80B226016;
-	Thu, 28 Mar 2024 11:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
-	s=smtp; t=1711623671;
+	s=arc-20240116; t=1711624472; c=relaxed/simple;
+	bh=ih0F07PnNJ+ccJsZ5jWXyBWyimm8raUL914bms3twsE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dBuiTnPRwvQvxqtXTBxZLzuXvQVOU26QRyOlcGqcHX+SOBUzme7R6NbavoAxfzkWL/XXkbL+pSD6MVZU3DDSmOqYc4AGhL3lcE5cNZ6B5f9X02ZSMaGv9ndWR3JqAyi7vaUszxAIvWsNC9mc+87IlKEHaAhMjRQuVV7otpJpUPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org; spf=pass smtp.mailfrom=khvoinitsky.org; dkim=pass (1024-bit key) header.d=khvoinitsky.org header.i=@khvoinitsky.org header.b=Fyl+N1f0; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=khvoinitsky.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=khvoinitsky.org
+X-Forwarded-Encrypted: i=1; AJvYcCVW4U0GLmODIhKI3RbPwRUVQWMfZKffME3hCG8PKH227A7x5V0BG9325dqMX6gCJQXaSw93s0JqHxro+NSiAd8KkXKQ8hxMpBH+YR7VhOEpuP2BIXp2nJJ2cPNV7D2LyHnb7YPw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=khvoinitsky.org;
+	s=key1; t=1711624467;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=e3J+7uknz3z0s1JqJlEsccjqrrENP/4M0ZqplTq5eJU=;
-	b=dpXOQPKDkCmrGhqGtBgCQrWFj4n4hd60kAQwPK9oWxZK4nzVZv0Ek02vCFVsu0sUavFj3B
-	iWRCjOFoqF/LdParHOH5uf+yZe0QieCKFmxpW5EvuwS+Mx/skL0HWDUBjNQXooQuXATPq5
-	2h/gQTWy8YdnnRV12Jzob3ZYqBmIRLI=
-From: Natanael Copa <ncopa@alpinelinux.org>
-To: bpf@vger.kernel.org
-Cc: Natanael Copa <ncopa@alpinelinux.org>,
-	stable@vger.kernel.org,
-	Viktor Malik <vmalik@redhat.com>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tools/resolve_btfids: fix build with musl libc
-Date: Thu, 28 Mar 2024 11:59:13 +0100
-Message-ID: <20240328110103.28734-1-ncopa@alpinelinux.org>
-X-Mailer: git-send-email 2.44.0
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WyBdVLeR0iGztScqRFw42hXy5mWAAq735aD6y6toOHg=;
+	b=Fyl+N1f0YO9MXqnulUPITqDlTH6mLyYzhwkSMRAUew3ScV4yMi5BGekDVqNqN/4pbVeVT1
+	iviIOdy1hsp09koAF/ppHeLXZKHhpFzB2t0Up+TcP0lIqWTDOR+VEP7pSI5N6SVKedCaiz
+	HBGqwhrZ8uP9P/Lk7Ue0wV46bvXRPUE=
+X-Gm-Message-State: AOJu0YwZpFLgGjjWaaJHQhd8a+5w00zcU+Me6isJs64JlqCUgnAbYbdi
+	HGGQtCk/BsLZdIEbIoSBRdRfN19Nqnur0W5Ik3LzNbA63zOgKOJdnqA3GS6qbLvBbgRQUNFTnmq
+	jxBssZBOK8N0cWXHyKmLDWDrvRlc=
+X-Google-Smtp-Source: AGHT+IFtQTfimY5bygJfYb3mmH01UJxeFQyJouq/lZdlVc9aDYaf/0Zl1hsQw4Uz3UOnLX8E/RvhVnsq6FB1N2ZYrmw=
+X-Received: by 2002:a19:5e47:0:b0:513:bb6:6966 with SMTP id
+ z7-20020a195e47000000b005130bb66966mr1391855lfi.6.1711624465164; Thu, 28 Mar
+ 2024 04:14:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240324234027.1354210-1-sashal@kernel.org> <20240324234027.1354210-128-sashal@kernel.org>
+ <ZgVJGs2OI/4QsJCQ@duo.ucw.cz>
+In-Reply-To: <ZgVJGs2OI/4QsJCQ@duo.ucw.cz>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Mikhail Khvoinitsky <me@khvoinitsky.org>
+Date: Thu, 28 Mar 2024 13:14:13 +0200
+X-Gmail-Original-Message-ID: <CAMMabwPNaHF67fTunfr9L2H1msntquypcd0kgzdza+OwyuZRRw@mail.gmail.com>
+Message-ID: <CAMMabwPNaHF67fTunfr9L2H1msntquypcd0kgzdza+OwyuZRRw@mail.gmail.com>
+Subject: Re: [PATCH 5.10 127/238] HID: lenovo: Add middleclick_workaround
+ sysfs knob for cptkbd
+To: Pavel Machek <pavel@denx.de>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jiri Kosina <jkosina@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Include the header that defines u32.
+Hi,
+This patch is already on upstream. Unfortunately, previous backports
+of related commits caused some issues so just skipping this one isn't
+a good option.
 
-Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
-Cc: stable@vger.kernel.org
-Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
----
-This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
-uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
+For module parameters, while it's quite unrealistic for users to have
+more than one identical keyboard but with different firmware, this is
+possible and having a module option would prevent tuning only specific
+keyboard.
 
- tools/include/linux/btf_ids.h | 2 ++
- 1 file changed, 2 insertions(+)
+For the documentation, makes sense. Sorry, I should have done it
+together with the change, I'll fix it, thanks for pointing it out.
 
-diff --git a/tools/include/linux/btf_ids.h b/tools/include/linux/btf_ids.h
-index 72535f00572f..72ea363d434d 100644
---- a/tools/include/linux/btf_ids.h
-+++ b/tools/include/linux/btf_ids.h
-@@ -3,6 +3,8 @@
- #ifndef _LINUX_BTF_IDS_H
- #define _LINUX_BTF_IDS_H
- 
-+#include <linux/types.h> /* for u32 */
-+
- struct btf_id_set {
- 	u32 cnt;
- 	u32 ids[];
--- 
-2.44.0
-
+On Thu, 28 Mar 2024 at 12:40, Pavel Machek <pavel@denx.de> wrote:
+>
+> Hi!
+>
+> > From: Mikhail Khvainitski <me@khvoinitsky.org>
+> >
+> > [ Upstream commit 2814646f76f8518326964f12ff20aaee70ba154d ]
+> >
+> > Previous attempt to autodetect well-behaving patched firmware
+> > introduced in commit 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw
+> > on cptkbd and stop applying workaround") has shown that there are
+> > false-positives on original firmware (on both 1st gen and 2nd gen
+> > keyboards) which causes the middle button click workaround to be
+> > mistakenly disabled.
+> >
+> > This commit adds explicit parameter to sysfs to control this
+> > workaround.
+>
+> Should this go to stable? We have stream of lenovo workarounds, maybe
+> -stable should wait for upstream to solve this.
+>
+> Plus it should really have documentation.
+>
+> Oh and we normally solve this stuff with module parameters, so that it
+> can be fixed during bootup.
+>
+> Best regards,
+>                                                         Pavel
+>
+> > Fixes: 46a0a2c96f0f ("HID: lenovo: Detect quirk-free fw on cptkbd and stop applying workaround")
+> > Fixes: 43527a0094c1 ("HID: lenovo: Restrict detection of patched firmware only to USB cptkbd")
+> > Signed-off-by: Mikhail Khvainitski <me@khvoinitsky.org>
+> > Signed-off-by: Jiri Kosina <jkosina@suse.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> --
+> DENX Software Engineering GmbH,        Managing Director: Erika Unter
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
