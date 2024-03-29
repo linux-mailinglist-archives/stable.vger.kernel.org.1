@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-33666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E09D891F66
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:04:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C088891E95
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9299B279B0
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:46:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0CA1C27DC4
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA081ACBA5;
-	Fri, 29 Mar 2024 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528791B197A;
+	Fri, 29 Mar 2024 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brTWtpQ6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dn1lXu6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89F015217E;
-	Fri, 29 Mar 2024 12:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16C1B1971;
+	Fri, 29 Mar 2024 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716582; cv=none; b=T3abqEJjoGmkONQDgLE9emWb3f1ZfL1m6dy1bKQOabDRJct8H/lzr8bqi0jb/vyOssstFfdvUIC10V6wFcvsZoUYgTPpiEuO+4cblBDGrO9m60YiYGyQg1KHpgjvRp/XtkdW43dRyOn0AK1MY5UYsU95O2xXzzFosTMTjd0fB2U=
+	t=1711716584; cv=none; b=nPLQha7kOajHTyrZqeR3q03PJeV0E1E6+v5uznirMVjo5sehVoNP1Aebzz8hkZY4RIdkcslbFr1L+YWjSqGSWQEwzi2sqS5FpC8zdG1KAu9QFLx8K47MRWdIcqgthoZ3T8v5oaUCO80tCdGRBs59lmwBg+WtlAM0lvTkCXV2Ei4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716582; c=relaxed/simple;
-	bh=ORrkXhOEFKtoASG7lh/cLzIJoH6liO4TrWq0yY57hWU=;
+	s=arc-20240116; t=1711716584; c=relaxed/simple;
+	bh=Wbr3WrvcU27mxVlXxKr9LiCbLXTK6CwiODDSojafyfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSeb6Ollq2I5XBj/3z2x64yH6tsKosFdYHCqhGHJAUYhrFvJMXwIZVNXjZ/nuIEhp77OejdTKZNCkA9a6WBax7f02Nt2nhIi7Gxkgex0quC9E3ZRBy6JcqGJdVXcER1Imz9kjhTbjNHxWdkHgacb+mKG3UOwdeVT0vH4dvx6GKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brTWtpQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F046C43399;
-	Fri, 29 Mar 2024 12:49:41 +0000 (UTC)
+	 MIME-Version; b=sKsbC/tj1k/M4UQMv6ZUWFHZdyq+qz59TXtkmvX5eRaqbAZ76/jB/Oqd3gk78I+Dsa/Zg6lOr/X07Rdur0G3xafn6WanfIvjdEwG0VbUfuLYu8v+iiY7D6YcPiRVPeM/Fc62G3mUUjY8hyqhM04kVeweRjg6X/Hr4y46siY3LD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dn1lXu6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FFDC433A6;
+	Fri, 29 Mar 2024 12:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716582;
-	bh=ORrkXhOEFKtoASG7lh/cLzIJoH6liO4TrWq0yY57hWU=;
+	s=k20201202; t=1711716583;
+	bh=Wbr3WrvcU27mxVlXxKr9LiCbLXTK6CwiODDSojafyfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brTWtpQ6FwnccTAwgOSairdaB/yXBHG5QfvusuGjjBXGtLVKnD1ym9csrbS6cjxR9
-	 4Klpr8lVeQ/Pl0jASMG3/TjJKlWKtEQjhhgwWdPMx0J5UJkvKiaqUMPQqLdOOyt9lm
-	 tg7w+qSGiugweDWNvTgo7PE5TUtoSnOUUyKSEc3W+U/QFn6TWATfmHJit9WPEzCQen
-	 d70eJo07LrrG5hbEQM2BsnLJaYuk7OJCEGhsBsL3ins86JqfDzjx6yXaDXevIR2Y+Q
-	 NwQnKV0rY/QYm/wJ+m3zqu7UjFrgAEC/AO62akI5M1kWkcShRPcyhaA1Ku1O8bvGiT
-	 zGs4N9dlK/Fdg==
+	b=Dn1lXu6qus+iRJEUNadNe5WiSKkqKvp3lDi9FaFkNOCYOAFPEOf5Oura4NysWeqHp
+	 ImwTDb+y5xdm1Pr3wgJOmnoig11zF/IqauNSOIduXtpG6w5lRxif2R8sA5vRbhWeUo
+	 7LmawgrW/wrZYdkx8Y6+0TGkE8IpsHbBatdUOrx+bjfb0TJWDJyLNYxM677P5yZ8UN
+	 KP9OcWZnJ5GY/joxuarhGdjh/rLEqcZjmEq96EHgoIPxoP1kwJZxlBfYQacBD7k2HZ
+	 cQDI92u0WL9pBSeiYQf3w1WJywa+UiYBxcfd4IX1HL5JPGMB3O2XhtBdPMnVs6f/Aj
+	 8SQ2BUoPDbn9g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	kernel test robot <lkp@intel.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <n.schier@avm.de>,
-	linux-sh@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.10 22/31] sh: Fix build with CONFIG_UBSAN=y
-Date: Fri, 29 Mar 2024 08:48:39 -0400
-Message-ID: <20240329124903.3093161-22-sashal@kernel.org>
+Cc: David Sterba <dsterba@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	clm@fb.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 23/31] btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()
+Date: Fri, 29 Mar 2024 08:48:40 -0400
+Message-ID: <20240329124903.3093161-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124903.3093161-1-sashal@kernel.org>
 References: <20240329124903.3093161-1-sashal@kernel.org>
@@ -70,43 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.214
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <keescook@chromium.org>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit e36b70fb8c707a0688960184380bc151390d671b ]
+[ Upstream commit 7411055db5ce64f836aaffd422396af0075fdc99 ]
 
-The early boot stub for sh had UBSan instrumentation present where it is
-not supported. Disable it for this part of the build.
+The unhandled case in btrfs_relocate_sys_chunks() loop is a corruption,
+as it could be caused only by two impossible conditions:
 
-  sh4-linux-ld: arch/sh/boot/compressed/misc.o: in function `zlib_inflate_table':
-  misc.c:(.text+0x670): undefined reference to `__ubsan_handle_shift_out_of_bounds'
+- at first the search key is set up to look for a chunk tree item, with
+  offset -1, this is an inexact search and the key->offset will contain
+  the correct offset upon a successful search, a valid chunk tree item
+  cannot have an offset -1
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401310416.s8HLiLnC-lkp@intel.com/
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <n.schier@avm.de>
-Cc:  <linux-sh@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240130232717.work.088-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+- after first successful search, the found_key corresponds to a chunk
+  item, the offset is decremented by 1 before the next loop, it's
+  impossible to find a chunk item there due to alignment and size
+  constraints
+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/boot/compressed/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/volumes.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
-index 589d2d8a573db..edc9dc36115dc 100644
---- a/arch/sh/boot/compressed/Makefile
-+++ b/arch/sh/boot/compressed/Makefile
-@@ -13,6 +13,7 @@ targets		:= vmlinux vmlinux.bin vmlinux.bin.gz \
- OBJECTS = $(obj)/head_32.o $(obj)/misc.o $(obj)/cache.o
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index eaf5cd043dace..634b73d734bc6 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3178,7 +3178,17 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
+ 			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
+ 			goto error;
+ 		}
+-		BUG_ON(ret == 0); /* Corruption */
++		if (ret == 0) {
++			/*
++			 * On the first search we would find chunk tree with
++			 * offset -1, which is not possible. On subsequent
++			 * loops this would find an existing item on an invalid
++			 * offset (one less than the previous one, wrong
++			 * alignment and size).
++			 */
++			ret = -EUCLEAN;
++			goto error;
++		}
  
- GCOV_PROFILE := n
-+UBSAN_SANITIZE := n
- 
- #
- # IMAGE_OFFSET is the load offset of the compression loader
+ 		ret = btrfs_previous_item(chunk_root, path, key.objectid,
+ 					  key.type);
 -- 
 2.43.0
 
