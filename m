@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-33654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3D1891E77
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:43:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA54891E7C
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857401F27D2C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:43:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1564228830A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729331AE847;
-	Fri, 29 Mar 2024 12:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C723F1AE86B;
+	Fri, 29 Mar 2024 12:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pq8aQkUD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sep+Vtwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0221ACBCE;
-	Fri, 29 Mar 2024 12:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC6F1AE862;
+	Fri, 29 Mar 2024 12:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716561; cv=none; b=AbHSVQO+Oe0szKL6oVIBZxTrRrN2Dg0xzBuBG27cIqXO9hqLf9We53jTFSnet1RSsxmqyCxgJ+Vows6z6h4T3xzkjo54a2cJPTYe6Q9ORz0zq6NjpNKrZPfVOKpsPcDg+IExMZTRHoKsK5wBzzc/V5eFKBMjH+FmmFQ39ZfcD3A=
+	t=1711716563; cv=none; b=Dhxh0sxB5RYAb0U4Qxu0M+h0NuCVjo+qFnnUA+QWvRLL2bygyK/3EnMFqKOPuzd2xXu4ITsLhDo8j6hnUmt2awU3tK7LiGriCv+SoKqAT7IQV44oCzY8TYjZarDrvnsQ0N9Kv2nucivh61wQdEaVNbb7LpxqNpEEzSfashtjUEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716561; c=relaxed/simple;
-	bh=mnvBdOWr2dTaO6J2yotkR/heUcAFjGhxaYEUT9or5M4=;
+	s=arc-20240116; t=1711716563; c=relaxed/simple;
+	bh=M8P/3KG1nNxQ+GD7IykbZpxImOfesKInWZciBRSL8bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpF/vrN3/6WGutQirhM0bpmHX9NrW2oGPRXTXfZ6RgHbjgyQWDsTo7dc9LaPGJEmOAE96WmmiDPTVJTcznn8k9VfRQjaSB3WUuIxyDXPAR5indVgfMmZvvfEYpPE18fvJV4ZhzC/K4DG4IemLDzecP8hX1eYdKKtz+hAypJ5iTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pq8aQkUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338E4C433C7;
-	Fri, 29 Mar 2024 12:49:19 +0000 (UTC)
+	 MIME-Version; b=FrYj4d8GPa43j31dUJCyuHAng1uN+bLvrXnh8jb1juJtdflbuP4OscQXLzMpG1e6SBMtAV1WdGRQBBQfqFb0jrT+0tKBkx6POsCQcu5GIVp1SLYeCnEI9FrYneUn/2mfVGwgd0Rb4WiwrjxPzj02SasKObqGZrezNffFYLaK3Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sep+Vtwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5526BC433F1;
+	Fri, 29 Mar 2024 12:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716561;
-	bh=mnvBdOWr2dTaO6J2yotkR/heUcAFjGhxaYEUT9or5M4=;
+	s=k20201202; t=1711716563;
+	bh=M8P/3KG1nNxQ+GD7IykbZpxImOfesKInWZciBRSL8bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pq8aQkUDU73Io+yHSViB5mA5Oqask48R531FWMN1SGeGeuv58oq+eO/NUG45E1v50
-	 ZOSOHPvqiIa26aysJbPzDErVyThF5qnauK88Lx5zg7F2H2aIDhCTzegR5Cmpg/9pL6
-	 xL73H+aElD8sV9r/NDjgPzZ2XurerqM4WnFmyLh+45dM3lv0FR5PB3QUrkHm9NHBBP
-	 QFQuJWB9gLOd/E4rDdLgzDGaVNPcill1z2DbbSm44GZ4zORL02JO8ZaGbD8vecfdUR
-	 sUASoAX1D/SZUrTuwdb25nTAf79AE1p45oS9m7cizyiYOtvL0I5RywlEySc/h5we37
-	 UlEgWa0dAgjuw==
+	b=Sep+Vtwr+Wg+8gG9lwpISIzr5Tq+DMFVh1SHL3n+UJbJmlnPN+qF0VuRtOc8RmzMK
+	 jQC3r41Ds3OpoCqnNMOPnr2mA4qnIchE/n+elenk3d64Iz4B6V9hlzEF2F2YK5DqSS
+	 SiQLJMULoOMX9UE7wiJ7wwZQuUJ2bOYcRwaGtEzX/vnEojjJhjtYZSl256sJ283INe
+	 94Tb2QmgGU9IpXrD71JR++XjZOqFoDraz1TLLOSdPw51SkQeezz6rSkvsqba1pAJUU
+	 ZJS7kKzZVapE+55sxbl+LEuN7LwlZosnajSqYCoaBsphQh68wRzb63h2cEKlqPBd9B
+	 2VJ0LucQSKkqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	dsimic@manjaro.org,
-	s.hauer@pengutronix.de,
-	jonas@kwiboo.se,
-	rick.wertenbroek@gmail.com,
-	knaerzche@gmail.com,
-	quentin.schulz@theobroma-systems.com,
-	chris.obbard@collabora.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 10/31] arm64: dts: rockchip: fix rk3399 hdmi ports node
-Date: Fri, 29 Mar 2024 08:48:27 -0400
-Message-ID: <20240329124903.3093161-10-sashal@kernel.org>
+	mchehab@kernel.org,
+	nathan@kernel.org,
+	linux-media@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 11/31] media: sta2x11: fix irq handler cast
+Date: Fri, 29 Mar 2024 08:48:28 -0400
+Message-ID: <20240329124903.3093161-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124903.3093161-1-sashal@kernel.org>
 References: <20240329124903.3093161-1-sashal@kernel.org>
@@ -77,63 +68,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.214
 Content-Transfer-Encoding: 8bit
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f051b6ace7ffcc48d6d1017191f167c0a85799f6 ]
+[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
 
-Fix rk3399 hdmi ports node so that it matches the
-rockchip,dw-hdmi.yaml binding.
+clang-16 warns about casting incompatible function pointers:
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/a6ab6f75-3b80-40b1-bd30-3113e14becdd@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+
+Change the prototype of the irq handler to the regular version with a
+local variable to adjust the argument type.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: update argument documentation]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 3180f576ed02e..e2515218ff734 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -1769,6 +1769,7 @@ simple-audio-card,codec {
- 	hdmi: hdmi@ff940000 {
- 		compatible = "rockchip,rk3399-dw-hdmi";
- 		reg = <0x0 0xff940000 0x0 0x20000>;
-+		reg-io-width = <4>;
- 		interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru PCLK_HDMI_CTRL>,
- 			 <&cru SCLK_HDMI_SFR>,
-@@ -1777,13 +1778,16 @@ hdmi: hdmi@ff940000 {
- 			 <&cru PLL_VPLL>;
- 		clock-names = "iahb", "isfr", "cec", "grf", "vpll";
- 		power-domains = <&power RK3399_PD_HDCP>;
--		reg-io-width = <4>;
- 		rockchip,grf = <&grf>;
- 		#sound-dai-cells = <0>;
- 		status = "disabled";
+diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
+index 336df65c8af11..01ca940aecc2d 100644
+--- a/drivers/media/pci/sta2x11/sta2x11_vip.c
++++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
+@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
+ /**
+  * vip_irq - interrupt routine
+  * @irq: Number of interrupt ( not used, correct number is assumed )
+- * @vip: local data structure containing all information
++ * @data: local data structure containing all information
+  *
+  * check for both frame interrupts set ( top and bottom ).
+  * check FIFO overflow, but limit number of log messages after open.
+@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
+  *
+  * IRQ_HANDLED, interrupt done.
+  */
+-static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
++static irqreturn_t vip_irq(int irq, void *data)
+ {
++	struct sta2x11_vip *vip = data;
+ 	unsigned int status;
  
- 		ports {
--			hdmi_in: port {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			hdmi_in: port@0 {
-+				reg = <0>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
+ 	status = reg_read(vip, DVP_ITS);
+@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
  
-@@ -1796,6 +1800,10 @@ hdmi_in_vopl: endpoint@1 {
- 					remote-endpoint = <&vopl_out_hdmi>;
- 				};
- 			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
-+			};
- 		};
- 	};
+ 	spin_lock_init(&vip->slock);
  
+-	ret = request_irq(pdev->irq,
+-			  (irq_handler_t) vip_irq,
+-			  IRQF_SHARED, KBUILD_MODNAME, vip);
++	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+ 		ret = -ENODEV;
 -- 
 2.43.0
 
