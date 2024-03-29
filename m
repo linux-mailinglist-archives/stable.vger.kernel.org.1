@@ -1,122 +1,141 @@
-Return-Path: <stable+bounces-33123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD2A689150E
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:10:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B4F891513
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035031C20BA9
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 08:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57521287C74
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 08:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A606A446A1;
-	Fri, 29 Mar 2024 08:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150F847F6B;
+	Fri, 29 Mar 2024 08:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="mz+n4RAe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DEiJ/gTp"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F168D40842;
-	Fri, 29 Mar 2024 08:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196963EA62;
+	Fri, 29 Mar 2024 08:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711699848; cv=none; b=W76l//wUtL3lNKrsC1UxlL/h2DWBW/VM+nUYmYec0dtdUYexU99KxWkRn4PemZ3MpFhLx4Z1j657IbtneAM6KeuytTJKc+DBrhqfp0s+2X19UH44GtaS3xGqRdqSsyP1qeUJIkAxMoMEPsGu0nb/HnlyLgedni/OaoJUHXTfZO8=
+	t=1711700144; cv=none; b=f5myAdWB/c74UW7WptiTAQm7PQJ/CgOe6/q4b8KxYP3oAExCzj8XxloM688icdCmc2wv85lv9LCv3UkAGcQkrF6MDDRAyppbFpL6rMLxL4Y8KkL3XAOZaHLAAD4dL/W4vzSTF4WaZkJxSi7EBGcqo8Erjwh9CrkNIIHPmuMrhdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711699848; c=relaxed/simple;
-	bh=Wjl3zr/BNN56wdS4u3nAMWSo+sSz1TXRs/Ujsp1d1sI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OmTVcMXUBTkPDySmt2oCCdiQ3RqmjoN2n9SR82SmnUBY7Gbstt6ielJaodlDvwe856hkBJ0BkegCKut5JcIobW7/KZZvtdqpTNVH+CExuTtRegmGygnVE4yx3FIsj7Piq7INgd6wWivWLgtNcCYiUQPV71j1iqKtPSbzgJu7xxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=mz+n4RAe; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id BC5A621325;
-	Fri, 29 Mar 2024 08:01:57 +0000 (UTC)
-Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [149.56.97.132])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 20CD4260DF;
-	Fri, 29 Mar 2024 08:01:49 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay1.mymailcheap.com (Postfix) with ESMTPS id 1AE483E981;
-	Fri, 29 Mar 2024 08:01:41 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 4F7E04007F;
-	Fri, 29 Mar 2024 08:01:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
-	s=default; t=1711699300;
-	bh=Wjl3zr/BNN56wdS4u3nAMWSo+sSz1TXRs/Ujsp1d1sI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mz+n4RAeOc8uqy9kkguomSw9juCsMtDrnaou59z+I05ogwu9A2wQWZjt8A7hMFvyp
-	 cqeFPBHQL9BWQ+ftSOap1PBOmWuje7hfmLA8ZwQIkJnLTVItSZPQ2v5tE2Gnj6678c
-	 Dmo2hWdfUr9Uyx0PY37EQGvR5Sew46/jhNiDqh7E=
-Received: from [10.66.66.8] (unknown [139.59.64.216])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 1961F42C88;
-	Fri, 29 Mar 2024 08:01:33 +0000 (UTC)
-Message-ID: <47302624-6466-41a7-85db-f6872d58a4d2@pavinjoseph.com>
-Date: Fri, 29 Mar 2024 13:31:30 +0530
+	s=arc-20240116; t=1711700144; c=relaxed/simple;
+	bh=6n/QVOvkQ4BcV96xx2uONvGMr6jJ/2/o9PowaWsduw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gc5tMJOslEAJlpHg+XTZBdB4e6ldcBm+FTiXwUczEFqmC1GOKLlmkg62gbDDdNeL//HabS3lAiC4t07M4GgE2pmZSkzhFJY0nVXpZWF6WJPhVr0VbSVo3+N0iBi0itnf/NpZSQruiYFlqu8Ht1xSIXa17EgAoV6IXXKy8VN8H/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DEiJ/gTp; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a4e0e3ef357so233797266b.2;
+        Fri, 29 Mar 2024 01:15:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711700141; x=1712304941; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7aSYngHOh0xu8jyBiYodXCsYFEDRn/f5k50FDMhmEvE=;
+        b=DEiJ/gTpxIsUoztm6/1oN0NztqRwGDrsU2YA7GEGVwzN8mzdeKJMAgmP0TXZcGvjBy
+         nZhTtgrmre3Zg/+0uX/w/zgLG0aa2tOD21VxHaaSBygi5ypjx/inTEkQWhKL89rNayDn
+         102T6MD7jDTibIDmY7NMwS0rHaoPxtC1Izp65fLHMauSc2ZXSFnY+w5npo9Z6EWiTiYz
+         rVDeO2zuTZTNqCJmYYZFbiplEgZIpIyzciok7C02dAsN2yrdX37OlNX3ClruM3jQL0vI
+         m+YwdlVK3E+vbi3aF6LukaegnVseY36UF+CleFBQ0gvXY9qDIKdwUtjLaE9SLplZKXjg
+         2KiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711700141; x=1712304941;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7aSYngHOh0xu8jyBiYodXCsYFEDRn/f5k50FDMhmEvE=;
+        b=bWDmIdm7MuR34D6ysjjkjox3cIf/A57LyDs15ddzInMQn1hrrAm68rYD3aTSzfxVJM
+         eGfig+7ZuXqCo8M4FA4eb0b73/IUkUZvYR9oDACncya5/ZjgU88Uk8BasQpwkWnMR8W5
+         2c0ieeguho1DkRII82+pnHuiUJodIZLz5UKbiFD528Px9jLB4kFtPRGPdki+1f/p76b/
+         21E3mvwajOSsn+38O4uI3IAsGxYSea/X6szwCUwUeWxQ976MS82NM//vZyG12G30AsR4
+         6gU4gky9V7iogIqkHPUgPG9YQD7kbX2aAB/ns+dGmuEtxtK0vS9wcBb40kikbwuqj6mU
+         96XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUATIMPqb348lQTAIZjmKJG4DWowk70/+C9scu6XAhp75/NZZXE8U7oExHbeYAcrmmtjpDoNotFXmih1Zy2AkmlJQtsGhoqeTp22+Ai/+8vwbbe+XlIA96Q/+qIJYaoSqlxKZ92
+X-Gm-Message-State: AOJu0YyRzbHPXMBDgssAPEtte5+zG5LX6p6HP8ROmD2biRvlnp+b7sYr
+	Hpd8KstMh+a8Ywqu1j7OORpHgd4tsVCyuI+CbqglAMRYKxvGSF4S
+X-Google-Smtp-Source: AGHT+IEELZMCPR3A1dINqt8iO9RCrhHrkwiQEaavtjQTwB8Qqz2UuU9+b2g9bBKGsznMcY8kdwE8BQ==
+X-Received: by 2002:a17:906:39d1:b0:a46:e0ab:40ff with SMTP id i17-20020a17090639d100b00a46e0ab40ffmr1193488eje.35.1711700140971;
+        Fri, 29 Mar 2024 01:15:40 -0700 (PDT)
+Received: from gmail.com (195-38-112-2.pool.digikabel.hu. [195.38.112.2])
+        by smtp.gmail.com with ESMTPSA id s18-20020a170906501200b00a474d2d87efsm1646696ejj.139.2024.03.29.01.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Mar 2024 01:15:40 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Fri, 29 Mar 2024 09:15:38 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Pavin Joseph <me@pavinjoseph.com>
+Cc: Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	stable@vger.kernel.org, Eric Hagberg <ehagberg@gmail.com>,
+	Simon Horman <horms@verge.net.au>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
+	Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Yuntao Wang <ytcoode@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v4] x86/mm/ident_map: On UV systems, use gbpages only
+ where full GB page should be mapped.
+Message-ID: <ZgZ4qlbncvxhboQ0@gmail.com>
+References: <20240328160614.1838496-1-steve.wahl@hpe.com>
+ <ZgZqhWoRZoq5tJoU@gmail.com>
+ <47302624-6466-41a7-85db-f6872d58a4d2@pavinjoseph.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] x86/mm/ident_map: On UV systems, use gbpages only
- where full GB page should be mapped.
-To: Ingo Molnar <mingo@kernel.org>, Steve Wahl <steve.wahl@hpe.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- stable@vger.kernel.org, Eric Hagberg <ehagberg@gmail.com>,
- Simon Horman <horms@verge.net.au>, Eric Biederman <ebiederm@xmission.com>,
- Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
- Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>,
- Hou Wenlong <houwenlong.hwl@antgroup.com>,
- Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
- Yuntao Wang <ytcoode@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-References: <20240328160614.1838496-1-steve.wahl@hpe.com>
- <ZgZqhWoRZoq5tJoU@gmail.com>
-Content-Language: en-US
-From: Pavin Joseph <me@pavinjoseph.com>
-In-Reply-To: <ZgZqhWoRZoq5tJoU@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.09 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,infradead.org,linutronix.de,redhat.com,alien8.de,zytor.com,vger.kernel.org,lists.linux.dev,gmail.com,verge.net.au,xmission.com,dbc.dk,hpe.com,antgroup.com,linux-foundation.org,google.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 4F7E04007F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47302624-6466-41a7-85db-f6872d58a4d2@pavinjoseph.com>
 
-On 3/29/24 12:45, Ingo Molnar wrote:
-> Does the 'nogbpages' kernel command line option fail on these systems
-> even outside of kexec (ie. regular boot), or only in combination with
-> kexec?
 
-Original reporter here, using nogbpages allows for normal bootup, but 
-kexec fails with it on my two similar systems.
+* Pavin Joseph <me@pavinjoseph.com> wrote:
 
-Pavin.
+> On 3/29/24 12:45, Ingo Molnar wrote:
+> > Does the 'nogbpages' kernel command line option fail on these systems
+> > even outside of kexec (ie. regular boot), or only in combination with
+> > kexec?
+> 
+> Original reporter here, using nogbpages allows for normal bootup, but 
+> kexec fails with it on my two similar systems.
+
+Just to clarify, we have the following 3 upstream (and soon to be upstream) versions:
+
+ v1: pre-d794734c9bbf kernels
+ v2: d794734c9bbf x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+ v3: c567f2948f57 Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
+
+Where v1 and v3 ought to be the same in behavior.
+
+So how does the failure matrix look like on your systems? Is my 
+understanding accurate:
+
+
+           regular boot  | regular kexec | nogbpages boot | nogbpages kexec boot
+ ------------------------|---------------------------------------------------
+ v1:       OK            | OK            | OK             | FAIL
+ v2:       OK            | FAIL          | FAIL           | FAIL
+
+?
+
+Thanks,
+
+	Ingo
 
