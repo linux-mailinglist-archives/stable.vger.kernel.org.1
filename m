@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-33625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94185891FAD
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:09:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E59891FF2
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83951B34970
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:35:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 829D7B29535
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5027516C871;
-	Fri, 29 Mar 2024 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568B41A971D;
+	Fri, 29 Mar 2024 12:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHRK2dhJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZiflXBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D67B16C86C;
-	Fri, 29 Mar 2024 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D11A9715;
+	Fri, 29 Mar 2024 12:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716500; cv=none; b=V2WXiICSqgrKWdmINWswo5uAI2EKtkryZ0SfzMhizJ6fhwbRf5JG6Gzxr0vKiU7Uh8sfS99xcaOzZHqxl1Ser0RgxyZ2z83/OOdKE96usrhGqYwJJmq044LChZvmz8jTfhELKsvIVlGC4Gx3KBfaFJkhUTbo9OgG22MNbd4VaZo=
+	t=1711716503; cv=none; b=qIlfGadwvXEQDskggS5+UZcvSkTsVArf0MgABXkinAeH3a5A0qGAb+WJvFucbWadNjAZFJiCl1zJJump4yOgs/q+8RDOPCr83OPpjAsCktLoaaDD/MB9Sxc/K4qCUCuJXUIPc4dHfiOdXxZgq0CbcM+vdqG0em139HKLhEfS4BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716500; c=relaxed/simple;
-	bh=aiYW0yw5E+HOidbqciMe7uHQZ7wj+DvE0N4dRycpisI=;
+	s=arc-20240116; t=1711716503; c=relaxed/simple;
+	bh=Kdyszlwq5JIK92eTlec4mtX/vVJlwIS0I5GaYJWP4a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqO9ZT7VStyvLWJYYw/LT907jA3rGgfmYsSpZym+LPJyxoeC6Y8nBzbC8lUyHaHlO13OsGB55v3h8Ln4rN67SbrpPK/tCzZj2PQFuNGgpgptoK+haUMIpfHpSPDilz+hI0vct09BnEZMAFZFRr+9M9EBB/wuORKk3O3zCfzGUFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHRK2dhJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32399C43390;
-	Fri, 29 Mar 2024 12:48:18 +0000 (UTC)
+	 MIME-Version; b=g9AIA/ZHiE0fTY+PrEiQXqcu3DQjeGcc2dxHhpUzl7+97pggrMD+3p0ZxRzWpq+rWC27sgjxyfQicvERP7HS36c+UWdHctQkPhBbIoej05yc9iEr2Wb6+Fuqqm6KQHLy5BBz0/9Cu7Sj+6wuDGSLUz5kthFQjE1/lqtBVLJOXLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZiflXBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219E4C433F1;
+	Fri, 29 Mar 2024 12:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716499;
-	bh=aiYW0yw5E+HOidbqciMe7uHQZ7wj+DvE0N4dRycpisI=;
+	s=k20201202; t=1711716502;
+	bh=Kdyszlwq5JIK92eTlec4mtX/vVJlwIS0I5GaYJWP4a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHRK2dhJZkcJKNAWf/BFhJy+SylX4zcnvQ/1i8SJs32mVA+z8CVr2fj7o+YVDjAr2
-	 V570dNpDBEt6hTatldcRBNoB1Qab1iCgCrbKBz2vlAcVyBdwACv5TNP957dgOXtVoe
-	 kDCXZV6XnnECYMHl7s5nyiQI9vLJH4b3l6cDil3Y5Px1Re2DtG+ZGGuCrdU/ffalZ8
-	 nCKSc3bK+qFG9oKGEf2ms5YPMGZU3x9VTZ2q/4o9mgiqWEC87ZZ5wxWHk8nQuszdU6
-	 H420lvdlZMDCiBK8o6ca2ZcoEBtNVrMzMkBiXol9eWpLQvuA92zowGqsHl5i4dqux9
-	 VD19vtWbbOe0g==
+	b=KZiflXBBy5Cy4IekttU+qg2e3rmOt190v6Tx5zft0gdjcvdaNs7GPRA0goB7aS3h8
+	 5byfKrDY4NqJYkegv8D8kTcj+dPaD/rtB23Ol9o4fDxRRIG2jRpynbTGyFKfl2MDbd
+	 fgqzVH6LiP0R8bgLD/yqrmEdlEfchG8cJhiZj9T2+fj2bp13pwcu23ZvZx23Z1wTR5
+	 FluHV64KOa5yZwcA+Hkh2UalTjP8l96hBLeVLD8Nx1sy8YCRVrLh6PVi1lEPGkqhnP
+	 ic6GEJ5e4t8uJqZuddUH9g7Me6CJhdOC8CvbcythUkH3edV8bejWmurWBEheFaFM8Z
+	 6HW6FLGwSwsmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aric Cyr <aric.cyr@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dillon.varone@amd.com,
-	aurabindo.pillai@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 16/34] drm/amd/display: Fix nanosec stat overflow
-Date: Fri, 29 Mar 2024 08:47:17 -0400
-Message-ID: <20240329124750.3092394-16-sashal@kernel.org>
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 18/34] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
+Date: Fri, 29 Mar 2024 08:47:19 -0400
+Message-ID: <20240329124750.3092394-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
 References: <20240329124750.3092394-1-sashal@kernel.org>
@@ -76,43 +64,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
+[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
 
-[Why]
-Nanosec stats can overflow on long running systems potentially causing
-statistic logging issues.
+In function get_pkg_num() if fopen_or_die() succeeds it returns a file
+pointer to be used. But fclose() is never called before returning from
+the function.
 
-[How]
-Use 64bit types for nanosec stats to ensure no overflow.
-
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-index 4220fd8fdd60c..54cd86060f4d6 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
-@@ -57,10 +57,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
- 		unsigned int length);
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 5fd9e594079cf..ebda9c366b2ba 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1241,6 +1241,7 @@ unsigned int get_pkg_num(int cpu)
+ 	retval = fscanf(fp, "%d\n", &pkg);
+ 	if (retval != 1)
+ 		errx(1, "%s: failed to parse", pathname);
++	fclose(fp);
+ 	return pkg;
+ }
  
- void mod_stats_update_flip(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_vupdate(struct mod_stats *mod_stats,
--		unsigned long timestamp_in_ns);
-+		unsigned long long timestamp_in_ns);
- 
- void mod_stats_update_freesync(struct mod_stats *mod_stats,
- 		unsigned int v_total_min,
 -- 
 2.43.0
 
