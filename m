@@ -1,106 +1,88 @@
-Return-Path: <stable+bounces-33609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784B3891E04
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:30:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09244891D72
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34267285A91
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98FB1F211B9
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4B51A5D8D;
-	Fri, 29 Mar 2024 12:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB45321EB60;
+	Fri, 29 Mar 2024 12:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjMNluy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7LtC1+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDED11A5D7F;
-	Fri, 29 Mar 2024 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7993220FABB
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716453; cv=none; b=umSM+1WCyiBxbFgk6gMKHU8kHFW6BGwAEDQHCLXsjMbgjZAwUt9yYQEXIHJhO6tXC7uX101hISLBOVuu9d7s2aQpbd95ci+wFQ0f8Geo4uxo4V2biNBUdAx6GsOxR8OlX8O9a6onFdaMTmnc0wBf9/6uPM9XQUaUrXSnlgU9rR8=
+	t=1711716369; cv=none; b=ROT6+3b35qHvDZhQzCzOd6niBYEOXsKSUrn6RZDnUK25jInNLmFDAEj83BhDw7YtCmTimF09zCQraAH3ic8R2EdRvTSey1GdjV6kcutFMuTDvFIPdr/188PNrltxW2l3zAkTWV6sBLiMayaG3SR1VfdRYk9Cn2OwGhzUnU5gZ/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716453; c=relaxed/simple;
-	bh=/mV5g2u4Bgi3sJcKcC/duOfJ8yg/8UzMmXb6B1zUg2A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsqXANjWCWVbKauEP3hEzP09J4g8Pp5PDKbGB0WIQF3sxxBmOk/vE/8rbQEE37+88AMWsvr7VTjQRVYzXWwm+X49JJB9WAx9G+sS6i8d5U1rCT73XqDEacKt1Jjp0ECcUTX6nZ45yOqYkJrHWpk4mYd2MqEFAYc0PsCq7Qpm49s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjMNluy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8640C433A6;
-	Fri, 29 Mar 2024 12:47:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716453;
-	bh=/mV5g2u4Bgi3sJcKcC/duOfJ8yg/8UzMmXb6B1zUg2A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjMNluy3d7NUA4pQVabD7zH6NDiqg6NQGA751XNQxFs/fDKhPYsdLcoyH2jXA2OwO
-	 XCHxkTnTJRuCm2MZp5GFCVci9XjdggJNLOG09exBYaJ7x0nZOw+BqKH6g72Tm2y9cJ
-	 mTbgfcG58KuaRaRKxh3IYC74SBRsYaopKh66gohXGDt6u+V+eNd+O2R1N1zwZ47aZ1
-	 iiBvxSkkQ1qd3OGDxHSrV9tAmijHbpMqoenWkLhTPMZLVLUcbF76M2I5FxSufGu1Qy
-	 0JlbROIYLTmOCg1pCsHSC2+ps22D65T1f6c/JMACPFhzMkYmUZUNv35LSACCTw7DI3
-	 FAdKTHA3NttoA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: linke li <lilinke99@qq.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 52/52] ring-buffer: use READ_ONCE() to read cpu_buffer->commit_page in concurrent environment
-Date: Fri, 29 Mar 2024 08:45:46 -0400
-Message-ID: <20240329124605.3091273-52-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329124605.3091273-1-sashal@kernel.org>
-References: <20240329124605.3091273-1-sashal@kernel.org>
+	s=arc-20240116; t=1711716369; c=relaxed/simple;
+	bh=LsMWezJhXK4R/5UjMBklU2vSbWpP6YaWSCOHbztr9GQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b2zWsKhVH1Wpsc9oJuVRskTcLB2ed7rvytpnEr4wFN0MUPvG5jsZ7VDkoYeC+NX7KuwZ5dZLKl8wSVsAcyEzY/CxHFz0rlL7su7bjVhZ09E7iW6AFBU3zEAX1Rk4hZLrenmGP8ZT3rMIgQtBj2hTIDl9AOPVn8J44PRqvT8mRQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7LtC1+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD584C433C7;
+	Fri, 29 Mar 2024 12:46:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711716369;
+	bh=LsMWezJhXK4R/5UjMBklU2vSbWpP6YaWSCOHbztr9GQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M7LtC1+xw2Md9BGF6Ef1ADllAM0JfX2ZLgnZYzFTcU7ArE+owVpQRiL68tbH3T62c
+	 fKOrQhDizLAGZlYmXgSXMoLYqmLC1t3IodRy0M4KMAVRzfOhn4tdkUyWOBU/fxMBvK
+	 aoMWdA3DAhJx6q889H+G4Zdd42ksHOyYLJ9H6Smo=
+Date: Fri, 29 Mar 2024 13:46:06 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, stable@vger.kernel.org,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>
+Subject: Re: [PATCH v2 1/7] x86/asm: Add _ASM_RIP() macro for x86-64 (%rip)
+ suffix
+Message-ID: <2024032958-nearness-strut-181f@gregkh>
+References: <20240226122237.198921-1-nik.borisov@suse.com>
+ <20240226122237.198921-2-nik.borisov@suse.com>
+ <20240312013317.7k6vlhs6iqgxbbru@desk>
+ <9055ecec-e5d5-4f12-928e-7c58d5a25de1@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.83
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <9055ecec-e5d5-4f12-928e-7c58d5a25de1@suse.com>
 
-From: linke li <lilinke99@qq.com>
+On Tue, Mar 12, 2024 at 07:57:19AM +0200, Nikolay Borisov wrote:
+> 
+> 
+> On 12.03.24 г. 3:33 ч., Pawan Gupta wrote:
+> > On Mon, Feb 26, 2024 at 02:22:31PM +0200, Nikolay Borisov wrote:
+> > > From: "H. Peter Anvin (Intel)" <hpa@zytor.com>
+> > > 
+> > > [ Upstream commit 0576d1ed1e153bf34b54097e0561ede382ba88b0 ]
+> > 
+> > Looks like the correct sha is f87bc8dc7a7c438c70f97b4e51c76a183313272e
+> 
+> Indeed, 0576d1ed1e153bf34b54097e0561ede382ba88b0 is my local shaid of the
+> backported commit. Thanks for catching it!
 
-[ Upstream commit f1e30cb6369251c03f63c564006f96a54197dcc4 ]
+Can you fix this up and verify the other commit ids and resend so I
+don't have to manually change them by hand?
 
-In function ring_buffer_iter_empty(), cpu_buffer->commit_page is read
-while other threads may change it. It may cause the time_stamp that read
-in the next line come from a different page. Use READ_ONCE() to avoid
-having to reason about compiler optimizations now and in future.
+Also, why is this series so much smaller than the 5.10 and 5.15
+backports?  What is missing here that is in the 5.10 and newer kernels?
+KVM stuff?
 
-Link: https://lore.kernel.org/linux-trace-kernel/tencent_DFF7D3561A0686B5E8FC079150A02505180A@qq.com
+thanks,
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: linke li <lilinke99@qq.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/trace/ring_buffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index e019a9278794f..7ed92f311dc9b 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -4384,7 +4384,7 @@ int ring_buffer_iter_empty(struct ring_buffer_iter *iter)
- 	cpu_buffer = iter->cpu_buffer;
- 	reader = cpu_buffer->reader_page;
- 	head_page = cpu_buffer->head_page;
--	commit_page = cpu_buffer->commit_page;
-+	commit_page = READ_ONCE(cpu_buffer->commit_page);
- 	commit_ts = commit_page->page->time_stamp;
- 
- 	/*
--- 
-2.43.0
-
+greg k-h
 
