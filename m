@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-33686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BE6891EC3
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C73891EC4
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83B3B1C2841E
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:51:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111521C23323
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FA61B76A3;
-	Fri, 29 Mar 2024 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B41115250D;
+	Fri, 29 Mar 2024 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XhWi3sCu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OICQ5ysB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F154B1B769A;
-	Fri, 29 Mar 2024 12:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091A21B4536;
+	Fri, 29 Mar 2024 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716629; cv=none; b=l55/9b8WwO5xLxdKXVVTm/qpYgkVQa9+iyqfyNwnUsfwMNkMAMgn+Knd0S5UbWOf04iqii4jkK2cmYOBzqSsKGJoB7diOmkwQyg4IrNVFJ5X2iEHw9Cj2qxB5Ch5bvfWTrpzzvLV2gHEz4HkzaqRJJA7HbvcQsOOBjsCm5pKZPY=
+	t=1711716632; cv=none; b=l0PMc1xFg37TVZlGijnZxppQw7dTTr4ZkyIGDLUvYIZcbYrF0ffaG8yGNi6a/i82HGxEvRCd/5ZX/cBUn36B5yUsixYgmeD4SUjqhLjJ4pyg45OHa+at1GoLmsQ6LWubc9Y83mcl2MQEraRHsr2B2lI33AL2/ifGLBCFeC4Ko7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716629; c=relaxed/simple;
-	bh=IPN8OiMd9T5FgRETASxaV9m1JSM5nlYJ4IY53EPMpls=;
+	s=arc-20240116; t=1711716632; c=relaxed/simple;
+	bh=vWrJHpNpvv/pTjRBRuxyQkmES6YQhamOMA0mHriCXKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3SG9dnCcC/uXTZi0LVJT30mN1NBAfnxbtZthJXfgF2AUyVIAyw24/KHqGyc/arHt0f4aMbPQ+UCITkvm8SgWu3avDxygOl4ucF6g+yQvSNU6OGLE4bI8/vBtpkw61P7vxiFb8HAiP1OJnTLf53PNhcuoPckG1P1O3iZoWUTMI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XhWi3sCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC97C433C7;
-	Fri, 29 Mar 2024 12:50:27 +0000 (UTC)
+	 MIME-Version; b=CkOFoU3OusK9QrTbIQlBQUg5Isv1ppbpaCfGTHmKy7Exo3p/Lmk4b5azU83hVyW3+CrKhraXvYsSIyXNT9+foJa//HE+cKkVUIHVXoYOJfEKdlhoXJzQ96TckDiSIcNJ1lpO7BcVOj3cD7p7tA5rPDzC+ltbVe9MEr7o43JgXxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OICQ5ysB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2959AC43390;
+	Fri, 29 Mar 2024 12:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716628;
-	bh=IPN8OiMd9T5FgRETASxaV9m1JSM5nlYJ4IY53EPMpls=;
+	s=k20201202; t=1711716631;
+	bh=vWrJHpNpvv/pTjRBRuxyQkmES6YQhamOMA0mHriCXKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhWi3sCurbezbBagj9afZ0VVXoEVeqyAPtq2JSq74JKg9XkJ+TSNvZZVUpg2rArQs
-	 +RpWQi6VrL6Gz9XtP9EAXdkKCPeX7S1onLbsBNcZiC83r0BFT8g+dU8zhxfYso1fVp
-	 UMchXXNUBqcEcjEjkOcTmhB8xn7eXzaGatC1s84SUN5oiXll61VmKuXHYCZAcQp+HF
-	 oS7VINVfPq0GLxrFaz/gYWPihZpKLsS/eGQ6ffCPKoVIbwL8jjOodgcdzqgZjGNNrQ
-	 kmx0oEnNGQPpqlGM6bRHFs+PZ/ZUcWQflP/jrzST/lDhSM8IApwC41br6to3KtmKW3
-	 Rn/M8jIFilL9w==
+	b=OICQ5ysBrjXUQtRRICa15HU1Ejd1qMZvwmP0IEgtmJNI/pBjRdQICvOursh81ocsW
+	 HqtW+EUOatSDEquzJOA/ryo/ZcumyxlcaOAGPLEuwJR0lUKlHt7uLqU37orNEeHL4+
+	 QvlyvGIbZTFLBBlDD+2/jbzHMIR9rtUbmNRU+nNJf0NO5lJtAOJgli2F33NCZE1R8P
+	 oHeHheIT/Sy6kUhoz+5Ldtrl9z2V+l1dspIbSX0tktttV8mhmZ71zjtBKHeNX2saVI
+	 JvEJxmEAiSZtIywBx7n49z4uxTgWbpye7WKgCq1LoavBThM5NHlqVR5uDYdcgStiCs
+	 FccBuRPMDZtMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+Cc: Aric Cyr <aric.cyr@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	nathan@kernel.org,
-	linux-media@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 10/23] media: sta2x11: fix irq handler cast
-Date: Fri, 29 Mar 2024 08:49:43 -0400
-Message-ID: <20240329125009.3093845-10-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dillon.varone@amd.com,
+	aurabindo.pillai@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.4 11/23] drm/amd/display: Fix nanosec stat overflow
+Date: Fri, 29 Mar 2024 08:49:44 -0400
+Message-ID: <20240329125009.3093845-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329125009.3093845-1-sashal@kernel.org>
 References: <20240329125009.3093845-1-sashal@kernel.org>
@@ -68,60 +76,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.273
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Aric Cyr <aric.cyr@amd.com>
 
-[ Upstream commit 3de49ae81c3a0f83a554ecbce4c08e019f30168e ]
+[ Upstream commit 14d68acfd04b39f34eea7bea65dda652e6db5bf6 ]
 
-clang-16 warns about casting incompatible function pointers:
+[Why]
+Nanosec stats can overflow on long running systems potentially causing
+statistic logging issues.
 
-drivers/media/pci/sta2x11/sta2x11_vip.c:1057:6: error: cast from 'irqreturn_t (*)(int, struct sta2x11_vip *)' (aka 'enum irqreturn (*)(int, struct sta2x11_vip *)') to 'irq_handler_t' (aka 'enum irqreturn (*)(int, void *)') converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+[How]
+Use 64bit types for nanosec stats to ensure no overflow.
 
-Change the prototype of the irq handler to the regular version with a
-local variable to adjust the argument type.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: update argument documentation]
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/sta2x11/sta2x11_vip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/modules/inc/mod_stats.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/sta2x11/sta2x11_vip.c b/drivers/media/pci/sta2x11/sta2x11_vip.c
-index fd3de3bb0c89b..80b7862a8e02f 100644
---- a/drivers/media/pci/sta2x11/sta2x11_vip.c
-+++ b/drivers/media/pci/sta2x11/sta2x11_vip.c
-@@ -760,7 +760,7 @@ static const struct video_device video_dev_template = {
- /**
-  * vip_irq - interrupt routine
-  * @irq: Number of interrupt ( not used, correct number is assumed )
-- * @vip: local data structure containing all information
-+ * @data: local data structure containing all information
-  *
-  * check for both frame interrupts set ( top and bottom ).
-  * check FIFO overflow, but limit number of log messages after open.
-@@ -770,8 +770,9 @@ static const struct video_device video_dev_template = {
-  *
-  * IRQ_HANDLED, interrupt done.
-  */
--static irqreturn_t vip_irq(int irq, struct sta2x11_vip *vip)
-+static irqreturn_t vip_irq(int irq, void *data)
- {
-+	struct sta2x11_vip *vip = data;
- 	unsigned int status;
+diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
+index 3812094b52e8f..88b312c3eb43a 100644
+--- a/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
++++ b/drivers/gpu/drm/amd/display/modules/inc/mod_stats.h
+@@ -51,10 +51,10 @@ void mod_stats_update_event(struct mod_stats *mod_stats,
+ 		unsigned int length);
  
- 	status = reg_read(vip, DVP_ITS);
-@@ -1053,9 +1054,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
+ void mod_stats_update_flip(struct mod_stats *mod_stats,
+-		unsigned long timestamp_in_ns);
++		unsigned long long timestamp_in_ns);
  
- 	spin_lock_init(&vip->slock);
+ void mod_stats_update_vupdate(struct mod_stats *mod_stats,
+-		unsigned long timestamp_in_ns);
++		unsigned long long timestamp_in_ns);
  
--	ret = request_irq(pdev->irq,
--			  (irq_handler_t) vip_irq,
--			  IRQF_SHARED, KBUILD_MODNAME, vip);
-+	ret = request_irq(pdev->irq, vip_irq, IRQF_SHARED, KBUILD_MODNAME, vip);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request_irq failed\n");
- 		ret = -ENODEV;
+ void mod_stats_update_freesync(struct mod_stats *mod_stats,
+ 		unsigned int v_total_min,
 -- 
 2.43.0
 
