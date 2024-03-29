@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-33126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEF6891594
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:16:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D138915A0
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2791285A1A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:16:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A04FDB2306A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAF53A1B6;
-	Fri, 29 Mar 2024 09:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC563A1B6;
+	Fri, 29 Mar 2024 09:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEXM3Fmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmqZppOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EA82AD2A;
-	Fri, 29 Mar 2024 09:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56E34F606;
+	Fri, 29 Mar 2024 09:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711703792; cv=none; b=BNCJpAxI3f+/tb3yqlZ89YBYVtWqJlV8Gcj+TgCFYrzqdqVUKCw2gfYr1zOnNh8yPDbQ/fmd1cweNRmagd5kxwhYRwVQr4vpc53vwtVpuuQ08CmzvK/bsGZo9atdow/7NJcWjj4Xzv6YhSTXG4cFni7R7wRV/oOEtJzjrKmLUn8=
+	t=1711703860; cv=none; b=s24OdVwbr2ihmMBO5kpAH/QFHmEudcPk7r8qnYctVwKE9Ey0R4fqcbUH0HDMWRvnXyaSTm58gapsHqNxMi2/lZ20K0lcgmcJwRiWMVw8B5POy6fx+W3D0eNmXDC91Yb7fGX1XDTEdYirfxrdxSBqSYgb+mTFVLfug1p2c43vUSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711703792; c=relaxed/simple;
-	bh=ot+sbE0dJtMdhT9Zki789DWUHsOHuq0gkjdWSqJtxgY=;
+	s=arc-20240116; t=1711703860; c=relaxed/simple;
+	bh=ukG19+e5dQUl/rTjw8Kta4Qq+7PmCZE3qbRajYNkPjk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GHe2H4CXtIfMnkxatF3P8Tn4tMfK9gNC6gasg4K0o3DzTpRM8tQlLB6pPXtiDW+OeucM0rGe3xWCQklGdjPq/rE8QvCVyybN7PlOukYFcCqEa+abmFseFHLykgoe/BYIl8RVYHNxGBt+Q10TuQ2p3RL2z3jYGdkVXJ1Cpv32lSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEXM3Fmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DADDC43390;
-	Fri, 29 Mar 2024 09:16:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijN3BrBwWk5ve65OOsgxwdkhNTXcJRJRpxVwn/Kd2rAAFdHuPnEgxGIyfGGwOFinvoqyisLTW5UD7gu4FzbdlDmtbaLFw4eseouyKyBHvatmrnYApru8CFqswp+JCXMuMO9khkH/ZlLUzbvg3p30E3gUdi91I8o0SB34g6iZytw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmqZppOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14A4C433F1;
+	Fri, 29 Mar 2024 09:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711703792;
-	bh=ot+sbE0dJtMdhT9Zki789DWUHsOHuq0gkjdWSqJtxgY=;
+	s=korg; t=1711703860;
+	bh=ukG19+e5dQUl/rTjw8Kta4Qq+7PmCZE3qbRajYNkPjk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sEXM3Fmb8CxbHZms2EMzabtVckxIPrQ6YI5qDE7TD1ppCKmjl+RwsRKWOolTQThdJ
-	 lFyuXKp+s+a0D5UXLB7qFEHa5GDl7LPqEloyK/fcxiTOyrNZCTwPFxjJiqD0KN1bXN
-	 o6DS9wx1a6Xp/qVEbAc+Wwd9keMmPgtUyX+ogODQ=
-Date: Fri, 29 Mar 2024 10:16:28 +0100
+	b=xmqZppOjBLT9G22vs9QWJt++yXpoSTWnjU/zdxjci9kfazyhQDOWQqE8odjoLezwc
+	 bG1jWMU5xJT+V52cD9LO/iuIyoMWGBJaRr8UL+nXQvEpGwRUDR9q+3HLJBeVLZd9hg
+	 Bs5XZhHEeQAt3YPqJcUxTB7xZTVLm+898pbmBnLg=
+Date: Fri, 29 Mar 2024 10:17:36 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Ard Biesheuvel <ardb@kernel.org>
 Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
 	stable@kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: FAILED: Patch "x86/efistub: Call mixed mode boot services on the
  firmware's stack" failed to apply to 6.8-stable tree
-Message-ID: <2024032917-mossy-parkway-f298@gregkh>
+Message-ID: <2024032902-moonlit-abridge-743e@gregkh>
 References: <20240327120643.2824712-1-sashal@kernel.org>
  <CAMj1kXH8n4-8VHSVygUyEc4Zne-4gE0uijAkDe-Ufu6hUnFU+g@mail.gmail.com>
- <CAMj1kXG5bywFpNpMRTXsnaQ6gr4aOBTO7PZ9Op-JV37JT9StKw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,32 +56,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXG5bywFpNpMRTXsnaQ6gr4aOBTO7PZ9Op-JV37JT9StKw@mail.gmail.com>
+In-Reply-To: <CAMj1kXH8n4-8VHSVygUyEc4Zne-4gE0uijAkDe-Ufu6hUnFU+g@mail.gmail.com>
 
-On Fri, Mar 29, 2024 at 08:13:36AM +0200, Ard Biesheuvel wrote:
-> On Wed, 27 Mar 2024 at 15:46, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Wed, Mar 27, 2024 at 03:46:53PM +0200, Ard Biesheuvel wrote:
+> On Wed, 27 Mar 2024 at 14:06, Sasha Levin <sashal@kernel.org> wrote:
 > >
-> > On Wed, 27 Mar 2024 at 14:06, Sasha Levin <sashal@kernel.org> wrote:
-> > >
-> > > The patch below does not apply to the 6.8-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git commit
-> > > id to <stable@vger.kernel.org>.
-> > >
-> >
-> > This applies fine on top of 6.8.2, 6.7.11 and 6.6.23.
-> >
-> > On 6.1.83, it gave me a warning
-> >
-> >   Auto-merging arch/x86/boot/compressed/efi_mixed.S
-> >
-> > but the change still applied without problems.
-> >
-> > Not sure what is going on here .....
+> > The patch below does not apply to the 6.8-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
 > >
 > 
-> Ping?
+> This applies fine on top of 6.8.2, 6.7.11 and 6.6.23.
 > 
+> On 6.1.83, it gave me a warning
+> 
+>   Auto-merging arch/x86/boot/compressed/efi_mixed.S
+> 
+> but the change still applied without problems.
+> 
+> Not sure what is going on here .....
 
-Give us time to catch up please, I'll go look at this now...
+Odd, it worked here forme, now queued up everywhere, sorry for the
+noise.
+
+greg k-h
 
