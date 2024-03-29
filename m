@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-33639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908BB891E52
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:39:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8F3891E5B
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CF032844A1
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A578B1F24D4E
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9348D1AC008;
-	Fri, 29 Mar 2024 12:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1B716CCDF;
+	Fri, 29 Mar 2024 12:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrnOqRm2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cw6hvqpa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F43D14E2C9;
-	Fri, 29 Mar 2024 12:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2FB16CCD5;
+	Fri, 29 Mar 2024 12:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716522; cv=none; b=tM4yy/+3/YYvdUMHBZEwuqFBgDHSbhkQX27VvC7isl0GAP6Aj2tl1Xj2EXFxKeXNKoBx9iiQeHKztut/O7gm0dKb02RbOL9riYc2Z4rRgO0ogBsyfBH4XLPtml13V1rWxcrxCGY3w7jNGgr/b3bRMZ0gM6lW+4dqn3VNiRTYCnM=
+	t=1711716525; cv=none; b=Bi8MWkP0pPL8wuNSxVEX3KxfmQXMlL+C5vWu36pt+CUf3fCqGWD8kt/bmZURskpJYZ7KEBdsINxm39HSbA4pKIOhPoKMXuwPfmVvEARmYonMICotyaxgNRdCgE2imOvZdB+SuDhX0/Ffb6gTfwBMSiJ/MZiie0vjP07hs+1AYS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716522; c=relaxed/simple;
-	bh=GxrkUBfErBuPqs7D0mlV016hRVzmj1cw++ndtNpyer8=;
+	s=arc-20240116; t=1711716525; c=relaxed/simple;
+	bh=FopW1+5t67Kp7oQnuAz61rt5C5Ev2YhNbDRJjkDoy14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsUXLLEyO/WA97u/vBaR1HJKt4F7UZ0MixVpmRIT+TerUhgkgjUnfRnOwGc8lhHC1u7ij8CqgPJCcOrtKN/qEJl/rYdCyFI4DlkHPGtSNjKpvFs4xT9dKiThdv1frs0dqfI0NkKbLuAEnYcQKk4Ey3beoj03TQjYe7mdrdSCJCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrnOqRm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C66C43390;
-	Fri, 29 Mar 2024 12:48:40 +0000 (UTC)
+	 MIME-Version; b=K0jTZfVyvOa96arXKFyifN5k7JYVish6QsE5cS9o9flRr/g7e+HdumWKP6ANcyx8gBT0EahuC78JxLTb0TVI9rVcBZu2Ni/JqwxOaLopzhXIXNodCSxer+cpUYG+Cb4D4NFJJkoNuu+KFEJbnSD1BMDZzM1ncenCrjF1VdEr2sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cw6hvqpa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0446C433C7;
+	Fri, 29 Mar 2024 12:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716521;
-	bh=GxrkUBfErBuPqs7D0mlV016hRVzmj1cw++ndtNpyer8=;
+	s=k20201202; t=1711716525;
+	bh=FopW1+5t67Kp7oQnuAz61rt5C5Ev2YhNbDRJjkDoy14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrnOqRm2t5QAUr0ZsHBfBcZur6HJBzI8tTo9EWectPQXUWcD1v+apaGeuqF4ttZX4
-	 7EKMymy+8g64QL/JDHTQUiUB6vfA65WYizQXtzURTjRlPccX5B8UJhVUR9Q5bhlLYU
-	 KHxVgfUn3atJO4TRz9BONyKZvVFL3jLWmMgIZ6nb/zZAwUHe/S3xaslmfFFpcrqC4U
-	 r1d0TLt8s6HN6nxboYP25CYUj43fQxKWxXE7sRaSEHrl+pcEUaFXrmYcpEOYDxw751
-	 x8oIIecKz6+3WoZIISW1ttsI/KOcb93ta15ivA5xhbEbGiHfgM6jENoAGKS8U7slin
-	 3XN8X9h3Gzm1Q==
+	b=cw6hvqpaYdk9OOGpT1b6Lka3t8I89/32O8o94gjWapZu5nU+dIY7WH/8GYF49yuOP
+	 ZjG4PZ/KYJuN4XALzWwLCkHXItQZ1QUpiGQ9aPpRKyiNpMzcOGUTNARRYna/yKDHLW
+	 QzPwAWLqxcWBnABMnkA+WOFirErj6zchg2HeaTyNKZM4PTN3EsfHEI2ur6L43moLvM
+	 iJ3exfLerYvcmxY7VE5J9h7Ig4Tcoi24YQh6MAfjjmHoP6hY0337ByyZzhmNXyBMxf
+	 Yv25I6oMPr2DlyOgl65yFOxuPU0vP209RBUDgWI/h1G6YbepAcG9ATWuG/ArGSVPxm
+	 BqRQMY63NuuaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: "Ricardo B. Marliere" <ricardo@marliere.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 30/34] Input: make input_class constant
-Date: Fri, 29 Mar 2024 08:47:31 -0400
-Message-ID: <20240329124750.3092394-30-sashal@kernel.org>
+	John Hawley <warthog9@eaglescrag.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 33/34] ktest: force $buildonly = 1 for 'make_warnings_file' test type
+Date: Fri, 29 Mar 2024 08:47:34 -0400
+Message-ID: <20240329124750.3092394-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
 References: <20240329124750.3092394-1-sashal@kernel.org>
@@ -68,50 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 From: "Ricardo B. Marliere" <ricardo@marliere.net>
 
-[ Upstream commit a4735d40a5da96a637af6e5bf9f6ec8b9d996acd ]
+[ Upstream commit 07283c1873a4d0eaa0e822536881bfdaea853910 ]
 
-Since commit 43a7206b0963 ("driver core: class: make class_register() take
-a const *"), the driver core allows for struct class to be in read-only
-memory, so move the input_class structure to be declared at build time
-placing it into read-only memory, instead of having to be dynamically
-allocated at boot time.
+The test type "make_warnings_file" should have no mandatory configuration
+parameters other than the ones required by the "build" test type, because
+its purpose is to create a file with build warnings that may or may not be
+used by other subsequent tests. Currently, the only way to use it as a
+stand-alone test is by setting POWER_CYCLE, CONSOLE, SSH_USER,
+BUILD_TARGET, TARGET_IMAGE, REBOOT_TYPE and GRUB_MENU.
 
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240315-ktest-v2-1-c5c20a75f6a3@marliere.net
+
+Cc: John Hawley <warthog9@eaglescrag.net>
 Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Link: https://lore.kernel.org/r/20240305-class_cleanup-input-v1-1-0c3d950c25db@marliere.net
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/input.c | 2 +-
- include/linux/input.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/ktest/ktest.pl | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index 5ca3f11d2d759..5c26f1e2c25a0 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -1901,7 +1901,7 @@ static char *input_devnode(struct device *dev, umode_t *mode)
- 	return kasprintf(GFP_KERNEL, "input/%s", dev_name(dev));
- }
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index e6c381498e632..449e45bd69665 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -836,6 +836,7 @@ sub set_value {
+     if ($lvalue =~ /^(TEST|BISECT|CONFIG_BISECT)_TYPE(\[.*\])?$/ &&
+ 	$prvalue !~ /^(config_|)bisect$/ &&
+ 	$prvalue !~ /^build$/ &&
++	$prvalue !~ /^make_warnings_file$/ &&
+ 	$buildonly) {
  
--struct class input_class = {
-+const struct class input_class = {
- 	.name		= "input",
- 	.devnode	= input_devnode,
- };
-diff --git a/include/linux/input.h b/include/linux/input.h
-index 0354b298d8749..6cc4bad37f40e 100644
---- a/include/linux/input.h
-+++ b/include/linux/input.h
-@@ -512,7 +512,7 @@ void input_enable_softrepeat(struct input_dev *dev, int delay, int period);
- 
- bool input_device_enabled(struct input_dev *dev);
- 
--extern struct class input_class;
-+extern const struct class input_class;
- 
- /**
-  * struct ff_device - force-feedback part of an input device
+ 	# Note if a test is something other than build, then we
 -- 
 2.43.0
 
