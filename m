@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-33373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B319D891B8A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:27:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E2E891B8D
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5CC29221C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B6291F27801
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E7A17556D;
-	Fri, 29 Mar 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59DC1422B7;
+	Fri, 29 Mar 2024 12:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGx8wLBX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuzacE92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900D0175568;
-	Fri, 29 Mar 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCA6175C91;
+	Fri, 29 Mar 2024 12:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715731; cv=none; b=QsDWG9QrMLI25Ygh+h3O3Q8+mx9/pKoNNOyoXDVlzxqpVlbfPqFxTGBsrJWC1QXF+i+rCY9vUqe4EPu2kEzjkYywv3useUOEUblOnSZb5Hl0pviM9Gy4CoSVJgOl8z0O3LVNO6UgfIG3pGtDMBiYIovfH2FqCeF09qRFLzRljF0=
+	t=1711715734; cv=none; b=pbER57WKuOHk5KUXZY8AVAspYHQr6Q5rCbmNvFD4+nIbI3iiGGpXI0JzX+57Gh68nnJeJWu5TtijqtLpODbCZcyVSSY0mRbT+JO62RX9jx4eiI2JjBdEo9H8VfIHqhn3NQzx9xS5jZDmwVTIbn/1ayB/cnj6qrRC+LgN5vEVTkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715731; c=relaxed/simple;
-	bh=+uHwfZ62RMXerS0nEStQgHY8Yp6ppGe+Mm9EyPS2VnE=;
+	s=arc-20240116; t=1711715734; c=relaxed/simple;
+	bh=e6smQi1YdhW/dUGgauSLAn2658GEXnwU88IsD3J1bTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBomPbu31njbqc+8VQ79u37cDUQExf5odBV11vaTY6JdwZDPerYjMdkYpZXuYQwO0uTRfzyyugXrTdNXVOrnO7xN5i+PjnA/5g7D+/KoNYcCFeBPj3ukJGgwz/uKikBGTnczX4dcOP94+Q/dSK5EBB/2ly/mKuQ4WbIZqu2Z4QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGx8wLBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BF8C43390;
-	Fri, 29 Mar 2024 12:35:30 +0000 (UTC)
+	 MIME-Version; b=CFQFU60nWOJkoXN6/Tu+5camdz/ePMTdgxqbVQD0USYPl7XQhVNwHv3NUoinMO8e34p0VhR0dkIWbpfBZ6jRJ69NXOG0oCsLv6yLy467jThtY15+SueeaPVETFZ+q6E+Pg/ltdYrs07yFU/mCr5HsObybgMk3I0LIDqYfpPRXLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuzacE92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8F7C43394;
+	Fri, 29 Mar 2024 12:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715731;
-	bh=+uHwfZ62RMXerS0nEStQgHY8Yp6ppGe+Mm9EyPS2VnE=;
+	s=k20201202; t=1711715733;
+	bh=e6smQi1YdhW/dUGgauSLAn2658GEXnwU88IsD3J1bTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGx8wLBXq++EdLgYnWLn15tE5X4FNMZWLSwLNEM3R5ELXyo5CGkPiuQtP4PWgrEVc
-	 R+EZqbX+fkUTkujPgor7eLScQMJMSNwolIKbzmW+CbrYfMcJ2m1jG9na5+14cVPHXS
-	 s3C9BAj+cF6xoF5t/xUm+xJZg2CGv7W5n62CfDExyD99ghVqFLC4C5pkb6XQ7VkPSF
-	 0nCJ//NEv1Gkt6dq3x4WxeUnQtbw/JFI/FcHzKCm3XfZdkc9XZcQSUfxBEHcWqHP1p
-	 FrgA1ks0fIDTugXse29C6xUmp3lUlpMQQn8TsMuvozf3EV4PqhC4r94xgpCf+7Ivcd
-	 K7GoVBML5iImQ==
+	b=BuzacE92nKLYwcnW9ZkKLYvpfLltMCWiOz/KXOV4OLKBc4IVxUr+PM4mGbUIdFTBT
+	 LnFBGoJMOVDk7TUoiEsCi+4rD8KXYaLhLafcZimZEVkCOV2EiDJywwUpI0inYPVmiJ
+	 xbaYYerT4hCriTv+pGP9ce/srr+2C68rRgjmf7Yhfhb/UElmkAJ2rkdzBM2/2/ZGmJ
+	 UbZusczMImra//7N07MLlSD6AVlZY1bBPU1K+PPA98O3RT5ePMNWr+pas7L4D0106p
+	 29Zr3Fi1Tn6h6hE4ij2NeeSdCHR7YbGLSXqMwpIua/3rrS7P3mrIGxv1+bdRm5q5W9
+	 QTh4nQ20ZZ8uA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 05/11] tools/power x86_energy_perf_policy: Fix file leak in get_pkg_num()
-Date: Fri, 29 Mar 2024 08:35:11 -0400
-Message-ID: <20240329123522.3086878-5-sashal@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	masahiroy@kernel.org,
+	rmk+kernel@armlinux.org.uk,
+	deller@gmx.de,
+	catalin.marinas@arm.com,
+	sparclinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 06/11] sparc: vdso: Disable UBSAN instrumentation
+Date: Fri, 29 Mar 2024 08:35:12 -0400
+Message-ID: <20240329123522.3086878-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329123522.3086878-1-sashal@kernel.org>
 References: <20240329123522.3086878-1-sashal@kernel.org>
@@ -64,32 +71,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.311
 Content-Transfer-Encoding: 8bit
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit f85450f134f0b4ca7e042dc3dc89155656a2299d ]
+[ Upstream commit d4be85d068b4418c341f79b654399f7f0891069a ]
 
-In function get_pkg_num() if fopen_or_die() succeeds it returns a file
-pointer to be used. But fclose() is never called before returning from
-the function.
+The UBSAN instrumentation cannot work in the vDSO since it is executing
+in userspace, so disable it in the Makefile. Fixes the build failures
+such as:
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+arch/sparc/vdso/vclock_gettime.c:217: undefined reference to `__ubsan_handle_shift_out_of_bounds'
+
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://lore.kernel.org/all/20240224073617.GA2959352@ravnborg.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 1 +
+ arch/sparc/vdso/Makefile | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 2aba622d1c5aa..470d03e143422 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -1112,6 +1112,7 @@ unsigned int get_pkg_num(int cpu)
- 	retval = fscanf(fp, "%d\n", &pkg);
- 	if (retval != 1)
- 		errx(1, "%s: failed to parse", pathname);
-+	fclose(fp);
- 	return pkg;
- }
+diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+index dc85570d88395..4fa1cb1a67fca 100644
+--- a/arch/sparc/vdso/Makefile
++++ b/arch/sparc/vdso/Makefile
+@@ -1,6 +1,7 @@
+ #
+ # Building vDSO images for sparc.
+ #
++UBSAN_SANITIZE := n
+ 
+ KBUILD_CFLAGS += $(DISABLE_LTO)
  
 -- 
 2.43.0
