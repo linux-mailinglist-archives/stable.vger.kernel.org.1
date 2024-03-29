@@ -1,163 +1,190 @@
-Return-Path: <stable+bounces-33146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0567A89172C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:57:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F008917DF
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06371C2160C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A98841C219B7
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EFE7C0B5;
-	Fri, 29 Mar 2024 10:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CAD6A33C;
+	Fri, 29 Mar 2024 11:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="15ofR0A7"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9055B6A347;
-	Fri, 29 Mar 2024 10:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F991096F;
+	Fri, 29 Mar 2024 11:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711709808; cv=none; b=c00wy0XMaSNOxa7gO6jb4/GUio+kk0Z/cD9nd6wbPTuY5Opkk0eFFwXJWNBI8AHvgqU7RaORrb/wK7y/SaGiOdJW1kOXBPPzEGvmvr9de4ozCNO3oOVCdnSCYO/Xno7+tsckXynHZtq2N99vm57VXroiPojo1sVzj36kFQ5Jntw=
+	t=1711712066; cv=none; b=JZhpcIZbtEusdP6RS2+Wm/DL+P3LJ2qPYMN5wxOsHjBiT4NQv4ToumXKAgk12gPCqJRPlf5wTurtbBlf48OY9VfYeCjYTW9DvZefwS263T0E7fgoSV9jtFwmt99OyGxF5WXSMZIwvlKh8DbUYhxuaKs8gU0XjOWDv6O4ciZayNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711709808; c=relaxed/simple;
-	bh=JczRvhAxp0oCK7GkF7t5XGDG+V3gmMYtZapyAPDTA+8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nu99oGNa6aorOYW03eAse7dQV6Ou5BEzb6aG7CInHntNpEqGALY/FgPWyGU7kJlQB9YEruqI8a8NMyJhrQiiHsfnXb2CgirRL7bD81gvn1XeAnuqCay9UOgC2dCQPUfeHbghoGBgmDeCZelNwKqlVb1bMMr+zyL1BE0ZnHCRr2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4V5cPT0MfBz9xqwd;
-	Fri, 29 Mar 2024 18:40:29 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 8E05A14068E;
-	Fri, 29 Mar 2024 18:56:32 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwDnISZMngZmVsAqBQ--.12203S3;
-	Fri, 29 Mar 2024 11:56:31 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: zohar@linux.ibm.com,
-	dmitry.kasatkin@gmail.com,
-	eric.snowberg@oracle.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com
-Cc: linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	pc@manguebit.com,
-	christian@brauner.io,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] ima: evm: Rename *_post_path_mknod() to *_path_post_mknod()
-Date: Fri, 29 Mar 2024 11:56:09 +0100
-Message-Id: <20240329105609.1566309-2-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
-References: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+	s=arc-20240116; t=1711712066; c=relaxed/simple;
+	bh=CD+U/4SMvslHllsXoojsThdlHsrwenDb0wNTOqeQPjU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W0xtjAeyrMPSP1oLtahu1aNjqTv8BgmRpdr8gzgJKdJVkzYdUf6YaZLExX9ySN9plNc5p6xm/Wc/QHinJowe49B9U0umYfK3krZIEhhNhyy/bg5vKS4H1AEbgjxDCCd9IB9MQTXLymN2rTljxQLoSplHV0wPi/Nbbb0HBQXC87o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=15ofR0A7; arc=none smtp.client-ip=212.227.126.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valentinobst.de;
+	s=s1-ionos; t=1711711998; x=1712316798; i=kernel@valentinobst.de;
+	bh=kiemghf0V/GSK2wbZLm1KTLUSSgc/ODkFkc449G7fSI=;
+	h=X-UI-Sender-Class:From:Date:Subject:To:Cc;
+	b=15ofR0A76otzeI/sIVKoaC8Qv2gy7vxHim2Ymh1CY7FWbG+DWtRahTZw6V+CoZPM
+	 sgAAJccwjr3jXRsVI72swtSHjdLD09Tjckr8f+c0IIbGHTfEzvdwb9FR9i9FnCwPW
+	 hF/zg05P8SMCIJcE6ViA7FOT+OrS6vG9Lg2z+0HKgbwtSYJnmKygP6q19B5wVfXnb
+	 q84NlE/zJCPZi96h/eQ9glpGb9Zq8qvfaSY41uATCybsQ+wLUCiXETdqJE2Z/EM5U
+	 sg34+2aXk+z4G2rl6bwQQFzVYQz3JTfosFWQEawD+gr5U/gKUWC8mgSuLblGdHdQ/
+	 bqQYw+6lVQhP1ZJ58w==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from [10.77.77.61] ([217.249.70.154]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N4hex-1soHPN2Wxj-011hm9; Fri, 29 Mar 2024 12:33:18 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+Date: Fri, 29 Mar 2024 12:31:58 +0100
+Subject: [PATCH v3] x86/tools: fix line number reported for malformed lines
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:GxC2BwDnISZMngZmVsAqBQ--.12203S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF18Gr1ktr15Aw45GFW5trb_yoW5urykpa
-	n5t3WUGrn8JFy5Wr1kAFy7ZFyFg34rXFWUWan5Kw1SyF9xtr1qqFn29a4Y9FZ8tFW0gryI
-	v3WUtrn8Zw4Utw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUGw
-	A2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMc
-	Ij6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_
-	Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI
-	0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
-	0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0GY
-	LDUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQARBF1jj5vtpQACs0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <20240329-x86-insn-decoder-line-fix-v3-1-ec97e21d63bf@valentinobst.de>
+X-B4-Tracking: v=1; b=H4sIAK2mBmYC/43NQQqDMBAF0KtI1p1iRmtsV71H6UKTSR2QpCQSL
+ OLdG10VCqXL/5n/ZhGRAlMUl2IRgRJH9i6H6lAIPXTuQcAmZ4El1iWihLltgF10YEh7QwFGdgS
+ WZ1C9tEhSVWityPtnoFzv9u2e88Bx8uG1v0pya/9RkwQJtdLm1EklW91cUzeSm9j5Pk5HQ2KzE
+ 3561S8Ps6cN1WfdnG2+/vbWdX0DnP7P+xgBAAA=
+To: Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+ Ingo Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ John Baublitz <john.m.baublitz@gmail.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, 
+ =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
+ linux-kernel@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org, 
+ Valentin Obst <kernel@valentinobst.de>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711711993; l=3102;
+ i=kernel@valentinobst.de; s=20240131; h=from:subject:message-id;
+ bh=2yrFMY5+SkggOHssX479kJtPf1H7LqZLVDyny3osaw8=;
+ b=/Nn//02Z2oCL5gr446bWK3XQ8O4GS/oo2j5cCI9ik9RCoNR8lTuw66hxInDLN48SptcHnrqzR
+ Ky+lvc0vuIMBIAeR3hJ98InwVMWPPLtnydzMN19YC4Qx44LQeWOnzxC
+X-Developer-Key: i=kernel@valentinobst.de; a=ed25519;
+ pk=3s7U8y0mqkaiurgHSQQTYWOo2tw5HgzCg5vnJVfw37Y=
+X-Provags-ID: V03:K1:Dw8Wc4f3SmNQdchz8rSOTpOoyWdA1Zrbv/NisIdmEkpeigaiwaZ
+ Hntcz/jWJi56Mt3VO+ElFiDob1y0ULkKfnQwo4E3eC0dSngn9kpi4jVawtOVjfba4oYCrKl
+ VPzTgVmtZJ4lW8/ROZAUuWT41HSQIdxj0OQck8BzXEEPdAgsfMDMUeSxlAr0O9FaTR3n5VU
+ 1b+BMQHsFnyHNSJNg/m7Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:7io/rqjPaZQ=;olFbZPdz3zE1etpUCGrzuB58KL8
+ PLVp5bABWX65KousaqgreXUxCV5GtNsM+SdTI+kA9goxjenIa2HOpFHFpc6EcEPmixJxTmvkY
+ Q7wZpGT6osuw0ChUvNN6lhL81oTeN/i2vJNGAozFIFGLXMbMihzunjSwLqcjQxb63eKXOdXKU
+ mkLxbvM+qFl7BArjIMl/j6qSjuzWv1roybzEZUinMU5xCqXIZVFwk60eOvtfN5NGg1xIsRvmy
+ SpuGPgRlvveUoQ3gHPwrVirEFzC78yezhr/0plSY9mglqM3NcsSZ2pUynIGAkfXOzLEXNSEjm
+ 1VfuRNIUgO+dAiWjNiuMrQylEmtJ0DWPE7ziosRkRESLNVnAfIH+dqMiOhHucKpcMc/FLgZ6i
+ mrwQdQaxUksrhmscHAd4TjtQqJQ2GquVey9qvemPH04q6iicbZLGxYE1hImxZpyiTZCW2XdlZ
+ ygHHgralNdARXxJLspGMlQ3vNpoHt3gEDOsIKBniuzjKbS90shQQp3wAPoD0pvItsCTHd884j
+ uoDl0l4qoMD6hNcOJGTmouKcZnPjVjJNFZMUCr1dyHIzJDq519buQ68Xoc1kQT0pAC+HrXike
+ eRo+xLmN3fecC9r9h+9yAminvFu95nt2dWhDEZLpOK/NSon0Fxel1YQdemvltl4AbrmldRRO2
+ QKn0pjdELTMcElLvpg1qhgC+9NUd5K4kienmuvyz1h5NVxaF0NHp2eUcCr1eM7iJ0qAkBmFT5
+ unIXxEkwQ9bpECDIakWz35cN523+Qjosb+4RoX64A+tPbdPf//CdRI=
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+Commit 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
+included symbol lines in the post-processed objdump output consumed by
+the insn decoder test. This broke the `instuction lines =3D=3D total lines=
+`
+property that `insn_decoder_test.c` relied upon to print the offending
+line's number in error messages. This has the consequence that the line
+number reported on a test failure is unreated to, and much smaller than,
+the line that actually caused the problem.
 
-Rename ima_post_path_mknod() and evm_post_path_mknod() respectively to
-ima_path_post_mknod() and evm_path_post_mknod(), to facilitate finding
-users of the path_post_mknod LSM hook.
+Add a new variable that counts the combined (insn+symbol) line count and
+report this in the error message.
 
-Cc: stable@vger.kernel.org # 6.8.x
-Reported-by: Christian Brauner <christian@brauner.io>
-Closes: https://lore.kernel.org/linux-kernel/20240328-raushalten-krass-cb040068bde9@brauner/
-Fixes: 05d1a717ec04 ("ima: add support for creating files using the mknodat syscall")
-Fixes: cd3cec0a02c7 ("ima: Move to LSM infrastructure")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/integrity/evm/evm_main.c | 4 ++--
- security/integrity/ima/ima_main.c | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
+Cc: stable@vger.kernel.org
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Reported-by: John Baublitz <john.m.baublitz@gmail.com>
+Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
+Signed-off-by: Valentin Obst <kernel@valentinobst.de>
+=2D--
+See v2's commit message and [1] for context why this bug made debugging a
+test failure harder than necessary.
 
-diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
-index ec1659273fcf..b4dd6e960203 100644
---- a/security/integrity/evm/evm_main.c
-+++ b/security/integrity/evm/evm_main.c
-@@ -1034,7 +1034,7 @@ static void evm_file_release(struct file *file)
- 		iint->flags &= ~EVM_NEW_FILE;
- }
- 
--static void evm_post_path_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
-+static void evm_path_post_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
- {
- 	struct inode *inode = d_backing_inode(dentry);
- 	struct evm_iint_cache *iint;
-@@ -1102,7 +1102,7 @@ static struct security_hook_list evm_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(inode_init_security, evm_inode_init_security),
- 	LSM_HOOK_INIT(inode_alloc_security, evm_inode_alloc_security),
- 	LSM_HOOK_INIT(file_release, evm_file_release),
--	LSM_HOOK_INIT(path_post_mknod, evm_post_path_mknod),
-+	LSM_HOOK_INIT(path_post_mknod, evm_path_post_mknod),
- };
- 
- static const struct lsm_id evm_lsmid = {
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index afc883e60cf3..f33124ceece3 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -709,14 +709,14 @@ static void ima_post_create_tmpfile(struct mnt_idmap *idmap,
- }
- 
- /**
-- * ima_post_path_mknod - mark as a new inode
-+ * ima_path_post_mknod - mark as a new inode
-  * @idmap: idmap of the mount the inode was found from
-  * @dentry: newly created dentry
-  *
-  * Mark files created via the mknodat syscall as new, so that the
-  * file data can be written later.
-  */
--static void ima_post_path_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
-+static void ima_path_post_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
- {
- 	struct ima_iint_cache *iint;
- 	struct inode *inode = d_backing_inode(dentry);
-@@ -1165,7 +1165,7 @@ static struct security_hook_list ima_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(kernel_post_load_data, ima_post_load_data),
- 	LSM_HOOK_INIT(kernel_read_file, ima_read_file),
- 	LSM_HOOK_INIT(kernel_post_read_file, ima_post_read_file),
--	LSM_HOOK_INIT(path_post_mknod, ima_post_path_mknod),
-+	LSM_HOOK_INIT(path_post_mknod, ima_path_post_mknod),
- #ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
- 	LSM_HOOK_INIT(key_post_create_or_update, ima_post_key_create_or_update),
- #endif
--- 
-2.34.1
+[1]: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic=
+/insn_decoder_test.20failure/near/421075039
+
+Changes in v3:
+- Add Cc stable tag in sign-off area.
+- Make commit message less verbose.
+- Link to v2: https://lore.kernel.org/r/20240223-x86-insn-decoder-line-fix=
+-v2-1-cde49c69f402@valentinobst.de
+
+Changes in v2:
+- Added tags 'Reviewed-by', 'Tested-by', 'Reported-by', 'Debugged-by',
+  'Link', and 'Fixes'.
+- Explain why this patch fixes the commit mentioned in the 'Fixes' tag.
+- CCed the stable list and sent to all x86 maintainers.
+- Link to v1: https://lore.kernel.org/r/20240221-x86-insn-decoder-line-fix=
+-v1-1-47cd5a1718c6@valentinobst.de
+=2D--
+ arch/x86/tools/insn_decoder_test.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_deco=
+der_test.c
+index 472540aeabc2..727017a3c3c7 100644
+=2D-- a/arch/x86/tools/insn_decoder_test.c
++++ b/arch/x86/tools/insn_decoder_test.c
+@@ -114,6 +114,7 @@ int main(int argc, char **argv)
+ 	unsigned char insn_buff[16];
+ 	struct insn insn;
+ 	int insns =3D 0;
++	int lines =3D 0;
+ 	int warnings =3D 0;
+
+ 	parse_args(argc, argv);
+@@ -123,6 +124,8 @@ int main(int argc, char **argv)
+ 		int nb =3D 0, ret;
+ 		unsigned int b;
+
++		lines++;
++
+ 		if (line[0] =3D=3D '<') {
+ 			/* Symbol line */
+ 			strcpy(sym, line);
+@@ -134,12 +137,12 @@ int main(int argc, char **argv)
+ 		strcpy(copy, line);
+ 		tab1 =3D strchr(copy, '\t');
+ 		if (!tab1)
+-			malformed_line(line, insns);
++			malformed_line(line, lines);
+ 		s =3D tab1 + 1;
+ 		s +=3D strspn(s, " ");
+ 		tab2 =3D strchr(s, '\t');
+ 		if (!tab2)
+-			malformed_line(line, insns);
++			malformed_line(line, lines);
+ 		*tab2 =3D '\0';	/* Characters beyond tab2 aren't examined */
+ 		while (s < tab2) {
+ 			if (sscanf(s, "%x", &b) =3D=3D 1) {
+
+=2D--
+base-commit: 4cece764965020c22cff7665b18a012006359095
+change-id: 20240221-x86-insn-decoder-line-fix-7b1f2e1732ff
+
+Best regards,
+=2D-
+Valentin Obst <kernel@valentinobst.de>
 
 
