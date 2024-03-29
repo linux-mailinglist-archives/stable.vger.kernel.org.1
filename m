@@ -1,95 +1,78 @@
-Return-Path: <stable+bounces-33380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F71891BAC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:30:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AD4891C5C
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35631F259D9
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FAC2288D1B
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225011442EB;
-	Fri, 29 Mar 2024 12:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF98185236;
+	Fri, 29 Mar 2024 12:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIwAwshY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/Aa3pIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CE813664E;
-	Fri, 29 Mar 2024 12:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C042D185230
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715931; cv=none; b=hKyXHQ203bPVFeDCFalPnUK59cQ2+Vm4g9JV3uCiUcmUU1lk+mpvve4APMlj4PRsK0Sb1yzPRMU1sJbRmB0X/b0/abaV4szq39VRnwo3+WVKX+LdqjA4+cOejIETOcewXrz8AygxgBSP+5qJbCIqWlKfW14GBkRAGgKNRNorLzU=
+	t=1711716124; cv=none; b=W+f/SKYkKWoQvfrJNZEL8iK08dEyBgkY0omSWH2Kb06sUMrg2rfzMwyVPNMyQh8e/rvFWGDnXSy/NhgNNeDRAjo5zU3dfN6LpQovH5UA8ap4SoRseMIda8SPx/9ObS7xg85kfTe1GI+0yPm8UWLKwhgyCosvIgEw77n0EaXyn0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715931; c=relaxed/simple;
-	bh=7OCE6E+V/uRCmyJIcNCPSK5hYqaC8YBhEdwTeGxys3M=;
+	s=arc-20240116; t=1711716124; c=relaxed/simple;
+	bh=8dDsvaWmejQv5mi73WI03Xf5IEP7Y0Cx8SLYl4dh3OY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UcnvqbLis9BVhgBtwhzKOPNr2KELtBeKKKPe/Pp1yRi6y7vrOwY50dqO9kbWf1U98NKdKzEgygC7wNsY6fBeBEFckNhyyqgi9w428QsS8orU6eyUPfeCxE1v7uJnGHBHDcpMPxPwkOzSR7WNUwyUHFVgoKpzexAZRTwSmgTNlQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIwAwshY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5EFC433C7;
-	Fri, 29 Mar 2024 12:38:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=l4bYHk5Gb6ebSG3vOMlazt7vO84a5elyTCcxXTDsIvqQarfQiDZjQc9ctZPs/waSUVoFCgR4QkYTVrn1YAxPnF0gAaBjQGkqJB0fDhyVqmUP28TrHXkQzJZ87WWOog+W2He84SYIlGq19xWGXXR2C/+I0cTbQ2pT4G63f6Aa9EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/Aa3pIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173D9C43394;
+	Fri, 29 Mar 2024 12:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711715931;
-	bh=7OCE6E+V/uRCmyJIcNCPSK5hYqaC8YBhEdwTeGxys3M=;
+	s=korg; t=1711716124;
+	bh=8dDsvaWmejQv5mi73WI03Xf5IEP7Y0Cx8SLYl4dh3OY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aIwAwshYuhXNwu5+OKWbn6PPzRD2Q1fuTJPxJF5b6wNOFJ0B1iC69LpdDDWMfqi/Y
-	 OJkKAH3fz/dAmmchsiOtbPx9n6ux59ANT3v0YZHBVtbgCaH+N69RYgaXibPVb16NP/
-	 0NhzBe0hDWb3cT9OoO+gYoillLKprEn8qXLMNYxk=
-Date: Fri, 29 Mar 2024 13:38:48 +0100
+	b=y/Aa3pIJ6JIElHaYRPW6zWwRaw6XqEInNfF05/8pxp4WaukrZSIdkFH7mtZH7tAGy
+	 0urNN5y6TYrP0bQgrtt9A3OmaFVs0LgCcU+0VpPez3PEry8g1EAZ0f6F++a19jTG/i
+	 b2q6nBRCZSsua8tWn3BMEkbacRchFAJZ0I3qsD8I=
+Date: Fri, 29 Mar 2024 13:41:33 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: genjian zhang <zhanggenjian@126.com>
-Cc: stable@vger.kernel.org, axboe@kernel.dk, stable@kernel.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	zhanggenjian123@gmail.com, Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: Re: Re: [PATCH 4.19.y 0/9] Fix the UAF issue caused by the loop
- driver
-Message-ID: <2024032938-preface-reassure-a1f4@gregkh>
-References: <20240301013028.2293831-1-zhanggenjian@126.com>
- <2024030421-obedient-unbalance-a728@gregkh>
- <1d74f009.2179.18e16c2d99f.Coremail.zhanggenjian@126.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, "H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Borislav Petkov <bp@suse.de>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: Re: [PATCH 5.15.y v2 00/11] Delay VERW + RFDS 5.15.y backport
+Message-ID: <2024032923-casket-registrar-a962@gregkh>
+References: <20240312-delay-verw-backport-5-15-y-v2-0-e0f71d17ed1b@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d74f009.2179.18e16c2d99f.Coremail.zhanggenjian@126.com>
+In-Reply-To: <20240312-delay-verw-backport-5-15-y-v2-0-e0f71d17ed1b@linux.intel.com>
 
-On Thu, Mar 07, 2024 at 10:34:12AM +0800, genjian zhang wrote:
-> 
-> At 2024-03-04 21:31:20, "Greg KH" <gregkh@linuxfoundation.org> wrote:
-> >On Fri, Mar 01, 2024 at 09:30:19AM +0800, Genjian wrote:
-> >> From: Genjian Zhang <zhanggenjian@kylinos.cn>
-> >> 
-> >> Hello!
-> >> 
-> >> We found that 2035c770bfdb ("loop: Check for overflow while configuring loop") lost a unlock loop_ctl_mutex in loop_get_status(...).
-> >> which caused syzbot to report a UAF issue. However, the upstream patch does not have this issue.
-> >> So, we revert this patch and directly apply the unmodified upstream patch.
-> >> 
-> >> Risk use-after-free as reported by syzbot：
-> >
-> >This looks good, but you are backporting commits that are NOT in newer
-> >stable releases (i.e. from 5.8 but the commit is not in 5.4.y), is that
-> >intentional?
-> >
-> >Does 5.4.y also have this problem?  If so, can you send a series that
-> >fixes that up so I can take both of them at the same time?
-> >
-> >thanks,
-> >
-> >greg k-h
-> 
-> Thank you for your advice. This problem also exists in 5.4.y. 
-> I will send a series of patches for 5.4.y.
+On Tue, Mar 12, 2024 at 02:10:34PM -0700, Pawan Gupta wrote:
+> v2:
+> - This includes the backport of recently upstreamed mitigation of a CPU
+>   vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746).
+>   This is because RFDS has a dependency on "Delay VERW" series, and it
+>   is convenient to merge them together.
+> - rebased to v5.15.151
 
-All now queued up, thanks!
+Now queued up, thanks.
 
 greg k-h
 
