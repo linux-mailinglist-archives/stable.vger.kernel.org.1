@@ -1,140 +1,139 @@
-Return-Path: <stable+bounces-33120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B238913DA
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 07:37:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D3189140A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 08:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C0B1C23B7E
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 06:37:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24DAEB2304B
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 07:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07AA224C9;
-	Fri, 29 Mar 2024 06:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96FBF9E4;
+	Fri, 29 Mar 2024 07:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="WnPpWSfB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L5cLUHyK"
 X-Original-To: stable@vger.kernel.org
-Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4633BB20;
-	Fri, 29 Mar 2024 06:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D261B33CCC;
+	Fri, 29 Mar 2024 07:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711694253; cv=none; b=TLDtluwW/IVZPqcdjBop8gquOuTRjArJKabCIwrkVF+6KAzvnX3sDqQF4t73lYWxXsxDoNgYXwUghopk9hjKtyhOnaCV7OoOf7hc2Wf8InS94i50+3talX/B3MxXHFRXvOosQtel9mx08qge1dLfYVBGV2RVofrNLxGEf1AiSRs=
+	t=1711696524; cv=none; b=CQPWGj4gTJY1j6zsURVgSV9q8UOy6vCOe7nwgOPWaZ+knZetcf7umNejlVHJWF42RLOHSz5t8ykhzqM9Z6L+QwZ/GaLETH+22DpLHcGlc6wD3r0TjjUak8/+oFEooUSxoWJIqPEY+G1Mfpnm86i3s/byxA9uSdZo+u8ES4TmeQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711694253; c=relaxed/simple;
-	bh=eaTURs2DX3hFrascB0JmgCheHmdrmF0RLNDE+Or7F2I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QNTDiocbIdyTUBleiml8aJ7QFOST9myPo7u9q/dxV446HKX8Y1I+xug+oObnI3WlqbOPGHkfxBdyyN9RVdYGkSZlATHTd6LhNiAbOTLyCMTXL76U0gwwvfdERBbyE0seddRk38Yx2X3AB0GUOafdxSsoU2oV12DfFjwvpBDOM6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=WnPpWSfB; arc=none smtp.client-ip=139.138.61.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1711694251; x=1743230251;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eaTURs2DX3hFrascB0JmgCheHmdrmF0RLNDE+Or7F2I=;
-  b=WnPpWSfB+nDinQ74Roq2uUQGzPg68f87JSOCOUylWknn5smSnul//wcl
-   8jOTIKROUr3BmjsvOVI38dU/ewX9q9r1BSZT20uTxmSV+4Lc32XTYawEw
-   eAwCpN2UDfubE7xgOy5GZMw1kA7KPI37VEqI68yWxUnKawUH8DY2PsPmZ
-   0XDtdx8jH5HV0Xa2YYomQeL6pyan12SnExvrn8UCHnvBbLVBsOvN3WZ+7
-   wufz4Vj7QyON1cUciqWokKGF0vB2n+31cYw8v3OSr6QO+6u80KCyJEFrR
-   yYmQfo8l9wKS4bbHchokzuS1N1QtybZEzHYCjoWHTa9k7mtE+tYmVd05E
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="132533101"
-X-IronPort-AV: E=Sophos;i="6.07,164,1708354800"; 
-   d="scan'208";a="132533101"
-Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
-  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 15:36:18 +0900
-Received: from yto-m1.gw.nic.fujitsu.com (yto-nat-yto-m1.gw.nic.fujitsu.com [192.168.83.64])
-	by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id 01556E9668;
-	Fri, 29 Mar 2024 15:36:17 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
-	by yto-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 34FEA12F761;
-	Fri, 29 Mar 2024 15:36:16 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id BC9362288EE;
-	Fri, 29 Mar 2024 15:36:15 +0900 (JST)
-Received: from irides.g08.fujitsu.local (unknown [10.167.226.114])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 378B31A006D;
-	Fri, 29 Mar 2024 14:36:15 +0800 (CST)
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-To: qemu-devel@nongnu.org,
-	linux-cxl@vger.kernel.org
-Cc: Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com,
-	dave@stgolabs.net,
-	ira.weiny@intel.com,
-	stable@vger.kernel.org
-Subject: [RFC PATCH v2 1/6] cxl/core: correct length of DPA field masks
-Date: Fri, 29 Mar 2024 14:36:09 +0800
-Message-Id: <20240329063614.362763-2-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
-References: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
+	s=arc-20240116; t=1711696524; c=relaxed/simple;
+	bh=vcBZF75PvdSN87wejsi7pX6QTEy6uXjLbXwwfZFg3Eg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k3Hjt6z+YPScPnfhV9akejUaJq1WnXQX1xLSINAn+e4DDyyX4hec32nIjZjhUytJnpJjOCz3Cr80JTT1maILdWY7CuO0fyiICpOYIbXeMGTkK1rO5as034ZzYHPx9QmAOiTybg+m2MzjSbvNZhCyQwxN8b/mBCJ8h/uX7I3nuAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L5cLUHyK; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-565c6cf4819so4648950a12.1;
+        Fri, 29 Mar 2024 00:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711696521; x=1712301321; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mozfWZbRnnqWKHe9tnc7q0wOVsOmikcudgvgpeew1+E=;
+        b=L5cLUHyKmOCGoBuiVuBONQS6/s6X03KM5eyFMbkZio5EjTMD/irf9oO2tThDtxSjTV
+         +b6+IeCR63Fi3PcQVjVbmL8JxXdUpprIbpriIZnFql/KnzWQF7oQD9mE8dUbY1Tvsgzb
+         CMV/7drs6iQjxFLjWBI9BHe+/fTohY3CfyCvWloFsBGMLAr+Y/NDE00sitj5fPEm4thi
+         5inKjvkgkMPOJVTpeMDN8s+WaLSF4ylsdfzr+sC7jTfWMgCX+xw0XFhbDyu4bR1PFDZu
+         X+6bYak1MkhocVnAbrmara4k96F7iov4C35MfihsEDvxWH/gDuLHcfk4i4KEkdqsGfjM
+         nsQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711696521; x=1712301321;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mozfWZbRnnqWKHe9tnc7q0wOVsOmikcudgvgpeew1+E=;
+        b=eeMRNxO8wfchjfAxFtFpxDrji1/mlNIrN7xhqpuKaZ+i/ZvLZpZ+K2NT+N3EGevDWY
+         kdN5T5GovpQ4izVMWbd4Tx/ZPGf0dTSx5H2eFChAKoz/VNJ36vpFTDpHdkb4qEpN3791
+         SuKvPp/drdCX17BoYRHuGnJf0z0PxM5oYXex/zQ/5IxLnGYonfgOOQ46DgruTsHhGP7f
+         d0ykxCXf3A8ZqlEYWivMUGiGl4Mh48MUsPD+T8+VPHXoGewsc9Tn0vE9Vsf6MgfMjpTG
+         xLvKmJwFIW8dwhydCIDtzMp+zB1i8fPeWJH8CHx+8YpSqv+HX6v2HPRSxraGICrId1j2
+         xaBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+d/p0NmumbJumfbUxE4Ub8pmF2Yr6nhw7sYw95hPjPKywdOVBkWNzkRnRKL7vKyBtdglBlwAqmgff+oo0LtvPRiPtjhOGTfSG0qxa4G2XJ58vluOaDRR5GGqB7zDknN0sLb5n
+X-Gm-Message-State: AOJu0Yxav7rxMbpR3eVb1IN+0by8QyswwkQD5c924v7OusyJ9RJJED1d
+	eHxTDvjLTvR8h1MCtsfZqBPm18hwpNOrBDWnS4jJCP9X3aGea7FmZawTU4RM1bQ=
+X-Google-Smtp-Source: AGHT+IFhRkjxogRTyF/K3aWBTa/zm6XcSZhhLZnndCssQDKYDtq+qxbh6p75jpjUxX89xLoNA/e6vw==
+X-Received: by 2002:a50:8e1b:0:b0:568:b0f4:fe69 with SMTP id 27-20020a508e1b000000b00568b0f4fe69mr4049605edw.12.1711696520810;
+        Fri, 29 Mar 2024 00:15:20 -0700 (PDT)
+Received: from gmail.com (195-38-112-2.pool.digikabel.hu. [195.38.112.2])
+        by smtp.gmail.com with ESMTPSA id ew12-20020a056402538c00b0056a033fa007sm1675741edb.64.2024.03.29.00.15.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Mar 2024 00:15:20 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Fri, 29 Mar 2024 08:15:17 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Steve Wahl <steve.wahl@hpe.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	Pavin Joseph <me@pavinjoseph.com>, stable@vger.kernel.org,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Simon Horman <horms@verge.net.au>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Dave Young <dyoung@redhat.com>, Sarah Brofeldt <srhb@dbc.dk>,
+	Russ Anderson <rja@hpe.com>, Dimitri Sivanich <sivanich@hpe.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Yuntao Wang <ytcoode@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v4] x86/mm/ident_map: On UV systems, use gbpages only
+ where full GB page should be mapped.
+Message-ID: <ZgZqhWoRZoq5tJoU@gmail.com>
+References: <20240328160614.1838496-1-steve.wahl@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28282.003
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28282.003
-X-TMASE-Result: 10-1.936900-10.000000
-X-TMASE-MatchedRID: 6KVfooacCZzo4fT4WEihVSQWufwDJ4K9T5ysQDj6eFnIPbn2oQhptW4j
-	6HJSTgstiC69Gex0rT0XkIT0cenSu+BRuAss+FbmEXjPIvKd74BUENBIMyKD0ceQfu6iwSfsePr
-	7SQbqKPDi8zVgXoAltsIJ+4gwXrEtJ0RPnyOnrZINUgM7QdTcfXGwKxjdKzHf8Yi1jddtlC4HZ7
-	7a2hmTYf2ng54tmDQpuA2+Y9lsxTCcrrRiTSKATNx+1ANNyC8exuBs026550TAYLx7rnbR8rDQ8
-	m3TqgloelpCXnG+JjvDGBZ1G8r1Sf2D6gx/0ozp
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240328160614.1838496-1-steve.wahl@hpe.com>
 
-The length of Physical Address in General Media Event Record/DRAM Event
-Record is 64-bit, so the field mask should be defined as such length.
-Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
-mask off the upper-32-bits of DPA addresses. The cxl_poison event is
-unaffected.
 
-If userspace was doing its own DPA-to-HPA translation this could lead to
-incorrect page retirement decisions, but there is no known consumer
-(like rasdaemon) of this event today.
+* Steve Wahl <steve.wahl@hpe.com> wrote:
 
-Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
-Cc: <stable@vger.kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
----
- drivers/cxl/core/trace.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> When ident_pud_init() uses only gbpages to create identity maps, large
+> ranges of addresses not actually requested can be included in the
+> resulting table; a 4K request will map a full GB.  On UV systems, this
+> ends up including regions that will cause hardware to halt the system
+> if accessed (these are marked "reserved" by BIOS).  Even processor
+> speculation into these regions is enough to trigger the system halt.
+> And MTRRs cannot be used to restrict this speculation, there are not
+> enough MTRRs to cover all the reserved regions.
 
-diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-index e5f13260fc52..e2d1f296df97 100644
---- a/drivers/cxl/core/trace.h
-+++ b/drivers/cxl/core/trace.h
-@@ -253,11 +253,11 @@ TRACE_EVENT(cxl_generic_event,
-  * DRAM Event Record
-  * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
-  */
--#define CXL_DPA_FLAGS_MASK			0x3F
-+#define CXL_DPA_FLAGS_MASK			0x3FULL
- #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
- 
--#define CXL_DPA_VOLATILE			BIT(0)
--#define CXL_DPA_NOT_REPAIRABLE			BIT(1)
-+#define CXL_DPA_VOLATILE			BIT_ULL(0)
-+#define CXL_DPA_NOT_REPAIRABLE			BIT_ULL(1)
- #define show_dpa_flags(flags)	__print_flags(flags, "|",		   \
- 	{ CXL_DPA_VOLATILE,			"VOLATILE"		}, \
- 	{ CXL_DPA_NOT_REPAIRABLE,		"NOT_REPAIRABLE"	}  \
--- 
-2.34.1
+Nor should MTRRs be (ab-)used for this really.
 
+> The fix for that would be to only use gbpages when map creation 
+> requests include the full GB page of space, and falling back to using 
+> smaller 2M pages when only portions of a GB page are included in the 
+> request.
+> 
+> But on some other systems, possibly due to buggy bios, that solution 
+> leaves some areas out of the identity map that are needed for kexec 
+> to succeed.  It is believed that these areas are not marked properly 
+> for map_acpi_tables() in arch/x86/kernel/machine_kexec_64.c to catch 
+> and map them.  The nogbpages kernel command line option also causes 
+> these systems to fail even without these changes.
+
+Does the 'nogbpages' kernel command line option fail on these systems 
+even outside of kexec (ie. regular boot), or only in combination with 
+kexec?
+
+Thanks,
+
+	Ingo
 
