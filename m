@@ -1,73 +1,102 @@
-Return-Path: <stable+bounces-33649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58279891E6C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:41:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CA8891EAE
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7F31F2496A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:41:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEFE81F26B8E
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BC516D11F;
-	Fri, 29 Mar 2024 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E65208BB;
+	Fri, 29 Mar 2024 12:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilpHVWkX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAAZiASc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E615A16D119
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59AB16DEDA;
+	Fri, 29 Mar 2024 12:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716552; cv=none; b=nbAuaKFTzpKwfaxgA7prRC9c/EnozLd445unKGEd4XSo67WnWUpFGn8O0/mPWDY3pFloeQiXW1F6QoDaSoH6Dc0yxlaKOHBBPdFEBm0W0kGOoDpWwt5QwjCIMk2HmFO6sm3hUGPEIxJ7hazTrJdLnR/7deZhj7GtnCJxlYW5xgk=
+	t=1711716610; cv=none; b=nFqeYwhkQ1hiGLSOn5hhbrr9+zUE83kvQscVocp6PxbUlHxi9FYiNp1V4i0TRNr36z+csyE8mzvkL8tf1FCyvvl9M24BkJn/hdV6AC4gTmUSTmsRafBa2yU6EA1dzbQjYU/IWXQpoKLhMnaHqwVONyDX5gGvi+6rjLPD7iYwdOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716552; c=relaxed/simple;
-	bh=4QpyOAswf98sDHUTk+WhliIXWYBHtM9un6jV7hdIFMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EM1SGl4Eeo+zV5WJ+e+Xpo7NVpTOj1EZgh6Uz3Jk9q8mHKHf2bMjYuN/1iDlrLOhhKcAtX/RwAh1oteuP0iA28ZcU9T1trpD9eghUirak+jMZsF2Nt2YUNLNkUlz+4XPkVc8tLuGMl6Yzy1DNmPdk06RSeFfHMuyJ5fetuS0WDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilpHVWkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371ADC433C7;
-	Fri, 29 Mar 2024 12:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711716551;
-	bh=4QpyOAswf98sDHUTk+WhliIXWYBHtM9un6jV7hdIFMc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ilpHVWkXjXFo/AxAGexA+Wov873FFUB4stULJ7drt1CYxjzbCtPCL58xFRAwltEBX
-	 8+h7kiL03H337381oWzmS+lD7dhfe9bs9UwJEwJA7/Wm5730FVC9M1U194lxvyTaLY
-	 UsXMC43UsfA1x3UiEkuJZfqBpdGIP45ucyHrDXGI=
-Date: Fri, 29 Mar 2024 13:49:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v0 0/2] Fix LPSS clock divider for XPS 9530, 6.8.y
- backport
-Message-ID: <2024032957-garter-subfloor-26c3@gregkh>
-References: <20240317005400.974432-1-alex.vinarskis@gmail.com>
+	s=arc-20240116; t=1711716610; c=relaxed/simple;
+	bh=KrtLP2+xQcj9c07YWsMGvUeNakHzSGnJr64CquHleek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZO/XBCqFczgUTwJCBpS5eFhg5S4cWj2+rTp7bOYo1dA9qoNH2sOBG2GK4V9Qh52q/Rr1jEVv/ZLAeRPu3PWDJCDkL6FYnh3g5EE+a3YUYv8eWeVef0kzjsxcUxZ97aZtCyAV7+xORSg85RelA7SvtLopedU4/kIIyelbpzHq0wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAAZiASc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE419C43390;
+	Fri, 29 Mar 2024 12:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711716610;
+	bh=KrtLP2+xQcj9c07YWsMGvUeNakHzSGnJr64CquHleek=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DAAZiAScVtpf4YjI7RG5/5K89VTh2FwEZIXvZpae2fo96TwC2G9cqv4IYUSq6uu/8
+	 2cNxYl2XKLm3bPkvXLZvmijRbXNDvCGQNuMT30c9B22Db+Z2rHoJ/3K832it7EIliN
+	 FyWevyPsTtwbPVvfizX/jOW+mhLulA/TCLdb9nphg2UE0CUh+fF0PM3zk5tKG7yUyR
+	 qI9XaLd2FSW/ixzIMZSa8MpS+1ZLvgbbclj0np86xLGo/3NxA4IfHYpsI/sEnw8X/R
+	 zyt4eVzQ80oxC6wiEMB+qoUH6qCPhmzXUnVUAG/I2whiWBsFxK1uVOYufR0C+vXaM0
+	 /RROMKktFYGJg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Kunwu Chan <chentao@kylinos.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	minipli@grsecurity.net,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 01/23] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
+Date: Fri, 29 Mar 2024 08:49:34 -0400
+Message-ID: <20240329125009.3093845-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240317005400.974432-1-alex.vinarskis@gmail.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.273
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 17, 2024 at 01:53:58AM +0100, Aleksandrs Vinarskis wrote:
-> This is a backport of recently upstreamed fix for XPS 9530 sound issue.
-> Both apply cleanly to 6.8.y, and could also be cherry-picked from upstream.
-> 
-> Ideally should be applied to all branches where upstream commit
-> d110858a6925827609d11db8513d76750483ec06 exists (6.8.y) or was backported
-> (6.7.y) as it adds initial yet incomplete support for this laptop. Patches
-> for 6.7.y require modification, will be submitted separately.
-> 
-> Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-All now queued up, thanks.
+[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
 
-greg k-h
+While input core can work with input->phys set to NULL userspace might
+depend on it, so better fail probing if allocation fails. The system must
+be in a pretty bad shape for it to happen anyway.
+
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/input/rmi4/rmi_driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index 258d5fe3d395c..aa32371f04af6 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
+ 		}
+ 		rmi_driver_set_input_params(rmi_dev, data->input);
+ 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
+-						"%s/input0", dev_name(dev));
++						   "%s/input0", dev_name(dev));
++		if (!data->input->phys) {
++			retval = -ENOMEM;
++			goto err;
++		}
+ 	}
+ 
+ 	retval = rmi_init_functions(data);
+-- 
+2.43.0
+
 
