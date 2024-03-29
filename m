@@ -1,115 +1,137 @@
-Return-Path: <stable+bounces-33739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F568892121
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 17:02:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B848920B7
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC197B34C67
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0D491C2794A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B080F3FE4C;
-	Fri, 29 Mar 2024 15:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IShpZdoJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541E51EEE4;
+	Fri, 29 Mar 2024 15:43:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5CF4C63F;
-	Fri, 29 Mar 2024 15:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2851C0DF7;
+	Fri, 29 Mar 2024 15:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711725949; cv=none; b=m2JbW6gGmxK3p87YkkdLDhtrSVbKo36RyLyXciOQK3AKFwSQRXgE6btIBfw9fnF30+LQxY5SuOsJStfQhUuvpGJH2V0I1pdrphAr9f82zEDXTTfsdqzKdzY1vVZsVUuTaERtuUR3dUOPFCLTWpTlN4XYyibmsaqMgphc9rkpIew=
+	t=1711726996; cv=none; b=sLwrxY9g1KBg2KGGKOmBUVhN0dRQX9weqTwHxzdf2ruVyPmhbRlm8onPZTBrN6Nud8kffLy8+WCqiSw8nCleox3S0J7BgWlKkjr6Gk9xaKEGTnRYmcWBgOd7NjnFkCXBd7SOkvrw+IOZo1roeFioTQA/tbCcGjHR4RlEmPKsnNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711725949; c=relaxed/simple;
-	bh=Osf1Z2q3n8yY4dhROiRx8gO9B7djKPb1ZMYZa1eyIWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bm33Q4SUwDc5tASEVehREwuxRoKTkXwAumYUw1SY0bEZ9muWIJQhM+PpPLx9MNCltMOc8hq4LUyL4gOWsd7EjI7evpqKlV5yEPi08CjhrVobq0FIOKICHX5L3Cg70CVvJIfhF0teIrnLzATxOG0Nd0xcDyYw6Ra/XZhX4Xs9Foc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IShpZdoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37CFC433C7;
-	Fri, 29 Mar 2024 15:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711725949;
-	bh=Osf1Z2q3n8yY4dhROiRx8gO9B7djKPb1ZMYZa1eyIWE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IShpZdoJ8MbvXVXROFDDBAFKTqasTyW7bdupmBM+DziqzyMhLLN6y2ol20Ad2KG8v
-	 M0ss/Rm77UTSFimcoG8WZBHSlqp1eahc/PUFbHLQh0RY9df+vjCHdfIzHuq92xfw42
-	 fiBoUSvpFJ/04vbGEUsv++BJWyex79DorMvuJOYL0/qjV+dgN97TxN1sF0lO8cydLs
-	 NPCNOcc59rtrXTr/uFUk382lt56MMTLmgc7Jl8D9VeoZaWelHa5zihl4PzxAlbMWQ1
-	 NH6+oIn3jMMSYAAdz8C3ZP9FQlPZd6EVxsF1vnqrX7fuzfsWZJK/3H8H83gkTBrs5Q
-	 P7Rniy03qgV1Q==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d476d7972aso30353991fa.1;
-        Fri, 29 Mar 2024 08:25:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXLw3+RJmjCF7Z/+88fshC+5YW6iPrB2Iddj6P0ZGIwt4dxM0JmvchAjuzEha2p9mOHtVsaq84wOaOuvvFVBzNeqEjjMWusC8gi70hH2dqcY2xCBZ+Wyb4/wSNn887gGojyrqP4
-X-Gm-Message-State: AOJu0YzxGBe0eZMfLVI6QjZNMs3XwHoE5994a7JZcPked7kJrLAqCyV7
-	YOIilHBI6LK3gn38d9C1b0hJxvgT9Ms7BOXPW4N+z3eUu1+8PSlo6csnZ5pDtCYN9sYLFJtVBiz
-	R90bq9tpwHJX+eviocaRKP04YRqo=
-X-Google-Smtp-Source: AGHT+IHGFQreuRdKf10WxAH8Qs+v5kOr5+Flsdu3WUfPItjOx0uNzWjfZ7HwxQf10gDfw4XYZGENtUoFrnHla+hOqlw=
-X-Received: by 2002:a2e:aa14:0:b0:2d4:68ef:c711 with SMTP id
- bf20-20020a2eaa14000000b002d468efc711mr1689753ljb.25.1711725947373; Fri, 29
- Mar 2024 08:25:47 -0700 (PDT)
+	s=arc-20240116; t=1711726996; c=relaxed/simple;
+	bh=8D3dJ6svTFv3Xw6tQT1vQDH8IAiOheAKB2leJyMX3hQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dfg+xh6oSOL9Kkd395WsFb05PXbCbX4I2bBDCSj5KAgxVKwgHsoVaqyH1GF7tzqrz9XqlxmdPw5KREUAWkstNs2weASRdkKajOY5WflS1NUCtwH8zyeaP2e1rQ9vUVIVFlSoffw/Nx0hUpBlecWAJvGPI/H4DnS5A/PIacs22tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4V5km40SrJz9xqxL;
+	Fri, 29 Mar 2024 23:27:00 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id D5ED41402CD;
+	Fri, 29 Mar 2024 23:43:08 +0800 (CST)
+Received: from [10.48.128.185] (unknown [10.48.128.185])
+	by APP2 (Coremail) with SMTP id GxC2BwDXECV94QZmAQ8uBQ--.25296S2;
+	Fri, 29 Mar 2024 16:43:07 +0100 (CET)
+Message-ID: <302ad45e-aff9-40e8-97de-121353e73384@huaweicloud.com>
+Date: Fri, 29 Mar 2024 16:42:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327120810.2825990-1-sashal@kernel.org> <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
- <2024032916-statue-skyrocket-af59@gregkh>
-In-Reply-To: <2024032916-statue-skyrocket-af59@gregkh>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 29 Mar 2024 17:25:35 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEtH5NdRL2Ya3+h0wJqsLwQudNmfxepsw5x4hcS2K1T-Q@mail.gmail.com>
-Message-ID: <CAMj1kXEtH5NdRL2Ya3+h0wJqsLwQudNmfxepsw5x4hcS2K1T-Q@mail.gmail.com>
-Subject: Re: FAILED: Patch "x86/sev: Fix position dependent variable
- references in startup code" failed to apply to 6.8-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
-	Kevin Loughlin <kevinloughlin@google.com>, Borislav Petkov <bp@alien8.de>, stable@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] security: Handle dentries without inode in
+ security_path_post_mknod()
+To: Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
+ eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com
+Cc: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-cifs@vger.kernel.org, viro@zeniv.linux.org.uk, pc@manguebit.com,
+ christian@brauner.io, Roberto Sassu <roberto.sassu@huawei.com>,
+ stable@vger.kernel.org, Steve French <smfrench@gmail.com>
+References: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+ <7b8162281b355b16e8dbdb93297a9a1cfb5bb6da.camel@linux.ibm.com>
+Content-Language: en-US
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+In-Reply-To: <7b8162281b355b16e8dbdb93297a9a1cfb5bb6da.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:GxC2BwDXECV94QZmAQ8uBQ--.25296S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw43Xr4ftF1DKFW3ZryfXrb_yoW8Cr4DpF
+	W8u3WDt3s5Jry8Gr4SyFy7Aa4Ikay8XF45G3Z5JrW3Za43uF1YgrWSvayY9rWDtr42gry2
+	yw42qF9IqayDZFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
+	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
+	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+	AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+	6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFDGOUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgARBF1jj5fusAAAsv
 
-On Fri, 29 Mar 2024 at 13:56, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Mar 27, 2024 at 04:39:20PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 27 Mar 2024 at 14:08, Sasha Levin <sashal@kernel.org> wrote:
-> > >
-> > > The patch below does not apply to the 6.8-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git commit
-> > > id to <stable@vger.kernel.org>.
-> > >
-> >
-> > I will send the v6.8 backport separately right away.
-> >
-> > v6.7 and v6.6 can take this patch unmodified but will need to take
-> > 29956748339aa8757a7e2f927a8679dd08f24bb6 as a prerequisite first.
->
-> Now done, thanks.
->
-> > (v6.8 no longer applies because of the way Linus fixed up a merge
-> > conflict in the 6.8 cycle)
->
-> I fixed this up by hand, hopefully got it right :)
->
+On 3/29/2024 4:05 PM, Mimi Zohar wrote:
+> On Fri, 2024-03-29 at 11:56 +0100, Roberto Sassu wrote:
+>> From: Roberto Sassu <roberto.sassu@huawei.com>
+>>
+>> Commit 08abce60d63fi ("security: Introduce path_post_mknod hook")
+>> introduced security_path_post_mknod(), to replace the IMA-specific call to
+>> ima_post_path_mknod().
+>>
+>> For symmetry with security_path_mknod(), security_path_post_mknod() is
+>> called after a successful mknod operation, for any file type, rather than
+>> only for regular files at the time there was the IMA call.
+>>
+>> However, as reported by VFS maintainers, successful mknod operation does
+>> not mean that the dentry always has an inode attached to it (for example,
+>> not for FIFOs on a SAMBA mount).
+>>
+>> If that condition happens, the kernel crashes when
+>> security_path_post_mknod() attempts to verify if the inode associated to
+>> the dentry is private.
+>>
+>> Add an extra check to first verify if there is an inode attached to the
+>> dentry, before checking if the inode is private. Also add the same check to
+>> the current users of the path_post_mknod hook, ima_post_path_mknod() and
+>> evm_post_path_mknod().
+>>
+>> Finally, use the proper helper, d_backing_inode(), to retrieve the inode
+>> from the dentry in ima_post_path_mknod().
+>>
+>> Cc: stable@vger.kernel.org # 6.8.x
+> 
+> Huh?  It doesn't need to be backported.
 
-Thanks - I will double check once the patches are sent out.
+Ehm, sorry. To be removed.
 
-> > v6.1 and older need separate backports so i will send those out later.
->
-> Wonderful, thanks!
->
+>> Reported-by: Steve French <smfrench@gmail.com>
+>> Closes:
+>> https://lore.kernel.org/linux-kernel/CAH2r5msAVzxCUHHG8VKrMPUKQHmBpE6K9_vjhgDa1uAvwx4ppw@mail.gmail.com/
+>> Fixes: 08abce60d63fi ("security: Introduce path_post_mknod hook")
+> 
+> -> 08abce60d63f
 
-I sent this out on Wednesday but I don't see them in lore. Please let
-me know if I should resend these.
+Ok.
 
-[PATCH -stable-6.1 1/4] x86/coco: Export cc_vendor
-[PATCH -stable-6.1 2/4] x86/coco: Get rid of accessor functions
-[PATCH -stable-6.1 3/4] x86/Kconfig: Remove
-CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
-[PATCH -stable-6.1 4/4] x86/sev: Fix position dependent variable
-references in startup code
+Thanks
+
+Roberto
+
+>> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> Acked-by: Mimi Zohar <zohar@linux.ibm.com>
+> 
+
 
