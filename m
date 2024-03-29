@@ -1,102 +1,76 @@
-Return-Path: <stable+bounces-33723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D13891F49
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:02:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCFA891F4A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D85A81C2482E
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99850288F2E
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A4713EFFB;
-	Fri, 29 Mar 2024 13:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EB785C43;
+	Fri, 29 Mar 2024 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN7/YxB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYtFZbqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2B9657B5;
-	Fri, 29 Mar 2024 13:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A376A032
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711718013; cv=none; b=iHgLs77MhmslDEWdbKMVSlkWFq2/w11GMCVVt9Luw5ln8RaClP5EshuQs39bma53UZ64FhhyzDE9R6Hg+54GOmi4Hro5RSEhU+ZzMlOdyG4o8z0z8noYUCnCeEWUWFLavp+kfD6++AwzxptAooG1/i8xtNa5T9UCU+JsLITzIaM=
+	t=1711718115; cv=none; b=CSRvc+qyqHFRjdyrPRcO5fVf3qUmYg9HuL9AGfldRZGpowfwuHInyXHM2deMd4f6px/6qP1G30aQvGW6jxI3yHNxYxgg8Wu7DSXoI1vD7yLjL2JQLz9d+JXkoyzlBojW0gxj1b6eK0WBEpvcPibbYj4eXFEWQsyRsmA9y4lVcLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711718013; c=relaxed/simple;
-	bh=wvQ5mwBkCgiKnf6K6NYjSedf2tsI0v0ruLxmsaaV0SA=;
+	s=arc-20240116; t=1711718115; c=relaxed/simple;
+	bh=SXxQmWkMYtTeEu0wM0ZZLc4fskX3b9plcxCm0Lm+APs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UN7VlW0bJ1QYM980xgunN3a+A/CtHmqqKwIHf0JjNzX49MvMtzjfLfck5m9c/Y8gw7NrHcHP/MrWtyOl8sOz6CF1bi7uB3JNMwvVxQmh1n/jWnFCkrmrpX66KFuQsMXcCI+MSnUDblYqwgbzi4v9aqjFKpgEoDw9X5X1fDkGqow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qN7/YxB1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1663C433F1;
-	Fri, 29 Mar 2024 13:13:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hn/UYhqz6X47L+cwEURPEmrvAn6FDRy3lEw4ykzibDUuOQnc+ZYtK4FxY8OBHFwaEGV5tBUUekrlnkYntxmCUB8SkJW5dZ8MNwF18x5R82oSl/LyIYdo9xByZEKdTMIvRh2BpkQsnV6Ct4kcdBik5OvfTY/w0QGue0H3j04TR30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYtFZbqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C089C433F1;
+	Fri, 29 Mar 2024 13:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711718012;
-	bh=wvQ5mwBkCgiKnf6K6NYjSedf2tsI0v0ruLxmsaaV0SA=;
+	s=korg; t=1711718115;
+	bh=SXxQmWkMYtTeEu0wM0ZZLc4fskX3b9plcxCm0Lm+APs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qN7/YxB1lUTVN1x+k+4e5a4d3gWSWHQH0dCMO29UsUlKwc1QgiChJU+nmBFZ9WzYA
-	 SVrIUTc5WmCBOhUyo6uGter3PDS1x2SzfvFwouEsiulHyMZHx1zq5LgO23LOGErESf
-	 JvyWhGdGwgPQl2FlL7jSmhaZovkuX3ZRjjJxUSGU=
-Date: Fri, 29 Mar 2024 14:13:29 +0100
+	b=zYtFZbqY4t5iRlyzs3H+Md7bJ44GInJXzapKKou50je2lT7VuxE8Q9Yexn6SmDF0T
+	 sJS2WY6XucFfHroR7JHH0YcwAnlaG+YxzNKQrCx1Oh2GX7oYaKA3Ir9qxUTikSRwYA
+	 2D55JLpM/R+JPBkjgKsvWVATtSQqAs6R7jrZpJFg=
+Date: Fri, 29 Mar 2024 14:15:12 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Tim Schumacher <timschumi@gmx.de>
-Cc: stable@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: Re: [PATCH 5.15-] efivars: Request at most 512 bytes for variable
- names
-Message-ID: <2024032918-amperage-cornstalk-a77d@gregkh>
-References: <20240317023326.285140-1-timschumi@gmx.de>
+To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: stable@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: Re: v6.7+ stable backport request for drm/i915
+Message-ID: <2024032904-reformed-pupil-7519@gregkh>
+References: <ZfnpxcS2dXkzlExH@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240317023326.285140-1-timschumi@gmx.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZfnpxcS2dXkzlExH@intel.com>
 
-On Sun, Mar 17, 2024 at 03:33:21AM +0100, Tim Schumacher wrote:
-> commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+On Tue, Mar 19, 2024 at 09:38:45PM +0200, Ville Syrjälä wrote:
+> Hi stable team,
 > 
-> Work around a quirk in a few old (2011-ish) UEFI implementations, where
-> a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-> will always return EFI_INVALID_PARAMETER.
+> Please backport the following the commits to 6.7/6.8 to fix
+> some i915 type-c/thunderbolt PLL issues:
+> commit 92b47c3b8b24 ("drm/i915: Replace a memset() with zero initialization")
+> commit ba407525f824 ("drm/i915: Try to preserve the current shared_dpll for fastset on type-c ports")
+> commit d283ee5662c6 ("drm/i915: Include the PLL name in the debug messages")
+> commit 33c7760226c7 ("drm/i915: Suppress old PLL pipe_mask checks for MG/TC/TBT PLLs")
 > 
-> There is some lore around EFI variable names being up to 1024 bytes in
-> size, but this has no basis in the UEFI specification, and the upper
-> bounds are typically platform specific, and apply to the entire variable
-> (name plus payload).
-> 
-> Given that Linux does not permit creating files with names longer than
-> NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
-> reasonable limit.
-> 
-> Cc: <stable@vger.kernel.org> # 6.1+
-> Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> [timschumi@gmx.de: adjusted diff for changed context and code move]
-> Signed-off-by: Tim Schumacher <timschumi@gmx.de>
-> ---
-> Please apply this patch to stable kernel 5.15, 5.10, 5.4, and 4.19
-> respectively. Kernel 6.1 and upwards were already handled via CC,
-> 5.15 and below required a separate patch due to a slight refactor of
-> surrounding code in bbc6d2c6ef22 ("efi: vars: Switch to new wrapper
-> layer") and a subsequent code move in 2d82e6227ea1 ("efi: vars: Move
-> efivar caching layer into efivarfs").
-> 
-> Please note that the upper Signed-off-by tags are remnants from the
-> original patch, I documented my modifications below them and added
-> another sign-off. As far as I was able to gather, this is the expected
-> format for diverged stable patches.
-> 
-> I'm not sure on the specifics of manual stable backports, so let me
-> know in case anything doesn't follow the process. The linux-efi team
-> and list are on CC both for documentation/review purposes and in case
-> a new sign-off/ack of theirs is required.
+> 6.7 will need two additional dependencies:
+> commit f215038f4133 ("drm/i915: Use named initializers for DPLL info")
+> commit 58046e6cf811 ("drm/i915: Stop printing pipe name as hex")
 
-Now queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
 
