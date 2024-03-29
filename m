@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-33725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9AE8920BE
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:45:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69180891F69
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00F01B2CAEC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 947E71C2862A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD4C14036A;
-	Fri, 29 Mar 2024 13:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949851428E4;
+	Fri, 29 Mar 2024 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAWNTgFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFKYRxMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7F885C65;
-	Fri, 29 Mar 2024 13:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4396612A154;
+	Fri, 29 Mar 2024 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711718163; cv=none; b=Q0X35WlSBWwjt1BR1DxJ+C7+r3NxR6jFXIhFgqBg7o7PwaNiUAiZEf8v7zSHG7FpXMuFjE625cxYfSDOq1jH7WFkrxxVepqKaLOs5/dmoOT7hhd1AjZjtsJZVkGD6YDvDELPJPQo9a0L0nBBFq6en2dnvr6GrGEUEHtucXO+HA8=
+	t=1711718639; cv=none; b=RHdQxU9eSo6SPyg/8r15dzUnUPD9S93RfiqdIijXQjEy8pGMzz1tfVeWEVcu09GUv5ECjNtEufOLkkhQ53dxO9jajsI7rXNn6mYmaok+E/DaMxqaXcCTXisZL/lfu1eRbUsLzUeSu7ofUNb4Qp0ojc0AYVwJGXaD47K/+7AOstc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711718163; c=relaxed/simple;
-	bh=Q8aiCQiDocO1TSosjADdGI3WzH++KgCgbUKBRybc3zQ=;
+	s=arc-20240116; t=1711718639; c=relaxed/simple;
+	bh=bQx/BXOUSe4TNoDtXR2BXWY0aFMLcADXigMMWJW/L3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dpbTp7Q46QPNl02yS1eG3zFbUUQBXXVDyBkbGVlfbO3qDj1ZVgwNb/JnYac9YIIeiufju8CacZxy4o0zpOCWGbCoC48ZEb1HM1Bz8fh5qKWcABRlgxIPU3gTKQ6VCrGPWnYR2gsni9Ew5DM1u84AnziZjtMVmsPfD1U00vKlbBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAWNTgFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033B5C433C7;
-	Fri, 29 Mar 2024 13:16:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pck9qzt8qi8viidWtHlFAoWLB82JaYLff0bQSKiCMOyejoWJp+rZWc8RXd4i3mB0HINt0NzyYCmkceq4HUDYNXfVnXUT1aVkkD0UmBi9wXnfiELrLc/rfy84tiV5n8cnGg0X4HIwYISEGl7RhpMTMyzI6ePdwH0ZBLQ7UJND/nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFKYRxMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D88C433F1;
+	Fri, 29 Mar 2024 13:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711718163;
-	bh=Q8aiCQiDocO1TSosjADdGI3WzH++KgCgbUKBRybc3zQ=;
+	s=korg; t=1711718639;
+	bh=bQx/BXOUSe4TNoDtXR2BXWY0aFMLcADXigMMWJW/L3A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bAWNTgFN+7+LR6ZouPr68Zdyby/lctHsRkN5y1ha+h9R1NOPgv8IvAHR80CtYh0tt
-	 0oLaBZpgOVF6C0Gu8b4fKc3FWi0r2uKPPdFyesQFYuighSumwe6217WVJcL0OclJD7
-	 Eq7aG/fqCQJCoFbm4Nz5cTu0CTz7uiYRSL6KgJMU=
-Date: Fri, 29 Mar 2024 14:16:00 +0100
+	b=rFKYRxMFWgbTseJJMATejdwMQAFlQv/Gg01agjZQWEoWMUuHtWmzii0H62Wzpj5KT
+	 wuktrBJ0GoAHlP5XS1yvLuqjYvss3CWMTe1AnvlI8Hc9WtLczeN0VHc6JwfzhxEcHJ
+	 IW/M9vWYf3kCbr3JTTZZT+rhIEPz01karffLPpVI=
+Date: Fri, 29 Mar 2024 14:23:39 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH] blk-mq: release scheduler resource when request completes
-Message-ID: <2024032952-nearly-glorified-c0f8@gregkh>
-References: <20240322174014.373323-1-bvanassche@acm.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: FAILED: Patch "powerpc: xor_vmx: Add '-mhard-float' to CFLAGS"
+ failed to apply to 5.10-stable tree
+Message-ID: <2024032925-tapering-correct-c88c@gregkh>
+References: <20240327122007.2835763-1-sashal@kernel.org>
+ <20240327151613.GA1153323@dev-arch.thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,61 +58,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240322174014.373323-1-bvanassche@acm.org>
+In-Reply-To: <20240327151613.GA1153323@dev-arch.thelio-3990X>
 
-On Fri, Mar 22, 2024 at 10:40:14AM -0700, Bart Van Assche wrote:
-> From: Chengming Zhou <zhouchengming@bytedance.com>
+On Wed, Mar 27, 2024 at 08:16:13AM -0700, Nathan Chancellor wrote:
+> On Wed, Mar 27, 2024 at 08:20:07AM -0400, Sasha Levin wrote:
+> > The patch below does not apply to the 5.10-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> ...
+> > ------------------ original commit in Linus's tree ------------------
+> > 
+> > From 35f20786c481d5ced9283ff42de5c69b65e5ed13 Mon Sep 17 00:00:00 2001
+> > From: Nathan Chancellor <nathan@kernel.org>
+> > Date: Sat, 27 Jan 2024 11:07:43 -0700
+> > Subject: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
 > 
-> commit e5c0ca13659e9d18f53368d651ed7e6e433ec1cf upstream.
-> 
-> Chuck reported [1] an IO hang problem on NFS exports that reside on SATA
-> devices and bisected to commit 615939a2ae73 ("blk-mq: defer to the normal
-> submission path for post-flush requests").
-> 
-> We analysed the IO hang problem, found there are two postflush requests
-> waiting for each other.
-> 
-> The first postflush request completed the REQ_FSEQ_DATA sequence, so go to
-> the REQ_FSEQ_POSTFLUSH sequence and added in the flush pending list, but
-> failed to blk_kick_flush() because of the second postflush request which
-> is inflight waiting in scheduler queue.
-> 
-> The second postflush waiting in scheduler queue can't be dispatched because
-> the first postflush hasn't released scheduler resource even though it has
-> completed by itself.
-> 
-> Fix it by releasing scheduler resource when the first postflush request
-> completed, so the second postflush can be dispatched and completed, then
-> make blk_kick_flush() succeed.
-> 
-> While at it, remove the check for e->ops.finish_request, as all
-> schedulers set that. Reaffirm this requirement by adding a WARN_ON_ONCE()
-> at scheduler registration time, just like we do for insert_requests and
-> dispatch_request.
-> 
-> [1] https://lore.kernel.org/all/7A57C7AE-A51A-4254-888B-FE15CA21F9E9@oracle.com/
-> 
-> Link: https://lore.kernel.org/linux-block/20230819031206.2744005-1-chengming.zhou@linux.dev/
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202308172100.8ce4b853-oliver.sang@intel.com
-> Fixes: 615939a2ae73 ("blk-mq: defer to the normal submission path for post-flush requests")
-> Reported-by: Chuck Lever <chuck.lever@oracle.com>
-> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-> Tested-by: Chuck Lever <chuck.lever@oracle.com>
-> Link: https://lore.kernel.org/r/20230813152325.3017343-1-chengming.zhou@linux.dev
-> [axboe: folded in incremental fix and added tags]
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> [bvanassche: changed RQF_USE_SCHED into RQF_ELVPRIV; restored the
-> finish_request pointer check before calling finish_request and removed
-> the new warning from the elevator code. This patch fixes an I/O hang
-> when submitting a REQ_FUA request to a request queue for a zoned block
-> device for which FUA has been disabled (QUEUE_FLAG_FUA is not set).]
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->  block/blk-mq.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
+> I have attached a backport that will work for 5.15 and earlier. I think
+> you worked around this conflict in 5.15 by taking 04e85bbf71c9 but I am
+> not sure that is a smart idea. I think it might just be better to drop
+> that dependency and apply this version in 5.15.
 
-Now queued up, thanks.
+I'll go drop it and take this version, thanks!
 
 greg k-h
 
