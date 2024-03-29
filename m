@@ -1,104 +1,115 @@
-Return-Path: <stable+bounces-33738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046258920AB
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:41:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F568892121
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 17:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E46BAB39085
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:24:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC197B34C67
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AAE386;
-	Fri, 29 Mar 2024 15:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B080F3FE4C;
+	Fri, 29 Mar 2024 15:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h6zU8Yzq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IShpZdoJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB1052F6F
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 15:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5CF4C63F;
+	Fri, 29 Mar 2024 15:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711725671; cv=none; b=tfTksKbHlKkNoUZ5q36wEG/ccCH6vUTsZVOs/3EKMK5XEfZF3OxycgMmJBrGG21/yJ3xkprJikGOb1NE4xvsQyT272LqiNgXY7lvrmXt2yYDOx7/rR11FjRp66QHpB7lvqmaVUIeP4dj2QNxoRl6BmD6ruHq5B0cmEWC6grRAss=
+	t=1711725949; cv=none; b=m2JbW6gGmxK3p87YkkdLDhtrSVbKo36RyLyXciOQK3AKFwSQRXgE6btIBfw9fnF30+LQxY5SuOsJStfQhUuvpGJH2V0I1pdrphAr9f82zEDXTTfsdqzKdzY1vVZsVUuTaERtuUR3dUOPFCLTWpTlN4XYyibmsaqMgphc9rkpIew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711725671; c=relaxed/simple;
-	bh=2YD/CMAbrUGVAP0HPybXV7ApTqLDwTkW8f0hGkdl0h0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=X+Bgij4X5SB+EJ0OAZNPVxbSZicj4zKvVCw+ZkLDUdNOnpju//riVB4n2DZ1BlllmsTClsoSoBdlVx+J2UeRyvMPDoGjXg6mL88Lj3OSwywHZqq+F08pC2jOeaz1fFM1cYWnt36Ah7myP6s+3BSB5RVhk1o9gVCV79mF1zvNxwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h6zU8Yzq; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a4e40fad4fdso34404366b.2
-        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 08:21:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711725669; x=1712330469; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:content-language:to
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b4ZNcLkhCoetnyeaUQXMj5X/oh8psgAL474DwX1Jy6k=;
-        b=h6zU8YzqszsBvGRrNuVvc5kIZu8jJazzsVRJq/nCe8KvLnZSlRgmrEhN1fXhNV2N7p
-         A6c0J2wRwFZKncZ93saVAY932OGjdxQdSlWlO223cwif8ArD6haC0hQRMC9OAhb4UFxJ
-         ZbHkbtGwdhDV4J76WUAjZqiw8+7K2vEdcGsLp61zlhuPWG0LY61duBybDvEan7n7EnJ6
-         3MOoqUKburlZ2aExBWZoincMUb6fn0JC/nQvLrz41mCvL7RXcOhd9FyJ4KxQJz2sWkVe
-         yG+47vz9Ldhl1B1SlEKLUnF7QKyPc7fIu0HvvbVoUfuuUOx1dNDXTYmzgevW7rNIvBzT
-         WTOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711725669; x=1712330469;
-        h=content-transfer-encoding:subject:from:cc:content-language:to
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b4ZNcLkhCoetnyeaUQXMj5X/oh8psgAL474DwX1Jy6k=;
-        b=hXYshltenHVS1YMWlSfH6aY/Z6MPocFRKwDRUrXKv4gbcun5kR5XvtYh3QYT/VTTBy
-         luWuwnlUkgmKJ+HQor2XQEUA25m2fjaqxV/NLhdmDNDKDRx+AYqUbGi3i9wUwfgr40pr
-         RB+2J6f54OOVCmcpK3qBXcAQdqFaknmcDiJZr3wqLdBLFvOn0VSPZYjZmPrUnfON9Dwz
-         cUZFEecdD2S3ctSWFM5s9vmeBhNqM8/H8ORZxqQHxA3ALIwKgiUpfcQ2dySk6ICJKFuh
-         Gth0kU4UmDQBvzdywX7S2wXo/kz8B6Ky1xoI4HnCtwySrr6HWNylxaDF4pHMvb3IH0rK
-         cv0w==
-X-Gm-Message-State: AOJu0Yw9HwXc9Fc3ih3/TLzre0pLBv5IxgxUKApnfVEOGUTlKmb3Sp/E
-	Miv1focRfBs9d2CaowWJ9skxGBMVJMR6HeDHMLE/pE50VlbbgT980afFMtU=
-X-Google-Smtp-Source: AGHT+IFK6nWKmBOXCVlZeadYZrCqYsuM0BLFwEpD9HVvqOtfWI8oK3w5X3EUQMV4pmqDTVYwkeG3xg==
-X-Received: by 2002:a17:906:3454:b0:a47:4fed:514a with SMTP id d20-20020a170906345400b00a474fed514amr1644434ejb.52.1711725668528;
-        Fri, 29 Mar 2024 08:21:08 -0700 (PDT)
-Received: from [192.168.178.150] (i58039.upc-i.chello.nl. [62.195.58.39])
-        by smtp.googlemail.com with ESMTPSA id q16-20020a1709060e5000b00a47531764fdsm2032012eji.65.2024.03.29.08.21.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Mar 2024 08:21:08 -0700 (PDT)
-Message-ID: <1ee68691-9eb4-404a-adb4-fdaaf12c905d@gmail.com>
-Date: Fri, 29 Mar 2024 16:21:07 +0100
+	s=arc-20240116; t=1711725949; c=relaxed/simple;
+	bh=Osf1Z2q3n8yY4dhROiRx8gO9B7djKPb1ZMYZa1eyIWE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bm33Q4SUwDc5tASEVehREwuxRoKTkXwAumYUw1SY0bEZ9muWIJQhM+PpPLx9MNCltMOc8hq4LUyL4gOWsd7EjI7evpqKlV5yEPi08CjhrVobq0FIOKICHX5L3Cg70CVvJIfhF0teIrnLzATxOG0Nd0xcDyYw6Ra/XZhX4Xs9Foc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IShpZdoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37CFC433C7;
+	Fri, 29 Mar 2024 15:25:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711725949;
+	bh=Osf1Z2q3n8yY4dhROiRx8gO9B7djKPb1ZMYZa1eyIWE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IShpZdoJ8MbvXVXROFDDBAFKTqasTyW7bdupmBM+DziqzyMhLLN6y2ol20Ad2KG8v
+	 M0ss/Rm77UTSFimcoG8WZBHSlqp1eahc/PUFbHLQh0RY9df+vjCHdfIzHuq92xfw42
+	 fiBoUSvpFJ/04vbGEUsv++BJWyex79DorMvuJOYL0/qjV+dgN97TxN1sF0lO8cydLs
+	 NPCNOcc59rtrXTr/uFUk382lt56MMTLmgc7Jl8D9VeoZaWelHa5zihl4PzxAlbMWQ1
+	 NH6+oIn3jMMSYAAdz8C3ZP9FQlPZd6EVxsF1vnqrX7fuzfsWZJK/3H8H83gkTBrs5Q
+	 P7Rniy03qgV1Q==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d476d7972aso30353991fa.1;
+        Fri, 29 Mar 2024 08:25:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXLw3+RJmjCF7Z/+88fshC+5YW6iPrB2Iddj6P0ZGIwt4dxM0JmvchAjuzEha2p9mOHtVsaq84wOaOuvvFVBzNeqEjjMWusC8gi70hH2dqcY2xCBZ+Wyb4/wSNn887gGojyrqP4
+X-Gm-Message-State: AOJu0YzxGBe0eZMfLVI6QjZNMs3XwHoE5994a7JZcPked7kJrLAqCyV7
+	YOIilHBI6LK3gn38d9C1b0hJxvgT9Ms7BOXPW4N+z3eUu1+8PSlo6csnZ5pDtCYN9sYLFJtVBiz
+	R90bq9tpwHJX+eviocaRKP04YRqo=
+X-Google-Smtp-Source: AGHT+IHGFQreuRdKf10WxAH8Qs+v5kOr5+Flsdu3WUfPItjOx0uNzWjfZ7HwxQf10gDfw4XYZGENtUoFrnHla+hOqlw=
+X-Received: by 2002:a2e:aa14:0:b0:2d4:68ef:c711 with SMTP id
+ bf20-20020a2eaa14000000b002d468efc711mr1689753ljb.25.1711725947373; Fri, 29
+ Mar 2024 08:25:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: stable@vger.kernel.org
-Content-Language: en-US
-Cc: regressions@lists.linux.dev
-From: =?UTF-8?Q?L=C3=A9o_COLISSON?= <leo.colisson@gmail.com>
-Subject: Regression : Latitude 5500 do not always go to true sleep mode
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240327120810.2825990-1-sashal@kernel.org> <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
+ <2024032916-statue-skyrocket-af59@gregkh>
+In-Reply-To: <2024032916-statue-skyrocket-af59@gregkh>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 29 Mar 2024 17:25:35 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEtH5NdRL2Ya3+h0wJqsLwQudNmfxepsw5x4hcS2K1T-Q@mail.gmail.com>
+Message-ID: <CAMj1kXEtH5NdRL2Ya3+h0wJqsLwQudNmfxepsw5x4hcS2K1T-Q@mail.gmail.com>
+Subject: Re: FAILED: Patch "x86/sev: Fix position dependent variable
+ references in startup code" failed to apply to 6.8-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
+	Kevin Loughlin <kevinloughlin@google.com>, Borislav Petkov <bp@alien8.de>, stable@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Dear Linux maintainers,
+On Fri, 29 Mar 2024 at 13:56, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Mar 27, 2024 at 04:39:20PM +0200, Ard Biesheuvel wrote:
+> > On Wed, 27 Mar 2024 at 14:08, Sasha Levin <sashal@kernel.org> wrote:
+> > >
+> > > The patch below does not apply to the 6.8-stable tree.
+> > > If someone wants it applied there, or to any other stable or longterm
+> > > tree, then please email the backport, including the original git commit
+> > > id to <stable@vger.kernel.org>.
+> > >
+> >
+> > I will send the v6.8 backport separately right away.
+> >
+> > v6.7 and v6.6 can take this patch unmodified but will need to take
+> > 29956748339aa8757a7e2f927a8679dd08f24bb6 as a prerequisite first.
+>
+> Now done, thanks.
+>
+> > (v6.8 no longer applies because of the way Linus fixed up a merge
+> > conflict in the 6.8 cycle)
+>
+> I fixed this up by hand, hopefully got it right :)
+>
 
-Since I upgraded my system (from NixOs release 
-2caf4ef5005ecc68141ecb4aac271079f7371c44, running linux 5.15.90, to 
-b8697e57f10292a6165a20f03d2f42920dfaf973, running linux 6.6.19), my 
-system started to experience a weird behavior : when closing the lid, 
-the system does not always go to a true sleep mode : when I restart it, 
-the battery is drained. Not sure what I can try here.
+Thanks - I will double check once the patches are sent out.
 
-You can find more information on my tries here, with some journalctl logs :
+> > v6.1 and older need separate backports so i will send those out later.
+>
+> Wonderful, thanks!
+>
 
-- https://github.com/NixOS/nixpkgs/issues/299464
+I sent this out on Wednesday but I don't see them in lore. Please let
+me know if I should resend these.
 
-- 
-https://discourse.nixos.org/t/since-upgrade-my-laptop-does-not-go-to-sleep-when-closing-the-lid/42243/2
-
-Cheers,
-Léo
-
+[PATCH -stable-6.1 1/4] x86/coco: Export cc_vendor
+[PATCH -stable-6.1 2/4] x86/coco: Get rid of accessor functions
+[PATCH -stable-6.1 3/4] x86/Kconfig: Remove
+CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+[PATCH -stable-6.1 4/4] x86/sev: Fix position dependent variable
+references in startup code
 
