@@ -1,130 +1,140 @@
-Return-Path: <stable+bounces-33754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7D68923E3
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 20:12:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11978923F3
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 20:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013F12859E4
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 19:12:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42FE1B21AA4
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 19:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10579130E5D;
-	Fri, 29 Mar 2024 19:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD48B13BAC3;
+	Fri, 29 Mar 2024 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cysaH0ZA"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="BxkSCmqH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB748563D
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 19:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB0C1386B4
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 19:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711739548; cv=none; b=oDJYnjdTjCB63aIqMqrpVA+2racJthes+HdDIN7RyvsUJKUxqTj2Ufzjea9oCdp+TPWnzd8egmjnCW5XzUmE2cPPrR1VWTnYU6Oxidvk60O7Tl3K5UCx5ADOGyohYrpc0om1MZ7x7xcyn4w0jtsoYbuKRkPZk69bRj5O/vbo/zI=
+	t=1711739590; cv=none; b=t0zsQu3PhUUp1tnKTiJfehU0FTkM1ETOv5yGF2X4xzmEEQm2oSVMevhCnz/BYB/gB6OkQ5FGb8pdojI03b2kYSTauXoy+9ZpAAu7M40XuUW/+YgV3XB70+kcjtsm1xO7xZ2SbKnYt4mnv3jO2FfApLXhfAbIGI27VrKUo2OLijQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711739548; c=relaxed/simple;
-	bh=AKvtFqmJH4ZOM6+yzO+8vG0/T8jZKT9K8FySji2Vvss=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kuiP+qFBhTWs+SYZm0adUDJkUXipX2mFkUmDEixLIz8cjY7Woq46matPiT0hnm6Znl5YgmMFGGbUKM8yPMw5YYo0/5MEtfsFYtEM0iW+4845EClGJwkuUcbSLTPhck11VHHaVCvXMhfxL4ufUUWdjX5l6gBLkxG0lT1xIUZ10aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cysaH0ZA; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6e88e4c8500so1848695b3a.2
-        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:12:26 -0700 (PDT)
+	s=arc-20240116; t=1711739590; c=relaxed/simple;
+	bh=KlO9M95dbXioJjwabMTZkCSBBVLvvf8dKA6fibf0Fb8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uSNQvZjQbMzRP9Y9h83SOVjpPt6yCeJgTJyh/C3iIHQu9cntqafKatJT8H7fa9qpYxukNHCOflZ24/WJ5J5JSF4/tBi9/RGTEadiVzCg6/BOJcio8wU8GU/zwIiZbrCuCZpSe373br1h6i89/E9VuNzY++7CeoWovMC4lbcExZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=BxkSCmqH; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dcbef31a9dbso1572674276.1
+        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1711739545; x=1712344345; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=scdxeJwXUHBDaV04a23nwEkYWMwKWnbfowekmqNHaec=;
-        b=cysaH0ZARUctsKax8vvExBJt9dL7FAd26PNloL/5i6HhjLV+ORuRYAmUDfK7XhkkLF
-         E5FTN7MnpGfMYBXvemz8lLnag3NIWniKzTotShfiSRB6OLXvrDrJNDu8HT/78cTg2UI4
-         pDlOLnegmedYvwIDJzSxC6D9YrthXn9UbnBzk=
+        d=paul-moore.com; s=google; t=1711739587; x=1712344387; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/GANtgtiBttY0+ggrT+rX/zOqSgUS0IxHWYjZGlwBuE=;
+        b=BxkSCmqH8TZ8d/sRn+k1j6BoOIib9QO36ms9BIutDyjC1eV6JBcPaxaXmFy76gPJKm
+         x45DMPlz8Sfx7VXgder80QfN3n9XBFri7FTGRkgiTRgpp6qBn9311MeKjRCXYwnJVYYM
+         1+MZRloC8paUhZN9hk5kTeWk1qOqDC7ls1VCMiap7dPn3H78/6eUGGUlYSvLdyR/ebxd
+         1PxmGJeqBbl9QWGMgMSz+bWDhziw+Qu2TPHA32fLrm5ABlvtWsUHSl1zzLQSYNIEnaNX
+         873PacDX3/LFS17eZNTcsonIIzNmSZuhfBEHSfIwJ1mXjvst694qDwKufJg87oTkxbi0
+         3Eqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711739545; x=1712344345;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=scdxeJwXUHBDaV04a23nwEkYWMwKWnbfowekmqNHaec=;
-        b=uiFAoLLVf1PIybnBPByHl/DZKB/smkvr82ecT/MkB5gNZEs/8jF8iFICTxlZ7rOega
-         wK16/ySajMykToxLVS1HXARd645b+NV8JY5mU+0+Sc5TJg1pJnQfNCz1x203NFiABbMD
-         sOq+1c2FR2ZrYOHAbD+kdSn1iYCF3Z301klJ9FtgWqrUzYvgi3anzAO1tFtY/PmjJ4CL
-         Vx4qEk/VIr2rEBGnnl68SX/D4x87m9BSlIkuQHoyRIdcAdcgizylATINNYvEfAVu8ASu
-         tniglkMoDNwMEmytZxuOGtLGtjzMFRAaXTVkFwWmF1Eb51ViRIGhd6ZF0DvJrkXWIKg5
-         xXCg==
-X-Gm-Message-State: AOJu0YylpJWZa1quADh9Lk2ly4h+tkK2N7P1xO53E1WdEAEuNJT5Zzof
-	QQ2ayIzBgJh3ZnDmS8lShC4IrmxoqXle4OXIEB7RDtLbeEDEDexnQJI0PNzqtD4ZhUHxJeDyxU3
-	W2ffFwRxOjsit0RqLA1hAJ+CzM4iiTCzx2Gg3T4e4guRLOJ0lhNeQ+OIMZAfmCeRR5ULbO7b0ss
-	9m7xSuHKTfLXedV06ubOgg73OKEYvnCbQNm27N3OSvRzE=
-X-Google-Smtp-Source: AGHT+IEwjpEQv+LpV3KuKQ0fkXK/nEXbm5c2Qxf1IlRblY8ca0unVY5+k2YpXHSooflCb+JQub2eIA==
-X-Received: by 2002:a05:6a21:318b:b0:1a6:ff14:a6a3 with SMTP id za11-20020a056a21318b00b001a6ff14a6a3mr1547146pzb.25.1711739545219;
-        Fri, 29 Mar 2024 12:12:25 -0700 (PDT)
-Received: from ubuntu-vm.eng.vmware.com ([128.177.82.146])
-        by smtp.gmail.com with ESMTPSA id a17-20020a62e211000000b006e6c3753786sm1317471pfi.41.2024.03.29.12.12.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 12:12:24 -0700 (PDT)
-From: Kuntal Nayak <kuntal.nayak@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: jslaby@suse.com,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Yangxi Xiang <xyangxi5@gmail.com>,
-	stable <stable@kernel.org>,
-	Kuntal Nayak <kuntal.nayak@broadcom.com>
-Subject: [PATCH v4.19-v5.4] vt: fix memory overlapping when deleting chars in the buffer
-Date: Fri, 29 Mar 2024 12:12:08 -0700
-Message-Id: <20240329191208.88821-1-kuntal.nayak@broadcom.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1711739587; x=1712344387;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/GANtgtiBttY0+ggrT+rX/zOqSgUS0IxHWYjZGlwBuE=;
+        b=uJcDzNJeA8Yp74Av4TmTnPZZ7VJUYoVylROYd0A50JupoLQA/svf7/WluwIHhRF5GR
+         jRV0CTbBW9rEYBY9UWUk4lZQyw6AuONqO9BxLJlBtWrUc7fjC2EkpJi4ICAtrjvdpQBS
+         iKvzbmeVhapK6UeCPPINmBG9UrG6rgUUpF5TShG03Nj/Z0vLY/Jcvf3OtWAY5GAw2F0m
+         orzR6WSZH1pFqMc5yEpzyGEGXLpId3Ju/hKgCAIB5VQWtm3zffeqz27zRt31z5Y8JIXR
+         nNH44NTca3oQzg4aSQJh/RClE3l1j1f8UNrT/JZjsJEcaworRsjK1CwEQpBWYiwTKHf8
+         exdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYq2/QGyIgZvmUFZlyKE4REsxZ76bHAgS6nJ3TCRUKiqI9U1cPnPSomk4K15MBaB1R+lDjii31tllEMBgnYnHAAMouuEgq
+X-Gm-Message-State: AOJu0YwCRVFWeqa5/tfrtyFGmLawy1AXv4y8LHKEci3bD0wuYgBhJlgZ
+	yRfph8jEJKPE1A5lxj/2T/gQE+cgZiptzoCVRubMlgrP4t99+Rk9aonAQb4ZfSkSZhLa/AnLkke
+	MJjEg5/dHDDYC3vVFHRrNy6GtYziCpOTrZN2z
+X-Google-Smtp-Source: AGHT+IF6bGOeX7gUKGAtS5mDjau9RUMnjocg9FrjpHi6DlCICMIbMhN5NiKHW+DNPuwpPpupHnUnX91f/yBI8gN9nyE=
+X-Received: by 2002:a25:b225:0:b0:dc7:45d3:ffd0 with SMTP id
+ i37-20020a25b225000000b00dc745d3ffd0mr3411457ybj.1.1711739587638; Fri, 29 Mar
+ 2024 12:13:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+ <20240329105609.1566309-2-roberto.sassu@huaweicloud.com> <e9181ec0bc07a23fc694d47b4ed49635d1039d89.camel@linux.ibm.com>
+In-Reply-To: <e9181ec0bc07a23fc694d47b4ed49635d1039d89.camel@linux.ibm.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 29 Mar 2024 15:12:56 -0400
+Message-ID: <CAHC9VhS49p-rffsP4gW5C-C6kOqFfBWJhLrfB_zunp7adXe2cQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ima: evm: Rename *_post_path_mknod() to *_path_post_mknod()
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>, dmitry.kasatkin@gmail.com, 
+	eric.snowberg@oracle.com, jmorris@namei.org, serge@hallyn.com, 
+	linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, viro@zeniv.linux.org.uk, pc@manguebit.com, 
+	christian@brauner.io, Roberto Sassu <roberto.sassu@huawei.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Yangxi Xiang <xyangxi5@gmail.com>
+On Fri, Mar 29, 2024 at 11:17=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.com> w=
+rote:
+> On Fri, 2024-03-29 at 11:56 +0100, Roberto Sassu wrote:
+> > From: Roberto Sassu <roberto.sassu@huawei.com>
+> >
+> > Rename ima_post_path_mknod() and evm_post_path_mknod() respectively to
+> > ima_path_post_mknod() and evm_path_post_mknod(), to facilitate finding
+> > users of the path_post_mknod LSM hook.
+> >
+> > Cc: stable@vger.kernel.org # 6.8.x
+>
+> Since commit cd3cec0a02c7 ("ima: Move to LSM infrastructure") was upstrea=
+med in
+> this open window.  This change does not need to be packported and should =
+be
+> limited to IMA and EVM full fledge LSMs.
+>
+> > Reported-by: Christian Brauner <christian@brauner.io>
+> > Closes:
+> > https://lore.kernel.org/linux-kernel/20240328-raushalten-krass-cb040068=
+bde9@brauner/
+> > Fixes: 05d1a717ec04 ("ima: add support for creating files using the mkn=
+odat
+> > syscall")
+>
+> "Fixes: 05d1a717ec04" should be removed.
 
-[ upstream commit 39cdb68c64d8 ]
+I'd take it one step further and remove both 'Fixes' tags.  A 'Fixes'
+tag implies a flaw in the functionality of the code, this is just a
+function rename.
 
-A memory overlapping copy occurs when deleting a long line. This memory
-overlapping copy can cause data corruption when scr_memcpyw is optimized
-to memcpy because memcpy does not ensure its behavior if the destination
-buffer overlaps with the source buffer. The line buffer is not always
-broken, because the memcpy utilizes the hardware acceleration, whose
-result is not deterministic.
+Another important thing to keep in mind about 'Fixes' tags, unless
+you've told the stable kernel folks to only take patches that you've
+explicitly marked for stable, they are likely going to attempt to
+backport anything with a 'Fixes' tag.
 
-Fix this problem by using replacing the scr_memcpyw with scr_memmovew.
+Regardless, since I was looking at 1/2 I took a quick look at this
+patch and it looks fine to me once the comments have been
+incorporated.
 
-Fixes: 81732c3b2fed ("tty vt: Fix line garbage in virtual console on command line edition")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yangxi Xiang <xyangxi5@gmail.com>
-Link: https://lore.kernel.org/r/20220628093322.5688-1-xyangxi5@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ KN: vc_state is not a separate structure in LTS v4.19, v5.4. Adjusted the patch
-  accordingly by using vc_x instead of state.x for backport. ]
-Signed-off-by: Kuntal Nayak <kuntal.nayak@broadcom.com>
----
- drivers/tty/vt/vt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Paul Moore <paul@paul-moore.com>
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index c9083d853..a351e264d 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -855,7 +855,7 @@ static void delete_char(struct vc_data *vc, unsigned int nr)
- 	unsigned short *p = (unsigned short *) vc->vc_pos;
- 
- 	vc_uniscr_delete(vc, nr);
--	scr_memcpyw(p, p + nr, (vc->vc_cols - vc->vc_x - nr) * 2);
-+	scr_memmovew(p, p + nr, (vc->vc_cols - vc->vc_x - nr) * 2);
- 	scr_memsetw(p + vc->vc_cols - vc->vc_x - nr, vc->vc_video_erase_char,
- 			nr * 2);
- 	vc->vc_need_wrap = 0;
--- 
-2.39.0
+> > Fixes: cd3cec0a02c7 ("ima: Move to LSM infrastructure")
+> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+>
+> Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 
+--=20
+paul-moore.com
 
