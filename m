@@ -1,172 +1,98 @@
-Return-Path: <stable+bounces-33758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B525892459
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 20:37:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABA0892471
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 20:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3BF7284CCF
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 19:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079891C21EEC
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 19:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6658139566;
-	Fri, 29 Mar 2024 19:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D49213A246;
+	Fri, 29 Mar 2024 19:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UqkdpScG"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LsJqFqP0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0843B78E
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 19:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B5F139D04;
+	Fri, 29 Mar 2024 19:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711741019; cv=none; b=jL2IylxRXnr4JZP10qNSUpS1JXGThdFQfLerVX9T/Ry3E4x++3u9j8+37wWQr96QRaDU71W2o6ZFN3SszHK2MRU4GmoXjW/do4X2KsWPtdhiAzrkVwKQfRp+hPFW3u/FaKjdHalTKqrZ2KRJYICRfpEr8ApMuIQU/7+bZnBovxg=
+	t=1711741594; cv=none; b=Yz6gHTW4S7ayAmn8404riFyNenqYo01C0qFhr1ESNGehOesNsq+Hw8eg83qroGzv4OD3UHIk5DDmZO5hszJq+sgZRm/5Ljkrx4sg6olgfK5CUz9LOyVzEFSAtlkjJJTFuEvD3XCIu5eO7yAdeJBuQSFOX4suwYHHfZ9WXCYcdTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711741019; c=relaxed/simple;
-	bh=XWJ5L+9qn4g25NVZSdkkIFHiRao0Rnwp4nYt7BHiXWs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IhK3gEWM9yHwhhYR6BCilAI0mhKglCOB0l4ufxJGex8xjsBNwj/anThCqzp/+gIu7hT2bgjkwj8uaEGlcUbxocwTeMTvGyS7o4KB54gbDUYG9hbi+kh3DjqmVmyxyXqpsH4h4aOgDNef8azsL/c7BPhOoI8e3FXfYJl7jd5UAWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UqkdpScG; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-56bde8ea904so20685a12.0
-        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:36:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1711741016; x=1712345816; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IG2sdULi0sIh2ro2ngvfwXnPQgm3+COAzlzZGsm+OFA=;
-        b=UqkdpScGl1Y2o1Fq8wMY71p9VBqCgP4XKZi3l9VlrbBW3plyKRkTiBAv5hCbH0ZU/F
-         +3KJh2vCuJevBEhdga3pBjBQOV8RYJgT+EBVQLLO2jIR4OXTdi+BqzePf/SDSHIm/axf
-         Ebp0nfbZ3dMs3x2Zd5yLoMNbFk6wZV/8OvT9iwJjeoaUozj+cHunMNiU+KhL43DkA1BU
-         xQGjYmrEel+wqrhsi0RaC9HT9T4m43P/wnpbXVeX3uNiyuT0uwabihgHyzNkRFor+EzY
-         1ViqQokwTu5yRQkUA4IsZtiy9cBWiXaRqpbyYFpUWFpOTOuoVHe8q5dj8uLxNdzneEB1
-         dN4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711741016; x=1712345816;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IG2sdULi0sIh2ro2ngvfwXnPQgm3+COAzlzZGsm+OFA=;
-        b=n10Hgffdy840wjPc3yV6dXqvh+QG455Tt7sykExUNcaMYVfgPt/RztxmZBIW6t2+wh
-         AXN+Gpp8BIxy7e3vqk4zWoxYP0cBeVxnF1tNKvXXZ5ETIMjWj+rhVI3mWIfoT8HSufQK
-         +2dgnTi0EA/ZWv8LrsAZY1bQ/zUEeYMoF5JCCmXPz3oMRdFR7WrVXI4dIEMWi5Tj4joK
-         TgN+8BXpsi2+SAaTHeGwpiVXyHzcvIg7fl+pNhn5CW+BJPogH6mFHXz9JsD7e8Ho/Ksl
-         1Tk3i0dJeYMW11sE5U3qo8oz2shPHSrV0WuJN4koqqeYc2i3PnKko02Wv6CCelZ0BL8c
-         t2Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAnZ7VIRBWaYaR35vnzE7P45M0CppLoHtcOkiHIlQYdkwO/5+Rfwuh9Hdkb7+RVuDYGGuQZplwMFwMbUk9UL2qGRHI+mDa
-X-Gm-Message-State: AOJu0YzRdjdcv1cOGaL9JEhM9LZEqhdQRvq+ipIJxKi7UL7Uq1aJRuSn
-	QswyhQl/W733y7uaLD/5UwdnRWiOfS5swmtutvqJVdXGi0kGdNOWoXva1Ft6LI3psaX14unCTpP
-	tnxl4JcpXu6bV2OtyIerLGIAI9xvYclRU0Zg=
-X-Google-Smtp-Source: AGHT+IEkuV+rTJvTCWIOBN1gpiKXWkItHvEm4U6jPpj3+9fzrBARDw9iU9zkIBN8ZmFc4XWd4s5xBYxozS8xZ0sqGeY=
-X-Received: by 2002:aa7:c752:0:b0:56c:522f:6799 with SMTP id
- c18-20020aa7c752000000b0056c522f6799mr133259eds.5.1711741015944; Fri, 29 Mar
- 2024 12:36:55 -0700 (PDT)
+	s=arc-20240116; t=1711741594; c=relaxed/simple;
+	bh=zYYB0UTSbRLws4DW2xNoeDK8WItj9tGsyvCKAM5E+ls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sIuSx6SKkUZPvEaVGrtvx7vKNpjyFZPKB7B1fvl/krjvkMSFN9PB0O6nx1ZXqFsUUxrKYV9cibrzCaE29ol8zxZXHM1KNqInb5X+XopTw1C9QR27SCDE+WjlO64a1wrDHlih+Mtx+cX6jlNgqexYKEwDV4+M5v6uxZeVi4s4uqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LsJqFqP0; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.64.65.59] (unknown [20.29.225.195])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 020AB20E6F42;
+	Fri, 29 Mar 2024 12:46:31 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 020AB20E6F42
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1711741592;
+	bh=cyTA2cENb6Yp33jOnm7DNF77XO+4wSIz79NQQoBF7v0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LsJqFqP02CUKkfUhLZjuUQr1pQ0xb9+ApnC1krA/TWB9Lz5UFhdI7zPFqztKo2pqG
+	 7/gwAEzIUcbObSW9ZBpgKl6t7sB0LDeSXzbIjWEQsk/aYlz4DcpboWya7uegZW7AdH
+	 mIoWV9PzU/6HQlPtqK6yGo32BtA93gQ9TLv/HSCk=
+Message-ID: <07ed50c1-75a9-494c-8a6a-5edcc2d6f932@linux.microsoft.com>
+Date: Fri, 29 Mar 2024 12:46:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328062757.29803-1-mingyang.cui@horizon.ai>
-In-Reply-To: <20240328062757.29803-1-mingyang.cui@horizon.ai>
-From: John Stultz <jstultz@google.com>
-Date: Fri, 29 Mar 2024 12:36:42 -0700
-Message-ID: <CANDhNCqKR30uD1RDmW7V6VHtdwbGnU5uJEvj_AUwHCsXZv3+Nw@mail.gmail.com>
-Subject: Re: [PATCH] sched/fair: Fix forked task check in vruntime_normalized
-To: "mingyang.cui" <mingyang.cui@horizon.ai>
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, mgorman@suse.de, bristot@redhat.com, 
-	linux-kernel@vger.kernel.org, kernel-team@android.com, stable@vger.kernel.org, 
-	tkjos@google.com, pjt@google.com, quentin.perret@arm.com, 
-	Patrick.Bellasi@arm.com, Chris.Redpath@arm.com, Morten.Rasmussen@arm.com, 
-	joaodias@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] swiotlb: Do not set total_used to 0 in
+ swiotlb_create_debugfs_files()
+To: Dexuan Cui <decui@microsoft.com>, hch@lst.de, m.szyprowski@samsung.com,
+ robin.murphy@arm.com, zhangpeng362@huawei.com, iommu@lists.linux.dev,
+ mhklinux@outlook.com
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240329192809.17318-1-decui@microsoft.com>
+Content-Language: en-CA
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+In-Reply-To: <20240329192809.17318-1-decui@microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 28, 2024 at 8:21=E2=80=AFAM mingyang.cui <mingyang.cui@horizon.=
-ai> wrote:
->
-> When rt_mutex_setprio changes a task's scheduling class to RT,
-> sometimes the task's vruntime is not updated correctly upon
-> return to the fair class.
-> Specifically, the following is being observed:
-> - task has just been created and running for a short time
-> - task sleep while still in the fair class
-> - task is boosted to RT via rt_mutex_setprio, which changes
->   the task to RT and calls check_class_changed.
-> - check_class_changed leads to detach_task_cfs_rq, at which point
->   the vruntime_normalized check sees that the task's sum_exec_runtime
->   is zero, which results in skipping the subtraction of the
->   rq's min_vruntime from the task's vruntime
-> - later, when the prio is deboosted and the task is moved back
->   to the fair class, the fair rq's min_vruntime is added to
->   the task's vruntime, even though it wasn't subtracted earlier.
-
-Just to make sure I am following: since sum_exec_runtime is updated in
-update_curr(), if the task goes to sleep, shouldn't it be dequeued and
-thus update_curr() would have been run (and thus sum_exec_runtime
-would be non-zero)?
-
-Maybe in this analysis is the new task being boosted while it is still
-newly running (instead of sleeping)?
-
-> Since the task's vruntime is about double that of other tasks in cfs_rq,
-> the task to be unable to run for a long time when there are continuous
-> runnable tasks in cfs_rq.
->
-> The immediate result is inflation of the task's vruntime, giving
-> it lower priority (starving it if there's enough available work).
-> The longer-term effect is inflation of all vruntimes because the
-> task's vruntime becomes the rq's min_vruntime when the higher
-> priority tasks go idle. That leads to a vicious cycle, where
-> the vruntime inflation repeatedly doubled.
-
-This is an interesting find! I'm curious how you detected the problem,
-as it might make a good correctness test (which I'm selfishly looking
-for more of myself :)
-
-> The root cause of the problem is that the vruntime_normalized made a
-> misjudgment. Since the sum_exec_runtime of some tasks that were just
-> created and run for a short time is zero, the vruntime_normalized
-> mistakenly thinks that they are tasks that have just been forked.
-> Therefore, sum_exec_runtime is not subtracted from the vruntime of the
-> task.
->
-> So, we fix this bug by adding a check condition for newly forked task.
->
-> Signed-off-by: mingyang.cui <mingyang.cui@horizon.ai>
+On 3/29/2024 12:28 PM, Dexuan Cui wrote:
+> Sometimes the readout of /sys/kernel/debug/swiotlb/io_tlb_used and
+> io_tlb_used_hiwater can be a huge number (e.g. 18446744073709551615),
+> which is actually a negative number if we use "%ld" to print the number.
+> 
+> When swiotlb_create_default_debugfs() is running from late_initcall,
+> mem->total_used may already be non-zero, because the storage driver
+> may have already started to perform I/O operations: if the storage
+> driver is built-in, its probe() callback is called before late_initcall.
+> 
+> swiotlb_create_debugfs_files() should not blindly set mem->total_used
+> and mem->used_hiwater to 0; actually it doesn't have to initialize the
+> fields at all, because the fields, as part of the global struct
+> io_tlb_default_mem, have been implicitly initialized to zero.
+> 
+> Also don't explicitly set mem->transient_nslabs to 0.
+> 
+> Fixes: 8b0977ecc8b3 ("swiotlb: track and report io_tlb_used high water marks in debugfs")
+> Fixes: 02e765697038 ("swiotlb: add debugfs to track swiotlb transient pool usage")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dexuan Cui <decui@microsoft.com>
 > ---
->  kernel/sched/fair.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 73a89fbd81be..3d0c14f3731f 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -11112,7 +11112,7 @@ static inline bool vruntime_normalized(struct tas=
-k_struct *p)
->          * - A task which has been woken up by try_to_wake_up() and
->          *   waiting for actually being woken up by sched_ttwu_pending().
->          */
-> -       if (!se->sum_exec_runtime ||
-> +       if (!se->sum_exec_runtime && p->state =3D=3D TASK_NEW ||
->             (p->state =3D=3D TASK_WAKING && p->sched_remote_wakeup))
->                 return true;
+>  kernel/dma/swiotlb.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
 
-This looks like it was applied against an older tree? The p->state
-accesses should be under a READ_ONCE (and likely consolidated before
-the conditional?)
+Sorry, I'm missing a why in this commit message. Can you say what happens if the
+total_used and used_hiwater IS blindly set to 0? Is the only effect the change in
+the readout of the swiotlb debugfs files?
 
-Also, I wonder if alternatively a call to update_curr() if
-(cfs_rq->curr =3D=3D se) in switched_from_fair() would be good (ie:
-normalize it on the boost to close the edge case rather than handle it
-as an expected non-normalized condition)?
+Thanks,
+Easwar
 
-thanks
--john
 
