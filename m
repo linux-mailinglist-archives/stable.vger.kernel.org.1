@@ -1,78 +1,167 @@
-Return-Path: <stable+bounces-33447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AD4891C5C
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:48:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C70D891CBD
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FAC2288D1B
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:48:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A411C242FC
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF98185236;
-	Fri, 29 Mar 2024 12:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D42A13AA48;
+	Fri, 29 Mar 2024 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/Aa3pIJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6sNthHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C042D185230
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 12:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D2C13A3EB;
+	Fri, 29 Mar 2024 12:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716124; cv=none; b=W+f/SKYkKWoQvfrJNZEL8iK08dEyBgkY0omSWH2Kb06sUMrg2rfzMwyVPNMyQh8e/rvFWGDnXSy/NhgNNeDRAjo5zU3dfN6LpQovH5UA8ap4SoRseMIda8SPx/9ObS7xg85kfTe1GI+0yPm8UWLKwhgyCosvIgEw77n0EaXyn0k=
+	t=1711716212; cv=none; b=BugxyDEfMqKDTY7o5osOXGouGesUhSU9mdfstPc7vMUQAe+4r6gVF+4qPR6ffxyihRwj2vAtZiMXQGxxInjnGWmHlrVzXT6BmJdFGZmJFBree3gK6coVpo5QgGHCBjI214yTwQgV31sSn1uQC3McSC9RSS2y0t+2lCBtdw+HHK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716124; c=relaxed/simple;
-	bh=8dDsvaWmejQv5mi73WI03Xf5IEP7Y0Cx8SLYl4dh3OY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l4bYHk5Gb6ebSG3vOMlazt7vO84a5elyTCcxXTDsIvqQarfQiDZjQc9ctZPs/waSUVoFCgR4QkYTVrn1YAxPnF0gAaBjQGkqJB0fDhyVqmUP28TrHXkQzJZ87WWOog+W2He84SYIlGq19xWGXXR2C/+I0cTbQ2pT4G63f6Aa9EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/Aa3pIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173D9C43394;
-	Fri, 29 Mar 2024 12:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711716124;
-	bh=8dDsvaWmejQv5mi73WI03Xf5IEP7Y0Cx8SLYl4dh3OY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y/Aa3pIJ6JIElHaYRPW6zWwRaw6XqEInNfF05/8pxp4WaukrZSIdkFH7mtZH7tAGy
-	 0urNN5y6TYrP0bQgrtt9A3OmaFVs0LgCcU+0VpPez3PEry8g1EAZ0f6F++a19jTG/i
-	 b2q6nBRCZSsua8tWn3BMEkbacRchFAJZ0I3qsD8I=
-Date: Fri, 29 Mar 2024 13:41:33 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: stable@vger.kernel.org, "H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Borislav Petkov <bp@suse.de>,
-	Alyssa Milburn <alyssa.milburn@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: Re: [PATCH 5.15.y v2 00/11] Delay VERW + RFDS 5.15.y backport
-Message-ID: <2024032923-casket-registrar-a962@gregkh>
-References: <20240312-delay-verw-backport-5-15-y-v2-0-e0f71d17ed1b@linux.intel.com>
+	s=arc-20240116; t=1711716212; c=relaxed/simple;
+	bh=B+UPqiZhHjHusSKbhDQ5UfjOH+MzF07nuUtbkag2bOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CysOlHJAzfl9U0B7bdXGpqI2eeEc3EFpsTk6OGagcP0izPh0qXzR12bzfkGQU3nR2p5B10a/DuUcDsSJhTasE9zpc3cbG9hPGlwi5g+OEtNG/rS2cEOdmfbBWEsP42URdtDiTBTRvGmOpr0tp7buXDf0JIZcUsLJmFlWY5XceQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6sNthHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC87C433F1;
+	Fri, 29 Mar 2024 12:43:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711716211;
+	bh=B+UPqiZhHjHusSKbhDQ5UfjOH+MzF07nuUtbkag2bOY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=S6sNthHToLA6IuSMh63ZiENOw+/IVEBEOCFGJJgrONR/TxBxy89+65nVYyshfRVie
+	 QY6queLY3A5gIdfjQN1gxsnvjYRshRarQU5xklaNr7znAEOrlTCIApo56iYYohEGiR
+	 4ruk8Hlod2NXiwdApDZ/wzvTs2JJfmMfJEYKXT0FhvvycrlnjnXG4W2pToU4vtE4MZ
+	 S2iP7ZH9YuYpPb99iukMRJ9gjLQ5KSh0h+SEOyOBUo4sw/FQOqW7tmM7x0I2mJS2bH
+	 voJsr9FyVUM3XMyVufgtsigt/fRCPpvGlG3TqSMBnDyAHF+EnyKo/zN4r3ONFQgg3g
+	 jrIRhCOjCcOww==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 01/75] drm/vc4: don't check if plane->state->fb == state->fb
+Date: Fri, 29 Mar 2024 08:41:42 -0400
+Message-ID: <20240329124330.3089520-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240312-delay-verw-backport-5-15-y-v2-0-e0f71d17ed1b@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.23
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 12, 2024 at 02:10:34PM -0700, Pawan Gupta wrote:
-> v2:
-> - This includes the backport of recently upstreamed mitigation of a CPU
->   vulnerability Register File Data Sampling (RFDS) (CVE-2023-28746).
->   This is because RFDS has a dependency on "Delay VERW" series, and it
->   is convenient to merge them together.
-> - rebased to v5.15.151
+From: Maíra Canal <mcanal@igalia.com>
 
-Now queued up, thanks.
+[ Upstream commit 5ee0d47dcf33efd8950b347dcf4d20bab12a3fa9 ]
 
-greg k-h
+Currently, when using non-blocking commits, we can see the following
+kernel warning:
+
+[  110.908514] ------------[ cut here ]------------
+[  110.908529] refcount_t: underflow; use-after-free.
+[  110.908620] WARNING: CPU: 0 PID: 1866 at lib/refcount.c:87 refcount_dec_not_one+0xb8/0xc0
+[  110.908664] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device cmac algif_hash aes_arm64 aes_generic algif_skcipher af_alg bnep hid_logitech_hidpp vc4 brcmfmac hci_uart btbcm brcmutil bluetooth snd_soc_hdmi_codec cfg80211 cec drm_display_helper drm_dma_helper drm_kms_helper snd_soc_core snd_compress snd_pcm_dmaengine fb_sys_fops sysimgblt syscopyarea sysfillrect raspberrypi_hwmon ecdh_generic ecc rfkill libaes i2c_bcm2835 binfmt_misc joydev snd_bcm2835(C) bcm2835_codec(C) bcm2835_isp(C) v4l2_mem2mem videobuf2_dma_contig snd_pcm bcm2835_v4l2(C) raspberrypi_gpiomem bcm2835_mmal_vchiq(C) videobuf2_v4l2 snd_timer videobuf2_vmalloc videobuf2_memops videobuf2_common snd videodev vc_sm_cma(C) mc hid_logitech_dj uio_pdrv_genirq uio i2c_dev drm fuse dm_mod drm_panel_orientation_quirks backlight ip_tables x_tables ipv6
+[  110.909086] CPU: 0 PID: 1866 Comm: kodi.bin Tainted: G         C         6.1.66-v8+ #32
+[  110.909104] Hardware name: Raspberry Pi 3 Model B Rev 1.2 (DT)
+[  110.909114] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  110.909132] pc : refcount_dec_not_one+0xb8/0xc0
+[  110.909152] lr : refcount_dec_not_one+0xb4/0xc0
+[  110.909170] sp : ffffffc00913b9c0
+[  110.909177] x29: ffffffc00913b9c0 x28: 000000556969bbb0 x27: 000000556990df60
+[  110.909205] x26: 0000000000000002 x25: 0000000000000004 x24: ffffff8004448480
+[  110.909230] x23: ffffff800570b500 x22: ffffff802e03a7bc x21: ffffffecfca68c78
+[  110.909257] x20: ffffff8002b42000 x19: ffffff802e03a600 x18: 0000000000000000
+[  110.909283] x17: 0000000000000011 x16: ffffffffffffffff x15: 0000000000000004
+[  110.909308] x14: 0000000000000fff x13: ffffffed577e47e0 x12: 0000000000000003
+[  110.909333] x11: 0000000000000000 x10: 0000000000000027 x9 : c912d0d083728c00
+[  110.909359] x8 : c912d0d083728c00 x7 : 65646e75203a745f x6 : 746e756f63666572
+[  110.909384] x5 : ffffffed579f62ee x4 : ffffffed579eb01e x3 : 0000000000000000
+[  110.909409] x2 : 0000000000000000 x1 : ffffffc00913b750 x0 : 0000000000000001
+[  110.909434] Call trace:
+[  110.909441]  refcount_dec_not_one+0xb8/0xc0
+[  110.909461]  vc4_bo_dec_usecnt+0x4c/0x1b0 [vc4]
+[  110.909903]  vc4_cleanup_fb+0x44/0x50 [vc4]
+[  110.910315]  drm_atomic_helper_cleanup_planes+0x88/0xa4 [drm_kms_helper]
+[  110.910669]  vc4_atomic_commit_tail+0x390/0x9dc [vc4]
+[  110.911079]  commit_tail+0xb0/0x164 [drm_kms_helper]
+[  110.911397]  drm_atomic_helper_commit+0x1d0/0x1f0 [drm_kms_helper]
+[  110.911716]  drm_atomic_commit+0xb0/0xdc [drm]
+[  110.912569]  drm_mode_atomic_ioctl+0x348/0x4b8 [drm]
+[  110.913330]  drm_ioctl_kernel+0xec/0x15c [drm]
+[  110.914091]  drm_ioctl+0x24c/0x3b0 [drm]
+[  110.914850]  __arm64_sys_ioctl+0x9c/0xd4
+[  110.914873]  invoke_syscall+0x4c/0x114
+[  110.914897]  el0_svc_common+0xd0/0x118
+[  110.914917]  do_el0_svc+0x38/0xd0
+[  110.914936]  el0_svc+0x30/0x8c
+[  110.914958]  el0t_64_sync_handler+0x84/0xf0
+[  110.914979]  el0t_64_sync+0x18c/0x190
+[  110.914996] ---[ end trace 0000000000000000 ]---
+
+This happens because, although `prepare_fb` and `cleanup_fb` are
+perfectly balanced, we cannot guarantee consistency in the check
+plane->state->fb == state->fb. This means that sometimes we can increase
+the refcount in `prepare_fb` and don't decrease it in `cleanup_fb`. The
+opposite can also be true.
+
+In fact, the struct drm_plane .state shouldn't be accessed directly
+but instead, the `drm_atomic_get_new_plane_state()` helper function should
+be used. So, we could stick to this check, but using
+`drm_atomic_get_new_plane_state()`. But actually, this check is not really
+needed. We can increase and decrease the refcount symmetrically without
+problems.
+
+This is going to make the code more simple and consistent.
+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240105175908.242000-1-mcanal@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/vc4/vc4_plane.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/vc4/vc4_plane.c b/drivers/gpu/drm/vc4/vc4_plane.c
+index 00e713faecd5a..5948e34f7f813 100644
+--- a/drivers/gpu/drm/vc4/vc4_plane.c
++++ b/drivers/gpu/drm/vc4/vc4_plane.c
+@@ -1505,9 +1505,6 @@ static int vc4_prepare_fb(struct drm_plane *plane,
+ 
+ 	drm_gem_plane_helper_prepare_fb(plane, state);
+ 
+-	if (plane->state->fb == state->fb)
+-		return 0;
+-
+ 	return vc4_bo_inc_usecnt(bo);
+ }
+ 
+@@ -1516,7 +1513,7 @@ static void vc4_cleanup_fb(struct drm_plane *plane,
+ {
+ 	struct vc4_bo *bo;
+ 
+-	if (plane->state->fb == state->fb || !state->fb)
++	if (!state->fb)
+ 		return;
+ 
+ 	bo = to_vc4_bo(&drm_fb_dma_get_gem_obj(state->fb, 0)->base);
+-- 
+2.43.0
+
 
