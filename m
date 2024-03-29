@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-33154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C71E891832
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:53:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80E9891839
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F195283046
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78AA41F22A71
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0782A1A5;
-	Fri, 29 Mar 2024 11:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA2F7C0A7;
+	Fri, 29 Mar 2024 11:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbSDz9fT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXjSi+BS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3AB3CF7D
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 11:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538DA2A1A5;
+	Fri, 29 Mar 2024 11:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711713202; cv=none; b=aePIVPym7Sd0hcWnTBP3eZHpeDJHRroYgVpWphmENwGZSfE3MZTaXmYUoRFOwQgBfDWSsZgsprdZ+84uLxU9gc4BuAwBw1TPEldXZx/rRhYT6FT5sXR5nOYUTAT7RojIcXs4DxAS9AK2/vuOwUhMBTvnrSrWZrMBcSbvWDf1HMM=
+	t=1711713410; cv=none; b=n/NBHZfsD1/yieaFyJfomWYDSNCVH7AxO0nxJ1vjzP1qcaNizgI9lSfoVh45bXmB7xlQP6bgliHkQqQ6cuAXO93k/JQ832m9rFMtziWykX43sRXQO/9/zWf+wlhyoZD49ksL/xUitoHBaNtEnQkHC79twICQqrGEc41CF45DY3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711713202; c=relaxed/simple;
-	bh=XvTd+eccGJcKXGpA3VgGBC+MtVKkvneet0XElL9X5tM=;
+	s=arc-20240116; t=1711713410; c=relaxed/simple;
+	bh=N3vJLpKKCF66KRFxoWDNYIgz+O0iT8ojHf0tNeT60ds=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UuX9YszOGOwmPsvtM0xCyQEUiDZd+XcfdXX0RHAlrWZY6NggF9tif8BJ0WeF4dAyoSo/YeoNc7pojZKNijBLh5P/9LGZMzY9ik57k66/f4XXskrpB6/7aSfr1WA1EdAcQZFzS+FL6boPxk3SWnB7hOYPrjsFrWqyNOHB9HBZXns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbSDz9fT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924D8C433F1;
-	Fri, 29 Mar 2024 11:53:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=YoVosm8cNXlo+UAuyHz6Q7m6vWVDH+L01xBRboxNLQBiPUbHqAAN4cLIaVxzbCZhMDAurF28vV6uKFq0K/qIU1X2kla3ozrtOdXz0vWoRU+nHDzpT0bOtZ13LN7nE/TIKSkTMw+iv5o6o1ykGNSt2FBA3cKSPTMJbyjQ7Rc9F8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXjSi+BS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E82DC433F1;
+	Fri, 29 Mar 2024 11:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711713202;
-	bh=XvTd+eccGJcKXGpA3VgGBC+MtVKkvneet0XElL9X5tM=;
+	s=korg; t=1711713409;
+	bh=N3vJLpKKCF66KRFxoWDNYIgz+O0iT8ojHf0tNeT60ds=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VbSDz9fTd70kuU88M2AU7GI553Lw+a/5yF8KuSA+TBwdKwiYCvBNHQ8hp2SBNn1la
-	 O2PXu83aafmvV9STbzPKH2Ue7s9NkpMmyt97CiShS7HeVFwVQ+00PB95KZYCGFLpf1
-	 FZXpPC3FPgBAs3jGXJ879QLhreIvJ6duAy2HK7Ik=
-Date: Fri, 29 Mar 2024 12:53:18 +0100
+	b=yXjSi+BSwuOzx9azE94oluhs2HbkaySjgvVzLNHynRDSzkO0EyZvMhiUt9YDwOA6t
+	 ihA+/K4qfWt6oq4jMPDmhCHz/uqwB9AAAz94ESOIcafvoGfxj8abUvxBlywxQI6o4r
+	 6HE6gmvINWym3jeFSud7+IdbwUNyEPZa0eQLaPIE=
+Date: Fri, 29 Mar 2024 12:56:46 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>, stable@vger.kernel.org,
-	sashal@kernel.org
-Subject: Re: [PATCH 6.6.y 0/4] vfio: Interrupt eventfd hardening for 6.6.y
-Message-ID: <2024032959-improve-groove-7bac@gregkh>
-References: <20240327225444.909882-1-alex.williamson@redhat.com>
- <bff69f62-692b-481e-bbad-020148894f7b@redhat.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Borislav Petkov <bp@alien8.de>, stable@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: FAILED: Patch "x86/sev: Fix position dependent variable
+ references in startup code" failed to apply to 6.8-stable tree
+Message-ID: <2024032916-statue-skyrocket-af59@gregkh>
+References: <20240327120810.2825990-1-sashal@kernel.org>
+ <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,22 +58,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bff69f62-692b-481e-bbad-020148894f7b@redhat.com>
+In-Reply-To: <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
 
-On Thu, Mar 28, 2024 at 11:03:40AM +0100, Eric Auger wrote:
-> Hi Alex,
-> On 3/27/24 23:54, Alex Williamson wrote:
-> > These backports only require reverting to the older eventfd_signal()
-> > API with two parameters, prior to commit 3652117f8548
-> > ("eventfd: simplify eventfd_signal()").  Thanks,
-> for the series
-> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+On Wed, Mar 27, 2024 at 04:39:20PM +0200, Ard Biesheuvel wrote:
+> On Wed, 27 Mar 2024 at 14:08, Sasha Levin <sashal@kernel.org> wrote:
+> >
+> > The patch below does not apply to the 6.8-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> >
+> 
+> I will send the v6.8 backport separately right away.
+> 
+> v6.7 and v6.6 can take this patch unmodified but will need to take
+> 29956748339aa8757a7e2f927a8679dd08f24bb6 as a prerequisite first.
 
-All now queued up, thanks.
+Now done, thanks.
 
-But what about older kernels?  These should go much further back, right?
+> (v6.8 no longer applies because of the way Linus fixed up a merge
+> conflict in the 6.8 cycle)
 
-thanks,
+I fixed this up by hand, hopefully got it right :)
+
+> v6.1 and older need separate backports so i will send those out later.
+
+Wonderful, thanks!
 
 greg k-h
 
