@@ -1,141 +1,181 @@
-Return-Path: <stable+bounces-33144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D938916E4
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:33:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CECC9891722
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 433581C21BDC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A951C211BB
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDB84AEDF;
-	Fri, 29 Mar 2024 10:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dqAG/k1T"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805ED6A013;
+	Fri, 29 Mar 2024 10:56:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FBC56455
-	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 10:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94CB364BA;
+	Fri, 29 Mar 2024 10:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711708392; cv=none; b=pL/unqYggSBtcgAPsdQiEyIH00+FD5njS8syGGJkmT07oBkCb3fv4unIYt7CgcPLX4GKhY2t1w/sQ+9UP8aYPqXnkDW0tsYJpyAIKBhw3K+IWIMYvuLIYeiYTf5COr1FboH+TCmrSsWL9jrP7UsysYrxrEdpgchX9Vu6fg8xf1U=
+	t=1711709801; cv=none; b=s47UREUfTFlby6+5DDPDBItpERALFg+ethFOmdHQ3O3SJk5Ze8+rw9rAbIlrxpgChflWTkbLfEz2YUSDyHMbg89Skb6wINDg+uhiZySNKm1EzLeCzeasNxT4rxhfJhNU1wQIHLXvN7W8rvjls0zMh3D9zN4v4ZBoiE7qBcO2Cog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711708392; c=relaxed/simple;
-	bh=DD6Jah54JvVvy/pv9fBbtNuZFBhf+OamddQ7th7HeoE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r2I7fIKXU8z76v0Wm461dtGDogLAtzAHk5MIf5i0PiUP+GKYPThLh9FQe35vhHK4Gg6Dp9cCZSX/1WEudL80OQv01eJRxaqUEzA7QosR3f4A1Lp8lxXBBc2ZL9L+qtagd9tb/UHenk/5wj6NOVVyhhqps1h/h7CwHv42d9R2EBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dqAG/k1T; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a46cd9e7fcaso236869766b.1
-        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 03:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1711708389; x=1712313189; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NwoDgUONbFIzKdwbbRbTYAlPST0Ig55g88KHArxxc/c=;
-        b=dqAG/k1TZGFK4J69GU1sKJ28uJU+FZ/elLKmkiZyngpDgrYgKVxj4yV2jUlZI5ZYFh
-         32lgdO1Fw9aOxq1q+Khep/2Ulz0y4+ctNTp/GvPzWdZj8m9vnMcMzo/3MncVQm84XNwl
-         CwDkLkCBPpNDsbVWNWhWKcT3161witvdQJvxQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711708389; x=1712313189;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NwoDgUONbFIzKdwbbRbTYAlPST0Ig55g88KHArxxc/c=;
-        b=raE8g8soIipJ8Mh2aXMK5iCXV05vDwQ4Wzbvde/y9l+oxDych+X6n+DdQaXPTI8cYA
-         daM9gn2MDvAB6Q2huZ0PXHTWVmez4NXiryQsTS+3+1HpIKUZm3n2fhtstB6B2hZYuNVH
-         rtohl22R1rLcI5GWKC8737ZC4DLZ1jefowM5uDJkKwPUyUn2IXshJkD5MQUGmMLI/G2J
-         /XMz0cOcH84HMKVUrc8+JQPDkPRVy9kMQlHZv0zmRO/9jF5clrsBRc9ESkDW/sOsxg4Z
-         N8v3DjyQcMhqzSgKoiUwYiChCSZ2Ic4Dl+VQUEgdgQLPgi/ovQXzN0ZL6isXPDh/ANxd
-         E1zg==
-X-Gm-Message-State: AOJu0YyJQvcgdnKZiEfXH64+VfTRmvVVW0Db7XnvaW4wxsIg068Cvlub
-	ycn9IBQn9t4pQuwxyfpr2jLXjP6+orewb1FpHO0xx4/QFiZ7gxmTVHvogreYg3Zgg00g76E3dmc
-	6GU1Gik/jE1wwTSXcGIESHjR6BtuLYECvu8dT
-X-Google-Smtp-Source: AGHT+IGVGcA9bR6UFeCQVCvMVEPcupaxgap9YC4ODdnvUbwCtxUjIvbwg3uzTjmWUTuBUs4WUwHGNMCIfALbUmIQgiA=
-X-Received: by 2002:a17:906:f58a:b0:a4e:3c1a:d6c with SMTP id
- cm10-20020a170906f58a00b00a4e3c1a0d6cmr709159ejd.9.1711708388649; Fri, 29 Mar
- 2024 03:33:08 -0700 (PDT)
+	s=arc-20240116; t=1711709801; c=relaxed/simple;
+	bh=wXmD/wTPLUziOZNHo17aLeyr2LXTHIbWqldBHooT3mA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oAY78pFPdDUQ44pwFyD+Yuwk8AFkBbB776IM8U0dKW6E7Z5amMz57ReuqKHcdYnu85n7zt/k3muab/d9IodGWui9GNiajK6q4FPjxcpisfS/kBxd2Z0T3/gftTKl//oXgboef13/3x97pd53g5k19GonpzZbynScu80Ou3+4naE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4V5cPL1clGz9y0km;
+	Fri, 29 Mar 2024 18:40:22 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 79883140556;
+	Fri, 29 Mar 2024 18:56:23 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+	by APP2 (Coremail) with SMTP id GxC2BwDnISZMngZmVsAqBQ--.12203S2;
+	Fri, 29 Mar 2024 11:56:22 +0100 (CET)
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: zohar@linux.ibm.com,
+	dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com
+Cc: linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	pc@manguebit.com,
+	christian@brauner.io,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	stable@vger.kernel.org,
+	Steve French <smfrench@gmail.com>
+Subject: [PATCH 1/2] security: Handle dentries without inode in security_path_post_mknod()
+Date: Fri, 29 Mar 2024 11:56:08 +0100
+Message-Id: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328123805.3886026-1-srish.srinivasan@broadcom.com> <2024032945-unheated-evacuee-6e0a@gregkh>
-In-Reply-To: <2024032945-unheated-evacuee-6e0a@gregkh>
-From: Srish Srinivasan <srish.srinivasan@broadcom.com>
-Date: Fri, 29 Mar 2024 16:02:57 +0530
-Message-ID: <CA+1BbzyCr4sFS8qQ4U6g6mi-sD72y==ubBd2bxXiRLEvvx8-KQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1.y] net: tls: handle backlogging of crypto requests
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, borisp@nvidia.com, john.fastabend@gmail.com, 
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	vakul.garg@nxp.com, davejwatson@fb.com, netdev@vger.kernel.org, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Vasavi Sirnapalli <vasavi.sirnapalli@broadcom.com>, Sabrina Dubroca <sd@queasysnail.net>, 
-	Simon Horman <horms@kernel.org>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:GxC2BwDnISZMngZmVsAqBQ--.12203S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXrWrAFWkCw4fWw45ury8Krg_yoWrXryUpF
+	4rt3WkJr95XFy8Wr18AFy7u3WSkay5WFWUWan5Wa1ayFnxXr1jqrs2vryY9rW5tr4UGryx
+	twnFyrsxAa1qyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvab4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
+	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6Fyj6rWUJwCI42IY6I8E87Iv
+	67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
+	uYvjxUxo7KDUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQARBF1jj5vtpQABs3
 
-On Fri, Mar 29, 2024 at 2:53=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Thu, Mar 28, 2024 at 06:08:05PM +0530, Srish Srinivasan wrote:
-> > From: Jakub Kicinski <kuba@kernel.org>
-> >
-> > commit 8590541473188741055d27b955db0777569438e3 upstream
-> >
-> > Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
-> > requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
-> >  -EBUSY instead of -EINPROGRESS in valid situations. For example, when
-> > the cryptd queue for AESNI is full (easy to trigger with an
-> > artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
-> > to the backlog but still processed. In that case, the async callback
-> > will also be called twice: first with err =3D=3D -EINPROGRESS, which it
-> > seems we can just ignore, then with err =3D=3D 0.
-> >
-> > Compared to Sabrina's original patch this version uses the new
-> > tls_*crypt_async_wait() helpers and converts the EBUSY to
-> > EINPROGRESS to avoid having to modify all the error handling
-> > paths. The handling is identical.
-> >
-> > Fixes: a54667f6728c ("tls: Add support for encryption using async offlo=
-ad accelerator")
-> > Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls =
-records")
-> > Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
-> > Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-> > Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66=
-983f28.1694018970.git.sd@queasysnail.net/
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > Signed-off-by: David S. Miller <davem@davemloft.net>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > [Srish: fixed merge-conflict in stable branch linux-6.1.y,
-> > needs to go on top of https://lore.kernel.org/stable/20240307155930.913=
-525-1-lee@kernel.org/]
-> > Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
-> > ---
-> >  net/tls/tls_sw.c | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
->
-> Now queued up, thanks.
->
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Greg, this patch (i.e. v1) has hunk failures.
+Commit 08abce60d63fi ("security: Introduce path_post_mknod hook")
+introduced security_path_post_mknod(), to replace the IMA-specific call to
+ima_post_path_mknod().
 
-Just now I have sent v2 for this patch (after resolving hunks).
-Requesting you to queue up v2:
-https://lore.kernel.org/stable/20240329102540.3888561-1-srish.srinivasan@br=
-oadcom.com/T/#m164567a5bd32085931a1b1367ae12e4102870111
+For symmetry with security_path_mknod(), security_path_post_mknod() is
+called after a successful mknod operation, for any file type, rather than
+only for regular files at the time there was the IMA call.
 
-Sorry for the inconvenience.
+However, as reported by VFS maintainers, successful mknod operation does
+not mean that the dentry always has an inode attached to it (for example,
+not for FIFOs on a SAMBA mount).
 
-> greg k-h
+If that condition happens, the kernel crashes when
+security_path_post_mknod() attempts to verify if the inode associated to
+the dentry is private.
+
+Add an extra check to first verify if there is an inode attached to the
+dentry, before checking if the inode is private. Also add the same check to
+the current users of the path_post_mknod hook, ima_post_path_mknod() and
+evm_post_path_mknod().
+
+Finally, use the proper helper, d_backing_inode(), to retrieve the inode
+from the dentry in ima_post_path_mknod().
+
+Cc: stable@vger.kernel.org # 6.8.x
+Reported-by: Steve French <smfrench@gmail.com>
+Closes: https://lore.kernel.org/linux-kernel/CAH2r5msAVzxCUHHG8VKrMPUKQHmBpE6K9_vjhgDa1uAvwx4ppw@mail.gmail.com/
+Fixes: 08abce60d63fi ("security: Introduce path_post_mknod hook")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+---
+ security/integrity/evm/evm_main.c | 6 ++++--
+ security/integrity/ima/ima_main.c | 5 +++--
+ security/security.c               | 4 +++-
+ 3 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
+index 81dbade5b9b3..ec1659273fcf 100644
+--- a/security/integrity/evm/evm_main.c
++++ b/security/integrity/evm/evm_main.c
+@@ -1037,11 +1037,13 @@ static void evm_file_release(struct file *file)
+ static void evm_post_path_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
+ {
+ 	struct inode *inode = d_backing_inode(dentry);
+-	struct evm_iint_cache *iint = evm_iint_inode(inode);
++	struct evm_iint_cache *iint;
+ 
+-	if (!S_ISREG(inode->i_mode))
++	/* path_post_mknod hook might pass dentries without attached inode. */
++	if (!inode || !S_ISREG(inode->i_mode))
+ 		return;
+ 
++	iint = evm_iint_inode(inode);
+ 	if (iint)
+ 		iint->flags |= EVM_NEW_FILE;
+ }
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index c84e8c55333d..afc883e60cf3 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -719,10 +719,11 @@ static void ima_post_create_tmpfile(struct mnt_idmap *idmap,
+ static void ima_post_path_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
+ {
+ 	struct ima_iint_cache *iint;
+-	struct inode *inode = dentry->d_inode;
++	struct inode *inode = d_backing_inode(dentry);
+ 	int must_appraise;
+ 
+-	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
++	/* path_post_mknod hook might pass dentries without attached inode. */
++	if (!ima_policy_flag || !inode || !S_ISREG(inode->i_mode))
+ 		return;
+ 
+ 	must_appraise = ima_must_appraise(idmap, inode, MAY_ACCESS,
+diff --git a/security/security.c b/security/security.c
+index 7e118858b545..455f0749e1b0 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -1801,7 +1801,9 @@ EXPORT_SYMBOL(security_path_mknod);
+  */
+ void security_path_post_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
+ {
+-	if (unlikely(IS_PRIVATE(d_backing_inode(dentry))))
++	/* Not all dentries have an inode attached after mknod. */
++	if (d_backing_inode(dentry) &&
++	    unlikely(IS_PRIVATE(d_backing_inode(dentry))))
+ 		return;
+ 	call_void_hook(path_post_mknod, idmap, dentry);
+ }
+-- 
+2.34.1
+
 
