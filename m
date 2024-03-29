@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-33630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05399891E39
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:36:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FA4891E3A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D041F2E6AC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:36:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C38501F2E7CC
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6932F14D433;
-	Fri, 29 Mar 2024 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB511AA2ED;
+	Fri, 29 Mar 2024 12:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mi9M8JnT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdI5WHf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241F51A9CFB;
-	Fri, 29 Mar 2024 12:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BB11AA2E3;
+	Fri, 29 Mar 2024 12:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716508; cv=none; b=RsUrPFyDRPbBVq+uikQjAvTMEcYThiWGDSrhzBRrVVB2klO6HQPqTk+k8ffNoXnH1Mu/oEUBR3RqxWRLXzteHvv/4Qv3kjdhBJlL+g4WopuDhZmJQtjPRnI811EuYQi7mldYRTo9SJqs/blWc3lm/6FtPhMdOD1Ya3q5povAMyI=
+	t=1711716510; cv=none; b=rS3hR+AeXJFEU+yD6sl/uFiQkxX0zU+0EdXU/z/mjJUSd2nBSj/ZB7ttskqkjCY0OcQeQ9ZBABF0ilJPIUWJhiTwLJeekj2mkdPvMSVjocgrvwiIGEkXzZgv9cnJjYW+NnOMb/wIHW+sacQ5bhTWogl7HfvDvs92f4hkDxMbx04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716508; c=relaxed/simple;
-	bh=z3XiLMh0cK+G0ZnTWiXCzpuT2OM6i7XU0zkUIoZQdhc=;
+	s=arc-20240116; t=1711716510; c=relaxed/simple;
+	bh=VKEh8WoAVQm91ORr+Wi6O1sNZ5hN6y39we68l0cN8sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V32fFl2X9ibKZqtvJLiAL6uIdT1VBfrLucf/1Ppa+b6VNbZHyE94MwcjWLrNdghulsJO4wwr+cu3hGfp4WxTiSmgOHzYPaxeUicV4mfp2QjsahHYsRQ3lAyDmxeaeNqZ8yBUrQQtVpQamdH2BotRQdRtKuKx+IN58ccBP9Y0UXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mi9M8JnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805CFC433F1;
-	Fri, 29 Mar 2024 12:48:26 +0000 (UTC)
+	 MIME-Version; b=cBjZGVboHrGXMmEtBEKle2swCciFEMtxvreqvRoyWv1gErHd8xnUFD9j4v77fSFW+mDMI1L2EU6V8Hb7P8LkTlq6YS3ke7DnlsIgrO7XlGEpgAefdlq0bx5jaTdiMJkhzKFBTQD1qzXTK63j+r0qBXcusqzdNmjQZ7vWf5pfZD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdI5WHf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2657C43390;
+	Fri, 29 Mar 2024 12:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716507;
-	bh=z3XiLMh0cK+G0ZnTWiXCzpuT2OM6i7XU0zkUIoZQdhc=;
+	s=k20201202; t=1711716510;
+	bh=VKEh8WoAVQm91ORr+Wi6O1sNZ5hN6y39we68l0cN8sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mi9M8JnTczFjd+ZjXzLparALKEpnaNz2E/qsIHk/Wyf0qHS6CGgH44dTgYQr3XGbR
-	 K4WqCkNJ362bvHvDya/HonRHzQZxUSp7YqrjNjpEcRQfwevqM/TMPU9g0PDtNjZCFT
-	 evUP2dTdbPumamhtiGdDnpC0GuDcpiwoDiFklsuxBWD1TeVJg3zzu7Q2lflzhpQ74B
-	 XFeQh+OnTc7DSG72h9SH0XLqBS6S4bvopH2ShgUnEVAKlB/QrFYnN03hmSt8q2dF/l
-	 FnpAo5RleiIHVqwwP4v9WtB78G0/XeqOMzHLFcAofylxwoCLTwRcu9Jck7CyxE2fKa
-	 P1opWPu6py7FQ==
+	b=DdI5WHf/tlX7ikbqVSaJ0rRYhdoYJf55Vq+dtS6ldj92S5vDreG6+b4GA+hobRKrf
+	 zE15BJSHzfaV6n8oGCwo+vXDe3WE+loZhgnwx/raZY6n8jD/U57LLXVUEl84OdiyAN
+	 scBSlts86ElrEaQXFuZqrlfEJJVL2qmON33EOh5mFo9OIru4gmrXYCb+wheE2Kclv7
+	 2Ns1hNxnarR4BJcaZlI7e81TMsBiAgo2I3+MHmq83EmwH5XtxXbHjKPSaHTcusMdcz
+	 YkF98+ec92jqItfGMFskzSRF+DM/KOn/m41+wJSYdS9YkJvPKyjGBtEwVbcs9icsB2
+	 8h/TYm/TOC27A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	Sam Ravnborg <sam@ravnborg.org>,
+Cc: Ian Rogers <irogers@google.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	andreas@gaisler.com,
-	masahiroy@kernel.org,
-	svens@linux.ibm.com,
-	nicolas@fjasle.eu,
-	sparclinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 21/34] sparc: vdso: Disable UBSAN instrumentation
-Date: Fri, 29 Mar 2024 08:47:22 -0400
-Message-ID: <20240329124750.3092394-21-sashal@kernel.org>
+	peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	adrian.hunter@intel.com,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 22/34] libperf evlist: Avoid out-of-bounds access
+Date: Fri, 29 Mar 2024 08:47:23 -0400
+Message-ID: <20240329124750.3092394-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
 References: <20240329124750.3092394-1-sashal@kernel.org>
@@ -70,36 +70,124 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <keescook@chromium.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit d4be85d068b4418c341f79b654399f7f0891069a ]
+[ Upstream commit 1947b92464c3268381604bbe2ac977a3fd78192f ]
 
-The UBSAN instrumentation cannot work in the vDSO since it is executing
-in userspace, so disable it in the Makefile. Fixes the build failures
-such as:
+Parallel testing appears to show a race between allocating and setting
+evsel ids. As there is a bounds check on the xyarray it yields a segv
+like:
 
-arch/sparc/vdso/vclock_gettime.c:217: undefined reference to `__ubsan_handle_shift_out_of_bounds'
+```
+AddressSanitizer:DEADLYSIGNAL
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://lore.kernel.org/all/20240224073617.GA2959352@ravnborg.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+=================================================================
+
+==484408==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010
+
+==484408==The signal is caused by a WRITE memory access.
+
+==484408==Hint: address points to the zero page.
+
+    #0 0x55cef5d4eff4 in perf_evlist__id_hash tools/lib/perf/evlist.c:256
+    #1 0x55cef5d4f132 in perf_evlist__id_add tools/lib/perf/evlist.c:274
+    #2 0x55cef5d4f545 in perf_evlist__id_add_fd tools/lib/perf/evlist.c:315
+    #3 0x55cef5a1923f in store_evsel_ids util/evsel.c:3130
+    #4 0x55cef5a19400 in evsel__store_ids util/evsel.c:3147
+    #5 0x55cef5888204 in __run_perf_stat tools/perf/builtin-stat.c:832
+    #6 0x55cef5888c06 in run_perf_stat tools/perf/builtin-stat.c:960
+    #7 0x55cef58932db in cmd_stat tools/perf/builtin-stat.c:2878
+...
+```
+
+Avoid this crash by early exiting the perf_evlist__id_add_fd and
+perf_evlist__id_add is the access is out-of-bounds.
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240229070757.796244-1-irogers@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/perf/evlist.c                  | 18 ++++++++++++------
+ tools/lib/perf/include/internal/evlist.h |  4 ++--
+ 2 files changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
-index c5e1545bc5cf9..d0f6487d1e790 100644
---- a/arch/sparc/vdso/Makefile
-+++ b/arch/sparc/vdso/Makefile
-@@ -2,6 +2,7 @@
- #
- # Building vDSO images for sparc.
- #
-+UBSAN_SANITIZE := n
+diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
+index 5146ff0fa078c..6aa1c35273a18 100644
+--- a/tools/lib/perf/evlist.c
++++ b/tools/lib/perf/evlist.c
+@@ -224,10 +224,10 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist)
  
- VDSO64-$(CONFIG_SPARC64)	:= y
- VDSOCOMPAT-$(CONFIG_COMPAT)	:= y
+ static void perf_evlist__id_hash(struct perf_evlist *evlist,
+ 				 struct perf_evsel *evsel,
+-				 int cpu, int thread, u64 id)
++				 int cpu_map_idx, int thread, u64 id)
+ {
+ 	int hash;
+-	struct perf_sample_id *sid = SID(evsel, cpu, thread);
++	struct perf_sample_id *sid = SID(evsel, cpu_map_idx, thread);
+ 
+ 	sid->id = id;
+ 	sid->evsel = evsel;
+@@ -245,21 +245,27 @@ void perf_evlist__reset_id_hash(struct perf_evlist *evlist)
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id)
++			 int cpu_map_idx, int thread, u64 id)
+ {
+-	perf_evlist__id_hash(evlist, evsel, cpu, thread, id);
++	if (!SID(evsel, cpu_map_idx, thread))
++		return;
++
++	perf_evlist__id_hash(evlist, evsel, cpu_map_idx, thread, id);
+ 	evsel->id[evsel->ids++] = id;
+ }
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd)
++			   int cpu_map_idx, int thread, int fd)
+ {
+ 	u64 read_data[4] = { 0, };
+ 	int id_idx = 1; /* The first entry is the counter value */
+ 	u64 id;
+ 	int ret;
+ 
++	if (!SID(evsel, cpu_map_idx, thread))
++		return -1;
++
+ 	ret = ioctl(fd, PERF_EVENT_IOC_ID, &id);
+ 	if (!ret)
+ 		goto add;
+@@ -288,7 +294,7 @@ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 	id = read_data[id_idx];
+ 
+ add:
+-	perf_evlist__id_add(evlist, evsel, cpu, thread, id);
++	perf_evlist__id_add(evlist, evsel, cpu_map_idx, thread, id);
+ 	return 0;
+ }
+ 
+diff --git a/tools/lib/perf/include/internal/evlist.h b/tools/lib/perf/include/internal/evlist.h
+index f366dbad6a88c..49b17b2b3923f 100644
+--- a/tools/lib/perf/include/internal/evlist.h
++++ b/tools/lib/perf/include/internal/evlist.h
+@@ -119,11 +119,11 @@ u64 perf_evlist__read_format(struct perf_evlist *evlist);
+ 
+ void perf_evlist__id_add(struct perf_evlist *evlist,
+ 			 struct perf_evsel *evsel,
+-			 int cpu, int thread, u64 id);
++			 int cpu_map_idx, int thread, u64 id);
+ 
+ int perf_evlist__id_add_fd(struct perf_evlist *evlist,
+ 			   struct perf_evsel *evsel,
+-			   int cpu, int thread, int fd);
++			   int cpu_map_idx, int thread, int fd);
+ 
+ void perf_evlist__reset_id_hash(struct perf_evlist *evlist);
+ 
 -- 
 2.43.0
 
