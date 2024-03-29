@@ -1,45 +1,52 @@
-Return-Path: <stable+bounces-33741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F241B8920C2
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A826189215E
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 17:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD00D28691A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9BF287E16
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748FD1EF03;
-	Fri, 29 Mar 2024 15:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27F185623;
+	Fri, 29 Mar 2024 16:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="PBx+Aqjj"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B821C0DD0;
-	Fri, 29 Mar 2024 15:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0455085636;
+	Fri, 29 Mar 2024 16:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711727148; cv=none; b=PKyxCYDUI/eRKEmbGDZ70ASq7qEvxdAP1D5HGvf5vJKcW2YHnPXTWkTCFBETK+6S+GUT6guWCZL7TZlhujH0yf2f7HhEYsdCEut6IQsTjaEX/l0faB67LwmcLfIwxTwaKmq6vhdtSfuW0uGBCjaRm7xwTH+FuWX/SGzpyEA5vwo=
+	t=1711728854; cv=none; b=d6+zbpi3ss+c4FYYkZnYZ/xRq4gvruVbc8SATyMC1Z9EUpsFgADM1Tj4zYksSBCmb8p8iaO8zj5FwQvgymwTj/hJUuNzeHKglldK1fbjQK2ImoJAyz3XPtWFVDh8bMFUvH4gZCiI42evVFEhhP2CBUafViHmMMuM9XXmw8XFMBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711727148; c=relaxed/simple;
-	bh=LqWjA+/6Exik0OsXA9dAI7OvBuQWFxpxADnnIBMeYmg=;
+	s=arc-20240116; t=1711728854; c=relaxed/simple;
+	bh=i2wZH2CNvVHIqtarxVDuKNJBCbMqzcBWHMfPED1qheE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lHNzmPWUKhIFM0fNyZ9n3/u191qmtgBs4GsC3x9hEDtELGrj+Ps+6jEFNsqKsoQbtpu8TcLq+EeRqNbvfuk6rADGaCP4AKBsxqS5ZT994w4YeCDMtsGnoP7+D7QAVkLQMGU6x7wEqSopCR7WoHCCG7YiaWjx4FExENoCW0F7rPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4V5kk16DXzz9v7JY;
-	Fri, 29 Mar 2024 23:25:13 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 445091402A5;
-	Fri, 29 Mar 2024 23:45:28 +0800 (CST)
-Received: from [10.48.128.185] (unknown [10.48.128.185])
-	by APP2 (Coremail) with SMTP id GxC2BwAH8yYM4gZmgxYuBQ--.12307S2;
-	Fri, 29 Mar 2024 16:45:27 +0100 (CET)
-Message-ID: <0cce46c1-3a78-435c-b60e-04c1d790529b@huaweicloud.com>
-Date: Fri, 29 Mar 2024 16:45:15 +0100
+	 In-Reply-To:Content-Type; b=BmT1XQtf4tZXO6ADsWfKSxS154McdkAlOdE6uDycw0BoCPnQOM6T1NjQzkZwCiKslfbyc1oF6BLtw27HP6cw2qiNrb9+vhSBLWiB/Xy/dxfjUrbP753s1UWvvNRBzfR897TAFh23FcO++dYjpLavdR51a8NOZFYU2pjMr3nGsD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=PBx+Aqjj; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=9xsIHYLie0pvh9FebvDoNiQkO3Ms0+BZXLDiPJEuBz0=;
+	t=1711728852; x=1712160852; b=PBx+AqjjCIzuGCV8j5fe/CSSJAGJA+6/2bJWDu9vf6k29OT
+	yom1KqeM+Nh2WmIzs0bjfj5YX6EoRndBVU4J5XdQDC38xWW9wT7h3CgKzDMy2vQ5BzoRfluS06Ywf
+	9/sm890cmEHtkJaVJXcXqoF4+XSsMKZXcOiQl5sVNs9nNUKSYkW3uz1KniwNWiqGGZIN4SLYVF54a
+	PGx0oqRgE6GvMwZmw4KJsCkl9Ssv3RiQV9iV6Ct93CMqS/d90WJQa7/3xzv3MeeE9gzJZz61sNJ+4
+	zZVY4X4O86d3VsskeS+JEfsDYNK3tAfHAuR9OHYQ/CekviFAC+j6YH3hYiqErIsQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rqErk-0005vd-07; Fri, 29 Mar 2024 17:14:04 +0100
+Message-ID: <2a4a2d24-2c4d-47cc-bc1b-30c309c173e3@leemhuis.info>
+Date: Fri, 29 Mar 2024 17:14:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,77 +54,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ima: evm: Rename *_post_path_mknod() to
- *_path_post_mknod()
-Content-Language: en-US
-To: Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
- eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
- serge@hallyn.com
-Cc: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-cifs@vger.kernel.org, viro@zeniv.linux.org.uk, pc@manguebit.com,
- christian@brauner.io, Roberto Sassu <roberto.sassu@huawei.com>,
+Subject: Re: Regression : Latitude 5500 do not always go to true sleep mode
+To: =?UTF-8?Q?L=C3=A9o_COLISSON?= <leo.colisson@gmail.com>,
  stable@vger.kernel.org
-References: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
- <20240329105609.1566309-2-roberto.sassu@huaweicloud.com>
- <e9181ec0bc07a23fc694d47b4ed49635d1039d89.camel@linux.ibm.com>
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-In-Reply-To: <e9181ec0bc07a23fc694d47b4ed49635d1039d89.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:GxC2BwAH8yYM4gZmgxYuBQ--.12307S2
-X-Coremail-Antispam: 1UD129KBjvJXoWruF45GF4kCFyDtw1rKFWrGrg_yoW8JrW7pF
-	W8t3Z8Crn5tr1xAFnavFW3AFW8AayUXF4YqFn5try5Z34aganY9rWI9a4FgasxKr429a4a
-	yF1SqrnIv3yUArDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
-	AIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-	c7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUo0eHDUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQARBF1jj5vwDwABsA
+Cc: regressions@lists.linux.dev
+References: <1ee68691-9eb4-404a-adb4-fdaaf12c905d@gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <1ee68691-9eb4-404a-adb4-fdaaf12c905d@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1711728852;60f62002;
+X-HE-SMSGID: 1rqErk-0005vd-07
 
-On 3/29/2024 4:16 PM, Mimi Zohar wrote:
-> On Fri, 2024-03-29 at 11:56 +0100, Roberto Sassu wrote:
->> From: Roberto Sassu <roberto.sassu@huawei.com>
->>
->> Rename ima_post_path_mknod() and evm_post_path_mknod() respectively to
->> ima_path_post_mknod() and evm_path_post_mknod(), to facilitate finding
->> users of the path_post_mknod LSM hook.
->>
->> Cc: stable@vger.kernel.org # 6.8.x
+On 29.03.24 16:21, Léo COLISSON wrote:
 > 
-> Since commit cd3cec0a02c7 ("ima: Move to LSM infrastructure") was upstreamed in
-> this open window.  This change does not need to be packported and should be
-> limited to IMA and EVM full fledge LSMs.
-
-Yes, got it wrong.
-
->> Reported-by: Christian Brauner <christian@brauner.io>
->> Closes:
->> https://lore.kernel.org/linux-kernel/20240328-raushalten-krass-cb040068bde9@brauner/
->> Fixes: 05d1a717ec04 ("ima: add support for creating files using the mknodat
->> syscall")
+> Since I upgraded my system (from NixOs release
+> 2caf4ef5005ecc68141ecb4aac271079f7371c44, running linux 5.15.90, to
+> b8697e57f10292a6165a20f03d2f42920dfaf973, running linux 6.6.19), my
+> system started to experience a weird behavior : when closing the lid,
+> the system does not always go to a true sleep mode : when I restart it,
+> the battery is drained. Not sure what I can try here.
 > 
-> "Fixes: 05d1a717ec04" should be removed.
-
-Ok, I agree that it is not a necessary fix for stable kernels. We can 
-reconsider it if there is a bug fix depending on it.
-
-Thanks
-
-Roberto
-
->> Fixes: cd3cec0a02c7 ("ima: Move to LSM infrastructure")
->> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> You can find more information on my tries here, with some journalctl logs :
 > 
-> Acked-by: Mimi Zohar <zohar@linux.ibm.com>
+> - https://github.com/NixOS/nixpkgs/issues/299464
 > 
+> -
+> https://discourse.nixos.org/t/since-upgrade-my-laptop-does-not-go-to-sleep-when-closing-the-lid/42243/2
 
+Thx for the report, but the sad reality is: I doubt that any kernel
+developer will look into the report unless you perform a bisection to
+find the change that causes the problem. That's because the report lacks
+details and this kind of problem can be caused by various areas of the
+kernels, so none of the developer will feel responsible to take a closer
+look. From a quick look into your log it seems you are also using
+out-of-tree drivers that taint the kernel, which is another reason why
+it's unlikely that anyone will take a closer look.
+
+For further details on reporting issues and mistakes many people make
+(and you might want to avoid in case you want to submit a improve
+report), see:
+
+https://docs.kernel.org/admin-guide/reporting-issues.html
+https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
+
+Ciao, Thorsten
 
