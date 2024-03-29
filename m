@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-33600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9F0891DEC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:28:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FA4891DEF
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 608B11C27D17
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:28:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1953A1F2C5FC
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B456A16C428;
-	Fri, 29 Mar 2024 12:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236751A4C14;
+	Fri, 29 Mar 2024 12:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSyjNtUk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEbrRgXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE471A33BF;
-	Fri, 29 Mar 2024 12:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF811A4C0E;
+	Fri, 29 Mar 2024 12:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716441; cv=none; b=W2s/X1ZdqvKXQ0ZV/UJElCHyY9u8FZ4KyrP3ssNOgLfHJBRhUepTfhURy7N0c31B490nCVisleu/JvCi6N+YoQOHu6s68jtHtxzh7BOwxHnuwmebXCNMEkYJX47RBQFC1A5OmQzdqvvAYI/jEgrdx5hHzmO6lvNo+VQAjOxrldU=
+	t=1711716444; cv=none; b=G7890A57K5oJLjD1wwXpigFd9wGLAZIob2F4qGlOwD+GNW2fWedTdrDjPdWNNsZVIvwPw9nM5xSkiqq8rxbIHfI77gxJAGO6XYJB7bBWjmeNKJ6VN0YhbMBP02LtnrAHet9KIHQD23x/JvqqFGjUU44KQFj2+sZIj59OP6dg20Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716441; c=relaxed/simple;
-	bh=Yx4z1c+Bu5s+V0sWrTPLA22MMO08Ob0bgjwlHnhaN5k=;
+	s=arc-20240116; t=1711716444; c=relaxed/simple;
+	bh=zZ9Pp+gF5Nd2ff9Hb0BYwi0APXWGdw1wvGYH0OFOOH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRnieWKjGmv805vYHA69xDH8P90effrPKomgElb6ex8/8jsddFdX87PYKmAy+hKS02/TCJk2aWxMEtF/yvobbDDL2GFNoBjrONs2NKR2BhGQbkcqCG/t294k9wKdSTXag0pi6951cB6Tga81dntJf5SuQeukZCRfkYk/AyUs6P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSyjNtUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A39FC43330;
-	Fri, 29 Mar 2024 12:47:20 +0000 (UTC)
+	 MIME-Version; b=a+SsPgXI0ITG97p7nbi4Yc8hAQPPwVepQPHXPBIMaiFcVbKw67tmIKaGZauXdXkBaToeIAKjEB8SZc49fxc4ZimCwvAR2A/JY2sfcurVmqwu/Dth7nmKlWXoDhOTY/6PVqiSUgAz+LM0wVORUOxCrPjh2YEgIrlsFONollUGmDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEbrRgXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D8DC43394;
+	Fri, 29 Mar 2024 12:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716441;
-	bh=Yx4z1c+Bu5s+V0sWrTPLA22MMO08Ob0bgjwlHnhaN5k=;
+	s=k20201202; t=1711716444;
+	bh=zZ9Pp+gF5Nd2ff9Hb0BYwi0APXWGdw1wvGYH0OFOOH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSyjNtUkO5NPXkWufLgjgmhXxI5TEQ3T4jKj8KlamkU5RB2GlJCiudK5IfbzvaoMi
-	 66xUuOkL1DS52e8PtCSTKtlqF75sxoLSlvf2tNyH2NHECGJbRn/BBUD0ER/cdjbfYn
-	 EEYAcPY6FlbaTPY6q0hm5BZFdfW+XwaANRZtz7k/1D4aQuH+4vBPJm4/nHm/v/tthV
-	 qdXg8+TfNhim1rTWj3oPKVIHnowzU+e7umbBjvHQj4n6aUkV3zwR5HJNdfPlvFtpNU
-	 NAexU79Bmo1Sug8LM9pyCl5wpfwN4Qwtj1Co/lID6gl3Mhp6BbYtBtIqvNzQN4rALD
-	 uoSZRD5I2EclQ==
+	b=CEbrRgXj73lv4wxzJHu1hAqktHjSfioIA08JwDhnpjm6RfVK0kfLfBjRg00cJYXfU
+	 6cPdljFYhCAkdDGLNtjSyCGBG3AadmRzx7GKLLHAOB6FkciDZkQJz7TYDVs4zWzDxu
+	 0i4bvhjliRkjhzjKRB3bVul3O9mWDd4scYAIg6nlpiJW6FJ7Wj60RTxRO4ufyk3nib
+	 IxItB7NhTTVUDSmH376kZnHdwZmwgBHzYI+K3hcvVZX0D23gqo9mG5o/0DDi4lETaF
+	 m5ljgIuyya4JCtKf7kyiOZRpqHZ1YFjBj5Y1jbVuUNzRGUzfnKGJE8Fjwo8P9PanGc
+	 v+qL1R1rszgqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Smirnov <r.smirnov@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: "Ricardo B. Marliere" <ricardo@marliere.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 43/52] block: prevent division by zero in blk_rq_stat_sum()
-Date: Fri, 29 Mar 2024 08:45:37 -0400
-Message-ID: <20240329124605.3091273-43-sashal@kernel.org>
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 45/52] Input: make input_class constant
+Date: Fri, 29 Mar 2024 08:45:39 -0400
+Message-ID: <20240329124605.3091273-45-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124605.3091273-1-sashal@kernel.org>
 References: <20240329124605.3091273-1-sashal@kernel.org>
@@ -66,38 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.83
 Content-Transfer-Encoding: 8bit
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
 
-[ Upstream commit 93f52fbeaf4b676b21acfe42a5152620e6770d02 ]
+[ Upstream commit a4735d40a5da96a637af6e5bf9f6ec8b9d996acd ]
 
-The expression dst->nr_samples + src->nr_samples may
-have zero value on overflow. It is necessary to add
-a check to avoid division by zero.
+Since commit 43a7206b0963 ("driver core: class: make class_register() take
+a const *"), the driver core allows for struct class to be in read-only
+memory, so move the input_class structure to be declared at build time
+placing it into read-only memory, instead of having to be dynamically
+allocated at boot time.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20240305134509.23108-1-r.smirnov@omp.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Link: https://lore.kernel.org/r/20240305-class_cleanup-input-v1-1-0c3d950c25db@marliere.net
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-stat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/input.c | 2 +-
+ include/linux/input.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-stat.c b/block/blk-stat.c
-index da9407b7d4abf..41be89ecaf20e 100644
---- a/block/blk-stat.c
-+++ b/block/blk-stat.c
-@@ -28,7 +28,7 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
- /* src is a per-cpu stat, mean isn't initialized */
- void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
- {
--	if (!src->nr_samples)
-+	if (dst->nr_samples + src->nr_samples <= dst->nr_samples)
- 		return;
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index 8b6a922f84702..067a9b1d5befc 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -1918,7 +1918,7 @@ static char *input_devnode(struct device *dev, umode_t *mode)
+ 	return kasprintf(GFP_KERNEL, "input/%s", dev_name(dev));
+ }
  
- 	dst->min = min(dst->min, src->min);
+-struct class input_class = {
++const struct class input_class = {
+ 	.name		= "input",
+ 	.devnode	= input_devnode,
+ };
+diff --git a/include/linux/input.h b/include/linux/input.h
+index 49790c1bd2c43..fa656f30081f6 100644
+--- a/include/linux/input.h
++++ b/include/linux/input.h
+@@ -514,7 +514,7 @@ void input_enable_softrepeat(struct input_dev *dev, int delay, int period);
+ 
+ bool input_device_enabled(struct input_dev *dev);
+ 
+-extern struct class input_class;
++extern const struct class input_class;
+ 
+ /**
+  * struct ff_device - force-feedback part of an input device
 -- 
 2.43.0
 
