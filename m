@@ -1,190 +1,166 @@
-Return-Path: <stable+bounces-33148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F008917DF
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:34:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB23E8917DE
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A98841C219B7
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:34:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81138284FE8
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CAD6A33C;
-	Fri, 29 Mar 2024 11:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047AF6A34F;
+	Fri, 29 Mar 2024 11:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="15ofR0A7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HHiSefgg"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F991096F;
-	Fri, 29 Mar 2024 11:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B421096F
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 11:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711712066; cv=none; b=JZhpcIZbtEusdP6RS2+Wm/DL+P3LJ2qPYMN5wxOsHjBiT4NQv4ToumXKAgk12gPCqJRPlf5wTurtbBlf48OY9VfYeCjYTW9DvZefwS263T0E7fgoSV9jtFwmt99OyGxF5WXSMZIwvlKh8DbUYhxuaKs8gU0XjOWDv6O4ciZayNU=
+	t=1711712037; cv=none; b=sMxy3RAYN2W7KaXHK714GkrPQB5XVkEoKVJSkgB/LDGpRv7CU+4Rb3NXntvpLw6DcKm51Qv067z3Xhd4dEx2yczGcdK4FLXx94qGEvgcuCyn/ck5qlPM811DsJqCQFzrldNM80vjGQNeqoiNq43cPGGxKXImd/wnGb//usm8GYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711712066; c=relaxed/simple;
-	bh=CD+U/4SMvslHllsXoojsThdlHsrwenDb0wNTOqeQPjU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W0xtjAeyrMPSP1oLtahu1aNjqTv8BgmRpdr8gzgJKdJVkzYdUf6YaZLExX9ySN9plNc5p6xm/Wc/QHinJowe49B9U0umYfK3krZIEhhNhyy/bg5vKS4H1AEbgjxDCCd9IB9MQTXLymN2rTljxQLoSplHV0wPi/Nbbb0HBQXC87o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=15ofR0A7; arc=none smtp.client-ip=212.227.126.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valentinobst.de;
-	s=s1-ionos; t=1711711998; x=1712316798; i=kernel@valentinobst.de;
-	bh=kiemghf0V/GSK2wbZLm1KTLUSSgc/ODkFkc449G7fSI=;
-	h=X-UI-Sender-Class:From:Date:Subject:To:Cc;
-	b=15ofR0A76otzeI/sIVKoaC8Qv2gy7vxHim2Ymh1CY7FWbG+DWtRahTZw6V+CoZPM
-	 sgAAJccwjr3jXRsVI72swtSHjdLD09Tjckr8f+c0IIbGHTfEzvdwb9FR9i9FnCwPW
-	 hF/zg05P8SMCIJcE6ViA7FOT+OrS6vG9Lg2z+0HKgbwtSYJnmKygP6q19B5wVfXnb
-	 q84NlE/zJCPZi96h/eQ9glpGb9Zq8qvfaSY41uATCybsQ+wLUCiXETdqJE2Z/EM5U
-	 sg34+2aXk+z4G2rl6bwQQFzVYQz3JTfosFWQEawD+gr5U/gKUWC8mgSuLblGdHdQ/
-	 bqQYw+6lVQhP1ZJ58w==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from [10.77.77.61] ([217.249.70.154]) by mrelayeu.kundenserver.de
- (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N4hex-1soHPN2Wxj-011hm9; Fri, 29 Mar 2024 12:33:18 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-Date: Fri, 29 Mar 2024 12:31:58 +0100
-Subject: [PATCH v3] x86/tools: fix line number reported for malformed lines
+	s=arc-20240116; t=1711712037; c=relaxed/simple;
+	bh=a98z97iZ9qMHChDUAuP9dsimB8jEj34VV0KcH9AYrnk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e9dosiRW5izwb2GHKaOSRd8d8QocYpAQlsGmy90aO0VtWSSjE7euVEnnWLZ69Tz8t6dfiRkCPro7B66QvLTpAyjFWK0vO5t25ejYbiehC6uQV+WflaaPoeGvzOs2dwKbdQcU7RWIBq33n0GBZGOM9I5n9S+mWXUbnf6i6nWP/es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HHiSefgg; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711712034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nxs/nhXmfqPK2CmkDAQIe64EBqgnehcVF3kvjfNJmIA=;
+	b=HHiSefggm1LXlI7PlD3MlLx4/UskpwY6+OAYtDAJB/jjr6YQ0sVYZtuTtM6qfCsbQ7I8Q5
+	Sjc6uzw3dC/rqFwYt+Fjt+Pt4K30OPNWrB9TI+8PC1K5JIZUbrXd4l3jq4FrqMjUUdn9Hb
+	W36yPWV+DyBWacmLerDi79YFI4lhiwc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-oY1N7YXfO4icGR-4LE-WPw-1; Fri, 29 Mar 2024 07:33:53 -0400
+X-MC-Unique: oY1N7YXfO4icGR-4LE-WPw-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a4e3e823acaso15218666b.1
+        for <stable@vger.kernel.org>; Fri, 29 Mar 2024 04:33:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711712032; x=1712316832;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nxs/nhXmfqPK2CmkDAQIe64EBqgnehcVF3kvjfNJmIA=;
+        b=dYMHtPJHVV+ocHV9VJ3X1bjuG5nXdB3+24SDBDjEeGyciXUXct4XxMRA/AzNF85syY
+         Gk7QnfdW2O5kOhZVjbvmpb5bvfwrK19tuJKVIwW71Yrjx6jrGI/4WWYLO+izCg2kO5y1
+         IpkDCOigtCtqT2q3PrbggVYtwTOjEeTn1iAuGAV62NHe1AyG5pgqw2qwfuV7476CGxJy
+         Xo9fTTDHD7bZ45EucXvUyIZZXc5exDVprOXc6aJDQA6BtkpYgKAXvGaMyc80mPQHtXAx
+         tu/LCbOJ45u1hV4PcVn72K9Wms5h2A6Zv9F/CXR6Lfhb+Km0ILnKCkcLvaZ7yYAR4/Ip
+         VmtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSs2wTjcFMroRhQSFyg6CpjUzmoues2xTCTcUCBCHWxv3+byoDxAlL/5mhb9ZTFQRVIAl+diYbpKmEBS9f3itdWg1mZZs6
+X-Gm-Message-State: AOJu0YyZjhwmrslMJUlDMnl0bvw/vAbmpfAZgRBdwx7dxoAHSn6ZHQ6o
+	Lvikhb9PN9ONAT3VpsSZfqts3XdMtSCqJy5TPovv5gX+wSZeso83v6A/5hOAtDD/hKNxc90CqYj
+	RoYlye4BffCujpH49Va3ewi9hGnutw/xR7+gNm9iBtgTsasyuWYdCo3wvCszVtw==
+X-Received: by 2002:a17:906:fd0:b0:a4e:24cf:76d3 with SMTP id c16-20020a1709060fd000b00a4e24cf76d3mr1489186ejk.50.1711712031988;
+        Fri, 29 Mar 2024 04:33:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpicBzyNHMOLooDyw621tGAy3x2axjAjhlvNN+IR7X9qs4jXu2mRhzqMMDXByCJxKQmmm+gw==
+X-Received: by 2002:a17:906:fd0:b0:a4e:24cf:76d3 with SMTP id c16-20020a1709060fd000b00a4e24cf76d3mr1489170ejk.50.1711712031656;
+        Fri, 29 Mar 2024 04:33:51 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id m16-20020a170906581000b00a4a3807929esm1823908ejq.119.2024.03.29.04.33.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Mar 2024 04:33:51 -0700 (PDT)
+Message-ID: <e0641bc4-2154-40ec-a188-c42464ff84ad@redhat.com>
+Date: Fri, 29 Mar 2024 12:33:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20240329-x86-insn-decoder-line-fix-v3-1-ec97e21d63bf@valentinobst.de>
-X-B4-Tracking: v=1; b=H4sIAK2mBmYC/43NQQqDMBAF0KtI1p1iRmtsV71H6UKTSR2QpCQSL
- OLdG10VCqXL/5n/ZhGRAlMUl2IRgRJH9i6H6lAIPXTuQcAmZ4El1iWihLltgF10YEh7QwFGdgS
- WZ1C9tEhSVWityPtnoFzv9u2e88Bx8uG1v0pya/9RkwQJtdLm1EklW91cUzeSm9j5Pk5HQ2KzE
- 3561S8Ps6cN1WfdnG2+/vbWdX0DnP7P+xgBAAA=
-To: Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
- Ingo Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Thomas Gleixner <tglx@linutronix.de>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- John Baublitz <john.m.baublitz@gmail.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, 
- =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
- linux-kernel@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org, 
- Valentin Obst <kernel@valentinobst.de>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711711993; l=3102;
- i=kernel@valentinobst.de; s=20240131; h=from:subject:message-id;
- bh=2yrFMY5+SkggOHssX479kJtPf1H7LqZLVDyny3osaw8=;
- b=/Nn//02Z2oCL5gr446bWK3XQ8O4GS/oo2j5cCI9ik9RCoNR8lTuw66hxInDLN48SptcHnrqzR
- Ky+lvc0vuIMBIAeR3hJ98InwVMWPPLtnydzMN19YC4Qx44LQeWOnzxC
-X-Developer-Key: i=kernel@valentinobst.de; a=ed25519;
- pk=3s7U8y0mqkaiurgHSQQTYWOo2tw5HgzCg5vnJVfw37Y=
-X-Provags-ID: V03:K1:Dw8Wc4f3SmNQdchz8rSOTpOoyWdA1Zrbv/NisIdmEkpeigaiwaZ
- Hntcz/jWJi56Mt3VO+ElFiDob1y0ULkKfnQwo4E3eC0dSngn9kpi4jVawtOVjfba4oYCrKl
- VPzTgVmtZJ4lW8/ROZAUuWT41HSQIdxj0OQck8BzXEEPdAgsfMDMUeSxlAr0O9FaTR3n5VU
- 1b+BMQHsFnyHNSJNg/m7Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7io/rqjPaZQ=;olFbZPdz3zE1etpUCGrzuB58KL8
- PLVp5bABWX65KousaqgreXUxCV5GtNsM+SdTI+kA9goxjenIa2HOpFHFpc6EcEPmixJxTmvkY
- Q7wZpGT6osuw0ChUvNN6lhL81oTeN/i2vJNGAozFIFGLXMbMihzunjSwLqcjQxb63eKXOdXKU
- mkLxbvM+qFl7BArjIMl/j6qSjuzWv1roybzEZUinMU5xCqXIZVFwk60eOvtfN5NGg1xIsRvmy
- SpuGPgRlvveUoQ3gHPwrVirEFzC78yezhr/0plSY9mglqM3NcsSZ2pUynIGAkfXOzLEXNSEjm
- 1VfuRNIUgO+dAiWjNiuMrQylEmtJ0DWPE7ziosRkRESLNVnAfIH+dqMiOhHucKpcMc/FLgZ6i
- mrwQdQaxUksrhmscHAd4TjtQqJQ2GquVey9qvemPH04q6iicbZLGxYE1hImxZpyiTZCW2XdlZ
- ygHHgralNdARXxJLspGMlQ3vNpoHt3gEDOsIKBniuzjKbS90shQQp3wAPoD0pvItsCTHd884j
- uoDl0l4qoMD6hNcOJGTmouKcZnPjVjJNFZMUCr1dyHIzJDq519buQ68Xoc1kQT0pAC+HrXike
- eRo+xLmN3fecC9r9h+9yAminvFu95nt2dWhDEZLpOK/NSon0Fxel1YQdemvltl4AbrmldRRO2
- QKn0pjdELTMcElLvpg1qhgC+9NUd5K4kienmuvyz1h5NVxaF0NHp2eUcCr1eM7iJ0qAkBmFT5
- unIXxEkwQ9bpECDIakWz35cN523+Qjosb+4RoX64A+tPbdPf//CdRI=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] media: ov2680: Allow probing if link-frequencies
+ is absent
+Content-Language: en-US, nl
+To: Fabio Estevam <festevam@gmail.com>, sakari.ailus@linux.intel.com
+Cc: rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com,
+ linux-media@vger.kernel.org, Fabio Estevam <festevam@denx.de>,
+ stable@vger.kernel.org
+References: <20240328224413.2616294-1-festevam@gmail.com>
+ <20240328224413.2616294-2-festevam@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20240328224413.2616294-2-festevam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Commit 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
-included symbol lines in the post-processed objdump output consumed by
-the insn decoder test. This broke the `instuction lines =3D=3D total lines=
-`
-property that `insn_decoder_test.c` relied upon to print the offending
-line's number in error messages. This has the consequence that the line
-number reported on a test failure is unreated to, and much smaller than,
-the line that actually caused the problem.
+Hi,
 
-Add a new variable that counts the combined (insn+symbol) line count and
-report this in the error message.
+On 3/28/24 11:44 PM, Fabio Estevam wrote:
+> From: Fabio Estevam <festevam@denx.de>
+> 
+> Since commit 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint
+> property verification") the ov2680 no longer probes on a imx7s-warp7:
+> 
+> ov2680 1-0036: error -EINVAL: supported link freq 330000000 not found
+> ov2680 1-0036: probe with driver ov2680 failed with error -22
+> 
+> As the 'link-frequencies' property is not mandatory, allow the probe
+> to succeed by skipping the link-frequency verification when the
+> property is absent.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint property verification")
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
-Cc: stable@vger.kernel.org
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Reported-by: John Baublitz <john.m.baublitz@gmail.com>
-Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
-Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-=2D--
-See v2's commit message and [1] for context why this bug made debugging a
-test failure harder than necessary.
+Thanks, patch looks good to me:
 
-[1]: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic=
-/insn_decoder_test.20failure/near/421075039
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Changes in v3:
-- Add Cc stable tag in sign-off area.
-- Make commit message less verbose.
-- Link to v2: https://lore.kernel.org/r/20240223-x86-insn-decoder-line-fix=
--v2-1-cde49c69f402@valentinobst.de
+Regards,
 
-Changes in v2:
-- Added tags 'Reviewed-by', 'Tested-by', 'Reported-by', 'Debugged-by',
-  'Link', and 'Fixes'.
-- Explain why this patch fixes the commit mentioned in the 'Fixes' tag.
-- CCed the stable list and sent to all x86 maintainers.
-- Link to v1: https://lore.kernel.org/r/20240221-x86-insn-decoder-line-fix=
--v1-1-47cd5a1718c6@valentinobst.de
-=2D--
- arch/x86/tools/insn_decoder_test.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Hans
 
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_deco=
-der_test.c
-index 472540aeabc2..727017a3c3c7 100644
-=2D-- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -114,6 +114,7 @@ int main(int argc, char **argv)
- 	unsigned char insn_buff[16];
- 	struct insn insn;
- 	int insns =3D 0;
-+	int lines =3D 0;
- 	int warnings =3D 0;
 
- 	parse_args(argc, argv);
-@@ -123,6 +124,8 @@ int main(int argc, char **argv)
- 		int nb =3D 0, ret;
- 		unsigned int b;
 
-+		lines++;
-+
- 		if (line[0] =3D=3D '<') {
- 			/* Symbol line */
- 			strcpy(sym, line);
-@@ -134,12 +137,12 @@ int main(int argc, char **argv)
- 		strcpy(copy, line);
- 		tab1 =3D strchr(copy, '\t');
- 		if (!tab1)
--			malformed_line(line, insns);
-+			malformed_line(line, lines);
- 		s =3D tab1 + 1;
- 		s +=3D strspn(s, " ");
- 		tab2 =3D strchr(s, '\t');
- 		if (!tab2)
--			malformed_line(line, insns);
-+			malformed_line(line, lines);
- 		*tab2 =3D '\0';	/* Characters beyond tab2 aren't examined */
- 		while (s < tab2) {
- 			if (sscanf(s, "%x", &b) =3D=3D 1) {
-
-=2D--
-base-commit: 4cece764965020c22cff7665b18a012006359095
-change-id: 20240221-x86-insn-decoder-line-fix-7b1f2e1732ff
-
-Best regards,
-=2D-
-Valentin Obst <kernel@valentinobst.de>
+> ---
+> Changes since v2:
+> - Fix memory leak and print a warning if 'link-frequencies' is absent. (Laurent)
+> 
+>  drivers/media/i2c/ov2680.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+> index 3e3b7c2b492c..a857763c7984 100644
+> --- a/drivers/media/i2c/ov2680.c
+> +++ b/drivers/media/i2c/ov2680.c
+> @@ -1123,18 +1123,23 @@ static int ov2680_parse_dt(struct ov2680_dev *sensor)
+>  		goto out_free_bus_cfg;
+>  	}
+>  
+> +	if (!bus_cfg.nr_of_link_frequencies) {
+> +		dev_warn(dev, "Consider passing 'link-frequencies' in DT\n");
+> +		goto skip_link_freq_validation;
+> +	}
+> +
+>  	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
+>  		if (bus_cfg.link_frequencies[i] == sensor->link_freq[0])
+>  			break;
+>  
+> -	if (bus_cfg.nr_of_link_frequencies == 0 ||
+> -	    bus_cfg.nr_of_link_frequencies == i) {
+> +	if (bus_cfg.nr_of_link_frequencies == i) {
+>  		ret = dev_err_probe(dev, -EINVAL,
+>  				    "supported link freq %lld not found\n",
+>  				    sensor->link_freq[0]);
+>  		goto out_free_bus_cfg;
+>  	}
+>  
+> +skip_link_freq_validation:
+>  	ret = 0;
+>  out_free_bus_cfg:
+>  	v4l2_fwnode_endpoint_free(&bus_cfg);
 
 
