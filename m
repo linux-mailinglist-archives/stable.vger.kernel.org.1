@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-33729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69180891F69
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:04:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51436891F6F
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 947E71C2862A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E65081F30E2A
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949851428E4;
-	Fri, 29 Mar 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DDE13BAC3;
+	Fri, 29 Mar 2024 13:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFKYRxMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErF6txmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4396612A154;
-	Fri, 29 Mar 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB2D142627
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711718639; cv=none; b=RHdQxU9eSo6SPyg/8r15dzUnUPD9S93RfiqdIijXQjEy8pGMzz1tfVeWEVcu09GUv5ECjNtEufOLkkhQ53dxO9jajsI7rXNn6mYmaok+E/DaMxqaXcCTXisZL/lfu1eRbUsLzUeSu7ofUNb4Qp0ojc0AYVwJGXaD47K/+7AOstc=
+	t=1711718753; cv=none; b=aYYr8QF9j7SuEMAmSutFkVtVburbJ5rWhbrPEgdZ2E6guuBaNRMN+up2iapMNGtfRTC0Mgt413jo49sdSm8C86BgjS+0d/t0nPxXbA60gD/bYRa3AH/HGJOoOVUBr9OKRT/y0M52ksLDV9VT8NJpNVi1Le1rfchjgZZ7lN/ayO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711718639; c=relaxed/simple;
-	bh=bQx/BXOUSe4TNoDtXR2BXWY0aFMLcADXigMMWJW/L3A=;
+	s=arc-20240116; t=1711718753; c=relaxed/simple;
+	bh=kcpcK2qfbmklh/B3XqrbduqGt8KdImnT+lBCuXNJTyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pck9qzt8qi8viidWtHlFAoWLB82JaYLff0bQSKiCMOyejoWJp+rZWc8RXd4i3mB0HINt0NzyYCmkceq4HUDYNXfVnXUT1aVkkD0UmBi9wXnfiELrLc/rfy84tiV5n8cnGg0X4HIwYISEGl7RhpMTMyzI6ePdwH0ZBLQ7UJND/nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFKYRxMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D88C433F1;
-	Fri, 29 Mar 2024 13:23:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=s7Do2D3+Zgd+2CfPBuW/XtvsGJ966fSk7VG+jc3cL/iLbvUQqyr789+jEpm5P/iTbhzpg7n6/drmQMWfpJeUXDJoEFPBgt6FyhoOUUEVCr2Si5G64XtXOw5MRNQlleLvB0fWyMFLnqv0ZJQAO4q8cLCDXIE/aIqNqBLiW3jmtnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErF6txmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19200C433F1;
+	Fri, 29 Mar 2024 13:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711718639;
-	bh=bQx/BXOUSe4TNoDtXR2BXWY0aFMLcADXigMMWJW/L3A=;
+	s=korg; t=1711718752;
+	bh=kcpcK2qfbmklh/B3XqrbduqGt8KdImnT+lBCuXNJTyw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rFKYRxMFWgbTseJJMATejdwMQAFlQv/Gg01agjZQWEoWMUuHtWmzii0H62Wzpj5KT
-	 wuktrBJ0GoAHlP5XS1yvLuqjYvss3CWMTe1AnvlI8Hc9WtLczeN0VHc6JwfzhxEcHJ
-	 IW/M9vWYf3kCbr3JTTZZT+rhIEPz01karffLPpVI=
-Date: Fri, 29 Mar 2024 14:23:39 +0100
+	b=ErF6txmkHLsim1Oun6c9mtZy06HBkBno3Tz0A3omEQXQ7LFZuO4qWr/hp28lBD3IZ
+	 MXSAg7iTQOf5JspfuXMii/WrcodGC2ShsD3sPtWBwFOFMR25t4hALlbWH56Qb+kgpn
+	 ulu4dc+3BcqckFEt5BU+MZSHF+z4DvXyUddNp3gQ=
+Date: Fri, 29 Mar 2024 14:25:49 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: FAILED: Patch "powerpc: xor_vmx: Add '-mhard-float' to CFLAGS"
- failed to apply to 5.10-stable tree
-Message-ID: <2024032925-tapering-correct-c88c@gregkh>
-References: <20240327122007.2835763-1-sashal@kernel.org>
- <20240327151613.GA1153323@dev-arch.thelio-3990X>
+To: "Liang, Kan" <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org, andrew.brown@intel.com,
+	dave.hansen@linux.intel.com, Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Hector Martin <marcan@marcan.st>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: Re: [PATCH stable 6.6 and 6.7 2/2] perf top: Uniform the event name
+ for the hybrid machine
+Message-ID: <2024032944-regain-striking-b711@gregkh>
+References: <20240308151239.2414774-1-kan.liang@linux.intel.com>
+ <20240308151239.2414774-2-kan.liang@linux.intel.com>
+ <2024032918-spruce-sapling-c829@gregkh>
+ <ed2715c2-d572-44c9-8b6c-0f897e5c8108@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,28 +62,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240327151613.GA1153323@dev-arch.thelio-3990X>
+In-Reply-To: <ed2715c2-d572-44c9-8b6c-0f897e5c8108@linux.intel.com>
 
-On Wed, Mar 27, 2024 at 08:16:13AM -0700, Nathan Chancellor wrote:
-> On Wed, Mar 27, 2024 at 08:20:07AM -0400, Sasha Levin wrote:
-> > The patch below does not apply to the 5.10-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> ...
-> > ------------------ original commit in Linus's tree ------------------
-> > 
-> > From 35f20786c481d5ced9283ff42de5c69b65e5ed13 Mon Sep 17 00:00:00 2001
-> > From: Nathan Chancellor <nathan@kernel.org>
-> > Date: Sat, 27 Jan 2024 11:07:43 -0700
-> > Subject: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
+On Fri, Mar 29, 2024 at 09:16:09AM -0400, Liang, Kan wrote:
+> Hi Greg,
 > 
-> I have attached a backport that will work for 5.15 and earlier. I think
-> you worked around this conflict in 5.15 by taking 04e85bbf71c9 but I am
-> not sure that is a smart idea. I think it might just be better to drop
-> that dependency and apply this version in 5.15.
+> On 2024-03-29 9:09 a.m., Greg KH wrote:
+> > On Fri, Mar 08, 2024 at 07:12:39AM -0800, kan.liang@linux.intel.com wrote:
+> >> From: Kan Liang <kan.liang@linux.intel.com>
+> >>
+> >> [The patch set is to fix the perf top failure on all Intel hybrid
+> >> machines. Without the patch, the default perf top command is broken.
+> >>
+> >> I have verified that the patches on both stable 6.6 and 6.7. They can
+> >> be applied to stable 6.6 and 6.7 tree without any modification as well.
+> >>
+> >> Please consider to apply them to stable 6.6 and 6.7. Thanks]
+> > 
+> > Already in the 6.6.23 and 6.7.11 releases.
+> > 
+> 
+> Thanks. I see this one (2/2) is merged.
+> Could you please also apply the first patch (1/2) as well? Without the
+> first one, the perf top still fails.
 
-I'll go drop it and take this version, thanks!
-
-greg k-h
+Already done, thanks.
 
