@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-33632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A46891E3D
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:37:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B27891E40
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3D0287A5D
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:37:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA3E41C266F6
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C06B1AA30C;
-	Fri, 29 Mar 2024 12:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE851AAA6F;
+	Fri, 29 Mar 2024 12:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DovIWKRg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XjLtuEwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474871AA2FE;
-	Fri, 29 Mar 2024 12:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8991AAA67;
+	Fri, 29 Mar 2024 12:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716511; cv=none; b=TO0S7ofRIpQcyz+T2a+MCeBVD5JzSrJKpd28SLcP/2iYOc9K7i0TgHuTJukywIHclV15PzRNuqYs0Aw2zVdoSXAs2YRFdo433vx6wewTE4bPAAzI2WudmNicHSEfHQ5eZde0qrzpiWxQ2n+yjTZOWq+6LaF9gZj3srYOJAWzl98=
+	t=1711716513; cv=none; b=Ms/Bs3CaD/1qDIZDNjZ4Cof4C6mPWpg6REKTYXXQz8NlBYPyi/cNgZH9zjkzNe8i31OWID/fqtcPJJJuExBeMj+YtAKIJY5pzolSSoRzXatImegUA/qZPPJe5s6F2GPwrFVfvgET1Y+KbVtwPsCUqjZ5PYNd4xyAfFwg6evbAik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716511; c=relaxed/simple;
-	bh=wrgoYIwXfWwL0pSAyWQzL3um30X/2cmpWHSwMZMCNUA=;
+	s=arc-20240116; t=1711716513; c=relaxed/simple;
+	bh=ORrkXhOEFKtoASG7lh/cLzIJoH6liO4TrWq0yY57hWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiDpWB/yIK60velM+kJSMfoD0JNl69Vqa1S6gfMF3GjGMDL/fryOMe9yjyRmgGOALawVJolsIAJDEEoqAvLjQge4VxHXBya5xa625W+pZi8EUae+/yGZREkDZqN1XUNKoVtJS+OQ7HC8lF2EYZToh7aBbN/DI6exVVHppdxobPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DovIWKRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D56C433A6;
-	Fri, 29 Mar 2024 12:48:30 +0000 (UTC)
+	 MIME-Version; b=X+5TEMXltJKWmEUOlLEaQFwEqDwfZRBpDJH5m9T7XgrE+leDgzp6Fw03prSt1+6E5WLBOfemn35ceEkzY/5e2R1ka1X55sL4E5IELsn6tJbfe7+eF75S8LxiPuIvJf5a1SKF2xokGGUWGuilqtIyb2fqDGNaT5GGwqXOtPFN5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XjLtuEwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E611C433F1;
+	Fri, 29 Mar 2024 12:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716511;
-	bh=wrgoYIwXfWwL0pSAyWQzL3um30X/2cmpWHSwMZMCNUA=;
+	s=k20201202; t=1711716513;
+	bh=ORrkXhOEFKtoASG7lh/cLzIJoH6liO4TrWq0yY57hWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DovIWKRgbS+Ekf4fC3/30TtK0bd6euRKezFuGQnmhnlL3eliHXMW7qVUDXV2NJZFG
-	 E/emNqjQdatJioKMsNjdihKtLMYFMSiHyip0oWUNK7UsxyMHtpwFMJ7vC//a4IKncD
-	 zy9DOMfkco+DckfWY3L4w1E7WcMlvYh/dPmiPQHFfI8W+mZOKaNZwAMdmDytJKMb1G
-	 iE4ex6FBLKRrsNMwAgrl/dZw8XkEUguAgLrvgXtLaGRxBGOkGMUorJdGrA/+T4Eixs
-	 iaMpiQ26w9tTsoQIHts8KO3zQa+3A4X/clItALyZtsqpMapPwyY4r3QMAG5ksAv/wD
-	 NtVWsvnEWIJOQ==
+	b=XjLtuEwnB+s4nNWCOaIoZcbOFwvbkbCxg+2JBts6XdAYY4HIGvMPZtqAibqfvOIo7
+	 +L0wvptaJ6P/RFHyrycCuBuaRUVdJ4OJMLyPlPnwhPcitiOGmcLTgMh1p4Y5ndCjVj
+	 hHWHWFuLQGzWQskMPft49eWxOFMZvtsq+amTTS0xMLrY7yNGmgMY+5Z8QIuw65ttFz
+	 QTMOx/XLFnE4C9KlzZYYQy82fEiq4+1HEyT8tNbPDsmY80yS3GWMg2YJwQScygEldZ
+	 NtnPA4OHwJV5Hgmesey2WJiu9GtwCvEkPShkoqf/57vhZMHtuRT/UQhaJRo1maQ9Te
+	 yz+ISOB8jWDJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edmund Raile <edmund.raile@proton.me>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 23/34] PCI: Mark LSI FW643 to avoid bus reset
-Date: Fri, 29 Mar 2024 08:47:24 -0400
-Message-ID: <20240329124750.3092394-23-sashal@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>,
+	kernel test robot <lkp@intel.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <n.schier@avm.de>,
+	linux-sh@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 24/34] sh: Fix build with CONFIG_UBSAN=y
+Date: Fri, 29 Mar 2024 08:47:25 -0400
+Message-ID: <20240329124750.3092394-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
 References: <20240329124750.3092394-1-sashal@kernel.org>
@@ -65,50 +70,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Edmund Raile <edmund.raile@proton.me>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 29a43dc130ce65d365a8ea9e1cc4bc51005a353e ]
+[ Upstream commit e36b70fb8c707a0688960184380bc151390d671b ]
 
-Apparently the LSI / Agere FW643 can't recover after a Secondary Bus Reset
-and requires a power-off or suspend/resume and rescan.
+The early boot stub for sh had UBSan instrumentation present where it is
+not supported. Disable it for this part of the build.
 
-VFIO resets a device before assigning it to a VM, and the FW643 doesn't
-support any other reset methods, so this problem prevented assignment of
-FW643 to VMs.
+  sh4-linux-ld: arch/sh/boot/compressed/misc.o: in function `zlib_inflate_table':
+  misc.c:(.text+0x670): undefined reference to `__ubsan_handle_shift_out_of_bounds'
 
-Prevent use of Secondary Bus Reset for this device.
-
-With this change, the FW643 can be assigned to VMs with VFIO.  Note that it
-will not be reset, resulting in leaking state between VMs and host.
-
-Link: https://lore.kernel.org/r/20240227131401.17913-1-edmund.raile@proton.me
-Signed-off-by: Edmund Raile <edmund.raile@proton.me>
-[bhelgaas: commit log, comment]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401310416.s8HLiLnC-lkp@intel.com/
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <n.schier@avm.de>
+Cc:  <linux-sh@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240130232717.work.088-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/sh/boot/compressed/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index fcdc17bbcc8ee..1a4ae9aeebfea 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3638,6 +3638,14 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x003e, quirk_no_bus_reset);
-  */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_CAVIUM, 0xa100, quirk_no_bus_reset);
+diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
+index 589d2d8a573db..edc9dc36115dc 100644
+--- a/arch/sh/boot/compressed/Makefile
++++ b/arch/sh/boot/compressed/Makefile
+@@ -13,6 +13,7 @@ targets		:= vmlinux vmlinux.bin vmlinux.bin.gz \
+ OBJECTS = $(obj)/head_32.o $(obj)/misc.o $(obj)/cache.o
  
-+/*
-+ * Apparently the LSI / Agere FW643 can't recover after a Secondary Bus
-+ * Reset and requires a power-off or suspend/resume and rescan.  Prevent
-+ * use of that reset.
-+ */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATT, 0x5900, quirk_no_bus_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATT, 0x5901, quirk_no_bus_reset);
-+
- /*
-  * Some TI KeyStone C667X devices do not support bus/hot reset.  The PCIESS
-  * automatically disables LTSSM when Secondary Bus Reset is received and
+ GCOV_PROFILE := n
++UBSAN_SANITIZE := n
+ 
+ #
+ # IMAGE_OFFSET is the load offset of the compression loader
 -- 
 2.43.0
 
