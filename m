@@ -1,96 +1,103 @@
-Return-Path: <stable+bounces-33164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C73891891
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:21:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C328918B8
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03271F238A5
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C0728684F
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BED85631;
-	Fri, 29 Mar 2024 12:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6174C86146;
+	Fri, 29 Mar 2024 12:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU+TObV2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObckFNdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620B169E1E;
-	Fri, 29 Mar 2024 12:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E585C44;
+	Fri, 29 Mar 2024 12:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711714885; cv=none; b=ZeKLwTkhvPJBEapEseSOa6axjmN7qljyfbAbSGEoIjbV/Rgtl3ChjOqcgLgOOOY8e7sWq8tSTrCB0TIX8pU0ewfSzXjePFKOp5pl9sRdIg07A/bRSiuvstn/WsWHYNUaJ/bI1gi1/9XD6DRwvHP2K76l+PWDdZ+h67paGeoxn9c=
+	t=1711715214; cv=none; b=p46AoPGw+OTfopVs8ZSyAhdzxLFIPDXHx0G4nlaKsZ0lf9oDvUT+9I8cVN1H/BCm88FzZdP6lLqWpKqijbjwDeyVMsznXl03pu+Kmmyurdkpp5FbN5n2iXHbwBefu424y9wxTg7eEMu/SSvCRotOwrCYaIdDV56m+DEj52alQcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711714885; c=relaxed/simple;
-	bh=KV8MAW0WMd10XKbpiyQdNKyGugobmHYXrd9fx5ETW1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PyjGh1NUnVnMcB/fj10fD2+UMXpdGsbdc9+AxvwDcckW+gvn7MbME7SpotgCHDl/JN389nyyaTTLNBtf1i3BxMjQrqeEzCVa4P29i8Fj9NhSr2UH4QQNxWQy31nozPH5bPoDP4WZRr/MM0Ej5XGtsBUk9rKCa8DWveovgRQJYqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU+TObV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AAAC433C7;
-	Fri, 29 Mar 2024 12:21:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711714884;
-	bh=KV8MAW0WMd10XKbpiyQdNKyGugobmHYXrd9fx5ETW1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EU+TObV27sH3T1plQcMKQCAMobCr39kitiKz2UNFsknh5jVOovWZmZRYESJoMaHBQ
-	 9gQgJ2daodiXNx4nEyBjd6fpjrJ2c8NK3M0AXpnWFT8opMjvf2rnP4vMFpXIcqfYTH
-	 YdcAdUIZWnCBB25uLSu/vIiVceFap4eqANvApsGk=
-Date: Fri, 29 Mar 2024 13:21:20 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Krister Johansen <kjlx@templeofstupid.com>, stable@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	David Matlack <dmatlack@google.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH 5.15.y v2 0/2] fix softlockups in stage2_apply_range()
-Message-ID: <2024032913-felt-tip-fasting-5fab@gregkh>
-References: <cover.1709665227.git.kjlx@templeofstupid.com>
- <cover.1709685364.git.kjlx@templeofstupid.com>
- <878r2vr7tj.wl-maz@kernel.org>
+	s=arc-20240116; t=1711715214; c=relaxed/simple;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IF1wrRPfJeAYdtVUiRO0vSTe25/Ca3fxzEUZ7LJ2CGZjePdh3x97bm2qBMXxSl14qfuQE4INQjBvfisa1hF3bnAjmf+S/J5FYmTMx4aQqLPXAKxaKHxg+aOie8jFu4SWCB6FEzLeGQty02BzITvOzlNpGAoBA9OHaDnKQ7Fiwow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObckFNdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAA1C433C7;
+	Fri, 29 Mar 2024 12:26:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711715213;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ObckFNdG+45nGWzKJi9c0jBsoSFdpTdIvGKeX/7Oon/znd1IuJJP9gwgzqxWJ91U5
+	 y5r7gEpz20sYX07qCwA5U+/cSYX7HoOW1kBVVYqQ+GA3tNR+v1ApMh4C0rsW1CSEnl
+	 S2FHj9TE+Ta92AkShhpcwPsZNIARVF3Lj4R6N9Yy3GpkrHbJWq5j9YaFf/dv6D5Rx1
+	 jWginDVgZGsDYQNBW6tAFWtPinCtiTP63JPkd81j9IlgwnpZvF7RnYUtJR26FvhP57
+	 7ySwT/qOSmWjLfR023f2Sb8IDpW6LQkh/RMy0j1HrIDUg7H3N3jgsffKmtdIxLQuhX
+	 Cn0sMJqSM0qpg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 01/68] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Date: Fri, 29 Mar 2024 08:24:57 -0400
+Message-ID: <20240329122652.3082296-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878r2vr7tj.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.2
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 06, 2024 at 10:08:40AM +0000, Marc Zyngier wrote:
-> On Wed, 06 Mar 2024 00:49:34 +0000,
-> Krister Johansen <kjlx@templeofstupid.com> wrote:
-> > 
-> > Hi Stable Team,
-> > In 5.15, unmapping large kvm vms on arm64 can generate softlockups.  My team has
-> > been hitting this when tearing down VMs > 100Gb in size.
-> > 
-> > Oliver fixed this with the attached patches.  They've been in mainline since
-> > 6.1.
-> > 
-> > I tested on 5.15.150 with these patches applied. When they're present,
-> > both the dirty_log_perf_test detailed in the second patch, and
-> > kvm_page_table_test no longer generate softlockups when unmapping VMs
-> > with large memory configurations.
-> > 
-> > Would you please consider these patches for inclusion in an upcoming 5.15
-> > release?
-> > 
-> > Change in v2:  I ran format-patch without the --from option which incorrectly
-> > generated the first series without leaving Oliver in place as the author.  The
-> > v2 should retain the correct authorship.  Apologies for the mistake.
-> 
-> Thanks for this.
-> 
-> FWIW,
-> 
-> Acked-by: Marc Zyngier <maz@kernel.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-Now queued up,t hanks.
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-greg k-h
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index 988222cea9dfe..acc84e6711b0e 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
+-- 
+2.43.0
+
 
