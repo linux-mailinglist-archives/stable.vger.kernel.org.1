@@ -1,156 +1,102 @@
-Return-Path: <stable+bounces-33233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7AB8919BF
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:47:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623828919C8
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EFF286C90
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:47:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9188B217EB
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6A114BFBB;
-	Fri, 29 Mar 2024 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CAB13B5A4;
+	Fri, 29 Mar 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZcnaQuZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFKojrdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1E114B082;
-	Fri, 29 Mar 2024 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2CC13B599;
+	Fri, 29 Mar 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715360; cv=none; b=biKotN+96ducSbVzmB82ABv4DiS66lJWE8c6wbb5oCyKAofZBaYaJv/rAgAE3o7ZRmGrMk/eSNJD9JLce0BzPjbFwdlR/bm4O6v59Fippv/AQyBiFNvYfb6U9F0ihodPMKQPToNg+vGhEN12qqRtMDFw7Zpi4jeu3F9RdlWbP68=
+	t=1711715397; cv=none; b=oDJNF3I/Z2CFtYzFS4wqmQ/orLWVD9zvAYOmLIUKFDvYER3WfRTRa2fEhnGES4qqnJgYHpeTYu3zLOi98eVXE7hE8y+Cu1r7s1qMHC8ocXVTZ4zGHX0qcsSju+TnaJmy0H0bi8511lwjGBv39fr39VyXiRyXk3HMYcMjqBnymfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715360; c=relaxed/simple;
-	bh=KABQHWyylxn9V22SBKEYJzDMqoVOt0P7PgTKiCi3zUE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HARB4ZzMlfAmFbziCXOt0+hhc9gePNuDboWCOMtRQty+YZagY+UZkOXjnoiyLBpl9kx9vDlYa2w0noejl1Gx/vmUHWAePhddIYHh0nMY4l5m05W1NNB7gCjWv4vhtOeH9ZgRSlYqDt/QdyEX+Btsk66q0Fn00QeGVckK1Z/uDLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZcnaQuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BBBC433C7;
-	Fri, 29 Mar 2024 12:29:18 +0000 (UTC)
+	s=arc-20240116; t=1711715397; c=relaxed/simple;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BObuwzj7DsgI8xHuhRcwxd5dOviLoQlboghyY0xVUoJamz/zNdvF/8lU/Ms3eiGNdmuNUv6IBpDcscSyne3OtglcBVNHxJKBc/pMS9yPrx/wR3kO/GCXZU3hwJwXHs+feC6ZYGZKFWokOGia2RJEcWJGuimOSV2LQMOdeosVNzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFKojrdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A923C43394;
+	Fri, 29 Mar 2024 12:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711715359;
-	bh=KABQHWyylxn9V22SBKEYJzDMqoVOt0P7PgTKiCi3zUE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZcnaQuZ/X4CRnuS5XQTl6sQknD2vrct5n4FOHm21bs9v568HAzI1+36a3OVVpc9Z
-	 JIa16to88F5CJk/ER13ytCXTiLzpoEfjx4a7aZwlTMgMkAKFCyiIP8c7iHYOXL66zS
-	 O+V7OU6CWhaHunghlIWgtjnQ+v5K1wZyZsEimLOSG2K58thUrvoOgpJxlmKtvLz0Gy
-	 Rq742x9xYtjlvt8Lh7sotqAbdbtT9TkzR9xnHQD359Q2wYWZ5kuIn1uh6h32TrHH6c
-	 MJixD9jP5yHHhbKYTydiYi3ihw7vKHpt8/OTybpB3cOSd3fUDpkYR8u//c2VOG4cRj
-	 Edn33GY6HEtqw==
+	s=k20201202; t=1711715397;
+	bh=Ra4UXu1BegVD/dxe6uYDNjPmp+4p/Ri+3qwVOVWo+MA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BFKojrdjGbJCoTpGbw+mgQBNsnXJWd5ajkaFL8O0DV6WAcUmAM+N0pkNQVQkKdibC
+	 AZp9AKdxRRWbW09dwQp7/GAN+DeE1VBznVfQMVGkfXvhGQPT9xXi1pHmqpKboV7GDS
+	 j4FPwx0X62FncIauJgX2oT7yFgMyJrovxlN6ro4iIstJOdGKwfcFVEtXB/PGgwCv2h
+	 yvmlFci+iQTAEmQCHqBNsHyRSw2FzZh2wZfPZbeG2XWdeSo0B7tTXcSmITHuUoNs9c
+	 hVDVldT5eGF10PWa1B2Z8qHVQTM91OxG/vn3DIefqJfoQ0URazeiOFQqtDd35QjYi6
+	 HpZkaDHLyGTGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinicius Peixoto <nukelet64@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	johan.hedberg@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 68/68] Bluetooth: Add new quirk for broken read key length on ATS2851
-Date: Fri, 29 Mar 2024 08:26:04 -0400
-Message-ID: <20240329122652.3082296-68-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/52] wifi: ath9k: fix LNA selection in ath_ant_try_scan()
+Date: Fri, 29 Mar 2024 08:28:31 -0400
+Message-ID: <20240329122956.3083859-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329122652.3082296-1-sashal@kernel.org>
-References: <20240329122652.3082296-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.2
+X-stable-base: Linux 6.6.23
 Content-Transfer-Encoding: 8bit
 
-From: Vinicius Peixoto <nukelet64@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 48201a3b3f398be6a01f78a14b18bd5d31c47458 ]
+[ Upstream commit d6b27eb997ef9a2aa51633b3111bc4a04748e6d3 ]
 
-The ATS2851 controller erroneously reports support for the "Read
-Encryption Key Length" HCI command. This makes it unable to connect
-to any devices, since this command is issued by the kernel during the
-connection process in response to an "Encryption Change" HCI event.
+In 'ath_ant_try_scan()', (most likely) the 2nd LNA's signal
+strength should be used in comparison against RSSI when
+selecting first LNA as the main one. Compile tested only.
 
-Add a new quirk (HCI_QUIRK_BROKEN_ENC_KEY_SIZE) to hint that the command
-is unsupported, preventing it from interrupting the connection process.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-This is the error log from btmon before this patch:
-
-> HCI Event: Encryption Change (0x08) plen 4
-        Status: Success (0x00)
-        Handle: 2048 Address: ...
-        Encryption: Enabled with E0 (0x01)
-< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
-        Handle: 2048 Address: ...
-> HCI Event: Command Status (0x0f) plen 4
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Unknown HCI Command (0x01)
-
-Signed-off-by: Vinicius Peixoto <nukelet64@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20231211172502.25202-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c   | 1 +
- include/net/bluetooth/hci.h | 8 ++++++++
- net/bluetooth/hci_event.c   | 3 ++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/antenna.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d31edad7a0560..0c0e06ea92863 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4481,6 +4481,7 @@ static int btusb_probe(struct usb_interface *intf,
- 		set_bit(HCI_QUIRK_BROKEN_READ_TRANSMIT_POWER, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
-+		set_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks);
- 	}
- 
- 	if (!reset)
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index bdee5d649cc61..8c36e094ec99f 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -330,6 +330,14 @@ enum {
- 	 * during the hdev->setup vendor callback.
- 	 */
- 	HCI_QUIRK_BROKEN_LE_CODED,
-+
-+	/*
-+	 * When this quirk is set, the HCI_OP_READ_ENC_KEY_SIZE command is
-+	 * skipped during an HCI_EV_ENCRYPT_CHANGE event. This is required
-+	 * for Actions Semiconductor ATS2851 based controllers, which erroneously
-+	 * claim to support it.
-+	 */
-+	HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE,
- };
- 
- /* HCI device flags */
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 2a5f5a7d2412b..8652cdee14b00 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3660,7 +3660,8 @@ static void hci_encrypt_change_evt(struct hci_dev *hdev, void *data,
- 		 * controller really supports it. If it doesn't, assume
- 		 * the default size (16).
- 		 */
--		if (!(hdev->commands[20] & 0x10)) {
-+		if (!(hdev->commands[20] & 0x10) ||
-+		    test_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks)) {
- 			conn->enc_key_size = HCI_LINK_KEY_SIZE;
- 			goto notify;
- 		}
+diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
+index 988222cea9dfe..acc84e6711b0e 100644
+--- a/drivers/net/wireless/ath/ath9k/antenna.c
++++ b/drivers/net/wireless/ath/ath9k/antenna.c
+@@ -643,7 +643,7 @@ static void ath_ant_try_scan(struct ath_ant_comb *antcomb,
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_PLUS_LNA2;
+ 			} else if (antcomb->rssi_sub >
+-				   antcomb->rssi_lna1) {
++				   antcomb->rssi_lna2) {
+ 				/* set to A-B */
+ 				conf->main_lna_conf = ATH_ANT_DIV_COMB_LNA1;
+ 				conf->alt_lna_conf = ATH_ANT_DIV_COMB_LNA1_MINUS_LNA2;
 -- 
 2.43.0
 
