@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-33129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FAA8915AE
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:24:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D6D89160D
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C26F1C21FCC
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:24:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BDCE1F22D50
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16F2E635;
-	Fri, 29 Mar 2024 09:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800AD48792;
+	Fri, 29 Mar 2024 09:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk2pJ0EC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cbcd9DP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CEC1EB4B;
-	Fri, 29 Mar 2024 09:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFD647F47;
+	Fri, 29 Mar 2024 09:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711704239; cv=none; b=XUCEcYUkr8TW79f1o8/YzdBc7RY7x727VBg0eJ/fu1dXytVh16dX4ClY4WW3slCoCaSUIX1IKtPTS4YtfVYz6qFUeh6Hwgp0l7+ZyG/6WTbYzTRbvVgINNRKR4NnCExSNElWBTf5y6bSemZ13k3lC1Vpge3QmIRsB5399amEA+g=
+	t=1711704632; cv=none; b=fxsG0VX/boxtxby2ABvjOEyfLacCgzqzdF9g7BKv1im+FQWuIZBgd4M0OePwqQ2Qg/951aCNsMOnr7tk3SOTGg3tVfRue3UjaaW3I8zPho4Jt5nhQQhQCu6jaCihuzceJnGq8egcc5mzIlWq77KSSBJBkD6EnRoy0UQF7Kt2Qi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711704239; c=relaxed/simple;
-	bh=TJLlT4e+J+W29O7RPoscY0Kx/HZJD7XHBxAVhA1Z4yE=;
+	s=arc-20240116; t=1711704632; c=relaxed/simple;
+	bh=5aAN4jOiEFoIaZBQwLAA8Fc6rgsjCmq/3EA8ps1cDz4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvjmE74eXY/0u8OHv8T7R9ATCXFV84H9054eXa+MtvdR+n7CVioWi9Un/ge54LEdMMp06UD8W54nwf5IVjOAjyPbQIcTxV+QO4V8F4vHSNMOvimuad5BGPByXUujbTRm0VfitJiI2tUInUltya7N3o3ElAcypBLY4eHtmcwyeFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk2pJ0EC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A19CC433C7;
-	Fri, 29 Mar 2024 09:23:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rQlZ1g0FmAz94xOD/hk9X/snH7SkscUB7w3JiPWbFDUHFXRXswdKUZhXuhzb8/wIpsjOv4CShPxYLKmFB2hnkQnU6AueSD0eQ2UoQEC/nMsW+WlP+bRQhzj1WQm+24JiIEVKVGtYTTow7slrYPHW68Bl0QYyhla08OOmI0U+pPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cbcd9DP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1A6C433F1;
+	Fri, 29 Mar 2024 09:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711704238;
-	bh=TJLlT4e+J+W29O7RPoscY0Kx/HZJD7XHBxAVhA1Z4yE=;
+	s=korg; t=1711704630;
+	bh=5aAN4jOiEFoIaZBQwLAA8Fc6rgsjCmq/3EA8ps1cDz4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rk2pJ0ECAK8VZR08hGtUpvk2jcUwb8uwf/zsiXY47gJAGOYYtZwaX0D15LCaGpwUX
-	 sfSirqBMfhTex6ui8V0GEiL6TNOSQ0vfJ7AncyMA95SALmxGkNQCNNkTnbcAbPHwH1
-	 wmfmm+X/RvlLoXQZW3N8zFN1jM01X/hIB4CB8px0=
-Date: Fri, 29 Mar 2024 10:23:55 +0100
+	b=2Cbcd9DPUqJyporETyS5OQercffaPHnV4sZXr8TfC+3B1ajwJI8Lz1Twv/6N7SJxG
+	 xK4soTG6+pHsLSik5hJabgwXxuBshwLUlk8b6D4ye7bLT62tLZgGeTh+2A53UCUKTO
+	 8O8EhYWNU2Bqi2fzq79KTlR9QvuHgwvXo0VavmTM=
+Date: Fri, 29 Mar 2024 10:30:21 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Srish Srinivasan <srish.srinivasan@broadcom.com>
-Cc: stable@vger.kernel.org, borisp@nvidia.com, john.fastabend@gmail.com,
-	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, vakul.garg@nxp.com, davejwatson@fb.com,
-	netdev@vger.kernel.org, ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] net: tls: handle backlogging of crypto requests
-Message-ID: <2024032945-unheated-evacuee-6e0a@gregkh>
-References: <20240328123805.3886026-1-srish.srinivasan@broadcom.com>
+To: "Mukunda,Vijendar" <vijendar.mukunda@amd.com>
+Cc: Luca Stefani <luca.stefani.ge1@gmail.com>,
+	Sasha Levin <sashal@kernel.org>, Jiawei Wang <me@jwang.link>,
+	Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] Revert "ASoC: amd: yc: add new YC platform variant
+ (0x63) support"
+Message-ID: <2024032911-elephant-shy-0284@gregkh>
+References: <20240312023326.224504-1-me@jwang.link>
+ <bc0c1a15-ba31-44ba-85be-273147472240@gmail.com>
+ <2024032722-transpose-unable-65d0@gregkh>
+ <465c52a1-2f61-4585-9622-80b8a30c715a@amd.com>
+ <2024032853-drainage-deflator-5bae@gregkh>
+ <8e5127ff-0ffa-495a-bd6a-ca452375f5f6@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240328123805.3886026-1-srish.srinivasan@broadcom.com>
+In-Reply-To: <8e5127ff-0ffa-495a-bd6a-ca452375f5f6@amd.com>
 
-On Thu, Mar 28, 2024 at 06:08:05PM +0530, Srish Srinivasan wrote:
-> From: Jakub Kicinski <kuba@kernel.org>
+On Thu, Mar 28, 2024 at 05:27:58PM +0530, Mukunda,Vijendar wrote:
+> On 28/03/24 17:04, Greg KH wrote:
+> > On Thu, Mar 28, 2024 at 04:10:38PM +0530, Mukunda,Vijendar wrote:
+> >> On 27/03/24 23:39, Greg KH wrote:
+> >>> On Wed, Mar 27, 2024 at 06:56:18PM +0100, Luca Stefani wrote:
+> >>>> Hello everyone,
+> >>>>
+> >>>> Can those changes be pulled in stable? They're currently breaking mic input
+> >>>> on my 21K9CTO1WW, ThinkPad P16s Gen 2, and probably more devices in the
+> >>>> wild.
+> >>> <formletter>
+> >>>
+> >>> This is not the correct way to submit patches for inclusion in the
+> >>> stable kernel tree.  Please read:
+> >>>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> >>> for how to do this properly.
+> >>>
+> >>> </formletter>
+> >> These patches already got merged in V6.9-rc1 release.
+> >> Need to be cherry-picked for stable release.
+> >>
+> > What changes exactly?  I do not see any git ids here.
+> >
+> > confused,
+> >
+> > greg k-h
 > 
-> commit 8590541473188741055d27b955db0777569438e3 upstream
+> Below are the commits.
 > 
-> Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
-> requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
->  -EBUSY instead of -EINPROGRESS in valid situations. For example, when
-> the cryptd queue for AESNI is full (easy to trigger with an
-> artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
-> to the backlog but still processed. In that case, the async callback
-> will also be called twice: first with err == -EINPROGRESS, which it
-> seems we can just ignore, then with err == 0.
+> 37bee1855d0e ASoC: amd: yc: Revert "add new YC platform variant (0x63) support"
+> 861b3415e4de ASoC: amd: yc: Revert "Fix non-functional mic on Lenovo 21J2"
 > 
-> Compared to Sabrina's original patch this version uses the new
-> tls_*crypt_async_wait() helpers and converts the EBUSY to
-> EINPROGRESS to avoid having to modify all the error handling
-> paths. The handling is identical.
 > 
-> Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
-> Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-> Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
-> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-> Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> [Srish: fixed merge-conflict in stable branch linux-6.1.y,
-> needs to go on top of https://lore.kernel.org/stable/20240307155930.913525-1-lee@kernel.org/]
-> Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
-> ---
->  net/tls/tls_sw.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+> 
 
-Now queued up, thanks.
-
-greg k-h
+Already asked for here:
+	https://lore.kernel.org/r/1b8a991b-ad82-44e6-a76d-a2f81880d549@gmail.com
 
