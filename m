@@ -1,100 +1,102 @@
-Return-Path: <stable+bounces-33128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1098915A2
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:19:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FAA8915AE
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 10:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBA5A2856DD
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C26F1C21FCC
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 09:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD781EEFD;
-	Fri, 29 Mar 2024 09:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16F2E635;
+	Fri, 29 Mar 2024 09:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/Nw9UWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk2pJ0EC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10DE3FB2A;
-	Fri, 29 Mar 2024 09:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CEC1EB4B;
+	Fri, 29 Mar 2024 09:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711703969; cv=none; b=qfZpYhJB4hsQrTO3aYPY6sXM/bz1v2hv0D29g3SdTsT8lKfiobc15sMKtxafzpF/K4BDBfsXLR42rA5te2loEHsWxf6505/OxGpFLX5VKViNhVhgpsk88ZNuVZE5tZ9Z/QmwNpBTC+KTPPCF2f+mwxoYgiqIdpo3zHy/UzAocG0=
+	t=1711704239; cv=none; b=XUCEcYUkr8TW79f1o8/YzdBc7RY7x727VBg0eJ/fu1dXytVh16dX4ClY4WW3slCoCaSUIX1IKtPTS4YtfVYz6qFUeh6Hwgp0l7+ZyG/6WTbYzTRbvVgINNRKR4NnCExSNElWBTf5y6bSemZ13k3lC1Vpge3QmIRsB5399amEA+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711703969; c=relaxed/simple;
-	bh=xnQ28nT/HPo9EjDB6uMDEc6rA+VfMKivA9z5SN5805Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k2SM/EbnOBwD0LgZccH+V1NXwBeZSxoUxTT8dJ4Pt4cPcUT5pqZWk9bjy/A/y/ue05RVfaOrc+3o5d2hlri9OyNvdeNIg9TGu/yIfSfmLBgetnsCwbW0Jmbt1qodjoXNF489A+8tRrU+cRMKbaba+5ET0OySjAFFCgIpO14VpAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/Nw9UWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62266C433C7;
-	Fri, 29 Mar 2024 09:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711703969;
-	bh=xnQ28nT/HPo9EjDB6uMDEc6rA+VfMKivA9z5SN5805Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=o/Nw9UWNY6Bt7GpBSTI6vY2B/lrN22ojZ9RgSWQsuIWceZcA9/gyPL9WTCfD9e2xM
-	 dJrEgxUXQv7bW2R9r7H7I+iOshE4PtdDTimOCJH2jHz0IkNuTKI1C1cukivOf+FErA
-	 1sZnclAoRHGkVC5L5fzg6uFUPZ5VIY+zswdUULuQR3XSsZGU0eQu+lnzYC3kTP9oim
-	 22uLnUobGIYtbnaV9tqPyTHznk65LP0h9tpPk96YPleOca5qkbvbKafCIJRbR4R47s
-	 b5UOKFmu6nHLJ1laBi8BsCDGrsUWZ3HbY9MOACXr3r29kn6xNzm0v4Zli2bb09wk3q
-	 x1mZixGFb2Y/A==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-515d30f6ee8so133551e87.2;
-        Fri, 29 Mar 2024 02:19:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVkFIPelV5CDtuEL9GzSuU6pvviXxgGWWviDdjsA537+5v6Q1K6aK1CLcyeiJhcMxFscTSYYwRFiTg9p9u6AJ2i3ZdGjWae9+wemVrXwBij+LWkGuv4vU01sNW9lkNluh7+12Vv
-X-Gm-Message-State: AOJu0Yy5P7wXlgbFuco4I1WYrJpIRTMwpklB5m/EN2yhNFrCHKeDyPo/
-	gb8W5xbGGMgt9+t8XCPANtsHfOmJnH0Or7TrX0Ur+BFYZRbVkUFb4bmU1tkvAQ5qDb11F/pQlyZ
-	s4FeuEIAHKrorUfngd1E3pzTocI8=
-X-Google-Smtp-Source: AGHT+IEy7qrEN4qNx/lxd/wxw/PN561ajfXIK2EpJ2U8xF9soL2ICwxURoxnkj/H9ZhwdV67bnd8VW2yv6DnAQNP5gw=
-X-Received: by 2002:a05:6512:2116:b0:513:de8d:203c with SMTP id
- q22-20020a056512211600b00513de8d203cmr1334181lfr.28.1711703967770; Fri, 29
- Mar 2024 02:19:27 -0700 (PDT)
+	s=arc-20240116; t=1711704239; c=relaxed/simple;
+	bh=TJLlT4e+J+W29O7RPoscY0Kx/HZJD7XHBxAVhA1Z4yE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AvjmE74eXY/0u8OHv8T7R9ATCXFV84H9054eXa+MtvdR+n7CVioWi9Un/ge54LEdMMp06UD8W54nwf5IVjOAjyPbQIcTxV+QO4V8F4vHSNMOvimuad5BGPByXUujbTRm0VfitJiI2tUInUltya7N3o3ElAcypBLY4eHtmcwyeFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk2pJ0EC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A19CC433C7;
+	Fri, 29 Mar 2024 09:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711704238;
+	bh=TJLlT4e+J+W29O7RPoscY0Kx/HZJD7XHBxAVhA1Z4yE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rk2pJ0ECAK8VZR08hGtUpvk2jcUwb8uwf/zsiXY47gJAGOYYtZwaX0D15LCaGpwUX
+	 sfSirqBMfhTex6ui8V0GEiL6TNOSQ0vfJ7AncyMA95SALmxGkNQCNNkTnbcAbPHwH1
+	 wmfmm+X/RvlLoXQZW3N8zFN1jM01X/hIB4CB8px0=
+Date: Fri, 29 Mar 2024 10:23:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Srish Srinivasan <srish.srinivasan@broadcom.com>
+Cc: stable@vger.kernel.org, borisp@nvidia.com, john.fastabend@gmail.com,
+	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, vakul.garg@nxp.com, davejwatson@fb.com,
+	netdev@vger.kernel.org, ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com, vasavi.sirnapalli@broadcom.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] net: tls: handle backlogging of crypto requests
+Message-ID: <2024032945-unheated-evacuee-6e0a@gregkh>
+References: <20240328123805.3886026-1-srish.srinivasan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327120643.2824712-1-sashal@kernel.org> <CAMj1kXH8n4-8VHSVygUyEc4Zne-4gE0uijAkDe-Ufu6hUnFU+g@mail.gmail.com>
- <2024032902-moonlit-abridge-743e@gregkh>
-In-Reply-To: <2024032902-moonlit-abridge-743e@gregkh>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 29 Mar 2024 11:19:16 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHxF-F75x-xC32O+Rtehoost_qfoHJrzkdj-GbqPSH-UQ@mail.gmail.com>
-Message-ID: <CAMj1kXHxF-F75x-xC32O+Rtehoost_qfoHJrzkdj-GbqPSH-UQ@mail.gmail.com>
-Subject: Re: FAILED: Patch "x86/efistub: Call mixed mode boot services on the
- firmware's stack" failed to apply to 6.8-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, stable@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240328123805.3886026-1-srish.srinivasan@broadcom.com>
 
-On Fri, 29 Mar 2024 at 11:17, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Mar 27, 2024 at 03:46:53PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 27 Mar 2024 at 14:06, Sasha Levin <sashal@kernel.org> wrote:
-> > >
-> > > The patch below does not apply to the 6.8-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git commit
-> > > id to <stable@vger.kernel.org>.
-> > >
-> >
-> > This applies fine on top of 6.8.2, 6.7.11 and 6.6.23.
-> >
-> > On 6.1.83, it gave me a warning
-> >
-> >   Auto-merging arch/x86/boot/compressed/efi_mixed.S
-> >
-> > but the change still applied without problems.
-> >
-> > Not sure what is going on here .....
->
-> Odd, it worked here forme, now queued up everywhere, sorry for the
-> noise.
->
+On Thu, Mar 28, 2024 at 06:08:05PM +0530, Srish Srinivasan wrote:
+> From: Jakub Kicinski <kuba@kernel.org>
+> 
+> commit 8590541473188741055d27b955db0777569438e3 upstream
+> 
+> Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
+> requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
+>  -EBUSY instead of -EINPROGRESS in valid situations. For example, when
+> the cryptd queue for AESNI is full (easy to trigger with an
+> artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
+> to the backlog but still processed. In that case, the async callback
+> will also be called twice: first with err == -EINPROGRESS, which it
+> seems we can just ignore, then with err == 0.
+> 
+> Compared to Sabrina's original patch this version uses the new
+> tls_*crypt_async_wait() helpers and converts the EBUSY to
+> EINPROGRESS to avoid having to modify all the error handling
+> paths. The handling is identical.
+> 
+> Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
+> Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+> Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
+> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+> Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> [Srish: fixed merge-conflict in stable branch linux-6.1.y,
+> needs to go on top of https://lore.kernel.org/stable/20240307155930.913525-1-lee@kernel.org/]
+> Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
+> ---
+>  net/tls/tls_sw.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 
-Thanks!
+Now queued up, thanks.
+
+greg k-h
 
