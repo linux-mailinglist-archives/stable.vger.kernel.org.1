@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-33610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC388891E50
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:38:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBEF891E78
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E97B2E4F9
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:31:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C47CB33BCB
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 14:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18061A647A;
-	Fri, 29 Mar 2024 12:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77381A648D;
+	Fri, 29 Mar 2024 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxYyOnKM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QPCRJatJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A40B1A6463;
-	Fri, 29 Mar 2024 12:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFA91A6483;
+	Fri, 29 Mar 2024 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716471; cv=none; b=PFjY7nxPR4Q6fLJfCjlVZdfHKeTPATdDd3ClaswmA1y8Lir/+XoS8+7iDRrfsvufKZM6EgtfiTZi4vMfEuDPwUjCjKzkoDlBWYbTDhwsvQb+51/mXy6OpHEBtseaExUTZW01WTgvqze1eWDo0+KgRgyi1/JzmJ2aXMgdl0L14dc=
+	t=1711716472; cv=none; b=ZYYVJ1XlqvN9xjg2M0fp/0bG2h3Krx69zeJidgLF3Fv3XMrp1BZplIGCHvjI375KF02DwO9aH1SfjCAd0+KnWjjZ0m+cIvFMo8vNiPPO/Y0POvykLJXz2b289mQD86tbr7UpwmJxEBygi113sftBESzRAiyyF24debg2Gp3k0ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716471; c=relaxed/simple;
-	bh=KrtLP2+xQcj9c07YWsMGvUeNakHzSGnJr64CquHleek=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZeI+vngTz0nQcKfbOkWRaSpYF9Bvt749ER3akT7elZZQMGYKKkpWiMb+dk5e/4r7PRzOuaHv6I785MpGIpkkA7j4R2x4gZmtrogPlh1SlNJwW5dZ0DISs8uoqzA4VJwI9G85H4MKcctZAKbmParSVfjfYq38HVhlpwwstvpVdpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxYyOnKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649D8C433F1;
-	Fri, 29 Mar 2024 12:47:50 +0000 (UTC)
+	s=arc-20240116; t=1711716472; c=relaxed/simple;
+	bh=gDrerwWCpuVFmxg267SBmknIxzpAnbC2XgLOiKQKd6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UdreY+VXhr0r6salj0Q5k6e6OiKAjJKCp45VpAIfSJ9VZm/D+kzCRZkNnLKip7KK+HIbMLxw1nbS8/rw1wr1iCgIxoLYojy8kajr6wHlOBz2sYVNqsWUgaS12sTG2moVDuecyl/A8BrFBvZJZNXPvjFPAr1aj7ZHjcG0HLCF4Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QPCRJatJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DA9C43390;
+	Fri, 29 Mar 2024 12:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716471;
-	bh=KrtLP2+xQcj9c07YWsMGvUeNakHzSGnJr64CquHleek=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bxYyOnKMediWNUcVlJK/bxCisJ+Ii51JZ0YG+JEJrst5PY4vbCTUWsV5FWQGwpCdq
-	 gj5adxV68pui6Zytmu2wxgRKCFYeNbx8eXi8Bb5q3dmlXP9VGfosGaDrdNIDCmb1Dp
-	 6BQR+wlG8gXyzdPqvnJ53/vdc8f8tUqtXjwet11iTC8ULI9sfhV6W8DUb2+QCmYAwg
-	 9j3iZwmwMTnR8/kVjhfp5MWicxH5yE/CyOjMIqc/7mWxQoj37RB6kUefWSuXvS+snq
-	 RmdYcZAkaaV+8QFxUj/NKk5Qo6Dq+0L3OrEmyq2fv/ouyHQyEf8N5iSbt5lIZ/ZEFz
-	 JwHweG+7v+VEA==
+	s=k20201202; t=1711716472;
+	bh=gDrerwWCpuVFmxg267SBmknIxzpAnbC2XgLOiKQKd6U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QPCRJatJv7LH6czyODh2jpjMj8X1GjH2WUB4g+jkekXXmmKN06kUT68uEupzoodpO
+	 ZR9vjFl7YmOgfHOmzFQytweZhZ4ZCmSq/L18VZPV5xQ0JZCgweneu8xgsP7pnKV2If
+	 NwJTgvBMX5Zb9pO5HEKr5SctdVqiXEZr5so4mqLxTS0XhXGjAtVAsqzRu/AvgxJWIg
+	 d7MjXdt4xlSct0nW1LtSB90kR/VjFCfiY16sXFCS0pTWLT4iPnyM4UdYwf94WHv/tr
+	 019YKompKe90pm1YoDWxEs2AYvhjQYpIkK9lJfo3/rg7vPM/eEi8JQ7Pdx7/SIF2dI
+	 tf4Ti0vrBGG3A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kunwu Chan <chentao@kylinos.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>,
-	minipli@grsecurity.net,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/34] Input: synaptics-rmi4 - fail probing if memory allocation for "phys" fails
-Date: Fri, 29 Mar 2024 08:47:02 -0400
-Message-ID: <20240329124750.3092394-1-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 02/34] pinctrl: renesas: checker: Limit cfg reg enum checks to provided IDs
+Date: Fri, 29 Mar 2024 08:47:03 -0400
+Message-ID: <20240329124750.3092394-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
+References: <20240329124750.3092394-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,39 +66,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit bc4996184d56cfaf56d3811ac2680c8a0e2af56e ]
+[ Upstream commit 3803584a4e9b65bb5b013f862f55c5055aa86c25 ]
 
-While input core can work with input->phys set to NULL userspace might
-depend on it, so better fail probing if allocation fails. The system must
-be in a pretty bad shape for it to happen anyway.
+If the number of provided enum IDs in a variable width config register
+description does not match the expected number, the checker uses the
+expected number for validating the individual enum IDs.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240117073124.143636-1-chentao@kylinos.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+However, this may cause out-of-bounds accesses on the array holding the
+enum IDs, leading to bogus enum_id conflict warnings.  Worse, if the bug
+is an incorrect bit field description (e.g. accidentally using "12"
+instead of "-12" for a reserved field), thousands of warnings may be
+printed, overflowing the kernel log buffer.
+
+Fix this by limiting the enum ID check to the number of provided enum
+IDs.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/c7385f44f2faebb8856bcbb4e908d846fc1531fb.1705930809.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pinctrl/renesas/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 258d5fe3d395c..aa32371f04af6 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -1196,7 +1196,11 @@ static int rmi_driver_probe(struct device *dev)
- 		}
- 		rmi_driver_set_input_params(rmi_dev, data->input);
- 		data->input->phys = devm_kasprintf(dev, GFP_KERNEL,
--						"%s/input0", dev_name(dev));
-+						   "%s/input0", dev_name(dev));
-+		if (!data->input->phys) {
-+			retval = -ENOMEM;
-+			goto err;
-+		}
- 	}
+diff --git a/drivers/pinctrl/renesas/core.c b/drivers/pinctrl/renesas/core.c
+index 75fc420b6bdf1..8d3b75231f39e 100644
+--- a/drivers/pinctrl/renesas/core.c
++++ b/drivers/pinctrl/renesas/core.c
+@@ -868,9 +868,11 @@ static void __init sh_pfc_check_cfg_reg(const char *drvname,
+ 		sh_pfc_err("reg 0x%x: var_field_width declares %u instead of %u bits\n",
+ 			   cfg_reg->reg, rw, cfg_reg->reg_width);
  
- 	retval = rmi_init_functions(data);
+-	if (n != cfg_reg->nr_enum_ids)
++	if (n != cfg_reg->nr_enum_ids) {
+ 		sh_pfc_err("reg 0x%x: enum_ids[] has %u instead of %u values\n",
+ 			   cfg_reg->reg, cfg_reg->nr_enum_ids, n);
++		n = cfg_reg->nr_enum_ids;
++	}
+ 
+ check_enum_ids:
+ 	sh_pfc_check_reg_enums(drvname, cfg_reg->reg, cfg_reg->enum_ids, n);
 -- 
 2.43.0
 
