@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-33155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80E9891839
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:57:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D611891840
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 13:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78AA41F22A71
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 11:57:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D6A01C21C25
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 12:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA2F7C0A7;
-	Fri, 29 Mar 2024 11:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEFB7E111;
+	Fri, 29 Mar 2024 11:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXjSi+BS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRDP3P7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538DA2A1A5;
-	Fri, 29 Mar 2024 11:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4976A02A
+	for <stable@vger.kernel.org>; Fri, 29 Mar 2024 11:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711713410; cv=none; b=n/NBHZfsD1/yieaFyJfomWYDSNCVH7AxO0nxJ1vjzP1qcaNizgI9lSfoVh45bXmB7xlQP6bgliHkQqQ6cuAXO93k/JQ832m9rFMtziWykX43sRXQO/9/zWf+wlhyoZD49ksL/xUitoHBaNtEnQkHC79twICQqrGEc41CF45DY3E=
+	t=1711713597; cv=none; b=QdoIKqG9rkV9AhFS7rdZUuVfLxc650STkXakMCFpiYJH1fuzF53H0bptVEwOs2CPK6leTSEU2mQpQ3OMemlV3Axac0Bu020FuUNqKXUQoo4D3Q4GdveMxjUyU6QIA6/cLTpVPb8Gg1a/Ztmz/Q+MtvLqTj9jVhtjzMjUNY0vdVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711713410; c=relaxed/simple;
-	bh=N3vJLpKKCF66KRFxoWDNYIgz+O0iT8ojHf0tNeT60ds=;
+	s=arc-20240116; t=1711713597; c=relaxed/simple;
+	bh=RSz981FzmqDRw9x4P9agLW4GAoPtVPagtjCNMXcZ2UI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YoVosm8cNXlo+UAuyHz6Q7m6vWVDH+L01xBRboxNLQBiPUbHqAAN4cLIaVxzbCZhMDAurF28vV6uKFq0K/qIU1X2kla3ozrtOdXz0vWoRU+nHDzpT0bOtZ13LN7nE/TIKSkTMw+iv5o6o1ykGNSt2FBA3cKSPTMJbyjQ7Rc9F8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXjSi+BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E82DC433F1;
-	Fri, 29 Mar 2024 11:56:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=oRRelUVDnFXHCtfIdFlPFtgBhwt9q/hgz5gFOpwWvUPTs7WfqNMgFPz5gx3iPUvIpxdqcFb3ibzsoSyo7Maeviib9+U6j48urgiHs9dJr4k2W8mvLX5vXUepL3s1qy53Sdw49LRt5f3JWAia57fRdrPje+0UK+9hOHSP793ZNEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRDP3P7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E680BC433F1;
+	Fri, 29 Mar 2024 11:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711713409;
-	bh=N3vJLpKKCF66KRFxoWDNYIgz+O0iT8ojHf0tNeT60ds=;
+	s=korg; t=1711713597;
+	bh=RSz981FzmqDRw9x4P9agLW4GAoPtVPagtjCNMXcZ2UI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yXjSi+BSwuOzx9azE94oluhs2HbkaySjgvVzLNHynRDSzkO0EyZvMhiUt9YDwOA6t
-	 ihA+/K4qfWt6oq4jMPDmhCHz/uqwB9AAAz94ESOIcafvoGfxj8abUvxBlywxQI6o4r
-	 6HE6gmvINWym3jeFSud7+IdbwUNyEPZa0eQLaPIE=
-Date: Fri, 29 Mar 2024 12:56:46 +0100
+	b=yRDP3P7EatQV7ZHOPnNVtydzNN1ZxNLCr2f6OfiYhNReJe54DlIsWNstz8XXP6PWT
+	 vSjzaE0uGita2RoPg5N8UwiNMt12XgcZ2c6/hoCzVchqg/LdozGYvQouW1bI4q/k0Z
+	 41bUfxmzdkIDVowFYvVXnRtXBIQIJbzHWn4bc6aU=
+Date: Fri, 29 Mar 2024 12:59:54 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	Borislav Petkov <bp@alien8.de>, stable@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "x86/sev: Fix position dependent variable
- references in startup code" failed to apply to 6.8-stable tree
-Message-ID: <2024032916-statue-skyrocket-af59@gregkh>
-References: <20240327120810.2825990-1-sashal@kernel.org>
- <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
+To: Li Lingfeng <lilingfeng@huaweicloud.com>
+Cc: stable@vger.kernel.org, jsperbeck@google.com, beanhuo@micron.com,
+	hch@lst.de, axboe@kernel.dk, sashal@kernel.org,
+	yukuai1@huaweicloud.com, houtao1@huawei.com, yi.zhang@huawei.com,
+	yangerkun@huawei.com, lilingfeng3@huawei.com
+Subject: Re: [PATCH 5.10] nvme: use nvme_cid to generate command_id in trace
+ event
+Message-ID: <2024032924-cadet-purely-06a9@gregkh>
+References: <20240306112506.1699133-1-lilingfeng@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,32 +57,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXGNneD2E=iGM18DMrAqKySi6JdDF-f-Sd+Vs036-_RL2g@mail.gmail.com>
+In-Reply-To: <20240306112506.1699133-1-lilingfeng@huaweicloud.com>
 
-On Wed, Mar 27, 2024 at 04:39:20PM +0200, Ard Biesheuvel wrote:
-> On Wed, 27 Mar 2024 at 14:08, Sasha Levin <sashal@kernel.org> wrote:
-> >
-> > The patch below does not apply to the 6.8-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
+On Wed, Mar 06, 2024 at 07:25:06PM +0800, Li Lingfeng wrote:
+> From: Li Lingfeng <lilingfeng3@huawei.com>
 > 
-> I will send the v6.8 backport separately right away.
+> A null-ptr-deref problem may occur since commit 706960d328f5 ("nvme: use
+> command_id instead of req->tag in trace_nvme_complete_rq()") tries to get
+> command_id by nvme_req(req)->cmd while nvme_req(req)->cmd is NULL.
+> The problem has been sloved since the patch has been reverted by commit
+> 929ba86476b3. However, cmd->common.command_id is set to req->tag again
+> which should be ((genctl & 0xf)< 12 | req->tag).
+> Generating command_id by nvme_cid() in trace event instead of
+> nvme_req(req)->cmd->common.command_id to set it to
+> ((genctl & 0xf)< 12 | req->tag) without trigging the null-ptr-deref
+> problem.
 > 
-> v6.7 and v6.6 can take this patch unmodified but will need to take
-> 29956748339aa8757a7e2f927a8679dd08f24bb6 as a prerequisite first.
+> Fixes: commit 706960d328f5 ("nvme: use command_id instead of req->tag in trace_nvme_complete_rq()")
 
-Now done, thanks.
+This committ is reverted in the 5.10.208 release, so is this change
+still needed?
 
-> (v6.8 no longer applies because of the way Linus fixed up a merge
-> conflict in the 6.8 cycle)
-
-I fixed this up by hand, hopefully got it right :)
-
-> v6.1 and older need separate backports so i will send those out later.
-
-Wonderful, thanks!
+thanks,
 
 greg k-h
 
