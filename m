@@ -1,128 +1,156 @@
-Return-Path: <stable+bounces-33734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B17589200A
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:16:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC2F89203D
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 16:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 165B9289D0E
-	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:16:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6F01F23347
+	for <lists+stable@lfdr.de>; Fri, 29 Mar 2024 15:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED67B4F887;
-	Fri, 29 Mar 2024 14:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6C21311BD;
+	Fri, 29 Mar 2024 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KE2IDlBa"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qjcJgRX+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBE91C288;
-	Fri, 29 Mar 2024 14:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEFD48787;
+	Fri, 29 Mar 2024 15:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711723871; cv=none; b=Dti3HyqLaHK0d4CqJstC42wCFO4K/u6Q7lKr8yfMNEYpgEau9EHsgHbc/x4mwyPNJZELbSn7pEcGKaip1aifyHdNnSPdZBwYWN4cPMd0bW9TolJ5D5Z4DgwRSL3ekF6SI72/DFTafb+1iGsb/6rg+WE979ujz8+ZO9in8FHbVjw=
+	t=1711724755; cv=none; b=mFniPnx/5rWavZxtcm+fqhUkJj/wZDQ5TIiV3Q4Llvqeams+Mcljjeobk+P4fF6zMUjk3qgpxuDzT2WhkaEn/0C2+HOGctnNLFV7wDjhcTUCw5fp50MyWofTZqxQR4piIvtdXmmbVO5USbK8LcAeDNnkmS1yN4672/QHvKcEnCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711723871; c=relaxed/simple;
-	bh=p6bKSFEP4zGZYycN36toi+5UqTy9rKrRPNUigF912MA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEhe0LN/VGCZ3akPhgNUgoVPyCuBY1i4thc7iquU2FWq1hqtTzAfBMNWiCJ7o3tWZZD9GxDds/2mTx8eO2jbkHmvMs1oJiuzjTNMyHPmPuBv/TrjwkKnOO8n3bQlGeZdirk0/VgPbaMr37/neHaFR1jzs2kT+F1Dn0BIcUaJRPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KE2IDlBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB5AC43390;
-	Fri, 29 Mar 2024 14:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711723871;
-	bh=p6bKSFEP4zGZYycN36toi+5UqTy9rKrRPNUigF912MA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KE2IDlBajOeZFHKgq72qyYLgo3F/CifdixeiUqXCo09NgTIK0Sb769JZagg6kccSy
-	 om/lGw0oLBSHuyI3MAfRR72hg/DZIM6U8a2zFuBkEDePNjYvMAKIhk3cxvZtx8zAGi
-	 CXQjLS+ftAa6AAZM2EkiqW4htRsCX4t7ilITinW6hCeFu7uJiX+tEi4xzMUDkDfvtp
-	 vEJk+jHVnxmKFX2iuxGXu3ISpaLJ0SpntSUS2e2bSzyIpqs8x5+lqbFyRskFdCcWCF
-	 3AJykoCyvYfzyJBDt24+XeYEWHVO2suJZHVAt1PBjbf6tvZ9mSOAXfgXEdRHY4efYd
-	 Ncmr4KH8UHNtg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15.y] selftests: mptcp: diag: return KSFT_FAIL not test_cnt
-Date: Fri, 29 Mar 2024 15:51:05 +0100
-Message-ID: <20240329145105.1637785-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024032713-identity-slightly-586d@gregkh>
-References: <2024032713-identity-slightly-586d@gregkh>
+	s=arc-20240116; t=1711724755; c=relaxed/simple;
+	bh=hWTBr1HsRFSiIR+jVAkUIvH4iFAvcopyR5HkgRFO4VA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pX5V65g73Z7UsBMHOBGT5REbokHHeoqIiyGt7wczyrZ6HAN5CediOgEcq01GLCIsV1AR0AIeZ7UwHq1KmghsEs8fFQyoCmO91lXUeS1bwb/SbwAY+l/jW3yRRBbZnKY6ileRkzNkUel7rQIleYq5eJhpfzdo7uy9LetnXS9EogE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qjcJgRX+; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42TF2v2P004967;
+	Fri, 29 Mar 2024 15:05:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=j3kxR/csuodeDHffXwgWbeoQ0UBFIz87t1zEbv/ko6M=;
+ b=qjcJgRX+neaKnzPRRWb7qoH2qZ6KoaXKFtoUW1L6Iht796BfDFNG0hfFi9sP/s2aKBBS
+ Fbzf1ageLnyOkHC/C2ophHxj1iU1EFxDY+kWkRHqjRwlJb3DS9fN2m2vWYzUI7vpW5sC
+ +ii3lBsg+ggzoUslOYfUQqT2Py4yDCBXaNHMhksqLNxAzRHQFbNMT8akwMnPkU3A/9Xi
+ Cl+PHpCrRDhUb8T/HTb+LCiZ1shnQiQGtb+Lt13UsJkV/pm2JryJKKJ+7us32hQjnXg/
+ WWnTQwP4oWlM+3lFc4bPPChaUWRAzD/GImVuBqeaj9JcYO+BIK+fm3c2y0BpKXBsan9q uA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5yxf809h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 15:05:19 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42TF5Ju5008421;
+	Fri, 29 Mar 2024 15:05:19 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5yxf809g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 15:05:19 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42TEbeMX016411;
+	Fri, 29 Mar 2024 15:05:18 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x29dun0ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 15:05:18 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42TF5FPs25166550
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Mar 2024 15:05:17 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8468E5805F;
+	Fri, 29 Mar 2024 15:05:15 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E9A9758060;
+	Fri, 29 Mar 2024 15:05:13 +0000 (GMT)
+Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.126.92])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 Mar 2024 15:05:13 +0000 (GMT)
+Message-ID: <7b8162281b355b16e8dbdb93297a9a1cfb5bb6da.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/2] security: Handle dentries without inode in
+ security_path_post_mknod()
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, dmitry.kasatkin@gmail.com,
+        eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com
+Cc: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-cifs@vger.kernel.org, viro@zeniv.linux.org.uk, pc@manguebit.com,
+        christian@brauner.io, Roberto Sassu <roberto.sassu@huawei.com>,
+        stable@vger.kernel.org, Steve French <smfrench@gmail.com>
+Date: Fri, 29 Mar 2024 11:05:13 -0400
+In-Reply-To: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+References: <20240329105609.1566309-1-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-23.el8_9) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gEKmMXZ0y70WPjaV8vljt_hLgh1srMtD
+X-Proofpoint-ORIG-GUID: XvQ5czlv999DsIyO-nwzKjYYOrUUmD7Q
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2328; i=matttbe@kernel.org; h=from:subject; bh=1CWB7pgE6SS9sV6vHVm59PijAn+MSrEr+qO/BB1X+c8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmBtVZMAQlObfiHVGoHknc1f90YxbleVgV8LDcf LzSL/yivIiJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZgbVWQAKCRD2t4JPQmmg c4lYEACs4ZRd2vCtZdq9SEGfxGlFnYBNQDrT38P9brGj49sZ7cWN7WoO/6NfqZ8B80IUiFsIgiT GmdS7/jBAekC8jDyXrc/81BKzNAcMIIioV0kG27KrFEI8t+7T53AHczA7D40ACgUbjEVekIoYBj 4hS+nzvfBO00Rolfx79ZV4aixzzLnFQ+Tu4qbr3HDKLboiKr4CS1Nr6a+bhK0RUqEXVKJfwVYoF dN9SMet7ZSYX5mvJx5MJD3JJkP3Qo7FuPHZXNToy9lXE1KjV0GWjQKpKa+EiwisMYY0FSuWIELm JeQVcjIp+NSTyie/LRs0WqNr/XhWkyDlgy++6WfJ1NLrAJ1lFn+Fg2jkf55g67gcLtnmE2qE8yt JhyWIWHAwee+vLqeAhSV/0Z+P6O+JTGybEQzYGCQPPh+ucLXX1E66jveCx1CZdvxxTGhyloQ0Jf HDyA2oEXac5FB+DNL3gnE4qVR6C96JVMaTGehhEPjZD13z0aa7TGGETh09t/EaimeC2zeGtYc2u 4feEdNJ/iCck+xm82J5bf3toI704rK1uo5zanl/0AbOJWBjRJAGssl7xg96RV0zOfv/1USfixcP fK/irRfnguQlzD9uDKXKUjtAmpZiMEFeNcuosAzwz2FGmV4LnIq48/THq8VArR0SO9VmHc5Ibc0 e0N7NmP2iXj50GA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-29_13,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=831 mlxscore=0
+ suspectscore=0 phishscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403290133
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Fri, 2024-03-29 at 11:56 +0100, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> Commit 08abce60d63fi ("security: Introduce path_post_mknod hook")
+> introduced security_path_post_mknod(), to replace the IMA-specific call to
+> ima_post_path_mknod().
+> 
+> For symmetry with security_path_mknod(), security_path_post_mknod() is
+> called after a successful mknod operation, for any file type, rather than
+> only for regular files at the time there was the IMA call.
+> 
+> However, as reported by VFS maintainers, successful mknod operation does
+> not mean that the dentry always has an inode attached to it (for example,
+> not for FIFOs on a SAMBA mount).
+> 
+> If that condition happens, the kernel crashes when
+> security_path_post_mknod() attempts to verify if the inode associated to
+> the dentry is private.
+> 
+> Add an extra check to first verify if there is an inode attached to the
+> dentry, before checking if the inode is private. Also add the same check to
+> the current users of the path_post_mknod hook, ima_post_path_mknod() and
+> evm_post_path_mknod().
+> 
+> Finally, use the proper helper, d_backing_inode(), to retrieve the inode
+> from the dentry in ima_post_path_mknod().
+> 
+> Cc: stable@vger.kernel.org # 6.8.x
 
-The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
-if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
-the whole test will be marked as skipped instead of 'failed'!
+Huh?  It doesn't need to be backported.
 
-So we should do ret=${KSFT_FAIL} instead.
+> Reported-by: Steve French <smfrench@gmail.com>
+> Closes: 
+> https://lore.kernel.org/linux-kernel/CAH2r5msAVzxCUHHG8VKrMPUKQHmBpE6K9_vjhgDa1uAvwx4ppw@mail.gmail.com/
+> Fixes: 08abce60d63fi ("security: Introduce path_post_mknod hook")
 
-Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
-Cc: stable@vger.kernel.org
-Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit 45bcc0346561daa3f59e19a753cc7f3e08e8dff1)
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Notes:
- - Conflicts in diag.sh because the commit ce9902573652 ("selftests:
-   mptcp: diag: format subtests results in TAP") is not in v5.15 tree.
-   These conflicts were in the context for an unrelated feature.
- - Compared to the conflicts seen with the same patch in the v6.1 tree,
-   there was an extra one here in v5.15 because the commit f2ae0fa68e28
-   ("selftests/mptcp: add diag listen tests") is no the in this tree: it
-   moves the assignation of 'ret' in '__chk_nr()' under an extra check.
-   The conflict was easy to fix, simply by changing the value of 'ret'
-   from the previous location.
----
- tools/testing/selftests/net/mptcp/diag.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+-> 08abce60d63f
 
-diff --git a/tools/testing/selftests/net/mptcp/diag.sh b/tools/testing/selftests/net/mptcp/diag.sh
-index 57a681107f73..a8178a9c1e10 100755
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -53,7 +53,7 @@ __chk_nr()
- 	printf "%-50s" "$msg"
- 	if [ $nr != $expected ]; then
- 		echo "[ fail ] expected $expected found $nr"
--		ret=$test_cnt
-+		ret=${KSFT_FAIL}
- 	else
- 		echo "[  ok  ]"
- 	fi
-@@ -88,10 +88,10 @@ wait_msk_nr()
- 	printf "%-50s" "$msg"
- 	if [ $i -ge $timeout ]; then
- 		echo "[ fail ] timeout while expecting $expected max $max last $nr"
--		ret=$test_cnt
-+		ret=${KSFT_FAIL}
- 	elif [ $nr != $expected ]; then
- 		echo "[ fail ] expected $expected found $nr"
--		ret=$test_cnt
-+		ret=${KSFT_FAIL}
- 	else
- 		echo "[  ok  ]"
- 	fi
--- 
-2.43.0
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
 
 
