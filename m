@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-33824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB2C892A2C
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A049892A34
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DCE91C20E5C
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:58:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6654A1C21480
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6360E210FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD04F2838E;
 	Sat, 30 Mar 2024 09:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhF/qfMG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBkJQNjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E381EB5A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F3224A03;
 	Sat, 30 Mar 2024 09:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711792677; cv=none; b=UBroF+nQKze7k5kkZdy+nsVtLKS7OwGg42paDCoR4ReIxsGcQAYz6/7FkDw/O0ayTSfreTBbXv3REuPJeZabDcTIk3guOML7miPFKJ7Avx0G5RNPTgQUz5WJNU5v5vmmgSr2x3AC4X6uf9hxBC7he20ETy+aIrbOdhEQunRs7wo=
+	t=1711792677; cv=none; b=YyZtDEsFziNpiYfe8pTUXuTo2EoAKykXWVJWAAP0Ycf4dBeBSMLLOTccIR2l05hxoeeAZzKu5sXfB6NzKdt8s+v5rEZeZncFQdSEh9ReKgE7I0i/trEbtB8Y/y1UOXlff6IKwrg0hyQNVMxxyRhL79WPXQpCj+EpITLZJKHMCA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711792677; c=relaxed/simple;
-	bh=eDnRUPngHqoQZ7G0b6cjOURT4uhlTvBwqKCHkp86dUI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QfauZKJJH+s1+v0RjTZV41bZp5+jTw2RjxC3cvG4cVS7IQD4ORfx8ITsf2U3AIN+A0PyQTdQXSap+O9opTBP2UEPuVyBqm6hubyWjJ/V32hcYyrD3Eo1oCSN+aUAYIsDcgJ+mY8KvTJb9SPi4R9vUcXgivBUlTYi2bXqJOcyX5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhF/qfMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DBA97C433C7;
-	Sat, 30 Mar 2024 09:57:56 +0000 (UTC)
+	bh=bebuIwcUBNMtYbSzdkVNlj0yN3Mms/4B8BSns5s9jWM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CGytvjMe4oCbrEIMB9oeWTl8ysc6giLPLB03B4hi9D6j+kW/pg6ScXKQ7WgXiCdMpSYdOPdUXlKrAJCft/7KNiFSV9TT52Qj3rJ91G2+Zcrmd1g3O/pM34tn7YF61JJKSC4kDCf4nUKNPTkbQIUYeKnR+QeA1Ji+hBWrArySujw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBkJQNjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3BC5DC43609;
+	Sat, 30 Mar 2024 09:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711792676;
-	bh=eDnRUPngHqoQZ7G0b6cjOURT4uhlTvBwqKCHkp86dUI=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=JhF/qfMGRF2vRF9lE7VZ9fXM8H87R6irghexmiTHRAAyGdBzRAuQ8CNW4iyOk2XnV
-	 JXXDTzTq82CQ4xQR/1ykWZFZ6dzSPyxI9Zbt3Z2QR5OM273vEmxIcvdxd84mnkxZml
-	 HZR+FhYjZXYqQNZz1pt5oB0sxaKFLTJOteIPMRFxCRnwjth13nwPioeLluXmFA2/W2
-	 JXNRe76Guf5Y1v1pBfxlUsCeBGeau2f+bwyhvdxnSNTqjVNLA2J+gAAtTjLCSxBQVO
-	 3bkGe8UtsPK0VoWih9WUqyrD7jTFd3v1LeSyrZ00mguL96ztYSYQqiS6/cUry3MMS+
-	 0ZQo7ntmGqIMA==
+	s=k20201202; t=1711792677;
+	bh=bebuIwcUBNMtYbSzdkVNlj0yN3Mms/4B8BSns5s9jWM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=bBkJQNjm6+iwK7Oo9ZKoxNPmM3KMVEUXraK+5rpydUUIlhQ3PfN0XSdH7C9+wPHmR
+	 cBcCs8E6sUbfGsTKzwQBSJwE14ia6ZB7xJNCzTpEsroVuYh4iDEZOCVBZ1Kol6VJ2o
+	 kA4QD/IKVxnYS23KTndmvSLuJZ+uL9d3F7EvR1pUCjZIYgflD8Uk9Ewdmg0UtJzWXs
+	 fCirwBwTgORYFKUMCZufd89cmOjNcTA4VqNEMFfH+IIBqj2m+hSooSiMbqcUjtQetj
+	 gSMc4ScZ+QKsfIeWfbYS//UIfMf3dfxZ6bnDc7SBo3nPjTD9dngiVwJztg8miM0UZE
+	 FRgqmQOKOMxWw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCFE5CD11DD;
-	Sat, 30 Mar 2024 09:57:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34F4FCD128E;
+	Sat, 30 Mar 2024 09:57:57 +0000 (UTC)
 From: Sam Ravnborg via B4 Relay <devnull+sam.ravnborg.org@kernel.org>
-Subject: [PATCH 00/10] sparc64: Fix CPU online bug and warning fixes
-Date: Sat, 30 Mar 2024 10:57:36 +0100
-Message-Id: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
+Date: Sat, 30 Mar 2024 10:57:45 +0100
+Subject: [PATCH 09/10] sparc64: Fix number of online CPUs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,21 +55,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABHiB2YC/x3MQQqAIBBA0avErBNMTaqrRAuzsWZjMQMVRHdPW
- r7F/w8IMqHAUD3AeJLQnguauoK4hbyioqUYjDZOW9MrOQJH79QVOFNeRXnfxdhrTK2doWQHY6L
- 7X47T+35CLiOJYgAAAA==
+Message-Id: <20240330-sparc64-warnings-v1-9-37201023ee2f@ravnborg.org>
+References: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
+In-Reply-To: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
 To: Andreas Larsson <andreas@gaisler.com>, 
  "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
 Cc: Nick Bowler <nbowler@draconx.ca>, linux-kernel@vger.kernel.org, 
- Arnd Bergmann <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>, 
- Atish Patra <atish.patra@oracle.com>, stable@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, Atish Patra <atish.patra@oracle.com>, 
+ Sam Ravnborg <sam@ravnborg.org>, stable@vger.kernel.org, 
  Bob Picco <bob.picco@oracle.com>, Vijay Kumar <vijay.ac.kumar@oracle.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711792675; l=2071;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711792675; l=4552;
  i=sam@ravnborg.org; s=20230107; h=from:subject:message-id;
- bh=eDnRUPngHqoQZ7G0b6cjOURT4uhlTvBwqKCHkp86dUI=;
- b=XbiHaZ/tYJDLA+a14/hq+RNLsBlpQeOA1+rEeZk7TbiaKPXwytF49GTZiGF68WZIeOwb02V/RLnH
- CJVACzeFBQ/ioYueEX2mS2PTVVtDyJVb3DKSvYn8mxZNLwri6H+R
+ bh=dn/Iq8dROBgEtbrmvGqdZDKLIQGxfIlMZA5xlo5LiLk=;
+ b=Mm0tyHZeXe/t+CUAz0TIDK29Bnh9pWuLw9N9PngOUrSliPSuEf3HaRhoErcq25a4YyE9mnLixJng
+ DR+0exWWCpJJ9L0PynCkfmAWNCYEio9DUJVIyayOkKqpOy3h29V7
 X-Developer-Key: i=sam@ravnborg.org; a=ed25519;
  pk=R0+pqV7BRYOAeOIGkyOrSNke7arx5y3LkEuNi37YEyU=
 X-Endpoint-Received: by B4 Relay for sam@ravnborg.org/20230107 with
@@ -77,59 +77,128 @@ X-Endpoint-Received: by B4 Relay for sam@ravnborg.org/20230107 with
 X-Original-From: Sam Ravnborg <sam@ravnborg.org>
 Reply-To: sam@ravnborg.org
 
-Nick Bowler reported that sparc64 failed to bring all his CPU's online,
-and that turned out to be an easy fix.
+From: Sam Ravnborg <sam@ravnborg.org>
 
-The sparc64 build was rather noisy with a lot of warnings which had
-irritated me enough to go ahead and fix them.
-With this set of patches my arch/sparc/ is almost warning free for
-all{no,yes,mod}config + defconfig builds.
+Nick Bowler reported:
+    When using newer kernels on my Ultra 60 with dual 450MHz UltraSPARC-II
+    CPUs, I noticed that only CPU 0 comes up, while older kernels (including
+    4.7) are working fine with both CPUs.
 
-There is one warning about "clone3 not implemented", which I have ignored.
+      I bisected the failure to this commit:
 
-The warning fixes hides the fact that sparc64 is not yet y2038 prepared,
-and it would be preferable if someone knowledgeable would fix this
-poperly.
+      9b2f753ec23710aa32c0d837d2499db92fe9115b is the first bad commit
+      commit 9b2f753ec23710aa32c0d837d2499db92fe9115b
+      Author: Atish Patra <atish.patra@oracle.com>
+      Date:   Thu Sep 15 14:54:40 2016 -0600
 
-All fixes looks like 6.9 material to me.
+      sparc64: Fix cpu_possible_mask if nr_cpus is set
 
-	Sam 
+    This is a small change that reverts very easily on top of 5.18: there is
+    just one trivial conflict.  Once reverted, both CPUs work again.
 
+    Maybe this is related to the fact that the CPUs on this system are
+    numbered CPU0 and CPU2 (there is no CPU1)?
+
+The current code that adjust cpu_possible based on nr_cpu_ids do not
+take into account that CPU's may not come one after each other.
+Move the chech to the function that setup the cpu_possible mask
+so there is no need to adjust it later.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 9b2f753ec237 ("sparc64: Fix cpu_possible_mask if nr_cpus is set")
+Reported-by: Nick Bowler <nbowler@draconx.ca>
+Tested-by: Nick Bowler <nbowler@draconx.ca>
+Link: https://lore.kernel.org/sparclinux/20201009161924.c8f031c079dd852941307870@gmx.de/
+Link: https://lore.kernel.org/all/CADyTPEwt=ZNams+1bpMB1F9w_vUdPsGCt92DBQxxq_VtaLoTdw@mail.gmail.com/
+Cc: <stable@vger.kernel.org> # v4.8+
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Atish Patra <atish.patra@oracle.com>
+Cc: Bob Picco <bob.picco@oracle.com>
+Cc: Vijay Kumar <vijay.ac.kumar@oracle.com>
+Cc: David S. Miller <davem@davemloft.net>
 ---
-Sam Ravnborg (10):
-      sparc64: Fix prototype warning for init_vdso_image
-      sparc64: Fix prototype warnings in traps_64.c
-      sparc64: Fix prototype warning for vmemmap_free
-      sparc64: Fix prototype warning for alloc_irqstack_bootmem
-      sparc64: Fix prototype warning for uprobe_trap
-      sparc64: Fix prototype warning for dma_4v_iotsb_bind
-      sparc64: Fix prototype warnings in adi_64.c
-      sparc64: Fix prototype warning for sched_clock
-      sparc64: Fix number of online CPUs
-      sparc64: Fix prototype warnings for vdso
+ arch/sparc/include/asm/smp_64.h |  2 --
+ arch/sparc/kernel/prom_64.c     |  4 +++-
+ arch/sparc/kernel/setup_64.c    |  1 -
+ arch/sparc/kernel/smp_64.c      | 14 --------------
+ 4 files changed, 3 insertions(+), 18 deletions(-)
 
- arch/sparc/include/asm/smp_64.h  |  2 --
- arch/sparc/include/asm/vdso.h    | 10 ++++++++++
- arch/sparc/kernel/adi_64.c       | 14 +++++++-------
- arch/sparc/kernel/kernel.h       |  4 ++++
- arch/sparc/kernel/pci_sun4v.c    |  6 +++---
- arch/sparc/kernel/prom_64.c      |  4 +++-
- arch/sparc/kernel/setup_64.c     |  3 +--
- arch/sparc/kernel/smp_64.c       | 14 --------------
- arch/sparc/kernel/time_64.c      |  1 +
- arch/sparc/kernel/traps_64.c     | 10 +++++-----
- arch/sparc/kernel/uprobes.c      |  2 ++
- arch/sparc/mm/init_64.c          |  5 -----
- arch/sparc/vdso/vclock_gettime.c |  1 +
- arch/sparc/vdso/vma.c            |  5 +++--
- 14 files changed, 40 insertions(+), 41 deletions(-)
----
-base-commit: 84b76d05828a1909e20d0f66553b876b801f98c8
-change-id: 20240329-sparc64-warnings-668cc90ef53b
+diff --git a/arch/sparc/include/asm/smp_64.h b/arch/sparc/include/asm/smp_64.h
+index 505b6700805d..0964fede0b2c 100644
+--- a/arch/sparc/include/asm/smp_64.h
++++ b/arch/sparc/include/asm/smp_64.h
+@@ -47,7 +47,6 @@ void arch_send_call_function_ipi_mask(const struct cpumask *mask);
+ int hard_smp_processor_id(void);
+ #define raw_smp_processor_id() (current_thread_info()->cpu)
+ 
+-void smp_fill_in_cpu_possible_map(void);
+ void smp_fill_in_sib_core_maps(void);
+ void __noreturn cpu_play_dead(void);
+ 
+@@ -77,7 +76,6 @@ void __cpu_die(unsigned int cpu);
+ #define smp_fill_in_sib_core_maps() do { } while (0)
+ #define smp_fetch_global_regs() do { } while (0)
+ #define smp_fetch_global_pmu() do { } while (0)
+-#define smp_fill_in_cpu_possible_map() do { } while (0)
+ #define smp_init_cpu_poke() do { } while (0)
+ #define scheduler_poke() do { } while (0)
+ 
+diff --git a/arch/sparc/kernel/prom_64.c b/arch/sparc/kernel/prom_64.c
+index 998aa693d491..ba82884cb92a 100644
+--- a/arch/sparc/kernel/prom_64.c
++++ b/arch/sparc/kernel/prom_64.c
+@@ -483,7 +483,9 @@ static void *record_one_cpu(struct device_node *dp, int cpuid, int arg)
+ 	ncpus_probed++;
+ #ifdef CONFIG_SMP
+ 	set_cpu_present(cpuid, true);
+-	set_cpu_possible(cpuid, true);
++
++	if (num_possible_cpus() < nr_cpu_ids)
++		set_cpu_possible(cpuid, true);
+ #endif
+ 	return NULL;
+ }
+diff --git a/arch/sparc/kernel/setup_64.c b/arch/sparc/kernel/setup_64.c
+index 1d519f18d2b2..63615f5c99b4 100644
+--- a/arch/sparc/kernel/setup_64.c
++++ b/arch/sparc/kernel/setup_64.c
+@@ -671,7 +671,6 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	paging_init();
+ 	init_sparc64_elf_hwcap();
+-	smp_fill_in_cpu_possible_map();
+ 	/*
+ 	 * Once the OF device tree and MDESC have been setup and nr_cpus has
+ 	 * been parsed, we know the list of possible cpus.  Therefore we can
+diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
+index f3969a3600db..e50c38eba2b8 100644
+--- a/arch/sparc/kernel/smp_64.c
++++ b/arch/sparc/kernel/smp_64.c
+@@ -1220,20 +1220,6 @@ void __init smp_setup_processor_id(void)
+ 		xcall_deliver_impl = hypervisor_xcall_deliver;
+ }
+ 
+-void __init smp_fill_in_cpu_possible_map(void)
+-{
+-	int possible_cpus = num_possible_cpus();
+-	int i;
+-
+-	if (possible_cpus > nr_cpu_ids)
+-		possible_cpus = nr_cpu_ids;
+-
+-	for (i = 0; i < possible_cpus; i++)
+-		set_cpu_possible(i, true);
+-	for (; i < NR_CPUS; i++)
+-		set_cpu_possible(i, false);
+-}
+-
+ void smp_fill_in_sib_core_maps(void)
+ {
+ 	unsigned int i;
 
-Best regards,
 -- 
-Sam Ravnborg <sam@ravnborg.org>
+2.34.1
 
 
 
