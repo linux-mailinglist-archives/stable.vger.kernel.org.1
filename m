@@ -1,164 +1,202 @@
-Return-Path: <stable+bounces-33810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F269892A12
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:34:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE72892A16
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACE322832C8
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:34:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF4E1F221DD
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05922D533;
-	Sat, 30 Mar 2024 09:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF68F9C1;
+	Sat, 30 Mar 2024 09:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="K93VgGGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7NXUklG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F64E1C0DDD;
-	Sat, 30 Mar 2024 09:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFC864F
+	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 09:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711791271; cv=none; b=fC4QQiana65tSuBRu9LVdQxj6FZE6ff5mOfMXWEMyuUyrL/N8U7RK4M871aXxSYEPncemGKQUJqvN/Tm+w/W5f1F/nZyveS7NYT6tS96EAPQ8RTiHYYiR4cLFeQgh30U2SiP8I0/ogh3Uynwc8rrAnT1UuWl3fz3JxKEn3Anl6s=
+	t=1711791991; cv=none; b=BzZMrs9UR/TaACTW73z7aK5Kv+r9r5HbU3Ty9RKdevqxYJn8sRs8WOWTniji4T6MJ+K1XbZwP8+PRiBKaFtN9JKoQac6Z6WVpug83U6caB/vtkRx1xM3K348+iOGvDe2hA2mLRwS3wdd/T/vT3eSevI2ohMvyNK/LD4gYoAKx1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711791271; c=relaxed/simple;
-	bh=2D3W7Aq8rRi3gmv+4PXRtGv6s9okVKCpNPzM2GIJhqA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=oZ2mnoqV3I/A+ghJoH6qP0Irn46wHvNbvSS/KhvRI+DZKC2LRtBP86bbofhhHGX0OS9gAOflkKKP9w2X8lRkmtEnDk1SJ/rZpCGn47IWmwkFiPGdffd9dSPROsO1/4XXRM1P7A7FqtSLdZm5rzj34rpxayo4iIHX5v7bhBgDPlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=K93VgGGb; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1711791235; x=1713091235;
-	bh=YkJ6HA2Rzwgap8CzRAVIV0XAgD0cG3+xkx0g8vSdt0Y=;
-	h=Mime-Version:From;
-	b=K93VgGGb/2nFZnEjPEWjtOFZjLkdRjNqs+qj0cvIh8ACa5XfYLnplq+BW+yBybZ+e
-	 2gsvkxx0tZ+A8/2gYL0VpfgSPwQsE7fj2m8nxSjSXvvLkqczB/iiR/YRpbLG3isntZ
-	 NqqtZjJt+rH4guTWG5Ma4VNQXFiJY+7aWakxQYS7/DuyRUw1Zg98hjFMTBnhWcbP9z
-	 g/Ckj/p0F0w2SVAEfBTKxsX607AF2qYCxXQTwOlVUd+eW6M6tloL0NdruYfdpMd7Cj
-	 /+WHJNMQN2qGkzrIwfwpmDnePqlBAf9zyp0Q4vqGNczUhUJSkocVDkgbHPX0iWytuS
-	 MpZFthd63l3gg==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42U9XrDM052600
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sat, 30 Mar 2024 10:33:55 +0100 (CET)
-	(envelope-from balejk@matfyz.cz)
+	s=arc-20240116; t=1711791991; c=relaxed/simple;
+	bh=XBNM6zSbJljgEldMq7n9uDsTgYx/MLhcLJavokCoxj8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gZ5RRMe27d7Yo0y49H5R8LIzVb8NXhRCp0zsSOWwE6Mr3NdrcGLmyTRp7Dqw6WgZl6dsFYqJ6oockZLmfQ/LwjUmpEAusiTQhjhWDIeXBSwrV1y+ao+5+cq00fdcJ/sx/qYx9OsD9k8qepm69xOx6AosZwUxd6TLbrdkDnGLztM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7NXUklG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B10C433C7;
+	Sat, 30 Mar 2024 09:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711791990;
+	bh=XBNM6zSbJljgEldMq7n9uDsTgYx/MLhcLJavokCoxj8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Z7NXUklGdrGNBu2lQkpHrw08wMsgNQ9pvd9t+5V1yEwH44CkzbG/zd1pBwIvzSTP9
+	 ddHAC2frTwxV3fomlk2V8mLM/WDvg9hfi9PD+tmNDs8YFF3Y9hLF/vxenUc6qX2Fei
+	 P4rk6XGSHr1Wq3YjUJd9lrM6A22vEFiAV19mp4NQ=
+Subject: FAILED: patch "[PATCH] x86/bugs: Fix the SRSO mitigation on Zen3/4" failed to apply to 6.8-stable tree
+To: bp@alien8.de,mingo@kernel.org,torvalds@linux-foundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 30 Mar 2024 10:46:27 +0100
+Message-ID: <2024033027-tapered-curly-3516@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 30 Mar 2024 10:33:53 +0100
-Message-Id: <D06ZCKKYTQM5.3OJ6HCLHW3DZ9@matfyz.cz>
-Cc: "Markuss Broks" <markuss.broks@gmail.com>,
-        "Dmitry Torokhov"
- <dmitry.torokhov@gmail.com>,
-        <linux-input@vger.kernel.org>, <duje.mihanovic@skole.hr>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.8 78/98] input/touchscreen: imagis: add
- support for IST3032C
-To: "Sasha Levin" <sashal@kernel.org>
-From: "Karel Balej" <balejk@matfyz.cz>
-References: <20240329123919.3087149-1-sashal@kernel.org>
- <20240329123919.3087149-78-sashal@kernel.org>
-In-Reply-To: <20240329123919.3087149-78-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Sasha,
 
-Sasha Levin, 2024-03-29T08:37:49-04:00:
-> From: Karel Balej <balejk@matfyz.cz>
->
-> [ Upstream commit 90cb57a6c5717b83a110c0da720a03ee32ed255e ]
->
-> IST3032C is a touchscreen chip used for instance in the
-> samsung,coreprimevelte smartphone, with which this was tested. Add the
-> chip specific information to the driver.
->
-> Reviewed-by: Markuss Broks <markuss.broks@gmail.com>
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> Link: https://lore.kernel.org/r/20240301164659.13240-6-karelb@gimli.ms.mf=
-f.cuni.cz
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/input/touchscreen/imagis.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscre=
-en/imagis.c
-> index 9af8a6332ae67..e1fafa561ee38 100644
-> --- a/drivers/input/touchscreen/imagis.c
-> +++ b/drivers/input/touchscreen/imagis.c
-> @@ -11,6 +11,8 @@
->  #include <linux/property.h>
->  #include <linux/regulator/consumer.h>
-> =20
-> +#define IST3032C_WHOAMI			0x32c
-> +
->  #define IST3038B_REG_STATUS		0x20
->  #define IST3038B_REG_CHIPID		0x30
->  #define IST3038B_WHOAMI			0x30380b
-> @@ -363,6 +365,13 @@ static int imagis_resume(struct device *dev)
-> =20
->  static DEFINE_SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_re=
-sume);
-> =20
-> +static const struct imagis_properties imagis_3032c_data =3D {
-> +	.interrupt_msg_cmd =3D IST3038C_REG_INTR_MESSAGE,
-> +	.touch_coord_cmd =3D IST3038C_REG_TOUCH_COORD,
-> +	.whoami_cmd =3D IST3038C_REG_CHIPID,
-> +	.whoami_val =3D IST3032C_WHOAMI,
-> +};
-> +
->  static const struct imagis_properties imagis_3038b_data =3D {
->  	.interrupt_msg_cmd =3D IST3038B_REG_STATUS,
->  	.touch_coord_cmd =3D IST3038B_REG_STATUS,
-> @@ -380,6 +389,7 @@ static const struct imagis_properties imagis_3038c_da=
-ta =3D {
-> =20
->  #ifdef CONFIG_OF
->  static const struct of_device_id imagis_of_match[] =3D {
-> +	{ .compatible =3D "imagis,ist3032c", .data =3D &imagis_3032c_data },
->  	{ .compatible =3D "imagis,ist3038b", .data =3D &imagis_3038b_data },
->  	{ .compatible =3D "imagis,ist3038c", .data =3D &imagis_3038c_data },
->  	{ },
-> --=20
-> 2.43.0
+The patch below does not apply to the 6.8-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-sorry if I'm missing something, but I don't see why this should be
-backported: it doesn't fix anything, it's just adding support for new
-hardware.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I can see that adding a device ID is permitted for -stable [1], but I
-thought it still has to bear some signs of a fix, such as maybe here
-[2].
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4535e1a4174c4111d92c5a9a21e542d232e0fcaa
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033027-tapered-curly-3516@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
-Furthermore, you are also proposing to backport Duje's touch keys
-support [3] which I think is unarguably a new feature and not a fix at
-all. Of all the Imagis patches, only the touch area correction [4] seems
-to make sense for backporting.
+Possible dependencies:
 
-Could you please explain?
 
-[1] https://docs.kernel.org/next/process/stable-kernel-rules.html
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/commit/?=
-id=3Dd40e9edcf3eb925c259df9f9dd7319a4fcbc675b
-[3] https://lore.kernel.org/stable/20240329123919.3087149-88-sashal@kernel.=
-org/
-[4] https://lore.kernel.org/stable/20240329123919.3087149-76-sashal@kernel.=
-org/
 
-Thank you, best regards,
-K. B.
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4535e1a4174c4111d92c5a9a21e542d232e0fcaa Mon Sep 17 00:00:00 2001
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
+Date: Thu, 28 Mar 2024 13:59:05 +0100
+Subject: [PATCH] x86/bugs: Fix the SRSO mitigation on Zen3/4
+
+The original version of the mitigation would patch in the calls to the
+untraining routines directly.  That is, the alternative() in UNTRAIN_RET
+will patch in the CALL to srso_alias_untrain_ret() directly.
+
+However, even if commit e7c25c441e9e ("x86/cpu: Cleanup the untrain
+mess") meant well in trying to clean up the situation, due to micro-
+architectural reasons, the untraining routine srso_alias_untrain_ret()
+must be the target of a CALL instruction and not of a JMP instruction as
+it is done now.
+
+Reshuffle the alternative macros to accomplish that.
+
+Fixes: e7c25c441e9e ("x86/cpu: Cleanup the untrain mess")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+
+diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+index 076bf8dee702..25466c4d2134 100644
+--- a/arch/x86/include/asm/asm-prototypes.h
++++ b/arch/x86/include/asm/asm-prototypes.h
+@@ -14,6 +14,7 @@
+ #include <asm/asm.h>
+ #include <asm/fred.h>
+ #include <asm/gsseg.h>
++#include <asm/nospec-branch.h>
+ 
+ #ifndef CONFIG_X86_CMPXCHG64
+ extern void cmpxchg8b_emu(void);
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index fc3a8a3c7ffe..170c89ed22fc 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -262,11 +262,20 @@
+ .Lskip_rsb_\@:
+ .endm
+ 
++/*
++ * The CALL to srso_alias_untrain_ret() must be patched in directly at
++ * the spot where untraining must be done, ie., srso_alias_untrain_ret()
++ * must be the target of a CALL instruction instead of indirectly
++ * jumping to a wrapper which then calls it. Therefore, this macro is
++ * called outside of __UNTRAIN_RET below, for the time being, before the
++ * kernel can support nested alternatives with arbitrary nesting.
++ */
++.macro CALL_UNTRAIN_RET
+ #if defined(CONFIG_MITIGATION_UNRET_ENTRY) || defined(CONFIG_MITIGATION_SRSO)
+-#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+-#else
+-#define CALL_UNTRAIN_RET	""
++	ALTERNATIVE_2 "", "call entry_untrain_ret", X86_FEATURE_UNRET, \
++		          "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+ #endif
++.endm
+ 
+ /*
+  * Mitigate RETBleed for AMD/Hygon Zen uarch. Requires KERNEL CR3 because the
+@@ -282,8 +291,8 @@
+ .macro __UNTRAIN_RET ibpb_feature, call_depth_insns
+ #if defined(CONFIG_MITIGATION_RETHUNK) || defined(CONFIG_MITIGATION_IBPB_ENTRY)
+ 	VALIDATE_UNRET_END
+-	ALTERNATIVE_3 "",						\
+-		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++	CALL_UNTRAIN_RET
++	ALTERNATIVE_2 "",						\
+ 		      "call entry_ibpb", \ibpb_feature,			\
+ 		     __stringify(\call_depth_insns), X86_FEATURE_CALL_DEPTH
+ #endif
+@@ -342,6 +351,8 @@ extern void retbleed_return_thunk(void);
+ static inline void retbleed_return_thunk(void) {}
+ #endif
+ 
++extern void srso_alias_untrain_ret(void);
++
+ #ifdef CONFIG_MITIGATION_SRSO
+ extern void srso_return_thunk(void);
+ extern void srso_alias_return_thunk(void);
+diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
+index 721b528da9ac..02cde194a99e 100644
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -163,6 +163,7 @@ SYM_CODE_START_NOALIGN(srso_alias_untrain_ret)
+ 	lfence
+ 	jmp srso_alias_return_thunk
+ SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ 	.popsection
+ 
+ 	.pushsection .text..__x86.rethunk_safe
+@@ -224,10 +225,12 @@ SYM_CODE_START(srso_return_thunk)
+ SYM_CODE_END(srso_return_thunk)
+ 
+ #define JMP_SRSO_UNTRAIN_RET "jmp srso_untrain_ret"
+-#define JMP_SRSO_ALIAS_UNTRAIN_RET "jmp srso_alias_untrain_ret"
+ #else /* !CONFIG_MITIGATION_SRSO */
++/* Dummy for the alternative in CALL_UNTRAIN_RET. */
++SYM_CODE_START(srso_alias_untrain_ret)
++	RET
++SYM_FUNC_END(srso_alias_untrain_ret)
+ #define JMP_SRSO_UNTRAIN_RET "ud2"
+-#define JMP_SRSO_ALIAS_UNTRAIN_RET "ud2"
+ #endif /* CONFIG_MITIGATION_SRSO */
+ 
+ #ifdef CONFIG_MITIGATION_UNRET_ENTRY
+@@ -319,9 +322,7 @@ SYM_FUNC_END(retbleed_untrain_ret)
+ #if defined(CONFIG_MITIGATION_UNRET_ENTRY) || defined(CONFIG_MITIGATION_SRSO)
+ 
+ SYM_FUNC_START(entry_untrain_ret)
+-	ALTERNATIVE_2 JMP_RETBLEED_UNTRAIN_RET,				\
+-		      JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO,		\
+-		      JMP_SRSO_ALIAS_UNTRAIN_RET, X86_FEATURE_SRSO_ALIAS
++	ALTERNATIVE JMP_RETBLEED_UNTRAIN_RET, JMP_SRSO_UNTRAIN_RET, X86_FEATURE_SRSO
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
+ 
+
 
