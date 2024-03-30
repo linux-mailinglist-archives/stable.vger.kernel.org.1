@@ -1,96 +1,157 @@
-Return-Path: <stable+bounces-33783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C158928BD
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 02:19:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8F98928B9
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 02:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 716A1B224A8
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 01:19:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE661F225B3
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 01:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0D6186A;
-	Sat, 30 Mar 2024 01:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DA415C3;
+	Sat, 30 Mar 2024 01:18:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F9315A5;
-	Sat, 30 Mar 2024 01:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AED7E8;
+	Sat, 30 Mar 2024 01:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711761591; cv=none; b=LCC5ZHnKkaGMEUBh5cK26pjw46vqdNKtq5rQ6pgWwr+eiIhaF03ZmUT7aBBse+4KijKCXdLUI/jninUfAr7isbe6UBmP20vsxvhSnXFuWpQSyACu6ihmcB/FMAEb7sORyfmY2r5WDUdG4tEBcRjA+mFr2HsVqAkBtE5Psg+9Yh4=
+	t=1711761512; cv=none; b=LKFD53QKYbmG0aAt16EOuvLyvNzmoBNJLuXhTp9N5pu4+OBJd78A2pSkjjxGsz+X27NhIC85zFrDIeB4IrpAJvsbhy8nrR14HFTdkdOTrkbXnlp5kHaCPta7V2kjSmYz7DGeOLh1dBaM4aE4980Wf6lnsEulkpFEVFlOvhLt89c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711761591; c=relaxed/simple;
-	bh=SzSwPqnfalelzzooJos0UDdLGmQNrWe+krnbkhcDrLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NGVqP4OqPVZRQde6eTIZyy+6NrRvPGUF64Yttvfyr2BZpfiqtl7w/Gq2tc2BWJ8+6eTb9w7r16/EhkEiQ31e35gj+bTAuaFB/cpcW64vGuEh4h+d8K48HxP8EorQCV9WHtTgmZDLAh/ap1gKptKil/lfv+o9yQzDmk88v3a+y7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+	s=arc-20240116; t=1711761512; c=relaxed/simple;
+	bh=ZxhyUR/BsO+88hhZ0WPOqi7RMpOM0Seq4GE1dJ6FiFg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X+aCxp4xrGT1wv2hKv+hhgdvUp6uyOUL7B921fedksCbNx6PXoblF2MZcO30MiyN/HT8XUQ51SKSIs8wdGp4r/gP3F8fl56e8uYAh5t0xM8FlDWLOl7ZPF4xz1Zu9qf+hUoTu2EEwM1adiVNlNCRXAh/AhoFmq+HD04+G0R+nJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4V5ztt1rQtzbdZy;
-	Sat, 30 Mar 2024 09:18:46 +0800 (CST)
-Received: from kwepemm600020.china.huawei.com (unknown [7.193.23.147])
-	by mail.maildlp.com (Postfix) with ESMTPS id 423D3140382;
-	Sat, 30 Mar 2024 09:19:39 +0800 (CST)
-Received: from [10.174.179.160] (10.174.179.160) by
- kwepemm600020.china.huawei.com (7.193.23.147) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 30 Mar 2024 09:19:38 +0800
-Message-ID: <8c424dfd-8ca0-6614-903f-a37dac818d27@huawei.com>
-Date: Sat, 30 Mar 2024 09:19:37 +0800
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V5zqG6GYhz1h4Hl;
+	Sat, 30 Mar 2024 09:15:38 +0800 (CST)
+Received: from dggpemd100002.china.huawei.com (unknown [7.185.36.164])
+	by mail.maildlp.com (Postfix) with ESMTPS id 89076140134;
+	Sat, 30 Mar 2024 09:18:20 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by dggpemd100002.china.huawei.com
+ (7.185.36.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Sat, 30 Mar
+ 2024 09:18:20 +0800
+From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+	<jirislaby@kernel.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>
+CC: <stable@vger.kernel.org>, Jon Ringle <jringle@gridpoint.com>,
+	<linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Wang Weiyang
+	<wangweiyang2@huawei.com>
+Subject: [PATCH stable 5.10 5.15 v2] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
+Date: Sat, 30 Mar 2024 09:25:20 +0800
+Message-ID: <20240330012520.1904970-1-gongruiqi1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] swiotlb: Do not set total_used to 0 in
- swiotlb_create_debugfs_files()
-Content-Language: en-US
-To: Dexuan Cui <decui@microsoft.com>, <hch@lst.de>,
-	<m.szyprowski@samsung.com>, <robin.murphy@arm.com>, <iommu@lists.linux.dev>,
-	<mhklinux@outlook.com>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20240329192809.17318-1-decui@microsoft.com>
-From: "zhangpeng (AS)" <zhangpeng362@huawei.com>
-In-Reply-To: <20240329192809.17318-1-decui@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600020.china.huawei.com (7.193.23.147)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemd100002.china.huawei.com (7.185.36.164)
 
-On 2024/3/30 3:28, Dexuan Cui wrote:
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-> Sometimes the readout of /sys/kernel/debug/swiotlb/io_tlb_used and
-> io_tlb_used_hiwater can be a huge number (e.g. 18446744073709551615),
-> which is actually a negative number if we use "%ld" to print the number.
->
-> When swiotlb_create_default_debugfs() is running from late_initcall,
-> mem->total_used may already be non-zero, because the storage driver
-> may have already started to perform I/O operations: if the storage
-> driver is built-in, its probe() callback is called before late_initcall.
->
-> swiotlb_create_debugfs_files() should not blindly set mem->total_used
-> and mem->used_hiwater to 0; actually it doesn't have to initialize the
-> fields at all, because the fields, as part of the global struct
-> io_tlb_default_mem, have been implicitly initialized to zero.
->
-> Also don't explicitly set mem->transient_nslabs to 0.
->
-> Fixes: 8b0977ecc8b3 ("swiotlb: track and report io_tlb_used high water marks in debugfs")
-> Fixes: 02e765697038 ("swiotlb: add debugfs to track swiotlb transient pool usage")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
 
-Reviewed-by: ZhangPeng<zhangpeng362@huawei.com>
+The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+initial register address is sent ($00), followed by all the FIFO data
+without having to resend the register address each time. In this mode, the
+IC doesn't increment the register address for each R/W byte.
 
+The regmap_raw_read() and regmap_raw_write() are functions which can
+perform IO over multiple registers. They are currently used to read/write
+from/to the FIFO, and although they operate correctly in this burst mode on
+the SPI bus, they would corrupt the regmap cache if it was not disabled
+manually. The reason is that when the R/W size is more than 1 byte, these
+functions assume that the register address is incremented and handle the
+cache accordingly.
+
+Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+remove the manual cache control which was a workaround when using the
+_raw_ versions. FIFO registers are properly declared as volatile so
+cache will not be used/updated for FIFO accesses.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc:  <stable@vger.kernel.org> # 5.10 5.15
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+---
+
+v2: Backport to both 5.15 and 5.10
+
+The mainline commit dbf4ab821804 ("serial: sc16is7xx: convert from _raw_
+to _noinc_ regmap functions for FIFO") by Hugo has been assigned to be
+CVE-2023-52488, but for stable branches lower than 6.1 there's no
+official backport.
+
+I made up this backport patch for 5.10, and its correctness has been
+confirmed in previous communication with Hugo. Let's publicize it and
+merge it into upstream.
+
+ drivers/tty/serial/sc16is7xx.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 8c09c97f9814..0066a0e23516 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -376,9 +376,7 @@ static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
+ 	const u8 line = sc16is7xx_line(port);
+ 	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
+ 
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
+-	regcache_cache_bypass(s->regmap, false);
++	regmap_noinc_read(s->regmap, addr, s->buf, rxlen);
+ }
+ 
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+@@ -394,9 +392,7 @@ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_write(s->regmap, addr, s->buf, to_send);
+-	regcache_cache_bypass(s->regmap, false);
++	regmap_noinc_write(s->regmap, addr, s->buf, to_send);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+@@ -489,6 +485,11 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+ 	return false;
+ }
+ 
++static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
++{
++	return reg == SC16IS7XX_RHR_REG;
++}
++
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+@@ -1439,6 +1440,8 @@ static struct regmap_config regcfg = {
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
++	.readable_noinc_reg = sc16is7xx_regmap_noinc,
+ };
+ 
+ #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
 -- 
-Best Regards,
-Peng
+2.25.1
 
 
