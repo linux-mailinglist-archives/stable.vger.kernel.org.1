@@ -1,133 +1,141 @@
-Return-Path: <stable+bounces-33835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5422D892A5F
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 11:20:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F06F892B0D
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 13:03:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E936DB2179A
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CD8E1C20DCA
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 12:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C1728DC0;
-	Sat, 30 Mar 2024 10:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA1536B08;
+	Sat, 30 Mar 2024 12:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="W/H5UHy8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="p0ClvWXu"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f+F9bupj"
 X-Original-To: stable@vger.kernel.org
-Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AD61C0DD5;
-	Sat, 30 Mar 2024 10:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C89D1FBA;
+	Sat, 30 Mar 2024 12:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711794000; cv=none; b=tgiUxWqnZI0E5fqgpa4bkTMUN1k376e3NOWiUAeknQBFSF4TBlKPiTkIBCYaFctc+U/QJQXsJ2E0NUeXyqi19o19qJ7Pn+KSlXYJ6CuEPqb0PHUzhRSRPrMaxiVF45OmumQugtkeHFeCHE7zhsDKo/Ga1Fh8ySAe1e//GK4uecw=
+	t=1711800220; cv=none; b=qYPjOiC9jbpFV2r3VWtBmS5vjM+flGE3JulDMmceLkHLOZS6P9PCSx3Xabcxg5Qt1PpR6dnv780d6kxpfNP+coeyubtsk6VI9agvUIlpjdyFMEC8hu20J6I9AmBwp5hZAXLHkXLbJwPeg0un2uRgTiiFpTLCZ2HfTr6pZBhuyoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711794000; c=relaxed/simple;
-	bh=MhKZZ8Mjj6u+jepgsjCGC+XkNcSBwTwz5oCrL8z0nic=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=RzSSW+Sl+hY6n/sNseJ39V6rzkCg50aKZxX/FUfgCmGckUXnD9+yELmAh6/bQvkD+/9bUqs6INEhLL67+wBDDzpMmNnaXaL7tOAtxu6mKiuFlWLt7pbflyDj9A3TgyREK5/Kda7IrtgTAnbzLfA7UnUQhPRy+2j90owSPFIYA/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=W/H5UHy8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=p0ClvWXu; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id F2F5D13800A1;
-	Sat, 30 Mar 2024 06:19:57 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Sat, 30 Mar 2024 06:19:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1711793997; x=1711880397; bh=gYQUywggWk
-	t3lojA/q48Eke62WZWW42/D/zhK3t7AWw=; b=W/H5UHy85C1c8XawRzQvt85Lm/
-	8h+VMnftbgWUO+MfezKNPAp/pdPG4DehGuvcqax/DhFeRns08LKcMa4QVSkDpmhp
-	+9N9UC8+0r12z08Fxqizls1IgRj1NpVmJ5ycMPMHKaKFXrn+tZt0g2et25c61v3l
-	tUFlxnn1K74PhE1AnqZwGOWnDzMAMg+E8vRP6oNArmS7Mmk0adSITqnnAF6lu3uh
-	w9KP4yhTEjzubH0GLuhDCCGMMK4xz+gGVyT52f2tiD9B1OF9UOS2xDon/l1IOY8Q
-	/bSAvJOuDb+bQzwj3bqBew39vZEd0l3AfJq0w7UZVTi/WMfd4s40x0XA99Sw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1711793997; x=1711880397; bh=gYQUywggWkt3lojA/q48Eke62WZW
-	W42/D/zhK3t7AWw=; b=p0ClvWXuOzrCt700Nosc8cBW8iYRjph2wMSHS+DHp+W9
-	c8xlEfLYXMXjqfyx/h2ZhnbVdx/7zBujVzcVnvFPlZooMiccI8joNbOedFy2qJ0J
-	qhXXJ/elB5Qt8kPMiLZxtBz3U//XjOQTTFClkNm7f4pC1Fc3i2KKQjOax6wTuf4j
-	dSkTEfb606PDaWb1OlGcLnOMx56yjsHqfU5g/ugpdJf3UfHYWcS5+XRymT9aampo
-	Is8jqqj6XetL4cCnANRgZEMHH+zeDzWDwDDvvSvvKSreZP0YTUK02M0JVkDAp+lT
-	ytxQ/JyVdNfTWcGrg5LbkLFmHZ2AZ2bMmY7cSz7W6w==
-X-ME-Sender: <xms:TecHZoDjf4TNNKEtu6Ai-Q-O7dUMWufKcaqXNum15joB87Ivq6fJ2g>
-    <xme:TecHZqj5zlKtThTOD8QSqRU8nUoboGrvflLobQV5K3nmyFltxWD2ugXyrrFKToZX0
-    Z2xfurxQzsi6mGjRVU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddvgedgudehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:TecHZrmUrQS_FaqJzpRHfaNiFce7GSt5lPOh-6ESS4wwPKzxKd3BrQ>
-    <xmx:TecHZuz09b75CwNZfFqRl2qmechWqKb0_jRj425tBlUHEOoeuOW6jg>
-    <xmx:TecHZtQUmfb0_k3vS9XN7udXCARxjjah20UNTVqAM5tKAsHZalnMKg>
-    <xmx:TecHZpbyOhQt5GcIpp3TQo4TA5b5W0KIF1mLzd2Y92apAq6aHCluoQ>
-    <xmx:TecHZiKEfk8lbjgeqTt6qCbVaNMxXwecbcdZK4y0_BuiSP0LdR3LvA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id AF635B6008D; Sat, 30 Mar 2024 06:19:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
+	s=arc-20240116; t=1711800220; c=relaxed/simple;
+	bh=+Nha7AhXlZIaPPsVuUPnRGZTRCFgib3EZhIf2wQU+fA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mOYXFqbhLjTjgf148SjtiF7DEEE8UtUdYBSPrby7+hVnShb2CZTqcFAPLGx+Em7FmLtOfks0HpYvbx9o2Ecwy8GyJZIChWgAL5uIRMlIhOvc+Jo2SD7HbAhlWjBRnrqFbvJIDFWMf1wJ0onDump7B98Z5lhX5XwA8EpTHMBP1rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f+F9bupj; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1711800216; x=1712059416;
+	bh=3whj0k58pL0GaO5Dv0/Jw6FeGqHzzIhwiZFFSAfmeos=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=f+F9bupjAOinB4jRtXK5mnJLbyT1QFx1iwXvWC5hn1ubqcy0sYFh6tQ+RpcYwo+/W
+	 EFQyREP8o86fEprsNdEdxSZmyBQR+zgfN7jD/Ih8tOxnBBUUbnZyVpV1K2MpSFluHy
+	 6mJk4Nss7yYMWvUbI8NdvUpxuRJwqhQ5l42Z/N9WykoqUUW+LmA//JMcY8dB1oq8hf
+	 9qaG/tVNJsclmVs/3303RIcI71d0UO3EM+LbWQIoPH/c8+0/Rf2DkMh3QrAxSfcHm8
+	 wIKPu95RMA0oX6/PCx+MNKhseEj4cW41Wpv+0df6/J96Fdduit96Rrv81ofGInKC3I
+	 aHhvl5w0OBxGg==
+Date: Sat, 30 Mar 2024 12:03:31 +0000
+To: Laine Taffin Altman <alexanderaltman@me.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+Message-ID: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
+In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+References: <20240313230713.987124-1-benno.lossin@proton.me> <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com> <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com> <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <4e57929b-1539-4a25-ab05-a2a9e04ecc1d@app.fastmail.com>
-In-Reply-To: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
-References: <20240330-sparc64-warnings-v1-0-37201023ee2f@ravnborg.org>
-Date: Sat, 30 Mar 2024 11:19:37 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Sam Ravnborg" <sam@ravnborg.org>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Cc: "Nick Bowler" <nbowler@draconx.ca>, linux-kernel@vger.kernel.org,
- "Atish Patra" <atish.patra@oracle.com>, stable@vger.kernel.org,
- "Bob Picco" <bob.picco@oracle.com>, "Vijay Kumar" <vijay.ac.kumar@oracle.com>
-Subject: Re: [PATCH 00/10] sparc64: Fix CPU online bug and warning fixes
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 30, 2024, at 10:57, Sam Ravnborg via B4 Relay wrote:
-> Nick Bowler reported that sparc64 failed to bring all his CPU's online,
-> and that turned out to be an easy fix.
->
-> The sparc64 build was rather noisy with a lot of warnings which had
-> irritated me enough to go ahead and fix them.
-> With this set of patches my arch/sparc/ is almost warning free for
-> all{no,yes,mod}config + defconfig builds.
+On 21.03.24 05:53, Laine Taffin Altman wrote:
+> On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>> On 3/19/24 06:28, Laine Taffin Altman wrote:
+>>> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
+wrote:
+>>>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
+>>>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+>>>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
+>>>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>>>
+>>>>>>> It is not enough for a type to be a ZST to guarantee that zeroed me=
+mory
+>>>>>>> is a valid value for it; it must also be inhabited. Creating a valu=
+e of
+>>>>>>> an uninhabited type, ZST or no, is immediate UB.
+>>>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, sinc=
+e
+>>>>>>> that type is not inhabited.
+>>>>>>>
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::z=
+eroed` function")
+>>>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+>>>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+>>>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>>>>
+>>>>>> I think either in the commit log or in the code comment, there bette=
+r be
+>>>>>> a link or explanation on "(un)inhabited type". The rest looks good t=
+o
+>>>>>> me.
+>>>>>
+>>>>> Would the following be okay for that purpose?
+>>>>>
+>>>>> A type is inhabited if at least one valid value of that type exists; =
+a
+>>>>> type is uninhabited if no valid values of that type exist.  The terms
+>>>>> "inhabited" and "uninhabited" in this sense originate in type theory,
+>>>>> a branch of mathematics.
+>>>>>
+>>>>> In Rust, producing an invalid value of any type is immediate undefine=
+d
+>>>>> behavior (UB); this includes via zeroing memory.  Therefore, since an
+>>>>> uninhabited type has no valid values, producing any values at all for
+>>>>> it is UB.
+>>>>>
+>>>>> The Rust standard library type `core::convert::Infallible` is
+>>>>> uninhabited, by virtue of having been declared as an enum with no
+>>>>> cases, which always produces uninhabited types in Rust.  Thus, remove
+>>>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
+>>>>> the UB.
+>>>>>
+>>>>
+>>>> Yeah, this works for me. Thanks!
+>>>
+>>> Great!  Should it be re-sent or can the new wording be incorporated upo=
+n merge?
+>>
+>> I can re-send it for you again, or do you want to send it yourself?
+>> I think it is also a good idea to add a link to [1] in the code, since
+>> the above explanation is rather long and fits better in the commit
+>> message.
+>>
+>=20
+> I=E2=80=99ll try and do it myself; thank you for sending the first round =
+for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
+By's should I retain?
 
-Patches 1-9 look good to me,
+Do you still want to send it yourself? If you don't have the time, no
+problem, I can send it again.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+--=20
+Cheers,
+Benno
 
-> There is one warning about "clone3 not implemented", which I have ignored.
->
-> The warning fixes hides the fact that sparc64 is not yet y2038 prepared,
-> and it would be preferable if someone knowledgeable would fix this
-> poperly.
-
-The clone3 bug has been around for ages, it's probably not even that
-hard to fix and just needs a little bit of testing.
-
-If anyone wants to work on the time64 support for the vdso, I can
-explain the details for how it's done.
-
-Both of these are real bugs that should be addressed, unlike
-the other warning fixes that are mostly cosmetic aside from
-allowing the build with CONFIG_WERROR=y.
-
-     Arnd
 
