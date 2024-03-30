@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A55892A05
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:29:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E01892A06
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1141F2213A
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BE151C211D4
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2F8BA4B;
-	Sat, 30 Mar 2024 09:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CC8BA4B;
+	Sat, 30 Mar 2024 09:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpnI9tAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhwda0pj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFED64F
-	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 09:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBB864F
+	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 09:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711790949; cv=none; b=OHZUdf8/EFRHOsDoewaNAdfK1+xQPYyLLYpcqLiHbvqol0iQJpcVQP77lzSUZNk+PlVYOjbRlm89ubYr9RAzWvRVIg+Je2EYjaD93lB2y76rvPQP1/7EcyeaB1fYMHTTJe7PqRBxaWP1ccwU1XjhygUjArgY5TbE7nlu8cfHMhY=
+	t=1711790958; cv=none; b=WzWt6nTyaHWe/1zcsBwiW46ZGhhN/VCRfE9p5tKfbitKu77EcUC60pu9L5Orzv3UEEV/xnRiSEeJNJOWWUwpVG6T9Y5Q0lZSP1rFrKt4qXeNbFhYhI6zBHMtByFMjVZ0DTSJEv1IaWPqUMomc9a4B4qUJzDShGCdSx0jYbOc7vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711790949; c=relaxed/simple;
-	bh=rnaXFp3P9RBFm5ZcQlcJkOzYt3Sk03fbFJE0v6qACnY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rItzdOlACQKDEHHxX5voJJhT/6jI9OOCt9X2YcUcNIZCXSDw5/KvJJL1mKrAHWKj2nB7nQDQwDhnLbmoUFA2f1d+NT3i+ThD2ZH2erKywMwiv3Umk8pzbuIuo6n2eqemp3Pofjkl6v2+CeNHzjh3fLGtfOqSEtDjBucBqPeGwcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpnI9tAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA6AC43390;
-	Sat, 30 Mar 2024 09:29:07 +0000 (UTC)
+	s=arc-20240116; t=1711790958; c=relaxed/simple;
+	bh=G/ix9nz6HQha//tH8WCSPFV6sRMj4TAKQoCO97jVmrI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OCz13RFYfBaxMyC+JDTsAjg+EKB26Zwe3D+4CQIgJjD3Lmnvvh0hxkmE/+V28l33Q9ubtIsiAdbFNaAmvVUNHbkpsucnt/hDrRbnivI4siG6zpsDH3VY/0jkSmJDlOCXsEj9fv8vvwvYG95TUqp/OAJJlHJZx6oytNsdgRDjhWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhwda0pj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1220C433C7;
+	Sat, 30 Mar 2024 09:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711790948;
-	bh=rnaXFp3P9RBFm5ZcQlcJkOzYt3Sk03fbFJE0v6qACnY=;
+	s=korg; t=1711790958;
+	bh=G/ix9nz6HQha//tH8WCSPFV6sRMj4TAKQoCO97jVmrI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TpnI9tAik4nXToQteZ+Qhmqi6An2pGhtZusXCQzBhuIZlc4QiQQWJiie/JywS0izU
-	 YYrNS6I5TOpNdN+Pf4CUQWW6SjnswAatbHaqNjldOxPwKZ0CERl2ilYS3yKOUmaA+/
-	 vdi9aF2nQA09zhSBMGdTXVTnYngCDRIr9nktfkhs=
-Subject: FAILED: patch "[PATCH] crash: use macro to add crashk_res into iomem early for" failed to apply to 6.8-stable tree
+	b=zhwda0pjS1EKitDb0ksYA4VI24Eo5BC3AtdYWtYfzJJgeg9efcKbnfkHEjc7nkzBi
+	 1sBVtUEOANq8us6Ou05zmeN4hJgk33Jq5mr4ELWFuZ7GwhmoiZ/nSsoycqhtmjBvf5
+	 /VdtScPU1DnrDpf5LtO8s3DoLbMizjo+9BkIjsCU=
+Subject: FAILED: patch "[PATCH] crash: use macro to add crashk_res into iomem early for" failed to apply to 6.7-stable tree
 To: bhe@redhat.com,akpm@linux-foundation.org,chenhuacai@loongson.cn,dyoung@redhat.com,jbohac@suse.cz,lihuafei1@huawei.com,mingo@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Mar 2024 10:29:05 +0100
-Message-ID: <2024033005-graded-dangle-3a21@gregkh>
+Date: Sat, 30 Mar 2024 10:29:07 +0100
+Message-ID: <2024033006-laptop-tassel-b290@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
 git cherry-pick -x 32fbe5246582af4f611ccccee33fd6e559087252
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033005-graded-dangle-3a21@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033006-laptop-tassel-b290@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
 32fbe5246582 ("crash: use macro to add crashk_res into iomem early for specific arch")
 85fcde402db1 ("kexec: split crashkernel reservation code out from crash_core.c")
+4a693ce65b18 ("kdump: defer the insertion of crashkernel resources")
+29166371ef67 ("kdump: remove redundant DEFAULT_CRASH_KERNEL_LOW_SIZE")
 
 thanks,
 
