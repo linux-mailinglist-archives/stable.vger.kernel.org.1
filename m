@@ -1,150 +1,91 @@
-Return-Path: <stable+bounces-33840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E173892C07
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 17:25:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFE5892C0F
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 17:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AFE2283AB1
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 16:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6A0283B8C
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 16:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86E83A1C2;
-	Sat, 30 Mar 2024 16:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DE83A8CE;
+	Sat, 30 Mar 2024 16:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="bbofwrgr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Rhc+L6LC"
+	dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b="L4g/mTqi"
 X-Original-To: stable@vger.kernel.org
-Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
+Received: from mr85p00im-hyfv06011401.me.com (mr85p00im-hyfv06011401.me.com [17.58.23.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D72335D8
-	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 16:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291DA2B2DD
+	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 16:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711815947; cv=none; b=apvu74mG6P/GGADsbHx5tJ5mUVMuQKUrtBAEihMNqNAxmADgSmbznV9/EYM/spSNpmg8IIowoRulwIRIr6fT793+/0xxd1OhgtPd8lvkyk44NzHPwKUvhj3PGLDEVXfnuCyT4kgrYcsmUyx6Cp3R8FwExw1W2ya7oLeZ0Yo4t2I=
+	t=1711816609; cv=none; b=BhXXKQQp7bNyAfrixiFgD2zGI6QSdwBeIug+LJEJ2kMCW9gF1Rm32n9B6qrF6xyJpuszjUGioUoJ/EtOHuCh3iHyiWri4cDIU7TmdjepHMhA6tUcg95ebAFl514kxUqDQZYo8FhbcCSN3jWqeGirRhw2WjiEjEKz2dydneLQ8wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711815947; c=relaxed/simple;
-	bh=3xcaOhn8D9Exi2tJWGMytl0xKlu2RCZnH/yUlBorvYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BJK05WKv5LhAxS9ks3+JTC1Porxjkz0GpdHwW4NuFtsfqNIYxx3uiBEt7Yy8s5Ayc49v7GcCLTWbowSnf6zfru+juSu7OQtz+fiWmugk/JoRvIHiMVa7wJaHFAiT+s5LJCAGWu0DxH5VNLssseetfNjF8FMiZiJ2j0Fpr2Ik3FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=bbofwrgr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Rhc+L6LC; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 4E4E213800C9;
-	Sat, 30 Mar 2024 12:25:44 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sat, 30 Mar 2024 12:25:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1711815944; x=1711902344; bh=6EmT5VAqAf
-	VZEI7t418sTxwaqRhYXuC8xtP73kRinY0=; b=bbofwrgrvDVnvxLRyVZpMTtBre
-	3+lEQCq38uqaevFNaFjo3X06pEayq8lgfhDzevGBduZp1J/RqVgaVbkgBhxk+67K
-	Fk7Qjb+xwo4hmACFQHbUwyzGh5w2Ww0HNUlVjSkQSNA+lUSf0EZpU45wKkL5YnMq
-	XczmaFq7ej1XSVmxlR/wUQgDxjfFTjF+/yPQY/YgjwkUwLrmX/lorGkR0/Gt9ze+
-	wOp549tMOGkSu7TLn0Jhwqjr0gY5dYRpbWwCXGukWpvequy7DWYocYlDTdp96NRM
-	rH68WGa/vNCVj1qHK8f9G/K9lW4lPQ6KBWWqRnTuaOhehTsE4LRAF37qGXKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1711815944; x=1711902344; bh=6EmT5VAqAfVZEI7t418sTxwaqRhY
-	XuC8xtP73kRinY0=; b=Rhc+L6LCWGlBcpLNVsythswcQ8UCZ4CEFaqn5l3aiPG5
-	5AlUqcVAAozkYzxfFdHYQRc6mCiuPb2ViLA7QmnxZgs6dYl/wrw/ZvTobbJloGGV
-	0yc0HQPqEqj8vbHw3ggRREfEn/jkY+ZVpu2movy/FJDc/9o9mGlgx+9Dg/MT89CU
-	7LsdZGkId3Z+vLnP5yBGOTf7dmlntsF2icCMDSjXboCFu7FbZEwEjJ0sZjwUtBip
-	a7zN8g52WxeQgFOV4H4ix//kWz94u9I+EqUQTPkAuDWfyvmcFH1L4ugbAMsYLnFa
-	3af6wZhq3heyZVFQXUR4pCEU5dBe0Udti+dfCe+6jg==
-X-ME-Sender: <xms:CD0IZo7qHYm5ud-w8sI3o-_P4Fg9pIcQUqVDOr8JTSqFBZdKMXcGHA>
-    <xme:CD0IZp6OVukFKzxDtcfANQHKDReRe-026cZxgxnNUq-j1cu9vSpcFewi2O-XeVamU
-    dwjqVJRj6Fv6Q>
-X-ME-Received: <xmr:CD0IZncFBZMW2SNIsWQOZxaDNMHIkedSbUPfpWikce5EKobk5sTs-RyIs5DEnsWP7FjqFOiBwsYEOdzx_7VDfCvRtRNa8-ErlCpEZg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddvhedgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepudeife
-    evhefhvddtiefhvdevhfelleefieeffeekieeggfethfdvudetfeetffeknecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:CD0IZtKpo5zL4Ly0kX66J7ClYcJuLjkJ_Uilui4iiqIWBprAuh7GFg>
-    <xmx:CD0IZsK-HaL8HueTW5PRVJUrZ6hnFrheWCVEhV1TMftQMa25iqUbBA>
-    <xmx:CD0IZuwgy1eS7W_CZipm5RyNmfrbFqwUNGCXGPcjJpy_GYh2OyHFXw>
-    <xmx:CD0IZgKePlX7CC_4OR2s5HH_5iZ6exObJsGFaCMaoS9i4EtNMuoH_Q>
-    <xmx:CD0IZvaUw8724KLq5Qg-lgG5ChNlWA67Sya8maJpXROgAzQDJQ6YAg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 30 Mar 2024 12:25:43 -0400 (EDT)
-Date: Sat, 30 Mar 2024 17:25:40 +0100
-From: Greg KH <greg@kroah.com>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: stable@vger.kernel.org, John Audia <therealgraysky@proton.me>,
-	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
-	linux-mtd@lists.infradead.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: Backport "mtd: spinand: Add support for 5-byte IDs" to 6.6, 6.7
- and 6.8
-Message-ID: <2024033034-volley-grout-f835@gregkh>
-References: <de171eb5-3e95-4529-9228-9a4ed526ed46@hauke-m.de>
+	s=arc-20240116; t=1711816609; c=relaxed/simple;
+	bh=bhC28vlfwYiRi9JF5mh8TZiUGQSiMhN19F0vKCYegAk=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=rVLML+lJ4A+W0Gqa/16MVjypWOooamJvLcwtrRlMQTiVWx7i233pGEb/UOOh/Rlrv5prxwZjyFgNcuFhU1rfdElAWUvVEGe99Lee6nzhmQfgyZzdDtlBILkNa38HXxPselTQ9MgeAogenJYEQeKKSNJoMcFD/FuRPzocjBXqoN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com; spf=pass smtp.mailfrom=me.com; dkim=pass (2048-bit key) header.d=me.com header.i=@me.com header.b=L4g/mTqi; arc=none smtp.client-ip=17.58.23.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=me.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=me.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+	t=1711816607; bh=bhC28vlfwYiRi9JF5mh8TZiUGQSiMhN19F0vKCYegAk=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:To;
+	b=L4g/mTqih39wKUGrnzA++XhcNO8Lyijae1pJNsVrLG0eH4tek+0tY38nl/HlHhuue
+	 kKkYYfcBpgqVdt+8E08+XGyqA6I+1CKTEwB+XJErKfk9rio0Ajhy6FjYgqpgoOB8Td
+	 Dzy74p4eQE6M2hyvw9Nn2she5cCI8Szfbqlph273gWqpxKqC9nITEDjYsn+YHGvyzy
+	 Hm+B33PtRylYPkhUkENhhWpxzrmAp8aIWD0fDr/wgor4CnZ7hhnJtGD5CtZd40PFBQ
+	 E1CpIZXAkElnQPG9b+0hnzaQBUNnBLUZNUvAnPDTRDmcbmu3XnF2+mqfQS66R9IdTd
+	 XvYn75J6/wOmA==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-hyfv06011401.me.com (Postfix) with ESMTPSA id D33E7357AFFE;
+	Sat, 30 Mar 2024 16:36:46 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Laine Taffin Altman <alexanderaltman@me.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de171eb5-3e95-4529-9228-9a4ed526ed46@hauke-m.de>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
+Date: Sat, 30 Mar 2024 09:36:35 -0700
+Message-Id: <AA29E05A-DCA7-4857-8473-C183C50EBE81@me.com>
+References: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+In-Reply-To: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
+To: Benno Lossin <benno.lossin@proton.me>
+X-Mailer: iPhone Mail (21E236)
+X-Proofpoint-ORIG-GUID: Ew_WfHtjkljunJTafMuK8fYpGQW-NuoE
+X-Proofpoint-GUID: Ew_WfHtjkljunJTafMuK8fYpGQW-NuoE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-30_11,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 mlxlogscore=678
+ mlxscore=0 phishscore=0 spamscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2403300136
 
-On Sat, Mar 30, 2024 at 02:49:56PM +0100, Hauke Mehrtens wrote:
-> Hi,
-> 
-> Please backport the following commit back to the Linux stable kernels 6.6,
-> 6.7 and 6.8:
-> 
-> commit 34a956739d295de6010cdaafeed698ccbba87ea4
-> Author: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-> Date:   Thu Jan 25 22:01:07 2024 +0200
-> 
->     mtd: spinand: Add support for 5-byte IDs
-> 
->     E.g. ESMT chips will return an identification code with a length of 5
->     bytes. In order to prevent ambiguity, flash chips would actually need to
->     return IDs that are up to 17 or more bytes long due to JEDEC's
->     continuation scheme. I understand that if a manufacturer ID is located
->     in bank N of JEDEC's database (there are currently 16 banks), N - 1
->     continuation codes (7Fh) need to be added to the identification code
->     (comprising of manufacturer ID and device ID). However, most flash chip
->     manufacturers don't seem to implement this (correctly).
-> 
->     Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
->     Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
->     Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
->     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
->     Link:
-> https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
-> 
-> 
-> This will fix a regression introduced between Linux kernel 6.6.22 and 6.6.23
-> in OpenWrt. The esmt NAND flash is not detected any more:
-> <3>[    0.885607] spi-nand spi0.0: unknown raw ID c8017f7f
-> <4>[    0.890852] spi-nand: probe of spi0.0 failed with error -524
-> See: https://github.com/openwrt/openwrt/pull/14992
-> 
-> 
-> The following commit was backported to 6.6.22, but the commit it depends on
-> was not backported.
-> commit 4bd14b2fd8a83a2f5220ba4ef323f741e11bfdfd
-> Author: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-> Date:   Thu Jan 25 22:01:08 2024 +0200
-> 
->     mtd: spinand: esmt: Extend IDs to 5 bytes
+I=E2=80=99ll do it myself tomorrow night; sorry for the delay!
 
-Now queued up, thanks.
+Thanks,
+Laine
 
-greg k-h
+On Mar 30, 2024, at 5:03=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me> w=
+rote:
+>=20
+> =EF=BB=BF
+> <mime-attachment>
+> <encrypted.asc>
 
