@@ -1,141 +1,116 @@
-Return-Path: <stable+bounces-33836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F06F892B0D
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 13:03:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A92F892B76
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 14:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CD8E1C20DCA
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 12:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF9A1F21BE9
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 13:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA1536B08;
-	Sat, 30 Mar 2024 12:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A17221105;
+	Sat, 30 Mar 2024 13:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f+F9bupj"
+	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="Ff2rF0HL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C89D1FBA;
-	Sat, 30 Mar 2024 12:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D021E500
+	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 13:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711800220; cv=none; b=qYPjOiC9jbpFV2r3VWtBmS5vjM+flGE3JulDMmceLkHLOZS6P9PCSx3Xabcxg5Qt1PpR6dnv780d6kxpfNP+coeyubtsk6VI9agvUIlpjdyFMEC8hu20J6I9AmBwp5hZAXLHkXLbJwPeg0un2uRgTiiFpTLCZ2HfTr6pZBhuyoM=
+	t=1711806609; cv=none; b=pY3ZUlLCFOZAM/2g3eBpxYLo6SYZaQqnyu7CLxtYtoZeG1AZdtfpku0SuzbbUvK4k4rPF1v6CRkjnRSgtPcObeylMBjzTbi9otQ210YU7ACSb71ZeayiJJ778Mc/al80VBTkoso/iFeGH2SJMzeXcA6q17ZHdZpJsIVhu41YPgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711800220; c=relaxed/simple;
-	bh=+Nha7AhXlZIaPPsVuUPnRGZTRCFgib3EZhIf2wQU+fA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mOYXFqbhLjTjgf148SjtiF7DEEE8UtUdYBSPrby7+hVnShb2CZTqcFAPLGx+Em7FmLtOfks0HpYvbx9o2Ecwy8GyJZIChWgAL5uIRMlIhOvc+Jo2SD7HbAhlWjBRnrqFbvJIDFWMf1wJ0onDump7B98Z5lhX5XwA8EpTHMBP1rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f+F9bupj; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711800216; x=1712059416;
-	bh=3whj0k58pL0GaO5Dv0/Jw6FeGqHzzIhwiZFFSAfmeos=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=f+F9bupjAOinB4jRtXK5mnJLbyT1QFx1iwXvWC5hn1ubqcy0sYFh6tQ+RpcYwo+/W
-	 EFQyREP8o86fEprsNdEdxSZmyBQR+zgfN7jD/Ih8tOxnBBUUbnZyVpV1K2MpSFluHy
-	 6mJk4Nss7yYMWvUbI8NdvUpxuRJwqhQ5l42Z/N9WykoqUUW+LmA//JMcY8dB1oq8hf
-	 9qaG/tVNJsclmVs/3303RIcI71d0UO3EM+LbWQIoPH/c8+0/Rf2DkMh3QrAxSfcHm8
-	 wIKPu95RMA0oX6/PCx+MNKhseEj4cW41Wpv+0df6/J96Fdduit96Rrv81ofGInKC3I
-	 aHhvl5w0OBxGg==
-Date: Sat, 30 Mar 2024 12:03:31 +0000
-To: Laine Taffin Altman <alexanderaltman@me.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: init: remove impl Zeroable for Infallible
-Message-ID: <2dd2c052-0d1f-4a77-9fff-1d6db80310e1@proton.me>
-In-Reply-To: <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-References: <20240313230713.987124-1-benno.lossin@proton.me> <Zfh5DYkxNAm-mY_9@boqun-archlinux> <93FD9491-7E2D-4324-8443-0884B7CFC6EF@me.com> <ZfkW8rwpdRc_hJBU@Boquns-Mac-mini.home> <3FBC841A-968E-4AC5-83F0-E906C7EE85C3@me.com> <6857bb37-c4ee-4817-9b6a-e40e549b6402@proton.me> <F1F3C985-9CAE-4286-B236-4AF6C0918DB5@me.com>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1711806609; c=relaxed/simple;
+	bh=DoW4hW7/00YU0rjJo39Z33LBzOzV/j+pyJYQuss5RS4=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=saD/85W19Hg7v3b3N1CWNoJKz/Ya35s+WV/NIBQi3IBwWdifjKB1UP+Qmy3w9JroRrLXSgSXlTtqZ/OXCs4WURXicfYH/9n83QIWURgcn3SyxCnGFgRMaMwyveYtaYS6FHzALK7iCGH8nFRga7QLIRDuH5CkmornbAaoRdHxYDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=Ff2rF0HL; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4V6JYd3SBdz9sd5;
+	Sat, 30 Mar 2024 14:49:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+	t=1711806597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QBITO0QHOJI7RWnxD7EVnkWW9XcuiIgw2NIbh4lFNZ0=;
+	b=Ff2rF0HLOA0deDYzV3OqpFnuhRdgLXjkonwAhJB01LzYmDfXDLjvAZV/epJtzKWxB8Q9Ch
+	TEuB+HeXQB47XWO+Tu4Scx/DaErDXm/q2rjeBlqon3mrxi5iHsglSSrGAKpb6wC1ImSTgK
+	ySCtz4LMSGxcY3EeQ1WU6WsjoTvo3u6m+I3o9E5y6nHIxBCcXKsnYzmUyDMrKaftOxYDEI
+	AMxR5E7c5mdHMhhyoBFEXChyuWMEL6UuTo2fMo8gl1Ufolu8+ndOAd8dC1waIBmudMQ239
+	sT0dyuBY6UdtISdoZ9BsiXrNjKTcAW6nCRVbuoNthyPJh/Nkvgfo7vMwb/P+Jw==
+Message-ID: <de171eb5-3e95-4529-9228-9a4ed526ed46@hauke-m.de>
+Date: Sat, 30 Mar 2024 14:49:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+To: stable@vger.kernel.org
+From: Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Backport "mtd: spinand: Add support for 5-byte IDs" to 6.6, 6.7 and
+ 6.8
+Cc: John Audia <therealgraysky@proton.me>,
+ Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
+ linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4V6JYd3SBdz9sd5
 
-On 21.03.24 05:53, Laine Taffin Altman wrote:
-> On Mar 19, 2024, at 3:34=E2=80=AFAM, Benno Lossin <benno.lossin@proton.me=
-> wrote:
->> On 3/19/24 06:28, Laine Taffin Altman wrote:
->>> On Mar 18, 2024, at 9:39=E2=80=AFPM, Boqun Feng <boqun.feng@gmail.com> =
-wrote:
->>>> On Mon, Mar 18, 2024 at 08:17:07PM -0700, Laine Taffin Altman wrote:
->>>>> On Mar 18, 2024, at 10:25=E2=80=AFAM, Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
->>>>>> On Wed, Mar 13, 2024 at 11:09:37PM +0000, Benno Lossin wrote:
->>>>>>> From: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>>>
->>>>>>> It is not enough for a type to be a ZST to guarantee that zeroed me=
-mory
->>>>>>> is a valid value for it; it must also be inhabited. Creating a valu=
-e of
->>>>>>> an uninhabited type, ZST or no, is immediate UB.
->>>>>>> Thus remove the implementation of `Zeroable` for `Infallible`, sinc=
-e
->>>>>>> that type is not inhabited.
->>>>>>>
->>>>>>> Cc: stable@vger.kernel.org
->>>>>>> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::z=
-eroed` function")
->>>>>>> Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
->>>>>>> Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
->>>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>>>>
->>>>>> I think either in the commit log or in the code comment, there bette=
-r be
->>>>>> a link or explanation on "(un)inhabited type". The rest looks good t=
-o
->>>>>> me.
->>>>>
->>>>> Would the following be okay for that purpose?
->>>>>
->>>>> A type is inhabited if at least one valid value of that type exists; =
-a
->>>>> type is uninhabited if no valid values of that type exist.  The terms
->>>>> "inhabited" and "uninhabited" in this sense originate in type theory,
->>>>> a branch of mathematics.
->>>>>
->>>>> In Rust, producing an invalid value of any type is immediate undefine=
-d
->>>>> behavior (UB); this includes via zeroing memory.  Therefore, since an
->>>>> uninhabited type has no valid values, producing any values at all for
->>>>> it is UB.
->>>>>
->>>>> The Rust standard library type `core::convert::Infallible` is
->>>>> uninhabited, by virtue of having been declared as an enum with no
->>>>> cases, which always produces uninhabited types in Rust.  Thus, remove
->>>>> the implementation of `Zeroable` for `Infallible`, thereby avoiding
->>>>> the UB.
->>>>>
->>>>
->>>> Yeah, this works for me. Thanks!
->>>
->>> Great!  Should it be re-sent or can the new wording be incorporated upo=
-n merge?
->>
->> I can re-send it for you again, or do you want to send it yourself?
->> I think it is also a good idea to add a link to [1] in the code, since
->> the above explanation is rather long and fits better in the commit
->> message.
->>
->=20
-> I=E2=80=99ll try and do it myself; thank you for sending the first round =
-for me and illustrating procedures!  What Reviewed-By=E2=80=99s/Signed-Off-=
-By's should I retain?
+Hi,
 
-Do you still want to send it yourself? If you don't have the time, no
-problem, I can send it again.
+Please backport the following commit back to the Linux stable kernels 
+6.6, 6.7 and 6.8:
 
---=20
-Cheers,
-Benno
+commit 34a956739d295de6010cdaafeed698ccbba87ea4
+Author: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Date:   Thu Jan 25 22:01:07 2024 +0200
 
+     mtd: spinand: Add support for 5-byte IDs
+
+     E.g. ESMT chips will return an identification code with a length of 5
+     bytes. In order to prevent ambiguity, flash chips would actually 
+need to
+     return IDs that are up to 17 or more bytes long due to JEDEC's
+     continuation scheme. I understand that if a manufacturer ID is located
+     in bank N of JEDEC's database (there are currently 16 banks), N - 1
+     continuation codes (7Fh) need to be added to the identification code
+     (comprising of manufacturer ID and device ID). However, most flash chip
+     manufacturers don't seem to implement this (correctly).
+
+     Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+     Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+     Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+     Link: 
+https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
+
+
+This will fix a regression introduced between Linux kernel 6.6.22 and 
+6.6.23 in OpenWrt. The esmt NAND flash is not detected any more:
+<3>[    0.885607] spi-nand spi0.0: unknown raw ID c8017f7f
+<4>[    0.890852] spi-nand: probe of spi0.0 failed with error -524
+See: https://github.com/openwrt/openwrt/pull/14992
+
+
+The following commit was backported to 6.6.22, but the commit it depends 
+on was not backported.
+commit 4bd14b2fd8a83a2f5220ba4ef323f741e11bfdfd
+Author: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+Date:   Thu Jan 25 22:01:08 2024 +0200
+
+     mtd: spinand: esmt: Extend IDs to 5 bytes
+
+
+Hauke
 
