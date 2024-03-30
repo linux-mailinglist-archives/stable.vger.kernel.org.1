@@ -1,103 +1,95 @@
-Return-Path: <stable+bounces-33790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535E98929B0
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:25:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5634A8929BB
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 09:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D53D3283411
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 08:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E778D1F21ECB
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 08:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30AE1C0DEA;
-	Sat, 30 Mar 2024 08:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CABC1C0DE5;
+	Sat, 30 Mar 2024 08:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="pmf/Wuuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQmQB0og"
 X-Original-To: stable@vger.kernel.org
-Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286AF79D8;
-	Sat, 30 Mar 2024 08:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77E881F;
+	Sat, 30 Mar 2024 08:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711787131; cv=none; b=o1cgqdyb4xKzZ2zBgY+h4XHuowBt3PvSEBMWc3l5K3wm9m2MqI9CMobgoRrFz8m4cKkIYtlVjbDbVDAt8wBXRQewWJUr1AEgZZxB4hvGhi6lS65r48z/WZlGq8QkyUtrUjGTf1nvxo8rJPfxgLm+8rTYteZy9McuMNg9IA8sy+I=
+	t=1711788123; cv=none; b=FkglQlH2w5CB9aEQOziSIaRuukZkJ8kuiJD1cbVcJ6XRUaR2BBe+axx2Jb9Rx++WgbV0T7dWnlXYUbYo9Q1mL1cxp3RubIo2akJ0Y21tc5PXe3pY1aqLyXzh/78xOGz5RR/qNJKw00tRL7NJTxMO3ENVYbEuT4APAvTVfMRXXoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711787131; c=relaxed/simple;
-	bh=ajK3qZPjABu64x0qWUWrYS5lGxEpXNu8G6mGAqricqU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lAeRmJ1KzGZvJpDnftXrlEspwOWVB/BoM9+pCrP1u3BjlurYvNIiGb6zQqsB3yOYK+IG7gpBGFNxooZYHmfOzcRwLKuRaOf2PkjQj/Zd4WwqF1JrUrmgOliIbiWLRHCIdhbc5WO3dKBcJCSjp1j4K3ZptXkhMV3VHCpeLDpTM40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=pmf/Wuuh; arc=none smtp.client-ip=37.205.15.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id B7D811B7FA4;
-	Sat, 30 Mar 2024 09:25:19 +0100 (CET)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1711787119; bh=ajK3qZPjABu64x0qWUWrYS5lGxEpXNu8G6mGAqricqU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pmf/WuuhsXc8LnJnE6qLaLZ4Pue7JbRDKnma60f7ae9f7g2632uGjtV+HrKvmMeZ0
-	 SJrt113HgiT3XR0YwBuvaT9pBXCWcEnOhW41HxDO/ngPWkfxkOVzFB/vfb+QVZElNA
-	 mmr6N3ijXNOQ3oCROrv6/01y6j8Sxt4xjqZCveQ/Qy5TqJFYCb5kMvJNntTRu7r5xc
-	 tAyYshOGa1Fd0Qzz5gkLA7LM0fduIdL68j9nVsD3rPfMg0NqJzmhdtANpjrWNH7MmN
-	 +oEpWyeM0sKSA1yTB6Fx8N0fUcpijZQbyisP8JAINOI7BpoVJsdDv9gKtCq80lhmsf
-	 VvorcihuMULdw==
-Date: Sat, 30 Mar 2024 09:25:18 +0100
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: hch@lst.de, m.szyprowski@samsung.com, robin.murphy@arm.com,
- zhangpeng362@huawei.com, iommu@lists.linux.dev, mhklinux@outlook.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] swiotlb: Do not set total_used to 0 in
- swiotlb_create_debugfs_files()
-Message-ID: <20240330092518.71b5f0c0@meshulam.tesarici.cz>
-In-Reply-To: <20240329192809.17318-1-decui@microsoft.com>
-References: <20240329192809.17318-1-decui@microsoft.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1711788123; c=relaxed/simple;
+	bh=Ok2cDhfso4TDpA+Gl3lwSDvKxuJdbY8V+QMHG4GEcRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EkXJxqj70x4kkwGkM1cBp13VsY14t9EuHK2Q25sKxl2zTHLCF/vVFdalOoQjZ59fQFfmiHQkq/J/iRWlYUIHkHZg5xIxmviW2iAAdAFO5h0AhjyILqPq365SmY1NupCOy6rWHDNYZMG58b3DlFrdWLXN4d9UzYVZyzknxGYRd2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQmQB0og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B715C433C7;
+	Sat, 30 Mar 2024 08:42:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711788122;
+	bh=Ok2cDhfso4TDpA+Gl3lwSDvKxuJdbY8V+QMHG4GEcRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HQmQB0ogLi04ukA/+Iw0RtIYKLwQsqkKQaDBR+XCR+qjkZbYZo5kCLihR3lwQRoXe
+	 U4abKxmgZTbj7nVGMpDKPz1H8e+iicGyRhnUTRJselOb4VGUxjJZsDbOLMVabjZ2XT
+	 r8Ej1aya/EdwfJHSBPEoPNVnS6uAiFh6vze3SWlE=
+Date: Sat, 30 Mar 2024 09:41:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 5.15.y] selftests: mptcp: diag: return KSFT_FAIL not
+ test_cnt
+Message-ID: <2024033019-ice-ferry-0131@gregkh>
+References: <2024032713-identity-slightly-586d@gregkh>
+ <20240329145105.1637785-2-matttbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240329145105.1637785-2-matttbe@kernel.org>
 
-V Fri, 29 Mar 2024 12:28:09 -0700
-Dexuan Cui <decui@microsoft.com> naps=C3=A1no:
-
-> Sometimes the readout of /sys/kernel/debug/swiotlb/io_tlb_used and
-> io_tlb_used_hiwater can be a huge number (e.g. 18446744073709551615),
-> which is actually a negative number if we use "%ld" to print the number.
->=20
-> When swiotlb_create_default_debugfs() is running from late_initcall,
-> mem->total_used may already be non-zero, because the storage driver
-> may have already started to perform I/O operations: if the storage
-> driver is built-in, its probe() callback is called before late_initcall.
->=20
-> swiotlb_create_debugfs_files() should not blindly set mem->total_used
-> and mem->used_hiwater to 0; actually it doesn't have to initialize the
-> fields at all, because the fields, as part of the global struct
-> io_tlb_default_mem, have been implicitly initialized to zero.
->=20
-> Also don't explicitly set mem->transient_nslabs to 0.
->=20
-> Fixes: 8b0977ecc8b3 ("swiotlb: track and report io_tlb_used high water ma=
-rks in debugfs")
-> Fixes: 02e765697038 ("swiotlb: add debugfs to track swiotlb transient poo=
-l usage")
+On Fri, Mar 29, 2024 at 03:51:05PM +0100, Matthieu Baerts (NGI0) wrote:
+> From: Geliang Tang <tanggeliang@kylinos.cn>
+> 
+> The test counter 'test_cnt' should not be returned in diag.sh, e.g. what
+> if only the 4th test fail? Will do 'exit 4' which is 'exit ${KSFT_SKIP}',
+> the whole test will be marked as skipped instead of 'failed'!
+> 
+> So we should do ret=${KSFT_FAIL} instead.
+> 
+> Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+> Fixes: 42fb6cddec3b ("selftests: mptcp: more stable diag tests")
+> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> (cherry picked from commit 45bcc0346561daa3f59e19a753cc7f3e08e8dff1)
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+> Notes:
+>  - Conflicts in diag.sh because the commit ce9902573652 ("selftests:
+>    mptcp: diag: format subtests results in TAP") is not in v5.15 tree.
+>    These conflicts were in the context for an unrelated feature.
+>  - Compared to the conflicts seen with the same patch in the v6.1 tree,
+>    there was an extra one here in v5.15 because the commit f2ae0fa68e28
+>    ("selftests/mptcp: add diag listen tests") is no the in this tree: it
+>    moves the assignation of 'ret' in '__chk_nr()' under an extra check.
+>    The conflict was easy to fix, simply by changing the value of 'ret'
+>    from the previous location.
 
-FWIW I confirm that the transient_nslabs counter does not have to be
-initialized either.
+Both now queued up, thanks.
 
-Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-
-Petr T
+greg k-h
 
