@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-33830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CEC892A48
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 11:03:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B72C892A4A
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 11:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FFE61F2248A
-	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:03:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F7928342A
+	for <lists+stable@lfdr.de>; Sat, 30 Mar 2024 10:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6C4208A2;
-	Sat, 30 Mar 2024 10:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D97320DD0;
+	Sat, 30 Mar 2024 10:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmGtNCEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGEmzNPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5CA847E
-	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 10:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B72720B21
+	for <stable@vger.kernel.org>; Sat, 30 Mar 2024 10:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711793029; cv=none; b=bAdLBA9nfc972Rlw15pBPQNytRqcG474rgfbeS7y2SMM/Ch5sSxsXeb2LamroZo0UIPS8nERESjYgTaYITrsisVuFsrnv4EVCv1a8DRn4jS1T4ShPWEXJmTnzvNh0vwj+wHE62yqp8R+npfG1pyNzjtRs+x7toabt8OSmcQ/olg=
+	t=1711793277; cv=none; b=cWWc5onVVUNkRD8Hwhfu6OdryJWjGTxd/uHeFLbLOJDy6oA24VmSUv8HYn72B/OCXIum+lat6Z6jS8p16ZTKYMRl0G1iA/MF/l8H1hMZaDuJwFdwUfXqbornSPZPudI6LUUeQqyXKjzuvsIU4itBy88b18qgCBYjENJ3u/JGdWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711793029; c=relaxed/simple;
-	bh=tkxX51MDBFbICxlCdxqHRkLqJOXqm3cUpK9ECnwheDI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EO7EReqHzRdzeoaNYbhjgCfpqwTsw/GvRFplG5eIFbMOFLoBCFpNtzep+M+K5A+6te1DFvE75HkbI7HvJSltLHBEpOxxWvsBRbcFV1bJ6XgjD96DdKz83AV9IH27o1rQlX5r34Sg8x3Opiszjf+s3f1tZGS//QiytwBU8IPsJ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmGtNCEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89C5C433C7;
-	Sat, 30 Mar 2024 10:03:48 +0000 (UTC)
+	s=arc-20240116; t=1711793277; c=relaxed/simple;
+	bh=XxPw2PrJ+pWkFeMVVB+xnZiSxZmeDJFt4cJR0ns4lOU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O7vPm7ickBaKH84Kje3wDxzqb55sHc/5I57QWVAMLFT3Bv1/XkBYyYUJElXrh5SKBoriV81heF7GKTQeyrK8pjZ5f6G9P1Qnj3R03bavFjeallXcvzx2Ljb9vMaRnSx3zc6HfrUP0hdJKAvm+jtqoiuzfqZ5AYiYASkxTAfrNPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGEmzNPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D2FC433F1;
+	Sat, 30 Mar 2024 10:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711793029;
-	bh=tkxX51MDBFbICxlCdxqHRkLqJOXqm3cUpK9ECnwheDI=;
+	s=korg; t=1711793276;
+	bh=XxPw2PrJ+pWkFeMVVB+xnZiSxZmeDJFt4cJR0ns4lOU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dmGtNCEyQCS5WGRn4Pvbb19+ffsG7W33rzGq2wOZeoZ9TQjJ8anhf/f983Tjcamfd
-	 CgwUDaomc2PRrPG4COXnZzaDIrr2rxPdCQWWdqwlaI7pYrSvFTK8QJTb55sv2bNYDz
-	 Frurorb/CpuUj4LzG16p8KaqmHhyB2InMPDgT958=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Reset queue_priority_hint on parking" failed to apply to 5.4-stable tree
-To: chris@chris-wilson.co.uk,andi.shyti@linux.intel.com,janusz.krzysztofik@linux.intel.com,mika.kuoppala@linux.intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
+	b=dGEmzNPc6KDN4DIbINgMRUJeQmhf3bw/4dABJ1OVw+UTttpjSARhov3RrJ1REN9fY
+	 g0Eccry1WJICIDQYPY4NiHolGazSEcxLXnabD5ispg0K3gMSzhlm/2bsCKvID4wBu7
+	 YJyCCygyeOlcrrfjQ/RjkPgZ6MxcJkxMKtVKCHx4=
+Subject: FAILED: patch "[PATCH] drm/i915/vma: Fix UAF on destroy against retire race" failed to apply to 6.1-stable tree
+To: janusz.krzysztofik@linux.intel.com,andi.shyti@linux.intel.com,nirmoy.das@intel.com,rodrigo.vivi@intel.com,thomas.hellstrom@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Mar 2024 11:03:46 +0100
-Message-ID: <2024033046-mobility-coherence-2055@gregkh>
+Date: Sat, 30 Mar 2024 11:07:53 +0100
+Message-ID: <2024033053-lyrically-excluding-f09f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4a3859ea5240365d21f6053ee219bb240d520895
+git cherry-pick -x 0e45882ca829b26b915162e8e86dbb1095768e9e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033046-mobility-coherence-2055@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033053-lyrically-excluding-f09f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,121 +77,200 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4a3859ea5240365d21f6053ee219bb240d520895 Mon Sep 17 00:00:00 2001
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 18 Mar 2024 14:58:47 +0100
-Subject: [PATCH] drm/i915/gt: Reset queue_priority_hint on parking
+From 0e45882ca829b26b915162e8e86dbb1095768e9e Mon Sep 17 00:00:00 2001
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Tue, 5 Mar 2024 15:35:06 +0100
+Subject: [PATCH] drm/i915/vma: Fix UAF on destroy against retire race
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Originally, with strict in order execution, we could complete execution
-only when the queue was empty. Preempt-to-busy allows replacement of an
-active request that may complete before the preemption is processed by
-HW. If that happens, the request is retired from the queue, but the
-queue_priority_hint remains set, preventing direct submission until
-after the next CS interrupt is processed.
+Object debugging tools were sporadically reporting illegal attempts to
+free a still active i915 VMA object when parking a GT believed to be idle.
 
-This preempt-to-busy race can be triggered by the heartbeat, which will
-also act as the power-management barrier and upon completion allow us to
-idle the HW. We may process the completion of the heartbeat, and begin
-parking the engine before the CS event that restores the
-queue_priority_hint, causing us to fail the assertion that it is MIN.
-
-<3>[  166.210729] __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
-<0>[  166.210781] Dumping ftrace buffer:
-<0>[  166.210795] ---------------------------------
+[161.359441] ODEBUG: free active (active state 0) object: ffff88811643b958 object type: i915_active hint: __i915_vma_active+0x0/0x50 [i915]
+[161.360082] WARNING: CPU: 5 PID: 276 at lib/debugobjects.c:514 debug_print_object+0x80/0xb0
 ...
-<0>[  167.302811] drm_fdin-1097      2..s1. 165741070us : trace_ports: 0000:00:02.0 rcs0: promote { ccid:20 1217:2 prio 0 }
-<0>[  167.302861] drm_fdin-1097      2d.s2. 165741072us : execlists_submission_tasklet: 0000:00:02.0 rcs0: preempting last=1217:2, prio=0, hint=2147483646
-<0>[  167.302928] drm_fdin-1097      2d.s2. 165741072us : __i915_request_unsubmit: 0000:00:02.0 rcs0: fence 1217:2, current 0
-<0>[  167.302992] drm_fdin-1097      2d.s2. 165741073us : __i915_request_submit: 0000:00:02.0 rcs0: fence 3:4660, current 4659
-<0>[  167.303044] drm_fdin-1097      2d.s1. 165741076us : execlists_submission_tasklet: 0000:00:02.0 rcs0: context:3 schedule-in, ccid:40
-<0>[  167.303095] drm_fdin-1097      2d.s1. 165741077us : trace_ports: 0000:00:02.0 rcs0: submit { ccid:40 3:4660* prio 2147483646 }
-<0>[  167.303159] kworker/-89       11..... 165741139us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence c90:2, current 2
-<0>[  167.303208] kworker/-89       11..... 165741148us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:c90 unpin
-<0>[  167.303272] kworker/-89       11..... 165741159us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 1217:2, current 2
-<0>[  167.303321] kworker/-89       11..... 165741166us : __intel_context_do_unpin: 0000:00:02.0 rcs0: context:1217 unpin
-<0>[  167.303384] kworker/-89       11..... 165741170us : i915_request_retire.part.0: 0000:00:02.0 rcs0: fence 3:4660, current 4660
-<0>[  167.303434] kworker/-89       11d..1. 165741172us : __intel_context_retire: 0000:00:02.0 rcs0: context:1216 retire runtime: { total:56028ns, avg:56028ns }
-<0>[  167.303484] kworker/-89       11..... 165741198us : __engine_park: 0000:00:02.0 rcs0: parked
-<0>[  167.303534]   <idle>-0         5d.H3. 165741207us : execlists_irq_handler: 0000:00:02.0 rcs0: semaphore yield: 00000040
-<0>[  167.303583] kworker/-89       11..... 165741397us : __intel_context_retire: 0000:00:02.0 rcs0: context:1217 retire runtime: { total:325575ns, avg:0ns }
-<0>[  167.303756] kworker/-89       11..... 165741777us : __intel_context_retire: 0000:00:02.0 rcs0: context:c90 retire runtime: { total:0ns, avg:0ns }
-<0>[  167.303806] kworker/-89       11..... 165742017us : __engine_park: __engine_park:283 GEM_BUG_ON(engine->sched_engine->queue_priority_hint != (-((int)(~0U >> 1)) - 1))
-<0>[  167.303811] ---------------------------------
-<4>[  167.304722] ------------[ cut here ]------------
-<2>[  167.304725] kernel BUG at drivers/gpu/drm/i915/gt/intel_engine_pm.c:283!
-<4>[  167.304731] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-<4>[  167.304734] CPU: 11 PID: 89 Comm: kworker/11:1 Tainted: G        W          6.8.0-rc2-CI_DRM_14193-gc655e0fd2804+ #1
-<4>[  167.304736] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
-<4>[  167.304738] Workqueue: i915-unordered retire_work_handler [i915]
-<4>[  167.304839] RIP: 0010:__engine_park+0x3fd/0x680 [i915]
-<4>[  167.304937] Code: 00 48 c7 c2 b0 e5 86 a0 48 8d 3d 00 00 00 00 e8 79 48 d4 e0 bf 01 00 00 00 e8 ef 0a d4 e0 31 f6 bf 09 00 00 00 e8 03 49 c0 e0 <0f> 0b 0f 0b be 01 00 00 00 e8 f5 61 fd ff 31 c0 e9 34 fd ff ff 48
-<4>[  167.304940] RSP: 0018:ffffc9000059fce0 EFLAGS: 00010246
-<4>[  167.304942] RAX: 0000000000000200 RBX: 0000000000000000 RCX: 0000000000000006
-<4>[  167.304944] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000009
-<4>[  167.304946] RBP: ffff8881330ca1b0 R08: 0000000000000001 R09: 0000000000000001
-<4>[  167.304947] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8881330ca000
-<4>[  167.304948] R13: ffff888110f02aa0 R14: ffff88812d1d0205 R15: ffff88811277d4f0
-<4>[  167.304950] FS:  0000000000000000(0000) GS:ffff88844f780000(0000) knlGS:0000000000000000
-<4>[  167.304952] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-<4>[  167.304953] CR2: 00007fc362200c40 CR3: 000000013306e003 CR4: 0000000000770ef0
-<4>[  167.304955] PKRU: 55555554
-<4>[  167.304957] Call Trace:
-<4>[  167.304958]  <TASK>
-<4>[  167.305573]  ____intel_wakeref_put_last+0x1d/0x80 [i915]
-<4>[  167.305685]  i915_request_retire.part.0+0x34f/0x600 [i915]
-<4>[  167.305800]  retire_requests+0x51/0x80 [i915]
-<4>[  167.305892]  intel_gt_retire_requests_timeout+0x27f/0x700 [i915]
-<4>[  167.305985]  process_scheduled_works+0x2db/0x530
-<4>[  167.305990]  worker_thread+0x18c/0x350
-<4>[  167.305993]  kthread+0xfe/0x130
-<4>[  167.305997]  ret_from_fork+0x2c/0x50
-<4>[  167.306001]  ret_from_fork_asm+0x1b/0x30
-<4>[  167.306004]  </TASK>
+[161.360304] CPU: 5 PID: 276 Comm: kworker/5:2 Not tainted 6.5.0-rc1-CI_DRM_13375-g003f860e5577+ #1
+[161.360314] Hardware name: Intel Corporation Rocket Lake Client Platform/RocketLake S UDIMM 6L RVP, BIOS RKLSFWI1.R00.3173.A03.2204210138 04/21/2022
+[161.360322] Workqueue: i915-unordered __intel_wakeref_put_work [i915]
+[161.360592] RIP: 0010:debug_print_object+0x80/0xb0
+...
+[161.361347] debug_object_free+0xeb/0x110
+[161.361362] i915_active_fini+0x14/0x130 [i915]
+[161.361866] release_references+0xfe/0x1f0 [i915]
+[161.362543] i915_vma_parked+0x1db/0x380 [i915]
+[161.363129] __gt_park+0x121/0x230 [i915]
+[161.363515] ____intel_wakeref_put_last+0x1f/0x70 [i915]
 
-It is necessary for the queue_priority_hint to be lower than the next
-request submission upon waking up, as we rely on the hint to decide when
-to kick the tasklet to submit that first request.
+That has been tracked down to be happening when another thread is
+deactivating the VMA inside __active_retire() helper, after the VMA's
+active counter has been already decremented to 0, but before deactivation
+of the VMA's object is reported to the object debugging tool.
 
-Fixes: 22b7a426bbe1 ("drm/i915/execlists: Preempt-to-busy")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10154
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+We could prevent from that race by serializing i915_active_fini() with
+__active_retire() via ref->tree_lock, but that wouldn't stop the VMA from
+being used, e.g. from __i915_vma_retire() called at the end of
+__active_retire(), after that VMA has been already freed by a concurrent
+i915_vma_destroy() on return from the i915_active_fini().  Then, we should
+rather fix the issue at the VMA level, not in i915_active.
+
+Since __i915_vma_parked() is called from __gt_park() on last put of the
+GT's wakeref, the issue could be addressed by holding the GT wakeref long
+enough for __active_retire() to complete before that wakeref is released
+and the GT parked.
+
+I believe the issue was introduced by commit d93939730347 ("drm/i915:
+Remove the vma refcount") which moved a call to i915_active_fini() from
+a dropped i915_vma_release(), called on last put of the removed VMA kref,
+to i915_vma_parked() processing path called on last put of a GT wakeref.
+However, its visibility to the object debugging tool was suppressed by a
+bug in i915_active that was fixed two weeks later with commit e92eb246feb9
+("drm/i915/active: Fix missing debug object activation").
+
+A VMA associated with a request doesn't acquire a GT wakeref by itself.
+Instead, it depends on a wakeref held directly by the request's active
+intel_context for a GT associated with its VM, and indirectly on that
+intel_context's engine wakeref if the engine belongs to the same GT as the
+VMA's VM.  Those wakerefs are released asynchronously to VMA deactivation.
+
+Fix the issue by getting a wakeref for the VMA's GT when activating it,
+and putting that wakeref only after the VMA is deactivated.  However,
+exclude global GTT from that processing path, otherwise the GPU never goes
+idle.  Since __i915_vma_retire() may be called from atomic contexts, use
+async variant of wakeref put.  Also, to avoid circular locking dependency,
+take care of acquiring the wakeref before VM mutex when both are needed.
+
+v7: Add inline comments with justifications for:
+    - using untracked variants of intel_gt_pm_get/put() (Nirmoy),
+    - using async variant of _put(),
+    - not getting the wakeref in case of a global GTT,
+    - always getting the first wakeref outside vm->mutex.
+v6: Since __i915_vma_active/retire() callbacks are not serialized, storing
+    a wakeref tracking handle inside struct i915_vma is not safe, and
+    there is no other good place for that.  Use untracked variants of
+    intel_gt_pm_get/put_async().
+v5: Replace "tile" with "GT" across commit description (Rodrigo),
+  - avoid mentioning multi-GT case in commit description (Rodrigo),
+  - explain why we need to take a temporary wakeref unconditionally inside
+    i915_vma_pin_ww() (Rodrigo).
+v4: Refresh on top of commit 5e4e06e4087e ("drm/i915: Track gt pm
+    wakerefs") (Andi),
+  - for more easy backporting, split out removal of former insufficient
+    workarounds and move them to separate patches (Nirmoy).
+  - clean up commit message and description a bit.
+v3: Identify root cause more precisely, and a commit to blame,
+  - identify and drop former workarounds,
+  - update commit message and description.
+v2: Get the wakeref before VM mutex to avoid circular locking dependency,
+  - drop questionable Fixes: tag.
+
+Fixes: d93939730347 ("drm/i915: Remove the vma refcount")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/8875
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.4+
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: stable@vger.kernel.org # v5.19+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240318135906.716055-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 98850e96cf811dc2d0a7d0af491caff9f5d49c1e)
+Link: https://patchwork.freedesktop.org/patch/msgid/20240305143747.335367-6-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit f3c71b2ded5c4367144a810ef25f998fd1d6c381)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_pm.c b/drivers/gpu/drm/i915/gt/intel_engine_pm.c
-index 96bdb93a948d..fb7bff27b45a 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_pm.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_pm.c
-@@ -279,9 +279,6 @@ static int __engine_park(struct intel_wakeref *wf)
- 	intel_engine_park_heartbeat(engine);
- 	intel_breadcrumbs_park(engine->breadcrumbs);
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index d09aad34ba37..b70715b1411d 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -34,6 +34,7 @@
+ #include "gt/intel_engine.h"
+ #include "gt/intel_engine_heartbeat.h"
+ #include "gt/intel_gt.h"
++#include "gt/intel_gt_pm.h"
+ #include "gt/intel_gt_requests.h"
+ #include "gt/intel_tlb.h"
  
--	/* Must be reset upon idling, or we may miss the busy wakeup. */
--	GEM_BUG_ON(engine->sched_engine->queue_priority_hint != INT_MIN);
--
- 	if (engine->park)
- 		engine->park(engine);
+@@ -103,12 +104,42 @@ static inline struct i915_vma *active_to_vma(struct i915_active *ref)
  
-diff --git a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-index 42aade0faf2d..b061a0a0d6b0 100644
---- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-@@ -3272,6 +3272,9 @@ static void execlists_park(struct intel_engine_cs *engine)
+ static int __i915_vma_active(struct i915_active *ref)
  {
- 	cancel_timer(&engine->execlists.timer);
- 	cancel_timer(&engine->execlists.preempt);
+-	return i915_vma_tryget(active_to_vma(ref)) ? 0 : -ENOENT;
++	struct i915_vma *vma = active_to_vma(ref);
 +
-+	/* Reset upon idling, or we may delay the busy wakeup. */
-+	WRITE_ONCE(engine->sched_engine->queue_priority_hint, INT_MIN);
++	if (!i915_vma_tryget(vma))
++		return -ENOENT;
++
++	/*
++	 * Exclude global GTT VMA from holding a GT wakeref
++	 * while active, otherwise GPU never goes idle.
++	 */
++	if (!i915_vma_is_ggtt(vma)) {
++		/*
++		 * Since we and our _retire() counterpart can be
++		 * called asynchronously, storing a wakeref tracking
++		 * handle inside struct i915_vma is not safe, and
++		 * there is no other good place for that.  Hence,
++		 * use untracked variants of intel_gt_pm_get/put().
++		 */
++		intel_gt_pm_get_untracked(vma->vm->gt);
++	}
++
++	return 0;
  }
  
- static void add_to_engine(struct i915_request *rq)
+ static void __i915_vma_retire(struct i915_active *ref)
+ {
+-	i915_vma_put(active_to_vma(ref));
++	struct i915_vma *vma = active_to_vma(ref);
++
++	if (!i915_vma_is_ggtt(vma)) {
++		/*
++		 * Since we can be called from atomic contexts,
++		 * use an async variant of intel_gt_pm_put().
++		 */
++		intel_gt_pm_put_async_untracked(vma->vm->gt);
++	}
++
++	i915_vma_put(vma);
+ }
+ 
+ static struct i915_vma *
+@@ -1404,7 +1435,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	struct i915_vma_work *work = NULL;
+ 	struct dma_fence *moving = NULL;
+ 	struct i915_vma_resource *vma_res = NULL;
+-	intel_wakeref_t wakeref = 0;
++	intel_wakeref_t wakeref;
+ 	unsigned int bound;
+ 	int err;
+ 
+@@ -1424,8 +1455,14 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & PIN_GLOBAL)
+-		wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
++	/*
++	 * In case of a global GTT, we must hold a runtime-pm wakeref
++	 * while global PTEs are updated.  In other cases, we hold
++	 * the rpm reference while the VMA is active.  Since runtime
++	 * resume may require allocations, which are forbidden inside
++	 * vm->mutex, get the first rpm wakeref outside of the mutex.
++	 */
++	wakeref = intel_runtime_pm_get(&vma->vm->i915->runtime_pm);
+ 
+ 	if (flags & vma->vm->bind_async_flags) {
+ 		/* lock VM */
+@@ -1561,8 +1598,7 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
+ 	if (work)
+ 		dma_fence_work_commit_imm(&work->base);
+ err_rpm:
+-	if (wakeref)
+-		intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
++	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
+ 
+ 	if (moving)
+ 		dma_fence_put(moving);
 
 
