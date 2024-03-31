@@ -1,224 +1,207 @@
-Return-Path: <stable+bounces-33861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962EA893169
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 13:03:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8476E8931AC
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 15:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B97211C20912
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 11:03:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6320D1C20E9F
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 13:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38251143C70;
-	Sun, 31 Mar 2024 11:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEE11448F8;
+	Sun, 31 Mar 2024 13:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z35T7bHS"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="fn2rK449"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD42FEEC0
-	for <stable@vger.kernel.org>; Sun, 31 Mar 2024 11:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9222EB08;
+	Sun, 31 Mar 2024 13:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711883035; cv=none; b=cHvLE0C553wwItVVKLrVvo0b5LI0ICfAQhlQuV2S70nbbI1WHM5iatZNchAlM4UgSFclQKbpB6d2LyCsndwQpwAj6XzfqWXDh8SWtjtRygvTgTi990vS4g60Kq6Tw7bDmV8gHCe/tBxkv6cKcIvgjmNcSs1nXt48PHm8bxUNoqE=
+	t=1711891389; cv=none; b=LPxdNPTQYubClB+XrBga/fM3q6b52sArWKdtMvUMFTuO3Tej33gYNZiFiv4pnAPcmdwPBP2hWK7cBgt3+48fRjN3K+neN9F9zziSj7LdkEs9bmmBevxCnTwoq5Mm35gxgltZGga6VgLzqkVQXdQi8YASKsCaN9S+SYOG6Tc69no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711883035; c=relaxed/simple;
-	bh=JKBpNHe0bKCl41JBaAx+tcKC2E2odfVVTRZkuqY6OCI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RbxBObl01rtSm4ddYE0jiCFcUguJO5Szfk7xKM1wOlQPb1mBWVqpbzhUTSJ5totVXeEFkavijNhynhpEvy2ZlYq9l5UtdCvRF5QmEu8LidU/wENruXolz1qKQ9EwqzdwVeed0wxFZ6kjD2EbJYBaB5Re5tA4oY3oLROrq/o2ceE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z35T7bHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF72C433C7;
-	Sun, 31 Mar 2024 11:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711883034;
-	bh=JKBpNHe0bKCl41JBaAx+tcKC2E2odfVVTRZkuqY6OCI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Z35T7bHS99875DxRt9E4ZQHnbUp3D8w0RUO891Pq1cKCwuwy8d6+M+9MGPMih6SjS
-	 8sraxdVSp47kKpSnxdJBx9JRZaL59jPQmzM4yknVJmImj4TvPHQO6B0/ILg/CL6pZP
-	 2pU/ciMSOhL5aUTmfV96ZcO4KLm8cnqkM0r1T1rw=
-Subject: FAILED: patch "[PATCH] USB: UAS: return ENODEV when submit urbs fail with device not" failed to apply to 4.19-stable tree
-To: WeitaoWang-oc@zhaoxin.com,gregkh@linuxfoundation.org,oneukum@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 31 Mar 2024 13:03:44 +0200
-Message-ID: <2024033144-armless-overact-1e1d@gregkh>
+	s=arc-20240116; t=1711891389; c=relaxed/simple;
+	bh=0JdnalII33ICqSebxleFo2xxjuuYod6bhO/Ywq4s8/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NoqUlETmyZI73zoxV6OcludGi++MNrPXCy3rOOm5RDyI93jqu2eeAsi5vw7e+/yy7SxC/RSgvkcRQLwDh8NBTBMe5ERbg8cDzWdICLXXYX2pZJyxyhc4gJgx/BfUmjK3u5M1OEzpHIKpf1MmpkN6LChuLD1AdlAnX7CefSDV0KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=fn2rK449; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1711891378; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=DNVFJe7fzXJ46hFedS/yET7Jx+L9l6utZ/e9Xt9A6X8=;
+	b=fn2rK449UwxAktwc06z/gHLkd7nxrhpX7uWiykXzVdT27RatS3BoIPlE5eLtg6xVpZ4vhBovaNpCHm5sBSnjugXpmKstOdcgg8XnbUlUPScpMFRS5/wRJtR0TMJgr9R1dn/nzhr7qwc8K5EOPw/egpB6h/ifdb36uJXH57tgDSM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=hengqi@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W3bgCBV_1711891376;
+Received: from 30.121.31.164(mailfrom:hengqi@linux.alibaba.com fp:SMTPD_---0W3bgCBV_1711891376)
+          by smtp.aliyun-inc.com;
+          Sun, 31 Mar 2024 21:22:57 +0800
+Message-ID: <8b6f03a9-1afb-42ef-82aa-7eaf7517133c@linux.alibaba.com>
+Date: Sun, 31 Mar 2024 21:22:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
+ supported
+To: Breno Leitao <leitao@debian.org>
+Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
+ qemu-devel@nongnu.org,
+ "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+References: <20240329171641.366520-1-leitao@debian.org>
+From: Heng Qi <hengqi@linux.alibaba.com>
+In-Reply-To: <20240329171641.366520-1-leitao@debian.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+在 2024/3/30 上午1:16, Breno Leitao 写道:
+> There is a bug when setting the RSS options in virtio_net that can break
+> the whole machine, getting the kernel into an infinite loop.
+>
+> Running the following command in any QEMU virtual machine with virtionet
+> will reproduce this problem:
+>
+>      # ethtool -X eth0  hfunc toeplitz
+>
+> This is how the problem happens:
+>
+> 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+>
+> 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+>
+> 3) virtnet_commit_rss_command() populates 4 entries for the rss
+> scatter-gather
+>
+> 4) Since the command above does not have a key, then the last
+> scatter-gatter entry will be zeroed, since rss_key_size == 0.
+> sg_buf_size = vi->rss_key_size;
+>
+> 5) This buffer is passed to qemu, but qemu is not happy with a buffer
+> with zero length, and do the following in virtqueue_map_desc() (QEMU
+> function):
+>
+>    if (!sz) {
+>        virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+>
+> 6) virtio_error() (also QEMU function) set the device as broken
+>
+>      vdev->broken = true;
+>
+> 7) Qemu bails out, and do not repond this crazy kernel.
+>
+> 8) The kernel is waiting for the response to come back (function
+> virtnet_send_command())
+>
+> 9) The kernel is waiting doing the following :
+>
+>        while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+> 	     !virtqueue_is_broken(vi->cvq))
+> 	      cpu_relax();
+>
+> 10) None of the following functions above is true, thus, the kernel
+> loops here forever. Keeping in mind that virtqueue_is_broken() does
+> not look at the qemu `vdev->broken`, so, it never realizes that the
+> vitio is broken at QEMU side.
+>
+> Fix it by not sending RSS commands if the feature is not available in
+> the device.
+>
+> Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+> Cc: stable@vger.kernel.org
+> Cc: qemu-devel@nongnu.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changelog:
+>
+> V2:
+>    * Moved from creating a valid packet, by rejecting the request
+>      completely
+> V3:
+>    * Got some good feedback from and Xuan Zhuo and Heng Qi, and reworked
+>      the rejection path.
+>
+> ---
+>   drivers/net/virtio_net.c | 22 ++++++++++++++++++----
+>   1 file changed, 18 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index c22d1118a133..c4a21ec51adf 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -3807,6 +3807,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
+>   			    struct netlink_ext_ack *extack)
+>   {
+>   	struct virtnet_info *vi = netdev_priv(dev);
+> +	bool update = false;
+>   	int i;
+>   
+>   	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+> @@ -3814,13 +3815,24 @@ static int virtnet_set_rxfh(struct net_device *dev,
+>   		return -EOPNOTSUPP;
+>   
+>   	if (rxfh->indir) {
+> +		if (!vi->has_rss)
+> +			return -EOPNOTSUPP;
+> +
+>   		for (i = 0; i < vi->rss_indir_table_size; ++i)
+>   			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
+> +		update = true;
+>   	}
+> -	if (rxfh->key)
+> +
+> +	if (rxfh->key) {
+> +		if (!vi->has_rss && !vi->has_rss_hash_report)
+> +			return -EOPNOTSUPP;
+> +
+>   		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
+> +		update = true;
+> +	}
+>   
+> -	virtnet_commit_rss_command(vi);
+> +	if (update)
+> +		virtnet_commit_rss_command(vi);
+>   
+>   	return 0;
+>   }
+> @@ -4729,13 +4741,15 @@ static int virtnet_probe(struct virtio_device *vdev)
+>   	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+>   		vi->has_rss_hash_report = true;
+>   
+> -	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
+> +	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+>   		vi->has_rss = true;
+>   
+> -	if (vi->has_rss || vi->has_rss_hash_report) {
+>   		vi->rss_indir_table_size =
+>   			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+>   				rss_max_indirection_table_length));
+> +	}
+> +
+> +	if (vi->has_rss || vi->has_rss_hash_report) {
+>   		vi->rss_key_size =
+>   			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+>   
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x cd5432c712351a3d5f82512908f5febfca946ca6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033144-armless-overact-1e1d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
 
-Possible dependencies:
+Thanks.
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From cd5432c712351a3d5f82512908f5febfca946ca6 Mon Sep 17 00:00:00 2001
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Date: Thu, 7 Mar 2024 02:08:14 +0800
-Subject: [PATCH] USB: UAS: return ENODEV when submit urbs fail with device not
- attached
-
-In the scenario of entering hibernation with udisk in the system, if the
-udisk was gone or resume fail in the thaw phase of hibernation. Its state
-will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
-and can't not handle disconnect event. Next, in the poweroff phase of
-hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
-when poweroff this scsi device, which will cause uas_submit_urbs to be
-called to submit URB for sense/data/cmd pipe. However, these URBs will
-submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
-will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
-the SCSI layer go into an ugly loop and system fail to go into hibernation.
-
-On the other hand, when we specially check for -ENODEV in function
-uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
-poweroff fail and system shutdown instead of entering hibernation.
-
-To fix this issue, let uas_submit_urbs to return original generic error
-when submitting URB failed. At the same time, we need to translate -ENODEV
-to DID_NOT_CONNECT for the SCSI layer.
-
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 71ace274761f..08953f0d4532 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, gfp_t gfp,
-  * daft to me.
-  */
- 
--static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-+static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- {
- 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
- 	struct urb *urb;
-@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- 
- 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
- 	if (!urb)
--		return NULL;
-+		return -ENOMEM;
- 	usb_anchor_urb(urb, &devinfo->sense_urbs);
- 	err = usb_submit_urb(urb, gfp);
- 	if (err) {
- 		usb_unanchor_urb(urb);
- 		uas_log_cmd_state(cmnd, "sense submit err", err);
- 		usb_free_urb(urb);
--		return NULL;
- 	}
--	return urb;
-+	return err;
- }
- 
- static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 			   struct uas_dev_info *devinfo)
- {
- 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
--	struct urb *urb;
- 	int err;
- 
- 	lockdep_assert_held(&devinfo->lock);
- 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (err)
-+			return err;
- 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
- 	}
- 
-@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_FROM_DEVICE);
- 		if (!cmdinfo->data_in_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
- 	}
- 
-@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_in_urb);
- 			uas_log_cmd_state(cmnd, "data in submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
- 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
-@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_TO_DEVICE);
- 		if (!cmdinfo->data_out_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
- 	}
- 
-@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_out_urb);
- 			uas_log_cmd_state(cmnd, "data out submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
- 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
-@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 	if (cmdinfo->state & ALLOC_CMD_URB) {
- 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
- 		if (!cmdinfo->cmd_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_CMD_URB;
- 	}
- 
-@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->cmd_urb);
- 			uas_log_cmd_state(cmnd, "cmd submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->cmd_urb = NULL;
- 		cmdinfo->state &= ~SUBMIT_CMD_URB;
-@@ -698,7 +696,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
- 	}
 
 
