@@ -1,160 +1,110 @@
-Return-Path: <stable+bounces-33851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A3D892E85
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 05:56:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829A2892EB8
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 08:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5C41282401
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 03:56:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A63D1C20B30
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 06:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F6E184E;
-	Sun, 31 Mar 2024 03:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78E26FB2;
+	Sun, 31 Mar 2024 06:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quaintcat.com header.i=@quaintcat.com header.b="QJViYUcS"
 X-Original-To: stable@vger.kernel.org
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+Received: from mx3.quaintcat.com (mx3.quaintcat.com [51.222.159.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6196F15A5;
-	Sun, 31 Mar 2024 03:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFFD6FA7
+	for <stable@vger.kernel.org>; Sun, 31 Mar 2024 06:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.222.159.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711857365; cv=none; b=tg8nFyJ8+UqSwx9CyFXpiYGaDg4kLdcOhO/BYn877nBddORpytJmOSREnDGpO1jIuNYPgSJ+EIZmIvUI3p3Q/alMHUTl7axRENiYRjgG8URGr7hxWv7zTBgDZ0CyuImoL+aPd8Yu5+BiNjY9aeL4Cwqjil0eY7O+eLqykL6vRUQ=
+	t=1711865236; cv=none; b=S7kVgzQO12VMjbTp+Q3+sVdwOA1+rmz+GQl/qiUjU5dzKEkYEi9RVc3fMkIXGcTOPiS06Yb/WEDRMblM1DaOeMxXrxl+izAMTYv+kKPes+3hLfC+9WbtBNzpvC7BGM/Bqb55CEOFxTsx4a7pUgwwJxe5VXtO+khuQbdT84YiZVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711857365; c=relaxed/simple;
-	bh=AAkRuLGOG4uqK+pVFGRIXj1u90Wm2JoqrdOoOkvsh88=;
-	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type:Subject; b=N1wA9usPrCwIUEKgiXK9aTjVxeYAS2Yj+Ti1SPq4eSFp/4eG1J6YeRw6b1s6Pqh9y6WkjnOgK4EIQpTUBvSwV67tGBtrHn6rGRYl0V/6gQMFj1hkhPVGTpWsfx/MX71Rkn9bfaQcn+brY9Zovoow5ZEg6HQbv613GVLQjVGjAzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
-Received: from in01.mta.xmission.com ([166.70.13.51]:37872)
-	by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1rqmIc-006R2Q-0g; Sat, 30 Mar 2024 21:56:02 -0600
-Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:42414 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1rqmIa-00BOOY-SP; Sat, 30 Mar 2024 21:56:01 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Pavin Joseph <me@pavinjoseph.com>,  Steve Wahl <steve.wahl@hpe.com>,
-  Dave Hansen <dave.hansen@linux.intel.com>,  Andy Lutomirski
- <luto@kernel.org>,  Peter Zijlstra <peterz@infradead.org>,  Thomas
- Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav
- Petkov <bp@alien8.de>,  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,
-  linux-kernel@vger.kernel.org,  Linux regressions mailing list
- <regressions@lists.linux.dev>,  stable@vger.kernel.org,  Eric Hagberg
- <ehagberg@gmail.com>,  Simon Horman <horms@verge.net.au>,  Dave Young
- <dyoung@redhat.com>,  Sarah Brofeldt <srhb@dbc.dk>,  Russ Anderson
- <rja@hpe.com>,  Dimitri Sivanich <sivanich@hpe.com>,  Hou Wenlong
- <houwenlong.hwl@antgroup.com>,  Andrew Morton <akpm@linux-foundation.org>,
-  Baoquan He <bhe@redhat.com>,  Yuntao Wang <ytcoode@gmail.com>,  Bjorn
- Helgaas <bhelgaas@google.com>
-References: <20240328160614.1838496-1-steve.wahl@hpe.com>
-	<ZgZqhWoRZoq5tJoU@gmail.com>
-	<47302624-6466-41a7-85db-f6872d58a4d2@pavinjoseph.com>
-	<ZgZ4qlbncvxhboQ0@gmail.com>
-	<be5982f8-3928-455e-969c-1e4c419d80a2@pavinjoseph.com>
-	<ZgbCfVPvWroCnGE4@gmail.com>
-Date: Sat, 30 Mar 2024 22:55:53 -0500
-In-Reply-To: <ZgbCfVPvWroCnGE4@gmail.com> (Ingo Molnar's message of "Fri, 29
-	Mar 2024 14:30:37 +0100")
-Message-ID: <871q7r12d2.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1711865236; c=relaxed/simple;
+	bh=Ft2ZyO38MJAyx+xz3hc0o+PsDVYPeZWdszawndIz8ag=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=hdUH5s5DCnCpOVHIC+bpm6YC3Uw2bTGlzQwKTNuC93A9RiTr+0c+RYh1SW8N1qAsHIylAjVThXAHI3JQoHkPPsHXJayToXSWgIm6RLGGheLCO5O16JMrcl/vQofx1jS81xMztuPjDlVwtUwCnTaB+9K5kmC+RhTJSXOnPyiPazE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=quaintcat.com; spf=pass smtp.mailfrom=quaintcat.com; dkim=pass (2048-bit key) header.d=quaintcat.com header.i=@quaintcat.com header.b=QJViYUcS; arc=none smtp.client-ip=51.222.159.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=quaintcat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quaintcat.com
+Date: Sun, 31 Mar 2024 00:59:51 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx3.quaintcat.com 0C4292004C31
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quaintcat.com;
+	s=mx3v3; t=1711864803;
+	bh=226hwrhacq+TC1h/KzA3HIs/y5L5HvPLLdDsJkeKcBc=;
+	h=Date:From:To:cc:Subject:From;
+	b=QJViYUcSdJsOdnVsav7dIPAFtGc5NwF1UCFB2uJK+UT5kKLugWxrzzYh/LNJqIzRA
+	 HO2cqMNcPHPCdCD3SWLK73Bt1Fa9fKwXBPMETe1+QbDrRcJYSQZyJl7OUt48jC/+B3
+	 oST5muc0JADU6DtP36fx5SXgXQJ0jxNXubdSaWmG2Hx4FaJTifBum151YPwB36OEoI
+	 addWQwICUoeHrzYbD3kteOrmQkSwduRFQpLIj4DNQi/JgvL+8WkoauJRZT4sCfnT+1
+	 QxB2hsqcZWcepM2x/rjObmegMOaiTn/EUASHiifC64bDwgXxak/ypnHAvc7uMWiUS9
+	 SWSZn4Iatg7Mw==
+From: Andrei Gaponenko <beamflash@quaintcat.com>
+To: stable@vger.kernel.org
+cc: regressions@lists.linux.dev, regressions@leemhuis.info
+Subject: [REGRESSION] external monitor+Dell dock in 6.8
+Message-ID: <22aa3878-62c7-9a2c-cfcc-303f373871f6@quaintcat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1rqmIa-00BOOY-SP;;;mid=<871q7r12d2.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX1/kWo8wjQwNMWG010uyvizqLJN0L8iVgO0=
-X-SA-Exim-Connect-IP: 68.227.168.167
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-	*      [score: 0.4922]
-	*  0.7 XMSubLong Long Subject
-	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-	*      [sa04 1397; Body=1 Fuz1=1 Fuz2=1]
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-	*  0.0 T_TooManySym_03 6+ unique symbols in subject
-	*  0.0 T_TooManySym_02 5+ unique symbols in subject
-	*  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa04 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Ingo Molnar <mingo@kernel.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 518 ms - load_scoreonly_sql: 0.05 (0.0%),
-	signal_user_changed: 13 (2.5%), b_tie_ro: 11 (2.2%), parse: 1.72
-	(0.3%), extract_message_metadata: 19 (3.6%), get_uri_detail_list: 2.4
-	(0.5%), tests_pri_-2000: 7 (1.4%), tests_pri_-1000: 6 (1.2%),
-	tests_pri_-950: 1.84 (0.4%), tests_pri_-900: 1.47 (0.3%),
-	tests_pri_-90: 100 (19.3%), check_bayes: 84 (16.2%), b_tokenize: 13
-	(2.4%), b_tok_get_all: 9 (1.8%), b_comp_prob: 3.1 (0.6%),
-	b_tok_touch_all: 54 (10.5%), b_finish: 1.18 (0.2%), tests_pri_0: 334
-	(64.4%), check_dkim_signature: 0.69 (0.1%), check_dkim_adsp: 3.1
-	(0.6%), poll_dns_idle: 0.93 (0.2%), tests_pri_10: 5 (1.0%),
-	tests_pri_500: 24 (4.7%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v4] x86/mm/ident_map: On UV systems, use gbpages only
- where full GB page should be mapped.
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Content-Type: text/plain; charset=US-ASCII
 
-Ingo Molnar <mingo@kernel.org> writes:
+Hello,
 
-> * Pavin Joseph <me@pavinjoseph.com> wrote:
->
->> On 3/29/24 13:45, Ingo Molnar wrote:
->> > Just to clarify, we have the following 3 upstream (and soon to be upstream) versions:
->> > 
->> >   v1: pre-d794734c9bbf kernels
->> >   v2: d794734c9bbf x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
->> >   v3: c567f2948f57 Revert "x86/mm/ident_map: Use gbpages only where full GB page should be mapped."
->> > 
->> > Where v1 and v3 ought to be the same in behavior.
->> > 
->> > So how does the failure matrix look like on your systems? Is my
->> > understanding accurate:
->
->> Slight correction:
->> 
->>    regular boot  | regular kexec | nogbpages boot | nogbpages kexec boot
->> -----------------|---------------|----------------|------------------
->> v1:       OK     | OK            | OK             | FAIL
->> v2:       OK     | FAIL          | OK             | FAIL
->
-> Thanks!
->
-> So the question is now: does anyone have a theory about in what fashion 
-> the kexec nogbpages bootup differs from the regular nogbpages bootup to 
-> break on your system?
->
-> I'd have expected the described root cause of the firmware not properly 
-> enumerating all memory areas that need to be mapped to cause trouble on 
-> regular, non-kexec nogbpages bootups too. What makes the kexec bootup 
-> special to trigger this crash?
+I noticed a regression with the mailine kernel pre-compiled by EPEL.
+I have just tried linux-6.9-rc1.tar.gz from kernel.org, and it still
+misbehaves.
 
-My blind hunch would be something in the first 1MiB being different.
-The first 1MiB is where all of the historical stuff is and where
-I have seen historical memory maps be less than perfectly accurate.
+The default setup: a laptop is connected to a dock, Dell WD22TB4, via
+a USB-C cable.  The dock is connected to an external monitor via a
+Display Port cable.  With a "good" kernel everything works.  With a
+"broken" kernel, the external monitor is still correctly identified by
+the system, and is shown as enabled in plasma systemsettings. The
+system also behaves like the monitor is working, for example, one can
+move the mouse pointer off the laptop screen.  However the external
+monitor screen stays black, and it eventually goes to sleep.
 
-Changing what is mapped being the difference between success and failure
-sounds like some place that is dark and hard to debug a page fault is
-being triggered and that in turn becoming a triple fault.
+Everything worked with EPEL mainline kernels up to and including
+kernel-ml-6.7.9-1.el9.elrepo.x86_64
 
-Paving Joseph is there any chance you can provide your memory map?
-Perhaps just cat /proc/iomem?
+The breakage is observed in
 
-If I have something to go one other than works/doesn't work I can
-probably say something intelligent.
+kernel-ml-6.8.1-1.el9.elrepo.x86_64
+kernel-ml-6.8.2-1.el9.elrepo.x86_64
+linux-6.9-rc1.tar.gz from kernel.org (with olddefconfig)
 
-Eric
+Other tests: using an HDMI cable instead of the Display Port cable
+between the monitor and the dock does not change things, black screen
+with the newer kernels.
+
+Using a small HDMI-to-USB-C adapter instead of the dock results in a
+working system, even with the newer kernels.  So the breakage appears
+to be specific to the Dell WD22TB4 dock.
+
+Operating System: AlmaLinux 9.3 (Shamrock Pampas Cat)
+
+uname -mi: x86_64 x86_64
+
+Laptop: Dell Precision 5470/02RK6V
+
+lsusb |grep dock
+Bus 003 Device 007: ID 413c:b06e Dell Computer Corp. Dell dock
+Bus 003 Device 008: ID 413c:b06f Dell Computer Corp. Dell dock
+Bus 003 Device 006: ID 0bda:5413 Realtek Semiconductor Corp. Dell dock
+Bus 003 Device 005: ID 0bda:5487 Realtek Semiconductor Corp. Dell dock
+Bus 002 Device 004: ID 0bda:0413 Realtek Semiconductor Corp. Dell dock
+Bus 002 Device 003: ID 0bda:0487 Realtek Semiconductor Corp. Dell dock
+
+dmesg and kernel config are attached to 
+https://bugzilla.kernel.org/show_bug.cgi?id=218663
+
+#regzbot introduced: v6.7.9..v6.8.1
+
+Andrei
 
