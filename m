@@ -1,197 +1,224 @@
-Return-Path: <stable+bounces-33857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB908893139
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 12:27:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6A5893166
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 13:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B99481C20DCC
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 10:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2BB1F22F72
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 11:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AD276C76;
-	Sun, 31 Mar 2024 10:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37325143C71;
+	Sun, 31 Mar 2024 11:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="drQZw0N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmJtZ9eG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57498763EC;
-	Sun, 31 Mar 2024 10:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE74BEEC0
+	for <stable@vger.kernel.org>; Sun, 31 Mar 2024 11:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711880872; cv=none; b=e6gMlreel5UHPKcXWnunhMQGoCd2rA86nQ+cTiFINgVFXBmGFYMlDog7vCjNbpptkM+1yNc2ZLiKGLi4pVBDWT68nobQAawBU5nhLGlevTdPfLhrsfqxHib6SDYEMICaDOgVIlOlEXuA7go0MxeelZPTwQjoQuMvGiH6GkLOcL0=
+	t=1711883023; cv=none; b=Jout7AQJSrqDhfFZCRARFNq8F7DYnY3j7SUpR49pvFL2EKdBo7W+DUhbuB9d5lNWj5upxfPcVJvyzFSWmo38duwrbBBAVs2FEH50xOO2EhVW6rVUX4x5vl6GssV5SGkh7FbWJ6i4I8Kjz2ZH7k9TWxVVZjElGpfpIb9C/XHoi7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711880872; c=relaxed/simple;
-	bh=L/10QJEhsAIm7eEgjRvTrgcoaqTTGRJhJ9WBna1Dhzo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B0ks29nkeg+I722LXKQRyPvB2otD09yFrnak5ITlEnAPyTkSlhlLPMUsnTZyq2y0f6JT8yaLRg9IKaAbBRhoV7HjPOptvczG/SgN/OQPtWaVoW6NlRD9iUeFX9/fpqm3DN2hYK6ADYAAD/friSXDYPbPmaFtHlzv9hWFAsbiwxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=drQZw0N5; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1711880862; x=1712140062;
-	bh=xXth9F6mwWUjnYOxzF4GaPch1yXF0oNpcQcxRS44w7o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=drQZw0N5x+P/gZGHHE0jckPV6Ol7xxWmHl241EVA4RqoHZXHzth9hx7sTbBfj4Ju1
-	 8pOT0V6UUng3HHCl7BXMkwBefdE3p8A/5KDazXZB07HfNMOQJtA+CDLBT6q/zlyqOt
-	 /N2Co0gmGH0WsdP77w9XkNIlQTOPOsjnNsx4MuhJpR0K+5mbXgvpAKHXxcDbYbmwAm
-	 jsDoIUaQNFhBKSZfJJ91qnu+ru1ZKdsBBKwQ3KEFporLzFDvJM32o4+gO3LRHTzsUu
-	 J5wCxK4v9QdcIiN1vliExlJWEdNH2R9RHfQdUESW7DNEOCuecKuDvDljcJvdy9OS0B
-	 uuclS0MVnsaPA==
-Date: Sun, 31 Mar 2024 10:27:37 +0000
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>, Thomas Bertschinger <tahbertschinger@gmail.com>, Andrea Righi <andrea.righi@canonical.com>, Sumera Priyadarsini <sylphrenadin@gmail.com>, Finn Behrens <me@kloenk.dev>, Adam Bratschi-Kaye <ark.email@gmail.com>, stable@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: macros: fix soundness issue in `module!` macro
-Message-ID: <d41d123e-d682-4685-88f5-e45567cc1975@proton.me>
-In-Reply-To: <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com>
-References: <20240327160346.22442-1-benno.lossin@proton.me> <CANeycqp0o-HKBx6nuGCy9DD6mAwoGWzTR6bm5ceajsUhKcZuQg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
+	s=arc-20240116; t=1711883023; c=relaxed/simple;
+	bh=bxMf5pe5Xcu2ghvDLN6ThuP3qAqeLryDB2o8Vicn3VM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r0/4r6dQ0F4uUDkNF8NaNNCg2PKx4bK8OwoUrCC3RZsA5ZVrOqBu+OVLW3vrC6sIyx/27oE4ZDya97JCUCSeI/1IRviovkBm+d0o+BmPjy4604N5/YzbpTKvf4tztTMETbCN01KhTdK9av7+dpyXtxMuT1J+0iIqXyGRpykDoOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmJtZ9eG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EC9C433C7;
+	Sun, 31 Mar 2024 11:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1711883023;
+	bh=bxMf5pe5Xcu2ghvDLN6ThuP3qAqeLryDB2o8Vicn3VM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=gmJtZ9eGcnGgK34kgHZy3fr6RZQ11qGKavCW4SwVJRALJ+IQYG0B7oguQ5lX1iP3p
+	 kHZp5migI5LzjiIP6HOwzxC2+jnXeJTze9zAMRtp7DwjoXvqOzHnQEkZHDv4RCOUcb
+	 gb4EyUO9JxGqwR8RC3QbWr51RgyfBRJ2raI58WSk=
+Subject: FAILED: patch "[PATCH] USB: UAS: return ENODEV when submit urbs fail with device not" failed to apply to 5.15-stable tree
+To: WeitaoWang-oc@zhaoxin.com,gregkh@linuxfoundation.org,oneukum@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 31 Mar 2024 13:03:40 +0200
+Message-ID: <2024033140-goon-residence-7f8c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 31.03.24 03:00, Wedson Almeida Filho wrote:
-> On Wed, 27 Mar 2024 at 13:04, Benno Lossin <benno.lossin@proton.me> wrote=
-:
->> +                    #[cfg(not(MODULE))]
->> +                    #[doc(hidden)]
->> +                    #[no_mangle]
->> +                    pub extern \"C\" fn __{name}_exit() {{
->> +                        __exit()
 
-I just noticed this should be wrapped in an `unsafe` block with a SAFETY
-comment. Will fix this in v2.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
->> +                    }}
->>
->> -            #[cfg(not(MODULE))]
->> -            #[doc(hidden)]
->> -            #[no_mangle]
->> -            pub extern \"C\" fn __{name}_exit() {{
->> -                __exit()
->> -            }}
->> +                    /// # Safety
->> +                    ///
->> +                    /// This function must
->> +                    /// - only be called once,
->> +                    /// - not be called concurrently with `__exit`.
->=20
-> I don't think the second item is needed here, it really is a
-> requirement on `__exit`.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixed.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x cd5432c712351a3d5f82512908f5febfca946ca6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024033140-goon-residence-7f8c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
->=20
->> +                    unsafe fn __init() -> core::ffi::c_int {{
->> +                        match <{type_} as kernel::Module>::init(&THIS_M=
-ODULE) {{
->> +                            Ok(m) =3D> {{
->> +                                // SAFETY:
->> +                                // no data race, since `__MOD` can only=
- be accessed by this module and
->> +                                // there only `__init` and `__exit` acc=
-ess it. These functions are only
->> +                                // called once and `__exit` cannot be c=
-alled before or during `__init`.
->> +                                unsafe {{
->> +                                    __MOD =3D Some(m);
->> +                                }}
->> +                                return 0;
->> +                            }}
->> +                            Err(e) =3D> {{
->> +                                return e.to_errno();
->> +                            }}
->> +                        }}
->> +                    }}
->>
->> -            fn __init() -> core::ffi::c_int {{
->> -                match <{type_} as kernel::Module>::init(&THIS_MODULE) {=
-{
->> -                    Ok(m) =3D> {{
->> +                    /// # Safety
->> +                    ///
->> +                    /// This function must
->> +                    /// - only be called once,
->> +                    /// - be called after `__init`,
->> +                    /// - not be called concurrently with `__init`.
->=20
-> The second item is incomplete: it must be called after `__init` *succeeds=
-*.
+Possible dependencies:
 
-Indeed.
 
->=20
-> With that added (which is a different precondition), I think the third
-> item can be dropped because if you have to wait to see whether
-> `__init` succeeded or failed before you can call `__exit`, then
-> certainly you cannot call it concurrently with `__init`.
 
-I would love to drop that requirement, but I am not sure we can. With
-that requirement, I wanted to ensure that no data race on `__MOD` can
-happen. If you need to verify that `__init` succeeded, one might think
-that it is not possible to call `__exit` such that a data race occurs,
-but I think it could theoretically be done if the concrete `Module`
-implementation never failed.
+thanks,
 
-Do you have any suggestion for what I could add to the "be called after
-`__init` was called and returned `0`" requirement to make a data race
-impossible?
+greg k-h
 
---=20
-Cheers,
-Benno
+------------------ original commit in Linus's tree ------------------
 
->=20
->> +                    unsafe fn __exit() {{
->> +                        // SAFETY:
->> +                        // no data race, since `__MOD` can only be acce=
-ssed by this module and there
->> +                        // only `__init` and `__exit` access it. These =
-functions are only called once
->> +                        // and `__init` was already called.
->>                           unsafe {{
->> -                            __MOD =3D Some(m);
->> +                            // Invokes `drop()` on `__MOD`, which shoul=
-d be used for cleanup.
->> +                            __MOD =3D None;
->>                           }}
->> -                        return 0;
->>                       }}
->> -                    Err(e) =3D> {{
->> -                        return e.to_errno();
->> -                    }}
->> -                }}
->> -            }}
->>
->> -            fn __exit() {{
->> -                unsafe {{
->> -                    // Invokes `drop()` on `__MOD`, which should be use=
-d for cleanup.
->> -                    __MOD =3D None;
->> +                    {modinfo}
->>                   }}
->>               }}
->> -
->> -            {modinfo}
->>           ",
->>           type_ =3D info.type_,
->>           name =3D info.name,
->>
->> base-commit: 4cece764965020c22cff7665b18a012006359095
->> --
->> 2.44.0
->>
->>
+From cd5432c712351a3d5f82512908f5febfca946ca6 Mon Sep 17 00:00:00 2001
+From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Date: Thu, 7 Mar 2024 02:08:14 +0800
+Subject: [PATCH] USB: UAS: return ENODEV when submit urbs fail with device not
+ attached
+
+In the scenario of entering hibernation with udisk in the system, if the
+udisk was gone or resume fail in the thaw phase of hibernation. Its state
+will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
+and can't not handle disconnect event. Next, in the poweroff phase of
+hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
+when poweroff this scsi device, which will cause uas_submit_urbs to be
+called to submit URB for sense/data/cmd pipe. However, these URBs will
+submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
+will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
+the SCSI layer go into an ugly loop and system fail to go into hibernation.
+
+On the other hand, when we specially check for -ENODEV in function
+uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
+poweroff fail and system shutdown instead of entering hibernation.
+
+To fix this issue, let uas_submit_urbs to return original generic error
+when submitting URB failed. At the same time, we need to translate -ENODEV
+to DID_NOT_CONNECT for the SCSI layer.
+
+Suggested-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Link: https://lore.kernel.org/r/20240306180814.4897-1-WeitaoWang-oc@zhaoxin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 71ace274761f..08953f0d4532 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, gfp_t gfp,
+  * daft to me.
+  */
+ 
+-static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
++static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
+ {
+ 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
+ 	struct urb *urb;
+@@ -541,30 +541,28 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
+ 
+ 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
+ 	if (!urb)
+-		return NULL;
++		return -ENOMEM;
+ 	usb_anchor_urb(urb, &devinfo->sense_urbs);
+ 	err = usb_submit_urb(urb, gfp);
+ 	if (err) {
+ 		usb_unanchor_urb(urb);
+ 		uas_log_cmd_state(cmnd, "sense submit err", err);
+ 		usb_free_urb(urb);
+-		return NULL;
+ 	}
+-	return urb;
++	return err;
+ }
+ 
+ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 			   struct uas_dev_info *devinfo)
+ {
+ 	struct uas_cmd_info *cmdinfo = scsi_cmd_priv(cmnd);
+-	struct urb *urb;
+ 	int err;
+ 
+ 	lockdep_assert_held(&devinfo->lock);
+ 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
+-		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
+-		if (!urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
++		if (err)
++			return err;
+ 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
+ 	}
+ 
+@@ -572,7 +570,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_FROM_DEVICE);
+ 		if (!cmdinfo->data_in_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
+ 	}
+ 
+@@ -582,7 +580,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_in_urb);
+ 			uas_log_cmd_state(cmnd, "data in submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
+ 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
+@@ -592,7 +590,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+ 							cmnd, DMA_TO_DEVICE);
+ 		if (!cmdinfo->data_out_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
+ 	}
+ 
+@@ -602,7 +600,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->data_out_urb);
+ 			uas_log_cmd_state(cmnd, "data out submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
+ 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
+@@ -611,7 +609,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 	if (cmdinfo->state & ALLOC_CMD_URB) {
+ 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
+ 		if (!cmdinfo->cmd_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+ 		cmdinfo->state &= ~ALLOC_CMD_URB;
+ 	}
+ 
+@@ -621,7 +619,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+ 		if (err) {
+ 			usb_unanchor_urb(cmdinfo->cmd_urb);
+ 			uas_log_cmd_state(cmnd, "cmd submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+ 		}
+ 		cmdinfo->cmd_urb = NULL;
+ 		cmdinfo->state &= ~SUBMIT_CMD_URB;
+@@ -698,7 +696,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
+-		set_host_byte(cmnd, DID_ERROR);
++		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+ 	}
 
 
