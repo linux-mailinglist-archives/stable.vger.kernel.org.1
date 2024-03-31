@@ -1,94 +1,71 @@
-Return-Path: <stable+bounces-33869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB008935BB
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 22:20:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FAA893604
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 23:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42BD81F21E76
-	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 20:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF9EB21067
+	for <lists+stable@lfdr.de>; Sun, 31 Mar 2024 21:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84368147C88;
-	Sun, 31 Mar 2024 20:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66F6145FF0;
+	Sun, 31 Mar 2024 21:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZO6Sgu/I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RBO5O64K"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D98147C65
-	for <stable@vger.kernel.org>; Sun, 31 Mar 2024 20:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444C81E521
+	for <stable@vger.kernel.org>; Sun, 31 Mar 2024 21:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711916446; cv=none; b=FwHath4kAPvuvMCaRO3vIejJXROj0p9+rQWVe0WHx5ebA3h9ubP0meKzFglQ8bJUEnWPpto6OF72RpHhJoTzOBxHfJHRHZWPVEY9I5dR7mXc1tVeQIS/KFRutrBJs7ZsBs708VIcul3Q7DHpbYniARiPl7n5VDgbf0JdPkUTkFY=
+	t=1711922025; cv=none; b=jbVYJh8lhUidH6V+Pm8UgEBbSxXhtMBbIPpjSLDR+TcYkYMs9Vl0ydnRFFqvK2/e4ot6xw0zBAOrJ8FhCOCSvi3YH0S156p8AO/2001dnrOgNrEy4+ko4gQfcALSYlx7qLgHogrwGbzqEUR0meyqTnNYdFyP0DlM/IATz4tKbNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711916446; c=relaxed/simple;
-	bh=pw6ynhZlliocTZxNsLu4uszjDWeDXBnouTCCdjYhWiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QHIGTtOc+5u36kAyyn9oS3TLwAEFQVQWmMPyu1l7WHbx7I695DIdBOkB8BAbZhQwzlN9zHi5cmYbpf+bMdHpiEVHPEMoDL1W44GrIIfI9xr8u+/ypqZQlCe7BIYTWgqOOoAo45vxyFfw4ORoJhMBv0Jx8bsK7eTe/uZBKT3axr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZO6Sgu/I; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711916443;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FRRVj/JjKizxzXFDRSo3l/T54pHZqeXumE93BFWpnkg=;
-	b=ZO6Sgu/Iivi8pSR++I2y5SZlB5//cD/I1sfs5F8ZJYgfzjW4YSySLUNjxRwKwnr25PGzHH
-	FpsI7on3tJd1SnByVSYVjAq5mOMVP/7CNbu8UsKBqAdtgRMeNVEfUie9fU302rgvf9L1lp
-	YGWgaAwLOCkZ0qLKy1TaQ8FV9LWhUtU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-V5z5srWOPayVgNEEzpchKQ-1; Sun, 31 Mar 2024 16:20:39 -0400
-X-MC-Unique: V5z5srWOPayVgNEEzpchKQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a466c7b0587so253960266b.0
-        for <stable@vger.kernel.org>; Sun, 31 Mar 2024 13:20:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711916438; x=1712521238;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FRRVj/JjKizxzXFDRSo3l/T54pHZqeXumE93BFWpnkg=;
-        b=dBO/10RhAp4Ns9cFIng8DMfGYMCg2k2l04j7xS5KVXGydQrl+BvCj4ChUU/0rfLc2z
-         UKAnuY2yJhk66qllg/k0EJ0KIJq5luQMKsbhMflNWAjg5k8DbOJcf2CobzoDjsyYv8T7
-         /Zw73q2T/rviNrNE7U2wohF7Akola+PX5A6A/8IsWMNQEY6U37fvuZZyfsSSWwAcT6Ds
-         o5DMLFkYxStNwUQboSB+DPjwC7qfYLv2Mb5zKjZob2y0e/WpdhDfQmuRVPKfi/xnR31V
-         O7EKkI0JMBoMM3NLAqA1gtwsIHnMoQkDvdIOZZGXAnzexYj2TqAeyHOz0KpAXT3whppW
-         NmsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFIaI0oNffO51G0v4csrKTMxx9hOQUAobXLULfjHUJDCN4UYFUv8FIkw9kJP8dJMRn9FAzPFZINso8LpIM2fCeBEmIa3Up
-X-Gm-Message-State: AOJu0Yzh6rWpSSGUZ2mltDNooEeDt7uGJRfmsI5dG6hnYaEU2v9yoM7S
-	/qMhAp33j7tHJo1JMdPrwjWeff/STYmW/ytQKDwseaxLNH72NQD0fJ1+mBTNWIap7xkenR+2vk/
-	iJnY/0uLXQyQJ3g800kCZbyZQHf3QNiTvGsuencxMsTUlIZPRI5XIvA==
-X-Received: by 2002:a17:907:3181:b0:a4e:663a:3cf4 with SMTP id xe1-20020a170907318100b00a4e663a3cf4mr1328716ejb.6.1711916438436;
-        Sun, 31 Mar 2024 13:20:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGpknzv8VBlqoGJZhO+j/gEtYVNu8noUyOMoh3rGDewOFPJPPTVRdkL5QIIU1wPMo3a8degxA==
-X-Received: by 2002:a17:907:3181:b0:a4e:663a:3cf4 with SMTP id xe1-20020a170907318100b00a4e663a3cf4mr1328694ejb.6.1711916437852;
-        Sun, 31 Mar 2024 13:20:37 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:172:9c27:9486:684f:de6:8ab8])
-        by smtp.gmail.com with ESMTPSA id q2-20020a170906b28200b00a4655976025sm4495364ejz.82.2024.03.31.13.20.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Mar 2024 13:20:37 -0700 (PDT)
-Date: Sun, 31 Mar 2024 16:20:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: hengqi@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Melnychenko <andrew@daynix.com>, rbc@meta.com,
-	riel@surriel.com, stable@vger.kernel.org, qemu-devel@nongnu.org,
-	"open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
- supported
-Message-ID: <20240331160618-mutt-send-email-mst@kernel.org>
-References: <20240329171641.366520-1-leitao@debian.org>
+	s=arc-20240116; t=1711922025; c=relaxed/simple;
+	bh=iUjp/GuKJIkRs21rfS8tj1eku0kuRdLcqfM9/gF2pLg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hOpH22uG5smv9tJvdxRghXhkvFwO/xqnuB9Q7K2r8qAC4DMe3vrOyL5mHhnwSXET4UStTJt694edMKffKXA0b2OTYCOvJHHLD2LM12pPoMSDYqV8JoyaJI4ctEZBvyhoW98KvQCnXioEbydZM5Xx/zeq4GHuYB55yZqdmWqgqpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RBO5O64K; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711922023; x=1743458023;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=iUjp/GuKJIkRs21rfS8tj1eku0kuRdLcqfM9/gF2pLg=;
+  b=RBO5O64KxcUZrUnMsUyMCRbiUFIPpFx7yZuwSVWQtnad7FIBT8KnN8DW
+   mXKih83/IWsamHgocQDnNDUlW+CrbTEXcoi0l7jyKnr49oPGr41sVjOf2
+   ViIIiNbQg4LBMs+eiK1EwDTcoAjxFPcIrhdDC90tt1a6uKwYkjeYZkdko
+   kxayWqFJM7TU9Fu9C9fqD5S+/kzkswAWCVyn4JPSPJwhEGDy2U95kB9Fm
+   2mu1gfgSCWJaIzdojLJBiDxZQTLull7tx1LhAxeyHDBPYfk2mucf9lOs6
+   8Xm61mMTpiZULl9DD7uXIE54njg3PZldOxRqZCBCZTiyKrgQ3hQOjxsmr
+   A==;
+X-CSE-ConnectionGUID: MC7DBwMaQOKq7UXuZPDQZg==
+X-CSE-MsgGUID: QCS/5qSUQIWgmgkE0ld5iQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11030"; a="6936888"
+X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
+   d="scan'208";a="6936888"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2024 14:53:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,171,1708416000"; 
+   d="scan'208";a="22202449"
+Received: from lkp-server01.sh.intel.com (HELO 3d808bfd2502) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 31 Mar 2024 14:53:42 -0700
+Received: from kbuild by 3d808bfd2502 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rr37T-0001RG-0K;
+	Sun, 31 Mar 2024 21:53:39 +0000
+Date: Mon, 1 Apr 2024 05:53:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] aio: Fix null ptr deref in aio_complete() wakeup
+Message-ID: <ZgnbTzVKNnsBkWGJ@ef6127956eaa>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,144 +74,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240329171641.366520-1-leitao@debian.org>
+In-Reply-To: <20240331215212.522544-1-kent.overstreet@linux.dev>
 
-On Fri, Mar 29, 2024 at 10:16:41AM -0700, Breno Leitao wrote:
-> There is a bug when setting the RSS options in virtio_net that can break
-> the whole machine, getting the kernel into an infinite loop.
-> 
-> Running the following command in any QEMU virtual machine with virtionet
-> will reproduce this problem:
-> 
->     # ethtool -X eth0  hfunc toeplitz
-> 
-> This is how the problem happens:
-> 
-> 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-> 
-> 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-> 
-> 3) virtnet_commit_rss_command() populates 4 entries for the rss
-> scatter-gather
-> 
-> 4) Since the command above does not have a key, then the last
-> scatter-gatter entry will be zeroed, since rss_key_size == 0.
-> sg_buf_size = vi->rss_key_size;
-> 
-> 5) This buffer is passed to qemu, but qemu is not happy with a buffer
-> with zero length, and do the following in virtqueue_map_desc() (QEMU
-> function):
-> 
->   if (!sz) {
->       virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-> 
-> 6) virtio_error() (also QEMU function) set the device as broken
-> 
->     vdev->broken = true;
-> 
-> 7) Qemu bails out, and do not repond this crazy kernel.
-> 
-> 8) The kernel is waiting for the response to come back (function
-> virtnet_send_command())
-> 
-> 9) The kernel is waiting doing the following :
-> 
->       while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-> 	     !virtqueue_is_broken(vi->cvq))
-> 	      cpu_relax();
-> 
-> 10) None of the following functions above is true, thus, the kernel
-> loops here forever. Keeping in mind that virtqueue_is_broken() does
-> not look at the qemu `vdev->broken`, so, it never realizes that the
-> vitio is broken at QEMU side.
-> 
-> Fix it by not sending RSS commands if the feature is not available in
-> the device.
-> 
-> Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-> Cc: stable@vger.kernel.org
+Hi,
 
-net has its own stable process, don't CC stable on net patches.
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] aio: Fix null ptr deref in aio_complete() wakeup
+Link: https://lore.kernel.org/stable/20240331215212.522544-1-kent.overstreet%40linux.dev
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
-> Cc: qemu-devel@nongnu.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> Changelog:
-> 
-> V2:
->   * Moved from creating a valid packet, by rejecting the request
->     completely
-> V3:
->   * Got some good feedback from and Xuan Zhuo and Heng Qi, and reworked
->     the rejection path.
-> 
-> ---
->  drivers/net/virtio_net.c | 22 ++++++++++++++++++----
->  1 file changed, 18 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index c22d1118a133..c4a21ec51adf 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -3807,6 +3807,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
->  			    struct netlink_ext_ack *extack)
->  {
->  	struct virtnet_info *vi = netdev_priv(dev);
-> +	bool update = false;
->  	int i;
->  
->  	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-> @@ -3814,13 +3815,24 @@ static int virtnet_set_rxfh(struct net_device *dev,
->  		return -EOPNOTSUPP;
->  
->  	if (rxfh->indir) {
-> +		if (!vi->has_rss)
-> +			return -EOPNOTSUPP;
-> +
->  		for (i = 0; i < vi->rss_indir_table_size; ++i)
->  			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
-> +		update = true;
->  	}
-> -	if (rxfh->key)
-> +
-> +	if (rxfh->key) {
-> +		if (!vi->has_rss && !vi->has_rss_hash_report)
-> +			return -EOPNOTSUPP;
-
-
-What's the logic here? Is it || or &&? A comment can't hurt.
-
-> +
->  		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
-> +		update = true;
-> +	}
->  
-> -	virtnet_commit_rss_command(vi);
-> +	if (update)
-> +		virtnet_commit_rss_command(vi);
->  
->  	return 0;
->  }
-> @@ -4729,13 +4741,15 @@ static int virtnet_probe(struct virtio_device *vdev)
->  	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
->  		vi->has_rss_hash_report = true;
->  
-> -	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-> +	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
->  		vi->has_rss = true;
->  
-> -	if (vi->has_rss || vi->has_rss_hash_report) {
->  		vi->rss_indir_table_size =
->  			virtio_cread16(vdev, offsetof(struct virtio_net_config,
->  				rss_max_indirection_table_length));
-> +	}
-> +
-> +	if (vi->has_rss || vi->has_rss_hash_report) {
->  		vi->rss_key_size =
->  			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
->  
-> -- 
-> 2.43.0
 
 
