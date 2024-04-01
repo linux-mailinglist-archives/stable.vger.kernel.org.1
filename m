@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2869E893FB7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07A9894161
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D35751F22078
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 772D7282E89
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E48A47A57;
-	Mon,  1 Apr 2024 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A52A481D0;
+	Mon,  1 Apr 2024 16:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZG1fpqXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1gJrfMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06584596E;
-	Mon,  1 Apr 2024 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC138481B8;
+	Mon,  1 Apr 2024 16:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988417; cv=none; b=iWwS1aRJBVHCNmLAamJYuxwXqGD1VqgGtQauAI886vJhetfxUOu73QwQ9gNtet2vOwjSFaV/wdxHfcmcMmT1WYbiNI4CRo4m2oXH4MZZ3WTLJlR3iM8V/BgjzjivRoPmzejDITNXmzXdwPAjGf5AFQbSjbVct7Fg3njM3jMvVGM=
+	t=1711989693; cv=none; b=u0uF7KNUh0PrxzfUFWnFztD910tp4iRxGeXwegBLG808tYfqXZWMaw23jJRNtwdGUqAbD48BAUPv+ftPh/44/RYKFYatoOyx1BEKuX6TL1V+4nUfC3DVvklsPn/DzDhi+gYFULB5GGf8MISGlJNdzd2RjF7bciIrdHVbaUe7Vz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988417; c=relaxed/simple;
-	bh=k0tVhb2mQyOTCcpxlreyQH7S28zQdrGo35hBFviBM9c=;
+	s=arc-20240116; t=1711989693; c=relaxed/simple;
+	bh=ewem3yeuJa8LpevRPxVd0EYLJYUSZMjrA+JPpZdOgAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJCvkGQD/U5yuwVFmgibxGECETNtYM5JW0GYbhuMmXQKsMCMvDA9ZJs1vn4eID9mZ5Qk9l50NdNZKUBlAO3Ga4uNYyGCZmXhAscsOHDBfzvuM2xOQwblnfFp3aJyvljqBeJXdsAkBGBEHW01BAFtKClQbe2KoWov4frbjSP4znw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZG1fpqXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E13C433F1;
-	Mon,  1 Apr 2024 16:20:16 +0000 (UTC)
+	 MIME-Version; b=SRPSNOl8CFtyMAWGP5HSs4suc1HBcE5HqWmnyq20XMAGdWwuxQo922A9obVhxnBh5IuEHIyvWt0KRiTlMcN5MRhsDa/dzSGMSZf2EoeGFeVNERdZUgzYu+jSi3472/6QfmoifNnnGDzRF9CF8URpl4BB9F9j/IgMn85waR99mqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1gJrfMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE4CC433F1;
+	Mon,  1 Apr 2024 16:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988417;
-	bh=k0tVhb2mQyOTCcpxlreyQH7S28zQdrGo35hBFviBM9c=;
+	s=korg; t=1711989692;
+	bh=ewem3yeuJa8LpevRPxVd0EYLJYUSZMjrA+JPpZdOgAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZG1fpqXVHmxTj3iHQnIMEfnxPthPqf9IxMFHppcwTVWbVNcES477Y1OQlaGG0Lqph
-	 5uZVzv+pFNP+HxTjEMJIug7JNuNl0pkGyLWGwAs5KJYN6ZVbwOQWvxqNhRNTFWV0AD
-	 WFZbbZuIas51wZkntXEZfQhcXiOa7qEtRvI6w3mE=
+	b=t1gJrfMa3wzcR8aoOPwwnf3MhkuPwJckQGdlU/PnFe3FkPjK39vYPRQol5QsFtWvn
+	 eDgeuZ8lsAGaBod4iGxISii328TIz0vIIoJW2brvWE0ZaHP6NNXWql/CJpLqqvv1YJ
+	 g3UxgRH5qvwoYJBa0XzJu5AXgcAhimIjgnuGgSiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Steve French <stfrench@microsoft.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 179/432] cifs: make cifs_chan_update_iface() a void function
+Subject: [PATCH 6.6 117/396] nfs: fix UAF in direct writes
 Date: Mon,  1 Apr 2024 17:42:46 +0200
-Message-ID: <20240401152558.484266290@linuxfoundation.org>
+Message-ID: <20240401152551.406901577@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 8d606c311b75e81063b4ea650b301cbe0c4ed5e1 ]
+[ Upstream commit 17f46b803d4f23c66cacce81db35fef3adb8f2af ]
 
-The return values for cifs_chan_update_iface() didn't match what the
-documentation said and nothing was checking them anyway.  Just make it
-a void function.
+In production we have been hitting the following warning consistently
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 16a57d768111 ("cifs: reduce warning log level for server not advertising interfaces")
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 17 PID: 1800359 at lib/refcount.c:28 refcount_warn_saturate+0x9c/0xe0
+Workqueue: nfsiod nfs_direct_write_schedule_work [nfs]
+RIP: 0010:refcount_warn_saturate+0x9c/0xe0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __warn+0x9f/0x130
+ ? refcount_warn_saturate+0x9c/0xe0
+ ? report_bug+0xcc/0x150
+ ? handle_bug+0x3d/0x70
+ ? exc_invalid_op+0x16/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? refcount_warn_saturate+0x9c/0xe0
+ nfs_direct_write_schedule_work+0x237/0x250 [nfs]
+ process_one_work+0x12f/0x4a0
+ worker_thread+0x14e/0x3b0
+ ? ZSTD_getCParams_internal+0x220/0x220
+ kthread+0xdc/0x120
+ ? __btf_name_valid+0xa0/0xa0
+ ret_from_fork+0x1f/0x30
+
+This is because we're completing the nfs_direct_request twice in a row.
+
+The source of this is when we have our commit requests to submit, we
+process them and send them off, and then in the completion path for the
+commit requests we have
+
+if (nfs_commit_end(cinfo.mds))
+	nfs_direct_write_complete(dreq);
+
+However since we're submitting asynchronous requests we sometimes have
+one that completes before we submit the next one, so we end up calling
+complete on the nfs_direct_request twice.
+
+The only other place we use nfs_generic_commit_list() is in
+__nfs_commit_inode, which wraps this call in a
+
+nfs_commit_begin();
+nfs_commit_end();
+
+Which is a common pattern for this style of completion handling, one
+that is also repeated in the direct code with get_dreq()/put_dreq()
+calls around where we process events as well as in the completion paths.
+
+Fix this by using the same pattern for the commit requests.
+
+Before with my 200 node rocksdb stress running this warning would pop
+every 10ish minutes.  With my patch the stress test has been running for
+several hours without popping.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |  2 +-
- fs/smb/client/sess.c      | 17 +++++++----------
- 2 files changed, 8 insertions(+), 11 deletions(-)
+ fs/nfs/direct.c        | 11 +++++++++--
+ fs/nfs/write.c         |  2 +-
+ include/linux/nfs_fs.h |  1 +
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 6945551ea166d..13131957d9616 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -654,7 +654,7 @@ cifs_chan_is_iface_active(struct cifs_ses *ses,
- 			  struct TCP_Server_Info *server);
- void
- cifs_disable_secondary_channels(struct cifs_ses *ses);
--int
-+void
- cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server);
- int
- SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_mount);
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 0c2ac8d929a26..f8f4e7fc05dae 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -361,10 +361,9 @@ cifs_disable_secondary_channels(struct cifs_ses *ses)
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 5918c67dae0da..b6f801e73bfdc 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -668,10 +668,17 @@ static void nfs_direct_commit_schedule(struct nfs_direct_req *dreq)
+ 	LIST_HEAD(mds_list);
  
- /*
-  * update the iface for the channel if necessary.
-- * will return 0 when iface is updated, 1 if removed, 2 otherwise
-  * Must be called with chan_lock held.
-  */
--int
-+void
- cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- {
- 	unsigned int chan_index;
-@@ -373,20 +372,19 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
- 	struct sockaddr_storage ss;
--	int rc = 0;
- 
- 	spin_lock(&ses->chan_lock);
- 	chan_index = cifs_ses_get_chan_index(ses, server);
- 	if (chan_index == CIFS_INVAL_CHAN_INDEX) {
- 		spin_unlock(&ses->chan_lock);
--		return 0;
-+		return;
- 	}
- 
- 	if (ses->chans[chan_index].iface) {
- 		old_iface = ses->chans[chan_index].iface;
- 		if (old_iface->is_active) {
- 			spin_unlock(&ses->chan_lock);
--			return 1;
-+			return;
- 		}
- 	}
- 	spin_unlock(&ses->chan_lock);
-@@ -399,7 +397,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	if (!ses->iface_count) {
- 		spin_unlock(&ses->iface_lock);
- 		cifs_dbg(VFS, "server %s does not advertise interfaces\n", ses->server->hostname);
--		return 0;
-+		return;
- 	}
- 
- 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
-@@ -439,7 +437,6 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	}
- 
- 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
--		rc = 1;
- 		iface = NULL;
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
-@@ -454,7 +451,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 		}
- 
- 		spin_unlock(&ses->iface_lock);
--		return 0;
-+		return;
- 	}
- 
- 	/* now drop the ref to the current iface */
-@@ -483,13 +480,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	chan_index = cifs_ses_get_chan_index(ses, server);
- 	if (chan_index == CIFS_INVAL_CHAN_INDEX) {
- 		spin_unlock(&ses->chan_lock);
--		return 0;
-+		return;
- 	}
- 
- 	ses->chans[chan_index].iface = iface;
- 	spin_unlock(&ses->chan_lock);
- 
--	return rc;
-+	return;
+ 	nfs_init_cinfo_from_dreq(&cinfo, dreq);
++	nfs_commit_begin(cinfo.mds);
+ 	nfs_scan_commit(dreq->inode, &mds_list, &cinfo);
+ 	res = nfs_generic_commit_list(dreq->inode, &mds_list, 0, &cinfo);
+-	if (res < 0) /* res == -ENOMEM */
+-		nfs_direct_write_reschedule(dreq);
++	if (res < 0) { /* res == -ENOMEM */
++		spin_lock(&dreq->lock);
++		if (dreq->flags == 0)
++			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
++		spin_unlock(&dreq->lock);
++	}
++	if (nfs_commit_end(cinfo.mds))
++		nfs_direct_write_complete(dreq);
  }
  
- /*
+ static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 4a250f65fa759..7d03811f44a4b 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1661,7 +1661,7 @@ static int wait_on_commit(struct nfs_mds_commit_info *cinfo)
+ 				       !atomic_read(&cinfo->rpcs_out));
+ }
+ 
+-static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
+ {
+ 	atomic_inc(&cinfo->rpcs_out);
+ }
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 279262057a925..832b7e354b4e3 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -612,6 +612,7 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(void);
+ extern void nfs_commit_free(struct nfs_commit_data *data);
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo);
+ bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+ 
+ static inline bool nfs_have_writebacks(const struct inode *inode)
 -- 
 2.43.0
 
