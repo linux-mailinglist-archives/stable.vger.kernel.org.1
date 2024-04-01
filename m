@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-34692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2AC894066
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414CF894231
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9110A1F2215D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A02BDB21589
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B7546B9F;
-	Mon,  1 Apr 2024 16:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D6941232;
+	Mon,  1 Apr 2024 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxeeUxyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm+hXwTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94013D961;
-	Mon,  1 Apr 2024 16:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FEB8F5C;
+	Mon,  1 Apr 2024 16:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988975; cv=none; b=ri0risATu7IOkp79AZK95Y2yUwaRrCsUf/wH7PJMRR4RMUkt/oZiKGje8do5bmJNMiu6lSsQ/etUr1ltFAZoiBrQ0WZSFw+v5KmpDrMp/vK2KvbABzoxmMuFQyx+3OGNduQRbleyszxfHMo481g8wdtzi7IEsgeYocgOoCIwxKg=
+	t=1711990215; cv=none; b=s7ILJQ+N5J576XRiKbrHGldTOkjLObFghiWU1MxacEQaoUxV0Yl6K1ly2Qzr6NXraoApxM/n09BEV4TOaPtB6MeX6BLw//mm7stWwuN6pVGJ+bWnG6pmZ7dSUFyrfzEn3C1IpVrgqy5VyhmXHpNv1shAKtcHLGJ8GHon4G/n24Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988975; c=relaxed/simple;
-	bh=VLb04Zz37v9hyv/Gjutm5l3s6B6TQMuhoT+Fc4F/o/E=;
+	s=arc-20240116; t=1711990215; c=relaxed/simple;
+	bh=dgl5XVWW1Nq+LiuWGttT6+1KPVwI/2ytKEJjAEMR26g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IN5MZTnz73iFLL9RWtJCWOzZdPCeCtbcjudMR+MJqSw5J+wc3z5W68IVheTHdEHaMiymiO6HYShQAHZo0et7H4M8i6nURmMlVUHov/o/hwo8voA4+QW63FgbUvZaedhKSyq4jI0KMW2ck8IDuczOhOXX96CKmsflPEPPw6viJ78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxeeUxyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA6EC433C7;
-	Mon,  1 Apr 2024 16:29:34 +0000 (UTC)
+	 MIME-Version; b=ac021K1m9Pzvha02mTVqm406lFPYvdIWX9+Ik1GfJM+RiHxC8kcDPxV6GujH16uFScDk+f1a9p1hYSCXocbHHACRUP5lLkdY1Htfbsw8KLLG1INTKT6yv0lXN11iEFXFN0pe1fEE3xMlW9V499mKHvit+9ikfsasBr7kmzkVIks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm+hXwTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B986C433F1;
+	Mon,  1 Apr 2024 16:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988974;
-	bh=VLb04Zz37v9hyv/Gjutm5l3s6B6TQMuhoT+Fc4F/o/E=;
+	s=korg; t=1711990215;
+	bh=dgl5XVWW1Nq+LiuWGttT6+1KPVwI/2ytKEJjAEMR26g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxeeUxydSti3Jhhm8uB6MeV+lXgIRAj2lGBqWjcy+71/DIOB7rdr6NJLkOtqJN8km
-	 g5ZF8NH8eAYvx/stC5ZEirrEq5kLrPYDwx0sLXcELErceDrHCXeDi0fWJCxqKl7WkS
-	 kowInWlDBlO1VRKw263uPaw32mTShPGvqyaBDYUs=
+	b=gm+hXwTWLD+mwZlh01PkjjKYxcUgzMzIkNRU3WMB7O+I2aE/TnJKBYw+ItlPowt0F
+	 rw+7XrNaWKRvya/S1es8lc7Mrxx85i3RVRG4gDo1mNSBfckpWHE03Qdt5PNBlpOvV0
+	 QX0FUtXt4ccqUR18kbyNqmBRWjvNZl4SfOjk2XS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WA AM <waautomata@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 344/432] btrfs: zoned: use zone aware sb location for scrub
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 282/396] x86/Kconfig: Remove CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
 Date: Mon,  1 Apr 2024 17:45:31 +0200
-Message-ID: <20240401152603.500752392@linuxfoundation.org>
+Message-ID: <20240401152556.316548570@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 74098a989b9c3370f768140b7783a7aaec2759b3 upstream.
+commit 29956748339aa8757a7e2f927a8679dd08f24bb6 upstream.
 
-At the moment scrub_supers() doesn't grab the super block's location via
-the zoned device aware btrfs_sb_log_location() but via btrfs_sb_offset().
+It was meant well at the time but nothing's using it so get rid of it.
 
-This leads to checksum errors on 'scrub' as we're not accessing the
-correct location of the super block.
-
-So use btrfs_sb_log_location() for getting the super blocks location on
-scrub.
-
-Reported-by: WA AM <waautomata@gmail.com>
-Link: http://lore.kernel.org/linux-btrfs/CANU2Z0EvUzfYxczLgGUiREoMndE9WdQnbaawV5Fv5gNXptPUKw@mail.gmail.com
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240202163510.GDZb0Zvj8qOndvFOiZ@fat_crate.local
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt  |    4 +---
+ Documentation/arch/x86/amd-memory-encryption.rst |   16 ++++++++--------
+ arch/x86/Kconfig                                 |   13 -------------
+ arch/x86/mm/mem_encrypt_identity.c               |   11 +----------
+ 4 files changed, 10 insertions(+), 34 deletions(-)
 
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2809,7 +2809,17 @@ static noinline_for_stack int scrub_supe
- 		gen = btrfs_get_last_trans_committed(fs_info);
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3269,9 +3269,7 @@
  
- 	for (i = 0; i < BTRFS_SUPER_MIRROR_MAX; i++) {
--		bytenr = btrfs_sb_offset(i);
-+		ret = btrfs_sb_log_location(scrub_dev, i, 0, &bytenr);
-+		if (ret == -ENOENT)
-+			break;
+ 	mem_encrypt=	[X86-64] AMD Secure Memory Encryption (SME) control
+ 			Valid arguments: on, off
+-			Default (depends on kernel configuration option):
+-			  on  (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=y)
+-			  off (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=n)
++			Default: off
+ 			mem_encrypt=on:		Activate SME
+ 			mem_encrypt=off:	Do not activate SME
+ 
+--- a/Documentation/arch/x86/amd-memory-encryption.rst
++++ b/Documentation/arch/x86/amd-memory-encryption.rst
+@@ -87,14 +87,14 @@ The state of SME in the Linux kernel can
+ 	  kernel is non-zero).
+ 
+ SME can also be enabled and activated in the BIOS. If SME is enabled and
+-activated in the BIOS, then all memory accesses will be encrypted and it will
+-not be necessary to activate the Linux memory encryption support.  If the BIOS
+-merely enables SME (sets bit 23 of the MSR_AMD64_SYSCFG), then Linux can activate
+-memory encryption by default (CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT=y) or
+-by supplying mem_encrypt=on on the kernel command line.  However, if BIOS does
+-not enable SME, then Linux will not be able to activate memory encryption, even
+-if configured to do so by default or the mem_encrypt=on command line parameter
+-is specified.
++activated in the BIOS, then all memory accesses will be encrypted and it
++will not be necessary to activate the Linux memory encryption support.
 +
-+		if (ret) {
-+			spin_lock(&sctx->stat_lock);
-+			sctx->stat.super_errors++;
-+			spin_unlock(&sctx->stat_lock);
-+			continue;
-+		}
-+
- 		if (bytenr + BTRFS_SUPER_INFO_SIZE >
- 		    scrub_dev->commit_total_bytes)
- 			break;
++If the BIOS merely enables SME (sets bit 23 of the MSR_AMD64_SYSCFG),
++then memory encryption can be enabled by supplying mem_encrypt=on on the
++kernel command line.  However, if BIOS does not enable SME, then Linux
++will not be able to activate memory encryption, even if configured to do
++so by default or the mem_encrypt=on command line parameter is specified.
+ 
+ Secure Nested Paging (SNP)
+ ==========================
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1514,19 +1514,6 @@ config AMD_MEM_ENCRYPT
+ 	  This requires an AMD processor that supports Secure Memory
+ 	  Encryption (SME).
+ 
+-config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+-	bool "Activate AMD Secure Memory Encryption (SME) by default"
+-	depends on AMD_MEM_ENCRYPT
+-	help
+-	  Say yes to have system memory encrypted by default if running on
+-	  an AMD processor that supports Secure Memory Encryption (SME).
+-
+-	  If set to Y, then the encryption of system memory can be
+-	  deactivated with the mem_encrypt=off command line option.
+-
+-	  If set to N, then the encryption of system memory can be
+-	  activated with the mem_encrypt=on command line option.
+-
+ # Common NUMA Features
+ config NUMA
+ 	bool "NUMA Memory Allocation and Scheduler Support"
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -97,7 +97,6 @@ static char sme_workarea[2 * PMD_SIZE] _
+ 
+ static char sme_cmdline_arg[] __initdata = "mem_encrypt";
+ static char sme_cmdline_on[]  __initdata = "on";
+-static char sme_cmdline_off[] __initdata = "off";
+ 
+ static void __init sme_clear_pgd(struct sme_populate_pgd_data *ppd)
+ {
+@@ -504,7 +503,7 @@ void __init sme_encrypt_kernel(struct bo
+ 
+ void __init sme_enable(struct boot_params *bp)
+ {
+-	const char *cmdline_ptr, *cmdline_arg, *cmdline_on, *cmdline_off;
++	const char *cmdline_ptr, *cmdline_arg, *cmdline_on;
+ 	unsigned int eax, ebx, ecx, edx;
+ 	unsigned long feature_mask;
+ 	unsigned long me_mask;
+@@ -587,12 +586,6 @@ void __init sme_enable(struct boot_param
+ 	asm ("lea sme_cmdline_on(%%rip), %0"
+ 	     : "=r" (cmdline_on)
+ 	     : "p" (sme_cmdline_on));
+-	asm ("lea sme_cmdline_off(%%rip), %0"
+-	     : "=r" (cmdline_off)
+-	     : "p" (sme_cmdline_off));
+-
+-	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT))
+-		sme_me_mask = me_mask;
+ 
+ 	cmdline_ptr = (const char *)((u64)bp->hdr.cmd_line_ptr |
+ 				     ((u64)bp->ext_cmd_line_ptr << 32));
+@@ -602,8 +595,6 @@ void __init sme_enable(struct boot_param
+ 
+ 	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
+ 		sme_me_mask = me_mask;
+-	else if (!strncmp(buffer, cmdline_off, sizeof(buffer)))
+-		sme_me_mask = 0;
+ 
+ out:
+ 	if (sme_me_mask) {
 
 
 
