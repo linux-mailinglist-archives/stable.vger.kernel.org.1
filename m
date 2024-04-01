@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D3E894326
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28AC894023
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BACAA1F26EED
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100501C215B5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8D482E4;
-	Mon,  1 Apr 2024 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17DF45BE4;
+	Mon,  1 Apr 2024 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2mpGCjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u05kKsAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11761BA3F;
-	Mon,  1 Apr 2024 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2BE1CA8F;
+	Mon,  1 Apr 2024 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990821; cv=none; b=jVaFyGCH9Ar9F6N/VTSIWQiwOvIuOkbZ4W8ckKDkHqpdm24FwpD6yO3er8cBDNaoTt+9DyWDCQxY1leAboMQneOpvpHwtNG6EZRR/ZN4DoULrI5dakTIr0+T1PhLKSN0nAkM60woAzyW0xAZScFRPzhiPYBege3gFiFPyXy4D5k=
+	t=1711988757; cv=none; b=Er70XnVeHW64di4bvW9yOwEtk6qBd3Qnf0QtD2ecs6BUBl9aCv2dr2aVA3/kCYqIi/mwLtd8dtwCGY43tj2bLWJGayMYEYFP5947fyxlhA8zjv7bE/LVu+ELM1Ui4arn+ldcpjmtzLoZO05N08xO6BxOKMaFRYv0gY9j8F0zmqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990821; c=relaxed/simple;
-	bh=xx5PC5+O/22ycLdeQ1ONRmB0LKlR0ytPCwsFE3vxsN8=;
+	s=arc-20240116; t=1711988757; c=relaxed/simple;
+	bh=Mu+wTT7mZu6JU+R2Lyp0TxyE9VZGN3/zzalje0P5DgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDAta3stP3gUJ+qNYPOlr3voN55wvDQxoZ74Kqnoc3if/fNPaASB+INLfJd/BrbSzljtA6e+w2Y2saukjeNlYj63DRX0XJsjnVWEqvfyUr8w2IY7YRz7g4iy2/s6dRDsPOBqmxtNNjCkBTjfhzvo6tjxrfQnD+yuIW1h+Z4S4fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2mpGCjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBF5C433F1;
-	Mon,  1 Apr 2024 17:00:20 +0000 (UTC)
+	 MIME-Version; b=Z8xOVF0jZhM+4aW6UvsEoqWOeDXGP5e9s5cUMOVWImi6CqlhDyobg6AwsjqrzD7Kv9Dv4J2DshBUWhhB8KU9ujJFvH0JYPMnFznkRLPvMxSAQXiAOLXLw6k3oieD+E4kx5TDEXjAxylGpdnhnCczNG7Qr3gD6RDsUoF7bDABaSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u05kKsAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08674C43390;
+	Mon,  1 Apr 2024 16:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990820;
-	bh=xx5PC5+O/22ycLdeQ1ONRmB0LKlR0ytPCwsFE3vxsN8=;
+	s=korg; t=1711988757;
+	bh=Mu+wTT7mZu6JU+R2Lyp0TxyE9VZGN3/zzalje0P5DgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2mpGCjVPzj03PeApZ1xT77fIYgHNPPSA284xm0I6cipKS/puEIQj42Np30HVoJIM
-	 FA50IjMNG2jM/7ok8YkdN8aN7UeHCD2tOaRsn3xgpJsTGhxwImSqpc4ATxHI4PLifl
-	 il+ZFSfpg8LSP0SbrbNQYcEsfRK2xn0X7URCo8Q4=
+	b=u05kKsAwy/NqgcUBRaWngcH4mkLCx+DlH7BtqCGmUVw4cQVEYWK3NKUaZD5wQslog
+	 INpvhnJmTzKyOK1+IoCz/a1YpjoVWmSsmlaB4kEzebD7LUqX5x8ZdgbzxiLQlIrcbW
+	 PeS+huiRkVw0EHSyqF5O3DwrAMZUjNa7BCn+fvdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/272] dm-raid: fix lockdep waring in "pers->hot_add_disk"
+	Fabio Estevam <festevam@denx.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.7 279/432] ARM: imx_v6_v7_defconfig: Restore CONFIG_BACKLIGHT_CLASS_DEVICE
 Date: Mon,  1 Apr 2024 17:44:26 +0200
-Message-ID: <20240401152532.939683615@linuxfoundation.org>
+Message-ID: <20240401152601.493489664@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
+commit 2b0a5a8a397c0ae8f8cd25e7d3857c749239ceb8 upstream.
 
-The lockdep assert is added by commit a448af25becf ("md/raid10: remove
-rcu protection to access rdev from conf") in print_conf(). And I didn't
-notice that dm-raid is calling "pers->hot_add_disk" without holding
-'reconfig_mutex'.
+Since commit bfac19e239a7 ("fbdev: mx3fb: Remove the driver") backlight
+is no longer functional.
 
-"pers->hot_add_disk" read and write many fields that is protected by
-'reconfig_mutex', and raid_resume() already grab the lock in other
-contex. Hence fix this problem by protecting "pers->host_add_disk"
-with the lock.
+The fbdev mx3fb driver used to automatically select
+CONFIG_BACKLIGHT_CLASS_DEVICE.
 
-Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
-Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now that the mx3fb driver has been removed, enable the
+CONFIG_BACKLIGHT_CLASS_DEVICE option so that backlight can still work
+by default.
+
+Tested on a imx6dl-sabresd board.
+
+Cc: stable@vger.kernel.org
+Fixes: bfac19e239a7 ("fbdev: mx3fb: Remove the driver")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # Toradex Colibri iMX7
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/configs/imx_v6_v7_defconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index bf833ca880bc1..99b4738e867a8 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -4046,7 +4046,9 @@ static void raid_resume(struct dm_target *ti)
- 		 * Take this opportunity to check whether any failed
- 		 * devices are reachable again.
- 		 */
-+		mddev_lock_nointr(mddev);
- 		attempt_restore_of_faulty_devices(rs);
-+		mddev_unlock(mddev);
- 	}
- 
- 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
--- 
-2.43.0
-
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -297,6 +297,7 @@ CONFIG_FB_MODE_HELPERS=y
+ CONFIG_LCD_CLASS_DEVICE=y
+ CONFIG_LCD_L4F00242T03=y
+ CONFIG_LCD_PLATFORM=y
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_PWM=y
+ CONFIG_BACKLIGHT_GPIO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
 
 
 
