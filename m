@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-34445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5972893F61
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5080894102
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F872283F4D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55089B212F8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC77E481AA;
-	Mon,  1 Apr 2024 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1E4CB35;
+	Mon,  1 Apr 2024 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvQiM+oe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrdLqGEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A282481B3;
-	Mon,  1 Apr 2024 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512E74AECF;
+	Mon,  1 Apr 2024 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988147; cv=none; b=FIzOTBTjJgszFNNVm1z8w1An0qFX7FaWwbBrvkfJSV4W3glzfVn54+jzzvMhnTySU9tStBkX6teStpk4s2Gi1aob4XP62UHfUPAJSj78wlglXfX6ooTw6HVKu1ESA1ZDp4wwHgCyfpOOoyZ5VnTtvs1qVvH0O43+/PmlTTY/QBg=
+	t=1711989392; cv=none; b=h1Gn+uuHNYBCV0vmq7XsQ5xDR2K+dwdyhft+AqTccDh1JvsFwPWCApdKleOQr3c4KShdwKzF3vVkiKhB21/1lWjeGFh+p4/89smhDM4/A07fHLdoOfw3+M84y4tbSUYqq3Ua4Elh4sRX51elMFXYpPfJ2Gn9IfIGgy1ftUYiGTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988147; c=relaxed/simple;
-	bh=3+jjBhX5FnMpAcbKxE3A+H++hzg0MEynl/7FFetCCGg=;
+	s=arc-20240116; t=1711989392; c=relaxed/simple;
+	bh=qJMwMb3BkSKfiCXlXLPxHYMbkJ/jbFPENCbFBNuIIww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6nir18BcYYhRw48ftPhbtVI76qbQ1t5V3gy9bgjV+fIUGdGztejT30qG/LUq9EaGQvKwiy7FPF5Y0ziuaUKVrkii0cSgatN1zP3hHxtWBChTGiwUsZcN6f8d4mFCi1iEKVgD4M33EuTYclA1DdQPVVBg52zKCYe35GJ8g+73U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvQiM+oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394DEC433C7;
-	Mon,  1 Apr 2024 16:15:45 +0000 (UTC)
+	 MIME-Version; b=kekdKwaQ/8Ve3BK2fIUWZ44FzzFhRUzhnt3fz9IQjQw5r8yPL5h6HrqzlLeQKTd/T+hM3OOpjJpvSyo1mumo82G/2oHj4nTua7czMDLfvwQZGPuxsxHB9X6iUqcbahhuob3cWQJ+i+D/ldeXDqVpftqds0e8rpR4LCVGQgPTo6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrdLqGEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB0DC433A6;
+	Mon,  1 Apr 2024 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988145;
-	bh=3+jjBhX5FnMpAcbKxE3A+H++hzg0MEynl/7FFetCCGg=;
+	s=korg; t=1711989391;
+	bh=qJMwMb3BkSKfiCXlXLPxHYMbkJ/jbFPENCbFBNuIIww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvQiM+oez4lFwjhSoY2IunTJqMgfhau7/VQa3a5AHnquYHm8fwXM6j6LKysFUY+Pn
-	 /eRuC0NFmFLp/ZNGP9WMRUDnOHzMdMZPeLC4tqFHWQ+DDjWgRiA4/4Fdmq36gHzeGH
-	 3/uS/pW2afSIHnYvmRxGRNLyVT/4HS1Mt6tlSquI=
+	b=LrdLqGEj7O1tmpOwWfcwUjhxV6s6pDFfNs7qKo3vYMgyuMtBUAJQ50TJuXjBRSO17
+	 Tgj8+wClFDwvZW8T9Xtni/KEDotG9qH4HcGCg6CH1hY3VZULvljSkBMk+g9zWHs72M
+	 XuLdlsmVCiOTLqSg6bvNVZqwArDyQqsH12qlR1Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ricky Wu <ricky_wu@realtek.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 097/432] PCI/PM: Drain runtime-idle callbacks before driver removal
+Subject: [PATCH 6.6 035/396] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
 Date: Mon,  1 Apr 2024 17:41:24 +0200
-Message-ID: <20240401152556.017034796@linuxfoundation.org>
+Message-ID: <20240401152548.975106803@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
+[ Upstream commit 5580e96dad5a439d561d9648ffcbccb739c2a120 ]
 
-A race condition between the .runtime_idle() callback and the .remove()
-callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
-unhandled page fault [1].
+If nr_cpu_ids is too low to include at least all the threads of a single
+core adjust nr_cpu_ids upwards. This avoids triggering odd bugs in code
+that assumes all threads of a core are available.
 
-The problem is that rtsx_pci_runtime_idle() is not expected to be running
-after pm_runtime_get_sync() has been called, but the latter doesn't really
-guarantee that.  It only guarantees that the suspend and resume callbacks
-will not be running when it returns.
-
-However, if a .runtime_idle() callback is already running when
-pm_runtime_get_sync() is called, the latter will notice that the runtime PM
-status of the device is RPM_ACTIVE and it will return right away without
-waiting for the former to complete.  In fact, it cannot wait for
-.runtime_idle() to complete because it may be called from that callback (it
-arguably does not make much sense to do that, but it is not strictly
-prohibited).
-
-Thus in general, whoever is providing a .runtime_idle() callback needs
-to protect it from running in parallel with whatever code runs after
-pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
-pm_runtime_get_sync() has returned, but it may continue running then if it
-has started earlier.]
-
-One way to address that race condition is to call pm_runtime_barrier()
-after pm_runtime_get_sync() (not before it, because a nonzero value of the
-runtime PM usage counter is necessary to prevent runtime PM callbacks from
-being invoked) to wait for the .runtime_idle() callback to complete should
-it be running at that point.  A suitable place for doing that is in
-pci_device_remove() which calls pm_runtime_get_sync() before removing the
-driver, so it may as well call pm_runtime_barrier() subsequently, which
-will prevent the race in question from occurring, not just in the rtsx_pcr
-driver, but in any PCI drivers providing .runtime_idle() callbacks.
-
-Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
-Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Ricky Wu <ricky_wu@realtek.com>
-Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: <stable@vger.kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231229120107.2281153-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/prom.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 51ec9e7e784f0..9c59bf03d6579 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -473,6 +473,13 @@ static void pci_device_remove(struct device *dev)
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 0b5878c3125b1..58e80076bed5c 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -375,6 +375,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 	if (IS_ENABLED(CONFIG_PPC64))
+ 		boot_cpu_hwid = be32_to_cpu(intserv[found_thread]);
  
- 	if (drv->remove) {
- 		pm_runtime_get_sync(dev);
-+		/*
-+		 * If the driver provides a .runtime_idle() callback and it has
-+		 * started to run already, it may continue to run in parallel
-+		 * with the code below, so wait until all of the runtime PM
-+		 * activity has completed.
-+		 */
-+		pm_runtime_barrier(dev);
- 		drv->remove(pci_dev);
- 		pm_runtime_put_noidle(dev);
- 	}
++	if (nr_cpu_ids % nthreads != 0) {
++		set_nr_cpu_ids(ALIGN(nr_cpu_ids, nthreads));
++		pr_warn("nr_cpu_ids was not a multiple of threads_per_core, adjusted to %d\n",
++			nr_cpu_ids);
++	}
++
+ 	/*
+ 	 * PAPR defines "logical" PVR values for cpus that
+ 	 * meet various levels of the architecture:
 -- 
 2.43.0
 
