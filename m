@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-35456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E541894404
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1088942B9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599E6283A03
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CFAE283175
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1D7482EF;
-	Mon,  1 Apr 2024 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0227F482E4;
+	Mon,  1 Apr 2024 16:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0WayKDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTeEf5tF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A8921105;
-	Mon,  1 Apr 2024 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EF0481D1;
+	Mon,  1 Apr 2024 16:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991456; cv=none; b=omwxhPfKDMDB8EpIzwhZI28RYwTqycB+PLpXo85KUoiz7/LeO1hkJBfT37tsbwl70eR1KfQgxJ+EYATqDYhmEffMXbNalFG5ufTU8zwQNvSfFg91fd0p7Hm3+d9jt8jh41G0ILUCfn0g12XbtC4uH5LcIKmixktyfSQtlxRPWeo=
+	t=1711990533; cv=none; b=KSr3z8r8FJyK+8MNeEVpwFKw79U4DWmn6/g0gfZJ0Z0foQGKxDryPPMPWY8g3No/M7Glaz/GcuSYP+Xkni2uu2qUjD3Eax6NrIinrLPkpH4Yg2ROxis0K+XSdmHBBcQrI8AGuldAWF4gH7H7hxIWSbzEz+v2ZJbN3DtwMMQZyBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991456; c=relaxed/simple;
-	bh=ZdWGTM4JEjWwo47mK1Ki8g/1P4jYu8jzbdLksjBUmrI=;
+	s=arc-20240116; t=1711990533; c=relaxed/simple;
+	bh=ie9IvmnSvCYd54UBesnNctHhlICAx3sEeSMX9UMZprY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMEYH6pfoMeiy9dq/DkUifGa7H4bDRJEllwECHAWT5UH8RC77NoFgAcXxAVjRDr6vth2A9sFY2fVF1HJmlZ/GLqdeyqVw4XlNmYBK80xLVU5ZIefUNgi55URn+815cfypnwD7dv/zCmDeFsfyxHMMyPKdpfk8WPU7j+RpmtF6Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0WayKDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A40C433C7;
-	Mon,  1 Apr 2024 17:10:55 +0000 (UTC)
+	 MIME-Version; b=nbYS0oQEw07+6PdXM2z03wl9UWkNxxg2GbNmNV2rMNSwsl109bPne3EXTkoeR+bSpdZMRzMbAG83c0m0y2w4lXbeypi44qE+byzXyXSQZmYYHsA0QpxW0PE2jUC4gXRNJgW1kYstSUtb8VARQUSjRLP50905Wumd3DDjN03xVC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTeEf5tF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C99C433F1;
+	Mon,  1 Apr 2024 16:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991456;
-	bh=ZdWGTM4JEjWwo47mK1Ki8g/1P4jYu8jzbdLksjBUmrI=;
+	s=korg; t=1711990533;
+	bh=ie9IvmnSvCYd54UBesnNctHhlICAx3sEeSMX9UMZprY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0WayKDVi9MyIMILx1Ek0QdcINqmJKvE/nz8pTaJYBApzKaDKFdc1/rZ/UIWfAU+3
-	 Dp6aHFdDsM3DpjOEpKln20eN4a78S13Tv+r4mRVXe/TElzmghP3wmk9Nt/E/mc4SVa
-	 N+xiauSuHYhWO7GsF4rDecnA7zNiob6jcJJN5qJM=
+	b=mTeEf5tF9s9JqsPN/9pGqmNAppXDGpCwDUcOD9wL+zpSkQqE1x3baeNYcFnsq3+OV
+	 2gyxwZtlTUHHpO5HOtioa397bZ32+l5k+zdbly+kFM203Upx+fS8KnNp0hw4eMLuXe
+	 MJ7kpsResi0iPHD8e5ab3W9lnxx2sX97sPzKS0vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.1 243/272] usb: dwc2: host: Fix remote wakeup from hibernation
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 384/396] scsi: qla2xxx: Fix double free of the ha->vp_map pointer
 Date: Mon,  1 Apr 2024 17:47:13 +0200
-Message-ID: <20240401152538.570467796@linuxfoundation.org>
+Message-ID: <20240401152559.364937128@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-commit bae2bc73a59c200db53b6c15fb26bb758e2c6108 upstream.
+commit e288285d47784fdcf7c81be56df7d65c6f10c58b upstream.
 
-Starting from core v4.30a changed order of programming
-GPWRDN_PMUACTV to 0 in case of exit from hibernation on
-remote wakeup signaling from device.
+Coverity scan reported potential risk of double free of the pointer
+ha->vp_map.  ha->vp_map was freed in qla2x00_mem_alloc(), and again freed
+in function qla2x00_mem_free(ha).
 
-Fixes: c5c403dc4336 ("usb: dwc2: Add host/device hibernation functions")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/99385ec55ce73445b6fbd0f471c9bd40eb1c9b9e.1708939799.git.Minas.Harutyunyan@synopsys.com
+Assign NULL to vp_map and kfree take care of NULL.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/core.h |    1 +
- drivers/usb/dwc2/hcd.c  |   17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -1084,6 +1084,7 @@ struct dwc2_hsotg {
- 	bool needs_byte_swap;
- 
- 	/* DWC OTG HW Release versions */
-+#define DWC2_CORE_REV_4_30a	0x4f54430a
- #define DWC2_CORE_REV_2_71a	0x4f54271a
- #define DWC2_CORE_REV_2_72a     0x4f54272a
- #define DWC2_CORE_REV_2_80a	0x4f54280a
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5610,10 +5610,12 @@ int dwc2_host_exit_hibernation(struct dw
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
- 
- 	/* De-assert Wakeup Logic */
--	gpwrdn = dwc2_readl(hsotg, GPWRDN);
--	gpwrdn &= ~GPWRDN_PMUACTV;
--	dwc2_writel(hsotg, gpwrdn, GPWRDN);
--	udelay(10);
-+	if (!(rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+		gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+		gpwrdn &= ~GPWRDN_PMUACTV;
-+		dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+		udelay(10);
-+	}
- 
- 	hprt0 = hr->hprt0;
- 	hprt0 |= HPRT0_PWR;
-@@ -5638,6 +5640,13 @@ int dwc2_host_exit_hibernation(struct dw
- 		hprt0 |= HPRT0_RES;
- 		dwc2_writel(hsotg, hprt0, HPRT0);
- 
-+		/* De-assert Wakeup Logic */
-+		if ((rem_wakeup && hsotg->hw_params.snpsid >= DWC2_CORE_REV_4_30a)) {
-+			gpwrdn = dwc2_readl(hsotg, GPWRDN);
-+			gpwrdn &= ~GPWRDN_PMUACTV;
-+			dwc2_writel(hsotg, gpwrdn, GPWRDN);
-+			udelay(10);
-+		}
- 		/* Wait for Resume time and then program HPRT again */
- 		mdelay(100);
- 		hprt0 &= ~HPRT0_RES;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4601,6 +4601,7 @@ fail_free_init_cb:
+ 	ha->init_cb_dma = 0;
+ fail_free_vp_map:
+ 	kfree(ha->vp_map);
++	ha->vp_map = NULL;
+ fail:
+ 	ql_log(ql_log_fatal, NULL, 0x0030,
+ 	    "Memory allocation failure.\n");
 
 
 
