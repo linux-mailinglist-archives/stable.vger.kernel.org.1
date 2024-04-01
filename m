@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-34226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15782893E6D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:03:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7A3893E7A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A42B22D76
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:03:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CEC2826BC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7DD4778C;
-	Mon,  1 Apr 2024 16:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98024778B;
+	Mon,  1 Apr 2024 16:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI6AZd02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INwmYtfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2153F8F4;
-	Mon,  1 Apr 2024 16:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B611CA8F;
+	Mon,  1 Apr 2024 16:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987408; cv=none; b=l1Ellt1a4h18ExE0qvOVh4dvgRdHENvUb9SxC1uXRIbysY0+Inm/kSiaY/4wDOdHJqf38MoG2SX7LSvtYFde+Kgnny8hWs3VqHw2NG/RmmdviAPCccDBpoKJSyspfXtsFAgyzBDTkFbW3zQV55cQA3+7V3dqVg2LSnCZOXG82Yc=
+	t=1711987445; cv=none; b=NMeApVaR7DBIkiPFC5A2KCcQzA8SyiNDox37bOD27D7AuJJJG/74cIYVhbxZMM6rnRYYJGsyvCg4fPuu4wOIaDTxrbN6Hj3+J+Mh/XSDPwQCHzP/34PzzJH4UhKWKSFUVuxUB0xZFiSO4PNhTvsVp/B/i75Vbmu4y4zqd+CkZc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987408; c=relaxed/simple;
-	bh=Fdg/oeLhxK54LGAPca40j5UR4YuBp/CSBNU/fePmL4c=;
+	s=arc-20240116; t=1711987445; c=relaxed/simple;
+	bh=46FsSdNxy+EA5uQtUr1rZaRORPCJehdmb4l2KgQRrkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nl2vIirkhEY4uHQzf9Ah0xZTUoyOt60JAF606a7w7dpJ/m0jUOz1hf90t067/qMErFTkNOQeUMnpOqjLVIGcp8ogDWOs/8mmj/v9duLLzWu4ZIjYyq1mHwNYXqQFFL5yWMxTDsvXKNQYUuXPTBIBXerORwp4CdROnoRTJyGdrNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI6AZd02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2F2C433C7;
-	Mon,  1 Apr 2024 16:03:28 +0000 (UTC)
+	 MIME-Version; b=O6c1ihF3kRJ2LrUlEbPWbc6d/ApUkjyAe3J0Ky3ypFuZnp7Ag/DcfVrNTqq3Qs5C3HwBhR7SkoD+u4tM7k6Do3OqFfIZSxohHjzqpYycOpaFFu2cK0rh36FsOoTNLCpdHTMgT4oZrLnm52tbZQwX+naYOJFRD8PJMHpMdgez2ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INwmYtfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EDAC433C7;
+	Mon,  1 Apr 2024 16:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987408;
-	bh=Fdg/oeLhxK54LGAPca40j5UR4YuBp/CSBNU/fePmL4c=;
+	s=korg; t=1711987445;
+	bh=46FsSdNxy+EA5uQtUr1rZaRORPCJehdmb4l2KgQRrkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hI6AZd02yDZygK3GO6r+UudiQ4wonIcjI87k5+LMjhNJ6Oegfhrz0IXafvpZMVBAg
-	 L1SOTuvXTiK4qjPAxUwPPcQiBAPgIwXqIlnjWxzHvBShKj3mhpiqqnvj6MUNtikkU5
-	 hz84SBaZnCQVehzLXGHhQLNVN6KCu8JJAjun0p2c=
+	b=INwmYtfkPxR+Rp12sMSNBpnBoaB4/EvCLL3aXmea/6PaZSZn7bYv+N9dh77d6Rgkt
+	 /ExVuReOrDG+K4P+lGQEOlnUy1SI3lek0JAjc/8+XQAAdOEkcVm5pidX4eCMT/o/q4
+	 mamWBs32wypAuDIizz3fLvNtr5Y0G/5x0l5weaNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 261/399] printk: Update @console_may_schedule in console_trylock_spinning()
-Date: Mon,  1 Apr 2024 17:43:47 +0200
-Message-ID: <20240401152556.979480689@linuxfoundation.org>
+Subject: [PATCH 6.8 262/399] irqchip/renesas-rzg2l: Flush posted write in irq_eoi()
+Date: Mon,  1 Apr 2024 17:43:48 +0200
+Message-ID: <20240401152557.008986781@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -67,44 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 8076972468584d4a21dab9aa50e388b3ea9ad8c7 ]
+[ Upstream commit 9eec61df55c51415409c7cc47e9a1c8de94a0522 ]
 
-console_trylock_spinning() may takeover the console lock from a
-schedulable context. Update @console_may_schedule to make sure it
-reflects a trylock acquire.
+The irq_eoi() callback of the RZ/G2L interrupt chip clears the relevant
+interrupt cause bit in the TSCR register by writing to it.
 
-Reported-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Closes: https://lore.kernel.org/lkml/20240222090538.23017-1-quic_mojha@quicinc.com
-Fixes: dbdda842fe96 ("printk: Add console owner and waiter logic to load balance console writes")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/875xybmo2z.fsf@jogness.linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+This write is not sufficient because the write is posted and therefore not
+guaranteed to immediately clear the bit. Due to that delay the CPU can
+raise the just handled interrupt again.
+
+Prevent this by reading the register back which causes the posted write to
+be flushed to the hardware before the read completes.
+
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index a11e1b6f29c04..7a835b277e98d 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2026,6 +2026,12 @@ static int console_trylock_spinning(void)
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 9494fc26259c3..5285bc817dd0c 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -99,8 +99,14 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
+ 	 * falling/rising-edge.
  	 */
- 	mutex_acquire(&console_lock_dep_map, 0, 1, _THIS_IP_);
- 
-+	/*
-+	 * Update @console_may_schedule for trylock because the previous
-+	 * owner may have been schedulable.
-+	 */
-+	console_may_schedule = 0;
-+
- 	return 1;
+-	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
++	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq))) {
+ 		writel_relaxed(iscr & ~bit, priv->base + ISCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + ISCR);
++	}
  }
  
+ static void rzg2l_tint_eoi(struct irq_data *d)
+@@ -111,8 +117,14 @@ static void rzg2l_tint_eoi(struct irq_data *d)
+ 	u32 reg;
+ 
+ 	reg = readl_relaxed(priv->base + TSCR);
+-	if (reg & bit)
++	if (reg & bit) {
+ 		writel_relaxed(reg & ~bit, priv->base + TSCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + TSCR);
++	}
+ }
+ 
+ static void rzg2l_irqc_eoi(struct irq_data *d)
 -- 
 2.43.0
 
