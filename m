@@ -1,164 +1,138 @@
-Return-Path: <stable+bounces-33877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AF28938B7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:51:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85498938D2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 10:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF0561F2161E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 07:51:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1225B2110C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 08:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2AC15A4;
-	Mon,  1 Apr 2024 07:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEFFFBF7;
+	Mon,  1 Apr 2024 08:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="V0qVg081"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Yig2SCAM"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA208F6E
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 07:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957DAB67D;
+	Mon,  1 Apr 2024 08:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711957855; cv=none; b=Xl+8IRca69VWv/607JHfWJGh/OpM/xcF2rEnYGVNYHcMr53KL4jkP1+b+Ss1veCtnV3gqTUO3fzOK0wB8U97vI/DP78gfhvSJ9sF532KmUPkHXU676dAUMbpVsTiRA3e+mRf+5m1uOpbr+vg44zY6cKHiPEitlUej6YHkpihkSM=
+	t=1711958815; cv=none; b=JI4yR034TuurgQZ8ZxmzYeX9xS3z6/ip3NbXO3KFUBNHHrInskd2G1dHK5O9/uGkEhqrwJ0NJbrvUVFY6LYSNt2iWtQgr910otNLxDoHGycJbrd4DpE+qnTQ21OR05y/UKFpv2Z6Tbzjr8Iin0YYulW/f6Z8M4RuNzwPJ/8637w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711957855; c=relaxed/simple;
-	bh=JigHOSBjxmUkvUOMIdPDj7ZNUA7z6jU/r3gDNG+eGvo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TGvDBxeuhMJe04e+hu0+tgRpDjey0opeFeneLNI0ZNzw1Q02VM4Xq1R1A9go3HYgxI8f1RAs2uzRypCBHAM0nXtkucnIV9oLJePD93EshAlAzbvPAxAbC2vPXCxNXqHRszddkY8d02iNfpmC8KOrmFOL9U/+LkUWWOiIAj+GwNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=V0qVg081; arc=none smtp.client-ip=91.218.175.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711957850;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=azKewMdXjrP1Vb4JbEgXcwOQdFK4Qn8EqameaBqK/gE=;
-	b=V0qVg0810KrGabS8A1RI8LkcCQGVFTEA3nAaGWRVRYKnfTm00mNyoMJROK/LKJeUjJu4rs
-	RvFal3heDvhFZsw4R91xU+y9lvil4pF94tJGMXUFNjp1rkWarNk8BFi6aQ3nKw6HDHx4X3
-	pI9J8BOJectgpCGLRksHyBB/Jb1lPnw=
-From: George Guo <dongtai.guo@linux.dev>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 2/2] tracing: Remove unnecessary var destroy in onmax_destroy()
-Date: Mon,  1 Apr 2024 15:50:49 +0800
-Message-Id: <20240401075049.2655077-3-dongtai.guo@linux.dev>
-In-Reply-To: <20240401075049.2655077-1-dongtai.guo@linux.dev>
-References: <20240401075049.2655077-1-dongtai.guo@linux.dev>
+	s=arc-20240116; t=1711958815; c=relaxed/simple;
+	bh=dv7waqHQs0vwYKfDcU27zXQuQ91eC/DvcVEwqH0xT7g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SJX15+IigKuizYg8aJaINNZ3JZv9IIdK3Q9bZLxHh7yuDo95tvOIsadTKslfT8VdXO7LWshqS1alIWS7IzgtxBsxw64dlVdQbJrnQnNhPxpVCUg4etGeYUUVee5FgJgRhCRoyty1LWO9NUXGzwGY+W+qlUgjxUbLZVs9yuwjgOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Yig2SCAM; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=OWoUGFK7msyMCDg9YbIYisHA611Jcw8kSzLG0yI4RZs=;
+	b=Yig2SCAMic+m84mKTiObnnVPcQ2fQR9yDPvdznkmbfr/aKG/9OS/Pjw1DsyAkb
+	W6uJB/ENr99iQFhrEk1P+EuOAshXoJdTYnE8Zv6tti6Ge9nzwBiaCwdRjFXti7FO
+	YkcfkyTDgEybJQHjEF3Yv3cQ+Tg6ceaac9o8ytPfHTOQ0=
+Received: from [172.24.140.18] (unknown [111.204.182.99])
+	by gzga-smtp-mta-g1-4 (Coremail) with SMTP id _____wD33+qRagpmB4MsAg--.37333S2;
+	Mon, 01 Apr 2024 16:04:36 +0800 (CST)
+Message-ID: <073e5bf0-99c4-4dc5-8894-5442e2d53a34@126.com>
+Date: Mon, 1 Apr 2024 16:04:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/fair: Fix forked task check in vruntime_normalized
+To: "mingyang.cui" <mingyang.cui@horizon.ai>, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, bristot@redhat.com
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com,
+ stable@vger.kernel.org, tkjos@google.com, pjt@google.com,
+ quentin.perret@arm.com, Patrick.Bellasi@arm.com, Chris.Redpath@arm.com,
+ Morten.Rasmussen@arm.com, joaodias@google.com
+References: <20240328062757.29803-1-mingyang.cui@horizon.ai>
+Content-Language: en-US
+From: Honglei Wang <jameshongleiwang@126.com>
+In-Reply-To: <20240328062757.29803-1-mingyang.cui@horizon.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD33+qRagpmB4MsAg--.37333S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1kXw48JF4UXFW7Ar4kXrb_yoW5Xw13pF
+	4kXFW3Jr4kWw12krnrJrZ7Jry5G393Ga17JrnIya4rAws8Ww1IyrW7Ka129FWjyr4xAFWf
+	tF48tw4fGws0yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jVQ6JUUUUU=
+X-CM-SenderInfo: 5mdpv2pkrqwzphlzt0bj6rjloofrz/1tbiTxOzrWVLZlNMcQABsl
 
-From: George Guo <guodongtai@kylinos.cn>
 
-commit ff9d31d0d46672e201fc9ff59c42f1eef5f00c77 upstream.
 
-The onmax_destroy() destroyed the onmax var, casusing a double-free error
-flagged by KASAN.
+On 2024/3/28 14:27, mingyang.cui wrote:
+> When rt_mutex_setprio changes a task's scheduling class to RT,
+> sometimes the task's vruntime is not updated correctly upon
+> return to the fair class.
+> Specifically, the following is being observed:
+> - task has just been created and running for a short time
+> - task sleep while still in the fair class
+> - task is boosted to RT via rt_mutex_setprio, which changes
+>    the task to RT and calls check_class_changed.
+> - check_class_changed leads to detach_task_cfs_rq, at which point
+>    the vruntime_normalized check sees that the task's sum_exec_runtime
+>    is zero, which results in skipping the subtraction of the
+>    rq's min_vruntime from the task's vruntime
+Hi Mingyang,
 
-This is tested via "./ftracetest test.d/trigger/inter-event/
-trigger-onmatch-onmax-action-hist.tc".
+Did you do the test on the latest tree? vruntime_normalized was removed 
+by e8f331bcc2 (sched/smp: Use lag to simplify cross-runqueue placement).
 
-==================================================================
-BUG: KASAN: use-after-free in destroy_hist_field+0x1c2/0x200
-Read of size 8 at addr ffff88800a4ad100 by task ftracetest/4731
+Thanks,
+Honglei
 
-CPU: 0 PID: 4731 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #77
-Source Version: Unknown
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
-Call Trace:
- dump_stack+0xcb/0x10b
- print_address_description.cold+0x54/0x249
- kasan_report_error.cold+0x63/0xab
- ? destroy_hist_field+0x1c2/0x200
- ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
- __asan_report_load8_noabort+0x8d/0xa0
- ? destroy_hist_field+0x1c2/0x200
- destroy_hist_field+0x1c2/0x200
- onmax_destroy+0x72/0x1e0
- ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
- destroy_hist_data+0x236/0xa40
- event_hist_trigger_free+0x212/0x2f0
- ? update_cond_flag+0x128/0x170
- ? event_hist_trigger_func+0x2880/0x2880
- hist_unregister_trigger+0x2f2/0x4f0
- event_hist_trigger_func+0x168c/0x2880
- ? tracing_map_cmp_u64+0xa0/0xa0
- ? onmatch_create.constprop.0+0xf50/0xf50
- ? __mutex_lock_slowpath+0x10/0x10
- event_trigger_write+0x2f4/0x490
- ? trigger_start+0x180/0x180
- ? __fget_light+0x369/0x5d0
- ? count_memcg_event_mm+0x104/0x2b0
- ? trigger_start+0x180/0x180
- __vfs_write+0x81/0x100
- vfs_write+0x1e1/0x540
- ksys_write+0x12a/0x290
- ? __ia32_sys_read+0xb0/0xb0
- ? __close_fd+0x1d3/0x280
- do_syscall_64+0xe3/0x2d0
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-RIP: 0033:0x7fd7f4c44e04
-Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 
-48 8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 
-f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
-RSP: 002b:00007fff10370df8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000000000000010f RCX: 00007fd7f4c44e04
-RDX: 000000000000010f RSI: 000055fa765df650 RDI: 0000000000000001
-RBP: 000055fa765df650 R08: 000000000000000a R09: 0000000000000000
-R10: 000000000000000a R11: 0000000000000246 R12: 00007fd7f4d035c0
-R13: 000000000000010f R14: 00007fd7f4d037c0 R15: 000000000000010f
-==================================================================
-
-So remove the onmax_destroy() destroy_hist_field() call for that var.
-
-Fixes: 50450603ec9c("tracing: Add 'onmax' hist trigger action support")
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
----
- kernel/trace/trace_events_hist.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 7dcb96305e56..58b8a2575b8c 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -337,7 +337,6 @@ struct action_data {
- 			char			*fn_name;
- 			unsigned int		max_var_ref_idx;
- 			struct hist_field	*max_var;
--			struct hist_field	*var;
- 		} onmax;
- 	};
- };
-@@ -3489,7 +3488,6 @@ static void onmax_destroy(struct action_data *data)
- 	unsigned int i;
- 
- 	destroy_hist_field(data->onmax.max_var, 0);
--	destroy_hist_field(data->onmax.var, 0);
- 
- 	kfree(data->onmax.var_str);
- 	kfree(data->onmax.fn_name);
-@@ -3528,8 +3526,6 @@ static int onmax_create(struct hist_trigger_data *hist_data,
- 	if (!ref_field)
- 		return -ENOMEM;
- 
--	data->onmax.var = ref_field;
--
- 	data->fn = onmax_save;
- 	data->onmax.max_var_ref_idx = var_ref_idx;
- 	max_var = create_var(hist_data, file, "max", sizeof(u64), "u64");
--- 
-2.34.1
+> - later, when the prio is deboosted and the task is moved back
+>    to the fair class, the fair rq's min_vruntime is added to
+>    the task's vruntime, even though it wasn't subtracted earlier.
+> 
+> Since the task's vruntime is about double that of other tasks in cfs_rq,
+> the task to be unable to run for a long time when there are continuous
+> runnable tasks in cfs_rq.
+> 
+> The immediate result is inflation of the task's vruntime, giving
+> it lower priority (starving it if there's enough available work).
+> The longer-term effect is inflation of all vruntimes because the
+> task's vruntime becomes the rq's min_vruntime when the higher
+> priority tasks go idle. That leads to a vicious cycle, where
+> the vruntime inflation repeatedly doubled.
+> 
+> The root cause of the problem is that the vruntime_normalized made a
+> misjudgment. Since the sum_exec_runtime of some tasks that were just
+> created and run for a short time is zero, the vruntime_normalized
+> mistakenly thinks that they are tasks that have just been forked.
+> Therefore, sum_exec_runtime is not subtracted from the vruntime of the
+> task.
+> 
+> So, we fix this bug by adding a check condition for newly forked task.
+> 
+> Signed-off-by: mingyang.cui <mingyang.cui@horizon.ai>
+> ---
+>   kernel/sched/fair.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 73a89fbd81be..3d0c14f3731f 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -11112,7 +11112,7 @@ static inline bool vruntime_normalized(struct task_struct *p)
+>   	 * - A task which has been woken up by try_to_wake_up() and
+>   	 *   waiting for actually being woken up by sched_ttwu_pending().
+>   	 */
+> -	if (!se->sum_exec_runtime ||
+> +	if (!se->sum_exec_runtime && p->state == TASK_NEW ||
+>   	    (p->state == TASK_WAKING && p->sched_remote_wakeup))
+>   		return true;
+>   
 
 
