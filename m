@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-34749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562488940AB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2BB68942A8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9031F22832
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EAF2283431
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556783613C;
-	Mon,  1 Apr 2024 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB044653C;
+	Mon,  1 Apr 2024 16:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHfzEelJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h97Xw5MJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134AB1C0DE7;
-	Mon,  1 Apr 2024 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF73063E;
+	Mon,  1 Apr 2024 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989168; cv=none; b=H5UWUkb1WyvqN0hx+6M0CEizO8Wy3o5MnXl4EKciBKhKJ7lasm1pUzr0/GK0G1LZLVwsZXnmcw4Idt16L8yAiRT1z6Y7uNU7hFn6bK8oJvjKCJdlfhwxKyqm4Y/f3bsQHkR5ghLal1P9QCnHDwqHzH5AZ7r1iUgTW/Igxr7ySZU=
+	t=1711990486; cv=none; b=jGuUgC8/jw9DncyOqDF3SkQn9KzEauVJmpYYfJPhecjLiX5nha9wlVPU0rp5aCkEvxGV32LIaFGds+ppKrNSPA3cByUQd2h6MQNsMbHfLlKzE0cKzLjEkW+Zz3X5P0RDdIk46d8IJO8w8LDpTDr5jSLb2vxIo8fv5lpcj12nO3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989168; c=relaxed/simple;
-	bh=28/zcOqTZ9/aghvy+F8ft/AuHED3z8pcepYrubaA0To=;
+	s=arc-20240116; t=1711990486; c=relaxed/simple;
+	bh=AEtNtAvo1eNxxjZw6k328fKH3IMCZ2LKZW5ds6f50UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+XcavRD/ok6vcdGc4a6GFBupoTzwkRMb/TOEv0//xfKPlOcQnU8W8y4z61uttYl79zg4G19ZoNqoYntR7boVRQKP6p+4X0tKSXnbEGMSmGyXo92kOyAHbhU9Vb57BmPkOXpmA/I2Yav2LTASbbtd/qCIx5xP6WcIHq7z+Kuv0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHfzEelJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E55FC433C7;
-	Mon,  1 Apr 2024 16:32:47 +0000 (UTC)
+	 MIME-Version; b=SOux53ImzIZUCulvDC0ixW7imFywwl3/T/6lw8zHI7gOSzw5fPpaA8mH7Mdd5mfojS90S9/K6vKXP7znIAq8DiuskLP4n8/zWxxD50xsb7EZ0Oj0FZtKgLJpQSNr9P/V3K7jYg7irZrepvQczzFfr5D3Jzr1X8xwnxompfuTNMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h97Xw5MJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464BCC433F1;
+	Mon,  1 Apr 2024 16:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989168;
-	bh=28/zcOqTZ9/aghvy+F8ft/AuHED3z8pcepYrubaA0To=;
+	s=korg; t=1711990486;
+	bh=AEtNtAvo1eNxxjZw6k328fKH3IMCZ2LKZW5ds6f50UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHfzEelJl9oqgFfTE7qEiqZ0DWElEy1wx8t0eKdryQwsCtQAu10WE7gvmBLeml4U0
-	 xnC14YeV++D4G9PFf7IGZv0b/DXlaHdr3Xd/x5CRtjiX5AgEr5bdbAT7Xa83PYIo4G
-	 iejc/5PiUpx/OycqfXbOdpgVtWaeRWomDg/H28pU=
+	b=h97Xw5MJJ+f10p/mWlL+mE8SmjWx+uo/IZKtTHosSsuX04da3MYrl3VxDnCvmvs4B
+	 oHHhuK+IFtkLnikTo3Mr1SsIXptiwG4x8n98udurLa4ks5Q2wM2TTtmVorIF3JPIvu
+	 tBAhO144ByB2+b3dpV2e4cUU5UgIX+juAhWNjNsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.7 401/432] usb: dwc2: host: Fix ISOC flow in DDMA mode
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.6 339/396] drm/vmwgfx: Create debugfs ttm_resource_manager entry only if needed
 Date: Mon,  1 Apr 2024 17:46:28 +0200
-Message-ID: <20240401152605.333146229@linuxfoundation.org>
+Message-ID: <20240401152558.021658472@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,139 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit b258e42688501cadb1a6dd658d6f015df9f32d8f upstream.
+commit 4be9075fec0a639384ed19975634b662bfab938f upstream.
 
-Fixed ISOC completion flow in DDMA mode. Added isoc
-descriptor actual length value and update urb's start_frame
-value.
-Fixed initialization of ISOC DMA descriptors flow.
+The driver creates /sys/kernel/debug/dri/0/mob_ttm even when the
+corresponding ttm_resource_manager is not allocated.
+This leads to a crash when trying to read from this file.
 
-Fixes: 56f5b1cff22a ("staging: Core files for the DWC2 driver")
-Fixes: 20f2eb9c4cf8 ("staging: dwc2: add microframe scheduler from downstream Pi kernel")
-Fixes: c17b337c1ea4 ("usb: dwc2: host: program descriptor for next frame")
-Fixes: dc4c76e7b22c ("staging: HCD descriptor DMA support for the DWC2 driver")
-Fixes: 762d3a1a9cd7 ("usb: dwc2: host: process all completed urbs")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/a8b1e1711cc6cabfb45d92ede12e35445c66f06c.1708944698.git.Minas.Harutyunyan@synopsys.com
+Add a check to create mob_ttm, system_mob_ttm, and gmr_ttm debug file
+only when the corresponding ttm_resource_manager is allocated.
+
+crash> bt
+PID: 3133409  TASK: ffff8fe4834a5000  CPU: 3    COMMAND: "grep"
+ #0 [ffffb954506b3b20] machine_kexec at ffffffffb2a6bec3
+ #1 [ffffb954506b3b78] __crash_kexec at ffffffffb2bb598a
+ #2 [ffffb954506b3c38] crash_kexec at ffffffffb2bb68c1
+ #3 [ffffb954506b3c50] oops_end at ffffffffb2a2a9b1
+ #4 [ffffb954506b3c70] no_context at ffffffffb2a7e913
+ #5 [ffffb954506b3cc8] __bad_area_nosemaphore at ffffffffb2a7ec8c
+ #6 [ffffb954506b3d10] do_page_fault at ffffffffb2a7f887
+ #7 [ffffb954506b3d40] page_fault at ffffffffb360116e
+    [exception RIP: ttm_resource_manager_debug+0x11]
+    RIP: ffffffffc04afd11  RSP: ffffb954506b3df0  RFLAGS: 00010246
+    RAX: ffff8fe41a6d1200  RBX: 0000000000000000  RCX: 0000000000000940
+    RDX: 0000000000000000  RSI: ffffffffc04b4338  RDI: 0000000000000000
+    RBP: ffffb954506b3e08   R8: ffff8fee3ffad000   R9: 0000000000000000
+    R10: ffff8fe41a76a000  R11: 0000000000000001  R12: 00000000ffffffff
+    R13: 0000000000000001  R14: ffff8fe5bb6f3900  R15: ffff8fe41a6d1200
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #8 [ffffb954506b3e00] ttm_resource_manager_show at ffffffffc04afde7 [ttm]
+ #9 [ffffb954506b3e30] seq_read at ffffffffb2d8f9f3
+    RIP: 00007f4c4eda8985  RSP: 00007ffdbba9e9f8  RFLAGS: 00000246
+    RAX: ffffffffffffffda  RBX: 000000000037e000  RCX: 00007f4c4eda8985
+    RDX: 000000000037e000  RSI: 00007f4c41573000  RDI: 0000000000000003
+    RBP: 000000000037e000   R8: 0000000000000000   R9: 000000000037fe30
+    R10: 0000000000000000  R11: 0000000000000246  R12: 00007f4c41573000
+    R13: 0000000000000003  R14: 00007f4c41572010  R15: 0000000000000003
+    ORIG_RAX: 0000000000000000  CS: 0033  SS: 002b
+
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: af4a25bbe5e7 ("drm/vmwgfx: Add debugfs entries for various ttm resource managers")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240312093551.196609-1-jfalempe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c      |   12 ++++++++++--
- drivers/usb/dwc2/hcd_ddma.c |   17 +++++++++++------
- drivers/usb/dwc2/hw.h       |    2 +-
- 3 files changed, 22 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -2701,8 +2701,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 		qh = list_entry(qh_ptr, struct dwc2_qh, qh_list_entry);
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1444,12 +1444,15 @@ static void vmw_debugfs_resource_manager
+ 					    root, "system_ttm");
+ 	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, TTM_PL_VRAM),
+ 					    root, "vram_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
+-					    root, "gmr_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
+-					    root, "mob_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
+-					    root, "system_mob_ttm");
++	if (vmw->has_gmr)
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
++						    root, "gmr_ttm");
++	if (vmw->has_mob) {
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
++						    root, "mob_ttm");
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
++						    root, "system_mob_ttm");
++	}
+ }
  
- 		/*
- 		 * Move the QH from the periodic ready schedule to the
-@@ -2735,8 +2738,11 @@ enum dwc2_transaction_type dwc2_hcd_sele
- 			hsotg->available_host_channels--;
- 		}
- 
--		if (dwc2_assign_and_init_hc(hsotg, qh))
-+		if (dwc2_assign_and_init_hc(hsotg, qh)) {
-+			if (hsotg->params.uframe_sched)
-+				hsotg->available_host_channels++;
- 			break;
-+		}
- 
- 		/*
- 		 * Move the QH from the non-periodic inactive schedule to the
-@@ -4143,6 +4149,8 @@ void dwc2_host_complete(struct dwc2_hsot
- 			 urb->actual_length);
- 
- 	if (usb_pipetype(urb->pipe) == PIPE_ISOCHRONOUS) {
-+		if (!hsotg->params.dma_desc_enable)
-+			urb->start_frame = qtd->qh->start_active_frame;
- 		urb->error_count = dwc2_hcd_urb_get_error_count(qtd->urb);
- 		for (i = 0; i < urb->number_of_packets; ++i) {
- 			urb->iso_frame_desc[i].actual_length =
---- a/drivers/usb/dwc2/hcd_ddma.c
-+++ b/drivers/usb/dwc2/hcd_ddma.c
-@@ -559,7 +559,7 @@ static void dwc2_init_isoc_dma_desc(stru
- 	idx = qh->td_last;
- 	inc = qh->host_interval;
- 	hsotg->frame_number = dwc2_hcd_get_frame_number(hsotg);
--	cur_idx = dwc2_frame_list_idx(hsotg->frame_number);
-+	cur_idx = idx;
- 	next_idx = dwc2_desclist_idx_inc(qh->td_last, inc, qh->dev_speed);
- 
- 	/*
-@@ -866,6 +866,8 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- {
- 	struct dwc2_dma_desc *dma_desc;
- 	struct dwc2_hcd_iso_packet_desc *frame_desc;
-+	u16 frame_desc_idx;
-+	struct urb *usb_urb = qtd->urb->priv;
- 	u16 remain = 0;
- 	int rc = 0;
- 
-@@ -878,8 +880,11 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 				DMA_FROM_DEVICE);
- 
- 	dma_desc = &qh->desc_list[idx];
-+	frame_desc_idx = (idx - qtd->isoc_td_first) & (usb_urb->number_of_packets - 1);
- 
--	frame_desc = &qtd->urb->iso_descs[qtd->isoc_frame_index_last];
-+	frame_desc = &qtd->urb->iso_descs[frame_desc_idx];
-+	if (idx == qtd->isoc_td_first)
-+		usb_urb->start_frame = dwc2_hcd_get_frame_number(hsotg);
- 	dma_desc->buf = (u32)(qtd->urb->dma + frame_desc->offset);
- 	if (chan->ep_is_in)
- 		remain = (dma_desc->status & HOST_DMA_ISOC_NBYTES_MASK) >>
-@@ -900,7 +905,7 @@ static int dwc2_cmpl_host_isoc_dma_desc(
- 		frame_desc->status = 0;
- 	}
- 
--	if (++qtd->isoc_frame_index == qtd->urb->packet_count) {
-+	if (++qtd->isoc_frame_index == usb_urb->number_of_packets) {
- 		/*
- 		 * urb->status is not used for isoc transfers here. The
- 		 * individual frame_desc status are used instead.
-@@ -1005,11 +1010,11 @@ static void dwc2_complete_isoc_xfer_ddma
- 				return;
- 			idx = dwc2_desclist_idx_inc(idx, qh->host_interval,
- 						    chan->speed);
--			if (!rc)
-+			if (rc == 0)
- 				continue;
- 
--			if (rc == DWC2_CMPL_DONE)
--				break;
-+			if (rc == DWC2_CMPL_DONE || rc == DWC2_CMPL_STOP)
-+				goto stop_scan;
- 
- 			/* rc == DWC2_CMPL_STOP */
- 
---- a/drivers/usb/dwc2/hw.h
-+++ b/drivers/usb/dwc2/hw.h
-@@ -698,7 +698,7 @@
- #define TXSTS_QTOP_TOKEN_MASK		(0x3 << 25)
- #define TXSTS_QTOP_TOKEN_SHIFT		25
- #define TXSTS_QTOP_TERMINATE		BIT(24)
--#define TXSTS_QSPCAVAIL_MASK		(0xff << 16)
-+#define TXSTS_QSPCAVAIL_MASK		(0x7f << 16)
- #define TXSTS_QSPCAVAIL_SHIFT		16
- #define TXSTS_FSPCAVAIL_MASK		(0xffff << 0)
- #define TXSTS_FSPCAVAIL_SHIFT		0
+ static int vmwgfx_pm_notifier(struct notifier_block *nb, unsigned long val,
 
 
 
