@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC048943E8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647F08940BE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C2911C21B12
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968B41C21387
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9096D47A5D;
-	Mon,  1 Apr 2024 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0695B1E525;
+	Mon,  1 Apr 2024 16:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQetKWd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWlcnf/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C908487BC;
-	Mon,  1 Apr 2024 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DFC1C0DE7;
+	Mon,  1 Apr 2024 16:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991378; cv=none; b=hJX8w4xWZhM/9JHkFm338kfkedTgmeTY+60wjjuSRmJbPZ043QjLqKx1JHjBPQvkK0JNIAw0WgXcpaMubnWlzeKR0LX4pHSfX76IRGfLiABAc/BOwAdCOUC06HcM6papY4hOA2qxsjfUBoxJDW/0furkNPwy9mC1dSTTXhSLObg=
+	t=1711989231; cv=none; b=MZX7p0jCeDiBdSWo1Lqb/7YWIrTCRyrMfCVnNVO3jsdUQ3dNcOGgdfyq8uE1aIe6bHmny8QV3MO4TmllcRIic1hUporARL7V1uZPU9kpmwUdN1TVCqaDco9BDJlM9FgzFDzj6SGjZHidgSg6LxhVl0hn4P7XvMBbcz78ajfqGSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991378; c=relaxed/simple;
-	bh=zi55t759RjtOrxcjoYPvTIHoyA4oB0zjYj0pKxfHGQQ=;
+	s=arc-20240116; t=1711989231; c=relaxed/simple;
+	bh=eA7yvFqox44XKs1F3JHlfRpGqCkeslcpsRQeGGXjMOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMJqreMmFRtatizDBnCy94h1ydsEC5V9DMcRG6bk81skKwWGMPJsIOnH1RmM7TSaMrMBFbojIysP2nSXgf+k53ULzX6QH+lo02GDt2KXKM8v1wKXoAFdwlXC9r4/T6AQ15MgGIcpdOT5UeWXpqmhlLGFkXs2EOYLURg/C+cgSpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQetKWd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC66C433F1;
-	Mon,  1 Apr 2024 17:09:37 +0000 (UTC)
+	 MIME-Version; b=e7iBw/tsv2/a0w9iQBYQG5MKVzc/iJ2tQyQc5tidfyT0leASLb20gZVf+7BvEeY+wZtqe6OZPRZkwzPR75P+ZAGbBkq5DRxyTwCM1k0p9jFEzxcaGJo1EyDe98WjeQrp7RwcZ7+gQxRnXTvQDc77+JEM/i6AVamo0ewAP4GoGNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWlcnf/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8407C433F1;
+	Mon,  1 Apr 2024 16:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991378;
-	bh=zi55t759RjtOrxcjoYPvTIHoyA4oB0zjYj0pKxfHGQQ=;
+	s=korg; t=1711989231;
+	bh=eA7yvFqox44XKs1F3JHlfRpGqCkeslcpsRQeGGXjMOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQetKWd7M9jFqMdUhZ5YLekXcoFR/nMNFAQziuqaZyHQ6BRU7rPXLj2TotCYN7IQd
-	 7tCK+auFHncr9FyBzyJzwKWm3H/4Aes9V+SJEWgubqCxqxux4HQu5JrpHQ4fW6cd7f
-	 Cmk4Zv3egI5L5uRKGYfIE4+6/LFBefcDaIbem5o8=
+	b=tWlcnf/tDzp0433TYU0zPOd25TOXN+4SuTljm5MW1Mj9w5gkyVF0WnQDPStIekvrl
+	 exEAsuUrEraWLtUfA+YxwlD2U5mMG56bzQiguFzfUUoflJZq9Wd0yt9WuKli+Gkm/G
+	 beWxmMMS6WNSYxGSgbVhZ10RUY4Cu1Lvh3JcpvNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Brian Cain <bcain@quicinc.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 218/272] hexagon: vmlinux.lds.S: handle attributes section
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 421/432] scsi: qla2xxx: Delay I/O Abort on PCI error
 Date: Mon,  1 Apr 2024 17:46:48 +0200
-Message-ID: <20240401152537.742577256@linuxfoundation.org>
+Message-ID: <20240401152605.972233096@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 549aa9678a0b3981d4821bf244579d9937650562 upstream.
+commit 591c1fdf2016d118b8fbde427b796fac13f3f070 upstream.
 
-After the linked LLVM change, the build fails with
-CONFIG_LD_ORPHAN_WARN_LEVEL="error", which happens with allmodconfig:
+Currently when PCI error is detected, I/O is aborted manually through the
+ABORT IOCB mechanism which is not guaranteed to succeed.
 
-  ld.lld: error: vmlinux.a(init/main.o):(.hexagon.attributes) is being placed in '.hexagon.attributes'
+Instead, wait for the OS or system to notify driver to wind down I/O
+through the pci_error_handlers api.  Set eeh_busy flag to pause all traffic
+and wait for I/O to drain.
 
-Handle the attributes section in a similar manner as arm and riscv by
-adding it after the primary ELF_DETAILS grouping in vmlinux.lds.S, which
-fixes the error.
-
-Link: https://lkml.kernel.org/r/20240319-hexagon-handle-attributes-section-vmlinux-lds-s-v1-1-59855dab8872@kernel.org
-Fixes: 113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
-Link: https://github.com/llvm/llvm-project/commit/31f4b329c8234fab9afa59494d7f8bdaeaefeaad
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Brian Cain <bcain@quicinc.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-11-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/hexagon/kernel/vmlinux.lds.S |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/qla2xxx/qla_attr.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/hexagon/kernel/vmlinux.lds.S
-+++ b/arch/hexagon/kernel/vmlinux.lds.S
-@@ -64,6 +64,7 @@ SECTIONS
- 	STABS_DEBUG
- 	DWARF_DEBUG
- 	ELF_DETAILS
-+	.hexagon.attributes 0 : { *(.hexagon.attributes) }
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -2741,7 +2741,13 @@ qla2x00_dev_loss_tmo_callbk(struct fc_rp
+ 		return;
  
- 	DISCARDS
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900c,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(fcport->vha);
++		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
++		    0, WAIT_TARGET);
+ 		return;
+ 	}
  }
+@@ -2763,7 +2769,11 @@ qla2x00_terminate_rport_io(struct fc_rpo
+ 	vha = fcport->vha;
+ 
+ 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
+-		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
++		/* Will wait for wind down of adapter */
++		ql_dbg(ql_dbg_aer, fcport->vha, 0x900b,
++		    "%s pci offline detected (id %06x)\n", __func__,
++		    fcport->d_id.b24);
++		qla_pci_set_eeh_busy(vha);
+ 		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
+ 			0, WAIT_TARGET);
+ 		return;
 
 
 
