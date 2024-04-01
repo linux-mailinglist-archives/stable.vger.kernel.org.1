@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2ED8943BA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800D389428E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E890128391B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219091F25F50
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3554487BE;
-	Mon,  1 Apr 2024 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94A54EB24;
+	Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKLoM/8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7kDJzEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F83482E4;
-	Mon,  1 Apr 2024 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CC04D9F6;
+	Mon,  1 Apr 2024 16:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991238; cv=none; b=shFAO7SAWelKk/0kw/uGKx25Qf2Bx36/OS+8i9moO94W5/41obBcF6ClfGpGb78ygzBusg5mjnl+LwSxyJ2RHzTo3cKc5I69uk/SVJFPeyGFWQ90ISYlWnMRyfcWWETHyMdcdoBIqBejgdfliB4p0ChRSp+tFiL39X4ngQONlEc=
+	t=1711990411; cv=none; b=RN9MXfQO0m+o60MJp6cXgrvOIZDKEfeOmmDHUW5I6HZWXaF004AZESQDo2d4nA2zIbThoR9HlADFSiwQfdQ7odcGFf1zATSWfqC3uU/2CgWYSBd/tfjk4EGbp+dB5dobJ4fhRyJBcUGQhZj3ywsWKQLX6sTt7fed6GNpkUh+tEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991238; c=relaxed/simple;
-	bh=jvbtkEDvCPcnpIoICV7DuTeKStlnsjVcyeGduY/PgF0=;
+	s=arc-20240116; t=1711990411; c=relaxed/simple;
+	bh=3Z6iiYY9lX3Q+6lKbfcehWlMXpiAYuTJclcAmjr3Heo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFxb5iFXkn5k/SjAIX/e75zdD1GjsNJN6vXqGriMZ6Hr3QttvlthF55n2R6DkO9k4Rsf/xQVegqU12IedNk7R9lPE0h2J8TKb/wd/g7gOi+SUvieh8EZro2ximSarkbZUQ/Mo34EbIDvlPpgh00Qbe8mZPh2pyW87IvVw+e64L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKLoM/8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34ABC433C7;
-	Mon,  1 Apr 2024 17:07:17 +0000 (UTC)
+	 MIME-Version; b=W33eFDxMaQxL3sUOzw1RB79bFZ+0Zuk8Yc7mjr/9tR+F09sx6XyFfxY+4zMmwYfun/Kz2E2jvr3TxwZe+pHZEIsypFhgtQOtqYLQk1+bU3iFagc+VIPk/THL4xCXtuvoutN9LlR3WC6bQi4QRVKXsxr5MFG/F0EzUYwwDUbmoIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7kDJzEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB333C433F1;
+	Mon,  1 Apr 2024 16:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991238;
-	bh=jvbtkEDvCPcnpIoICV7DuTeKStlnsjVcyeGduY/PgF0=;
+	s=korg; t=1711990411;
+	bh=3Z6iiYY9lX3Q+6lKbfcehWlMXpiAYuTJclcAmjr3Heo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKLoM/8R6QQcP3karEGaYJRFAtYUD01ezL9/c5lrK36iCp4XR96UhC8N/EFTQmi5K
-	 Fa3RYem4Wr0G14XTkb+6AYwpOHUdi/Jx2JSkdMkgQOMlnObNDF1O9adsqL+49rk44A
-	 3zf0eDOVuZ0dfGX/o8ZtOcQKauXTsGxh9jP12VyA=
+	b=J7kDJzEiof02+hChZphUzhhzeg0KrFAnYhY3F5uJkVYzj2OM6nVHVVNcdzYRNHyBN
+	 4ZjH5hTXnL5A4L9pd2qwFgab0XSFipdAmBdqEx9/5a6iI9EOcbzBWW9whN27/QNE3K
+	 pDMRDkuh4mn+QUG2l5Ldg759wQA5BdEAyYjwuwQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.1 204/272] vfio/fsl-mc: Block calling interrupt handler without trigger
+	Jonathon Hall <jonathon.hall@puri.sm>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 345/396] drm/i915: Do not match JSL in ehl_combo_pll_div_frac_wa_needed()
 Date: Mon,  1 Apr 2024 17:46:34 +0200
-Message-ID: <20240401152537.277653215@linuxfoundation.org>
+Message-ID: <20240401152558.203188486@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Jonathon Hall <jonathon.hall@puri.sm>
 
-[ Upstream commit 7447d911af699a15f8d050dfcb7c680a86f87012 ]
+commit e41d769f1a7a1dc533c35ef7b366be3dbf432a1c upstream.
 
-The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-initially NULL and may become NULL if the user sets the trigger
-eventfd to -1.  The interrupt handler itself is guaranteed that
-trigger is always valid between request_irq() and free_irq(), but
-the loopback testing mechanisms to invoke the handler function
-need to test the trigger.  The triggering and setting ioctl paths
-both make use of igate and are therefore mutually exclusive.
+Since commit 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for
+platform/subplatform defines"), boot freezes on a Jasper Lake tablet
+(Librem 11), usually with graphical corruption on the eDP display,
+but sometimes just a black screen.  This commit was included in 6.6 and
+later.
 
-The vfio-fsl-mc driver does not make use of irqfds, nor does it
-support any sort of masking operations, therefore unlike vfio-pci
-and vfio-platform, the flow can remain essentially unchanged.
+That commit was intended to refactor EHL and JSL macros, but the change
+to ehl_combo_pll_div_frac_wa_needed() started matching JSL incorrectly
+when it was only intended to match EHL.
 
-Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+It replaced:
+	return ((IS_PLATFORM(i915, INTEL_ELKHARTLAKE) &&
+		 IS_JSL_EHL_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+with:
+	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
+		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+
+Remove IS_JASPERLAKE() to fix the regression.
+
+Signed-off-by: Jonathon Hall <jonathon.hall@puri.sm>
+Cc: stable@vger.kernel.org
+Fixes: 0c65dc062611 ("drm/i915/jsl: s/JSL/JASPERLAKE for platform/subplatform defines")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240313135424.3731410-1-jonathon.hall@puri.sm
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 1ef48859317b2a77672dea8682df133abf9c44ed)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpll_mgr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-@@ -142,13 +142,14 @@ static int vfio_fsl_mc_set_irq_trigger(s
- 	irq = &vdev->mc_irqs[index];
- 
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		u8 trigger = *(u8 *)data;
- 
--		if (trigger)
--			vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (trigger && irq->trigger)
-+			eventfd_signal(irq->trigger, 1);
- 	}
- 
- 	return 0;
+--- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
++++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+@@ -2462,7 +2462,7 @@ static void icl_wrpll_params_populate(st
+ static bool
+ ehl_combo_pll_div_frac_wa_needed(struct drm_i915_private *i915)
+ {
+-	return (((IS_ELKHARTLAKE(i915) || IS_JASPERLAKE(i915)) &&
++	return ((IS_ELKHARTLAKE(i915) &&
+ 		 IS_DISPLAY_STEP(i915, STEP_B0, STEP_FOREVER)) ||
+ 		 IS_TIGERLAKE(i915) || IS_ALDERLAKE_S(i915) || IS_ALDERLAKE_P(i915)) &&
+ 		 i915->display.dpll.ref_clks.nssc == 38400;
 
 
 
