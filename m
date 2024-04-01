@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-35238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F7489430E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D810B89419A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A61D1F22A6F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92956281399
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1923481C6;
-	Mon,  1 Apr 2024 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1C4AEDA;
+	Mon,  1 Apr 2024 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fv0eeyFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs0c+/zA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D8BA3F;
-	Mon,  1 Apr 2024 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76884AED4;
+	Mon,  1 Apr 2024 16:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990744; cv=none; b=ayhuAyfTrYCI58KJi82LCQR2B04/Y1LjS6PixDabEHbUCoW4sAQ4qOvhoyQmTv0J2/WHTpkdsepkK78GQIMTaNXeAZTwuOVFV8LpzppcfGGrBb4YAbBgu4V9EjdKUK0rtIpDaHhqgJ1iTL8GZaMytBVEhkGVkd7mJiqApX2GxMg=
+	t=1711989826; cv=none; b=ZfZf6vqOSkWON2TSmzhzayCOYqK+UYj0VGYN+C1w0pzlWy80upjJKgUNjgNk5JWDV4zTdJXb1/ditKF7JZfgD8K8EBochNg0w6e+oHHEBVlbwPJn4Ko0k7qfbSMixrZfS/XoAc4DOSdjNgNsCAwVly+G2310cIxQfP9BrBgO0Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990744; c=relaxed/simple;
-	bh=Ln3/0S259vEIHfHnLsoBQs7u6ADZimFiI2YVQfFn5MU=;
+	s=arc-20240116; t=1711989826; c=relaxed/simple;
+	bh=1bKizJToSKSQEZsa/8DxrytX+CV6hA1q/VKlIqtNUCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOoNQP3VV1aaVwrHznq6M/k2g1Gu24/pgscrZq0zMR5GcGuCGzEg+bM3ZWB/IBJL+AdL1K+L8+w/VDFFpn3JTo3iM/aOd8QqC4IOurKPCQU5zq/O/EWvGqgTUZID2yVnW4yKZFMelQdPw7bECX7E0KqdaKy1vvyukkRq1tI+db0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fv0eeyFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230F0C433C7;
-	Mon,  1 Apr 2024 16:59:03 +0000 (UTC)
+	 MIME-Version; b=HyAe/+sStdf5avzrbVPoVjgxOUppxQf7NO+OpBkcsyGt8JZU+rnrL92xMz900e1QkQkCpo9DajSHjVm4e7AtMg27CJ1LGMXCKpdMY3CBFuBv4pjFL189i725RsgxgFtfP6a/6A3ZfSNArXwO5ab8mC/jReiR+gaERCQjDEaAJ24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs0c+/zA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D14C433C7;
+	Mon,  1 Apr 2024 16:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990744;
-	bh=Ln3/0S259vEIHfHnLsoBQs7u6ADZimFiI2YVQfFn5MU=;
+	s=korg; t=1711989826;
+	bh=1bKizJToSKSQEZsa/8DxrytX+CV6hA1q/VKlIqtNUCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fv0eeyFFNKoJ/Q0P9wbWUHUxco7PW1mIkf3OuJP5V4ZeSL/ERyiehq8pRP+VYOwhp
-	 6mrDuUxiu8UG00lQSLz6abnr0gNyIHWxRuZhrw/0cf0vT0RwOdBlASALhsVtnS8hE2
-	 hNjQ9dfh6OVL8F1/+KgAFHq4C5qRtYzST/gJz4QQ=
+	b=Gs0c+/zAlFMbQq9AH8b+oJjhUS8760+hwaEpd7gOolv6PLAr2CGD0r4rd40EInb18
+	 ZkLTIojiG1ecR3JDsr/sUm22b4W0XVNYmX3mxT3B3n5GgY07KXDvK097DpxQCGfshc
+	 SKehn296VOFOP1ZmbwflHu2e8JXutWPs4zEmWN6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Christoph Lameter (Ampere)" <cl@linux.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/272] media: mc: Rename pad variable to clarify intent
+Subject: [PATCH 6.6 165/396] cpufreq: dt: always allocate zeroed cpumask
 Date: Mon,  1 Apr 2024 17:43:34 +0200
-Message-ID: <20240401152531.108424070@linuxfoundation.org>
+Message-ID: <20240401152552.859851712@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 9ec9109cf9f611e3ec9ed0355afcc7aae5e73176 ]
+[ Upstream commit d2399501c2c081eac703ca9597ceb83c7875a537 ]
 
-The pad local variable in the media_pipeline_explore_next_link()
-function is used to store the pad through which the entity has been
-reached. Rename it to origin to reflect that and make the code easier to
-read. This will be even more important in subsequent commits when
-expanding the function with additional logic.
+Commit 0499a78369ad ("ARM64: Dynamically allocate cpumasks and increase
+supported CPUs to 512") changed the handling of cpumasks on ARM 64bit,
+what resulted in the strange issues and warnings during cpufreq-dt
+initialization on some big.LITTLE platforms.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This was caused by mixing OPPs between big and LITTLE cores, because
+OPP-sharing information between big and LITTLE cores is computed on
+cpumask, which in turn was not zeroed on allocation. Fix this by
+switching to zalloc_cpumask_var() call.
+
+Fixes: dc279ac6e5b4 ("cpufreq: dt: Refactor initialization to handle probe deferral properly")
+CC: stable@vger.kernel.org # v5.10+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@linux.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/mc/mc-entity.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/cpufreq/cpufreq-dt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index c7cb49205b017..50b68b4dde5d0 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -579,13 +579,13 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 					    struct media_pipeline_walk *walk)
- {
- 	struct media_pipeline_walk_entry *entry = media_pipeline_walk_top(walk);
--	struct media_pad *pad;
-+	struct media_pad *origin;
- 	struct media_link *link;
- 	struct media_pad *local;
- 	struct media_pad *remote;
- 	int ret;
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index 8bd6e5e8f121c..2d83bbc65dd0b 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -208,7 +208,7 @@ static int dt_cpufreq_early_init(struct device *dev, int cpu)
+ 	if (!priv)
+ 		return -ENOMEM;
  
--	pad = entry->pad;
-+	origin = entry->pad;
- 	link = list_entry(entry->links, typeof(*link), list);
- 	media_pipeline_walk_pop(walk);
+-	if (!alloc_cpumask_var(&priv->cpus, GFP_KERNEL))
++	if (!zalloc_cpumask_var(&priv->cpus, GFP_KERNEL))
+ 		return -ENOMEM;
  
-@@ -595,7 +595,7 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 		link->sink->entity->name, link->sink->index);
- 
- 	/* Get the local pad and remote pad. */
--	if (link->source->entity == pad->entity) {
-+	if (link->source->entity == origin->entity) {
- 		local = link->source;
- 		remote = link->sink;
- 	} else {
-@@ -607,8 +607,9 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 	 * Skip links that originate from a different pad than the incoming pad
- 	 * that is not connected internally in the entity to the incoming pad.
- 	 */
--	if (pad != local &&
--	    !media_entity_has_pad_interdep(pad->entity, pad->index, local->index)) {
-+	if (origin != local &&
-+	    !media_entity_has_pad_interdep(origin->entity, origin->index,
-+					   local->index)) {
- 		dev_dbg(walk->mdev->dev,
- 			"media pipeline: skipping link (no route)\n");
- 		return 0;
+ 	cpumask_set_cpu(cpu, priv->cpus);
 -- 
 2.43.0
 
