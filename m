@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DD989433E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 482DC8941EC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55FA21C21EAB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7802E1C214FE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9201481C6;
-	Mon,  1 Apr 2024 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A591847A6B;
+	Mon,  1 Apr 2024 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oif/WuN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc7k7xyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C37BA3F;
-	Mon,  1 Apr 2024 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643D340876;
+	Mon,  1 Apr 2024 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990879; cv=none; b=XVMGS3BtVo2vDa/uGLtgSQ9mhL466M++9bGbedrvMBhCiYV+5dos1N3mv+rTPMK5QoKcyDNGcRvHUrSZwcfsnwsi8J815xsornialVC2MkCIS0QmgdrDuDvUrE7o97yaRLw0/G3lk808x3aUXW10mJ/ZEZZ0ptIHRV6XBf8+AZ0=
+	t=1711990071; cv=none; b=k6wRBbPUFnPo9tQ7Rdr8UYJpSaQakAKH3euLxfLrz6nYtuqF8K7eDO9Peue+A/yc8jWtqTwo07oHl/iO/ls3lrc2z0TJAqf+FUWLtqGT8FNUp4IrWiqZUXE4Tpq+WOObloLPzVBjni0LR45XTUdZzT//+lXHQO6S0ZUWlE+HX9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990879; c=relaxed/simple;
-	bh=VD6wCE21J8X3yFBG6hXGfoHaxOa6L2R8wv8l7v0piLY=;
+	s=arc-20240116; t=1711990071; c=relaxed/simple;
+	bh=Sz0o9Wac7H6vAKYxC9Vdx4qr3fQleXlyO8eK3Zridtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNv0UkSv7bn2/y4iV3K+7QSVXX7rswSA0HQtuXtYT/VcjwZcIlWNrKz0zmmPZR/x443MQIS2BkQxeO32Y7J0BvO9n+kaxMs8mSbx2Z73WxrczFmfxBIrYGRKjxUExacO84YhyJ5KgBJ4/l9l5x/t5+f0uyZV7n2uF6Y3ELQJ6kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oif/WuN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEA8C433F1;
-	Mon,  1 Apr 2024 17:01:18 +0000 (UTC)
+	 MIME-Version; b=FjWkLB6RdDxG3SvIvHM5ManBU7Ew7V7VC30mziP/1gc2qnrxTj7wd4lHvRZZs5RpGEPIc/487Ijr1V1MZREyo+QOnFKu2jFEavz3NDlwQh8ZkYMRtxDR1bHcS2/AO8QhioKLnerGcgoUtdaBeW2sNvl82/3O9QTN6+uboMCHWHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc7k7xyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7FBC433F1;
+	Mon,  1 Apr 2024 16:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990879;
-	bh=VD6wCE21J8X3yFBG6hXGfoHaxOa6L2R8wv8l7v0piLY=;
+	s=korg; t=1711990071;
+	bh=Sz0o9Wac7H6vAKYxC9Vdx4qr3fQleXlyO8eK3Zridtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oif/WuN5EmM5anKOoDkV98Ex8Mx/6/9gV9KBHv/X3PcnRH8IbS51Fsq3kTUCpuNyW
-	 FSlyZAAJTzzwjNtYQdQWVZR/uY5FEYFMg3CIOv4vvEhW4Sd+Fo5U2DMKydvawVgA6g
-	 deuv1OAaGIfnk8rF4l4q135wUaO7xWQvZKbsb6C8=
+	b=Vc7k7xyufWXU8672rC2UKpOpRr8c6vyfzzRcWails1k0581AOtoZY6pEIt4pIrI7v
+	 kgMlRpChT9Zyr3rxYZRBhzC3sVZt9xlAX9wTOazkvOiTG5o8gZvgvA2jTNAHGsAhfc
+	 gqO1xMSTEXPaLj7543KHQUiDnDOuqvdVcmNlW0LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/272] nfs: fix UAF in direct writes
-Date: Mon,  1 Apr 2024 17:44:45 +0200
-Message-ID: <20240401152533.599259417@linuxfoundation.org>
+	Andy Chi <andy.chi@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 237/396] ALSA: hda/realtek: fix mute/micmute LEDs for HP EliteBook
+Date: Mon,  1 Apr 2024 17:44:46 +0200
+Message-ID: <20240401152554.980954860@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Andy Chi <andy.chi@canonical.com>
 
-[ Upstream commit 17f46b803d4f23c66cacce81db35fef3adb8f2af ]
+commit a17bd44c0146b00fcaa692915789c16bd1fb2a81 upstream.
 
-In production we have been hitting the following warning consistently
+The HP EliteBook using ALC236 codec which using 0x02 to
+control mute LED and 0x01 to control micmute LED.
+Therefore, add a quirk to make it works.
 
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 17 PID: 1800359 at lib/refcount.c:28 refcount_warn_saturate+0x9c/0xe0
-Workqueue: nfsiod nfs_direct_write_schedule_work [nfs]
-RIP: 0010:refcount_warn_saturate+0x9c/0xe0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x9f/0x130
- ? refcount_warn_saturate+0x9c/0xe0
- ? report_bug+0xcc/0x150
- ? handle_bug+0x3d/0x70
- ? exc_invalid_op+0x16/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0x9c/0xe0
- nfs_direct_write_schedule_work+0x237/0x250 [nfs]
- process_one_work+0x12f/0x4a0
- worker_thread+0x14e/0x3b0
- ? ZSTD_getCParams_internal+0x220/0x220
- kthread+0xdc/0x120
- ? __btf_name_valid+0xa0/0xa0
- ret_from_fork+0x1f/0x30
-
-This is because we're completing the nfs_direct_request twice in a row.
-
-The source of this is when we have our commit requests to submit, we
-process them and send them off, and then in the completion path for the
-commit requests we have
-
-if (nfs_commit_end(cinfo.mds))
-	nfs_direct_write_complete(dreq);
-
-However since we're submitting asynchronous requests we sometimes have
-one that completes before we submit the next one, so we end up calling
-complete on the nfs_direct_request twice.
-
-The only other place we use nfs_generic_commit_list() is in
-__nfs_commit_inode, which wraps this call in a
-
-nfs_commit_begin();
-nfs_commit_end();
-
-Which is a common pattern for this style of completion handling, one
-that is also repeated in the direct code with get_dreq()/put_dreq()
-calls around where we process events as well as in the completion paths.
-
-Fix this by using the same pattern for the commit requests.
-
-Before with my 200 node rocksdb stress running this warning would pop
-every 10ish minutes.  With my patch the stress test has been running for
-several hours without popping.
-
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240304134033.773348-1-andy.chi@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/direct.c        | 11 +++++++++--
- fs/nfs/write.c         |  2 +-
- include/linux/nfs_fs.h |  1 +
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 8fdb65e1b14a3..b555efca01d20 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -647,10 +647,17 @@ static void nfs_direct_commit_schedule(struct nfs_direct_req *dreq)
- 	LIST_HEAD(mds_list);
- 
- 	nfs_init_cinfo_from_dreq(&cinfo, dreq);
-+	nfs_commit_begin(cinfo.mds);
- 	nfs_scan_commit(dreq->inode, &mds_list, &cinfo);
- 	res = nfs_generic_commit_list(dreq->inode, &mds_list, 0, &cinfo);
--	if (res < 0) /* res == -ENOMEM */
--		nfs_direct_write_reschedule(dreq);
-+	if (res < 0) { /* res == -ENOMEM */
-+		spin_lock(&dreq->lock);
-+		if (dreq->flags == 0)
-+			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
-+		spin_unlock(&dreq->lock);
-+	}
-+	if (nfs_commit_end(cinfo.mds))
-+		nfs_direct_write_complete(dreq);
- }
- 
- static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 6a06066684172..8e21caae4cae2 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -1656,7 +1656,7 @@ static int wait_on_commit(struct nfs_mds_commit_info *cinfo)
- 				       !atomic_read(&cinfo->rpcs_out));
- }
- 
--static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
-+void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
- {
- 	atomic_inc(&cinfo->rpcs_out);
- }
-diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
-index 7931fa4725612..ac7d799d9d387 100644
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -582,6 +582,7 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
- extern int  nfs_commit_inode(struct inode *, int);
- extern struct nfs_commit_data *nfs_commitdata_alloc(void);
- extern void nfs_commit_free(struct nfs_commit_data *data);
-+void nfs_commit_begin(struct nfs_mds_commit_info *cinfo);
- bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
- 
- static inline bool nfs_have_writebacks(const struct inode *inode)
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9950,6 +9950,10 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
