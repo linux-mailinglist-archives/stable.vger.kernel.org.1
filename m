@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-35037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206D6894208
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E683894379
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B611F2278A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343F21F252B2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FE7482CA;
-	Mon,  1 Apr 2024 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493774AEDF;
+	Mon,  1 Apr 2024 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9cSZkxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu+X0oOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709B18F5C;
-	Mon,  1 Apr 2024 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B39495F0;
+	Mon,  1 Apr 2024 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990133; cv=none; b=BRYTXrlyf8Tyhy4DhPN2LIskElO09eH+0ehHmXyfSJrFtg5EKsP0B4todheWqIUlR9ddnkLTZ7edIPYKvugimK/KsXto+/GthxGSQgz89hIUFEw+4tkjHNps+XntvbMdh76FHQOuenNAPSE6auWYX+cagC2JhTgNcjPnZ9x/N6M=
+	t=1711991040; cv=none; b=Vv2MWg1F2bdsEw8v/KHLF9GDj8iTsQI5B/pIFPduSGIZuPDzoblUtvtQcbzCRKklgD7RIshBMy1JrEhqzmOYuTjThTxsFMpMT89fWAuyZcZHjoTsyBz43rfas4gak8ZxQvxITHcvhP9OoOZOXRC3OFQyNSizkOt+fOYJTxXYOrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990133; c=relaxed/simple;
-	bh=0/k1dn7mLnUdFyaBdFCRCLykLc4RCX3P9FnKGLJ1B78=;
+	s=arc-20240116; t=1711991040; c=relaxed/simple;
+	bh=2AwupsJSS9I8k5kdnmOt6K3AfYkjwFd8gcDG5mT6/gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+QNan1fpeqD8htlKOn9giforYFpt/V8IoGH1rBa0JdeKne/14d7XLBnmkgsSboE9zpQOajbvBdUvcK3w8/IasoLOHUoTPtVBNWc2pKALtkH4Dhzj4SR0qRguczLC27DgVxyk7oPz6M6ySrM59J+KHwdYj9Im001zLujevg/Bcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9cSZkxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81962C433C7;
-	Mon,  1 Apr 2024 16:48:52 +0000 (UTC)
+	 MIME-Version; b=hvCUl4Xx5O0Dqz02gUPSejJ1QOXBtkYv5c4TjQ0p7aMz2OvF9nyPh7uTCbV5YhkIDLHTWBoErZTz10YCSmJVbDCB0T53UIYOWZ8fbzVBaiJMySCQKDJ+pQUbx0oE2mZKnRIumMoAiCznGxvk4nUS8XdQ1UeUykbrMktIWppZ+lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu+X0oOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AA4C433F1;
+	Mon,  1 Apr 2024 17:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990133;
-	bh=0/k1dn7mLnUdFyaBdFCRCLykLc4RCX3P9FnKGLJ1B78=;
+	s=korg; t=1711991039;
+	bh=2AwupsJSS9I8k5kdnmOt6K3AfYkjwFd8gcDG5mT6/gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9cSZkxm9gfbonBAyFFj21ew/YpxpXdyaad3uIQOCYMPxUtWoICWjbFj6RrcQGaf+
-	 WcnIFo3KsXhFHwrb5crECvBJrxlRyOuylumXsKSgQZKAaZrnDLEYtMSumf4Z/IVQJK
-	 zyhKCxVQOU45Sa06quptju/1hIxWy73DXCusUYa4=
+	b=Hu+X0oOBoi291GFsoAzpVYSutOeEnnsl0upK1fxiTuo1kSK/lW7bImtbOjVG7sOC+
+	 BqmSH6se8tDNvQBbBwLlhFYcy//d5Ipn8IoYhV6Cs10kQryPBPfjZgJf4HseK4m5IP
+	 CK0ewhNt5cz69kxm4sDsAvtw/4ZQyNc/d94hBgZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 257/396] xfs: use xfs_defer_pending objects to recover intent items
-Date: Mon,  1 Apr 2024 17:45:06 +0200
-Message-ID: <20240401152555.570538724@linuxfoundation.org>
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 117/272] drm/exynos: do not return negative values from .get_modes()
+Date: Mon,  1 Apr 2024 17:45:07 +0200
+Message-ID: <20240401152534.317745506@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,526 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 03f7767c9f6120ac933378fdec3bfd78bf07bc11 upstream.
+[ Upstream commit 13d5b040363c7ec0ac29c2de9cf661a24a8aa531 ]
 
-One thing I never quite got around to doing is porting the log intent
-item recovery code to reconstruct the deferred pending work state.  As a
-result, each intent item open codes xfs_defer_finish_one in its recovery
-method, because that's what the EFI code did before xfs_defer.c even
-existed.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-This is a gross thing to have left unfixed -- if an EFI cannot proceed
-due to busy extents, we end up creating separate new EFIs for each
-unfinished work item, which is a change in behavior from what runtime
-would have done.
-
-Worse yet, Long Li pointed out that there's a UAF in the recovery code.
-The ->commit_pass2 function adds the intent item to the AIL and drops
-the refcount.  The one remaining refcount is now owned by the recovery
-mechanism (aka the log intent items in the AIL) with the intent of
-giving the refcount to the intent done item in the ->iop_recover
-function.
-
-However, if something fails later in recovery, xlog_recover_finish will
-walk the recovered intent items in the AIL and release them.  If the CIL
-hasn't been pushed before that point (which is possible since we don't
-force the log until later) then the intent done release will try to free
-its associated intent, which has already been freed.
-
-This patch starts to address this mess by having the ->commit_pass2
-functions recreate the xfs_defer_pending state.  The next few patches
-will fix the recovery functions.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Inki Dae <inki.dae@samsung.com>
+Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: stable@vger.kernel.org
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/d8665f620d9c252aa7d5a4811ff6b16e773903a2.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_defer.c       |  105 ++++++++++++++++++++++++++----------
- fs/xfs/libxfs/xfs_defer.h       |    5 +
- fs/xfs/libxfs/xfs_log_recover.h |    3 +
- fs/xfs/xfs_attr_item.c          |   10 ---
- fs/xfs/xfs_bmap_item.c          |    9 +--
- fs/xfs/xfs_extfree_item.c       |    9 +--
- fs/xfs/xfs_log.c                |    1 
- fs/xfs/xfs_log_priv.h           |    1 
- fs/xfs/xfs_log_recover.c        |  115 ++++++++++++++++++++--------------------
- fs/xfs/xfs_refcount_item.c      |    9 +--
- fs/xfs/xfs_rmap_item.c          |    9 +--
- 11 files changed, 159 insertions(+), 117 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 4 ++--
+ drivers/gpu/drm/exynos/exynos_hdmi.c     | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_defer.c
-+++ b/fs/xfs/libxfs/xfs_defer.c
-@@ -245,23 +245,53 @@ xfs_defer_create_intents(
- 	return ret;
- }
- 
--STATIC void
-+static inline void
- xfs_defer_pending_abort(
- 	struct xfs_mount		*mp,
-+	struct xfs_defer_pending	*dfp)
-+{
-+	const struct xfs_defer_op_type	*ops = defer_op_types[dfp->dfp_type];
-+
-+	trace_xfs_defer_pending_abort(mp, dfp);
-+
-+	if (dfp->dfp_intent && !dfp->dfp_done) {
-+		ops->abort_intent(dfp->dfp_intent);
-+		dfp->dfp_intent = NULL;
-+	}
-+}
-+
-+static inline void
-+xfs_defer_pending_cancel_work(
-+	struct xfs_mount		*mp,
-+	struct xfs_defer_pending	*dfp)
-+{
-+	const struct xfs_defer_op_type	*ops = defer_op_types[dfp->dfp_type];
-+	struct list_head		*pwi;
-+	struct list_head		*n;
-+
-+	trace_xfs_defer_cancel_list(mp, dfp);
-+
-+	list_del(&dfp->dfp_list);
-+	list_for_each_safe(pwi, n, &dfp->dfp_work) {
-+		list_del(pwi);
-+		dfp->dfp_count--;
-+		trace_xfs_defer_cancel_item(mp, dfp, pwi);
-+		ops->cancel_item(pwi);
-+	}
-+	ASSERT(dfp->dfp_count == 0);
-+	kmem_cache_free(xfs_defer_pending_cache, dfp);
-+}
-+
-+STATIC void
-+xfs_defer_pending_abort_list(
-+	struct xfs_mount		*mp,
- 	struct list_head		*dop_list)
- {
- 	struct xfs_defer_pending	*dfp;
--	const struct xfs_defer_op_type	*ops;
- 
- 	/* Abort intent items that don't have a done item. */
--	list_for_each_entry(dfp, dop_list, dfp_list) {
--		ops = defer_op_types[dfp->dfp_type];
--		trace_xfs_defer_pending_abort(mp, dfp);
--		if (dfp->dfp_intent && !dfp->dfp_done) {
--			ops->abort_intent(dfp->dfp_intent);
--			dfp->dfp_intent = NULL;
--		}
--	}
-+	list_for_each_entry(dfp, dop_list, dfp_list)
-+		xfs_defer_pending_abort(mp, dfp);
- }
- 
- /* Abort all the intents that were committed. */
-@@ -271,7 +301,7 @@ xfs_defer_trans_abort(
- 	struct list_head		*dop_pending)
- {
- 	trace_xfs_defer_trans_abort(tp, _RET_IP_);
--	xfs_defer_pending_abort(tp->t_mountp, dop_pending);
-+	xfs_defer_pending_abort_list(tp->t_mountp, dop_pending);
- }
- 
- /*
-@@ -389,27 +419,13 @@ xfs_defer_cancel_list(
- {
- 	struct xfs_defer_pending	*dfp;
- 	struct xfs_defer_pending	*pli;
--	struct list_head		*pwi;
--	struct list_head		*n;
--	const struct xfs_defer_op_type	*ops;
- 
- 	/*
- 	 * Free the pending items.  Caller should already have arranged
- 	 * for the intent items to be released.
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index f5e1adfcaa514..fb941a8c99f0f 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -316,14 +316,14 @@ static int vidi_get_modes(struct drm_connector *connector)
  	 */
--	list_for_each_entry_safe(dfp, pli, dop_list, dfp_list) {
--		ops = defer_op_types[dfp->dfp_type];
--		trace_xfs_defer_cancel_list(mp, dfp);
--		list_del(&dfp->dfp_list);
--		list_for_each_safe(pwi, n, &dfp->dfp_work) {
--			list_del(pwi);
--			dfp->dfp_count--;
--			trace_xfs_defer_cancel_item(mp, dfp, pwi);
--			ops->cancel_item(pwi);
--		}
--		ASSERT(dfp->dfp_count == 0);
--		kmem_cache_free(xfs_defer_pending_cache, dfp);
--	}
-+	list_for_each_entry_safe(dfp, pli, dop_list, dfp_list)
-+		xfs_defer_pending_cancel_work(mp, dfp);
- }
- 
- /*
-@@ -666,6 +682,39 @@ xfs_defer_add(
- }
- 
- /*
-+ * Create a pending deferred work item to replay the recovered intent item
-+ * and add it to the list.
-+ */
-+void
-+xfs_defer_start_recovery(
-+	struct xfs_log_item		*lip,
-+	enum xfs_defer_ops_type		dfp_type,
-+	struct list_head		*r_dfops)
-+{
-+	struct xfs_defer_pending	*dfp;
-+
-+	dfp = kmem_cache_zalloc(xfs_defer_pending_cache,
-+			GFP_NOFS | __GFP_NOFAIL);
-+	dfp->dfp_type = dfp_type;
-+	dfp->dfp_intent = lip;
-+	INIT_LIST_HEAD(&dfp->dfp_work);
-+	list_add_tail(&dfp->dfp_list, r_dfops);
-+}
-+
-+/*
-+ * Cancel a deferred work item created to recover a log intent item.  @dfp
-+ * will be freed after this function returns.
-+ */
-+void
-+xfs_defer_cancel_recovery(
-+	struct xfs_mount		*mp,
-+	struct xfs_defer_pending	*dfp)
-+{
-+	xfs_defer_pending_abort(mp, dfp);
-+	xfs_defer_pending_cancel_work(mp, dfp);
-+}
-+
-+/*
-  * Move deferred ops from one transaction to another and reset the source to
-  * initial state. This is primarily used to carry state forward across
-  * transaction rolls with pending dfops.
-@@ -769,7 +818,7 @@ xfs_defer_ops_capture_abort(
- {
- 	unsigned short			i;
- 
--	xfs_defer_pending_abort(mp, &dfc->dfc_dfops);
-+	xfs_defer_pending_abort_list(mp, &dfc->dfc_dfops);
- 	xfs_defer_cancel_list(mp, &dfc->dfc_dfops);
- 
- 	for (i = 0; i < dfc->dfc_held.dr_bufs; i++)
---- a/fs/xfs/libxfs/xfs_defer.h
-+++ b/fs/xfs/libxfs/xfs_defer.h
-@@ -125,6 +125,11 @@ void xfs_defer_ops_capture_abort(struct
- 		struct xfs_defer_capture *d);
- void xfs_defer_resources_rele(struct xfs_defer_resources *dres);
- 
-+void xfs_defer_start_recovery(struct xfs_log_item *lip,
-+		enum xfs_defer_ops_type dfp_type, struct list_head *r_dfops);
-+void xfs_defer_cancel_recovery(struct xfs_mount *mp,
-+		struct xfs_defer_pending *dfp);
-+
- int __init xfs_defer_init_item_caches(void);
- void xfs_defer_destroy_item_caches(void);
- 
---- a/fs/xfs/libxfs/xfs_log_recover.h
-+++ b/fs/xfs/libxfs/xfs_log_recover.h
-@@ -153,4 +153,7 @@ xlog_recover_resv(const struct xfs_trans
- 	return ret;
- }
- 
-+void xlog_recover_intent_item(struct xlog *log, struct xfs_log_item *lip,
-+		xfs_lsn_t lsn, unsigned int dfp_type);
-+
- #endif	/* __XFS_LOG_RECOVER_H__ */
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -772,14 +772,8 @@ xlog_recover_attri_commit_pass2(
- 	attrip = xfs_attri_init(mp, nv);
- 	memcpy(&attrip->attri_format, attri_formatp, len);
- 
--	/*
--	 * The ATTRI has two references. One for the ATTRD and one for ATTRI to
--	 * ensure it makes it into the AIL. Insert the ATTRI into the AIL
--	 * directly and drop the ATTRI reference. Note that
--	 * xfs_trans_ail_update() drops the AIL lock.
--	 */
--	xfs_trans_ail_insert(log->l_ailp, &attrip->attri_item, lsn);
--	xfs_attri_release(attrip);
-+	xlog_recover_intent_item(log, &attrip->attri_item, lsn,
-+			XFS_DEFER_OPS_TYPE_ATTR);
- 	xfs_attri_log_nameval_put(nv);
- 	return 0;
- }
---- a/fs/xfs/xfs_bmap_item.c
-+++ b/fs/xfs/xfs_bmap_item.c
-@@ -681,12 +681,9 @@ xlog_recover_bui_commit_pass2(
- 	buip = xfs_bui_init(mp);
- 	xfs_bui_copy_format(&buip->bui_format, bui_formatp);
- 	atomic_set(&buip->bui_next_extent, bui_formatp->bui_nextents);
--	/*
--	 * Insert the intent into the AIL directly and drop one reference so
--	 * that finishing or canceling the work will drop the other.
--	 */
--	xfs_trans_ail_insert(log->l_ailp, &buip->bui_item, lsn);
--	xfs_bui_release(buip);
-+
-+	xlog_recover_intent_item(log, &buip->bui_item, lsn,
-+			XFS_DEFER_OPS_TYPE_BMAP);
- 	return 0;
- }
- 
---- a/fs/xfs/xfs_extfree_item.c
-+++ b/fs/xfs/xfs_extfree_item.c
-@@ -820,12 +820,9 @@ xlog_recover_efi_commit_pass2(
- 		return error;
+ 	if (!ctx->raw_edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
+-		return -EFAULT;
++		return 0;
  	}
- 	atomic_set(&efip->efi_next_extent, efi_formatp->efi_nextents);
--	/*
--	 * Insert the intent into the AIL directly and drop one reference so
--	 * that finishing or canceling the work will drop the other.
--	 */
--	xfs_trans_ail_insert(log->l_ailp, &efip->efi_item, lsn);
--	xfs_efi_release(efip);
-+
-+	xlog_recover_intent_item(log, &efip->efi_item, lsn,
-+			XFS_DEFER_OPS_TYPE_FREE);
- 	return 0;
- }
  
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1542,6 +1542,7 @@ xlog_alloc_log(
- 	log->l_covered_state = XLOG_STATE_COVER_IDLE;
- 	set_bit(XLOG_ACTIVE_RECOVERY, &log->l_opstate);
- 	INIT_DELAYED_WORK(&log->l_work, xfs_log_worker);
-+	INIT_LIST_HEAD(&log->r_dfops);
+ 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
+ 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
+ 	if (!edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
+-		return -ENOMEM;
++		return 0;
+ 	}
  
- 	log->l_prev_block  = -1;
- 	/* log->l_tail_lsn = 0x100000000LL; cycle = 1; current block = 0 */
---- a/fs/xfs/xfs_log_priv.h
-+++ b/fs/xfs/xfs_log_priv.h
-@@ -407,6 +407,7 @@ struct xlog {
- 	long			l_opstate;	/* operational state */
- 	uint			l_quotaoffs_flag; /* XFS_DQ_*, for QUOTAOFFs */
- 	struct list_head	*l_buf_cancel_table;
-+	struct list_head	r_dfops;	/* recovered log intent items */
- 	int			l_iclog_hsize;  /* size of iclog header */
- 	int			l_iclog_heads;  /* # of iclog header sectors */
- 	uint			l_sectBBsize;   /* sector size in BBs (2^n) */
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -1723,30 +1723,24 @@ xlog_clear_stale_blocks(
-  */
- void
- xlog_recover_release_intent(
--	struct xlog		*log,
--	unsigned short		intent_type,
--	uint64_t		intent_id)
-+	struct xlog			*log,
-+	unsigned short			intent_type,
-+	uint64_t			intent_id)
- {
--	struct xfs_ail_cursor	cur;
--	struct xfs_log_item	*lip;
--	struct xfs_ail		*ailp = log->l_ailp;
--
--	spin_lock(&ailp->ail_lock);
--	for (lip = xfs_trans_ail_cursor_first(ailp, &cur, 0); lip != NULL;
--	     lip = xfs_trans_ail_cursor_next(ailp, &cur)) {
-+	struct xfs_defer_pending	*dfp, *n;
-+
-+	list_for_each_entry_safe(dfp, n, &log->r_dfops, dfp_list) {
-+		struct xfs_log_item	*lip = dfp->dfp_intent;
-+
- 		if (lip->li_type != intent_type)
- 			continue;
- 		if (!lip->li_ops->iop_match(lip, intent_id))
- 			continue;
+ 	drm_connector_update_edid_property(connector, edid);
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index 1a7194a653ae5..be2d9cbaaef2e 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -887,11 +887,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
+ 	int ret;
  
--		spin_unlock(&ailp->ail_lock);
--		lip->li_ops->iop_release(lip);
--		spin_lock(&ailp->ail_lock);
--		break;
--	}
-+		ASSERT(xlog_item_is_intent(lip));
+ 	if (!hdata->ddc_adpt)
+-		return -ENODEV;
++		return 0;
  
--	xfs_trans_ail_cursor_done(&cur);
--	spin_unlock(&ailp->ail_lock);
-+		xfs_defer_cancel_recovery(log->l_mp, dfp);
-+	}
- }
+ 	edid = drm_get_edid(connector, hdata->ddc_adpt);
+ 	if (!edid)
+-		return -ENODEV;
++		return 0;
  
- int
-@@ -1939,6 +1933,29 @@ xlog_buf_readahead(
- 		xfs_buf_readahead(log->l_mp->m_ddev_targp, blkno, len, ops);
- }
- 
-+/*
-+ * Create a deferred work structure for resuming and tracking the progress of a
-+ * log intent item that was found during recovery.
-+ */
-+void
-+xlog_recover_intent_item(
-+	struct xlog			*log,
-+	struct xfs_log_item		*lip,
-+	xfs_lsn_t			lsn,
-+	unsigned int			dfp_type)
-+{
-+	ASSERT(xlog_item_is_intent(lip));
-+
-+	xfs_defer_start_recovery(lip, dfp_type, &log->r_dfops);
-+
-+	/*
-+	 * Insert the intent into the AIL directly and drop one reference so
-+	 * that finishing or canceling the work will drop the other.
-+	 */
-+	xfs_trans_ail_insert(log->l_ailp, lip, lsn);
-+	lip->li_ops->iop_unpin(lip, 0);
-+}
-+
- STATIC int
- xlog_recover_items_pass2(
- 	struct xlog                     *log,
-@@ -2533,29 +2550,22 @@ xlog_abort_defer_ops(
-  */
- STATIC int
- xlog_recover_process_intents(
--	struct xlog		*log)
-+	struct xlog			*log)
- {
- 	LIST_HEAD(capture_list);
--	struct xfs_ail_cursor	cur;
--	struct xfs_log_item	*lip;
--	struct xfs_ail		*ailp;
--	int			error = 0;
-+	struct xfs_defer_pending	*dfp, *n;
-+	int				error = 0;
- #if defined(DEBUG) || defined(XFS_WARN)
--	xfs_lsn_t		last_lsn;
--#endif
-+	xfs_lsn_t			last_lsn;
- 
--	ailp = log->l_ailp;
--	spin_lock(&ailp->ail_lock);
--#if defined(DEBUG) || defined(XFS_WARN)
- 	last_lsn = xlog_assign_lsn(log->l_curr_cycle, log->l_curr_block);
- #endif
--	for (lip = xfs_trans_ail_cursor_first(ailp, &cur, 0);
--	     lip != NULL;
--	     lip = xfs_trans_ail_cursor_next(ailp, &cur)) {
--		const struct xfs_item_ops	*ops;
- 
--		if (!xlog_item_is_intent(lip))
--			break;
-+	list_for_each_entry_safe(dfp, n, &log->r_dfops, dfp_list) {
-+		struct xfs_log_item	*lip = dfp->dfp_intent;
-+		const struct xfs_item_ops *ops = lip->li_ops;
-+
-+		ASSERT(xlog_item_is_intent(lip));
- 
- 		/*
- 		 * We should never see a redo item with a LSN higher than
-@@ -2573,19 +2583,22 @@ xlog_recover_process_intents(
- 		 * The recovery function can free the log item, so we must not
- 		 * access lip after it returns.
- 		 */
--		spin_unlock(&ailp->ail_lock);
--		ops = lip->li_ops;
- 		error = ops->iop_recover(lip, &capture_list);
--		spin_lock(&ailp->ail_lock);
- 		if (error) {
- 			trace_xlog_intent_recovery_failed(log->l_mp, error,
- 					ops->iop_recover);
- 			break;
- 		}
--	}
- 
--	xfs_trans_ail_cursor_done(&cur);
--	spin_unlock(&ailp->ail_lock);
-+		/*
-+		 * XXX: @lip could have been freed, so detach the log item from
-+		 * the pending item before freeing the pending item.  This does
-+		 * not fix the existing UAF bug that occurs if ->iop_recover
-+		 * fails after creating the intent done item.
-+		 */
-+		dfp->dfp_intent = NULL;
-+		xfs_defer_cancel_recovery(log->l_mp, dfp);
-+	}
- 	if (error)
- 		goto err;
- 
-@@ -2606,27 +2619,15 @@ err:
-  */
- STATIC void
- xlog_recover_cancel_intents(
--	struct xlog		*log)
-+	struct xlog			*log)
- {
--	struct xfs_log_item	*lip;
--	struct xfs_ail_cursor	cur;
--	struct xfs_ail		*ailp;
--
--	ailp = log->l_ailp;
--	spin_lock(&ailp->ail_lock);
--	lip = xfs_trans_ail_cursor_first(ailp, &cur, 0);
--	while (lip != NULL) {
--		if (!xlog_item_is_intent(lip))
--			break;
-+	struct xfs_defer_pending	*dfp, *n;
- 
--		spin_unlock(&ailp->ail_lock);
--		lip->li_ops->iop_release(lip);
--		spin_lock(&ailp->ail_lock);
--		lip = xfs_trans_ail_cursor_next(ailp, &cur);
--	}
-+	list_for_each_entry_safe(dfp, n, &log->r_dfops, dfp_list) {
-+		ASSERT(xlog_item_is_intent(dfp->dfp_intent));
- 
--	xfs_trans_ail_cursor_done(&cur);
--	spin_unlock(&ailp->ail_lock);
-+		xfs_defer_cancel_recovery(log->l_mp, dfp);
-+	}
- }
- 
- /*
---- a/fs/xfs/xfs_refcount_item.c
-+++ b/fs/xfs/xfs_refcount_item.c
-@@ -696,12 +696,9 @@ xlog_recover_cui_commit_pass2(
- 	cuip = xfs_cui_init(mp, cui_formatp->cui_nextents);
- 	xfs_cui_copy_format(&cuip->cui_format, cui_formatp);
- 	atomic_set(&cuip->cui_next_extent, cui_formatp->cui_nextents);
--	/*
--	 * Insert the intent into the AIL directly and drop one reference so
--	 * that finishing or canceling the work will drop the other.
--	 */
--	xfs_trans_ail_insert(log->l_ailp, &cuip->cui_item, lsn);
--	xfs_cui_release(cuip);
-+
-+	xlog_recover_intent_item(log, &cuip->cui_item, lsn,
-+			XFS_DEFER_OPS_TYPE_REFCOUNT);
- 	return 0;
- }
- 
---- a/fs/xfs/xfs_rmap_item.c
-+++ b/fs/xfs/xfs_rmap_item.c
-@@ -702,12 +702,9 @@ xlog_recover_rui_commit_pass2(
- 	ruip = xfs_rui_init(mp, rui_formatp->rui_nextents);
- 	xfs_rui_copy_format(&ruip->rui_format, rui_formatp);
- 	atomic_set(&ruip->rui_next_extent, rui_formatp->rui_nextents);
--	/*
--	 * Insert the intent into the AIL directly and drop one reference so
--	 * that finishing or canceling the work will drop the other.
--	 */
--	xfs_trans_ail_insert(log->l_ailp, &ruip->rui_item, lsn);
--	xfs_rui_release(ruip);
-+
-+	xlog_recover_intent_item(log, &ruip->rui_item, lsn,
-+			XFS_DEFER_OPS_TYPE_RMAP);
- 	return 0;
- }
- 
+ 	hdata->dvi_mode = !connector->display_info.is_hdmi;
+ 	DRM_DEV_DEBUG_KMS(hdata->dev, "%s : width[%d] x height[%d]\n",
+-- 
+2.43.0
+
 
 
 
