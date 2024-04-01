@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-34916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A243C894172
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:42:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E43A893FB9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3B411C20E66
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:42:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3571E1F21E7A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843EF481BF;
-	Mon,  1 Apr 2024 16:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B52745BE4;
+	Mon,  1 Apr 2024 16:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4pVahBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPkWTPFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6434654F;
-	Mon,  1 Apr 2024 16:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588EBC129;
+	Mon,  1 Apr 2024 16:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989730; cv=none; b=jhP805nc69Yb4VroVxrPJR0Le45+yR56Eu99qKwJKgHSYEWAwVfrtBwXpwziEYm1LaOvmsGHR0sXSvKDsvHXMQcRYaxuOHQQ3qD1vVlUHZ6OdpGY/1uk8HKn49iDpz5Kk1NZ22BxBt7px7V/sg6Un8LgJm7g0cm6NVpBaduYbkQ=
+	t=1711988424; cv=none; b=VXID8sOTJV1SgZqw6G69KXcW5fmx9nRsf7I3NHEiqYG9svn+E1BDW5kJ/QJ/bKcJuU0NTeR30iobdhhUAdSwRyd1V8CwCtE/TOdYuLs6PqawFoUJMhNbG3BfAycmVenMHQL7eaud9lV0Hu0a+NgFbU2r22SQxBLNVg510U6P4hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989730; c=relaxed/simple;
-	bh=79nKVjqieIpUIclvKGLwyT/z1xpqajHgk7TEB6OSxrM=;
+	s=arc-20240116; t=1711988424; c=relaxed/simple;
+	bh=5z1fErpRDQUcKd6+bsBslOG/wKP3ZoOokV7DR6fIhiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqZSactPbm3sAiderGd4ISfA0dakJcJIKQCxzN4m4iQ9/EBhoNrVmvfjGDQg4R88OhLbmaRwIcnIAtNMGxsDPzcFvBZkWBJEqo//s3aRqeV7V5hUaV97cPgUOmw4CKrJjq56Bj8VsnD06BmbEtkLIvsJqhuJcRYK9/aUuTbMBwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4pVahBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D539C433C7;
-	Mon,  1 Apr 2024 16:42:09 +0000 (UTC)
+	 MIME-Version; b=NPxGHcwnIRLvZmB7bHxssjuCBArDPmnxJ211Ono94uBjrrP2534cvFPOwFLlQmgoI1fDGXBttGXs6l0IvBC8qWD1lqtfl/nkoDBLvib1gWgeqGfXhX9iQFK9+oDEu5x1lb/a3gHrY0ddUqCUH11YPjUwPffSIqHRrLK+CYuweDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPkWTPFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA643C433C7;
+	Mon,  1 Apr 2024 16:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989729;
-	bh=79nKVjqieIpUIclvKGLwyT/z1xpqajHgk7TEB6OSxrM=;
+	s=korg; t=1711988424;
+	bh=5z1fErpRDQUcKd6+bsBslOG/wKP3ZoOokV7DR6fIhiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4pVahBGD7Q45esFpS4VZI0dZI8x4Cq7cEylkgkhCoaflI1p0iTIGweADW9ZFCy2N
-	 J49bdrVPqgxdh5Tw3wheMbCIIT7n5/nkqH3P5doPyIgMU4w7Re57uNgLE/sgxTdsD3
-	 spGIGRivBqN+JzTfAjm/4euEZyyMiYkkQl7bqCqo=
+	b=WPkWTPFX2Lo7Xif5JKAB29wRXU9uAWvSFRnUjFUfcFhZFyFJmhK1I4iGmI736U3yP
+	 HEdg8zO8w+N7ScU5XbX7L6H33FzIMpCqvkmEkAcei/PPviDbl7LN4xpS+Ope43nfH+
+	 5QDkWdWAYwpxc7WSdhex7G5M94PD3qyytZiTSS6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Dave Wysochanski <dwysocha@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Eugene Korenevsky <ekorenevsky@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/396] NFS: Read unlock folio on nfs_page_create_from_folio() error
-Date: Mon,  1 Apr 2024 17:42:47 +0200
-Message-ID: <20240401152551.436202821@linuxfoundation.org>
+Subject: [PATCH 6.7 181/432] cifs: open_cached_dir(): add FILE_READ_EA to desired access
+Date: Mon,  1 Apr 2024 17:42:48 +0200
+Message-ID: <20240401152558.542729979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Eugene Korenevsky <ekorenevsky@astralinux.ru>
 
-[ Upstream commit 11974eec839c167362af685aae5f5e1baaf979eb ]
+[ Upstream commit f1b8224b4e6ed59e7e6f5c548673c67410098d8d ]
 
-The netfs conversion lost a folio_unlock() for the case where
-nfs_page_create_from_folio() returns an error (usually -ENOMEM).  Restore
-it.
+Since smb2_query_eas() reads EA and uses cached directory,
+open_cached_dir() should request FILE_READ_EA access.
 
-Reported-by: David Jeffery <djeffery@redhat.com>
-Cc: <stable@vger.kernel.org> # 6.4+
-Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Acked-by: Dave Wysochanski <dwysocha@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Otherwise listxattr() and getxattr() will fail with EACCES
+(0xc0000022 STATUS_ACCESS_DENIED SMB status).
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218543
+Cc: stable@vger.kernel.org
+Signed-off-by: Eugene Korenevsky <ekorenevsky@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/read.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/cached_dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/read.c b/fs/nfs/read.c
-index 7dc21a48e3e7b..a142287d86f68 100644
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -305,6 +305,8 @@ int nfs_read_add_folio(struct nfs_pageio_descriptor *pgio,
- 	new = nfs_page_create_from_folio(ctx, folio, 0, aligned_len);
- 	if (IS_ERR(new)) {
- 		error = PTR_ERR(new);
-+		if (nfs_netfs_folio_unlock(folio))
-+			folio_unlock(folio);
- 		goto out;
- 	}
- 
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index 5730c65ffb40d..15e1215bc4e5a 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -233,7 +233,8 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 		.tcon = tcon,
+ 		.path = path,
+ 		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_FILE),
+-		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES,
++		.desired_access =  FILE_READ_DATA | FILE_READ_ATTRIBUTES |
++				   FILE_READ_EA,
+ 		.disposition = FILE_OPEN,
+ 		.fid = pfid,
+ 	};
 -- 
 2.43.0
 
