@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-35127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072C5894288
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 853D78943AD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16851F25EF7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB2E1F26250
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D264C630;
-	Mon,  1 Apr 2024 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFC04D9F0;
+	Mon,  1 Apr 2024 17:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVXszQoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOKt09fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE3E4D584;
-	Mon,  1 Apr 2024 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0554D59E;
+	Mon,  1 Apr 2024 17:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990402; cv=none; b=bzscoxH2Cskul20m1o7q9CYOec6NQdaQH12NwdlGwCy8c73Cjs0HF24TTYmKzEzQMDkRsN86k1VMcrjSBrkTszdvx1Qdrn5D1ga9XfxMR0dIb/0W0JWk6ESx8IuHi3Ed2N3ADaCtwncN8b91oxbwul9Cifes4sZqtVSW0NWvMNE=
+	t=1711991199; cv=none; b=QDfOQTQs6Raxe8xeJXwhvmWt0xNm8nL4/GDva0NmY8uncRTjoY6QnwxoqbyIS6AcOHi4vao9rUfThTIdwKYZjyDHrmH7M8YWO3bOPa/jTzTrwydJTsbPJ2VwS1k5sB+wrA+OIGUvqs1NtWgb5x82VYMM5+X1cU4YhFfJZgd+WpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990402; c=relaxed/simple;
-	bh=JDpRSVY3kAkdlSk1wAWCgfb7bMKYRn390OWDoHrjA4k=;
+	s=arc-20240116; t=1711991199; c=relaxed/simple;
+	bh=61wGDqvEBsiGsdHKp/PUg6mpYJ3nW1pK/8ww2V7kGTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jExAAvmdp3xetz2Iq4pTW0uGmWlHlFv1ZpAiTeK+R2q+J1ZIEToiwIHsWpXBaART42uM5ivQ61WKnw2ozrd5hEznKkV/Dwn2spn/c+VbVluWnsjSH0BTy513xHfOm6fptMP/m3RpgIrvjytG9LK0zCkQZF1QySLIs3VAk00tddU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVXszQoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F26C433F1;
-	Mon,  1 Apr 2024 16:53:21 +0000 (UTC)
+	 MIME-Version; b=BGUNehsjo71oNBTQJp9YpxTnzoJ6wpi+n/m5a1F8maCsbsFSiYvAL0UK8SR+ThvPkvQwTyBiu+FA67cVbby4VmRBA/S5KxTIAt0/smTy8bpmFOZvuOG9oUPte+3H0FSgpM9ZaFJ8dNFvF2qr6E1EiYLZpA9bKdieI/8ASOz3itc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOKt09fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC2BC433F1;
+	Mon,  1 Apr 2024 17:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990402;
-	bh=JDpRSVY3kAkdlSk1wAWCgfb7bMKYRn390OWDoHrjA4k=;
+	s=korg; t=1711991199;
+	bh=61wGDqvEBsiGsdHKp/PUg6mpYJ3nW1pK/8ww2V7kGTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVXszQoeioRPN6QeSrfp5Y/ESEznjiaZ6k+J7XIIbD3Unv/h2OSJAi9ohOGrNFLxk
-	 BRgD384pj50ILB6IHhgBdiO1fwAGvq7RTrEQKxFU5G/MYy+p4vZngL8patQsRQ80Ai
-	 kJUvi03872/V2xefnzuWSGyvEsuzC/5upNbzsnKU=
+	b=iOKt09fqOY4/2Yx/9RHT26XmZyWrsI2tmHVi1ox8Lf4OaKotujf9P0+PlzRjctHmN
+	 2vH4qwZxPomi3nXH89iIbX3RRYHe9Eg6tp3WO2om0FGyoynSK5f/MBedFYDOkXuebP
+	 EAAl2KrAQFMIeaAGG6FVilbN0v+Q6Dm+lLAviQSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Liming Sun <limings@nvidia.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 334/396] sdhci-of-dwcmshc: disable PM runtime in dwcmshc_remove()
+	Adamos Ttofari <attofari@amazon.de>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 193/272] x86/fpu: Keep xfd_state in sync with MSR_IA32_XFD
 Date: Mon,  1 Apr 2024 17:46:23 +0200
-Message-ID: <20240401152557.872192083@linuxfoundation.org>
+Message-ID: <20240401152536.911213891@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liming Sun <limings@nvidia.com>
+From: Adamos Ttofari <attofari@amazon.de>
 
-commit 03749309909935070253accab314288d332a204d upstream.
+[ Upstream commit 10e4b5166df9ff7a2d5316138ca668b42d004422 ]
 
-This commit disables PM runtime in dwcmshc_remove() to avoid the
-error message below when reloading the sdhci-of-dwcmshc.ko
+Commit 672365477ae8 ("x86/fpu: Update XFD state where required") and
+commit 8bf26758ca96 ("x86/fpu: Add XFD state to fpstate") introduced a
+per CPU variable xfd_state to keep the MSR_IA32_XFD value cached, in
+order to avoid unnecessary writes to the MSR.
 
-  sdhci-dwcmshc MLNXBF30:00: Unbalanced pm_runtime_enable!
+On CPU hotplug MSR_IA32_XFD is reset to the init_fpstate.xfd, which
+wipes out any stale state. But the per CPU cached xfd value is not
+reset, which brings them out of sync.
 
-Fixes: 48fe8fadbe5e ("mmc: sdhci-of-dwcmshc: Add runtime PM operations")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Liming Sun <limings@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/b9155963ffb12d18375002bf9ac9a3f98b727fc8.1710854108.git.limings@nvidia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a consequence a subsequent xfd_update_state() might fail to update
+the MSR which in turn can result in XRSTOR raising a #NM in kernel
+space, which crashes the kernel.
+
+To fix this, introduce xfd_set_state() to write xfd_state together
+with MSR_IA32_XFD, and use it in all places that set MSR_IA32_XFD.
+
+Fixes: 672365477ae8 ("x86/fpu: Update XFD state where required")
+Signed-off-by: Adamos Ttofari <attofari@amazon.de>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240322230439.456571-1-chang.seok.bae@intel.com
+
+Closes: https://lore.kernel.org/lkml/20230511152818.13839-1-attofari@amazon.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ arch/x86/kernel/fpu/xstate.c |  5 +++--
+ arch/x86/kernel/fpu/xstate.h | 14 ++++++++++----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -584,6 +584,17 @@ free_pltfm:
- 	return err;
- }
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index ebe698f8af73b..2aa849705bb68 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -177,10 +177,11 @@ void fpu__init_cpu_xstate(void)
+ 	 * Must happen after CR4 setup and before xsetbv() to allow KVM
+ 	 * lazy passthrough.  Write independent of the dynamic state static
+ 	 * key as that does not work on the boot CPU. This also ensures
+-	 * that any stale state is wiped out from XFD.
++	 * that any stale state is wiped out from XFD. Reset the per CPU
++	 * xfd cache too.
+ 	 */
+ 	if (cpu_feature_enabled(X86_FEATURE_XFD))
+-		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
++		xfd_set_state(init_fpstate.xfd);
  
-+static void dwcmshc_disable_card_clk(struct sdhci_host *host)
+ 	/*
+ 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 3518fb26d06b0..19ca623ffa2ac 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -148,20 +148,26 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
+ #endif
+ 
+ #ifdef CONFIG_X86_64
++static inline void xfd_set_state(u64 xfd)
 +{
-+	u16 ctrl;
-+
-+	ctrl = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+	if (ctrl & SDHCI_CLOCK_CARD_EN) {
-+		ctrl &= ~SDHCI_CLOCK_CARD_EN;
-+		sdhci_writew(host, ctrl, SDHCI_CLOCK_CONTROL);
-+	}
++	wrmsrl(MSR_IA32_XFD, xfd);
++	__this_cpu_write(xfd_state, xfd);
 +}
 +
- static void dwcmshc_remove(struct platform_device *pdev)
+ static inline void xfd_update_state(struct fpstate *fpstate)
  {
- 	struct sdhci_host *host = platform_get_drvdata(pdev);
-@@ -591,8 +602,14 @@ static void dwcmshc_remove(struct platfo
- 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	struct rk35xx_priv *rk_priv = priv->priv;
+ 	if (fpu_state_size_dynamic()) {
+ 		u64 xfd = fpstate->xfd;
  
-+	pm_runtime_get_sync(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+
- 	sdhci_remove_host(host, 0);
- 
-+	dwcmshc_disable_card_clk(host);
-+
- 	clk_disable_unprepare(pltfm_host->clk);
- 	clk_disable_unprepare(priv->bus_clk);
- 	if (rk_priv)
-@@ -683,17 +700,6 @@ static void dwcmshc_enable_card_clk(stru
- 		sdhci_writew(host, ctrl, SDHCI_CLOCK_CONTROL);
+-		if (__this_cpu_read(xfd_state) != xfd) {
+-			wrmsrl(MSR_IA32_XFD, xfd);
+-			__this_cpu_write(xfd_state, xfd);
+-		}
++		if (__this_cpu_read(xfd_state) != xfd)
++			xfd_set_state(xfd);
  	}
  }
--
--static void dwcmshc_disable_card_clk(struct sdhci_host *host)
--{
--	u16 ctrl;
--
--	ctrl = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
--	if (ctrl & SDHCI_CLOCK_CARD_EN) {
--		ctrl &= ~SDHCI_CLOCK_CARD_EN;
--		sdhci_writew(host, ctrl, SDHCI_CLOCK_CONTROL);
--	}
--}
  
- static int dwcmshc_runtime_suspend(struct device *dev)
- {
+ extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
+ #else
++static inline void xfd_set_state(u64 xfd) { }
++
+ static inline void xfd_update_state(struct fpstate *fpstate) { }
+ 
+ static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
+-- 
+2.43.0
+
 
 
 
