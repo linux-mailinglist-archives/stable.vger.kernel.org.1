@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DE989423B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:51:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 197C4894399
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFCB1C210CA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C923A2837EC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078D64CDEC;
-	Mon,  1 Apr 2024 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12231481B8;
+	Mon,  1 Apr 2024 17:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiYqRuld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3t5pgOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A44CB4A;
-	Mon,  1 Apr 2024 16:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47241DFF4;
+	Mon,  1 Apr 2024 17:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990237; cv=none; b=NHRhx7orB6Fk2pU66Z93D7nUQQNC2RUJ1C103weIUOTFRDx7BF2WQB8B2sg/2zNg7qiJrBXiO16SUQ+lAy/LRLOvIBk6RDBJdT451GPB7u0F06AKf5WEZvcIza7/QPFcK5+uHjSaJmt/GdzKxiJTVMO+UPLSR/hjBy5fjDVO2Uw=
+	t=1711991145; cv=none; b=AggdKhf5aiSBa3YZRPnuXqWB1PAujFD4cL/CshyxSmh0pKksmRIPnhrPC0x7wWVduCZe/qvKcxQkCOTWapqiA/5r43LIkO1A5A1OBnGQjtu8vc7VkgmJirw6PIYwu2vI6HQvFMcucuXASn2WyASxnhjL3HtFnUpExsq/z9I1K50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990237; c=relaxed/simple;
-	bh=hDz67f2DB412MPmFBtDa4LB1SuH3Qj4S7QwtQDfgXeE=;
+	s=arc-20240116; t=1711991145; c=relaxed/simple;
+	bh=2PMGuIQP9jlPCKZ/UrCaDF4o8pIJ+A9FDuSS1P14DFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXJbMa78NHlI185sFZMBgGzWBSaK30qI+SvoX1iLulS2gpCfB/TmC+X8Uaw4cepl+g3rR6mWbEXke2QR/o9imN2M7j+k5SclVV5B1bTmsf21kJnIQ7U3Wk/J4GxxVPnS/7n5Or7c2mx91C/7OXIK3RRmcGrl5TRMJaMddP+tFLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiYqRuld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3DEC43390;
-	Mon,  1 Apr 2024 16:50:36 +0000 (UTC)
+	 MIME-Version; b=SMu0HBLcNp8Su7NPj5A/cABEcz6YP22alrRrbxHGHz3u9p4n7TYib8Jcp1OAbwbf2HHfudoJKVzDz5EBwAgo8YEFr5WKOM8Ey+cHIRo9osjaMusm7SE1ca54yx5U3F8Cf33ZAmjCLZdSujOpIMFOo1m6JHZkMBFT2HHWjGykqto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3t5pgOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B320C433F1;
+	Mon,  1 Apr 2024 17:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990237;
-	bh=hDz67f2DB412MPmFBtDa4LB1SuH3Qj4S7QwtQDfgXeE=;
+	s=korg; t=1711991145;
+	bh=2PMGuIQP9jlPCKZ/UrCaDF4o8pIJ+A9FDuSS1P14DFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiYqRuldcbUbTppvRIyqbgCFfGfeuXoMxFbIs/QCZBqppR38QzA5z4Ra+wo3IGlYC
-	 thUNNZ/XooC4NgNcfzuBl95kJDWeqev0IuZTDOIVYZYpyrVxA+Qb7yRWAU5+0tzKgv
-	 oocleKDU6CH2294kZQ57Cp6FLr4IIQO/a3Nku9KU=
+	b=M3t5pgOpRHttMPOIGyekggvOmrF1/w/v2kirM/f/2SWxg7JSFoaSzUmFJb1cL9s+W
+	 uRD9hv++VEs5VYyUFXeC+6fkv74v3hAfeq17q3mpKM/euYrZEh/NFYn4MkSwAVW4O1
+	 O3v0N/W0HYK1/6xPrHMwAKp0h30rYtzl4uzl3dK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/396] swiotlb: Honour dma_alloc_coherent() alignment in swiotlb_alloc()
-Date: Mon,  1 Apr 2024 17:45:38 +0200
-Message-ID: <20240401152556.521724707@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.1 149/272] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
+Date: Mon,  1 Apr 2024 17:45:39 +0200
+Message-ID: <20240401152535.357438895@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit cbf53074a528191df82b4dba1e3d21191102255e ]
+commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
 
-core-api/dma-api-howto.rst states the following properties of
-dma_alloc_coherent():
+After a couple recent changes in LLVM, there is a warning (or error with
+CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
+specifically the memset() in copy_to_user_tmpl().
 
-  | The CPU virtual address and the DMA address are both guaranteed to
-  | be aligned to the smallest PAGE_SIZE order which is greater than or
-  | equal to the requested size.
+  In file included from net/xfrm/xfrm_user.c:14:
+  ...
+  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+    438 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  1 error generated.
 
-However, swiotlb_alloc() passes zero for the 'alloc_align_mask'
-parameter of swiotlb_find_slots() and so this property is not upheld.
-Instead, allocations larger than a page are aligned to PAGE_SIZE,
+While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
+is first assigned in copy_templates() by calling validate_tmpl() first
+(so there should not be any issue in practice), LLVM/clang cannot really
+deduce that across the boundaries of these functions. Without that
+knowledge, it cannot assume that the loop stops before i is greater than
+XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
+memset().
 
-Calculate the mask corresponding to the page order suitable for holding
-the allocation and pass that to swiotlb_find_slots().
+To make the bounds of ->xfrm_nr clear to the compiler and add additional
+defense in case copy_to_user_tmpl() is ever used in a path where
+->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
+add an explicit bound check and early return, which clears up the
+warning.
 
-Fixes: e81e99bacc9f ("swiotlb: Support aligned swiotlb buffers")
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linux/issues/1985
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/swiotlb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_user.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index e59f510a5d8a6..ded5a1f9e8f82 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -1608,12 +1608,14 @@ struct page *swiotlb_alloc(struct device *dev, size_t size)
- 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
- 	struct io_tlb_pool *pool;
- 	phys_addr_t tlb_addr;
-+	unsigned int align;
- 	int index;
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1979,6 +1979,9 @@ static int copy_to_user_tmpl(struct xfrm
+ 	if (xp->xfrm_nr == 0)
+ 		return 0;
  
- 	if (!mem)
- 		return NULL;
- 
--	index = swiotlb_find_slots(dev, 0, size, 0, &pool);
-+	align = (1 << (get_order(size) + PAGE_SHIFT)) - 1;
-+	index = swiotlb_find_slots(dev, 0, size, align, &pool);
- 	if (index == -1)
- 		return NULL;
- 
--- 
-2.43.0
-
++	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
++		return -ENOBUFS;
++
+ 	for (i = 0; i < xp->xfrm_nr; i++) {
+ 		struct xfrm_user_tmpl *up = &vec[i];
+ 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
 
 
 
