@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-34728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BFA894092
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB68C89439B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3268F1C215C1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86EB0B216CE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD0D3BBC3;
-	Mon,  1 Apr 2024 16:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35376446B6;
+	Mon,  1 Apr 2024 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY9QC8LW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0nNXeae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCA71E86C;
-	Mon,  1 Apr 2024 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DF51DFF4;
+	Mon,  1 Apr 2024 17:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989100; cv=none; b=FVvDhqWyqDYepdWoKWdBheh6LDC+GOF49v1wzBfZk00JhhpeNt1IeroyRsYMtx5L1tvOpdx3Q451smCgnOT9L9UcTfoIjesEpQY7Ucb3iX9EOx8pF9O+XrgxDG/IzU9JnM7sg5Htmq6UncbmM3/KErd/1g/Bn2x+JMuhlQGCfkc=
+	t=1711991149; cv=none; b=idbOLK0cM1MPqBY8cCiuLUlntIcF4uonkdSAmFNNbqPK933P5Vjs8F5ObVxmKbSzrn/aEduhZ/qOoYuC8Izrxz3zn8qNx2hFgDKZ69AHgsxsRsrgyK2b4glw1c4UYTi6F0fbWlYQ0QZZ8xGfUIGkoq+nKrNG/yVi2gbppDN8PV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989100; c=relaxed/simple;
-	bh=ZdwGR3dPrVRIYqvun8xd01TzWsvIT608CRVnwramAdM=;
+	s=arc-20240116; t=1711991149; c=relaxed/simple;
+	bh=DbLpIw+u/oJWw/r8Ya6yoYmu6bfverxvHSh0EGhlVX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLq2sKj1+DAbdCDN19nzkKK1SLzydirfVK9GsW0zbpffrJGO82qYixQc4L2KBIoVWIsrXqUOYoo8Z6NXNeYI+J+zieJUw6E8YjN8j7dse6SBatx0KaNmMhgiGl05ByxyQpMlmF9juiCfPZdq3XKqhFJ6+xSZ+yBYD+FBi6N9u/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY9QC8LW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63555C433F1;
-	Mon,  1 Apr 2024 16:31:39 +0000 (UTC)
+	 MIME-Version; b=pjha9uql5/mFJCR4eBkS34w6ns9uk3BBGAauPndA4SMOmF5rIZI9m4vyZK7rkSo8olhnWAISE1zHm9tfBAJl5gGJ4WEIC2vOYXFCkDdrLI/lQxhPJ8e2SQIb+VcMYfDFEzyH9Bp1yThdj5U1EvceznRTwq5mjhf2d5RRYrWUAQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0nNXeae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8BFC433C7;
+	Mon,  1 Apr 2024 17:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989099;
-	bh=ZdwGR3dPrVRIYqvun8xd01TzWsvIT608CRVnwramAdM=;
+	s=korg; t=1711991148;
+	bh=DbLpIw+u/oJWw/r8Ya6yoYmu6bfverxvHSh0EGhlVX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZY9QC8LW+zPzLLS48ctV7ESTpVtGN8tJH2ONsOr+5PjwbE0ss5m0pRtfbV8mBu4lL
-	 QprNcCcqtL0ZVQKSW3PxTJz115FMkKjWuOF1i5CzDwQDvTiKAWE8Rm8/ZomegkFzJW
-	 pa9cclr44vx2pO2Y0Kkqx2AESAsK3aar4nhzjNkQ=
+	b=P0nNXeaesckfUk/ldCGkXrxG9gWJgNbxTWvDyCTDKnbpIqoU3ArsZFQeXn80bGnUs
+	 +pRvigM5/Z+cQXdhmnU3Tj1ddVbZfGBbAERSKOHXUYjvQLKmy4jqsyQEidbFbVRdun
+	 sKly8nvHduK9L97GJZo4l2gTOAiZjT+0XhDRJutU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ezra Buehler <ezra.buehler@husqvarnagroup.com>,
-	Martin Kurbanov <mmkurbanov@salutedevices.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 6.7 379/432] mtd: spinand: Add support for 5-byte IDs
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Srish Srinivasan <srish.srinivasan@broadcom.com>
+Subject: [PATCH 6.1 176/272] net: tls: handle backlogging of crypto requests
 Date: Mon,  1 Apr 2024 17:46:06 +0200
-Message-ID: <20240401152604.599689736@linuxfoundation.org>
+Message-ID: <20240401152536.269663992@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 34a956739d295de6010cdaafeed698ccbba87ea4 upstream.
+commit 8590541473188741055d27b955db0777569438e3 upstream.
 
-E.g. ESMT chips will return an identification code with a length of 5
-bytes. In order to prevent ambiguity, flash chips would actually need to
-return IDs that are up to 17 or more bytes long due to JEDEC's
-continuation scheme. I understand that if a manufacturer ID is located
-in bank N of JEDEC's database (there are currently 16 banks), N - 1
-continuation codes (7Fh) need to be added to the identification code
-(comprising of manufacturer ID and device ID). However, most flash chip
-manufacturers don't seem to implement this (correctly).
+Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
+requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
+ -EBUSY instead of -EINPROGRESS in valid situations. For example, when
+the cryptd queue for AESNI is full (easy to trigger with an
+artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
+to the backlog but still processed. In that case, the async callback
+will also be called twice: first with err == -EINPROGRESS, which it
+seems we can just ignore, then with err == 0.
 
-Signed-off-by: Ezra Buehler <ezra.buehler@husqvarnagroup.com>
-Reviewed-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Tested-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240125200108.24374-2-ezra@easyb.ch
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Compared to Sabrina's original patch this version uses the new
+tls_*crypt_async_wait() helpers and converts the EBUSY to
+EINPROGRESS to avoid having to modify all the error handling
+paths. The handling is identical.
+
+Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
+Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[Srish: v2: fixed hunk failures
+        fixed merge-conflict in stable branch linux-6.1.y,
+        needs to go on top of https://lore.kernel.org/stable/20240307155930.913525-1-lee@kernel.org/]
+Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mtd/spinand.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -169,7 +169,7 @@
- struct spinand_op;
- struct spinand_device;
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -195,6 +195,17 @@ static void tls_decrypt_done(crypto_comp
+ 	struct sock *sk;
+ 	int aead_size;
  
--#define SPINAND_MAX_ID_LEN	4
-+#define SPINAND_MAX_ID_LEN	5
- /*
-  * For erase, write and read operation, we got the following timings :
-  * tBERS (erase) 1ms to 4ms
++	/* If requests get too backlogged crypto API returns -EBUSY and calls
++	 * ->complete(-EINPROGRESS) immediately followed by ->complete(0)
++	 * to make waiting for backlog to flush with crypto_wait_req() easier.
++	 * First wait converts -EBUSY -> -EINPROGRESS, and the second one
++	 * -EINPROGRESS -> 0.
++	 * We have a single struct crypto_async_request per direction, this
++	 * scheme doesn't help us, so just ignore the first ->complete().
++	 */
++	if (err == -EINPROGRESS)
++		return;
++
+ 	aead_size = sizeof(*aead_req) + crypto_aead_reqsize(aead);
+ 	aead_size = ALIGN(aead_size, __alignof__(*dctx));
+ 	dctx = (void *)((u8 *)aead_req + aead_size);
+@@ -268,6 +279,10 @@ static int tls_do_decryption(struct sock
+ 	}
+ 
+ 	ret = crypto_aead_decrypt(aead_req);
++	if (ret == -EBUSY) {
++		ret = tls_decrypt_async_wait(ctx);
++		ret = ret ?: -EINPROGRESS;
++	}
+ 	if (ret == -EINPROGRESS) {
+ 		if (darg->async)
+ 			return 0;
+@@ -451,6 +466,9 @@ static void tls_encrypt_done(crypto_comp
+ 	struct tls_rec *rec;
+ 	struct sock *sk;
+ 
++	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
++		return;
++
+ 	rec = container_of(aead_req, struct tls_rec, aead_req);
+ 	msg_en = &rec->msg_encrypted;
+ 
+@@ -556,6 +574,10 @@ static int tls_do_encryption(struct sock
+ 	atomic_inc(&ctx->encrypt_pending);
+ 
+ 	rc = crypto_aead_encrypt(aead_req);
++	if (rc == -EBUSY) {
++		rc = tls_encrypt_async_wait(ctx);
++		rc = rc ?: -EINPROGRESS;
++	}
+ 	if (!rc || rc != -EINPROGRESS) {
+ 		atomic_dec(&ctx->encrypt_pending);
+ 		sge->offset -= prot->prepend_size;
 
 
 
