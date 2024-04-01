@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-35198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC67C8942DC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33EB893FDF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58423B22662
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D522285170
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F0F40876;
-	Mon,  1 Apr 2024 16:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AB846B9F;
+	Mon,  1 Apr 2024 16:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EywWHG+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4LXqIU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DDBA3F;
-	Mon,  1 Apr 2024 16:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AD0C129;
+	Mon,  1 Apr 2024 16:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990618; cv=none; b=pdcu2hGgIh8gzPcCju35APuTuAetW0AGxFD3sp7Jmdnq9w+8H5tEYI2Qz5WYuUfIzT916WGmgLr+xofI8B/AZrSsNAnD/XSUsC1bG36nD6Pm+z8DEGVzC5+owLgOem+IHD+uGG6xFIZfi2OrB90CET0X7tB3ESJ1zh0BsDsSevA=
+	t=1711988547; cv=none; b=bvFRjURgfOtCQAIKEYcrJ9KJT/KffHKuyhUcuo4adWtreOEqEmUAmdP13AwpAAb+ghfUQnnp3t8Ff1c+3ttIsV0dRnfWR46F4ITPmyzOs216TcjNJAfjpeMdPFn66s0T8YwjExuVYCmVelL2h2eWddmT7nUmNceHuvMAbeqv84I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990618; c=relaxed/simple;
-	bh=EwJTJpvLZU1ey9rgpI4kmnklSoG/EYppDTxZtf0amOo=;
+	s=arc-20240116; t=1711988547; c=relaxed/simple;
+	bh=FydO007xpH0Fkl+pBP+ruGYeybMnAH4xzcbI9d7B1SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2jwsh2OE7JEPeZik9xTmULszSlcOspoEZofkqeN8jYX1xSuyjUYoRauc/WBvkeIhnFbOwWbvcmvL28zKReKvS3EKzkycLNZdWTRqvH5rf2E/prUWkbmC80caQkintQlF3AEZV4aWjrR1ai80EBBZVOGpHR8sbsjWf4wiXIe32w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EywWHG+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC90C433C7;
-	Mon,  1 Apr 2024 16:56:57 +0000 (UTC)
+	 MIME-Version; b=sPFPhLR9SHovyEIe6be72JM1OaDDIa22aXHP7upel0Zc7YRi51d4KoaqA1AC8InIWGYv5XPL9kFsbuMCQeKyL0GvEPEAjgx89suDNrNjt6YzclAKcDJ0rllzi1Fz2d5BP8/DkQWz4BNSX/6sXxyZUCMQV8Ggos1ayTsf0iW5PLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4LXqIU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A0EC433F1;
+	Mon,  1 Apr 2024 16:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990618;
-	bh=EwJTJpvLZU1ey9rgpI4kmnklSoG/EYppDTxZtf0amOo=;
+	s=korg; t=1711988547;
+	bh=FydO007xpH0Fkl+pBP+ruGYeybMnAH4xzcbI9d7B1SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EywWHG+cVALF0s1ks7IxDvihvFbRVP8tps5mTCFBk+yotXEGggS3Ssn3RIGOPMbrc
-	 9j1TLwT8mt8UDSt0WFtrug6xTwoO40eOtS50TV3vD+wP3nPFZtaXKIvSObvgxsJnF7
-	 SlbCHiPg+rcn9P6Ea4lG0D+gkRxYB48dPM/SGQw0=
+	b=D4LXqIU5tymoVe5kDX+4LmOpb6VpjPLmX1hP1CNvfsH4hI/p74dmGQqmNjMZm9xqh
+	 gG9y/2agr0QhIl95cVLcX5yzyfo0kExfUpZSsRHedAtVwErKVUiCBFkFZ4bKcc4LPJ
+	 Fg/9qVRZ0nqRatBQgNKzd15m/7A9j3NNicqpGIDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Duncan Ma <duncan.ma@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/272] smack: Set SMACK64TRANSMUTE only for dirs in smack_inode_setxattr()
+Subject: [PATCH 6.7 217/432] drm/amd/display: Fix idle check for shared firmware state
 Date: Mon,  1 Apr 2024 17:43:24 +0200
-Message-ID: <20240401152530.739702153@linuxfoundation.org>
+Message-ID: <20240401152559.611841062@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 9c82169208dde516510aaba6bbd8b13976690c5d ]
+[ Upstream commit 3d066f9547dd58329b526db44f42c487a7974703 ]
 
-Since the SMACK64TRANSMUTE xattr makes sense only for directories, enforce
-this restriction in smack_inode_setxattr().
+[WHY]
+We still had an instance of get_idle_state checking the PMFW scratch
+register instead of the actual idle allow signal.
 
+[HOW]
+Replace it with the SW state check for whether we had allowed idle
+through notify_idle.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Reviewed-by: Duncan Ma <duncan.ma@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index fbadc61feedd1..07f7351148ecf 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1309,7 +1309,8 @@ static int smack_inode_setxattr(struct user_namespace *mnt_userns,
- 		check_star = 1;
- 	} else if (strcmp(name, XATTR_NAME_SMACKTRANSMUTE) == 0) {
- 		check_priv = 1;
--		if (size != TRANS_TRUE_SIZE ||
-+		if (!S_ISDIR(d_backing_inode(dentry)->i_mode) ||
-+		    size != TRANS_TRUE_SIZE ||
- 		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
- 			rc = -EINVAL;
- 	} else
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index dab26d7e4d52a..b51208f44c240 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4925,22 +4925,16 @@ void dc_allow_idle_optimizations(struct dc *dc, bool allow)
+ 
+ bool dc_dmub_is_ips_idle_state(struct dc *dc)
+ {
+-	uint32_t idle_state = 0;
+-
+ 	if (dc->debug.disable_idle_power_optimizations)
+ 		return false;
+ 
+ 	if (!dc->caps.ips_support || (dc->config.disable_ips == DMUB_IPS_DISABLE_ALL))
+ 		return false;
+ 
+-	if (dc->hwss.get_idle_state)
+-		idle_state = dc->hwss.get_idle_state(dc);
+-
+-	if (!(idle_state & DMUB_IPS1_ALLOW_MASK) ||
+-		!(idle_state & DMUB_IPS2_ALLOW_MASK))
+-		return true;
++	if (!dc->ctx->dmub_srv)
++		return false;
+ 
+-	return false;
++	return dc->ctx->dmub_srv->idle_allowed;
+ }
+ 
+ /* set min and max memory clock to lowest and highest DPM level, respectively */
 -- 
 2.43.0
 
