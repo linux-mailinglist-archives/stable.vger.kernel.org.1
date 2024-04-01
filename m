@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1006E8939AD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB248939AE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 11:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B916A1F221F3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:45:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A731F211E0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 09:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D691110953;
-	Mon,  1 Apr 2024 09:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96613125C4;
+	Mon,  1 Apr 2024 09:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXgqCF6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY4fZ+E7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9797F125AB
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A97125AB
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 09:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711964718; cv=none; b=mHyW2cKPBCpNxAF3q20WUj4lT512QHccSRbPYGKviLHv052illKeT8wV85N/oFR/xWkFgW4/iOSCvVwX0JBd+4Iimn5vN0i5OiMx8SedCFawG2KN9orLp+1/DtYEdMRSYRY8KbwXr+4lX43RuLY2oYDIzcUmZPrOh9zUiL2h41E=
+	t=1711964723; cv=none; b=GQAeq3jxZWkykzx9cd1gf5ahU7Q5z1gnH+enfFFy5zoweOgKgbKnUI2qEczskWqrcgTHY+ftRR9kRqMF6ZrrL2iz6viFuBJ9t+xI7AVOBK8J/8c3dYZh36g2iy4d1fRqKw+WPREsp2HXrdhmCuxnd7U/fEgKnwcRsLJL3HMBcOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711964718; c=relaxed/simple;
-	bh=PIvDxz9dzJjGxRuI8UwliEln9SXw2U8AIJO1lsnjPcU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SELdKsaqPA5kz1XujRTIvt9JcR+8ihsBhBSKNsSYC4HCgAS8xL8RY5hRKix2DFiuza9NdbOF805Qt+MW9n7XMQ+Z3G+nQ+XCNwCAu3f2FX+Zsf9RLrCKo37svlsnVzKezMCJglmRWF5qy9rLb6rD2UiQOo1RmqcjfWDNzYGGKDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXgqCF6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95B5C43390;
-	Mon,  1 Apr 2024 09:45:17 +0000 (UTC)
+	s=arc-20240116; t=1711964723; c=relaxed/simple;
+	bh=NhfUXfCwOFVcOxUsoxoYobHa8u3rRehkedmW7jpV2TA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZsQ3sSZSNsbjWA0oITd+3Y6ySAgM1UePgCEOShX1UTnfoM6v8Jj7G32RhTGrCqpinZZV5YNBfVOnVZgEtIzEbuSxB13L19GYv5T4lWaxZasCeBa6fcU7FZ9Cj9wbG2JGbqNjK7HnBeYGiL1eyJRrzdCkDTDP5wyNqkRXYwpXDdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY4fZ+E7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BD0C433F1;
+	Mon,  1 Apr 2024 09:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711964718;
-	bh=PIvDxz9dzJjGxRuI8UwliEln9SXw2U8AIJO1lsnjPcU=;
+	s=korg; t=1711964722;
+	bh=NhfUXfCwOFVcOxUsoxoYobHa8u3rRehkedmW7jpV2TA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BXgqCF6tv2BaRjWlh8q1S59DBRtxl80hsroQeter0rJNnPyiJblna5Tv08PliMfZG
-	 vmfMZeUaRXt+37G9On5BV7+pHDDO90R8mCP7OyOH5c62KZWFqUix9xgGjNu/dfUnMr
-	 /aj7ruCWvmHHxLDCoxeQAE2Z5kNr06PuOzwJARGM=
-Subject: FAILED: patch "[PATCH] USB: core: Fix deadlock in port "disable" sysfs attribute" failed to apply to 5.15-stable tree
+	b=xY4fZ+E74zDLUS/lj1GezPHo8x/9M3nDW13I/jMalUG5Shj46ZNVTSARZOX/N32aP
+	 skaiiVZaTJX10OmcxZNsbGhWoZdFrWVJAZALUOyblZyxdId5J5QvTLIBokTXTofFwf
+	 WipbcgY4DEZyquhuN7uerudyySHVMb3yjmAVFWb0=
+Subject: FAILED: patch "[PATCH] USB: core: Fix deadlock in port "disable" sysfs attribute" failed to apply to 5.10-stable tree
 To: stern@rowland.harvard.edu,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 11:45:14 +0200
-Message-ID: <2024040114-outer-channel-e465@gregkh>
+Date: Mon, 01 Apr 2024 11:45:16 +0200
+Message-ID: <2024040116-mortician-grudging-9be5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f4d1960764d8a70318b02f15203a1be2b2554ca1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040114-outer-channel-e465@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040116-mortician-grudging-9be5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,8 @@ f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
 8c67d06f3fd9 ("usb: Link the ports to the connectors they are attached to")
 b8f1ba99cea5 ("usb: hub: make wait_for_connected() take an int instead of a pointer to int")
 f59f93cd1d72 ("usb: hub: avoid warm port reset during USB3 disconnect")
+7142452387c7 ("USB: Verify the port status when timeout happens during port suspend")
+975f94c7d6c3 ("usb: core: hub: fix race condition about TRSMRCY of resume")
 
 thanks,
 
