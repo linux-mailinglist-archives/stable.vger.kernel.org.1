@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE48893FA7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:19:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D36894130
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4366C285164
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D785A1F22687
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B184778E;
-	Mon,  1 Apr 2024 16:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719F847A6B;
+	Mon,  1 Apr 2024 16:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLa21dt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13gTUxzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891951CA8F;
-	Mon,  1 Apr 2024 16:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E9F1E86C;
+	Mon,  1 Apr 2024 16:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988373; cv=none; b=KYlvaS6N3quUgMAOOTdAJFBUGABKg/rdYtX3dcEwoO4j78RMT0XkSvcfO/YxEzj2fLgfITFtc5ZklMlUH4mpp/EutG9BRxGJrw7CpInl8Or+/w2cP8g4l89oN1Y7pt2wZIX4lzjyJcIeInn4ChOx4DxeQIb2jqu17Z/DLS4X1PM=
+	t=1711989531; cv=none; b=mnrTU/F2AWccm2g+AulH0PfL7f4cdh1VKyKpN1HOf+nkcj2HOjrtcWhH9wV8bxV4vwoQBY2YBs2O48uX+Q257woyboC0F+am3YxTC4FZ9oL4l2ixRFy0dfeA/wJJwT6iSNTAQjyisqxZFMwbiX9BLQo1QUfaTWoPMXPRXZmWxGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988373; c=relaxed/simple;
-	bh=UJj5PcQ9YD/uxifM0KAxWPyOSKgmVT4aM8bGFHs29SI=;
+	s=arc-20240116; t=1711989531; c=relaxed/simple;
+	bh=V2CT7vyOe9lrTI1rs0t33UJSvH8AoMPSaIipld0k6do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T+zf7COLmg4k+m+JZxHRtjPlfC94Y0QCKxxRFzV6xwPOzA76nhjHxtYR1txR32lTlf6QiY6RL4BV0IRGlc7H2SkxKw5lKzuKnM210EHF0cd+mQaffeItWxE81o8rnDzNdsI/LUlWHkNkoToR43t0wJKmWAXlaEhnqpu2Y79KzIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLa21dt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE098C433C7;
-	Mon,  1 Apr 2024 16:19:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sHIOg+aQOZtbSGAfEGJ+KamMynBx17vh037/SyCap8AHwbSIf0pcmjTWwAbl9hkJ5nOC4pBhY3cfEyvnzcS2bANlDJ5suGnKn3bNUt/NR5HgiLGdlwZ6aX9xMRFkZsV0eu/HM24o3ZdJVmYpln38RRglUDbwfoBjgu2nqFx3+EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13gTUxzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97118C433C7;
+	Mon,  1 Apr 2024 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988373;
-	bh=UJj5PcQ9YD/uxifM0KAxWPyOSKgmVT4aM8bGFHs29SI=;
+	s=korg; t=1711989531;
+	bh=V2CT7vyOe9lrTI1rs0t33UJSvH8AoMPSaIipld0k6do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLa21dt+IOGBSpY9JPAfS4jgBLl9LrOrIrNLnc8/ZpJpkDQ0Rv82l7H1D+ePQwd+A
-	 JMfU8wDxwvEgoMWbi34JnkojTQd0nnFG3An8ZMMqvrcEUEXVsdDdBRoaII+digEftI
-	 bJvNymwEcVIzo3QlaJkGfj1cA6gY6ZK+Jj/wjr60=
+	b=13gTUxzGzeAoZBjKb7tziOuj5ZMDLn11MuXc+ZG1TvEp51GrYOCt41/6Cresh0Kxj
+	 LPeKiskt401CUTb6L6y+nWVJc+fKFJZRDDFkvjLJ/ErPiPUgMUUI0SeGwILdCRI6pA
+	 5RMnRX0zST1yDA3jfhRiKsa6Q5uw/IkzU1GmHezs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 137/432] PCI: dwc: endpoint: Fix advertised resizable BAR size
-Date: Mon,  1 Apr 2024 17:42:04 +0200
-Message-ID: <20240401152557.218674707@linuxfoundation.org>
+Subject: [PATCH 6.6 076/396] USB: serial: cp210x: add ID for MGP Instruments PDS100
+Date: Mon,  1 Apr 2024 17:42:05 +0200
+Message-ID: <20240401152550.184946858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Christian Häggström <christian.haggstrom@orexplore.com>
 
-[ Upstream commit 72e34b8593e08a0ee759b7a038e0b178418ea6f8 ]
+[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
 
-The commit message in commit fc9a77040b04 ("PCI: designware-ep: Configure
-Resizable BAR cap to advertise the smallest size") claims that it modifies
-the Resizable BAR capability to only advertise support for 1 MB size BARs.
+The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
+produced by Mirion Technologies. Tested by forcing the driver
+association with
 
-However, the commit writes all zeroes to PCI_REBAR_CAP (the register which
-contains the possible BAR sizes that a BAR be resized to).
+  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
 
-According to the spec, it is illegal to not have a bit set in
-PCI_REBAR_CAP, and 1 MB is the smallest size allowed.
+and then setting the serial port in 115200 8N1 mode. The device
+announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
 
-Set bit 4 in PCI_REBAR_CAP, so that we actually advertise support for a
-1 MB BAR size.
-
-Before:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB
-                BAR 1: current size: 1MB
-                BAR 2: current size: 1MB
-                BAR 3: current size: 1MB
-                BAR 4: current size: 1MB
-                BAR 5: current size: 1MB
-After:
-        Capabilities: [2e8 v1] Physical Resizable BAR
-                BAR 0: current size: 1MB, supported: 1MB
-                BAR 1: current size: 1MB, supported: 1MB
-                BAR 2: current size: 1MB, supported: 1MB
-                BAR 3: current size: 1MB, supported: 1MB
-                BAR 4: current size: 1MB, supported: 1MB
-                BAR 5: current size: 1MB, supported: 1MB
-
-Fixes: fc9a77040b04 ("PCI: designware-ep: Configure Resizable BAR cap to advertise the smallest size")
-Link: https://lore.kernel.org/linux-pci/20240307111520.3303774-1-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index c2630db745608..19b6708f60efb 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -692,8 +692,13 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
- 		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
- 			PCI_REBAR_CTRL_NBAR_SHIFT;
- 
-+		/*
-+		 * PCIe r6.0, sec 7.8.6.2 require us to support at least one
-+		 * size in the range from 1 MB to 512 GB. Advertise support
-+		 * for 1 MB BAR size only.
-+		 */
- 		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
--			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-+			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, BIT(4));
- 	}
- 
- 	/*
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index d339d81f6e8cf..2169b6549a260 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
+ 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
++	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
+ 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
 -- 
 2.43.0
 
