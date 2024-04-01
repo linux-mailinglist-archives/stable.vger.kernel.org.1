@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D9F8940E3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE86893F6A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7626DB20B68
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643852841BD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD011E525;
-	Mon,  1 Apr 2024 16:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C7C47A6B;
+	Mon,  1 Apr 2024 16:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmCY1r+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFTU4hlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01AC1C0DE7;
-	Mon,  1 Apr 2024 16:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF497481B3;
+	Mon,  1 Apr 2024 16:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989329; cv=none; b=PQNHxHmSfTf0Em99ND7rY0WcrqNWT7RL/rG32XTH/LFMMDhMzXAxZniJOrgcReS8UYX/iXSS7+Rt5IqRpyMhFcVLPE1wwmcBkNwL0R7kNbAyXgkDjNH9C8ynAXQNd++UfZcEHgmlTMiBe6wvvsHcgtfMMTuX89O0u6xUsa+vYEM=
+	t=1711988176; cv=none; b=cbU8sP2S8uOzUbzD5bEJYCbWsbwJsaxrOOB2XmUn+RHucNH1jZzWDteKCs1dY8WKIsHlIEQsXTKqv4p1TcF0r2HkhbRj9XAs6DEOigjOGyD5cSs5riUnI+6bzwWUTzVGTvGClQ+lTTQ9fJoP4O5Z4Ve1bVzjpJXz1/1Yw522k00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989329; c=relaxed/simple;
-	bh=28c5/dQctOewvr7eKy5ys2X81MAovbuGscWP6+OQWkA=;
+	s=arc-20240116; t=1711988176; c=relaxed/simple;
+	bh=gsSQMY+mXcxXQtbriR5BBAZ9BSf0WQmv6S0ff1DQgs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6XqyAifHrGYiO+mBhwaI6in/JZ5qTlRFt/y6NMUapMmE+heAOVnDhFbWcxCzcp6WE6/KkbrbwhAEVhFz9xxQVNydFGnUIsVEcbQArd7oTj7SbEiGXDmAl+ghD+LjxNSE8sCq1BfdruDbWwLxjF2Snm1FevGmO7vd2kEv1QrjrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmCY1r+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0A0C433C7;
-	Mon,  1 Apr 2024 16:35:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aIkGP67thsvCp0xq501c4nb6qnDP2e+W81PMTT9fYDtpDEjNx9ShuxVJoPq5uZvCTfjPbJVMpWX24rf05GQSpW+GvVyKRezv6XeLjPul/UmpMbIKT4orun5jXnSlLU69TuI4LWOLRHfVHqr6cbnj88ZNrNvnuIqes4Ch1WX8V34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFTU4hlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DCAC433F1;
+	Mon,  1 Apr 2024 16:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989329;
-	bh=28c5/dQctOewvr7eKy5ys2X81MAovbuGscWP6+OQWkA=;
+	s=korg; t=1711988176;
+	bh=gsSQMY+mXcxXQtbriR5BBAZ9BSf0WQmv6S0ff1DQgs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmCY1r+H59iQwE3j/UWLfUSkDgR4BSeY/ePGTdPJRANiI3kCiQlyGSkG+e8i1nFtx
-	 6lNkYfi3v7/zOFt1rIS4fC3wszvIk8tXymUTHsJYoR0qD5gLsL5ugNvtajtaOWQMht
-	 NQJ+S+M9HdtBdMdMv3MrBIIV8dx1g7l/eKGZZ9CI=
+	b=SFTU4hlD41k90C6MZDET8frir7OaS5Y0+Qs6QXwpM8sToYm2paOZH6fJ0ISXBLQVT
+	 WC1l6kzXk7BKVuyIE1K72pU5pStCfoOmnpezA5MNKbeNimPGpENAiGcLlS3tmB5FFX
+	 FebNCELfmauKtQ1Dx7a2jxC0fcnKdWzB7A0hhnUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	BassCheck <bass@buaa.edu.cn>,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/396] media: xc4000: Fix atomicity violation in xc4000_get_frequency
+Subject: [PATCH 6.7 079/432] USB: serial: cp210x: add ID for MGP Instruments PDS100
 Date: Mon,  1 Apr 2024 17:41:06 +0200
-Message-ID: <20240401152548.407841442@linuxfoundation.org>
+Message-ID: <20240401152555.479438595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Christian Häggström <christian.haggstrom@orexplore.com>
 
-[ Upstream commit 36d503ad547d1c75758a6fcdbec2806f1b6aeb41 ]
+[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
 
-In xc4000_get_frequency():
-	*freq = priv->freq_hz + priv->freq_offset;
-The code accesses priv->freq_hz and priv->freq_offset without holding any
-lock.
+The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
+produced by Mirion Technologies. Tested by forcing the driver
+association with
 
-In xc4000_set_params():
-	// Code that updates priv->freq_hz and priv->freq_offset
-	...
+  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
 
-xc4000_get_frequency() and xc4000_set_params() may execute concurrently,
-risking inconsistent reads of priv->freq_hz and priv->freq_offset. Since
-these related data may update during reading, it can result in incorrect
-frequency calculation, leading to atomicity violations.
+and then setting the serial port in 115200 8N1 mode. The device
+announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
 
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 6.2.
-
-To address this issue, it is proposed to add a mutex lock pair in
-xc4000_get_frequency() to ensure atomicity. With this patch applied, our
-tool no longer reports the possible bug, with the kernel configuration
-allyesconfig for x86_64. Due to the lack of associated hardware, we cannot
-test the patch in runtime testing, and just verify it according to the
-code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 4c07e32884ab ("[media] xc4000: Fix get_frequency()")
+Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
 Cc: stable@vger.kernel.org
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/tuners/xc4000.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 57ded9ff3f043..29bc63021c5aa 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1515,10 +1515,10 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
- {
- 	struct xc4000_priv *priv = fe->tuner_priv;
- 
-+	mutex_lock(&priv->lock);
- 	*freq = priv->freq_hz + priv->freq_offset;
- 
- 	if (debug) {
--		mutex_lock(&priv->lock);
- 		if ((priv->cur_fw.type
- 		     & (BASE | FM | DTV6 | DTV7 | DTV78 | DTV8)) == BASE) {
- 			u16	snr = 0;
-@@ -1529,8 +1529,8 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
- 				return 0;
- 			}
- 		}
--		mutex_unlock(&priv->lock);
- 	}
-+	mutex_unlock(&priv->lock);
- 
- 	dprintk(1, "%s()\n", __func__);
- 
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index d339d81f6e8cf..2169b6549a260 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
+ 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
++	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
+ 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
 -- 
 2.43.0
 
