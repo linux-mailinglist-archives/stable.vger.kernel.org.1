@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-34268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6ACC893E9E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:05:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9789431E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8FF2822C7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:05:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211121C21ECE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2310B446AC;
-	Mon,  1 Apr 2024 16:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C374482DF;
+	Mon,  1 Apr 2024 16:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8sSrQFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVwB7VdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D304B1CA8F;
-	Mon,  1 Apr 2024 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5BE47A64;
+	Mon,  1 Apr 2024 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987549; cv=none; b=qZmf2urgOQ2FpF3cKK/5OyxdQBujyHMRxpLiDr7ZoSUsA1pCRJoO5LByGO38TuMAVG4KG5WkWLbm3LBRJ+ucb1b2qChPdMGhocbaBtx2+M6QW+4mhjyHcIIjeaN4BqAnbzyOwWuAP+DNLCs7qrSxUs9W7mLui+JM5XX7jJ4uIyo=
+	t=1711990795; cv=none; b=s/8HzRb5Ww1DnUV5YA92Pxhane2vrPbsSS7IrdKLfxbnGmvYv4WlDfN9Nad1XV/5zrn/Oe95RAAV7pUY7geOF8wVCyWkgX5FX9kxz9WWSbquDJuGYg5ILlHjRwHWlcFr7s/MfqnUEmY1HSa6Xm62TdCFtxjag07Iu7u6pE/sNMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987549; c=relaxed/simple;
-	bh=XTTOxpTy+qr8Ncai0XKpRGBslqtYHtC1okXrojl+58g=;
+	s=arc-20240116; t=1711990795; c=relaxed/simple;
+	bh=g4J3MF2eyo3skaNXFxvcSGNKCXPjP+cKEQYIUaELzmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aG1N57h07wcZ39i3Zj0bBL18R2ghP0sKm7ny2oqQ9a/7LGnlh0PwKWmUTuwqextTOn3W4esI9PacMBuIa/Lf0LfngnjmKjHPPc9CTvjuMAdSd6HenTx0xzuZB+n1bEJXcbfXOnhSU5X8RzAGmP3sAejcd45BKdJHGlm49sd94+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8sSrQFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1279EC433C7;
-	Mon,  1 Apr 2024 16:05:48 +0000 (UTC)
+	 MIME-Version; b=Mr47HP2VFKy5ICyxboijFrBDvjlgykPupip7JFcvnt6zh6wJuvRJgcvt/t/1NMUVD1Gpyeitn5ZDUsMFDHi1qlUnKdHhsEdEBVZi2wY/9k//TBCDDgbAm2IoNxigld+x9jvX05CdmuxzLaHhRtWkqL31fRLU15krG1mrOi6to8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVwB7VdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D140DC433C7;
+	Mon,  1 Apr 2024 16:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987549;
-	bh=XTTOxpTy+qr8Ncai0XKpRGBslqtYHtC1okXrojl+58g=;
+	s=korg; t=1711990795;
+	bh=g4J3MF2eyo3skaNXFxvcSGNKCXPjP+cKEQYIUaELzmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8sSrQFtcZnf+GX+eDbQcqZKmLmdCCdQu05IE5L6EhX+PwhCLniJx9KRoJHA6z4PH
-	 RxAfCliNHuPMaWtja5QxTdlrq4jL4MJnyBn+G5QY2trM4Do4UywG9kK8AMiuK9/4DY
-	 z4RVFYatuyItT7jaaq0u7sTrxsLrR6Z3TcjD+GcY=
+	b=gVwB7VdZjcB7EhbE3STPUF3D5EHdP4h6g5Zgnut5IcmDmE7cs6ch28ntGi38XJyrj
+	 1N5yWmII1nd9U02Ed8VOA0nbUfc/PQdnnfcVisgi0ZvlIlpBO8XfFaJxjolxJV+4mV
+	 DtZerYgYm+EO+lcEIAl3KyzmST4XGeWpFbz0I3r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	Jan Kara <jack@suse.cz>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 293/399] tmpfs: fix race on handling dquot rbtree
+	Benson Leung <bleung@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jameson Thies <jthies@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/272] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
 Date: Mon,  1 Apr 2024 17:44:19 +0200
-Message-ID: <20240401152557.932698807@linuxfoundation.org>
+Message-ID: <20240401152532.718038833@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Maiolino <cem@kernel.org>
+From: Jameson Thies <jthies@google.com>
 
-commit 0a69b6b3a026543bc215ccc866d0aea5579e6ce2 upstream.
+[ Upstream commit 4d0a5a9915793377c0fe1a8d78de6bcd92cea963 ]
 
-A syzkaller reproducer found a race while attempting to remove dquot
-information from the rb tree.
+Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
+plug type and updating the modal support macro for consistent naming.
 
-Fetching the rb_tree root node must also be protected by the
-dqopt->dqio_sem, otherwise, giving the right timing, shmem_release_dquot()
-will trigger a warning because it couldn't find a node in the tree, when
-the real reason was the root node changing before the search starts:
-
-Thread 1				Thread 2
-- shmem_release_dquot()			- shmem_{acquire,release}_dquot()
-
-- fetch ROOT				- Fetch ROOT
-
-					- acquire dqio_sem
-- wait dqio_sem
-
-					- do something, triger a tree rebalance
-					- release dqio_sem
-
-- acquire dqio_sem
-- start searching for the node, but
-  from the wrong location, missing
-  the node, and triggering a warning.
-
-Link: https://lkml.kernel.org/r/20240320124011.398847-1-cem@kernel.org
-Fixes: eafc474e2029 ("shmem: prepare shmem quota infrastructure")
-Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Link: https://lore.kernel.org/r/20240305025804.1290919-2-jthies@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem_quota.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/shmem_quota.c
-+++ b/mm/shmem_quota.c
-@@ -116,7 +116,7 @@ static int shmem_free_file_info(struct s
- static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(sb, qid->type);
--	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node *node;
- 	qid_t id = from_kqid(&init_user_ns, *qid);
- 	struct quota_info *dqopt = sb_dqopt(sb);
- 	struct quota_id *entry = NULL;
-@@ -126,6 +126,7 @@ static int shmem_get_next_id(struct supe
- 		return -ESRCH;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 60ce9fb6e7450..dbb10cb310d4c 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -220,12 +220,12 @@ struct ucsi_cable_property {
+ #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
+ #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
+ #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
+-#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
++#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
+ #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
+-#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
++#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
+ 	u8 latency;
+ } __packed;
  
- 	down_read(&dqopt->dqio_sem);
-+	node = ((struct rb_root *)info->dqi_priv)->rb_node;
- 	while (node) {
- 		entry = rb_entry(node, struct quota_id, node);
- 
-@@ -165,7 +166,7 @@ out_unlock:
- static int shmem_acquire_dquot(struct dquot *dquot)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
--	struct rb_node **n = &((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node **n;
- 	struct shmem_sb_info *sbinfo = dquot->dq_sb->s_fs_info;
- 	struct rb_node *parent = NULL, *new_node = NULL;
- 	struct quota_id *new_entry, *entry;
-@@ -176,6 +177,8 @@ static int shmem_acquire_dquot(struct dq
- 	mutex_lock(&dquot->dq_lock);
- 
- 	down_write(&dqopt->dqio_sem);
-+	n = &((struct rb_root *)info->dqi_priv)->rb_node;
-+
- 	while (*n) {
- 		parent = *n;
- 		entry = rb_entry(parent, struct quota_id, node);
-@@ -264,7 +267,7 @@ static bool shmem_is_empty_dquot(struct
- static int shmem_release_dquot(struct dquot *dquot)
- {
- 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
--	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
-+	struct rb_node *node;
- 	qid_t id = from_kqid(&init_user_ns, dquot->dq_id);
- 	struct quota_info *dqopt = sb_dqopt(dquot->dq_sb);
- 	struct quota_id *entry = NULL;
-@@ -275,6 +278,7 @@ static int shmem_release_dquot(struct dq
- 		goto out_dqlock;
- 
- 	down_write(&dqopt->dqio_sem);
-+	node = ((struct rb_root *)info->dqi_priv)->rb_node;
- 	while (node) {
- 		entry = rb_entry(node, struct quota_id, node);
- 
+-- 
+2.43.0
+
 
 
 
