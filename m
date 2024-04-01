@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-35165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A88942B3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112478943DD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00A3F1F266A1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF8A328134B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDBC47A6B;
-	Mon,  1 Apr 2024 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687E5482DF;
+	Mon,  1 Apr 2024 17:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzKgAoib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxgbW9Em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB64AEFA;
-	Mon,  1 Apr 2024 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257FA47A5D;
+	Mon,  1 Apr 2024 17:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990514; cv=none; b=of2rA4GW7+oNZfy5+bbp74PxqcEAIICNQ3pUEqJjjowIKM4n5o+KEFUhk+212p3e7g4k88reKi0oq5/9I99a76BeXz2h6HbUHIT7xA+H2DuVuceWUQvLmWhEvevCgAF0V85Pgn68zlt8JYoyerPK3xx+4tWm7SJyhNOLMd8SNrU=
+	t=1711991347; cv=none; b=XOe+ribM6a4EfOw3TKs0qyAKbv9rBZu4DdUxfobyxIA6QkUXt/y8LI1fxS8DjxWids6P+WD+N6DZ7WwtgAlssKbPxD6hLTiblOAH1yzQ/124+E2Hv2rGFRe/16abQDdkwf46s4fCvYn45qfDEuZ77dqe+iQI9lyikskTYN6U0Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990514; c=relaxed/simple;
-	bh=VcHzR4/H9ShUh/SFIz0RdQOXIUIHQ1ay/vYdP8RXXF0=;
+	s=arc-20240116; t=1711991347; c=relaxed/simple;
+	bh=ARNH/ve2L9YcTIVTxScuvwQL8T2avxsmlQYTU2uqzI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRik8Y9KUuSjTMZ1R+gKcfHfzGBQGeeCxkTUDVVFDK8IhOFvJQm4frzT/iIZecsCH+gaM6gWLY+GLb3PxsP9gZIoy12ZRPOuicdzSXnm20g9s7Rd2bwjGWefdkKnAce9nV4KAzRB+LmxE1ypA+pHetrzamNSnW4WtEDYT51VqUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzKgAoib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CFAC43390;
-	Mon,  1 Apr 2024 16:55:13 +0000 (UTC)
+	 MIME-Version; b=MS7CoyBW9njjkzHTtnuVcLLaL/IKtsJxRsrSyXhChXi/x2na7IUVk6rBznl55qvUe0aCYQZfVhvN3nrd/nuv+4/kkUa9cy7Ppk1xGQgp4ZlrCyuHkL2SkYkQDtojzIVrRyzJ7pCJfaw2teI30oOK623HOqhMVACiEyw2PhbXcnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxgbW9Em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A98BC433C7;
+	Mon,  1 Apr 2024 17:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990514;
-	bh=VcHzR4/H9ShUh/SFIz0RdQOXIUIHQ1ay/vYdP8RXXF0=;
+	s=korg; t=1711991346;
+	bh=ARNH/ve2L9YcTIVTxScuvwQL8T2avxsmlQYTU2uqzI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzKgAoibhhAoLwY7DVKzhKac5tZZCUWw9cprtfKTy1Qgh/bChLaTElQNMOIsfqHOV
-	 hfrOpA1arKoA2d7FsWfK3s6J3Rl52MqQ0elOPQRjFW3N+jG5R/mWd1ENY0dtlk5vxr
-	 fWGL8mj+hJa4Y4fKFYK9YeBoHTUehxVDhjGvzYKE=
+	b=RxgbW9EmYhGM1QZHZHKyIqrscJYVztu5OqVCvqyyWQy/kJWy1KJL5+t05v4MgDfw5
+	 Vm2X1uLfF66ssu2LthbSma1/6fUp2kbmR1nzNrSDUR51d9DaWD2yeZxpca+mtlfrxa
+	 pe6+elamgFkzKBU8C7mLt0P2dDAd/y/oZemZo1Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com,
+	Bart Van Assche <bvanassche@acm.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 378/396] scsi: qla2xxx: Prevent command send on chip reset
+Subject: [PATCH 6.1 237/272] scsi: core: Fix unremoved procfs host directory regression
 Date: Mon,  1 Apr 2024 17:47:07 +0200
-Message-ID: <20240401152559.184273878@linuxfoundation.org>
+Message-ID: <20240401152538.372778466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 4895009c4bb72f71f2e682f1e7d2c2d96e482087 upstream.
+commit f23a4d6e07570826fe95023ca1aa96a011fa9f84 upstream.
 
-Currently IOCBs are allowed to push through while chip reset could be in
-progress. During chip reset the outstanding_cmds array is cleared
-twice. Once when any command on this array is returned as failed and
-secondly when the array is initialize to zero. If a command is inserted on
-to the array between these intervals, then the command will be lost.  Check
-for chip reset before sending IOCB.
+Commit fc663711b944 ("scsi: core: Remove the /proc/scsi/${proc_name}
+directory earlier") fixed a bug related to modules loading/unloading, by
+adding a call to scsi_proc_hostdir_rm() on scsi_remove_host(). But that led
+to a potential duplicate call to the hostdir_rm() routine, since it's also
+called from scsi_host_dev_release(). That triggered a regression report,
+which was then fixed by commit be03df3d4bfe ("scsi: core: Fix a procfs host
+directory removal regression"). The fix just dropped the hostdir_rm() call
+from dev_release().
 
+But it happens that this proc directory is created on scsi_host_alloc(),
+and that function "pairs" with scsi_host_dev_release(), while
+scsi_remove_host() pairs with scsi_add_host(). In other words, it seems the
+reason for removing the proc directory on dev_release() was meant to cover
+cases in which a SCSI host structure was allocated, but the call to
+scsi_add_host() didn't happen. And that pattern happens to exist in some
+error paths, for example.
+
+Syzkaller causes that by using USB raw gadget device, error'ing on
+usb-storage driver, at usb_stor_probe2(). By checking that path, we can see
+that the BadDevice label leads to a scsi_host_put() after a SCSI host
+allocation, but there's no call to scsi_add_host() in such path. That leads
+to messages like this in dmesg (and a leak of the SCSI host proc
+structure):
+
+usb-storage 4-1:87.51: USB Mass Storage device detected
+proc_dir_entry 'scsi/usb-storage' already registered
+WARNING: CPU: 1 PID: 3519 at fs/proc/generic.c:377 proc_register+0x347/0x4e0 fs/proc/generic.c:376
+
+The proper fix seems to still call scsi_proc_hostdir_rm() on dev_release(),
+but guard that with the state check for SHOST_CREATED; there is even a
+comment in scsi_host_dev_release() detailing that: such conditional is
+meant for cases where the SCSI host was allocated but there was no calls to
+{add,remove}_host(), like the usb-storage case.
+
+This is what we propose here and with that, the error path of usb-storage
+does not trigger the warning anymore.
+
+Reported-by: syzbot+c645abf505ed21f931b5@syzkaller.appspotmail.com
+Fixes: be03df3d4bfe ("scsi: core: Fix a procfs host directory removal regression")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20240313113006.2834799-1-gpiccoli@igalia.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    8 ++++++--
- drivers/scsi/qla2xxx/qla_iocb.c |   33 +++++++++++++++++++++++++++++++--
- 2 files changed, 37 insertions(+), 4 deletions(-)
+ drivers/scsi/hosts.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1193,8 +1193,12 @@ int qla24xx_async_gnl(struct scsi_qla_ho
- 	return rval;
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -353,12 +353,13 @@ static void scsi_host_dev_release(struct
  
- done_free_sp:
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	/*
-+	 * use qla24xx_async_gnl_sp_done to purge all pending gnl request.
-+	 * kref_put is call behind the scene.
-+	 */
-+	sp->u.iocb_cmd.u.mbx.in_mb[0] = MBS_COMMAND_ERROR;
-+	qla24xx_async_gnl_sp_done(sp, QLA_COMMAND_ERROR);
- 	fcport->flags &= ~(FCF_ASYNC_SENT);
- done:
- 	fcport->flags &= ~(FCF_ASYNC_ACTIVE);
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -2587,6 +2587,33 @@ void
- qla2x00_sp_release(struct kref *kref)
- {
- 	struct srb *sp = container_of(kref, struct srb, cmd_kref);
-+	struct scsi_qla_host *vha = sp->vha;
-+
-+	switch (sp->type) {
-+	case SRB_CT_PTHRU_CMD:
-+		/* GPSC & GFPNID use fcport->ct_desc.ct_sns for both req & rsp */
-+		if (sp->u.iocb_cmd.u.ctarg.req &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.req != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp &&
-+			(!sp->fcport ||
-+			 sp->u.iocb_cmd.u.ctarg.rsp != sp->fcport->ct_desc.ct_sns)) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	sp->free(sp);
- }
-@@ -2692,7 +2719,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	 */
- 	sp = qla2x00_get_sp(vha, fcport, GFP_KERNEL);
- 	if (!sp) {
--		kfree(fcport);
-+		qla2x00_free_fcport(fcport);
- 		ql_log(ql_log_info, vha, 0x70e6,
- 		 "SRB allocation failed\n");
- 		return -ENOMEM;
-@@ -2747,6 +2774,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	if (rval != QLA_SUCCESS) {
- 		/* ref: INIT */
- 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		qla2x00_free_fcport(fcport);
- 		return QLA_FUNCTION_FAILED;
+ 	if (shost->shost_state == SHOST_CREATED) {
+ 		/*
+-		 * Free the shost_dev device name here if scsi_host_alloc()
+-		 * and scsi_host_put() have been called but neither
++		 * Free the shost_dev device name and remove the proc host dir
++		 * here if scsi_host_{alloc,put}() have been called but neither
+ 		 * scsi_host_add() nor scsi_host_remove() has been called.
+ 		 * This avoids that the memory allocated for the shost_dev
+-		 * name is leaked.
++		 * name as well as the proc dir structure are leaked.
+ 		 */
++		scsi_proc_hostdir_rm(shost->hostt);
+ 		kfree(dev_name(&shost->shost_dev));
  	}
  
-@@ -2756,6 +2784,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
- 
- 	wait_for_completion(&elsio->u.els_logo.comp);
-+	qla2x00_free_fcport(fcport);
- 
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-@@ -3918,7 +3947,7 @@ qla2x00_start_sp(srb_t *sp)
- 		return -EAGAIN;
- 	}
- 
--	pkt = __qla2x00_alloc_iocbs(sp->qpair, sp);
-+	pkt = qla2x00_alloc_iocbs_ready(sp->qpair, sp);
- 	if (!pkt) {
- 		rval = -EAGAIN;
- 		ql_log(ql_log_warn, vha, 0x700c,
 
 
 
