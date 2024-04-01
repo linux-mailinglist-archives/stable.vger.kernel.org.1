@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-35465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B089440D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:11:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69800894284
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81B34B215F8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:11:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F289F28112E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F3B481B8;
-	Mon,  1 Apr 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920B74D59F;
+	Mon,  1 Apr 2024 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaKwPsVc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/BClTW8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CBD38DE5;
-	Mon,  1 Apr 2024 17:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC4C481D7
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 16:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991488; cv=none; b=K3MwqLosIwIFyhi88KRQG11NH5gwBYWN9JyWrhZqMo3Uu6E/9d5MVKzDGFEecQRCClr01ciZ6SqpBt2sKRDOoyuX8zbgYBXnUgzknmQwH9cp4o/5Xc8e/9DTI/Pg8JyR2H4++Id0SmGFg1mALqP09Fr2ZtwiEvTFtk9pt7bZkmg=
+	t=1711990396; cv=none; b=lRZ9/+/jcM23h+2sqyxx4f9vVLrmtaBBqn6WanyDvS5TlsOkygkL2iHvDq+YTX5vyjMhjJ7N8lCpD8vSeEB8+EwDZuixiO2Vy9AtPtUe6N7d+8AiEidw76nNpI4QaHtXNQd0nq6NxFVgkqclvSNRVPyoR6gdK3tcZBLCSHmzTWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991488; c=relaxed/simple;
-	bh=vj6UnxU3bHS6m3eQvIwA+0kykmJR0tlxc1jNA78p8cE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJH9EDibMWdSjKaRqIhZuXVpO5+0l6U8RgZklH1N54IsUCbx6WzODfMd8nem6XFtfsKzDotw9zs3X4UE6WYkiAFm8hcsQI9Sot8Oxfky5LJ2IsQ2u6hdsie59Al1VnA9yU/lVJuGHWhmmuSCBsMrKhQgQjdZgDmDsN+5gL/pSOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaKwPsVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A446C433F1;
-	Mon,  1 Apr 2024 17:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991488;
-	bh=vj6UnxU3bHS6m3eQvIwA+0kykmJR0tlxc1jNA78p8cE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaKwPsVcf1xwXoYcarO+PBON4SfDH2EfIMSJ1dRwFnbvfnpZox29CXtH8PkEZFSUL
-	 s8yLrBm/mG4nuxZD7L4VrFaJ/svwYPfp0snxa0S7j9cnfNgbZYDGeszYrS0j8RP59U
-	 dZXZIr8Xmmew5WrU7WFFTyk5dcHeXuqu5QfeASI0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1711990396; c=relaxed/simple;
+	bh=yMMnIkxpp1VsuJAMFNiKmwJv1x2qtHD6B5/Nwbyjxu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BqkTo+/uK1k/OqOu3wnJy9F6SUaBus+grkbbBgerweUjipAYkknNX7C5xcU1LA47fOg8fDcVtSiQ23y3zSOXAoJYOVlFpTp7HsE/nQI2J6ohZUJeScg7SN87fF34zZGNnXKpb7MImzmMvdzSM1JSj0FIxdy4IoJmsioYIw/pYpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/BClTW8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711990393;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GSuqvpGhWw2nG0uvDHi91yEk6nUixxpJsArBwLMNL3k=;
+	b=T/BClTW8jEfpCItdFkJt7WObzz+EeSfPUEEj4GG1MBt2Sa5l9BlaONwj7G5A0Bzn34ZGmO
+	bJwJjggJaNcnC6oouH73fJvlx4H1Qi04UmIikb7xAeCzCpWSToE/DjlFMqExKrsBWR62/H
+	9K9H84NyyeVj1NC0SROLxVsldPJ1I6k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-5fTmoKCtM0izEha5O9Pq3g-1; Mon,
+ 01 Apr 2024 12:53:10 -0400
+X-MC-Unique: 5fTmoKCtM0izEha5O9Pq3g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 840232800E8F;
+	Mon,  1 Apr 2024 16:53:09 +0000 (UTC)
+Received: from omen.home.shazbot.org (unknown [10.22.34.212])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AA7693C21;
+	Mon,  1 Apr 2024 16:53:08 +0000 (UTC)
+From: Alex Williamson <alex.williamson@redhat.com>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Natanael Copa <ncopa@alpinelinux.org>,
-	Greg Thelen <gthelen@google.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.1 272/272] tools/resolve_btfids: fix build with musl libc
-Date: Mon,  1 Apr 2024 17:47:42 +0200
-Message-ID: <20240401152539.571111850@linuxfoundation.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org,
+	eric.auger@redhat.com
+Subject: [PATCH 5.10.y 5.4.y 0/6] vfio: Interrupt eventfd hardening for 5.10.y, 5.4.y
+Date: Mon,  1 Apr 2024 10:52:54 -0600
+Message-ID: <20240401165302.3699643-1-alex.williamson@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,42 +69,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is nearly identical to the v5.15 backport, the only difference is
+the split to struct vfio_pci_core_device hasn't occurred yet, so we need
+to use the original vfio_pci_device object instead.
 
-------------------
+NB. The fsl-mc driver doesn't exist on v5.4.y, therefore the last patch
+in the series should be dropped against v5.4.
 
-From: Natanael Copa <ncopa@alpinelinux.org>
+v4.19.y does not include IRQF_NO_AUTOEN, so this is as far as I intend
+to go with these.  Thanks,
 
-commit 62248b22d01e96a4d669cde0d7005bd51ebf9e76 upstream.
+Alex
 
-Include the header that defines u32.
-This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
-uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
+Alex Williamson (6):
+  vfio/pci: Disable auto-enable of exclusive INTx IRQ
+  vfio/pci: Lock external INTx masking ops
+  vfio: Introduce interface to flush virqfd inject workqueue
+  vfio/pci: Create persistent INTx handler
+  vfio/platform: Create persistent IRQ handlers
+  vfio/fsl-mc: Block calling interrupt handler without trigger
 
-Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
-Cc: stable@vger.kernel.org
-Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
-Tested-by: Greg Thelen <gthelen@google.com>
-Link: https://lore.kernel.org/r/20240328110103.28734-1-ncopa@alpinelinux.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/include/linux/btf_ids.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c    |   7 +-
+ drivers/vfio/pci/vfio_pci_intrs.c         | 176 +++++++++++++---------
+ drivers/vfio/platform/vfio_platform_irq.c | 101 +++++++++----
+ drivers/vfio/virqfd.c                     |  21 +++
+ include/linux/vfio.h                      |   2 +
+ 5 files changed, 201 insertions(+), 106 deletions(-)
 
---- a/tools/include/linux/btf_ids.h
-+++ b/tools/include/linux/btf_ids.h
-@@ -3,6 +3,8 @@
- #ifndef _LINUX_BTF_IDS_H
- #define _LINUX_BTF_IDS_H
- 
-+#include <linux/types.h> /* for u32 */
-+
- struct btf_id_set {
- 	u32 cnt;
- 	u32 ids[];
-
+-- 
+2.44.0
 
 
