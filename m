@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-35284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99916894342
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EFE8941FB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61501C21E79
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F421C2134E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2725B482EF;
-	Mon,  1 Apr 2024 17:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D828433DA;
+	Mon,  1 Apr 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIdf7Qgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDi+/HKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3815481C6;
-	Mon,  1 Apr 2024 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAE03613C;
+	Mon,  1 Apr 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990895; cv=none; b=H9vDQMXbgo3gRjDYGnm1dXq2Bv6SKAGe+74KYA/7wJVDYBfBhamr485C0wXDI3b9JECfnD7Asubvlm9WE6XXNNKFmnbQfAyxDDIzSlk19VhfoDb/cW3rE+w9VHs+zL+rEhVOBoI3jyltK14RcbApfIgatu993oLsqflDgOtmjFw=
+	t=1711990110; cv=none; b=F5jCxSd8s8fwY5EMYeXjd7yxpaUyxYnHVT12vukdZltzviDhKC6QzbRm1b2mu++9P6FLD8zcDS7Kd1soSJk1pq8/N1inP0Xy0crP1Dtc24lo/IH5X0H6cyTVsIt+qeDWL8FkVSclo21OTYpdMyG+oaThb/Y5vG76xyv80x/seJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990895; c=relaxed/simple;
-	bh=olb9VRb2vZxvETgmLze7OqD6WIq31E+UU5lctqtBlzs=;
+	s=arc-20240116; t=1711990110; c=relaxed/simple;
+	bh=gWOdiABM0ZPlXsuQaWspwS5O5FfeJ81a0f3hG42LhqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AAC/WwgKhtawOaZWynV9h5eAuxXcg+S85m6hpIuQo6/mB3fLYDhg3FK0ZWYP22+OphGfA0GP1DZyBG1aJsP1aEkpa8rETLBM+n9eYubtSdjbyr0CmU5oYftQlW7nx5a426cIfS/Xp9tEMF8JewPYtxm2x1r5hBppz2lVqzgH5SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIdf7Qgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453D5C433C7;
-	Mon,  1 Apr 2024 17:01:35 +0000 (UTC)
+	 MIME-Version; b=f4hf1ruecJkJbVWaqt5yX6eWNoPK5YDeK6O8IihHbjf6A7l4rFQdMle5/mbUQn+A24gcuhWFB8zT7UZ6IHEEal/0PFrRC4TUF4S4REpIS7bz3PAp7fnACgsNbaClalRELWavp8AQt9k9YdUhJz2zwmWunfA54McMJO9JDhPHANo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDi+/HKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6094C433F1;
+	Mon,  1 Apr 2024 16:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990895;
-	bh=olb9VRb2vZxvETgmLze7OqD6WIq31E+UU5lctqtBlzs=;
+	s=korg; t=1711990110;
+	bh=gWOdiABM0ZPlXsuQaWspwS5O5FfeJ81a0f3hG42LhqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIdf7Qgxk1pSf5yf3Uks+zfYp7rRbNe3x3QSNrRtvbmAKQaZaQ5swMuZy3+jhjr8e
-	 cKz+dzsFzvn9d4bhhMWDi0WCqbS9S/R78xU3LXl+6PA15IHwgcw6LlcRTrvRwXeaa9
-	 eyYpqJhkc6U6omF7TP8O4KR4gcfgk8w5kT8InshI=
+	b=jDi+/HKui65hF4fpw508vhoPQbpG6VW+0MWQpuWQfzIqry6JYuRIKGZ7eRLqbVdUF
+	 RgGEcQhMZmZz76yNDszogNWQI3Qd6bivF047p6lDol9rii369t6vKRdg+iT8GtI0ie
+	 vPh3zj1dYFJGnQKdmu/iZYSe7Ex9L46/rclNK/jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Long Li <longli@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/272] PCI: hv: Fix ring buffer size calculation
-Date: Mon,  1 Apr 2024 17:44:50 +0200
-Message-ID: <20240401152533.751037350@linuxfoundation.org>
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 242/396] iio: accel: adxl367: fix DEVID read after reset
+Date: Mon,  1 Apr 2024 17:44:51 +0200
+Message-ID: <20240401152555.129118118@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit b5ff74c1ef50fe08e384026875fec660fadfaedd ]
+commit 1b926914bbe4e30cb32f268893ef7d82a85275b8 upstream.
 
-For a physical PCI device that is passed through to a Hyper-V guest VM,
-current code specifies the VMBus ring buffer size as 4 pages.  But this
-is an inappropriate dependency, since the amount of ring buffer space
-needed is unrelated to PAGE_SIZE. For example, on x86 the ring buffer
-size ends up as 16 Kbytes, while on ARM64 with 64 Kbyte pages, the ring
-size bloats to 256 Kbytes. The ring buffer for PCI pass-thru devices
-is used for only a few messages during device setup and removal, so any
-space above a few Kbytes is wasted.
+regmap_read_poll_timeout() will not sleep before reading,
+causing the first read to return -ENXIO on I2C, since the
+chip does not respond to it while it is being reset.
 
-Fix this by declaring the ring buffer size to be a fixed 16 Kbytes.
-Furthermore, use the VMBUS_RING_SIZE() macro so that the ring buffer
-header is properly accounted for, and so the size is rounded up to a
-page boundary, using the page size for which the kernel is built. While
-w/64 Kbyte pages this results in a 64 Kbyte ring buffer header plus a
-64 Kbyte ring buffer, that's the smallest possible with that page size.
-It's still 128 Kbytes better than the current code.
+The datasheet specifies that a soft reset operation has a
+latency of 7.5ms.
 
-Link: https://lore.kernel.org/linux-pci/20240216202240.251818-1-mhklinux@outlook.com
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a 15ms sleep between reset and reading the DEVID register,
+and switch to a simple regmap_read() call.
+
+Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240207033657.206171-1-demonsingur@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-hyperv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/accel/adxl367.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index 9693bab59bf7c..b36cbc9136ae1 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -49,6 +49,7 @@
- #include <linux/refcount.h>
- #include <linux/irqdomain.h>
- #include <linux/acpi.h>
-+#include <linux/sizes.h>
- #include <asm/mshyperv.h>
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -1429,9 +1429,11 @@ static int adxl367_verify_devid(struct a
+ 	unsigned int val;
+ 	int ret;
  
- /*
-@@ -465,7 +466,7 @@ struct pci_eject_response {
- 	u32 status;
- } __packed;
+-	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
+-				       val == ADXL367_DEVID_AD, 1000, 10000);
++	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
+ 	if (ret)
++		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
++
++	if (val != ADXL367_DEVID_AD)
+ 		return dev_err_probe(st->dev, -ENODEV,
+ 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
+ 				     val, ADXL367_DEVID_AD);
+@@ -1510,6 +1512,8 @@ int adxl367_probe(struct device *dev, co
+ 	if (ret)
+ 		return ret;
  
--static int pci_ring_size = (4 * PAGE_SIZE);
-+static int pci_ring_size = VMBUS_RING_SIZE(SZ_16K);
- 
- /*
-  * Driver specific state.
--- 
-2.43.0
-
++	fsleep(15000);
++
+ 	ret = adxl367_verify_devid(st);
+ 	if (ret)
+ 		return ret;
 
 
 
