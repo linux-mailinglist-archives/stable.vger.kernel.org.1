@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-34363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E904A893F08
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:11:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9D9893F14
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2312834AA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:11:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C8821F21D5D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A70D47A6A;
-	Mon,  1 Apr 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306B647A62;
+	Mon,  1 Apr 2024 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4YmSuob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/GvCAUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F9B4776F;
-	Mon,  1 Apr 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E235D446AC;
+	Mon,  1 Apr 2024 16:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987869; cv=none; b=HKnF0wS6FAjYzd8MIYAT00vC1z/Ob3YAwHCAgcOMnrANjUlNj9v/lLaIPAQrHjNY5Kl3WtEo2sN7Qz4N7sUljB5baB1MXccFbfAMW/igobeOyjj/RoiFDbKyV4tFfFGR8MU1qv/wL3hNZltFm/RttzzIzs5iZpcA5We9QRwPjUQ=
+	t=1711987907; cv=none; b=Gf+HhVY704uBU5nXKuGpMq+9MFrfMFEinU71RS3NQCA1YmsoRhhr4eyNS9Cso7Osh2FIc2pv+ICk63WPqDGEN/wqfp35pd+eiVtKY8yp2kyCDQ7jK4oOcr0K5Lq52vJ/ZZ6NIwUFaJppq6yZsDI0ZQiS0bmOETTyYkADh6Du8do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987869; c=relaxed/simple;
-	bh=DN7PWJ53RnazUYVNJN4q5Npzx1QxkzNgrcbVCMC0LJ8=;
+	s=arc-20240116; t=1711987907; c=relaxed/simple;
+	bh=rf4v7DBplo9CstdToVWZ1GXpqEekl/GqjVpTeEjAJaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/MJHddCBqgtJsSTspg9A1aMGJ3hQ47rNiEImnbz7WxWLcQ/POktRsCx4OwKL9mMGyQZ2CIJi+Fjgo5gAptx0bMxlwg3bGORK39XCWE0v340eiTnvOnUQFI++QH2XghrUbtVUkaPS7fLEqzMAAbu2D/TS9YY5vkp+vw+BnlJ1b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4YmSuob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBA4C433C7;
-	Mon,  1 Apr 2024 16:11:08 +0000 (UTC)
+	 MIME-Version; b=icK6ZVj4cKhK8aq2v4/U3kkR+Kj/RwKCP9SCyt1Rhg+KzxbznvhPzCC63UAKgbAHGJh7eMEk4qDaHrOjZ3RS5paQ4Ik9LmaBGNPrr3Mp0I/l6fGYcWRqqPAPKftt1UvXEG+e4AwO3mVg0fCBbURUKfJJ8bOTe20RKZlfkQbCO44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/GvCAUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B647C43390;
+	Mon,  1 Apr 2024 16:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987868;
-	bh=DN7PWJ53RnazUYVNJN4q5Npzx1QxkzNgrcbVCMC0LJ8=;
+	s=korg; t=1711987906;
+	bh=rf4v7DBplo9CstdToVWZ1GXpqEekl/GqjVpTeEjAJaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4YmSuobppYzw2CWXQLH97WF5CiAU6HeLCkl8mzEC0ooLLsOX2QnKMe14RRtrAKO9
-	 zX8IVgemblAjC+RSeDYXe4ZN/gPBzS8JV4WI9VGbLXfR4EDa9b5Gxdcl+OuEJAJtJk
-	 1xiZeIt9cfY0nXQVRSpCwiO8mFVxlLmCi9f26n8k=
+	b=e/GvCAUXTxtOWEaPulF7ApXvW17WwzmIKwhNzwUIPZDAZRZp+gk1/t9iWfOsL3w2b
+	 XCY/6uPjegUqZHpg2c13TMZsBzvWmN42x3jLqBx4nFRjbejsCicpUpglLg0nxkcyXX
+	 KJ+CZeW0lYeRy29B5opDmzZG4zc898hYytZ/Rlmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 008/432] remoteproc: virtio: Fix wdg cannot recovery remote processor
-Date: Mon,  1 Apr 2024 17:39:55 +0200
-Message-ID: <20240401152553.378775493@linuxfoundation.org>
+Subject: [PATCH 6.7 009/432] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Date: Mon,  1 Apr 2024 17:39:56 +0200
+Message-ID: <20240401152553.407943118@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 References: <20240401152553.125349965@linuxfoundation.org>
@@ -67,61 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-[ Upstream commit b327c72753d6a78de37aed6c35756f2ef62897ee ]
+[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
 
-Recovery remote processor failed when wdg irq received:
-[    0.842574] remoteproc remoteproc0: crash detected in cix-dsp-rproc: type watchdog
-[    0.842750] remoteproc remoteproc0: handling crash #1 in cix-dsp-rproc
-[    0.842824] remoteproc remoteproc0: recovering cix-dsp-rproc
-[    0.843342] remoteproc remoteproc0: stopped remote processor cix-dsp-rproc
-[    0.847901] rproc-virtio rproc-virtio.0.auto: Failed to associate buffer
-[    0.847979] remoteproc remoteproc0: failed to probe subdevices for cix-dsp-rproc: -16
+With the addition of RPMh power domain to the GCC node in
+device tree, we noticed a significant delay in getting the
+UFS driver probed on AOSP which futher led to mount failures
+because Android do not support rootwait. So adding a soft
+dependency on RPMh power domain which informs modprobe to
+load rpmhpd module before gcc-sdm845.
 
-The reason is that dma coherent mem would not be released when
-recovering the remote processor, due to rproc_virtio_remove()
-would not be called, where the mem released. It will fail when
-it try to allocate and associate buffer again.
-
-Releasing reserved memory from rproc_virtio_dev_release(), instead of
-rproc_virtio_remove().
-
-Fixes: 1d7b61c06dc3 ("remoteproc: virtio: Create platform device for the remoteproc_virtio")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231217053659.3245745-1-joakim.zhang@cixtech.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/remoteproc_virtio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-sdm845.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
-index 83d76915a6ad6..25b66b113b695 100644
---- a/drivers/remoteproc/remoteproc_virtio.c
-+++ b/drivers/remoteproc/remoteproc_virtio.c
-@@ -351,6 +351,9 @@ static void rproc_virtio_dev_release(struct device *dev)
- 
- 	kfree(vdev);
- 
-+	of_reserved_mem_device_release(&rvdev->pdev->dev);
-+	dma_release_coherent_memory(&rvdev->pdev->dev);
-+
- 	put_device(&rvdev->pdev->dev);
- }
- 
-@@ -584,9 +587,6 @@ static void rproc_virtio_remove(struct platform_device *pdev)
- 	rproc_remove_subdev(rproc, &rvdev->subdev);
- 	rproc_remove_rvdev(rvdev);
- 
--	of_reserved_mem_device_release(&pdev->dev);
--	dma_release_coherent_memory(&pdev->dev);
--
- 	put_device(&rproc->dev);
- }
- 
+diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
+index 725cd52d2398e..ea4c3bf4fb9bf 100644
+--- a/drivers/clk/qcom/gcc-sdm845.c
++++ b/drivers/clk/qcom/gcc-sdm845.c
+@@ -4037,3 +4037,4 @@ module_exit(gcc_sdm845_exit);
+ MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_ALIAS("platform:gcc-sdm845");
++MODULE_SOFTDEP("pre: rpmhpd");
 -- 
 2.43.0
 
