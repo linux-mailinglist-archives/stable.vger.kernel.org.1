@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-35232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7884F894308
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E18894001
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D9C282A36
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9FE283783
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ED2481C6;
-	Mon,  1 Apr 2024 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8E46B9F;
+	Mon,  1 Apr 2024 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqglqdcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqA/qI93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849AABA3F;
-	Mon,  1 Apr 2024 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F871C129;
+	Mon,  1 Apr 2024 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990726; cv=none; b=kQv3/rbgK39XNXvshR0HwEgE+kbtSsN7wm0jalvzzXHi2FTE4qQXBcLl+lp6pjD2uLpRJ27kQwSnmpWKmVaGMVvr/jKtobNEF00/DNz55vmdFe+of53s2f9yOSHRhutRRlTuZTmU7hbZOjqc8COPwYljlFHk8Lkz2uispYOa53M=
+	t=1711988661; cv=none; b=RW/J0SwmnNoqWwacuTMS1V5p2G7TQD/i3kTRDpgbXnRDFfZedWvmDQHS/YS7YRPbEjK9w1DOigHqdF/TZb/0iJWlAoVN8e6K8aeTNHGvSZ/vcamdMs4Ak7O12M2fGSIdp0zNi/egcUE5bwZ2Rx+SIkOL9uY5EyudHvaP92Y6QZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990726; c=relaxed/simple;
-	bh=wHT0UBiQ7ZHGlHGXzw7fGqbJvE0qfpNLB3mFNN0FfjA=;
+	s=arc-20240116; t=1711988661; c=relaxed/simple;
+	bh=Jsyg7L1OAhp9889u4D6evZoZWoNpMt6+M/qnaMaw1Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hK8iz8lTRFY2X33R69l8OEOL9cOP5bEXyMNLxHs68uDy85CtjKuClAGLeTCBGBdicaQQ+zUEFdeg3nLdN71jmf9ZQjR6C+lxsOppFoobxB/5G4yjkiRXKdofODeLSmWWTgNIUT6M8rIAS2u6CTsDaaUgjaYR7WGg/1DPUya4MYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqglqdcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1ABC433C7;
-	Mon,  1 Apr 2024 16:58:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lQIU2pW+g93JC89z2nhJlQWBRAE+wJB4Zde4Ph7MPAnwsPEtdHXlEgpWqE9yWsJIdeefKQvNb12oM7AaEL2cZlKkhy83vUNQFK+W8mdz2xvcj+u0CIzwqzBtTqI2wqcN0e5xqW6Djmw+jNXFLW1W5UoOLyMulwX2wUIq55NHWs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqA/qI93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06C3C433F1;
+	Mon,  1 Apr 2024 16:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990726;
-	bh=wHT0UBiQ7ZHGlHGXzw7fGqbJvE0qfpNLB3mFNN0FfjA=;
+	s=korg; t=1711988661;
+	bh=Jsyg7L1OAhp9889u4D6evZoZWoNpMt6+M/qnaMaw1Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqglqdcnByGFrWr8Ig/WkuxkM1Z5xuMxpXQJ6xwmGvkuK1cpeWPDsG6RNq7/pBz2F
-	 dPJA762U0Am+xb7HtpiQiwxfnkppU0BNr61l+qf+CLFsOuzNWFo4lMujqTqGsWbCPB
-	 vEcVH1CmuNKYmUKteJEbrLlxoR0/rDYCBM9u6RrI=
+	b=YqA/qI93VjcvhNiI5fg5uIw2lPpndi8pWif7ipKSs4mo/8OwjEyFnnvdRUJpkQnFu
+	 eflYS4/BW58RI/Vo3Uu5sCDuSZNYL/YY6ZqzWigBFtOiOFhMwkj7IO3A3VTjg9UcV6
+	 qRy4L5Zul3SvlY8ytXMH3MNtXhzlciDPQTRQn40I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/272] parisc: Fix csum_ipv6_magic on 32-bit systems
-Date: Mon,  1 Apr 2024 17:43:57 +0200
-Message-ID: <20240401152531.867449843@linuxfoundation.org>
+	Lu Yao <yaolu@kylinos.cn>,
+	Kees Cook <keescook@chromium.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 251/432] init/Kconfig: lower GCC version check for -Warray-bounds
+Date: Mon,  1 Apr 2024 17:43:58 +0200
+Message-ID: <20240401152600.625651725@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +72,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 4408ba75e4ba80c91fde7e10bccccf388f5c09be ]
+commit 3e00f5802fabf2f504070a591b14b648523ede13 upstream.
 
-Calculating the IPv6 checksum on 32-bit systems missed overflows when
-adding the proto+len fields into the checksum. This results in the
-following unit test failure.
+We continue to see false positives from -Warray-bounds even in GCC 10,
+which is getting reported in a few places[1] still:
 
-    # test_csum_ipv6_magic: ASSERTION FAILED at lib/checksum_kunit.c:506
-    Expected ( u64)csum_result == ( u64)expected, but
-        ( u64)csum_result == 46722 (0xb682)
-        ( u64)expected == 46721 (0xb681)
-    not ok 5 test_csum_ipv6_magic
+security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
 
-This is probably rarely seen in the real world because proto+len are
-usually small values which will rarely result in overflows when calculating
-the checksum. However, the unit test code uses large values for the length
-field, causing the test to fail.
+Lower the GCC version check from 11 to 10.
 
-Fix the problem by adding the missing carry into the final checksum.
-
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
+Reported-by: Lu Yao <yaolu@kylinos.cn>
+Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
+Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Marc Aurèle La France <tsi@tuyoix.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ init/Kconfig |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index f705e5dd10742..e619e67440db9 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -163,7 +163,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- "	ldw,ma		4(%2), %7\n"	/* 4th daddr */
- "	addc		%6, %0, %0\n"
- "	addc		%7, %0, %0\n"
--"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
-+"	addc		%3, %0, %0\n"	/* fold in proto+len */
-+"	addc		0, %0, %0\n"	/* add carry */
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -876,14 +876,14 @@ config CC_IMPLICIT_FALLTHROUGH
+ 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
+ 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
  
- #endif
- 	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
--- 
-2.43.0
-
+-# Currently, disable gcc-11+ array-bounds globally.
++# Currently, disable gcc-10+ array-bounds globally.
+ # It's still broken in gcc-13, so no upper bound yet.
+-config GCC11_NO_ARRAY_BOUNDS
++config GCC10_NO_ARRAY_BOUNDS
+ 	def_bool y
+ 
+ config CC_NO_ARRAY_BOUNDS
+ 	bool
+-	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
++	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
+ 
+ #
+ # For architectures that know their GCC __int128 support is sound
 
 
 
