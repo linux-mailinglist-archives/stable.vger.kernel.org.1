@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-35406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E098943CD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450088943CE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74994283934
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3DC22839B1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4853E48781;
-	Mon,  1 Apr 2024 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75F7487BC;
+	Mon,  1 Apr 2024 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1L25Nlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+bPLukZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB154495F0;
-	Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EBA482DF;
+	Mon,  1 Apr 2024 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991294; cv=none; b=MzjxpOjHg/OHH4IFkITBQE+KIIWU3KiXkfMyPaZY7MxFOD2+w6HeNpohbUvNJAhDotfwR+YYLQ2k3ol3yqE0x0mSyMgLToOSBTWOqG3npjQKsEavdwqH0+1cPULL/VA6BztTZDqwhtiO5pEG1yDfGPH+zFYRGgCj1pRJg3mFq18=
+	t=1711991297; cv=none; b=AILfsQoIkqi4wqhVkQILCUlcRd44GLacbFcmO5HqMj3vJefl2ExUigIqAlhjmhFErGr1sXWwUpgQsKCjidEizo/BCC+khB+pceXN+qxxQKniyw9XATFgiyxdPWkGxBug4Lbbm/2mdYT9X3gk4jholGN2ew4JJoZquJRkL3hYCm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991294; c=relaxed/simple;
-	bh=aUDt8qKoGnimdIe6NCssqfaDmpCvfqlhXZOLUv4ZMoQ=;
+	s=arc-20240116; t=1711991297; c=relaxed/simple;
+	bh=ZUVdOhBsdcdXuExfwd66/6dDnE/V/90E55HEpfNE6Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/cFu+14KEhYh8xYop/YSVlaBADBngT4AUzkuh/1C6WWgMkFMOM5QS17GUT/7m4rFHpTCbbmp1Yi3LWMQqJ3fBq5hgmXcwZQl3pRDdDrHx3Cj9aY8AehnDytxzgaxTh3XX7FY0lx7y04QD4oIxeBIvAuAoVtwjqfLl+VaOmuOjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1L25Nlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B13C433C7;
-	Mon,  1 Apr 2024 17:08:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DvgsmUs5tnN+a9vO/PLOLtuBE3u3RQYQ+ccli4ZyF9y8fawlgCcq1/smtwy9svmNwgCpTz5Os28fPSC8HydyfUriVdGvThKD1dKznWvPl/IjY1XkuxlE8RIt0A1H1tZYaptNEusHI9yAYXbEu8JY6KxkLGQkSDwvwgWWvcrTHfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+bPLukZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3A3C43390;
+	Mon,  1 Apr 2024 17:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991293;
-	bh=aUDt8qKoGnimdIe6NCssqfaDmpCvfqlhXZOLUv4ZMoQ=;
+	s=korg; t=1711991297;
+	bh=ZUVdOhBsdcdXuExfwd66/6dDnE/V/90E55HEpfNE6Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1L25Nlxj3k3xWEeDa9HIkYUnbf9DRc45ySa1UA+V1DbveFAeXvGI3mQOdRu034Bt
-	 +t5YmpUQFQJWCRj+rIj2EOt7Zb8+g4ljGLNqnFO5GzQu8q2v4rqjK6iDm1uXjOMiZ7
-	 rfd3oVmAjkKzXBJNrN42mkNxj09xWNMMlSOv5PXw=
+	b=C+bPLukZkv2HCbjdrpOaNDSgn4jsKf3Jt7XPkM2TUrqaVe8nsMjuw19Kcnmz0+awR
+	 EptoVtb639S0irVi+Z3rnbTobKDFtZ4MILPatKmAP95CKm83yiTfCYtHNv0tfUR9Hk
+	 xH2HjgxDspMvsCANAIOTZRK/EIwCOH00JF5QvLYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 222/272] block: Do not force full zone append completion in req_bio_endio()
-Date: Mon,  1 Apr 2024 17:46:52 +0200
-Message-ID: <20240401152537.876410125@linuxfoundation.org>
+	Ye Zhang <ye.zhang@rock-chips.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 223/272] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
+Date: Mon,  1 Apr 2024 17:46:53 +0200
+Message-ID: <20240401152537.909629931@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
 References: <20240401152530.237785232@linuxfoundation.org>
@@ -60,60 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Ye Zhang <ye.zhang@rock-chips.com>
 
-commit 55251fbdf0146c252ceff146a1bb145546f3e034 upstream.
+commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
 
-This reverts commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988.
+The issue occurs when the devfreq cooling device uses the EM power model
+and the get_real_power() callback is provided by the driver.
 
-Partial zone append completions cannot be supported as there is no
-guarantees that the fragmented data will be written sequentially in the
-same manner as with a full command. Commit 748dc0b65ec2 ("block: fix
-partial zone append completion handling in req_bio_endio()") changed
-req_bio_endio() to always advance a partially failed BIO by its full
-length, but this can lead to incorrect accounting. So revert this
-change and let low level device drivers handle this case by always
-failing completely zone append operations. With this revert, users will
-still see an IO error for a partially completed zone append BIO.
+The EM power table is sorted ascending，can't index the table by cooling
+device state，so convert cooling state to performance state by
+dfc->max_state - dfc->capped_state.
 
-Fixes: 748dc0b65ec2 ("block: fix partial zone append completion handling in req_bio_endio()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240328004409.594888-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/thermal/devfreq_cooling.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -761,16 +761,11 @@ static void req_bio_endio(struct request
- 		/*
- 		 * Partial zone append completions cannot be supported as the
- 		 * BIO fragments may end up not being written sequentially.
--		 * For such case, force the completed nbytes to be equal to
--		 * the BIO size so that bio_advance() sets the BIO remaining
--		 * size to 0 and we end up calling bio_endio() before returning.
- 		 */
--		if (bio->bi_iter.bi_size != nbytes) {
-+		if (bio->bi_iter.bi_size != nbytes)
- 			bio->bi_status = BLK_STS_IOERR;
--			nbytes = bio->bi_iter.bi_size;
--		} else {
-+		else
- 			bio->bi_iter.bi_sector = rq->__sector;
--		}
- 	}
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -201,7 +201,7 @@ static int devfreq_cooling_get_requested
  
- 	bio_advance(bio, nbytes);
+ 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+ 		if (!res) {
+-			state = dfc->capped_state;
++			state = dfc->max_state - dfc->capped_state;
+ 
+ 			/* Convert EM power into milli-Watts first */
+ 			dfc->res_util = dfc->em_pd->table[state].power;
 
 
 
