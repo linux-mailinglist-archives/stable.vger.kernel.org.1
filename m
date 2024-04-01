@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-33927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90B5893B6B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:28:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA98F893B6C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A757B20C9A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 13:28:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274701C20DD2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 13:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B883F8F7;
-	Mon,  1 Apr 2024 13:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB0F3F9C0;
+	Mon,  1 Apr 2024 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCgEDuOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPaAu7T+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A183F8E0
-	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 13:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C473F8F7
+	for <stable@vger.kernel.org>; Mon,  1 Apr 2024 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711978087; cv=none; b=jD+roiH7eNrtFeuebMl9jQ72itmpSQUVGl0QEK09Y1NZUmiJw/4EH9Io/tJVnOM7TPXI+58KAhoj5TIXuK6J1K6fn8P92CumQKBjEwRuXMsCd2TJf2dbd8nu90px/6yU4Sz8LEtWSLyEZ4NjSGM/U5z8n2kASczCI4tUt2MfnbQ=
+	t=1711978096; cv=none; b=ePpExrfvnZBjmiAHmNX8+PRpibOH/yAbQQ61AGPKV0IqikXtglRi09pEkeQuM/GHX/u3ZFB7enFGtgyWY3z0Z30Fj0Wx4Tl8PgLs66M74VI8SNsH8/OlLI3NH2fZFtgNRE0yQ2p0rk+faBG30wyqCMdu3XRb3nye3KAaVitvlPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711978087; c=relaxed/simple;
-	bh=9ZfIWQXxXnK30JZ8yUiSAIgxMx/5mB/TOlzfozUqnmo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VZvBjtZl038J3tkuz6b7Y4pNbTpXlUnSHwcJgvAvCuU76w3FyT8r+Q5OsdCp+ol7YpXZD3f/F8ixDSVFU9YOmRxBtSIKq+7c24hPLEu6d4bzh5UAkV2M9XzJWWO78tucdajAXKw4EEKbUGeyphIMFYlZVKx8sZKx3Xi+6Hjxq/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCgEDuOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEA1C433F1;
-	Mon,  1 Apr 2024 13:28:05 +0000 (UTC)
+	s=arc-20240116; t=1711978096; c=relaxed/simple;
+	bh=9TJlBGBpIFTj/TI/gt7ajm3lDqsX5jusLY0VjjDgHHA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oqEgUPajRQtPk+i3UpD5/VAnaS+nU3beHtTQeLHRb5C54BrxC9U6P8xvzTS46D1YWZTqT6brgt1LVWJcgzl+fTkyYy02oJLWfwuQMNR8FNFTOVOquzswO+qtOv1QBhx10MsxvroUc+pwbIRNM2k0CpgDi3KfOKwEsD5ndaz4eqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPaAu7T+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EFAC433C7;
+	Mon,  1 Apr 2024 13:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711978086;
-	bh=9ZfIWQXxXnK30JZ8yUiSAIgxMx/5mB/TOlzfozUqnmo=;
+	s=korg; t=1711978095;
+	bh=9TJlBGBpIFTj/TI/gt7ajm3lDqsX5jusLY0VjjDgHHA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BCgEDuOpNnXEDSLJsMbEVaF59Wnkl2kWxOLbQSBi6k3PdKmzPOBpeVouY2njQUP/X
-	 W+9Bg55FIL/foU/aw0+XOyuA3FhO2Jetzm6pvNZ52l8NE7P9EPmRsQhTq2xsrkxuol
-	 gkQkecpGZeF9gOMmuSFb3KknHUos7yJ7QwfNB3FE=
-Subject: FAILED: patch "[PATCH] perf/x86/amd/core: Update and fix stalled-cycles-* events for" failed to apply to 4.19-stable tree
+	b=rPaAu7T+laf0GmRg8fv2oTSC6SzHqESSngdWv89/CDdDY9vLP4YLDRaeONvxNWo4i
+	 Y/1qQxRyNRZkfqjJ5slLD6mVntoUt2bmPlBMGUeRmXHvH8wTct0j/AAP1IJJpRf6zE
+	 kPhVw70xCFs2El1ZCyO7fdY2ifIIY+Qf8ee/uzwM=
+Subject: FAILED: patch "[PATCH] perf/x86/amd/core: Update and fix stalled-cycles-* events for" failed to apply to 5.4-stable tree
 To: sandipan.das@amd.com,irogers@google.com,mingo@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Apr 2024 15:28:03 +0200
-Message-ID: <2024040103-scholar-tall-0cf6@gregkh>
+Date: Mon, 01 Apr 2024 15:28:04 +0200
+Message-ID: <2024040104-avid-embolism-6b9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c7b2edd8377be983442c1344cb940cd2ac21b601
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040103-scholar-tall-0cf6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024040104-avid-embolism-6b9b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 c7b2edd8377b ("perf/x86/amd/core: Update and fix stalled-cycles-* events for Zen 2 and later")
-3fe3331bb285 ("perf/x86/amd: Add event map for AMD Family 17h")
 
 thanks,
 
