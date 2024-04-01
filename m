@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E72893F6D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5F9894113
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A635F1F2256A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B33C8B22341
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A547481B3;
-	Mon,  1 Apr 2024 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39B34AEC1;
+	Mon,  1 Apr 2024 16:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4F+KnpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEHu4OQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E9447A6A;
-	Mon,  1 Apr 2024 16:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F115481B7;
+	Mon,  1 Apr 2024 16:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988187; cv=none; b=CdMp8deaKgnPTUlNpolqBzaZFt2ZCirByea2uwW6TyPz0KSPAEK07TuT3m3TzeLskNACTSSyutuYWohtHCyCOABL9/1QFOAtu6QtRAK8T17R6HXhaOzFDjHFSlj0FyWVPURlYH4VdkRhQb5Le0tUrvGi7D5i2iDjlpse6Ror7lA=
+	t=1711989439; cv=none; b=BQTGxIp5nrFkuUWit4wROVoxcv0y4HqEuVHUzL0+94jtNGZp4CqVXzy+BaWpT+8EoGXoz8ehvOeilGNTKRELZeEQY7dLEN1DrPmCsC3F4t2anAoImyJD/K+IrMpMZWPCUWWn7NEmR1fN4RqkeWrSL4JkVMvjkmCsUkMFyM9lZsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988187; c=relaxed/simple;
-	bh=lx86JM82je5ThMJ+nGsNy9rzbmXb2x+BFJxn+B9ZZCk=;
+	s=arc-20240116; t=1711989439; c=relaxed/simple;
+	bh=2eUrHditrQ3SPJaKleTv6F2pNe7fHyi3tM7aQ+dw6qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDxSZ9cRBH8TBqvtsf1hbQm+fyoYEOQ2iRai9YoCXuJrLUKqNvQsmAZg8Txy75PWck45n7jKq2GAF2TutNP8H8fcIi+AIDHP6G/FZVXK3F9FtGzQwO8EUXkd/tHLpY+ST3eQrSuuZkYhmcf05gWYL1vYnjlkDy8SDBHYXvcU630=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4F+KnpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0001C433C7;
-	Mon,  1 Apr 2024 16:16:25 +0000 (UTC)
+	 MIME-Version; b=iwuGC+XORmJH+7Mn/he0Zrey2QeYkrrLej9vC2cNrIxFmFOXM4LGLaSyXsUEYrof+eW+mylZqNTYQmxADb1QhNujN6c/Rh5/Ko6qQV1YgjllettZNWWBbRtdi1Ao+eyOdcr/0ESzaZEJ7OtEWSZOxr4WmvCk6p45pdsm3EJ+a6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEHu4OQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FF1C43390;
+	Mon,  1 Apr 2024 16:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988186;
-	bh=lx86JM82je5ThMJ+nGsNy9rzbmXb2x+BFJxn+B9ZZCk=;
+	s=korg; t=1711989439;
+	bh=2eUrHditrQ3SPJaKleTv6F2pNe7fHyi3tM7aQ+dw6qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4F+KnpDKKYwGET7IkZ2y+1RpSHHkPBCh7fekmULe2BX0uuE8WkCZNlkWH+HT42wc
-	 7U4hcRcDOe1n11OTqmtsilJ8c8oVRP0dgWDpkra68ps8bLr+Q32h0kG2oOjmAHu+Xe
-	 DvsyhEZdgcauCoYlysL4YdvX5EkpuKoC/65tDIgs=
+	b=lEHu4OQau0UPMWk5X8tnWopUZumRUo7KuYOWU5yfWk/7AWxgqaMfMY3VDVAKTl8N6
+	 KDh7Q3OKu6YHBWTeUetdN7CyTYtnyBWQ7YyF2Z9RRz8vUfLpn4TpigiyMTFxG2QgZZ
+	 jOK0+2iT45ex6HLiVlmemsy2e7h7MVQEfq9u2+P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Battersby <tonyb@cybernetics.com>,
-	Greg Edwards <gedwards@ddn.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Chenyuan Yang <cy54@illinois.edu>,
+	Richard Weinberger <richard@nod.at>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 110/432] block: Fix page refcounts for unaligned buffers in __bio_release_pages()
+Subject: [PATCH 6.6 048/396] ubi: Check for too small LEB size in VTBL code
 Date: Mon,  1 Apr 2024 17:41:37 +0200
-Message-ID: <20240401152556.410754737@linuxfoundation.org>
+Message-ID: <20240401152549.359562491@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Richard Weinberger <richard@nod.at>
 
-[ Upstream commit 38b43539d64b2fa020b3b9a752a986769f87f7a6 ]
+[ Upstream commit 68a24aba7c593eafa8fd00f2f76407b9b32b47a9 ]
 
-Fix an incorrect number of pages being released for buffers that do not
-start at the beginning of a page.
+If the LEB size is smaller than a volume table record we cannot
+have volumes.
+In this case abort attaching.
 
-Fixes: 1b151e2435fc ("block: Remove special-casing of compound pages")
+Cc: Chenyuan Yang <cy54@illinois.edu>
 Cc: stable@vger.kernel.org
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Tested-by: Greg Edwards <gedwards@ddn.com>
-Link: https://lore.kernel.org/r/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
+Reported-by: Chenyuan Yang <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-mtd/1433EB7A-FC89-47D6-8F47-23BE41B263B3@illinois.edu/
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/mtd/ubi/vtbl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/block/bio.c b/block/bio.c
-index 270f6b99926ea..62419aa09d731 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -1149,7 +1149,7 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
- 
- 	bio_for_each_folio_all(fi, bio) {
- 		struct page *page;
--		size_t done = 0;
-+		size_t nr_pages;
- 
- 		if (mark_dirty) {
- 			folio_lock(fi.folio);
-@@ -1157,10 +1157,11 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
- 			folio_unlock(fi.folio);
- 		}
- 		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
-+		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
-+			   fi.offset / PAGE_SIZE + 1;
- 		do {
- 			bio_release_page(bio, page++);
--			done += PAGE_SIZE;
--		} while (done < fi.length);
-+		} while (--nr_pages != 0);
- 	}
- }
- EXPORT_SYMBOL_GPL(__bio_release_pages);
+diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
+index f700f0e4f2ec4..6e5489e233dd2 100644
+--- a/drivers/mtd/ubi/vtbl.c
++++ b/drivers/mtd/ubi/vtbl.c
+@@ -791,6 +791,12 @@ int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_attach_info *ai)
+ 	 * The number of supported volumes is limited by the eraseblock size
+ 	 * and by the UBI_MAX_VOLUMES constant.
+ 	 */
++
++	if (ubi->leb_size < UBI_VTBL_RECORD_SIZE) {
++		ubi_err(ubi, "LEB size too small for a volume record");
++		return -EINVAL;
++	}
++
+ 	ubi->vtbl_slots = ubi->leb_size / UBI_VTBL_RECORD_SIZE;
+ 	if (ubi->vtbl_slots > UBI_MAX_VOLUMES)
+ 		ubi->vtbl_slots = UBI_MAX_VOLUMES;
 -- 
 2.43.0
 
