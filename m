@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B44C894005
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5962889430F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C824B20D24
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E314283425
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F6147A57;
-	Mon,  1 Apr 2024 16:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28C8481B8;
+	Mon,  1 Apr 2024 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vj13XQ7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/bDDePK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D75C129;
-	Mon,  1 Apr 2024 16:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE4A1E86C;
+	Mon,  1 Apr 2024 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988675; cv=none; b=af06JETD0Io4oTIXOLGxJT5+W6rWcIait1aPugdrOfBoyr40foeVf1YnANTSKxO2xIlira5tlDt4/8lH1elI1W1yip+jPeWbVuYKmVNHG20FfNFAqE+OMqxAhSoQGsvkbkq7ayzcl2yR79NU+WPWwkgOYmwI0GO1R20h0yTbOz4=
+	t=1711990748; cv=none; b=qriLzfMYCSEoqiUilUnIxzFPAHHExK6Wu+Eq0j/9ulzYhlrVGsDNKmb1iM8PGvVTnr/ZzU8hWE99JMnvca6VKbcv5EYs6+/o8FpEMGqjNN9AXv0zm7qbZdrn+9XoAT/ldyzrwLC+T4LwKRXhw49zpk5VDx55n38jvGnAZRHiBLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988675; c=relaxed/simple;
-	bh=VSZ8MgFI5jBAvTzeZJwwrOVVOwObhj/E2Nsy3CdDOi0=;
+	s=arc-20240116; t=1711990748; c=relaxed/simple;
+	bh=VXo3lRpDELA2XyjxSJn7CNUQSa8oYi1uvYz0ePDe2jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuThmWQ7BWynd3kpUtxjUTSY4697/yh+RFmULjvPLsb3zWtHpiQzVODZTTY++5yUC+JQf/GONIAp74Lu+XdWc19a8uhp4cuK4b42VRBqK9PwSowF0EsBCC9I9Ah5Mos7RdAjiyvLDsfN8ckPUQvTwgk90KLlyJOJur3Wc9Iy3Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vj13XQ7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EB5C433C7;
-	Mon,  1 Apr 2024 16:24:34 +0000 (UTC)
+	 MIME-Version; b=B889gUBqeBBQYR9IrYsA+T19WWU8W8lfPORfv9VxVs0jsiQB4fSQThMWETnfXgFDlxnx7j7movpa05ma/P9qd0gK6/ZAeLJYvivTR8ibAmYb0C7DCyLam47QSOvDUfmpz7OxdBSEpo+FxmdJdt8z11rqTyO334b/yZFY6MfNlgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/bDDePK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF9DC433F1;
+	Mon,  1 Apr 2024 16:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988675;
-	bh=VSZ8MgFI5jBAvTzeZJwwrOVVOwObhj/E2Nsy3CdDOi0=;
+	s=korg; t=1711990748;
+	bh=VXo3lRpDELA2XyjxSJn7CNUQSa8oYi1uvYz0ePDe2jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vj13XQ7YmEDb3ctVl8KPV57VGxGP1CstcsovuEEAmMYUZ7ZnCFKM5sWzkOU76k2DD
-	 MrVtgTJF1NPsmTk8p88poRoeU4omTctry/X+QjlprtEunPnMkcEjc4jrJ3buWh8rMG
-	 OyWp+/gxTr+85mpwurYq+W8JsuYxR1sz9UeWzSR0=
+	b=Z/bDDePKFJJq8LQsY7JnJ/TbNn3Cp4f4zOn54DTO30HrS1pqUFS9puphe47yVO3Lq
+	 OrTqFt0x9aNIgGgnHReoqwWf/clXBgPIMjtvaZlesGbL/rQpUWEgsSvoVBmcv5uNqE
+	 3kk15sGCB34WbNhBf3/0Rnr+2nZqb0z93YR0HK9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 228/432] drm/bridge: add ->edid_read hook and drm_bridge_edid_read()
+Subject: [PATCH 6.1 025/272] media: mc: Expand MUST_CONNECT flag to always require an enabled link
 Date: Mon,  1 Apr 2024 17:43:35 +0200
-Message-ID: <20240401152559.935916864@linuxfoundation.org>
+Message-ID: <20240401152531.138812106@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +63,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit d807ad80d811ba0c22adfd871e2a46491f80d6e2 ]
+[ Upstream commit b3decc5ce7d778224d266423b542326ad469cb5f ]
 
-Add new struct drm_edid based ->edid_read hook and
-drm_bridge_edid_read() function to call the hook.
+The MEDIA_PAD_FL_MUST_CONNECT flag indicates that the pad requires an
+enabled link to stream, but only if it has any link at all. This makes
+little sense, as if a pad is part of a pipeline, there are very few use
+cases for an active link to be mandatory only if links exist at all. A
+review of in-tree drivers confirms they all need an enabled link for
+pads marked with the MEDIA_PAD_FL_MUST_CONNECT flag.
 
-v2: Include drm/drm_edid.h
+Expand the scope of the flag by rejecting pads that have no links at
+all. This requires modifying the pipeline build code to add those pads
+to the pipeline.
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/9d08d22eaffcb9c59a2b677e45d7e61fc689bc2f.1706038510.git.jani.nikula@intel.com
-Stable-dep-of: 171b711b26cc ("drm/bridge: lt8912b: do not return negative values from .get_modes()")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_bridge.c | 46 +++++++++++++++++++++++++++++++++++-
- include/drm/drm_bridge.h     | 33 ++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+), 1 deletion(-)
+ .../media/mediactl/media-types.rst            | 11 ++--
+ drivers/media/mc/mc-entity.c                  | 53 +++++++++++++++----
+ 2 files changed, 48 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index 30d66bee0ec6a..e1cfba2ff583b 100644
---- a/drivers/gpu/drm/drm_bridge.c
-+++ b/drivers/gpu/drm/drm_bridge.c
-@@ -27,8 +27,9 @@
- #include <linux/mutex.h>
+diff --git a/Documentation/userspace-api/media/mediactl/media-types.rst b/Documentation/userspace-api/media/mediactl/media-types.rst
+index 0ffeece1e0c8e..6332e8395263b 100644
+--- a/Documentation/userspace-api/media/mediactl/media-types.rst
++++ b/Documentation/userspace-api/media/mediactl/media-types.rst
+@@ -375,12 +375,11 @@ Types and flags used to represent the media graph elements
+ 	  are origins of links.
  
- #include <drm/drm_atomic_state_helper.h>
--#include <drm/drm_debugfs.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_debugfs.h>
-+#include <drm/drm_edid.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_file.h>
- #include <drm/drm_of.h>
-@@ -1206,6 +1207,47 @@ int drm_bridge_get_modes(struct drm_bridge *bridge,
+     *  -  ``MEDIA_PAD_FL_MUST_CONNECT``
+-       -  If this flag is set and the pad is linked to any other pad, then
+-	  at least one of those links must be enabled for the entity to be
+-	  able to stream. There could be temporary reasons (e.g. device
+-	  configuration dependent) for the pad to need enabled links even
+-	  when this flag isn't set; the absence of the flag doesn't imply
+-	  there is none.
++       -  If this flag is set, then for this pad to be able to stream, it must
++	  be connected by at least one enabled link. There could be temporary
++	  reasons (e.g. device configuration dependent) for the pad to need
++	  enabled links even when this flag isn't set; the absence of the flag
++	  doesn't imply there is none.
+ 
+ 
+ One and only one of ``MEDIA_PAD_FL_SINK`` and ``MEDIA_PAD_FL_SOURCE``
+diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
+index 50b68b4dde5d0..8919df09e3e8d 100644
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -509,14 +509,15 @@ static int media_pipeline_walk_push(struct media_pipeline_walk *walk,
+ 
+ /*
+  * Move the top entry link cursor to the next link. If all links of the entry
+- * have been visited, pop the entry itself.
++ * have been visited, pop the entry itself. Return true if the entry has been
++ * popped.
+  */
+-static void media_pipeline_walk_pop(struct media_pipeline_walk *walk)
++static bool media_pipeline_walk_pop(struct media_pipeline_walk *walk)
+ {
+ 	struct media_pipeline_walk_entry *entry;
+ 
+ 	if (WARN_ON(walk->stack.top < 0))
+-		return;
++		return false;
+ 
+ 	entry = media_pipeline_walk_top(walk);
+ 
+@@ -526,7 +527,7 @@ static void media_pipeline_walk_pop(struct media_pipeline_walk *walk)
+ 			walk->stack.top);
+ 
+ 		walk->stack.top--;
+-		return;
++		return true;
+ 	}
+ 
+ 	entry->links = entry->links->next;
+@@ -534,6 +535,8 @@ static void media_pipeline_walk_pop(struct media_pipeline_walk *walk)
+ 	dev_dbg(walk->mdev->dev,
+ 		"media pipeline: moved entry %u to next link\n",
+ 		walk->stack.top);
++
++	return false;
  }
- EXPORT_SYMBOL_GPL(drm_bridge_get_modes);
  
-+/**
-+ * drm_bridge_edid_read - read the EDID data of the connected display
-+ * @bridge: bridge control structure
-+ * @connector: the connector to read EDID for
-+ *
-+ * If the bridge supports output EDID retrieval, as reported by the
-+ * DRM_BRIDGE_OP_EDID bridge ops flag, call &drm_bridge_funcs.edid_read to get
-+ * the EDID and return it. Otherwise return NULL.
-+ *
-+ * If &drm_bridge_funcs.edid_read is not set, fall back to using
-+ * drm_bridge_get_edid() and wrapping it in struct drm_edid.
-+ *
-+ * RETURNS:
-+ * The retrieved EDID on success, or NULL otherwise.
-+ */
-+const struct drm_edid *drm_bridge_edid_read(struct drm_bridge *bridge,
-+					    struct drm_connector *connector)
-+{
-+	if (!(bridge->ops & DRM_BRIDGE_OP_EDID))
-+		return NULL;
+ /* Free all memory allocated while walking the pipeline. */
+@@ -583,11 +586,12 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 	struct media_link *link;
+ 	struct media_pad *local;
+ 	struct media_pad *remote;
++	bool last_link;
+ 	int ret;
+ 
+ 	origin = entry->pad;
+ 	link = list_entry(entry->links, typeof(*link), list);
+-	media_pipeline_walk_pop(walk);
++	last_link = media_pipeline_walk_pop(walk);
+ 
+ 	dev_dbg(walk->mdev->dev,
+ 		"media pipeline: exploring link '%s':%u -> '%s':%u\n",
+@@ -612,7 +616,7 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 					   local->index)) {
+ 		dev_dbg(walk->mdev->dev,
+ 			"media pipeline: skipping link (no route)\n");
+-		return 0;
++		goto done;
+ 	}
+ 
+ 	/*
+@@ -627,13 +631,44 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
+ 	if (!(link->flags & MEDIA_LNK_FL_ENABLED)) {
+ 		dev_dbg(walk->mdev->dev,
+ 			"media pipeline: skipping link (disabled)\n");
+-		return 0;
++		goto done;
+ 	}
+ 
+ 	ret = media_pipeline_add_pad(pipe, walk, remote);
+ 	if (ret)
+ 		return ret;
+ 
++done:
++	/*
++	 * If we're done iterating over links, iterate over pads of the entity.
++	 * This is necessary to discover pads that are not connected with any
++	 * link. Those are dead ends from a pipeline exploration point of view,
++	 * but are still part of the pipeline and need to be added to enable
++	 * proper validation.
++	 */
++	if (!last_link)
++		return 0;
 +
-+	/* Transitional: Fall back to ->get_edid. */
-+	if (!bridge->funcs->edid_read) {
-+		const struct drm_edid *drm_edid;
-+		struct edid *edid;
++	dev_dbg(walk->mdev->dev,
++		"media pipeline: adding unconnected pads of '%s'\n",
++		local->entity->name);
 +
-+		edid = drm_bridge_get_edid(bridge, connector);
-+		if (!edid)
-+			return NULL;
++	media_entity_for_each_pad(origin->entity, local) {
++		/*
++		 * Skip the origin pad (already handled), pad that have links
++		 * (already discovered through iterating over links) and pads
++		 * not internally connected.
++		 */
++		if (origin == local || !local->num_links ||
++		    !media_entity_has_pad_interdep(origin->entity, origin->index,
++						   local->index))
++			continue;
 +
-+		drm_edid = drm_edid_alloc(edid, (edid->extensions + 1) * EDID_LENGTH);
-+
-+		kfree(edid);
-+
-+		return drm_edid;
++		ret = media_pipeline_add_pad(pipe, walk, local);
++		if (ret)
++			return ret;
 +	}
 +
-+	return bridge->funcs->edid_read(bridge, connector);
-+}
-+EXPORT_SYMBOL_GPL(drm_bridge_edid_read);
-+
- /**
-  * drm_bridge_get_edid - get the EDID data of the connected display
-  * @bridge: bridge control structure
-@@ -1215,6 +1257,8 @@ EXPORT_SYMBOL_GPL(drm_bridge_get_modes);
-  * DRM_BRIDGE_OP_EDID bridge ops flag, call &drm_bridge_funcs.get_edid to
-  * get the EDID and return it. Otherwise return NULL.
-  *
-+ * Deprecated. Prefer using drm_bridge_edid_read().
-+ *
-  * RETURNS:
-  * The retrieved EDID on success, or NULL otherwise.
-  */
-diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
-index 9ef461aa9b9e2..99aea536013ef 100644
---- a/include/drm/drm_bridge.h
-+++ b/include/drm/drm_bridge.h
-@@ -557,6 +557,37 @@ struct drm_bridge_funcs {
- 	int (*get_modes)(struct drm_bridge *bridge,
- 			 struct drm_connector *connector);
+ 	return 0;
+ }
  
-+	/**
-+	 * @edid_read:
-+	 *
-+	 * Read the EDID data of the connected display.
-+	 *
-+	 * The @edid_read callback is the preferred way of reporting mode
-+	 * information for a display connected to the bridge output. Bridges
-+	 * that support reading EDID shall implement this callback and leave
-+	 * the @get_modes callback unimplemented.
-+	 *
-+	 * The caller of this operation shall first verify the output
-+	 * connection status and refrain from reading EDID from a disconnected
-+	 * output.
-+	 *
-+	 * This callback is optional. Bridges that implement it shall set the
-+	 * DRM_BRIDGE_OP_EDID flag in their &drm_bridge->ops.
-+	 *
-+	 * The connector parameter shall be used for the sole purpose of EDID
-+	 * retrieval, and shall not be stored internally by bridge drivers for
-+	 * future usage.
-+	 *
-+	 * RETURNS:
-+	 *
-+	 * An edid structure newly allocated with drm_edid_alloc() or returned
-+	 * from drm_edid_read() family of functions on success, or NULL
-+	 * otherwise. The caller is responsible for freeing the returned edid
-+	 * structure with drm_edid_free().
-+	 */
-+	const struct drm_edid *(*edid_read)(struct drm_bridge *bridge,
-+					    struct drm_connector *connector);
-+
- 	/**
- 	 * @get_edid:
- 	 *
-@@ -888,6 +919,8 @@ drm_atomic_helper_bridge_propagate_bus_fmt(struct drm_bridge *bridge,
- enum drm_connector_status drm_bridge_detect(struct drm_bridge *bridge);
- int drm_bridge_get_modes(struct drm_bridge *bridge,
- 			 struct drm_connector *connector);
-+const struct drm_edid *drm_bridge_edid_read(struct drm_bridge *bridge,
-+					    struct drm_connector *connector);
- struct edid *drm_bridge_get_edid(struct drm_bridge *bridge,
- 				 struct drm_connector *connector);
- void drm_bridge_hpd_enable(struct drm_bridge *bridge,
+@@ -745,7 +780,6 @@ __must_check int __media_pipeline_start(struct media_pad *pad,
+ 		struct media_pad *pad = ppad->pad;
+ 		struct media_entity *entity = pad->entity;
+ 		bool has_enabled_link = false;
+-		bool has_link = false;
+ 		struct media_link *link;
+ 
+ 		dev_dbg(mdev->dev, "Validating pad '%s':%u\n", pad->entity->name,
+@@ -775,7 +809,6 @@ __must_check int __media_pipeline_start(struct media_pad *pad,
+ 			/* Record if the pad has links and enabled links. */
+ 			if (link->flags & MEDIA_LNK_FL_ENABLED)
+ 				has_enabled_link = true;
+-			has_link = true;
+ 
+ 			/*
+ 			 * Validate the link if it's enabled and has the
+@@ -813,7 +846,7 @@ __must_check int __media_pipeline_start(struct media_pad *pad,
+ 		 * 3. If the pad has the MEDIA_PAD_FL_MUST_CONNECT flag set,
+ 		 * ensure that it has either no link or an enabled link.
+ 		 */
+-		if ((pad->flags & MEDIA_PAD_FL_MUST_CONNECT) && has_link &&
++		if ((pad->flags & MEDIA_PAD_FL_MUST_CONNECT) &&
+ 		    !has_enabled_link) {
+ 			dev_dbg(mdev->dev,
+ 				"Pad '%s':%u must be connected by an enabled link\n",
 -- 
 2.43.0
 
