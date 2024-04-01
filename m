@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-34493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62325893F93
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EFF894139
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93CC01C2109B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2D80282CC0
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C895D446D5;
-	Mon,  1 Apr 2024 16:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967714596E;
+	Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1/6OgXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10EyTt7f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8716F3D961;
-	Mon,  1 Apr 2024 16:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5490B1E86C;
+	Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988305; cv=none; b=FRM/AfM7IyPPeBRH/gEZ5t4rUZ30LXw6SaJZuZuR7kM2gkdbhWQOxfhIW1ftTeRT1lCT714AJkr4xxhGLZemOJU5I6uOIc3YBQHVBEV9PondOHBiinnoPZ9UcTZv8R2n5XojanCKzXgkLQq+AdWOmvMr+pRxEvkpIvH+IdzZF6k=
+	t=1711989561; cv=none; b=J9IQmUstgGdaTWWLsWcvxRuB0nA2/DbHgL1PufpIi+NYaIxclpi6u9A+H0rwwRppNEE/GQAwrTPkaRYIovBJuqWt1hKeXqhMn2t0+2h4mG+IbLin4Np7EHnhlI25U4lvWOOAvrQjgygY49xDtcwlWSjq7VCx75+6tBhhnZ+CGfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988305; c=relaxed/simple;
-	bh=nuiSUb8MrTqCKnGQejucqsMNTC9pDmwiFNezOS8DcHI=;
+	s=arc-20240116; t=1711989561; c=relaxed/simple;
+	bh=NezcCKqy1TCuCAgPCtNBE1/a/OJRnfesqLUOiqdF5OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lljmDp3f7uFFix/OqaYKc1bv/D8pb/ZF8gPHrQuurcNW0M+AGDNp9ySHUigqpXeGnVq7dwnlsfcRwLQGodQ1exWiNKe0aweV8Qatc8MXTQ3XfaOSmZIj9svhxqRuLMKKYGSKovFjUOkJlInP3ocseVqymW5PQX4zoN+t5Xo4ONE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1/6OgXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAF3C433C7;
-	Mon,  1 Apr 2024 16:18:24 +0000 (UTC)
+	 MIME-Version; b=pYxwdaal4qSNBudT4sYq7zTGYE5QVmI2qfBWDnTWlebv3dZbRZDH8MFwlzG4hVoYHklJI/2APv0h9GQw9xmck8chXkNRb5n1QdwiFwg2qF2wIE0V6YwplnnYa2+iC196hHaa1FNjQl29dP09bsd6z93hx8U6pgDEXGX6aCJM27w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10EyTt7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FCC433C7;
+	Mon,  1 Apr 2024 16:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988305;
-	bh=nuiSUb8MrTqCKnGQejucqsMNTC9pDmwiFNezOS8DcHI=;
+	s=korg; t=1711989561;
+	bh=NezcCKqy1TCuCAgPCtNBE1/a/OJRnfesqLUOiqdF5OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1/6OgXEJtSzQJv1q1wWUQkqYuKpMSq/JmJqigzjwNfvPFK8YZ6sCHeozSWFiEbae
-	 H3zbyD1aABAc+nvILw9jRjHjLAz7/ycQu9gDq1Pa/A1y3wvbHE0lmaEKUMfb4hLbf0
-	 K7HClX2va+ny77BHx5X+hhg80ntAXMpuiV3R4oV0=
+	b=10EyTt7fxTc0LLTN+/QjvuRzmUEWJd5YbNcCuAq9Zb0dFCQ9f+4l3q3XLkZ6gm0CN
+	 9LpVpihzfW9ackqSm5bMsmcvReCwR7CUoF/HnOgO970IxXEInv86kIXelBceVjIFyc
+	 t7TPxjv3zUeIRsFVrthEJ2AZzs6+yri6TO1IFMx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhenyu Wang <zhenyuw@linux.intel.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 146/432] i915: make inject_virtual_interrupt() void
+Subject: [PATCH 6.6 084/396] fuse: dont unhash root
 Date: Mon,  1 Apr 2024 17:42:13 +0200
-Message-ID: <20240401152557.493180297@linuxfoundation.org>
+Message-ID: <20240401152550.421911372@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 85884871921000b9bca2184077b1159771e50047 ]
+[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
 
-The single caller of inject_virtual_interrupt() ignores the return value
-anyway. This allows us to simplify eventfd_signal() in follow-up
-patches.
+The root inode is assumed to be always hashed.  Do not unhash the root
+inode even if it is marked BAD.
 
-Link: https://lore.kernel.org/r/20231122-vfs-eventfd-signal-v2-1-bd549b14ce0c@kernel.org
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhenyu Wang <zhenyuw@linux.intel.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 675daf435e9f ("vfio/platform: Create persistent IRQ handlers")
+Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
+Cc: <stable@vger.kernel.org> # v5.11
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gvt/interrupt.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ fs/fuse/fuse_i.h | 1 -
+ fs/fuse/inode.c  | 7 +++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gvt/interrupt.c b/drivers/gpu/drm/i915/gvt/interrupt.c
-index de3f5903d1a7a..b32ba5f2b240e 100644
---- a/drivers/gpu/drm/i915/gvt/interrupt.c
-+++ b/drivers/gpu/drm/i915/gvt/interrupt.c
-@@ -422,7 +422,7 @@ static void init_irq_map(struct intel_gvt_irq *irq)
- #define MSI_CAP_DATA(offset) (offset + 8)
- #define MSI_CAP_EN 0x1
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 9377c46f14c4a..3e65cdc946316 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -939,7 +939,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
  
--static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
-+static void inject_virtual_interrupt(struct intel_vgpu *vgpu)
+ static inline void fuse_make_bad(struct inode *inode)
  {
- 	unsigned long offset = vgpu->gvt->device_info.msi_cap_offset;
- 	u16 control, data;
-@@ -434,10 +434,10 @@ static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
- 
- 	/* Do not generate MSI if MSIEN is disabled */
- 	if (!(control & MSI_CAP_EN))
--		return 0;
-+		return;
- 
- 	if (WARN(control & GENMASK(15, 1), "only support one MSI format\n"))
--		return -EINVAL;
-+		return;
- 
- 	trace_inject_msi(vgpu->id, addr, data);
- 
-@@ -451,10 +451,9 @@ static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
- 	 * returned and don't inject interrupt into guest.
- 	 */
- 	if (!test_bit(INTEL_VGPU_STATUS_ATTACHED, vgpu->status))
--		return -ESRCH;
--	if (vgpu->msi_trigger && eventfd_signal(vgpu->msi_trigger, 1) != 1)
--		return -EFAULT;
--	return 0;
-+		return;
-+	if (vgpu->msi_trigger)
-+		eventfd_signal(vgpu->msi_trigger, 1);
+-	remove_inode_hash(inode);
+ 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
  }
  
- static void propagate_event(struct intel_gvt_irq *irq,
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 59743813563e5..23ab31b967a13 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -472,8 +472,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
+ 	} else if (fuse_stale_inode(inode, generation, attr)) {
+ 		/* nodeid was reused, any I/O on the old inode should fail */
+ 		fuse_make_bad(inode);
+-		iput(inode);
+-		goto retry;
++		if (inode != d_inode(sb->s_root)) {
++			remove_inode_hash(inode);
++			iput(inode);
++			goto retry;
++		}
+ 	}
+ 	fi = get_fuse_inode(inode);
+ 	spin_lock(&fi->lock);
 -- 
 2.43.0
 
