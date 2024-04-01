@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-35309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422D889435E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A8689421B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2BB1283895
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E88E61C2030A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBB487BE;
-	Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3870C481B8;
+	Mon,  1 Apr 2024 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRCRMqHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOO4fp4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440DD1C0DE7;
-	Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6D8F5C;
+	Mon,  1 Apr 2024 16:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990975; cv=none; b=fW5jfSLv0TvH8hUVk380h4fIxCoyicyxXlgaGUClnT591VBISwWZ3x59/d15A/idG7/6XiqLopqD0pgLgByi1ItL07td0XMrQUJfjX0HZmwD5FhqjI9FX3CJKTgC8v7GSoHfSMxf62ka1cXLAkSTUaPSaJ76Ysw5rcv5ttm/ehs=
+	t=1711990167; cv=none; b=PN04zNVvBEVxTORizjk5WUZuYe+XyaSe0A+z8l4edx3j3lV7zibFNPOl6SfLr8BZaE95suUxzqqQYnD++8rLYnCETtIsHc7Bggr7eqB8Te8UIzN9C86NYKVupTCqrNQAvD1+K1zfiAD6AuHjSah0xD+M538fdVcTYH2sfK/Wb0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990975; c=relaxed/simple;
-	bh=5riP3Of43dAhmghPZwb3Q8+ygQ4RnLkY5+Ly0DtiPy8=;
+	s=arc-20240116; t=1711990167; c=relaxed/simple;
+	bh=oHL5zqz/cUjwzCnrKeY4BGDtGiJXonOo1seeczz7kFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaBvKE+PMtBVDrwA01LpU7qQ/ktEvpda+dSo9bAHkxCxovjxEk4AzKkP/kVefEsyEE2RMH+ZSiQ9r1ybEhzMtuCDShnU6a3u1B5zuje4xPwk/PXjtMawAtcdoKTZxVpJEnY6h/e9L18deiCWoWMOknfJOYqxqJMapkbiiXSt7Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRCRMqHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C433F1;
-	Mon,  1 Apr 2024 17:02:54 +0000 (UTC)
+	 MIME-Version; b=IHS8nohxN0jh+uD5TBcBYimUcP1foHrLIjVtiV51kYdRWCnxbX09xhPtM4SCqW+budEz2ch5ZHufCPLtFI9SkdBoy3Ne/UtVta2e+q3vmqu6spGr9vn+sA3qqXakLzvJv473kPXp9UkTrDXJCN3EbZQLli/8UHkFaKMzGOWSbtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOO4fp4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D062C433F1;
+	Mon,  1 Apr 2024 16:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990975;
-	bh=5riP3Of43dAhmghPZwb3Q8+ygQ4RnLkY5+Ly0DtiPy8=;
+	s=korg; t=1711990166;
+	bh=oHL5zqz/cUjwzCnrKeY4BGDtGiJXonOo1seeczz7kFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRCRMqHK0iSRD6aLIuuCr40FI0xB6X4LvMS6iectRI3tHtGwfQgUw/xLLmXg4ekTu
-	 iMuhTjdqbOH9Iy2db1OPq/lF90hxx3JGWfN4Jfzo1yYLs+MA74rJX6T47oC5nPAtOA
-	 e5lVlt9edDFMyEiHIUz27LAyl5BQMahLtgnIX5wA=
+	b=mOO4fp4kP/9xzk/En8sIrQ6saIzN8pHBo7HNq3Ez5NYhKSIkRJ7+pmhNFm5eGtsQx
+	 3d9aa2p4nJ6ymYI5XC40ezjnjeAvzd1ZYWDBJQY7vKV2/y6GJywIQHj3zCXeIY53iw
+	 OZ9Klv4xyQVvgM/AB08Mec5MkgDpnELAcqIG9mLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/272] nilfs2: prevent kernel bug at submit_bh_wbc()
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 266/396] xfs: fix an off-by-one error in xreap_agextent_binval
 Date: Mon,  1 Apr 2024 17:45:15 +0200
-Message-ID: <20240401152534.567911997@linuxfoundation.org>
+Message-ID: <20240401152555.835362842@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 269cdf353b5bdd15f1a079671b0f889113865f20 ]
+commit c0e37f07d2bd3c1ee3fb5a650da7d8673557ed16 upstream.
 
-Fix a bug where nilfs_get_block() returns a successful status when
-searching and inserting the specified block both fail inconsistently.  If
-this inconsistent behavior is not due to a previously fixed bug, then an
-unexpected race is occurring, so return a temporary error -EAGAIN instead.
+Overall, this function tries to find and invalidate all buffers for a
+given extent of space on the data device.  The inner for loop in this
+function tries to find all xfs_bufs for a given daddr.  The lengths of
+all possible cached buffers range from 1 fsblock to the largest needed
+to contain a 64k xattr value (~17fsb).  The scan is capped to avoid
+looking at anything buffer going past the given extent.
 
-This prevents callers such as __block_write_begin_int() from requesting a
-read into a buffer that is not mapped, which would cause the BUG_ON check
-for the BH_Mapped flag in submit_bh_wbc() to fail.
+Unfortunately, the loop continuation test is wrong -- max_fsbs is the
+largest size we want to scan, not one past that.  Put another way, this
+loop is actually 1-indexed, not 0-indexed.  Therefore, the continuation
+test should use <=, not <.
 
-Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, online repairs of btree blocks fails to stale any buffers
+for btrees that are being torn down, which causes later assertions in
+the buffer cache when another thread creates a different-sized buffer.
+This happens in xfs/709 when allocating an inode cluster buffer:
+
+ ------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 3346128 at fs/xfs/xfs_message.c:104 assfail+0x3a/0x40 [xfs]
+ CPU: 0 PID: 3346128 Comm: fsstress Not tainted 6.7.0-rc4-djwx #rc4
+ RIP: 0010:assfail+0x3a/0x40 [xfs]
+ Call Trace:
+  <TASK>
+  _xfs_buf_obj_cmp+0x4a/0x50
+  xfs_buf_get_map+0x191/0xba0
+  xfs_trans_get_buf_map+0x136/0x280
+  xfs_ialloc_inode_init+0x186/0x340
+  xfs_ialloc_ag_alloc+0x254/0x720
+  xfs_dialloc+0x21f/0x870
+  xfs_create_tmpfile+0x1a9/0x2f0
+  xfs_rename+0x369/0xfd0
+  xfs_vn_rename+0xfa/0x170
+  vfs_rename+0x5fb/0xc30
+  do_renameat2+0x52d/0x6e0
+  __x64_sys_renameat2+0x4b/0x60
+  do_syscall_64+0x3b/0xe0
+  entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+A later refactoring patch in the online repair series fixed this by
+accident, which is why I didn't notice this until I started testing only
+the patches that are likely to end up in 6.8.
+
+Fixes: 1c7ce115e521 ("xfs: reap large AG metadata extents when possible")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c | 2 +-
+ fs/xfs/scrub/reap.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
-index f625872321cca..8eb4288d46fe0 100644
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -112,7 +112,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
- 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
- 					   __func__, inode->i_ino,
- 					   (unsigned long long)blkoff);
--				err = 0;
-+				err = -EAGAIN;
- 			}
- 			nilfs_transaction_abort(inode->i_sb);
- 			goto out;
--- 
-2.43.0
-
+--- a/fs/xfs/scrub/reap.c
++++ b/fs/xfs/scrub/reap.c
+@@ -247,7 +247,7 @@ xreap_agextent_binval(
+ 		max_fsbs = min_t(xfs_agblock_t, agbno_next - bno,
+ 				xfs_attr3_rmt_blocks(mp, XFS_XATTR_SIZE_MAX));
+ 
+-		for (fsbcount = 1; fsbcount < max_fsbs; fsbcount++) {
++		for (fsbcount = 1; fsbcount <= max_fsbs; fsbcount++) {
+ 			struct xfs_buf	*bp = NULL;
+ 			xfs_daddr_t	daddr;
+ 			int		error;
 
 
 
