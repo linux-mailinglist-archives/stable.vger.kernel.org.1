@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E22A894280
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EF9894392
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7872AB20CD3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827FD1F25759
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AB04AEC3;
-	Mon,  1 Apr 2024 16:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD33481B8;
+	Mon,  1 Apr 2024 17:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkIF4xby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sin0NZiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029EA487BC;
-	Mon,  1 Apr 2024 16:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C851DFF4;
+	Mon,  1 Apr 2024 17:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990393; cv=none; b=gnzNp8SRF1xlCzt2zqmCXaeWT7kTyl0QowvoNJ0uyjcxsSWjjOtRp47IAwdZcqFyCxkLY/PRUq6AAsJT+XCGM7nw583JCtp6XwDU0nyCGX3+1uXpZZpf35n7tXGytCxq52XOARmB/UPW0NU3CIISMED+Ca+3ipbX64UFSwX5Yio=
+	t=1711991122; cv=none; b=hxY5MVRfttZ/3XOArAcReO8CCeOnZ7SX85nw4/fWbfYonb/saBVrMnQfIfXmDozJK3V0cnzO4ZoX0NYyl9irP4gkX096q8cT/hu8a0m2MTicqmjC1TjNb/5q+2bh7eclG8Ww8aQVGVMlFzxAadVMFEaxm1KV7EPJOqHdHMyWemQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990393; c=relaxed/simple;
-	bh=/1Tc+Qowhsc6vfeiLC420vEtcv1KpWvIE1zk6dv/R/I=;
+	s=arc-20240116; t=1711991122; c=relaxed/simple;
+	bh=BP9KJXDw4u5ptyy2JLxnevmwr7X8xdbTeyFWkDEWcdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1t4dT4+bFzopuObf2gk7LQi0P6Wry+iLSvwr/qVOvk7X8XHu3HidtIZFvPypKmvxTkUn8nJIYAdxTtgQ+LCq0swDt20aF7IveU20ZuU2siWvrAClgaT0GVauqui7X5pFjyIeViLUtmu+k4OzUwKn50YOImjyATXegG9Tb99S+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkIF4xby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB0FC433C7;
-	Mon,  1 Apr 2024 16:53:12 +0000 (UTC)
+	 MIME-Version; b=e+8FE8gK8FszsK4qyOy+pyJPlzoNhelss/V5rSjL4hReR9boe2UNVcEEK9vMYkgXQLlpwkX6J8vnpFt7/xPPmzYDj0s1B5ykgK/8hSAdjklAVHi6C/AGtE6Du71omYiCk8Oftw8K7LK07eENJe2RfS6NuQUcKrR/r0r3seRDlN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sin0NZiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F01C433C7;
+	Mon,  1 Apr 2024 17:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990392;
-	bh=/1Tc+Qowhsc6vfeiLC420vEtcv1KpWvIE1zk6dv/R/I=;
+	s=korg; t=1711991122;
+	bh=BP9KJXDw4u5ptyy2JLxnevmwr7X8xdbTeyFWkDEWcdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkIF4xbyFAhzk0mD5snbmjotMWqSehRDmmi0zhh7QYpmJaURw01lDJj8kTCQwfFK1
-	 eLKIU4OYHpQ8c10FCNLf8Nj2sTHCeXmfZ6XwegXKN3MsCS7kIUWcKt/rwrK71ekYrU
-	 NAfljK++sq96wcL+YtwaJybHRs5KU5etG3zVaE8c=
+	b=sin0NZiC5kw8ehGYzg++2XqR7pF4bO3fyVOmqtYhx6KrCFvXJSvesn7LeWWvTXcxe
+	 krqpnHWsL55qhyOfMYk3rqfEs8YwrQ1yNyqCURIzp4InVBfpxMerVw6jvSFPJOESg3
+	 3WIRsahQM1Hydh+kpoNiw2VBvlDoq0QcnAdLoJGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Sperbeck <jsperbeck@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 310/396] init: open /initrd.image with O_LARGEFILE
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.1 169/272] tee: optee: Fix kernel panic caused by incorrect error handling
 Date: Mon,  1 Apr 2024 17:45:59 +0200
-Message-ID: <20240401152557.156316926@linuxfoundation.org>
+Message-ID: <20240401152536.028715306@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Sperbeck <jsperbeck@google.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-commit 4624b346cf67400ef46a31771011fb798dd2f999 upstream.
+commit 95915ba4b987cf2b222b0f251280228a1ff977ac upstream.
 
-If initrd data is larger than 2Gb, we'll eventually fail to write to the
-/initrd.image file when we hit that limit, unless O_LARGEFILE is set.
+The error path while failing to register devices on the TEE bus has a
+bug leading to kernel panic as follows:
 
-Link: https://lkml.kernel.org/r/20240317221522.896040-1-jsperbeck@google.com
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+[   15.406913] Mem abort info:
+[   15.409722]   ESR = 0x0000000096000005
+[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   15.418814]   SET = 0, FnV = 0
+[   15.421878]   EA = 0, S1PTW = 0
+[   15.425031]   FSC = 0x05: level 1 translation fault
+[   15.429922] Data abort info:
+[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+
+Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+lead to the introduction of this bug. So fix it appropriately.
+
+Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/initramfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tee/optee/device.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -673,7 +673,7 @@ static void __init populate_initrd_image
+--- a/drivers/tee/optee/device.c
++++ b/drivers/tee/optee/device.c
+@@ -90,13 +90,14 @@ static int optee_register_device(const u
+ 	if (rc) {
+ 		pr_err("device registration failed, err: %d\n", rc);
+ 		put_device(&optee_device->dev);
++		return rc;
+ 	}
  
- 	printk(KERN_INFO "rootfs image is not initramfs (%s); looks like an initrd\n",
- 			err);
--	file = filp_open("/initrd.image", O_WRONLY | O_CREAT, 0700);
-+	file = filp_open("/initrd.image", O_WRONLY|O_CREAT|O_LARGEFILE, 0700);
- 	if (IS_ERR(file))
- 		return;
+ 	if (func == PTA_CMD_GET_DEVICES_SUPP)
+ 		device_create_file(&optee_device->dev,
+ 				   &dev_attr_need_supplicant);
  
+-	return rc;
++	return 0;
+ }
+ 
+ static int __optee_enumerate_devices(u32 func)
 
 
 
