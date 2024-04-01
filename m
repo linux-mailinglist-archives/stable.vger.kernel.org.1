@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-34563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB024893FDD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508E28942DB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B6091F21D1D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C841C21E6E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4910646B9F;
-	Mon,  1 Apr 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF8B433DA;
+	Mon,  1 Apr 2024 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUg8HWj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij0MUsbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075B5C129;
-	Mon,  1 Apr 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E96CBA3F;
+	Mon,  1 Apr 2024 16:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988541; cv=none; b=mpU+qJV/JE8BvXaLiGOSQhoil6vCa2I6JUYcHl7dMYd6l/5ZZSk6543//GWfeoTRruuCdEtDXb89J7M1SELgtRN0NmdCZOzBm/tAW27GR+R0fCEFkfuuQRkesKSt0MjRagyWJpdYeVODYHxaVVsZ9X/YHWqzYiflAYzDiJq5ELE=
+	t=1711990615; cv=none; b=moFjt/QSW1UWztWXrrRlQErvKExHrvkC/U6wKc1ZEWeT6lNyi1vrHNrNXdRTiupSKqe+v3QQtodg2baYDD3pOud8pTEInUQ32DRxueB6ck0sG2n7xqC+BS3A8xeENtgA0KKebVWXUPycniVvQAwP1UU7qjhBbWa1VfwjKzrMw5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988541; c=relaxed/simple;
-	bh=BEWcx+/LbCxc/rCc4uGO2L3mePOzUmSfMutrErc4FJo=;
+	s=arc-20240116; t=1711990615; c=relaxed/simple;
+	bh=mFiUKKuzTgirS1twEx1T5Li7uA1DVqAYf/1KAmklCgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGJg+OIgb4CnWCy/k72FoSFWjhGCqmjW/0PjGGSchQokLXsVYKIxtwEyPKL9CJmX108pUIjC+xBzQ3kXmpf9cGJZKKNPEr50dt6pJb8h5kn1BdziS0H2kS86DRXG+bvhMvIM/rASknEHgoTbFs+0TMWY4k4XjuMvN60gILpzWuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUg8HWj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ADBC433C7;
-	Mon,  1 Apr 2024 16:22:20 +0000 (UTC)
+	 MIME-Version; b=onlblgE61aYUkH+bMDkG1qdqXSA3FcrPl3hs/mcPSBAZBWcqbTAfbdpWu9XsrL1Q2E/98IQR5U5yWbjUXcrUIlHVqOse9jUG2wa62qytjTa0G0QMMgrxGYV7ksJezVRRk/tOUtB1POKonLgq9xlcYMSeTp5PgTCnD8+7H0Bsyng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij0MUsbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653D4C433F1;
+	Mon,  1 Apr 2024 16:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988540;
-	bh=BEWcx+/LbCxc/rCc4uGO2L3mePOzUmSfMutrErc4FJo=;
+	s=korg; t=1711990614;
+	bh=mFiUKKuzTgirS1twEx1T5Li7uA1DVqAYf/1KAmklCgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUg8HWj/ZRCNwfczGJrzHEZ5Cqg/v8IVOKGx8rCux0eegW6Oh9fxwxxOyv7dac5kJ
-	 ht7jTvm85FLtM2RSSP1VSlTv54TN5lwdso0XZxkDDTgKa90NrTcmTRpPXtsmgLJHVV
-	 PhfWxmkMD8eQsYLNBy3sf3FSSx4TMhhobJxm/0ek=
+	b=ij0MUsbx+eYhUXSo/l1snIeNfPqZ3AGmCb4WN2S9m5FTDArFK/nGRoD8d9q8rwpzD
+	 uqbFvgVi8dxACT8kRqC7DYoHz1/ceVrSub8soh+ifI7B4HNkAAONCGaVuqMVu//NA8
+	 8tF8G17SJuOvWLrKZOizDu0ubQdkMYKFlmn0kAMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 215/432] drm/amd/display: Init DPPCLK from SMU on dcn32
-Date: Mon,  1 Apr 2024 17:43:22 +0200
-Message-ID: <20240401152559.553357953@linuxfoundation.org>
+Subject: [PATCH 6.1 013/272] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Date: Mon,  1 Apr 2024 17:43:23 +0200
+Message-ID: <20240401152530.708616041@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,158 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-[ Upstream commit 4f5b8d78ca43fcc695ba16c83ebfabbfe09506d6 ]
+[ Upstream commit 1d9054e3a4fd36e2949e616f7360bdb81bcc1921 ]
 
-[WHY & HOW]
-DPPCLK ranges should be obtained from the SMU when available.
+With the addition of RPMh power domain to the GCC node in
+device tree, we noticed a significant delay in getting the
+UFS driver probed on AOSP which futher led to mount failures
+because Android do not support rootwait. So adding a soft
+dependency on RPMh power domain which informs modprobe to
+load rpmhpd module before gcc-sdm845.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240123062814.2555649-1-amit.pundir@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c  | 14 ++++++++++
- .../drm/amd/display/dc/dcn32/dcn32_resource.c |  2 ++
- .../amd/display/dc/dcn321/dcn321_resource.c   |  2 ++
- .../drm/amd/display/dc/dml2/dml2_wrapper.c    | 28 +++++++++++++------
- .../drm/amd/display/dc/dml2/dml2_wrapper.h    |  3 ++
- 5 files changed, 41 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/gcc-sdm845.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-index a496930b1f9c0..289918ea7298d 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-@@ -217,6 +217,16 @@ void dcn32_init_clocks(struct clk_mgr *clk_mgr_base)
- 	if (clk_mgr_base->bw_params->dc_mode_limit.dispclk_mhz > 1950)
- 		clk_mgr_base->bw_params->dc_mode_limit.dispclk_mhz = 1950;
- 
-+	/* DPPCLK */
-+	dcn32_init_single_clock(clk_mgr, PPCLK_DPPCLK,
-+			&clk_mgr_base->bw_params->clk_table.entries[0].dppclk_mhz,
-+			&num_entries_per_clk->num_dppclk_levels);
-+	num_levels = num_entries_per_clk->num_dppclk_levels;
-+	clk_mgr_base->bw_params->dc_mode_limit.dppclk_mhz = dcn30_smu_get_dc_mode_max_dpm_freq(clk_mgr, PPCLK_DPPCLK);
-+	//HW recommends limit of 1950 MHz in display clock for all DCN3.2.x
-+	if (clk_mgr_base->bw_params->dc_mode_limit.dppclk_mhz > 1950)
-+		clk_mgr_base->bw_params->dc_mode_limit.dppclk_mhz = 1950;
-+
- 	if (num_entries_per_clk->num_dcfclk_levels &&
- 			num_entries_per_clk->num_dtbclk_levels &&
- 			num_entries_per_clk->num_dispclk_levels)
-@@ -241,6 +251,10 @@ void dcn32_init_clocks(struct clk_mgr *clk_mgr_base)
- 					= khz_to_mhz_ceil(clk_mgr_base->ctx->dc->debug.min_dpp_clk_khz);
- 	}
- 
-+	for (i = 0; i < num_levels; i++)
-+		if (clk_mgr_base->bw_params->clk_table.entries[i].dppclk_mhz > 1950)
-+			clk_mgr_base->bw_params->clk_table.entries[i].dppclk_mhz = 1950;
-+
- 	/* Get UCLK, update bounding box */
- 	clk_mgr_base->funcs->get_memclk_states_from_smu(clk_mgr_base);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-index 3d335b1ca1089..cc468bdcb3de2 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-@@ -2012,6 +2012,8 @@ static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw
- {
- 	DC_FP_START();
- 	dcn32_update_bw_bounding_box_fpu(dc, bw_params);
-+	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2)
-+		dml2_reinit(dc, &dc->dml2_options, &dc->current_state->bw_ctx.dml2);
- 	DC_FP_END();
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-index 4156a8cc2bc7e..3b7505b5f0a41 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-@@ -1579,6 +1579,8 @@ static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *b
- {
- 	DC_FP_START();
- 	dcn321_update_bw_bounding_box_fpu(dc, bw_params);
-+	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2)
-+		dml2_reinit(dc, &dc->dml2_options, &dc->current_state->bw_ctx.dml2);
- 	DC_FP_END();
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index 8f34df00055c3..269bfb14c2399 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -701,13 +701,8 @@ static inline struct dml2_context *dml2_allocate_memory(void)
- 	return (struct dml2_context *) kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
- }
- 
--bool dml2_create(const struct dc *in_dc, const struct dml2_configuration_options *config, struct dml2_context **dml2)
-+static void dml2_init(const struct dc *in_dc, const struct dml2_configuration_options *config, struct dml2_context **dml2)
- {
--	// Allocate Mode Lib Ctx
--	*dml2 = dml2_allocate_memory();
--
--	if (!(*dml2))
--		return false;
- 
- 	// Store config options
- 	(*dml2)->config = *config;
-@@ -735,9 +730,18 @@ bool dml2_create(const struct dc *in_dc, const struct dml2_configuration_options
- 	initialize_dml2_soc_bbox(*dml2, in_dc, &(*dml2)->v20.dml_core_ctx.soc);
- 
- 	initialize_dml2_soc_states(*dml2, in_dc, &(*dml2)->v20.dml_core_ctx.soc, &(*dml2)->v20.dml_core_ctx.states);
-+}
-+
-+bool dml2_create(const struct dc *in_dc, const struct dml2_configuration_options *config, struct dml2_context **dml2)
-+{
-+	// Allocate Mode Lib Ctx
-+	*dml2 = dml2_allocate_memory();
-+
-+	if (!(*dml2))
-+		return false;
-+
-+	dml2_init(in_dc, config, dml2);
- 
--	/*Initialize DML20 instance which calls dml2_core_create, and core_dcn3_populate_informative*/
--	//dml2_initialize_instance(&(*dml_ctx)->v20.dml_init);
- 	return true;
- }
- 
-@@ -777,3 +781,11 @@ bool dml2_create_copy(struct dml2_context **dst_dml2,
- 
- 	return true;
- }
-+
-+void dml2_reinit(const struct dc *in_dc,
-+				 const struct dml2_configuration_options *config,
-+				 struct dml2_context **dml2)
-+{
-+
-+	dml2_init(in_dc, config, dml2);
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-index 0de6886969c69..548504d7de1e9 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-@@ -195,6 +195,9 @@ void dml2_copy(struct dml2_context *dst_dml2,
- 	struct dml2_context *src_dml2);
- bool dml2_create_copy(struct dml2_context **dst_dml2,
- 	struct dml2_context *src_dml2);
-+void dml2_reinit(const struct dc *in_dc,
-+				 const struct dml2_configuration_options *config,
-+				 struct dml2_context **dml2);
- 
- /*
-  * dml2_validate - Determines if a display configuration is supported or not.
+diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
+index 6af08e0ca8475..ef15e8f114027 100644
+--- a/drivers/clk/qcom/gcc-sdm845.c
++++ b/drivers/clk/qcom/gcc-sdm845.c
+@@ -4038,3 +4038,4 @@ module_exit(gcc_sdm845_exit);
+ MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_ALIAS("platform:gcc-sdm845");
++MODULE_SOFTDEP("pre: rpmhpd");
 -- 
 2.43.0
 
