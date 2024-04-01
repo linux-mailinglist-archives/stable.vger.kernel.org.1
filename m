@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CF18943C3
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A30894272
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24A55B219E7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:07:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFD13B20CE3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA98548781;
-	Mon,  1 Apr 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991D55026B;
+	Mon,  1 Apr 2024 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrRc/klZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kixsbh+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F3147A64;
-	Mon,  1 Apr 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2F4F897;
+	Mon,  1 Apr 2024 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991267; cv=none; b=bJEqyJFKbsUg8g+9Mtoel9Cyq+1cZnebPH8jUd9SrHsoyNS2a26YY/hwrPH0qh5m2CItqb1e6Lk8kyFSPI7ir3NQWn/VMcHWrbNLe0qBaLivpTMU+gksA+2kyqmuvmUvtjfCg+Y6OMemmqNLlB4yrcBhPGMmKDbQiCDjofZ9gv0=
+	t=1711990353; cv=none; b=R+IlBrUiHeKUROr2n1zJBhDy83FvHLvimxB6X2yixqPpCmMET3ieZDwEBGkAtK8a8AkH6cLjVm9Je/7Q4W/HWHY8NrvfBxAMWajVg7ISwe9s32Olf2KgZKk+Pi7v69dij3acJqLTsOdW+WUFnlwBbXQ4FP4ReLZcvKgcmQp4Rds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991267; c=relaxed/simple;
-	bh=GhDefM2vhU2HhJexO6PZ5nCmy3+UxykQugJ0URUYnJ8=;
+	s=arc-20240116; t=1711990353; c=relaxed/simple;
+	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxN+TigCADLgzFt6YLRsZ+rfEtdrP1F7vCuDNGCrTPQvRFPKLdz0RzN0nhGDTr8vZ8gtEPuEAU7aVTtxwEYRB1O6sbpyX9jSU9ucNZ95KraEB4BspO8veMBq+oTZ5neB+JVR//ajXSUMFETqV/L95RCU6o765pdcVgi2GTS2YdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrRc/klZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80437C433C7;
-	Mon,  1 Apr 2024 17:07:46 +0000 (UTC)
+	 MIME-Version; b=KNCCApLDevLtwv7yCVJENta+MXUqm1JD2rDubmDCLqASrix5UUfybK3BVHUADnSGrhwjBf9W5iGvRFp2VbUlSR7STCzeM4ok/DMx63ErAj76Cw8nxTuY37yo9AB0D/gXMUMTWMODiV7TkalYS7Z2/EBPAu2QE3zixdog/jljI5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kixsbh+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02D7C433F1;
+	Mon,  1 Apr 2024 16:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991267;
-	bh=GhDefM2vhU2HhJexO6PZ5nCmy3+UxykQugJ0URUYnJ8=;
+	s=korg; t=1711990353;
+	bh=saR6ED4fDaM1istcXEmH99JGv/3Zpp17j5CMcblAQIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrRc/klZJkfsQ/yhZvS1vXVQYNQccwUT5rqFHNhzhp6N9fjpoSQw6wKjV/8ooXJl8
-	 pJfYL/hz83d8UhDu865wYf0Km+1vUHxxlSNE31Olcr76T142QS9c7f9wlt2HFJcsdv
-	 T5r9ud4Lxzv2R1TZfdmV4evsQnP1vCkOsYQ2r6Ls=
+	b=Kixsbh+3n1+Qxna2oxMg8/M628FISWdx08EWyXVtezzhIDQ2NW1NMNHyyiWEBF0jn
+	 lKMM90b2x2p6dOXJBYDYtW04ZKVOgRGIpC6kTVVMIh3jfhXalcpv4rAe5Y+GfMuNhy
+	 BaWhWUhXbtDQnIeUBAbt7q5tiZgYH9oBw/Z2VjEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/272] printk: Update @console_may_schedule in console_trylock_spinning()
+	Stefan Wahren <wahrenst@gmx.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH 6.6 325/396] gpio: cdev: sanitize the label before requesting the interrupt
 Date: Mon,  1 Apr 2024 17:46:14 +0200
-Message-ID: <20240401152536.561886618@linuxfoundation.org>
+Message-ID: <20240401152557.602821716@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 8076972468584d4a21dab9aa50e388b3ea9ad8c7 ]
+commit b34490879baa847d16fc529c8ea6e6d34f004b38 upstream.
 
-console_trylock_spinning() may takeover the console lock from a
-schedulable context. Update @console_may_schedule to make sure it
-reflects a trylock acquire.
+When an interrupt is requested, a procfs directory is created under
+"/proc/irq/<irqnum>/<label>" where <label> is the string passed to one of
+the request_irq() variants.
 
-Reported-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Closes: https://lore.kernel.org/lkml/20240222090538.23017-1-quic_mojha@quicinc.com
-Fixes: dbdda842fe96 ("printk: Add console owner and waiter logic to load balance console writes")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/875xybmo2z.fsf@jogness.linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What follows is that the string must not contain the "/" character or
+the procfs mkdir operation will fail. We don't have such constraints for
+GPIO consumer labels which are used verbatim as interrupt labels for
+GPIO irqs. We must therefore sanitize the consumer string before
+requesting the interrupt.
+
+Let's replace all "/" with ":".
+
+Cc: stable@vger.kernel.org
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Closes: https://lore.kernel.org/linux-gpio/39fe95cb-aa83-4b8b-8cab-63947a726754@gmx.net/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Kent Gibson <warthog618@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/printk/printk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpio/gpiolib-cdev.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index c55ee859dbd08..0ae06d5046bb0 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -1947,6 +1947,12 @@ static int console_trylock_spinning(void)
- 	 */
- 	mutex_acquire(&console_lock_dep_map, 0, 1, _THIS_IP_);
- 
-+	/*
-+	 * Update @console_may_schedule for trylock because the previous
-+	 * owner may have been schedulable.
-+	 */
-+	console_may_schedule = 0;
-+
- 	return 1;
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1010,10 +1010,20 @@ static u32 gpio_v2_line_config_debounce_
+ 	return 0;
  }
  
--- 
-2.43.0
-
++static inline char *make_irq_label(const char *orig)
++{
++	return kstrdup_and_replace(orig, '/', ':', GFP_KERNEL);
++}
++
++static inline void free_irq_label(const char *label)
++{
++	kfree(label);
++}
++
+ static void edge_detector_stop(struct line *line)
+ {
+ 	if (line->irq) {
+-		free_irq(line->irq, line);
++		free_irq_label(free_irq(line->irq, line));
+ 		line->irq = 0;
+ 	}
+ 
+@@ -1038,6 +1048,7 @@ static int edge_detector_setup(struct li
+ 	unsigned long irqflags = 0;
+ 	u64 eflags;
+ 	int irq, ret;
++	char *label;
+ 
+ 	eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
+ 	if (eflags && !kfifo_initialized(&line->req->events)) {
+@@ -1074,11 +1085,17 @@ static int edge_detector_setup(struct li
+ 			IRQF_TRIGGER_RISING : IRQF_TRIGGER_FALLING;
+ 	irqflags |= IRQF_ONESHOT;
+ 
++	label = make_irq_label(line->req->label);
++	if (!label)
++		return -ENOMEM;
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq, edge_irq_handler, edge_irq_thread,
+-				   irqflags, line->req->label, line);
+-	if (ret)
++				   irqflags, label, line);
++	if (ret) {
++		free_irq_label(label);
+ 		return ret;
++	}
+ 
+ 	line->irq = irq;
+ 	return 0;
+@@ -1943,7 +1960,7 @@ static void lineevent_free(struct lineev
+ 		blocking_notifier_chain_unregister(&le->gdev->device_notifier,
+ 						   &le->device_unregistered_nb);
+ 	if (le->irq)
+-		free_irq(le->irq, le);
++		free_irq_label(free_irq(le->irq, le));
+ 	if (le->desc)
+ 		gpiod_free(le->desc);
+ 	kfree(le->label);
+@@ -2091,6 +2108,7 @@ static int lineevent_create(struct gpio_
+ 	int fd;
+ 	int ret;
+ 	int irq, irqflags = 0;
++	char *label;
+ 
+ 	if (copy_from_user(&eventreq, ip, sizeof(eventreq)))
+ 		return -EFAULT;
+@@ -2175,15 +2193,23 @@ static int lineevent_create(struct gpio_
+ 	if (ret)
+ 		goto out_free_le;
+ 
++	label = make_irq_label(le->label);
++	if (!label) {
++		ret = -ENOMEM;
++		goto out_free_le;
++	}
++
+ 	/* Request a thread to read the events */
+ 	ret = request_threaded_irq(irq,
+ 				   lineevent_irq_handler,
+ 				   lineevent_irq_thread,
+ 				   irqflags,
+-				   le->label,
++				   label,
+ 				   le);
+-	if (ret)
++	if (ret) {
++		free_irq_label(label);
+ 		goto out_free_le;
++	}
+ 
+ 	le->irq = irq;
+ 
 
 
 
