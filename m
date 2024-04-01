@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-34866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EFF894139
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:39:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9375F894160
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2D80282CC0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 349A0B20B68
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967714596E;
-	Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8A4481B7;
+	Mon,  1 Apr 2024 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10EyTt7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjVoYEcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5490B1E86C;
-	Mon,  1 Apr 2024 16:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0223BBC3;
+	Mon,  1 Apr 2024 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989561; cv=none; b=J9IQmUstgGdaTWWLsWcvxRuB0nA2/DbHgL1PufpIi+NYaIxclpi6u9A+H0rwwRppNEE/GQAwrTPkaRYIovBJuqWt1hKeXqhMn2t0+2h4mG+IbLin4Np7EHnhlI25U4lvWOOAvrQjgygY49xDtcwlWSjq7VCx75+6tBhhnZ+CGfM=
+	t=1711989689; cv=none; b=olgrQJ3ZerSoazQ8eBRtER5CGJDmN9nfA/hZQoB+jOVsk7ucxw276efvZ0SCnr8PdutdczV37SoiTpAG39fHHFL884gQE0YH1w5Dr5xHAk7/aFIkTHpHpaTCGMbUj1YP6N9mvv5TQOyZYCuYKozL+4owwUMTY8A7ljSHQVTu+io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989561; c=relaxed/simple;
-	bh=NezcCKqy1TCuCAgPCtNBE1/a/OJRnfesqLUOiqdF5OY=;
+	s=arc-20240116; t=1711989689; c=relaxed/simple;
+	bh=BCmzf0xIkadibwWozY5+U09JH06/aOue3+EXVQbRk0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYxwdaal4qSNBudT4sYq7zTGYE5QVmI2qfBWDnTWlebv3dZbRZDH8MFwlzG4hVoYHklJI/2APv0h9GQw9xmck8chXkNRb5n1QdwiFwg2qF2wIE0V6YwplnnYa2+iC196hHaa1FNjQl29dP09bsd6z93hx8U6pgDEXGX6aCJM27w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10EyTt7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FCC433C7;
-	Mon,  1 Apr 2024 16:39:20 +0000 (UTC)
+	 MIME-Version; b=igADg8J0uaUfFFR6XZJFcWOcn0LNrZ0CME1ZuZnvPJX15M2pfoZUbhgW7PUXgGjVvZHxQD7b40X4uxaboK8Vk64/l7P48IWqyDReNXMPekGEVLbDVtcIssVeoondz+5AklcR6zabXTV7BaIu3L4ovQxC+866scA08cnhUJ69EkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjVoYEcj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C0CC433C7;
+	Mon,  1 Apr 2024 16:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989561;
-	bh=NezcCKqy1TCuCAgPCtNBE1/a/OJRnfesqLUOiqdF5OY=;
+	s=korg; t=1711989689;
+	bh=BCmzf0xIkadibwWozY5+U09JH06/aOue3+EXVQbRk0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10EyTt7fxTc0LLTN+/QjvuRzmUEWJd5YbNcCuAq9Zb0dFCQ9f+4l3q3XLkZ6gm0CN
-	 9LpVpihzfW9ackqSm5bMsmcvReCwR7CUoF/HnOgO970IxXEInv86kIXelBceVjIFyc
-	 t7TPxjv3zUeIRsFVrthEJ2AZzs6+yri6TO1IFMx4=
+	b=RjVoYEcj7KWNwGYzPs3VOD8e4L6+bwUaCIHtJNlEORs2QPzpTf0PZq0vSgxSX9rhj
+	 1C71u3AbvzqwdqLtrZjd9Kqwyp1dhISvIVs7dVucJSc9ItH887U2pnKdGsMmjByxbz
+	 d3DSFOC6ZXtH8R484T4XQpY9G+56m/zJMAzPaQxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Benson Leung <bleung@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jameson Thies <jthies@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/396] fuse: dont unhash root
-Date: Mon,  1 Apr 2024 17:42:13 +0200
-Message-ID: <20240401152550.421911372@linuxfoundation.org>
+Subject: [PATCH 6.6 085/396] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
+Date: Mon,  1 Apr 2024 17:42:14 +0200
+Message-ID: <20240401152550.452292779@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
 References: <20240401152547.867452742@linuxfoundation.org>
@@ -65,52 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Jameson Thies <jthies@google.com>
 
-[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
+[ Upstream commit 4d0a5a9915793377c0fe1a8d78de6bcd92cea963 ]
 
-The root inode is assumed to be always hashed.  Do not unhash the root
-inode even if it is marked BAD.
+Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
+plug type and updating the modal support macro for consistent naming.
 
-Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
-Cc: <stable@vger.kernel.org> # v5.11
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Link: https://lore.kernel.org/r/20240305025804.1290919-2-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/fuse_i.h | 1 -
- fs/fuse/inode.c  | 7 +++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 9377c46f14c4a..3e65cdc946316 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -939,7 +939,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 474315a72c770..13ec976b1c747 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -221,12 +221,12 @@ struct ucsi_cable_property {
+ #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
+ #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
+ #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
+-#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
++#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
+ #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
+ #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
+-#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
++#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
+ 	u8 latency;
+ } __packed;
  
- static inline void fuse_make_bad(struct inode *inode)
- {
--	remove_inode_hash(inode);
- 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
- }
- 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 59743813563e5..23ab31b967a13 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -472,8 +472,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 	} else if (fuse_stale_inode(inode, generation, attr)) {
- 		/* nodeid was reused, any I/O on the old inode should fail */
- 		fuse_make_bad(inode);
--		iput(inode);
--		goto retry;
-+		if (inode != d_inode(sb->s_root)) {
-+			remove_inode_hash(inode);
-+			iput(inode);
-+			goto retry;
-+		}
- 	}
- 	fi = get_fuse_inode(inode);
- 	spin_lock(&fi->lock);
 -- 
 2.43.0
 
