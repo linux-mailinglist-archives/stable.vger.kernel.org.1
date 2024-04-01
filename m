@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-35157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848338942A9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA778940AC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E065DB20512
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CC4DB20ED6
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79588433DA;
-	Mon,  1 Apr 2024 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D370138DD8;
+	Mon,  1 Apr 2024 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDkrqXi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MngRQQKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FED63E;
-	Mon,  1 Apr 2024 16:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9B61C0DE7;
+	Mon,  1 Apr 2024 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990490; cv=none; b=Zm3rxfmNChytmjgSoJXb8TDo0PiwhqKJOnnMwqsTjXZlJ1cUaPVil+erog/DFlHQVwrR0Hjt8l+sDoW4+2o+5KaYpNTuqICgc3KwaV5vW/M3Q11PbPlWU14w4a4FSRRRBYw5a/p2o2w8AxTjjpxX28e/ZweuVXS25LAQfEJQSRQ=
+	t=1711989171; cv=none; b=fn4P/NUw0h/adHoq+H76a5BynufxmTk2fImWM3xhVR4FB5FeeRVtnvXRAot48K1hTZnP393/yuMXHbrZkvLWwV+ps9WvDx6jIFo8RldAWo/hz8hK8PXw1IgSzRbhORJxVwyZCxz/lw7nIl2ijvFGc5jzVNEzSMTaOdZ9O9YWqSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990490; c=relaxed/simple;
-	bh=kkjKIQCTttz20BNoFtySvEWvcH0lh5a02zmyzIfozv8=;
+	s=arc-20240116; t=1711989171; c=relaxed/simple;
+	bh=NiAsFGE9OycGx69r8S/K2dGuFgnu3R+roKIHlaTOzwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmiNnDHt8h27i47u1kyIgVctOGkzNGV/hghCt5Uq8SN07/5uTrj96mRPon9LbAQM781zCLjHrmSH4ZOSFxSm6fkVlUnVCHzaKP42qi2Z44VaZ6UTTYFJ/SWANRDmvoikgYHto+9dY2qFMuxuxOMK13QdKtpGcUeGktvRaZUEzrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDkrqXi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B595C433C7;
-	Mon,  1 Apr 2024 16:54:49 +0000 (UTC)
+	 MIME-Version; b=OjH5/8AqEjxoquLKgJwl7sBm8oa23SUZVNPM1D+poJnNwN56gL9wzXLPdA/44HFsFI8M8J3xxtHnKhyVhyo8QwJT1j07JXvggocLI/ga4nvJinScPIHNzdfahkO3X331cVg44n3F3nL3hAe4R0Ar7Dtn8yJLlIqyhEJpcfEgm8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MngRQQKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B899CC433C7;
+	Mon,  1 Apr 2024 16:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990489;
-	bh=kkjKIQCTttz20BNoFtySvEWvcH0lh5a02zmyzIfozv8=;
+	s=korg; t=1711989171;
+	bh=NiAsFGE9OycGx69r8S/K2dGuFgnu3R+roKIHlaTOzwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDkrqXi6O4dVpAGMlkaeqMZHu74tTKld2UrMQbFDBe/dLzKHDJ7CAGCZ6zum/xXDY
-	 urCXslC+nmGDVA1RB+CZ7FuPiMODmNFCSwmyo4QbBvP0Hc8UwCU4E5PMW6CGbYrsJE
-	 X6zVCWOPzbCOv9T8qmwtZz0CWm0TNRh+aq0bz4y0=
+	b=MngRQQKQ/yCsTHrw/hQY3hpoATEg2fjpbxWBNfBcn9ca+l+umOt+XULiVfMOjDiKy
+	 ICVGkHn+c1SgCE1ehqaXlCe4e705thWvgUZDu2vCkMQBUxoM9ulOvbVqjC789B2ayH
+	 Ghk3dd31gTSGemVVISw2B7MQzhq4T3GwQ06x2FVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 340/396] drm/amdkfd: fix TLB flush after unmap for GFX9.4.2
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 6.7 402/432] usb: dwc2: gadget: Fix exiting from clock gating
 Date: Mon,  1 Apr 2024 17:46:29 +0200
-Message-ID: <20240401152558.050708298@linuxfoundation.org>
+Message-ID: <20240401152605.373181458@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-commit 1210e2f1033dc56b666c9f6dfb761a2d3f9f5d6c upstream.
+commit 31f42da31417bec88158f3cf62d19db836217f1e upstream.
 
-TLB flush after unmap accidentially was removed on
-gfx9.4.2. It is to add it back.
+Added exiting from the clock gating mode on USB Reset Detect interrupt
+if core in the clock gating mode.
+Added new condition to check core in clock gating mode or no.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 9b4965d77e11 ("usb: dwc2: Add exit clock gating from session request interrupt")
+Fixes: 5d240efddc7f ("usb: dwc2: Add exit clock gating from wakeup interrupt")
+Fixes: 16c729f90bdf ("usb: dwc2: Allow exit clock gating in urb enqueue")
+Fixes: 401411bbc4e6 ("usb: dwc2: Add exit clock gating before removing driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cbcc2ccd37e89e339130797ed68ae4597db773ac.1708938774.git.Minas.Harutyunyan@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc2/core_intr.c |    9 ++++++---
+ drivers/usb/dwc2/gadget.c    |    6 ++++++
+ drivers/usb/dwc2/hcd.c       |    2 +-
+ drivers/usb/dwc2/platform.c  |    2 +-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -1466,7 +1466,7 @@ void kfd_flush_tlb(struct kfd_process_de
+--- a/drivers/usb/dwc2/core_intr.c
++++ b/drivers/usb/dwc2/core_intr.c
+@@ -297,7 +297,8 @@ static void dwc2_handle_session_req_intr
  
- static inline bool kfd_flush_tlb_after_unmap(struct kfd_dev *dev)
- {
--	return KFD_GC_VERSION(dev) > IP_VERSION(9, 4, 2) ||
-+	return KFD_GC_VERSION(dev) >= IP_VERSION(9, 4, 2) ||
- 	       (KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 1) && dev->sdma_fw_version >= 18) ||
- 	       KFD_GC_VERSION(dev) == IP_VERSION(9, 4, 0);
- }
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		}
+ 
+@@ -408,7 +409,8 @@ static void dwc2_handle_wakeup_detected_
+ 
+ 			/* Exit gadget mode clock gating. */
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		} else {
+ 			/* Change to L0 state */
+@@ -425,7 +427,8 @@ static void dwc2_handle_wakeup_detected_
+ 			}
+ 
+ 			if (hsotg->params.power_down ==
+-			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended)
++			    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++			    !hsotg->params.no_clock_gating)
+ 				dwc2_host_exit_clock_gating(hsotg, 1);
+ 
+ 			/*
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -3727,6 +3727,12 @@ irq_retry:
+ 		if (hsotg->in_ppd && hsotg->lx_state == DWC2_L2)
+ 			dwc2_exit_partial_power_down(hsotg, 0, true);
+ 
++		/* Exit gadget mode clock gating. */
++		if (hsotg->params.power_down ==
++		    DWC2_POWER_DOWN_PARAM_NONE && hsotg->bus_suspended &&
++		    !hsotg->params.no_clock_gating)
++			dwc2_gadget_exit_clock_gating(hsotg, 0);
++
+ 		hsotg->lx_state = DWC2_L0;
+ 	}
+ 
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -4657,7 +4657,7 @@ static int _dwc2_hcd_urb_enqueue(struct
+ 	}
+ 
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -331,7 +331,7 @@ static void dwc2_driver_remove(struct pl
+ 
+ 	/* Exit clock gating when driver is removed. */
+ 	if (hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
+-	    hsotg->bus_suspended) {
++	    hsotg->bus_suspended && !hsotg->params.no_clock_gating) {
+ 		if (dwc2_is_device_mode(hsotg))
+ 			dwc2_gadget_exit_clock_gating(hsotg, 0);
+ 		else
 
 
 
