@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-34496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5639C893F96
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5EA89414D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB3181F21FDB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151E2282F41
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1BD4778E;
-	Mon,  1 Apr 2024 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016E7481D7;
+	Mon,  1 Apr 2024 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bu6+vrY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyoFSJjh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9273F8F4;
-	Mon,  1 Apr 2024 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC26B1EB37;
+	Mon,  1 Apr 2024 16:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988316; cv=none; b=AzY7TgtYr8viS7x4NdWCKWUaQK4wPcyZmexfWeGhjXm1tR6vNr/W8r/THdV7Gr4R3S/LJCC8RUXhqG5Ko7CDlSNlyH1PyO17bYwWStOOrD+yLZQnMNA66Sceg6pg6UASdesEJQjsulsGVeh2ofg/YQFOWXsXglPSu5dsdq5WLXo=
+	t=1711989624; cv=none; b=qVAaOeVwGq9HgTlJbOXR9G2uaxJAkE/ny6VVD9UovTKI0evkjAXJO/Z0W7ZIAM66koa+BIaM98uj01RnrIRZhmyZqkhNgaAT+WEtghXAwXBZ4tbFxRgDFapVys8dOyPNHxqdDwlucGqcfuSLdubPAUUMcsXhVasCMcGFy5IA1XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988316; c=relaxed/simple;
-	bh=oCXTqi/tTNI/YpfLL5R1s7wqVbISJik+ezase+LyT7k=;
+	s=arc-20240116; t=1711989624; c=relaxed/simple;
+	bh=/vm5C/MUbywBX2Pc0X943rJ/OpDarOW7SkO6nn6y08E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMD8ZPpTtSodjCbrm7MYzwpWwBzLAg0BJeF2eUWclCUPkKLjURrNGTDK4RankuHQP9mi+rP35OMPZpOJR8YhetcF6gcp5UUQbeStvocCjvQ/+vmHNJbA5VuA9ZaNtuMg5bJ6DY6RihqPDs6r+OKNpxM3DLWPonR0WseTnrPFFHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bu6+vrY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804C1C433F1;
-	Mon,  1 Apr 2024 16:18:35 +0000 (UTC)
+	 MIME-Version; b=mdmFeyEyKtp8aqyrAwjaia0xwxU6lKJfrIP1gUSNUy/eT5nPoSaQ9FpjxzPD2Zc1Bj3qnqTy5WFcoi5uBztoP6GwCg8ClAycthgIojN03qe2Lr2Gvw99Ny5ihsxQiKLwvo7XilUx4dg42udYxCD3xZlsBJecUHyfvCx1f0MKhLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyoFSJjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E08C433F1;
+	Mon,  1 Apr 2024 16:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988316;
-	bh=oCXTqi/tTNI/YpfLL5R1s7wqVbISJik+ezase+LyT7k=;
+	s=korg; t=1711989624;
+	bh=/vm5C/MUbywBX2Pc0X943rJ/OpDarOW7SkO6nn6y08E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bu6+vrY4WtV2CByKhYkaLEAcJmRk2kOL/mAS16HhHT7h005/sRtYn3jxyakjAlzcB
-	 yEBQ8pz7HuO5HiYYXBTN3I+4WFsWOVne5gMPmEKtviBrgdQdczwDM1vZIO7QxU+cp8
-	 wwzcxCxHwO7+tmTSfYT163dSoELF17Xl7sVUFpjc=
+	b=hyoFSJjhjuPXrN2jd/r7+0YiLoUxk9ek4VFPvEXOrxNivWk0NykKA0LIHrTeFXLH1
+	 ryaQuCSWBHX8/QPCOXXJKmaLqHAxOnQ5f/+86k7dI8fL0oInFRPk0j/FqP1iGxrQ57
+	 KB0fb2uWe5GY+HxqYnPA4ciEYbEod17PyOIkbKmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Roger Quadros <rogerq@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 149/432] vfio/fsl-mc: Block calling interrupt handler without trigger
+Subject: [PATCH 6.6 087/396] usb: dwc3-am62: Disable wakeup at remove
 Date: Mon,  1 Apr 2024 17:42:16 +0200
-Message-ID: <20240401152557.581229828@linuxfoundation.org>
+Message-ID: <20240401152550.511515072@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 7447d911af699a15f8d050dfcb7c680a86f87012 ]
+[ Upstream commit 4ead695e6b3cac06543d7bc7241ab75aee4ea6a6 ]
 
-The eventfd_ctx trigger pointer of the vfio_fsl_mc_irq object is
-initially NULL and may become NULL if the user sets the trigger
-eventfd to -1.  The interrupt handler itself is guaranteed that
-trigger is always valid between request_irq() and free_irq(), but
-the loopback testing mechanisms to invoke the handler function
-need to test the trigger.  The triggering and setting ioctl paths
-both make use of igate and are therefore mutually exclusive.
+Disable wakeup at remove.
+Fixes the below warnings on module unload and reload.
 
-The vfio-fsl-mc driver does not make use of irqfds, nor does it
-support any sort of masking operations, therefore unlike vfio-pci
-and vfio-platform, the flow can remain essentially unchanged.
+> dwc3-am62 f900000.dwc3-usb: couldn't enable device as a wakeup source: -17
+> dwc3-am62 f910000.dwc3-usb: couldn't enable device as a wakeup source: -17
 
-Cc: Diana Craciun <diana.craciun@oss.nxp.com>
-Cc:  <stable@vger.kernel.org>
-Fixes: cc0ee20bd969 ("vfio/fsl-mc: trigger an interrupt via eventfd")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-8-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 4e3972b589da ("usb: dwc3-am62: Enable as a wakeup source by default")
+Cc: stable@vger.kernel.org # v6.4+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240227-for-v6-9-am62-usb-errata-3-0-v4-2-0ada8ddb0767@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/dwc3-am62.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-index d62fbfff20b82..82b2afa9b7e31 100644
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc_intr.c
-@@ -141,13 +141,14 @@ static int vfio_fsl_mc_set_irq_trigger(struct vfio_fsl_mc_device *vdev,
- 	irq = &vdev->mc_irqs[index];
+diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
+index f85603b7f7c5e..ea6e29091c0c9 100644
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -274,6 +274,7 @@ static void dwc3_ti_remove(struct platform_device *pdev)
+ 	u32 reg;
  
- 	if (flags & VFIO_IRQ_SET_DATA_NONE) {
--		vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (irq->trigger)
-+			eventfd_signal(irq->trigger);
+ 	pm_runtime_get_sync(dev);
++	device_init_wakeup(dev, false);
+ 	of_platform_depopulate(dev);
  
- 	} else if (flags & VFIO_IRQ_SET_DATA_BOOL) {
- 		u8 trigger = *(u8 *)data;
- 
--		if (trigger)
--			vfio_fsl_mc_irq_handler(hwirq, irq);
-+		if (trigger && irq->trigger)
-+			eventfd_signal(irq->trigger);
- 	}
- 
- 	return 0;
+ 	/* Clear mode valid bit */
 -- 
 2.43.0
 
