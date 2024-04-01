@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E993894013
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF88B894319
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8FB61F21DC9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AACA8283570
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E43247A76;
-	Mon,  1 Apr 2024 16:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618DF481C6;
+	Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNswvILM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiuRZSW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C46446AC;
-	Mon,  1 Apr 2024 16:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1EABA3F;
+	Mon,  1 Apr 2024 16:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988717; cv=none; b=FVgRhXUs7b0g160oZbpBS3aLFQVCzjuXrLtQcjJO4ShMK9DM53WCEAmDH7dgvQRW8Lqj7pScw9qPZST32K0khQIDKrldnRtFF8btHOC0mrAs0EIXOO2Y8qHja2ur+QgUkXcndBS8ymlan44hukg/GY5zYSKqvhcz+vPYg8HGTt0=
+	t=1711990782; cv=none; b=IYjLEs2gnPX0RRnRXWmjF2DYKlHr7D36bOrv4Wd9pEk4xMXAMRGPjGXhWM2/Q0bZsFve1dwzvSHMyeagFobTpW669Ix0nIcLN9M+N58+IgwuAOymdA2czqcehxAOJMLBJ2Ge4zWKFCvWVHfgpSf5zHTn0QqWA9tDn4PTw709CrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988717; c=relaxed/simple;
-	bh=buDAD1XiVbMMNDOJxpslMhg3x/gVnt6LMMX8xAH6dI4=;
+	s=arc-20240116; t=1711990782; c=relaxed/simple;
+	bh=IU4Se+ckKuxOz8FOBruNrTJeVF/7DxoDefhS62/C1hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntswYfOsa8wBgxenn4+EZaRgrulZ1lXPXWfoTOMfpgADE+FXVDTEH12k9F9kd1bmcGbTsMGBEt0UEGh9QgSEAt7P4HIMLRzoxXM8PkAnDXDCWIb8tzCR6P3gnJ+w5Mrt3BKcQXrPvcpseFvig0T2DGIDDSqDdzEKDWWeuKtFf8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNswvILM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811C8C433F1;
-	Mon,  1 Apr 2024 16:25:16 +0000 (UTC)
+	 MIME-Version; b=KAXdsUbPoYQ8qHAu5NH+zDr2CEEI8stRep/KcQP2P13rFkRmqhuZMC5ID0D/A95SfSovZETndBg9CzXoCfkH2Fi1/ryxVEiE+xoROjpiC2MGw7gcRZq3oQtVh/nNVJr7C1PDukxHcv7kohtrKZWKbuyecJh/ejGk5AsPa2hTy68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiuRZSW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81008C43390;
+	Mon,  1 Apr 2024 16:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988717;
-	bh=buDAD1XiVbMMNDOJxpslMhg3x/gVnt6LMMX8xAH6dI4=;
+	s=korg; t=1711990782;
+	bh=IU4Se+ckKuxOz8FOBruNrTJeVF/7DxoDefhS62/C1hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNswvILMkN88eWfSE+tqe0G3ZAkNOmKuNA3Z/M0blLkM7WwMPey6cJJ8uZKGGI4ue
-	 jo+sGN2iKBr8T4kXuMOSYeacONaPpvIy5OZBrD2F9z+xOZ1EeDPOtFwO5eojUgFfre
-	 C3FXwl+nq69pTv0CvMMLIw6oF+QBxqW8jcHVbE4o=
+	b=DiuRZSW4e0+8jAjVlV6omiDZXWgv/2y2WiD0tasrEUqRHdt5PiyCIvFAB5BYvOf8w
+	 bdn9dvFAFLYxT6ZgoESg0TrAJreQhn/wmzMkyBTPu30k4RphgMhnLpXiZKiScPGyEP
+	 kV4dD94l8aofj2n8ftWrlJngGjxu8X8HRzBGeotM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	regressions@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.7 268/432] misc: lis3lv02d_i2c: Fix regulators getting en-/dis-abled twice on suspend/resume
+	Dhruva Gole <d-gole@ti.com>,
+	Qingliang Li <qingliang.li@mediatek.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 065/272] PM: sleep: wakeirq: fix wake irq warning in system suspend
 Date: Mon,  1 Apr 2024 17:44:15 +0200
-Message-ID: <20240401152601.150862272@linuxfoundation.org>
+Message-ID: <20240401152532.585061878@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Qingliang Li <qingliang.li@mediatek.com>
 
-commit ac3e0384073b2408d6cb0d972fee9fcc3776053d upstream.
+[ Upstream commit e7a7681c859643f3f2476b2a28a494877fd89442 ]
 
-When not configured for wakeup lis3lv02d_i2c_suspend() will call
-lis3lv02d_poweroff() even if the device has already been turned off
-by the runtime-suspend handler and if configured for wakeup and
-the device is runtime-suspended at this point then it is not turned
-back on to serve as a wakeup source.
+When driver uses pm_runtime_force_suspend() as the system suspend callback
+function and registers the wake irq with reverse enable ordering, the wake
+irq will be re-enabled when entering system suspend, triggering an
+'Unbalanced enable for IRQ xxx' warning. In this scenario, the call
+sequence during system suspend is as follows:
+  suspend_devices_and_enter()
+    -> dpm_suspend_start()
+      -> dpm_run_callback()
+        -> pm_runtime_force_suspend()
+          -> dev_pm_enable_wake_irq_check()
+          -> dev_pm_enable_wake_irq_complete()
 
-Before commit b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting
-of the reg_ctrl callback"), lis3lv02d_poweroff() failed to disable
-the regulators which as a side effect made calling poweroff() twice ok.
+    -> suspend_enter()
+      -> dpm_suspend_noirq()
+        -> device_wakeup_arm_wake_irqs()
+          -> dev_pm_arm_wake_irq()
 
-Now that poweroff() correctly disables the regulators, doing this twice
-triggers a WARN() in the regulator core:
+To fix this issue, complete the setting of WAKE_IRQ_DEDICATED_ENABLED flag
+in dev_pm_enable_wake_irq_complete() to avoid redundant irq enablement.
 
-unbalanced disables for regulator-dummy
-WARNING: CPU: 1 PID: 92 at drivers/regulator/core.c:2999 _regulator_disable
-...
-
-Fix lis3lv02d_i2c_suspend() to not call poweroff() a second time if
-already runtime-suspended and add a poweron() call when necessary to
-make wakeup work.
-
-lis3lv02d_i2c_resume() has similar issues, with an added weirness that
-it always powers on the device if it is runtime suspended, after which
-the first runtime-resume will call poweron() again, causing the enabled
-count for the regulator to increase by 1 every suspend/resume. These
-unbalanced regulator_enable() calls cause the regulator to never
-be turned off and trigger the following WARN() on driver unbind:
-
-WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put
-
-Fix this by making lis3lv02d_i2c_resume() mirror the new suspend().
-
-Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
-Cc: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 15 7590
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/r/20240220190035.53402-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Qingliang Li <qingliang.li@mediatek.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lis3lv02d/lis3lv02d_i2c.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/base/power/wakeirq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-+++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-@@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct
- 	struct i2c_client *client = to_i2c_client(dev);
- 	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
+index afd094dec5ca3..ca0c092ba47fb 100644
+--- a/drivers/base/power/wakeirq.c
++++ b/drivers/base/power/wakeirq.c
+@@ -362,8 +362,10 @@ void dev_pm_enable_wake_irq_complete(struct device *dev)
+ 		return;
  
--	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
-+	/* Turn on for wakeup if turned off by runtime suspend */
-+	if (lis3->pdata && lis3->pdata->wakeup_flags) {
-+		if (pm_runtime_suspended(dev))
-+			lis3lv02d_poweron(lis3);
-+	/* For non wakeup turn off if not already turned off by runtime suspend */
-+	} else if (!pm_runtime_suspended(dev))
- 		lis3lv02d_poweroff(lis3);
-+
- 	return 0;
+ 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
+-	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
++	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE) {
+ 		enable_irq(wirq->irq);
++		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
++	}
  }
  
-@@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct d
- 	struct i2c_client *client = to_i2c_client(dev);
- 	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
- 
--	/*
--	 * pm_runtime documentation says that devices should always
--	 * be powered on at resume. Pm_runtime turns them off after system
--	 * wide resume is complete.
--	 */
--	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
--		pm_runtime_suspended(dev))
-+	/* Turn back off if turned on for wakeup and runtime suspended*/
-+	if (lis3->pdata && lis3->pdata->wakeup_flags) {
-+		if (pm_runtime_suspended(dev))
-+			lis3lv02d_poweroff(lis3);
-+	/* For non wakeup turn back on if not runtime suspended */
-+	} else if (!pm_runtime_suspended(dev))
- 		lis3lv02d_poweron(lis3);
- 
- 	return 0;
+ /**
+-- 
+2.43.0
+
 
 
 
