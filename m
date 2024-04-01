@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6C9894387
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BF1894079
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567C82838BD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D44E283373
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF971482CA;
-	Mon,  1 Apr 2024 17:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54211E525;
+	Mon,  1 Apr 2024 16:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz3+idxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPWVTEcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F12E1DFF4;
-	Mon,  1 Apr 2024 17:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495517FD;
+	Mon,  1 Apr 2024 16:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991085; cv=none; b=rdx+ubiM9qpiGhwtYpMSY2J8KQxY2aRXkyS0pOFnG9QbCdLKXvf+8z8ZLRzoXWCzHH0u4IW82jPNPuUXnC7PjXCymU3iLz54KKjwPB63toOEdlM220go+tYX73ptHmQwhT0yzmpSrgSUG9S4/bUoLx8prkQZLwhvY7FN0J+c4ek=
+	t=1711989033; cv=none; b=rEHwL0ExQQMOwxlL2GAGj/n63enwU5kgX1IJ68ytUibPjHe3jpB4nXyl311vFr5RmN+HWVyOgMTydxsIOTrxzX9tdWTIwqbGgi2aMhYomojr2+HJnLoWHv3UfQKpwob7/XaMgOzdbFgl/XRK3iynqzWQT7Au75hF2Ut9vbzhoD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991085; c=relaxed/simple;
-	bh=4Jo604/eV22zivqbDU88XgWES6+D5Dv1UuQwAkk3uls=;
+	s=arc-20240116; t=1711989033; c=relaxed/simple;
+	bh=K1jmXECCxmOEYgdds8+KZN21t3yvo/lhFckl2r6/dfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pob4wgoUneUfzH+ix+CnRdNDpdAChchGbPHXVg2F3TN7gHUw486HlRCPCbdEnodVIYXMeURjv4apal8OSJkohqJkWIg54K7kVqgSYdh4lpgYQyQb5+krpo32irx6niIp1k+j2rdV/UrdWWNcNzrE19jkKhtGENeml1NnmvfiRbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pz3+idxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F94C433C7;
-	Mon,  1 Apr 2024 17:04:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qhvfbpHKNlE508932gpalY3EMTNFkGEGJnlf3xKwLi9tM317P8UcJ173rjbMofCsgckfI7Gm7SMQtEQF7Ogi9qdIVwlF8isDAt6746NDDIhXY9NXrOuKdVL7r+8yKwcgBbTyIk7SPk10pKkpPvRwxDdg+rFWmYGTTWytjQFZW+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPWVTEcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7970C433F1;
+	Mon,  1 Apr 2024 16:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991085;
-	bh=4Jo604/eV22zivqbDU88XgWES6+D5Dv1UuQwAkk3uls=;
+	s=korg; t=1711989033;
+	bh=K1jmXECCxmOEYgdds8+KZN21t3yvo/lhFckl2r6/dfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pz3+idxx5r67RqAk1YWPYdwFZEUTucA+s2W754fCh0Hl4W/YUTMT7Y95NbLaUDRe9
-	 R1mMxuMYuG/AkKgJtHRRv4vhB831908BfsAFIzAjvOnZgWA58a8byFPqary7JKB/XG
-	 W8jnq9pFISMY7M0XAqCEce8KwK22TQXxaVNbu7JA=
+	b=HPWVTEcSHsZUU0uVtF+NLavwZY5RKEXE233gl2+CmUfkJOtj+QGiez4KGfneBOpQc
+	 zWt7LoAUtDDplZmdUc6P7SfAwUgaNAGg6Mmr7OSBSVHjmoHpBz74MnzdW3a9YgkiwA
+	 5Odu9EXxuHEzqpO/jO9nlazY46Q2m6PI0DhzGvhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 159/272] usb: port: Dont try to peer unused USB ports based on location
+	Ye Zhang <ye.zhang@rock-chips.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.7 362/432] thermal: devfreq_cooling: Fix perf state when calculate dfc res_util
 Date: Mon,  1 Apr 2024 17:45:49 +0200
-Message-ID: <20240401152535.698165590@linuxfoundation.org>
+Message-ID: <20240401152604.063828503@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Ye Zhang <ye.zhang@rock-chips.com>
 
-commit 69c63350e573367f9c8594162288cffa8a26d0d1 upstream.
+commit a26de34b3c77ae3a969654d94be49e433c947e3b upstream.
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
+The issue occurs when the devfreq cooling device uses the EM power model
+and the get_real_power() callback is provided by the driver.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
+The EM power table is sorted ascending，can't index the table by cooling
+device state，so convert cooling state to performance state by
+dfc->max_state - dfc->capped_state.
 
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
-
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
-
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-Link: https://lore.kernel.org/r/20240222233343.71856-1-mathias.nyman@linux.intel.com
+Fixes: 615510fe13bd ("thermal: devfreq_cooling: remove old power model and use EM")
+Cc: 5.11+ <stable@vger.kernel.org> # 5.11+
+Signed-off-by: Ye Zhang <ye.zhang@rock-chips.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/port.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/thermal/devfreq_cooling.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -534,7 +534,7 @@ static int match_location(struct usb_dev
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -201,7 +201,7 @@ static int devfreq_cooling_get_requested
  
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
+ 		res = dfc->power_ops->get_real_power(df, power, freq, voltage);
+ 		if (!res) {
+-			state = dfc->capped_state;
++			state = dfc->max_state - dfc->capped_state;
  
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -545,7 +545,8 @@ static int match_location(struct usb_dev
- 
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
+ 			/* Convert EM power into milli-Watts first */
+ 			dfc->res_util = dfc->em_pd->table[state].power;
 
 
 
