@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C448894219
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422D889435E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6CD1F22A9C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2BB1283895
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0571241232;
-	Mon,  1 Apr 2024 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBB487BE;
+	Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDksCHb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRCRMqHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D9E1C0DE7;
-	Mon,  1 Apr 2024 16:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440DD1C0DE7;
+	Mon,  1 Apr 2024 17:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990163; cv=none; b=Cghpoa+/WHnzo6u92yTHRb0dpyc6R6fxp8mEt18OsuR5jMI4eQCG5wFq7AI1eHVoyu0iqHiq0yqSW7AYEikH3qdcOTVMSbo4X12WzPR6YPZgkC6uC8gxZX0jf9KMGc6shuArCILBMATLvlkrS7uQpc5on7WHwda3531zQ4zuVOQ=
+	t=1711990975; cv=none; b=fW5jfSLv0TvH8hUVk380h4fIxCoyicyxXlgaGUClnT591VBISwWZ3x59/d15A/idG7/6XiqLopqD0pgLgByi1ItL07td0XMrQUJfjX0HZmwD5FhqjI9FX3CJKTgC8v7GSoHfSMxf62ka1cXLAkSTUaPSaJ76Ysw5rcv5ttm/ehs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990163; c=relaxed/simple;
-	bh=i2ZJjlbZDbH0CK9ki02+3jM56nI6WFpjudgHWzEEkQo=;
+	s=arc-20240116; t=1711990975; c=relaxed/simple;
+	bh=5riP3Of43dAhmghPZwb3Q8+ygQ4RnLkY5+Ly0DtiPy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCDQZcsTnTMF7j3U3YbjGPr4vpt6OkSNE33Xsv991B8zY9eisFkQS2e4xoLSA7wP9T3/d+zfC6unmemIFxEGGM9px7fqONM/xnJf38esdVx7UpIXougaapux03eSYL8TPIiQwQuF0ZizM/HKB8FOgAeO4tKjIGR9cp+qfx7fhMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDksCHb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F23C433C7;
-	Mon,  1 Apr 2024 16:49:22 +0000 (UTC)
+	 MIME-Version; b=TaBvKE+PMtBVDrwA01LpU7qQ/ktEvpda+dSo9bAHkxCxovjxEk4AzKkP/kVefEsyEE2RMH+ZSiQ9r1ybEhzMtuCDShnU6a3u1B5zuje4xPwk/PXjtMawAtcdoKTZxVpJEnY6h/e9L18deiCWoWMOknfJOYqxqJMapkbiiXSt7Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRCRMqHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C433F1;
+	Mon,  1 Apr 2024 17:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990163;
-	bh=i2ZJjlbZDbH0CK9ki02+3jM56nI6WFpjudgHWzEEkQo=;
+	s=korg; t=1711990975;
+	bh=5riP3Of43dAhmghPZwb3Q8+ygQ4RnLkY5+Ly0DtiPy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDksCHb5iHk0uX6a3REtzzGl6cl8km+b2IcXzKOEWXx42LcFxcnu5g1/bQI1ywmTZ
-	 pl5bwp4eFRh0cpzNuaE/XFkwKl9bUtFuGGX8V0qymf027V/8/rDAKDDEy4xJ2Fqp8K
-	 qafUHk1KaaB29iA/wZFbsXYL1cfP0eYqQlhxs4NQ=
+	b=rRCRMqHK0iSRD6aLIuuCr40FI0xB6X4LvMS6iectRI3tHtGwfQgUw/xLLmXg4ekTu
+	 iMuhTjdqbOH9Iy2db1OPq/lF90hxx3JGWfN4Jfzo1yYLs+MA74rJX6T47oC5nPAtOA
+	 e5lVlt9edDFMyEiHIUz27LAyl5BQMahLtgnIX5wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 265/396] xfs: recompute growfsrtfree transaction reservation while growing rt volume
-Date: Mon,  1 Apr 2024 17:45:14 +0200
-Message-ID: <20240401152555.806638455@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/272] nilfs2: prevent kernel bug at submit_bh_wbc()
+Date: Mon,  1 Apr 2024 17:45:15 +0200
+Message-ID: <20240401152534.567911997@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 578bd4ce7100ae34f98c6b0147fe75cfa0dadbac upstream.
+[ Upstream commit 269cdf353b5bdd15f1a079671b0f889113865f20 ]
 
-While playing with growfs to create a 20TB realtime section on a
-filesystem that didn't previously have an rt section, I noticed that
-growfs would occasionally shut down the log due to a transaction
-reservation overflow.
+Fix a bug where nilfs_get_block() returns a successful status when
+searching and inserting the specified block both fail inconsistently.  If
+this inconsistent behavior is not due to a previously fixed bug, then an
+unexpected race is occurring, so return a temporary error -EAGAIN instead.
 
-xfs_calc_growrtfree_reservation uses the current size of the realtime
-summary file (m_rsumsize) to compute the transaction reservation for a
-growrtfree transaction.  The reservations are computed at mount time,
-which means that m_rsumsize is zero when growfs starts "freeing" the new
-realtime extents into the rt volume.  As a result, the transaction is
-undersized and fails.
+This prevents callers such as __block_write_begin_int() from requesting a
+read into a buffer that is not mapped, which would cause the BUG_ON check
+for the BH_Mapped flag in submit_bh_wbc() to fail.
 
-Fix this by recomputing the transaction reservations every time we
-change m_rsumsize.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240313105827.5296-3-konishi.ryusuke@gmail.com
+Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nilfs2/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -1070,6 +1070,9 @@ xfs_growfs_rt(
- 			nsbp->sb_rbmblocks;
- 		nrsumblocks = XFS_B_TO_FSB(mp, nrsumsize);
- 		nmp->m_rsumsize = nrsumsize = XFS_FSB_TO_B(mp, nrsumblocks);
-+		/* recompute growfsrt reservation from new rsumsize */
-+		xfs_trans_resv_calc(nmp, &nmp->m_resv);
-+
- 		/*
- 		 * Start a transaction, get the log reservation.
- 		 */
-@@ -1153,6 +1156,8 @@ error_cancel:
- 		 */
- 		mp->m_rsumlevels = nrsumlevels;
- 		mp->m_rsumsize = nrsumsize;
-+		/* recompute growfsrt reservation from new rsumsize */
-+		xfs_trans_resv_calc(mp, &mp->m_resv);
- 
- 		error = xfs_trans_commit(tp);
- 		if (error)
+diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
+index f625872321cca..8eb4288d46fe0 100644
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -112,7 +112,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
+ 					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
+ 					   __func__, inode->i_ino,
+ 					   (unsigned long long)blkoff);
+-				err = 0;
++				err = -EAGAIN;
+ 			}
+ 			nilfs_transaction_abort(inode->i_sb);
+ 			goto out;
+-- 
+2.43.0
+
 
 
 
