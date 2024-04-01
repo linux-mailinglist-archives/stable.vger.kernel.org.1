@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-34978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC558941C1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E00894301
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141EB283070
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7934B2223C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF2E482E4;
-	Mon,  1 Apr 2024 16:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982704C615;
+	Mon,  1 Apr 2024 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGnWTybC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzf0DyCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576FB481DB;
-	Mon,  1 Apr 2024 16:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560774AEDF;
+	Mon,  1 Apr 2024 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989937; cv=none; b=o268gNORq68NadrWwuV0v6yC5l0oQLU5qXsCRtSsQmydL/s/Uq8ZvwgVF/rRTULoKThyZlFZfsQ18J5Bx97P+oZRvjG8S0qxrQUurRBOn0cwFsRRc7UxAXsh493qk388D1fSQCKl+ki6r1CAZ2fs2BeaH+PCW8jnspghi+UPuGU=
+	t=1711990701; cv=none; b=ZSupHsYyQeIRo3pvYtRdju/VxANv6JlseLZmxnU4qXghg7xWE9ea8xCSSmUzaMje+8GVTADbd90r9P4hoBA0cz5hrbjqaloBkdRk10FL1W41Zx29qMJCyLTibSQHbIe07AnJDweoFBQxsyqZDlMC1A7plPgiwdhnfnmLmx319Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989937; c=relaxed/simple;
-	bh=1HllURXyd6ZRfFl7uLyK7TaZ9WQeDwwMpUWlhCH9mc8=;
+	s=arc-20240116; t=1711990701; c=relaxed/simple;
+	bh=gZM9cEBl3YzT04zq4u6r8oIQm25qIoKrjAfv95D3FLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3kFF/k1iirSlia9erNbgVSRxiRjgYRVtStpAgv3jUeCRclORZkwfgZWwbjJDht0fc82GSzzGhFu3fwj7Xga5WN7ohJEp15OGAb2pD7nSZ3EeboUXzDUdmiJ+RlcBv3pX4Kndt86rk6vQpKxQG3s/qVLqdn51wEBfE1mcc61FWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGnWTybC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AFBC43390;
-	Mon,  1 Apr 2024 16:45:36 +0000 (UTC)
+	 MIME-Version; b=KOM/fyfA3pVtcTr+KycsaXrZcuJLP2uK2hUHnLLciPYqmcT7MuMZGe52LCgL2e5ybd6VdEZq4859+C75Bhp8HniIQqG8U/kyUOtbZxjxA9pOkexXFr9P1pqCsqNeWadPAD4/kzn9O+acSPgGD4VrzlPR8AzLRl4u2cg0uWqr1Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzf0DyCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCCAC433C7;
+	Mon,  1 Apr 2024 16:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989937;
-	bh=1HllURXyd6ZRfFl7uLyK7TaZ9WQeDwwMpUWlhCH9mc8=;
+	s=korg; t=1711990701;
+	bh=gZM9cEBl3YzT04zq4u6r8oIQm25qIoKrjAfv95D3FLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGnWTybCFvOGVqQ2X6OPEfjbVJgt0Qz7ZkTJb1lefqsQDg8pXj9bFfJh2KrNuJm5S
-	 AyFRmnMVNQ83vMVxqixja+1iqN3QWYQYSDPP9SdwbeJJPLomEkou4NE+Jv83ZOula8
-	 4qObMrxLR3HWU5A9+tBGus2p/shj+8kYLXSqBPok=
+	b=Wzf0DyCj9YQdI1rvZECEW01OO8xxZybzc+E6hMzZUwmbm74ctF7ko9Jq/DQI1aUre
+	 f1Skt42Bgg4whTSv2Il6jlR1uHEM7DUwuYGMQrrof17pjhd8sUmX3vRAt0rGQ7bAnC
+	 1b3qtHmsTEkNPJ5mGyI+5YGvK+IQ6FfszmKP2F4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt <cryptearth@googlemail.com>,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/396] ahci: asm1064: asm1166: dont limit reported ports
+Subject: [PATCH 6.1 039/272] fat: fix uninitialized field in nostale filehandles
 Date: Mon,  1 Apr 2024 17:43:49 +0200
-Message-ID: <20240401152553.309186483@linuxfoundation.org>
+Message-ID: <20240401152531.599013681@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 6cd8adc3e18960f6e59d797285ed34ef473cc896 ]
+[ Upstream commit fde2497d2bc3a063d8af88b258dbadc86bd7b57c ]
 
-Previously, patches have been added to limit the reported count of SATA
-ports for asm1064 and asm1166 SATA controllers, as those controllers do
-report more ports than physically having.
+When fat_encode_fh_nostale() encodes file handle without a parent it
+stores only first 10 bytes of the file handle. However the length of the
+file handle must be a multiple of 4 so the file handle is actually 12
+bytes long and the last two bytes remain uninitialized. This is not
+great at we potentially leak uninitialized information with the handle
+to userspace. Properly initialize the full handle length.
 
-While it is allowed to report more ports than physically having in CAP.NP,
-it is not allowed to report more ports than physically having in the PI
-(Ports Implemented) register, which is what these HBAs do.
-(This is a AHCI spec violation.)
-
-Unfortunately, it seems that the PMP implementation in these ASMedia HBAs
-is also violating the AHCI and SATA-IO PMP specification.
-
-What these HBAs do is that they do not report that they support PMP
-(CAP.SPM (Supports Port Multiplier) is not set).
-
-Instead, they have decided to add extra "virtual" ports in the PI register
-that is used if a port multiplier is connected to any of the physical
-ports of the HBA.
-
-Enumerating the devices behind the PMP as specified in the AHCI and
-SATA-IO specifications, by using PMP READ and PMP WRITE commands to the
-physical ports of the HBA is not possible, you have to use the "virtual"
-ports.
-
-This is of course bad, because this gives us no way to detect the device
-and vendor ID of the PMP actually connected to the HBA, which means that
-we can not apply the proper PMP quirks for the PMP that is connected to
-the HBA.
-
-Limiting the port map will thus stop these controllers from working with
-SATA Port Multipliers.
-
-This patch reverts both patches for asm1064 and asm1166, so old behavior
-is restored and SATA PMP will work again, but it will also reintroduce the
-(minutes long) extra boot time for the ASMedia controllers that do not
-have a PMP connected (either on the PCIe card itself, or an external PMP).
-
-However, a longer boot time for some, is the lesser evil compared to some
-other users not being able to detect their drives at all.
-
-Fixes: 0077a504e1a4 ("ahci: asm1166: correct count of reported ports")
-Fixes: 9815e3961754 ("ahci: asm1064: correct count of reported ports")
-Cc: stable@vger.kernel.org
-Reported-by: Matt <cryptearth@googlemail.com>
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-[cassel: rewrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
+Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
+Fixes: ea3983ace6b7 ("fat: restructure export_operations")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ fs/fat/nfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 9933ad9737bb2..535de3ed60f23 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -670,19 +670,6 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
--		switch (pdev->device) {
--		case 0x1166:
--			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--			hpriv->saved_port_map = 0x3f;
--			break;
--		case 0x1064:
--			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
--			hpriv->saved_port_map = 0xf;
--			break;
--		}
--	}
--
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->saved_port_map = 1;
+diff --git a/fs/fat/nfs.c b/fs/fat/nfs.c
+index af191371c3529..bab63eeaf9cbc 100644
+--- a/fs/fat/nfs.c
++++ b/fs/fat/nfs.c
+@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inode, __u32 *fh, int *lenp,
+ 		fid->parent_i_gen = parent->i_generation;
+ 		type = FILEID_FAT_WITH_PARENT;
+ 		*lenp = FAT_FID_SIZE_WITH_PARENT;
++	} else {
++		/*
++		 * We need to initialize this field because the fh is actually
++		 * 12 bytes long
++		 */
++		fid->parent_i_pos_hi = 0;
+ 	}
+ 
+ 	return type;
 -- 
 2.43.0
 
