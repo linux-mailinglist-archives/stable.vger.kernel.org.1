@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CC0894206
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C7B89435C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59E231C219F8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 012281C21640
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D1C481C4;
-	Mon,  1 Apr 2024 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4202E1C0DE7;
+	Mon,  1 Apr 2024 17:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvjl/EvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9eu2f9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7848F5C;
-	Mon,  1 Apr 2024 16:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54F24AEDF;
+	Mon,  1 Apr 2024 17:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990129; cv=none; b=NNGihxURvU5uoFoIATKQWdOG782/A8NsaHy7UHP4Ho71UCN9Sey2dDNGQfTxTN5fAvYFMKvnspk4+WSHvwvKiriPv19ny3+1AVqUhwjhA0/aCbjJqt4hFKTxRxCz83Mfj5lAZJ0FWkFc5GFZmL39X68j0zXOrscYl9omq4uXV2E=
+	t=1711990968; cv=none; b=Hs8qPjduWCXenpf30rdGCNQO0U7SmHUwLJdpERQ6TG1gggqbA5VFEPYr5jE7ZwFMVVctKd+j47/QPf8WSw0WEkauV/8bSTxyTDiSfkCk7lAZ9mdO+CTCVeU/5jPeL4OFKXPoNe3PLQqRPruS67XO3aOtkaI/jo6ECUZvtrRv4M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990129; c=relaxed/simple;
-	bh=8FhqAFC/glW9Xhb6joA0VP5pO7JSv+bJ0shrxcA0kSI=;
+	s=arc-20240116; t=1711990968; c=relaxed/simple;
+	bh=mswpXEYQptGqWC+z1pZsMbd3OwNXywb1wFCBD+A0N14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exQl4TMhQFFWpUzeY9fay1w/LTm509tiMs092grMCSe8BvlG33997tfm04jZScLOlRVkFIFChprgBNwLN0FcIzC8suEF/+rhJ6d68u00PYlTDALhrCVblrPe/IxulXdscxpw2MhRRUlbzsyU+KTD7RoiUqXnIkYHftdZL4GDaU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvjl/EvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56025C433F1;
-	Mon,  1 Apr 2024 16:48:49 +0000 (UTC)
+	 MIME-Version; b=YY6CXrpTRLqjw5aOJ9AqYBS7/2uKOruFKbohFeiO4ncZ+V0P1/3ev7E0dTdnXlt49gql2WyYuo0bLtB67H+1i/O2oMl8+PHmoW403mTYqsGYyC6oZCqOlyZkMbqi6BEne4GZE6/pvYNvcEsdGE02qdZNmjxxlGhm2ixzBNdDfqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9eu2f9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A53C433C7;
+	Mon,  1 Apr 2024 17:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990129;
-	bh=8FhqAFC/glW9Xhb6joA0VP5pO7JSv+bJ0shrxcA0kSI=;
+	s=korg; t=1711990968;
+	bh=mswpXEYQptGqWC+z1pZsMbd3OwNXywb1wFCBD+A0N14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kvjl/EvU256q/4jE5S286iaGj8PHG3vQtpzRiZT0M60YEiz6gKt5JonB94B3daChf
-	 OvgHvamNegc7cMuo4lCXlQTiCjHwC2/z2em+W048F+dbF1BJ7mk7KoVJ6pRVjQoquZ
-	 Zp4Cn2KyAoLh/nGgZKt5ftmGs4oHCh0xHM4M6+5g=
+	b=I9eu2f9SD+/j+Xf9nzBHTgx6zoGjBjGWS9niUpj5A1VVYLo1o6aZtDYbEQ/TrFgGy
+	 2gjCvpslR2DfSzhKeXVvjTdsUNUPRB5bmMTUC2NXigiD+i981YUN8kRhmKHx6De0qC
+	 AtHp2p1vvbgymWS6jEADYCrCeV3FForRe6B0DVCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 256/396] xfs: dont leak recovered attri intent items
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/272] drm/probe-helper: warn about negative .get_modes()
 Date: Mon,  1 Apr 2024 17:45:05 +0200
-Message-ID: <20240401152555.539858720@linuxfoundation.org>
+Message-ID: <20240401152534.249981702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 07bcbdf020c9fd3c14bec51c50225a2a02707b94 upstream.
+[ Upstream commit 7af03e688792293ba33149fb8df619a8dff90e80 ]
 
-If recovery finds an xattr log intent item calling for the removal of an
-attribute and the file doesn't even have an attr fork, we know that the
-removal is trivially complete.  However, we can't just exit the recovery
-function without doing something about the recovered log intent item --
-it's still on the AIL, and not logging an attrd item means it stays
-there forever.
+The .get_modes() callback is supposed to return the number of modes,
+never a negative error code. If a negative value is returned, it'll just
+be interpreted as a negative count, and added to previous calculations.
 
-This has likely not been seen in practice because few people use LARP
-and the runtime code won't log the attri for a no-attrfork removexattr
-operation.  But let's fix this anyway.
+Document the rules, but handle the negative values gracefully with an
+error message.
 
-Also we shouldn't really be testing the attr fork presence until we've
-taken the ILOCK, though this doesn't matter much in recovery, which is
-single threaded.
-
-Fixes: fdaf1bb3cafc ("xfs: ATTR_REPLACE algorithm with LARP enabled needs rework")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/50208c866facc33226a3c77b82bb96aeef8ef310.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_item.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_probe_helper.c       | 7 +++++++
+ include/drm/drm_modeset_helper_vtables.h | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -329,6 +329,13 @@ xfs_xattri_finish_update(
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
+index 3b968ad187cf3..52dbaf74fe164 100644
+--- a/drivers/gpu/drm/drm_probe_helper.c
++++ b/drivers/gpu/drm/drm_probe_helper.c
+@@ -362,6 +362,13 @@ static int drm_helper_probe_get_modes(struct drm_connector *connector)
  
-+	/* If an attr removal is trivially complete, we're done. */
-+	if (attr->xattri_op_flags == XFS_ATTRI_OP_FLAGS_REMOVE &&
-+	    !xfs_inode_hasattr(args->dp)) {
-+		error = 0;
-+		goto out;
+ 	count = connector_funcs->get_modes(connector);
+ 
++	/* The .get_modes() callback should not return negative values. */
++	if (count < 0) {
++		drm_err(connector->dev, ".get_modes() returned %pe\n",
++			ERR_PTR(count));
++		count = 0;
 +	}
 +
- 	error = xfs_attr_set_iter(attr);
- 	if (!error && attr->xattri_dela_state != XFS_DAS_DONE)
- 		error = -EAGAIN;
-@@ -608,8 +615,6 @@ xfs_attri_item_recover(
- 			attr->xattri_dela_state = xfs_attr_init_add_state(args);
- 		break;
- 	case XFS_ATTRI_OP_FLAGS_REMOVE:
--		if (!xfs_inode_hasattr(args->dp))
--			goto out;
- 		attr->xattri_dela_state = xfs_attr_init_remove_state(args);
- 		break;
- 	default:
+ 	/*
+ 	 * Fallback for when DDC probe failed in drm_get_edid() and thus skipped
+ 	 * override/firmware EDID.
+diff --git a/include/drm/drm_modeset_helper_vtables.h b/include/drm/drm_modeset_helper_vtables.h
+index fafa70ac1337f..6f19cf5c210e5 100644
+--- a/include/drm/drm_modeset_helper_vtables.h
++++ b/include/drm/drm_modeset_helper_vtables.h
+@@ -896,7 +896,8 @@ struct drm_connector_helper_funcs {
+ 	 *
+ 	 * RETURNS:
+ 	 *
+-	 * The number of modes added by calling drm_mode_probed_add().
++	 * The number of modes added by calling drm_mode_probed_add(). Return 0
++	 * on failures (no modes) instead of negative error codes.
+ 	 */
+ 	int (*get_modes)(struct drm_connector *connector);
+ 
+-- 
+2.43.0
+
 
 
 
