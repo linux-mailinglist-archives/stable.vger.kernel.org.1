@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A816893EC4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:07:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A4E894057
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BAF61C216C5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCA81F21C6A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2604778E;
-	Mon,  1 Apr 2024 16:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B342446AC;
+	Mon,  1 Apr 2024 16:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfEp9ySf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNuRlcZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C51F3FE2D;
-	Mon,  1 Apr 2024 16:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296EBC129;
+	Mon,  1 Apr 2024 16:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987660; cv=none; b=XL5KJGjULUherIRJJEf7SOvps/xP6BHun02JLFq64dJYVNjvGYHdtbthHos028d4z8K3olj6tlIjZfDJT8HnlAE0PE9Hx3EPY7DbkPMpASs5HeanrZJr0zh+HXUcq1RzjOMz0B9nFwiKhMXEiC8CllXnyv62X9mkA3EMtX0tN58=
+	t=1711988928; cv=none; b=tnlkKF/FNuEOB92+VvWthjCcMjq347qtX0Y4D0Ivg0y4QTI/ZjhuL6x4MkdLcXBK0nMkbZtp9IyxiO7ntfA+mHSwwIr7iyH/6flVdrrqG9PYUbsGBsCZv+r1h36ZUM6eRgqIDt0K7Wf4EG/8SeTP/JAw/seBWAexny7qYrAiKhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987660; c=relaxed/simple;
-	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
+	s=arc-20240116; t=1711988928; c=relaxed/simple;
+	bh=rEnWWW4B3+B2Ljj+OMmwAV+uwzVdzc1wqfydazmmB9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swkavKSNo9/IGBIX9LYd0F75bnwNzrV4SsSxt/rIMpgbLdKKZNVIzXqm8FolZ+PaISBKyvP0wdDlaQ+68C44QJkKuKFghu4+ji7dWnOdG/BH4YxdwwPJW1n12Ffpu2m8goiDVGrwVcohvcHj5dbMoFqtp+xY1QdPtY4LP+RlHv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfEp9ySf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7D6C433F1;
-	Mon,  1 Apr 2024 16:07:39 +0000 (UTC)
+	 MIME-Version; b=tCEj9B9OjVD2yFuS9p4lEHiL9UadXj+8C2MI6UOltLZVFVVy6cQhdEsRP7J6HADgH5EDRl8Cnyvw8bq5Ue/zuUx6RB3JQFl7q7opkhpi2ZMBaMCuuVXul1jGW1bvFfqUuQsNtbl6OL5nTjsk419HFV+UPAHmSk/rRnkbu/Hu468=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNuRlcZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4B6C433F1;
+	Mon,  1 Apr 2024 16:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987660;
-	bh=R5kZ3J2h2q5M9lqUHJGgWWJAbOAMABD4kbCbpfOiwEw=;
+	s=korg; t=1711988928;
+	bh=rEnWWW4B3+B2Ljj+OMmwAV+uwzVdzc1wqfydazmmB9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfEp9ySf+9PhXXLS+zcvP25ofmdK+uwEzCVrS27B6YuSu+pRbEwUSQOIkkiNBrQmY
-	 Qu3whWAU0cnzFr3yoptKycKZkQAe613ESnxV4Qcz80MnlN8dzmD4yZTkxk7KdOxNv4
-	 6xxepJMOy7lNrvZfAHUcpAZRcfsd5kgCxbHSufxU=
+	b=fNuRlcZn6o94C+p4NrEuaypHQpXPp50vjsrF+vIyO/yezj0jzPrYCf+3pIsbWmlus
+	 42G+eZ4d231q5WYXFKQo0EPIhcNXRCjyGUN2nMhw7dE9unmDtN/89JFcrpKRNmy4up
+	 F/Zulqs4/NSHQs9Ku/tujwhJkDxacL3MPfMOS0/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 352/399] scsi: sg: Avoid sg device teardown race
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Chris Park <chris.park@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 331/432] drm/amd/display: Prevent crash when disable stream
 Date: Mon,  1 Apr 2024 17:45:18 +0200
-Message-ID: <20240401152559.680994067@linuxfoundation.org>
+Message-ID: <20240401152603.085626890@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Chris Park <chris.park@amd.com>
 
-commit 27f58c04a8f438078583041468ec60597841284d upstream.
+commit 72d72e8fddbcd6c98e1b02d32cf6f2b04e10bd1c upstream.
 
-sg_remove_sfp_usercontext() must not use sg_device_destroy() after calling
-scsi_device_put().
+[Why]
+Disabling stream encoder invokes a function that no longer exists.
 
-sg_device_destroy() is accessing the parent scsi_device request_queue which
-will already be set to NULL when the preceding call to scsi_device_put()
-removed the last reference to the parent scsi_device.
+[How]
+Check if the function declaration is NULL in disable stream encoder.
 
-The resulting NULL pointer exception will then crash the kernel.
-
-Link: https://lore.kernel.org/r/20240305150509.23896-1-Alexander@wetzel-home.de
-Fixes: db59133e9279 ("scsi: sg: fix blktrace debugfs entries leakage")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Link: https://lore.kernel.org/r/20240320213032.18221-1-Alexander@wetzel-home.de
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Chris Park <chris.park@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2207,6 +2207,7 @@ sg_remove_sfp_usercontext(struct work_st
- {
- 	struct sg_fd *sfp = container_of(work, struct sg_fd, ew.work);
- 	struct sg_device *sdp = sfp->parentdp;
-+	struct scsi_device *device = sdp->device;
- 	Sg_request *srp;
- 	unsigned long iflags;
- 
-@@ -2232,8 +2233,9 @@ sg_remove_sfp_usercontext(struct work_st
- 			"sg_remove_sfp: sfp=0x%p\n", sfp));
- 	kfree(sfp);
- 
--	scsi_device_put(sdp->device);
-+	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
- 	kref_put(&sdp->d_ref, sg_device_destroy);
-+	scsi_device_put(device);
- 	module_put(THIS_MODULE);
- }
- 
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1184,7 +1184,8 @@ void dce110_disable_stream(struct pipe_c
+ 		if (dccg) {
+ 			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
+ 			dccg->funcs->set_dpstreamclk(dccg, REFCLK, tg->inst, dp_hpo_inst);
+-			dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
++			if (dccg && dccg->funcs->set_dtbclk_dto)
++				dccg->funcs->set_dtbclk_dto(dccg, &dto_params);
+ 		}
+ 	} else if (dccg && dccg->funcs->disable_symclk_se) {
+ 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
 
 
 
