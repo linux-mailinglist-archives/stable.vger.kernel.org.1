@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-34393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE5F893F2A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:12:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E904A893F08
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750301F2260A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:12:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2312834AA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864CF47A62;
-	Mon,  1 Apr 2024 16:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A70D47A6A;
+	Mon,  1 Apr 2024 16:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnIvORTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4YmSuob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB4F4778C;
-	Mon,  1 Apr 2024 16:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F9B4776F;
+	Mon,  1 Apr 2024 16:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987970; cv=none; b=NXqcqMHpQyeWQslFwilFUpqgWugQ7pvWhHjVgMwlWt1Xy3EALC2ILSoINRczp/rxx74Og9lxuy1YelDsLvaBLYUiXFgPoTgkzi/jJW4YtOgRsLB+vElLRuBcQ4QWN7csNQ74fkd3G0rvmwkBU3yhJDZgomHoYSnhe5KQ8BgSS9A=
+	t=1711987869; cv=none; b=HKnF0wS6FAjYzd8MIYAT00vC1z/Ob3YAwHCAgcOMnrANjUlNj9v/lLaIPAQrHjNY5Kl3WtEo2sN7Qz4N7sUljB5baB1MXccFbfAMW/igobeOyjj/RoiFDbKyV4tFfFGR8MU1qv/wL3hNZltFm/RttzzIzs5iZpcA5We9QRwPjUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987970; c=relaxed/simple;
-	bh=3ULDQxWSEIHJ9fBgHWhFgAgQ0USSDvzW04wiS6NCi4g=;
+	s=arc-20240116; t=1711987869; c=relaxed/simple;
+	bh=DN7PWJ53RnazUYVNJN4q5Npzx1QxkzNgrcbVCMC0LJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4GO/8KpCY4vvVJxdwBd2Z/0fNBOmJL/HdqFDZ6Fm3lDjoZpzaWVwlqevPAIokwka6WHBwgcvQhqXFyPskNu5S9agcZmofa08ZZs8OMrQHsQPGGVynKd1Iz/wC5/JkZ2G/eRQ5ie8kGoeoWi8+gw1YatsiMlJhQ7H6AivNaF2Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnIvORTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B222EC433F1;
-	Mon,  1 Apr 2024 16:12:49 +0000 (UTC)
+	 MIME-Version; b=W/MJHddCBqgtJsSTspg9A1aMGJ3hQ47rNiEImnbz7WxWLcQ/POktRsCx4OwKL9mMGyQZ2CIJi+Fjgo5gAptx0bMxlwg3bGORK39XCWE0v340eiTnvOnUQFI++QH2XghrUbtVUkaPS7fLEqzMAAbu2D/TS9YY5vkp+vw+BnlJ1b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4YmSuob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBA4C433C7;
+	Mon,  1 Apr 2024 16:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987970;
-	bh=3ULDQxWSEIHJ9fBgHWhFgAgQ0USSDvzW04wiS6NCi4g=;
+	s=korg; t=1711987868;
+	bh=DN7PWJ53RnazUYVNJN4q5Npzx1QxkzNgrcbVCMC0LJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnIvORTypqkr91P0/zy4xUuBs2KFmO5k24puo3bF1+bJu1ueIx+DHs1tJd3Ga0hmX
-	 C+n0vPj4DH5IQo+YW9uxD6FXb5G5yeUgypcjSI1gykNVA9lskZIG0ceAoSEWgs7wU8
-	 JMBZDC8nriI1TngDw1B4G1Hzq9v/5Exfe3L9fmbQ=
+	b=s4YmSuobppYzw2CWXQLH97WF5CiAU6HeLCkl8mzEC0ooLLsOX2QnKMe14RRtrAKO9
+	 zX8IVgemblAjC+RSeDYXe4ZN/gPBzS8JV4WI9VGbLXfR4EDa9b5Gxdcl+OuEJAJtJk
+	 1xiZeIt9cfY0nXQVRSpCwiO8mFVxlLmCi9f26n8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 007/432] arm64: dts: qcom: sc7280: Add additional MSI interrupts
-Date: Mon,  1 Apr 2024 17:39:54 +0200
-Message-ID: <20240401152553.350222974@linuxfoundation.org>
+Subject: [PATCH 6.7 008/432] remoteproc: virtio: Fix wdg cannot recovery remote processor
+Date: Mon,  1 Apr 2024 17:39:55 +0200
+Message-ID: <20240401152553.378775493@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 References: <20240401152553.125349965@linuxfoundation.org>
@@ -66,49 +67,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit b8ba66b40da3230a8675cb5dd5c2dea5bce24d62 ]
+[ Upstream commit b327c72753d6a78de37aed6c35756f2ef62897ee ]
 
-Current MSI's mapping doesn't have all the vectors. This platform
-supports 8 vectors each vector supports 32 MSI's, so total MSI's
-supported is 256.
+Recovery remote processor failed when wdg irq received:
+[    0.842574] remoteproc remoteproc0: crash detected in cix-dsp-rproc: type watchdog
+[    0.842750] remoteproc remoteproc0: handling crash #1 in cix-dsp-rproc
+[    0.842824] remoteproc remoteproc0: recovering cix-dsp-rproc
+[    0.843342] remoteproc remoteproc0: stopped remote processor cix-dsp-rproc
+[    0.847901] rproc-virtio rproc-virtio.0.auto: Failed to associate buffer
+[    0.847979] remoteproc remoteproc0: failed to probe subdevices for cix-dsp-rproc: -16
 
-Add all the MSI groups supported for this PCIe instance in this platform.
+The reason is that dma coherent mem would not be released when
+recovering the remote processor, due to rproc_virtio_remove()
+would not be called, where the mem released. It will fail when
+it try to allocate and associate buffer again.
 
-Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
-cc: stable@vger.kernel.org
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-Link: https://lore.kernel.org/r/20231218-additional_msi-v1-1-de6917392684@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Releasing reserved memory from rproc_virtio_dev_release(), instead of
+rproc_virtio_remove().
+
+Fixes: 1d7b61c06dc3 ("remoteproc: virtio: Create platform device for the remoteproc_virtio")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231217053659.3245745-1-joakim.zhang@cixtech.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/remoteproc/remoteproc_virtio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 84de20c88a869..e456c9512f9c6 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2147,8 +2147,16 @@ pcie1: pci@1c08000 {
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/remoteproc_virtio.c
+index 83d76915a6ad6..25b66b113b695 100644
+--- a/drivers/remoteproc/remoteproc_virtio.c
++++ b/drivers/remoteproc/remoteproc_virtio.c
+@@ -351,6 +351,9 @@ static void rproc_virtio_dev_release(struct device *dev)
  
--			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "msi";
-+			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "msi0", "msi1", "msi2", "msi3",
-+					  "msi4", "msi5", "msi6", "msi7";
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 0x7>;
- 			interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,
+ 	kfree(vdev);
+ 
++	of_reserved_mem_device_release(&rvdev->pdev->dev);
++	dma_release_coherent_memory(&rvdev->pdev->dev);
++
+ 	put_device(&rvdev->pdev->dev);
+ }
+ 
+@@ -584,9 +587,6 @@ static void rproc_virtio_remove(struct platform_device *pdev)
+ 	rproc_remove_subdev(rproc, &rvdev->subdev);
+ 	rproc_remove_rvdev(rvdev);
+ 
+-	of_reserved_mem_device_release(&pdev->dev);
+-	dma_release_coherent_memory(&pdev->dev);
+-
+ 	put_device(&rproc->dev);
+ }
+ 
 -- 
 2.43.0
 
