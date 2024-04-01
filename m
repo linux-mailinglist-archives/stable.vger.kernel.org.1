@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF498942FC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2E8941AB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8AD9283835
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B318B2293E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311F1E86C;
-	Mon,  1 Apr 2024 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F03481D0;
+	Mon,  1 Apr 2024 16:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRnJmw7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmnLdWV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C72BA3F;
-	Mon,  1 Apr 2024 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F544654F;
+	Mon,  1 Apr 2024 16:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990688; cv=none; b=Xrrb0icB6cRdFtoyqy0GS5cmDVyu3U9+xK4vdqFKBtrOEohDiwBLabY/OENWVlXnBNwuFATbJlN91G+Bw38Vm7rBSt4WUN6gz9KKLweLA+mN+qyT6oPvfzpL6t5Hjl+HOcpIDxuVIa+H6pnzXHewscL20oSI8xPCjUAeKrc/AZ0=
+	t=1711989873; cv=none; b=N3bGvXiesqTm43k9z2yWGaxrzrUz99zKyedAE8L4GcOBnJQ9sasRqRBblPryeERmkfAbVfnH1H7KGv2PwphKQAKZknd3MbWnT5+r6/ezlH5slEZ+KFc4/7kVlWETa/xaxcZOffNFEO4T1cowS9DgfOhzK0SI8wwkWbVUy5FOgcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990688; c=relaxed/simple;
-	bh=BfvTd+x6dOWDhT6Ry7pxTJK8/1EmukK80UTC1pfFo0A=;
+	s=arc-20240116; t=1711989873; c=relaxed/simple;
+	bh=soeq7qXeCXQ6aUjA4srX62hXoW2fCRex5HeZHbm5bIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgnFj/OYR9nBty/lDmn29xuWcpJc+QRKE9gKXJACeePiM8jw4csgW4L7PeV6x8GBd98ruA1rZKZJG+xbVcIDHvstSFH07wM+TGchAdEvMItjcGCiPheVSQBlnQFzmsq3dSZWVgf0IG2xBGJB4LRZ68yg3LZB20QtWwTi86QJcr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRnJmw7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A2DC433C7;
-	Mon,  1 Apr 2024 16:58:07 +0000 (UTC)
+	 MIME-Version; b=a5TB+RhNJIezLeX7Vneeu6i7RlvU7UpESamUOO8NuCM7/mZS+hKLD+kI6rz+wnKo/DcoI/kEFt5Lh+1t2XoyWFl5/f5OLPJ69/KRhmxP+hRVbtn6WHkZNRue6i3/KAMwLrC3LRoqfkMxOHPArQuWg+Trggwwsf0OmI0Pf2PF6mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmnLdWV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E630BC433F1;
+	Mon,  1 Apr 2024 16:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990688;
-	bh=BfvTd+x6dOWDhT6Ry7pxTJK8/1EmukK80UTC1pfFo0A=;
+	s=korg; t=1711989873;
+	bh=soeq7qXeCXQ6aUjA4srX62hXoW2fCRex5HeZHbm5bIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRnJmw7cCXrxEnJrVQKvAbm2mpSnW2VcWfuRDW6L1g3orK2sm6roIIdrkUg08wZUo
-	 9GPGx5tWNtT+CwknSCgPYYAO/TFQfB+1GZCLnMm/sYDx6Ql0wfk5SNyWkhdXQu6FLV
-	 Isc5Zi3UF5qsZpWqqo2H3QlliF4YnKIeGrwcoF1Q=
+	b=DmnLdWV3HjvNn9z2OSDtg7kqo+9uEmTyJ+sMnJBZnUyJpOzFc1WLXPz+kYrofn/9b
+	 DIMBdaFqUieIx4Ie6uzOHUf1Qf9d+kM1zjjIxez4cPyzMQ9SF7K/4vbchTbNVZdd1U
+	 2EEK+kFxBM9hdX458UGapbjhjktlJ+aZC3E0aenc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/272] block: Clear zone limits for a non-zoned stacked queue
+Subject: [PATCH 6.6 177/396] wireguard: netlink: access device through ctx instead of peer
 Date: Mon,  1 Apr 2024 17:43:46 +0200
-Message-ID: <20240401152531.505016431@linuxfoundation.org>
+Message-ID: <20240401152553.221135902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-[ Upstream commit c8f6f88d25929ad2f290b428efcae3b526f3eab0 ]
+[ Upstream commit 71cbd32e3db82ea4a74e3ef9aeeaa6971969c86f ]
 
-Device mapper may create a non-zoned mapped device out of a zoned device
-(e.g., the dm-zoned target). In such case, some queue limit such as the
-max_zone_append_sectors and zone_write_granularity endup being non zero
-values for a block device that is not zoned. Avoid this by clearing
-these limits in blk_stack_limits() when the stacked zoned limit is
-false.
+The previous commit fixed a bug that led to a NULL peer->device being
+dereferenced. It's actually easier and faster performance-wise to
+instead get the device from ctx->wg. This semantically makes more sense
+too, since ctx->wg->peer_allowedips.seq is compared with
+ctx->allowedips_seq, basing them both in ctx. This also acts as a
+defence in depth provision against freed peers.
 
-Fixes: 3093a479727b ("block: inherit the zoned characteristics in blk_stack_limits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240222131724.1803520-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireguard/netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index bbca4ce77a2d3..c702f408bbc0a 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -680,6 +680,10 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 	t->zone_write_granularity = max(t->zone_write_granularity,
- 					b->zone_write_granularity);
- 	t->zoned = max(t->zoned, b->zoned);
-+	if (!t->zoned) {
-+		t->zone_write_granularity = 0;
-+		t->max_zone_append_sectors = 0;
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL(blk_stack_limits);
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index 12d80306ff3bc..a6661c9500d40 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -164,8 +164,8 @@ get_peer(struct wg_peer *peer, struct sk_buff *skb, struct dump_ctx *ctx)
+ 	if (!allowedips_node)
+ 		goto no_allowedips;
+ 	if (!ctx->allowedips_seq)
+-		ctx->allowedips_seq = peer->device->peer_allowedips.seq;
+-	else if (ctx->allowedips_seq != peer->device->peer_allowedips.seq)
++		ctx->allowedips_seq = ctx->wg->peer_allowedips.seq;
++	else if (ctx->allowedips_seq != ctx->wg->peer_allowedips.seq)
+ 		goto no_allowedips;
+ 
+ 	allowedips_nest = nla_nest_start(skb, WGPEER_A_ALLOWEDIPS);
 -- 
 2.43.0
 
