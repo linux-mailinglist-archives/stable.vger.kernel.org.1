@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60199894042
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BC5893EA8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C391F218D6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFF9282320
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C7A47A62;
-	Mon,  1 Apr 2024 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C34596E;
+	Mon,  1 Apr 2024 16:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmLryoda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNLf3PMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61243C129;
-	Mon,  1 Apr 2024 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07621CA8F;
+	Mon,  1 Apr 2024 16:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988865; cv=none; b=c+Hzvtr18J5LEkY/zNE8aP5s1Jd5zFkbUhvmScJIvva4zu4nZFqDOeE4LhFCPuRLidV27XOkDGSCU0UvX3+Si+mnuKIt3qyweG/8Rs2qkTZ7LHqdjsZYkE3s0UOV1jFqo+gAoLdzAle7gNzxPvu5G9frGl/C9T1jjQlUhtmQdoQ=
+	t=1711987586; cv=none; b=ePon7EaRKCWtJLwAj/H6cMU30E7fW0Ghds3DgZKsf/ac22KGDSUXqmOCBWjpEG2l4B6ke6Sx+OMA6MLCZe2Ngr/4k+s77gcIUn9lddC3mWvXX73C9gkUc7PCI8ahdEH2QKbWg5tMvFc9jTka9USiPX7HFjR9FnRLOof5nv315fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988865; c=relaxed/simple;
-	bh=VVul250uIBatrnVnoIiIheoRiD2M0oBKXBSjYlRJ/rY=;
+	s=arc-20240116; t=1711987586; c=relaxed/simple;
+	bh=rHhE3d1+Ftz8Scrylh0ADebtcs6el7WJTQigHPjw9Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcvghZz4bmIi3Rg3npG1U7jF8LWDs5txU6DAcPnqtz+sxfDnVRu6vwzVh/SKitGqUFL3ioxHnymZ56a1/kusO6au04E0rmZS9B88XjIhyF971Y5WuQcIGaoZ83L9+C4fL39TNRx8adiy4NAwB6pO58quRLW3IdxCHieQYg+upGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmLryoda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43B4C433F1;
-	Mon,  1 Apr 2024 16:27:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hjuXrCbuC9FLbpAbmqoWe8Qfmi7hjk+h32kKpxuIwUaGAwiJA9nFXOZFm0/CJyGTUO04szkdj3Xughc47C6B8DhIhasu88JToPUA9oXvPJUFlBZ0cTcR62QqVB1JvhNVFwaWNxjIl2ghEtjpu67GDrNpUs+rLQJaiiiOzswF2a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNLf3PMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5DBC433C7;
+	Mon,  1 Apr 2024 16:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988865;
-	bh=VVul250uIBatrnVnoIiIheoRiD2M0oBKXBSjYlRJ/rY=;
+	s=korg; t=1711987586;
+	bh=rHhE3d1+Ftz8Scrylh0ADebtcs6el7WJTQigHPjw9Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmLryodaXAuF0bPxySywnIRXR4Izy7qJEs2RBrWOv7oIIhOHvz0Q3zfFucHUi+4fQ
-	 L0RP1B3nl1f1JLmI7GUMLGpxtaeT/fkP7H2ime1RihxfB4bLeRvONodCKQbArh7fcA
-	 8/u2sFDsDLAmeKGMnhr4oVxWPgFJnUY7ldz/V3FI=
+	b=oNLf3PMn7vgif7YyOXgTzmVLKMIJ6jZY9iVriRFRJkYZcerhBR2Sg/iwa0FqSRnIG
+	 ptq9nF6sLx/wmf/qt//jw3CdX8hsqwyPx0Hz2Ds06uHnaDH9esYlfbGj166qt0Svae
+	 r4UwyFCRk4mToXPx2SIBrkSnwO4AAc1Ro0b3KXw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 311/432] irqchip/renesas-rzg2l: Rename rzg2l_irq_eoi()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.8 332/399] drm/i915/bios: Tolerate devdata==NULL in intel_bios_encoder_supports_dp_dual_mode()
 Date: Mon,  1 Apr 2024 17:44:58 +0200
-Message-ID: <20240401152602.462446841@linuxfoundation.org>
+Message-ID: <20240401152559.088450492@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit b4b5cd61a6fdd92ede0dc39f0850a182affd1323 ]
+commit 32e39bab59934bfd3f37097d4dd85ac5eb0fd549 upstream.
 
-Rename rzg2l_irq_eoi()->rzg2l_clear_irq_int() and simplify the code by
-removing redundant priv local variable.
+If we have no VBT, or the VBT didn't declare the encoder
+in question, we won't have the 'devdata' for the encoder.
+Instead of oopsing just bail early.
 
-Suggested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We won't be able to tell whether the port is DP++ or not,
+but so be it.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10464
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240319092443.15769-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 26410896206342c8a80d2b027923e9ee7d33b733)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_bios.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 51dda1745ffaa..762bb90b74e61 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -66,10 +66,9 @@ static struct rzg2l_irqc_priv *irq_data_to_priv(struct irq_data *data)
- 	return data->domain->host_data;
- }
- 
--static void rzg2l_irq_eoi(struct irq_data *d)
-+static void rzg2l_clear_irq_int(struct rzg2l_irqc_priv *priv, unsigned int hwirq)
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -3344,6 +3344,9 @@ bool intel_bios_encoder_supports_dp_dual
  {
--	unsigned int hw_irq = irqd_to_hwirq(d) - IRQC_IRQ_START;
--	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
-+	unsigned int hw_irq = hwirq - IRQC_IRQ_START;
- 	u32 bit = BIT(hw_irq);
- 	u32 iitsr, iscr;
+ 	const struct child_device_config *child = &devdata->child;
  
-@@ -113,7 +112,7 @@ static void rzg2l_irqc_eoi(struct irq_data *d)
- 
- 	raw_spin_lock(&priv->lock);
- 	if (hw_irq >= IRQC_IRQ_START && hw_irq <= IRQC_IRQ_COUNT)
--		rzg2l_irq_eoi(d);
-+		rzg2l_clear_irq_int(priv, hw_irq);
- 	else if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ)
- 		rzg2l_clear_tint_int(priv, hw_irq);
- 	raw_spin_unlock(&priv->lock);
--- 
-2.43.0
-
++	if (!devdata)
++		return false;
++
+ 	if (!intel_bios_encoder_supports_dp(devdata) ||
+ 	    !intel_bios_encoder_supports_hdmi(devdata))
+ 		return false;
 
 
 
