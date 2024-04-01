@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-34053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06883893DA9
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:55:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E197D893D88
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 381FD1C21493
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:55:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D082283127
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FB152F61;
-	Mon,  1 Apr 2024 15:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE64E4E1B3;
+	Mon,  1 Apr 2024 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AThZfYsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGYA+Y1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B261B47A7A;
-	Mon,  1 Apr 2024 15:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3A64CDEC;
+	Mon,  1 Apr 2024 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711986850; cv=none; b=FmmUckksUvzr3FWEs8h/TtPPyydH4ZBevy6U3D/dSp/EYOQQBWK0fDzxAy98COnR7udqHf3i8d0tA5trnLCTDbtk9xOO/xrr7MrUpLBWPZxVEcQgL5gNMKCCkHgvL5bJfF1eDto7CZrBMeog4R7sXehHShXl1WoIHHps42L3Zsw=
+	t=1711986751; cv=none; b=TfgKVJnt0dcnpm8fctyBamDQXtzd+Xk6Z3aO5bSAoCuYz4aGGGpgJeJ/3vkxdyoKW/z7g/CYK2bTGyTMUtvCFB4tON5tI5DJ6ZM36/no4kw4EhSCfoE/tfzCI6ZMhchfGg+mAOj/ojYI0gh8wS/FHCXEPDnYKIE2ClMJui6uhjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711986850; c=relaxed/simple;
-	bh=S6fJM3Kz4JOL994prCV8jwmQpf1w3CaIsANhSjwCwbg=;
+	s=arc-20240116; t=1711986751; c=relaxed/simple;
+	bh=uaQ6baqu59sMe6NhXpNsfK5N8cWQv6UULdM3AzZoRic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCWNeVIwNcGalcJGiU+iDDuInRbF1mUozouxlZHiNr4sU8pZSbfUEq9B5AijwY4h5I9YN1IZ1Fw7ENKwgWy59vAO9iskYmHa/TBGK3KfE3chCEFiz22o8l7ePH/grDB7HGYfa6Oorx8EDKmUz+xfaU7sbG66shNQRRn+xwz6dFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AThZfYsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375FDC433C7;
-	Mon,  1 Apr 2024 15:54:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=afBIG3oWoNYPGEvCX1KJAXwos5jA2ncSzsPE/fJ7qY3zXZSBRiFUK8BrbrrNI6pbfdrOQj67K9lK3vOqR8YQNenyb2Z+6uNyvJ9doxfjUubZu6qq7noSEkwXV5YxFXzZ2se4zuo7VkpgyckftFrO2gKzKH+yxrpfEIeZpj239Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGYA+Y1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5530C433F1;
+	Mon,  1 Apr 2024 15:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711986850;
-	bh=S6fJM3Kz4JOL994prCV8jwmQpf1w3CaIsANhSjwCwbg=;
+	s=korg; t=1711986751;
+	bh=uaQ6baqu59sMe6NhXpNsfK5N8cWQv6UULdM3AzZoRic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AThZfYsBzn47uE+VKAL+8Ua7xt1G6ErtZ3BREUmOxKyON8/SKG3+gbRnjGOjUxxT6
-	 RK0791BNugRB15vJ3DOQpqzYzjkJJMfLEd87cHQbl7QIA/epg1Q2b8YR35I2+c+hF3
-	 ER2WYvqLB2ChY3al7xKyNTy90037Hzw2ccsPGkXA=
+	b=IGYA+Y1l1Mx3PbX26pkxT9sWDhYrvrVWFJAN9/E2ZbBdfQpGMVm5Yzy/a/UxphVFP
+	 89B/Phcdd+pGSKkWtld7kPS2pUplixayy4nZ6KXtqqhS5PDYED68rAUSHoG6TH7JSW
+	 tcGjt97u3AUoEZ8PafaTJYyo6FghlY/Lz4SDDmZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 065/399] iio: adc: rockchip_saradc: use mask for write_enable bitfield
-Date: Mon,  1 Apr 2024 17:40:31 +0200
-Message-ID: <20240401152551.126611547@linuxfoundation.org>
+Subject: [PATCH 6.8 066/399] docs: Restore "smart quotes" for quotes
+Date: Mon,  1 Apr 2024 17:40:32 +0200
+Message-ID: <20240401152551.156773966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -62,67 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+From: Akira Yokosawa <akiyks@gmail.com>
 
-[ Upstream commit 5b4e4b72034f85f7a0cdd147d3d729c5a22c8764 ]
+[ Upstream commit fe2562582bffe675721e77e00b3bf5bfa1d7aeab ]
 
-Some of the registers on the SARADCv2 have bits write protected except
-if another bit is set. This is usually done by having the lowest 16 bits
-store the data to write and the highest 16 bits specify which of the 16
-lowest bits should have their value written to the hardware block.
+Commit eaae75754d81 ("docs: turn off "smart quotes" in the HTML build")
+disabled conversion of quote marks along with that of dashes.
+Despite the short summary, the change affects not only HTML build
+but also other build targets including PDF.
 
-The write_enable mask for the channel selection was incorrect because it
-was just the value shifted by 16 bits, which means it would only ever
-write bits and never clear them. So e.g. if someone starts a conversion
-on channel 5, the lowest 4 bits would be 0x5, then starts a conversion
-on channel 0, it would still be 5.
+However, as "smart quotes" had been enabled for more than half a
+decade already, quite a few readers of HTML pages are likely expecting
+conversions of "foo" -> “foo” and 'bar' -> ‘bar’.
 
-Instead of shifting the value by 16 as the mask, let's use the OR'ing of
-the appropriate masks shifted by 16.
+Furthermore, in LaTeX typesetting convention, it is common to use
+distinct marks for opening and closing quote marks.
 
-Note that this is not an issue currently because the only SARADCv2
-currently supported has a reset defined in its Device Tree, that reset
-resets the SARADC controller before starting a conversion on a channel.
-However, this reset is handled as optional by the probe function and
-thus proper masking should be used in the event an SARADCv2 without a
-reset ever makes it upstream.
+To satisfy such readers' expectation, restore conversion of quotes
+only by setting smartquotes_action [1].
 
-Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-2-84b06a0f623a@theobroma-systems.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: [1] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-smartquotes_action
+Cc: stable@vger.kernel.org  # v6.4
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20240225094600.65628-1-akiyks@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/rockchip_saradc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/conf.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 2da8d6f3241a1..1c0042fbbb548 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -102,12 +102,12 @@ static void rockchip_saradc_start_v2(struct rockchip_saradc *info, int chn)
- 	writel_relaxed(0xc, info->regs + SARADC_T_DAS_SOC);
- 	writel_relaxed(0x20, info->regs + SARADC_T_PD_SOC);
- 	val = FIELD_PREP(SARADC2_EN_END_INT, 1);
--	val |= val << 16;
-+	val |= SARADC2_EN_END_INT << 16;
- 	writel_relaxed(val, info->regs + SARADC2_END_INT_EN);
- 	val = FIELD_PREP(SARADC2_START, 1) |
- 	      FIELD_PREP(SARADC2_SINGLE_MODE, 1) |
- 	      FIELD_PREP(SARADC2_CONV_CHANNELS, chn);
--	val |= val << 16;
-+	val |= (SARADC2_START | SARADC2_SINGLE_MODE | SARADC2_CONV_CHANNELS) << 16;
- 	writel(val, info->regs + SARADC2_CONV_CON);
- }
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index da64c9fb7e072..d148f3e8dd572 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -346,9 +346,9 @@ sys.stderr.write("Using %s theme\n" % html_theme)
+ html_static_path = ['sphinx-static']
  
+ # If true, Docutils "smart quotes" will be used to convert quotes and dashes
+-# to typographically correct entities.  This will convert "--" to "—",
+-# which is not always what we want, so disable it.
+-smartquotes = False
++# to typographically correct entities.  However, conversion of "--" to "—"
++# is not always what we want, so enable only quotes.
++smartquotes_action = 'q'
+ 
+ # Custom sidebar templates, maps document names to template names.
+ # Note that the RTD theme ignores this
 -- 
 2.43.0
 
