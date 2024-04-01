@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-35017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEDD8941EB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DD989433E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA36A1F2118F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55FA21C21EAB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CB54654F;
-	Mon,  1 Apr 2024 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9201481C6;
+	Mon,  1 Apr 2024 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2vzK+A9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oif/WuN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D451E525;
-	Mon,  1 Apr 2024 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C37BA3F;
+	Mon,  1 Apr 2024 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990068; cv=none; b=SwsoqrSXf5D9Pre76ad4ai3OJAyQBc6EzjhuqwZ5qdLlsU3ZHy3iUvPOTljsr950I7jDTq1HJX7mNGV80romS+O4h24WRsUYPbPO7qeZpvTbq2vDfT/eWUyuyEbgPQiZyjp4y1BPD75uW+fc++dIg3lq/r6Ujy7TKe2rJjBKkKk=
+	t=1711990879; cv=none; b=XVMGS3BtVo2vDa/uGLtgSQ9mhL466M++9bGbedrvMBhCiYV+5dos1N3mv+rTPMK5QoKcyDNGcRvHUrSZwcfsnwsi8J815xsornialVC2MkCIS0QmgdrDuDvUrE7o97yaRLw0/G3lk808x3aUXW10mJ/ZEZZ0ptIHRV6XBf8+AZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990068; c=relaxed/simple;
-	bh=wDkzHUdW9M4KI4j214yORY4UvDGmV8U4edh/GiZqo4U=;
+	s=arc-20240116; t=1711990879; c=relaxed/simple;
+	bh=VD6wCE21J8X3yFBG6hXGfoHaxOa6L2R8wv8l7v0piLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4BbZwk5jJvdhSCbg7fBz8zJ0e3M+2OLdiTMLTZcQ2PZRN73vmangCid9RSLMmbB5KV2k09WBkQiPni4r5Gdq0j6pAl0tBKtKldRexkodnT+03S857qHwHBjzZs5MrKvNRSUj5Bt+YQBLvhyAs9aVTgwn26sZ450gMSsciw6/iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2vzK+A9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD8BC433C7;
-	Mon,  1 Apr 2024 16:47:47 +0000 (UTC)
+	 MIME-Version; b=BNv0UkSv7bn2/y4iV3K+7QSVXX7rswSA0HQtuXtYT/VcjwZcIlWNrKz0zmmPZR/x443MQIS2BkQxeO32Y7J0BvO9n+kaxMs8mSbx2Z73WxrczFmfxBIrYGRKjxUExacO84YhyJ5KgBJ4/l9l5x/t5+f0uyZV7n2uF6Y3ELQJ6kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oif/WuN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEA8C433F1;
+	Mon,  1 Apr 2024 17:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990068;
-	bh=wDkzHUdW9M4KI4j214yORY4UvDGmV8U4edh/GiZqo4U=;
+	s=korg; t=1711990879;
+	bh=VD6wCE21J8X3yFBG6hXGfoHaxOa6L2R8wv8l7v0piLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2vzK+A9cFJfu/imwjI4dYMQAF+Nk1IxGbwQhMdYEfeW+Zk87fiZgZEOo7qf+xlzU
-	 M5T3pnHZcmm4lfRDSObInmi9NOvyKuDN5RFOnol2YbdC7CDrj59GkWyzoXVQa9A3G6
-	 +uib3/MFRQweH9+WzR8FDHPvs26tCH1EiLVOtqyA=
+	b=oif/WuN5EmM5anKOoDkV98Ex8Mx/6/9gV9KBHv/X3PcnRH8IbS51Fsq3kTUCpuNyW
+	 FSlyZAAJTzzwjNtYQdQWVZR/uY5FEYFMg3CIOv4vvEhW4Sd+Fo5U2DMKydvawVgA6g
+	 deuv1OAaGIfnk8rF4l4q135wUaO7xWQvZKbsb6C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 236/396] ALSA: hda/realtek - Add Headset Mic supported Acer NB platform
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/272] nfs: fix UAF in direct writes
 Date: Mon,  1 Apr 2024 17:44:45 +0200
-Message-ID: <20240401152554.951660116@linuxfoundation.org>
+Message-ID: <20240401152533.599259417@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 34ab5bbc6e82214d7f7393eba26d164b303ebb4e upstream.
+[ Upstream commit 17f46b803d4f23c66cacce81db35fef3adb8f2af ]
 
-It will be enable headset Mic for Acer NB platform.
+In production we have been hitting the following warning consistently
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/fe0eb6661ca240f3b7762b5b3257710d@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 17 PID: 1800359 at lib/refcount.c:28 refcount_warn_saturate+0x9c/0xe0
+Workqueue: nfsiod nfs_direct_write_schedule_work [nfs]
+RIP: 0010:refcount_warn_saturate+0x9c/0xe0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __warn+0x9f/0x130
+ ? refcount_warn_saturate+0x9c/0xe0
+ ? report_bug+0xcc/0x150
+ ? handle_bug+0x3d/0x70
+ ? exc_invalid_op+0x16/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? refcount_warn_saturate+0x9c/0xe0
+ nfs_direct_write_schedule_work+0x237/0x250 [nfs]
+ process_one_work+0x12f/0x4a0
+ worker_thread+0x14e/0x3b0
+ ? ZSTD_getCParams_internal+0x220/0x220
+ kthread+0xdc/0x120
+ ? __btf_name_valid+0xa0/0xa0
+ ret_from_fork+0x1f/0x30
+
+This is because we're completing the nfs_direct_request twice in a row.
+
+The source of this is when we have our commit requests to submit, we
+process them and send them off, and then in the completion path for the
+commit requests we have
+
+if (nfs_commit_end(cinfo.mds))
+	nfs_direct_write_complete(dreq);
+
+However since we're submitting asynchronous requests we sometimes have
+one that completes before we submit the next one, so we end up calling
+complete on the nfs_direct_request twice.
+
+The only other place we use nfs_generic_commit_list() is in
+__nfs_commit_inode, which wraps this call in a
+
+nfs_commit_begin();
+nfs_commit_end();
+
+Which is a common pattern for this style of completion handling, one
+that is also repeated in the direct code with get_dreq()/put_dreq()
+calls around where we process events as well as in the completion paths.
+
+Fix this by using the same pattern for the commit requests.
+
+Before with my 200 node rocksdb stress running this warning would pop
+every 10ish minutes.  With my patch the stress test has been running for
+several hours without popping.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/direct.c        | 11 +++++++++--
+ fs/nfs/write.c         |  2 +-
+ include/linux/nfs_fs.h |  1 +
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10935,6 +10935,8 @@ static const struct snd_hda_pin_quirk al
-  *   at most one tbl is allowed to define for the same vendor and same codec
-  */
- static const struct snd_hda_pin_quirk alc269_fallback_pin_fixup_tbl[] = {
-+	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1025, "Acer", ALC2XX_FIXUP_HEADSET_MIC,
-+		{0x19, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 8fdb65e1b14a3..b555efca01d20 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -647,10 +647,17 @@ static void nfs_direct_commit_schedule(struct nfs_direct_req *dreq)
+ 	LIST_HEAD(mds_list);
+ 
+ 	nfs_init_cinfo_from_dreq(&cinfo, dreq);
++	nfs_commit_begin(cinfo.mds);
+ 	nfs_scan_commit(dreq->inode, &mds_list, &cinfo);
+ 	res = nfs_generic_commit_list(dreq->inode, &mds_list, 0, &cinfo);
+-	if (res < 0) /* res == -ENOMEM */
+-		nfs_direct_write_reschedule(dreq);
++	if (res < 0) { /* res == -ENOMEM */
++		spin_lock(&dreq->lock);
++		if (dreq->flags == 0)
++			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
++		spin_unlock(&dreq->lock);
++	}
++	if (nfs_commit_end(cinfo.mds))
++		nfs_direct_write_complete(dreq);
+ }
+ 
+ static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 6a06066684172..8e21caae4cae2 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1656,7 +1656,7 @@ static int wait_on_commit(struct nfs_mds_commit_info *cinfo)
+ 				       !atomic_read(&cinfo->rpcs_out));
+ }
+ 
+-static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
+ {
+ 	atomic_inc(&cinfo->rpcs_out);
+ }
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 7931fa4725612..ac7d799d9d387 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -582,6 +582,7 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(void);
+ extern void nfs_commit_free(struct nfs_commit_data *data);
++void nfs_commit_begin(struct nfs_mds_commit_info *cinfo);
+ bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+ 
+ static inline bool nfs_have_writebacks(const struct inode *inode)
+-- 
+2.43.0
+
 
 
 
