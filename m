@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-34571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BED5893FE5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F4B893FE8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB2728520C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D402851FD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89E947A6B;
-	Mon,  1 Apr 2024 16:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC5447A62;
+	Mon,  1 Apr 2024 16:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES1eGTB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1vLMZIh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967E247A57;
-	Mon,  1 Apr 2024 16:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743CC129;
+	Mon,  1 Apr 2024 16:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988567; cv=none; b=UlOlld4HZy05Da5V46pNJDq/BGq1qC3EvHfYN5+RQsNJrZhy46EHOoia+Ag06ZUp1VI/xXKdjZOgWm2dU8xjtCesTJZapCMpR7IjsRK/4+Z1kalX4XkWbJM+xXO+BbQhh6hNbm5gciHeF49WA75ff3if0ZGfNL39iAKX15LPrso=
+	t=1711988577; cv=none; b=NQL32+kptPHhSyGj0MBvLjrbIIYCvWoKQerrFJWzs6LRz3W3yLUdFayIcTI/rYkPWUEVxrR0yj+bnCTSyHut1AXpq45/05Adfu1g4ISRo6944M5LSnuIUhvV2Ila7qrTkVnxGtg29mSDMLQAVKoH/A9qTIos3gejKwCvEEORMzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988567; c=relaxed/simple;
-	bh=Hu7Uud5pZNTCtHDuLEcnw8KYtqvAQKzRHdsJi8Asiqg=;
+	s=arc-20240116; t=1711988577; c=relaxed/simple;
+	bh=FhOnGyT98rcZDtyE3lrLtAfyAEyr0LBCruSE49QjwIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qh48IfqZoIHZHiSq29/bpLeYzh+uTP2G9dwrY+qNCirHaZXlis4ZJDMt2j///nNmnOck4Ma6SYYThd3RMCP0amF+lBn9jCYrWKC4vu5V46BfUCnSqO4hxagEzSCXR0bMKXz8YpeeNQ5x916hM7k8YJhTp695RpCbXS9+yVQGYAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES1eGTB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AE4C433C7;
-	Mon,  1 Apr 2024 16:22:46 +0000 (UTC)
+	 MIME-Version; b=Ir4EseVtRhi7pjAiuLOAuXeaptHpgQEbZaj7nT2lTRnXwf/5RtErcklRKxEiir/xVhT65QqYyOYUlgsinJJdp9tXf13GZxWxnynMUG5DCZsJwTJw4poy7/ksoe+3Z3ahvGBn/yU2k97d7N9XRmRL+PbvhApMxYEuq1rOYdZDVU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1vLMZIh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0053C433F1;
+	Mon,  1 Apr 2024 16:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988567;
-	bh=Hu7Uud5pZNTCtHDuLEcnw8KYtqvAQKzRHdsJi8Asiqg=;
+	s=korg; t=1711988577;
+	bh=FhOnGyT98rcZDtyE3lrLtAfyAEyr0LBCruSE49QjwIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ES1eGTB9xO8S7UHVqAz+qivqIg/sd8CIeg1M7GbigC8NH8Z7PTPSkJqyX+bBaten7
-	 Ha4SNYa/eOe4Zxoy7GhU7xYnGuvfZ9F8cWp8H3E2APTPmQ8iXY7rhVF1W/pSs3QP75
-	 n9n1cNugpJAQiSxNcIcba+I3sgTDqQZnE1uZO9Ss=
+	b=d1vLMZIhe0bvtO8xSWSej7AdFFk4jbmEz8nka8+zFHJMS85SUPMvZX3e1TOhGsvv8
+	 awGCP57cIBEQooL8Y+Wfr4Do3XYKFaDWILSWVNJdlmPks4c50Wof6l12/sdXXNaHur
+	 8IfF+9eAGdJUIClnDtWiViaM3itVXKN7WiTcPNaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Feng Liu <feliu@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 196/432] ksmbd: fix potencial out-of-bounds when buffer offset is invalid
-Date: Mon,  1 Apr 2024 17:43:03 +0200
-Message-ID: <20240401152558.985999292@linuxfoundation.org>
+Subject: [PATCH 6.7 197/432] virtio: Define feature bit for administration virtqueue
+Date: Mon,  1 Apr 2024 17:43:04 +0200
+Message-ID: <20240401152559.015194527@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 References: <20240401152553.125349965@linuxfoundation.org>
@@ -66,314 +70,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Feng Liu <feliu@nvidia.com>
 
-[ Upstream commit c6cd2e8d2d9aa7ee35b1fa6a668e32a22a9753da ]
+[ Upstream commit 838bebb4c926a573839ff1bfe1b654a6ed0f9779 ]
 
-I found potencial out-of-bounds when buffer offset fields of a few requests
-is invalid. This patch set the minimum value of buffer offset field to
-->Buffer offset to validate buffer length.
+Introduce VIRTIO_F_ADMIN_VQ which is used for administration virtqueue
+support.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Feng Liu <feliu@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20231219093247.170936-2-yishaih@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Stable-dep-of: 310227f42882 ("virtio: reenable config if freezing device failed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2misc.c | 23 +++++++++++++------
- fs/smb/server/smb2pdu.c  | 48 ++++++++++++++++++++++------------------
- 2 files changed, 42 insertions(+), 29 deletions(-)
+ include/uapi/linux/virtio_config.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-index 7c872ffb4b0a9..727cb49926ee5 100644
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -101,7 +101,9 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 		*len = le16_to_cpu(((struct smb2_sess_setup_req *)hdr)->SecurityBufferLength);
- 		break;
- 	case SMB2_TREE_CONNECT:
--		*off = le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathOffset);
-+		*off = max_t(unsigned short int,
-+			     le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathOffset),
-+			     offsetof(struct smb2_tree_connect_req, Buffer));
- 		*len = le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathLength);
- 		break;
- 	case SMB2_CREATE:
-@@ -110,7 +112,6 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 			max_t(unsigned short int,
- 			      le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset),
- 			      offsetof(struct smb2_create_req, Buffer));
--
- 		unsigned short int name_len =
- 			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
+diff --git a/include/uapi/linux/virtio_config.h b/include/uapi/linux/virtio_config.h
+index 8881aea60f6f1..2445f365bce74 100644
+--- a/include/uapi/linux/virtio_config.h
++++ b/include/uapi/linux/virtio_config.h
+@@ -52,7 +52,7 @@
+  * rest are per-device feature bits.
+  */
+ #define VIRTIO_TRANSPORT_F_START	28
+-#define VIRTIO_TRANSPORT_F_END		41
++#define VIRTIO_TRANSPORT_F_END		42
  
-@@ -131,11 +132,15 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 		break;
- 	}
- 	case SMB2_QUERY_INFO:
--		*off = le16_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferOffset);
-+		*off = max_t(unsigned int,
-+			     le16_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferOffset),
-+			     offsetof(struct smb2_query_info_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferLength);
- 		break;
- 	case SMB2_SET_INFO:
--		*off = le16_to_cpu(((struct smb2_set_info_req *)hdr)->BufferOffset);
-+		*off = max_t(unsigned int,
-+			     le16_to_cpu(((struct smb2_set_info_req *)hdr)->BufferOffset),
-+			     offsetof(struct smb2_set_info_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_set_info_req *)hdr)->BufferLength);
- 		break;
- 	case SMB2_READ:
-@@ -145,7 +150,7 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 	case SMB2_WRITE:
- 		if (((struct smb2_write_req *)hdr)->DataOffset ||
- 		    ((struct smb2_write_req *)hdr)->Length) {
--			*off = max_t(unsigned int,
-+			*off = max_t(unsigned short int,
- 				     le16_to_cpu(((struct smb2_write_req *)hdr)->DataOffset),
- 				     offsetof(struct smb2_write_req, Buffer));
- 			*len = le32_to_cpu(((struct smb2_write_req *)hdr)->Length);
-@@ -156,7 +161,9 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 		*len = le16_to_cpu(((struct smb2_write_req *)hdr)->WriteChannelInfoLength);
- 		break;
- 	case SMB2_QUERY_DIRECTORY:
--		*off = le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameOffset);
-+		*off = max_t(unsigned short int,
-+			     le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameOffset),
-+			     offsetof(struct smb2_query_directory_req, Buffer));
- 		*len = le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameLength);
- 		break;
- 	case SMB2_LOCK:
-@@ -171,7 +178,9 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 		break;
- 	}
- 	case SMB2_IOCTL:
--		*off = le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputOffset);
-+		*off = max_t(unsigned int,
-+			     le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputOffset),
-+			     offsetof(struct smb2_ioctl_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputCount);
- 		break;
- 	default:
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 199c31c275e5b..88db6e207e0ee 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1951,7 +1951,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
- 
- 	WORK_BUFFERS(work, req, rsp);
- 
--	treename = smb_strndup_from_utf16(req->Buffer,
-+	treename = smb_strndup_from_utf16((char *)req + le16_to_cpu(req->PathOffset),
- 					  le16_to_cpu(req->PathLength), true,
- 					  conn->local_nls);
- 	if (IS_ERR(treename)) {
-@@ -2704,7 +2704,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out2;
- 		}
- 
--		name = smb2_get_name(req->Buffer,
-+		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
-@@ -4080,7 +4080,7 @@ int smb2_query_dir(struct ksmbd_work *work)
- 	}
- 
- 	srch_flag = req->Flags;
--	srch_ptr = smb_strndup_from_utf16(req->Buffer,
-+	srch_ptr = smb_strndup_from_utf16((char *)req + le16_to_cpu(req->FileNameOffset),
- 					  le16_to_cpu(req->FileNameLength), 1,
- 					  conn->local_nls);
- 	if (IS_ERR(srch_ptr)) {
-@@ -4340,7 +4340,8 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		    sizeof(struct smb2_ea_info_req))
- 			return -EINVAL;
- 
--		ea_req = (struct smb2_ea_info_req *)req->Buffer;
-+		ea_req = (struct smb2_ea_info_req *)((char *)req +
-+						     le16_to_cpu(req->InputBufferOffset));
- 	} else {
- 		/* need to send all EAs, if no specific EA is requested*/
- 		if (le32_to_cpu(req->Flags) & SL_RETURN_SINGLE_ENTRY)
-@@ -5986,6 +5987,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			      struct ksmbd_share_config *share)
- {
- 	unsigned int buf_len = le32_to_cpu(req->BufferLength);
-+	char *buffer = (char *)req + le16_to_cpu(req->BufferOffset);
- 
- 	switch (req->FileInfoClass) {
- 	case FILE_BASIC_INFORMATION:
-@@ -5993,7 +5995,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (buf_len < sizeof(struct smb2_file_basic_info))
- 			return -EINVAL;
- 
--		return set_file_basic_info(fp, (struct smb2_file_basic_info *)req->Buffer, share);
-+		return set_file_basic_info(fp, (struct smb2_file_basic_info *)buffer, share);
- 	}
- 	case FILE_ALLOCATION_INFORMATION:
- 	{
-@@ -6001,7 +6003,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			return -EINVAL;
- 
- 		return set_file_allocation_info(work, fp,
--						(struct smb2_file_alloc_info *)req->Buffer);
-+						(struct smb2_file_alloc_info *)buffer);
- 	}
- 	case FILE_END_OF_FILE_INFORMATION:
- 	{
-@@ -6009,7 +6011,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			return -EINVAL;
- 
- 		return set_end_of_file_info(work, fp,
--					    (struct smb2_file_eof_info *)req->Buffer);
-+					    (struct smb2_file_eof_info *)buffer);
- 	}
- 	case FILE_RENAME_INFORMATION:
- 	{
-@@ -6017,7 +6019,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			return -EINVAL;
- 
- 		return set_rename_info(work, fp,
--				       (struct smb2_file_rename_info *)req->Buffer,
-+				       (struct smb2_file_rename_info *)buffer,
- 				       buf_len);
- 	}
- 	case FILE_LINK_INFORMATION:
-@@ -6026,7 +6028,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			return -EINVAL;
- 
- 		return smb2_create_link(work, work->tcon->share_conf,
--					(struct smb2_file_link_info *)req->Buffer,
-+					(struct smb2_file_link_info *)buffer,
- 					buf_len, fp->filp,
- 					work->conn->local_nls);
- 	}
-@@ -6036,7 +6038,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 			return -EINVAL;
- 
- 		return set_file_disposition_info(fp,
--						 (struct smb2_file_disposition_info *)req->Buffer);
-+						 (struct smb2_file_disposition_info *)buffer);
- 	}
- 	case FILE_FULL_EA_INFORMATION:
- 	{
-@@ -6049,7 +6051,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (buf_len < sizeof(struct smb2_ea_info))
- 			return -EINVAL;
- 
--		return smb2_set_ea((struct smb2_ea_info *)req->Buffer,
-+		return smb2_set_ea((struct smb2_ea_info *)buffer,
- 				   buf_len, &fp->filp->f_path, true);
- 	}
- 	case FILE_POSITION_INFORMATION:
-@@ -6057,14 +6059,14 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (buf_len < sizeof(struct smb2_file_pos_info))
- 			return -EINVAL;
- 
--		return set_file_position_info(fp, (struct smb2_file_pos_info *)req->Buffer);
-+		return set_file_position_info(fp, (struct smb2_file_pos_info *)buffer);
- 	}
- 	case FILE_MODE_INFORMATION:
- 	{
- 		if (buf_len < sizeof(struct smb2_file_mode_info))
- 			return -EINVAL;
- 
--		return set_file_mode_info(fp, (struct smb2_file_mode_info *)req->Buffer);
-+		return set_file_mode_info(fp, (struct smb2_file_mode_info *)buffer);
- 	}
- 	}
- 
-@@ -6145,7 +6147,7 @@ int smb2_set_info(struct ksmbd_work *work)
- 		}
- 		rc = smb2_set_info_sec(fp,
- 				       le32_to_cpu(req->AdditionalInformation),
--				       req->Buffer,
-+				       (char *)req + le16_to_cpu(req->BufferOffset),
- 				       le32_to_cpu(req->BufferLength));
- 		ksmbd_revert_fsids(work);
- 		break;
-@@ -7591,7 +7593,7 @@ static int fsctl_pipe_transceive(struct ksmbd_work *work, u64 id,
- 				 struct smb2_ioctl_rsp *rsp)
- {
- 	struct ksmbd_rpc_command *rpc_resp;
--	char *data_buf = (char *)&req->Buffer[0];
-+	char *data_buf = (char *)req + le32_to_cpu(req->InputOffset);
- 	int nbytes = 0;
- 
- 	rpc_resp = ksmbd_rpc_ioctl(work->sess, id, data_buf,
-@@ -7704,6 +7706,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 	u64 id = KSMBD_NO_FID;
- 	struct ksmbd_conn *conn = work->conn;
- 	int ret = 0;
-+	char *buffer;
- 
- 	if (work->next_smb2_rcv_hdr_off) {
- 		req = ksmbd_req_buf_next(work);
-@@ -7726,6 +7729,8 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		goto out;
- 	}
- 
-+	buffer = (char *)req + le32_to_cpu(req->InputOffset);
+ #ifndef VIRTIO_CONFIG_NO_LEGACY
+ /* Do we get callbacks when the ring is completely used, even if we've
+@@ -114,4 +114,10 @@
+  * This feature indicates that the driver can reset a queue individually.
+  */
+ #define VIRTIO_F_RING_RESET		40
 +
- 	cnt_code = le32_to_cpu(req->CtlCode);
- 	ret = smb2_calc_max_out_buf_len(work, 48,
- 					le32_to_cpu(req->MaxOutputResponse));
-@@ -7783,7 +7788,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		ret = fsctl_validate_negotiate_info(conn,
--			(struct validate_negotiate_info_req *)&req->Buffer[0],
-+			(struct validate_negotiate_info_req *)buffer,
- 			(struct validate_negotiate_info_rsp *)&rsp->Buffer[0],
- 			in_buf_len);
- 		if (ret < 0)
-@@ -7836,7 +7841,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		rsp->VolatileFileId = req->VolatileFileId;
- 		rsp->PersistentFileId = req->PersistentFileId;
- 		fsctl_copychunk(work,
--				(struct copychunk_ioctl_req *)&req->Buffer[0],
-+				(struct copychunk_ioctl_req *)buffer,
- 				le32_to_cpu(req->CtlCode),
- 				le32_to_cpu(req->InputCount),
- 				req->VolatileFileId,
-@@ -7849,8 +7854,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 			goto out;
- 		}
- 
--		ret = fsctl_set_sparse(work, id,
--				       (struct file_sparse *)&req->Buffer[0]);
-+		ret = fsctl_set_sparse(work, id, (struct file_sparse *)buffer);
- 		if (ret < 0)
- 			goto out;
- 		break;
-@@ -7873,7 +7877,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		zero_data =
--			(struct file_zero_data_information *)&req->Buffer[0];
-+			(struct file_zero_data_information *)buffer;
- 
- 		off = le64_to_cpu(zero_data->FileOffset);
- 		bfz = le64_to_cpu(zero_data->BeyondFinalZero);
-@@ -7904,7 +7908,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		ret = fsctl_query_allocated_ranges(work, id,
--			(struct file_allocated_range_buffer *)&req->Buffer[0],
-+			(struct file_allocated_range_buffer *)buffer,
- 			(struct file_allocated_range_buffer *)&rsp->Buffer[0],
- 			out_buf_len /
- 			sizeof(struct file_allocated_range_buffer), &nbytes);
-@@ -7948,7 +7952,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 			goto out;
- 		}
- 
--		dup_ext = (struct duplicate_extents_to_file *)&req->Buffer[0];
-+		dup_ext = (struct duplicate_extents_to_file *)buffer;
- 
- 		fp_in = ksmbd_lookup_fd_slow(work, dup_ext->VolatileFileHandle,
- 					     dup_ext->PersistentFileHandle);
++/*
++ * This feature indicates that the device support administration virtqueues.
++ */
++#define VIRTIO_F_ADMIN_VQ		41
++
+ #endif /* _UAPI_LINUX_VIRTIO_CONFIG_H */
 -- 
 2.43.0
 
