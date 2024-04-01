@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B038943EF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3356E8942CC
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 080C71F27557
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:10:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CD21C21D34
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93894482F6;
-	Mon,  1 Apr 2024 17:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1D9487BC;
+	Mon,  1 Apr 2024 16:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enRVVqwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHcg0aaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEEB481B8;
-	Mon,  1 Apr 2024 17:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10022EB0B;
+	Mon,  1 Apr 2024 16:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991403; cv=none; b=JsbDphgHl+KvtHzEXdX4A4qxnGfyj70pZoT53jEduZ5A9jT2CiPmEjWdeRCm+SOLMTEbnGDKj0ETkxET5jvdbsmMQZZ+o3B1jLvgOlp/U5shwByvyJehVgaZCEZCq6RxABR41Qveu97rrvRtyZk2Yb0zYtd4Sa9l1uLYyYy4AZs=
+	t=1711990576; cv=none; b=SX7hqQgdL/onXtYra/6CKFtIAfNgIXVb4cX1f2nSXYxaW4y3tE0zCQGvkTXmlIKlqIvpQ2gR9RXuVE/tO+d+enuM6+tOyxXrYVOHPIrcpdRs4Ljv+fJJuIl4roOzINxKT2N6cmwSkhay9/1EL0qs0hGwtaWPWgKTbS+Fq9Ev0uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991403; c=relaxed/simple;
-	bh=yMy6LHa2JNfPh5OFlqaPTl25fwXzD2dBWshuZKWJuus=;
+	s=arc-20240116; t=1711990576; c=relaxed/simple;
+	bh=LrmVH51FR6QhZxMhX0jtqLDLx+e0ljejZi+3yh6/Sh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkVe2jssBcA15v3HmEb89dYLFpYXrBUWstzFi6Hm0tN3OpCWxEiZNHWaIcHP4fiqMpl9OLUFi+tDx/F7jYBIw8oXqVZtyQyaiB2019AgVRvXarEUE/nwtIV2FYEyf5NoBRRTbv+sgk5HxFmjGAuy41weL2dQqJ0DCKvMAhlEQio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enRVVqwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBFAC433F1;
-	Mon,  1 Apr 2024 17:10:02 +0000 (UTC)
+	 MIME-Version; b=GyCS7ZB0SUBgk/zYQRGI1jBA6OS5NYtfsz1tF/Ym6z/U65tiH7Y02D8m++a4YT9BB5ePIky5IwiaMyFmcylhesm0/ohJ8pDWIXxPNQpq1gQpJermuNSIxN+opioC6HQCWQWajzwC7r51YsdaTDfKyItKYL2jyDkAeTBZehVqgBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHcg0aaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07844C433C7;
+	Mon,  1 Apr 2024 16:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991403;
-	bh=yMy6LHa2JNfPh5OFlqaPTl25fwXzD2dBWshuZKWJuus=;
+	s=korg; t=1711990576;
+	bh=LrmVH51FR6QhZxMhX0jtqLDLx+e0ljejZi+3yh6/Sh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enRVVqwFoHb+KeuIjm4Ck/65brQSnfSJV5q+9u3Lnpyw70gjeXF0hdbrt4plzM4A1
-	 DxaI1UpXYSyhrB8Cc6flxb2s3ae/9y2dGr1KKRzJt4RUQMbuqpQfD5vJMs6Sujd1h2
-	 2qyFsEUkJRDW7seuA1xq+NXqY31oV7UBxM63v1lQ=
+	b=UHcg0aaUT+m9oYrj7oI9vy2uqNeOjztYtZeyyk3gRBQCKSxkTDEVRHzxCCydwCG/2
+	 YRNq9YG6Eqg21NilHBZ2wrTKF5ovYg7U227rQRihKmZzEkhvLyNyLj/eAKGhPlYjkS
+	 1gBudwvaHZCt6pL+lDYX+1EX2hOByyL3MNB8B+ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 254/272] usb: typec: ucsi: Clear UCSI_CCI_RESET_COMPLETE before reset
-Date: Mon,  1 Apr 2024 17:47:24 +0200
-Message-ID: <20240401152538.962795707@linuxfoundation.org>
+	Natanael Copa <ncopa@alpinelinux.org>,
+	Greg Thelen <gthelen@google.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 396/396] tools/resolve_btfids: fix build with musl libc
+Date: Mon,  1 Apr 2024 17:47:25 +0200
+Message-ID: <20240401152559.713284729@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Natanael Copa <ncopa@alpinelinux.org>
 
-commit 3de4f996a0b5412aa451729008130a488f71563e upstream.
+commit 62248b22d01e96a4d669cde0d7005bd51ebf9e76 upstream.
 
-Check the UCSI_CCI_RESET_COMPLETE complete flag before starting
-another reset. Use a UCSI_SET_NOTIFICATION_ENABLE command to clear
-the flag if it is set.
+Include the header that defines u32.
+This fixes build of 6.6.23 and 6.1.83 kernels for Alpine Linux, which
+uses musl libc. I assume that GNU libc indirecly pulls in linux/types.h.
 
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-6-lk@c--e.de
+Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218647
+Cc: stable@vger.kernel.org
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+Tested-by: Greg Thelen <gthelen@google.com>
+Link: https://lore.kernel.org/r/20240328110103.28734-1-ncopa@alpinelinux.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ tools/include/linux/btf_ids.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -878,13 +878,47 @@ static int ucsi_reset_connector(struct u
+--- a/tools/include/linux/btf_ids.h
++++ b/tools/include/linux/btf_ids.h
+@@ -3,6 +3,8 @@
+ #ifndef _LINUX_BTF_IDS_H
+ #define _LINUX_BTF_IDS_H
  
- static int ucsi_reset_ppm(struct ucsi *ucsi)
- {
--	u64 command = UCSI_PPM_RESET;
-+	u64 command;
- 	unsigned long tmo;
- 	u32 cci;
- 	int ret;
- 
- 	mutex_lock(&ucsi->ppm_lock);
- 
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret < 0)
-+		goto out;
++#include <linux/types.h> /* for u32 */
 +
-+	/*
-+	 * If UCSI_CCI_RESET_COMPLETE is already set we must clear
-+	 * the flag before we start another reset. Send a
-+	 * UCSI_SET_NOTIFICATION_ENABLE command to achieve this.
-+	 * Ignore a timeout and try the reset anyway if this fails.
-+	 */
-+	if (cci & UCSI_CCI_RESET_COMPLETE) {
-+		command = UCSI_SET_NOTIFICATION_ENABLE;
-+		ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
-+					     sizeof(command));
-+		if (ret < 0)
-+			goto out;
-+
-+		tmo = jiffies + msecs_to_jiffies(UCSI_TIMEOUT_MS);
-+		do {
-+			ret = ucsi->ops->read(ucsi, UCSI_CCI,
-+					      &cci, sizeof(cci));
-+			if (ret < 0)
-+				goto out;
-+			if (cci & UCSI_CCI_COMMAND_COMPLETE)
-+				break;
-+			if (time_is_before_jiffies(tmo))
-+				break;
-+			msleep(20);
-+		} while (1);
-+
-+		WARN_ON(cci & UCSI_CCI_RESET_COMPLETE);
-+	}
-+
-+	command = UCSI_PPM_RESET;
- 	ret = ucsi->ops->async_write(ucsi, UCSI_CONTROL, &command,
- 				     sizeof(command));
- 	if (ret < 0)
+ struct btf_id_set {
+ 	u32 cnt;
+ 	u32 ids[];
 
 
 
