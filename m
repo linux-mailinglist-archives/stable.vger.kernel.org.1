@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7189589420B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA37B89406B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1AF71F21030
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6C2282721
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3351DFF4;
-	Mon,  1 Apr 2024 16:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C0947A7C;
+	Mon,  1 Apr 2024 16:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0v7ou/qb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcKpjOSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166198F5C;
-	Mon,  1 Apr 2024 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB36946B9F;
+	Mon,  1 Apr 2024 16:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990140; cv=none; b=iedvqCkl7P7jjhBJRbZ1YE2lgRBo7gA+4/5WG5B6Z39ujf56zzfnWb8kSfFYlDW2oK4tUcgjumaxroQQmxBKeGzfUNhV7DLUhhvwU9FMRkmyqi49A96Y+f86i3hBt9AVkCvyVJnPXc8u8Cm/7oTHwjLeX7wxQAZx/u7WqeelheY=
+	t=1711988988; cv=none; b=RKvlB93wYG1HT4601GwiS3oQpMyv+/AssHGfiYOhxufA4xaghCF/f3ScR7JpfoKGNspyB53EIkBHAXNEXz3Hz0OyBwLuOBDQmjZzosvsKlDmoPLZFbhmiqkBq9EWopYg6t2rm1P91DBFYweN60A7pguTLQa2Jw+/yQA2Q07H2R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990140; c=relaxed/simple;
-	bh=FLySU1PwYVt+Bmdvv5oNXfaryWGpks56SfBQhANIO8k=;
+	s=arc-20240116; t=1711988988; c=relaxed/simple;
+	bh=JJsSTbA8BwIDHAV5d9xRws0cmzplecbCOHRG6+Rx0NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVVYlL+3nbepMgcRtPat17DAY8oGOELW+pQ92KBUe+yCDgXEtgK21wKsxvQPs1+w3U0PCp8Q637gm1AwlYm2125ywIRN6LKg0Nl3r3IOjfBOoK6J1DPXZSNxAmC/QWq8D7I91SeRbD4p+8O5+6I/LgT7oGjz30YF9TN5nluWiX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0v7ou/qb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2893DC433F1;
-	Mon,  1 Apr 2024 16:48:58 +0000 (UTC)
+	 MIME-Version; b=C33t9fnN+YpgE2W1hSNGV6dXlmSXlZk+QmERffBW/iud5/A0nfmvfgg7TEk5TQxKJ1jKj1mbI6EsuKPOX2H5ShFgdRR7xsIjakdhYYGkeY82vRGd/A5cyWAUblz0gx0YpoYVqBm5vwdUP49CGgb87iiKwfEfcX0rGovrHOYQDS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcKpjOSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CB7C433C7;
+	Mon,  1 Apr 2024 16:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990139;
-	bh=FLySU1PwYVt+Bmdvv5oNXfaryWGpks56SfBQhANIO8k=;
+	s=korg; t=1711988988;
+	bh=JJsSTbA8BwIDHAV5d9xRws0cmzplecbCOHRG6+Rx0NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0v7ou/qbtWIL40JlmxWW3hYDw3m+Rs967J8NOpBp1Ivu3Ac1owliMlTklc8e8hGvm
-	 j0qkjghLW/NuesNzXFo7sdNJNktlKcCOn9DVVMnDgGC1uZoctPU+izW0mJcS9/BWFR
-	 obll3ozFowAxHx6BxFrOy5bCDLR1wUosu8+HlKiM=
+	b=LcKpjOSKJNfwufxCE5OdYnx7uqfYdKFdwE07EhCn0LesEvR97dN2FZPmDSKO+1Mcg
+	 X/s5MhPdRdAYSOZOr9kQEKiGhLCBl9UD95hahe7nIbZgVuEN7nQXc6bQ76shopymQm
+	 fhA73UW0gNUJT9WxAwIZCmF9Nh5WVKCv331YNCBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 259/396] xfs: transfer recovered intent item ownership in ->iop_recover
+	Alex Romosan <aromosan@gmail.com>,
+	CHECK_1234543212345@protonmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 321/432] btrfs: do not skip re-registration for the mounted device
 Date: Mon,  1 Apr 2024 17:45:08 +0200
-Message-ID: <20240401152555.630052286@linuxfoundation.org>
+Message-ID: <20240401152602.773716163@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit deb4cd8ba87f17b12c72b3827820d9c703e9fd95 upstream.
+commit d565fffa68560ac540bf3d62cc79719da50d5e7a upstream.
 
-Now that we pass the xfs_defer_pending object into the intent item
-recovery functions, we know exactly when ownership of the sole refcount
-passes from the recovery context to the intent done item.  At that
-point, we need to null out dfp_intent so that the recovery mechanism
-won't release it.  This should fix the UAF problem reported by Long Li.
+There are reports that since version 6.7 update-grub fails to find the
+device of the root on systems without initrd and on a single device.
 
-Note that we still want to recreate the full deferred work state.  That
-will be addressed in the next patches.
+This looks like the device name changed in the output of
+/proc/self/mountinfo:
 
-Fixes: 2e76f188fd90 ("xfs: cancel intents immediately if process_intents fails")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+6.5-rc5 working
+
+  18 1 0:16 / / rw,noatime - btrfs /dev/sda8 ...
+
+6.7 not working:
+
+  17 1 0:15 / / rw,noatime - btrfs /dev/root ...
+
+and "update-grub" shows this error:
+
+  /usr/sbin/grub-probe: error: cannot find a device for / (is /dev mounted?)
+
+This looks like it's related to the device name, but grub-probe
+recognizes the "/dev/root" path and tries to find the underlying device.
+However there's a special case for some filesystems, for btrfs in
+particular.
+
+The generic root device detection heuristic is not done and it all
+relies on reading the device infos by a btrfs specific ioctl. This ioctl
+returns the device name as it was saved at the time of device scan (in
+this case it's /dev/root).
+
+The change in 6.7 for temp_fsid to allow several single device
+filesystem to exist with the same fsid (and transparently generate a new
+UUID at mount time) was to skip caching/registering such devices.
+
+This also skipped mounted device. One step of scanning is to check if
+the device name hasn't changed, and if yes then update the cached value.
+
+This broke the grub-probe as it always read the device /dev/root and
+couldn't find it in the system. A temporary workaround is to create a
+symlink but this does not survive reboot.
+
+The right fix is to allow updating the device path of a mounted
+filesystem even if this is a single device one.
+
+In the fix, check if the device's major:minor number matches with the
+cached device. If they do, then we can allow the scan to happen so that
+device_list_add() can take care of updating the device path. The file
+descriptor remains unchanged.
+
+This does not affect the temp_fsid feature, the UUID of the mounted
+filesystem remains the same and the matching is based on device major:minor
+which is unique per mounted filesystem.
+
+This covers the path when the device (that exists for all mounted
+devices) name changes, updating /dev/root to /dev/sdx. Any other single
+device with filesystem and is not mounted is still skipped.
+
+Note that if a system is booted and initial mount is done on the
+/dev/root device, this will be the cached name of the device. Only after
+the command "btrfs device scan" it will change as it triggers the
+rename.
+
+The fix was verified by users whose systems were affected.
+
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218353
+Link: https://lore.kernel.org/lkml/CAKLYgeJ1tUuqLcsquwuFqjDXPSJpEiokrWK2gisPKDZLs8Y2TQ@mail.gmail.com/
+Fixes: bc27d6f0aa0e ("btrfs: scan but don't register device on single device filesystem")
+CC: stable@vger.kernel.org # 6.7+
+Tested-by: Alex Romosan <aromosan@gmail.com>
+Tested-by: CHECK_1234543212345@protonmail.com
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_log_recover.h |    2 ++
- fs/xfs/xfs_attr_item.c          |    1 +
- fs/xfs/xfs_bmap_item.c          |    2 ++
- fs/xfs/xfs_extfree_item.c       |    2 ++
- fs/xfs/xfs_log_recover.c        |   19 ++++++++++++-------
- fs/xfs/xfs_refcount_item.c      |    1 +
- fs/xfs/xfs_rmap_item.c          |    2 ++
- 7 files changed, 22 insertions(+), 7 deletions(-)
+ fs/btrfs/volumes.c |   57 +++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 10 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_log_recover.h
-+++ b/fs/xfs/libxfs/xfs_log_recover.h
-@@ -155,5 +155,7 @@ xlog_recover_resv(const struct xfs_trans
- 
- void xlog_recover_intent_item(struct xlog *log, struct xfs_log_item *lip,
- 		xfs_lsn_t lsn, unsigned int dfp_type);
-+void xlog_recover_transfer_intent(struct xfs_trans *tp,
-+		struct xfs_defer_pending *dfp);
- 
- #endif	/* __XFS_LOG_RECOVER_H__ */
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -632,6 +632,7 @@ xfs_attri_item_recover(
- 
- 	args->trans = tp;
- 	done_item = xfs_trans_get_attrd(tp, attrip);
-+	xlog_recover_transfer_intent(tp, dfp);
- 
- 	xfs_ilock(ip, XFS_ILOCK_EXCL);
- 	xfs_trans_ijoin(tp, ip, 0);
---- a/fs/xfs/xfs_bmap_item.c
-+++ b/fs/xfs/xfs_bmap_item.c
-@@ -524,6 +524,8 @@ xfs_bui_item_recover(
- 		goto err_rele;
- 
- 	budp = xfs_trans_get_bud(tp, buip);
-+	xlog_recover_transfer_intent(tp, dfp);
-+
- 	xfs_ilock(ip, XFS_ILOCK_EXCL);
- 	xfs_trans_ijoin(tp, ip, 0);
- 
---- a/fs/xfs/xfs_extfree_item.c
-+++ b/fs/xfs/xfs_extfree_item.c
-@@ -689,7 +689,9 @@ xfs_efi_item_recover(
- 	error = xfs_trans_alloc(mp, &resv, 0, 0, 0, &tp);
- 	if (error)
- 		return error;
-+
- 	efdp = xfs_trans_get_efd(tp, efip, efip->efi_format.efi_nextents);
-+	xlog_recover_transfer_intent(tp, dfp);
- 
- 	for (i = 0; i < efip->efi_format.efi_nextents; i++) {
- 		struct xfs_extent_free_item	fake = {
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2590,13 +2590,6 @@ xlog_recover_process_intents(
- 			break;
- 		}
- 
--		/*
--		 * XXX: @lip could have been freed, so detach the log item from
--		 * the pending item before freeing the pending item.  This does
--		 * not fix the existing UAF bug that occurs if ->iop_recover
--		 * fails after creating the intent done item.
--		 */
--		dfp->dfp_intent = NULL;
- 		xfs_defer_cancel_recovery(log->l_mp, dfp);
- 	}
- 	if (error)
-@@ -2631,6 +2624,18 @@ xlog_recover_cancel_intents(
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1290,6 +1290,47 @@ int btrfs_forget_devices(dev_t devt)
+ 	return ret;
  }
  
- /*
-+ * Transfer ownership of the recovered log intent item to the recovery
-+ * transaction.
-+ */
-+void
-+xlog_recover_transfer_intent(
-+	struct xfs_trans		*tp,
-+	struct xfs_defer_pending	*dfp)
++static bool btrfs_skip_registration(struct btrfs_super_block *disk_super,
++				    const char *path, dev_t devt,
++				    bool mount_arg_dev)
 +{
-+	dfp->dfp_intent = NULL;
++	struct btrfs_fs_devices *fs_devices;
++
++	/*
++	 * Do not skip device registration for mounted devices with matching
++	 * maj:min but different paths. Booting without initrd relies on
++	 * /dev/root initially, later replaced with the actual root device.
++	 * A successful scan ensures grub2-probe selects the correct device.
++	 */
++	list_for_each_entry(fs_devices, &fs_uuids, fs_list) {
++		struct btrfs_device *device;
++
++		mutex_lock(&fs_devices->device_list_mutex);
++
++		if (!fs_devices->opened) {
++			mutex_unlock(&fs_devices->device_list_mutex);
++			continue;
++		}
++
++		list_for_each_entry(device, &fs_devices->devices, dev_list) {
++			if (device->bdev && (device->bdev->bd_dev == devt) &&
++			    strcmp(device->name->str, path) != 0) {
++				mutex_unlock(&fs_devices->device_list_mutex);
++
++				/* Do not skip registration. */
++				return false;
++			}
++		}
++		mutex_unlock(&fs_devices->device_list_mutex);
++	}
++
++	if (!mount_arg_dev && btrfs_super_num_devices(disk_super) == 1 &&
++	    !(btrfs_super_flags(disk_super) & BTRFS_SUPER_FLAG_SEEDING))
++		return true;
++
++	return false;
 +}
 +
-+/*
-  * This routine performs a transaction to null out a bad inode pointer
-  * in an agi unlinked inode hash bucket.
-  */
---- a/fs/xfs/xfs_refcount_item.c
-+++ b/fs/xfs/xfs_refcount_item.c
-@@ -523,6 +523,7 @@ xfs_cui_item_recover(
- 		return error;
+ /*
+  * Look for a btrfs signature on a device. This may be called out of the mount path
+  * and we are not allowed to call set_blocksize during the scan. The superblock
+@@ -1346,18 +1387,14 @@ struct btrfs_device *btrfs_scan_one_devi
+ 		goto error_bdev_put;
+ 	}
  
- 	cudp = xfs_trans_get_cud(tp, cuip);
-+	xlog_recover_transfer_intent(tp, dfp);
+-	if (!mount_arg_dev && btrfs_super_num_devices(disk_super) == 1 &&
+-	    !(btrfs_super_flags(disk_super) & BTRFS_SUPER_FLAG_SEEDING)) {
+-		dev_t devt;
++	if (btrfs_skip_registration(disk_super, path, bdev_handle->bdev->bd_dev,
++				    mount_arg_dev)) {
++		pr_debug("BTRFS: skip registering single non-seed device %s (%d:%d)\n",
++			  path, MAJOR(bdev_handle->bdev->bd_dev),
++			  MINOR(bdev_handle->bdev->bd_dev));
  
- 	for (i = 0; i < cuip->cui_format.cui_nextents; i++) {
- 		struct xfs_refcount_intent	fake = { };
---- a/fs/xfs/xfs_rmap_item.c
-+++ b/fs/xfs/xfs_rmap_item.c
-@@ -537,7 +537,9 @@ xfs_rui_item_recover(
- 			XFS_TRANS_RESERVE, &tp);
- 	if (error)
- 		return error;
-+
- 	rudp = xfs_trans_get_rud(tp, ruip);
-+	xlog_recover_transfer_intent(tp, dfp);
+-		ret = lookup_bdev(path, &devt);
+-		if (ret)
+-			btrfs_warn(NULL, "lookup bdev failed for path %s: %d",
+-				   path, ret);
+-		else
+-			btrfs_free_stale_devices(devt, NULL);
++		btrfs_free_stale_devices(bdev_handle->bdev->bd_dev, NULL);
  
- 	for (i = 0; i < ruip->rui_format.rui_nextents; i++) {
- 		struct xfs_rmap_intent	fake = { };
+-		pr_debug("BTRFS: skip registering single non-seed device %s\n", path);
+ 		device = NULL;
+ 		goto free_disk_super;
+ 	}
 
 
 
