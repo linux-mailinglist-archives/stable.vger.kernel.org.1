@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-35320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A042C89436D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD0B894060
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB3828389C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C424BB20E71
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B019482E4;
-	Mon,  1 Apr 2024 17:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8B545BE4;
+	Mon,  1 Apr 2024 16:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4Cl3aeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjiLmCvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6FC487BE;
-	Mon,  1 Apr 2024 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC823D961;
+	Mon,  1 Apr 2024 16:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991011; cv=none; b=CRxepR4wmeCXPoEqkurxr0zEOXbM3GeQ7KHuy0qqphwCCffTzSt8HbU6shFDZTmO+ZirqMSWa8IalRrgHfX+DM2iytb0Q9j2oqlJFyLCiPsK1KP1JtnfVm7HKg7svFFeKB47pH4AswjWgtYPRurATP8PnSJ8rYAA++RRQK/aqhk=
+	t=1711988955; cv=none; b=aguYRVXAUmfsfATz5N3rB3K2sP193ucg1G3z4L9TM6YrIKDKuFiPjIG/OZujD9RBdBzDeSUXLVvRh82SBgYgENFzUmZdsFyKFtLUmjgUjXlZiTsTJEyx3wWzr/SO5MQ33W84CPUJUiIDyPwMpiSCZu54E4C4h23KZrE7yexDxmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991011; c=relaxed/simple;
-	bh=ps8zLzPZdbWf2Ggg30RMPT1mrPWIM4B15C3lEKWJ5rc=;
+	s=arc-20240116; t=1711988955; c=relaxed/simple;
+	bh=M++KOEqTBWB0jxXkts8ta0v/dcapetbAStff7/ggZtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz64Vv2a6x9A+DVQ0DyCJ82TUttGWefF+Pq71Vi0fc3k4sJuTclCEjBi3kUc3yL8KIqzeR8cor2NR4VAH/dEpEoYwyCRqKDBZvlNFS5dqfSFJ0PQ4Krme2dbUN93hbbMQYrc+eoTnX/FanOd2HK7PQOos1bauydSGPVSIw/Km8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4Cl3aeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8DAC433F1;
-	Mon,  1 Apr 2024 17:03:30 +0000 (UTC)
+	 MIME-Version; b=J5dmPt9+8FOpEbP8AdoXHHCDNdOpOu+AtZu4tnr8lHM7YsaK5uBek7VTmsFTV6DcoDEzxQPRsE7zq2AeNC67Ri0yrK5qOOQW53IW/L/yTfbR2x8LRGhIF/w93xFAcWiaI+W4afr8GN9JwvbSiYR0Y1taGPO4ZeVI4QGI8Kkx1aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjiLmCvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C90CC433F1;
+	Mon,  1 Apr 2024 16:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991010;
-	bh=ps8zLzPZdbWf2Ggg30RMPT1mrPWIM4B15C3lEKWJ5rc=;
+	s=korg; t=1711988955;
+	bh=M++KOEqTBWB0jxXkts8ta0v/dcapetbAStff7/ggZtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4Cl3aeAkrkzKJcYXrDkK3w+WR9m9GdtHOo/15gW8VJNDttecDDMPXiXvP9PE+KsS
-	 +W15QUbrS/QS3MMB0YV7BbkbJR0J1Y85WH5CmCsO5C1JuS1Pz2BrjQS2s0pxn+lNLv
-	 jqSTlmB123KgqoQ20xeGkwezAwqepl+DNx9oFg1k=
+	b=FjiLmCvBXKgMkq/amcPyMQpwx5HH7rpfA/IQULY0pvjYmNtjDhO+JzasKHY7MmWxK
+	 Q3KdYK4osC5P1Q4V0nkIP7FBI2S7v6/g7Bu0MotCUDVJJ4Mp2yucaDGTPqsx1iUeZy
+	 lMQfi/T3anrFg9UFDSF8qokQLtP2kHdz5Dpz7PWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Andrey Jr. Melnikov" <temnota.am@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/272] ahci: asm1064: correct count of reported ports
+	Zev Weiss <zev@bewilderbeest.net>,
+	Borislav Petkov <bp@alien8.de>,
+	David Hildenbrand <david@redhat.com>,
+	Florent Revest <revest@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Kees Cook <keescook@chromium.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Sam James <sam@gentoo.org>,
+	Stefan Roesch <shr@devkernel.io>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.7 338/432] prctl: generalize PR_SET_MDWE support check to be per-arch
 Date: Mon,  1 Apr 2024 17:45:25 +0200
-Message-ID: <20240401152534.904433220@linuxfoundation.org>
+Message-ID: <20240401152603.306621407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +78,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Jr. Melnikov <temnota.am@gmail.com>
+From: Zev Weiss <zev@bewilderbeest.net>
 
-[ Upstream commit 9815e39617541ef52d0dfac4be274ad378c6dc09 ]
+commit d5aad4c2ca057e760a92a9a7d65bd38d72963f27 upstream.
 
-The ASM1064 SATA host controller always reports wrongly,
-that it has 24 ports. But in reality, it only has four ports.
+Patch series "ARM: prctl: Reject PR_SET_MDWE where not supported".
 
-before:
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xffff0f impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+I noticed after a recent kernel update that my ARM926 system started
+segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After some
+investigation it appears that ARMv5 is incapable of providing the
+appropriate protections for MDWE, since any readable memory is also
+implicitly executable.
 
-after:
-ahci 0000:04:00.0: ASM1064 has only four ports
-ahci 0000:04:00.0: forcing port_map 0xffff0f -> 0xf
-ahci 0000:04:00.0: SSS flag set, parallel bus scan disabled
-ahci 0000:04:00.0: AHCI 0001.0301 32 slots 24 ports 6 Gbps 0xf impl SATA mode
-ahci 0000:04:00.0: flags: 64bit ncq sntf stag pm led only pio sxs deso sadm sds apst
+The prctl_set_mdwe() function already had some special-case logic added
+disabling it on PARISC (commit 793838138c15, "prctl: Disable
+prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+check to use an arch_*() function, and (2) adds a corresponding override
+for ARM to disable MDWE on pre-ARMv6 CPUs.
 
-Signed-off-by: "Andrey Jr. Melnikov" <temnota.am@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: 6cd8adc3e189 ("ahci: asm1064: asm1166: don't limit reported ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+succeed instead of unconditionally failing; on ARMv6 the prctl works as it
+did previously.
+
+[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+
+
+This patch (of 2):
+
+There exist systems other than PARISC where MDWE may not be feasible to
+support; rather than cluttering up the generic code with additional
+arch-specific logic let's add a generic function for checking MDWE support
+and allow each arch to override it as needed.
+
+Link: https://lkml.kernel.org/r/20240227013546.15769-4-zev@bewilderbeest.net
+Link: https://lkml.kernel.org/r/20240227013546.15769-5-zev@bewilderbeest.net
+Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+Acked-by: Helge Deller <deller@gmx.de>	[parisc]
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Florent Revest <revest@chromium.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: Sam James <sam@gentoo.org>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: <stable@vger.kernel.org>	[6.3+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/mman.h |   14 ++++++++++++++
+ include/linux/mman.h           |    8 ++++++++
+ kernel/sys.c                   |    7 +++++--
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+ create mode 100644 arch/parisc/include/asm/mman.h
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 1790a2ecb9fac..9de1731b6b444 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -671,9 +671,17 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
--	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
--		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
--		hpriv->saved_port_map = 0x3f;
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA) {
-+		switch (pdev->device) {
-+		case 0x1166:
-+			dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+			hpriv->saved_port_map = 0x3f;
-+			break;
-+		case 0x1064:
-+			dev_info(&pdev->dev, "ASM1064 has only four ports\n");
-+			hpriv->saved_port_map = 0xf;
-+			break;
-+		}
- 	}
+--- /dev/null
++++ b/arch/parisc/include/asm/mman.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_MMAN_H__
++#define __ASM_MMAN_H__
++
++#include <uapi/asm/mman.h>
++
++/* PARISC cannot allow mdwe as it needs writable stacks */
++static inline bool arch_memory_deny_write_exec_supported(void)
++{
++	return false;
++}
++#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
++
++#endif /* __ASM_MMAN_H__ */
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -162,6 +162,14 @@ calc_vm_flag_bits(unsigned long flags)
  
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
--- 
-2.43.0
-
+ unsigned long vm_commit_limit(void);
+ 
++#ifndef arch_memory_deny_write_exec_supported
++static inline bool arch_memory_deny_write_exec_supported(void)
++{
++	return true;
++}
++#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
++#endif
++
+ /*
+  * Denies creating a writable executable mapping or gaining executable permissions.
+  *
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2408,8 +2408,11 @@ static inline int prctl_set_mdwe(unsigne
+ 	if (bits & PR_MDWE_NO_INHERIT && !(bits & PR_MDWE_REFUSE_EXEC_GAIN))
+ 		return -EINVAL;
+ 
+-	/* PARISC cannot allow mdwe as it needs writable stacks */
+-	if (IS_ENABLED(CONFIG_PARISC))
++	/*
++	 * EOPNOTSUPP might be more appropriate here in principle, but
++	 * existing userspace depends on EINVAL specifically.
++	 */
++	if (!arch_memory_deny_write_exec_supported())
+ 		return -EINVAL;
+ 
+ 	current_bits = get_current_mdwe();
 
 
 
