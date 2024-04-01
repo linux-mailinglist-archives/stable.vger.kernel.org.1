@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-34947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A75389419C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 578E4893FD7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C0791C217DF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8938A1C211AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8930B4C3C3;
-	Mon,  1 Apr 2024 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E3F47A5D;
+	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7SAYNWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfPloYA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461274B5AE;
-	Mon,  1 Apr 2024 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04C9C129;
+	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989833; cv=none; b=jwGYMVpeSMVIVl105WdH+eBenBNi2kPkOrA2ug4cSWjuuY0bfBBrhw1059gC83AailplJcPEw+OQ7qA7fJEYfg3TqZ+l22yI4eA0YtMPBsg34Hp0mF8f53s6RJuJO55kuOtyU9ofTgWJGygGul/B4HaNU8Q+5/d4DBANuE3Xodc=
+	t=1711988525; cv=none; b=Hr4/s5hFpnW672wzO6nKi2PxqRt8Tb/Bbdf/C0lezuZzIVRCaJyYJ7mKqlv26l+KoAPqxXQXzd3iv5NN4eIVEtX+BNOioyATaklmMA64Cu251jky/5uMS/aSEgAESnbkXhcPSd8xe8lnAnQessWZZd3cmQD21i+DWYQa1e6WkvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989833; c=relaxed/simple;
-	bh=aOOuPy9LnVKmP6YgnfekEX55eQpehYmh5nrdm7MHBxE=;
+	s=arc-20240116; t=1711988525; c=relaxed/simple;
+	bh=TpDU4tJSLCpjo6iMCGnLS29hwSIzIgBEVGZgVRpEbrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEdw+k6TvFQJIrt/jp4hp66fldmnFglNsBfd3SzatfONlfzo3aINbU+vwrPq8h5VP15Kga3V/kbUX+QwQo5LmmInNzJxfqjip5n6mtW+o05zLVMCCoEHc3mkjdtDARmtPfL4kf+/A1c95fVbCOPqGkx+pBe5Wk2HpDsDusXn2kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7SAYNWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD514C433F1;
-	Mon,  1 Apr 2024 16:43:52 +0000 (UTC)
+	 MIME-Version; b=tV6TlbBQXZK+aOD5F2LdoXeWLUJtQ9zt7Vl585RuJXXNkFeZHCbDJ7KmjV9PYkX2+VHU2CJ+Pfoa/V9DKknG2tXGY8U/02MyZhjqPrL+D+ZDLTgqQNFHv+YQbxCDIsaSzckHiToWIqeFDHPR1w6nAJLSje7/azAZ+f5rH8c0bzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfPloYA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C19C433F1;
+	Mon,  1 Apr 2024 16:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989833;
-	bh=aOOuPy9LnVKmP6YgnfekEX55eQpehYmh5nrdm7MHBxE=;
+	s=korg; t=1711988525;
+	bh=TpDU4tJSLCpjo6iMCGnLS29hwSIzIgBEVGZgVRpEbrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7SAYNWy7Nm/LQ3LuBsZFFu8i/I9tqHvAMxw9uWfYelXMA3Y2k2RkUUgAOkKN/zh3
-	 NPeM4DX5bgolVThCuAgSAF9kqWyCwlnyN6jz6+27bmzAUqBw0Ayu6xaB1MSAGydcua
-	 PNP8Scz0fzKz9I1rPO1YMpqbsAwRCaBdtCQBRsdk=
+	b=mfPloYA+AOg8qwx9NqbphhqtMBSM4VyFYqXucI7i+226E5skU7Lr3YbJoQ2xXj4hK
+	 8T5Zbnvdmtv7ooG9lPryhlEmVe3QeDJA9iBZI3JMFZ/g+gyAol0QydyBmTgv7qVBRI
+	 o9q6yztmEcXJquDygtTluf6Yo3DbcVcyc5RTlMaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Relja Vojvodic <relja.vojvodic@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/396] drm/vc4: hdmi: do not return negative values from .get_modes()
+Subject: [PATCH 6.7 211/432] drm/amd/display: Add ODM check during pipe split/merge validation
 Date: Mon,  1 Apr 2024 17:43:18 +0200
-Message-ID: <20240401152552.387635662@linuxfoundation.org>
+Message-ID: <20240401152559.436601744@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Relja Vojvodic <relja.vojvodic@amd.com>
 
-[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
+[ Upstream commit dd2c5fac91d46df9dc1bf025ef23eff4704bd85f ]
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+[why]
+When querying DML for a vlevel after pipes have been split or merged the
+ODM policy would revert to a default policy, which could cause the query
+to use the incorrect ODM status. In this case ODM 2to1 was validated,
+but the last DML query would assume no ODM and return the incorrect
+vlevel.
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[how]
+Added ODM check to apply the correct ODM policy before querying DML.
+
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Relja Vojvodic <relja.vojvodic@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 26fbcb3da77e ("drm/amd/display: Override min required DCFCLK in dml1_validate")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/display/dc/dcn32/dcn32_resource.h |  2 ++
+ .../display/dc/dcn32/dcn32_resource_helpers.c | 26 +++++++++++++++++++
+ .../drm/amd/display/dc/dml/dcn32/dcn32_fpu.c  |  3 +++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 25c9c71256d35..4626fe9aac563 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -508,7 +508,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
- 	edid = drm_get_edid(connector, vc4_hdmi->ddc);
- 	cec_s_phys_addr_from_edid(vc4_hdmi->cec_adap, edid);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
+index b931008114c91..58943835fb638 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.h
+@@ -183,6 +183,8 @@ bool dcn32_subvp_drr_admissable(struct dc *dc, struct dc_state *context);
  
- 	drm_connector_update_edid_property(connector, edid);
- 	ret = drm_add_edid_modes(connector, edid);
+ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int vlevel);
+ 
++void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc_state *context, display_e2e_pipe_params_st *pipes);
++
+ /* definitions for run time init of reg offsets */
+ 
+ /* CLK SRC */
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
+index bc5f0db23d0c3..c80d6485f6ffa 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource_helpers.c
+@@ -778,3 +778,29 @@ bool dcn32_subvp_vblank_admissable(struct dc *dc, struct dc_state *context, int
+ 
+ 	return result;
+ }
++
++void dcn32_update_dml_pipes_odm_policy_based_on_context(struct dc *dc, struct dc_state *context,
++		display_e2e_pipe_params_st *pipes)
++{
++	int i, pipe_cnt;
++	struct resource_context *res_ctx = &context->res_ctx;
++	struct pipe_ctx *pipe = NULL;
++
++	for (i = 0, pipe_cnt = 0; i < dc->res_pool->pipe_count; i++) {
++		int odm_slice_count = 0;
++
++		if (!res_ctx->pipe_ctx[i].stream)
++			continue;
++		pipe = &res_ctx->pipe_ctx[i];
++		odm_slice_count = resource_get_odm_slice_count(pipe);
++
++		if (odm_slice_count == 1)
++			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_dal;
++		else if (odm_slice_count == 2)
++			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_2to1;
++		else if (odm_slice_count == 4)
++			pipes[pipe_cnt].pipe.dest.odm_combine_policy = dm_odm_combine_policy_4to1;
++
++		pipe_cnt++;
++	}
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index fe2b67d745f0d..5b6d9643b02dc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -2178,6 +2178,7 @@ bool dcn32_internal_validate_bw(struct dc *dc,
+ 		int i;
+ 
+ 		pipe_cnt = dc->res_pool->funcs->populate_dml_pipes(dc, context, pipes, fast_validate);
++		dcn32_update_dml_pipes_odm_policy_based_on_context(dc, context, pipes);
+ 
+ 		/* repopulate_pipes = 1 means the pipes were either split or merged. In this case
+ 		 * we have to re-calculate the DET allocation and run through DML once more to
+@@ -2186,7 +2187,9 @@ bool dcn32_internal_validate_bw(struct dc *dc,
+ 		 * */
+ 		context->bw_ctx.dml.soc.allow_for_pstate_or_stutter_in_vblank_final =
+ 					dm_prefetch_support_uclk_fclk_and_stutter_if_possible;
++
+ 		vlevel = dml_get_voltage_level(&context->bw_ctx.dml, pipes, pipe_cnt);
++
+ 		if (vlevel == context->bw_ctx.dml.soc.num_states) {
+ 			/* failed after DET size changes */
+ 			goto validate_fail;
 -- 
 2.43.0
 
