@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-34446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4569A893F62
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8261C894104
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 720121C21707
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF0B1C21740
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D7F4778E;
-	Mon,  1 Apr 2024 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680BD4D59E;
+	Mon,  1 Apr 2024 16:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL56BVk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSgc4xeo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEC947A64;
-	Mon,  1 Apr 2024 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E9263E;
+	Mon,  1 Apr 2024 16:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988149; cv=none; b=IPmNYK/xnvlkHrLW0w3LdtSuQCfE6b2Kn//KRtDYE8/y3/YPl7qaY6APWTQFwPnFt2BDOi3L/WtyQHXaNaRAuu4/gHigfAZleEkB4ajFfErvbVnPJcITotiUIlmt0TxNGkubiD29cnL2wGS5tRSQPAM3+CAeG/OoPu0LfyX2DDc=
+	t=1711989399; cv=none; b=CnnpC6TBROytQqaboE3S/2WVT30s+RUx3VedbHsI8MrXcMt2yUtDerZxeaX9Hxg6RzHTLuAHYJ0+LFHAa9LzUxJ086aiYoRUHAV92HzmZ8yyY7PipH8M1SQtv6SeX15wuiD/zd98oaEIkwE8HfZZFGAfPSscGGZWulCT5zO784I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988149; c=relaxed/simple;
-	bh=qohvYUmAjmODXlEswvTBSLfmk2QmaWw3Es15thBz5H8=;
+	s=arc-20240116; t=1711989399; c=relaxed/simple;
+	bh=B2uayMs4qLSfQ7kshybldvOHbBlmdZK/j7k6/KE1Tgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbrAYVwWLKb9sF9mzXiShgUeD0kNfyu7vsPml1JdUTIZV/bO0m5hpljEq6CJiqX1EtY7YUCQIsfpUWlblA61Eipr9F5tH1pWMqiJwe9cVKSpbyxXJEpbxcqJ/UIg5cWI2zxO7FNUekmC5rBj/24KRDEv4Ccp+TogjTg6RUx/s20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL56BVk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0A6C433C7;
-	Mon,  1 Apr 2024 16:15:48 +0000 (UTC)
+	 MIME-Version; b=Pl4oMlzMJPIIsYvEqmU3mS0XpEAPfwCumLXtMhSdENizspCZjIcgudjYcPAxmIByAcsXI17kMkGDDV3MsY7XrMNtirXUW58OeL20k0nX4ss6HCzwgbUko75b1X5PUQedEA14T2shmITmMRalo6yrCE49OXE9EmbpGIcWLwxJ8oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSgc4xeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30036C43390;
+	Mon,  1 Apr 2024 16:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988149;
-	bh=qohvYUmAjmODXlEswvTBSLfmk2QmaWw3Es15thBz5H8=;
+	s=korg; t=1711989398;
+	bh=B2uayMs4qLSfQ7kshybldvOHbBlmdZK/j7k6/KE1Tgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL56BVk22mVB74EsyONJAD7uDECt5GnT32jGE5NchfRhfemRfcwz8nVP/RM9KqTmz
-	 7gj5K2ABqhSQiXUhWZuMywNBs6A0XkYyE2HuT+Ssy+3aPcjW0GUYWXqbgcBgi7ceqZ
-	 qhBtFqN33BjWLPj17nF3KcXCuX9DCfoHy123h1Yw=
+	b=CSgc4xeoxYB5GPFU7HzwoeQJrxhFhdajawr73Mih71fuVx8sAfh9pJPdzTlMSNzXO
+	 Yv4NG28h2moERF9prupqOJcmpBqfYmC8d1XmW5plFQmb59YH1UdcxX6OfaDuroV4Vz
+	 62A8ciY4ftX6kHSBmDo2CyUPv4bm/tgfaKCtvQVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niels van Aert <nvaert1986@hotmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Igor Zhbanov <izh1979@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	sparclinux@vger.kernel.org,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 098/432] PCI/DPC: Quirk PIO log size for Intel Raptor Lake Root Ports
-Date: Mon,  1 Apr 2024 17:41:25 +0200
-Message-ID: <20240401152556.047000174@linuxfoundation.org>
+Subject: [PATCH 6.6 037/396] sparc64: NMI watchdog: fix return value of __setup handler
+Date: Mon,  1 Apr 2024 17:41:26 +0200
+Message-ID: <20240401152549.034439297@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +68,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 627c6db20703b5d18d928464f411d0d4ec327508 ]
+[ Upstream commit 3ed7c61e49d65dacb96db798c0ab6fcd55a1f20f ]
 
-Commit 5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root
-Ports") and commit 3b8803494a06 ("PCI/DPC: Quirk PIO log size for Intel Ice
-Lake Root Ports") add quirks for Ice, Tiger and Alder Lake Root Ports.
-System firmware for Raptor Lake still has the bug, so Linux logs the
-warning below on several Raptor Lake systems like Dell Precision 3581 with
-Intel Raptor Lake processor (0W18NX) system firmware/BIOS version 1.10.1.
+__setup() handlers should return 1 to obsolete_checksetup() in
+init/main.c to indicate that the boot option has been handled.
+A return of 0 causes the boot option/value to be listed as an Unknown
+kernel parameter and added to init's (limited) argument or environment
+strings. Also, error return codes don't mean anything to
+obsolete_checksetup() -- only non-zero (usually 1) or zero.
+So return 1 from setup_nmi_watchdog().
 
-  pci 0000:00:07.0: [8086:a76e] type 01 class 0x060400
-  pci 0000:00:07.0: DPC: RP PIO log size 0 is invalid
-  pci 0000:00:07.1: [8086:a73f] type 01 class 0x060400
-  pci 0000:00:07.1: DPC: RP PIO log size 0 is invalid
-
-Apply the quirk for Raptor Lake Root Ports as well.
-
-This also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
-
-Link: https://lore.kernel.org/r/20240305113057.56468-1-pmenzel@molgen.mpg.de
-Reported-by: Niels van Aert <nvaert1986@hotmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218560
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Niels van Aert <nvaert1986@hotmail.com>
+Fixes: e5553a6d0442 ("sparc64: Implement NMI watchdog on capable cpus.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Igor Zhbanov <izh1979@gmail.com>
+Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux@vger.kernel.org
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20240211052802.22612-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/sparc/kernel/nmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 528044237bf9f..fa770601c655a 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6219,6 +6219,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
+diff --git a/arch/sparc/kernel/nmi.c b/arch/sparc/kernel/nmi.c
+index 17cdfdbf1f3b7..149adc0947530 100644
+--- a/arch/sparc/kernel/nmi.c
++++ b/arch/sparc/kernel/nmi.c
+@@ -279,7 +279,7 @@ static int __init setup_nmi_watchdog(char *str)
+ 	if (!strncmp(str, "panic", 5))
+ 		panic_on_timeout = 1;
  
- /*
+-	return 0;
++	return 1;
+ }
+ __setup("nmi_watchdog=", setup_nmi_watchdog);
+ 
 -- 
 2.43.0
 
