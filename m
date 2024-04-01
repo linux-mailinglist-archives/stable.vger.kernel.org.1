@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370CE893F57
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F165E894117
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667D81C2169E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD6152835A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B701481B4;
-	Mon,  1 Apr 2024 16:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7EA481C4;
+	Mon,  1 Apr 2024 16:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LliCYBZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blU5UQQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFAE47F6F;
-	Mon,  1 Apr 2024 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A831C0DE7;
+	Mon,  1 Apr 2024 16:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988113; cv=none; b=c8mU5JzCoCVAGKVgzVj6Jf+7h86/GuWnmQ5kofh9+QAak3B3ZiZFtPJ7sfUFRO3vQJ3v/VP2sHa+xHl85TTFu/tiCBfEive5uchSdsM40RnkF2JGJFAIoD/asqxSB6AWlT4IoNIWCgfnDMB2rFUiQiuwcbY7Jx6C1uia3B+hzkE=
+	t=1711989455; cv=none; b=INGU8G7a/qA0asduc1EziRYX5cUqoxA+qzqNVio7xNvEqhXfiMHx6nr3gt1SPRVVEw68xh+6BW3FdPfQ6SFhFlUXG45a8k32kG8Zi6jSayGYCUIyERc/3ucKzUIwmX//l4QmrDT1FXguEo+RZpa985tzDJCTbki+tPZg7f4gDm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988113; c=relaxed/simple;
-	bh=UlwYq1W1thgK0LbJ5FQqrnUUEVpL0z9203XdCT6KZ5k=;
+	s=arc-20240116; t=1711989455; c=relaxed/simple;
+	bh=OSD1KCno8QX8jlCQeiFUozF9NUuaWpO3KuMgkxHyXNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5QpCMQRfjHsynJupSHmcgbp3x/RC9RjydhvjJpviD4xiqMO/vtN3i+4BD3nuV34ohRh0FMFbzAEVNkk0iyTIdwV/aQD8H33/X7viQKrg65FmdQcgon/8cMckDA3hdkbcLZZtnehm8W1c7TL4wkCS4tC3ePoD63e+zwj3nlPl2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LliCYBZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62E1C433F1;
-	Mon,  1 Apr 2024 16:15:11 +0000 (UTC)
+	 MIME-Version; b=aZ6SqIFVByNdfyj9Vnl5XSVLC+3daqWoXpy6KrvKW2pCv4FHG7YilbWDKS9hye3XxX/UbcEDNmM+bwXvyU3XSqjOz6aVoP++b4LecL/hsIjUHrO9mj/zEcK+Rt0D8DLO/jivYwKwxXJWPY4syi2V0bjK8VCWbqDEqq5zZbnzpCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blU5UQQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFD1C433C7;
+	Mon,  1 Apr 2024 16:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988112;
-	bh=UlwYq1W1thgK0LbJ5FQqrnUUEVpL0z9203XdCT6KZ5k=;
+	s=korg; t=1711989455;
+	bh=OSD1KCno8QX8jlCQeiFUozF9NUuaWpO3KuMgkxHyXNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LliCYBZW3bIbilZuZPMLGNlq7BXbpSMfPnjZ2KoGr1dm2uGeh0tUxLvsJix61gbsx
-	 fIExzeFV0gUNDA5W2EVjGr8hB32zRUiaFDPA9Oiig0azabtI4YobqJc6q9l5NCfipc
-	 uXiqyfPll5XZnr9KxJZCP3xArAnGm+nq7WgvROA0=
+	b=blU5UQQdRDNea+DussrCBBViCu9xZhpCs91+joUitHUh6A8xDkB1I30wZJ5v0aKzQ
+	 e65VgT31Yo81ekrCDO7F7LLyVssDCkRHLWeWelMpGq8bv1AO5OLerWx1t3pIVR5JEQ
+	 MbUN5tYZpYYmeBVEQMOaE68zLKWzzg10bQPKivA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 088/432] fuse: dont unhash root
+Subject: [PATCH 6.6 026/396] arm64: dts: qcom: sm8550-qrd: correct WCD9385 TX port mapping
 Date: Mon,  1 Apr 2024 17:41:15 +0200
-Message-ID: <20240401152555.750205841@linuxfoundation.org>
+Message-ID: <20240401152548.683646313@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b1fe686a765e6c0d71811d825b5a1585a202b777 ]
+[ Upstream commit 8ca7fbd92c1b28edb5d5df7aeb8bb4886ddb9829 ]
 
-The root inode is assumed to be always hashed.  Do not unhash the root
-inode even if it is marked BAD.
+WCD9385 audio codec TX port mapping was copied form HDK8450, but in fact
+it is offset by one.  Correct it to fix recording via analogue
+microphones.
 
-Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
-Cc: <stable@vger.kernel.org> # v5.11
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 83fae950c992 ("arm64: dts: qcom: sm8550-qrd: add WCD9385 audio-codec")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240124164505.293202-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/fuse_i.h | 1 -
- fs/fuse/inode.c  | 7 +++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550-qrd.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 1df83eebda927..b5c241e16964d 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -939,7 +939,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
+diff --git a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
+index 2c09ce8aeafd9..7a70cc5942797 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
++++ b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
+@@ -835,7 +835,7 @@ &swr2 {
+ 	wcd_tx: codec@0,3 {
+ 		compatible = "sdw20217010d00";
+ 		reg = <0 3>;
+-		qcom,tx-port-mapping = <1 1 2 3>;
++		qcom,tx-port-mapping = <2 2 3 4>;
+ 	};
+ };
  
- static inline void fuse_make_bad(struct inode *inode)
- {
--	remove_inode_hash(inode);
- 	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
- }
- 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 2a6d44f91729b..b676c72c62adf 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -469,8 +469,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 	} else if (fuse_stale_inode(inode, generation, attr)) {
- 		/* nodeid was reused, any I/O on the old inode should fail */
- 		fuse_make_bad(inode);
--		iput(inode);
--		goto retry;
-+		if (inode != d_inode(sb->s_root)) {
-+			remove_inode_hash(inode);
-+			iput(inode);
-+			goto retry;
-+		}
- 	}
- 	fi = get_fuse_inode(inode);
- 	spin_lock(&fi->lock);
 -- 
 2.43.0
 
