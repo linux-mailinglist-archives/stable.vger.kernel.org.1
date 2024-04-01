@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-35054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CC0894227
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D58893EC9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEB0FB20E02
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5361CB22192
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043F3BBC3;
-	Mon,  1 Apr 2024 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6863F8F4;
+	Mon,  1 Apr 2024 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiF2QUi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfjhUK8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D78F5C;
-	Mon,  1 Apr 2024 16:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980534776F;
+	Mon,  1 Apr 2024 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990190; cv=none; b=HhgguvO5OCCBOERzpvalJdVqhevK6KXuGl4zcdfO12uGhO0/w92y7PZ9rdXFcBfatx8Sn/VPuXeZWcy8MFLeMwpuwt78Khd9Wtljn1vsn+AyB2CK7NqxQoHFFbV1PH54Cr2bok9Bnqt7o3lqMXCPcaPOnLOVRtUD0EKPEWHWG1A=
+	t=1711987676; cv=none; b=Ei3/4PqKWrSXM+vCIp0BQTV7YT8/t8/VrNTbWfmv7FfVm7B9ISgTI9wuBlkSn4tjRW+Pfzn2K0qKazkDksPTQKRPDgP1snpJwx/6tnbShflllNRrjNi24avjn6QsNOex+O31UWy/Gj7g9SSoLADoc+xNb6Tpck2NosQ8ISYEw+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990190; c=relaxed/simple;
-	bh=A2T9HxyvPB8EZBT2wYHqhJoyqdQxUDltA1q0SHXxyto=;
+	s=arc-20240116; t=1711987676; c=relaxed/simple;
+	bh=DCBj5XhR9MBYu86wxVHAzUq7mCLhHDHfPJD9A6zxdOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaKvcVAUR2OF1OiBV1QhM/O2NsG6U8D2ljD0Uk9cV8uZKCQOaWgghq3sNEbkcRspaJw8ODAW9ytYF6xGm48rlMUWbILw4LGhyyFEfG7ILgEBsTVcUr6MCPCrHRg5ycPVwaOoR5w44rcEdfGEjG01C77x7fr/T3i6gjWltmc3XI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiF2QUi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A337BC433F1;
-	Mon,  1 Apr 2024 16:49:49 +0000 (UTC)
+	 MIME-Version; b=ZMwsna2GRjcOLdNcyO1ODPiOUBkJN5ZKSn4BN/4MwzAvdK1ckJmHWTmf0LVMNQ7r1e5izWk6Ej1K5TjXkEpOTmDKySqUlUXFGXQdPeGAg/iJ7999uoGZvM+6/5JaVH4igtuj2DyixI9DHxzeL2Znc52BYhYLkwh2W5RyeI9lvms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfjhUK8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5F0C433F1;
+	Mon,  1 Apr 2024 16:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990190;
-	bh=A2T9HxyvPB8EZBT2wYHqhJoyqdQxUDltA1q0SHXxyto=;
+	s=korg; t=1711987676;
+	bh=DCBj5XhR9MBYu86wxVHAzUq7mCLhHDHfPJD9A6zxdOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uiF2QUi7Wqyj1/eivSbb/ibeH4YxnyCBXX33l0VnNcTO5UIsMypj0RcadyyhvA0kL
-	 cyxZkM6dCISewBcr6+2snUrdmQbh3hcReeNK3A5jPddjoCj2kV42pU5CwpxOvYzvsW
-	 nU+suaUFv/G6G+mqq/ikej0+PNVFy1tseUYUiV9s=
+	b=wfjhUK8cEAqZTYXYlBelBLWF8JGzkYKSQf9r0rfpd/W9vg6/Y4olotzIS1atEXRtM
+	 wh+t5AthoL8dnKjdjVHR+i3/22SGS0Oo1GQfWbTbJ8vjIx4NBC0pR/ud4Jub10p/sS
+	 bNVzCTj/1AkL4aSIkKd33MjzKWLpwvH90vSdFmCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 246/396] iio: imu: inv_mpu6050: fix FIFO parsing when empty
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jun Lei <jun.lei@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Xi Liu <xi.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.8 329/399] drm/amd/display: Set DCN351 BB and IP the same as DCN35
 Date: Mon,  1 Apr 2024 17:44:55 +0200
-Message-ID: <20240401152555.248565049@linuxfoundation.org>
+Message-ID: <20240401152558.999029290@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Xi Liu <xi.liu@amd.com>
 
-commit 60caa8b33bd682a9ed99d1fc3f91d74e1acc9922 upstream.
+commit 0ccc2b30f4feadc0b1a282dbcc06e396382e5d74 upstream.
 
-Now that we are reading the full FIFO in the interrupt handler,
-it is possible to have an emply FIFO since we are still receiving
-1 interrupt per data. Handle correctly this case instead of having
-an error causing a reset of the FIFO.
+[WHY & HOW]
+DCN351 and DCN35 should use the same bounding box and IP settings.
 
-Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240219154825.90656-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Xi Liu <xi.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-index 66d4ba088e70..d4f9b5d8d28d 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -109,6 +109,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	/* compute and process only all complete datum */
- 	nb = fifo_count / bytes_per_datum;
- 	fifo_count = nb * bytes_per_datum;
-+	if (nb == 0)
-+		goto end_session;
- 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
- 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
- 	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
--- 
-2.44.0
-
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -228,17 +228,13 @@ void dml2_init_socbb_params(struct dml2_
+ 		break;
+ 
+ 	case dml_project_dcn35:
++	case dml_project_dcn351:
+ 		out->num_chans = 4;
+ 		out->round_trip_ping_latency_dcfclk_cycles = 106;
+ 		out->smn_latency_us = 2;
+ 		out->dispclk_dppclk_vco_speed_mhz = 3600;
+ 		break;
+ 
+-	case dml_project_dcn351:
+-		out->num_chans = 16;
+-		out->round_trip_ping_latency_dcfclk_cycles = 1100;
+-		out->smn_latency_us = 2;
+-		break;
+ 	}
+ 	/* ---Overrides if available--- */
+ 	if (dml2->config.bbox_overrides.dram_num_chan)
 
 
 
