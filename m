@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747B5893EE5
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C40189436A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29FCB283488
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544962838BD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6E147A64;
-	Mon,  1 Apr 2024 16:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AA7487BE;
+	Mon,  1 Apr 2024 17:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqhz6pS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RYt/hWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5917B4776F;
-	Mon,  1 Apr 2024 16:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5E1DFF4;
+	Mon,  1 Apr 2024 17:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987763; cv=none; b=CGbCni9bVOxOvZBtJh7MD+GaouDpZWwnha2xR7lZxNP9y+9N1EuRgrDl+6TlDS/GqUqMrBfukNGq/XkP57Gy/9U0gHx8fA51KWPYd8Kk5rDL5OwLITleLbi7ySLndNtVIWMciXl/6DvBQIe50E9co/wJXPrDqkDQt1aFsMZZpkw=
+	t=1711991001; cv=none; b=ALFcNumH3eUbMP4Lct5RQ1liTOTdyLb4qJ/IGM1DkXKuUgJMyhq1D7R4BeEDZU2GX8ZNEdOkQIWqqvt03FVVULgvG6/bdykUvC8iNsBjmC2zrOgQlByQvWLp7XkRTYZOQ/rjxOYZBs6sgPEJA3MOjEtvoJ14eyTAksehPgbU3O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987763; c=relaxed/simple;
-	bh=fWJEBcWE+EME4qe41e/oQw6Ih9g1ME5s6ofjE75t66I=;
+	s=arc-20240116; t=1711991001; c=relaxed/simple;
+	bh=8t70cHffxhJSHLGLEuzLr5yzXyXeZsgyAynitZPZQ2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMEx2H3FIszE3jOglXjX20oIPniGgXh3JwmEIVdRO2e7EhZNVjKvR3MNSwmdHIvhAYVhbW0IaZUofV/IBRwwKsiy8hB7Q70Foaq8zBFnMmJ5QIRAWPQFhHWPj+Qi7Cr4B4z/1QwLviur/VzlAFz4UTk+EfjSEhTYPwwgkKjqpX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqhz6pS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EC6C433F1;
-	Mon,  1 Apr 2024 16:09:22 +0000 (UTC)
+	 MIME-Version; b=N04+nVW6AKiGa1tU0i+IyK+AjwPcUKyZCYA2WJcHc7qqTG9C7W5yw9bU0ThTuKGNJpfigIQgM9plImlBgHc17TlPbOT67bi5Dz/oTLDpzeGhkfSaYZjGNu6BJBO+8AzR+YOSBofK8J4ll2tHF4wxezLvKBy0I70d5cjbyiFa/Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RYt/hWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CEC433C7;
+	Mon,  1 Apr 2024 17:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987763;
-	bh=fWJEBcWE+EME4qe41e/oQw6Ih9g1ME5s6ofjE75t66I=;
+	s=korg; t=1711991001;
+	bh=8t70cHffxhJSHLGLEuzLr5yzXyXeZsgyAynitZPZQ2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqhz6pS954d/CgO1q/OBWU3TpN19WwEmGabKrFRNDpSp5byOjICWy5m2fm7yxvCN9
-	 fqODLmnlPtkn6kS/aTQa7eKLDSWcsTt9R+YvcQFrwhcZ6yGNacEDjAy5V8yx5+ZGSZ
-	 dp4HTpG49Vl6KJQL37yCHd0fSJWWxxbQWUfPwNKY=
+	b=1RYt/hWPQ3FIcymWFUJDwwEf/1yIv8feyCbXqvh69vzfIjArsE17nwlaW0gbQF9Lc
+	 zB83Lm7frokUNuQ5hLgen1aUbAq2th9Ftuwp1SsLcsWFfTH7dSR3COTnfp9dtyclzB
+	 F5Mov2C5YdWDhO+n6kU+Dv+40V5LQMVIoen4jD8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sanath S <Sanath.S@amd.com>
-Subject: [PATCH 6.8 357/399] usb: dwc3: Properly set system wakeup
+	Lillian Berry <lillian@star-ark.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/272] wireguard: netlink: check for dangling peer via is_dead instead of empty list
 Date: Mon,  1 Apr 2024 17:45:23 +0200
-Message-ID: <20240401152559.826912040@linuxfoundation.org>
+Message-ID: <20240401152534.836063752@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit f9aa41130ac69d13a53ce2a153ca79c70d43f39c upstream.
+[ Upstream commit 55b6c738673871c9b0edae05d0c97995c1ff08c4 ]
 
-If the device is configured for system wakeup, then make sure that the
-xHCI driver knows about it and make sure to permit wakeup only at the
-appropriate time.
+If all peers are removed via wg_peer_remove_all(), rather than setting
+peer_list to empty, the peer is added to a temporary list with a head on
+the stack of wg_peer_remove_all(). If a netlink dump is resumed and the
+cursored peer is one that has been removed via wg_peer_remove_all(), it
+will iterate from that peer and then attempt to dump freed peers.
 
-For host mode, if the controller goes through the dwc3 code path, then a
-child xHCI platform device is created. Make sure the platform device
-also inherits the wakeup setting for xHCI to enable remote wakeup.
+Fix this by instead checking peer->is_dead, which was explictly created
+for this purpose. Also move up the device_update_lock lockdep assertion,
+since reading is_dead relies on that.
 
-For device mode, make sure to disable system wakeup if no gadget driver
-is bound. We may experience unwanted system wakeup due to the wakeup
-signal from the controller PMU detecting connection/disconnection when
-in low power (D3). E.g. In the case of Steam Deck, the PCI PME prevents
-the system staying in suspend.
+It can be reproduced by a small script like:
+
+    echo "Setting config..."
+    ip link add dev wg0 type wireguard
+    wg setconf wg0 /big-config
+    (
+            while true; do
+                    echo "Showing config..."
+                    wg showconf wg0 > /dev/null
+            done
+    ) &
+    sleep 4
+    wg setconf wg0 <(printf "[Peer]\nPublicKey=$(wg genkey)\n")
+
+Resulting in:
+
+    BUG: KASAN: slab-use-after-free in __lock_acquire+0x182a/0x1b20
+    Read of size 8 at addr ffff88811956ec70 by task wg/59
+    CPU: 2 PID: 59 Comm: wg Not tainted 6.8.0-rc2-debug+ #5
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x47/0x70
+     print_address_description.constprop.0+0x2c/0x380
+     print_report+0xab/0x250
+     kasan_report+0xba/0xf0
+     __lock_acquire+0x182a/0x1b20
+     lock_acquire+0x191/0x4b0
+     down_read+0x80/0x440
+     get_peer+0x140/0xcb0
+     wg_get_device_dump+0x471/0x1130
 
 Cc: stable@vger.kernel.org
-Reported-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Closes: https://lore.kernel.org/linux-usb/70a7692d-647c-9be7-00a6-06fc60f77294@igalia.com/T/#mf00d6669c2eff7b308d1162acd1d66c09f0853c7
-Fixes: d07e8819a03d ("usb: dwc3: add xHCI Host support")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Sanath S <Sanath.S@amd.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
-Link: https://lore.kernel.org/r/667cfda7009b502e08462c8fb3f65841d103cc0a.1709865476.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Reported-by: Lillian Berry <lillian@star-ark.net>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c   |    2 ++
- drivers/usb/dwc3/core.h   |    2 ++
- drivers/usb/dwc3/gadget.c |   10 ++++++++++
- drivers/usb/dwc3/host.c   |   11 +++++++++++
- 4 files changed, 25 insertions(+)
+ drivers/net/wireguard/netlink.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1519,6 +1519,8 @@ static void dwc3_get_properties(struct d
- 	else
- 		dwc->sysdev = dwc->dev;
- 
-+	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
-+
- 	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
- 	if (ret >= 0) {
- 		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -1132,6 +1132,7 @@ struct dwc3_scratchpad_array {
-  *	3	- Reserved
-  * @dis_metastability_quirk: set to disable metastability quirk.
-  * @dis_split_quirk: set to disable split boundary.
-+ * @sys_wakeup: set if the device may do system wakeup.
-  * @wakeup_configured: set if the device is configured for remote wakeup.
-  * @suspended: set to track suspend event due to U3/L2.
-  * @imod_interval: set the interrupt moderation interval in 250ns
-@@ -1355,6 +1356,7 @@ struct dwc3 {
- 
- 	unsigned		dis_split_quirk:1;
- 	unsigned		async_callbacks:1;
-+	unsigned		sys_wakeup:1;
- 	unsigned		wakeup_configured:1;
- 	unsigned		suspended:1;
- 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2968,6 +2968,9 @@ static int dwc3_gadget_start(struct usb_
- 	dwc->gadget_driver	= driver;
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	if (dwc->sys_wakeup)
-+		device_wakeup_enable(dwc->sysdev);
-+
- 	return 0;
- }
- 
-@@ -2983,6 +2986,9 @@ static int dwc3_gadget_stop(struct usb_g
- 	struct dwc3		*dwc = gadget_to_dwc(g);
- 	unsigned long		flags;
- 
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc->gadget_driver	= NULL;
- 	dwc->max_cfg_eps = 0;
-@@ -4664,6 +4670,10 @@ int dwc3_gadget_init(struct dwc3 *dwc)
- 	else
- 		dwc3_gadget_set_speed(dwc->gadget, dwc->maximum_speed);
- 
-+	/* No system wakeup if no gadget driver bound */
-+	if (dwc->sys_wakeup)
-+		device_wakeup_disable(dwc->sysdev);
-+
- 	return 0;
- 
- err5:
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -123,6 +123,14 @@ int dwc3_host_init(struct dwc3 *dwc)
- 		goto err;
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index 6d1bd9f52d02a..81eef56773a23 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -255,17 +255,17 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (!peers_nest)
+ 		goto out;
+ 	ret = 0;
+-	/* If the last cursor was removed via list_del_init in peer_remove, then
++	lockdep_assert_held(&wg->device_update_lock);
++	/* If the last cursor was removed in peer_remove or peer_remove_all, then
+ 	 * we just treat this the same as there being no more peers left. The
+ 	 * reason is that seq_nr should indicate to userspace that this isn't a
+ 	 * coherent dump anyway, so they'll try again.
+ 	 */
+ 	if (list_empty(&wg->peer_list) ||
+-	    (ctx->next_peer && list_empty(&ctx->next_peer->peer_list))) {
++	    (ctx->next_peer && ctx->next_peer->is_dead)) {
+ 		nla_nest_cancel(skb, peers_nest);
+ 		goto out;
  	}
- 
-+	if (dwc->sys_wakeup) {
-+		/* Restore wakeup setting if switched from device */
-+		device_wakeup_enable(dwc->sysdev);
-+
-+		/* Pass on wakeup setting to the new xhci platform device */
-+		device_init_wakeup(&xhci->dev, true);
-+	}
-+
- 	return 0;
- err:
- 	platform_device_put(xhci);
-@@ -131,6 +139,9 @@ err:
- 
- void dwc3_host_exit(struct dwc3 *dwc)
- {
-+	if (dwc->sys_wakeup)
-+		device_init_wakeup(&dwc->xhci->dev, false);
-+
- 	platform_device_unregister(dwc->xhci);
- 	dwc->xhci = NULL;
- }
+-	lockdep_assert_held(&wg->device_update_lock);
+ 	peer = list_prepare_entry(ctx->next_peer, &wg->peer_list, peer_list);
+ 	list_for_each_entry_continue(peer, &wg->peer_list, peer_list) {
+ 		if (get_peer(peer, skb, ctx)) {
+-- 
+2.43.0
+
 
 
 
