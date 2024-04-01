@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-34021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E197D893D88
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:55:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF0D893D93
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D082283127
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1BB71F2110F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE64E4E1B3;
-	Mon,  1 Apr 2024 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019035024E;
+	Mon,  1 Apr 2024 15:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGYA+Y1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElDgd4OQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3A64CDEC;
-	Mon,  1 Apr 2024 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B12481C6;
+	Mon,  1 Apr 2024 15:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711986751; cv=none; b=TfgKVJnt0dcnpm8fctyBamDQXtzd+Xk6Z3aO5bSAoCuYz4aGGGpgJeJ/3vkxdyoKW/z7g/CYK2bTGyTMUtvCFB4tON5tI5DJ6ZM36/no4kw4EhSCfoE/tfzCI6ZMhchfGg+mAOj/ojYI0gh8wS/FHCXEPDnYKIE2ClMJui6uhjI=
+	t=1711986785; cv=none; b=KTza+YZGOVq8/PFJyXckuVdrRALJkWqUiaisi4W+TpgMuQePaxMAM6rj9VK/dYxEcjuvJIch6YUde/VuP0/+/cG+6H02OJwb9ftR+qAJcH1wMj73Z6HSZXHPJd7g2NSzA6LBrCwnMXKIAcgkrhMm6odGGA7puOUhC8kqrap1aKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711986751; c=relaxed/simple;
-	bh=uaQ6baqu59sMe6NhXpNsfK5N8cWQv6UULdM3AzZoRic=;
+	s=arc-20240116; t=1711986785; c=relaxed/simple;
+	bh=hRug/QPMx+aqn3HedK8WQ90rozSa7LGLvHTJu/jlIkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=afBIG3oWoNYPGEvCX1KJAXwos5jA2ncSzsPE/fJ7qY3zXZSBRiFUK8BrbrrNI6pbfdrOQj67K9lK3vOqR8YQNenyb2Z+6uNyvJ9doxfjUubZu6qq7noSEkwXV5YxFXzZ2se4zuo7VkpgyckftFrO2gKzKH+yxrpfEIeZpj239Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGYA+Y1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5530C433F1;
-	Mon,  1 Apr 2024 15:52:30 +0000 (UTC)
+	 MIME-Version; b=ueeQTwO8AlTkiD76DoVq502lrdeGZFtZpvoYzJhjJ1gxrSsoXBKXg5gyvKnjRIkXSwPFc9gkL7I9jufZ2t+q81pUdJcWlN5iOSMvkVYQdKbl2VzhkmVUsZ/Zq9LaDbZAOgqkyKpMt4TU08YQp454pBIumR9Xb+E3WZAnIPkwB0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElDgd4OQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B575C433F1;
+	Mon,  1 Apr 2024 15:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711986751;
-	bh=uaQ6baqu59sMe6NhXpNsfK5N8cWQv6UULdM3AzZoRic=;
+	s=korg; t=1711986785;
+	bh=hRug/QPMx+aqn3HedK8WQ90rozSa7LGLvHTJu/jlIkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGYA+Y1l1Mx3PbX26pkxT9sWDhYrvrVWFJAN9/E2ZbBdfQpGMVm5Yzy/a/UxphVFP
-	 89B/Phcdd+pGSKkWtld7kPS2pUplixayy4nZ6KXtqqhS5PDYED68rAUSHoG6TH7JSW
-	 tcGjt97u3AUoEZ8PafaTJYyo6FghlY/Lz4SDDmZg=
+	b=ElDgd4OQmioq486Sl60KsQhOg7tkZvTzXHz7ZuuwDUH4HLQSao6AnxbFQnST8JhPI
+	 puw1UCt8mjLIK+ngR6ugWAu3+MVhsHPiVHe1zBDzZd9Fovr8neDOKikC/odPFduqZl
+	 ifOh3CtWGMk+alyFDqs3Jzc5MM3i7ACbyydtqhcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Shivnandan Kumar <quic_kshivnan@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 066/399] docs: Restore "smart quotes" for quotes
-Date: Mon,  1 Apr 2024 17:40:32 +0200
-Message-ID: <20240401152551.156773966@linuxfoundation.org>
+Subject: [PATCH 6.8 067/399] cpufreq: Limit resolving a frequency to policy min/max
+Date: Mon,  1 Apr 2024 17:40:33 +0200
+Message-ID: <20240401152551.186820594@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -60,59 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
 
-[ Upstream commit fe2562582bffe675721e77e00b3bf5bfa1d7aeab ]
+[ Upstream commit d394abcb12bb1a6f309c1221fdb8e73594ecf1b4 ]
 
-Commit eaae75754d81 ("docs: turn off "smart quotes" in the HTML build")
-disabled conversion of quote marks along with that of dashes.
-Despite the short summary, the change affects not only HTML build
-but also other build targets including PDF.
+Resolving a frequency to an efficient one should not transgress
+policy->max (which can be set for thermal reason) and policy->min.
 
-However, as "smart quotes" had been enabled for more than half a
-decade already, quite a few readers of HTML pages are likely expecting
-conversions of "foo" -> “foo” and 'bar' -> ‘bar’.
+Currently, there is possibility where scaling_cur_freq can exceed
+scaling_max_freq when scaling_max_freq is an inefficient frequency.
 
-Furthermore, in LaTeX typesetting convention, it is common to use
-distinct marks for opening and closing quote marks.
+Add a check to ensure that resolving a frequency will respect
+policy->min/max.
 
-To satisfy such readers' expectation, restore conversion of quotes
-only by setting smartquotes_action [1].
-
-Link: [1] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-smartquotes_action
-Cc: stable@vger.kernel.org  # v6.4
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20240225094600.65628-1-akiyks@gmail.com
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
+Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+[ rjw: Whitespace adjustment, changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/conf.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/cpufreq.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index da64c9fb7e072..d148f3e8dd572 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -346,9 +346,9 @@ sys.stderr.write("Using %s theme\n" % html_theme)
- html_static_path = ['sphinx-static']
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index afda5f24d3ddc..320fab7d2e940 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1021,6 +1021,18 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
+ 						   efficiencies);
+ }
  
- # If true, Docutils "smart quotes" will be used to convert quotes and dashes
--# to typographically correct entities.  This will convert "--" to "—",
--# which is not always what we want, so disable it.
--smartquotes = False
-+# to typographically correct entities.  However, conversion of "--" to "—"
-+# is not always what we want, so enable only quotes.
-+smartquotes_action = 'q'
++static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
++{
++	unsigned int freq;
++
++	if (idx < 0)
++		return false;
++
++	freq = policy->freq_table[idx].frequency;
++
++	return freq == clamp_val(freq, policy->min, policy->max);
++}
++
+ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 						 unsigned int target_freq,
+ 						 unsigned int relation)
+@@ -1054,7 +1066,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 		return 0;
+ 	}
  
- # Custom sidebar templates, maps document names to template names.
- # Note that the RTD theme ignores this
+-	if (idx < 0 && efficiencies) {
++	/* Limit frequency index to honor policy->min/max */
++	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
+ 		efficiencies = false;
+ 		goto retry;
+ 	}
 -- 
 2.43.0
 
