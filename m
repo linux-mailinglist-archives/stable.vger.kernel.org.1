@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-34247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F375A893E86
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007688941F8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 805BF1F21872
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF60A2834AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5814779E;
-	Mon,  1 Apr 2024 16:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33333487BC;
+	Mon,  1 Apr 2024 16:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrzNCWyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONNKHioQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1E21CA8F;
-	Mon,  1 Apr 2024 16:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E73482ED;
+	Mon,  1 Apr 2024 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987479; cv=none; b=UAmAT4GpXV8A2YTtOwREbs2JlVMMFRffaOjWAtHD+lANDAdiShSWXnz1l+P9phBH/LZ/IIjo6t8uJSX7jy5WEJhxIk2Oia3eMEQFRiUEST41ElL4/hTbg4/mtsU77WiXk0CCBvZeUFeICaszFmSUPK3CGMnukv1zzvHWdouA5kI=
+	t=1711990101; cv=none; b=oIOETaQNIqLfSZ+50GFi3997m1d6zzTYQijCCS+hKyN5SRO2aX2JrTME/dZdwMo2+Re9RMSMHYeD+P++Nz8BTZj29yHAWCa3TXfBtQ5M6zrGA3HMtLfTgMi5xnAcz8Y3VUgKPgFGZm3DGD/+bVLOGB/hZVTMgoXvJxNB+xsU4QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987479; c=relaxed/simple;
-	bh=JndSk0oxylZAFcxJNJneAwssiOxiFehISgih/ef5ESQ=;
+	s=arc-20240116; t=1711990101; c=relaxed/simple;
+	bh=OPRX4fb2htaYMzAB0gtOgnhRL6ceqrSDqV9DsPDlXfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpIJFGz/Nggh8LlUz/a2A7dCMn1pHghKR6UkqpgBksfRbgI/lR2da/d2kGzt+gK0GUYbFa2rJY9u9/trQuwzzTqsL0BJOqoeAK0iaYHOMW+i5JUyp+6YC2PamlBoFBXiV16ohel69Llx7RmdIrb6yQ8Qvz5Tvvz85R2/QmODePg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrzNCWyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47164C433F1;
-	Mon,  1 Apr 2024 16:04:38 +0000 (UTC)
+	 MIME-Version; b=l3jQDT9GdQyS5KXrpRbUUz2szzht91xTge5Wxti3TKP8ZEYvCcYlmtdp5LC1u5v39c5pIau84hP+Z1+6sVV6cBMvRRYyfG7Op1cUxvzdbuHfFX5DzxoVRp7olq31jWsmJMUWIr3F2PpzIVkX0Y/GP0IILgaM6XWhyx4asWohBFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONNKHioQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F034C433F1;
+	Mon,  1 Apr 2024 16:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987478;
-	bh=JndSk0oxylZAFcxJNJneAwssiOxiFehISgih/ef5ESQ=;
+	s=korg; t=1711990100;
+	bh=OPRX4fb2htaYMzAB0gtOgnhRL6ceqrSDqV9DsPDlXfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrzNCWykwj8jUud6/oCoWMLdviwZh2fL7Kcunw9Brm7FkwOedq3kYRZ3/CeUce5XQ
-	 L4PlqHHvEBx634Atug2CrH81Od/c7yqYEJUM4eRmvNuXjl7XCM/r4i0SzmPOtFutD5
-	 epAwKaQQ2inKF6gCcO0CUq++KUKNZ7cHRft5/xnE=
+	b=ONNKHioQ2bqXIH909FBZll+20iip4sjemevxe3HPn4dT0CK3vc28zNA05Wk6EzW8/
+	 R2HZIf90SuKCLA5QyoB6LuI9KCNGsc8Ott+zMcm5ek46BkKKHlWku48f9soFC+oZam
+	 wNbU7E7CStkUEo8d6JGex1jy8BbCLC5SCxfed5wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.8 300/399] wifi: cfg80211: add a flag to disable wireless extensions
+	Ma Jun <Jun.Ma2@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 217/396] drm/amdgpu/pm: Fix the error of pwm1_enable setting
 Date: Mon,  1 Apr 2024 17:44:26 +0200
-Message-ID: <20240401152558.148969177@linuxfoundation.org>
+Message-ID: <20240401152554.392329368@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit be23b2d7c3b7c8bf57b1cf0bf890bd65df9d0186 upstream.
+commit 0dafaf659cc463f2db0af92003313a8bc46781cd upstream.
 
-Wireless extensions are already disabled if MLO is enabled,
-given that we cannot support MLO there with all the hard-
-coded assumptions about BSSID etc.
+Fix the pwm_mode value error which used for
+pwm1_enable setting
 
-However, the WiFi7 ecosystem is still stabilizing, and some
-devices may need MLO disabled while that happens. In that
-case, we might end up with a device that supports wext (but
-not MLO) in one kernel, and then breaks wext in the future
-(by enabling MLO), which is not desirable.
-
-Add a flag to let such drivers/devices disable wext even if
-MLO isn't yet enabled.
-
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://msgid.link/20240314110951.b50f1dc4ec21.I656ddd8178eedb49dc5c6c0e70f8ce5807afb54f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h   |    2 ++
- net/wireless/wext-core.c |    7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4972,6 +4972,7 @@ struct cfg80211_ops {
-  *	set this flag to update channels on beacon hints.
-  * @WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY: support connection to non-primary link
-  *	of an NSTR mobile AP MLD.
-+ * @WIPHY_FLAG_DISABLE_WEXT: disable wireless extensions for this device
-  */
- enum wiphy_flags {
- 	WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK		= BIT(0),
-@@ -4983,6 +4984,7 @@ enum wiphy_flags {
- 	WIPHY_FLAG_4ADDR_STATION		= BIT(6),
- 	WIPHY_FLAG_CONTROL_PORT_PROTOCOL	= BIT(7),
- 	WIPHY_FLAG_IBSS_RSN			= BIT(8),
-+	WIPHY_FLAG_DISABLE_WEXT			= BIT(9),
- 	WIPHY_FLAG_MESH_AUTH			= BIT(10),
- 	WIPHY_FLAG_SUPPORTS_EXT_KCK_32          = BIT(11),
- 	WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY	= BIT(12),
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -4,6 +4,7 @@
-  * Authors :	Jean Tourrilhes - HPL - <jt@hpl.hp.com>
-  * Copyright (c) 1997-2007 Jean Tourrilhes, All Rights Reserved.
-  * Copyright	2009 Johannes Berg <johannes@sipsolutions.net>
-+ * Copyright (C) 2024 Intel Corporation
-  *
-  * (As all part of the Linux kernel, this file is GPL)
-  */
-@@ -662,7 +663,8 @@ struct iw_statistics *get_wireless_stats
- 	    dev->ieee80211_ptr->wiphy->wext &&
- 	    dev->ieee80211_ptr->wiphy->wext->get_wireless_stats) {
- 		wireless_warn_cfg80211_wext();
--		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
-+		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
-+							WIPHY_FLAG_DISABLE_WEXT))
- 			return NULL;
- 		return dev->ieee80211_ptr->wiphy->wext->get_wireless_stats(dev);
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -2395,6 +2395,7 @@ static ssize_t amdgpu_hwmon_set_pwm1_ena
+ {
+ 	struct amdgpu_device *adev = dev_get_drvdata(dev);
+ 	int err, ret;
++	u32 pwm_mode;
+ 	int value;
+ 
+ 	if (amdgpu_in_reset(adev))
+@@ -2406,13 +2407,22 @@ static ssize_t amdgpu_hwmon_set_pwm1_ena
+ 	if (err)
+ 		return err;
+ 
++	if (value == 0)
++		pwm_mode = AMD_FAN_CTRL_NONE;
++	else if (value == 1)
++		pwm_mode = AMD_FAN_CTRL_MANUAL;
++	else if (value == 2)
++		pwm_mode = AMD_FAN_CTRL_AUTO;
++	else
++		return -EINVAL;
++
+ 	ret = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	if (ret < 0) {
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+ 		return ret;
  	}
-@@ -704,7 +706,8 @@ static iw_handler get_handler(struct net
- #ifdef CONFIG_CFG80211_WEXT
- 	if (dev->ieee80211_ptr && dev->ieee80211_ptr->wiphy) {
- 		wireless_warn_cfg80211_wext();
--		if (dev->ieee80211_ptr->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)
-+		if (dev->ieee80211_ptr->wiphy->flags & (WIPHY_FLAG_SUPPORTS_MLO |
-+							WIPHY_FLAG_DISABLE_WEXT))
- 			return NULL;
- 		handlers = dev->ieee80211_ptr->wiphy->wext;
- 	}
+ 
+-	ret = amdgpu_dpm_set_fan_control_mode(adev, value);
++	ret = amdgpu_dpm_set_fan_control_mode(adev, pwm_mode);
+ 
+ 	pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
+ 	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
 
 
 
