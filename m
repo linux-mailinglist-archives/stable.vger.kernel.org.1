@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B71893F5B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC8B89411B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AE611F22489
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47591F2277D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316ED1DFFC;
-	Mon,  1 Apr 2024 16:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C967433DA;
+	Mon,  1 Apr 2024 16:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPtqF0+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zABx2aj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C313D961;
-	Mon,  1 Apr 2024 16:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8EC1E525;
+	Mon,  1 Apr 2024 16:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988121; cv=none; b=Yry7ni2VGUTug9WXe4MvUrbcp4zRD/UkcdhI3hpF/lxZgJHOqNBBQi7aHLMKrOBSzGoYbz3H+qrEuddLGpd4jAWhYZPcja2AAqT7TSeUIQVNOgHDiJNzg8IaJV1dWmHd2zz3Z801NnYGgp2hgdPYGKaO+r1VuxOGBAiwdA2+G9E=
+	t=1711989468; cv=none; b=BNB1cgO9AK3Pto7W2LES19BzL9KZCBxciKFom8+CYW2HLgCBdnixdRJwzfwZwqp1czC4gLh61xgHK9vbN42P7znhaMtPVGEsdXrgDJ05NVBFKal1Nu4qYsghAWGzHY0vH8pWE1sDTXF7YL/XyKk3NSqEz93q1RHyzkKZrCHJP0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988121; c=relaxed/simple;
-	bh=AXwC1aBmX/VebUTi9aFU+Qh9KolNcoP95Kby1yEj1ec=;
+	s=arc-20240116; t=1711989468; c=relaxed/simple;
+	bh=JDSWNQ2FvrFcrp+jfq3d8KPj5qg8zPGUjYrczqUrs+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBxBvUA7t/T9ZARqGGI2l//w/hgpgNxhrlu2OCuaf8Bn+Q7mGMS7eWRrWjJajoZsn5ibC3IFiCwzyAs2fYylBbJcM1i5sVHHZB2rxF5gZaoV9ygwjGZV1qNxHccqUOfSIYqirg7miZ2w91/R0OOgeMb3zip9TEeXLMSgHShRdvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPtqF0+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE2FC433F1;
-	Mon,  1 Apr 2024 16:15:21 +0000 (UTC)
+	 MIME-Version; b=ujMfV6lFUy41NELvIUrdeJ3BpyVaLwv9kDHzAa5mE/10WCSpTm0vGhjaCEGm/oM/IAAzvBs+EhiCyhlWZrm0ZHJgGPue/euwDXHNllWxFzxiYroAxtMurMB59xHQnQ+bD1XDrrN2QsDZpHd6u0GNArSz6r5nou/uzvfzCdmyFEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zABx2aj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD92C433F1;
+	Mon,  1 Apr 2024 16:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988121;
-	bh=AXwC1aBmX/VebUTi9aFU+Qh9KolNcoP95Kby1yEj1ec=;
+	s=korg; t=1711989468;
+	bh=JDSWNQ2FvrFcrp+jfq3d8KPj5qg8zPGUjYrczqUrs+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPtqF0+QuReG7R3+hAUaymmibc5u9FC3G5+PAbg333MKLo46UuUgoZQNnDBBUjobT
-	 fSb+DJog9A/+28cugZfDiWlbSG/wsMWH/GEVY3s92oOW/tKRfNaLjEa3SqzDb1xijA
-	 4WTYAqNKZkduon40ONsyGZrKhrghmLLVDKbh7TR0=
+	b=zABx2aj058QJECC9W0Fo+HZXOLW1hAYEczvKVZc6ohIpbe1qDXL6uvOosRKqSRt7Z
+	 Z/xH3bKFM7iQesj9bv+GNcXzksgJzP1++VevrkQ02Emu0GO4PsQL6hXCwgC3jEapMB
+	 i0DJGZOnTfbaakn+xmddhY2GEUbLC0681qfLyu5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 090/432] usb: dwc3-am62: fix module unload/reload behavior
-Date: Mon,  1 Apr 2024 17:41:17 +0200
-Message-ID: <20240401152555.809430705@linuxfoundation.org>
+Subject: [PATCH 6.6 029/396] thermal/intel: Fix intel_tcc_get_temp() to support negative CPU temperature
+Date: Mon,  1 Apr 2024 17:41:18 +0200
+Message-ID: <20240401152548.773913259@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 6661befe41009c210efa2c1bcd16a5cc4cff8a06 ]
+[ Upstream commit 7251b9e8a007ddd834aa81f8c7ea338884629fec ]
 
-As runtime PM is enabled, the module can be runtime
-suspended when .remove() is called.
+CPU temperature can be negative in some cases. Thus the negative CPU
+temperature should not be considered as a failure.
 
-Do a pm_runtime_get_sync() to make sure module is active
-before doing any register operations.
+Fix intel_tcc_get_temp() and its users to support negative CPU
+temperature.
 
-Doing a pm_runtime_put_sync() should disable the refclk
-so no need to disable it again.
-
-Fixes the below warning at module removel.
-
-[   39.705310] ------------[ cut here ]------------
-[   39.710004] clk:162:3 already disabled
-[   39.713941] WARNING: CPU: 0 PID: 921 at drivers/clk/clk.c:1090 clk_core_disable+0xb0/0xb8
-
-We called of_platform_populate() in .probe() so call the
-cleanup function of_platform_depopulate() in .remove().
-Get rid of the now unnnecessary dwc3_ti_remove_core().
-Without this, module re-load doesn't work properly.
-
-Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20240227-for-v6-9-am62-usb-errata-3-0-v4-1-0ada8ddb0767@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3c1f066e1c5 ("thermal/intel: Introduce Intel TCC library")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-am62.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ .../intel/int340x_thermal/processor_thermal_device.c |  8 ++++----
+ drivers/thermal/intel/intel_tcc.c                    | 12 ++++++------
+ drivers/thermal/intel/x86_pkg_temp_thermal.c         |  8 ++++----
+ include/linux/intel_tcc.h                            |  2 +-
+ 4 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
-index 90a587bc29b74..f85603b7f7c5e 100644
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -267,21 +267,14 @@ static int dwc3_ti_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int dwc3_ti_remove_core(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
--	return 0;
--}
--
- static void dwc3_ti_remove(struct platform_device *pdev)
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+index 3ca0a2f5937f2..cdf88cadfc4f1 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+@@ -113,14 +113,14 @@ static int proc_thermal_get_zone_temp(struct thermal_zone_device *zone,
+ 					 int *temp)
  {
- 	struct device *dev = &pdev->dev;
- 	struct dwc3_am62 *am62 = platform_get_drvdata(pdev);
- 	u32 reg;
+ 	int cpu;
+-	int curr_temp;
++	int curr_temp, ret;
  
--	device_for_each_child(dev, NULL, dwc3_ti_remove_core);
-+	pm_runtime_get_sync(dev);
-+	of_platform_depopulate(dev);
+ 	*temp = 0;
  
- 	/* Clear mode valid bit */
- 	reg = dwc3_ti_readl(am62, USBSS_MODE_CONTROL);
-@@ -289,7 +282,6 @@ static void dwc3_ti_remove(struct platform_device *pdev)
- 	dwc3_ti_writel(am62, USBSS_MODE_CONTROL, reg);
+ 	for_each_online_cpu(cpu) {
+-		curr_temp = intel_tcc_get_temp(cpu, false);
+-		if (curr_temp < 0)
+-			return curr_temp;
++		ret = intel_tcc_get_temp(cpu, &curr_temp, false);
++		if (ret < 0)
++			return ret;
+ 		if (!*temp || curr_temp > *temp)
+ 			*temp = curr_temp;
+ 	}
+diff --git a/drivers/thermal/intel/intel_tcc.c b/drivers/thermal/intel/intel_tcc.c
+index 2e5c741c41ca0..5e8b7f34b3951 100644
+--- a/drivers/thermal/intel/intel_tcc.c
++++ b/drivers/thermal/intel/intel_tcc.c
+@@ -103,18 +103,19 @@ EXPORT_SYMBOL_NS_GPL(intel_tcc_set_offset, INTEL_TCC);
+ /**
+  * intel_tcc_get_temp() - returns the current temperature
+  * @cpu: cpu that the MSR should be run on, nagative value means any cpu.
++ * @temp: pointer to the memory for saving cpu temperature.
+  * @pkg: true: Package Thermal Sensor. false: Core Thermal Sensor.
+  *
+  * Get the current temperature returned by the CPU core/package level
+  * thermal sensor, in degrees C.
+  *
+- * Return: Temperature in degrees C on success, negative error code otherwise.
++ * Return: 0 on success, negative error code otherwise.
+  */
+-int intel_tcc_get_temp(int cpu, bool pkg)
++int intel_tcc_get_temp(int cpu, int *temp, bool pkg)
+ {
+ 	u32 low, high;
+ 	u32 msr = pkg ? MSR_IA32_PACKAGE_THERM_STATUS : MSR_IA32_THERM_STATUS;
+-	int tjmax, temp, err;
++	int tjmax, err;
  
- 	pm_runtime_put_sync(dev);
--	clk_disable_unprepare(am62->usb2_refclk);
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_suspended(dev);
+ 	tjmax = intel_tcc_get_tjmax(cpu);
+ 	if (tjmax < 0)
+@@ -131,9 +132,8 @@ int intel_tcc_get_temp(int cpu, bool pkg)
+ 	if (!(low & BIT(31)))
+ 		return -ENODATA;
+ 
+-	temp = tjmax - ((low >> 16) & 0x7f);
++	*temp = tjmax - ((low >> 16) & 0x7f);
+ 
+-	/* Do not allow negative CPU temperature */
+-	return temp >= 0 ? temp : -ENODATA;
++	return 0;
  }
+ EXPORT_SYMBOL_NS_GPL(intel_tcc_get_temp, INTEL_TCC);
+diff --git a/drivers/thermal/intel/x86_pkg_temp_thermal.c b/drivers/thermal/intel/x86_pkg_temp_thermal.c
+index 11a7f8108bbbf..61c3d450ee605 100644
+--- a/drivers/thermal/intel/x86_pkg_temp_thermal.c
++++ b/drivers/thermal/intel/x86_pkg_temp_thermal.c
+@@ -108,11 +108,11 @@ static struct zone_device *pkg_temp_thermal_get_dev(unsigned int cpu)
+ static int sys_get_curr_temp(struct thermal_zone_device *tzd, int *temp)
+ {
+ 	struct zone_device *zonedev = thermal_zone_device_priv(tzd);
+-	int val;
++	int val, ret;
+ 
+-	val = intel_tcc_get_temp(zonedev->cpu, true);
+-	if (val < 0)
+-		return val;
++	ret = intel_tcc_get_temp(zonedev->cpu, &val, true);
++	if (ret < 0)
++		return ret;
+ 
+ 	*temp = val * 1000;
+ 	pr_debug("sys_get_curr_temp %d\n", *temp);
+diff --git a/include/linux/intel_tcc.h b/include/linux/intel_tcc.h
+index f422612c28d6b..8ff8eabb4a987 100644
+--- a/include/linux/intel_tcc.h
++++ b/include/linux/intel_tcc.h
+@@ -13,6 +13,6 @@
+ int intel_tcc_get_tjmax(int cpu);
+ int intel_tcc_get_offset(int cpu);
+ int intel_tcc_set_offset(int cpu, int offset);
+-int intel_tcc_get_temp(int cpu, bool pkg);
++int intel_tcc_get_temp(int cpu, int *temp, bool pkg);
+ 
+ #endif /* __INTEL_TCC_H__ */
 -- 
 2.43.0
 
