@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045E0894313
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B5E894009
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64B9AB208FB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51C9E1C213D7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED964481B8;
-	Mon,  1 Apr 2024 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5495B4778E;
+	Mon,  1 Apr 2024 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPYpDaN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaF3xT5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADFA1E86C;
-	Mon,  1 Apr 2024 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FF14087B;
+	Mon,  1 Apr 2024 16:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990759; cv=none; b=qSU4bu4B61ZmKrXAZazLW0BN7DvMzXYiMpkX5Fr79rkRPI0iK/C7LsofMc5kn8M771rZfgXtxQtBJyBhJhRUIKq/L8h6VnCLBLkoHe2cvcBF/embPBIw3BXXKbj1WgkW/HollKlyIyrYjKM3znG/PAsbu3VhzuNd1dJ7Zb6ioYM=
+	t=1711988689; cv=none; b=pBRiYdFal6lV0GDncsxwSFfyskDPMcSBwcL+rR7nPH77m2+NAzLe1VukdMR1UUPDsi1y3nt2V87dTPxxjs6lnVWirwR5HCEUGn4+7+tfUBPpzmKQiAxP9g/advMjgrsWklHpJVZAIMehbw09mVyblPZSKxn+PaaKuMEY0sjHh54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990759; c=relaxed/simple;
-	bh=RztuwVQE0VbnDXPq3tIIIYnI+WiaBzhbZXBPDv7COnQ=;
+	s=arc-20240116; t=1711988689; c=relaxed/simple;
+	bh=Slaswz8P6KfsoXBCSULndJARxSqgy1Fp2IcXu+mvKX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=br/aBaabB77t/rH8pgeaSkGeVwRhKPcrqaU55zMEZgd+FlY6QjDd9Yo2j6rvLqjd0uDrKFAeMYF4DjWf+p6/pyZGGD9QUH5jAxZlxh1ZVdjOqmMZM+NXDMThIALotZoia776MBNVRvmrppwgVpXGlHiH5xN2LKK0PWFsRWk+5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPYpDaN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C05C433C7;
-	Mon,  1 Apr 2024 16:59:19 +0000 (UTC)
+	 MIME-Version; b=eJwJuNejupKFXsOvqvvdq56HlUUFDLHDi1AoyiYD6QawdxwAQcMDs9UJEq5O3KNC1JTbekLc3XYCYV1wMZXSAz7ILStU5eLJpOOpZAY+LyyosikLsEWF4gfd42EbSCy/vIS/eGdAN5P3aFuraJBKoPKf0rla9Ayes+QCO1T8H8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaF3xT5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73203C433F1;
+	Mon,  1 Apr 2024 16:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990759;
-	bh=RztuwVQE0VbnDXPq3tIIIYnI+WiaBzhbZXBPDv7COnQ=;
+	s=korg; t=1711988688;
+	bh=Slaswz8P6KfsoXBCSULndJARxSqgy1Fp2IcXu+mvKX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPYpDaN591OBiXk7hTGGAmJMZEUEr5djtPzBWgWDcW+FbmWwaupQAQ1tRZdMBQ+cM
-	 UaCdiWvhnUVLE8PESPvuk19cQr795ti1q+ryq+a8cIUj76XbiwExXbqePM6EGy5cb/
-	 AHWb1TkQ6erSw/jIdoFUZ9hop+wGsUjBxGJT7tvE=
+	b=xaF3xT5so2vr/67N3QgRh5FnZkUeG+rGNBHoJTGFXhNu3+gAdkLnj+pSPXqfylfOz
+	 YPYH+eX/vQPU5U0Zx/UkcmBFo6+f5tQb7MoBmm10oiYIF+XOtaqQobi3HJ0b20+Yzq
+	 A1Jx0n2HRbU1po9IC1rezI3bAaO71x4mJcwt4IAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Adrien Grassein <adrien.grassein@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/272] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
+Subject: [PATCH 6.7 231/432] drm/bridge: lt8912b: do not return negative values from .get_modes()
 Date: Mon,  1 Apr 2024 17:43:38 +0200
-Message-ID: <20240401152531.238600545@linuxfoundation.org>
+Message-ID: <20240401152600.023028892@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 5580e96dad5a439d561d9648ffcbccb739c2a120 ]
+[ Upstream commit 171b711b26cce208bb628526b1b368aeec7b6fa4 ]
 
-If nr_cpu_ids is too low to include at least all the threads of a single
-core adjust nr_cpu_ids upwards. This avoids triggering odd bugs in code
-that assumes all threads of a core are available.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
+Cc: Adrien Grassein <adrien.grassein@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231229120107.2281153-1-mpe@ellerman.id.au
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/dcdddcbcb64b6f6cdc55022ee50c10dee8ddbc3d.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 8537c354c560b..a64f4fb332893 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -369,6 +369,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	if (IS_ENABLED(CONFIG_PPC64))
- 		boot_cpu_hwid = be32_to_cpu(intserv[found_thread]);
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index f0ebd56b4736a..e5839c89a355a 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -430,23 +430,21 @@ lt8912_connector_mode_valid(struct drm_connector *connector,
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+ 	const struct drm_edid *drm_edid;
+-	int ret = -1;
+-	int num = 0;
+ 	struct lt8912 *lt = connector_to_lt8912(connector);
+ 	u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++	int ret, num;
  
-+	if (nr_cpu_ids % nthreads != 0) {
-+		set_nr_cpu_ids(ALIGN(nr_cpu_ids, nthreads));
-+		pr_warn("nr_cpu_ids was not a multiple of threads_per_core, adjusted to %d\n",
-+			nr_cpu_ids);
-+	}
+ 	drm_edid = drm_bridge_edid_read(lt->hdmi_port, connector);
+ 	drm_edid_connector_update(connector, drm_edid);
+-	if (drm_edid) {
+-		num = drm_edid_connector_add_modes(connector);
+-	} else {
+-		return ret;
+-	}
++	if (!drm_edid)
++		return 0;
 +
- 	/*
- 	 * PAPR defines "logical" PVR values for cpus that
- 	 * meet various levels of the architecture:
++	num = drm_edid_connector_add_modes(connector);
+ 
+ 	ret = drm_display_info_set_bus_formats(&connector->display_info,
+ 					       &bus_format, 1);
+-	if (ret)
+-		num = ret;
++	if (ret < 0)
++		num = 0;
+ 
+ 	drm_edid_free(drm_edid);
+ 	return num;
 -- 
 2.43.0
 
