@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077D7894344
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FB8894225
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C871C21E6F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230A21F22855
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D00481C6;
-	Mon,  1 Apr 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1897D47A6B;
+	Mon,  1 Apr 2024 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4FjY9e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y45pnZUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ACE1C0DE7;
-	Mon,  1 Apr 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83A81C0DE7;
+	Mon,  1 Apr 2024 16:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990902; cv=none; b=IVQ3+Q0bTa14LoRu4KmJW+Gkrd3VHKDVESyH5uyMd3Jtn1v33uA/ynkQsFvWPilqNVXYcY+qQPDggsrvsIWjEUaUBO8UeT5Tghx0bYT6q/L02HHo7he+tPpcFRHcrZbsTd7/S07fVhcLufHjV6QGqAATKKJzYynUlDiOdnJKGjg=
+	t=1711990183; cv=none; b=AETPTQfFca1Ov08dgzLDTkTyMBEUvlIDunDDXM4UzzIQBNWX0a/vfenXXHwYlmH9HdqPb0/m7Jgyy3OBBSLCOS/4Wv7Xb1anIrnuDXrGS6MQ7ZOzr3rj0Oims4QOh42TGNsIfKG8IyhydJBZg3NzTIYmoSGzZUhcbatoz7dAoy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990902; c=relaxed/simple;
-	bh=Prt8DmzcFDskio+QCEBYPET610Yxwzok4xLRmQjmx7w=;
+	s=arc-20240116; t=1711990183; c=relaxed/simple;
+	bh=IAbDnKXk8x1C78LW8K6mRKEKIccBsiZ0nXPTUwKmS1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrRiuJPjiwTaFgs00v7yf/kswtNzsMDALveTmkE3mA4Jppu8EuxM8TWCQ7biIkxBUrWaYmfZbl63jsNVGSOna3uXymx8DMJxuSbo41mgxZm77uqMyNrY9IHSJszko59upeP6JXF0wb3ejmDA7og6dMrvvvPAM0LfleqATeSsJDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4FjY9e2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D847C433C7;
-	Mon,  1 Apr 2024 17:01:41 +0000 (UTC)
+	 MIME-Version; b=pk03roW0lPyeM8soXfXrWNQduP6XmaF+QoaSkseLeMRYKnO2OonGpNHKL0E50nr3l5CFELS/ed+I90w62P0mC3WQ52N6F1UjsZxEElQXdSOSNsU7m+vM33vK6WJBPI4ZxXi29mMxmpKTc44tEcq3ZkAcdsYZZMcn4M7zLnzv+7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y45pnZUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408C9C433F1;
+	Mon,  1 Apr 2024 16:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990902;
-	bh=Prt8DmzcFDskio+QCEBYPET610Yxwzok4xLRmQjmx7w=;
+	s=korg; t=1711990183;
+	bh=IAbDnKXk8x1C78LW8K6mRKEKIccBsiZ0nXPTUwKmS1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4FjY9e2tBZ6NpJzCoHjeMLJzQQ4cLoJVT5IP8y/9sx+SdQnMpio8lrnKNsYxgEi2
-	 TOsbxx89t4iaH2OfVCqKj3Q6uPTXtHkQ0sMIlnCfJkcW+6FQYzxYWOdT28d1c7NE5B
-	 htaHb7INJIXG4Q8rGmzC01Hix/3PDYDcDEtXa7jM=
+	b=Y45pnZUZXyDwjsXhv1KTkY/RSiFTIcze3lo/oW/UDFA4RtCeq4GBcEwzcfloaxhcD
+	 RQm8NYFt8Nr0nZGNQzc+HvlOL7K3MbRVP69rGb52U+hdKCbct6Wc+DhwzUB9UsTypm
+	 nPLjKu4cYzibBA7hw8n2BLjcL6dRb0Doy7O34L1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/272] vfio/pci: Consolidate irq cleanup on MSI/MSI-X disable
-Date: Mon,  1 Apr 2024 17:44:52 +0200
-Message-ID: <20240401152533.827966700@linuxfoundation.org>
+	Andi Shyti <andi.shyti@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 6.6 244/396] i2c: i801: Avoid potential double call to gpiod_remove_lookup_table
+Date: Mon,  1 Apr 2024 17:44:53 +0200
+Message-ID: <20240401152555.187870975@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit a65f35cfd504e5135540939cffd4323083190b36 ]
+commit ceb013b2d9a2946035de5e1827624edc85ae9484 upstream.
 
-vfio_msi_disable() releases all previously allocated state
-associated with each interrupt before disabling MSI/MSI-X.
+If registering the platform device fails, the lookup table is
+removed in the error path. On module removal we would try to
+remove the lookup table again. Fix this by setting priv->lookup
+only if registering the platform device was successful.
+In addition free the memory allocated for the lookup table in
+the error path.
 
-vfio_msi_disable() iterates twice over the interrupt state:
-first directly with a for loop to do virqfd cleanup, followed
-by another for loop within vfio_msi_set_block() that removes
-the interrupt handler and its associated state using
-vfio_msi_set_vector_signal().
-
-Simplify interrupt cleanup by iterating over allocated interrupts
-once.
-
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/837acb8cbe86a258a50da05e56a1f17c1a19abbe.1683740667.git.reinette.chatre@intel.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Stable-dep-of: fe9a7082684e ("vfio/pci: Disable auto-enable of exclusive INTx IRQ")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d308dfbf62ef ("i2c: mux/i801: Switch to use descriptor passing")
+Cc: stable@vger.kernel.org
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-i801.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index bffb0741518b9..6a9c6a143cc3a 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -426,10 +426,9 @@ static void vfio_msi_disable(struct vfio_pci_core_device *vdev, bool msix)
- 	for (i = 0; i < vdev->num_ctx; i++) {
- 		vfio_virqfd_disable(&vdev->ctx[i].unmask);
- 		vfio_virqfd_disable(&vdev->ctx[i].mask);
-+		vfio_msi_set_vector_signal(vdev, i, -1, msix);
- 	}
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1417,7 +1417,6 @@ static void i801_add_mux(struct i801_pri
+ 		lookup->table[i] = GPIO_LOOKUP(mux_config->gpio_chip,
+ 					       mux_config->gpios[i], "mux", 0);
+ 	gpiod_add_lookup_table(lookup);
+-	priv->lookup = lookup;
  
--	vfio_msi_set_block(vdev, 0, vdev->num_ctx, NULL, msix);
--
- 	cmd = vfio_pci_memory_lock_and_enable(vdev);
- 	pci_free_irq_vectors(pdev);
- 	vfio_pci_memory_unlock_and_restore(vdev, cmd);
--- 
-2.43.0
-
+ 	/*
+ 	 * Register the mux device, we use PLATFORM_DEVID_NONE here
+@@ -1431,7 +1430,10 @@ static void i801_add_mux(struct i801_pri
+ 				sizeof(struct i2c_mux_gpio_platform_data));
+ 	if (IS_ERR(priv->mux_pdev)) {
+ 		gpiod_remove_lookup_table(lookup);
++		devm_kfree(dev, lookup);
+ 		dev_err(dev, "Failed to register i2c-mux-gpio device\n");
++	} else {
++		priv->lookup = lookup;
+ 	}
+ }
+ 
 
 
 
