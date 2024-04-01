@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-34384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC5C893F20
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:12:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420BA893F21
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1F92B20A46
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0984283496
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B864778C;
-	Mon,  1 Apr 2024 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717D14778E;
+	Mon,  1 Apr 2024 16:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyEra/W8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnJri6Q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0376A43AD6;
-	Mon,  1 Apr 2024 16:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC8143AD6;
+	Mon,  1 Apr 2024 16:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987941; cv=none; b=MrHPlfjRDKJgWpnC/x9qJBjdr9Q0S3kxBZMgAFEn6kD++nSyn5RYTJEyGAbSRrwH7/DjcOwKx1tCZx0bR0iDO3lAcv43Znta0MI1Qxml9K4pG6Anj/d857wxvZWzFHiIQEgnduyqBcUJF69z3ke1VuiQjux4JqpA3OxlfYZT8Ts=
+	t=1711987947; cv=none; b=U4/NXA9gjwUXkXSKdRPDoeplF6WDd/UZC79KxYWZK6C2b75EbHhhoh6Dh26gbkSSITaHj5u15tJKV1plHXCZwh0SOGgfp7bAJmXbuYHXn1y1QNzxB+S1uRxmdyJj85wSCvoLNQefO+O01dCdtzCoMVCS5Rfd0lYajFRidZkxnw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987941; c=relaxed/simple;
-	bh=DOTmmK/GTkfoMrH+J0aJmTr4YFOTR8AXqHxXTvlx1tg=;
+	s=arc-20240116; t=1711987947; c=relaxed/simple;
+	bh=0PjHsngTRhL05k3nikCA/iX3Pp8TwBLyqUwshew/woA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZoH7iLTiPrs8UUT1JLhpDr3IPRQChSFkkR0Oy4semTx1k59FFZiEyEqfUlZ0QtKi9EuecF8BIjp0yYxXTF3qHDs5Tx3wk6MKusPcXB4lH3gZqEPPjeIHUkMIKPEa5zzDZanFPRmpHZhxFyUrNz7VR2YPqvl4/BL1XY0L0ZsXb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyEra/W8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3783C43390;
-	Mon,  1 Apr 2024 16:12:18 +0000 (UTC)
+	 MIME-Version; b=jXcTulqe9myw8isCoG4ryZQ3JpAjiRiRfpAwwRLNQ47G3guTzpiGYephrqNPvuQbCPI+EF4zYXAop8/7NEpU1vURUG0+1r0R59skDKIUQAB4ol2IgsmFJyzvbWa1vLSgKhSepaE3XHzfcnFDgsKjMsQzIdx4G/l1EN8aOczuxOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnJri6Q9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410BAC433C7;
+	Mon,  1 Apr 2024 16:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987939;
-	bh=DOTmmK/GTkfoMrH+J0aJmTr4YFOTR8AXqHxXTvlx1tg=;
+	s=korg; t=1711987946;
+	bh=0PjHsngTRhL05k3nikCA/iX3Pp8TwBLyqUwshew/woA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyEra/W8QPL/B0njrMyspmPUkSQYIBlYzWLT8A78bwkwl3EFtdMqXRJ5hKQRw+DGl
-	 C39rLG8j1ICXkKUAbIqx+HvRmJ6agxN8Gf9FCAv1r/lodySy7Ye53jtuRlfxLs0F37
-	 QiKOxgs/dTtaJy0cbC1f7q3IIQoXs6NfU1gAD7Zo=
+	b=fnJri6Q9uqCfMTOMfJ8+lCptq5pj9VVhVObhnnBjtCzvr4AhZZK8ILBoMoCNBlMQQ
+	 tqlsZVMGhZsbI2Bfjdby4jt7TTmPXCNjFK9l5RdFsia3/zG3IK1PnSFu0vhakORO+/
+	 1eDKuQ1i3bIk186yb1kisJMW7o5Bf5/t8BLR5LuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 036/432] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
-Date: Mon,  1 Apr 2024 17:40:23 +0200
-Message-ID: <20240401152554.209619642@linuxfoundation.org>
+Subject: [PATCH 6.7 037/432] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
+Date: Mon,  1 Apr 2024 17:40:24 +0200
+Message-ID: <20240401152554.238549979@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
 References: <20240401152553.125349965@linuxfoundation.org>
@@ -67,32 +67,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 5580e96dad5a439d561d9648ffcbccb739c2a120 ]
+[ Upstream commit 777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef ]
 
-If nr_cpu_ids is too low to include at least all the threads of a single
-core adjust nr_cpu_ids upwards. This avoids triggering odd bugs in code
-that assumes all threads of a core are available.
+If nr_cpu_ids is too low to include the boot CPU adjust nr_cpu_ids
+upward. Otherwise the kernel will BUG when trying to allocate a paca
+for the boot CPU and fail to boot.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231229120107.2281153-1-mpe@ellerman.id.au
+Link: https://msgid.link/20231229120107.2281153-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/powerpc/kernel/prom.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 0b5878c3125b1..58e80076bed5c 100644
+index 58e80076bed5c..77364729a1b61 100644
 --- a/arch/powerpc/kernel/prom.c
 +++ b/arch/powerpc/kernel/prom.c
-@@ -375,6 +375,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	if (IS_ENABLED(CONFIG_PPC64))
- 		boot_cpu_hwid = be32_to_cpu(intserv[found_thread]);
+@@ -381,6 +381,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 			nr_cpu_ids);
+ 	}
  
-+	if (nr_cpu_ids % nthreads != 0) {
-+		set_nr_cpu_ids(ALIGN(nr_cpu_ids, nthreads));
-+		pr_warn("nr_cpu_ids was not a multiple of threads_per_core, adjusted to %d\n",
-+			nr_cpu_ids);
++	if (boot_cpuid >= nr_cpu_ids) {
++		set_nr_cpu_ids(min(CONFIG_NR_CPUS, ALIGN(boot_cpuid + 1, nthreads)));
++		pr_warn("Boot CPU %d >= nr_cpu_ids, adjusted nr_cpu_ids to %d\n",
++			boot_cpuid, nr_cpu_ids);
 +	}
 +
  	/*
