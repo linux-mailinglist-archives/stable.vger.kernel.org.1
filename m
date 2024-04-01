@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-35087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD289425A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:52:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D9689436F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC65E1C21C5D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:52:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 555F41C21D45
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814F648781;
-	Mon,  1 Apr 2024 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C8D482CA;
+	Mon,  1 Apr 2024 17:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYeP56QX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLCOpMqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAD6481B8;
-	Mon,  1 Apr 2024 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F081DFF4;
+	Mon,  1 Apr 2024 17:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990294; cv=none; b=hQlBv74v0NOMgPWXvmpFW8PJFL6CzU6q+11nK42Px9Fjcc+92CAMwPgbnSdadyKlzr5A9GRr4+3lF2WM1/8GlHY8ANJ1SJlWVcuUfVFF0aaCFysZHVKbHL6jMaZcSFgYVX078ePFiIpTHNWLBHa/Jd/LJoimpgB0BFiGVGPsGAU=
+	t=1711991017; cv=none; b=tB5078W0kXLCkhKhNTI5g0hLT4kQrdSIdpzCVIEFiv1v617czJN6jNgO1enbgrKykcI0Y4pbcYsLw0OeairLL1Z7ESvLoWTIq7VzJezOeoHc7kxvLQmIlSRI0kIuTNQzJ3FmExCYCsLNXCiya3DZ5/trK8iK327HVOMmdg9tr+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990294; c=relaxed/simple;
-	bh=7kbQZF7CloFxtL6igh7Zwp10KXejJW8nCOJ+6cvfvJI=;
+	s=arc-20240116; t=1711991017; c=relaxed/simple;
+	bh=BajQSgI+XDOeuC513hS1mFabUtsG1Cu5SJwgzglF8ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIY2QOdiiKZxLRp04DrH0Lon31z/gRDRQef/gDs7wtvcMSKG7N1f4ydikzv/NAt2vDSi9HXAyy4NJHpFrLFlD8Ens+A5JWrIGsAua1wGWPHryeki0p2rYkdxSZ9Wk0VW0e3U4Avqb0SV9Y/zgYpi53IYoZGfd76ju7JnCxjKch4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYeP56QX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD06CC433C7;
-	Mon,  1 Apr 2024 16:51:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jmqcY7ImE+DjuDGkp9g/TjjEwbBong5LKl1Hfl/dBx1+FEAyd1z9Byd4epq26uHdfO97ghRFzgXf+/To6TbWJI0yTzeU6URX487YLE7V5mRmc+iqUId4QSe/vJZq/uPuAz/LM9CJr/pTd+udBU/SaZNLUnRTm8deoxUb9/b2FhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLCOpMqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1F6C433C7;
+	Mon,  1 Apr 2024 17:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990294;
-	bh=7kbQZF7CloFxtL6igh7Zwp10KXejJW8nCOJ+6cvfvJI=;
+	s=korg; t=1711991017;
+	bh=BajQSgI+XDOeuC513hS1mFabUtsG1Cu5SJwgzglF8ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYeP56QXYoKigIpdfG6e5MezQVzfaZyNYE1x0Ivc61eKVgv3ZzadVxbw1ubeEGA/G
-	 NjrKrLpl70dLQ2xiez5a5Y5QdHyo9/lHA4hiR6WV2sCci5warJdvU3uxVJGhwM7EMM
-	 vDLP0lQYG5JhYIk+0P9hMPa1pzz/B1lqUhCjPLmU=
+	b=TLCOpMqM47Z6REFxqn3/IMgTQOi+OZM4hmtT+M1BHhutRjPIKTCu8FKyBIzSKrzkC
+	 MHtDXXyXXTlkLMicmm0mU64mLH16/hWVozWxtakaFw0aPRl1dzk3KeZznkWhOYMAYS
+	 REwlrfdSIWq14222p7fmbC5sW7Q8bRy8Ofna9MPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.6 278/396] vfio: Introduce interface to flush virqfd inject workqueue
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 137/272] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
 Date: Mon,  1 Apr 2024 17:45:27 +0200
-Message-ID: <20240401152556.199245164@linuxfoundation.org>
+Message-ID: <20240401152534.962783230@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit b620ecbd17a03cacd06f014a5d3f3a11285ce053 upstream.
+[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
 
-In order to synchronize changes that can affect the thread callback,
-introduce an interface to force a flush of the inject workqueue.  The
-irqfd pointer is only valid under spinlock, but the workqueue cannot
-be flushed under spinlock.  Therefore the flush work for the irqfd is
-queued under spinlock.  The vfio_irqfd_cleanup_wq workqueue is re-used
-for queuing this work such that flushing the workqueue is also ordered
-relative to shutdown.
+Otherwise after the GTT bo is released, the GTT and gart space is freed
+but amdgpu_ttm_backend_unbind will not clear the gart page table entry
+and leave valid mapping entry pointing to the stale system page. Then
+if GPU access the gart address mistakely, it will read undefined value
+instead page fault, harder to debug and reproduce the real issue.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-4-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Stable-dep-of: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/virqfd.c |   21 +++++++++++++++++++++
- include/linux/vfio.h  |    2 ++
- 2 files changed, 23 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/vfio/virqfd.c
-+++ b/drivers/vfio/virqfd.c
-@@ -101,6 +101,13 @@ static void virqfd_inject(struct work_st
- 		virqfd->thread(virqfd->opaque, virqfd->data);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 158b791883f03..dfb9d42007730 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -838,6 +838,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
+ 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
+ 				 gtt->ttm.dma_address, flags);
+ 	}
++	gtt->bound = true;
  }
  
-+static void virqfd_flush_inject(struct work_struct *work)
-+{
-+	struct virqfd *virqfd = container_of(work, struct virqfd, flush_inject);
-+
-+	flush_work(&virqfd->inject);
-+}
-+
- int vfio_virqfd_enable(void *opaque,
- 		       int (*handler)(void *, void *),
- 		       void (*thread)(void *, void *),
-@@ -124,6 +131,7 @@ int vfio_virqfd_enable(void *opaque,
- 
- 	INIT_WORK(&virqfd->shutdown, virqfd_shutdown);
- 	INIT_WORK(&virqfd->inject, virqfd_inject);
-+	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
- 
- 	irqfd = fdget(fd);
- 	if (!irqfd.file) {
-@@ -213,3 +221,16 @@ void vfio_virqfd_disable(struct virqfd *
- 	flush_workqueue(vfio_irqfd_cleanup_wq);
- }
- EXPORT_SYMBOL_GPL(vfio_virqfd_disable);
-+
-+void vfio_virqfd_flush_thread(struct virqfd **pvirqfd)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&virqfd_lock, flags);
-+	if (*pvirqfd && (*pvirqfd)->thread)
-+		queue_work(vfio_irqfd_cleanup_wq, &(*pvirqfd)->flush_inject);
-+	spin_unlock_irqrestore(&virqfd_lock, flags);
-+
-+	flush_workqueue(vfio_irqfd_cleanup_wq);
-+}
-+EXPORT_SYMBOL_GPL(vfio_virqfd_flush_thread);
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -349,6 +349,7 @@ struct virqfd {
- 	wait_queue_entry_t		wait;
- 	poll_table		pt;
- 	struct work_struct	shutdown;
-+	struct work_struct	flush_inject;
- 	struct virqfd		**pvirqfd;
- };
- 
-@@ -356,5 +357,6 @@ int vfio_virqfd_enable(void *opaque, int
- 		       void (*thread)(void *, void *), void *data,
- 		       struct virqfd **pvirqfd, int fd);
- void vfio_virqfd_disable(struct virqfd **pvirqfd);
-+void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
- 
- #endif /* VFIO_H */
+ /*
+-- 
+2.43.0
+
 
 
 
