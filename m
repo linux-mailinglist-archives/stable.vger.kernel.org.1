@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BA2894275
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D7F8943C7
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7BC8B21E4B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E760C283984
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43334D9E9;
-	Mon,  1 Apr 2024 16:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA54CB4A;
+	Mon,  1 Apr 2024 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/ARIcOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq8kZtrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDF24C624;
-	Mon,  1 Apr 2024 16:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6444C61B;
+	Mon,  1 Apr 2024 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990359; cv=none; b=oFAR/LIPFiyvTHWWyOefqo9gxpnVeoWb+ZUWVU8Zp80g5B/2hLADtkmfXrYtZrwvx6JT15w6IaCjaSy0KjdI4fLnH22B1Q/wJW+EqVBKJYazB7+TdDAfZdlRZEsaYnTNMK7mZkR2NQ+f6NC07D1Gf2Jogfh6EnxxZubP7SUqE4E=
+	t=1711991273; cv=none; b=lmdrHjpKvlt8x8BvSUx1jKX3P2HcJwDqcL31NUqi9HWI3OGxY6U7cwqz2Te4LrI7A8GbB1+6+K2rxJDuT1VCA2dTjfUGiEbY5ntNYA5k6YNpnHVz0ycLL3Kvbbb3E5nJrG/W8HOIbjjd9bPKGUlNZxPQ+fggJ1sk2Loh5H963gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990359; c=relaxed/simple;
-	bh=ctx01O+Woeeswjpb5RC63wPdtgjhFzxDhCL/zIX7YdI=;
+	s=arc-20240116; t=1711991273; c=relaxed/simple;
+	bh=nkGwBsZv7UpaQPw8g8skcz33jYZnoXaZ0CIlJ5Y4MTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNz0HO63WsDD+fePrglzC8FjXn58kNzWqy6B6hetWQYCweKLhp5gmrJolEc5Y5mgS5PiK4x6OPTNzJozGMgorg3DUkuZInJeUfwXWjBWd3UBOBij5xwpwrQs7Ca3117ZQfaY3kKYW+6JzMB2chVGjoaWG8yCg5yhPid7JM0ddWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/ARIcOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF3CC433C7;
-	Mon,  1 Apr 2024 16:52:38 +0000 (UTC)
+	 MIME-Version; b=V5BeKwZlcFG8Y/xggvgulNc/Voi89TiNqddGSL//7LbCJf89wdhS6L4fPYzoTnERJAR+NkswucmpRN9awJd+osrW8lxKOMivlkCQHfED+Pb7nFTUZYhbjtQwqanUpNY63+fSRdtY9dGSrLm4x4SFcQeNdQQAVAa0vVe4TqWljCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq8kZtrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF76C433C7;
+	Mon,  1 Apr 2024 17:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990359;
-	bh=ctx01O+Woeeswjpb5RC63wPdtgjhFzxDhCL/zIX7YdI=;
+	s=korg; t=1711991273;
+	bh=nkGwBsZv7UpaQPw8g8skcz33jYZnoXaZ0CIlJ5Y4MTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/ARIcOmLqve3LN3tBxR1qTMjif9g42+GOaPvrTfWcMZvcQ+cFQc/dN8a0ytfRTsJ
-	 C4P9cwARX2COs22HrIkA90OKC6hnIlQL7Mvwku+HkuV9bTtAhv9d+2iEOYFlyEbm8v
-	 uMiTgmmJQIxE3e1idwBinQwB3/L4WO4+3vpES9R4=
+	b=qq8kZtrI7op/rVQDnSIJxRVpVZ3nCoWO+iNfLf8lXtoCwrMJEoDcG2n97ssjWudud
+	 c2DzFXxGsLD/DoBeO+F73gKHiqx0q5xTDjLHDsEBTudxDvlcTocb9B2leKaoLvGWSm
+	 5DkTZ17i8ZtrOAWsO9HFVUGGgTVna0m8trTKOqMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Brian Cain <bcain@quicinc.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 327/396] hexagon: vmlinux.lds.S: handle attributes section
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 186/272] irqchip/renesas-rzg2l: Flush posted write in irq_eoi()
 Date: Mon,  1 Apr 2024 17:46:16 +0200
-Message-ID: <20240401152557.660526261@linuxfoundation.org>
+Message-ID: <20240401152536.647775574@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 549aa9678a0b3981d4821bf244579d9937650562 upstream.
+[ Upstream commit 9eec61df55c51415409c7cc47e9a1c8de94a0522 ]
 
-After the linked LLVM change, the build fails with
-CONFIG_LD_ORPHAN_WARN_LEVEL="error", which happens with allmodconfig:
+The irq_eoi() callback of the RZ/G2L interrupt chip clears the relevant
+interrupt cause bit in the TSCR register by writing to it.
 
-  ld.lld: error: vmlinux.a(init/main.o):(.hexagon.attributes) is being placed in '.hexagon.attributes'
+This write is not sufficient because the write is posted and therefore not
+guaranteed to immediately clear the bit. Due to that delay the CPU can
+raise the just handled interrupt again.
 
-Handle the attributes section in a similar manner as arm and riscv by
-adding it after the primary ELF_DETAILS grouping in vmlinux.lds.S, which
-fixes the error.
+Prevent this by reading the register back which causes the posted write to
+be flushed to the hardware before the read completes.
 
-Link: https://lkml.kernel.org/r/20240319-hexagon-handle-attributes-section-vmlinux-lds-s-v1-1-59855dab8872@kernel.org
-Fixes: 113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
-Link: https://github.com/llvm/llvm-project/commit/31f4b329c8234fab9afa59494d7f8bdaeaefeaad
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Brian Cain <bcain@quicinc.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/hexagon/kernel/vmlinux.lds.S |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/hexagon/kernel/vmlinux.lds.S
-+++ b/arch/hexagon/kernel/vmlinux.lds.S
-@@ -63,6 +63,7 @@ SECTIONS
- 	STABS_DEBUG
- 	DWARF_DEBUG
- 	ELF_DETAILS
-+	.hexagon.attributes 0 : { *(.hexagon.attributes) }
- 
- 	DISCARDS
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index fbd1766f6aaa5..454af6faf42bc 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -81,8 +81,14 @@ static void rzg2l_irq_eoi(struct irq_data *d)
+ 	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
+ 	 * falling/rising-edge.
+ 	 */
+-	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
++	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq))) {
+ 		writel_relaxed(iscr & ~bit, priv->base + ISCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + ISCR);
++	}
  }
+ 
+ static void rzg2l_tint_eoi(struct irq_data *d)
+@@ -93,8 +99,14 @@ static void rzg2l_tint_eoi(struct irq_data *d)
+ 	u32 reg;
+ 
+ 	reg = readl_relaxed(priv->base + TSCR);
+-	if (reg & bit)
++	if (reg & bit) {
+ 		writel_relaxed(reg & ~bit, priv->base + TSCR);
++		/*
++		 * Enforce that the posted write is flushed to prevent that the
++		 * just handled interrupt is raised again.
++		 */
++		readl_relaxed(priv->base + TSCR);
++	}
+ }
+ 
+ static void rzg2l_irqc_eoi(struct irq_data *d)
+-- 
+2.43.0
+
 
 
 
