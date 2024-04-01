@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-35360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF55894398
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:05:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8CC894263
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162E028389C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:05:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554B91F25697
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CC5481B8;
-	Mon,  1 Apr 2024 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE582BA3F;
+	Mon,  1 Apr 2024 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeDCjX35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owv5ie3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817B738DE5;
-	Mon,  1 Apr 2024 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBFC4C3C3;
+	Mon,  1 Apr 2024 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991142; cv=none; b=GRrS8usqu05jJo4CtJOJsbPgKGSLwXfIhxsMfXsZQww68YqLFuA+DOcgaUnHuEUt37XcY+L829nxFEB/WrL8LTRoTVDOk1w8PuIXwUk4TMiuJYlrvl9Ze82+s05/OORk5jywsC8GYPlqmtOZROtPmdwDdD6VdVZSGLMX5w2Xslc=
+	t=1711990322; cv=none; b=Nzf7MfTsB2TrSVfrFxUyZJ7a5Cd/D2Zmz5FwvU5hyxHjtd/Fw4CP6YDAcef4ckrLe/zvirVPvxizctpwaPCDsnxBbIeEh4xGAysP4lflcA8H8vO3FXlxSt7CBQUSLvTTvaAtYD0Ju7XfnhderFlzlZiMWy+3FmTqW/7mnaix2so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991142; c=relaxed/simple;
-	bh=gRQaYybqW5VOJB16RpWqHe3BqhJLUvw+oa7xPK1FaDM=;
+	s=arc-20240116; t=1711990322; c=relaxed/simple;
+	bh=zopiP55Y84kF58HNp0CfzqcAQNNHkPjfkjns0Q0QAp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezmviux2UfdySjgcazSLzEcVEEtiLOZ6LD8NuMKysSpHMQmJjKQgI5QPPW6JikIZSWgpmFE8chLaB8BQ6XzYSb2p5lL5PlTva+4cwpVsz7zks7ba63JC+ix26+gDV/D9h7PvBWB0oGMMem/tusNRwiS9maF2m5rY9pdmv+KFkKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeDCjX35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9A8C433F1;
-	Mon,  1 Apr 2024 17:05:41 +0000 (UTC)
+	 MIME-Version; b=sKzJZHiIinqbicpdzybSVg5KynkqfNJ6FMs0oIHQG2idhY3gflpkb7kNpuTR/z0w/A8Xn2pPxpSpc+XicDFK8n61Xdi+7Qj3tZIL/qrF7c3iN/69az/+XYACNfVWKU7Mo6qAVk/5eiwRorb1K6IyjmNFSU55HKAGzvNNcpXNMfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owv5ie3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897E9C433C7;
+	Mon,  1 Apr 2024 16:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991142;
-	bh=gRQaYybqW5VOJB16RpWqHe3BqhJLUvw+oa7xPK1FaDM=;
+	s=korg; t=1711990321;
+	bh=zopiP55Y84kF58HNp0CfzqcAQNNHkPjfkjns0Q0QAp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeDCjX35aGor+aATelyoYZeOjpuQPxM5YI9xFMhWX9rM6FiEAIF9BaAIdGRXPNW36
-	 7drksrJnI4PsSqI6M9ibkvnaYPuFXmJGOHd2dFN8mqC9hvNp+ODYrR9VYao1s4PZ8x
-	 aRnKGoVsCdQAzoz5pWMbqaNP+hVUnHqPNyn3rbEc=
+	b=owv5ie3qkM97yWsjg74WiZ24c9ICNJr/lB9QYNLh90OivbndLDh6PsCJOaFz+0k3e
+	 zdK/D/edLYefGY6Ii0Tl8XSsOpzezuHgIAZiL3SMQHmjRANkP3Ea0AIByc3jAH4nXp
+	 hl6A385sVDKbCSsN4AqUMpAvCrLt3fPzNyMbQPz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.1 175/272] x86/efistub: Call mixed mode boot services on the firmwares stack
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	Jan Kara <jack@suse.cz>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 316/396] tmpfs: fix race on handling dquot rbtree
 Date: Mon,  1 Apr 2024 17:46:05 +0200
-Message-ID: <20240401152536.230530467@linuxfoundation.org>
+Message-ID: <20240401152557.334682321@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Carlos Maiolino <cem@kernel.org>
 
-commit cefcd4fe2e3aaf792c14c9e56dab89e3d7a65d02 upstream.
+commit 0a69b6b3a026543bc215ccc866d0aea5579e6ce2 upstream.
 
-Normally, the EFI stub calls into the EFI boot services using the stack
-that was live when the stub was entered. According to the UEFI spec,
-this stack needs to be at least 128k in size - this might seem large but
-all asynchronous processing and event handling in EFI runs from the same
-stack and so quite a lot of space may be used in practice.
+A syzkaller reproducer found a race while attempting to remove dquot
+information from the rb tree.
 
-In mixed mode, the situation is a bit different: the bootloader calls
-the 32-bit EFI stub entry point, which calls the decompressor's 32-bit
-entry point, where the boot stack is set up, using a fixed allocation
-of 16k. This stack is still in use when the EFI stub is started in
-64-bit mode, and so all calls back into the EFI firmware will be using
-the decompressor's limited boot stack.
+Fetching the rb_tree root node must also be protected by the
+dqopt->dqio_sem, otherwise, giving the right timing, shmem_release_dquot()
+will trigger a warning because it couldn't find a node in the tree, when
+the real reason was the root node changing before the search starts:
 
-Due to the placement of the boot stack right after the boot heap, any
-stack overruns have gone unnoticed. However, commit
+Thread 1				Thread 2
+- shmem_release_dquot()			- shmem_{acquire,release}_dquot()
 
-  5c4feadb0011983b ("x86/decompressor: Move global symbol references to C code")
+- fetch ROOT				- Fetch ROOT
 
-moved the definition of the boot heap into C code, and now the boot
-stack is placed right at the base of BSS, where any overruns will
-corrupt the end of the .data section.
+					- acquire dqio_sem
+- wait dqio_sem
 
-While it would be possible to work around this by increasing the size of
-the boot stack, doing so would affect all x86 systems, and mixed mode
-systems are a tiny (and shrinking) fraction of the x86 installed base.
+					- do something, triger a tree rebalance
+					- release dqio_sem
 
-So instead, record the firmware stack pointer value when entering from
-the 32-bit firmware, and switch to this stack every time a EFI boot
-service call is made.
+- acquire dqio_sem
+- start searching for the node, but
+  from the wrong location, missing
+  the node, and triggering a warning.
 
-Cc: <stable@kernel.org> # v6.1+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lkml.kernel.org/r/20240320124011.398847-1-cem@kernel.org
+Fixes: eafc474e2029 ("shmem: prepare shmem quota infrastructure")
+Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ mm/shmem_quota.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -49,6 +49,11 @@ SYM_FUNC_START(startup_64_mixed_mode)
- 	lea	efi32_boot_args(%rip), %rdx
- 	mov	0(%rdx), %edi
- 	mov	4(%rdx), %esi
-+
-+	/* Switch to the firmware's stack */
-+	movl	efi32_boot_sp(%rip), %esp
-+	andl	$~7, %esp
-+
- #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	mov	8(%rdx), %edx		// saved bootparams pointer
- 	test	%edx, %edx
-@@ -260,6 +265,9 @@ SYM_FUNC_START_LOCAL(efi32_entry)
- 	/* Store firmware IDT descriptor */
- 	sidtl	(efi32_boot_idt - 1b)(%ebx)
+diff --git a/mm/shmem_quota.c b/mm/shmem_quota.c
+index 062d1c1097ae..ce514e700d2f 100644
+--- a/mm/shmem_quota.c
++++ b/mm/shmem_quota.c
+@@ -116,7 +116,7 @@ static int shmem_free_file_info(struct super_block *sb, int type)
+ static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(sb, qid->type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, *qid);
+ 	struct quota_info *dqopt = sb_dqopt(sb);
+ 	struct quota_id *entry = NULL;
+@@ -126,6 +126,7 @@ static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
+ 		return -ESRCH;
  
-+	/* Store firmware stack pointer */
-+	movl	%esp, (efi32_boot_sp - 1b)(%ebx)
-+
- 	/* Store boot arguments */
- 	leal	(efi32_boot_args - 1b)(%ebx), %ebx
- 	movl	%ecx, 0(%ebx)
-@@ -324,5 +332,6 @@ SYM_DATA_END(efi32_boot_idt)
+ 	down_read(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
  
- SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
- SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_sp, .long 0)
- SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
- SYM_DATA(efi_is64, .byte 1)
+@@ -165,7 +166,7 @@ static int shmem_get_next_id(struct super_block *sb, struct kqid *qid)
+ static int shmem_acquire_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node **n = &((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node **n;
+ 	struct shmem_sb_info *sbinfo = dquot->dq_sb->s_fs_info;
+ 	struct rb_node *parent = NULL, *new_node = NULL;
+ 	struct quota_id *new_entry, *entry;
+@@ -176,6 +177,8 @@ static int shmem_acquire_dquot(struct dquot *dquot)
+ 	mutex_lock(&dquot->dq_lock);
+ 
+ 	down_write(&dqopt->dqio_sem);
++	n = &((struct rb_root *)info->dqi_priv)->rb_node;
++
+ 	while (*n) {
+ 		parent = *n;
+ 		entry = rb_entry(parent, struct quota_id, node);
+@@ -264,7 +267,7 @@ static bool shmem_is_empty_dquot(struct dquot *dquot)
+ static int shmem_release_dquot(struct dquot *dquot)
+ {
+ 	struct mem_dqinfo *info = sb_dqinfo(dquot->dq_sb, dquot->dq_id.type);
+-	struct rb_node *node = ((struct rb_root *)info->dqi_priv)->rb_node;
++	struct rb_node *node;
+ 	qid_t id = from_kqid(&init_user_ns, dquot->dq_id);
+ 	struct quota_info *dqopt = sb_dqopt(dquot->dq_sb);
+ 	struct quota_id *entry = NULL;
+@@ -275,6 +278,7 @@ static int shmem_release_dquot(struct dquot *dquot)
+ 		goto out_dqlock;
+ 
+ 	down_write(&dqopt->dqio_sem);
++	node = ((struct rb_root *)info->dqi_priv)->rb_node;
+ 	while (node) {
+ 		entry = rb_entry(node, struct quota_id, node);
+ 
+-- 
+2.44.0
+
 
 
 
