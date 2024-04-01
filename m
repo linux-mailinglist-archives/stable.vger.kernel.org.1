@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-35205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C388942E7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:57:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5590C893FD5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E242837AF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:57:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 878F71C21561
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CB44C601;
-	Mon,  1 Apr 2024 16:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3246B9F;
+	Mon,  1 Apr 2024 16:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CngWA4CG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvAmqb5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36D04AEE0;
-	Mon,  1 Apr 2024 16:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A788C129;
+	Mon,  1 Apr 2024 16:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990641; cv=none; b=Y8f2mUWDGZCTbpesxS4O4a46Fopa+uifbe/FeN8B1fO2VqMFySbyifNnqQaYvjkC6QC2o3fGTouyX11z7eAUkv9VG3OTwuLckErPOUqaU6qXEvwNRmUhYbbtuVoXDkmUNRV6JsA19Eg7/ej64kZzIHjP3qcNG6EOA6hajkfpvo0=
+	t=1711988515; cv=none; b=tTIjBngrFP9Mfm4JlT+7PfzIPCzDBqRaQn16v8t4bsg9rsk808ffEXMOnKE8WwqDl1uphma4rFaQt8nV+9YNzP3NXgDgBmSSs3WeXAMeC/CTztvg7Qj9rpYmQo7feMsZM/tVg7c5M9AzyQDF7gqCiB2+QM5ToYKsB6JGf0Ar2f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990641; c=relaxed/simple;
-	bh=MaQkGzn/vlMMKsaQBIfPjq6rFbT/1Hv6BI1uPZ1sk/g=;
+	s=arc-20240116; t=1711988515; c=relaxed/simple;
+	bh=VjYJ9KcQVy6Rts3Fbx40NG4KgWPAVxcazVtcsl0Dtu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQLKAKKGIOWvz1vrGlwhEafp5UVT6kqw7RI6PY0hPxQCOARSjxgVUgQkqNb/LXvdTkDUNJFk69IUatwjNjqqOX/2HFP+TKU3UOE6kx3sDPrvYXaJhQgrrMjjd8N6RxNuFLCNmUMstdvfrqXkRrnpknkZyYSZBlRAx31K3xuDJfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CngWA4CG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5306DC433C7;
-	Mon,  1 Apr 2024 16:57:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=un+gAjy0nkv3PksgKrVv3zfmEC0Wf83pzb+QvKpFAtjz75f/jY2mlhLg36QLedYDAJSHL7VKGRnJ2sMcA/31Gfs7cyVXxALz9vCVa2JApkg/kgO3m/13vOosWfsi+BVff4eJBAFj322a6ZBavxRlpUC1FwEIs/CUuW1drF4pNik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvAmqb5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4DC433C7;
+	Mon,  1 Apr 2024 16:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990640;
-	bh=MaQkGzn/vlMMKsaQBIfPjq6rFbT/1Hv6BI1uPZ1sk/g=;
+	s=korg; t=1711988515;
+	bh=VjYJ9KcQVy6Rts3Fbx40NG4KgWPAVxcazVtcsl0Dtu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CngWA4CG5nVGOLKHIyV83uAQ6IzGfwjnddY1tY0xcUW41Mto2oMR99SB3Swa884gQ
-	 qSMBIQNvY0w9ozolMz5hRiYuIyZ2FcGt+jmn6Fp7RBbYmoWJs3EhA1l29x2aR+WiWV
-	 OSfQ8XtlyexFzJ0fL+VxK6p+Q+HzWXEQBi4l/65M=
+	b=UvAmqb5QQnWE3jsJoYlOertXup4IZ0jxn85MLZ3slrqtdN6erblU1gYaalhmycNTt
+	 69gaTkaCWbKNzD3OqE5+SCiyHEM96PIGUIepC2gQW8AOQjbmUPvBJxCd/vQm1WXKBp
+	 dinkw9FXgPhvmwVeLhbZtnD7uJIN0gi9BPy2twv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 004/272] KVM: x86: Advertise CPUID.(EAX=7,ECX=2):EDX[5:0] to userspace
-Date: Mon,  1 Apr 2024 17:43:14 +0200
-Message-ID: <20240401152530.398243514@linuxfoundation.org>
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 208/432] drm/amdgpu: amdgpu_ttm_gart_bind set gtt bound flag
+Date: Mon,  1 Apr 2024 17:43:15 +0200
+Message-ID: <20240401152559.343000923@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,127 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit eefe5e6682099445f77f2d97d4c525f9ac9d9b07 upstream.
+[ Upstream commit 6c6064cbe58b43533e3451ad6a8ba9736c109ac3 ]
 
-The low five bits {INTEL_PSFD, IPRED_CTRL, RRSBA_CTRL, DDPD_U, BHI_CTRL}
-advertise the availability of specific bits in IA32_SPEC_CTRL. Since KVM
-dynamically determines the legal IA32_SPEC_CTRL bits for the underlying
-hardware, the hard work has already been done. Just let userspace know
-that a guest can use these IA32_SPEC_CTRL bits.
+Otherwise after the GTT bo is released, the GTT and gart space is freed
+but amdgpu_ttm_backend_unbind will not clear the gart page table entry
+and leave valid mapping entry pointing to the stale system page. Then
+if GPU access the gart address mistakely, it will read undefined value
+instead page fault, harder to debug and reproduce the real issue.
 
-The sixth bit (MCDT_NO) states that the processor does not exhibit MXCSR
-Configuration Dependent Timing (MCDT) behavior. This is an inherent
-property of the physical processor that is inherited by the virtual
-CPU. Pass that information on to userspace.
-
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20231024001636.890236-1-jmattson@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/cpuid.c         |   21 ++++++++++++++++++---
- arch/x86/kvm/reverse_cpuid.h |   12 ++++++++++++
- 2 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -652,6 +652,11 @@ void kvm_set_cpu_caps(void)
- 		F(AVX_VNNI) | F(AVX512_BF16)
- 	);
- 
-+	kvm_cpu_cap_init_kvm_defined(CPUID_7_2_EDX,
-+		F(INTEL_PSFD) | F(IPRED_CTRL) | F(RRSBA_CTRL) | F(DDPD_U) |
-+		F(BHI_CTRL) | F(MCDT_NO)
-+	);
-+
- 	kvm_cpu_cap_mask(CPUID_D_1_EAX,
- 		F(XSAVEOPT) | F(XSAVEC) | F(XGETBV1) | F(XSAVES) | f_xfd
- 	);
-@@ -902,13 +907,13 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	/* function 7 has additional index. */
- 	case 7:
--		entry->eax = min(entry->eax, 1u);
-+		max_idx = entry->eax = min(entry->eax, 2u);
- 		cpuid_entry_override(entry, CPUID_7_0_EBX);
- 		cpuid_entry_override(entry, CPUID_7_ECX);
- 		cpuid_entry_override(entry, CPUID_7_EDX);
- 
--		/* KVM only supports 0x7.0 and 0x7.1, capped above via min(). */
--		if (entry->eax == 1) {
-+		/* KVM only supports up to 0x7.2, capped above via min(). */
-+		if (max_idx >= 1) {
- 			entry = do_host_cpuid(array, function, 1);
- 			if (!entry)
- 				goto out;
-@@ -918,6 +923,16 @@ static inline int __do_cpuid_func(struct
- 			entry->ecx = 0;
- 			entry->edx = 0;
- 		}
-+		if (max_idx >= 2) {
-+			entry = do_host_cpuid(array, function, 2);
-+			if (!entry)
-+				goto out;
-+
-+			cpuid_entry_override(entry, CPUID_7_2_EDX);
-+			entry->ecx = 0;
-+			entry->ebx = 0;
-+			entry->eax = 0;
-+		}
- 		break;
- 	case 0xa: { /* Architectural Performance Monitoring */
- 		union cpuid10_eax eax;
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -13,6 +13,7 @@
-  */
- enum kvm_only_cpuid_leafs {
- 	CPUID_12_EAX	 = NCAPINTS,
-+	CPUID_7_2_EDX,
- 	NR_KVM_CPU_CAPS,
- 
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
-@@ -36,6 +37,14 @@ enum kvm_only_cpuid_leafs {
- #define KVM_X86_FEATURE_SGX1		KVM_X86_FEATURE(CPUID_12_EAX, 0)
- #define KVM_X86_FEATURE_SGX2		KVM_X86_FEATURE(CPUID_12_EAX, 1)
- 
-+/* Intel-defined sub-features, CPUID level 0x00000007:2 (EDX) */
-+#define X86_FEATURE_INTEL_PSFD		KVM_X86_FEATURE(CPUID_7_2_EDX, 0)
-+#define X86_FEATURE_IPRED_CTRL		KVM_X86_FEATURE(CPUID_7_2_EDX, 1)
-+#define KVM_X86_FEATURE_RRSBA_CTRL	KVM_X86_FEATURE(CPUID_7_2_EDX, 2)
-+#define X86_FEATURE_DDPD_U		KVM_X86_FEATURE(CPUID_7_2_EDX, 3)
-+#define X86_FEATURE_BHI_CTRL		KVM_X86_FEATURE(CPUID_7_2_EDX, 4)
-+#define X86_FEATURE_MCDT_NO		KVM_X86_FEATURE(CPUID_7_2_EDX, 5)
-+
- struct cpuid_reg {
- 	u32 function;
- 	u32 index;
-@@ -61,6 +70,7 @@ static const struct cpuid_reg reverse_cp
- 	[CPUID_12_EAX]        = {0x00000012, 0, CPUID_EAX},
- 	[CPUID_8000_001F_EAX] = {0x8000001f, 0, CPUID_EAX},
- 	[CPUID_8000_0021_EAX] = {0x80000021, 0, CPUID_EAX},
-+	[CPUID_7_2_EDX]       = {         7, 2, CPUID_EDX},
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 75c9fd2c6c2a1..b0ed10f4de609 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -869,6 +869,7 @@ static void amdgpu_ttm_gart_bind(struct amdgpu_device *adev,
+ 		amdgpu_gart_bind(adev, gtt->offset, ttm->num_pages,
+ 				 gtt->ttm.dma_address, flags);
+ 	}
++	gtt->bound = true;
+ }
  
  /*
-@@ -91,6 +101,8 @@ static __always_inline u32 __feature_tra
- 		return KVM_X86_FEATURE_SGX1;
- 	else if (x86_feature == X86_FEATURE_SGX2)
- 		return KVM_X86_FEATURE_SGX2;
-+	else if (x86_feature == X86_FEATURE_RRSBA_CTRL)
-+		return KVM_X86_FEATURE_RRSBA_CTRL;
- 
- 	return x86_feature;
- }
+-- 
+2.43.0
+
 
 
 
