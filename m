@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBCA8941DB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:46:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D071893E8A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DD9D1C21932
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7EA28135F
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975DB47A6B;
-	Mon,  1 Apr 2024 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BB74596E;
+	Mon,  1 Apr 2024 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhMxT6JD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcIRyh0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546C1433DA;
-	Mon,  1 Apr 2024 16:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B722301;
+	Mon,  1 Apr 2024 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990014; cv=none; b=S1LHtbt6iAyK8EIJ2aqqZqq8N5CTBKZzIN31pLbz+5qvZeZ+uMF35xVsKyjBru1OOclYd8wNJtlLRx3d2GhTLeXD483uMHG+Y5qKhb9R23CVC6LMtzVBqAhHAP4NyHUa3nE4ypA1A2dgbLjnCWcVxusu/FTfIqKF42ipHPN3lE4=
+	t=1711987492; cv=none; b=YdZy+KFSBK+iq9Cgzqbx8v2X+Y++hWRM+uijpJDZBsODkx/S+86noBg4xPmX9JGPR7F9XcOqOzbFLK6ptS6b3RvKmF3ybdotAkKg8wHBSxSB7tD9zsbvb2hKB3+FBtmAhFxBfhsZFV24pt02O4pWZNG9WQ6ulL77TfNFU/1VbDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990014; c=relaxed/simple;
-	bh=A4FwoNyQ/s47WJxn2rr/fzp/G7MtCaStPJ+Ri85C7Kg=;
+	s=arc-20240116; t=1711987492; c=relaxed/simple;
+	bh=n7ziQw/F2Fi/w9A/pE/vZ+GCX1wXYKhxjvXBEHmrbiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDV9M0BAt4KPP2tYFpcEH2wvZYZlmP9/3PkKLpMxunM8WxTNPg7EcwhR3JXOnkC/Kah4tVCv8zVzZUUZe04Occlv/OkoIZXM8PAwYxFm/W8HDXkiFeco5I3t8jhVaSwTdDjxDD6JJfpHGdcOyQhRjXqesP1TfFamAYbQTc3qvLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhMxT6JD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D4FC433F1;
-	Mon,  1 Apr 2024 16:46:53 +0000 (UTC)
+	 MIME-Version; b=ZEajAVDt63IhaJnJm8w8PfePqKM4jOnWysFVKtZG7w2YzVbcz49ydosrPHZGTESl0U7Y6oUoGOwPHPJzPTY/XL0rJ5Qn1hoND5l6DuQdRc5PsakOI69/H0qW4UfprsYrrzb8T5/9g9JvQFqISkXcOYgZsqHj5KCc8S1Jg290yzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcIRyh0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD532C433C7;
+	Mon,  1 Apr 2024 16:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990014;
-	bh=A4FwoNyQ/s47WJxn2rr/fzp/G7MtCaStPJ+Ri85C7Kg=;
+	s=korg; t=1711987492;
+	bh=n7ziQw/F2Fi/w9A/pE/vZ+GCX1wXYKhxjvXBEHmrbiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhMxT6JDyEZH8XUFTZdYQBDYcxXG3qFK3/G0m7GIbchyWJfWIaf8VV22H0Lj2VfBV
-	 +zvpfIHu1HR+QF5MFa7XCzJ3yAzSHg1CtFMvIjcxrk6jzI0S/N1iIwlvH20eQHphOf
-	 4JjrnQouQJb5u1CySgcGz8AMRPFB2frpFOjhW2Iw=
+	b=OcIRyh0MDeM2R/u49To5b3/X7EnY8mq2GxK2VEJjnsikNg1/t1/8f5elqBEeMtEVM
+	 yksS9Zx/Kb6DScazG42ENYd868szKD6DpBvLT/0kpLt5teKIjk45brf7iLg1Li4W1k
+	 d0XwRKIZGMY98xOzoC1v4tcGmQQ88zvQTxaC69hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 221/396] USB: usb-storage: Prevent divide-by-0 error in isd200_ata_command
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 304/399] Revert "drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR"
 Date: Mon,  1 Apr 2024 17:44:30 +0200
-Message-ID: <20240401152554.509481914@linuxfoundation.org>
+Message-ID: <20240401152558.264730742@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 014bcf41d946b36a8f0b8e9b5d9529efbb822f49 upstream.
+commit 78aca9ee5e012e130dbfbd7191bc2302b0cf3b37 upstream.
 
-The isd200 sub-driver in usb-storage uses the HEADS and SECTORS values
-in the ATA ID information to calculate cylinder and head values when
-creating a CDB for READ or WRITE commands.  The calculation involves
-division and modulus operations, which will cause a crash if either of
-these values is 0.  While this never happens with a genuine device, it
-could happen with a flawed or subversive emulation, as reported by the
-syzbot fuzzer.
+This causes flicker on a bunch of eDP panels. The info_packet code
+also caused regressions on other OSes that we haven't' seen on Linux
+yet, but that is likely due to the fact that we haven't had a chance
+to test those environments on Linux.
 
-Protect against this possibility by refusing to bind to the device if
-either the ATA_ID_HEADS or ATA_ID_SECTORS value in the device's ID
-information is 0.  This requires isd200_Initialization() to return a
-negative error code when initialization fails; currently it always
-returns 0 (even when there is an error).
+We'll need to revisit this.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: syzbot+28748250ab47a8f04100@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-usb/0000000000003eb868061245ba7f@google.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+This reverts commit 202260f64519e591b5cd99626e441b6559f571a3.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3207
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3151
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: PrasannaKumar Muralidharan <prasannatsmkumar@gmail.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/b1e605ea-333f-4ac0-9511-da04f411763e@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/isd200.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c             |    8 ++----
+ drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c |   13 +++-------
+ 2 files changed, 8 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/storage/isd200.c
-+++ b/drivers/usb/storage/isd200.c
-@@ -1105,7 +1105,7 @@ static void isd200_dump_driveid(struct u
- static int isd200_get_inquiry_data( struct us_data *us )
- {
- 	struct isd200_info *info = (struct isd200_info *)us->extra;
--	int retStatus = ISD200_GOOD;
-+	int retStatus;
- 	u16 *id = info->id;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6256,9 +6256,8 @@ create_stream_for_sink(struct drm_connec
  
- 	usb_stor_dbg(us, "Entering isd200_get_inquiry_data\n");
-@@ -1137,6 +1137,13 @@ static int isd200_get_inquiry_data( stru
- 				isd200_fix_driveid(id);
- 				isd200_dump_driveid(us, id);
- 
-+				/* Prevent division by 0 in isd200_scsi_to_ata() */
-+				if (id[ATA_ID_HEADS] == 0 || id[ATA_ID_SECTORS] == 0) {
-+					usb_stor_dbg(us, "   Invalid ATA Identify data\n");
-+					retStatus = ISD200_ERROR;
-+					goto Done;
-+				}
+ 	if (stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+ 		mod_build_hf_vsif_infopacket(stream, &stream->vsp_infopacket);
+-	else if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
+-			 stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
+-			 stream->signal == SIGNAL_TYPE_EDP) {
 +
- 				memset(&info->InquiryData, 0, sizeof(info->InquiryData));
++	if (stream->link->psr_settings.psr_feature_enabled || stream->link->replay_settings.replay_feature_enabled) {
+ 		//
+ 		// should decide stream support vsc sdp colorimetry capability
+ 		// before building vsc info packet
+@@ -6274,9 +6273,8 @@ create_stream_for_sink(struct drm_connec
+ 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
+ 			tf = TRANSFER_FUNC_GAMMA_22;
+ 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
++		aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
  
- 				/* Standard IDE interface only supports disks */
-@@ -1202,6 +1209,7 @@ static int isd200_get_inquiry_data( stru
- 		}
+-		if (stream->link->psr_settings.psr_feature_enabled)
+-			aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
+ 	}
+ finish:
+ 	dc_sink_release(sink);
+--- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
++++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+@@ -147,15 +147,12 @@ void mod_build_vsc_infopacket(const stru
  	}
  
-+ Done:
- 	usb_stor_dbg(us, "Leaving isd200_get_inquiry_data %08X\n", retStatus);
+ 	/* VSC packet set to 4 for PSR-SU, or 2 for PSR1 */
+-	if (stream->link->psr_settings.psr_feature_enabled) {
+-		if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+-			vsc_packet_revision = vsc_packet_rev4;
+-		else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
+-			vsc_packet_revision = vsc_packet_rev2;
+-	}
+-
+-	if (stream->link->replay_settings.config.replay_supported)
++	if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
++		vsc_packet_revision = vsc_packet_rev4;
++	else if (stream->link->replay_settings.config.replay_supported)
+ 		vsc_packet_revision = vsc_packet_rev4;
++	else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
++		vsc_packet_revision = vsc_packet_rev2;
  
- 	return(retStatus);
-@@ -1481,22 +1489,27 @@ static int isd200_init_info(struct us_da
- 
- static int isd200_Initialization(struct us_data *us)
- {
-+	int rc = 0;
-+
- 	usb_stor_dbg(us, "ISD200 Initialization...\n");
- 
- 	/* Initialize ISD200 info struct */
- 
--	if (isd200_init_info(us) == ISD200_ERROR) {
-+	if (isd200_init_info(us) < 0) {
- 		usb_stor_dbg(us, "ERROR Initializing ISD200 Info struct\n");
-+		rc = -ENOMEM;
- 	} else {
- 		/* Get device specific data */
- 
--		if (isd200_get_inquiry_data(us) != ISD200_GOOD)
-+		if (isd200_get_inquiry_data(us) != ISD200_GOOD) {
- 			usb_stor_dbg(us, "ISD200 Initialization Failure\n");
--		else
-+			rc = -EINVAL;
-+		} else {
- 			usb_stor_dbg(us, "ISD200 Initialization complete\n");
-+		}
- 	}
- 
--	return 0;
-+	return rc;
- }
- 
- 
+ 	/* Update to revision 5 for extended colorimetry support */
+ 	if (stream->use_vsc_sdp_for_colorimetry)
 
 
 
