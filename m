@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2478B89414F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:40:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B66893FC9
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8ACEB20F43
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:40:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0DC1F22075
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87294654F;
-	Mon,  1 Apr 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D22045BE4;
+	Mon,  1 Apr 2024 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCf9LW/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlgfmMTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4C1E86C;
-	Mon,  1 Apr 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3D3C129;
+	Mon,  1 Apr 2024 16:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989631; cv=none; b=GnF2YTFe4PaaaaG5qrKYovKiXvvQ3yrr1lseAqbFERekOYAu+wQjDu8r+V3qeCUopM65lkV6xGSKuej8+OcdoZGXxPEGPwu2By8u0xG+TImLS4GqIw5XrxZVBrQeDojLEtEZVkS8cU2/QWf0Vr315+VjdtCpNNvcLZtCmSKtDks=
+	t=1711988480; cv=none; b=C6v7GkbTU4CBf+BHOH4CUh6NTbNG2VwlEQRchF3N8xWGpSTxrn/G7zmuBPQoynjMw3ROK9VdNAW4+UgTnFEEyP3ov9wMV51lgZb4KTJGdXYZx9W3nMqw+r7aphS3MZrA80pYecrWxJpmV8Gkiz5wdQ2YLj+wKvW+HclusEkhMsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989631; c=relaxed/simple;
-	bh=iIABjpvWQPH6e3F+W9H+jOkyGnMwh8jY0kjTZstvIgs=;
+	s=arc-20240116; t=1711988480; c=relaxed/simple;
+	bh=4eBGXpjWeE9m3oh0jpDUCBf8KrqECFQrPARXrpuO+x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7zkhPsPHEHWR/BPQw9CBjvLXroKCbQaqPo5s8+7R08r6Jwt0fWeGCRq2gL9s6cMwH/3tdnOUikgbWdrkOz1Ojb0KUonHKtuCJLd0yDZAAcih6mg11v6drEWjBTfAY6L3CqKLVrhEdw1RnADYrT7sumwlVXd7+bStlLxVW9PUUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCf9LW/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE25DC433C7;
-	Mon,  1 Apr 2024 16:40:30 +0000 (UTC)
+	 MIME-Version; b=g4Ijvtk5PJ1avWccJbT7TFdEjdEXoac8iMM1fSGh4Mynta3pxwnXfwSSwpooF9+kknAqiUlV0aYoTCH/Qj48o75oSyyoH+9oJFLjeCLXVwz7lbLa1Xu9hkH/S1qrUCgQrrhh6pViU6MA+VXW4RQCRqyTQfF8/wghN+RfyeonDnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlgfmMTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED1DC433C7;
+	Mon,  1 Apr 2024 16:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989631;
-	bh=iIABjpvWQPH6e3F+W9H+jOkyGnMwh8jY0kjTZstvIgs=;
+	s=korg; t=1711988479;
+	bh=4eBGXpjWeE9m3oh0jpDUCBf8KrqECFQrPARXrpuO+x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCf9LW/+61Mulg+wSmdK6iiBLNS2Ldvh3mC1xrWBwdRSHBssirwdFuuOYRw68hXue
-	 N+xI8uqVKul0fnd0ew5/XD5MvAFwU1ed6DHvxTM1QSJwpa8OgdaTExTTbRWrNudZC9
-	 syZpryoOkkWy08YkMnbPilZZJjbTt+7G8SFjlnw0=
+	b=AlgfmMTUq8+HcQR7FC80jDgJxVglUnMkGPYEGJp9o9ZFIFSYB98xK2AClZ2EB4/tn
+	 jN4srXt3RaesyLvBcdk5V++i9Jjvrv3+B1JoJsjN9HhESaMWkvKvq96gyXMs2C46sC
+	 fDor5tO84huaEswXQFDdsvE26okQ+kaxaeJwwu2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/396] hwmon: (amc6821) add of_match table
+Subject: [PATCH 6.7 168/432] drm/imx/ipuv3: do not return negative values from .get_modes()
 Date: Mon,  1 Apr 2024 17:42:35 +0200
-Message-ID: <20240401152551.080766980@linuxfoundation.org>
+Message-ID: <20240401152558.160947843@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 3f003fda98a7a8d5f399057d92e6ed56b468657c ]
+[ Upstream commit c2da9ada64962fcd2e6395ed9987b9874ea032d3 ]
 
-Add of_match table for "ti,amc6821" compatible string.
-This fixes automatic driver loading by userspace when using device-tree,
-and if built as a module like major linux distributions do.
+The .get_modes() hooks aren't supposed to return negative error
+codes. Return 0 for no modes, whatever the reason.
 
-While devices probe just fine with i2c_device_id table, userspace can't
-match the "ti,amc6821" compatible string from dt with the plain
-"amc6821" device id. As a result, the kernel module can not be loaded.
-
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20240307-amc6821-of-match-v1-1-5f40464a3110@solid-run.com
-[groeck: Cleaned up patch description]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/311f6eec96d47949b16a670529f4d89fcd97aefa.1709913674.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/amc6821.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/amc6821.c b/drivers/hwmon/amc6821.c
-index 2a7a4b6b00942..9b02b304c2f5d 100644
---- a/drivers/hwmon/amc6821.c
-+++ b/drivers/hwmon/amc6821.c
-@@ -934,10 +934,21 @@ static const struct i2c_device_id amc6821_id[] = {
+diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+index 70349739dd89b..55dedd73f528c 100644
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -72,14 +72,14 @@ static int imx_pd_connector_get_modes(struct drm_connector *connector)
+ 		int ret;
  
- MODULE_DEVICE_TABLE(i2c, amc6821_id);
+ 		if (!mode)
+-			return -EINVAL;
++			return 0;
  
-+static const struct of_device_id __maybe_unused amc6821_of_match[] = {
-+	{
-+		.compatible = "ti,amc6821",
-+		.data = (void *)amc6821,
-+	},
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(of, amc6821_of_match);
-+
- static struct i2c_driver amc6821_driver = {
- 	.class = I2C_CLASS_HWMON,
- 	.driver = {
- 		.name	= "amc6821",
-+		.of_match_table = of_match_ptr(amc6821_of_match),
- 	},
- 	.probe = amc6821_probe,
- 	.id_table = amc6821_id,
+ 		ret = of_get_drm_display_mode(np, &imxpd->mode,
+ 					      &imxpd->bus_flags,
+ 					      OF_USE_NATIVE_MODE);
+ 		if (ret) {
+ 			drm_mode_destroy(connector->dev, mode);
+-			return ret;
++			return 0;
+ 		}
+ 
+ 		drm_mode_copy(mode, &imxpd->mode);
 -- 
 2.43.0
 
