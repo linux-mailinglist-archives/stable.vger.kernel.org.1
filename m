@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-34484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC934893F8A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:17:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA16894111
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7118284D32
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:17:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5C42835A2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA90446AC;
-	Mon,  1 Apr 2024 16:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D10C4AEF6;
+	Mon,  1 Apr 2024 16:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5ncGGO0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MV1PBYmv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284171DFFC;
-	Mon,  1 Apr 2024 16:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17761482ED;
+	Mon,  1 Apr 2024 16:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988276; cv=none; b=SU8avRe2TOPrX61bC3KQ4AVW+TeekPJnfdfvTILUSQ5ZnjOHPN1vwoflso5tIopxgWT04Y83kHt8vG5QSR974XSAes4iogRSY8yP2PNO7SvdQcDCYry9TEwIa0dLfYNwmL1OqT7DwWiKAyz5jdutaG0R108GOZOJznyJ9SjiunQ=
+	t=1711989436; cv=none; b=as/JAhudATIAC2peeYmQS8VHFJJveh0MKn6Txgh6FRTfMvfztS2dDd9J8cqfrXsmiA9CWEJTaCzBBYOpNUw5A3GJ2k1vTSs7CfzU+RtWEPCrKXochGq1XANT2s+4ZQDtS7BZUxHOH7ze28zMOv6L/wGK3dh7SwsE+Al6kT4QgSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988276; c=relaxed/simple;
-	bh=Xhf1/kEvgGY3wZLFgePGdyvDhntbAjMlOjt46iZZrEY=;
+	s=arc-20240116; t=1711989436; c=relaxed/simple;
+	bh=KeV3pdwGieiuAMM8fN2oDPfQ6uQrrGguakBPbD9uqUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lwy2G3Kw2rpgaKIGfXVx/tf5SMBtkWH8GbCbe5lm9ydCCQZBa19WrcOQJJjX7m1K9FKyO8v4m1emt8AhBpRLmmrKj9JUyix+qyfnP0hzzbxoskvW17mpCdJy5xknIWUdJcXG+c0RAzYK1y62Djh50/TWXPg4xAsJNF4sVSB6ldc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5ncGGO0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9090BC433C7;
-	Mon,  1 Apr 2024 16:17:55 +0000 (UTC)
+	 MIME-Version; b=KDA7ApjZM83nYXHTSIC1Gidbdn+nPPj5Tt+UbYCOncLxfacpoL87OmsGtil6roViwar06r3xOVG+Eiqr+gZBumQvTLJiBFjXzoyAmwaiKs/B+Ju992SwC0JJ9DTENrQjVzAFOChdFNEGR7SNA63CPFT/x78/2ACFFpNg5TjNuLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MV1PBYmv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9046AC433C7;
+	Mon,  1 Apr 2024 16:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988276;
-	bh=Xhf1/kEvgGY3wZLFgePGdyvDhntbAjMlOjt46iZZrEY=;
+	s=korg; t=1711989436;
+	bh=KeV3pdwGieiuAMM8fN2oDPfQ6uQrrGguakBPbD9uqUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5ncGGO0DCBEqHvaKI1uoVpxFJ+XfW3ZR7mufMjyCRvMFqhrPJoYEX33xvw0ya6oy
-	 61g7oCfxBxmx/cUG6HIavV26x+im1KoaPSomIe/1a4LfCDOFxXiH+h7nOBLdIA4Xwi
-	 apb6HYctnMyBLNl7npnv5Iw4zXjzWDxIFSqE6PlU=
+	b=MV1PBYmvdkDZhFfEvSV4iCE1fan8K6+JkEAGQxP6UATracHq02tp+ZsDhV4jmsa3V
+	 2FVNq/H2MdVwxvzyJIxXdxVSDcKo82q0ZelhtJgoCwrnhjyDvYQmGtI2+9LVkgen9D
+	 3h46oEfLF94NFXbMOF+iV1MYMBEbX91qkX1QgnI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Song Liu <song@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 108/432] dm-raid: fix lockdep waring in "pers->hot_add_disk"
-Date: Mon,  1 Apr 2024 17:41:35 +0200
-Message-ID: <20240401152556.350220543@linuxfoundation.org>
+Subject: [PATCH 6.6 047/396] ubifs: Set page uptodate in the correct place
+Date: Mon,  1 Apr 2024 17:41:36 +0200
+Message-ID: <20240401152549.330359816@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 95009ae904b1e9dca8db6f649f2d7c18a6e42c75 ]
+[ Upstream commit 723012cab779eee8228376754e22c6594229bf8f ]
 
-The lockdep assert is added by commit a448af25becf ("md/raid10: remove
-rcu protection to access rdev from conf") in print_conf(). And I didn't
-notice that dm-raid is calling "pers->hot_add_disk" without holding
-'reconfig_mutex'.
+Page cache reads are lockless, so setting the freshly allocated page
+uptodate before we've overwritten it with the data it's supposed to have
+in it will allow a simultaneous reader to see old data.  Move the call
+to SetPageUptodate into ubifs_write_end(), which is after we copied the
+new data into the page.
 
-"pers->hot_add_disk" read and write many fields that is protected by
-'reconfig_mutex', and raid_resume() already grab the lock in other
-contex. Hence fix this problem by protecting "pers->host_add_disk"
-with the lock.
-
-Fixes: 9092c02d9435 ("DM RAID: Add ability to restore transiently failed devices on resume")
-Fixes: a448af25becf ("md/raid10: remove rcu protection to access rdev from conf")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240305072306.2562024-10-yukuai1@huaweicloud.com
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ubifs/file.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index 063f1266ec462..d97355e9b9a6e 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -4091,7 +4091,9 @@ static void raid_resume(struct dm_target *ti)
- 		 * Take this opportunity to check whether any failed
- 		 * devices are reachable again.
- 		 */
-+		mddev_lock_nointr(mddev);
- 		attempt_restore_of_faulty_devices(rs);
-+		mddev_unlock(mddev);
+diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+index e5382f0b25878..781206d0ec845 100644
+--- a/fs/ubifs/file.c
++++ b/fs/ubifs/file.c
+@@ -261,9 +261,6 @@ static int write_begin_slow(struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
  	}
  
- 	if (test_and_clear_bit(RT_FLAG_RS_SUSPENDED, &rs->runtime_flags)) {
+ 	if (PagePrivate(page))
+@@ -462,9 +459,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
+ 	}
+ 
+ 	err = allocate_budget(c, page, ui, appending);
+@@ -474,10 +468,8 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 		 * If we skipped reading the page because we were going to
+ 		 * write all of it, then it is not up to date.
+ 		 */
+-		if (skipped_read) {
++		if (skipped_read)
+ 			ClearPageChecked(page);
+-			ClearPageUptodate(page);
+-		}
+ 		/*
+ 		 * Budgeting failed which means it would have to force
+ 		 * write-back but didn't, because we set the @fast flag in the
+@@ -568,6 +560,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
+ 		goto out;
+ 	}
+ 
++	if (len == PAGE_SIZE)
++		SetPageUptodate(page);
++
+ 	if (!PagePrivate(page)) {
+ 		attach_page_private(page, (void *)1);
+ 		atomic_long_inc(&c->dirty_pg_cnt);
 -- 
 2.43.0
 
