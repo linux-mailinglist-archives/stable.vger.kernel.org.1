@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-35124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3129894286
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA43B89407C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EF041C21DDB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B18BB211BB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4044D9F2;
-	Mon,  1 Apr 2024 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB1B1E525;
+	Mon,  1 Apr 2024 16:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odjqq4S+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u07FIcc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474D54D137;
-	Mon,  1 Apr 2024 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F81C0DE7;
+	Mon,  1 Apr 2024 16:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990399; cv=none; b=cV3pxDaG4L1NhEpSjNAJABlGIobd7gSpnJlJQD8Y5tcM1ABVR9HJQa3j9pKr0qcw0iDdX6+1ShNrc4x2q4S7mQTZt4EBWII6kj7mmFzNDcj/c0IgHWPJl6T8zrAxuqsH0mhS1CV8aS0+wkoZy4leboPbzosbMt67bd5CanXBK1U=
+	t=1711989040; cv=none; b=eCFWaHNEoE0ds46OvRw7ZA1v8H9RQ8O+O5BL9Z8pQ9dGya4BgZqV7pDh9COraDb0117wMlA0mKVY8pvuw8Gbuny7CRbIpYG+b0E2e0rW7cpkd8zc7ZcRMH53NEtwo1+Re29zWAWrbNSWjdgxJGAjQrl7sOCEwGkpdtGDRgmBbJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990399; c=relaxed/simple;
-	bh=5iKdgqtd2yxApdW3qo97plm4KNZ6KRLKa0UZv8mZtzY=;
+	s=arc-20240116; t=1711989040; c=relaxed/simple;
+	bh=TU4SvnrM6qQUJbWweRYDdX9y7R5GbISQ+DYLEPYOzfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+9GdUtyID0ANN+q3yIYqMyG42g/N50h+rFAbo9pQUmbD9IgO8tyAC3p4ZbpDl2shfg/QGO/oDhlJ7HL/DoyPWe20yQRHNQaY0UAJ88i3iPFCjR7r7YGMFzODQEGYZMNh0TsYGnv16wOvTqOC/BNDRCB3lzcy9HwSVSTaIAa0Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odjqq4S+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCED9C43399;
-	Mon,  1 Apr 2024 16:53:18 +0000 (UTC)
+	 MIME-Version; b=fZ5pAS0sqFbWU0HCbDE26yQ8mqEruz39lgPWFPW/Sd5NvRpmx1YTy/Xy7g9SsMmD0YxsmRRaFeZ8g+vmgO337VwPZj+9danvsbHIqOU5VQYV6rOf9F5vIgBi/bYUtAnsy/vrn2CBEd+ugr1q2FfFPOHXldF/k+MHBQzaMq8eqds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u07FIcc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF66C433C7;
+	Mon,  1 Apr 2024 16:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990399;
-	bh=5iKdgqtd2yxApdW3qo97plm4KNZ6KRLKa0UZv8mZtzY=;
+	s=korg; t=1711989040;
+	bh=TU4SvnrM6qQUJbWweRYDdX9y7R5GbISQ+DYLEPYOzfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Odjqq4S+HSm3YHln2b7hCeY/D4PbK8Gdlh8TgCeSn19CDODcOQEwJeIrdDq3hmrF4
-	 zqsdVdvfYYcVbIUF8aLjozKAjxnjDGeqodsZGxNgnjgkOspJLA/fHbDt1eDwoN0dby
-	 t9dvJSOxPnIhSxR7O9q2GB9dsOieeFaslKpj0MtQ=
+	b=u07FIcc6B8MInpgOUv/XVNHfPLIb/ZKOZ2NGYK60rarmEkUFlHpNOaNuCkYg5c52n
+	 /zEOdXoVf2kqYQySXs6I2fY4OxcrwQJRS3jfuCHPaSQiB/lbhfuWiacKXp3bOZJBva
+	 MV1ikfYlPrGzKXylY5OY6IVs1SfcEgMeUm4+NrI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adamos Ttofari <attofari@amazon.de>,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/396] x86/fpu: Keep xfd_state in sync with MSR_IA32_XFD
+	Claus Hansen Ries <chr@terma.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 364/432] net: ll_temac: platform_get_resource replaced by wrong function
 Date: Mon,  1 Apr 2024 17:45:51 +0200
-Message-ID: <20240401152556.904628725@linuxfoundation.org>
+Message-ID: <20240401152604.128095891@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adamos Ttofari <attofari@amazon.de>
+From: Claus Hansen Ries <chr@terma.com>
 
-[ Upstream commit 10e4b5166df9ff7a2d5316138ca668b42d004422 ]
+commit 3a38a829c8bc27d78552c28e582eb1d885d07d11 upstream.
 
-Commit 672365477ae8 ("x86/fpu: Update XFD state where required") and
-commit 8bf26758ca96 ("x86/fpu: Add XFD state to fpstate") introduced a
-per CPU variable xfd_state to keep the MSR_IA32_XFD value cached, in
-order to avoid unnecessary writes to the MSR.
+The function platform_get_resource was replaced with
+devm_platform_ioremap_resource_byname and is called using 0 as name.
 
-On CPU hotplug MSR_IA32_XFD is reset to the init_fpstate.xfd, which
-wipes out any stale state. But the per CPU cached xfd value is not
-reset, which brings them out of sync.
+This eventually ends up in platform_get_resource_byname in the call
+stack, where it causes a null pointer in strcmp.
 
-As a consequence a subsequent xfd_update_state() might fail to update
-the MSR which in turn can result in XRSTOR raising a #NM in kernel
-space, which crashes the kernel.
+	if (type == resource_type(r) && !strcmp(r->name, name))
 
-To fix this, introduce xfd_set_state() to write xfd_state together
-with MSR_IA32_XFD, and use it in all places that set MSR_IA32_XFD.
+It should have been replaced with devm_platform_ioremap_resource.
 
-Fixes: 672365477ae8 ("x86/fpu: Update XFD state where required")
-Signed-off-by: Adamos Ttofari <attofari@amazon.de>
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240322230439.456571-1-chang.seok.bae@intel.com
-
-Closes: https://lore.kernel.org/lkml/20230511152818.13839-1-attofari@amazon.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bd69058f50d5 ("net: ll_temac: Use devm_platform_ioremap_resource_byname()")
+Signed-off-by: Claus Hansen Ries <chr@terma.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/cca18f9c630a41c18487729770b492bb@terma.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/xstate.c |  5 +++--
- arch/x86/kernel/fpu/xstate.h | 14 ++++++++++----
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/xilinx/ll_temac_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index ef6906107c541..571a43b3105df 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -178,10 +178,11 @@ void fpu__init_cpu_xstate(void)
- 	 * Must happen after CR4 setup and before xsetbv() to allow KVM
- 	 * lazy passthrough.  Write independent of the dynamic state static
- 	 * key as that does not work on the boot CPU. This also ensures
--	 * that any stale state is wiped out from XFD.
-+	 * that any stale state is wiped out from XFD. Reset the per CPU
-+	 * xfd cache too.
- 	 */
- 	if (cpu_feature_enabled(X86_FEATURE_XFD))
--		wrmsrl(MSR_IA32_XFD, init_fpstate.xfd);
-+		xfd_set_state(init_fpstate.xfd);
- 
- 	/*
- 	 * XCR_XFEATURE_ENABLED_MASK (aka. XCR0) sets user features
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 3518fb26d06b0..19ca623ffa2ac 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -148,20 +148,26 @@ static inline void xfd_validate_state(struct fpstate *fpstate, u64 mask, bool rs
- #endif
- 
- #ifdef CONFIG_X86_64
-+static inline void xfd_set_state(u64 xfd)
-+{
-+	wrmsrl(MSR_IA32_XFD, xfd);
-+	__this_cpu_write(xfd_state, xfd);
-+}
-+
- static inline void xfd_update_state(struct fpstate *fpstate)
- {
- 	if (fpu_state_size_dynamic()) {
- 		u64 xfd = fpstate->xfd;
- 
--		if (__this_cpu_read(xfd_state) != xfd) {
--			wrmsrl(MSR_IA32_XFD, xfd);
--			__this_cpu_write(xfd_state, xfd);
--		}
-+		if (__this_cpu_read(xfd_state) != xfd)
-+			xfd_set_state(xfd);
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1443,7 +1443,7 @@ static int temac_probe(struct platform_d
  	}
- }
  
- extern int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu);
- #else
-+static inline void xfd_set_state(u64 xfd) { }
-+
- static inline void xfd_update_state(struct fpstate *fpstate) { }
- 
- static inline int __xfd_enable_feature(u64 which, struct fpu_guest *guest_fpu) {
--- 
-2.43.0
-
+ 	/* map device registers */
+-	lp->regs = devm_platform_ioremap_resource_byname(pdev, 0);
++	lp->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(lp->regs)) {
+ 		dev_err(&pdev->dev, "could not map TEMAC registers\n");
+ 		return -ENOMEM;
 
 
 
