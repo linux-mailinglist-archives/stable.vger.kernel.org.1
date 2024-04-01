@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-34680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB17894059
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:28:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C460893EEF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A1271F222A4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:28:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C09A1C213D2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1772447A62;
-	Mon,  1 Apr 2024 16:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C0947A64;
+	Mon,  1 Apr 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeB1hHLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALZvOB9u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9553C129;
-	Mon,  1 Apr 2024 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9B74776F;
+	Mon,  1 Apr 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988934; cv=none; b=RKzkBP4WGoW4mI4iqpZrMpFzqM98gWVNA6fO+s4+P3WzX/NTatt1U2nYiaCdY/eVVnKySuE/SbxXtDmSCoHg09vJ5802r4bzgV2jns1W+3NYTy9dGRH5xgBjlsrrszyDyk0eYgPZvuPNMM5A1OWSYa+YsqpdNxNq6LffYqnvZ74=
+	t=1711987793; cv=none; b=PfdtQ3437fh306sMjF/pqrT84u+mCLSvzorFp4reQNgTxIIr/VWydUOme9LjQOio/80kOqj53/xvNkOmNOjCtr/Uwdr34n6NZrU553XAmoKYXeWpFK93JoTR1c4+qF9Fy/ExlFoEKKYHz+tdLFTWlesKOXmk51bsqgwmabl3ef8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988934; c=relaxed/simple;
-	bh=GHTD6mv2zqBX16VZD2qTqNr7Kq1ZdzjP3kS66esVt8A=;
+	s=arc-20240116; t=1711987793; c=relaxed/simple;
+	bh=yNOxXZy6jYngeOWv59yyzF/q9EHgLWwFBPxjohCMW2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fp666tgcTiWUFy49n7ijUi+axVM0dIynGOmCMJa38RdqWhpNddFWQTIsD6e+YgbxupD510ntlq5Iro7nmZC42ASsG3ZWTJ7McHMDZrDNZyKEq77Lt2XIYgqPZqG8Dp0if5O5Eels3WdpBPo76BTqG4ruVt8WnrM6YgQUyTI9SKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeB1hHLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C6AC43394;
-	Mon,  1 Apr 2024 16:28:54 +0000 (UTC)
+	 MIME-Version; b=eGvPtI1+j1o3YT2pWyrCmOfXIM+UqRNm35JJ9WRgfDOMAZ/OpBocIOSBh84QC1SAepYB190i4E3XAPCsaloYblogJGs8DoGqF4sX2Ol3FARe48QqOB1N19Et91ZRNu+sCEDBidMu4Rqa8poRAHm35YSOuLDyhYZp8xPBFUWYFD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALZvOB9u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11309C433F1;
+	Mon,  1 Apr 2024 16:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988934;
-	bh=GHTD6mv2zqBX16VZD2qTqNr7Kq1ZdzjP3kS66esVt8A=;
+	s=korg; t=1711987793;
+	bh=yNOxXZy6jYngeOWv59yyzF/q9EHgLWwFBPxjohCMW2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeB1hHLqlV24UscvpfVVjs9lrIv//cGfZmy8Q7WdUfKlaxdTJrCegREeh7oZF4prF
-	 oTDyHZn86wGwGsD/w47RbqYWd5oDA6I9I0Hbf+/LpOIs7rfpUobJCKOtUjH7z0R1g/
-	 ZW23eGCbwHg9DYZbx+lY+1xqS4Yw3tdGt5Cyx19I=
+	b=ALZvOB9uuipOkDuF3f2Q1sffDdhh/LKsZaRisDeh7BH3yRwZp/e9euXrI0u1SoMeh
+	 T5JlFdIgVN8bKEQOgZCvDuVMVSvyfEJp4vRgrqNT4e9y6mg4hCyWtiM+7ptoG/UscS
+	 Gt/rSkIcZM07E7VdhiPR9MWf8Y4Hftdni00PxkBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 333/432] ALSA: hda/tas2781: add locks to kcontrols
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.8 354/399] staging: vc04_services: changen strncpy() to strscpy_pad()
 Date: Mon,  1 Apr 2024 17:45:20 +0200
-Message-ID: <20240401152603.144345797@linuxfoundation.org>
+Message-ID: <20240401152559.739525995@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
+References: <20240401152549.131030308@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,185 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 15bc3066d2378eef1b45254be9df23b0dd7f1667 upstream.
+commit ef25725b7f8aaffd7756974d3246ec44fae0a5cf upstream.
 
-The rcabin.profile_cfg_id, cur_prog, cur_conf, force_fwload_status
-variables are acccessible from multiple threads and therefore require
-locking.
+gcc-14 warns about this strncpy() that results in a non-terminated
+string for an overflow:
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Message-ID: <e35b867f6fe5fa1f869dd658a0a1f2118b737f57.1711469583.git.soyer@irl.hu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In file included from include/linux/string.h:369,
+                 from drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:20:
+In function 'strncpy',
+    inlined from 'create_component' at drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c:940:2:
+include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' specified bound 128 equals destination size [-Werror=stringop-truncation]
+
+Change it to strscpy_pad(), which produces a properly terminated and
+zero-padded string.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240313163712.224585-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c |   50 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 2 deletions(-)
+ drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -179,8 +179,12 @@ static int tasdevice_get_profile_id(stru
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
+--- a/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
++++ b/drivers/staging/vc04_services/vchiq-mmal/mmal-vchiq.c
+@@ -937,8 +937,8 @@ static int create_component(struct vchiq
+ 	/* build component create message */
+ 	m.h.type = MMAL_MSG_TYPE_COMPONENT_CREATE;
+ 	m.u.component_create.client_component = component->client_component;
+-	strncpy(m.u.component_create.name, name,
+-		sizeof(m.u.component_create.name));
++	strscpy_pad(m.u.component_create.name, name,
++		    sizeof(m.u.component_create.name));
  
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->rcabin.profile_cfg_id;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -194,11 +198,15 @@ static int tasdevice_set_profile_id(stru
- 
- 	val = clamp(nr_profile, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->rcabin.profile_cfg_id != val) {
- 		tas_priv->rcabin.profile_cfg_id = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -235,8 +243,12 @@ static int tasdevice_program_get(struct
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->cur_prog;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -251,11 +263,15 @@ static int tasdevice_program_put(struct
- 
- 	val = clamp(nr_program, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->cur_prog != val) {
- 		tas_priv->cur_prog = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -264,8 +280,12 @@ static int tasdevice_config_get(struct s
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = tas_priv->cur_conf;
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -280,11 +300,15 @@ static int tasdevice_config_put(struct s
- 
- 	val = clamp(nr_config, 0, max);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->cur_conf != val) {
- 		tas_priv->cur_conf = val;
- 		ret = 1;
- 	}
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return ret;
- }
- 
-@@ -294,8 +318,15 @@ static int tas2781_amp_getvol(struct snd
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
-+	int ret;
- 
--	return tasdevice_amp_getvol(tas_priv, ucontrol, mc);
-+	mutex_lock(&tas_priv->codec_lock);
-+
-+	ret = tasdevice_amp_getvol(tas_priv, ucontrol, mc);
-+
-+	mutex_unlock(&tas_priv->codec_lock);
-+
-+	return ret;
- }
- 
- static int tas2781_amp_putvol(struct snd_kcontrol *kcontrol,
-@@ -304,9 +335,16 @@ static int tas2781_amp_putvol(struct snd
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
-+	int ret;
-+
-+	mutex_lock(&tas_priv->codec_lock);
- 
- 	/* The check of the given value is in tasdevice_amp_putvol. */
--	return tasdevice_amp_putvol(tas_priv, ucontrol, mc);
-+	ret = tasdevice_amp_putvol(tas_priv, ucontrol, mc);
-+
-+	mutex_unlock(&tas_priv->codec_lock);
-+
-+	return ret;
- }
- 
- static int tas2781_force_fwload_get(struct snd_kcontrol *kcontrol,
-@@ -314,10 +352,14 @@ static int tas2781_force_fwload_get(stru
- {
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	ucontrol->value.integer.value[0] = (int)tas_priv->force_fwload_status;
- 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
- 			tas_priv->force_fwload_status ? "ON" : "OFF");
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return 0;
- }
- 
-@@ -327,6 +369,8 @@ static int tas2781_force_fwload_put(stru
- 	struct tasdevice_priv *tas_priv = snd_kcontrol_chip(kcontrol);
- 	bool change, val = (bool)ucontrol->value.integer.value[0];
- 
-+	mutex_lock(&tas_priv->codec_lock);
-+
- 	if (tas_priv->force_fwload_status == val)
- 		change = false;
- 	else {
-@@ -336,6 +380,8 @@ static int tas2781_force_fwload_put(stru
- 	dev_dbg(tas_priv->dev, "%s : Force FWload %s\n", __func__,
- 		tas_priv->force_fwload_status ? "ON" : "OFF");
- 
-+	mutex_unlock(&tas_priv->codec_lock);
-+
- 	return change;
- }
- 
+ 	ret = send_synchronous_mmal_msg(instance, &m,
+ 					sizeof(m.u.component_create),
 
 
 
