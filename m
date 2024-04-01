@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-35274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90829894338
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:01:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3EF894315
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 080C9B20BAC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35CDE283551
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D7A482EF;
-	Mon,  1 Apr 2024 17:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE52A481C6;
+	Mon,  1 Apr 2024 16:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omaHCdkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhYmoZDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EF8BA3F;
-	Mon,  1 Apr 2024 17:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D764BA3F;
+	Mon,  1 Apr 2024 16:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990863; cv=none; b=uZTDDYqIgYdcAN8C14GH++H0SAic/3+NzXdpVmMFVeGJLN7JSnsnyr1fcDh3Nu3WosRFM0TUeECU7vF5Rv563QvfUFYRX88PL/Bdcs7jMO3TlvtOWnaddZ+gpYyYagMgF2lkiwe8qmtpkOKFIIYH7H8E3HWt6/UNVkoHg94+1fc=
+	t=1711990769; cv=none; b=UR/caBGh05Zu4bk8AN0CqP/XF9Hg+c6667ZJvKkZAyK3X8o7+UeMQYoCUj9R3WEIkY9NpNhM7GxpVzN1TndtitmdU8h9a9EzvokrKfhOM81b924iVQmzBU9HYi36gOviyw14h31cvAHFPQj3D0MuqGeEkIGJjjUkfTzvCrNrxQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990863; c=relaxed/simple;
-	bh=j2DqJof0ACJalfJOiwmqGYq1hq5xXxLIf6D7SZfNzXM=;
+	s=arc-20240116; t=1711990769; c=relaxed/simple;
+	bh=1gYQFvwPtYUVwka4tY3A/nNaKvF9yVp5+qTxnTG/lD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEQ9vfZbdSjoxrc1MGYtfndAXfw17Oeg8F0Rk1ytnrdt0pHGpHQajuwkHtJHEQjvYF1axohBxGba509mK+z8CIKNs7exUueZq7JOhqTBX78+TLxbu6uyfWO7oXEtYtGVrG+aLPLhKsvGzFLi9ntBX0x6Trru/OGerEsrJJaR0Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omaHCdkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B841CC433C7;
-	Mon,  1 Apr 2024 17:01:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CQbNsLuCii0y13QyUyABmDw7KO5eZ39S2doaSLyzt5sSHdiI35YCJyRPM8bwzPVVNOQwN0TE6jpds4xQ36tBVNi6B1G9dxwpLKxQI4fQrC3WPqZ01xKWgvWIrMwpYpc2nTGPxjk6whT4colJx6sY+yVvorq5KDKyndF+x/LwG1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhYmoZDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0929C433C7;
+	Mon,  1 Apr 2024 16:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990863;
-	bh=j2DqJof0ACJalfJOiwmqGYq1hq5xXxLIf6D7SZfNzXM=;
+	s=korg; t=1711990769;
+	bh=1gYQFvwPtYUVwka4tY3A/nNaKvF9yVp5+qTxnTG/lD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omaHCdkDOnGID39P541EL3Bu3ohizYiYDGYZzVzyAosY4T9bLMaDohgz446o35Bpk
-	 BGtzT8Jbca3bMMVkEo5lMN6OVnvqdz+XciHWSj5o3Ag51ZEu78RcvUmiVmAsamI7Mf
-	 BLVEKfljPAxDLPZlUNs8Xzfyi1eYKa3ZFRJHXVcg=
+	b=HhYmoZDeIxbAKz8hoech6dGGDQwIUquCzdIzqzc9IIDYZlvmQR2pHKJVWEjxEt3tu
+	 6kdle/w9DaD0be5H7dm5XEf4ZQ2R4m4tFavWB5LcJXVQhm1nYamHgIxw5yaq/+4s9F
+	 ZfXwq2wSJOUS6IEleay8ep+Tz69mkPtwZqXqAhWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
+	=?UTF-8?q?Christian=20H=C3=A4ggstr=C3=B6m?= <christian.haggstrom@orexplore.com>,
 	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/272] USB: serial: add device ID for VeriFone adapter
-Date: Mon,  1 Apr 2024 17:44:10 +0200
-Message-ID: <20240401152532.430563764@linuxfoundation.org>
+Subject: [PATCH 6.1 061/272] USB: serial: cp210x: add ID for MGP Instruments PDS100
+Date: Mon,  1 Apr 2024 17:44:11 +0200
+Message-ID: <20240401152532.459732079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
 References: <20240401152530.237785232@linuxfoundation.org>
@@ -60,79 +60,27 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Christian Häggström <christian.haggstrom@orexplore.com>
 
-[ Upstream commit cda704809797a8a86284f9df3eef5e62ec8a3175 ]
+[ Upstream commit a0d9d868491a362d421521499d98308c8e3a0398 ]
 
-Add device ID for a (probably fake) CP2102 UART device.
+The radiation meter has the text MGP Instruments PDS-100G or PDS-100GN
+produced by Mirion Technologies. Tested by forcing the driver
+association with
 
-lsusb -v output:
+  echo 10c4 863c > /sys/bus/usb-serial/drivers/cp210x/new_id
 
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               1.10
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x11ca VeriFone Inc
-  idProduct          0x0212 Verifone USB to Printer
-  bcdDevice            1.00
-  iManufacturer           1 Silicon Labs
-  iProduct                2 Verifone USB to Printer
-  iSerial                 3 0001
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              2 Verifone USB to Printer
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-Device Status:     0x0000
-  (Bus Powered)
+and then setting the serial port in 115200 8N1 mode. The device
+announces ID_USB_VENDOR_ENC=Silicon\x20Labs and ID_USB_MODEL_ENC=PDS100
 
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Signed-off-by: Christian Häggström <christian.haggstrom@orexplore.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -141,17 +89,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index b3e60b3847941..bd0632e77d8b0 100644
+index bd0632e77d8b0..e9ee8da8cc296 100644
 --- a/drivers/usb/serial/cp210x.c
 +++ b/drivers/usb/serial/cp210x.c
-@@ -177,6 +177,7 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
- 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
- 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
-+	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
- 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
- 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
- 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
+@@ -144,6 +144,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0x85EA) }, /* AC-Services IBUS-IF */
+ 	{ USB_DEVICE(0x10C4, 0x85EB) }, /* AC-Services CIS-IBUS */
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
++	{ USB_DEVICE(0x10C4, 0x863C) }, /* MGP Instruments PDS100 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
+ 	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
 -- 
 2.43.0
 
