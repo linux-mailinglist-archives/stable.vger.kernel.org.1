@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B4A89418F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:43:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D0C893FE3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0288282F22
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:43:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86FF1F21D9C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACC6481C6;
-	Mon,  1 Apr 2024 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCD47A74;
+	Mon,  1 Apr 2024 16:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLsZilmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRlBM8Bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E0F4778C;
-	Mon,  1 Apr 2024 16:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2936947A5D;
+	Mon,  1 Apr 2024 16:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989803; cv=none; b=kxY+UtGypg29wOvr8BxSreOdNDK2IMWxlOl1ijDzG4KIjWO2MIrm4RxUwa83TFiVfcUx7GPOgluUlLqx3gNoDSdo+3XQdjZrIsTn/1me9GYaulq+7mN+1zqHF7fe7CkJ9uo/+2wUjW0K7/jN5vZBx058SuLvIkLzO4+H7AyKjJs=
+	t=1711988561; cv=none; b=exI3WkDzRU5YCL5+dKh0BiOAaUtZt3qX5ypQsSOM1lkK6O98tQu10sK6xYZhM2J+KqLTHyK/Dgt2k5rlD6cnazGH05Ar7h2K1xjvjLh+Gv7ssTHOF087Bvta+Vrlte6lUPLt9cgpBuUVXkLF647oqQXHRt3wFD9JEquT8a9CH4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989803; c=relaxed/simple;
-	bh=z5dRyQWJORI2WSUFJcgit4Y43zhaXVt/NILtsyY30BI=;
+	s=arc-20240116; t=1711988561; c=relaxed/simple;
+	bh=b/mJey1o3qIfXtNfD3Axse5ucfDHdSbVhItT9e3Ge0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHEd/PosyGT+domzVJqxzKC5aHiDHHxwkJQLr/jDDVeSCJ8M+KPj5oDY9K1wuguP12UEjks3kmIbRjiuRYKQVLqDEE3abIrDuo9mduhpgiQiX/uh3fbsPfSyIWn4P8JSQ0dlzJTzTwXEPNepDJdSwOPJHMRvjFjZAI8KV4/wbE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLsZilmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465F8C433F1;
-	Mon,  1 Apr 2024 16:43:22 +0000 (UTC)
+	 MIME-Version; b=j6xDO6RigFiqxq8qBHlHg0Uo/lqGWcDV2hM99HGKhMjFhTrGIfto/xO3G1ZYa2Mc5w3U8V3b8ZsAZ3bRVUd9RwgzhNAFsZ5a0uDePP7hmRvnxOTcSptsIlLOyFsZjE2hs7vKfw3sPUu4PkShxuonbGKsketAgPjYcdGYv9C7sOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRlBM8Bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A054FC433C7;
+	Mon,  1 Apr 2024 16:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989802;
-	bh=z5dRyQWJORI2WSUFJcgit4Y43zhaXVt/NILtsyY30BI=;
+	s=korg; t=1711988561;
+	bh=b/mJey1o3qIfXtNfD3Axse5ucfDHdSbVhItT9e3Ge0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLsZilmHFQL0C3n3bFFvH4bxDrsNTwpY6GHvUk8HbFGXpnyna6Diu/P5L3X4ntGnU
-	 /+/BNQwi93CeMKr7A11ZoDmvp/8KwjWxJprSa4InxtXtp56s1ALg9qsLXjDB+kOA3K
-	 p3frEzjEngEbdlYNcVRYFvebSJMW68ZuKXjsnCEY=
+	b=DRlBM8BsYBWLF+TXNOLZNuYIx3TuxdVzvIBzwhmvnkOjSZJeGxTq6fptwiP1pCEBj
+	 etjFZzH+ikzc3cyvSh7lEzunxeak6TSZ2Vhy6omOv0zMgthDgXptA7gXCPMauvtZo0
+	 egBHpEI3er9MGAjfWNRmcnNgzjmhMtrFEUXQsPHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Anton Altaparmakov <anton@tuxera.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/396] cifs: do not let cifs_chan_update_iface deallocate channels
-Date: Mon,  1 Apr 2024 17:43:27 +0200
-Message-ID: <20240401152552.654117978@linuxfoundation.org>
+Subject: [PATCH 6.7 221/432] x86/pm: Work around false positive kmemleak report in msr_build_context()
+Date: Mon,  1 Apr 2024 17:43:28 +0200
+Message-ID: <20240401152559.729209057@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Anton Altaparmakov <anton@tuxera.com>
 
-[ Upstream commit 12d1e301bdfd1f2e2f371432dedef7cce8f01c4a ]
+[ Upstream commit e3f269ed0accbb22aa8f25d2daffa23c3fccd407 ]
 
-cifs_chan_update_iface is meant to check and update the server
-interface used for a channel when the existing server interface
-is no longer available.
+Since:
 
-So far, this handler had the code to remove an interface entry
-even if a new candidate interface is not available. Allowing
-this leads to several corner cases to handle.
+  7ee18d677989 ("x86/power: Make restore_processor_context() sane")
 
-This change makes the logic much simpler by not deallocating
-the current channel interface entry if a new interface is not
-found to replace it with.
+kmemleak reports this issue:
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 16a57d768111 ("cifs: reduce warning log level for server not advertising interfaces")
+  unreferenced object 0xf68241e0 (size 32):
+    comm "swapper/0", pid 1, jiffies 4294668610 (age 68.432s)
+    hex dump (first 32 bytes):
+      00 cc cc cc 29 10 01 c0 00 00 00 00 00 00 00 00  ....)...........
+      00 42 82 f6 cc cc cc cc cc cc cc cc cc cc cc cc  .B..............
+    backtrace:
+      [<461c1d50>] __kmem_cache_alloc_node+0x106/0x260
+      [<ea65e13b>] __kmalloc+0x54/0x160
+      [<c3858cd2>] msr_build_context.constprop.0+0x35/0x100
+      [<46635aff>] pm_check_save_msr+0x63/0x80
+      [<6b6bb938>] do_one_initcall+0x41/0x1f0
+      [<3f3add60>] kernel_init_freeable+0x199/0x1e8
+      [<3b538fde>] kernel_init+0x1a/0x110
+      [<938ae2b2>] ret_from_fork+0x1c/0x28
+
+Which is a false positive.
+
+Reproducer:
+
+  - Run rsync of whole kernel tree (multiple times if needed).
+  - start a kmemleak scan
+  - Note this is just an example: a lot of our internal tests hit these.
+
+The root cause is similar to the fix in:
+
+  b0b592cf0836 x86/pm: Fix false positive kmemleak report in msr_build_context()
+
+ie. the alignment within the packed struct saved_context
+which has everything unaligned as there is only "u16 gs;" at start of
+struct where in the past there were four u16 there thus aligning
+everything afterwards.  The issue is with the fact that Kmemleak only
+searches for pointers that are aligned (see how pointers are scanned in
+kmemleak.c) so when the struct members are not aligned it doesn't see
+them.
+
+Testing:
+
+We run a lot of tests with our CI, and after applying this fix we do not
+see any kmemleak issues any more whilst without it we see hundreds of
+the above report. From a single, simple test run consisting of 416 individual test
+cases on kernel 5.10 x86 with kmemleak enabled we got 20 failures due to this,
+which is quite a lot. With this fix applied we get zero kmemleak related failures.
+
+Fixes: 7ee18d677989 ("x86/power: Make restore_processor_context() sane")
+Signed-off-by: Anton Altaparmakov <anton@tuxera.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240314142656.17699-1-anton@tuxera.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 50 +++++++++++++++++---------------------------
- 1 file changed, 19 insertions(+), 31 deletions(-)
+ arch/x86/include/asm/suspend_32.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 2fc2fbb260bf0..0d76757528e49 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -438,7 +438,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
+diff --git a/arch/x86/include/asm/suspend_32.h b/arch/x86/include/asm/suspend_32.h
+index a800abb1a9925..d8416b3bf832e 100644
+--- a/arch/x86/include/asm/suspend_32.h
++++ b/arch/x86/include/asm/suspend_32.h
+@@ -12,11 +12,6 @@
  
--	if (!chan_index && !iface) {
-+	if (!iface) {
- 		cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
- 			 &ss);
- 		spin_unlock(&ses->iface_lock);
-@@ -446,7 +446,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	}
- 
- 	/* now drop the ref to the current iface */
--	if (old_iface && iface) {
-+	if (old_iface) {
- 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
- 			 &old_iface->sockaddr,
- 			 &iface->sockaddr);
-@@ -459,44 +459,32 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 
- 		kref_put(&old_iface->refcount, release_iface);
- 	} else if (old_iface) {
--		cifs_dbg(FYI, "releasing ref to iface: %pIS\n",
-+		/* if a new candidate is not found, keep things as is */
-+		cifs_dbg(FYI, "could not replace iface: %pIS\n",
- 			 &old_iface->sockaddr);
--
--		old_iface->num_channels--;
--		if (old_iface->weight_fulfilled)
--			old_iface->weight_fulfilled--;
--
--		kref_put(&old_iface->refcount, release_iface);
- 	} else if (!chan_index) {
- 		/* special case: update interface for primary channel */
--		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
--			 &iface->sockaddr);
--		iface->num_channels++;
--		iface->weight_fulfilled++;
--	} else {
--		WARN_ON(!iface);
--		cifs_dbg(FYI, "adding new iface: %pIS\n", &iface->sockaddr);
-+		if (iface) {
-+			cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
-+				 &iface->sockaddr);
-+			iface->num_channels++;
-+			iface->weight_fulfilled++;
-+		}
- 	}
- 	spin_unlock(&ses->iface_lock);
- 
--	spin_lock(&ses->chan_lock);
--	chan_index = cifs_ses_get_chan_index(ses, server);
--	if (chan_index == CIFS_INVAL_CHAN_INDEX) {
-+	if (iface) {
-+		spin_lock(&ses->chan_lock);
-+		chan_index = cifs_ses_get_chan_index(ses, server);
-+		if (chan_index == CIFS_INVAL_CHAN_INDEX) {
-+			spin_unlock(&ses->chan_lock);
-+			return 0;
-+		}
-+
-+		ses->chans[chan_index].iface = iface;
- 		spin_unlock(&ses->chan_lock);
--		return 0;
- 	}
- 
--	ses->chans[chan_index].iface = iface;
--
--	/* No iface is found. if secondary chan, drop connection */
--	if (!iface && SERVER_IS_CHAN(server))
--		ses->chans[chan_index].server = NULL;
--
--	spin_unlock(&ses->chan_lock);
--
--	if (!iface && SERVER_IS_CHAN(server))
--		cifs_put_tcp_session(server, false);
--
- 	return rc;
- }
+ /* image of the saved processor state */
+ struct saved_context {
+-	/*
+-	 * On x86_32, all segment registers except gs are saved at kernel
+-	 * entry in pt_regs.
+-	 */
+-	u16 gs;
+ 	unsigned long cr0, cr2, cr3, cr4;
+ 	u64 misc_enable;
+ 	struct saved_msrs saved_msrs;
+@@ -27,6 +22,11 @@ struct saved_context {
+ 	unsigned long tr;
+ 	unsigned long safety;
+ 	unsigned long return_address;
++	/*
++	 * On x86_32, all segment registers except gs are saved at kernel
++	 * entry in pt_regs.
++	 */
++	u16 gs;
+ 	bool misc_enable_saved;
+ } __attribute__((packed));
  
 -- 
 2.43.0
