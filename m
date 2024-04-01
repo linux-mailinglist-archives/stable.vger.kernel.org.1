@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-35224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E00894301
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E74D893FF8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7934B2223C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B03A1F21CFB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982704C615;
-	Mon,  1 Apr 2024 16:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A674445BE4;
+	Mon,  1 Apr 2024 16:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzf0DyCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFd0BP0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560774AEDF;
-	Mon,  1 Apr 2024 16:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66990C129;
+	Mon,  1 Apr 2024 16:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990701; cv=none; b=ZSupHsYyQeIRo3pvYtRdju/VxANv6JlseLZmxnU4qXghg7xWE9ea8xCSSmUzaMje+8GVTADbd90r9P4hoBA0cz5hrbjqaloBkdRk10FL1W41Zx29qMJCyLTibSQHbIe07AnJDweoFBQxsyqZDlMC1A7plPgiwdhnfnmLmx319Eo=
+	t=1711988631; cv=none; b=JvyHG1gCWwXIk1yN2ulbgs4kFSvYg2YU9xc0XLWpQrDMT0l0apxVS2DLv2bK/eT46x2tRJyWqCOjHu3vW/n1GfHWm9n6rqZZV1SWYYIJnpEtTSc4e5LvcmhdK3nfKo7a3jwafNt4MGkejYcublVcjk3kz/490VPpKqvkVEo1s/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990701; c=relaxed/simple;
-	bh=gZM9cEBl3YzT04zq4u6r8oIQm25qIoKrjAfv95D3FLY=;
+	s=arc-20240116; t=1711988631; c=relaxed/simple;
+	bh=xhgo8PQnkMkQc7FnSLsmwRiNF5zs8tC7tGk6OvIYdP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOM/fyfA3pVtcTr+KycsaXrZcuJLP2uK2hUHnLLciPYqmcT7MuMZGe52LCgL2e5ybd6VdEZq4859+C75Bhp8HniIQqG8U/kyUOtbZxjxA9pOkexXFr9P1pqCsqNeWadPAD4/kzn9O+acSPgGD4VrzlPR8AzLRl4u2cg0uWqr1Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzf0DyCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCCAC433C7;
-	Mon,  1 Apr 2024 16:58:20 +0000 (UTC)
+	 MIME-Version; b=RqDfYsQUttW924hxu7AsLfnTFIu4V4ah4R53T5K+f25hEoTCMx7Jv081vfh7WdiYk7MCGCOtslt9RDfDc9F9pgmm6g88Nwn36HvgxJ3SbSniP7i7GjxVkyiK3pJ5EEprhJJ8XUGyXkwzOMZIYHkvTLJw1UkFwWXjv21cTTViSuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFd0BP0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83A3C433F1;
+	Mon,  1 Apr 2024 16:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990701;
-	bh=gZM9cEBl3YzT04zq4u6r8oIQm25qIoKrjAfv95D3FLY=;
+	s=korg; t=1711988631;
+	bh=xhgo8PQnkMkQc7FnSLsmwRiNF5zs8tC7tGk6OvIYdP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wzf0DyCj9YQdI1rvZECEW01OO8xxZybzc+E6hMzZUwmbm74ctF7ko9Jq/DQI1aUre
-	 f1Skt42Bgg4whTSv2Il6jlR1uHEM7DUwuYGMQrrof17pjhd8sUmX3vRAt0rGQ7bAnC
-	 1b3qtHmsTEkNPJ5mGyI+5YGvK+IQ6FfszmKP2F4M=
+	b=CFd0BP0diTTDFG5yL6TW6YgeQoZR4MMqR++a9P/zOIZjMsskzdttCts0fLlpTf24z
+	 g5tBNbhMmgn00ryxLven1pjh3xH8BuAJZU0uynA+6qLBz91v+nIFhqSGM5Z9+46aQJ
+	 06cF6XPq28NGdAw67hDB1WTxtXhqA61ZiPi2Y5O4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/272] fat: fix uninitialized field in nostale filehandles
-Date: Mon,  1 Apr 2024 17:43:49 +0200
-Message-ID: <20240401152531.599013681@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.7 243/432] xfrm: Avoid clang fortify warning in copy_to_user_tmpl()
+Date: Mon,  1 Apr 2024 17:43:50 +0200
+Message-ID: <20240401152600.383950345@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit fde2497d2bc3a063d8af88b258dbadc86bd7b57c ]
+commit 1a807e46aa93ebad1dfbed4f82dc3bf779423a6e upstream.
 
-When fat_encode_fh_nostale() encodes file handle without a parent it
-stores only first 10 bytes of the file handle. However the length of the
-file handle must be a multiple of 4 so the file handle is actually 12
-bytes long and the last two bytes remain uninitialized. This is not
-great at we potentially leak uninitialized information with the handle
-to userspace. Properly initialize the full handle length.
+After a couple recent changes in LLVM, there is a warning (or error with
+CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
+specifically the memset() in copy_to_user_tmpl().
 
-Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
-Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
-Fixes: ea3983ace6b7 ("fat: restructure export_operations")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-Cc: Amir Goldstein <amir73il@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  In file included from net/xfrm/xfrm_user.c:14:
+  ...
+  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+    438 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  1 error generated.
+
+While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
+is first assigned in copy_templates() by calling validate_tmpl() first
+(so there should not be any issue in practice), LLVM/clang cannot really
+deduce that across the boundaries of these functions. Without that
+knowledge, it cannot assume that the loop stops before i is greater than
+XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
+memset().
+
+To make the bounds of ->xfrm_nr clear to the compiler and add additional
+defense in case copy_to_user_tmpl() is ever used in a path where
+->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
+add an explicit bound check and early return, which clears up the
+warning.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linux/issues/1985
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fat/nfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/xfrm/xfrm_user.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/fat/nfs.c b/fs/fat/nfs.c
-index af191371c3529..bab63eeaf9cbc 100644
---- a/fs/fat/nfs.c
-+++ b/fs/fat/nfs.c
-@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inode, __u32 *fh, int *lenp,
- 		fid->parent_i_gen = parent->i_generation;
- 		type = FILEID_FAT_WITH_PARENT;
- 		*lenp = FAT_FID_SIZE_WITH_PARENT;
-+	} else {
-+		/*
-+		 * We need to initialize this field because the fh is actually
-+		 * 12 bytes long
-+		 */
-+		fid->parent_i_pos_hi = 0;
- 	}
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2017,6 +2017,9 @@ static int copy_to_user_tmpl(struct xfrm
+ 	if (xp->xfrm_nr == 0)
+ 		return 0;
  
- 	return type;
--- 
-2.43.0
-
++	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
++		return -ENOBUFS;
++
+ 	for (i = 0; i < xp->xfrm_nr; i++) {
+ 		struct xfrm_user_tmpl *up = &vec[i];
+ 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
 
 
 
