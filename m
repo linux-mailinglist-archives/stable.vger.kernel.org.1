@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-34657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32572894040
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0489434A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63DD21C20D6F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD7428385A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A3D446D5;
-	Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179B0482CA;
+	Mon,  1 Apr 2024 17:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R49LIvHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhZgBWqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876D7C129;
-	Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3F81DFF4;
+	Mon,  1 Apr 2024 17:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988858; cv=none; b=Yw2C8HT1KCtdcFvRHRcK/fjdeD8pWFdRd95fHiNdH24dzwN8gvmcNaWveAzbDQAF0bYSR7KKbI/5DpKa7YTHst0oBXaRj0W2ne9RWGzwf7AkPnmMzWpL56ssTGamChxoM7iswIC5uBmVaNcSjqXrv9oNfE6w12UU6XnWLtjeeCA=
+	t=1711990917; cv=none; b=KCDZbshM7taocSkPFc4042bM1XMUvCfIkyN9RA0bqQjDgLhFcMB3MNo0kvGM7OqHUpD8PKYtclefZ6YFtsYKJKcX2vjP7Wdk5JwFd+9Y1FWIk6n3VNmKmCfK5d5Fmp6wIuKmdAAS/v04fSgg8jXSW7v+UhmnOQy6xjkjDokkip0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988858; c=relaxed/simple;
-	bh=1C/mkq0sQWPksnO6NNeFKYZ8z3Fz6NA/UJJaQMmu9Tc=;
+	s=arc-20240116; t=1711990917; c=relaxed/simple;
+	bh=65PT+ATWuciVg9fUCrawcu4dQbw0IBX1trOpu8HYRG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4AejG40TfOi5CGK1MH7k6tJ/4S26TbckwxtOZ4YoW0YJayB5xU83Bd/75BdnFFURzR+D5Q9YMuOURUNSbhUGEP1O/qOY5dnEEKTKi+f37Kt6y/Deqhop+iwGOjGLDwATbPkt9o69XAcqXy0iUgqi6OsBjXHDPu4gxx49pCWx0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R49LIvHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02116C433C7;
-	Mon,  1 Apr 2024 16:27:37 +0000 (UTC)
+	 MIME-Version; b=srK8/UoVo77OK3mVN7QO1iOs061QHK4PgC/QhYC4i5FNV0B1CwzqcFq5lnaxZY3fgVLJwy/voco8b5kEAzPIZEfmj4f/kNOjm5C7SvENmC81+pwC3qWh47fbbSu1Nr0d/CZPywKjxmxhvCfq4LCceKTx9ccHc123oKyw1eJ0Ggc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhZgBWqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C099C433F1;
+	Mon,  1 Apr 2024 17:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988858;
-	bh=1C/mkq0sQWPksnO6NNeFKYZ8z3Fz6NA/UJJaQMmu9Tc=;
+	s=korg; t=1711990917;
+	bh=65PT+ATWuciVg9fUCrawcu4dQbw0IBX1trOpu8HYRG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R49LIvHH2dBypmKhZm2Kc2R8GgBvUXUUkF7fGfQFM/DV2ahv1d4dC608uB9+Q5Don
-	 vJYXdTX5XRtZcEHK9Hc49MhjCo1H104YE6IHwju3YxQls6Oxp1nGZgFYTGZa6aI59E
-	 9197yK5JD915g+D5tTX5u5Yz2uTfm5+un199+pxo=
+	b=RhZgBWqwn8lkt6PwvYQzE90LleY1c4AlD9RA/aaa2tNDIUNkwamGZCPqRsrEAOpP0
+	 BPPKArnXzkMjuJ1NzfMF4U9gQhR2x2LEcGdDJZjJToT3ShzzkPvNMXxHIejOT8ThV+
+	 hbMiUA48lShgupDx1NCLSbvncZgyyt2QLIa63Mzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 309/432] irqchip/renesas-rzg2l: Add macro to retrieve TITSR register offset based on registers index
+Subject: [PATCH 6.1 106/272] ksmbd: retrieve number of blocks using vfs_getattr in set_file_allocation_info
 Date: Mon,  1 Apr 2024 17:44:56 +0200
-Message-ID: <20240401152602.404578328@linuxfoundation.org>
+Message-ID: <20240401152533.948270923@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit 2eca4731cc66563b3919d8753dbd74d18c39f662 ]
+[ Upstream commit 34cd86b6632718b7df3999d96f51e63de41c5e4f ]
 
-There are 2 TITSR registers available on the IA55 interrupt controller.
+Use vfs_getattr() to retrieve stat information, rather than make
+assumptions about how a filesystem fills inode structs.
 
-Add a macro that retrieves the TITSR register offset based on it's
-index. This macro is useful in when adding suspend/resume support so both
-TITSR registers can be accessed in a for loop.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20231120111820.87398-7-claudiu.beznea.uj@bp.renesas.com
-Stable-dep-of: 853a6030303f ("irqchip/renesas-rzg2l: Prevent spurious interrupts when setting trigger type")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/smb/server/smb2pdu.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index d6514f2d51aff..3f2f4ebfe4da6 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -28,8 +28,7 @@
- #define ISCR				0x10
- #define IITSR				0x14
- #define TSCR				0x20
--#define TITSR0				0x24
--#define TITSR1				0x28
-+#define TITSR(n)			(0x24 + (n) * 4)
- #define TITSR0_MAX_INT			16
- #define TITSEL_WIDTH			0x2
- #define TSSR(n)				(0x30 + ((n) * 4))
-@@ -206,8 +205,7 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
- 	struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 	unsigned int hwirq = irqd_to_hwirq(d);
- 	u32 titseln = hwirq - IRQC_TINT_START;
--	u32 offset;
--	u8 sense;
-+	u8 index, sense;
- 	u32 reg;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 66d25d0e34d8b..39fc078284c8e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5757,15 +5757,21 @@ static int set_file_allocation_info(struct ksmbd_work *work,
  
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
-@@ -223,17 +221,17 @@ static int rzg2l_tint_set_edge(struct irq_data *d, unsigned int type)
- 		return -EINVAL;
- 	}
+ 	loff_t alloc_blks;
+ 	struct inode *inode;
++	struct kstat stat;
+ 	int rc;
  
--	offset = TITSR0;
-+	index = 0;
- 	if (titseln >= TITSR0_MAX_INT) {
- 		titseln -= TITSR0_MAX_INT;
--		offset = TITSR1;
-+		index = 1;
- 	}
+ 	if (!(fp->daccess & FILE_WRITE_DATA_LE))
+ 		return -EACCES;
  
- 	raw_spin_lock(&priv->lock);
--	reg = readl_relaxed(priv->base + offset);
-+	reg = readl_relaxed(priv->base + TITSR(index));
- 	reg &= ~(IRQ_MASK << (titseln * TITSEL_WIDTH));
- 	reg |= sense << (titseln * TITSEL_WIDTH);
--	writel_relaxed(reg, priv->base + offset);
-+	writel_relaxed(reg, priv->base + TITSR(index));
- 	raw_spin_unlock(&priv->lock);
++	rc = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
++			 AT_STATX_SYNC_AS_STAT);
++	if (rc)
++		return rc;
++
+ 	alloc_blks = (le64_to_cpu(file_alloc_info->AllocationSize) + 511) >> 9;
+ 	inode = file_inode(fp->filp);
  
- 	return 0;
+-	if (alloc_blks > inode->i_blocks) {
++	if (alloc_blks > stat.blocks) {
+ 		smb_break_all_levII_oplock(work, fp, 1);
+ 		rc = vfs_fallocate(fp->filp, FALLOC_FL_KEEP_SIZE, 0,
+ 				   alloc_blks * 512);
+@@ -5773,7 +5779,7 @@ static int set_file_allocation_info(struct ksmbd_work *work,
+ 			pr_err("vfs_fallocate is failed : %d\n", rc);
+ 			return rc;
+ 		}
+-	} else if (alloc_blks < inode->i_blocks) {
++	} else if (alloc_blks < stat.blocks) {
+ 		loff_t size;
+ 
+ 		/*
 -- 
 2.43.0
 
