@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-34566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07060893FE1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74698941AF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF20B20F72
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6270428323B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4BF47A57;
-	Mon,  1 Apr 2024 16:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D57D4654F;
+	Mon,  1 Apr 2024 16:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7NlF08t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUFDkbJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12E8C129;
-	Mon,  1 Apr 2024 16:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72CB1E525;
+	Mon,  1 Apr 2024 16:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988551; cv=none; b=kRT3dupNys1e/lG5v7TLzFFzun0p8W3sCA8JWocfjWgIFtQt4gA4xFXw7KZ6Cms7HJw2yJTvHhyC1SFFCEecZVKF4GbjN3qmCq9Oadz5LbtLmGZ1kd0gh5DHpBix7O/CPN6rtN28C8djb0kh0iIg+SdKYQQdUl2N5xnppPpAqc4=
+	t=1711989893; cv=none; b=cmvHP+arlIGGg+RWo9iUrjn8NOzSMMzqZ5drVOu5/LFVSLsfU8W899IbNWycGg+/kOzXo8QNL4dJd7qXHBM5R08s7PFnsVahsPBftjdAZlKUP8g5gB1Es/NVetWbkVQpOrBERpzS+l42/blSprBpT92yRdbFDG+O4kV/70SzRfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988551; c=relaxed/simple;
-	bh=7ZTjC1aM6TRLqGLagC/ZT8TU1gKPIp5XifsV2xNZ82Q=;
+	s=arc-20240116; t=1711989893; c=relaxed/simple;
+	bh=luflWCn8FsuUII6wE7bFuw4Tn4aldvRHhfg8zLir2nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxshCQ8htjueUZcEKOUKTdhPviCP26IBl95YvocVfjQ5Cfnx/5yj/WSMmOrfzmgRB0Db1F+FlqWwM38XujeK+LTA7H/JX2l7oNMdVAe5KPnT3xttRc1uHR2KUEyzdPE/eGMJDNpmAW6h7IaHfI/ZziGfWFj+MwrupxrnPWFIxOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7NlF08t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CA6C433F1;
-	Mon,  1 Apr 2024 16:22:30 +0000 (UTC)
+	 MIME-Version; b=nmDy9X22QKyCmmedM/iqV1BPuDNQ4y2qejPQxpYfu/em5CIajznZWsgRpuhYJ5TBDGUNEmAABDSeRDVX9a6uP2KNzIcpIM7kgju+LtYph7lbO0KxBZV8LAUnlhREdXWMJM9xpanrVZEdz0H420iReMyjBwhop8L/UreXnS49ntg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUFDkbJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35995C433C7;
+	Mon,  1 Apr 2024 16:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988550;
-	bh=7ZTjC1aM6TRLqGLagC/ZT8TU1gKPIp5XifsV2xNZ82Q=;
+	s=korg; t=1711989893;
+	bh=luflWCn8FsuUII6wE7bFuw4Tn4aldvRHhfg8zLir2nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7NlF08tBYRnWBZvrbPpOiMbmF4SsHlxAGyfp+E7xu2KNBcFEElZMlRIaFM9DQ4DE
-	 t5L3V+UA1JTThaAiJV5/s9llX19xLDeg8w9LSV5UHmqOHM8ed1cLzptFQ7aZjpb8MZ
-	 hHWDKT/hCI4o5W6EHfQmoAN95kSl9avxI4mEBkDU=
+	b=fUFDkbJTeCJOsqA5qD5Dfh6J/iHs6SC7urZxkGv0wQzpzw8r+5yxada92QjaFdkbl
+	 H/NWWf2Yq29MYU7cLvLorsDUba4NmpRsWnzFc5cY3KYCTkpAnpGHRaVaWxnDyMZqZg
+	 Atl8AwvC49Yjcow3OMDuu5YWdTocUfxrWPlUVVfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 218/432] drm/amd/display: Return the correct HDCP error code
+Subject: [PATCH 6.6 156/396] cifs: add xid to query server interface call
 Date: Mon,  1 Apr 2024 17:43:25 +0200
-Message-ID: <20240401152559.641584634@linuxfoundation.org>
+Message-ID: <20240401152552.595986877@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit e64b3f55e458ce7e2087a0051f47edabf74545e7 ]
+[ Upstream commit 4cf6e1101a25ca5e63d48adf49b0a8a64bae790f ]
 
-[WHY & HOW]
-If the display is null when creating an HDCP session, return a proper
-error code.
+We were passing 0 as the xid for the call to query
+server interfaces. This is not great for debugging.
+This change adds a real xid.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 13c0a74747cb ("cifs: make sure server interfaces are requested only for SMB3+")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/connect.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-index ee67a35c2a8ed..ff930a71e496a 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
-@@ -513,6 +513,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
- 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
- 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
- 
-+	if (!display)
-+		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index a4147e999736a..2a564f19dbb39 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -119,6 +119,7 @@ static int reconn_set_ipaddr_from_hostname(struct TCP_Server_Info *server)
+ static void smb2_query_server_interfaces(struct work_struct *work)
+ {
+ 	int rc;
++	int xid;
+ 	struct cifs_tcon *tcon = container_of(work,
+ 					struct cifs_tcon,
+ 					query_interfaces.work);
+@@ -126,7 +127,10 @@ static void smb2_query_server_interfaces(struct work_struct *work)
+ 	/*
+ 	 * query server network interfaces, in case they change
+ 	 */
+-	rc = SMB3_request_interfaces(0, tcon, false);
++	xid = get_xid();
++	rc = SMB3_request_interfaces(xid, tcon, false);
++	free_xid(xid);
 +
- 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
- 
- 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
+ 	if (rc) {
+ 		if (rc == -EOPNOTSUPP)
+ 			return;
 -- 
 2.43.0
 
