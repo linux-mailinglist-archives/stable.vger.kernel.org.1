@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69020894199
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C41893FEF
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B7A28235F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7282D2851FA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC0B487BC;
-	Mon,  1 Apr 2024 16:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283A846B9F;
+	Mon,  1 Apr 2024 16:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2UniMoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9H9p2WY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D4F481D5;
-	Mon,  1 Apr 2024 16:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D54C129;
+	Mon,  1 Apr 2024 16:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989823; cv=none; b=BXUqocZuQPMQiamqP9H2kUVgmoRKsPnLPJh4r81r6XfKbwqe+4sM+e4jeX6CYSt9rzSazLVtPGgKqp9FKRtD0r2zuYGumzPuYpscudeFUzmSqJriPZ+DZZWtw949QXPhoITR4ZAgOY9Mmjm1YZ5DIIrezLsT/3Mu9WYn/4YPC1A=
+	t=1711988600; cv=none; b=AqIoS4BbBmZO+0ESJChpHb+Rigji9qyZ7hLH7P0Cv1BRe+fbf5WQr93y0gM65svd/S71w6Guc6t84NH5SUNN3tHN1AILo3RHImBrd+D1JiqbQ3CcgGGT6b7NCLuuC+89ULjhcQMCvL4CVIVJC11kqd1+pdDXsq+9h8Bd16Kotok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989823; c=relaxed/simple;
-	bh=tNKCUkBTmNgZwIsR9hk+qI4QjW5m/CloCQqBWQTpvAg=;
+	s=arc-20240116; t=1711988600; c=relaxed/simple;
+	bh=pyVlEXxS4nYJqaSGp4xBDW2FGK82xTYHDRD9Gxu+pmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qriaffNWIgF8oCIsENYeDJJ9vU+iAhtl4kMKJ3tCjxSyv0zVtOrWTS3C9HaCW4LN+FdgB1NHKnowyLAsBjRAs28vZvqI/mwRttgxhTQpzvwIS6sL1p3xcsWg0Q6UxfzSTRJ6g8PaH4z4rggMsLqr0OyWWe33iiXFk3UXX4Jjr4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2UniMoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23AAC43394;
-	Mon,  1 Apr 2024 16:43:42 +0000 (UTC)
+	 MIME-Version; b=j43ojm7KuIiNbKlrOeXfzOGobs3lXuUzJm9VVSx/119t7/XJtBJiEpXvguyZlV9Q2AFFgLVmKUW5pu5GdMwbg6xLNh9P7Q9LSGlhDIMyrzV5PdUIWKPNfh/YRDWaXt2UjpVqlVADqRwJFcy2Zr1aaGP/VMv/zDIkE+bm6xBj7S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9H9p2WY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E05C433F1;
+	Mon,  1 Apr 2024 16:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989823;
-	bh=tNKCUkBTmNgZwIsR9hk+qI4QjW5m/CloCQqBWQTpvAg=;
+	s=korg; t=1711988600;
+	bh=pyVlEXxS4nYJqaSGp4xBDW2FGK82xTYHDRD9Gxu+pmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2UniMoXzOWGcwsbHNbz4pE2qQXi5aR8UHsL/w0yEOEonBSSEem+n+dK2mY6G+bf9
-	 KwjYgIJwL4jPctQQJ5Uy/v+vB3uzGMjBN7ir/KrKl3Nl8c1+i0x4t3yXxE6vcctfxy
-	 dTNW4MKjCnRxNkWlHLdjgcdSOs4tRz0zA7h+DE48=
+	b=R9H9p2WYMxRL5gOZ+qelgStwpA4+UvkuaiKOWr0gzNCGbsaTG5zwlo7dg9A5xZqP8
+	 l18OaVtS+HKn1P+TtOFA3Uh8szke5VozJS3up4HJbkfdPiqRfYxtFx0v8ALC+Szogj
+	 izd7XwZefKdCplgFEYZpT3Pa8e3jKKqMvQ0RjHCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/396] mtd: rawnand: Constrain even more when continuous reads are enabled
+Subject: [PATCH 6.7 226/432] vfio: Introduce interface to flush virqfd inject workqueue
 Date: Mon,  1 Apr 2024 17:43:33 +0200
-Message-ID: <20240401152552.829681324@linuxfoundation.org>
+Message-ID: <20240401152559.877358546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 78ffbefba8d7822b232585570b293de5bc397da6 ]
+[ Upstream commit b620ecbd17a03cacd06f014a5d3f3a11285ce053 ]
 
-As a matter of fact, continuous reads require additional handling at the
-operation level in order for them to work properly. The core helpers do
-have this additional logic now, but any time a controller implements its
-own page helper, this extra logic is "lost". This means we need another
-level of per-controller driver checks to ensure they can leverage
-continuous reads. This is for now unsupported, so in order to ensure
-continuous reads are enabled only when fully using the core page
-helpers, we need to add more initial checks.
+In order to synchronize changes that can affect the thread callback,
+introduce an interface to force a flush of the inject workqueue.  The
+irqfd pointer is only valid under spinlock, but the workqueue cannot
+be flushed under spinlock.  Therefore the flush work for the irqfd is
+queued under spinlock.  The vfio_irqfd_cleanup_wq workqueue is re-used
+for queuing this work such that flushing the workqueue is also ordered
+relative to shutdown.
 
-Also, as performance is not relevant during raw accesses, we also
-prevent these from enabling the feature.
-
-This should solve the issue seen with controllers such as the STM32 FMC2
-when in sequencer mode. In this case, the continuous read feature would
-be enabled but not leveraged, and most importantly not disabled, leading
-to further operations to fail.
-
-Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Link: https://lore.kernel.org/linux-mtd/20240307115315.1942678-1-miquel.raynal@bootlin.com
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Link: https://lore.kernel.org/r/20240308230557.805580-4-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Stable-dep-of: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_base.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/vfio/virqfd.c | 21 +++++++++++++++++++++
+ include/linux/vfio.h  |  2 ++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 9118b5753c553..c059ac4c19f11 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -3578,7 +3578,8 @@ static int nand_do_read_ops(struct nand_chip *chip, loff_t from,
- 	oob = ops->oobbuf;
- 	oob_required = oob ? 1 : 0;
- 
--	rawnand_enable_cont_reads(chip, page, readlen, col);
-+	if (likely(ops->mode != MTD_OPS_RAW))
-+		rawnand_enable_cont_reads(chip, page, readlen, col);
- 
- 	while (1) {
- 		struct mtd_ecc_stats ecc_stats = mtd->ecc_stats;
-@@ -5196,6 +5197,15 @@ static void rawnand_late_check_supported_ops(struct nand_chip *chip)
- 	if (!nand_has_exec_op(chip))
- 		return;
- 
-+	/*
-+	 * For now, continuous reads can only be used with the core page helpers.
-+	 * This can be extended later.
-+	 */
-+	if (!(chip->ecc.read_page == nand_read_page_hwecc ||
-+	      chip->ecc.read_page == nand_read_page_syndrome ||
-+	      chip->ecc.read_page == nand_read_page_swecc))
-+		return;
-+
- 	rawnand_check_cont_read_support(chip);
+diff --git a/drivers/vfio/virqfd.c b/drivers/vfio/virqfd.c
+index 29c564b7a6e13..5322691338019 100644
+--- a/drivers/vfio/virqfd.c
++++ b/drivers/vfio/virqfd.c
+@@ -101,6 +101,13 @@ static void virqfd_inject(struct work_struct *work)
+ 		virqfd->thread(virqfd->opaque, virqfd->data);
  }
  
++static void virqfd_flush_inject(struct work_struct *work)
++{
++	struct virqfd *virqfd = container_of(work, struct virqfd, flush_inject);
++
++	flush_work(&virqfd->inject);
++}
++
+ int vfio_virqfd_enable(void *opaque,
+ 		       int (*handler)(void *, void *),
+ 		       void (*thread)(void *, void *),
+@@ -124,6 +131,7 @@ int vfio_virqfd_enable(void *opaque,
+ 
+ 	INIT_WORK(&virqfd->shutdown, virqfd_shutdown);
+ 	INIT_WORK(&virqfd->inject, virqfd_inject);
++	INIT_WORK(&virqfd->flush_inject, virqfd_flush_inject);
+ 
+ 	irqfd = fdget(fd);
+ 	if (!irqfd.file) {
+@@ -213,3 +221,16 @@ void vfio_virqfd_disable(struct virqfd **pvirqfd)
+ 	flush_workqueue(vfio_irqfd_cleanup_wq);
+ }
+ EXPORT_SYMBOL_GPL(vfio_virqfd_disable);
++
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&virqfd_lock, flags);
++	if (*pvirqfd && (*pvirqfd)->thread)
++		queue_work(vfio_irqfd_cleanup_wq, &(*pvirqfd)->flush_inject);
++	spin_unlock_irqrestore(&virqfd_lock, flags);
++
++	flush_workqueue(vfio_irqfd_cleanup_wq);
++}
++EXPORT_SYMBOL_GPL(vfio_virqfd_flush_thread);
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index a65b2513f8cdc..5ac5f182ce0bb 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -349,6 +349,7 @@ struct virqfd {
+ 	wait_queue_entry_t		wait;
+ 	poll_table		pt;
+ 	struct work_struct	shutdown;
++	struct work_struct	flush_inject;
+ 	struct virqfd		**pvirqfd;
+ };
+ 
+@@ -356,5 +357,6 @@ int vfio_virqfd_enable(void *opaque, int (*handler)(void *, void *),
+ 		       void (*thread)(void *, void *), void *data,
+ 		       struct virqfd **pvirqfd, int fd);
+ void vfio_virqfd_disable(struct virqfd **pvirqfd);
++void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
+ 
+ #endif /* VFIO_H */
 -- 
 2.43.0
 
