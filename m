@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-35248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CB7894318
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C64894012
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1D9B2115F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CAC1C2159B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10004481B8;
-	Mon,  1 Apr 2024 16:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CAF1CA8F;
+	Mon,  1 Apr 2024 16:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+Pc7oTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mP1D59Fd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21A9BA3F;
-	Mon,  1 Apr 2024 16:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835654087B;
+	Mon,  1 Apr 2024 16:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990778; cv=none; b=LUgIfFrmSEcwPPHWC2H7SrBsDclS4MOmcLB48IkqKi69y5xoj1yXEluxBszDOivPTg+oDxXnOVBizMywFGzaRNIUmTjNaipeyqTB82f8CF5t6MidzmdAwfwhU/lHlvhTHuztVtZFxAvfAsdoeoGi8eh01QXlsdy9cBLl3bRleGk=
+	t=1711988713; cv=none; b=n247UNnhpCF9PqcVk/M2NrKLEB01CM+u/avbgLo2mUqGSB1etWd64OADhw9QlNbSjSREkiK2SM3UJoZoOXKoEpTNzlPSHMQag69dodgYe3i705pxUn8h68xxTCUH5lU/cBAj7/iVYzVIeEQ/oBnfNaroiHwI8IS0wXnG+CTjzxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990778; c=relaxed/simple;
-	bh=aSK8MlPiarke8Z+fWxbx8JGg0bNa7qmyBEYEnaprNro=;
+	s=arc-20240116; t=1711988713; c=relaxed/simple;
+	bh=o5/r481BhgsU32+YOrRDKv+/QWuF0UCf6rsDtjSsIjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h585kcpaHqpQ8f4Z32k+ipSceJTAa83UMHNJ3XOyLCd5Tk1hQP56eaLOvOUtSi3UQ2NZxnriBJ5HmHT91akh+zyf8PEc3ZlJG7PuNtylZQsRwtzSRsMgnmQUjOIRWOfhw2AUBPZflNWiqrGuk6OI9Cp1jX4GzWO1GciNyGesRYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+Pc7oTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA84C433F1;
-	Mon,  1 Apr 2024 16:59:38 +0000 (UTC)
+	 MIME-Version; b=MtMveuClhldE/AHjOGix72heVJ3yiRoNe4TqAMmI1iIOl2SITs6yPNuVW3XezoXZczuav+1nkNmvd4n9ClwrFPRIk6KBuhAAcWHLthSpUOsjKJb+dokL6372FN+pLU575XFd2nzYERiMOYX68/ZzKTIIr0Kx5Nb6sVpaMMQZ+Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mP1D59Fd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6075C433C7;
+	Mon,  1 Apr 2024 16:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990778;
-	bh=aSK8MlPiarke8Z+fWxbx8JGg0bNa7qmyBEYEnaprNro=;
+	s=korg; t=1711988713;
+	bh=o5/r481BhgsU32+YOrRDKv+/QWuF0UCf6rsDtjSsIjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+Pc7oTzlco/OfV2Pr6jKlwiopjFuv5y+wdxRucy5W25Cbe6CHHdp4vs8fzlymtRJ
-	 Z37WoW2crpQxJk7EpvpQa0AabFHN9Ey1N4sL96oW140atlURm/vmG/4C8xKAuRM4GO
-	 PRFZVfdua53iTaNGUOUorf4lpDWE2DqAhjdsITPk=
+	b=mP1D59FdGuO8lgA42Jd5ixFsxJVHcZgg+WYmCwtK3UOZL0iTSE7FKr/YNG5y0hqRV
+	 POjjXr0tFVJHjjn5oxc9GA99IlTKxom0n+Aolu96q3JRm0teHXJpnehl1PgNgX5Oyv
+	 CZ0+WqWAiTTcyS+KmoUo3kNXeoYpmKpMYT1gv1U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Toru Katagiri <Toru.Katagiri@tdk.com>,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/272] USB: serial: cp210x: add pid/vid for TDK NC0110013M and MM0110113M
+	Peter Collingbourne <pcc@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.7 267/432] serial: 8250_dw: Do not reclock if already at correct rate
 Date: Mon,  1 Apr 2024 17:44:14 +0200
-Message-ID: <20240401152532.547057335@linuxfoundation.org>
+Message-ID: <20240401152601.112837269@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toru Katagiri <Toru.Katagiri@tdk.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit b1a8da9ff1395c4879b4bd41e55733d944f3d613 ]
+commit e5d6bd25f93d6ae158bb4cd04956cb497a85b8ef upstream.
 
-TDK NC0110013M and MM0110113M have custom USB IDs for CP210x,
-so we need to add them to the driver.
+When userspace opens the console, we call set_termios() passing a
+termios with the console's configured baud rate. Currently this causes
+dw8250_set_termios() to disable and then re-enable the UART clock at
+the same frequency as it was originally. This can cause corruption
+of any concurrent console output. Fix it by skipping the reclocking
+if we are already at the correct rate.
 
-Signed-off-by: Toru Katagiri <Toru.Katagiri@tdk.com>
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Fixes: 4e26b134bd17 ("serial: 8250_dw: clock rate handling for all ACPI platforms")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240222192635.1050502-1-pcc@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/cp210x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_dw.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
-index e9ee8da8cc296..aa30288c8a8e0 100644
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -56,6 +56,8 @@ static const struct usb_device_id id_table[] = {
- 	{ USB_DEVICE(0x0471, 0x066A) }, /* AKTAKOM ACE-1001 cable */
- 	{ USB_DEVICE(0x0489, 0xE000) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
- 	{ USB_DEVICE(0x0489, 0xE003) }, /* Pirelli Broadband S.p.A, DP-L10 SIP/GSM Mobile */
-+	{ USB_DEVICE(0x04BF, 0x1301) }, /* TDK Corporation NC0110013M - Network Controller */
-+	{ USB_DEVICE(0x04BF, 0x1303) }, /* TDK Corporation MM0110113M - i3 Micro Module */
- 	{ USB_DEVICE(0x0745, 0x1000) }, /* CipherLab USB CCD Barcode Scanner 1000 */
- 	{ USB_DEVICE(0x0846, 0x1100) }, /* NetGear Managed Switch M4100 series, M5300 series, M7100 series */
- 	{ USB_DEVICE(0x08e6, 0x5501) }, /* Gemalto Prox-PU/CU contactless smartcard reader */
--- 
-2.43.0
-
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -357,9 +357,9 @@ static void dw8250_set_termios(struct ua
+ 	long rate;
+ 	int ret;
+ 
+-	clk_disable_unprepare(d->clk);
+ 	rate = clk_round_rate(d->clk, newrate);
+-	if (rate > 0) {
++	if (rate > 0 && p->uartclk != rate) {
++		clk_disable_unprepare(d->clk);
+ 		/*
+ 		 * Note that any clock-notifer worker will block in
+ 		 * serial8250_update_uartclk() until we are done.
+@@ -367,8 +367,8 @@ static void dw8250_set_termios(struct ua
+ 		ret = clk_set_rate(d->clk, newrate);
+ 		if (!ret)
+ 			p->uartclk = rate;
++		clk_prepare_enable(d->clk);
+ 	}
+-	clk_prepare_enable(d->clk);
+ 
+ 	dw8250_do_set_termios(p, termios, old);
+ }
 
 
 
