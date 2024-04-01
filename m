@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4109D8940FC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39811893F55
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A060CB20B3A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:36:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB34BB20A2B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4404C630;
-	Mon,  1 Apr 2024 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401EF47A74;
+	Mon,  1 Apr 2024 16:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7CjfTyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEVsZfPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D994C622;
-	Mon,  1 Apr 2024 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC1D481B7;
+	Mon,  1 Apr 2024 16:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989382; cv=none; b=K3Nn/GKrKVmqLeeQl6tmYWMXlmkLHWvu737yi73bsr1zg7PRE98vzFUBsUN6m7sIqrb9NLTWBUFzQ8EiWCH5zJghD4RKtv2XeixKlzRNRzeCVls24e1PgpKRIntXdbO8ZE5m72x986j5yiBllS4kz4QGBLJfRrImMS58Aum25rU=
+	t=1711988105; cv=none; b=YZ/pdkKlE7jGcgX06OLxlPWic3b2KaulRS6Six0gAljPFsB5AY3rWOfXAAASGRaykFRCVyOzhbEVpo32ZTkKvli7Sqou4W9+vF/oX9BFNYCmNS10EaO5v9vlYp/lcLY8e9nLAC82PyjDqNa1WSaxjTkiq3Wo4P0pU8H5nrvKSXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989382; c=relaxed/simple;
-	bh=WvNbZ1FQI1ERTk8MOv54GD8DNCDwU1MN1n2XUVvhd2A=;
+	s=arc-20240116; t=1711988105; c=relaxed/simple;
+	bh=B6JyT9Cd7ELkmqqaK5giG+hmHtj43JKSI2h47S+KAOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VM8sexT20E9Ivx95sjYG7CdMgpRT4j4DDs74znH+Sxp9EhKHl4xpbxdJOpSA5As2edwSennxLdMUCcNs21JmoK39OFedVTqnwigB6GW9W5ge8avMdxsD9UUiI/L/GuLzKKjmZ0mHX94WBKRTniVexnJ5G3vRA5v35cD/rGX7rHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7CjfTyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAEDC433C7;
-	Mon,  1 Apr 2024 16:36:20 +0000 (UTC)
+	 MIME-Version; b=upsKVxmmZGy0ApvZVMS/EGRYwnxsPXDk3mDbPHzjHSa0GnyJ2cfrpXm4NapCRrjn19Y8XACJ0fkcryg7sDEuFNLJpa7bqGi6hlTikwHsrkDZL+ASS0Ns0slkK/4Tx5yZapZ/7xp/jvMMexuWfr/VLpuC4jc6bodaxSP5qTJbsE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEVsZfPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06D6C433C7;
+	Mon,  1 Apr 2024 16:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989381;
-	bh=WvNbZ1FQI1ERTk8MOv54GD8DNCDwU1MN1n2XUVvhd2A=;
+	s=korg; t=1711988105;
+	bh=B6JyT9Cd7ELkmqqaK5giG+hmHtj43JKSI2h47S+KAOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7CjfTyKC+ixlZrXKR6X2fs8qoCIUVdcIDmaUcT309r16O01ZGs/MWmUwvz9Clv7w
-	 Q8yTI4cgBF5VGwxdyXuUQQ6klfKXDlHzjGsjFAj2dYAPwmVoLx9Bom3Mo9IirvxmWJ
-	 52yT0KBBElVHqWgQL3vWtZQsDMXNjPcZ6vB1bV14=
+	b=bEVsZfPy5S89y4Tybh11u5hn5vAP/lgA8JkEIZ0hjMu/vAj92BGvgGhkxOSX4X+jU
+	 NWdXcLsIzbrfsO2PAzW+DVmn+C/o5uz31rzdvZ868kMYKpVKUUXr5elCnpnK0GicN4
+	 ZPSbD94MJzCS+IEU9uz7ShvM5T//lci9jkZvy9ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/396] media: nxp: imx8-isi: Mark all crossbar sink pads as MUST_CONNECT
+Subject: [PATCH 6.7 086/432] fuse: replace remaining make_bad_inode() with fuse_make_bad()
 Date: Mon,  1 Apr 2024 17:41:13 +0200
-Message-ID: <20240401152548.622491123@linuxfoundation.org>
+Message-ID: <20240401152555.687143385@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 9b71021b2ea537632b01e51e3f003df24a637858 ]
+[ Upstream commit 82e081aebe4d9c26e196c8260005cc4762b57a5d ]
 
-All the sink pads of the crossbar switch require an active link if
-they're part of the pipeline. Mark them with the
-MEDIA_PAD_FL_MUST_CONNECT flag to fail pipeline validation if they're
-not connected. This allows removing a manual check when translating
-streams.
+fuse_do_statx() was added with the wrong helper.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: d3045530bdd2 ("fuse: implement statx")
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/nxp/imx8-isi/imx8-isi-crossbar.c    | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/fuse/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-index 44354931cf8a1..c9a4d091b5707 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-@@ -160,13 +160,6 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index d19cbf34c6341..d3bc463d9da76 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1210,7 +1210,7 @@ static int fuse_do_statx(struct inode *inode, struct file *file,
+ 	if (((sx->mask & STATX_SIZE) && !fuse_valid_size(sx->size)) ||
+ 	    ((sx->mask & STATX_TYPE) && (!fuse_valid_type(sx->mode) ||
+ 					 inode_wrong_type(inode, sx->mode)))) {
+-		make_bad_inode(inode);
++		fuse_make_bad(inode);
+ 		return -EIO;
  	}
- 
- 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
--	if (!pad) {
--		dev_dbg(xbar->isi->dev,
--			"no pad connected to crossbar input %u\n",
--			sink_pad);
--		return ERR_PTR(-EPIPE);
--	}
--
- 	sd = media_entity_to_v4l2_subdev(pad->entity);
- 	if (!sd) {
- 		dev_dbg(xbar->isi->dev,
-@@ -471,7 +464,8 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
- 	}
- 
- 	for (i = 0; i < xbar->num_sinks; ++i)
--		xbar->pads[i].flags = MEDIA_PAD_FL_SINK;
-+		xbar->pads[i].flags = MEDIA_PAD_FL_SINK
-+				    | MEDIA_PAD_FL_MUST_CONNECT;
- 	for (i = 0; i < xbar->num_sources; ++i)
- 		xbar->pads[i + xbar->num_sinks].flags = MEDIA_PAD_FL_SOURCE;
  
 -- 
 2.43.0
