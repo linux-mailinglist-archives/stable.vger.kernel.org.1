@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3D68941EE
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:47:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58233894019
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952AA1F21C4F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8C31F21F0D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A0C4654F;
-	Mon,  1 Apr 2024 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886E846B9F;
+	Mon,  1 Apr 2024 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xV0x1u/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+U40MGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AA940876;
-	Mon,  1 Apr 2024 16:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C931CA8F;
+	Mon,  1 Apr 2024 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990078; cv=none; b=i9s+J9s24oXGOfkJdYjqSwnJ86vQVZHStBTwcBwqBloRnnPQ1/zbMAvBzlotzpAaWvmI2UTa7R7n5ozovZpLt5ZUOGnPZe2sSzsQpN5rTTu5N4Olg7quYz76MuRZLwimk3wLYp58Oe51WRvch2YvLNYsZbebXpLgGqn69MkEy0E=
+	t=1711988737; cv=none; b=imQkbgzglPtxRWmGu2KDgfrIWCa3x8IoQGq2UOTjvqL2JJ4gzB8htBPcSF+EFFy7NhMg6TUCoGeuVKKNhtvpvjE5x8SNHhkrciUcGd2TE+Ws1EQ6pp5LfFe8W81YHSHk9SSsSUNafzrDqUBi1/FimY4GDThUZXW6P/htWOfg1fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990078; c=relaxed/simple;
-	bh=A2kqNJBgZftFhnfKiHQiUNajmG3duAa0ukg9Kw0gd1M=;
+	s=arc-20240116; t=1711988737; c=relaxed/simple;
+	bh=PIi5Kskv6CRGssBIVLh7vcv6KoJ9tjgcNSoOeMN9D+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGdsb4T7FDiPYIpH4vW2qHFZZOEyp/BdzencOZiZaLHKLUGcepnAEdZd4+MbCM5FkTyZSD5OJsEW5MpS4v+Be7fG+fDITFqyMAWy4L1PLmftZ5APcgHj6qDx8uAEAtV1EJ+Ghazg6q+A7E8C63NvYnUt2hK89AMGZcQWyXWIesY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xV0x1u/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6470EC433F1;
-	Mon,  1 Apr 2024 16:47:57 +0000 (UTC)
+	 MIME-Version; b=Y49WVrR9asq/FqSrEpe+RMAxW/FldDBVnDccVMDHL6Q5y2f3J2iOaOPEuIeL5CLST9jHtZvxZCd2XupsUyNg9LfA2nwl6zz1XH2Nb9eo+7h1HJnFPGsjh+TcTwTgxW+cx1dPfQCeRJ36VDwgX/pwv9hGCMEm0WTN1hDLeYMfTRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+U40MGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5728C433F1;
+	Mon,  1 Apr 2024 16:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990077;
-	bh=A2kqNJBgZftFhnfKiHQiUNajmG3duAa0ukg9Kw0gd1M=;
+	s=korg; t=1711988737;
+	bh=PIi5Kskv6CRGssBIVLh7vcv6KoJ9tjgcNSoOeMN9D+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xV0x1u/16/62ziY74C4TNDkghxscZvsLAUS/Wot3tDLyI5rTM0R10RvClyJ1jZDlf
-	 /Eo3zF5VKJQq8W5PqZX1lSreS+SPhAMbP6rhUlvrdAR0k77tl/k5UGFONekdpnAGbt
-	 bS1lKGD2BmbcfW6bES+HwZ1QFRsGjra2a1J8X8K8=
+	b=W+U40MGphYwLtBrst7ooN98/fmg0Lf91kg+kq1gdhKKiOcC4aLgrz0vDN2s8kZDev
+	 AdFF9vJb2d3PQmZ2cPxfJc162n4bwwpHWmOJ9NqXN9woW4ob4VZFPrIYX3iA9/IKVt
+	 6slugcQYt2PcDCC5XeVpfqgDof6dYuVqcgwW1P44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edmund Raile <edmund.raile@proton.me>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.6 212/396] firewire: ohci: prevent leak of left-over IRQ on unbind
+	stable <stable@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.7 274/432] Revert "tty: serial: simplify qcom_geni_serial_send_chunk_fifo()"
 Date: Mon,  1 Apr 2024 17:44:21 +0200
-Message-ID: <20240401152554.246577183@linuxfoundation.org>
+Message-ID: <20240401152601.347025783@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edmund Raile <edmund.raile@proton.me>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 575801663c7dc38f826212b39e3b91a4a8661c33 upstream.
+commit 3d9319c27ceb35fa3d2c8b15508967f3fc7e5b78 upstream.
 
-Commit 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
-also removed the call to free_irq() in pci_remove(), leading to a
-leftover irq of devm_request_irq() at pci_disable_msi() in pci_remove()
-when unbinding the driver from the device
+This reverts commit 5c7e105cd156fc9adf5294a83623d7a40c15f9b9.
 
-remove_proc_entry: removing non-empty directory 'irq/136', leaking at
-least 'firewire_ohci'
-Call Trace:
- ? remove_proc_entry+0x19c/0x1c0
- ? __warn+0x81/0x130
- ? remove_proc_entry+0x19c/0x1c0
- ? report_bug+0x171/0x1a0
- ? console_unlock+0x78/0x120
- ? handle_bug+0x3c/0x80
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? remove_proc_entry+0x19c/0x1c0
- unregister_irq_proc+0xf4/0x120
- free_desc+0x3d/0xe0
- ? kfree+0x29f/0x2f0
- irq_free_descs+0x47/0x70
- msi_domain_free_locked.part.0+0x19d/0x1d0
- msi_domain_free_irqs_all_locked+0x81/0xc0
- pci_free_msi_irqs+0x12/0x40
- pci_disable_msi+0x4c/0x60
- pci_remove+0x9d/0xc0 [firewire_ohci
-     01b483699bebf9cb07a3d69df0aa2bee71db1b26]
- pci_device_remove+0x37/0xa0
- device_release_driver_internal+0x19f/0x200
- unbind_store+0xa1/0xb0
+As identified by KASAN, the simplification done by the cleanup patch
+was not legal.
 
-remove irq with devm_free_irq() before pci_disable_msi()
-also remove it in fail_msi: of pci_probe() as this would lead to
-an identical leak
+>From tracing through the code, it can be seen that we're transmitting
+from a 4096-byte circular buffer. We copy anywhere from 1-4 bytes from
+it each time. The simplification runs into trouble when we get near
+the end of the circular buffer. For instance, we might start out with
+xmit->tail = 4094 and we want to transfer 4 bytes. With the code
+before simplification this was no problem. We'd read buf[4094],
+buf[4095], buf[0], and buf[1]. With the new code we'll do a
+memcpy(&buf[4094], 4) which reads 2 bytes past the end of the buffer
+and then skips transmitting what's at buf[0] and buf[1].
 
-Cc: stable@vger.kernel.org
-Fixes: 5a95f1ded28691e6 ("firewire: ohci: use devres for requested IRQ")
-Signed-off-by: Edmund Raile <edmund.raile@proton.me>
-Link: https://lore.kernel.org/r/20240229144723.13047-2-edmund.raile@proton.me
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+KASAN isn't 100% consistent at reporting this for me, but to be extra
+confident in the analysis, I added traces of the tail and tx_bytes and
+then wrote a test program:
+
+  while true; do
+    echo -n "abcdefghijklmnopqrstuvwxyz0" > /dev/ttyMSM0
+    sleep .1
+  done
+
+I watched the traces over SSH and saw:
+  qcom_geni_serial_send_chunk_fifo: 4093 4
+  qcom_geni_serial_send_chunk_fifo: 1 3
+
+Which indicated that one byte should be missing. Sure enough the
+output that should have been:
+
+  abcdefghijklmnopqrstuvwxyz0
+
+In one case was actually missing a byte:
+
+  abcdefghijklmnopqrstuvwyz0
+
+Running "ls -al" on large directories also made the missing bytes
+obvious since columns didn't line up.
+
+While the original code may not be the most elegant, we only talking
+about copying up to 4 bytes here. Let's just go back to the code that
+worked.
+
+Fixes: 5c7e105cd156 ("tty: serial: simplify qcom_geni_serial_send_chunk_fifo()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Jiri Slaby <jirislaby@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240304174952.1.I920a314049b345efd1f69d708e7f74d2213d0b49@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/ohci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -3773,6 +3773,7 @@ static int pci_probe(struct pci_dev *dev
- 	return 0;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -851,19 +851,21 @@ static void qcom_geni_serial_stop_tx(str
+ }
  
-  fail_msi:
-+	devm_free_irq(&dev->dev, dev->irq, ohci);
- 	pci_disable_msi(dev);
+ static void qcom_geni_serial_send_chunk_fifo(struct uart_port *uport,
+-					     unsigned int remaining)
++					     unsigned int chunk)
+ {
+ 	struct qcom_geni_serial_port *port = to_dev_port(uport);
+ 	struct circ_buf *xmit = &uport->state->xmit;
+-	unsigned int tx_bytes;
++	unsigned int tx_bytes, c, remaining = chunk;
+ 	u8 buf[BYTES_PER_FIFO_WORD];
  
- 	return err;
-@@ -3800,6 +3801,7 @@ static void pci_remove(struct pci_dev *d
+ 	while (remaining) {
+ 		memset(buf, 0, sizeof(buf));
+ 		tx_bytes = min(remaining, BYTES_PER_FIFO_WORD);
  
- 	software_reset(ohci);
+-		memcpy(buf, &xmit->buf[xmit->tail], tx_bytes);
+-		uart_xmit_advance(uport, tx_bytes);
++		for (c = 0; c < tx_bytes ; c++) {
++			buf[c] = xmit->buf[xmit->tail];
++			uart_xmit_advance(uport, 1);
++		}
  
-+	devm_free_irq(&dev->dev, dev->irq, ohci);
- 	pci_disable_msi(dev);
+ 		iowrite32_rep(uport->membase + SE_GENI_TX_FIFOn, buf, 1);
  
- 	dev_notice(&dev->dev, "removing fw-ohci device\n");
 
 
 
