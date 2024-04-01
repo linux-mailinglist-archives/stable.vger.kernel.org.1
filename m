@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-34333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D100F893EE7
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64198894388
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5580AB20E5B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E04228389D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0178E47A74;
-	Mon,  1 Apr 2024 16:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62537482CA;
+	Mon,  1 Apr 2024 17:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+4xM5xl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0P+V4Y8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23FD4778E;
-	Mon,  1 Apr 2024 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B5A38DE5;
+	Mon,  1 Apr 2024 17:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987766; cv=none; b=feL0Gzw/lMYy7w+SrjdArMq3liwHJ7NA9cGREXxfeWVRxuD6LZ8oIpcdCFTz3+mjfZLk8l6yRgk6j+tHfYLgB5/UWuO6lfrJN/O8Hc+I2tMV4xoLwXlanCc72pWXVdeqUDTXo3qerb7q60yUpyxvdV144fvuuWjqeciIX/325x4=
+	t=1711991089; cv=none; b=aGecFlU56NalCJUwIRUIM8rNFvq82aNLvbgF8KDIWir4qEjWjjjouu25jeZ7RmzzNLWlFRK0tHXFw6iM6vGRYBoq6eokvvKDY7kN9eAfeOBqvNNPE+qu0hSdTuJFCOC9i+jCuUhspNWUxKdgyykwImYqVDZ8dAPYT/deXxvzyWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987766; c=relaxed/simple;
-	bh=IFAGWS7MyC+Jo1g2H4Stop2KtOFpIfFZlVmlr5CyF10=;
+	s=arc-20240116; t=1711991089; c=relaxed/simple;
+	bh=baZczth9mRZFnWqCfMes0BRjX3hT65DPe3hsxOmNd7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUI98oKmmBvqpmmfwgrtKPOrOUcfd1LZHBCG7AadbWx8yrfjKHoMnBzcfvw+KjfrQ/MkuY5osUBW1qdyNZuRpTeG+miY6PK1GLif91acafEY7Ju2t+gQ7nIiNMg7Sii+j8giX1W+LpjZpM3Sgcnm6mBP8OySmzPRHVq2xGJTAvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+4xM5xl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39819C433C7;
-	Mon,  1 Apr 2024 16:09:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MDhnlUxC7guxjHeEYNF7rDs7uNPnzNO38ogG+7h2ChTDuqrSh1J3x/NTYPeofdrNr1WLyK0hMqVE/Z66/dnRLhwl8rCv+HZEymihr7ZEY3ny6Lwy99pI14Nw/vNzONewoCLH6LxeYPd3p4c6TfPl9DCoO/Azgy/BUvhFbFQKjrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0P+V4Y8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85959C43390;
+	Mon,  1 Apr 2024 17:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987766;
-	bh=IFAGWS7MyC+Jo1g2H4Stop2KtOFpIfFZlVmlr5CyF10=;
+	s=korg; t=1711991089;
+	bh=baZczth9mRZFnWqCfMes0BRjX3hT65DPe3hsxOmNd7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+4xM5xl0tvPhUNyK3ApC2Medch//twRw4VvTvgqj6CJvXKUusfcZqHBX/M+IFgRe
-	 wWeg5R6OuX2VQ/Tc4tyr8urRMLtt+4Uf0lgeLtgeIg21aIxa42oWfiDFwNoU8j85Z3
-	 Hxqaa3THgUKGjWDgNVzlRCg37i6E9Hg0ml6y/Bts=
+	b=0P+V4Y8w+/x8Du4TTx9/helkFt1KHWIgzo5AG+HF5lhZX9HazQ8+xcbUK5XitvJNT
+	 SO/8nfk9RbT/7U1t52RiYGMN0I+I3quNbvUKTejw0GZCcdHhgjtyv8n9Y5nJ43uf5S
+	 i9aTZzHn/KUwSl3RTJDpxMA46thkdgz1GOcD/rDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 384/399] scsi: qla2xxx: Fix double free of fcport
+	stable <stable@kernel.org>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Subject: [PATCH 6.1 160/272] tty: serial: fsl_lpuart: avoid idle preamble pending if CTS is enabled
 Date: Mon,  1 Apr 2024 17:45:50 +0200
-Message-ID: <20240401152600.636847536@linuxfoundation.org>
+Message-ID: <20240401152535.731323986@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 82f522ae0d97119a43da53e0f729275691b9c525 upstream.
+commit 74cb7e0355fae9641f825afa389d3fba3b617714 upstream.
 
-The server was crashing after LOGO because fcport was getting freed twice.
+If the remote uart device is not connected or not enabled after booting
+up, the CTS line is high by default. At this time, if we enable the flow
+control when opening the device(for example, using “stty -F /dev/ttyLP4
+crtscts” command), there will be a pending idle preamble(first writing 0
+and then writing 1 to UARTCTRL_TE will queue an idle preamble) that
+cannot be sent out, resulting in the uart port fail to close(waiting for
+TX empty), so the user space stty will have to wait for a long time or
+forever.
 
- -----------[ cut here ]-----------
- kernel BUG at mm/slub.c:371!
- invalid opcode: 0000 1 SMP PTI
- CPU: 35 PID: 4610 Comm: bash Kdump: loaded Tainted: G OE --------- - - 4.18.0-425.3.1.el8.x86_64 #1
- Hardware name: HPE ProLiant DL360 Gen10/ProLiant DL360 Gen10, BIOS U32 09/03/2021
- RIP: 0010:set_freepointer.part.57+0x0/0x10
- RSP: 0018:ffffb07107027d90 EFLAGS: 00010246
- RAX: ffff9cb7e3150000 RBX: ffff9cb7e332b9c0 RCX: ffff9cb7e3150400
- RDX: 0000000000001f37 RSI: 0000000000000000 RDI: ffff9cb7c0005500
- RBP: fffff693448c5400 R08: 0000000080000000 R09: 0000000000000009
- R10: 0000000000000000 R11: 0000000000132af0 R12: ffff9cb7c0005500
- R13: ffff9cb7e3150000 R14: ffffffffc06990e0 R15: ffff9cb7ea85ea58
- FS: 00007ff6b79c2740(0000) GS:ffff9cb8f7ec0000(0000) knlGS:0000000000000000
- CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055b426b7d700 CR3: 0000000169c18002 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
- kfree+0x238/0x250
- qla2x00_els_dcmd_sp_free+0x20/0x230 [qla2xxx]
- ? qla24xx_els_dcmd_iocb+0x607/0x690 [qla2xxx]
- qla2x00_issue_logo+0x28c/0x2a0 [qla2xxx]
- ? qla2x00_issue_logo+0x28c/0x2a0 [qla2xxx]
- ? kernfs_fop_write+0x11e/0x1a0
+This is an LPUART IP bug(idle preamble has higher priority than CTS),
+here add a workaround patch to enable TX CTS after enabling UARTCTRL_TE,
+so that the idle preamble does not get stuck due to CTS is deasserted.
 
-Remove one of the free calls and add check for valid fcport. Also use
-function qla2x00_free_fcport() instead of kfree().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 380c966c093e ("tty: serial: fsl_lpuart: add 32-bit register interface support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20240305015706.1050769-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_iocb.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_iocb.c
-+++ b/drivers/scsi/qla2xxx/qla_iocb.c
-@@ -2637,7 +2637,8 @@ static void qla2x00_els_dcmd_sp_free(srb
- {
- 	struct srb_iocb *elsio = &sp->u.iocb_cmd;
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2213,9 +2213,12 @@ lpuart32_set_termios(struct uart_port *p
  
--	kfree(sp->fcport);
-+	if (sp->fcport)
-+		qla2x00_free_fcport(sp->fcport);
+ 	lpuart32_write(&sport->port, bd, UARTBAUD);
+ 	lpuart32_serial_setbrg(sport, baud);
+-	lpuart32_write(&sport->port, modem, UARTMODIR);
+-	lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	/* disable CTS before enabling UARTCTRL_TE to avoid pending idle preamble */
++	lpuart32_write(&sport->port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
+ 	/* restore control register */
++	lpuart32_write(&sport->port, ctrl, UARTCTRL);
++	/* re-enable the CTS if needed */
++	lpuart32_write(&sport->port, modem, UARTMODIR);
  
- 	if (elsio->u.els_logo.els_logo_pyld)
- 		dma_free_coherent(&sp->vha->hw->pdev->dev, DMA_POOL_SIZE,
-@@ -2750,6 +2751,7 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	if (!elsio->u.els_logo.els_logo_pyld) {
- 		/* ref: INIT */
- 		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		qla2x00_free_fcport(fcport);
- 		return QLA_FUNCTION_FAILED;
- 	}
- 
-@@ -2784,7 +2786,6 @@ qla24xx_els_dcmd_iocb(scsi_qla_host_t *v
- 	    fcport->d_id.b.area, fcport->d_id.b.al_pa);
- 
- 	wait_for_completion(&elsio->u.els_logo.comp);
--	qla2x00_free_fcport(fcport);
- 
- 	/* ref: INIT */
- 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+ 	if ((ctrl & (UARTCTRL_PE | UARTCTRL_M)) == UARTCTRL_PE)
+ 		sport->is_cs7 = true;
 
 
 
