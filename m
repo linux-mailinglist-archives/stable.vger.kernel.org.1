@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CB8893EFC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C78989408B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80F1A1F212F0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9781C215CD
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AE94596E;
-	Mon,  1 Apr 2024 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2B23613C;
+	Mon,  1 Apr 2024 16:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ios53dtz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW49GGa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9407F8F5C;
-	Mon,  1 Apr 2024 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999041C0DE7;
+	Mon,  1 Apr 2024 16:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987837; cv=none; b=mM7C3EXz7YLU3HJTtL902qdnGvrQBQUg3zgdXGQc3tArs6DLceO3tCY7FTT58hk/kC9nJngchIsVPsDDXpO9ab57ubBc3pvOGDxxlbqs6G2P8br5KKcsY1gaRcvXxJKsNQzaV9huGilg0HDxIr1gcP3rnldZnENXcxjjkjdPSqc=
+	t=1711989079; cv=none; b=FJ5viEIhJg07BuRCU0WYN96GUuzS3iCdB0iVM5/FcwW2+yUTevAdaM3brCBoxdyF14nD51R8oDgqwbwEUFdG5p+LzrZCXWrJnGhGQTJyNJ9AHxLF4VJ9TGAY5IckOIB9WJtZOBWttWCfsb4wDgy+W3adXHjc39ON3JLjV5Em5T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987837; c=relaxed/simple;
-	bh=toXop0LEx21jteSFdSQq7UrSbLGFW+9co8H37I6KxAA=;
+	s=arc-20240116; t=1711989079; c=relaxed/simple;
+	bh=V2hXdiGvkEFz5ndiO81ImvbzvOKUyf2rhtY3lGf4Ws8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pdv3JFAmIIVnmh5dRaHx6sUm/sxrTeZFNWN3zv1llWd9Hm5/+CxQDj2S+PlN2oKP++A4vfKMgWGFZdPyPEgnumtN5kVo4Bxgq1PrFhBFoLHaZmVj6X53WUvvXEcs6kLc8nyPlLXKxcL428GnueC/fdd5XZvcWnuZRMf2cikCRBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ios53dtz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15518C433C7;
-	Mon,  1 Apr 2024 16:10:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nT8KtRkJxGFpdOKHjw1YrL56tpw85hZoXdcK0Q2EeuywH3KuOklglVFCjkuv2cl4FJoFhRH97tc16xRv8wfcr3GNFhlrrUNmc8NYM1dYvWydHTNGfmzjoYc/yAK5FCyFBW1TFfsXXtNQzxg1Z7HWfGzwKOPeXrO6Orij4rA4uNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW49GGa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07214C433C7;
+	Mon,  1 Apr 2024 16:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987837;
-	bh=toXop0LEx21jteSFdSQq7UrSbLGFW+9co8H37I6KxAA=;
+	s=korg; t=1711989079;
+	bh=V2hXdiGvkEFz5ndiO81ImvbzvOKUyf2rhtY3lGf4Ws8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ios53dtzJI/wXMcfxTUTbyHME3MaVK2rcTb6l/xA5RiexjRgPZBYTDW6u5v5xA6XM
-	 3zH6msIUIwkpZk3IFATObNXBobynly7M6y1g6g4dfl8A7Pis015Mwwv+3IYctqNPYq
-	 LNcop46cnFvG0pWFAyanj8CVbaAiCOU3qNRvQVPU=
+	b=nW49GGa4FZfY7NRZ4uCUvBrjb0mKE7POLSmche/nUBaAyvoEf5f+MhqPpMD0hxKQV
+	 WoGpyEfkbLIvM1qM2TNFDxScx+d+U0myow2nXaPKW1L6E0igTXjQ9e9xHnWVQFBwW+
+	 oTdzuEfzIUO3d1kioXX/9CFtnnx5xv6Blqe1nel4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Xingui Yang <yangxingui@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 395/399] scsi: libsas: Add a helper sas_get_sas_addr_and_dev_type()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Animesh Manna <animesh.manna@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.7 374/432] drm/i915/dsb: Fix DSB vblank waits when using VRR
 Date: Mon,  1 Apr 2024 17:46:01 +0200
-Message-ID: <20240401152600.963792727@linuxfoundation.org>
+Message-ID: <20240401152604.439895749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit a57345279fd311ba679b8083feb0eec5272c7729 upstream.
+commit f12751168f1a49ebb84b8056cf038973c53b284f upstream.
 
-Add a helper to get attached_sas_addr and device type from disc_resp.
+Looks like the undelayed vblank gets signalled exactly when
+the active period ends. That is a problem for DSB+VRR when
+we are already in vblank and expect DSB to start executing
+as soon as we send the push. Instead of starting, the DSB
+just keeps on waiting for the undelayed vblank which won't
+signal until the end of the next frame's active period,
+which is far too late.
 
-Suggested-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20240307141413.48049-2-yangxingui@huawei.com
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The end result is that DSB won't have even started
+executing by the time the flips/etc. have completed.
+We then wait for an extra 1ms, after which we terminate
+the DSB and report a timeout:
+[drm] *ERROR* [CRTC:80:pipe A] DSB 0 timed out waiting for idle (current head=0xfedf4000, head=0x0, tail=0x1080)
+
+To fix this let's configure DSB to use the so called VRR
+"safe window" instead of the undelayed vblank to trigger
+the DSB vblank logic, when VRR is enabled.
+
+Cc: stable@vger.kernel.org
+Fixes: 34d8311f4a1c ("drm/i915/dsb: Re-instate DSB for LUT updates")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9927
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240306040806.21697-3-ville.syrjala@linux.intel.com
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+(cherry picked from commit 41429d9b68367596eb3d6d5961e6295c284622a7)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libsas/sas_expander.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dsb.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/scsi/libsas/sas_expander.c
-+++ b/drivers/scsi/libsas/sas_expander.c
-@@ -1621,6 +1621,16 @@ out_err:
+--- a/drivers/gpu/drm/i915/display/intel_dsb.c
++++ b/drivers/gpu/drm/i915/display/intel_dsb.c
+@@ -339,6 +339,17 @@ static int intel_dsb_dewake_scanline(con
+ 	return max(0, vblank_start - intel_usecs_to_scanlines(adjusted_mode, latency));
+ }
  
- /* ---------- Domain revalidation ---------- */
- 
-+static void sas_get_sas_addr_and_dev_type(struct smp_disc_resp *disc_resp,
-+					  u8 *sas_addr,
-+					  enum sas_device_type *type)
++static u32 dsb_chicken(struct intel_crtc *crtc)
 +{
-+	memcpy(sas_addr, disc_resp->disc.attached_sas_addr, SAS_ADDR_SIZE);
-+	*type = to_dev_type(&disc_resp->disc);
-+	if (*type == SAS_PHY_UNUSED)
-+		memset(sas_addr, 0, SAS_ADDR_SIZE);
++	if (crtc->mode_flags & I915_MODE_FLAG_VRR)
++		return DSB_CTRL_WAIT_SAFE_WINDOW |
++			DSB_CTRL_NO_WAIT_VBLANK |
++			DSB_INST_WAIT_SAFE_WINDOW |
++			DSB_INST_NO_WAIT_VBLANK;
++	else
++		return 0;
 +}
 +
- static int sas_get_phy_discover(struct domain_device *dev,
- 				int phy_id, struct smp_disc_resp *disc_resp)
+ static void _intel_dsb_commit(struct intel_dsb *dsb, u32 ctrl,
+ 			      int dewake_scanline)
  {
-@@ -1674,13 +1684,8 @@ int sas_get_phy_attached_dev(struct doma
- 		return -ENOMEM;
+@@ -360,6 +371,9 @@ static void _intel_dsb_commit(struct int
+ 	intel_de_write_fw(dev_priv, DSB_CTRL(pipe, dsb->id),
+ 			  ctrl | DSB_ENABLE);
  
- 	res = sas_get_phy_discover(dev, phy_id, disc_resp);
--	if (res == 0) {
--		memcpy(sas_addr, disc_resp->disc.attached_sas_addr,
--		       SAS_ADDR_SIZE);
--		*type = to_dev_type(&disc_resp->disc);
--		if (*type == 0)
--			memset(sas_addr, 0, SAS_ADDR_SIZE);
--	}
-+	if (res == 0)
-+		sas_get_sas_addr_and_dev_type(disc_resp, sas_addr, type);
- 	kfree(disc_resp);
- 	return res;
- }
++	intel_de_write_fw(dev_priv, DSB_CHICKEN(pipe, dsb->id),
++			  dsb_chicken(crtc));
++
+ 	intel_de_write_fw(dev_priv, DSB_HEAD(pipe, dsb->id),
+ 			  i915_ggtt_offset(dsb->vma));
+ 
 
 
 
