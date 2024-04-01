@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEED7894168
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588D5893FEE
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A6FB282F5E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D78D1C2125B
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A44482DF;
-	Mon,  1 Apr 2024 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE9547A62;
+	Mon,  1 Apr 2024 16:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/ozkISZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5RDW4iM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCD747A6B;
-	Mon,  1 Apr 2024 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C801446AC;
+	Mon,  1 Apr 2024 16:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989709; cv=none; b=aV2daIIxHDrQZXneUiTJQnCGemdAodvAuprZl41PetcS8pzteid4A4U9WRZMhO6j6s0yRF0kNB620SBpP1ufkmQ3NNL84kAtRImUkTSx2opDKD59dkDYsLnYH41a8BNba60muRWp1fL5nERCjlwOutr+7BL2wZWRWhyNilvpFZ0=
+	t=1711988597; cv=none; b=OsYmX4AE7Yf2WxUIzYho27FklwiEssn00L3C5Vt8ZEejtJNiI8iv7PWkWdEpTGqgyk9qGQJSbGtiql+9UO2Da9LrDYGQ2sJ60rZ2CtR9hf6fEJ5khG836bcmcjkZ60wgbwcaMa9Ynr4UttOTaa0tfFuMxv5t+ZS5Aq8kAY9upEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989709; c=relaxed/simple;
-	bh=7Dk+a5JHMW8zgo/n5uVBAZvIYD28SN/PCoImZgRDKvY=;
+	s=arc-20240116; t=1711988597; c=relaxed/simple;
+	bh=4ssyFjpDjJ6m6n19FTRqT802pz96sSOSxTP2OWnem6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcouGK8PjJ9RTWA9B/qTPci2Fs45CKNREi2fOGT1Z7xIoZCaW3yuacfdBPhBQHtnv0Y38pd8MF5rivlRc4bJGpeldS9wdsiMXkKJ9Lmz6SBCJGdWal795zAmBmgrYMbovDlLYGt2EkTJbr4eHHScf8cJqjTL+pkf7cKSAzjht2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/ozkISZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02A9C43390;
-	Mon,  1 Apr 2024 16:41:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r2x/xgU3bfHwfQ3MkRoxPoxiNlTIviqlOdWILCqK/cmXJwK8K0stN0j/wvPSesASxUb9a2NGDu16+FXaCUq5Fd8eqz3NwaKQDucp7kUQL9S8+jQC8xekJiQ0J6rIfvLKGF04/kXw2y7NgSnk1FhNjDSZz6k38ZMqN5+v3fIvTIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5RDW4iM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027ACC433C7;
+	Mon,  1 Apr 2024 16:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989709;
-	bh=7Dk+a5JHMW8zgo/n5uVBAZvIYD28SN/PCoImZgRDKvY=;
+	s=korg; t=1711988597;
+	bh=4ssyFjpDjJ6m6n19FTRqT802pz96sSOSxTP2OWnem6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/ozkISZXh6yJzO2zzulShSgzwmk7Gfmz4JIE4zPEdVQ8TkbFDGkKXU7jx35wmMF+
-	 nz1+FMHc1lT2lQQnYWcO1ZEuKnFH1444BFPcn/08dJNyKDiEPUaWzcPN6n8LUpkB9r
-	 2OHW7r0IXrnQDDCGOXl3q0O3Fz2aWD8VLrST7e70=
+	b=e5RDW4iMwyGBC8c/PLH86VEBSYjjxQ3qscc3mRcdLPPD1uID9HNOPqnHMt3ouoyLl
+	 C2doic7ux4eqA8OBVT1YnswcBElKXBBf0GKiqlO5V6D13Mpgqj5c3rkqw8UpiEwabr
+	 NYiIuPd4ESeAh6DldLEnpMGYqUZRxrWcBCkH5bM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/396] tpm,tpm_tis: Avoid warning splat at shutdown
-Date: Mon,  1 Apr 2024 17:42:59 +0200
-Message-ID: <20240401152551.793422290@linuxfoundation.org>
+Subject: [PATCH 6.7 193/432] drm/i915: Add missing ; to __assign_str() macros in tracepoint code
+Date: Mon,  1 Apr 2024 17:43:00 +0200
+Message-ID: <20240401152558.894605354@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit b7ab4bbd0188f3985b821fa09456b11105a8dedf ]
+[ Upstream commit 0df4c388a1e310400a6e90fb10b286e2673756f0 ]
 
-If interrupts are not activated the work struct 'free_irq_work' is not
-initialized. This results in a warning splat at module shutdown.
+I'm working on improving the __assign_str() and __string() macros to be
+more efficient, and removed some unneeded semicolons. This triggered a bug
+in the build as some of the __assign_str() macros in intel_display_trace
+was missing a terminating semicolon.
 
-Fix this by always initializing the work regardless of whether interrupts
-are activated or not.
+Link: https://lore.kernel.org/linux-trace-kernel/20240222133057.2af72a19@gandalf.local.home
 
-cc: stable@vger.kernel.org
-Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandled IRQs")
-Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
-Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org/
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: David Airlie <airlied@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 2ceea5d88048b ("drm/i915: Print plane name in fbc tracepoints")
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_trace.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 1b350412d8a6b..64c875657687d 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *chip, u32 intmask,
- 	int rc;
- 	u32 int_status;
- 
--	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
--
- 	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
- 				       tis_int_handler, IRQF_ONESHOT | flags,
- 				       dev_name(&chip->dev), chip);
-@@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 	priv->phy_ops = phy_ops;
- 	priv->locality_count = 0;
- 	mutex_init(&priv->locality_count_mutex);
-+	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
- 
- 	dev_set_drvdata(&chip->dev, priv);
- 
+diff --git a/drivers/gpu/drm/i915/display/intel_display_trace.h b/drivers/gpu/drm/i915/display/intel_display_trace.h
+index 99bdb833591ce..7862e7cefe027 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_trace.h
++++ b/drivers/gpu/drm/i915/display/intel_display_trace.h
+@@ -411,7 +411,7 @@ TRACE_EVENT(intel_fbc_activate,
+ 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
+ 									 plane->pipe);
+ 			   __assign_str(dev, __dev_name_kms(plane));
+-			   __assign_str(name, plane->base.name)
++			   __assign_str(name, plane->base.name);
+ 			   __entry->pipe = crtc->pipe;
+ 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
+ 			   __entry->scanline = intel_get_crtc_scanline(crtc);
+@@ -438,7 +438,7 @@ TRACE_EVENT(intel_fbc_deactivate,
+ 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
+ 									 plane->pipe);
+ 			   __assign_str(dev, __dev_name_kms(plane));
+-			   __assign_str(name, plane->base.name)
++			   __assign_str(name, plane->base.name);
+ 			   __entry->pipe = crtc->pipe;
+ 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
+ 			   __entry->scanline = intel_get_crtc_scanline(crtc);
+@@ -465,7 +465,7 @@ TRACE_EVENT(intel_fbc_nuke,
+ 			   struct intel_crtc *crtc = intel_crtc_for_pipe(to_i915(plane->base.dev),
+ 									 plane->pipe);
+ 			   __assign_str(dev, __dev_name_kms(plane));
+-			   __assign_str(name, plane->base.name)
++			   __assign_str(name, plane->base.name);
+ 			   __entry->pipe = crtc->pipe;
+ 			   __entry->frame = intel_crtc_get_vblank_counter(crtc);
+ 			   __entry->scanline = intel_get_crtc_scanline(crtc);
 -- 
 2.43.0
 
