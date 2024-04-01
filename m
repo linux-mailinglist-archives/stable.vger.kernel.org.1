@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-34501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A556B893F9B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:18:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B44089415C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34ED8B2090C
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:18:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B395B1F22F4E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E74778C;
-	Mon,  1 Apr 2024 16:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B3B47A6B;
+	Mon,  1 Apr 2024 16:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbBTUv7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbWuEmxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4513F8F4;
-	Mon,  1 Apr 2024 16:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25EA3BBC3;
+	Mon,  1 Apr 2024 16:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988333; cv=none; b=gv5TTjXnktCimchytWR4AAaYsFZ9wOM7MYB+/cDWpcWly3hVwYaMAYx/F8+TP5wiLpXUGXJO1NmOqiGTKPr1ObNRH/nZFd+djRTwh1FTbp5zcRqhbl5qFgTVKw0DZ2aEnCKA1S7ZAMyF8B2sHvrq4zo+hIODm+RI99GDlFCS0c8=
+	t=1711989676; cv=none; b=QjxII0RyeXqnWV1n6qF+CnRIzDFjkmsoVSilC+thD8KnMOm99T88TUTdD24dcxyQl1AodgW/nrSLv/P8LhfRvP3Vo0mm7HNb2dQwCnrUFkpLlc8PQN9uLByx0L7JX90rvqqWIkkmo6Nzy9PRb5N++oraZ76SjG9+8RaNwx6dQtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988333; c=relaxed/simple;
-	bh=9KX1w5199xJTlxbLK2EV4SqNJp/q2Kv1jDKaa6OUNM0=;
+	s=arc-20240116; t=1711989676; c=relaxed/simple;
+	bh=9Ppm4C/RgEx2h1uGAuAmFSAdHo2MOKg0ZSmqlEmDu1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yck5RE+vWte4N5dk4liCfF7PpN9AAB7Rj9rh7CQzBEo4zqzxrQ8blgHNXDQzdO3SJ6xr5Rvzdp2m7Yg0Hyz88G5X9oqT81ROgL7TzXRc/OXf5CcH34tkucd/t7I1ENULqI3xmgsl1DaA7si0RY6eZ+Yp9jzs1ZdalqE8KTilrOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbBTUv7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD88C433F1;
-	Mon,  1 Apr 2024 16:18:52 +0000 (UTC)
+	 MIME-Version; b=u3HOsdYYh0bYYQP6umfOVZLDThICF+kBrYYU7ADbcNjBoZZOPmDYvyG8PE6RbhsWYWCgg7WOJ0vJUVfYEJDn/ETnQATo68T/m7ULPP29kQDDy7lWnT5matWAPR/lEdt/3uBnUAm6030EMhil/JCRX5AGKDpjHU3cPbfVqSerhE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbWuEmxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FBBC433C7;
+	Mon,  1 Apr 2024 16:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988333;
-	bh=9KX1w5199xJTlxbLK2EV4SqNJp/q2Kv1jDKaa6OUNM0=;
+	s=korg; t=1711989675;
+	bh=9Ppm4C/RgEx2h1uGAuAmFSAdHo2MOKg0ZSmqlEmDu1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbBTUv7bo0y8U3+vQT2EYD4EC51Ibxjd5t6K78bLEdaGSatN1OasuD1DDeQ9yK+lK
-	 rWcrK3MzZy58YmzfehL2s2OJcrkbQxYQpzje/LhSdzC+v+DBQXjQNJupTTzapLlh0x
-	 /vZvbTYgWrnQ4EGoOdjJSwYdp045g1nE+w+/J5dU=
+	b=WbWuEmxcjoFkfMo6Q1jbIqx3y5naAblZ1jW1FuufHinCLIG4gqcWECNKqUJ7vk9K1
+	 N6inX1Nj03fg5RDKLY5WendAHWkel5+Ywg6PZnXwVO0A0hvsBB4thLTt08SLQbI5uY
+	 Uk+t36lKMV4rE84avoQeORkgYuGisWRPtl0lMRa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alex Lyakas <alex.lyakas@zadara.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 153/432] platform/x86/intel/tpmi: Change vsec offset to u64
+Subject: [PATCH 6.6 091/396] btrfs: fix off-by-one chunk length calculation at contains_pending_extent()
 Date: Mon,  1 Apr 2024 17:42:20 +0200
-Message-ID: <20240401152557.707174113@linuxfoundation.org>
+Message-ID: <20240401152550.630194848@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 57221a07ff37ff356f9265acd228bc3c8744c8fc ]
+[ Upstream commit ae6bd7f9b46a29af52ebfac25d395757e2031d0d ]
 
-The vsec offset can be 64 bit long depending on the PFS start. So change
-type to u64. Also use 64 bit formatting for seq_printf.
+At contains_pending_extent() the value of the end offset of a chunk we
+found in the device's allocation state io tree is inclusive, so when
+we calculate the length we pass to the in_range() macro, we must sum
+1 to the expression "physical_end - physical_offset".
 
-Fixes: 47731fd2865f ("platform/x86/intel: Intel TPMI enumeration driver")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org # v6.3+
-Link: https://lore.kernel.org/r/20240305194644.2077867-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+In practice the wrong calculation should be harmless as chunks sizes
+are never 1 byte and we should never have 1 byte ranges of unallocated
+space. Nevertheless fix the wrong calculation.
+
+Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
+Link: https://lore.kernel.org/linux-btrfs/CAOcd+r30e-f4R-5x-S7sV22RJPe7+pgwherA6xqN2_qe7o4XTg@mail.gmail.com/
+Fixes: 1c11b63eff2a ("btrfs: replace pending/pinned chunks lists with io tree")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/tpmi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/btrfs/volumes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/tpmi.c b/drivers/platform/x86/intel/tpmi.c
-index 311abcac894a6..c2f6e20b45bc0 100644
---- a/drivers/platform/x86/intel/tpmi.c
-+++ b/drivers/platform/x86/intel/tpmi.c
-@@ -96,7 +96,7 @@ struct intel_tpmi_pfs_entry {
-  */
- struct intel_tpmi_pm_feature {
- 	struct intel_tpmi_pfs_entry pfs_header;
--	unsigned int vsec_offset;
-+	u64 vsec_offset;
- 	struct intel_vsec_device *vsec_dev;
- };
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 722a1dde75636..36adbb3d096a9 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1432,7 +1432,7 @@ static bool contains_pending_extent(struct btrfs_device *device, u64 *start,
  
-@@ -389,7 +389,7 @@ static int tpmi_pfs_dbg_show(struct seq_file *s, void *unused)
- 			read_blocked = feature_state.read_blocked ? 'Y' : 'N';
- 			write_blocked = feature_state.write_blocked ? 'Y' : 'N';
+ 		if (in_range(physical_start, *start, len) ||
+ 		    in_range(*start, physical_start,
+-			     physical_end - physical_start)) {
++			     physical_end + 1 - physical_start)) {
+ 			*start = physical_end + 1;
+ 			return true;
  		}
--		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%08x\t%c\t%c\t\t%c\t\t%c\n",
-+		seq_printf(s, "0x%02x\t\t0x%02x\t\t0x%04x\t\t0x%04x\t\t0x%02x\t\t0x%016llx\t%c\t%c\t\t%c\t\t%c\n",
- 			   pfs->pfs_header.tpmi_id, pfs->pfs_header.num_entries,
- 			   pfs->pfs_header.entry_size, pfs->pfs_header.cap_offset,
- 			   pfs->pfs_header.attribute, pfs->vsec_offset, locked, disabled,
-@@ -408,7 +408,8 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
- 	struct intel_tpmi_pm_feature *pfs = s->private;
- 	int count, ret = 0;
- 	void __iomem *mem;
--	u32 off, size;
-+	u32 size;
-+	u64 off;
- 	u8 *buffer;
- 
- 	size = TPMI_GET_SINGLE_ENTRY_SIZE(pfs);
-@@ -424,7 +425,7 @@ static int tpmi_mem_dump_show(struct seq_file *s, void *unused)
- 	mutex_lock(&tpmi_dev_lock);
- 
- 	for (count = 0; count < pfs->pfs_header.num_entries; ++count) {
--		seq_printf(s, "TPMI Instance:%d offset:0x%x\n", count, off);
-+		seq_printf(s, "TPMI Instance:%d offset:0x%llx\n", count, off);
- 
- 		mem = ioremap(off, size);
- 		if (!mem) {
 -- 
 2.43.0
 
