@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F0A893EA0
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:06:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C2B894321
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842241C2120B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:06:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F12DAB20A64
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B694D446AC;
-	Mon,  1 Apr 2024 16:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7253481C6;
+	Mon,  1 Apr 2024 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0e/MEls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/kMcmY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745BB1CA8F;
-	Mon,  1 Apr 2024 16:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67465BA3F;
+	Mon,  1 Apr 2024 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987559; cv=none; b=q0MLK+E4a1Fuwfkl2SFo7o8uXLm/RDyWjo2aJCiOO23cXq+pMuEO4GzCpafjveAQYavRBrLlx5LY3IkVJBIAaNd0g0MzdsIBKIvlzT3mD9RLj6x9EsF9Ms2vWnMztLurBnvd1b7my2c20gcum7hA2sq60hnhwIP7HWeRSzsnFlE=
+	t=1711990798; cv=none; b=PBiXnZb3Ioo1bmj5x1cF7cE3wSROA3AkfDqth7qbuhl6Ro+kYChKCsDLgEw86PbMv4cxliyicWvRRE9anKqhonkafMGtBq+T0TdpDppt2Dbz9ElYnr06+gX6UuWO43t0pN5zPmTlyszB6FQSpApYXKPkb+pIQDoWtCwDFxLSgLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987559; c=relaxed/simple;
-	bh=/gOt41U+14Rf6ZT3R/JPtviCLQ2fHoxzHYEyDgQRZI8=;
+	s=arc-20240116; t=1711990798; c=relaxed/simple;
+	bh=RWkk9WiFIbIpX7NV7Eamws8gXtOOE9vQpkov7HrJLSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ER6HYVtJEbJaD7PTGvRv4zC0E/xqBdlueN08xAidnfdEpjFRvIbjnwok8tXxmnSJ/70FsWDRrGJAkkDzOMEXlAWyiCDSPM6/VXrmDAmaWKD9jR75X07EasysoaKBjFpNG8BbnT/Ztk0Qtxz2VlXjBQnh0DAV0ygFYkE2INxr5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0e/MEls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42B5C433F1;
-	Mon,  1 Apr 2024 16:05:58 +0000 (UTC)
+	 MIME-Version; b=EI7+PggETadQEU8nsSZ/74NfFwP99cYtkEAV5i1+7clKv9Li0R6T2Wd0UwmUFN/+odbJ308wO0IuvC8lSH1SB0vR6RoKrmD1+0Hrb5xLC13wqwYyaW2hsHhteVOt2dz8jqkiuwpyjRWxJ1OcuZCqfqRx1T8AkwNHqd9xe9WC+nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/kMcmY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB16BC433F1;
+	Mon,  1 Apr 2024 16:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987559;
-	bh=/gOt41U+14Rf6ZT3R/JPtviCLQ2fHoxzHYEyDgQRZI8=;
+	s=korg; t=1711990798;
+	bh=RWkk9WiFIbIpX7NV7Eamws8gXtOOE9vQpkov7HrJLSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0e/MElsX8K4nXheK0Ko/17NA16zBD2YGeN8kPcjPv59b2goLZPPDdTNCuL7lLKeN
-	 oYDlCEz5zxI5pQJlkNinD2QF99ek3JVUB1iP3DuV+zwCvZ4QS1bbzmlKotiirW5AQk
-	 dc/ZOONfq6Z5SpUshV6GNV8dzytgTwbqVAvrYhKs=
+	b=v/kMcmY+XQBzR2r6/V+tbN/zaLCtcyS/t8vk1e1MjgPBOFQbqpylT1GTZ7JwBZIN2
+	 WzHuV6GMzeGJ2e9PDFGOD2TUsdEAu/VmSs14aBMOM7WL1z8sj3N9WMGNbm5IxctYBV
+	 xtodrFTqE0imhpYSNxsRGmCmEGAcAkrOlN5f8STo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 294/399] btrfs: validate device maj:min during open
+	Peter Collingbourne <pcc@google.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/272] serial: Lock console when calling into driver before registration
 Date: Mon,  1 Apr 2024 17:44:20 +0200
-Message-ID: <20240401152557.963456801@linuxfoundation.org>
+Message-ID: <20240401152532.747633314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Peter Collingbourne <pcc@google.com>
 
-commit 9f7eb8405dcbc79c5434821e9e3e92abe187ee8e upstream.
+[ Upstream commit 801410b26a0e8b8a16f7915b2b55c9528b69ca87 ]
 
-Boris managed to create a device capable of changing its maj:min without
-altering its device path.
+During the handoff from earlycon to the real console driver, we have
+two separate drivers operating on the same device concurrently. In the
+case of the 8250 driver these concurrent accesses cause problems due
+to the driver's use of banked registers, controlled by LCR.DLAB. It is
+possible for the setup(), config_port(), pm() and set_mctrl() callbacks
+to set DLAB, which can cause the earlycon code that intends to access
+TX to instead access DLL, leading to missed output and corruption on
+the serial line due to unintended modifications to the baud rate.
 
-Only multi-devices can be scanned. A device that gets scanned and remains
-in the btrfs kernel cache might end up with an incorrect maj:min.
+In particular, for setup() we have:
 
-Despite the temp-fsid feature patch did not introduce this bug, it could
-lead to issues if the above multi-device is converted to a single device
-with a stale maj:min. Subsequently, attempting to mount the same device
-with the correct maj:min might mistake it for another device with the same
-fsid, potentially resulting in wrongly auto-enabling the temp-fsid feature.
+univ8250_console_setup()
+-> serial8250_console_setup()
+-> uart_set_options()
+-> serial8250_set_termios()
+-> serial8250_do_set_termios()
+-> serial8250_do_set_divisor()
 
-To address this, this patch validates the device's maj:min at the time of
-device open and updates it if it has changed since the last scan.
+For config_port() we have:
 
-CC: stable@vger.kernel.org # 6.7+
-Fixes: a5b8a5f9f835 ("btrfs: support cloned-device mount capability")
-Reported-by: Boris Burkov <boris@bur.io>
-Co-developed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Boris Burkov <boris@bur.io>#
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+serial8250_config_port()
+-> autoconfig()
+
+For pm() we have:
+
+serial8250_pm()
+-> serial8250_do_pm()
+-> serial8250_set_sleep()
+
+For set_mctrl() we have (for some devices):
+
+serial8250_set_mctrl()
+-> omap8250_set_mctrl()
+-> __omap8250_set_mctrl()
+
+To avoid such problems, let's make it so that the console is locked
+during pre-registration calls to these callbacks, which will prevent
+the earlycon driver from running concurrently.
+
+Remove the partial solution to this problem in the 8250 driver
+that locked the console only during autoconfig_irq(), as this would
+result in a deadlock with the new approach. The console continues
+to be locked during autoconfig_irq() because it can only be called
+through uart_configure_port().
+
+Although this patch introduces more locking than strictly necessary
+(and in particular it also locks during the call to rs485_config()
+which is not affected by this issue as far as I can tell), it follows
+the principle that it is the responsibility of the generic console
+code to manage the earlycon handoff by ensuring that earlycon and real
+console driver code cannot run concurrently, and not the individual
+drivers.
+
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240304214350.501253-1-pcc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/8250/8250_port.c |  6 ------
+ drivers/tty/serial/serial_core.c    | 12 ++++++++++++
+ kernel/printk/printk.c              | 21 ++++++++++++++++++---
+ 3 files changed, 30 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -694,6 +694,16 @@ static int btrfs_open_one_device(struct
- 	device->bdev = bdev_handle->bdev;
- 	clear_bit(BTRFS_DEV_STATE_IN_FS_METADATA, &device->dev_state);
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 8efe31448df3c..c744feabd7cdd 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1377,9 +1377,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 		inb_p(ICP);
+ 	}
  
-+	if (device->devt != device->bdev->bd_dev) {
-+		btrfs_warn(NULL,
-+			   "device %s maj:min changed from %d:%d to %d:%d",
-+			   device->name->str, MAJOR(device->devt),
-+			   MINOR(device->devt), MAJOR(device->bdev->bd_dev),
-+			   MINOR(device->bdev->bd_dev));
+-	if (uart_console(port))
+-		console_lock();
+-
+ 	/* forget possible initially masked and pending IRQ */
+ 	probe_irq_off(probe_irq_on());
+ 	save_mcr = serial8250_in_MCR(up);
+@@ -1410,9 +1407,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+ 	if (port->flags & UPF_FOURPORT)
+ 		outb_p(save_ICP, ICP);
+ 
+-	if (uart_console(port))
+-		console_unlock();
+-
+ 	port->irq = (irq > 0) ? irq : 0;
+ }
+ 
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index f0ed30d0a697c..fe3f1d655dfe2 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2561,7 +2561,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 			port->type = PORT_UNKNOWN;
+ 			flags |= UART_CONFIG_TYPE;
+ 		}
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
+ 		port->ops->config_port(port, flags);
++		if (uart_console(port))
++			console_unlock();
+ 	}
+ 
+ 	if (port->type != PORT_UNKNOWN) {
+@@ -2569,6 +2574,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 
+ 		uart_report_port(drv, port);
+ 
++		/* Synchronize with possible boot console. */
++		if (uart_console(port))
++			console_lock();
 +
-+		device->devt = device->bdev->bd_dev;
-+	}
+ 		/* Power up port for set_mctrl() */
+ 		uart_change_pm(state, UART_PM_STATE_ON);
+ 
+@@ -2585,6 +2594,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+ 
+ 		uart_rs485_config(port);
+ 
++		if (uart_console(port))
++			console_unlock();
 +
- 	fs_devices->open_devices++;
- 	if (test_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state) &&
- 	    device->devid != BTRFS_DEV_REPLACE_DEVID) {
+ 		/*
+ 		 * If this driver supports console, and it hasn't been
+ 		 * successfully registered yet, try to re-register it.
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 981cdb00b8722..c55ee859dbd08 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3045,6 +3045,21 @@ static int __init keep_bootcon_setup(char *str)
+ 
+ early_param("keep_bootcon", keep_bootcon_setup);
+ 
++static int console_call_setup(struct console *newcon, char *options)
++{
++	int err;
++
++	if (!newcon->setup)
++		return 0;
++
++	/* Synchronize with possible boot console. */
++	console_lock();
++	err = newcon->setup(newcon, options);
++	console_unlock();
++
++	return err;
++}
++
+ /*
+  * This is called by register_console() to try to match
+  * the newly registered console with any of the ones selected
+@@ -3080,8 +3095,8 @@ static int try_enable_preferred_console(struct console *newcon,
+ 			if (_braille_register_console(newcon, c))
+ 				return 0;
+ 
+-			if (newcon->setup &&
+-			    (err = newcon->setup(newcon, c->options)) != 0)
++			err = console_call_setup(newcon, c->options);
++			if (err)
+ 				return err;
+ 		}
+ 		newcon->flags |= CON_ENABLED;
+@@ -3107,7 +3122,7 @@ static void try_enable_default_console(struct console *newcon)
+ 	if (newcon->index < 0)
+ 		newcon->index = 0;
+ 
+-	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
++	if (console_call_setup(newcon, NULL) != 0)
+ 		return;
+ 
+ 	newcon->flags |= CON_ENABLED;
+-- 
+2.43.0
+
 
 
 
