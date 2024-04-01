@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-35333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17FB89437D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 940C589406D
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1DA1C21800
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:04:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63A41C21401
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7594D48781;
-	Mon,  1 Apr 2024 17:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C767045BE4;
+	Mon,  1 Apr 2024 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBm7LbkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF3QeyPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308011DFF4;
-	Mon,  1 Apr 2024 17:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855671CA8F;
+	Mon,  1 Apr 2024 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711991053; cv=none; b=dLVi2riGYXOweQrnrbBG1ie2jJugG6C5TCpnCmcakLNjJcknvHGU3AT4E8CiLkf2wQJS+sBpqGnCOuwAIA9fKFyA2dnbrzRX+NC98r5g7bD7d3rugGPRHwtS8r4tsGufpNuCQO7DZt+gzaJta29Zy0AxFda7Fo0O5hP8fQ5svPU=
+	t=1711988995; cv=none; b=No8yk6dWJ5h/wzRRlLoAb4+sYEOfcY7onqvj/dbh5HU58n5pJnnjaINjxXasEy2GcDnVBY5Or0LN6WJJHc6PV5xKhNAU/wGfm4SqUQJN7elQ4kjIr06505hvJkJAC/r/h/k118PrEQuDciXcVrCd4HpNIbkwZaHVF743VcfKMsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711991053; c=relaxed/simple;
-	bh=tkc/09EnPYyjTT6cFUiO7bgnuCSGs9eC+3SiSwQQB4Q=;
+	s=arc-20240116; t=1711988995; c=relaxed/simple;
+	bh=pc+NPIS8ByHTlPuNBpsh5IthWBYUFug3v5JeuE4+1zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9U+TFuZHGsMhDm33gvRS8DluMVY3bU7ZnN5OQjPfuUsVmSnHoca/tWXpq/RKUWx8fECy5WSE9H7wA1rl/PRZTOa6xExR2aC+yl1XSJ2QvtSA1O7UloFwSvAZZCVJS9+3dZv9TKNiMKJ78cAW7TZa0K84v0jyt1eCMfGlRUCMUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBm7LbkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E73C433C7;
-	Mon,  1 Apr 2024 17:04:12 +0000 (UTC)
+	 MIME-Version; b=UmKE09r4Jt1zhBv6JHwTjPJ+xiikUWul3GHR8Ox7kgAh8kKAWMD8geisSMltouvzhRSVdlxWJMO7QPTkkmxcLVhn/i7WNOA4SsSj8L8vYtwD3C0iCXGYhb+JS89YZpF1BS1CkLB7eOsscrO6XdoeUlM7sh7vqy9XLeigs9Nq7Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF3QeyPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DFCC433C7;
+	Mon,  1 Apr 2024 16:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711991053;
-	bh=tkc/09EnPYyjTT6cFUiO7bgnuCSGs9eC+3SiSwQQB4Q=;
+	s=korg; t=1711988995;
+	bh=pc+NPIS8ByHTlPuNBpsh5IthWBYUFug3v5JeuE4+1zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBm7LbkBqWlb5HocDJ1N7HhwhjnHY32QmWciQchxBYtpTpkK17dSaUE/CpuYxfhq0
-	 J3SVPRUt0xEDJeCwC13q8Z1h97CEQgmuMdB3Yq4mXIbif61I2PI3NtY/hrpmewWHlt
-	 sUnOC+l7UEwJEvXFZ+/jAXfbaCyJIpRHNczPwhmY=
+	b=KF3QeyPHggBafFBKbEX2+//ZhGhARWoiFccnaUhLn146b7OBlUaJQtiQYhX0UYoA+
+	 JprrqU+Ug9yh526pHNhkZbCn5TD3bmSVi7wGkyitchnmmEkyZz9mKxRQTsK2cTPz/5
+	 QjhRMg/rbGqPA2JNH/wBofGDUjKenXUUluvaKmhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/272] drm/vc4: hdmi: do not return negative values from .get_modes()
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.7 322/432] mfd: intel-lpss: Switch to generalized quirk table
 Date: Mon,  1 Apr 2024 17:45:09 +0200
-Message-ID: <20240401152534.386716581@linuxfoundation.org>
+Message-ID: <20240401152602.803864741@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
-References: <20240401152530.237785232@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit abf493988e380f25242c1023275c68bd3579c9ce ]
+commit ac9538f6007e1c80f1b8a62db7ecc391b4d78ae5 upstream.
 
-The .get_modes() hooks aren't supposed to return negative error
-codes. Return 0 for no modes, whatever the reason.
+Introduce generic quirk table, and port existing walkaround for select
+Microsoft devices to it. This is a preparation for
+QUIRK_CLOCK_DIVIDER_UNITY.
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/dcda6d4003e2c6192987916b35c7304732800e08.1709913674.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231221185142.9224-2-alex.vinarskis@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/intel-lpss-pci.c |   23 +++++++++++++++--------
+ drivers/mfd/intel-lpss.c     |    2 +-
+ drivers/mfd/intel-lpss.h     |    9 ++++++++-
+ 3 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index ea2eaf6032caa..f696818913499 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -497,7 +497,7 @@ static int vc4_hdmi_connector_get_modes(struct drm_connector *connector)
- 	edid = drm_get_edid(connector, vc4_hdmi->ddc);
- 	cec_s_phys_addr_from_edid(vc4_hdmi->cec_adap, edid);
- 	if (!edid)
--		return -ENODEV;
-+		return 0;
+--- a/drivers/mfd/intel-lpss-pci.c
++++ b/drivers/mfd/intel-lpss-pci.c
+@@ -18,18 +18,24 @@
  
- 	drm_connector_update_edid_property(connector, edid);
- 	ret = drm_add_edid_modes(connector, edid);
--- 
-2.43.0
-
+ #include "intel-lpss.h"
+ 
+-/* Some DSDTs have an unused GEXP ACPI device conflicting with I2C4 resources */
+-static const struct pci_device_id ignore_resource_conflicts_ids[] = {
+-	/* Microsoft Surface Go (version 1) I2C4 */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1182), },
+-	/* Microsoft Surface Go 2 I2C4 */
+-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237), },
++static const struct pci_device_id quirk_ids[] = {
++	{
++		/* Microsoft Surface Go (version 1) I2C4 */
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1182),
++		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
++	},
++	{
++		/* Microsoft Surface Go 2 I2C4 */
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, 0x9d64, 0x152d, 0x1237),
++		.driver_data = QUIRK_IGNORE_RESOURCE_CONFLICTS,
++	},
+ 	{ }
+ };
+ 
+ static int intel_lpss_pci_probe(struct pci_dev *pdev,
+ 				const struct pci_device_id *id)
+ {
++	const struct pci_device_id *quirk_pci_info;
+ 	struct intel_lpss_platform_info *info;
+ 	int ret;
+ 
+@@ -45,8 +51,9 @@ static int intel_lpss_pci_probe(struct p
+ 	info->mem = &pdev->resource[0];
+ 	info->irq = pdev->irq;
+ 
+-	if (pci_match_id(ignore_resource_conflicts_ids, pdev))
+-		info->ignore_resource_conflicts = true;
++	quirk_pci_info = pci_match_id(quirk_ids, pdev);
++	if (quirk_pci_info)
++		info->quirks = quirk_pci_info->driver_data;
+ 
+ 	pdev->d3cold_delay = 0;
+ 
+--- a/drivers/mfd/intel-lpss.c
++++ b/drivers/mfd/intel-lpss.c
+@@ -401,7 +401,7 @@ int intel_lpss_probe(struct device *dev,
+ 		return ret;
+ 
+ 	lpss->cell->swnode = info->swnode;
+-	lpss->cell->ignore_resource_conflicts = info->ignore_resource_conflicts;
++	lpss->cell->ignore_resource_conflicts = info->quirks & QUIRK_IGNORE_RESOURCE_CONFLICTS;
+ 
+ 	intel_lpss_init_dev(lpss);
+ 
+--- a/drivers/mfd/intel-lpss.h
++++ b/drivers/mfd/intel-lpss.h
+@@ -11,16 +11,23 @@
+ #ifndef __MFD_INTEL_LPSS_H
+ #define __MFD_INTEL_LPSS_H
+ 
++#include <linux/bits.h>
+ #include <linux/pm.h>
+ 
++/*
++ * Some DSDTs have an unused GEXP ACPI device conflicting with I2C4 resources.
++ * Set to ignore resource conflicts with ACPI declared SystemMemory regions.
++ */
++#define QUIRK_IGNORE_RESOURCE_CONFLICTS BIT(0)
++
+ struct device;
+ struct resource;
+ struct software_node;
+ 
+ struct intel_lpss_platform_info {
+ 	struct resource *mem;
+-	bool ignore_resource_conflicts;
+ 	int irq;
++	unsigned int quirks;
+ 	unsigned long clk_rate;
+ 	const char *clk_con_id;
+ 	const struct software_node *swnode;
 
 
 
