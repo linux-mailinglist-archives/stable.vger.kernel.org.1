@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-34251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D071893E8A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:04:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7B189432C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7EA28135F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCD61C21E55
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BB74596E;
-	Mon,  1 Apr 2024 16:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB47482EF;
+	Mon,  1 Apr 2024 17:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcIRyh0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbJqA68O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B722301;
-	Mon,  1 Apr 2024 16:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0347A6B;
+	Mon,  1 Apr 2024 17:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987492; cv=none; b=YdZy+KFSBK+iq9Cgzqbx8v2X+Y++hWRM+uijpJDZBsODkx/S+86noBg4xPmX9JGPR7F9XcOqOzbFLK6ptS6b3RvKmF3ybdotAkKg8wHBSxSB7tD9zsbvb2hKB3+FBtmAhFxBfhsZFV24pt02O4pWZNG9WQ6ulL77TfNFU/1VbDM=
+	t=1711990834; cv=none; b=HB1sT+OVeQerjXep9+napgRQQFYDj6AsRx/l7X2Vn6l7VyV+VD6Av58e5fOZCc45aLa2kOEuGC6MhEqILOi4iBzbHFljQo4gdDpcR56U27O3wh/2cHzzrR1uxCmDBYP3SfVQVQtWcS0oeu3KG6jubErIcCZKlkkhhtThq2rTv/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987492; c=relaxed/simple;
-	bh=n7ziQw/F2Fi/w9A/pE/vZ+GCX1wXYKhxjvXBEHmrbiM=;
+	s=arc-20240116; t=1711990834; c=relaxed/simple;
+	bh=2F4HI8lTuremcdxN93PXDP4yfoZj1yfbOdD6O9gyJWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEajAVDt63IhaJnJm8w8PfePqKM4jOnWysFVKtZG7w2YzVbcz49ydosrPHZGTESl0U7Y6oUoGOwPHPJzPTY/XL0rJ5Qn1hoND5l6DuQdRc5PsakOI69/H0qW4UfprsYrrzb8T5/9g9JvQFqISkXcOYgZsqHj5KCc8S1Jg290yzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcIRyh0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD532C433C7;
-	Mon,  1 Apr 2024 16:04:51 +0000 (UTC)
+	 MIME-Version; b=GasnJN98VoQRhXAs06pG457w504DRhCExxqFqRWKxeL+m2hohy8gF2cgqZFhNaZ0Y3aAwd17EgqrX47S5Q/M2MgfKiRQafCl7Pdu4FzEXGTRRr6wtTTlpsDYvoS5o8j8/pftLebb/Hdnfgvvq5yHGA9eKiuNgF5r8QnFUr7FZGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbJqA68O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31ABC433F1;
+	Mon,  1 Apr 2024 17:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987492;
-	bh=n7ziQw/F2Fi/w9A/pE/vZ+GCX1wXYKhxjvXBEHmrbiM=;
+	s=korg; t=1711990834;
+	bh=2F4HI8lTuremcdxN93PXDP4yfoZj1yfbOdD6O9gyJWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcIRyh0MDeM2R/u49To5b3/X7EnY8mq2GxK2VEJjnsikNg1/t1/8f5elqBEeMtEVM
-	 yksS9Zx/Kb6DScazG42ENYd868szKD6DpBvLT/0kpLt5teKIjk45brf7iLg1Li4W1k
-	 d0XwRKIZGMY98xOzoC1v4tcGmQQ88zvQTxaC69hQ=
+	b=hbJqA68OcvJZ47IiCaT+hPdJ1y/xH+9NClevf9lXGtOXa7msEF88TUpcMCTK6DbjH
+	 p5Ew6Xd9P+zzEni5C7UnXzn9IB8h1ngrxQJCSCN+IC9jwapZXALuYql2Xert/Lon4l
+	 PPr1DvVemQZbSOp4zjo+Va9f6glq+h4D71YfOr48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 304/399] Revert "drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR"
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/272] mm: swap: fix race between free_swap_and_cache() and swapoff()
 Date: Mon,  1 Apr 2024 17:44:30 +0200
-Message-ID: <20240401152558.264730742@linuxfoundation.org>
+Message-ID: <20240401152533.098385229@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 78aca9ee5e012e130dbfbd7191bc2302b0cf3b37 upstream.
+[ Upstream commit 82b1c07a0af603e3c47b906c8e991dc96f01688e ]
 
-This causes flicker on a bunch of eDP panels. The info_packet code
-also caused regressions on other OSes that we haven't' seen on Linux
-yet, but that is likely due to the fact that we haven't had a chance
-to test those environments on Linux.
+There was previously a theoretical window where swapoff() could run and
+teardown a swap_info_struct while a call to free_swap_and_cache() was
+running in another thread.  This could cause, amongst other bad
+possibilities, swap_page_trans_huge_swapped() (called by
+free_swap_and_cache()) to access the freed memory for swap_map.
 
-We'll need to revisit this.
+This is a theoretical problem and I haven't been able to provoke it from a
+test case.  But there has been agreement based on code review that this is
+possible (see link below).
 
-This reverts commit 202260f64519e591b5cd99626e441b6559f571a3.
+Fix it by using get_swap_device()/put_swap_device(), which will stall
+swapoff().  There was an extra check in _swap_info_get() to confirm that
+the swap entry was not free.  This isn't present in get_swap_device()
+because it doesn't make sense in general due to the race between getting
+the reference and swapoff.  So I've added an equivalent check directly in
+free_swap_and_cache().
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3207
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3151
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Details of how to provoke one possible issue (thanks to David Hildenbrand
+for deriving this):
+
+--8<-----
+
+__swap_entry_free() might be the last user and result in
+"count == SWAP_HAS_CACHE".
+
+swapoff->try_to_unuse() will stop as soon as soon as si->inuse_pages==0.
+
+So the question is: could someone reclaim the folio and turn
+si->inuse_pages==0, before we completed swap_page_trans_huge_swapped().
+
+Imagine the following: 2 MiB folio in the swapcache. Only 2 subpages are
+still references by swap entries.
+
+Process 1 still references subpage 0 via swap entry.
+Process 2 still references subpage 1 via swap entry.
+
+Process 1 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+[then, preempted in the hypervisor etc.]
+
+Process 2 quits. Calls free_swap_and_cache().
+-> count == SWAP_HAS_CACHE
+
+Process 2 goes ahead, passes swap_page_trans_huge_swapped(), and calls
+__try_to_reclaim_swap().
+
+__try_to_reclaim_swap()->folio_free_swap()->delete_from_swap_cache()->
+put_swap_folio()->free_swap_slot()->swapcache_free_entries()->
+swap_entry_free()->swap_range_free()->
+...
+WRITE_ONCE(si->inuse_pages, si->inuse_pages - nr_entries);
+
+What stops swapoff to succeed after process 2 reclaimed the swap cache
+but before process1 finished its call to swap_page_trans_huge_swapped()?
+
+--8<-----
+
+Link: https://lkml.kernel.org/r/20240306140356.3974886-1-ryan.roberts@arm.com
+Fixes: 7c00bafee87c ("mm/swap: free swap slots in batch")
+Closes: https://lore.kernel.org/linux-mm/65a66eb9-41f8-4790-8db2-0c70ea15979f@redhat.com/
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c             |    8 ++----
- drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c |   13 +++-------
- 2 files changed, 8 insertions(+), 13 deletions(-)
+ mm/swapfile.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6256,9 +6256,8 @@ create_stream_for_sink(struct drm_connec
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 324844f98d67c..0d6182db44a6a 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1229,6 +1229,11 @@ static unsigned char __swap_entry_free_locked(struct swap_info_struct *p,
+  * with get_swap_device() and put_swap_device(), unless the swap
+  * functions call get/put_swap_device() by themselves.
+  *
++ * Note that when only holding the PTL, swapoff might succeed immediately
++ * after freeing a swap entry. Therefore, immediately after
++ * __swap_entry_free(), the swap info might become stale and should not
++ * be touched without a prior get_swap_device().
++ *
+  * Check whether swap entry is valid in the swap device.  If so,
+  * return pointer to swap_info_struct, and keep the swap entry valid
+  * via preventing the swap device from being swapoff, until
+@@ -1630,13 +1635,19 @@ int free_swap_and_cache(swp_entry_t entry)
+ 	if (non_swap_entry(entry))
+ 		return 1;
  
- 	if (stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
- 		mod_build_hf_vsif_infopacket(stream, &stream->vsp_infopacket);
--	else if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
--			 stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
--			 stream->signal == SIGNAL_TYPE_EDP) {
+-	p = _swap_info_get(entry);
++	p = get_swap_device(entry);
+ 	if (p) {
++		if (WARN_ON(data_race(!p->swap_map[swp_offset(entry)]))) {
++			put_swap_device(p);
++			return 0;
++		}
 +
-+	if (stream->link->psr_settings.psr_feature_enabled || stream->link->replay_settings.replay_feature_enabled) {
- 		//
- 		// should decide stream support vsc sdp colorimetry capability
- 		// before building vsc info packet
-@@ -6274,9 +6273,8 @@ create_stream_for_sink(struct drm_connec
- 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
- 			tf = TRANSFER_FUNC_GAMMA_22;
- 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
-+		aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
- 
--		if (stream->link->psr_settings.psr_feature_enabled)
--			aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
+ 		count = __swap_entry_free(p, entry);
+ 		if (count == SWAP_HAS_CACHE &&
+ 		    !swap_page_trans_huge_swapped(p, entry))
+ 			__try_to_reclaim_swap(p, swp_offset(entry),
+ 					      TTRS_UNMAPPED | TTRS_FULL);
++		put_swap_device(p);
  	}
- finish:
- 	dc_sink_release(sink);
---- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
-+++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
-@@ -147,15 +147,12 @@ void mod_build_vsc_infopacket(const stru
- 	}
- 
- 	/* VSC packet set to 4 for PSR-SU, or 2 for PSR1 */
--	if (stream->link->psr_settings.psr_feature_enabled) {
--		if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
--			vsc_packet_revision = vsc_packet_rev4;
--		else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
--			vsc_packet_revision = vsc_packet_rev2;
--	}
--
--	if (stream->link->replay_settings.config.replay_supported)
-+	if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
-+		vsc_packet_revision = vsc_packet_rev4;
-+	else if (stream->link->replay_settings.config.replay_supported)
- 		vsc_packet_revision = vsc_packet_rev4;
-+	else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
-+		vsc_packet_revision = vsc_packet_rev2;
- 
- 	/* Update to revision 5 for extended colorimetry support */
- 	if (stream->use_vsc_sdp_for_colorimetry)
+ 	return p != NULL;
+ }
+-- 
+2.43.0
+
 
 
 
