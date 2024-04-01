@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-35172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9968942BA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:55:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336918943D1
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 19:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 528981F2678F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:55:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6565E1C20D90
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7951C433DA;
-	Mon,  1 Apr 2024 16:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666FE482F6;
+	Mon,  1 Apr 2024 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxgo4JO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1Kx5Ni9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35683BA3F;
-	Mon,  1 Apr 2024 16:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238C240876;
+	Mon,  1 Apr 2024 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990536; cv=none; b=cuJ8UQbw/zjsnmOuOPLqBKK+kFGwQqRBIEm/lwEE3Y6cPfHqmMbeuC7s6FUghK31ucQP9r86srnVSMPDt4Y5lhog0D9T1CDotP/SQNdTEsutWwT2HHvZftuG+C6t0hO04qbnN/OdhR4VHBfc6boFvYiRVsOuVKg5sRxpewAQ5MY=
+	t=1711991307; cv=none; b=Mu808tp4m2x/9rJoTUslSfS+wnkrCG1m47hcFnniZXrSPz09GBOHbQM/Zh1oJ1VcOU9nDQFb+6n0A07K6cYPljymY6OBfmFvnQJpm2a08NfbZXkYZwy2HGjZn732LZr+CpXm8z5ViLpzWl/nowQvAr4+3zwr243JmKW72vcA8gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990536; c=relaxed/simple;
-	bh=dTW4S+DpqGOivEuWoh1hmimYiyNf/tDBmiNhiPa5YLk=;
+	s=arc-20240116; t=1711991307; c=relaxed/simple;
+	bh=FxXcv+fZOt87XJT/XxtRCyIFDpdey7QJ66zdqvb2B4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN79LCQEngbDoHn8vDRi7Putdii8rnS5torWlMJVYlaQ3AYq3CCZkhI8b9iyt7ngQ9k+NZEIXDZpacq9wKuQylGI7G+uyRqlzCR0jMtPU8uU+oi1DrmvA6WpZ3cGMOyaM1jVZBp9oP2Mcj06yuorKRHeG8jynnwoPp52f2jBaa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxgo4JO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55E6C433F1;
-	Mon,  1 Apr 2024 16:55:35 +0000 (UTC)
+	 MIME-Version; b=nMiNOWX8oQ06YHKiFTJYEZuAQ4Dv3Xcl0gIo1d+t9zHPWFoh/j7306RGbfZBQAQq7dxytd6Ie0gPo3BOceEg3DyRMUDq/tCd2Ip/HFgzcYgL6tfoiQNHZUk4BZT+bWsB9VIN+4Ilha/TJMaxul5umYd+XRvTx16Fc7IdRhfJtxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1Kx5Ni9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F05C433F1;
+	Mon,  1 Apr 2024 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990536;
-	bh=dTW4S+DpqGOivEuWoh1hmimYiyNf/tDBmiNhiPa5YLk=;
+	s=korg; t=1711991307;
+	bh=FxXcv+fZOt87XJT/XxtRCyIFDpdey7QJ66zdqvb2B4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxgo4JO5SI1xO16T8bF8kvq+gfnrT3n2gUCViSN+jYeEKz/bCouqYiapCPOQET+uB
-	 1m1G1aiumNczvrqLB+FtE98SMpueRVbbhQBvViWdCwJRfjoXWR28V12s4Wm1U0xJYN
-	 naB5zkPKwRT7vCmu0QFUzj2yXfTRaBdvBkpvJqy0=
+	b=G1Kx5Ni9PwwK4wpUb0HxeJ74Z8FUkvtUmW9tb8yCVv1Dl8gk3yUnomcf59DD9F/Vg
+	 em3FoBiVs0ZhpZZgsTGLIYcFeJTqVbA8MMMaHzdNwLFYv4l7KtXZ+UX0e1fJd6Yw96
+	 cjRr039AlJs8sGGsPowQ3Eko+IBHm7giV+dnI430=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Subject: [PATCH 6.6 367/396] usb: dwc2: host: Fix hibernation flow
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.1 226/272] drm/vmwgfx: Create debugfs ttm_resource_manager entry only if needed
 Date: Mon,  1 Apr 2024 17:46:56 +0200
-Message-ID: <20240401152558.858422499@linuxfoundation.org>
+Message-ID: <20240401152538.019998826@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-commit 3c7b9856a82227db01a20171d2e24c7ce305d59b upstream.
+commit 4be9075fec0a639384ed19975634b662bfab938f upstream.
 
-Added to backup/restore registers HFLBADDR, HCCHARi, HCSPLTi,
-HCTSIZi, HCDMAi and HCDMABi.
+The driver creates /sys/kernel/debug/dri/0/mob_ttm even when the
+corresponding ttm_resource_manager is not allocated.
+This leads to a crash when trying to read from this file.
 
-Fixes: 58e52ff6a6c3 ("usb: dwc2: Move register save and restore functions")
-Fixes: d17ee77b3044 ("usb: dwc2: add controller hibernation support")
-CC: stable@vger.kernel.org
-Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Link: https://lore.kernel.org/r/c2d10ee6098b9b009a8e94191e046004747d3bdd.1708945444.git.Minas.Harutyunyan@synopsys.com
+Add a check to create mob_ttm, system_mob_ttm, and gmr_ttm debug file
+only when the corresponding ttm_resource_manager is allocated.
+
+crash> bt
+PID: 3133409  TASK: ffff8fe4834a5000  CPU: 3    COMMAND: "grep"
+ #0 [ffffb954506b3b20] machine_kexec at ffffffffb2a6bec3
+ #1 [ffffb954506b3b78] __crash_kexec at ffffffffb2bb598a
+ #2 [ffffb954506b3c38] crash_kexec at ffffffffb2bb68c1
+ #3 [ffffb954506b3c50] oops_end at ffffffffb2a2a9b1
+ #4 [ffffb954506b3c70] no_context at ffffffffb2a7e913
+ #5 [ffffb954506b3cc8] __bad_area_nosemaphore at ffffffffb2a7ec8c
+ #6 [ffffb954506b3d10] do_page_fault at ffffffffb2a7f887
+ #7 [ffffb954506b3d40] page_fault at ffffffffb360116e
+    [exception RIP: ttm_resource_manager_debug+0x11]
+    RIP: ffffffffc04afd11  RSP: ffffb954506b3df0  RFLAGS: 00010246
+    RAX: ffff8fe41a6d1200  RBX: 0000000000000000  RCX: 0000000000000940
+    RDX: 0000000000000000  RSI: ffffffffc04b4338  RDI: 0000000000000000
+    RBP: ffffb954506b3e08   R8: ffff8fee3ffad000   R9: 0000000000000000
+    R10: ffff8fe41a76a000  R11: 0000000000000001  R12: 00000000ffffffff
+    R13: 0000000000000001  R14: ffff8fe5bb6f3900  R15: ffff8fe41a6d1200
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #8 [ffffb954506b3e00] ttm_resource_manager_show at ffffffffc04afde7 [ttm]
+ #9 [ffffb954506b3e30] seq_read at ffffffffb2d8f9f3
+    RIP: 00007f4c4eda8985  RSP: 00007ffdbba9e9f8  RFLAGS: 00000246
+    RAX: ffffffffffffffda  RBX: 000000000037e000  RCX: 00007f4c4eda8985
+    RDX: 000000000037e000  RSI: 00007f4c41573000  RDI: 0000000000000003
+    RBP: 000000000037e000   R8: 0000000000000000   R9: 000000000037fe30
+    R10: 0000000000000000  R11: 0000000000000246  R12: 00007f4c41573000
+    R13: 0000000000000003  R14: 00007f4c41572010  R15: 0000000000000003
+    ORIG_RAX: 0000000000000000  CS: 0033  SS: 002b
+
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Fixes: af4a25bbe5e7 ("drm/vmwgfx: Add debugfs entries for various ttm resource managers")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240312093551.196609-1-jfalempe@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/core.h |   12 ++++++++++++
- drivers/usb/dwc2/hcd.c  |   18 ++++++++++++++++--
- 2 files changed, 28 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc2/core.h
-+++ b/drivers/usb/dwc2/core.h
-@@ -729,8 +729,14 @@ struct dwc2_dregs_backup {
-  * struct dwc2_hregs_backup - Holds host registers state before
-  * entering partial power down
-  * @hcfg:		Backup of HCFG register
-+ * @hflbaddr:		Backup of HFLBADDR register
-  * @haintmsk:		Backup of HAINTMSK register
-+ * @hcchar:		Backup of HCCHAR register
-+ * @hcsplt:		Backup of HCSPLT register
-  * @hcintmsk:		Backup of HCINTMSK register
-+ * @hctsiz:		Backup of HCTSIZ register
-+ * @hdma:		Backup of HCDMA register
-+ * @hcdmab:		Backup of HCDMAB register
-  * @hprt0:		Backup of HPTR0 register
-  * @hfir:		Backup of HFIR register
-  * @hptxfsiz:		Backup of HPTXFSIZ register
-@@ -738,8 +744,14 @@ struct dwc2_dregs_backup {
-  */
- struct dwc2_hregs_backup {
- 	u32 hcfg;
-+	u32 hflbaddr;
- 	u32 haintmsk;
-+	u32 hcchar[MAX_EPS_CHANNELS];
-+	u32 hcsplt[MAX_EPS_CHANNELS];
- 	u32 hcintmsk[MAX_EPS_CHANNELS];
-+	u32 hctsiz[MAX_EPS_CHANNELS];
-+	u32 hcidma[MAX_EPS_CHANNELS];
-+	u32 hcidmab[MAX_EPS_CHANNELS];
- 	u32 hprt0;
- 	u32 hfir;
- 	u32 hptxfsiz;
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -5406,9 +5406,16 @@ int dwc2_backup_host_registers(struct dw
- 	/* Backup Host regs */
- 	hr = &hsotg->hr_backup;
- 	hr->hcfg = dwc2_readl(hsotg, HCFG);
-+	hr->hflbaddr = dwc2_readl(hsotg, HFLBADDR);
- 	hr->haintmsk = dwc2_readl(hsotg, HAINTMSK);
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		hr->hcchar[i] = dwc2_readl(hsotg, HCCHAR(i));
-+		hr->hcsplt[i] = dwc2_readl(hsotg, HCSPLT(i));
- 		hr->hcintmsk[i] = dwc2_readl(hsotg, HCINTMSK(i));
-+		hr->hctsiz[i] = dwc2_readl(hsotg, HCTSIZ(i));
-+		hr->hcidma[i] = dwc2_readl(hsotg, HCDMA(i));
-+		hr->hcidmab[i] = dwc2_readl(hsotg, HCDMAB(i));
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1429,12 +1429,15 @@ static void vmw_debugfs_resource_manager
+ 					    root, "system_ttm");
+ 	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, TTM_PL_VRAM),
+ 					    root, "vram_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
+-					    root, "gmr_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
+-					    root, "mob_ttm");
+-	ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
+-					    root, "system_mob_ttm");
++	if (vmw->has_gmr)
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_GMR),
++						    root, "gmr_ttm");
++	if (vmw->has_mob) {
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_MOB),
++						    root, "mob_ttm");
++		ttm_resource_manager_create_debugfs(ttm_manager_type(&vmw->bdev, VMW_PL_SYSTEM),
++						    root, "system_mob_ttm");
 +	}
+ }
  
- 	hr->hprt0 = dwc2_read_hprt0(hsotg);
- 	hr->hfir = dwc2_readl(hsotg, HFIR);
-@@ -5442,10 +5449,17 @@ int dwc2_restore_host_registers(struct d
- 	hr->valid = false;
- 
- 	dwc2_writel(hsotg, hr->hcfg, HCFG);
-+	dwc2_writel(hsotg, hr->hflbaddr, HFLBADDR);
- 	dwc2_writel(hsotg, hr->haintmsk, HAINTMSK);
- 
--	for (i = 0; i < hsotg->params.host_channels; ++i)
-+	for (i = 0; i < hsotg->params.host_channels; ++i) {
-+		dwc2_writel(hsotg, hr->hcchar[i], HCCHAR(i));
-+		dwc2_writel(hsotg, hr->hcsplt[i], HCSPLT(i));
- 		dwc2_writel(hsotg, hr->hcintmsk[i], HCINTMSK(i));
-+		dwc2_writel(hsotg, hr->hctsiz[i], HCTSIZ(i));
-+		dwc2_writel(hsotg, hr->hcidma[i], HCDMA(i));
-+		dwc2_writel(hsotg, hr->hcidmab[i], HCDMAB(i));
-+	}
- 
- 	dwc2_writel(hsotg, hr->hprt0, HPRT0);
- 	dwc2_writel(hsotg, hr->hfir, HFIR);
+ static int vmwgfx_pm_notifier(struct notifier_block *nb, unsigned long val,
 
 
 
