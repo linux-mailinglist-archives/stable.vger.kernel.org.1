@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-34794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C078940DF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:35:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F3E893F67
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1482B2833AD
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:35:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBA751F22B13
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8564241C89;
-	Mon,  1 Apr 2024 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B15047A62;
+	Mon,  1 Apr 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjJ3eeII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8xHUc1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FBEDF6B;
-	Mon,  1 Apr 2024 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC28A3D961;
+	Mon,  1 Apr 2024 16:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989319; cv=none; b=iaVlEyLT1GnM3xAEnuYJnlQ8earZ4pTEi5qWmhQkAjjFZjF1/ELRXBBWMIuMjycOcOhIN3fZ1be9np4s1aCzZo/eh50XyGhjYdzKeYzmG+xUd/YoNRDR9EIdaa2RoCE7BGODY6oF0H5UqmG/c0qKoNTqKWBXU6wNBv78GSAnkDc=
+	t=1711988166; cv=none; b=uL6AYRAIEK7pE/ZnpbadrS58v50yG9nHOkiu716gRL3Z+KPYd/GwtRaBlSGZpkVUKus3J0ALWAAAx5eUzltAO1T0suNJSlegEIuRZ2CrGEu29Jqg0TGndJF0lamA+G76agVDhmg5t0Vx/koJYQWDFcUz+0ZEbGSRbHitCnApUkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989319; c=relaxed/simple;
-	bh=zQTyXCEZTE9EeINeV4mygG/SudScuDPcykOqg532ing=;
+	s=arc-20240116; t=1711988166; c=relaxed/simple;
+	bh=MDEtn/BSbtRxMPQuScexR5XVqLH3JMS30sFMLszULsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXIEb59sG3/ahGlbGmmZnGH+cCczVKZj3tAPx3upiu4e1q9OO+ZsFKm+JdzudxRw7xYPxzCWgkE3AAh/BY5qLS9AMaU0IG0f+36l4gAzulixLOXPwNUnLvFr3BcCVZ60u/LEzYURTtyM1BQHfvpcafhuTz9qVkW2BrKHSfhTwCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjJ3eeII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35E9C433C7;
-	Mon,  1 Apr 2024 16:35:18 +0000 (UTC)
+	 MIME-Version; b=elAKQE0MxCOlTUhC+carsmcQUjW27Ncdjfc4Oq7l1+pYkYsutqfXTqc2lXiJJCaJe8F9Pv4TEkzpSvMa5qNs0iv6eycfGydxxVZJNM50PICOHUmGRRnxovQseNZe7nvSzc43XjhRfqaa1TWlBRLS6T67669cLYxxV+Oj2465er0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8xHUc1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A184C43390;
+	Mon,  1 Apr 2024 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989319;
-	bh=zQTyXCEZTE9EeINeV4mygG/SudScuDPcykOqg532ing=;
+	s=korg; t=1711988165;
+	bh=MDEtn/BSbtRxMPQuScexR5XVqLH3JMS30sFMLszULsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjJ3eeII6dvj8Hd8g7qDe4XlBviNT9DVxS+W5oqyjj40IoZ0Q46H+eTc2dZA59ys2
-	 +o4vXN21t1ED8m/KCiPq9gVyqouP6bT4pGKFKUJDPdL81YK9PcmBeoS9OUVybHXtV+
-	 H69T043kSvWYQYe/GNTJ7/oUQiyolFNSuWFN4siw=
+	b=t8xHUc1PExOOJDbLs5BM9VeodIta2kkWRDGyCD1W9pQ1rkktW3eHiQvVod3/677BV
+	 qw8qajf3URnnuP2LefSYTA+rh/PC9eLlHeBXub3/s4n7wzUzTcw6Blllo/eIjdaVlq
+	 ip9yI+sBTMhUObkl2nA27iRViofm5sxBE4WnfVuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jan-Benedict Glaw <jbglaw@lug-owl.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/396] serial: max310x: fix NULL pointer dereference in I2C instantiation
+Subject: [PATCH 6.7 076/432] powerpc/fsl: Fix mfpmr build errors with newer binutils
 Date: Mon,  1 Apr 2024 17:41:03 +0200
-Message-ID: <20240401152548.311749047@linuxfoundation.org>
+Message-ID: <20240401152555.390448360@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 0d27056c24efd3d63a03f3edfbcfc4827086b110 ]
+[ Upstream commit 5f491356b7149564ab22323ccce79c8d595bfd0c ]
 
-When trying to instantiate a max14830 device from userspace:
+Binutils 2.38 complains about the use of mfpmr when building
+ppc6xx_defconfig:
 
-    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
+    CC      arch/powerpc/kernel/pmc.o
+  {standard input}: Assembler messages:
+  {standard input}:45: Error: unrecognized opcode: `mfpmr'
+  {standard input}:56: Error: unrecognized opcode: `mtpmr'
 
-we get the following error:
+This is because by default the kernel is built with -mcpu=powerpc, and
+the mt/mfpmr instructions are not defined.
 
-    Unable to handle kernel NULL pointer dereference at virtual address...
-    ...
-    Call trace:
-        max310x_i2c_probe+0x48/0x170 [max310x]
-        i2c_device_probe+0x150/0x2a0
-    ...
+It can be avoided by enabling CONFIG_E300C3_CPU, but just adding that to
+the defconfig will leave open the possibility of randconfig failures.
 
-Add check for validity of devtype to prevent the error, and abort probe
-with a meaningful error message.
+So add machine directives around the mt/mfpmr instructions to tell
+binutils how to assemble them.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240118152213.2644269-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229122521.762431-3-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/reg_fsl_emb.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 4814aa310dcc5..e339abff926d3 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1635,13 +1635,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
+diff --git a/arch/powerpc/include/asm/reg_fsl_emb.h b/arch/powerpc/include/asm/reg_fsl_emb.h
+index a21f529c43d96..8359c06d92d9f 100644
+--- a/arch/powerpc/include/asm/reg_fsl_emb.h
++++ b/arch/powerpc/include/asm/reg_fsl_emb.h
+@@ -12,9 +12,16 @@
+ #ifndef __ASSEMBLY__
+ /* Performance Monitor Registers */
+ #define mfpmr(rn)	({unsigned int rval; \
+-			asm volatile("mfpmr %0," __stringify(rn) \
++			asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mfpmr %0," __stringify(rn) ";" \
++				     ".machine pop; " \
+ 				     : "=r" (rval)); rval;})
+-#define mtpmr(rn, v)	asm volatile("mtpmr " __stringify(rn) ",%0" : : "r" (v))
++#define mtpmr(rn, v)	asm volatile(".machine push; " \
++				     ".machine e300; " \
++				     "mtpmr " __stringify(rn) ",%0; " \
++				     ".machine pop; " \
++				     : : "r" (v))
+ #endif /* __ASSEMBLY__ */
  
- static int max310x_i2c_probe(struct i2c_client *client)
- {
--	const struct max310x_devtype *devtype =
--			device_get_match_data(&client->dev);
-+	const struct max310x_devtype *devtype;
- 	struct i2c_client *port_client;
- 	struct regmap *regmaps[4];
- 	unsigned int i;
- 	u8 port_addr;
- 
-+	devtype = device_get_match_data(&client->dev);
-+	if (!devtype)
-+		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
-+
- 	if (client->addr < devtype->slave_addr.min ||
- 		client->addr > devtype->slave_addr.max)
- 		return dev_err_probe(&client->dev, -EINVAL,
+ /* Freescale Book E Performance Monitor APU Registers */
 -- 
 2.43.0
 
