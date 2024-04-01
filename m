@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-34948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B452989419D
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F672894311
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D89301C2173B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4069428353C
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB764481D1;
-	Mon,  1 Apr 2024 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE132481C6;
+	Mon,  1 Apr 2024 16:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D86r42ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYlOUV8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87581481B7;
-	Mon,  1 Apr 2024 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D05FBA3F;
+	Mon,  1 Apr 2024 16:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989836; cv=none; b=M0o96Zlkt8rlU+p1HXM/UzzcX8fFn5zAq1tE/NW3fzI5bOPDFpOOXhWGCCNLE3U8rX6haSHoEenlJnYGN93n6bYWCWsqgV/hhjT4sxCqr7Q9+giCHUm4+iFbq7nixrf8Hse/C8szXuR/Pmjfek8EH0J5ZhlEJwzw8ol53vGvKx0=
+	t=1711990753; cv=none; b=X+PkY0QcqRa8Z+ou1CtPytKUYruYjbGSE4NXQbwr7Fd5q2nVzIvEpkvOPkbSAK7BCFdHE3GeLnPFe2uAskRsasHXuQUnSB698kO3BviOTvJ5RAQQEcTOQwqgZ1Z8J8d8dqQHIHAqChVAordyW6uPYmN5fmJiKlWJa6DY5yOJU8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989836; c=relaxed/simple;
-	bh=hNZ9e+HWPRBieXTYUlG2RuW8UOsAOE+doO0rqR9A398=;
+	s=arc-20240116; t=1711990753; c=relaxed/simple;
+	bh=DKJ3YCFdQsOXboa1Olu4nzaZHjA8DZWbBRaP7gFYUGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izVOGgxXQhg1cufZJUB0OkbscrZxEjn+tROFQBfpvV65f7C/ISg9IxAVsDZGaaxEmQqaijIp3DQU2mXlcijsHoENiykUb5qLWRL+SWBcEsHE9+8e/GzrdZG/cWed0jDdwMmv6UsO4M9OAUpJrTau1hfE5l2reY/utiNwILDTdl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D86r42ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA58C433F1;
-	Mon,  1 Apr 2024 16:43:55 +0000 (UTC)
+	 MIME-Version; b=KFhOnLjPtiA5sdV3juILhWjqhxwPbZ3S++vAOFOw2RX4+upXLWdmtKn4JXrq83GSqn6FnOV6agAzusfu3IGZ63wEvVOtNKAY4hMk01ROw4DHcIcZFso61l4xDX3bDarwlrFAHhClb07Jnu6Kd6qqtpPTmrjI0C883S2U2aN8h2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYlOUV8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145A4C433C7;
+	Mon,  1 Apr 2024 16:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989836;
-	bh=hNZ9e+HWPRBieXTYUlG2RuW8UOsAOE+doO0rqR9A398=;
+	s=korg; t=1711990753;
+	bh=DKJ3YCFdQsOXboa1Olu4nzaZHjA8DZWbBRaP7gFYUGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D86r42tyBxTDrUBikjwmaxeqXb9Sl1yMD9sYiwnfByMw9AOhZTD4mu+Em8LuyKoRH
-	 jad6+XMngHpyqCpUKZ4rS3AoB0b+tw8Ilpq20QmkenQQ4Mmakk0Y2aGsY1+Jfy8FtC
-	 4+OfJNpmM5FtomawDEQE5bfjEc4nK/T40BjK8tkA=
+	b=CYlOUV8rlA1T6zj4YKbwtuP7nlTglAwsbRJ5cOSrlm5dHIMSii3ptRRg2DkOy1ya1
+	 lPCSupjzJ9QH5xwWdNgDRT51UB5dDT6qS7mZIQzD6RZ6yt7qjfiuLlOJ/iI0bNB1c9
+	 PDGQ7EdUUWxS2jL/JFFpQKN1+Gw+boJNvIUpe2xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Kumlien <ian.kumlien@gmail.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>,
-	"Anatoli N . Chechelnickiy" <Anatoli.Chechelnickiy@m.interpipe.biz>
-Subject: [PATCH 6.6 167/396] net: esp: fix bad handling of pages from page_pool
+	David Matlack <dmatlack@google.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/272] KVM: Always flush async #PF workqueue when vCPU is being destroyed
 Date: Mon,  1 Apr 2024 17:43:36 +0200
-Message-ID: <20240401152552.919362744@linuxfoundation.org>
+Message-ID: <20240401152531.177668703@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,198 +64,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit c3198822c6cb9fb588e446540485669cc81c5d34 ]
+[ Upstream commit 3d75b8aa5c29058a512db29da7cbee8052724157 ]
 
-When the skb is reorganized during esp_output (!esp->inline), the pages
-coming from the original skb fragments are supposed to be released back
-to the system through put_page. But if the skb fragment pages are
-originating from a page_pool, calling put_page on them will trigger a
-page_pool leak which will eventually result in a crash.
+Always flush the per-vCPU async #PF workqueue when a vCPU is clearing its
+completion queue, e.g. when a VM and all its vCPUs is being destroyed.
+KVM must ensure that none of its workqueue callbacks is running when the
+last reference to the KVM _module_ is put.  Gifting a reference to the
+associated VM prevents the workqueue callback from dereferencing freed
+vCPU/VM memory, but does not prevent the KVM module from being unloaded
+before the callback completes.
 
-This leak can be easily observed when using CONFIG_DEBUG_VM and doing
-ipsec + gre (non offloaded) forwarding:
+Drop the misguided VM refcount gifting, as calling kvm_put_kvm() from
+async_pf_execute() if kvm_put_kvm() flushes the async #PF workqueue will
+result in deadlock.  async_pf_execute() can't return until kvm_put_kvm()
+finishes, and kvm_put_kvm() can't return until async_pf_execute() finishes:
 
-  BUG: Bad page state in process ksoftirqd/16  pfn:1451b6
-  page:00000000de2b8d32 refcount:0 mapcount:0 mapping:0000000000000000 index:0x1451b6000 pfn:0x1451b6
-  flags: 0x200000000000000(node=0|zone=2)
-  page_type: 0xffffffff()
-  raw: 0200000000000000 dead000000000040 ffff88810d23c000 0000000000000000
-  raw: 00000001451b6000 0000000000000001 00000000ffffffff 0000000000000000
-  page dumped because: page_pool leak
-  Modules linked in: ip_gre gre mlx5_ib mlx5_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm ib_uverbs ib_core overlay zram zsmalloc fuse [last unloaded: mlx5_core]
-  CPU: 16 PID: 96 Comm: ksoftirqd/16 Not tainted 6.8.0-rc4+ #22
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x36/0x50
-   bad_page+0x70/0xf0
-   free_unref_page_prepare+0x27a/0x460
-   free_unref_page+0x38/0x120
-   esp_ssg_unref.isra.0+0x15f/0x200
-   esp_output_tail+0x66d/0x780
-   esp_xmit+0x2c5/0x360
-   validate_xmit_xfrm+0x313/0x370
-   ? validate_xmit_skb+0x1d/0x330
-   validate_xmit_skb_list+0x4c/0x70
-   sch_direct_xmit+0x23e/0x350
-   __dev_queue_xmit+0x337/0xba0
-   ? nf_hook_slow+0x3f/0xd0
-   ip_finish_output2+0x25e/0x580
-   iptunnel_xmit+0x19b/0x240
-   ip_tunnel_xmit+0x5fb/0xb60
-   ipgre_xmit+0x14d/0x280 [ip_gre]
-   dev_hard_start_xmit+0xc3/0x1c0
-   __dev_queue_xmit+0x208/0xba0
-   ? nf_hook_slow+0x3f/0xd0
-   ip_finish_output2+0x1ca/0x580
-   ip_sublist_rcv_finish+0x32/0x40
-   ip_sublist_rcv+0x1b2/0x1f0
-   ? ip_rcv_finish_core.constprop.0+0x460/0x460
-   ip_list_rcv+0x103/0x130
-   __netif_receive_skb_list_core+0x181/0x1e0
-   netif_receive_skb_list_internal+0x1b3/0x2c0
-   napi_gro_receive+0xc8/0x200
-   gro_cell_poll+0x52/0x90
-   __napi_poll+0x25/0x1a0
-   net_rx_action+0x28e/0x300
-   __do_softirq+0xc3/0x276
-   ? sort_range+0x20/0x20
-   run_ksoftirqd+0x1e/0x30
-   smpboot_thread_fn+0xa6/0x130
-   kthread+0xcd/0x100
-   ? kthread_complete_and_exit+0x20/0x20
-   ret_from_fork+0x31/0x50
-   ? kthread_complete_and_exit+0x20/0x20
-   ret_from_fork_asm+0x11/0x20
-   </TASK>
+ WARNING: CPU: 8 PID: 251 at virt/kvm/kvm_main.c:1435 kvm_put_kvm+0x2d/0x320 [kvm]
+ Modules linked in: vhost_net vhost vhost_iotlb tap kvm_intel kvm irqbypass
+ CPU: 8 PID: 251 Comm: kworker/8:1 Tainted: G        W          6.6.0-rc1-e7af8d17224a-x86/gmem-vm #119
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+ Workqueue: events async_pf_execute [kvm]
+ RIP: 0010:kvm_put_kvm+0x2d/0x320 [kvm]
+ Call Trace:
+  <TASK>
+  async_pf_execute+0x198/0x260 [kvm]
+  process_one_work+0x145/0x2d0
+  worker_thread+0x27e/0x3a0
+  kthread+0xba/0xe0
+  ret_from_fork+0x2d/0x50
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
+ INFO: task kworker/8:1:251 blocked for more than 120 seconds.
+       Tainted: G        W          6.6.0-rc1-e7af8d17224a-x86/gmem-vm #119
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:kworker/8:1     state:D stack:0     pid:251   ppid:2      flags:0x00004000
+ Workqueue: events async_pf_execute [kvm]
+ Call Trace:
+  <TASK>
+  __schedule+0x33f/0xa40
+  schedule+0x53/0xc0
+  schedule_timeout+0x12a/0x140
+  __wait_for_common+0x8d/0x1d0
+  __flush_work.isra.0+0x19f/0x2c0
+  kvm_clear_async_pf_completion_queue+0x129/0x190 [kvm]
+  kvm_arch_destroy_vm+0x78/0x1b0 [kvm]
+  kvm_put_kvm+0x1c1/0x320 [kvm]
+  async_pf_execute+0x198/0x260 [kvm]
+  process_one_work+0x145/0x2d0
+  worker_thread+0x27e/0x3a0
+  kthread+0xba/0xe0
+  ret_from_fork+0x2d/0x50
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
 
-The suggested fix is to introduce a new wrapper (skb_page_unref) that
-covers page refcounting for page_pool pages as well.
+If kvm_clear_async_pf_completion_queue() actually flushes the workqueue,
+then there's no need to gift async_pf_execute() a reference because all
+invocations of async_pf_execute() will be forced to complete before the
+vCPU and its VM are destroyed/freed.  And that in turn fixes the module
+unloading bug as __fput() won't do module_put() on the last vCPU reference
+until the vCPU has been freed, e.g. if closing the vCPU file also puts the
+last reference to the KVM module.
 
+Note that kvm_check_async_pf_completion() may also take the work item off
+the completion queue and so also needs to flush the work queue, as the
+work will not be seen by kvm_clear_async_pf_completion_queue().  Waiting
+on the workqueue could theoretically delay a vCPU due to waiting for the
+work to complete, but that's a very, very small chance, and likely a very
+small delay.  kvm_arch_async_page_present_queued() unconditionally makes a
+new request, i.e. will effectively delay entering the guest, so the
+remaining work is really just:
+
+        trace_kvm_async_pf_completed(addr, cr2_or_gpa);
+
+        __kvm_vcpu_wake_up(vcpu);
+
+        mmput(mm);
+
+and mmput() can't drop the last reference to the page tables if the vCPU is
+still alive, i.e. the vCPU won't get stuck tearing down page tables.
+
+Add a helper to do the flushing, specifically to deal with "wakeup all"
+work items, as they aren't actually work items, i.e. are never placed in a
+workqueue.  Trying to flush a bogus workqueue entry rightly makes
+__flush_work() complain (kudos to whoever added that sanity check).
+
+Note, commit 5f6de5cbebee ("KVM: Prevent module exit until all VMs are
+freed") *tried* to fix the module refcounting issue by having VMs grab a
+reference to the module, but that only made the bug slightly harder to hit
+as it gave async_pf_execute() a bit more time to complete before the KVM
+module could be unloaded.
+
+Fixes: af585b921e5d ("KVM: Halt vcpu if page it tries to access is swapped out")
 Cc: stable@vger.kernel.org
-Fixes: 6a5bcd84e886 ("page_pool: Allow drivers to hint on SKB recycling")
-Reported-and-tested-by: Anatoli N.Chechelnickiy <Anatoli.Chechelnickiy@m.interpipe.biz>
-Reported-by: Ian Kumlien <ian.kumlien@gmail.com>
-Link: https://lore.kernel.org/netdev/CAA85sZvvHtrpTQRqdaOx6gd55zPAVsqMYk_Lwh4Md5knTq7AyA@mail.gmail.com
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: David Matlack <dmatlack@google.com>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/20240110011533.503302-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 10 ++++++++++
- net/ipv4/esp4.c        |  8 ++++----
- net/ipv6/esp6.c        |  8 ++++----
- 3 files changed, 18 insertions(+), 8 deletions(-)
+ virt/kvm/async_pf.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index ddfe86deb4e7f..2922059908cc5 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3438,6 +3438,16 @@ static inline void skb_frag_ref(struct sk_buff *skb, int f)
+diff --git a/virt/kvm/async_pf.c b/virt/kvm/async_pf.c
+index 9bfe1d6f6529a..adaf6f141804f 100644
+--- a/virt/kvm/async_pf.c
++++ b/virt/kvm/async_pf.c
+@@ -88,7 +88,27 @@ static void async_pf_execute(struct work_struct *work)
+ 	__kvm_vcpu_wake_up(vcpu);
  
- bool napi_pp_put_page(struct page *page, bool napi_safe);
- 
-+static inline void
-+skb_page_unref(const struct sk_buff *skb, struct page *page, bool napi_safe)
-+{
-+#ifdef CONFIG_PAGE_POOL
-+	if (skb->pp_recycle && napi_pp_put_page(page, napi_safe))
-+		return;
-+#endif
-+	put_page(page);
+ 	mmput(mm);
+-	kvm_put_kvm(vcpu->kvm);
 +}
 +
- static inline void
- napi_frag_unref(skb_frag_t *frag, bool recycle, bool napi_safe)
- {
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 4ccfc104f13a5..fe501d2186bcf 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -95,7 +95,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
- 			     __alignof__(struct scatterlist));
++static void kvm_flush_and_free_async_pf_work(struct kvm_async_pf *work)
++{
++	/*
++	 * The async #PF is "done", but KVM must wait for the work item itself,
++	 * i.e. async_pf_execute(), to run to completion.  If KVM is a module,
++	 * KVM must ensure *no* code owned by the KVM (the module) can be run
++	 * after the last call to module_put().  Note, flushing the work item
++	 * is always required when the item is taken off the completion queue.
++	 * E.g. even if the vCPU handles the item in the "normal" path, the VM
++	 * could be terminated before async_pf_execute() completes.
++	 *
++	 * Wake all events skip the queue and go straight done, i.e. don't
++	 * need to be flushed (but sanity check that the work wasn't queued).
++	 */
++	if (work->wakeup_all)
++		WARN_ON_ONCE(work->work.func);
++	else
++		flush_work(&work->work);
++	kmem_cache_free(async_pf_cache, work);
  }
  
--static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
-+static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
- {
- 	struct crypto_aead *aead = x->data;
- 	int extralen = 0;
-@@ -114,7 +114,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
- 	 */
- 	if (req->src != req->dst)
- 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
--			put_page(sg_page(sg));
-+			skb_page_unref(skb, sg_page(sg), false);
+ void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
+@@ -115,7 +135,6 @@ void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
+ #else
+ 		if (cancel_work_sync(&work->work)) {
+ 			mmput(work->mm);
+-			kvm_put_kvm(vcpu->kvm); /* == work->vcpu->kvm */
+ 			kmem_cache_free(async_pf_cache, work);
+ 		}
+ #endif
+@@ -127,7 +146,10 @@ void kvm_clear_async_pf_completion_queue(struct kvm_vcpu *vcpu)
+ 			list_first_entry(&vcpu->async_pf.done,
+ 					 typeof(*work), link);
+ 		list_del(&work->link);
+-		kmem_cache_free(async_pf_cache, work);
++
++		spin_unlock(&vcpu->async_pf.lock);
++		kvm_flush_and_free_async_pf_work(work);
++		spin_lock(&vcpu->async_pf.lock);
+ 	}
+ 	spin_unlock(&vcpu->async_pf.lock);
+ 
+@@ -152,7 +174,7 @@ void kvm_check_async_pf_completion(struct kvm_vcpu *vcpu)
+ 
+ 		list_del(&work->queue);
+ 		vcpu->async_pf.queued--;
+-		kmem_cache_free(async_pf_cache, work);
++		kvm_flush_and_free_async_pf_work(work);
+ 	}
  }
  
- #ifdef CONFIG_INET_ESPINTCP
-@@ -260,7 +260,7 @@ static void esp_output_done(void *data, int err)
- 	}
+@@ -187,7 +209,6 @@ bool kvm_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	work->arch = *arch;
+ 	work->mm = current->mm;
+ 	mmget(work->mm);
+-	kvm_get_kvm(work->vcpu->kvm);
  
- 	tmp = ESP_SKB_CB(skb)->tmp;
--	esp_ssg_unref(x, tmp);
-+	esp_ssg_unref(x, tmp, skb);
- 	kfree(tmp);
+ 	INIT_WORK(&work->work, async_pf_execute);
  
- 	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
-@@ -639,7 +639,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
- 	}
- 
- 	if (sg != dsg)
--		esp_ssg_unref(x, tmp);
-+		esp_ssg_unref(x, tmp, skb);
- 
- 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
- 		err = esp_output_tail_tcp(x, skb);
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 2cc1a45742d82..a3fa3eda388a4 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -112,7 +112,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
- 			     __alignof__(struct scatterlist));
- }
- 
--static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
-+static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
- {
- 	struct crypto_aead *aead = x->data;
- 	int extralen = 0;
-@@ -131,7 +131,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
- 	 */
- 	if (req->src != req->dst)
- 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
--			put_page(sg_page(sg));
-+			skb_page_unref(skb, sg_page(sg), false);
- }
- 
- #ifdef CONFIG_INET6_ESPINTCP
-@@ -294,7 +294,7 @@ static void esp_output_done(void *data, int err)
- 	}
- 
- 	tmp = ESP_SKB_CB(skb)->tmp;
--	esp_ssg_unref(x, tmp);
-+	esp_ssg_unref(x, tmp, skb);
- 	kfree(tmp);
- 
- 	esp_output_encap_csum(skb);
-@@ -677,7 +677,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
- 	}
- 
- 	if (sg != dsg)
--		esp_ssg_unref(x, tmp);
-+		esp_ssg_unref(x, tmp, skb);
- 
- 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
- 		err = esp_output_tail_tcp(x, skb);
 -- 
 2.43.0
 
