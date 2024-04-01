@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-34960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F0C8941AC
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AD4893FDB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FBFBB2299A
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 319391C21136
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3286B487BE;
-	Mon,  1 Apr 2024 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8161147A62;
+	Mon,  1 Apr 2024 16:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzE3P7Iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWIGsyUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18CD481DA;
-	Mon,  1 Apr 2024 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8F7C129;
+	Mon,  1 Apr 2024 16:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989877; cv=none; b=UR2St9CpBS69bZKes1KxTjdZKQmQ+nSPr16ffze6gXQM54shKDsz85PltyRRg+WjizaVFeohJIxTW0pcikKJTojW8lLEqwp6tS7bOsku0e85vmLGwEGQM9fapmUXjjmUJkn/M+3jGbbjfcCj9KdGNtIn93rSYGGda/v8lyR4hys=
+	t=1711988535; cv=none; b=PZNJ8cglL+aMgRsIXtF45E+67pyKEzBU2X3VttesYi+VjuzXcON5C4UqGT6TZWMwUqIzH6CvxKFgtmsxWNiywRIV6DwV2kgmWqOYaxy2TRhEC1ub0Tf0Y4uTtTjm3IH+Y19og/ZuJzal4UL4Ks/maiWAmH1iA/UBe32UkZI2shE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989877; c=relaxed/simple;
-	bh=bni2oreh2FKEObmaTucp12nLPfvOLx66qrWYUZaiTMs=;
+	s=arc-20240116; t=1711988535; c=relaxed/simple;
+	bh=y8YWYV6tXnMVpWYlx3O3lbu3Fg94McuSxPDoCDOq9d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVj824QtwcYl4Io6J9vz7/dSp3VRFrNTQEZzCQFV7udiuOhY1mO0MYXsfdqDbHkTnbqaeXWHoeayNqSbcQLad+bxca4bSIRGuZcKkNnkwEfCJsdaysZSdFqtjvWuPmzdl9j801W3y2p5RShGx96vD748RKWbpeQOFuJyQnh2YcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzE3P7Iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E79FC433C7;
-	Mon,  1 Apr 2024 16:44:36 +0000 (UTC)
+	 MIME-Version; b=ZOlN23spKsytcIl/G/Wm0S/W4Ome7NRlHgjORZpetVXHKoXWT2i8q4YVC2TjOVSbbdzJvMICCd3KfxxxGYwh3zXDg89NrWcHBU2vD/cQ6Cg7NYUuFxqdjQM6phnDHp43ZsYJgQOlzvAIdlEUuZjTwayAcQxQoDKrjtHO0uQ48UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWIGsyUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96769C433F1;
+	Mon,  1 Apr 2024 16:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989876;
-	bh=bni2oreh2FKEObmaTucp12nLPfvOLx66qrWYUZaiTMs=;
+	s=korg; t=1711988535;
+	bh=y8YWYV6tXnMVpWYlx3O3lbu3Fg94McuSxPDoCDOq9d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzE3P7Iz+0KUBW5Yd4rHCPm1LF9JJrYhA9SSWqRP0tQUjlPeElRwbuJqsXbXs9ee5
-	 xKDr8RUfCunsY0AX3N2IHuL7Ic5z4gJI4nuRFJhiWVnvGKYl5xYeEqzji2VQ8xwiB7
-	 1aUxb9W8p7qfhIOT+caHV2KM/u7PNamQNIGwMat4=
+	b=lWIGsyUv+DIPmMPRMnspqWcAoGhSSmkCKdLt5g/OM/5E0DjgMsBG/pyuNg08+CZxf
+	 lczrAkZsfazUGp+1kBofvCsjymuX9PQEQOoflRBRovCbvweIJFwEny+Ko/ww31WD/y
+	 czYIiOnP+YJlWh90YCQn8v0XpYHr8txvj/X+oG7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Zhiguo Niu <Zhiguo.Niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Josip Pavic <josip.pavic@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/396] Revert "block/mq-deadline: use correct way to throttling write requests"
+Subject: [PATCH 6.7 213/432] drm/amd/display: Allow dirty rects to be sent to dmub when abm is active
 Date: Mon,  1 Apr 2024 17:43:20 +0200
-Message-ID: <20240401152552.447025364@linuxfoundation.org>
+Message-ID: <20240401152559.494701165@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Josip Pavic <josip.pavic@amd.com>
 
-[ Upstream commit 256aab46e31683d76d45ccbedc287b4d3f3e322b ]
+[ Upstream commit 7fb19d9510937121a1f285894cffd30bc96572e3 ]
 
-The code "max(1U, 3 * (1U << shift)  / 4)" comes from the Kyber I/O
-scheduler. The Kyber I/O scheduler maintains one internal queue per hwq
-and hence derives its async_depth from the number of hwq tags. Using
-this approach for the mq-deadline scheduler is wrong since the
-mq-deadline scheduler maintains one internal queue for all hwqs
-combined. Hence this revert.
+[WHY]
+It's beneficial for ABM to know when new frame data are available.
 
+[HOW]
+Add new condition to allow dirty rects to be sent to DMUB when ABM is
+active. ABM will use this as a signal that a new frame has arrived.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Zhiguo Niu <Zhiguo.Niu@unisoc.com>
-Fixes: d47f9717e5cf ("block/mq-deadline: use correct way to throttling write requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240313214218.1736147-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Josip Pavic <josip.pavic@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index f958e79277b8b..02a916ba62ee7 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -646,9 +646,8 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
- 	struct request_queue *q = hctx->queue;
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
--	unsigned int shift = tags->bitmap_tags.sb.shift;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index bbdeda489768b..537f71c19b806 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3340,6 +3340,9 @@ static bool dc_dmub_should_send_dirty_rect_cmd(struct dc *dc, struct dc_stream_s
+ 	if (stream->link->replay_settings.config.replay_supported)
+ 		return true;
  
--	dd->async_depth = max(1U, 3 * (1U << shift)  / 4);
-+	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
- 
- 	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
++	if (stream->ctx->dce_version >= DCN_VERSION_3_5 && stream->abm_level)
++		return true;
++
+ 	return false;
  }
+ 
 -- 
 2.43.0
 
