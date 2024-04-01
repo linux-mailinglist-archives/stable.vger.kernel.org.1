@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-34907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FAB894163
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5527C893FC2
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A63B1F230CB
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:41:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3231F220DB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC1747A6B;
-	Mon,  1 Apr 2024 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867D045BE4;
+	Mon,  1 Apr 2024 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v02pBULu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYiHHpWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C64B63E;
-	Mon,  1 Apr 2024 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B513D961;
+	Mon,  1 Apr 2024 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989699; cv=none; b=tm9dfhim2UqHCiLpalIhXqucz9nLMXQFmFkX8jkn9bZ2PaXF/wXKeeAiJIPVPwarkZRfbmC/Ul2uyTPYrpcmUmr/vXQkMYuERMIyuWo4qwjvEv/6ggH9VJBFOMDpgUtVu1U1yEGIqOZhaV5jkyrQhRBHaN5UjfYFGVFCGubyPrQ=
+	t=1711988455; cv=none; b=pxwgGzlCT4h1eMz23+Lu+fSSLF0SLafGCHN8qsUGMfjZ/7lFq0Vv0RH4QAIOUMaW54B0i/nAI6LUUS3OIQ0sXAC24QWz4u6eTRFC1z9up5xz8bvDZeC/n53gtOmESPzxeBPx/U8u9jTRdc3B46kcfB8TEVkUraOwdAqYIYUMYTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989699; c=relaxed/simple;
-	bh=zWKtth+KIr8ZJetjGcZenQLnRctk+q+mLQggugVkYoc=;
+	s=arc-20240116; t=1711988455; c=relaxed/simple;
+	bh=2FrtjAPrx6mXuDqirk09Lv6KfLGs2kw3koIefDtxg4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glT4a1AVeqKDAnnwHlYXtPfqlPY42kWj+fP0jH2hok9sXID2SDQm3h/5FEBPjt9YzN+60VMIV2rjyonBn4vcUGjD7HhjlWSaZr2YVPB7KyT8/FHaVtkuflBQmkHS2ny0VsYo0Vhsar0bbmMmp4iC1/dUhQAO81MdKe7gQK0/HJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v02pBULu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1065FC433F1;
-	Mon,  1 Apr 2024 16:41:38 +0000 (UTC)
+	 MIME-Version; b=IYIBqxVJC+KevhK8tRzwSGWiTeLEiVh/FxfdG7M29U48AZeftgwjyjFQyGq3os2aR67v2FztARonsDyLt73lN0a1HDHmNrvJn+/w9DXs/72awWBuxYECZJWlWbE8IkSZ8yeWDaqHyDgeIhiWGKisnKcAQXCzy5xtk7ZtA4FULIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYiHHpWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB88BC433F1;
+	Mon,  1 Apr 2024 16:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989699;
-	bh=zWKtth+KIr8ZJetjGcZenQLnRctk+q+mLQggugVkYoc=;
+	s=korg; t=1711988455;
+	bh=2FrtjAPrx6mXuDqirk09Lv6KfLGs2kw3koIefDtxg4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v02pBULutjUuBnMFQ+2emNqKp9S1OGjhrOv1a+FWqsGoqGhk1JAttJMLG1qDIwt5q
-	 VVSaBNnMlj8kLp3rPchA6tjWJhhhKXJbuNIMMpvlTSWz9KMGLToerf/O25mfV4ENT+
-	 FE/W/i1aVMT+8jLpNCPr0GbBfozq+S4YDuYYTnCI=
+	b=yYiHHpWOKUkZCB87e3/0alI+4qk7K3kQd/TLvIS+nxaZIDTzHhYZU41KSDeb1KVgH
+	 5M8/aPPmAd+4SZvYtp7Omw+6d2iCxLZUd1JznlhXLxXeqHRw3Yc6MNbOKu8/Mha5TS
+	 XawkqEgdPFOzyGpqHm+Uh9A4uiVHHOg/7RPZB7Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/396] vfio/pci: Disable auto-enable of exclusive INTx IRQ
+Subject: [PATCH 6.7 189/432] x86/CPU/AMD: Update the Zenbleed microcode revisions
 Date: Mon,  1 Apr 2024 17:42:56 +0200
-Message-ID: <20240401152551.704434446@linuxfoundation.org>
+Message-ID: <20240401152558.777730397@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit fe9a7082684eb059b925c535682e68c34d487d43 ]
+[ Upstream commit 5c84b051bd4e777cf37aaff983277e58c99618d5 ]
 
-Currently for devices requiring masking at the irqchip for INTx, ie.
-devices without DisINTx support, the IRQ is enabled in request_irq()
-and subsequently disabled as necessary to align with the masked status
-flag.  This presents a window where the interrupt could fire between
-these events, resulting in the IRQ incrementing the disable depth twice.
-This would be unrecoverable for a user since the masked flag prevents
-nested enables through vfio.
+Update them to the correct revision numbers.
 
-Instead, invert the logic using IRQF_NO_AUTOEN such that exclusive INTx
-is never auto-enabled, then unmask as required.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Link: https://lore.kernel.org/r/20240308230557.805580-2-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index cbb4bcbfbf83d..3dbeeb5bfadce 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -296,8 +296,15 @@ static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 2055fb308f5b9..77a1ceb717d06 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1002,11 +1002,11 @@ static bool cpu_has_zenbleed_microcode(void)
+ 	u32 good_rev = 0;
  
- 	ctx->trigger = trigger;
+ 	switch (boot_cpu_data.x86_model) {
+-	case 0x30 ... 0x3f: good_rev = 0x0830107a; break;
+-	case 0x60 ... 0x67: good_rev = 0x0860010b; break;
+-	case 0x68 ... 0x6f: good_rev = 0x08608105; break;
+-	case 0x70 ... 0x7f: good_rev = 0x08701032; break;
+-	case 0xa0 ... 0xaf: good_rev = 0x08a00008; break;
++	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
++	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
++	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
++	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
++	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
  
-+	/*
-+	 * Devices without DisINTx support require an exclusive interrupt,
-+	 * IRQ masking is performed at the IRQ chip.  The masked status is
-+	 * protected by vdev->irqlock. Setup the IRQ without auto-enable and
-+	 * unmask as necessary below under lock.  DisINTx is unmodified by
-+	 * the IRQ configuration and may therefore use auto-enable.
-+	 */
- 	if (!vdev->pci_2_3)
--		irqflags = 0;
-+		irqflags = IRQF_NO_AUTOEN;
- 
- 	ret = request_irq(pdev->irq, vfio_intx_handler,
- 			  irqflags, ctx->name, vdev);
-@@ -308,13 +315,9 @@ static int vfio_intx_set_signal(struct vfio_pci_core_device *vdev, int fd)
- 		return ret;
- 	}
- 
--	/*
--	 * INTx disable will stick across the new irq setup,
--	 * disable_irq won't.
--	 */
- 	spin_lock_irqsave(&vdev->irqlock, flags);
--	if (!vdev->pci_2_3 && ctx->masked)
--		disable_irq_nosync(pdev->irq);
-+	if (!vdev->pci_2_3 && !ctx->masked)
-+		enable_irq(pdev->irq);
- 	spin_unlock_irqrestore(&vdev->irqlock, flags);
- 
- 	return 0;
+ 	default:
+ 		return false;
 -- 
 2.43.0
 
