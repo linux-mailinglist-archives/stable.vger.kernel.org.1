@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-34349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0C0893EF8
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:10:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3455989427A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901F21F21EA4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:10:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65DE71C217D5
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF27E8F5C;
-	Mon,  1 Apr 2024 16:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C4481B7;
+	Mon,  1 Apr 2024 16:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHUrCI+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lusRpvia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC53E4776F;
-	Mon,  1 Apr 2024 16:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD12D63E;
+	Mon,  1 Apr 2024 16:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987820; cv=none; b=G3W7GW6vPgbsUwvBDFV+qdcPgre2IJMYAgzLoWE07xjODUAVIi03qSF8+ocK51WSt8aX+O3FLsx0wTxuBWPKe9pGhU+VNqVh2hRJ7FyFMaImj04M55Vn+d3D9dvqyBdA1m2cD950D+XKMe5qGYmiNfYIvNiKnTsYYGEDRmylNqQ=
+	t=1711990384; cv=none; b=DDXmNUVHsJeKQFsdBtNFrYpFGYWyVTRDxs6643ALF08Kpq27iZ12va7Gm7HdLTg33kS4zWQXGEiMnafZj5FfVuR/ilQU6wSfU+PbTFqcaDBZvzmh9h74e08ZcFTFXjU7hu4/YkZ+bUmvhZsuFoafstXluJG1IiOwF4eVMlWAvA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987820; c=relaxed/simple;
-	bh=tU5UjjQjdF4HWRUMp/Wkp3INbrURdKd0sjulyajjZe4=;
+	s=arc-20240116; t=1711990384; c=relaxed/simple;
+	bh=mWEIuM9kw7tJbCNVN98DUdS/rtYiLc2S5BEsd99USfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4w7jKifSjLNdYRXe76MYedczrWlWA9/aQbozw0E0OWRPMgULZXOXMcpuBu/726nLCFDD8V9/5bZuSWMpCM4xMT7QM5kF9GD6PI4IopvbMzHIfVzbv8AKb3vmMVlmeAOO2hpf4pzR8+h+p7n+PIcx2SXG51N2pYrXTNvop/fR5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHUrCI+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A16AC433F1;
-	Mon,  1 Apr 2024 16:10:19 +0000 (UTC)
+	 MIME-Version; b=O2AJO0lVL6W2YrGv94hySeO7BIX9jcj2+ncRjWt5j0xLMykmKn/Wz4rEcTewjw8t3cWworWnIlg7o/G+EMGMzHYzWX7sTRnxbx5bg8XDb5/g1yP0DRAhY8QbVTEuE7673IdJRZpAVpubdGOAhhdxNwa3q1TTe4RpNX2bxewesZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lusRpvia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6559AC433C7;
+	Mon,  1 Apr 2024 16:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987820;
-	bh=tU5UjjQjdF4HWRUMp/Wkp3INbrURdKd0sjulyajjZe4=;
+	s=korg; t=1711990383;
+	bh=mWEIuM9kw7tJbCNVN98DUdS/rtYiLc2S5BEsd99USfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHUrCI+vntwgBUPnPIZQJ8+5ROAv5o1rMmO7mN0kwFd6qvbgOASVvZJpWDLcos3bI
-	 JiXh2GQkgiemHPitfPl7NkxOdLJ+8H9+3xxd1MifzgquCTJQM4PeB0Vu82FtJvtrRZ
-	 caH9Zr3ZP0tZ93TansvSA7FF20J87FMYJ5ABFnnk=
+	b=lusRpviamLPhKs8wYH7iy3E3B7hxlxrzjtxBRGwq5iGeQ4djmj6Yh0RkN2FQr0tfQ
+	 ct7w08/LOEx30uZ3lGc5djn493A1DkvVi4Wo+dHALH0s6tLqqKSjdXNgYZQiBTcF1g
+	 ey1dTY7w1S3jXwAnLSWvsAwskMbhEVcHi9gPSroE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.8 390/399] x86/bugs: Use fixed addressing for VERW operand
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Hector Martin <marcan@marcan.st>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 6.6 307/396] perf top: Use evsels cpus to replace user_requested_cpus
 Date: Mon,  1 Apr 2024 17:45:56 +0200
-Message-ID: <20240401152600.811703716@linuxfoundation.org>
+Message-ID: <20240401152557.068437633@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +67,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 8009479ee919b9a91674f48050ccbff64eafedaa upstream.
+commit 5fa695e7da4975e8d21ce49f3718d6cf00ecb75e upstream.
 
-The macro used for MDS mitigation executes VERW with relative
-addressing for the operand. This was necessary in earlier versions of
-the series. Now it is unnecessary and creates a problem for backports
-on older kernels that don't support relocations in alternatives.
-Relocation support was added by commit 270a69c4485d ("x86/alternative:
-Support relocations in alternatives").  Also asm for fixed addressing
-is much cleaner than relative RIP addressing.
+perf top errors out on a hybrid machine
+ $perf top
 
-Simplify the asm by using fixed addressing for VERW operand.
+ Error:
+ The cycles:P event is not supported.
 
-[ dhansen: tweak changelog ]
+The perf top expects that the "cycles" is collected on all CPUs in the
+system. But for hybrid there is no single "cycles" event which can cover
+all CPUs. Perf has to split it into two cycles events, e.g.,
+cpu_core/cycles/ and cpu_atom/cycles/. Each event has its own CPU mask.
+If a event is opened on the unsupported CPU. The open fails. That's the
+reason of the above error out.
 
-Closes: https://lore.kernel.org/lkml/20558f89-299b-472e-9a96-171403a83bd6@suse.com/
-Fixes: baf8361e5455 ("x86/bugs: Add asm helpers for executing VERW")
-Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240226-verw-arg-fix-v1-1-7b37ee6fd57d%40linux.intel.com
+Perf should only open the cycles event on the corresponding CPU. The
+commit ef91871c960e ("perf evlist: Propagate user CPU maps intersecting
+core PMU maps") intersect the requested CPU map with the CPU map of the
+PMU. Use the evsel's cpus to replace user_requested_cpus.
+
+The evlist's threads are also propagated to the evsel's threads in
+__perf_evlist__propagate_maps(). For a system-wide event, perf appends
+a dummy event and assign it to the evsel's threads. For a per-thread
+event, the evlist's thread_map is assigned to the evsel's threads. The
+same as the other tools, e.g., perf record, using the evsel's threads
+when opening an event.
+
+Reported-by: Arnaldo Carvalho de Melo <acme@kernel.org>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Closes: https://lore.kernel.org/linux-perf-users/ZXNnDrGKXbEELMXV@kernel.org/
+Link: https://lore.kernel.org/r/20231214144612.1092028-1-kan.liang@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-top.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -332,7 +332,7 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
- .endm
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1027,8 +1027,8 @@ static int perf_top__start_counters(stru
  
- #else /* __ASSEMBLY__ */
+ 	evlist__for_each_entry(evlist, counter) {
+ try_again:
+-		if (evsel__open(counter, top->evlist->core.user_requested_cpus,
+-				     top->evlist->core.threads) < 0) {
++		if (evsel__open(counter, counter->core.cpus,
++				counter->core.threads) < 0) {
+ 
+ 			/*
+ 			 * Specially handle overwrite fall back.
 
 
 
