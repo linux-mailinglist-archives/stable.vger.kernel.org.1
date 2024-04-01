@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF6F893DAA
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:55:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3B8893DBB
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 17:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D6F28325B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF63E1F22B76
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 15:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28214AEDA;
-	Mon,  1 Apr 2024 15:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680D74CE13;
+	Mon,  1 Apr 2024 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srndzm/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzuEnhSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79784778E;
-	Mon,  1 Apr 2024 15:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516F3FE2D;
+	Mon,  1 Apr 2024 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711986853; cv=none; b=RjBx8KDQ5wm9wrX3xqd7mQpePLArM7UYaQDnL09EEvKBnyObML6BK1TMySod1dvYbqHF+5X9wjFn2tizw9RlqUURIv3bFGkLQ76hsMjHIL5ks/e2TzK7EOhDmSmEIQXXL8caf5bQdsTlSGmzCkdaMzNuKMsuKQ9+xgfXxGrdkR0=
+	t=1711986889; cv=none; b=bWs6LgEIiG7BUX2jx4WZeY3sXZBODbnEA0BMwXZ/AIiV6sVqclPADnCbA/pVOOuzMZN0VJ01IgAEfNW3fbdGwSWI2FPTkdPBINLjX7dO5QuXztAElkb5I8Nfkd1nbl3fpdJyhb4K2xyUeVvTBWAtCGU8APkKXTmBXy71n0gIei0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711986853; c=relaxed/simple;
-	bh=fN7MsE6SdYUY3OhJ8dlc71bX6GldCeADOfdYCTxq0YE=;
+	s=arc-20240116; t=1711986889; c=relaxed/simple;
+	bh=Ihx+0iEp51lPBI6QD5T6vXL1jUYe5ApqJSzjNXkuTls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYC+E9buTLG10HVwHLBY7q7H8QnDXFil9VPRcuV3xTHPjU6UBgxD04WzqV8obL581sgsqDZj0PfM796TlgBYduifS7OIf2ez/7B7WslytxvAh1a9aSQiB9c3wc30xmF+0Q8O0m5wMx7/Dc7WwWZnPackcfzjqYnP9+hK0e1VWgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srndzm/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320D1C433F1;
-	Mon,  1 Apr 2024 15:54:12 +0000 (UTC)
+	 MIME-Version; b=F+dg0NseywYrMKiQtc4HaGjFmXElLw7LrrSMLiKw82kAQ/ZcyLAg8sJwI4GVFXKOa8vd9iWG4h4RAoQOwlRr7rSNjH1KiOF4S+BsH0qMOIhaN6GhrjEg5bxBPpAkYR9v37QY6hcDcD2S3+z+DKpznUl/2bj8t3jch5TU9YcAhL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzuEnhSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2059C433F1;
+	Mon,  1 Apr 2024 15:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711986853;
-	bh=fN7MsE6SdYUY3OhJ8dlc71bX6GldCeADOfdYCTxq0YE=;
+	s=korg; t=1711986889;
+	bh=Ihx+0iEp51lPBI6QD5T6vXL1jUYe5ApqJSzjNXkuTls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srndzm/6upNiMQYoLeV6O+CXNCDWfJdovla+3CJUGHY7M/dueO9CxhX4OVcaPfsI1
-	 mm7SMojwksKkqKwGQGSZGcN++hiRd1zo/aYYyX+LXGuU3Ghjs80HmEvaX0haY2PtMR
-	 R5Tcy75R941ewwIIkn00ill9fIeKBV0Spf78CeqY=
+	b=AzuEnhSJ5k7fNGkxgnxGwMe/rZqjuXgekb4eTfVDO3+d8kpGEbPEt2u5OmoWTIUbw
+	 xAPGCj08Bpp9ha4kLtr09xzxe1R5MvxAUXfT36eDU+8E12H3euy7EGnIdpAuhGv4In
+	 GEQh3ECIUxWbClTGA1qROI8y2okzzo9Csn2JreJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ricky Wu <ricky_wu@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 099/399] docs: Makefile: Add dependency to $(YNL_INDEX) for targets other than htmldocs
-Date: Mon,  1 Apr 2024 17:41:05 +0200
-Message-ID: <20240401152552.139094229@linuxfoundation.org>
+Subject: [PATCH 6.8 100/399] PCI/PM: Drain runtime-idle callbacks before driver removal
+Date: Mon,  1 Apr 2024 17:41:06 +0200
+Message-ID: <20240401152552.171158903@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
 References: <20240401152549.131030308@linuxfoundation.org>
@@ -70,59 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a304fa1d10fcb974c117d391e5b4d34c2baa9a62 ]
+[ Upstream commit 9d5286d4e7f68beab450deddbb6a32edd5ecf4bf ]
 
-Commit f061c9f7d058 ("Documentation: Document each netlink family")
-added recipes for YAML -> RST conversion.
-Then commit 7da8bdbf8f5d ("docs: Makefile: Fix make cleandocs by
-deleting generated .rst files") made sure those converted .rst files
-are cleaned by "make cleandocs".
+A race condition between the .runtime_idle() callback and the .remove()
+callback in the rtsx_pcr PCI driver leads to a kernel crash due to an
+unhandled page fault [1].
 
-However, they took care of htmldocs build only.
+The problem is that rtsx_pci_runtime_idle() is not expected to be running
+after pm_runtime_get_sync() has been called, but the latter doesn't really
+guarantee that.  It only guarantees that the suspend and resume callbacks
+will not be running when it returns.
 
-If one of other targets such as latexdocs or epubdocs is built
-without building htmldocs, missing .rst files can cause additional
-WARNINGs from sphinx-build as follow:
+However, if a .runtime_idle() callback is already running when
+pm_runtime_get_sync() is called, the latter will notice that the runtime PM
+status of the device is RPM_ACTIVE and it will return right away without
+waiting for the former to complete.  In fact, it cannot wait for
+.runtime_idle() to complete because it may be called from that callback (it
+arguably does not make much sense to do that, but it is not strictly
+prohibited).
 
-    ./Documentation/userspace-api/netlink/specs.rst:18: WARNING: undefined label: 'specs'
-    ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/rt_link'
-    ./Documentation/userspace-api/netlink/netlink-raw.rst:64: WARNING: unknown document: '../../networking/netlink_spec/tc'
-    ./Documentation/userspace-api/netlink/index.rst:21: WARNING: undefined label: 'specs'
+Thus in general, whoever is providing a .runtime_idle() callback needs
+to protect it from running in parallel with whatever code runs after
+pm_runtime_get_sync().  [Note that .runtime_idle() will not start after
+pm_runtime_get_sync() has returned, but it may continue running then if it
+has started earlier.]
 
-Add dependency to $(YNL_INDEX) for other targets and allow any targets
-to be built cleanly right after "make cleandocs".
+One way to address that race condition is to call pm_runtime_barrier()
+after pm_runtime_get_sync() (not before it, because a nonzero value of the
+runtime PM usage counter is necessary to prevent runtime PM callbacks from
+being invoked) to wait for the .runtime_idle() callback to complete should
+it be running at that point.  A suitable place for doing that is in
+pci_device_remove() which calls pm_runtime_get_sync() before removing the
+driver, so it may as well call pm_runtime_barrier() subsequently, which
+will prevent the race in question from occurring, not just in the rtsx_pcr
+driver, but in any PCI drivers providing .runtime_idle() callbacks.
 
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-Cc: stable@vger.kernel.org  # v6.7
-Cc: Thorsten Blum <thorsten.blum@toblux.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Reviwed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <e876e3c8-109d-4bc8-9916-05a4bc4ee9ac@gmail.com>
+Link: https://lore.kernel.org/lkml/20240229062201.49500-1-kai.heng.feng@canonical.com/ # [1]
+Link: https://lore.kernel.org/r/5761426.DvuYhMxLoT@kreacher
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Ricky Wu <ricky_wu@realtek.com>
+Acked-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/pci-driver.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index 3885bbe260eb2..99cb6cbccb135 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -111,7 +111,9 @@ $(YNL_INDEX): $(YNL_RST_FILES)
- $(YNL_RST_DIR)/%.rst: $(YNL_YAML_DIR)/%.yaml $(YNL_TOOL)
- 	$(Q)$(YNL_TOOL) -i $< -o $@
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 51ec9e7e784f0..9c59bf03d6579 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -473,6 +473,13 @@ static void pci_device_remove(struct device *dev)
  
--htmldocs: $(YNL_INDEX)
-+htmldocs texinfodocs latexdocs epubdocs xmldocs: $(YNL_INDEX)
-+
-+htmldocs:
- 	@$(srctree)/scripts/sphinx-pre-install --version-check
- 	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
- 
+ 	if (drv->remove) {
+ 		pm_runtime_get_sync(dev);
++		/*
++		 * If the driver provides a .runtime_idle() callback and it has
++		 * started to run already, it may continue to run in parallel
++		 * with the code below, so wait until all of the runtime PM
++		 * activity has completed.
++		 */
++		pm_runtime_barrier(dev);
+ 		drv->remove(pci_dev);
+ 		pm_runtime_put_noidle(dev);
+ 	}
 -- 
 2.43.0
 
