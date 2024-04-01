@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-34955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0A88941A6
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:44:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9D68942F8
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A381282FF1
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:44:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F4501F26E3E
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF704AEDF;
-	Mon,  1 Apr 2024 16:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AF0481C6;
+	Mon,  1 Apr 2024 16:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kjo47z1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YskyPB6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FA84AED7;
-	Mon,  1 Apr 2024 16:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2314653C;
+	Mon,  1 Apr 2024 16:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711989860; cv=none; b=RM2OUYwh3KtOBDUerMPoeRuSDE69bBEhy6Ot7ORxWLxxJx1aFDOwOGL8q8bfbsQLT7PUy2AbFpqXIwaEaqxAsJTsOGGROFPYMz0z9U9LR8aIdPAT0mLeePzZGjTO3SrhAZHslEwV67ck8kcGs5zdB1MUSbi/216jq4n0hb5uFCI=
+	t=1711990679; cv=none; b=R3M7KNrjRMWg7bwh5puX+Ooq679R9wLYy2EKegyaxkointl/LNmcA4QNZ8RPu4lNc2oZUXCfC0yx8xTFwGTXEpf0qG3tyf6Rxn7JA4mv0Vf2U24QQdPCD/LI2le+f+tSzEnsKoLRDYex7GwKaxwQI+Xp8jf6iMr6omxIYRy0Vq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711989860; c=relaxed/simple;
-	bh=6PUi2Soxd1XNmau6acYtpe5mkToew0QdcensuVOGhPE=;
+	s=arc-20240116; t=1711990679; c=relaxed/simple;
+	bh=raMVfBVExdJmIWZhykZN10QLjO+y88kHCeKIdYExHTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BT1//9h8aTkn75FCv+5O6w/oUsj3rvxDhwN/EEBETdQ1mFw0yD2gV6LyMucahJHdgeOOCMnZfPAZ9KVjHmsSJE+mP5ZFvLWHcX4Y4foW+SBzSZbOv4e241UxNIE1oEsXx3lyb3TV+vf4P3kkYRkQDyiPygwleXIlcbuuu0c8/uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kjo47z1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4395C433F1;
-	Mon,  1 Apr 2024 16:44:19 +0000 (UTC)
+	 MIME-Version; b=bRAwnhriBxJsC/GZY6Dkc1wM2quvV6v/Z+nkmi11AoPN117RMdsKEBv8IM4fzRwB7nk4K6xTNUWELUZkqcf4fCs5+zBmeKml/sNnjOlXc+epYLFA7onw5yqp+dFOUXr6kgC8/LGUQikRhw+eEHkMYm8c0niSR7+A+PEmpwDrpNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YskyPB6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8239DC433C7;
+	Mon,  1 Apr 2024 16:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711989860;
-	bh=6PUi2Soxd1XNmau6acYtpe5mkToew0QdcensuVOGhPE=;
+	s=korg; t=1711990679;
+	bh=raMVfBVExdJmIWZhykZN10QLjO+y88kHCeKIdYExHTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kjo47z1q/rko7E1WqQ4y0P6osMAnY0LyG4F7TZWCk1K0G1XHmUzoVt6PjVU4l1cnv
-	 YL5gvD4A8eEZBdGd8jKRdRUzsDs7fTvrzPfzmwVZYgzoO64WrjV5WdGvA2KEJivSmw
-	 ceLtCeKedfMqRZw4/c2HySWCLCrf/TUN3pAuNBsE=
+	b=YskyPB6GerIhP8Se6TtGnrJxjSudooKg2AQsI6UBoha/6+7dpO9fnuoEQUZdIh5cd
+	 UZCsPkAvOf9VsX5cqz5DHkQAXok3C+tgR8xBqdsqe785WKcMgmR4pSUGeLxPknBre3
+	 XEVBHA8YBUvyBZsqyZAQwRarEpJlQXf3qK95AVuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/396] LoongArch: Define the __io_aw() hook as mmiowb()
+Subject: [PATCH 6.1 033/272] crypto: qat - resolve race condition during AER recovery
 Date: Mon,  1 Apr 2024 17:43:43 +0200
-Message-ID: <20240401152553.131761490@linuxfoundation.org>
+Message-ID: <20240401152531.396919632@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152530.237785232@linuxfoundation.org>
+References: <20240401152530.237785232@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Damian Muszynski <damian.muszynski@intel.com>
 
-[ Upstream commit 9c68ece8b2a5c5ff9b2fcaea923dd73efeb174cd ]
+[ Upstream commit 7d42e097607c4d246d99225bf2b195b6167a210c ]
 
-Commit fb24ea52f78e0d595852e ("drivers: Remove explicit invocations of
-mmiowb()") remove all mmiowb() in drivers, but it says:
+During the PCI AER system's error recovery process, the kernel driver
+may encounter a race condition with freeing the reset_data structure's
+memory. If the device restart will take more than 10 seconds the function
+scheduling that restart will exit due to a timeout, and the reset_data
+structure will be freed. However, this data structure is used for
+completion notification after the restart is completed, which leads
+to a UAF bug.
 
-"NOTE: mmiowb() has only ever guaranteed ordering in conjunction with
-spin_unlock(). However, pairing each mmiowb() removal in this patch with
-the corresponding call to spin_unlock() is not at all trivial, so there
-is a small chance that this change may regress any drivers incorrectly
-relying on mmiowb() to order MMIO writes between CPUs using lock-free
-synchronisation."
+This results in a KFENCE bug notice.
 
-The mmio in radeon_ring_commit() is protected by a mutex rather than a
-spinlock, but in the mutex fastpath it behaves similar to spinlock. We
-can add mmiowb() calls in the radeon driver but the maintainer says he
-doesn't like such a workaround, and radeon is not the only example of
-mutex protected mmio.
+  BUG: KFENCE: use-after-free read in adf_device_reset_worker+0x38/0xa0 [intel_qat]
+  Use-after-free read at 0x00000000bc56fddf (in kfence-#142):
+  adf_device_reset_worker+0x38/0xa0 [intel_qat]
+  process_one_work+0x173/0x340
 
-So we should extend the mmiowb tracking system from spinlock to mutex,
-and maybe other locking primitives. This is not easy and error prone, so
-we solve it in the architectural code, by simply defining the __io_aw()
-hook as mmiowb(). And we no longer need to override queued_spin_unlock()
-so use the generic definition.
+To resolve this race condition, the memory associated to the container
+of the work_struct is freed on the worker if the timeout expired,
+otherwise on the function that schedules the worker.
+The timeout detection can be done by checking if the caller is
+still waiting for completion or not by using completion_done() function.
 
-Without this, we get such an error when run 'glxgears' on weak ordering
-architectures such as LoongArch:
-
-radeon 0000:04:00.0: ring 0 stalled for more than 10324msec
-radeon 0000:04:00.0: ring 3 stalled for more than 10240msec
-radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000001f412 last fence id 0x000000000001f414 on ring 3)
-radeon 0000:04:00.0: GPU lockup (current fence id 0x000000000000f940 last fence id 0x000000000000f941 on ring 0)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-radeon 0000:04:00.0: scheduling IB failed (-35).
-[drm:radeon_gem_va_ioctl [radeon]] *ERROR* Couldn't update BO_VA (-35)
-
-Link: https://lore.kernel.org/dri-devel/29df7e26-d7a8-4f67-b988-44353c4270ac@amd.com/T/#t
-Link: https://lore.kernel.org/linux-arch/20240301130532.3953167-1-chenhuacai@loongson.cn/T/#t
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/Kbuild      |  1 +
- arch/loongarch/include/asm/io.h        |  2 ++
- arch/loongarch/include/asm/qspinlock.h | 18 ------------------
- 3 files changed, 3 insertions(+), 18 deletions(-)
- delete mode 100644 arch/loongarch/include/asm/qspinlock.h
+ drivers/crypto/qat/qat_common/adf_aer.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/Kbuild b/arch/loongarch/include/asm/Kbuild
-index 93783fa24f6e9..dede0b422cfb9 100644
---- a/arch/loongarch/include/asm/Kbuild
-+++ b/arch/loongarch/include/asm/Kbuild
-@@ -4,6 +4,7 @@ generic-y += mcs_spinlock.h
- generic-y += parport.h
- generic-y += early_ioremap.h
- generic-y += qrwlock.h
-+generic-y += qspinlock.h
- generic-y += rwsem.h
- generic-y += segment.h
- generic-y += user.h
-diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
-index c486c2341b662..4a8adcca329b8 100644
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -71,6 +71,8 @@ extern void __memcpy_fromio(void *to, const volatile void __iomem *from, size_t
- #define memcpy_fromio(a, c, l) __memcpy_fromio((a), (c), (l))
- #define memcpy_toio(c, a, l)   __memcpy_toio((c), (a), (l))
+diff --git a/drivers/crypto/qat/qat_common/adf_aer.c b/drivers/crypto/qat/qat_common/adf_aer.c
+index fa6b7ecd4c08d..4f36b5a9164a7 100644
+--- a/drivers/crypto/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/qat/qat_common/adf_aer.c
+@@ -95,7 +95,8 @@ static void adf_device_reset_worker(struct work_struct *work)
+ 	if (adf_dev_init(accel_dev) || adf_dev_start(accel_dev)) {
+ 		/* The device hanged and we can't restart it so stop here */
+ 		dev_err(&GET_DEV(accel_dev), "Restart device failed\n");
+-		if (reset_data->mode == ADF_DEV_RESET_ASYNC)
++		if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
++		    completion_done(&reset_data->compl))
+ 			kfree(reset_data);
+ 		WARN(1, "QAT: device restart failed. Device is unusable\n");
+ 		return;
+@@ -103,11 +104,19 @@ static void adf_device_reset_worker(struct work_struct *work)
+ 	adf_dev_restarted_notify(accel_dev);
+ 	clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
  
-+#define __io_aw() mmiowb()
-+
- #include <asm-generic/io.h>
+-	/* The dev is back alive. Notify the caller if in sync mode */
+-	if (reset_data->mode == ADF_DEV_RESET_SYNC)
+-		complete(&reset_data->compl);
+-	else
++	/*
++	 * The dev is back alive. Notify the caller if in sync mode
++	 *
++	 * If device restart will take a more time than expected,
++	 * the schedule_reset() function can timeout and exit. This can be
++	 * detected by calling the completion_done() function. In this case
++	 * the reset_data structure needs to be freed here.
++	 */
++	if (reset_data->mode == ADF_DEV_RESET_ASYNC ||
++	    completion_done(&reset_data->compl))
+ 		kfree(reset_data);
++	else
++		complete(&reset_data->compl);
+ }
  
- #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
-diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch/include/asm/qspinlock.h
-deleted file mode 100644
-index 34f43f8ad5912..0000000000000
---- a/arch/loongarch/include/asm/qspinlock.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _ASM_QSPINLOCK_H
--#define _ASM_QSPINLOCK_H
--
--#include <asm-generic/qspinlock_types.h>
--
--#define queued_spin_unlock queued_spin_unlock
--
--static inline void queued_spin_unlock(struct qspinlock *lock)
--{
--	compiletime_assert_atomic_type(lock->locked);
--	c_sync();
--	WRITE_ONCE(lock->locked, 0);
--}
--
--#include <asm-generic/qspinlock.h>
--
--#endif /* _ASM_QSPINLOCK_H */
+ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
+@@ -140,8 +149,9 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
+ 			dev_err(&GET_DEV(accel_dev),
+ 				"Reset device timeout expired\n");
+ 			ret = -EFAULT;
++		} else {
++			kfree(reset_data);
+ 		}
+-		kfree(reset_data);
+ 		return ret;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
