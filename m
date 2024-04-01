@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-34656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-35054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF20989403F
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:27:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CC0894227
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660101F2108B
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:27:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEB0FB20E02
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976C746B9F;
-	Mon,  1 Apr 2024 16:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043F3BBC3;
+	Mon,  1 Apr 2024 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvjkfK7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiF2QUi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C83C129;
-	Mon,  1 Apr 2024 16:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D78F5C;
+	Mon,  1 Apr 2024 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711988855; cv=none; b=ffeeTQQAmAfweD27IdZ+Hc2/VxvtXB9hxhlQAYyiUJXWlEIFnHSRhwK7ICU3yApmBXAl6wVGTRLWOIbM8bRH4T5+VhRXNTqFj+NRUtc2d/qcOsRJc0sk7i66nJgMBxXfykor2utpripz9KzwkBiYjib722b5tn8YWiKI9UdID6E=
+	t=1711990190; cv=none; b=HhgguvO5OCCBOERzpvalJdVqhevK6KXuGl4zcdfO12uGhO0/w92y7PZ9rdXFcBfatx8Sn/VPuXeZWcy8MFLeMwpuwt78Khd9Wtljn1vsn+AyB2CK7NqxQoHFFbV1PH54Cr2bok9Bnqt7o3lqMXCPcaPOnLOVRtUD0EKPEWHWG1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711988855; c=relaxed/simple;
-	bh=p0lTGP+0U63X4sHeXwOjFFGCvX5NYqBu8nrttRFxCA4=;
+	s=arc-20240116; t=1711990190; c=relaxed/simple;
+	bh=A2T9HxyvPB8EZBT2wYHqhJoyqdQxUDltA1q0SHXxyto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ual+8fS+hjpVJBJEzI4HcodPLDkj7r828G37Klw0Lffn0gstT/dlNxuvarnosd93qQMR80mhM4FD9xN7SPbUOpHLnMcfXBg4Yo3Sp/1Lv+zZFqGZJ9UnHdViwEcEDGlPNMqiibXrnQUWBTq4k6LR7Lzl2VFDevlO6MKpcVo1Nmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvjkfK7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCF6C433C7;
-	Mon,  1 Apr 2024 16:27:34 +0000 (UTC)
+	 MIME-Version; b=IaKvcVAUR2OF1OiBV1QhM/O2NsG6U8D2ljD0Uk9cV8uZKCQOaWgghq3sNEbkcRspaJw8ODAW9ytYF6xGm48rlMUWbILw4LGhyyFEfG7ILgEBsTVcUr6MCPCrHRg5ycPVwaOoR5w44rcEdfGEjG01C77x7fr/T3i6gjWltmc3XI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiF2QUi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A337BC433F1;
+	Mon,  1 Apr 2024 16:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711988855;
-	bh=p0lTGP+0U63X4sHeXwOjFFGCvX5NYqBu8nrttRFxCA4=;
+	s=korg; t=1711990190;
+	bh=A2T9HxyvPB8EZBT2wYHqhJoyqdQxUDltA1q0SHXxyto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvjkfK7qLIKzsHrLg5m+eEL4VRv2gccpaEqOkDLKCSiV0QddKlyTQglR7rehyg4n2
-	 IV30uxWj3prOoimlPaE0XMxpk2DRyfnkGGHlHIdFO49r0fJzV+yaAMYrX+fmFJhGSM
-	 kHekhF8nXMsyoDloVhUZcgPGWd3EQlGRhZvj6mi8=
+	b=uiF2QUi7Wqyj1/eivSbb/ibeH4YxnyCBXX33l0VnNcTO5UIsMypj0RcadyyhvA0kL
+	 cyxZkM6dCISewBcr6+2snUrdmQbh3hcReeNK3A5jPddjoCj2kV42pU5CwpxOvYzvsW
+	 nU+suaUFv/G6G+mqq/ikej0+PNVFy1tseUYUiV9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 308/432] irqchip/renesas-rzg2l: Flush posted write in irq_eoi()
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 246/396] iio: imu: inv_mpu6050: fix FIFO parsing when empty
 Date: Mon,  1 Apr 2024 17:44:55 +0200
-Message-ID: <20240401152602.375896010@linuxfoundation.org>
+Message-ID: <20240401152555.248565049@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
-References: <20240401152553.125349965@linuxfoundation.org>
+In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
+References: <20240401152547.867452742@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 9eec61df55c51415409c7cc47e9a1c8de94a0522 ]
+commit 60caa8b33bd682a9ed99d1fc3f91d74e1acc9922 upstream.
 
-The irq_eoi() callback of the RZ/G2L interrupt chip clears the relevant
-interrupt cause bit in the TSCR register by writing to it.
+Now that we are reading the full FIFO in the interrupt handler,
+it is possible to have an emply FIFO since we are still receiving
+1 interrupt per data. Handle correctly this case instead of having
+an error causing a reset of the FIFO.
 
-This write is not sufficient because the write is posted and therefore not
-guaranteed to immediately clear the bit. Due to that delay the CPU can
-raise the just handled interrupt again.
-
-Prevent this by reading the register back which causes the posted write to
-be flushed to the hardware before the read completes.
-
-Fixes: 3fed09559cd8 ("irqchip: Add RZ/G2L IA55 Interrupt Controller driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://lore.kernel.org/r/20240219154825.90656-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 3dc2b3867f219..d6514f2d51aff 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -81,8 +81,14 @@ static void rzg2l_irq_eoi(struct irq_data *d)
- 	 * ISCR can only be cleared if the type is falling-edge, rising-edge or
- 	 * falling/rising-edge.
- 	 */
--	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq)))
-+	if ((iscr & bit) && (iitsr & IITSR_IITSEL_MASK(hw_irq))) {
- 		writel_relaxed(iscr & ~bit, priv->base + ISCR);
-+		/*
-+		 * Enforce that the posted write is flushed to prevent that the
-+		 * just handled interrupt is raised again.
-+		 */
-+		readl_relaxed(priv->base + ISCR);
-+	}
- }
- 
- static void rzg2l_tint_eoi(struct irq_data *d)
-@@ -93,8 +99,14 @@ static void rzg2l_tint_eoi(struct irq_data *d)
- 	u32 reg;
- 
- 	reg = readl_relaxed(priv->base + TSCR);
--	if (reg & bit)
-+	if (reg & bit) {
- 		writel_relaxed(reg & ~bit, priv->base + TSCR);
-+		/*
-+		 * Enforce that the posted write is flushed to prevent that the
-+		 * just handled interrupt is raised again.
-+		 */
-+		readl_relaxed(priv->base + TSCR);
-+	}
- }
- 
- static void rzg2l_irqc_eoi(struct irq_data *d)
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 66d4ba088e70..d4f9b5d8d28d 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -109,6 +109,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	/* compute and process only all complete datum */
+ 	nb = fifo_count / bytes_per_datum;
+ 	fifo_count = nb * bytes_per_datum;
++	if (nb == 0)
++		goto end_session;
+ 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
+ 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+ 	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
 -- 
-2.43.0
+2.44.0
 
 
 
