@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-35137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC64D894294
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A408940CA
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5891F2605E
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:54:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4801FB21565
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4C1482DF;
-	Mon,  1 Apr 2024 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D482B43AD6;
+	Mon,  1 Apr 2024 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yc09CQiy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T10Pco4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0C51DFF4;
-	Mon,  1 Apr 2024 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9237B10A3B;
+	Mon,  1 Apr 2024 16:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711990427; cv=none; b=ecxFWdpfHXuzp4Y2nYES175t9w6LSL0ODX3oPLvh/CDbGFHJRsdGYu/HhmnQI3FXpmZzfCLalNFVsRmbBUyRQ6KARKdW2cmxbRFi/cTlLHLZ12n7kHMf8TpU7Qh1sriBrflaNMHfHfLF1lA/UcSfONpi9ZEMGH3XQcW1Gq84hm8=
+	t=1711989266; cv=none; b=u/7qwfgL4GZWcphjykyvvmsRkXSxEjkfvWC+dIsWP0isHS8M1Rg0+S0Zkun21mmEUr69jnfW7rNkCJc6NkpHSkS2bPlcBhokVm6giaqy89onlQqEHmzwAk38FdsfBfKpB48cCkpIK2M5X0mN9HaY3sPtfcf4zqCPj0I0AW1TNH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711990427; c=relaxed/simple;
-	bh=SEJL9b6D9G+oWpvqkQ8tDyf0Ewe7rY5WmmU6n6tGUr8=;
+	s=arc-20240116; t=1711989266; c=relaxed/simple;
+	bh=yx4moEIob2ngIVyRwA7oyXh+03YdXWPj8G5dEal3Ess=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddges65oxEjLH5ENyGRjEEFpEAbUwDgreexKhbvAv+Krnh1vJsrr4ABCQ8FyULFInaRmAmm5Vo/CvuHblr9iTtwwWFolMMNXYwZY2PndmCVNjV7Yep5n0qNQPc8INibntiux8F7x5Nj5YtDStzhqeDDPoOdS3Bxdxo0E1Ym5uBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yc09CQiy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60C5C433F1;
-	Mon,  1 Apr 2024 16:53:46 +0000 (UTC)
+	 MIME-Version; b=CS/8U/NCkyq4pU+49MajTS6HP1r7OTT6P28ID5jXa0DZ1IuWOWpAfmZ/ZQ13Pu4+YhjpY4jFxON6sAdu0hq7JHLiGhvKqpll0U2/pdtcPljTotrZFI9vWoOXH/XnU/24klsNA7XDKFf/5ZZ6PVa9GA2pmDVYas7hU/3HlFaW6UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T10Pco4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A22C43394;
+	Mon,  1 Apr 2024 16:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711990427;
-	bh=SEJL9b6D9G+oWpvqkQ8tDyf0Ewe7rY5WmmU6n6tGUr8=;
+	s=korg; t=1711989265;
+	bh=yx4moEIob2ngIVyRwA7oyXh+03YdXWPj8G5dEal3Ess=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yc09CQiyRI3M2QK0fUrjonyGgqCR9hdt8enUiE2LZy1XyMqGCl/2/GgBBGaIRzZSu
-	 3020n5w8oM0gcAmWs1mICfMXKbzUtQdud3AyJ5ilJN3rxH3KvJ7Mlr57EuGmEA4K/q
-	 MnXXTCah262oZGPBLyEY9SvAlKX1kHlbpdY0f0hs=
+	b=T10Pco4tJFURhCCSKQAFYF0DATgGmB6UPlOnMHDm7wn7EcmX+xpQO91BXuTVPud2P
+	 aEzjMBryGtlA7Od1HoPmwYYJQGpX1+Cc4dPrTRZHvDMd61AXOu10UpYStofqPvUcPK
+	 Utdc2nqXGqPy6G7WyKLJQnmQSwPVQz9bAcM0DytI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 350/396] usb: cdc-wdm: close race between read and workqueue
-Date: Mon,  1 Apr 2024 17:46:39 +0200
-Message-ID: <20240401152558.349546927@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 413/432] scsi: qla2xxx: Fix N2N stuck connection
+Date: Mon,  1 Apr 2024 17:46:40 +0200
+Message-ID: <20240401152605.709859531@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152547.867452742@linuxfoundation.org>
-References: <20240401152547.867452742@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 339f83612f3a569b194680768b22bf113c26a29d upstream.
+commit 881eb861ca3877300570db10abbf11494e48548d upstream.
 
-wdm_read() cannot race with itself. However, in
-service_outstanding_interrupt() it can race with the
-workqueue, which can be triggered by error handling.
+Disk failed to rediscover after chip reset error injection. The chip reset
+happens at the time when a PLOGI is being sent. This causes a flag to be
+left on which blocks the retry. Clear the blocking flag.
 
-Hence we need to make sure that the WDM_RESPONDING
-flag is not just only set but tested.
-
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240314115132.3907-1-oneukum@suse.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240227164127.36465-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_gbl.h  |    2 +-
+ drivers/scsi/qla2xxx/qla_iocb.c |   32 +++++++++++---------------------
+ drivers/scsi/qla2xxx/qla_os.c   |    2 +-
+ 3 files changed, 13 insertions(+), 23 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -485,6 +485,7 @@ out_free_mem:
- static int service_outstanding_interrupt(struct wdm_device *desc)
- {
- 	int rv = 0;
-+	int used;
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -44,7 +44,7 @@ extern int qla2x00_fabric_login(scsi_qla
+ extern int qla2x00_local_device_login(scsi_qla_host_t *, fc_port_t *);
  
- 	/* submit read urb only if the device is waiting for it */
- 	if (!desc->resp_count || !--desc->resp_count)
-@@ -499,7 +500,10 @@ static int service_outstanding_interrupt
- 		goto out;
+ extern int qla24xx_els_dcmd_iocb(scsi_qla_host_t *, int, port_id_t);
+-extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *, bool);
++extern int qla24xx_els_dcmd2_iocb(scsi_qla_host_t *, int, fc_port_t *);
+ extern void qla2x00_els_dcmd2_free(scsi_qla_host_t *vha,
+ 				   struct els_plogi *els_plogi);
+ 
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -3041,7 +3041,7 @@ static void qla2x00_els_dcmd2_sp_done(sr
+ 
+ int
+ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *vha, int els_opcode,
+-    fc_port_t *fcport, bool wait)
++			fc_port_t *fcport)
+ {
+ 	srb_t *sp;
+ 	struct srb_iocb *elsio = NULL;
+@@ -3056,8 +3056,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	if (!sp) {
+ 		ql_log(ql_log_info, vha, 0x70e6,
+ 		 "SRB allocation failed\n");
+-		fcport->flags &= ~FCF_ASYNC_ACTIVE;
+-		return -ENOMEM;
++		goto done;
  	}
  
--	set_bit(WDM_RESPONDING, &desc->flags);
-+	used = test_and_set_bit(WDM_RESPONDING, &desc->flags);
-+	if (used)
-+		goto out;
-+
- 	spin_unlock_irq(&desc->iuspin);
- 	rv = usb_submit_urb(desc->response, GFP_KERNEL);
- 	spin_lock_irq(&desc->iuspin);
+ 	fcport->flags |= FCF_ASYNC_SENT;
+@@ -3066,9 +3065,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	ql_dbg(ql_dbg_io, vha, 0x3073,
+ 	       "%s Enter: PLOGI portid=%06x\n", __func__, fcport->d_id.b24);
+ 
+-	if (wait)
+-		sp->flags = SRB_WAKEUP_ON_COMP;
+-
+ 	sp->type = SRB_ELS_DCMD;
+ 	sp->name = "ELS_DCMD";
+ 	sp->fcport = fcport;
+@@ -3084,7 +3080,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (!elsio->u.els_plogi.els_plogi_pyld) {
+ 		rval = QLA_FUNCTION_FAILED;
+-		goto out;
++		goto done_free_sp;
+ 	}
+ 
+ 	resp_ptr = elsio->u.els_plogi.els_resp_pyld =
+@@ -3093,7 +3089,7 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (!elsio->u.els_plogi.els_resp_pyld) {
+ 		rval = QLA_FUNCTION_FAILED;
+-		goto out;
++		goto done_free_sp;
+ 	}
+ 
+ 	ql_dbg(ql_dbg_io, vha, 0x3073, "PLOGI %p %p\n", ptr, resp_ptr);
+@@ -3109,7 +3105,6 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 
+ 	if (els_opcode == ELS_DCMD_PLOGI && DBELL_ACTIVE(vha)) {
+ 		struct fc_els_flogi *p = ptr;
+-
+ 		p->fl_csp.sp_features |= cpu_to_be16(FC_SP_FT_SEC);
+ 	}
+ 
+@@ -3118,10 +3113,11 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 	    (uint8_t *)elsio->u.els_plogi.els_plogi_pyld,
+ 	    sizeof(*elsio->u.els_plogi.els_plogi_pyld));
+ 
+-	init_completion(&elsio->u.els_plogi.comp);
+ 	rval = qla2x00_start_sp(sp);
+ 	if (rval != QLA_SUCCESS) {
+-		rval = QLA_FUNCTION_FAILED;
++		fcport->flags |= FCF_LOGIN_NEEDED;
++		set_bit(RELOGIN_NEEDED, &vha->dpc_flags);
++		goto done_free_sp;
+ 	} else {
+ 		ql_dbg(ql_dbg_disc, vha, 0x3074,
+ 		    "%s PLOGI sent, hdl=%x, loopid=%x, to port_id %06x from port_id %06x\n",
+@@ -3129,21 +3125,15 @@ qla24xx_els_dcmd2_iocb(scsi_qla_host_t *
+ 		    fcport->d_id.b24, vha->d_id.b24);
+ 	}
+ 
+-	if (wait) {
+-		wait_for_completion(&elsio->u.els_plogi.comp);
+-
+-		if (elsio->u.els_plogi.comp_status != CS_COMPLETE)
+-			rval = QLA_FUNCTION_FAILED;
+-	} else {
+-		goto done;
+-	}
++	return rval;
+ 
+-out:
+-	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
++done_free_sp:
+ 	qla2x00_els_dcmd2_free(vha, &elsio->u.els_plogi);
+ 	/* ref: INIT */
+ 	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+ done:
++	fcport->flags &= ~(FCF_ASYNC_SENT | FCF_ASYNC_ACTIVE);
++	qla2x00_set_fcport_disc_state(fcport, DSC_DELETED);
+ 	return rval;
+ }
+ 
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -5583,7 +5583,7 @@ qla2x00_do_work(struct scsi_qla_host *vh
+ 			break;
+ 		case QLA_EVT_ELS_PLOGI:
+ 			qla24xx_els_dcmd2_iocb(vha, ELS_DCMD_PLOGI,
+-			    e->u.fcport.fcport, false);
++			    e->u.fcport.fcport);
+ 			break;
+ 		case QLA_EVT_SA_REPLACE:
+ 			rc = qla24xx_issue_sa_replace_iocb(vha, e);
 
 
 
