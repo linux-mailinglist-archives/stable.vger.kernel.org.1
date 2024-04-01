@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-34331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C1B893EE4
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:09:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A627C89407A
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 18:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376A41F21FFF
-	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6159B2830D3
+	for <lists+stable@lfdr.de>; Mon,  1 Apr 2024 16:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727FC47A57;
-	Mon,  1 Apr 2024 16:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130541E86C;
+	Mon,  1 Apr 2024 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDvSq01f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjr7q6a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BCB1CA8F;
-	Mon,  1 Apr 2024 16:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61D617FD;
+	Mon,  1 Apr 2024 16:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987760; cv=none; b=q1ZH6p6RU3+I48VQ8Kbf8i08ZDh/TENvkArFmTNbvjm6AawstnZf5mDmgkPcVforkkQQGRDUkMnP8JNj4gLRDV/Jves81dg4zeBeImvnx4HgRkOsOszVHGSgX7H1Cj38as7g62ROjZLUcALG+Cgcqm8ajiezKzgT+2AcLJiDpVg=
+	t=1711989036; cv=none; b=KP8t+095f00ydz1SfBtHYbH0ohlG0dcXDWwrn9HxouWrUPe1WDhhFwvjA+prSjM5bDVCl2bgH3dMXMAEAXJ/sQ/6rbKLsQv7dy6C/749wTFRm1IBj0ZYagOS1ZK0WaGKArdqHoetRfgmwyn4H2rEHJxKSpPA0V8hB5AKSshpT+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987760; c=relaxed/simple;
-	bh=4S5lObOdxQzBEpwcl/YuS29x/IrLhSjc6m7CsefGgZ4=;
+	s=arc-20240116; t=1711989036; c=relaxed/simple;
+	bh=n2qds4O40oHzcUalaZX9l0XpWIprhE0jPZtx5Rlp3MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5IZoNbXjsfPXHU3mc4YWgRbN1I8jGtNJLxyGlDAlIetPoKSzU4LKpgxmI5YG0JZyoAsi776qPOQYbgfYh5GfQb7UZFjl/I01xG9NDUamA0gW84+epfuRTaxn8iOz/z0BZY3Y4Iduckn1m8elwjhRTl+u+usSm0yzfrVTZu2jcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDvSq01f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902C7C433C7;
-	Mon,  1 Apr 2024 16:09:19 +0000 (UTC)
+	 MIME-Version; b=FNonqt9FaKL/l8u8zfZjucJ1LZJccxfGYnrzDAvxV571bNdbF61IVx2Gzn5AFy0khvvsoDYBcC6ZkOXn0ABBDSo8N2belpmumEn/5KGPbBthcklwTu51Hxlph/FBkAOF7q/6fG0+WORYX0KRdE2tIu6YWbFNBnSbs7aQk/aQVwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sjr7q6a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370F5C433F1;
+	Mon,  1 Apr 2024 16:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711987760;
-	bh=4S5lObOdxQzBEpwcl/YuS29x/IrLhSjc6m7CsefGgZ4=;
+	s=korg; t=1711989036;
+	bh=n2qds4O40oHzcUalaZX9l0XpWIprhE0jPZtx5Rlp3MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDvSq01fvrnpyBMEcYRhT87+wAvTo4juw8sAwJk/70AAzd9d3laUS4x5UtujFBlq4
-	 BEx+Pq8UzY5m2SJ49UsbzZizEQVgkE2x9TaI5m6B5DudNhgIIYkqRglb2EoPgGTP0G
-	 6LLIRznM+xnHPnD3d5Gk5JeV/VCmpakVfMT+SpMw=
+	b=Sjr7q6a/cgG0zXozMkoZqTr/2/4Y6cxWcgv+gsCTC14j+HQJkBwnF8HOaMmJR6XJy
+	 bq1EpH4s6fkWEKymyhP9z8ys4nI2q3G7ON415kSQvuBymf7kSZCQjD8E3SXa3Ya9S4
+	 IEau5gh3qerlE9g//+uPArGf/eh4BbcJ9SMK8qsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.8 383/399] scsi: qla2xxx: Fix double free of the ha->vp_map pointer
-Date: Mon,  1 Apr 2024 17:45:49 +0200
-Message-ID: <20240401152600.607706851@linuxfoundation.org>
+	Danilo Krummrich <dakr@redhat.com>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 6.7 363/432] nouveau/dmem: handle kcalloc() allocation failure
+Date: Mon,  1 Apr 2024 17:45:50 +0200
+Message-ID: <20240401152604.094147780@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240401152549.131030308@linuxfoundation.org>
-References: <20240401152549.131030308@linuxfoundation.org>
+In-Reply-To: <20240401152553.125349965@linuxfoundation.org>
+References: <20240401152553.125349965@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit e288285d47784fdcf7c81be56df7d65c6f10c58b upstream.
+commit 16e87fe23d4af6df920406494ced5c0f4354567b upstream.
 
-Coverity scan reported potential risk of double free of the pointer
-ha->vp_map.  ha->vp_map was freed in qla2x00_mem_alloc(), and again freed
-in function qla2x00_mem_free(ha).
+The kcalloc() in nouveau_dmem_evict_chunk() will return null if
+the physical memory has run out. As a result, if we dereference
+src_pfns, dst_pfns or dma_addrs, the null pointer dereference bugs
+will happen.
 
-Assign NULL to vp_map and kfree take care of NULL.
+Moreover, the GPU is going away. If the kcalloc() fails, we could not
+evict all pages mapping a chunk. So this patch adds a __GFP_NOFAIL
+flag in kcalloc().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240227164127.36465-8-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Finally, as there is no need to have physically contiguous memory,
+this patch switches kcalloc() to kvcalloc() in order to avoid
+failing allocations.
+
+CC: <stable@vger.kernel.org> # v6.1
+Fixes: 249881232e14 ("nouveau/dmem: evict device private memory during release")
+Suggested-by: Danilo Krummrich <dakr@redhat.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240306050104.11259-1-duoming@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4602,6 +4602,7 @@ fail_free_init_cb:
- 	ha->init_cb_dma = 0;
- fail_free_vp_map:
- 	kfree(ha->vp_map);
-+	ha->vp_map = NULL;
- fail:
- 	ql_log(ql_log_fatal, NULL, 0x0030,
- 	    "Memory allocation failure.\n");
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -378,9 +378,9 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	dma_addr_t *dma_addrs;
+ 	struct nouveau_fence *fence;
+ 
+-	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
+-	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
+-	dma_addrs = kcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL);
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dma_addrs = kvcalloc(npages, sizeof(*dma_addrs), GFP_KERNEL | __GFP_NOFAIL);
+ 
+ 	migrate_device_range(src_pfns, chunk->pagemap.range.start >> PAGE_SHIFT,
+ 			npages);
+@@ -406,11 +406,11 @@ nouveau_dmem_evict_chunk(struct nouveau_
+ 	migrate_device_pages(src_pfns, dst_pfns, npages);
+ 	nouveau_dmem_fence_done(&fence);
+ 	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	for (i = 0; i < npages; i++)
+ 		dma_unmap_page(chunk->drm->dev->dev, dma_addrs[i], PAGE_SIZE, DMA_BIDIRECTIONAL);
+-	kfree(dma_addrs);
++	kvfree(dma_addrs);
+ }
+ 
+ void
 
 
 
